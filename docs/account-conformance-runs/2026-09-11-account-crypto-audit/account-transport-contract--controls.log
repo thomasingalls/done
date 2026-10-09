@@ -1,0 +1,14 @@
+(node:7943) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ submission digest and parent omissions admit separately changed valid envelopes/refusals at the actual verifier boundary (9.323875ms)
+✔ head-final and v1 page-through omissions rescue a changed claim, without pretending finalization or entry validation occurs here (4.45275ms)
+✔ witness request-binding omission accepts a witness under a different held proposal scope (1.560208ms)
+✔ controls retain their reviewed boundaries and evidence inventory (1.009416ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.263667

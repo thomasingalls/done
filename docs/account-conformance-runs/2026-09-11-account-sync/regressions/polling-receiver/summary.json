@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T11:57:26.720Z",
+  "stages": [
+    {
+      "name": "types",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "units",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "controls",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native-controls",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "generated",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private owned v9 receive polling and reconnect: fixed idle interval and capped backoff, sticky failure halt, dispatch gate, lifetime draining, generated clock/native histories and effective omission controls. No outbound composition or personal Account deployment.",
+  "completedAt": "2026-09-11T12:00:37.968Z"
+}

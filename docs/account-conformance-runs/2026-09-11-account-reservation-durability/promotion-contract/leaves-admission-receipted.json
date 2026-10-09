@@ -1,0 +1,2491 @@
+[
+  {
+    "path": [
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "id"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "source",
+      "slotId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "source",
+      "principalId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "source",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "source",
+      "storeId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "source",
+      "rootId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "source",
+      "genesisIntentId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "source",
+      "generation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "claimMac"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "pin",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "pin",
+      "serviceId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "pin",
+      "origin"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "pin",
+      "rpId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "pin",
+      "authRoot"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "accountId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "attemptId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "status"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "principalId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "lineageId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "authRoot"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "rootCommitment"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "rPub"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "bootstrapSigner"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "envelope",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "envelope",
+      "salt"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "envelope",
+      "nonce"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "draft",
+      "envelope",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "confirmation",
+      "recoveryId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "confirmation",
+      "receiptId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "confirmation",
+      "draftDigest"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "account",
+      "confirmation",
+      "recoveryStateDigest"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "retryHash"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "custodyMac"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "sealReserved"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "credentialIds",
+      "0"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentialIds",
+      "1"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "stage"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentials",
+      "0",
+      "role"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentials",
+      "0",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentials",
+      "0",
+      "publicKey"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "credentials",
+      "0",
+      "sealed",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentials",
+      "0",
+      "sealed",
+      "nonce"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "credentials",
+      "0",
+      "sealed",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "credentials",
+      "1",
+      "role"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentials",
+      "1",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentials",
+      "1",
+      "publicKey"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "credentials",
+      "1",
+      "sealed",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "credentials",
+      "1",
+      "sealed",
+      "nonce"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "credentials",
+      "1",
+      "sealed",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "preparation"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "accountId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "principalId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "workspaceId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "lineageId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "authRoot"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "generation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "proposedEpoch"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "signer"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "actors",
+      "0",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "actors",
+      "0",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "actors",
+      "0",
+      "credential"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "actors",
+      "1",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "actors",
+      "1",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "actors",
+      "1",
+      "credential"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "coverage",
+      "derivation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "coverage",
+      "snapshot"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "coverage",
+      "heads"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "checkpoint",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "checkpoint",
+      "salt"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "checkpoint",
+      "nonce"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "checkpoint",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "0",
+      "recipient"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "0",
+      "id"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "0",
+      "publicKey"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "0",
+      "enc"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "0",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "1",
+      "recipient"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "1",
+      "id"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "1",
+      "publicKey"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "1",
+      "enc"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "wraps",
+      "1",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "genesis",
+      "signature"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "preparation"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "accountId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "principalId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "workspaceId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "lineageId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "authRoot"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "generation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "proposedEpoch"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "signer"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "actors",
+      "0",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "actors",
+      "0",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "actors",
+      "0",
+      "credential"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "actors",
+      "1",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "actors",
+      "1",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "actors",
+      "1",
+      "credential"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "coverage",
+      "derivation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "coverage",
+      "snapshot"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "coverage",
+      "heads"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "checkpoint",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "checkpoint",
+      "salt"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "checkpoint",
+      "nonce"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "checkpoint",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "0",
+      "recipient"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "0",
+      "id"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "0",
+      "publicKey"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "0",
+      "enc"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "0",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "1",
+      "recipient"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "1",
+      "id"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "1",
+      "publicKey"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "1",
+      "enc"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "wraps",
+      "1",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "candidate",
+      "signature"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "certification",
+      "members",
+      "0",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "certification",
+      "members",
+      "0",
+      "wPub"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "certification",
+      "members",
+      "0",
+      "sPub"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "certification",
+      "recoveryStateDigest"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "certification",
+      "approver"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "certification",
+      "signature"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "principalId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "workspaceId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "lineageId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "authRoot"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "rootCommitment"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "rPub"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "bootstrapSigner"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "envelope",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "envelope",
+      "salt"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "envelope",
+      "nonce"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "recovery",
+      "envelope",
+      "ct"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "request",
+      "originSignature"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "pin",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "pin",
+      "serviceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "pin",
+      "origin"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "pin",
+      "rpId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "pin",
+      "authRoot"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "requestDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "accountId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "principalId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "lineageId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "epoch"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "parent"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "generation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "certification",
+      "members",
+      "0",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "certification",
+      "members",
+      "0",
+      "wPub"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "certification",
+      "members",
+      "0",
+      "sPub"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "certification",
+      "recoveryStateDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "certification",
+      "approver"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "certification",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "owner"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "capabilities",
+      "0"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "capabilities",
+      "1"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "capabilities",
+      "2"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "capabilities",
+      "3"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "acceptancePublicKey"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "epoch",
+      "heads"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "head"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "offer",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "epoch"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "epochHead"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "generation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "checkpointDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "sv"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "ds"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "headVectorDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "producer"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "manifest",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "checkpointDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "manifestDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "derivedSv"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "derivedDs"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "headBaselineDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "derivation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "admittingCredential"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "selfAdmitted"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "decisionParent"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "completion",
+      "admission",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "kind"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "pin",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "pin",
+      "serviceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "pin",
+      "origin"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "pin",
+      "rpId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "pin",
+      "authRoot"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "requestDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "accountId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "principalId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "lineageId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "epoch"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "parent"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "generation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "certification",
+      "members",
+      "0",
+      "id"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "certification",
+      "members",
+      "0",
+      "wPub"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "certification",
+      "members",
+      "0",
+      "sPub"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "certification",
+      "recoveryStateDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "certification",
+      "approver"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "certification",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "owner"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "capabilities",
+      "0"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "capabilities",
+      "1"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "capabilities",
+      "2"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "capabilities",
+      "3"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "acceptancePublicKey"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "epoch",
+      "heads"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "head"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "offer",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "epoch"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "epochHead"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "generation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "checkpointDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "sv"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "ds"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "headVectorDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "producer"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "manifest",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "workspaceId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "checkpointDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "manifestDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "derivedSv"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "derivedDs"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "headBaselineDigest"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "derivation"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "admittingCredential"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "selfAdmitted"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "decisionParent"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "completion",
+      "admission",
+      "signature"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "epochSignature"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "pin",
+      "v"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "pin",
+      "serviceId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "pin",
+      "origin"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "pin",
+      "rpId"
+    ],
+    "result": "parser-refusal"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "pin",
+      "authRoot"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "accountId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "requestDigest"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "offerHead"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "completionDigest"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "credentialId"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "nonce"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "context",
+      "expiresAt"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "activation",
+      "proofHash"
+    ],
+    "result": "old-mac-refuses"
+  },
+  {
+    "path": [
+      "admission",
+      "receipt",
+      "signature"
+    ],
+    "result": "old-mac-refuses"
+  }
+]

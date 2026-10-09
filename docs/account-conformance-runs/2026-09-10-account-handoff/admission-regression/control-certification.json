@@ -1,0 +1,86 @@
+{
+  "gate": "certification",
+  "baseline": "refused",
+  "observed": "account activated after approval verification removed",
+  "result": {
+    "v": 1,
+    "kind": "promotion-receipt",
+    "offer": {
+      "v": 1,
+      "kind": "promotion-offer",
+      "epoch": {
+        "v": 1,
+        "kind": "first-authorization-epoch",
+        "pin": {
+          "v": 1,
+          "serviceId": "483fae613d8a7d2213be60792950ab86",
+          "origin": "http://localhost:4999",
+          "rpId": "localhost",
+          "authRoot": "34e7f13d53e5bee1771165e1e18bbe2fe669bc302714586c6e98ace5ca46f20f"
+        },
+        "requestDigest": "183a8004450cd1173867a443cbc466d8e33de830c53a6b1f26291fbe8bcfd48d",
+        "accountId": "jj2Gp33UmwdaKzqVo2dG79RGcfD3gi5H7Rtw8r0H6JQ",
+        "principalId": "11111111111111111111111111111111",
+        "workspaceId": "22222222222222222222222222222222",
+        "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+        "epoch": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "generation": 1,
+        "certification": {
+          "members": [
+            {
+              "id": "55555555555555555555555555555555",
+              "wPub": "4aa58505c3cc0209e1ac3bfa61979436ff81133a6478f447cb7107d1255a3e78",
+              "sPub": "afcfc3e6ea4d2d62f7d9e25882b7352b37de675ce2cd6fdf6937471bf1de7344"
+            }
+          ],
+          "recoveryStateDigest": "87b591fe97cbe99156fc86b38c655c95e6e9effa0c11b8e92efbc16fba412590",
+          "approver": "55555555555555555555555555555555",
+          "signature": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "owner": "55555555555555555555555555555555",
+        "capabilities": [
+          "read",
+          "write",
+          "admit",
+          "manage"
+        ],
+        "acceptancePublicKey": "81ec29d0a953ab3a9afa2180ebedd8efe73510b7489f3458352701791cd627d9",
+        "heads": []
+      },
+      "head": "7631ffe10c8f8bf635ab90fe84d5f5cfffe328c2251fa2c44e158101a2392c45",
+      "signature": "b5ae2632d78512b862d058a6445d9415749f63498ed062ac82abdbcb2e99fe415960441d66a44b091077e309fb3d5ad9474621e973ccaefb052da68845fe5e01"
+    },
+    "completion": {
+      "manifest": {
+        "v": 1,
+        "workspaceId": "22222222222222222222222222222222",
+        "epoch": 1,
+        "epochHead": "7631ffe10c8f8bf635ab90fe84d5f5cfffe328c2251fa2c44e158101a2392c45",
+        "generation": 1,
+        "checkpointDigest": "1c1976b7286a7159971a174d5d2adbb0b3e16bc1ab668522e2cfa578eea95da7",
+        "sv": "00",
+        "ds": "0000",
+        "headVectorDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+        "producer": "55555555555555555555555555555555",
+        "signature": "a7ebe38303c3d25272d79c2124f5f8cff71ffc71b04fb5559f6393642b396fd3cd4ed8a89b4d6b20519d3b7c647a1d87448f52d56423f5895903a0cba46ddd0e"
+      },
+      "admission": {
+        "v": 1,
+        "workspaceId": "22222222222222222222222222222222",
+        "checkpointDigest": "1c1976b7286a7159971a174d5d2adbb0b3e16bc1ab668522e2cfa578eea95da7",
+        "manifestDigest": "155db71c378e50299cdef426858cbd5ed2f374b5ec9ec725d86ed9e3fa4717eb",
+        "derivedSv": "00",
+        "derivedDs": "0000",
+        "headBaselineDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+        "derivation": "yjs-13.6.31-sv-ds-v1",
+        "admittingCredential": "55555555555555555555555555555555",
+        "selfAdmitted": 1,
+        "decisionParent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "signature": "d9508c288082feb54f435fe6a7e286dc6288966a56c8b9ba2336644fdf448923170c5d0d02e8a36bcbfe601f242a0d58ee99d9394b3779783c9aac803fee0602"
+      }
+    },
+    "epochSignature": "6897ad43f25cdc805bfacbf7a349e9cc7107045f4e1718e561c7cf7b4351ca33cca7a5a587022c408d8adea6420f59ea778300002378ea9f108b99087ef1fb01",
+    "signature": "5f1f82e2cafa87b6bc3732b3368793be7051b479e97e233e0b68ac52d71265e0ce48b1ec7e48036ca09a2564e4f053014797a5a144a9b05fd270558bccf44f03"
+  }
+}

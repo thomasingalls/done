@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay" time="19.228973" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing" time="17.146462" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="native submission abort retains work for cold restart" time="12.450527" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="native receive abort retains work for cold restart" time="12.521205" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="close drains a delayed send and prevents queued receive dispatch before releasing the shared permit" time="8.626633" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="local journal admission during an outbound seal is captured once and sent after readback gets a turn" time="11.640757" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<testcase name="retained signed receive conflict halts both lanes without closing valid Local content" time="10.914893" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs"/>
+	<!-- tests 7 -->
+	<!-- suites 0 -->
+	<!-- pass 7 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 94414.406583 -->
+</testsuites>

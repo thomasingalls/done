@@ -1,0 +1,40 @@
+{
+  "node": "v26.8.2",
+  "bundleSha256": "cefe533d2c55b8fa9366aaf22ce9d3b1487eb890c0d5b0f216c24fecf4893403",
+  "design": "one host; structurally valid synthetic candidate fields, not whole admission or service capacity; one warmup +3 equality samples including detached clone; V8 bytes are an encoding proxy, not browser file size",
+  "rows": [
+    {
+      "checkpointBytes": 4096,
+      "canonicalJsonBytes": 34130,
+      "retainedJsonBytes": 34130,
+      "v8EncodedBytes": 32088,
+      "equalityMs": [
+        5.975959000000017,
+        4.984541000000007,
+        4.211917
+      ]
+    },
+    {
+      "checkpointBytes": 65536,
+      "canonicalJsonBytes": 279890,
+      "retainedJsonBytes": 279890,
+      "v8EncodedBytes": 277850,
+      "equalityMs": [
+        37.14620899999997,
+        28.35620799999998,
+        33.07304199999999
+      ]
+    },
+    {
+      "checkpointBytes": 1048576,
+      "canonicalJsonBytes": 4212050,
+      "retainedJsonBytes": 4212050,
+      "v8EncodedBytes": 4210012,
+      "equalityMs": [
+        681.0091670000002,
+        695.537167,
+        719.1566250000001
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+(node:8023) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8023) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ control: removing recovery verification actually accepts a one-factor finalization (114.022375ms)
+✔ control: removing passkey verification actually accepts a one-factor finalization (58.973334ms)
+✔ control: removing the sealed-root check accepts an attacker-substituted authority root (25.65375ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 490.421583

@@ -1,0 +1,83 @@
+[
+  {
+    "name": "inventory",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1100
+  },
+  {
+    "name": "manifest",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1843
+  },
+  {
+    "name": "authority",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 943
+  },
+  {
+    "name": "signature",
+    "argv": [
+      "git",
+      "verify-commit",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 35
+  },
+  {
+    "name": "release-blocked",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--require-complete"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 1804
+  },
+  {
+    "name": "format",
+    "argv": [
+      "node_modules/.bin/oxfmt",
+      "--check",
+      "scripts/core-reproductions/browser.mjs",
+      "scripts/journal-contention/run.mjs",
+      "scripts/pending-projection/run.mjs",
+      "scripts/workspace-admission/catalog.mjs",
+      "scripts/workspace-admission/worker.mjs",
+      "src/crdt/admission.ts",
+      "src/crdt/admissionQueue.ts",
+      "src/crdt/admittedWorkspace.ts",
+      "src/crdt/workspacePreparation.ts",
+      "test/pending-projection/browser.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/workspace-admission/browser.mjs",
+      "test/workspaceAdmission.test.ts",
+      "docs/release-validation-graph.json"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 146
+  },
+  {
+    "name": "whitespace",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 59
+  }
+]

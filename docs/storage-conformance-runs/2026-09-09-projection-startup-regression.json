@@ -1,0 +1,1726 @@
+{
+  "schema": 1,
+  "scope": "owned-startup-browser",
+  "started": "2026-09-09T06:58:48.845Z",
+  "requestedCandidates": [
+    "startup"
+  ],
+  "requestedCases": [
+    "O01.absence",
+    "O02.orphan",
+    "O03.missing-content",
+    "O04.missing-custody",
+    "O05.routing",
+    "O06.legacy",
+    "O07.creation",
+    "O08.clear",
+    "O09.corrupt",
+    "O10.factor",
+    "O11.recheck",
+    "O12.replay",
+    "O13.init-death",
+    "O14.future",
+    "O15.scope"
+  ],
+  "harness": {
+    "commit": "fc1ff41757502db0ecb3093a0d0f87a138f3da73",
+    "dirty": true,
+    "files": {
+      "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+      "wasm/journal-seal/src/lib.rs": "716be05c199b8796b654c8935b466f30c16ac4ac1fadb783ae4f597474218b78",
+      "wasm/journal-seal/Cargo.toml": "8f8c138c9ee1a8b3a7edf5371163d253c597b93bc374eadb0eb587a50d0706c9",
+      "wasm/journal-seal/Cargo.lock": "6339c5b066678ce11cb27f70e1bc7a31ffaa9f2ff4c416e45b67ff6344dc5998",
+      "scripts/build-wasm-seal.mjs": "e10af46d1aaf514937c289cd8d2d5b57bc40ad4ee071e138be8c71849c5ca335",
+      "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+      "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+      "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+      "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+      "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+      "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+      "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+      "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+      "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+      "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+      "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+      "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+      "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+      "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+      "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+      "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+      "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+      "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+      "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+      "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+      "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+      "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+      "src/crdt/legacySource.ts": "0b75e1ed672c486675963b942e4d7bf56099003afd91cc6e7d9b713203124a5a",
+      "src/crdt/localClear.ts": "2a654c36f17a17da807b03346cd67949079d06d4b17954da9080b2b9525c36e6",
+      "src/crdt/localClearCrypto.ts": "b3c042521298b0408dfb2c55663b2ab5f22c7050df10e6c5eae4d8c1a0b11b25",
+      "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+      "src/crdt/localClearStorage.ts": "8e57651b4707acf4db527800542c0b23d6c38d2571bc56244209d9ec123f66aa",
+      "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+      "src/crdt/localGenesisRecord.ts": "264a5e2fb845b0bbfa053a9d7ea1ea685d7e6d245b39049f554678eea918d20d",
+      "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+      "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+      "src/crdt/ownedStartup.ts": "505bfd0a98947740dfe2dd6799b9c9b0c45b3e1912a7a332c4bb35211b70d876",
+      "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+      "src/crdt/serialize.ts": "4820519c4727482a1182ee1e8281ea92e83bd8698f5407df1fd4159a88cf4e2f",
+      "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+      "src/crdt/startupClassification.ts": "803d58793e0236e4af21361156be0ee5011ace8d272b127cd0afe9f191870080",
+      "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+      "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+      "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+      "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+      "src/crdt/workspaceChannel.ts": "5e82e4e850dc51672508e78a398bd5e04d72fbffca7193ab45505e32385abfd6",
+      "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+      "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+      "src/crdt/yjs.ts": "39f760b90a9853df70a877bb9b8d1a074dc51f271147726c2d092a86dd829834",
+      "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+      "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+      "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+      "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+      "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+      "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+      "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+      "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+      "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+      "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+      "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+      "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+      "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+      "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+      "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+      "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+      "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+      "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+      "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+      "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+      "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+      "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+      "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+      "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+      "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+      "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+      "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+      "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+      "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+      "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+      "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+      "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+      "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+      "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+      "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+      "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+      "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+      "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+      "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+      "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+      "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+      "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+      "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+      "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+      "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+      "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+      "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+      "pnpm-lock.yaml": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+      "package.json": "cbc728dcc1e5d784e0f3e66156c534fb0f46d0ea5eb78099a06d652d68d9b619",
+      "test/ownedStartup.test.ts": "0fc002657a37d2224b038ccc870eb4b53cc0c40773d924e52cab0a89ed1ae5e3",
+      "test/journal/browser.mjs": "f5488148137f9879fbc140de5602a06decaac01a2be9c0ad12de6e52c7d6836c",
+      "test/vectors/journal-aead.json": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7",
+      "test/content/browser.mjs": "00830bff7ec24592c429ccd7d62626ad8bb25739c44975f9e3028c75a73f4ae6",
+      "docs/owned-startup.md": "177b0cc884522112b0b69ed047df5f26b7d832a779c080955ae6ed382757a0aa",
+      "scripts/storage-conformance/report.mjs": "3213b63e0e5f4a39af85ef798a7f7e1eb09fee07e8006d78a2dc141263feb506",
+      "scripts/owned-startup/catalog.mjs": "545d5f4001cdea7db1e862e8e242210dbf60d3f1345865109dc1c0a13539bde9",
+      "scripts/owned-startup/run.mjs": "529bf735acbdaadf519e7d42a3cdab0c8e9259f46fe03523156944a949149ddb",
+      "scripts/owned-startup/scenarios.mjs": "3386284dc5f8add2cd8d3b3cc86d089e94d81b28907551ace0604ec621478fc1",
+      "test/owned-startup/browser.mjs": "3a022e0255d73e5879bcacf3c7d7f035f57b90a72fd32c9f1ab029f31d2a851a",
+      "test/owned-startup/index.html": "948c72d2f610209d7fbeeba9353e1609d9b14e18fb8cacc78ea0713a0a711cbf"
+    },
+    "node": "v26.8.1",
+    "vite": "8.1.5"
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "platform": "darwin",
+    "arch": "arm64",
+    "playwright": "1.62.0"
+  },
+  "candidates": [
+    {
+      "id": "startup",
+      "source": {
+        "files": {
+          "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+          "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+          "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+          "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+          "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+          "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+          "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+          "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+          "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+          "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+          "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+          "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+          "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+          "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+          "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+          "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+          "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+          "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+          "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+          "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+          "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+          "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+          "src/crdt/legacySource.ts": "0b75e1ed672c486675963b942e4d7bf56099003afd91cc6e7d9b713203124a5a",
+          "src/crdt/localClear.ts": "2a654c36f17a17da807b03346cd67949079d06d4b17954da9080b2b9525c36e6",
+          "src/crdt/localClearCrypto.ts": "b3c042521298b0408dfb2c55663b2ab5f22c7050df10e6c5eae4d8c1a0b11b25",
+          "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+          "src/crdt/localClearStorage.ts": "8e57651b4707acf4db527800542c0b23d6c38d2571bc56244209d9ec123f66aa",
+          "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+          "src/crdt/localGenesisRecord.ts": "264a5e2fb845b0bbfa053a9d7ea1ea685d7e6d245b39049f554678eea918d20d",
+          "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+          "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+          "src/crdt/ownedStartup.ts": "505bfd0a98947740dfe2dd6799b9c9b0c45b3e1912a7a332c4bb35211b70d876",
+          "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+          "src/crdt/serialize.ts": "4820519c4727482a1182ee1e8281ea92e83bd8698f5407df1fd4159a88cf4e2f",
+          "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+          "src/crdt/startupClassification.ts": "803d58793e0236e4af21361156be0ee5011ace8d272b127cd0afe9f191870080",
+          "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+          "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+          "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+          "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+          "src/crdt/workspaceChannel.ts": "5e82e4e850dc51672508e78a398bd5e04d72fbffca7193ab45505e32385abfd6",
+          "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+          "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+          "src/crdt/yjs.ts": "39f760b90a9853df70a877bb9b8d1a074dc51f271147726c2d092a86dd829834",
+          "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+          "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+          "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+          "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+          "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+          "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+          "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+          "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+          "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+          "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+          "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+          "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+          "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+          "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+          "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+          "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+          "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+          "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+          "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+          "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+          "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+          "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+          "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+          "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+          "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+          "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+          "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+          "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+          "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+          "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+          "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+          "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+          "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+          "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+          "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+          "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+          "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+          "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+          "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+          "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+          "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+          "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+          "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+          "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+          "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+          "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+          "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+        }
+      },
+      "mutation": null,
+      "cases": [
+        {
+          "id": "O01.absence",
+          "title": "Absent carriers do not create databases or enroll a factor",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "absent-is-observed-fresh",
+              "actual": "fresh",
+              "expected": "fresh",
+              "passed": true
+            },
+            {
+              "id": "preflight-no-database-side-effects",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "normal-open-does-not-enroll",
+              "actual": "fresh",
+              "expected": "fresh",
+              "passed": true
+            },
+            {
+              "id": "open-no-database-side-effects",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "fresh-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O02.orphan",
+          "title": "Surviving material without its index refuses fresh classification",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "orphan-not-fresh",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "orphan-open-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "orphan-carriers-retained",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[135,241,67,6,137,96,232,220,233,188,52,32],\"ct\":[89,7,216,128,19,203,31,194,157,235,131,154,181,204,11,48,120,225,205,139,58,58,214,195,2,60,138,173,253,143,193,70,120,221,84,1,209,94,82,239,53,218,210,34,162,85,66,88,17,59,46,193,58,103,166,143,107,95,182,225,105,225,245,30,34,238,228,206,205,230,206,234,235,2,199,224,238,68,84,108,169,203,91,25,134,11,223,211,43,221,201,76,51,82,54,168,178,117,222,160,226,67,129,127,84,39,234,164,114,179,135,20,71,220,48,131,195,223,121,226,224,123,39,122,99,204,206,172,94,117,208,239,28,234,5,170,209,11,137,177,204,96,101,212,30,125,152,154,231,45,133,115,72,132,147,169,105,243,214,132,21,78,252,60,52,248,74,210,231,87,91,38,44,62,53,16,9,226,146,110,149,235,141,208,140,27,24,188,117,136,111,107,110,253,93,37,69,94,25,108,159,45,106,38,195,199,16,196,148,242,68,247,26,162,43,80,228,219,54,13,136,71,255,176,226,34,30]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[109,75,180,198,21,110,156,30,132,184,188,209],\"ct\":[192,161,133,227,87,29,163,155,69,72,208,217,204,154,35,194,118,177,104,114,217,244,174,208,78,82,13,116,61,66,169,61,235,49,41,107,234,209,71,147,181,95,22]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"e02864095f195d099a11ec396669be44\",\"intent\":\"f2ba2cc689a5ecce3df18cb86f5199bc\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[45,76,76,164,63,153,60,119,4,186,22,157,73,27,203,80,206,123,14,113,64,75,11,245,255,143,3,42,171,180,136,52]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"e02864095f195d099a11ec396669be44\",\"root_id\":\"0f319c85eeb64f4cdc4a70d97aecb152\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[207,71,254,5,203,132,226,117,115,129,158,18,2,75,245,156],\"nonce\":[193,74,226,90,6,39,92,135,178,162,124,55],\"ct\":[181,142,129,23,4,37,151,89,227,166,220,221,223,83,192,178,64,242,55,28,157,121,236,166,77,122,37,227,131,197,220,143,223,240,58,181,3,44,61,199,94,100,14,19,157,225,100,112]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[146,245,19,21,53,169,223,15,98,114,54,181],\"ct\":[107,22,224,132,38,250,1,77,53,111,95,82,171,202,45,191,228,193,233,243,252,111,220,53,23,253,19,199,26,115,255,10,135,70,206,143,130,180,30,197,21,133,101,122,34,180,63,149]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"6c8dc1c9afacf3324ef52a60f7c6d410\",\"publicKey\":[106,80,183,35,46,9,49,188,127,244,174,118,198,108,28,139,56,184,118,28,89,167,59,110,117,58,157,243,157,233,188,40],\"sealed\":{\"v\":2,\"nonce\":[100,248,243,92,141,169,105,182,116,253,236,14],\"ct\":[150,247,17,236,86,210,104,114,190,12,146,26,228,73,109,233,14,78,251,188,179,68,89,58,159,68,83,46,227,0,167,62,2,104,200,159,20,234,188,58,176,209,227,75,173,181,73,142]}},{\"role\":\"signing\",\"id\":\"b91972337e673776a730f88857ce1040\",\"publicKey\":[162,183,179,43,31,113,216,11,44,40,90,255,58,164,77,225,180,10,180,193,140,100,183,127,6,149,124,184,240,59,170,216],\"sealed\":{\"v\":2,\"nonce\":[100,229,196,98,194,165,47,59,11,154,93,102],\"ct\":[253,113,35,250,222,42,180,127,217,51,198,78,152,180,143,221,170,11,222,51,191,176,86,148,165,7,105,174,3,253,195,91,176,43,245,148,80,20,103,159,168,246,127,21,171,175,7,175]}}],\"mac\":[122,101,230,61,226,173,9,57,127,83,18,23,139,9,96,98,247,209,237,190,34,3,200,6,186,201,104,1,109,213,79,44]},{\"v\":1,\"state\":\"ready\",\"intent\":\"f2ba2cc689a5ecce3df18cb86f5199bc\",\"mac\":[4,0,218,87,94,175,85,101,2,11,134,157,64,153,64,201,171,179,140,196,54,242,177,70,164,4,124,184,171,202,88,123]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[135,241,67,6,137,96,232,220,233,188,52,32],\"ct\":[89,7,216,128,19,203,31,194,157,235,131,154,181,204,11,48,120,225,205,139,58,58,214,195,2,60,138,173,253,143,193,70,120,221,84,1,209,94,82,239,53,218,210,34,162,85,66,88,17,59,46,193,58,103,166,143,107,95,182,225,105,225,245,30,34,238,228,206,205,230,206,234,235,2,199,224,238,68,84,108,169,203,91,25,134,11,223,211,43,221,201,76,51,82,54,168,178,117,222,160,226,67,129,127,84,39,234,164,114,179,135,20,71,220,48,131,195,223,121,226,224,123,39,122,99,204,206,172,94,117,208,239,28,234,5,170,209,11,137,177,204,96,101,212,30,125,152,154,231,45,133,115,72,132,147,169,105,243,214,132,21,78,252,60,52,248,74,210,231,87,91,38,44,62,53,16,9,226,146,110,149,235,141,208,140,27,24,188,117,136,111,107,110,253,93,37,69,94,25,108,159,45,106,38,195,199,16,196,148,242,68,247,26,162,43,80,228,219,54,13,136,71,255,176,226,34,30]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[109,75,180,198,21,110,156,30,132,184,188,209],\"ct\":[192,161,133,227,87,29,163,155,69,72,208,217,204,154,35,194,118,177,104,114,217,244,174,208,78,82,13,116,61,66,169,61,235,49,41,107,234,209,71,147,181,95,22]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"e02864095f195d099a11ec396669be44\",\"intent\":\"f2ba2cc689a5ecce3df18cb86f5199bc\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[45,76,76,164,63,153,60,119,4,186,22,157,73,27,203,80,206,123,14,113,64,75,11,245,255,143,3,42,171,180,136,52]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"e02864095f195d099a11ec396669be44\",\"root_id\":\"0f319c85eeb64f4cdc4a70d97aecb152\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[207,71,254,5,203,132,226,117,115,129,158,18,2,75,245,156],\"nonce\":[193,74,226,90,6,39,92,135,178,162,124,55],\"ct\":[181,142,129,23,4,37,151,89,227,166,220,221,223,83,192,178,64,242,55,28,157,121,236,166,77,122,37,227,131,197,220,143,223,240,58,181,3,44,61,199,94,100,14,19,157,225,100,112]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[146,245,19,21,53,169,223,15,98,114,54,181],\"ct\":[107,22,224,132,38,250,1,77,53,111,95,82,171,202,45,191,228,193,233,243,252,111,220,53,23,253,19,199,26,115,255,10,135,70,206,143,130,180,30,197,21,133,101,122,34,180,63,149]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"6c8dc1c9afacf3324ef52a60f7c6d410\",\"publicKey\":[106,80,183,35,46,9,49,188,127,244,174,118,198,108,28,139,56,184,118,28,89,167,59,110,117,58,157,243,157,233,188,40],\"sealed\":{\"v\":2,\"nonce\":[100,248,243,92,141,169,105,182,116,253,236,14],\"ct\":[150,247,17,236,86,210,104,114,190,12,146,26,228,73,109,233,14,78,251,188,179,68,89,58,159,68,83,46,227,0,167,62,2,104,200,159,20,234,188,58,176,209,227,75,173,181,73,142]}},{\"role\":\"signing\",\"id\":\"b91972337e673776a730f88857ce1040\",\"publicKey\":[162,183,179,43,31,113,216,11,44,40,90,255,58,164,77,225,180,10,180,193,140,100,183,127,6,149,124,184,240,59,170,216],\"sealed\":{\"v\":2,\"nonce\":[100,229,196,98,194,165,47,59,11,154,93,102],\"ct\":[253,113,35,250,222,42,180,127,217,51,198,78,152,180,143,221,170,11,222,51,191,176,86,148,165,7,105,174,3,253,195,91,176,43,245,148,80,20,103,159,168,246,127,21,171,175,7,175]}}],\"mac\":[122,101,230,61,226,173,9,57,127,83,18,23,139,9,96,98,247,209,237,190,34,3,200,6,186,201,104,1,109,213,79,44]},{\"v\":1,\"state\":\"ready\",\"intent\":\"f2ba2cc689a5ecce3df18cb86f5199bc\",\"mac\":[4,0,218,87,94,175,85,101,2,11,134,157,64,153,64,201,171,179,140,196,54,242,177,70,164,4,124,184,171,202,88,123]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "orphan-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O03.missing-content",
+          "title": "Missing initialized content never becomes an empty workspace",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "incomplete-open-is-repair",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "no-replacement-or-cleanup",
+              "actual": "{\"databases\":[{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"54461e088bab2f1522c4a51ad5852893\",\"root_id\":\"bb25ba5912220ab3997285ec02431be3\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[208,141,250,179,187,108,63,37,91,82,116,23,100,36,47,120],\"nonce\":[16,138,20,215,180,31,89,22,160,167,66,224],\"ct\":[233,176,251,121,198,175,234,180,11,18,218,45,67,18,139,74,101,237,217,206,186,91,54,224,226,238,14,136,239,112,107,51,7,205,19,61,41,191,20,55,193,119,210,203,113,135,194,96]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[18,217,100,231,89,4,212,0,213,130,249,43],\"ct\":[178,164,7,71,88,4,119,131,224,156,234,161,100,125,7,172,99,118,67,7,182,110,233,223,254,39,18,38,0,247,141,249,182,230,6,76,117,242,123,143,52,243,220,69,193,164,180,154]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"6abda423b4f8f368ea2005c7d8e7545b\",\"publicKey\":[170,215,185,11,35,172,77,57,103,38,168,1,43,242,186,42,134,215,219,153,150,8,231,179,236,77,162,118,166,142,194,54],\"sealed\":{\"v\":2,\"nonce\":[172,82,128,109,17,197,88,207,172,216,242,232],\"ct\":[69,117,52,251,251,132,137,82,241,66,186,62,134,102,112,186,153,23,126,126,150,187,77,185,159,146,173,14,51,118,250,187,60,122,75,55,3,76,139,244,131,232,229,179,176,236,95,112]}},{\"role\":\"signing\",\"id\":\"c651bb4e159c37ec755f4d3e08e11460\",\"publicKey\":[162,58,177,124,17,10,161,144,237,138,219,83,213,145,47,138,167,174,226,98,190,253,193,37,75,69,79,120,157,229,170,217],\"sealed\":{\"v\":2,\"nonce\":[223,202,69,46,220,139,25,251,225,190,226,67],\"ct\":[100,51,106,114,245,6,52,237,86,67,93,64,69,170,85,189,254,140,55,119,73,114,131,164,71,54,228,152,209,216,251,92,155,136,65,98,207,169,201,52,69,159,211,213,239,238,27,232]}}],\"mac\":[58,202,34,186,153,205,80,179,80,218,177,195,26,24,179,253,250,103,63,57,6,74,224,250,225,166,194,17,205,112,192,225]},{\"v\":1,\"state\":\"ready\",\"intent\":\"99e27a40f38f3b3b48ed435bb5c464f1\",\"mac\":[153,131,145,188,63,103,192,72,162,236,90,152,93,30,49,123,75,2,68,251,121,154,105,112,52,103,185,53,73,58,192,201]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"54461e088bab2f1522c4a51ad5852893\",\"root_id\":\"bb25ba5912220ab3997285ec02431be3\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[208,141,250,179,187,108,63,37,91,82,116,23,100,36,47,120],\"nonce\":[16,138,20,215,180,31,89,22,160,167,66,224],\"ct\":[233,176,251,121,198,175,234,180,11,18,218,45,67,18,139,74,101,237,217,206,186,91,54,224,226,238,14,136,239,112,107,51,7,205,19,61,41,191,20,55,193,119,210,203,113,135,194,96]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[18,217,100,231,89,4,212,0,213,130,249,43],\"ct\":[178,164,7,71,88,4,119,131,224,156,234,161,100,125,7,172,99,118,67,7,182,110,233,223,254,39,18,38,0,247,141,249,182,230,6,76,117,242,123,143,52,243,220,69,193,164,180,154]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"6abda423b4f8f368ea2005c7d8e7545b\",\"publicKey\":[170,215,185,11,35,172,77,57,103,38,168,1,43,242,186,42,134,215,219,153,150,8,231,179,236,77,162,118,166,142,194,54],\"sealed\":{\"v\":2,\"nonce\":[172,82,128,109,17,197,88,207,172,216,242,232],\"ct\":[69,117,52,251,251,132,137,82,241,66,186,62,134,102,112,186,153,23,126,126,150,187,77,185,159,146,173,14,51,118,250,187,60,122,75,55,3,76,139,244,131,232,229,179,176,236,95,112]}},{\"role\":\"signing\",\"id\":\"c651bb4e159c37ec755f4d3e08e11460\",\"publicKey\":[162,58,177,124,17,10,161,144,237,138,219,83,213,145,47,138,167,174,226,98,190,253,193,37,75,69,79,120,157,229,170,217],\"sealed\":{\"v\":2,\"nonce\":[223,202,69,46,220,139,25,251,225,190,226,67],\"ct\":[100,51,106,114,245,6,52,237,86,67,93,64,69,170,85,189,254,140,55,119,73,114,131,164,71,54,228,152,209,216,251,92,155,136,65,98,207,169,201,52,69,159,211,213,239,238,27,232]}}],\"mac\":[58,202,34,186,153,205,80,179,80,218,177,195,26,24,179,253,250,103,63,57,6,74,224,250,225,166,194,17,205,112,192,225]},{\"v\":1,\"state\":\"ready\",\"intent\":\"99e27a40f38f3b3b48ed435bb5c464f1\",\"mac\":[153,131,145,188,63,103,192,72,162,236,90,152,93,30,49,123,75,2,68,251,121,154,105,112,52,103,185,53,73,58,192,201]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "incomplete-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O04.missing-custody",
+          "title": "Ciphertext without custody is retained and refused",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "incomplete-open-is-repair",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "no-replacement-or-cleanup",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[141,169,103,83,252,122,139,140,16,146,145,79],\"ct\":[47,247,168,0,228,206,40,194,151,84,152,30,60,65,156,174,211,69,122,158,229,180,80,67,191,222,152,18,61,232,202,71,149,231,88,35,147,40,135,80,178,17,141,118,137,182,185,52,230,61,19,30,220,79,75,65,33,33,110,252,231,179,219,164,220,140,67,83,191,70,69,245,123,213,240,70,10,251,120,173,228,21,28,71,41,3,151,159,231,62,228,232,170,32,132,133,8,230,109,149,176,162,30,161,39,105,122,12,4,88,33,115,44,162,234,153,90,134,179,251,225,9,178,228,174,210,163,1,237,193,150,59,185,209,115,72,184,247,120,210,43,63,143,216,251,79,60,96,214,82,255,14,10,250,71,123,176,74,58,41,135,50,122,118,15,69,174,199,128,93,99,91,113,27,182,252,97,25,247,150,24,61,199,101,64,114,1,100,44,27,76,236,20,109,169,206,58,176,76,61,107,155,169,152,233,230,16,124,238,139,9,124,28,27,85,6,85,172,88,190,128,91,32,92,89,114,184]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[159,12,235,196,152,74,214,10,217,107,177,204],\"ct\":[18,61,48,109,196,100,19,227,102,111,112,129,119,129,94,9,216,78,4,208,161,145,65,158,53,207,115,246,207,32,71,53,92,175,64,151,231,198,162,134,28,4,111]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a9ee5f90a335eccbe43a2c29958f701e\",\"intent\":\"81424b5f8fc911c4e8c3179807c6f9a9\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[168,121,181,139,156,148,185,209,62,195,228,77,60,53,50,235,54,71,236,99,7,107,193,74,142,26,59,142,109,31,203,80]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":1,\"state\":\"ready\",\"intent\":\"81424b5f8fc911c4e8c3179807c6f9a9\",\"mac\":[195,198,94,178,154,22,251,200,131,233,52,220,220,87,30,209,103,125,147,211,159,160,182,103,185,230,61,117,52,6,20,92]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[141,169,103,83,252,122,139,140,16,146,145,79],\"ct\":[47,247,168,0,228,206,40,194,151,84,152,30,60,65,156,174,211,69,122,158,229,180,80,67,191,222,152,18,61,232,202,71,149,231,88,35,147,40,135,80,178,17,141,118,137,182,185,52,230,61,19,30,220,79,75,65,33,33,110,252,231,179,219,164,220,140,67,83,191,70,69,245,123,213,240,70,10,251,120,173,228,21,28,71,41,3,151,159,231,62,228,232,170,32,132,133,8,230,109,149,176,162,30,161,39,105,122,12,4,88,33,115,44,162,234,153,90,134,179,251,225,9,178,228,174,210,163,1,237,193,150,59,185,209,115,72,184,247,120,210,43,63,143,216,251,79,60,96,214,82,255,14,10,250,71,123,176,74,58,41,135,50,122,118,15,69,174,199,128,93,99,91,113,27,182,252,97,25,247,150,24,61,199,101,64,114,1,100,44,27,76,236,20,109,169,206,58,176,76,61,107,155,169,152,233,230,16,124,238,139,9,124,28,27,85,6,85,172,88,190,128,91,32,92,89,114,184]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[159,12,235,196,152,74,214,10,217,107,177,204],\"ct\":[18,61,48,109,196,100,19,227,102,111,112,129,119,129,94,9,216,78,4,208,161,145,65,158,53,207,115,246,207,32,71,53,92,175,64,151,231,198,162,134,28,4,111]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a9ee5f90a335eccbe43a2c29958f701e\",\"intent\":\"81424b5f8fc911c4e8c3179807c6f9a9\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[168,121,181,139,156,148,185,209,62,195,228,77,60,53,50,235,54,71,236,99,7,107,193,74,142,26,59,142,109,31,203,80]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":1,\"state\":\"ready\",\"intent\":\"81424b5f8fc911c4e8c3179807c6f9a9\",\"mac\":[195,198,94,178,154,22,251,200,131,233,52,220,220,87,30,209,103,125,147,211,159,160,182,103,185,230,61,117,52,6,20,92]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "incomplete-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O05.routing",
+          "title": "The recorded route cannot be bypassed by re-deriving a name",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "incomplete-open-is-repair",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "no-replacement-or-cleanup",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[20,116,206,127,150,212,153,144,155,232,156,129],\"ct\":[114,157,17,185,80,185,72,234,105,231,169,33,60,24,100,117,168,139,199,120,213,126,19,251,187,43,183,98,253,25,74,166,37,236,59,105,6,67,72,246,37,71,119,17,139,25,39,175,2,168,69,159,213,253,129,45,67,144,98,237,224,129,50,225,116,108,114,48,163,10,44,54,184,139,10,106,204,70,80,201,6,173,101,190,72,188,222,180,195,230,54,21,187,251,131,132,74,168,83,96,17,207,201,18,11,89,10,180,80,2,60,45,12,81,38,28,201,3,188,22,50,103,207,223,216,119,164,151,172,103,134,25,161,242,124,63,101,106,188,87,141,26,37,239,82,168,48,122,14,121,232,105,114,142,201,115,254,140,121,97,52,50,79,73,169,176,67,165,207,226,192,51,22,159,250,196,169,215,39,66,39,189,28,221,43,197,7,185,244,101,196,196,72,226,38,60,66,172,126,182,127,205,98,241,190,232,38,10,43,49,74,247,7,60,139,113,73,70,219,127,215,100,57,138,60,177,130]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[128,93,221,184,10,101,50,126,222,19,240,206],\"ct\":[185,79,199,101,136,36,117,227,55,71,3,125,93,7,24,108,113,203,86,105,66,210,65,131,182,101,188,241,225,234,20,235,38,255,5,214,252,46,20,252,233,42,131]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"b1bbc8a1e3596bb60a68228ca50bf70f\",\"intent\":\"c478ef5254b0b73384afb57c39ab1a63\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[169,196,26,110,188,247,199,149,156,167,7,251,56,233,48,217,59,206,106,244,29,219,78,192,149,85,253,238,52,3,53,217]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"b1bbc8a1e3596bb60a68228ca50bf70f\",\"root_id\":\"04800900120b6cb06d7197f7bec9576d\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[81,95,62,50,73,250,129,153,201,252,46,185,241,31,125,44],\"nonce\":[234,141,160,43,125,170,224,206,248,248,120,3],\"ct\":[84,241,81,150,153,247,227,202,19,121,15,66,90,245,59,89,75,19,159,194,100,55,60,196,191,25,71,23,36,22,92,131,18,206,19,86,214,156,122,227,26,98,228,156,64,110,26,51]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[128,116,68,90,76,255,231,205,115,137,222,77],\"ct\":[115,246,173,203,116,30,125,36,134,101,161,35,39,63,13,67,66,163,192,3,141,223,187,181,27,107,146,98,14,27,9,102,225,168,73,225,177,50,6,204,52,3,232,137,68,37,125,255]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"4ee30e2270280668059fc71743bd7a7d\",\"publicKey\":[26,71,19,199,2,67,185,51,123,236,87,10,200,152,58,162,245,113,51,85,13,225,87,206,139,230,149,151,46,32,166,10],\"sealed\":{\"v\":2,\"nonce\":[106,23,43,192,69,171,37,208,200,198,199,123],\"ct\":[15,134,226,149,119,232,46,29,211,47,50,78,220,222,13,211,17,179,193,41,240,115,153,26,150,82,236,185,143,112,146,237,10,98,239,193,128,176,130,16,207,245,11,5,238,182,74,205]}},{\"role\":\"signing\",\"id\":\"c0a6e42b381986644d6f0b90d8175e3a\",\"publicKey\":[216,231,148,136,71,163,103,12,215,139,212,98,250,157,34,168,10,119,14,35,20,50,81,222,43,143,131,33,85,100,3,179],\"sealed\":{\"v\":2,\"nonce\":[180,194,175,134,170,240,228,247,87,145,37,164],\"ct\":[64,22,59,18,100,194,145,98,93,150,84,117,131,254,236,122,6,140,78,227,146,130,192,245,3,37,190,72,244,164,169,74,236,73,82,136,221,49,146,205,138,236,199,232,0,100,244,17]}}],\"mac\":[214,192,63,26,14,186,110,87,177,131,38,42,210,47,60,117,200,120,34,218,253,50,220,41,6,25,101,198,124,90,34,207]},{\"v\":1,\"state\":\"ready\",\"intent\":\"c478ef5254b0b73384afb57c39ab1a63\",\"mac\":[107,248,131,146,104,187,176,127,85,226,107,78,179,26,152,213,86,122,195,201,94,135,197,246,51,169,192,143,101,141,152,4]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.wrong\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[20,116,206,127,150,212,153,144,155,232,156,129],\"ct\":[114,157,17,185,80,185,72,234,105,231,169,33,60,24,100,117,168,139,199,120,213,126,19,251,187,43,183,98,253,25,74,166,37,236,59,105,6,67,72,246,37,71,119,17,139,25,39,175,2,168,69,159,213,253,129,45,67,144,98,237,224,129,50,225,116,108,114,48,163,10,44,54,184,139,10,106,204,70,80,201,6,173,101,190,72,188,222,180,195,230,54,21,187,251,131,132,74,168,83,96,17,207,201,18,11,89,10,180,80,2,60,45,12,81,38,28,201,3,188,22,50,103,207,223,216,119,164,151,172,103,134,25,161,242,124,63,101,106,188,87,141,26,37,239,82,168,48,122,14,121,232,105,114,142,201,115,254,140,121,97,52,50,79,73,169,176,67,165,207,226,192,51,22,159,250,196,169,215,39,66,39,189,28,221,43,197,7,185,244,101,196,196,72,226,38,60,66,172,126,182,127,205,98,241,190,232,38,10,43,49,74,247,7,60,139,113,73,70,219,127,215,100,57,138,60,177,130]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[128,93,221,184,10,101,50,126,222,19,240,206],\"ct\":[185,79,199,101,136,36,117,227,55,71,3,125,93,7,24,108,113,203,86,105,66,210,65,131,182,101,188,241,225,234,20,235,38,255,5,214,252,46,20,252,233,42,131]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"b1bbc8a1e3596bb60a68228ca50bf70f\",\"intent\":\"c478ef5254b0b73384afb57c39ab1a63\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[169,196,26,110,188,247,199,149,156,167,7,251,56,233,48,217,59,206,106,244,29,219,78,192,149,85,253,238,52,3,53,217]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"b1bbc8a1e3596bb60a68228ca50bf70f\",\"root_id\":\"04800900120b6cb06d7197f7bec9576d\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[81,95,62,50,73,250,129,153,201,252,46,185,241,31,125,44],\"nonce\":[234,141,160,43,125,170,224,206,248,248,120,3],\"ct\":[84,241,81,150,153,247,227,202,19,121,15,66,90,245,59,89,75,19,159,194,100,55,60,196,191,25,71,23,36,22,92,131,18,206,19,86,214,156,122,227,26,98,228,156,64,110,26,51]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[128,116,68,90,76,255,231,205,115,137,222,77],\"ct\":[115,246,173,203,116,30,125,36,134,101,161,35,39,63,13,67,66,163,192,3,141,223,187,181,27,107,146,98,14,27,9,102,225,168,73,225,177,50,6,204,52,3,232,137,68,37,125,255]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"4ee30e2270280668059fc71743bd7a7d\",\"publicKey\":[26,71,19,199,2,67,185,51,123,236,87,10,200,152,58,162,245,113,51,85,13,225,87,206,139,230,149,151,46,32,166,10],\"sealed\":{\"v\":2,\"nonce\":[106,23,43,192,69,171,37,208,200,198,199,123],\"ct\":[15,134,226,149,119,232,46,29,211,47,50,78,220,222,13,211,17,179,193,41,240,115,153,26,150,82,236,185,143,112,146,237,10,98,239,193,128,176,130,16,207,245,11,5,238,182,74,205]}},{\"role\":\"signing\",\"id\":\"c0a6e42b381986644d6f0b90d8175e3a\",\"publicKey\":[216,231,148,136,71,163,103,12,215,139,212,98,250,157,34,168,10,119,14,35,20,50,81,222,43,143,131,33,85,100,3,179],\"sealed\":{\"v\":2,\"nonce\":[180,194,175,134,170,240,228,247,87,145,37,164],\"ct\":[64,22,59,18,100,194,145,98,93,150,84,117,131,254,236,122,6,140,78,227,146,130,192,245,3,37,190,72,244,164,169,74,236,73,82,136,221,49,146,205,138,236,199,232,0,100,244,17]}}],\"mac\":[214,192,63,26,14,186,110,87,177,131,38,42,210,47,60,117,200,120,34,218,253,50,220,41,6,25,101,198,124,90,34,207]},{\"v\":1,\"state\":\"ready\",\"intent\":\"c478ef5254b0b73384afb57c39ab1a63\",\"mac\":[107,248,131,146,104,187,176,127,85,226,107,78,179,26,152,213,86,122,195,201,94,135,197,246,51,169,192,143,101,141,152,4]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.wrong\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "incomplete-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O06.legacy",
+          "title": "Legacy routing stays selected and ordinary encrypted open refuses",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "selected-legacy-disposition",
+              "actual": {
+                "kind": "migration-required",
+                "reason": "selected-legacy-route"
+              },
+              "expected": {
+                "kind": "migration-required",
+                "reason": "selected-legacy-route"
+              },
+              "passed": true
+            },
+            {
+              "id": "legacy-normal-open-refuses",
+              "actual": "migration-required",
+              "expected": "migration-required",
+              "passed": true
+            },
+            {
+              "id": "legacy-routing-and-content-retained",
+              "actual": "{\"databases\":[{\"name\":\"done\",\"version\":1,\"data\":{\"updates\":{\"keys\":[1],\"values\":[\"retained legacy bytes\"]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done\",\"version\":1,\"data\":{\"updates\":{\"keys\":[1],\"values\":[\"retained legacy bytes\"]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "legacy-not-replaced",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O07.creation",
+          "title": "Renderer death during content creation leaves a pending disposition",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "partial-creation-classified",
+              "actual": {
+                "kind": "creation-pending",
+                "reason": "content-intent-needs-verified-resumption"
+              },
+              "expected": {
+                "kind": "creation-pending",
+                "reason": "content-intent-needs-verified-resumption"
+              },
+              "passed": true
+            },
+            {
+              "id": "partial-normal-open-refuses",
+              "actual": "creation-pending",
+              "expected": "creation-pending",
+              "passed": true
+            },
+            {
+              "id": "partial-intent-and-counter-retained",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[],\"values\":[]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a3593e7d0a03553a492331c6baafb556\",\"intent\":\"46e7b7003bba8f48c818c8d33dd5b17b\",\"active_gen\":1,\"next_seq\":1,\"reserved\":{\"1\":0},\"mac\":[138,206,79,138,112,147,22,12,0,221,201,4,117,78,241,230,52,112,64,93,152,197,39,241,118,129,199,15,151,39,19,88]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"a3593e7d0a03553a492331c6baafb556\",\"root_id\":\"62ff156e50fe85cfa55a5738a85eb12d\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[65,238,254,227,216,61,166,71,183,152,215,62,193,57,162,43],\"nonce\":[2,91,248,237,131,58,90,206,245,61,202,168],\"ct\":[135,9,146,96,134,216,21,41,74,32,163,13,251,33,157,131,212,56,95,250,2,31,51,116,68,254,49,47,100,144,63,57,179,175,247,216,242,250,40,145,73,160,13,167,86,138,74,176]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[168,166,154,16,135,72,120,232,8,188,186,23],\"ct\":[4,79,176,31,175,114,34,229,38,92,102,60,150,243,148,70,89,242,124,107,107,193,235,233,152,134,215,113,91,137,108,95,52,122,104,131,86,96,229,240,223,136,188,198,44,235,192,22]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"93a2f37e7de2119c6370bcce67524d51\",\"publicKey\":[59,196,253,165,76,105,36,131,148,155,182,167,23,170,109,2,240,52,103,232,244,133,20,204,252,46,110,1,249,167,201,126],\"sealed\":{\"v\":2,\"nonce\":[157,200,83,96,93,110,92,137,99,183,222,200],\"ct\":[169,67,22,190,1,32,173,165,199,157,148,162,108,106,225,208,150,78,164,10,174,56,34,203,3,178,141,159,202,230,24,145,179,137,245,53,200,233,34,115,194,209,73,199,120,252,248,229]}},{\"role\":\"signing\",\"id\":\"e3f4e8bca1538bfb689c6105b586d479\",\"publicKey\":[249,146,4,161,213,141,107,201,61,114,224,96,114,206,5,238,86,77,60,101,51,52,223,180,108,220,9,246,99,215,222,185],\"sealed\":{\"v\":2,\"nonce\":[230,46,115,171,152,3,13,45,186,57,186,37],\"ct\":[44,23,124,97,179,208,79,201,130,31,85,232,89,117,101,93,177,53,38,233,87,110,81,105,128,86,146,147,91,139,133,255,204,183,168,123,211,203,203,74,57,107,238,89,140,8,19,193]}}],\"mac\":[193,142,94,125,188,43,52,70,254,13,25,248,136,177,3,137,242,121,57,77,32,18,107,155,238,202,212,129,27,62,161,139]},{\"v\":1,\"state\":\"creating\",\"intent\":\"46e7b7003bba8f48c818c8d33dd5b17b\",\"mac\":[33,197,158,201,217,204,19,60,3,92,247,62,46,224,37,36,61,129,135,218,132,143,245,76,59,120,193,113,207,160,219,127]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[],\"values\":[]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a3593e7d0a03553a492331c6baafb556\",\"intent\":\"46e7b7003bba8f48c818c8d33dd5b17b\",\"active_gen\":1,\"next_seq\":1,\"reserved\":{\"1\":0},\"mac\":[138,206,79,138,112,147,22,12,0,221,201,4,117,78,241,230,52,112,64,93,152,197,39,241,118,129,199,15,151,39,19,88]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"a3593e7d0a03553a492331c6baafb556\",\"root_id\":\"62ff156e50fe85cfa55a5738a85eb12d\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[65,238,254,227,216,61,166,71,183,152,215,62,193,57,162,43],\"nonce\":[2,91,248,237,131,58,90,206,245,61,202,168],\"ct\":[135,9,146,96,134,216,21,41,74,32,163,13,251,33,157,131,212,56,95,250,2,31,51,116,68,254,49,47,100,144,63,57,179,175,247,216,242,250,40,145,73,160,13,167,86,138,74,176]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[168,166,154,16,135,72,120,232,8,188,186,23],\"ct\":[4,79,176,31,175,114,34,229,38,92,102,60,150,243,148,70,89,242,124,107,107,193,235,233,152,134,215,113,91,137,108,95,52,122,104,131,86,96,229,240,223,136,188,198,44,235,192,22]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"93a2f37e7de2119c6370bcce67524d51\",\"publicKey\":[59,196,253,165,76,105,36,131,148,155,182,167,23,170,109,2,240,52,103,232,244,133,20,204,252,46,110,1,249,167,201,126],\"sealed\":{\"v\":2,\"nonce\":[157,200,83,96,93,110,92,137,99,183,222,200],\"ct\":[169,67,22,190,1,32,173,165,199,157,148,162,108,106,225,208,150,78,164,10,174,56,34,203,3,178,141,159,202,230,24,145,179,137,245,53,200,233,34,115,194,209,73,199,120,252,248,229]}},{\"role\":\"signing\",\"id\":\"e3f4e8bca1538bfb689c6105b586d479\",\"publicKey\":[249,146,4,161,213,141,107,201,61,114,224,96,114,206,5,238,86,77,60,101,51,52,223,180,108,220,9,246,99,215,222,185],\"sealed\":{\"v\":2,\"nonce\":[230,46,115,171,152,3,13,45,186,57,186,37],\"ct\":[44,23,124,97,179,208,79,201,130,31,85,232,89,117,101,93,177,53,38,233,87,110,81,105,128,86,146,147,91,139,133,255,204,183,168,123,211,203,203,74,57,107,238,89,140,8,19,193]}}],\"mac\":[193,142,94,125,188,43,52,70,254,13,25,248,136,177,3,137,242,121,57,77,32,18,107,155,238,202,212,129,27,62,161,139]},{\"v\":1,\"state\":\"creating\",\"intent\":\"46e7b7003bba8f48c818c8d33dd5b17b\",\"mac\":[33,197,158,201,217,204,19,60,3,92,247,62,46,224,37,36,61,129,135,218,132,143,245,76,59,120,193,113,207,160,219,127]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "partial-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "O08.clear",
+          "title": "Retained clear markers prevent normal open without authorizing cleanup",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "clearing-disposition",
+              "actual": "clearing",
+              "expected": "clearing",
+              "passed": true
+            },
+            {
+              "id": "clearing-blocks-open",
+              "actual": "clearing",
+              "expected": "clearing",
+              "passed": true
+            },
+            {
+              "id": "clearing-does-not-authorize-deletion",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[104,128,205,70,228,243,228,65,155,192,175,4],\"ct\":[229,83,165,135,212,111,239,86,145,78,236,231,65,140,105,46,180,98,98,103,149,5,143,135,142,72,51,159,171,32,126,33,242,190,183,57,32,171,186,23,70,180,113,213,183,108,109,207,182,239,56,35,113,151,61,168,151,177,236,152,251,88,252,126,220,153,37,106,122,140,151,220,214,34,13,103,208,217,46,117,99,162,200,165,9,8,212,53,26,76,8,83,126,120,24,50,170,105,39,235,181,4,68,182,207,119,87,116,46,237,182,146,87,160,148,55,70,191,57,148,56,142,75,84,61,85,71,22,50,134,198,190,22,50,67,41,174,177,108,117,189,105,124,132,109,12,30,132,122,193,77,236,28,78,147,29,27,217,3,0,10,28,222,57,79,99,241,210,58,24,132,212,145,212,144,113,163,233,12,89,121,157,86,42,248,214,221,5,50,149,186,229,107,90,84,85,199,236,170,222,217,71,163,223,96,31,192,185,145,142,70,110,180,181,199,68,58,130,98,57,232,181,160,59,224,5,134]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[27,156,201,162,183,98,157,219,62,43,76,173],\"ct\":[7,143,193,89,176,161,94,72,248,169,14,174,80,23,19,253,50,82,197,84,105,245,33,213,2,33,47,69,241,216,42,38,87,161,80,59,201,154,234,34,91,177,127]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[42,78,233,39,71,237,229,235,29,152,149,246,10,243,39,23,140,34,216,30,148,235,251,71,47,195,226,96,5,146,49,44]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"root_id\":\"a48da62c9371d1fa08eca2aac84175f2\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[187,223,118,27,231,62,183,12,164,227,56,89,1,147,161,111],\"nonce\":[92,169,104,193,72,174,220,53,24,28,235,192],\"ct\":[72,38,223,248,163,194,17,216,59,253,116,1,67,238,224,254,61,237,61,215,107,137,3,196,206,57,21,207,35,187,221,228,119,76,132,133,9,198,156,91,15,52,102,211,152,70,195,58]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[251,37,204,92,65,1,162,144,181,52,6,92],\"ct\":[22,145,19,133,223,23,212,205,244,70,34,215,228,118,22,255,205,58,7,89,161,80,46,249,150,129,98,59,196,68,176,64,57,119,244,41,102,91,204,118,163,75,251,197,216,247,147,154]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"f50d2f6dd45e91e94a2c96d501ab6665\",\"publicKey\":[8,139,91,239,17,79,177,77,129,213,221,165,177,40,88,119,113,104,135,123,39,82,212,96,75,5,16,82,80,217,11,121],\"sealed\":{\"v\":2,\"nonce\":[218,215,15,234,167,45,252,225,227,125,60,240],\"ct\":[62,65,24,78,128,43,119,121,230,151,159,128,16,5,76,150,9,12,229,14,153,167,191,24,231,151,39,126,246,250,122,66,173,154,212,104,207,80,175,238,95,185,252,25,43,145,204,14]}},{\"role\":\"signing\",\"id\":\"e596102f4e94083b5be7cf04a125410d\",\"publicKey\":[212,246,246,89,165,186,101,195,220,63,78,91,219,121,26,89,2,159,170,157,71,214,15,221,198,166,24,204,116,101,118,43],\"sealed\":{\"v\":2,\"nonce\":[151,214,222,238,222,92,54,208,161,164,155,232],\"ct\":[248,24,47,59,195,31,28,77,219,196,133,161,106,72,20,110,145,177,189,123,117,120,193,109,224,116,80,79,146,217,124,85,209,64,242,2,34,55,136,57,213,0,186,57,245,146,1,34]}}],\"mac\":[133,104,119,172,137,25,107,139,160,205,132,233,33,218,11,27,39,30,165,226,170,121,129,223,114,227,27,156,4,253,117,67]},{\"v\":1,\"state\":\"ready\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"mac\":[77,87,149,207,158,101,41,176,175,202,110,247,22,222,126,97,38,36,80,243,19,129,164,194,60,106,117,137,138,91,87,209]},{\"state\":\"clearing\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[104,128,205,70,228,243,228,65,155,192,175,4],\"ct\":[229,83,165,135,212,111,239,86,145,78,236,231,65,140,105,46,180,98,98,103,149,5,143,135,142,72,51,159,171,32,126,33,242,190,183,57,32,171,186,23,70,180,113,213,183,108,109,207,182,239,56,35,113,151,61,168,151,177,236,152,251,88,252,126,220,153,37,106,122,140,151,220,214,34,13,103,208,217,46,117,99,162,200,165,9,8,212,53,26,76,8,83,126,120,24,50,170,105,39,235,181,4,68,182,207,119,87,116,46,237,182,146,87,160,148,55,70,191,57,148,56,142,75,84,61,85,71,22,50,134,198,190,22,50,67,41,174,177,108,117,189,105,124,132,109,12,30,132,122,193,77,236,28,78,147,29,27,217,3,0,10,28,222,57,79,99,241,210,58,24,132,212,145,212,144,113,163,233,12,89,121,157,86,42,248,214,221,5,50,149,186,229,107,90,84,85,199,236,170,222,217,71,163,223,96,31,192,185,145,142,70,110,180,181,199,68,58,130,98,57,232,181,160,59,224,5,134]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[27,156,201,162,183,98,157,219,62,43,76,173],\"ct\":[7,143,193,89,176,161,94,72,248,169,14,174,80,23,19,253,50,82,197,84,105,245,33,213,2,33,47,69,241,216,42,38,87,161,80,59,201,154,234,34,91,177,127]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[42,78,233,39,71,237,229,235,29,152,149,246,10,243,39,23,140,34,216,30,148,235,251,71,47,195,226,96,5,146,49,44]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"root_id\":\"a48da62c9371d1fa08eca2aac84175f2\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[187,223,118,27,231,62,183,12,164,227,56,89,1,147,161,111],\"nonce\":[92,169,104,193,72,174,220,53,24,28,235,192],\"ct\":[72,38,223,248,163,194,17,216,59,253,116,1,67,238,224,254,61,237,61,215,107,137,3,196,206,57,21,207,35,187,221,228,119,76,132,133,9,198,156,91,15,52,102,211,152,70,195,58]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[251,37,204,92,65,1,162,144,181,52,6,92],\"ct\":[22,145,19,133,223,23,212,205,244,70,34,215,228,118,22,255,205,58,7,89,161,80,46,249,150,129,98,59,196,68,176,64,57,119,244,41,102,91,204,118,163,75,251,197,216,247,147,154]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"f50d2f6dd45e91e94a2c96d501ab6665\",\"publicKey\":[8,139,91,239,17,79,177,77,129,213,221,165,177,40,88,119,113,104,135,123,39,82,212,96,75,5,16,82,80,217,11,121],\"sealed\":{\"v\":2,\"nonce\":[218,215,15,234,167,45,252,225,227,125,60,240],\"ct\":[62,65,24,78,128,43,119,121,230,151,159,128,16,5,76,150,9,12,229,14,153,167,191,24,231,151,39,126,246,250,122,66,173,154,212,104,207,80,175,238,95,185,252,25,43,145,204,14]}},{\"role\":\"signing\",\"id\":\"e596102f4e94083b5be7cf04a125410d\",\"publicKey\":[212,246,246,89,165,186,101,195,220,63,78,91,219,121,26,89,2,159,170,157,71,214,15,221,198,166,24,204,116,101,118,43],\"sealed\":{\"v\":2,\"nonce\":[151,214,222,238,222,92,54,208,161,164,155,232],\"ct\":[248,24,47,59,195,31,28,77,219,196,133,161,106,72,20,110,145,177,189,123,117,120,193,109,224,116,80,79,146,217,124,85,209,64,242,2,34,55,136,57,213,0,186,57,245,146,1,34]}}],\"mac\":[133,104,119,172,137,25,107,139,160,205,132,233,33,218,11,27,39,30,165,226,170,121,129,223,114,227,27,156,4,253,117,67]},{\"v\":1,\"state\":\"ready\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"mac\":[77,87,149,207,158,101,41,176,175,202,110,247,22,222,126,97,38,36,80,243,19,129,164,194,60,106,117,137,138,91,87,209]},{\"state\":\"clearing\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "cleared-disposition",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "cleared-blocks-open",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "cleared-does-not-authorize-deletion",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[104,128,205,70,228,243,228,65,155,192,175,4],\"ct\":[229,83,165,135,212,111,239,86,145,78,236,231,65,140,105,46,180,98,98,103,149,5,143,135,142,72,51,159,171,32,126,33,242,190,183,57,32,171,186,23,70,180,113,213,183,108,109,207,182,239,56,35,113,151,61,168,151,177,236,152,251,88,252,126,220,153,37,106,122,140,151,220,214,34,13,103,208,217,46,117,99,162,200,165,9,8,212,53,26,76,8,83,126,120,24,50,170,105,39,235,181,4,68,182,207,119,87,116,46,237,182,146,87,160,148,55,70,191,57,148,56,142,75,84,61,85,71,22,50,134,198,190,22,50,67,41,174,177,108,117,189,105,124,132,109,12,30,132,122,193,77,236,28,78,147,29,27,217,3,0,10,28,222,57,79,99,241,210,58,24,132,212,145,212,144,113,163,233,12,89,121,157,86,42,248,214,221,5,50,149,186,229,107,90,84,85,199,236,170,222,217,71,163,223,96,31,192,185,145,142,70,110,180,181,199,68,58,130,98,57,232,181,160,59,224,5,134]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[27,156,201,162,183,98,157,219,62,43,76,173],\"ct\":[7,143,193,89,176,161,94,72,248,169,14,174,80,23,19,253,50,82,197,84,105,245,33,213,2,33,47,69,241,216,42,38,87,161,80,59,201,154,234,34,91,177,127]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[42,78,233,39,71,237,229,235,29,152,149,246,10,243,39,23,140,34,216,30,148,235,251,71,47,195,226,96,5,146,49,44]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"root_id\":\"a48da62c9371d1fa08eca2aac84175f2\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[187,223,118,27,231,62,183,12,164,227,56,89,1,147,161,111],\"nonce\":[92,169,104,193,72,174,220,53,24,28,235,192],\"ct\":[72,38,223,248,163,194,17,216,59,253,116,1,67,238,224,254,61,237,61,215,107,137,3,196,206,57,21,207,35,187,221,228,119,76,132,133,9,198,156,91,15,52,102,211,152,70,195,58]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[251,37,204,92,65,1,162,144,181,52,6,92],\"ct\":[22,145,19,133,223,23,212,205,244,70,34,215,228,118,22,255,205,58,7,89,161,80,46,249,150,129,98,59,196,68,176,64,57,119,244,41,102,91,204,118,163,75,251,197,216,247,147,154]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"f50d2f6dd45e91e94a2c96d501ab6665\",\"publicKey\":[8,139,91,239,17,79,177,77,129,213,221,165,177,40,88,119,113,104,135,123,39,82,212,96,75,5,16,82,80,217,11,121],\"sealed\":{\"v\":2,\"nonce\":[218,215,15,234,167,45,252,225,227,125,60,240],\"ct\":[62,65,24,78,128,43,119,121,230,151,159,128,16,5,76,150,9,12,229,14,153,167,191,24,231,151,39,126,246,250,122,66,173,154,212,104,207,80,175,238,95,185,252,25,43,145,204,14]}},{\"role\":\"signing\",\"id\":\"e596102f4e94083b5be7cf04a125410d\",\"publicKey\":[212,246,246,89,165,186,101,195,220,63,78,91,219,121,26,89,2,159,170,157,71,214,15,221,198,166,24,204,116,101,118,43],\"sealed\":{\"v\":2,\"nonce\":[151,214,222,238,222,92,54,208,161,164,155,232],\"ct\":[248,24,47,59,195,31,28,77,219,196,133,161,106,72,20,110,145,177,189,123,117,120,193,109,224,116,80,79,146,217,124,85,209,64,242,2,34,55,136,57,213,0,186,57,245,146,1,34]}}],\"mac\":[133,104,119,172,137,25,107,139,160,205,132,233,33,218,11,27,39,30,165,226,170,121,129,223,114,227,27,156,4,253,117,67]},{\"v\":1,\"state\":\"ready\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"mac\":[77,87,149,207,158,101,41,176,175,202,110,247,22,222,126,97,38,36,80,243,19,129,164,194,60,106,117,137,138,91,87,209]},{\"state\":\"cleared\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[104,128,205,70,228,243,228,65,155,192,175,4],\"ct\":[229,83,165,135,212,111,239,86,145,78,236,231,65,140,105,46,180,98,98,103,149,5,143,135,142,72,51,159,171,32,126,33,242,190,183,57,32,171,186,23,70,180,113,213,183,108,109,207,182,239,56,35,113,151,61,168,151,177,236,152,251,88,252,126,220,153,37,106,122,140,151,220,214,34,13,103,208,217,46,117,99,162,200,165,9,8,212,53,26,76,8,83,126,120,24,50,170,105,39,235,181,4,68,182,207,119,87,116,46,237,182,146,87,160,148,55,70,191,57,148,56,142,75,84,61,85,71,22,50,134,198,190,22,50,67,41,174,177,108,117,189,105,124,132,109,12,30,132,122,193,77,236,28,78,147,29,27,217,3,0,10,28,222,57,79,99,241,210,58,24,132,212,145,212,144,113,163,233,12,89,121,157,86,42,248,214,221,5,50,149,186,229,107,90,84,85,199,236,170,222,217,71,163,223,96,31,192,185,145,142,70,110,180,181,199,68,58,130,98,57,232,181,160,59,224,5,134]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[27,156,201,162,183,98,157,219,62,43,76,173],\"ct\":[7,143,193,89,176,161,94,72,248,169,14,174,80,23,19,253,50,82,197,84,105,245,33,213,2,33,47,69,241,216,42,38,87,161,80,59,201,154,234,34,91,177,127]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[42,78,233,39,71,237,229,235,29,152,149,246,10,243,39,23,140,34,216,30,148,235,251,71,47,195,226,96,5,146,49,44]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"a89fc864859a4cd0245b2f879d61f9b9\",\"root_id\":\"a48da62c9371d1fa08eca2aac84175f2\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[187,223,118,27,231,62,183,12,164,227,56,89,1,147,161,111],\"nonce\":[92,169,104,193,72,174,220,53,24,28,235,192],\"ct\":[72,38,223,248,163,194,17,216,59,253,116,1,67,238,224,254,61,237,61,215,107,137,3,196,206,57,21,207,35,187,221,228,119,76,132,133,9,198,156,91,15,52,102,211,152,70,195,58]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[251,37,204,92,65,1,162,144,181,52,6,92],\"ct\":[22,145,19,133,223,23,212,205,244,70,34,215,228,118,22,255,205,58,7,89,161,80,46,249,150,129,98,59,196,68,176,64,57,119,244,41,102,91,204,118,163,75,251,197,216,247,147,154]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"f50d2f6dd45e91e94a2c96d501ab6665\",\"publicKey\":[8,139,91,239,17,79,177,77,129,213,221,165,177,40,88,119,113,104,135,123,39,82,212,96,75,5,16,82,80,217,11,121],\"sealed\":{\"v\":2,\"nonce\":[218,215,15,234,167,45,252,225,227,125,60,240],\"ct\":[62,65,24,78,128,43,119,121,230,151,159,128,16,5,76,150,9,12,229,14,153,167,191,24,231,151,39,126,246,250,122,66,173,154,212,104,207,80,175,238,95,185,252,25,43,145,204,14]}},{\"role\":\"signing\",\"id\":\"e596102f4e94083b5be7cf04a125410d\",\"publicKey\":[212,246,246,89,165,186,101,195,220,63,78,91,219,121,26,89,2,159,170,157,71,214,15,221,198,166,24,204,116,101,118,43],\"sealed\":{\"v\":2,\"nonce\":[151,214,222,238,222,92,54,208,161,164,155,232],\"ct\":[248,24,47,59,195,31,28,77,219,196,133,161,106,72,20,110,145,177,189,123,117,120,193,109,224,116,80,79,146,217,124,85,209,64,242,2,34,55,136,57,213,0,186,57,245,146,1,34]}}],\"mac\":[133,104,119,172,137,25,107,139,160,205,132,233,33,218,11,27,39,30,165,226,170,121,129,223,114,227,27,156,4,253,117,67]},{\"v\":1,\"state\":\"ready\",\"intent\":\"81cfe092298faec658843af8561d45eb\",\"mac\":[77,87,149,207,158,101,41,176,175,202,110,247,22,222,126,97,38,36,80,243,19,129,164,194,60,106,117,137,138,91,87,209]},{\"state\":\"cleared\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "clear-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O09.corrupt",
+          "title": "Unreadable persisted ciphertext fails before application initialization",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "preflight-is-not-authentication",
+              "actual": "unlock-required",
+              "expected": "unlock-required",
+              "passed": true
+            },
+            {
+              "id": "authenticated-open-refuses-damage",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "damage-preserved-without-app-initialization",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[167,211,57,36,204,42,3,222,54,169,73,82],\"ct\":[113,211,145,137,26,174,135,21,103,183,12,66,2,55,90,63,158,19,12,43,126,85,45,23,45,245,97,58,181,254,59,152,28,183,94,147,66,239,238,240,215,148,95,119,144,15,186,6,173,206,246,220,224,253,46,131,220,249,214,213,4,123,89,1,174,140,204,39,186,118,209,189,117,239,247,74,12,173,171,86,126,202,162,205,97,137,83,36,238,27,35,28,80,117,5,109,32,31,142,96,63,142,8,238,228,176,149,214,74,125,218,90,162,193,17,201,60,190,63,11,102,154,119,227,111,131,11,95,219,156,194,251,165,74,15,118,50,163,149,73,225,235,186,87,167,227,97,230,155,239,51,91,53,184,3,159,23,169,198,207,215,43,159,205,252,206,31,14,225,66,120,221,80,95,44,76,80,153,112,125,245,99,33,137,221,166,156,203,78,225,160,6,207,155,23,84,216,143,71,195,164,148,116,181,64,242,27,149,248,99,170,81,185,99,104,215,70,185,49,23,41,147,213,2,107,208,59]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[136,157,200,10,203,113,35,186,185,71,160,6],\"ct\":[101,142,41,44,72,132,220,73,182,65,179,69,196,221,242,95,105,231,153,98,191,240,99,202,215,149,87,208,207,167,92,205,181,107,70,14,194,104,108,146,167,139,18]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"f1448ce56177bb916147eab95d702367\",\"intent\":\"5751018cfe80b9ebc54f1f95261f9dce\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[191,179,176,65,125,25,96,58,15,16,29,129,39,130,218,125,119,74,85,178,132,236,85,177,243,122,81,108,173,153,142,131]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"f1448ce56177bb916147eab95d702367\",\"root_id\":\"ffa02b237f488bea184e5d82648638a2\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[95,32,11,246,127,210,137,26,104,118,209,27,12,59,201,78],\"nonce\":[116,78,162,70,197,133,215,172,71,196,76,111],\"ct\":[133,70,31,226,199,175,5,106,125,96,102,155,71,174,198,88,185,217,213,165,5,178,96,133,77,104,165,27,87,247,194,78,18,125,155,216,211,11,81,20,248,9,156,21,18,25,197,251]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[39,187,158,101,251,193,104,197,159,20,131,168],\"ct\":[211,65,70,176,143,139,205,224,193,205,60,143,114,37,171,15,136,255,39,147,164,167,92,235,93,210,162,13,11,250,169,106,247,183,200,243,252,138,48,13,220,113,228,246,122,123,94,147]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"23c5ee736e95288a7e49ea28a92b06fa\",\"publicKey\":[241,252,129,32,212,31,161,223,204,145,160,71,29,228,206,8,181,30,130,215,229,83,94,70,177,175,34,212,127,252,71,82],\"sealed\":{\"v\":2,\"nonce\":[125,90,137,49,161,82,140,246,234,136,13,10],\"ct\":[225,87,8,174,167,47,54,139,177,110,129,155,51,134,253,167,39,221,68,37,79,141,250,27,133,207,208,240,129,69,51,29,53,146,153,121,247,169,100,239,128,27,88,100,245,16,166,126]}},{\"role\":\"signing\",\"id\":\"c46494986d509ad3f5dfd7cea39448a5\",\"publicKey\":[108,131,65,171,211,146,143,96,68,4,4,8,254,192,0,138,38,166,234,185,206,231,232,232,7,162,200,144,223,209,63,11],\"sealed\":{\"v\":2,\"nonce\":[154,210,205,4,43,107,69,189,20,213,15,152],\"ct\":[125,248,150,230,145,9,63,235,22,98,148,99,73,145,230,78,233,106,28,53,57,101,90,38,44,92,59,102,44,221,146,10,122,111,160,186,151,19,112,96,225,249,89,8,153,81,15,242]}}],\"mac\":[75,35,252,253,186,205,77,209,150,179,253,155,73,99,25,19,163,43,66,103,234,247,39,213,141,37,109,159,42,205,141,241]},{\"v\":1,\"state\":\"ready\",\"intent\":\"5751018cfe80b9ebc54f1f95261f9dce\",\"mac\":[42,59,50,60,81,189,118,38,101,137,79,162,115,210,188,114,177,204,223,45,12,177,84,191,81,171,241,158,68,76,95,219]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[167,211,57,36,204,42,3,222,54,169,73,82],\"ct\":[113,211,145,137,26,174,135,21,103,183,12,66,2,55,90,63,158,19,12,43,126,85,45,23,45,245,97,58,181,254,59,152,28,183,94,147,66,239,238,240,215,148,95,119,144,15,186,6,173,206,246,220,224,253,46,131,220,249,214,213,4,123,89,1,174,140,204,39,186,118,209,189,117,239,247,74,12,173,171,86,126,202,162,205,97,137,83,36,238,27,35,28,80,117,5,109,32,31,142,96,63,142,8,238,228,176,149,214,74,125,218,90,162,193,17,201,60,190,63,11,102,154,119,227,111,131,11,95,219,156,194,251,165,74,15,118,50,163,149,73,225,235,186,87,167,227,97,230,155,239,51,91,53,184,3,159,23,169,198,207,215,43,159,205,252,206,31,14,225,66,120,221,80,95,44,76,80,153,112,125,245,99,33,137,221,166,156,203,78,225,160,6,207,155,23,84,216,143,71,195,164,148,116,181,64,242,27,149,248,99,170,81,185,99,104,215,70,185,49,23,41,147,213,2,107,208,59]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[136,157,200,10,203,113,35,186,185,71,160,6],\"ct\":[101,142,41,44,72,132,220,73,182,65,179,69,196,221,242,95,105,231,153,98,191,240,99,202,215,149,87,208,207,167,92,205,181,107,70,14,194,104,108,146,167,139,18]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"f1448ce56177bb916147eab95d702367\",\"intent\":\"5751018cfe80b9ebc54f1f95261f9dce\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[191,179,176,65,125,25,96,58,15,16,29,129,39,130,218,125,119,74,85,178,132,236,85,177,243,122,81,108,173,153,142,131]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"f1448ce56177bb916147eab95d702367\",\"root_id\":\"ffa02b237f488bea184e5d82648638a2\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[95,32,11,246,127,210,137,26,104,118,209,27,12,59,201,78],\"nonce\":[116,78,162,70,197,133,215,172,71,196,76,111],\"ct\":[133,70,31,226,199,175,5,106,125,96,102,155,71,174,198,88,185,217,213,165,5,178,96,133,77,104,165,27,87,247,194,78,18,125,155,216,211,11,81,20,248,9,156,21,18,25,197,251]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[39,187,158,101,251,193,104,197,159,20,131,168],\"ct\":[211,65,70,176,143,139,205,224,193,205,60,143,114,37,171,15,136,255,39,147,164,167,92,235,93,210,162,13,11,250,169,106,247,183,200,243,252,138,48,13,220,113,228,246,122,123,94,147]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"23c5ee736e95288a7e49ea28a92b06fa\",\"publicKey\":[241,252,129,32,212,31,161,223,204,145,160,71,29,228,206,8,181,30,130,215,229,83,94,70,177,175,34,212,127,252,71,82],\"sealed\":{\"v\":2,\"nonce\":[125,90,137,49,161,82,140,246,234,136,13,10],\"ct\":[225,87,8,174,167,47,54,139,177,110,129,155,51,134,253,167,39,221,68,37,79,141,250,27,133,207,208,240,129,69,51,29,53,146,153,121,247,169,100,239,128,27,88,100,245,16,166,126]}},{\"role\":\"signing\",\"id\":\"c46494986d509ad3f5dfd7cea39448a5\",\"publicKey\":[108,131,65,171,211,146,143,96,68,4,4,8,254,192,0,138,38,166,234,185,206,231,232,232,7,162,200,144,223,209,63,11],\"sealed\":{\"v\":2,\"nonce\":[154,210,205,4,43,107,69,189,20,213,15,152],\"ct\":[125,248,150,230,145,9,63,235,22,98,148,99,73,145,230,78,233,106,28,53,57,101,90,38,44,92,59,102,44,221,146,10,122,111,160,186,151,19,112,96,225,249,89,8,153,81,15,242]}}],\"mac\":[75,35,252,253,186,205,77,209,150,179,253,155,73,99,25,19,163,43,66,103,234,247,39,213,141,37,109,159,42,205,141,241]},{\"v\":1,\"state\":\"ready\",\"intent\":\"5751018cfe80b9ebc54f1f95261f9dce\",\"mac\":[42,59,50,60,81,189,118,38,101,137,79,162,115,210,188,114,177,204,223,45,12,177,84,191,81,171,241,158,68,76,95,219]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "damage-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O10.factor",
+          "title": "Wrong factor exposes no editor or transport and changes no carrier",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "wrong-factor-refuses",
+              "actual": "unlock-failed",
+              "expected": "unlock-failed",
+              "passed": true
+            },
+            {
+              "id": "wrong-factor-no-carrier-writes",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[53,120,224,59,150,125,55,172,38,168,88,139],\"ct\":[214,83,159,89,191,238,135,29,147,118,10,119,57,84,114,169,229,32,180,17,25,73,114,96,204,106,38,18,40,94,154,200,242,227,40,195,212,0,72,34,92,4,174,102,214,241,14,253,180,199,231,209,51,180,220,182,201,244,160,109,70,85,46,197,227,84,150,44,250,41,117,152,1,19,2,190,197,242,86,46,254,84,19,171,68,107,108,46,51,192,17,249,172,235,177,168,206,204,181,19,138,200,71,218,80,135,57,9,213,58,180,30,25,151,243,224,33,69,51,90,10,48,102,44,2,251,18,28,77,160,52,96,39,26,116,118,197,206,160,33,161,28,165,243,198,92,182,87,107,167,0,133,4,101,255,176,228,12,59,124,135,66,118,116,17,133,240,129,234,228,106,42,39,183,215,23,57,240,111,170,230,195,19,38,211,138,4,173,237,45,203,144,183,185,170,101,171,5,151,201,167,49,76,13,140,213,31,217,58,48,150,76,24,236,111,121,7,136,95,28,111,169,34,155,221,192]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[164,233,114,225,230,56,251,44,28,141,221,207],\"ct\":[200,26,106,33,241,131,56,233,13,18,212,175,5,192,4,82,168,95,254,128,231,122,101,252,149,234,221,158,125,45,88,201,173,228,173,134,205,63,79,92,62,29,227]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"100368faffad81d7f29530a8864ba1b1\",\"intent\":\"f2b348ca1eef9841c982dc683b5988e3\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[86,151,221,232,33,238,49,73,213,117,52,7,229,69,129,106,197,45,38,8,249,196,224,247,73,2,222,213,123,47,99,254]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"100368faffad81d7f29530a8864ba1b1\",\"root_id\":\"49d55e054966757e39db592258d0f721\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[19,37,153,7,4,4,39,157,232,160,180,11,112,48,125,33],\"nonce\":[229,32,187,205,193,81,186,27,217,174,16,35],\"ct\":[91,36,209,23,243,132,84,175,113,39,98,69,162,134,161,114,110,206,42,22,39,16,45,79,99,4,10,54,186,209,204,129,175,190,232,155,192,85,95,231,156,214,233,68,188,101,242,212]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[7,85,192,180,38,21,105,254,143,108,207,156],\"ct\":[74,150,209,22,132,237,155,44,53,31,113,16,5,8,182,155,97,29,168,235,186,249,121,197,156,182,48,23,11,41,15,127,151,94,211,1,65,107,73,173,81,30,117,61,1,39,208,124]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"4abf613d7c5dc8a23fff93a3cebe68a9\",\"publicKey\":[136,156,17,112,111,44,90,229,137,236,229,175,43,112,13,184,70,34,150,142,185,211,130,167,247,81,171,33,215,151,8,62],\"sealed\":{\"v\":2,\"nonce\":[75,221,182,19,194,21,28,214,163,66,54,86],\"ct\":[157,214,192,76,71,17,143,176,175,101,43,19,124,208,119,77,194,71,149,171,63,142,99,205,163,223,202,212,210,98,247,194,103,68,38,19,203,167,235,238,254,150,9,31,179,208,49,12]}},{\"role\":\"signing\",\"id\":\"afe05763e9c6a986fb19f1abfe8f162e\",\"publicKey\":[22,131,253,160,34,218,23,114,101,87,212,230,29,123,79,125,7,144,151,20,178,64,6,225,187,109,40,142,11,228,213,178],\"sealed\":{\"v\":2,\"nonce\":[236,32,21,199,41,123,21,241,45,123,65,181],\"ct\":[126,109,18,171,162,160,2,158,175,232,194,115,139,214,31,76,79,179,9,184,244,55,113,29,248,105,238,252,240,19,197,169,252,75,51,10,157,123,9,61,218,20,219,165,38,172,185,81]}}],\"mac\":[136,194,240,170,209,62,177,66,217,143,26,192,244,198,52,178,106,190,130,130,131,33,141,60,230,90,228,78,10,123,116,97]},{\"v\":1,\"state\":\"ready\",\"intent\":\"f2b348ca1eef9841c982dc683b5988e3\",\"mac\":[86,26,181,73,62,25,133,50,196,123,116,11,186,218,234,201,117,208,221,131,243,66,159,229,11,247,33,225,243,5,145,31]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[53,120,224,59,150,125,55,172,38,168,88,139],\"ct\":[214,83,159,89,191,238,135,29,147,118,10,119,57,84,114,169,229,32,180,17,25,73,114,96,204,106,38,18,40,94,154,200,242,227,40,195,212,0,72,34,92,4,174,102,214,241,14,253,180,199,231,209,51,180,220,182,201,244,160,109,70,85,46,197,227,84,150,44,250,41,117,152,1,19,2,190,197,242,86,46,254,84,19,171,68,107,108,46,51,192,17,249,172,235,177,168,206,204,181,19,138,200,71,218,80,135,57,9,213,58,180,30,25,151,243,224,33,69,51,90,10,48,102,44,2,251,18,28,77,160,52,96,39,26,116,118,197,206,160,33,161,28,165,243,198,92,182,87,107,167,0,133,4,101,255,176,228,12,59,124,135,66,118,116,17,133,240,129,234,228,106,42,39,183,215,23,57,240,111,170,230,195,19,38,211,138,4,173,237,45,203,144,183,185,170,101,171,5,151,201,167,49,76,13,140,213,31,217,58,48,150,76,24,236,111,121,7,136,95,28,111,169,34,155,221,192]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[164,233,114,225,230,56,251,44,28,141,221,207],\"ct\":[200,26,106,33,241,131,56,233,13,18,212,175,5,192,4,82,168,95,254,128,231,122,101,252,149,234,221,158,125,45,88,201,173,228,173,134,205,63,79,92,62,29,227]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"100368faffad81d7f29530a8864ba1b1\",\"intent\":\"f2b348ca1eef9841c982dc683b5988e3\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[86,151,221,232,33,238,49,73,213,117,52,7,229,69,129,106,197,45,38,8,249,196,224,247,73,2,222,213,123,47,99,254]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"100368faffad81d7f29530a8864ba1b1\",\"root_id\":\"49d55e054966757e39db592258d0f721\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[19,37,153,7,4,4,39,157,232,160,180,11,112,48,125,33],\"nonce\":[229,32,187,205,193,81,186,27,217,174,16,35],\"ct\":[91,36,209,23,243,132,84,175,113,39,98,69,162,134,161,114,110,206,42,22,39,16,45,79,99,4,10,54,186,209,204,129,175,190,232,155,192,85,95,231,156,214,233,68,188,101,242,212]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[7,85,192,180,38,21,105,254,143,108,207,156],\"ct\":[74,150,209,22,132,237,155,44,53,31,113,16,5,8,182,155,97,29,168,235,186,249,121,197,156,182,48,23,11,41,15,127,151,94,211,1,65,107,73,173,81,30,117,61,1,39,208,124]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"4abf613d7c5dc8a23fff93a3cebe68a9\",\"publicKey\":[136,156,17,112,111,44,90,229,137,236,229,175,43,112,13,184,70,34,150,142,185,211,130,167,247,81,171,33,215,151,8,62],\"sealed\":{\"v\":2,\"nonce\":[75,221,182,19,194,21,28,214,163,66,54,86],\"ct\":[157,214,192,76,71,17,143,176,175,101,43,19,124,208,119,77,194,71,149,171,63,142,99,205,163,223,202,212,210,98,247,194,103,68,38,19,203,167,235,238,254,150,9,31,179,208,49,12]}},{\"role\":\"signing\",\"id\":\"afe05763e9c6a986fb19f1abfe8f162e\",\"publicKey\":[22,131,253,160,34,218,23,114,101,87,212,230,29,123,79,125,7,144,151,20,178,64,6,225,187,109,40,142,11,228,213,178],\"sealed\":{\"v\":2,\"nonce\":[236,32,21,199,41,123,21,241,45,123,65,181],\"ct\":[126,109,18,171,162,160,2,158,175,232,194,115,139,214,31,76,79,179,9,184,244,55,113,29,248,105,238,252,240,19,197,169,252,75,51,10,157,123,9,61,218,20,219,165,38,172,185,81]}}],\"mac\":[136,194,240,170,209,62,177,66,217,143,26,192,244,198,52,178,106,190,130,130,131,33,141,60,230,90,228,78,10,123,116,97]},{\"v\":1,\"state\":\"ready\",\"intent\":\"f2b348ca1eef9841c982dc683b5988e3\",\"mac\":[86,26,181,73,62,25,133,50,196,123,116,11,186,218,234,201,117,208,221,131,243,66,159,229,11,247,33,225,243,5,145,31]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "wrong-factor-never-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "valid-factor-opens",
+              "actual": "ready",
+              "expected": "ready",
+              "passed": true
+            },
+            {
+              "id": "ready-after-replay-and-initialization",
+              "actual": [
+                "retained",
+                0,
+                true,
+                1,
+                1
+              ],
+              "expected": [
+                "retained",
+                0,
+                true,
+                1,
+                1
+              ],
+              "passed": true
+            },
+            {
+              "id": "classification-under-shared-permit",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O11.recheck",
+          "title": "Open rereads routing and controls after acquiring its lifetime",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "earlier-inspection-is-unlock-required",
+              "actual": "unlock-required",
+              "expected": "unlock-required",
+              "passed": true
+            },
+            {
+              "id": "open-queues-behind-exclusive",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "queued-open-not-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "open-rechecks-after-grant",
+              "actual": "clearing",
+              "expected": "clearing",
+              "passed": true
+            },
+            {
+              "id": "failed-open-does-not-initialize",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[93,63,102,158,22,207,12,6,36,210,197,93],\"ct\":[218,99,232,41,230,135,221,91,226,221,11,165,123,33,71,66,67,172,128,247,203,31,84,148,34,83,251,236,217,169,21,167,72,175,207,184,254,156,234,151,78,80,134,45,154,84,160,57,97,91,23,28,139,222,236,190,222,188,246,145,39,197,177,145,227,148,160,127,199,181,224,180,181,103,97,184,223,54,255,123,245,159,92,91,213,17,210,11,102,15,99,27,52,231,12,8,224,7,122,7,102,158,232,235,32,176,253,69,80,181,71,57,47,248,17,42,8,184,26,57,99,181,239,40,247,40,25,61,59,53,255,126,175,41,183,254,115,23,73,129,208,38,101,84,238,147,219,148,21,157,130,116,21,27,77,112,52,78,36,0,82,189,188,193,84,163,100,122,7,241,204,124,69,209,3,17,118,108,28,164,207,10,117,61,89,192,218,149,198,215,196,81,254,8,33,119,149,210,131,249,132,46,167,60,157,126,29,126,63,130,161,122,102,233,125,199,67,56,235,186,39,45,207,127,40,167,28]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[128,113,204,96,75,142,233,238,183,195,112,113],\"ct\":[140,80,29,104,39,221,196,76,249,53,196,56,3,51,100,67,85,228,65,174,133,101,118,82,13,65,147,94,117,246,221,148,101,99,235,141,237,79,68,30,135,121,111]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"92b013d5a6c564a83b64ed4064a603ae\",\"intent\":\"2843197a06de824bdcea819b732b97a3\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[122,126,74,117,8,163,131,247,180,38,76,27,197,1,251,85,86,20,32,94,230,201,152,152,141,152,211,7,50,129,136,0]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"92b013d5a6c564a83b64ed4064a603ae\",\"root_id\":\"e6af3c57a6c8ae38b25e8e611d47867c\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[200,48,166,144,92,161,71,45,91,87,207,84,111,102,10,217],\"nonce\":[42,188,81,173,9,193,255,85,0,40,71,31],\"ct\":[176,55,3,65,77,32,53,252,131,144,199,169,64,62,35,250,132,255,201,134,144,180,239,219,175,137,173,228,163,206,222,177,85,229,137,245,73,43,104,50,181,224,171,107,93,163,250,101]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[133,232,196,238,84,90,49,53,185,228,202,176],\"ct\":[245,202,34,155,240,50,163,155,12,192,248,219,98,194,204,15,5,136,34,55,192,149,48,237,85,20,32,191,225,123,200,48,191,73,243,178,18,65,232,82,255,240,63,34,130,254,160,19]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"efd2dc9933988c8f7a63ad640cb7b4a6\",\"publicKey\":[101,25,112,206,38,57,169,53,25,214,102,80,18,114,117,184,156,196,176,171,118,46,201,52,191,230,209,217,23,171,31,94],\"sealed\":{\"v\":2,\"nonce\":[172,88,239,126,249,38,34,182,191,69,38,186],\"ct\":[33,88,17,245,22,43,99,96,31,156,221,39,71,50,119,147,217,211,252,209,182,226,252,94,253,207,6,168,54,207,241,207,39,84,187,240,205,164,85,15,195,130,142,92,36,236,41,97]}},{\"role\":\"signing\",\"id\":\"07effa224dcd401d70ce138751012d26\",\"publicKey\":[170,13,209,203,62,248,125,43,202,12,237,84,130,229,223,178,138,96,112,101,131,48,27,205,110,187,148,255,124,129,214,225],\"sealed\":{\"v\":2,\"nonce\":[70,116,251,111,34,83,193,163,213,56,120,24],\"ct\":[10,136,189,96,208,123,137,218,80,250,207,209,45,251,0,11,230,138,173,201,163,195,196,137,147,132,116,35,142,53,18,57,197,49,66,243,78,228,82,255,17,209,160,77,2,9,68,30]}}],\"mac\":[20,11,11,93,163,9,87,16,231,110,63,71,195,193,230,179,194,169,30,147,59,35,245,223,234,57,170,223,16,0,164,248]},{\"v\":1,\"state\":\"ready\",\"intent\":\"2843197a06de824bdcea819b732b97a3\",\"mac\":[171,247,169,10,214,11,169,175,239,58,206,42,31,73,77,229,197,64,156,199,17,192,111,192,154,87,0,117,75,123,143,42]},{\"state\":\"clearing\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[93,63,102,158,22,207,12,6,36,210,197,93],\"ct\":[218,99,232,41,230,135,221,91,226,221,11,165,123,33,71,66,67,172,128,247,203,31,84,148,34,83,251,236,217,169,21,167,72,175,207,184,254,156,234,151,78,80,134,45,154,84,160,57,97,91,23,28,139,222,236,190,222,188,246,145,39,197,177,145,227,148,160,127,199,181,224,180,181,103,97,184,223,54,255,123,245,159,92,91,213,17,210,11,102,15,99,27,52,231,12,8,224,7,122,7,102,158,232,235,32,176,253,69,80,181,71,57,47,248,17,42,8,184,26,57,99,181,239,40,247,40,25,61,59,53,255,126,175,41,183,254,115,23,73,129,208,38,101,84,238,147,219,148,21,157,130,116,21,27,77,112,52,78,36,0,82,189,188,193,84,163,100,122,7,241,204,124,69,209,3,17,118,108,28,164,207,10,117,61,89,192,218,149,198,215,196,81,254,8,33,119,149,210,131,249,132,46,167,60,157,126,29,126,63,130,161,122,102,233,125,199,67,56,235,186,39,45,207,127,40,167,28]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[128,113,204,96,75,142,233,238,183,195,112,113],\"ct\":[140,80,29,104,39,221,196,76,249,53,196,56,3,51,100,67,85,228,65,174,133,101,118,82,13,65,147,94,117,246,221,148,101,99,235,141,237,79,68,30,135,121,111]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"92b013d5a6c564a83b64ed4064a603ae\",\"intent\":\"2843197a06de824bdcea819b732b97a3\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[122,126,74,117,8,163,131,247,180,38,76,27,197,1,251,85,86,20,32,94,230,201,152,152,141,152,211,7,50,129,136,0]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"92b013d5a6c564a83b64ed4064a603ae\",\"root_id\":\"e6af3c57a6c8ae38b25e8e611d47867c\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[200,48,166,144,92,161,71,45,91,87,207,84,111,102,10,217],\"nonce\":[42,188,81,173,9,193,255,85,0,40,71,31],\"ct\":[176,55,3,65,77,32,53,252,131,144,199,169,64,62,35,250,132,255,201,134,144,180,239,219,175,137,173,228,163,206,222,177,85,229,137,245,73,43,104,50,181,224,171,107,93,163,250,101]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[133,232,196,238,84,90,49,53,185,228,202,176],\"ct\":[245,202,34,155,240,50,163,155,12,192,248,219,98,194,204,15,5,136,34,55,192,149,48,237,85,20,32,191,225,123,200,48,191,73,243,178,18,65,232,82,255,240,63,34,130,254,160,19]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"efd2dc9933988c8f7a63ad640cb7b4a6\",\"publicKey\":[101,25,112,206,38,57,169,53,25,214,102,80,18,114,117,184,156,196,176,171,118,46,201,52,191,230,209,217,23,171,31,94],\"sealed\":{\"v\":2,\"nonce\":[172,88,239,126,249,38,34,182,191,69,38,186],\"ct\":[33,88,17,245,22,43,99,96,31,156,221,39,71,50,119,147,217,211,252,209,182,226,252,94,253,207,6,168,54,207,241,207,39,84,187,240,205,164,85,15,195,130,142,92,36,236,41,97]}},{\"role\":\"signing\",\"id\":\"07effa224dcd401d70ce138751012d26\",\"publicKey\":[170,13,209,203,62,248,125,43,202,12,237,84,130,229,223,178,138,96,112,101,131,48,27,205,110,187,148,255,124,129,214,225],\"sealed\":{\"v\":2,\"nonce\":[70,116,251,111,34,83,193,163,213,56,120,24],\"ct\":[10,136,189,96,208,123,137,218,80,250,207,209,45,251,0,11,230,138,173,201,163,195,196,137,147,132,116,35,142,53,18,57,197,49,66,243,78,228,82,255,17,209,160,77,2,9,68,30]}}],\"mac\":[20,11,11,93,163,9,87,16,231,110,63,71,195,193,230,179,194,169,30,147,59,35,245,223,234,57,170,223,16,0,164,248]},{\"v\":1,\"state\":\"ready\",\"intent\":\"2843197a06de824bdcea819b732b97a3\",\"mac\":[171,247,169,10,214,11,169,175,239,58,206,42,31,73,77,229,197,64,156,199,17,192,111,192,154,87,0,117,75,123,143,42]},{\"state\":\"clearing\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O12.replay",
+          "title": "Cancellation during authenticated replay drains before permit release",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "replay-not-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "cancel-waits-for-owned-native-work",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "exclusive-cannot-pass-undrained-open",
+              "actual": [
+                true,
+                true
+              ],
+              "expected": [
+                true,
+                true
+              ],
+              "passed": true
+            },
+            {
+              "id": "cancelled-open-result",
+              "actual": "cancelled",
+              "expected": "cancelled",
+              "passed": true
+            },
+            {
+              "id": "cancelled-open-not-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "retry-reacquires-and-opens",
+              "actual": "ready",
+              "expected": "ready",
+              "passed": true
+            },
+            {
+              "id": "retry-recovers-content",
+              "actual": "retained",
+              "expected": "retained",
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O13.init-death",
+          "title": "Interrupted admitted initialization recovers before exposure",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "initialization-awaits-durable-barrier",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "restart-resumes-open",
+              "actual": "ready",
+              "expected": "ready",
+              "passed": true
+            },
+            {
+              "id": "cold-open-recovers-before-exposure",
+              "actual": [
+                "retained",
+                0,
+                1
+              ],
+              "expected": [
+                "retained",
+                0,
+                1
+              ],
+              "passed": true
+            },
+            {
+              "id": "reopened-owner-admits-input",
+              "actual": "!retained",
+              "expected": "!retained",
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "O14.future",
+          "title": "Unsupported application schema is repair-required before initialization",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "future-schema-repair-required",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "future-schema-not-rewritten",
+              "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2,3],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[47,231,240,70,244,139,132,107,94,199,192,84],\"ct\":[172,145,121,155,3,202,119,71,183,33,28,25,129,128,185,90,115,140,61,144,126,212,255,79,49,72,142,137,158,72,10,124,83,135,114,224,246,84,222,216,56,209,38,186,205,13,202,195,218,172,120,172,123,25,210,115,255,147,90,79,39,234,69,250,5,228,219,116,241,220,13,249,140,199,1,193,188,3,102,103,205,220,115,52,53,214,98,244,81,128,39,131,78,190,113,84,85,182,171,77,235,207,63,40,114,183,179,50,48,193,136,220,254,71,191,197,91,171,118,31,227,189,39,38,226,12,243,57,207,148,94,171,254,77,166,242,212,221,19,178,83,106,124,47,203,67,232,248,146,234,102,144,49,65,1,17,39,46,24,229,222,116,18,233,225,123,109,56,173,63,86,76,97,182,195,124,52,74,5,155,182,33,176,27,118,91,125,129,135,182,236,220,145,232,4,247,41,60,126,48,47,14,64,6,106,14,138,253,140,8,255,181,120,114,12,136,96,136,44,142,182,23,251,183,63,156,199]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[60,250,237,249,199,17,220,245,147,192,202,202],\"ct\":[78,33,196,86,54,151,34,151,185,49,174,150,254,76,26,219,130,28,204,225,197,210,126,106,145,184,159,113,147,12,86,32,77,228,11,240,4,98,233,226,236,25,217]},{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":[8,193,207,6,102,149,210,13,245,77,97,17],\"ct\":[56,234,75,251,83,219,70,186,138,33,46,4,29,210,127,32,69,126,247,198,129,177,43,26,151,95,36,19,105,50,238,6,239,43,135,232,153,152,113,181,119,198,248,154,75,96,169,180,111,109,162,79,77,6,42,176,186,41,165,78,61,179,86,221,3,134,44,225,181,243,205,73,115,132,125,33,123,198,41,70,64,38,1,67,79,117,224,76,131,3,7,142,152,126,166,145,18,202,145,51,14,16,245,38,127,13,186,139,189,191,156,10,173,86,253,50,184,161,139,164,129,13,143,212,82,158,171,6,197,184,54,198,240,56,63,204,150,130,184,96,249,178,164,235,105,183,228,181,229,163,215,63,70,53,41,62,45,110,161,193,174,57,108,18,11,34,93,238,95,114,181,114,88,173,226,160,39,7,36,128,47,10,220,72,19,168,59,171,238,83,38,247,136,181,88,108,206,151,236,27,46,254,1,213,94,170,205,154,89,69,120,150,208,140,191,121,70,114,52,111,148,207,139,13,112,68,201,179,205,99,90,221,159,16,122,244,240,228,105,5,93,146,200,40,186,156,204,84,137,39,51,251,106,74,185,14,248,254,95,246,22,149,56,89,114,191,252,26,76]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"7a1220df21541f413aa87351ee7ba8c5\",\"intent\":\"82e2075e79281596209061d17f853a45\",\"active_gen\":1,\"next_seq\":4,\"reserved\":{\"1\":3},\"mac\":[107,92,143,165,243,35,212,84,182,136,204,173,191,205,114,208,151,148,234,91,233,210,29,93,3,39,42,130,122,70,191,160]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"7a1220df21541f413aa87351ee7ba8c5\",\"root_id\":\"f84c5b88ba14269307b2a913ae3944aa\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[71,188,54,88,107,93,100,161,179,96,136,144,134,60,31,102],\"nonce\":[226,71,99,225,97,189,186,53,129,255,241,220],\"ct\":[224,142,237,137,230,96,119,22,105,201,65,139,209,127,59,135,142,126,193,230,88,78,126,107,32,135,73,207,108,211,18,0,156,169,2,231,155,111,182,129,177,39,121,17,157,22,3,29]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[82,14,19,183,182,129,233,225,230,202,231,71],\"ct\":[79,213,126,159,126,69,6,112,82,171,180,138,183,84,12,174,33,127,89,22,249,51,15,255,96,150,139,190,77,215,15,157,139,105,253,44,77,119,15,42,254,199,122,54,105,190,51,155]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"16c0b1cb67b1f26943d226179b1d791d\",\"publicKey\":[73,179,121,160,98,29,89,216,160,200,109,167,233,232,213,170,49,100,122,156,166,6,162,245,65,122,219,37,205,80,198,88],\"sealed\":{\"v\":2,\"nonce\":[18,96,68,53,141,131,252,57,30,76,227,9],\"ct\":[157,246,162,116,30,149,129,138,202,144,97,8,170,191,22,75,122,206,242,229,36,142,14,189,17,134,52,33,176,42,96,214,198,94,242,88,148,238,116,254,114,121,3,235,33,85,249,188]}},{\"role\":\"signing\",\"id\":\"09be78def2d59f1da44213f9114a60e4\",\"publicKey\":[149,51,240,150,26,238,78,104,228,153,119,233,143,106,60,144,176,128,177,181,156,179,2,88,204,88,215,12,32,103,118,11],\"sealed\":{\"v\":2,\"nonce\":[218,222,1,72,111,117,121,79,207,66,87,236],\"ct\":[0,189,207,252,65,208,176,157,17,161,152,123,241,157,97,145,75,158,49,219,14,154,137,122,164,159,93,217,103,196,26,170,5,118,131,135,138,3,152,61,171,224,83,105,243,59,133,132]}}],\"mac\":[195,4,10,33,242,217,197,136,89,18,8,96,162,243,81,71,199,73,160,28,83,146,123,128,223,54,192,160,248,220,65,69]},{\"v\":1,\"state\":\"ready\",\"intent\":\"82e2075e79281596209061d17f853a45\",\"mac\":[8,111,64,224,250,145,204,232,131,183,20,203,250,204,101,235,118,80,103,192,249,248,38,70,48,227,133,189,128,157,203,230]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2,3],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[47,231,240,70,244,139,132,107,94,199,192,84],\"ct\":[172,145,121,155,3,202,119,71,183,33,28,25,129,128,185,90,115,140,61,144,126,212,255,79,49,72,142,137,158,72,10,124,83,135,114,224,246,84,222,216,56,209,38,186,205,13,202,195,218,172,120,172,123,25,210,115,255,147,90,79,39,234,69,250,5,228,219,116,241,220,13,249,140,199,1,193,188,3,102,103,205,220,115,52,53,214,98,244,81,128,39,131,78,190,113,84,85,182,171,77,235,207,63,40,114,183,179,50,48,193,136,220,254,71,191,197,91,171,118,31,227,189,39,38,226,12,243,57,207,148,94,171,254,77,166,242,212,221,19,178,83,106,124,47,203,67,232,248,146,234,102,144,49,65,1,17,39,46,24,229,222,116,18,233,225,123,109,56,173,63,86,76,97,182,195,124,52,74,5,155,182,33,176,27,118,91,125,129,135,182,236,220,145,232,4,247,41,60,126,48,47,14,64,6,106,14,138,253,140,8,255,181,120,114,12,136,96,136,44,142,182,23,251,183,63,156,199]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[60,250,237,249,199,17,220,245,147,192,202,202],\"ct\":[78,33,196,86,54,151,34,151,185,49,174,150,254,76,26,219,130,28,204,225,197,210,126,106,145,184,159,113,147,12,86,32,77,228,11,240,4,98,233,226,236,25,217]},{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":[8,193,207,6,102,149,210,13,245,77,97,17],\"ct\":[56,234,75,251,83,219,70,186,138,33,46,4,29,210,127,32,69,126,247,198,129,177,43,26,151,95,36,19,105,50,238,6,239,43,135,232,153,152,113,181,119,198,248,154,75,96,169,180,111,109,162,79,77,6,42,176,186,41,165,78,61,179,86,221,3,134,44,225,181,243,205,73,115,132,125,33,123,198,41,70,64,38,1,67,79,117,224,76,131,3,7,142,152,126,166,145,18,202,145,51,14,16,245,38,127,13,186,139,189,191,156,10,173,86,253,50,184,161,139,164,129,13,143,212,82,158,171,6,197,184,54,198,240,56,63,204,150,130,184,96,249,178,164,235,105,183,228,181,229,163,215,63,70,53,41,62,45,110,161,193,174,57,108,18,11,34,93,238,95,114,181,114,88,173,226,160,39,7,36,128,47,10,220,72,19,168,59,171,238,83,38,247,136,181,88,108,206,151,236,27,46,254,1,213,94,170,205,154,89,69,120,150,208,140,191,121,70,114,52,111,148,207,139,13,112,68,201,179,205,99,90,221,159,16,122,244,240,228,105,5,93,146,200,40,186,156,204,84,137,39,51,251,106,74,185,14,248,254,95,246,22,149,56,89,114,191,252,26,76]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"7a1220df21541f413aa87351ee7ba8c5\",\"intent\":\"82e2075e79281596209061d17f853a45\",\"active_gen\":1,\"next_seq\":4,\"reserved\":{\"1\":3},\"mac\":[107,92,143,165,243,35,212,84,182,136,204,173,191,205,114,208,151,148,234,91,233,210,29,93,3,39,42,130,122,70,191,160]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"7a1220df21541f413aa87351ee7ba8c5\",\"root_id\":\"f84c5b88ba14269307b2a913ae3944aa\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[71,188,54,88,107,93,100,161,179,96,136,144,134,60,31,102],\"nonce\":[226,71,99,225,97,189,186,53,129,255,241,220],\"ct\":[224,142,237,137,230,96,119,22,105,201,65,139,209,127,59,135,142,126,193,230,88,78,126,107,32,135,73,207,108,211,18,0,156,169,2,231,155,111,182,129,177,39,121,17,157,22,3,29]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[82,14,19,183,182,129,233,225,230,202,231,71],\"ct\":[79,213,126,159,126,69,6,112,82,171,180,138,183,84,12,174,33,127,89,22,249,51,15,255,96,150,139,190,77,215,15,157,139,105,253,44,77,119,15,42,254,199,122,54,105,190,51,155]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"16c0b1cb67b1f26943d226179b1d791d\",\"publicKey\":[73,179,121,160,98,29,89,216,160,200,109,167,233,232,213,170,49,100,122,156,166,6,162,245,65,122,219,37,205,80,198,88],\"sealed\":{\"v\":2,\"nonce\":[18,96,68,53,141,131,252,57,30,76,227,9],\"ct\":[157,246,162,116,30,149,129,138,202,144,97,8,170,191,22,75,122,206,242,229,36,142,14,189,17,134,52,33,176,42,96,214,198,94,242,88,148,238,116,254,114,121,3,235,33,85,249,188]}},{\"role\":\"signing\",\"id\":\"09be78def2d59f1da44213f9114a60e4\",\"publicKey\":[149,51,240,150,26,238,78,104,228,153,119,233,143,106,60,144,176,128,177,181,156,179,2,88,204,88,215,12,32,103,118,11],\"sealed\":{\"v\":2,\"nonce\":[218,222,1,72,111,117,121,79,207,66,87,236],\"ct\":[0,189,207,252,65,208,176,157,17,161,152,123,241,157,97,145,75,158,49,219,14,154,137,122,164,159,93,217,103,196,26,170,5,118,131,135,138,3,152,61,171,224,83,105,243,59,133,132]}}],\"mac\":[195,4,10,33,242,217,197,136,89,18,8,96,162,243,81,71,199,73,160,28,83,146,123,128,223,54,192,160,248,220,65,69]},{\"v\":1,\"state\":\"ready\",\"intent\":\"82e2075e79281596209061d17f853a45\",\"mac\":[8,111,64,224,250,145,204,232,131,183,20,203,250,204,101,235,118,80,103,192,249,248,38,70,48,227,133,189,128,157,203,230]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+              "passed": true
+            },
+            {
+              "id": "future-schema-not-exposed",
+              "actual": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "expected": [
+                0,
+                0,
+                null,
+                null,
+                null
+              ],
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "O15.scope",
+          "title": "Damage in one workspace does not prevent an independently valid workspace",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "valid-other-workspace-opens",
+              "actual": "ready",
+              "expected": "ready",
+              "passed": true
+            },
+            {
+              "id": "target-damage-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "other-workspace-remains-usable",
+              "actual": [
+                "independent",
+                "active",
+                1
+              ],
+              "expected": [
+                "independent",
+                "active",
+                1
+              ],
+              "passed": true
+            },
+            {
+              "id": "other-workspace-still-admits",
+              "actual": "!independent",
+              "expected": "!independent",
+              "passed": true
+            },
+            {
+              "id": "no-database-enumeration",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        }
+      ]
+    }
+  ],
+  "mutations": [
+    {
+      "id": "probe-creates-database",
+      "assertion": "preflight-no-database-side-effects",
+      "status": "detected",
+      "result": {
+        "id": "probe-creates-database",
+        "source": {
+          "files": {
+            "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+            "src/crdt/legacySource.ts": "0b75e1ed672c486675963b942e4d7bf56099003afd91cc6e7d9b713203124a5a",
+            "src/crdt/localClear.ts": "2a654c36f17a17da807b03346cd67949079d06d4b17954da9080b2b9525c36e6",
+            "src/crdt/localClearCrypto.ts": "b3c042521298b0408dfb2c55663b2ab5f22c7050df10e6c5eae4d8c1a0b11b25",
+            "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "src/crdt/localClearStorage.ts": "8e57651b4707acf4db527800542c0b23d6c38d2571bc56244209d9ec123f66aa",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "264a5e2fb845b0bbfa053a9d7ea1ea685d7e6d245b39049f554678eea918d20d",
+            "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "505bfd0a98947740dfe2dd6799b9c9b0c45b3e1912a7a332c4bb35211b70d876",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/serialize.ts": "4820519c4727482a1182ee1e8281ea92e83bd8698f5407df1fd4159a88cf4e2f",
+            "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+            "src/crdt/startupClassification.ts": "803d58793e0236e4af21361156be0ee5011ace8d272b127cd0afe9f191870080",
+            "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "src/crdt/startupStorage.ts": "cfd7e789f94cbcfbf1f8e62440e7454e862392622b64521aa5a8b75737937e98",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "5e82e4e850dc51672508e78a398bd5e04d72fbffca7193ab45505e32385abfd6",
+            "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+            "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "src/crdt/yjs.ts": "39f760b90a9853df70a877bb9b8d1a074dc51f271147726c2d092a86dd829834",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+            "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+            "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+            "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+            "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+            "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+            "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+            "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+            "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+            "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/startupStorage.ts",
+          "from": "request.transaction!.abort();",
+          "to": ";"
+        },
+        "cases": [
+          {
+            "id": "O01.absence",
+            "title": "Absent carriers do not create databases or enroll a factor",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "absent-is-observed-fresh",
+                "actual": "repair-required",
+                "expected": "fresh",
+                "passed": false
+              },
+              {
+                "id": "preflight-no-database-side-effects",
+                "actual": [
+                  {
+                    "name": "done.custody",
+                    "version": 1
+                  }
+                ],
+                "expected": [],
+                "passed": false
+              },
+              {
+                "id": "normal-open-does-not-enroll",
+                "actual": "repair-required",
+                "expected": "fresh",
+                "passed": false
+              },
+              {
+                "id": "open-no-database-side-effects",
+                "actual": [
+                  {
+                    "name": "done.custody",
+                    "version": 1
+                  }
+                ],
+                "expected": [],
+                "passed": false
+              },
+              {
+                "id": "fresh-never-exposed",
+                "actual": [
+                  0,
+                  0,
+                  null,
+                  null,
+                  null
+                ],
+                "expected": [
+                  0,
+                  0,
+                  null,
+                  null,
+                  null
+                ],
+                "passed": true
+              },
+              {
+                "id": "no-database-enumeration",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "orphan-is-fresh",
+      "assertion": "orphan-not-fresh",
+      "status": "detected",
+      "result": {
+        "id": "orphan-is-fresh",
+        "source": {
+          "files": {
+            "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+            "src/crdt/legacySource.ts": "0b75e1ed672c486675963b942e4d7bf56099003afd91cc6e7d9b713203124a5a",
+            "src/crdt/localClear.ts": "2a654c36f17a17da807b03346cd67949079d06d4b17954da9080b2b9525c36e6",
+            "src/crdt/localClearCrypto.ts": "b3c042521298b0408dfb2c55663b2ab5f22c7050df10e6c5eae4d8c1a0b11b25",
+            "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "src/crdt/localClearStorage.ts": "8e57651b4707acf4db527800542c0b23d6c38d2571bc56244209d9ec123f66aa",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "264a5e2fb845b0bbfa053a9d7ea1ea685d7e6d245b39049f554678eea918d20d",
+            "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "505bfd0a98947740dfe2dd6799b9c9b0c45b3e1912a7a332c4bb35211b70d876",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/serialize.ts": "4820519c4727482a1182ee1e8281ea92e83bd8698f5407df1fd4159a88cf4e2f",
+            "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+            "src/crdt/startupClassification.ts": "de58517439fa90c9fed759e7ae734b4e692e2d57d9044d644fb2aeb2ed1e9bb2",
+            "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "5e82e4e850dc51672508e78a398bd5e04d72fbffca7193ab45505e32385abfd6",
+            "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+            "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "src/crdt/yjs.ts": "39f760b90a9853df70a877bb9b8d1a074dc51f271147726c2d092a86dd829834",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+            "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+            "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+            "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+            "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+            "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+            "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+            "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+            "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+            "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/startupClassification.ts",
+          "from": "if (rows.length || disk || journal)",
+          "to": "if (false)"
+        },
+        "cases": [
+          {
+            "id": "O02.orphan",
+            "title": "Surviving material without its index refuses fresh classification",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "orphan-not-fresh",
+                "actual": "fresh",
+                "expected": "repair-required",
+                "passed": false
+              },
+              {
+                "id": "orphan-open-refuses",
+                "actual": "fresh",
+                "expected": "repair-required",
+                "passed": false
+              },
+              {
+                "id": "orphan-carriers-retained",
+                "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[56,174,141,81,238,132,119,110,65,164,248,35],\"ct\":[46,182,50,101,83,193,38,235,44,53,91,169,2,164,155,6,116,143,239,6,64,246,101,58,6,145,81,42,176,198,36,107,97,17,244,12,134,237,21,113,163,185,4,46,77,236,157,224,80,185,106,112,89,207,125,28,212,31,62,238,2,54,179,202,55,245,134,129,21,140,173,123,107,128,193,223,252,187,108,28,209,31,192,243,230,99,11,213,232,35,102,224,79,172,250,189,166,70,72,231,178,91,155,234,142,229,30,34,91,166,239,81,249,104,205,139,8,213,75,229,154,41,98,232,192,190,8,131,65,246,213,159,58,178,173,130,4,248,59,231,13,202,137,177,210,46,242,97,80,59,220,150,223,253,195,188,130,27,193,131,76,184,232,22,234,220,110,200,138,113,1,177,49,53,151,217,35,183,221,67,167,63,67,123,201,122,173,100,181,249,169,76,216,162,201,62,13,133,33,160,242,122,117,241,60,223,150,80,213,230,245,63,57,180,17,36,249,72,171,246,149,38,222,32,121,149,78]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[50,126,116,251,243,12,14,31,203,20,46,219],\"ct\":[247,197,55,89,13,32,52,143,54,241,56,248,39,195,77,222,127,38,187,189,247,238,240,21,46,62,204,191,255,174,137,70,142,151,107,48,238,93,133,98,71,136,105]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"63cd3a94dda4206155dfbb6e0314dc6f\",\"intent\":\"560642d0584d6877894b373fa7bd354b\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[132,205,205,15,145,179,22,219,193,207,64,23,139,88,162,211,79,100,163,85,105,188,223,57,147,80,201,211,181,58,253,43]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"63cd3a94dda4206155dfbb6e0314dc6f\",\"root_id\":\"d2a509b10cb7d2e960afc1957fe07bf6\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[7,142,11,5,107,234,59,139,247,75,173,38,117,186,145,42],\"nonce\":[198,31,100,11,194,18,30,150,3,252,34,230],\"ct\":[88,177,179,55,75,96,115,191,12,166,93,14,177,106,224,32,83,53,144,65,100,38,25,154,167,139,245,204,0,76,94,5,136,52,252,242,175,232,172,55,189,255,99,1,236,108,39,202]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[38,99,62,250,126,226,100,5,231,251,170,28],\"ct\":[90,139,34,181,7,151,138,66,117,33,108,222,226,134,194,227,166,232,212,147,169,64,241,201,144,143,221,56,123,193,5,227,160,196,5,1,212,66,22,154,185,113,38,96,33,97,33,149]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"72b19449617e7e0737651e37f5e18d98\",\"publicKey\":[82,219,213,197,71,80,56,110,16,209,196,63,242,139,157,31,30,64,157,14,163,210,137,34,73,226,214,16,110,104,145,23],\"sealed\":{\"v\":2,\"nonce\":[156,194,55,15,2,24,166,200,149,37,67,146],\"ct\":[34,50,90,112,61,237,163,111,57,246,118,1,158,70,60,183,242,255,165,23,149,226,227,195,34,46,129,20,14,122,99,161,154,210,235,195,35,112,14,115,67,209,117,238,127,191,178,225]}},{\"role\":\"signing\",\"id\":\"41b983e8fac69bf9d6c6b91fd0021a66\",\"publicKey\":[49,248,17,81,212,64,204,92,62,117,220,167,184,149,190,207,74,202,153,138,4,27,102,99,29,139,213,122,189,201,9,154],\"sealed\":{\"v\":2,\"nonce\":[245,23,125,25,141,157,207,43,151,223,235,252],\"ct\":[95,18,87,123,244,219,104,68,6,207,52,165,228,192,8,195,103,229,132,115,118,230,225,35,66,53,141,234,137,227,232,134,10,11,61,41,166,201,34,213,138,86,166,111,125,121,235,141]}}],\"mac\":[14,18,2,73,233,116,7,115,25,255,186,94,128,44,188,18,232,189,13,68,230,105,34,136,212,40,245,242,162,165,53,177]},{\"v\":1,\"state\":\"ready\",\"intent\":\"560642d0584d6877894b373fa7bd354b\",\"mac\":[171,248,120,107,5,183,151,28,20,239,193,114,19,37,48,236,80,77,171,209,255,82,42,244,17,107,65,224,235,87,144,211]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[]}]}}}],\"storage\":{}}",
+                "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[56,174,141,81,238,132,119,110,65,164,248,35],\"ct\":[46,182,50,101,83,193,38,235,44,53,91,169,2,164,155,6,116,143,239,6,64,246,101,58,6,145,81,42,176,198,36,107,97,17,244,12,134,237,21,113,163,185,4,46,77,236,157,224,80,185,106,112,89,207,125,28,212,31,62,238,2,54,179,202,55,245,134,129,21,140,173,123,107,128,193,223,252,187,108,28,209,31,192,243,230,99,11,213,232,35,102,224,79,172,250,189,166,70,72,231,178,91,155,234,142,229,30,34,91,166,239,81,249,104,205,139,8,213,75,229,154,41,98,232,192,190,8,131,65,246,213,159,58,178,173,130,4,248,59,231,13,202,137,177,210,46,242,97,80,59,220,150,223,253,195,188,130,27,193,131,76,184,232,22,234,220,110,200,138,113,1,177,49,53,151,217,35,183,221,67,167,63,67,123,201,122,173,100,181,249,169,76,216,162,201,62,13,133,33,160,242,122,117,241,60,223,150,80,213,230,245,63,57,180,17,36,249,72,171,246,149,38,222,32,121,149,78]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[50,126,116,251,243,12,14,31,203,20,46,219],\"ct\":[247,197,55,89,13,32,52,143,54,241,56,248,39,195,77,222,127,38,187,189,247,238,240,21,46,62,204,191,255,174,137,70,142,151,107,48,238,93,133,98,71,136,105]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"63cd3a94dda4206155dfbb6e0314dc6f\",\"intent\":\"560642d0584d6877894b373fa7bd354b\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[132,205,205,15,145,179,22,219,193,207,64,23,139,88,162,211,79,100,163,85,105,188,223,57,147,80,201,211,181,58,253,43]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"63cd3a94dda4206155dfbb6e0314dc6f\",\"root_id\":\"d2a509b10cb7d2e960afc1957fe07bf6\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[7,142,11,5,107,234,59,139,247,75,173,38,117,186,145,42],\"nonce\":[198,31,100,11,194,18,30,150,3,252,34,230],\"ct\":[88,177,179,55,75,96,115,191,12,166,93,14,177,106,224,32,83,53,144,65,100,38,25,154,167,139,245,204,0,76,94,5,136,52,252,242,175,232,172,55,189,255,99,1,236,108,39,202]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[38,99,62,250,126,226,100,5,231,251,170,28],\"ct\":[90,139,34,181,7,151,138,66,117,33,108,222,226,134,194,227,166,232,212,147,169,64,241,201,144,143,221,56,123,193,5,227,160,196,5,1,212,66,22,154,185,113,38,96,33,97,33,149]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"72b19449617e7e0737651e37f5e18d98\",\"publicKey\":[82,219,213,197,71,80,56,110,16,209,196,63,242,139,157,31,30,64,157,14,163,210,137,34,73,226,214,16,110,104,145,23],\"sealed\":{\"v\":2,\"nonce\":[156,194,55,15,2,24,166,200,149,37,67,146],\"ct\":[34,50,90,112,61,237,163,111,57,246,118,1,158,70,60,183,242,255,165,23,149,226,227,195,34,46,129,20,14,122,99,161,154,210,235,195,35,112,14,115,67,209,117,238,127,191,178,225]}},{\"role\":\"signing\",\"id\":\"41b983e8fac69bf9d6c6b91fd0021a66\",\"publicKey\":[49,248,17,81,212,64,204,92,62,117,220,167,184,149,190,207,74,202,153,138,4,27,102,99,29,139,213,122,189,201,9,154],\"sealed\":{\"v\":2,\"nonce\":[245,23,125,25,141,157,207,43,151,223,235,252],\"ct\":[95,18,87,123,244,219,104,68,6,207,52,165,228,192,8,195,103,229,132,115,118,230,225,35,66,53,141,234,137,227,232,134,10,11,61,41,166,201,34,213,138,86,166,111,125,121,235,141]}}],\"mac\":[14,18,2,73,233,116,7,115,25,255,186,94,128,44,188,18,232,189,13,68,230,105,34,136,212,40,245,242,162,165,53,177]},{\"v\":1,\"state\":\"ready\",\"intent\":\"560642d0584d6877894b373fa7bd354b\",\"mac\":[171,248,120,107,5,183,151,28,20,239,193,114,19,37,48,236,80,77,171,209,255,82,42,244,17,107,65,224,235,87,144,211]}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[]}]}}}],\"storage\":{}}",
+                "passed": true
+              },
+              {
+                "id": "orphan-never-exposed",
+                "actual": [
+                  0,
+                  0,
+                  null,
+                  null,
+                  null
+                ],
+                "expected": [
+                  0,
+                  0,
+                  null,
+                  null,
+                  null
+                ],
+                "passed": true
+              },
+              {
+                "id": "no-database-enumeration",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "skip-open-classification",
+      "assertion": "open-rechecks-after-grant",
+      "status": "detected",
+      "result": {
+        "id": "skip-open-classification",
+        "source": {
+          "files": {
+            "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+            "src/crdt/legacySource.ts": "0b75e1ed672c486675963b942e4d7bf56099003afd91cc6e7d9b713203124a5a",
+            "src/crdt/localClear.ts": "2a654c36f17a17da807b03346cd67949079d06d4b17954da9080b2b9525c36e6",
+            "src/crdt/localClearCrypto.ts": "b3c042521298b0408dfb2c55663b2ab5f22c7050df10e6c5eae4d8c1a0b11b25",
+            "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+            "src/crdt/localClearStorage.ts": "8e57651b4707acf4db527800542c0b23d6c38d2571bc56244209d9ec123f66aa",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "264a5e2fb845b0bbfa053a9d7ea1ea685d7e6d245b39049f554678eea918d20d",
+            "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "81f66da69a3aee8e1badeadd70ab832cea527504d61462309b8a596d71d20912",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/serialize.ts": "4820519c4727482a1182ee1e8281ea92e83bd8698f5407df1fd4159a88cf4e2f",
+            "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+            "src/crdt/startupClassification.ts": "803d58793e0236e4af21361156be0ee5011ace8d272b127cd0afe9f191870080",
+            "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+            "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "5e82e4e850dc51672508e78a398bd5e04d72fbffca7193ab45505e32385abfd6",
+            "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+            "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+            "src/crdt/yjs.ts": "39f760b90a9853df70a877bb9b8d1a074dc51f271147726c2d092a86dd829834",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+            "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+            "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+            "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+            "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+            "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+            "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+            "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+            "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+            "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/ownedStartup.ts",
+          "from": "classified = await classifyUnderPermit(task, authority);",
+          "to": "const verified = await authority.resolveIdentity(task, null); classified = {scope: {slotId: authority.slotId, workspaceId: authority.workspaceId, principalId: verified.principalId}, storeId: 'unverified', dbName: 'unverified'};"
+        },
+        "cases": [
+          {
+            "id": "O11.recheck",
+            "title": "Open rereads routing and controls after acquiring its lifetime",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "earlier-inspection-is-unlock-required",
+                "actual": "unlock-required",
+                "expected": "unlock-required",
+                "passed": true
+              },
+              {
+                "id": "open-queues-behind-exclusive",
+                "actual": true,
+                "expected": true,
+                "passed": true
+              },
+              {
+                "id": "queued-open-not-exposed",
+                "actual": [
+                  0,
+                  0,
+                  null,
+                  null,
+                  null
+                ],
+                "expected": [
+                  0,
+                  0,
+                  null,
+                  null,
+                  null
+                ],
+                "passed": true
+              },
+              {
+                "id": "open-rechecks-after-grant",
+                "actual": "ready",
+                "expected": "clearing",
+                "passed": false
+              },
+              {
+                "id": "failed-open-does-not-initialize",
+                "actual": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2,3],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[94,34,201,248,102,128,48,64,67,56,87,68],\"ct\":[117,9,33,252,171,224,88,247,85,113,20,219,111,27,98,68,242,130,219,143,158,239,38,34,193,230,248,27,126,143,242,171,164,182,151,168,176,248,122,69,23,66,99,175,73,59,250,211,66,129,184,95,255,140,23,223,108,242,197,29,135,223,78,234,97,198,228,1,57,54,79,238,38,146,244,44,229,33,36,20,6,205,217,98,50,170,122,26,117,166,157,198,76,158,134,36,3,255,98,109,136,134,137,46,237,240,97,156,176,76,89,8,11,246,167,170,102,80,72,28,43,148,42,187,83,249,27,224,94,97,62,212,178,91,60,100,224,39,227,41,219,249,175,250,211,244,75,60,38,188,107,207,70,58,201,171,111,219,215,217,76,49,234,195,232,203,92,48,178,21,46,119,62,35,251,113,213,75,136,159,195,104,239,47,176,67,107,150,197,158,90,169,116,34,111,105,252,171,162,4,15,60,203,23,218,27,179,41,126,228,137,87,23,45,211,216,66,4,117,215,51,47,57,70,240,252,20]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[62,153,111,40,70,246,65,167,89,21,191,216],\"ct\":[246,185,186,25,3,40,182,142,247,177,101,238,138,34,246,78,139,97,144,1,239,80,27,165,138,115,44,96,123,207,113,39,85,118,77,199,25,247,113,233,74,6,183]},{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":[97,20,93,43,64,201,45,118,169,148,17,206],\"ct\":[94,27,20,253,68,79,172,123,243,146,40,128,60,227,149,33,150,188,74,209,96,125,51,161,116,75,53,179,164,70,204,101,254,96,87,0,105,147,244,50,210,231,85,83,238,229,81,38,122,91,240,45,37,190,45,158,4,102,232,171,58,24,113,247,57,249,11,143,8,204,45,141,195,163,251,233,30,166,192,126,101,201,188,99,193,77,207,78,181,10,39,171,191,3,246,213,97,121,119,186,101,247]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"ff21f8185ebe3f31b489b01bcd5f5699\",\"intent\":\"df2122eb3e27fda718f80323f107ed5a\",\"active_gen\":1,\"next_seq\":4,\"reserved\":{\"1\":3},\"mac\":[80,36,136,96,249,160,28,111,90,238,181,48,53,103,251,83,32,25,216,154,221,250,120,158,234,204,97,200,4,95,168,161]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"ff21f8185ebe3f31b489b01bcd5f5699\",\"root_id\":\"e2660a2feef79e84c6371d32d6520cb8\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[148,133,206,220,215,222,101,209,136,75,149,234,250,65,210,84],\"nonce\":[211,94,121,28,243,41,180,185,15,97,45,210],\"ct\":[139,142,68,73,137,155,58,66,224,93,250,33,230,140,71,230,117,60,34,221,171,252,220,101,188,120,72,130,147,97,219,207,2,247,187,206,181,98,93,199,69,203,40,85,19,172,83,203]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[97,162,31,100,153,79,249,13,126,12,88,252],\"ct\":[211,48,80,155,161,233,167,226,22,14,152,228,76,111,151,22,248,138,161,55,13,77,190,100,196,236,169,87,57,200,146,132,186,109,113,167,251,245,251,146,253,182,14,152,22,81,114,12]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"d44245f0ce361c850e1187cc6e7913ba\",\"publicKey\":[222,47,50,66,247,23,23,184,217,177,104,137,178,20,98,99,56,215,157,217,99,206,251,239,177,56,161,167,65,194,44,25],\"sealed\":{\"v\":2,\"nonce\":[152,205,172,159,22,103,45,99,165,160,242,161],\"ct\":[152,168,81,131,227,40,101,246,136,160,178,13,36,197,118,132,70,150,55,208,163,244,154,193,146,228,92,111,124,191,62,105,160,102,116,50,255,141,5,41,199,130,42,111,33,239,229,90]}},{\"role\":\"signing\",\"id\":\"23cf4e672b09a60268529a08cb26caef\",\"publicKey\":[71,27,180,226,255,15,16,166,152,137,194,148,84,90,120,113,81,71,219,255,78,155,236,50,190,193,159,29,177,110,96,54],\"sealed\":{\"v\":2,\"nonce\":[253,135,190,231,172,248,50,47,198,74,79,238],\"ct\":[107,180,229,212,75,188,73,253,47,124,219,126,231,124,161,2,177,186,141,130,125,154,202,215,121,44,121,14,122,136,22,119,214,30,18,96,245,187,215,102,38,87,228,128,243,3,111,40]}}],\"mac\":[175,6,15,209,45,180,17,199,21,136,159,51,227,94,253,81,17,240,60,28,141,116,223,233,123,103,24,128,10,156,135,227]},{\"v\":1,\"state\":\"ready\",\"intent\":\"df2122eb3e27fda718f80323f107ed5a\",\"mac\":[119,6,229,164,119,180,251,154,62,139,117,1,190,248,230,205,36,22,244,194,38,222,143,208,14,224,159,209,29,90,238,225]},{\"state\":\"clearing\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+                "expected": "{\"databases\":[{\"name\":\"done.867fc572fdea36a2c203c4549ac4fb56\",\"version\":1,\"data\":{\"content\":{\"keys\":[1,2],\"values\":[{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":[94,34,201,248,102,128,48,64,67,56,87,68],\"ct\":[117,9,33,252,171,224,88,247,85,113,20,219,111,27,98,68,242,130,219,143,158,239,38,34,193,230,248,27,126,143,242,171,164,182,151,168,176,248,122,69,23,66,99,175,73,59,250,211,66,129,184,95,255,140,23,223,108,242,197,29,135,223,78,234,97,198,228,1,57,54,79,238,38,146,244,44,229,33,36,20,6,205,217,98,50,170,122,26,117,166,157,198,76,158,134,36,3,255,98,109,136,134,137,46,237,240,97,156,176,76,89,8,11,246,167,170,102,80,72,28,43,148,42,187,83,249,27,224,94,97,62,212,178,91,60,100,224,39,227,41,219,249,175,250,211,244,75,60,38,188,107,207,70,58,201,171,111,219,215,217,76,49,234,195,232,203,92,48,178,21,46,119,62,35,251,113,213,75,136,159,195,104,239,47,176,67,107,150,197,158,90,169,116,34,111,105,252,171,162,4,15,60,203,23,218,27,179,41,126,228,137,87,23,45,211,216,66,4,117,215,51,47,57,70,240,252,20]},{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":[62,153,111,40,70,246,65,167,89,21,191,216],\"ct\":[246,185,186,25,3,40,182,142,247,177,101,238,138,34,246,78,139,97,144,1,239,80,27,165,138,115,44,96,123,207,113,39,85,118,77,199,25,247,113,233,74,6,183]}]},\"heads\":{\"keys\":[],\"values\":[]},\"meta\":{\"keys\":[\"counter\"],\"values\":[{\"v\":1,\"store_id\":\"ff21f8185ebe3f31b489b01bcd5f5699\",\"intent\":\"df2122eb3e27fda718f80323f107ed5a\",\"active_gen\":1,\"next_seq\":3,\"reserved\":{\"1\":2},\"mac\":[135,211,170,193,112,102,89,159,94,27,239,193,200,94,65,176,217,174,225,249,203,241,214,168,20,89,19,25,242,110,14,119]}]},\"outbound\":{\"keys\":[],\"values\":[]}}},{\"name\":\"done.custody\",\"version\":1,\"data\":{\"entries\":{\"keys\":[[\"content-slot\",\"content-principal\",\"content-workspace\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"content-v1\"],[\"content-slot\",\"content-principal\",\"content-workspace\",\"fixture-transition\"]],\"values\":[{\"v\":2,\"state\":\"protected\",\"slot_id\":\"content-slot\",\"principal_id\":\"content-principal\",\"workspace_id\":\"content-workspace\",\"store_id\":\"ff21f8185ebe3f31b489b01bcd5f5699\",\"root_id\":\"e2660a2feef79e84c6371d32d6520cb8\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":[148,133,206,220,215,222,101,209,136,75,149,234,250,65,210,84],\"nonce\":[211,94,121,28,243,41,180,185,15,97,45,210],\"ct\":[139,142,68,73,137,155,58,66,224,93,250,33,230,140,71,230,117,60,34,221,171,252,220,101,188,120,72,130,147,97,219,207,2,247,187,206,181,98,93,199,69,203,40,85,19,172,83,203]}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":[97,162,31,100,153,79,249,13,126,12,88,252],\"ct\":[211,48,80,155,161,233,167,226,22,14,152,228,76,111,151,22,248,138,161,55,13,77,190,100,196,236,169,87,57,200,146,132,186,109,113,167,251,245,251,146,253,182,14,152,22,81,114,12]},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"d44245f0ce361c850e1187cc6e7913ba\",\"publicKey\":[222,47,50,66,247,23,23,184,217,177,104,137,178,20,98,99,56,215,157,217,99,206,251,239,177,56,161,167,65,194,44,25],\"sealed\":{\"v\":2,\"nonce\":[152,205,172,159,22,103,45,99,165,160,242,161],\"ct\":[152,168,81,131,227,40,101,246,136,160,178,13,36,197,118,132,70,150,55,208,163,244,154,193,146,228,92,111,124,191,62,105,160,102,116,50,255,141,5,41,199,130,42,111,33,239,229,90]}},{\"role\":\"signing\",\"id\":\"23cf4e672b09a60268529a08cb26caef\",\"publicKey\":[71,27,180,226,255,15,16,166,152,137,194,148,84,90,120,113,81,71,219,255,78,155,236,50,190,193,159,29,177,110,96,54],\"sealed\":{\"v\":2,\"nonce\":[253,135,190,231,172,248,50,47,198,74,79,238],\"ct\":[107,180,229,212,75,188,73,253,47,124,219,126,231,124,161,2,177,186,141,130,125,154,202,215,121,44,121,14,122,136,22,119,214,30,18,96,245,187,215,102,38,87,228,128,243,3,111,40]}}],\"mac\":[175,6,15,209,45,180,17,199,21,136,159,51,227,94,253,81,17,240,60,28,141,116,223,233,123,103,24,128,10,156,135,227]},{\"v\":1,\"state\":\"ready\",\"intent\":\"df2122eb3e27fda718f80323f107ed5a\",\"mac\":[119,6,229,164,119,180,251,154,62,139,117,1,190,248,230,205,36,22,244,194,38,222,143,208,14,224,159,209,29,90,238,225]},{\"state\":\"clearing\"}]}}},{\"name\":\"done.slots\",\"version\":1,\"data\":{\"slots\":{\"keys\":[\"content-slot\"],\"values\":[{\"id\":\"content-slot\",\"status\":\"active\",\"unlockBinding\":null,\"stores\":[{\"principal\":\"content-principal\",\"workspace\":\"content-workspace\",\"dbName\":\"done.867fc572fdea36a2c203c4549ac4fb56\"}]}]}}}],\"storage\":{}}",
+                "passed": false
+              },
+              {
+                "id": "no-database-enumeration",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Real retained-workspace startup, read-only scoped carrier census, factor unlock, authenticated replay, admitted initialization and post-ready editor/channel. Fresh genesis, identity onboarding, verified creation/migration resumption, clear execution, trim and default application cutover remain outside this checkpoint.",
+    "Synthetic fixture enrollment/index installation, Local identity and receive authority checker. No product genesis or Account verification claim. Transition tags are refusal hints, not authority to resume or delete.",
+    "One Chromium/macOS host; no native IME or low-end interaction budget pass. Private history retains deleted runtime content and adds a second whole-document clone.",
+    "Page loss only; no OS/power-loss, raw clone/rollback, old-writer cutover or release-gate claim."
+  ],
+  "exitCode": 0,
+  "finished": "2026-09-09T06:59:02.357Z"
+}

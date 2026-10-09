@@ -1,0 +1,802 @@
+Long-term account history implementation — focused development checks, not release qualification.
+
+Checkpoint/admission primitives:
+  node --test --test-timeout=15000 test/account-history/checkpoint.test.mjs
+  6 passed, 0 failed; duration 636 ms.
+  node_modules/.bin/tsc -b --noEmit
+  node_modules/.bin/oxlint account-protocol/historyCheckpoint.ts src/crdt/historyCheckpoint.ts test/account-history
+  node_modules/.bin/oxfmt account-protocol/historyCheckpoint.ts src/crdt/historyCheckpoint.ts test/account-history
+  git diff --check
+  All passed.
+
+The primitive test uses real Yjs replay and cryptography with disposable signed membership fixtures.
+It does not establish native owner installation, service durability, pruning or personal browser behavior.
+
+Durable service exchange:
+  node --test --test-timeout=20000 test/account-history/service.test.mjs
+  10 passed, 0 failed; duration 2499 ms. Includes disposable loopback HTTP session/grant check.
+  node --test --test-timeout=20000 --test-name-pattern='schema|offline.*upgrade' test/account-ceremony/content-transfer.test.mjs test/account-recovery/login.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/preparation.test.mjs
+  12 passed; one expected-version assertion still expected 24 instead of 25.
+  Updated that assertion, then:
+  node --test --test-timeout=20000 --test-name-pattern='history maintenance|schema 22 requires' test/account-ceremony/content-transfer.test.mjs test/account-recovery/commit.test.mjs
+  2 passed, 0 failed; duration 2375 ms (the repaired schema case plus real membership/rotation service composition).
+  First schema-24 fixture failed because it closed its fixture core twice. Reworked it to upgrade an
+  independent SQLite backup; the final 10-case service run above passed.
+  TypeScript, scoped oxlint/oxfmt and git diff --check pass.
+
+No live service upgrade, personal browser action, history deletion or release-validation campaign.
+
+Client attempts and cancellation fencing:
+  node --test --test-timeout=20000 test/account-history/client.test.mjs
+  7 passed, 0 failed; duration 1786 ms.
+  node --test --test-timeout=20000 test/account-history/service.test.mjs
+  10 passed, 0 failed; duration 1711 ms (disposable loopback HTTP).
+  node --test --test-timeout=20000 --test-name-pattern='schema|offline.*upgrade' test/account-ceremony/content-transfer.test.mjs test/account-recovery/login.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/preparation.test.mjs
+  13 passed, 0 failed; duration 4232 ms.
+  TypeScript, scoped oxlint/oxfmt and git diff --check passed.
+  Client tests use real service/cryptography, injected persistence, and fresh owner calls after failure.
+  Native custody/replay and UI are not yet integrated; no release inventory or broad campaign ran.
+
+Native history progress custody:
+  node_modules/.bin/vitest run test/custodyRecord.test.ts
+  7 passed, 0 failed; 570 ms (metadata cases extended with history field tampering/framing).
+  node_modules/.bin/vite build
+  Passed; 421 modules, 2.52 s. Local dist only; retained serving directory unchanged.
+  node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/membership-custody.spec.ts
+  Final: 1 passed, 21.8 s. Disposable original/joined accounts, injected native custody probe,
+  subsequent live editing/delivery. No personal accounts accessed.
+  Two initial probe failures came from comparing non-normalized JSON field order. Normalizing the
+  saved fixture fixed that check. One later run timed out at 120 s in pairedEditors before the new
+  assertions; its unchanged rerun passed at 21.8 s. No timeout or assertion was relaxed.
+  TypeScript, scoped lint/format and git diff checks passed.
+
+Handoff inventory and scoped source transport:
+  node --test --test-timeout=20000 test/account-history/checkpoint.test.mjs test/account-history/client.test.mjs
+  14 passed, 0 failed; duration 1968 ms.
+  node --test --test-timeout=20000 test/account-history/http-client.test.mjs
+  2 passed, 0 failed; duration 814 ms. First cancellation fixture aborted before its stream was
+  owned by the transport; highWaterMark=0 now waits for an actual in-flight reader before aborting.
+  node --test --test-timeout=20000 test/account-history/service.test.mjs
+  10 passed, 0 failed; duration 1634 ms.
+  node --test --test-timeout=20000 --test-name-pattern='history maintenance' test/account-ceremony/content-transfer.test.mjs
+  1 passed, 0 failed; duration 4007 ms. Genuine original handoff publication after proposal;
+  admission refuses, explicit rebuild succeeds, then actual rotation preserves ancestry.
+  TypeScript, scoped lint/format and git diff --check pass.
+  No baseline install, history deletion, live upgrade or release campaign.
+
+Cold accepted-source replay:
+  node --test --test-timeout=20000 test/account-history/source.test.mjs
+  4 passed, 0 failed; duration 2925 ms. Real signed service sources, removed-publisher insert/delete,
+  handoff-only writing, admitted baseline suffix replay, substituted source/missing cut refusal,
+  unresolved dependencies, cancellation and epoch-1 single-device suffix replay.
+  Initial fixture expected one refusal message too narrowly and shared a mutable source ref;
+  copying the ref and accepting the two valid first refusal boundaries corrected the fixture.
+  Injecting the fixture client also removed duplicate Yjs bundle loading.
+  node_modules/.bin/vitest run test/accountInboundCodec.test.ts test/accountInboundPrep.test.ts test/accountInboundControls.test.ts
+  67 passed, 0 failed; 3 files; 9.88 s.
+  node --test --test-timeout=20000 test/account-membership/replacement-source.test.mjs
+  6 passed, 0 failed; duration 2073 ms.
+  TypeScript, scoped lint/format and git diff --check passed.
+  This primitive still requires an available genesis/admitted-history opener. Native installed
+  replacement/recovery baselines, menu ownership, installation and pruning remain open.
+
+Native owner and explicit Account-menu integration:
+  node_modules/.bin/tsc -b --noEmit
+  node_modules/.bin/vite build
+  Passed; 430 modules, final build 2.53 s. Local dist only, not the retained serving directory.
+  node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/history.spec.ts test/packaged-account/membership-custody.spec.ts
+  History: 2 passed (sole device 9.2 s; two devices 36.3 s).
+  Custody: timed out after 120 s during existing pairedEditors enrollment, before custody assertions.
+  Unchanged isolated retry of membership-custody.spec.ts: 1 passed, 23.4 s (24.4 s runner total).
+  Earlier history checks twice exceeded the default 5 s assertion window for final peer verification.
+  A diagnostic 15 s assertion completed; final verification observation was 7167 ms and included
+  HTTP 429 backoff/retry. Application request deadlines and service throttles were not relaxed.
+  Sole-device test loses an actually committed publication response, locks/reopens and resumes;
+  two-device test independently admits both producers' snapshots and continues two-way writing.
+  node --test --test-timeout=20000 test/account-membership/replacement-source.test.mjs
+  6 passed, 0 failed; duration 2007 ms.
+  Scoped lint/format, TypeScript and git diff --check passed.
+  Recovery consumption, installed baseline cutover and pruning remain open. No live upgrade.
+
+Recovery consumes admitted history:
+  node --test --test-timeout=20000 test/account-recovery/history.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/source.test.mjs test/account-recovery/read.test.mjs
+  27 passed, 0 failed; duration 9910 ms.
+  node --test --test-timeout=20000 test/account-recovery/history.test.mjs test/account-recovery/transition.test.mjs
+  10 passed, 0 failed; duration 1991 ms (four new history cases repeated plus six transitions).
+  History controls cover snapshot-only originals/deletions, three successive snapshots plus suffix,
+  pending exclusion, changed preparation, damaged admission, lost committed recovery reply/restart,
+  second recovery and a genuinely re-signed intent omitting its required history reference.
+  node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts -g 'never-paired'
+  Final: 1 passed, 23.1 s; 23.8 s runner total. Blocks ordinary upload, confirms accepted-row count,
+  recovers snapshot-only writing and connects another device that receives it.
+  First run recovered the writing but failed to reach the next device's editor. The native source
+  refactor had mistakenly applied an original-device epoch guard to a recovered sole device at epoch
+  two. Restricting that guard to original devices repaired it; the unchanged assertion then passed.
+  TypeScript, scoped lint/format and git diff --check passed. Vite: 430 modules, 2.66 s.
+  Local dist only. Live service/schema, output limits and all retained history remain unchanged.
+
+
+2026-10-09 — Current-key recovered-owner history preparation (parent a938e344)
+Scope: signed handoff inventory, service CAS check, native recovery baseline fallback. No live changes/pruning.
+Initial checks exposed a module initialization cycle; reference parsing extracted from checkpoint payload parsing.
+The new real inbound fixture initially used synthetic time 1000; fixed fixture to use wall time. Application freshness checks unchanged.
+
+$ node --test --test-timeout=20000 test/account-recovery/history.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/transition.test.mjs test/account-history/source.test.mjs
+(node:39725) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cold source preserves accepted removed-device edits, deletions and writing present only in a handoff (676.81575ms)
+✔ missing prefixes, false cuts, unresolved dependencies and missing keys never produce a source (2089.294917ms)
+✔ handoff substitution and owner cancellation refuse before returning plaintext (495.060667ms)
+✔ a single-device account replays only the suffix after its admitted epoch-one checkpoint (183.025417ms)
+(node:39726) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39726) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:39726) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ first-device recovery commits one real replayed checkpoint, finalizes old writing and survives a lost reply (687.880875ms)
+✔ checkpoint publication after preparation refuses recovery before authority changes (180.438834ms)
+✔ an accepted append between replay and commit refuses without excluding the writer (324.213167ms)
+✔ commit rollback, cancellation and corrupted checkpoint never leave a partial authority (250.030375ms)
+✔ committed exact retry remains resolvable after preparation expiry; changed bytes cannot remint it (223.80225ms)
+✔ a recovered first device can admit and bind the next connection without an original checkpoint (793.169417ms)
+▶ expiry or account changes at the final boundary refuse and leave original authority intact
+  ✔ expired (156.850791ms)
+  ✔ account (163.469333ms)
+  ✔ credential (192.790542ms)
+✔ expiry or account changes at the final boundary refuse and leave original authority intact (513.743333ms)
+✔ schema 22 requires an explicit upgrade and preserves every retained account row (104.442541ms)
+(node:39727) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39727) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:39727) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ recovery reads the newest admitted snapshot plus suffix, including snapshot-only originals and deletions (612.348666ms)
+✔ a pending unadmitted history snapshot is not a recovery baseline (213.0965ms)
+✔ history changes during replay force recovery to restart; damaged admission cannot become a baseline (327.857084ms)
+✔ snapshot-only writing survives recovery commit, lost reply and a second recovery; a late snapshot fences commit (951.636584ms)
+✔ a recovered owner creates current-key history from signed recovery coverage and its accepted suffix (1698.336292ms)
+✔ recovery at epoch 1 excludes every old device and can admit another device (93.372208ms)
+✔ recovery at epoch 2 excludes every old device and can admit another device (72.844042ms)
+✔ recovery at epoch 3 excludes every old device and can admit another device (143.506417ms)
+✔ recovery after rotation retains historical final cuts and establishes another key floor (85.224041ms)
+✔ valid service signatures cannot substitute the recovery signer or omit a finalized writer (15.662291ms)
+✔ intent verification captures caller data before crypto and preserves exact retry identity (36.894ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4744.822042
+
+$ vitest run test/accountInboundCodec.test.ts
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+
+ Test Files  1 passed (1)
+      Tests  34 passed (34)
+   Start at  16:52:55
+   Duration  9.55s (transform 188ms, setup 44ms, import 294ms, tests 9.07s, environment 0ms)
+
+
+$ playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts -g never-paired
+
+Running 1 test using 1 worker
+
+(node:39855) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:224:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (24.1s)
+
+  1 passed (24.8s)
+
+TypeScript --noEmit, scoped oxfmt/oxlint, git diff --check: pass. Vite build: pass, 3.02 s.
+
+
+2026-10-09 — History-aware replacement handoffs (parent 5cfed25c)
+Scope: authenticated coverage, service publication fence, native source/certified replacement fallback and explicit refusal retry. No live changes or pruning.
+New service fixture first used wall-time expiry against the fixture service clock 1000; corrected the fixture to 61000 without changing request freshness checks.
+
+$ node --test --test-timeout=20000 test/account-history/source.test.mjs test/account-membership/replacement-checkpoint.test.mjs test/account-membership/replacement-checkpoint-replay.test.mjs
+(node:40563) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cold source preserves accepted removed-device edits, deletions and writing present only in a handoff (433.7095ms)
+✔ missing prefixes, false cuts, unresolved dependencies and missing keys never produce a source (1315.934542ms)
+✔ handoff substitution and owner cancellation refuse before returning plaintext (695.470417ms)
+✔ a single-device account replays only the suffix after its admitted epoch-one checkpoint (182.4435ms)
+✔ a certified replacement uses exact history and handoff coverage with only its current key (678.737208ms)
+(node:40564) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ current-key replacement cold replay preserves accepted writing, local journal edits and deletions (108.343666ms)
+✔ snapshot captures source documents and key before asynchronous signing (79.807792ms)
+✔ signed wrong coverage and altered ciphertext context cannot pass semantic replay (75.94475ms)
+✔ construction refuses incomplete accepted replay and unresolved local dependencies before signing (73.340792ms)
+✔ replacement checkpoint binds current admission and the full accepted cuts, including a removed publisher (95.060917ms)
+✔ producer signature cannot skip accepted removed writing or change admission coverage (33.539666ms)
+✔ replacement parser rejects ambiguous prefixes and bounds before cryptographic verification (29.161958ms)
+✔ recipient acknowledgement authenticates the exact checkpoint and cannot be borrowed or signed by its producer (75.76825ms)
+✔ replacement coverage requires the branded admission transition, not a rotation or a copied state (28.958334ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3804.2965
+
+$ node --test --test-timeout=20000 --test-name-pattern="replacement snapshot retention" test/account-ceremony/content-transfer.test.mjs
+(node:40511) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40511) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification (5243.949542ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5724.836333
+
+$ node --test --test-timeout=30000 --test-name-pattern="replacement publication binds" test/account-ceremony/content-transfer.test.mjs
+(node:40734) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40734) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:40734) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ replacement publication binds admitted history and source inventory while preserving exact lost-reply retries (4649.784959ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5226.873417
+
+$ node --test --test-timeout=20000 test/account-membership/handoff.test.mjs
+(node:40994) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser continuation handoff preserves all recipients and requires persisted installation before certification (143.061917ms)
+✔ wrapped delivery persists before sending and exact bytes survive a lost save or network reply (104.229625ms)
+✔ key installation and countersignature retry from committed custody after interruptions (110.423542ms)
+✔ mismatched approval, missing durable custody and substituted device refuse before key release (84.984541ms)
+✔ continuation progress preserves the first ceremony and refuses an older writer or incomplete value (0.730625ms)
+✔ replacement handoff persists one snapshot before publication and cold-replays before countersigning (230.957417ms)
+✔ replacement refuses unsaved or substituted snapshots and a key that cannot decrypt the writing (170.152541ms)
+✔ explicit history refusal durably clears only an unpublished replacement and rebuilds after restart (121.056ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1326.735833
+
+$ node --test --test-timeout=60000 test/account-recovery/install-native.test.mjs
+(node:40681) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40681) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:40681) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ recovery native installation resumes after partial activation, then edits and cold-opens with the new key only (3138.549625ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4083.9875
+
+$ playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts
+
+Running 2 tests using 1 worker
+
+(node:40668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:7:1 › packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again (1.2m)
+  ✓  2 test/packaged-account/recovery.spec.ts:224:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (23.2s)
+
+  2 passed (1.6m)
+
+$ playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts -g "packaged recovery resumes" (expanded replacement history scenario)
+
+Running 1 test using 1 worker
+
+(node:40912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:7:1 › packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again (1.3m)
+
+  1 passed (1.3m)
+
+Final TypeScript --noEmit, scoped oxfmt/oxlint and git diff --check: pass. Final Vite build: pass, 2.59 s.
+The final refusal-rebuild branch was checked in the direct retained coordinator tests after the native walkthrough; no second native rerun for that error-only branch.
+
+
+=== Additive reader installation ledger (2026-10-09) ===
+node --test --test-timeout=20000 test/account-successor/history.test.mjs test/account-membership/history.test.mjs test/account-membership/rotation-history.test.mjs test/account-history/install.test.mjs test/account-history/checkpoint.test.mjs
+(node:41903) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sole device can propose and admit repeated snapshots with exact ancestry and deletion coverage (42.16775ms)
+✔ a second eligible device must admit, with both self-admission flag directions checked (42.545417ms)
+✔ independent accepted replay prevents admitting missing insertions or deletions (14.604375ms)
+✔ a genuinely signed false coverage claim still fails decryption/replay admission (14.322458ms)
+✔ pending dependencies refuse before a checkpoint is signed; inputs freeze before async signing (12.514167ms)
+✔ finalized publishers cannot be omitted or advanced, and ancestry cannot rewind their cuts (108.606834ms)
+✔ history ancestry and AEAD bind the complete handoff inventory (27.829959ms)
+(node:41904) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ installed proof cold-replays with local originals and compaction, without advancing receive cuts (46.179833ms)
+✔ cold replay authenticates historical eligibility after certification, without accepting cloned brands (92.163542ms)
+✔ wrong slot, reader, membership head, admission and ciphertext all refuse before installation (17.094542ms)
+✔ duplicate, regression and immediate parent fork refuse; cancellation erases the prepared update (28.443ms)
+✔ continuation history records reader eligibility and each publisher starting epoch without retroactive rights (271.844792ms)
+✔ later publisher prefixes use actual issuance epochs and keep all prior accepted boundaries (143.032375ms)
+✔ committed successor verifies client distribution, outcome, recovery and final head as one authority transition (372.548875ms)
+✔ authorization signature cannot replace the signed distribution, move the excluded cutoff, or omit finalization (42.916541ms)
+✔ removed publisher accepted history survives, but later writes and current read rights do not (212.319542ms)
+✔ a joined owner can remove the original publisher without inheriting its finalization (138.350667ms)
+✔ only verified, immutable exact parent/current contexts resolve historical routes (65.365459ms)
+✔ historical acceptance and exact old pending envelopes accepted after admission remain distinct (34.113125ms)
+✔ signatures, publisher, previous link, leaf epoch and admission boundary cannot be substituted (30.486333ms)
+✔ permanent old refusals beyond the accepted boundary stay verifiable and do not become acceptances (90.147416ms)
+✔ complete prefix verifies independently signed envelope bytes including a zero prefix (92.656417ms)
+✔ missing, duplicate, reordered, changed and incorrectly routed prefix bytes refuse installation (28.417333ms)
+✔ prefix verification snapshots mutable bytes and fails closed on concurrent operations (25.996917ms)
+✔ retained child rejects a sibling even when the service signs both (54.380167ms)
+✔ generated prefixes and issuance epochs agree with an independent boundary model (1651.456875ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2299.940416
+
+Initial affected regression caught mutable base capture after await in the new history anchor adapter; captured before await and reran all 26 focused cases successfully. TypeScript --noEmit and scoped oxfmt/oxlint: pass. No browser/live writes in this stage.
+
+
+=== Ordered additive reader installation (2026-10-09) ===
+
+--- Focused service and HTTP tests (loopback allowed) ---
+(node:42486) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42486) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:42486) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history transport carries the exact signed request under the pinned scoped access (115.848667ms)
+✔ history transport cancels oversized, incomplete, and aborted reply streams and rejects forged replies (66.230792ms)
+(node:42487) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42487) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:42487) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix (246.372125ms)
+✔ publish resumes exact bytes after before-commit interruption and restart (77.02125ms)
+✔ publish resumes exact bytes after after-commit interruption and restart (84.213166ms)
+✔ admit resumes exact bytes after before-commit interruption and restart (96.498792ms)
+✔ admit resumes exact bytes after after-commit interruption and restart (86.835125ms)
+✔ false accepted cuts and catalog/record tampering refuse without becoming a baseline (121.202166ms)
+✔ competing proposals do not overwrite, and stale proposals can be discarded after an epoch change (239.329083ms)
+✔ authority changes during verification and revoked authorization at commit cannot publish (65.118875ms)
+✔ schema 24 requires an explicit offline upgrade and preserves account rows (64.576917ms)
+✔ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (148.062042ms)
+✔ catalog reads authenticate the current pointers without downloading checkpoint content (92.0565ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2097.679083
+
+--- Six installation cases ---
+(node:43182) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ installed proof cold-replays with local originals and compaction, without advancing receive cuts (40.615208ms)
+✔ cold replay authenticates historical eligibility after certification, without accepting cloned brands (73.421708ms)
+✔ wrong slot, reader, membership head, admission and ciphertext all refuse before installation (15.16575ms)
+✔ duplicate, regression and immediate parent fork refuse; cancellation erases the prepared update (22.646708ms)
+✔ installation captures the opener and proof before async verification (10.960625ms)
+✔ combined proof and plaintext refuse the native admission bound before publication (6080.41425ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6665.61925
+
+--- Final transport-only check ---
+(node:43355) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43355) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:43355) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history transport carries the exact signed request under the pinned scoped access (93.211ms)
+✔ history transport cancels oversized, incomplete, and aborted reply streams and rejects forged replies (61.221666ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 804.061458
+
+--- Initial packaged run (sole-device pass; later second snapshot assertion exceeded 5 s) ---
+
+Running 2 tests using 1 worker
+
+(node:42485) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/history.spec.ts:13:1 › sole device creates repeated native snapshots, retries lost publication and keeps editing (8.8s)
+  ✘  2 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (47.4s)
+
+
+  1) test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'History maintenance', exact: true })
+    Expected substring: "Snapshot saved. Verify it from another approved device."
+    Received string:    "Save a verified encrypted snapshot of your account’s writing. If another approved device exists, use this action there too to verify it.This first step keeps existing history. Space reclamation is not enabled yet.Checking and saving history…Check historyCreate history snapshot"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for getByRole('region', { name: 'History maintenance', exact: true })
+        14 × locator resolved to <section aria-label="History maintenance">…</section>
+           - unexpected value "Save a verified encrypted snapshot of your account’s writing. If another approved device exists, use this action there too to verify it.This first step keeps existing history. Space reclamation is not enabled yet.Checking and saving history…Check historyCreate history snapshot"
+
+
+      113 |     await expect(panel(page)).toContainText('Verified snapshot 1 is saved.');
+      114 |     await panel(second).getByRole('button', { name: 'Create history snapshot' }).click();
+    > 115 |     await expect(panel(second)).toContainText(
+          |                                 ^
+      116 |       'Snapshot saved. Verify it from another approved device.',
+      117 |     );
+      118 |     await panel(page).getByRole('button', { name: 'Check history', exact: true }).click();
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/history.spec.ts:115:33
+
+    Error Context: test-results/packaged-account/artifacts/history-two-native-device--7231d-s-and-keep-two-way-delivery/error-context.md
+
+  1 failed
+    test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery
+  1 passed (57.1s)
+
+--- Two-device abort/retry and offline replay ---
+
+Running 1 test using 1 worker
+
+(node:42891) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (1.1m)
+
+  1 passed (1.1m)
+
+--- Recovered/replacement reader across rotation and repeated recovery ---
+
+Running 1 test using 1 worker
+
+(node:43130) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:7:1 › packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again (1.5m)
+
+  1 passed (1.5m)
+
+TypeScript --noEmit, scoped oxfmt/oxlint, git diff --check: pass. Packaged walkthrough used the normal happy-path transport before the final network-abort classification change; that change has separate focused HTTP evidence. No personal state or retained service was changed. No release-validation campaign.
+
+Final production bundling: pass, 2.80 s.
+
+=== Authenticated receive cuts ===
+(node:44161) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ installed proof cold-replays with local originals and compaction, without advancing receive cuts (46.527834ms)
+✔ cold replay authenticates historical eligibility after certification, without accepting cloned brands (79.751041ms)
+✔ wrong slot, reader, membership head, admission and ciphertext all refuse before installation (17.037167ms)
+✔ duplicate, regression and immediate parent fork refuse; cancellation erases the prepared update (24.963125ms)
+✔ installation captures the opener and proof before async verification (13.598625ms)
+✔ combined proof and plaintext refuse the native admission bound before publication (5716.992666ms)
+✔ v2 cuts advance a certified peer, preserve later receipts and refuse overlapping forks (69.667542ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6372.723792
+
+Running 2 tests using 1 worker
+
+(node:44262) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/history.spec.ts:13:1 › sole device creates repeated native snapshots, retries lost publication and keeps editing (9.0s)
+  ✓  2 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (1.0m)
+
+  2 passed (1.2m)
+
+TypeScript --noEmit and production bundle pass. No service pruning/live changes.
+
+
+=== History-aware handoffs / early membership boundaries — 2026-10-09 ===
+
+-- done-handoff-focused-final.log --
+(node:50821) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ original and joined adopters retain exact local boundaries while skipping unseen heads (631.296833ms)
+✔ adoption rejects forged ancestry, reordered cuts, incomplete accepted prefixes and wrong installation (440.72525ms)
+✔ generation-one installation refuses a valid rotation until the actual generation owner exists (216.422666ms)
+✔ original publisher preserves epoch-one and epoch-two witnesses across later membership adoption (136.529708ms)
+(node:50822) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser continuation handoff preserves all recipients and requires persisted installation before certification (178.409ms)
+✔ wrapped delivery persists before sending and exact bytes survive a lost save or network reply (250.616ms)
+✔ key installation and countersignature retry from committed custody after interruptions (129.602041ms)
+✔ mismatched approval, missing durable custody and substituted device refuse before key release (110.603958ms)
+✔ continuation progress preserves the first ceremony and refuses an older writer or incomplete value (0.873417ms)
+✔ replacement handoff persists one snapshot before publication and cold-replays before countersigning (220.649666ms)
+✔ replacement refuses unsaved or substituted snapshots and a key that cannot decrypt the writing (165.860042ms)
+✔ explicit history refusal durably clears only an unpublished replacement and rebuilds after restart (137.728458ms)
+✔ a retained generation-one version-two delivery resumes on an upgraded joining device (89.159916ms)
+(node:50823) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ current-key replacement cold replay preserves accepted writing, local journal edits and deletions (144.794916ms)
+✔ snapshot captures source documents and key before asynchronous signing (261.11475ms)
+✔ signed wrong coverage and altered ciphertext context cannot pass semantic replay (100.519667ms)
+✔ construction refuses incomplete accepted replay and unresolved local dependencies before signing (95.449875ms)
+✔ replacement checkpoint binds current admission and the full accepted cuts, including a removed publisher (224.819667ms)
+✔ producer signature cannot skip accepted removed writing or change admission coverage (76.114292ms)
+✔ replacement parser rejects ambiguous prefixes and bounds before cryptographic verification (30.338292ms)
+✔ recipient acknowledgement authenticates the exact checkpoint and cannot be borrowed or signed by its producer (37.086084ms)
+✔ replacement coverage requires the branded admission transition, not a rotation or a copied state (33.420625ms)
+(node:50825) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ replacement reader starts at certified cuts with its current key, including removed writing but no removed stream (667.929208ms)
+✔ replacement reader verifies a current-key suffix after the admitted cut and cold-replays its saved prefix (625.042416ms)
+✔ replacement reader refuses changed binding, snapshot, candidate acknowledgement and uncovered receive prefix (497.539709ms)
+✔ replacement loading persists and cold-replays equivalent parsed field ordering (715.466333ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3107.100625
+
+-- done-handoff-reader-final.log --
+(node:50786) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:50786) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:50786) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ later browser reader preserves pre-sync writing, cold replay and cross-publisher dependencies through interrupted saves (6756.538875ms)
+✔ later browser reader refuses substituted custody, publishers, admissions and retained evidence before ready (5621.782084ms)
+✔ retained generation-one reader adopts admitted history across interrupted save and preserves suffix receipts (8226.07875ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21093.502458
+
+-- done-handoff-type.log --
+
+-- done-handoff-lint.log --
+
+-- Browser diagnostic (fixed) --
+Original publisher later adoption rejected spool event 0: expected epoch 3, actual epoch 1; early witnesses are now preserved. Temporary diagnostics removed.
+
+-- Packaged handoff result --
+  ✓  1 test/packaged-account/membership-connection.spec.ts:6:1 › joined device invites a third through packaged UI; all three retain and exchange writing (1.8m)
+  ✓  2 test/packaged-account/membership-connection.spec.ts:225:1 › first joining device opens an admitted sole-device history baseline and reopens offline (17.5s)
+  2 passed (2.1m)
+The run observed HTTP 429 capacity backoff. No application timeout or rate limit was loosened.
+
+-- Production build --
+
+✓ built in 2.79s
+
+
+=== Covered service-history pruning — 2026-10-09 ===
+
+-- done-prune-focused-final.log --
+(node:51981) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51981) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51981) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ client reopens exact publish attempt after a lost reply and service restart (224.145792ms)
+✔ client reopens exact admit attempt after a lost reply and service restart (149.73975ms)
+✔ failed progress persistence never publishes, while later attempts remain repeatable (219.496916ms)
+✔ untrusted replies and wrong-owner progress cannot clear a retained attempt (114.213875ms)
+✔ stale attempts preserve progress until explicitly cancelled; a lost cancellation reply resumes cancellation (315.555417ms)
+✔ cancelling an unsent proposal fences a delayed original publication (181.029375ms)
+✔ catalog rollback and progress changes during async signing refuse (116.175208ms)
+✔ explicit pruning requires two snapshots and retries an uncertain reply without losing saved progress (366.90125ms)
+✔ a retained old admission resolves after its snapshot ciphertext has been pruned (372.338209ms)
+(node:51982) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51982) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51982) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history transport carries the exact signed request under the pinned scoped access (122.832792ms)
+✔ history transport cancels oversized, incomplete, and aborted reply streams and rejects forged replies (65.173667ms)
+(node:51983) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51983) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51983) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ pruning removes only ciphertext covered by both retained snapshots and preserves exact acceptance retries (317.846ms)
+✔ pruning resumes atomically after before-commit and restart (191.881459ms)
+✔ pruning resumes atomically after after-commit and restart (180.528375ms)
+✔ pruning refuses a stale boundary, and modified compact evidence cannot conceal ledger damage (240.238584ms)
+✔ older snapshot ciphertext becomes an authenticated completion receipt without breaking lost-reply retries (312.10775ms)
+✔ pruning keeps refusal and parent evidence while accepted retries remain closed over their original decision (180.256291ms)
+✔ revoked commit authorization refuses pruning before either ciphertext carrier changes (154.699125ms)
+(node:51984) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51984) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51984) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix (247.159125ms)
+✔ publish resumes exact bytes after before-commit interruption and restart (72.552208ms)
+✔ publish resumes exact bytes after after-commit interruption and restart (72.523625ms)
+✔ admit resumes exact bytes after before-commit interruption and restart (93.518125ms)
+✔ admit resumes exact bytes after after-commit interruption and restart (90.368208ms)
+✔ false accepted cuts and catalog/record tampering refuse without becoming a baseline (102.67525ms)
+✔ competing proposals do not overwrite, and stale proposals can be discarded after an epoch change (223.681083ms)
+✔ authority changes during verification and revoked authorization at commit cannot publish (72.961541ms)
+✔ schema 24 requires an explicit offline upgrade and preserves account rows (64.38175ms)
+✔ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (146.891959ms)
+✔ catalog reads authenticate the current pointers without downloading checkpoint content (100.147625ms)
+✔ schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written (49.337125ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2752.181375
+
+-- done-prune-upgrade.log --
+(node:51843) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:51843) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:51843) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written (81.021167ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 818.49375
+
+-- done-prune-type.log --
+
+-- done-prune-lint.log --
+
+-- Packaged pruning / recovery --
+  ✓  2 test/packaged-account/recovery.spec.ts:255:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (24.9s)
+Initial returning-editor run timed out during pairedEditors service-worker readiness, before pruning. Replaced the unbounded shared setup wait with an activation assertion; cleanup no longer masks the original error.
+  ✓  1 test/packaged-account/history.spec.ts:191:1 › a returning editor installs admitted cuts after service pruning and keeps its local writing (41.4s)
+  1 passed (42.2s)
+
+-- Production build --
+
+✓ built in 2.79s
+
+
+=== Retained history upgrade — 2026-10-09 ===
+Operator authorized upgrade, deferred personal history walkthrough, and kept release validation paused until after publication.
+Build: 95433108; production bundle completed in 2.58 s.
+Graceful shutdown released the retained-state lock; existing offline upgrader created its pre-upgrade backup.
+{
+  "build": "95433108",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "from": 24,
+  "to": 26,
+  "backup": "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/account-enrollment-tailnet/backups/schema-24-AmOFlk",
+  "checks": {
+    "account.sqlite": {
+      "schema": 26,
+      "unchangedTables": 28,
+      "unchangedRows": 69,
+      "newTables": [
+        "history_checkpoint_catalog",
+        "history_checkpoint_discards",
+        "history_checkpoint_records"
+      ],
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    "authority.sqlite": {
+      "schema": 1,
+      "unchangedTables": 1,
+      "unchangedRows": 1,
+      "newTables": [],
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  },
+  "identityUnchanged": true,
+  "checkedAt": "2026-10-09T17:17:57.418Z",
+  "status": "running; actual-origin serving and session-boundary checks passed",
+  "health": [
+    {
+      "path": "/",
+      "status": 200,
+      "sha256": "c081b09a700958b65e890bfe7dc2d482bb008be89e42348ed675b0d2ab60c19c"
+    },
+    {
+      "path": "/accounts",
+      "status": 200,
+      "sha256": "c081b09a700958b65e890bfe7dc2d482bb008be89e42348ed675b0d2ab60c19c"
+    },
+    {
+      "path": "/recover/enrollment-00000000000000000000000000000000/start",
+      "status": 200,
+      "sha256": "c081b09a700958b65e890bfe7dc2d482bb008be89e42348ed675b0d2ab60c19c"
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "sha256": "19a67503f84491652e1d9dca4815f4b3cb4355aa232f5bddf24dacfe5367fdbd"
+    },
+    {
+      "path": "/__account-setup/config",
+      "status": 200,
+      "identityUnchanged": true,
+      "networkSessions": true,
+      "membershipContinuation": true
+    },
+    {
+      "path": "/account/history/v1/checkpoint",
+      "status": 401,
+      "uncredentialedRequestRefused": true
+    },
+    {
+      "path": "/account/delivery/read-v2",
+      "status": 403,
+      "uncredentialedRequestRefused": true
+    },
+    {
+      "path": "/operator.key",
+      "status": 404
+    },
+    {
+      "path": "/src/main.tsx",
+      "status": 404
+    }
+  ],
+  "precacheFilesVerified": 34,
+  "runtime": {
+    "build": "95433108",
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "servicePort": 53220,
+    "appPort": 53219,
+    "servicePid": 52585,
+    "serviceLog": "/tmp/done-account-service-95433108.log",
+    "appPid": 52586,
+    "appLog": "/tmp/done-account-app-95433108.log"
+  },
+  "postRestart": {
+    "account.sqlite": {
+      "schema": 26,
+      "unchangedTables": 28,
+      "unchangedRows": 69,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    "authority.sqlite": {
+      "schema": 1,
+      "unchangedTables": 1,
+      "unchangedRows": 1,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  }
+}
+No personal workspace was opened; no snapshot or prune operation was sent. Browser uptake deferred.

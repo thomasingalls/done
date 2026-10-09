@@ -1,4 +1,9 @@
 /**
+ * Historical automatic-rebase model. The 2026-09-16 operator ruling replaces
+ * sibling rebasing with fresh-credential ceremony restart (TRD §13.6 and
+ * docs/account-content-approval-prep.md). Keep these examples as historical
+ * evidence; they do not validate the new policy or its transcript/budget state.
+ *
  * §13.6's six enrollment states as executable states with crash points
  * (`P-1` criterion 11 and falsifier 18; round 1 `D-4`; the `S0-2` return).
  *
@@ -31,7 +36,15 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { type Machine, type Point, type Trace, type World, type Writer, runSchedule, upTo } from './scheduler';
+import {
+  type Machine,
+  type Point,
+  type Trace,
+  type World,
+  type Writer,
+  runSchedule,
+  upTo,
+} from './scheduler';
 
 const STATES = [
   'service-admitted',
@@ -96,7 +109,12 @@ const setEnrollment = (
     ...w.durable,
     enrollments: {
       ...w.durable.enrollments,
-      [cred]: { state: 'service-admitted', pendingCert: null, ...w.durable.enrollments[cred], ...patch },
+      [cred]: {
+        state: 'service-admitted',
+        pendingCert: null,
+        ...w.durable.enrollments[cred],
+        ...patch,
+      },
     },
   },
 });
@@ -201,7 +219,8 @@ const enrollment = (name: string, newCred: string): Writer<Durable, V> => ({
       // winner's successor epoch. A certified enrollment makes this a no-op.
       run: (w) => {
         const record = at(w.durable, newCred);
-        if (record === null || record.state === 'certified' || record.pendingCert === null) return w;
+        if (record === null || record.state === 'certified' || record.pendingCert === null)
+          return w;
         const parent = latest(w.durable);
         return setEnrollment(w, newCred, {
           pendingCert: {
@@ -241,7 +260,8 @@ const invariants = (w: W) => {
     // Criterion 11: once the key is delivered, either a durable pending
     // certificate exists or the set is activated — there is no state where a
     // released key has no carrier working toward certification.
-    const delivered = STATES.indexOf(record.state) >= STATES.indexOf('key-and-recovery-state-delivered');
+    const delivered =
+      STATES.indexOf(record.state) >= STATES.indexOf('key-and-recovery-state-delivered');
     if (delivered && record.state !== 'certified') {
       expect(record.pendingCert).not.toBeNull();
     }

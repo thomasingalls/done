@@ -1,5 +1,10 @@
 # Selection — TRD §15 row 13: device-lock derivation, enrollment migration and copy
 
+**Amended 2026-09-08:** mandatory factor custody at persistent genesis/cold start replaces the optional
+default. [SC-03/04/08](../storage-contract.md) governs writer lifetime, migration and copied-profile claims.
+Factor seal/derivation bytes stay unchanged; custody lifecycle metadata is versioned separately. The
+[conformance matrix](../storage-conformance.md) records production tests still required.
+
 **Status:** selected, and folded into the TRD. **Date:** 2026-08-18
 **Closes:** TRD §15 row 13 · **Scope of:** review 3a (storage and journal)
 **Constrained by:** TRD §13.3, §13.4, §13.2, §6.1, §6.5 · PRD §7.2, §6.7 · **Stage:** [sequencing.md](../sequencing.md) §3.1
@@ -18,29 +23,29 @@ profile copy could open the reader wrap a later rotation published. The custody 
 ## The selection
 
 ```
-Custody, per (principal, workspace) slot
+Custody, per principal/workspace entry within its local user slot
 
-  CustodyRecord = { v: 1, state: 'promptless' | 'enrolling' | 'locked',
-                    seals: LockSeal[], rotation_owed: boolean,
-                    wrapping_credential: {
-                      id,
-                      custody: 'promptless' | 'staged' | 'factor-sealed',
-                      sealed: LockSeal-shaped | absent,
-                      predecessor_id | absent } }
+  CustodyRecord = { v: 2, state: 'creating' | 'migrating' | 'protected',
+                    principal_id, workspace_id, seals: LockSeal[],
+                    creation_or_migration_intent | absent, seal_reserved,
+                    rotation_owed: boolean, wrapping_credential: {
+                      id, custody: 'staged' | 'factor-sealed',
+                      sealed, predecessor_id | absent } }
 
-  The wrapping credential is here because L_lock never protected it. On the
-  no-PRF tier it persists as a structured-cloned non-extractable CryptoKey --
-  promptless, and usable from a copied profile -- so rotation published a
-  reader wrap the pre-lock copy could open. It cannot be resealed: WebCrypto
-  cannot export a non-extractable key. So the lock REPLACES it.
+  New genesis    confirmed code, factor seals of fresh L_lock, sealed generation
+                 and receiving keys; state 'protected' only after durable completion.
+                 No L_local and no persistent acknowledgement before completion.
 
-  Default tier   state 'promptless', seals empty. L_local is a structured-cloned
-                 non-extractable CryptoKey and opens row 3's KeyEnvelope directly.
-                 Written at genesis, so enabling the lock is never a schema change.
+  Migration      v1 promptless/enrolling records are legacy input. Preserve old
+                 custody until verified resumable replacement is durable. Never
+                 treat missing/partial custody as fresh or create a promptless fallback.
+                 Existing factor-sealed v1 entries require verified complete receiver
+                 custody and a fresh root when seal-reservation history is absent;
+                 never infer that history from stored envelopes.
 
-  Lock tier      state 'locked'. No L_local. A fresh 32-byte L_lock takes its place
-                 in row 3's envelope — same format, same AAD, different key — and is
-                 itself sealed once per enrolled factor.
+  Scope          factor bytes retain their principal/workspace binding. The shared
+                 lifetime barrier is local-user-slot-wide; that coordination scope
+                 does not widen a factor's cryptographic authority.
 
 The factor seals
 
@@ -69,28 +74,30 @@ The PRF evaluation input, which is where the separation lives
   One assertion yields one slot's key for one role. §13.4's other three factor
   roles differ here, in the input, not in an HKDF label afterwards.
 
-Enrollment
+Genesis and legacy migration
 
-  1. Generate L_lock; seal it under every factor; write state 'enrolling'.
-     L_local and the live envelopes are untouched.
-  2. Reseal each retained generation's KeyEnvelope under L_lock, staged.
-  3. One transaction: swap staged over live, delete L_local, state 'locked'.
-     Stage a replacement wrapping credential as extractable bytes, sealed
-     under L_lock, imported non-extractable after unlock -- which is §13.4's
-     PRF-tier pattern with L_lock as the factor source, not a new carrier.
-  4. Rotate the content key forward, and introduce the replacement through a
-     certified recipient-set successor (row 5, TRD §13.5), so every future
-     rotator wraps to it. The predecessor stays valid until that successor
-     and the generation winner are both durably known.
-     rotation_owed until it lands -- derived from the apply record's step,
-     never asserted. No interface claims future-copy protection while true.
-
-  Disable      reverses 1-3 under a fresh L_local, and rotates again.
-  Add/remove   one seal written or deleted. No envelope moves.
-  Last seal    refused. Disabling is the operation that removes the last factor.
+  Genesis        confirm generated code; stage custody/identity under one creation
+                 intent; complete durable genesis before the first acknowledged edit.
+  Migration      acquire exclusive slot permit; stage new L_lock and retained-key
+                 seals; replace every promptless future-content receiver; atomically
+                 swap custody where its records share a database; apply the verified
+                 successor through resumable SC-03/04 phases. Old references retain
+                 their openers. Protection pending until required phases complete.
+  Disable        not offered; no ordinary promptless downgrade.
+  Add/remove     add an authenticated seal or remove one while another valid factor
+                 remains. No content-key change solely for a non-exposure seal change.
+  Last seal      removal refused. Exposure-driven replacement uses the selected
+                 forward-generation transition and cannot erase earlier copies.
 
                 LP(s) = uint16be(byteLength(utf8 s)) || utf8 s
 ```
+
+`seal_reserved` belongs to the identified custody root and monotonically counts every AES-GCM
+invocation under it, across purposes and abandoned attempts, before encryption (row 3 §5, SC-09).
+A transition intent identifies the staged root and its counter; an interruption never resets that count.
+`protected` requires verified complete genesis/migration and no remaining creation/migration intent;
+otherwise the durable intent identifies the operation and completed phases needed to resume. The
+`rotation_owed` flag is derived from that operation, not evidence that its prerequisites completed.
 
 Everything below is why, and what it cost.
 
@@ -108,20 +115,11 @@ backup, a disk image, a synced profile directory, a forensic tool — holds the 
 offline, unrateable and free. Row 14's attacker had to fetch an envelope from a service first; this one has
 already finished fetching.
 
-**So the passphrase question is decided, and decided the other way from how disk encryption decides it.**
-FileVault, LUKS and BitLocker all accept a memorable user secret, and they are not being careless: each is
-anchored to hardware that rate-limits guessing — a Secure Enclave, a TPM — so the offline attack is not
-merely expensive but unavailable. A browser origin has no such anchor. A user-chosen passphrase in a browser
-profile reduces to exactly the thing stretching cannot fix: thirty to forty bits behind a work factor, against
-an attacker who can spend a GPU-month and knows it.
-
-**Except that the browser does have one anchor, and it is WebAuthn.** The PRF extension returns bytes derived
-inside an authenticator that the copied profile does not contain. That is the platform's equivalent of the
-hardware those disk encryptors rely on, and it is the reason the lock is worth building at all.
-
-**Selected: a generated 125-bit code, always; PRF, where available, as an additional seal of the same key.**
-A user-chosen passphrase is rejected, and the rejection is the same shape as rows 2 and 14 — it would make the
-guarantee conditional on something the app cannot check and the user cannot be told they got wrong.
+**The selected response is a generated 125-bit code**, not a user-chosen password. Its entropy is the
+basis for resisting offline guessing; an online attempt counter cannot rate-limit an attacker holding
+the seal. PRF adds another seal where the authenticator capability remains external to the copied profile.
+Its availability and user-verification behavior require platform evidence. This does not justify blanket
+claims about hardware, filesystem forensics or other disk-encryption products (SC-08).
 
 ---
 
@@ -181,163 +179,79 @@ opening them, and the app opens the workspace it is showing.
 
 ---
 
-## 4. What enrollment moves, and the order that survives a crash
+## 4. Genesis and resumable legacy custody migration
 
-**The lock cannot adopt the key it replaces, and the reason is the default tier working correctly.** `L_local`
-is non-extractable precisely so its bytes cannot be serialized out; that forbids sealing them under a factor
-as much as it forbids exfiltrating them. So enrollment generates a fresh `L_lock` and reseals.
+New persistent workspaces use confirmed factor custody directly. The code ceremony and the durable
+creation record precede acknowledgement; SC-06 classifies partial and concurrent creation. Custody roots
+retain this row's principal/workspace scope inside the owning user slot. The slot-wide lifetime barrier
+coordinates transitions without broadening the scope of a factor.
 
-**Reseals what, and how much.** Only `KeyEnvelope`s — one per generation the device still needs (§6.1). Not
-content, not the journal: `K_g` is unchanged by enrollment, so every `StoredRecord` and every journal entry
-stays exactly as written. **This is what "strengthens custody of a key that already exists" means when made
-concrete**, and it is why the migration is a handful of 32-byte seals rather than a re-encryption.
+Existing promptless keys cannot be exported and resealed. Generate new factor-sealed custody and
+replacement future-content receivers, not just new envelopes beside an old promptless receiver. Stage
+retained-generation envelopes, durably swap custody, then complete the required certified receiver and
+forward-generation transition. Use SC-03/04's exclusive permit and restart records. A suspended writer
+can delay progress; no timer or steal authorizes retirement.
 
-**The ordering is §6.1's trim argument and §6.5's clear argument, applied a third time.** Both say the same
-thing: write the new thing, make it durable, then remove the old one, and let an interruption leave duplicate
-coverage rather than none.
+The same-database custody swap is atomic; work across databases is resumable. Never delete a required
+opener before its replacement completes. After a transition worker dies, reacquire exclusion and
+re-evaluate current carriers rather than trusting its old census. `rotation_owed` is derived from
+unfinished required migration phases, not cleared merely because the factor was confirmed.
 
-| Step                                                                           | State on disk after it                                   | Interrupted here                                                                       |
-| ------------------------------------------------------------------------------ | -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| 1. Seal `L_lock` under every factor, write `state: 'enrolling'`                | `L_local` present, envelopes under it, seals nobody uses | Roll back: delete the seals                                                            |
-| 2. Reseal envelopes under `L_lock`, staged                                     | Both sets present and both openable                      | Roll back or forward; neither loses a key                                              |
-| 3. One transaction: swap staged over live, delete `L_local`, `state: 'locked'` | Locked                                                   | Atomic — IndexedDB gives one transaction over the key store, and both halves are in it |
-| 4. Rotate the content key forward                                              | Locked, `rotation_owed` cleared                          | Locked and un-rotated: weaker, recoverable, re-runnable                                |
+## 5. Legacy migration rotates forward and does not erase history
 
-**The state that must never exist is no `L_local` and unresealed envelopes**, and step 3 is one transaction
-for exactly that reason. Splitting it — delete the handle, then swap — is the one ordering that bricks the
-slot, and it is the ordering a careful implementer reaches for, because deleting the old key first _feels_
-like the secure order.
+A pre-migration copy retains its old `L_local`, receiving credentials and `K_g`. Resealing current local
+envelopes cannot remove those copies. Replacement receiving credentials and a successor generation
+prevent that old receiver obtaining future keys after the required transition settles. Fresh protected
+genesis has no promptless predecessor.
 
-**`rotation_owed` is a flag rather than an assumption.** Step 4 is the only step that can fail without leaving
-evidence, since a locked, un-rotated slot looks entirely healthy. §5 is why that matters enough to persist a
-boolean for.
+Service settlement, observation and local activation are distinct (SC-03). Other devices may use an old
+generation until observing its successor. The UI reports protection pending until applicable durable
+migration predicates hold and does not promise instantaneous global protection or retroactive erasure.
+A migrated profile can retain factor-sealed openers for old history while removing only predecessors
+whose references permit retirement. Account migration uses the ordinary certified-set/generation
+protocol; Local's corresponding transition needs no network service.
 
----
+## 6. What Stage 1 owes
 
-## 5. Enrollment must rotate the content key, or the lock protects less than anyone will read it as
+Stage 1 includes confirmed factor genesis, cold-start unlock, explicit partial-state handling and
+factor-protected future receiving credentials where present. A record that says promptless while
+waiting for a later stage is no longer conforming. The selected factor cryptographic formats remain;
+new custody metadata has an explicit version and legacy conversion path.
 
-**This is the row's finding, and it is not visible from §13.3.**
-
-Consider the scenario the lock is _for_: someone whose profile is in an OS backup or a synced directory, who
-enables the lock today. Enrollment reseals the key envelopes under `L_lock` and destroys `L_local`. The
-current profile is now factor-gated. The backup is not — it still holds `L_local` as a structured clone, and
-copying an IndexedDB directory back is not an attack requiring skill.
-
-So the backup opens `K_g`. **And `K_g` is unchanged by enrollment, so it also opens every record written
-after the lock was enabled** — the attacker needs only a later copy of the ciphertext, which the same backup
-system is busy making. §13.3's own list of what the lock defeats includes _a synced profile directory_: a
-service that holds both the old snapshot and the new one. **Without rotation the lock buys that user almost
-nothing, permanently, while telling them it buys something.**
-
-**With rotation the exposure is bounded to what the backup already contained.** Post-enrollment content is
-written under a generation whose only envelope is sealed under `L_lock`, which the old copy does not have.
-That is the strongest available statement and, unlike the alternative, it is one a person can reason about:
-_from now on_.
-
-**Rotation is forward-only, and deliberately does not re-key history.** Re-sealing existing records under the
-new generation would cost a full rewrite and change nothing, because the copy that motivated the rotation
-already holds those records. The device keeps the old generation's envelope — now under `L_lock` — so history
-stays readable, and §6.1's `gen` field already carries which record needs which.
-
-**What this costs is a dependency, and it is the honest weak point of this row.** Rotation is unilateral and
-free while a workspace has one device and no service, which is every workspace through Stage 3. From Stage 4 a
-new generation has to reach the other admitted devices, and that is the wrapping path §13.2 and §7 already
-owe — so enrollment should _use_ the ordinary rotation operation rather than grow a private one. If that
-operation turns out not to be invocable locally, this reduces to `rotation_owed` staying true until the next
-ordinary rotation, and the copy in §7 has to say _takes full effect when this workspace next rotates its key_
-rather than _from now on_. **Flagged for review 3a as the place this construction is most likely to be told it
-is wrong.**
-
----
-
-## 6. What Stage 1 owes, which is one record it will never read
-
-The lock is optional, it is not in [sequencing.md](../sequencing.md) §3.2's Stage 1 list, and nothing here
-asks it to be. **One thing must land in Stage 1 anyway: the `CustodyRecord`, written at genesis, saying
-`'promptless'` forever.**
-
-The reason is §2.1's, exactly. A key store that has no custody record has the tier implied by what is present,
-and adding an explicit record afterwards means a migration over the first deployment's key material — the one
-kind of migration that is being avoided by doing this work in this order at all. Written at genesis it is
-about forty bytes that no code reads until the day someone enables the lock.
-
-**And it makes the default tier's promise checkable rather than inferred.** §11.1's no-plaintext-at-rest test
-inspects stores; a custody record turns _this slot is on the default tier_ into a fact a test can assert
-against, in both directions, instead of the absence of something.
-
----
+Existing vectors prove seal bytes and separations only. Production first-run, copy, migration and
+writer-lifetime obligations are C04–C06/C10–C14 in [storage-conformance.md](../storage-conformance.md).
+No plaintext scan or non-extractable-key flag pays those obligations.
 
 ## 7. The copy
 
-§13.3 names copy as part of this row, and it is not decoration here: **three of the four ways this feature can
-mislead are ways the words can mislead, not the construction.**
+**At first run:** save and confirm the generated device-lock code before persistent editing. Explain
+that it opens this device's local copy, is not account authentication or account recovery, and must be
+kept outside the copied-profile exposure domain. Do not retain it for redisplay. Code-only unlock works
+offline; offered authenticator seals are additional conveniences.
 
-| Trap                          | Why it is easy                                           | What the copy does                                                                                      |
-| ----------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Reads as "turn on encryption" | Every other product's device lock does turn something on | Never uses _encrypt_; the tier names are about **opening**, and encryption is described as already true |
-| Reads as an account password  | It is typed, at start-up, and looks like one             | Says _this device_, never _your account_; §13.2 forbids it authenticating anything                      |
-| Reads as retroactive          | "My laptop is locked now"                                | Says _from now on_, and says the backup sentence out loud (§5)                                          |
-| Reads as a recovery factor    | It is a code, and there is another code that is one      | Says it is not, at the moment of enrolling, where the user is thinking about codes                      |
+**Local consequence:** if this is the last readable copy and the last factor is lost, the data may be
+lost permanently; the app and support cannot open it. **Account consequence:** login alone does not
+recover content; a surviving authorized device or the separate user-held recovery material is required
+to re-enroll. Recovery does not unlock the old slot implicitly.
 
-**The default tier, in settings.** §13.3 requires its scoping sentence to travel with the property everywhere
-it is described, so the default tier gets copy of its own rather than being the absence of the lock:
+**Cold start:** offer enrolled factors only, with a concise wrong-code refusal. There is no ordinary
+“disable lock” action. Factor removal requires another valid enrolled factor; replacement for exposure
+uses the forward-generation rules.
 
-> **Opening this workspace needs no unlock.** Everything stored on this device is already encrypted — that
-> does not change. What the default setting means is that this browser profile can open it without asking
-> anyone for anything, so a copy of the profile, run as this app, could open it too.
-
-**Enabling it.** Two variants, because the consequence has two sizes and PRD §7.2 says the Local one is "the
-hardest version of the durability disclosure":
-
-> **Require an unlock on this device**
->
-> Your content is encrypted either way. This changes _who can open it_: instead of this browser profile
-> opening the workspace on its own, it will ask for your device-lock code — or your fingerprint or face,
-> where this device offers that — once each time the app cold-starts.
->
-> It applies to this device only, and to this workspace only. It is not your account password, it will not
-> recover your account, and it cannot open your workspace anywhere else.
->
-> **From now on.** A backup or copy of this profile made _before_ today was made without the lock and stays
-> readable. Turning this on protects what you write from here.
-
-At an account workspace it ends:
-
-> If you lose the code and the fingerprint, this device's copy is gone. Your workspace is not — sign in again
-> on this device, or use another one.
-
-At a never-admitted Local workspace it ends, and requires the code to be transcribed back before it will
-proceed:
-
-> **This workspace exists only on this device.** There is no server copy and no recovery key. If you lose the
-> code and the fingerprint, it is gone — and we cannot open it for you either. Type it back to confirm you
-> have it.
-
-**Cold start.** One line, no branding, no lock imagery, no failure count:
-
-> Unlock _done_ on this device · `[ Use Touch ID ]` · `Or enter your device-lock code`
-
-**A wrong code says what is wrong and nothing else** — `That code does not open this device.` Row 14's
-normalizer means a correctly transcribed code with `O` for `0` or a missing hyphen already opens it, so a
-failure here is a genuinely different code and the message may say so plainly. There is no attempt counter and
-no lockout: 125 bits is the rate limit, and a counter would only give an attacker who has the profile a way
-to lock out its owner.
-
-**Disabling it** states the direction rather than confirming a preference:
-
-> Opening this workspace will stop asking for anything on this device, from now on. Your device-lock code
-> stops working and the app will give you a new one if you turn this back on.
-
----
+**Migrating an existing installation:** report protection pending until durable custody, receiver and
+generation completion. Earlier copies retain their old history, and remote devices can lag observation.
+Do not promise secure erasure, resistance to live hostile code after unlock, or all OS forensic artifacts.
+Supported-browser full-profile tests establish the bounded copied-profile claim in SC-08.
 
 ## 8. What it costs
 
 | Cost                     | Measured or bounded                                                   | Against                                                                                                                                      |
 | ------------------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | Bundle                   | **None new**                                                          | HKDF-SHA-256 and AES-256-GCM are WebCrypto; the code encoder and normalizer are row 14's and are a few dozen lines of arithmetic             |
-| Cold start, default tier | **Unchanged**                                                         | One extra key-store read, in the transaction that already reads the key store (§6.1)                                                         |
-| Cold start, lock tier    | One assertion or one paste, then one HKDF and one 32-byte open        | Off the budget: §12's cold start is measured from load, and this precedes it as a ceremony (PRD §7.2 — a local unlock is not a network wait) |
-| Enrollment               | One seal per factor, one reseal per retained generation, one rotation | Generations retained are small (§6.1); at Stage 1 it is one                                                                                  |
+| Cold start | Mandatory factor interaction plus storage/key opening; measure separately | Preserve machine-only and interaction-inclusive measurements; human unlock is not zero cost |
+| Ordinary unlocked editing | Existing journal path, now under a live session permit | Retain the synchronous low-end budget; no per-edit lock request |
+| Fresh genesis | Factor seals and initial scoped custody; no predecessor rotation | Complete recoverable custody before acknowledgement |
+| Legacy migration | Seal every retained opener and replacement receiver; required forward transition | Cost depends on the retained census; frozen writers can postpone completion indefinitely |
 | Key store size           | 32 bytes of ciphertext plus 44 bytes of framing per factor            | Per slot                                                                                                                                     |
 
 ---
@@ -359,15 +273,10 @@ is precisely one that cannot be a root. **A design that had made PRF the root wo
 exist.** The gap this row recorded was real, and closing it strengthened the construction rather than qualifying
 it.
 
-**Whether enrollment can rotate unilaterally after Stage 4 is the construction's soft joint** (§5). Named
-here, and offered to review 3a as the thing most likely to come back changed.
-
-**Row 12 is adjacent, and this row makes the case slightly stronger.** [progress.md](../progress.md) already
-flags that the slot verifier sits in review 3b though it is storage-shaped. §13.9 has the verifier resisting
-offline guessing by a profile holder _and_ names the device lock in the same sentence — "plus the optional
-device-lock factor if that slot uses one". So 3b holds a construction whose threat model is §1 of this
-document, reviewed by the engagement that will not have read it. **Still not this document's change to make**,
-but it is now two rows pointing at the same seam rather than one.
+**Remaining validation is explicit.** Required-browser lifetime and authenticator behavior, complete
+credential inventory, first-run/last-factor-loss UX, and production migration/copy tests remain pending
+in C04–C06/C10–C14. These are not reasons to restore the old optional default. Review 3a consumes this
+corrected contract; row 12's separate slot-authentication role remains in review 3b's scope.
 
 **One thing Stage 4 must not do**, written here because it will be tempting there: the recovery path may not
 be given a way to open a locked slot. §13.3 forbids the lock becoming a recovery factor implicitly; the
@@ -395,9 +304,9 @@ checkable** — the property is about the value WebAuthn returns, so it cannot b
 implementation that regresses it produces working locks with no visible defect.
 
 The **custody vectors** show the same `KeyEnvelope`, with row 3's AAD byte-for-byte unchanged, opening under
-`L_local` on one tier and `L_lock` on the other, and assert separately that `L_local` does **not** open the
-lock tier's envelope — which is §13.3's _no default handle capable of opening the envelopes remains_ as an
-assertion rather than a sentence. That is row 3's _"the format is deliberately indifferent to
+`L_local` as legacy migration input and `L_lock` as current custody, and assert separately that `L_local` does **not** open the
+lock tier's envelope — which tests one envelope substitution only. It does not establish absence of every copied-profile
+opener, mandatory genesis, or protection of future receiving credentials. That is row 3's _"the format is deliberately indifferent to
 that choice"_ asserted rather than believed, and it is what a reviewer needs in order to check the two rows
 against each other in one place.
 

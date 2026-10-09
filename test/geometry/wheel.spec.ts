@@ -1,6 +1,8 @@
+import { test } from '../release-validation/browser-fixture';
+import { openApp } from './openApp';
 /** Desktop regressions for the bounded native three-day wheel surface. */
 
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import { addDays, type ISODate } from '../../src/lib/date';
 
 const activeDay = (page: Page) => page.locator('.day-panel[data-active="true"]');
@@ -16,7 +18,7 @@ const openDesktop = async (
   page: Page,
 ): Promise<{ body: Locator; header: Locator; initial: ISODate }> => {
   await page.setViewportSize({ width: 1280, height: 900 });
-  await page.goto('/');
+  await openApp(page);
   await expect(activeDay(page)).toBeVisible();
   const initial = (await activeDay(page).getAttribute('data-date')) as ISODate;
   return {

@@ -1,0 +1,94 @@
+[
+  {
+    "path": "build.log",
+    "sha256": "eebf6952df7a43bb8b28d45d504f0e9dbc9a1c0f143104b6112a2f2c9012a052"
+  },
+  {
+    "path": "control-passkey-baseline.json",
+    "sha256": "765713029b41fe214b7551d53d7bbed234fc243b0535cfd842a40a1937d67837"
+  },
+  {
+    "path": "control-passkey-mutant.json",
+    "sha256": "0e3e0cf73062dbb99f97336f921c5ba7731f0dd172c8f513590878450a4d9282"
+  },
+  {
+    "path": "control-recovery-baseline.json",
+    "sha256": "4117947996b46d69f265c713feba3247d9ff7765d8e3ffe58a9af64eb3643034"
+  },
+  {
+    "path": "control-recovery-mutant.json",
+    "sha256": "861651ee5d3fe9a2d301c52350e2b1656209ef032ee87e3a94bb593da949db4b"
+  },
+  {
+    "path": "control-root.json",
+    "sha256": "e1e6e8aee06706f860f0e1ed10ec2cbf7e3e6b7c3ffbe66953f143c3c79cf080"
+  },
+  {
+    "path": "core-regression/control-key-baseline.json",
+    "sha256": "e30706698f2f80a719135ea816e83b3ffb318f0ef7f402ecf179d224970b5b71"
+  },
+  {
+    "path": "core-regression/control-key-mutant.json",
+    "sha256": "371a92b79607de0c3328a497eeeb1567d9e5589b424b19f724f7c5f9f48b760d"
+  },
+  {
+    "path": "core-regression/control-purpose-baseline.json",
+    "sha256": "ab81bfdb96bb0c8179c1b8001217a60f341edb85dd164dea993a0a11cb3ba578"
+  },
+  {
+    "path": "core-regression/control-purpose-mutant.json",
+    "sha256": "100ce8fa8c737059c0eefbab922caf2fbfea491642bb48ed6abfb8b24ba0535a"
+  },
+  {
+    "path": "core-regression/control-replay-baseline.json",
+    "sha256": "4e1298763256dd810aa9c117ee11520cecfee4ff3ecaa9056513fecc2a5d54f9"
+  },
+  {
+    "path": "core-regression/control-replay-mutant.json",
+    "sha256": "51a2bc506f6cd642d4944b33d84b2b5c0a2865c8a692e1ab7554e6487a7eb4da"
+  },
+  {
+    "path": "core-regression/results.xml",
+    "sha256": "a821c4b8ff957e78f78b1a7abf6444a50635bfc3b64b2e016e2707a5bfe93b22"
+  },
+  {
+    "path": "core-regression/run.log",
+    "sha256": "fd8cc290fa40809240179c0d3234f69c241167fc0d3e89958ade2d363b4a4fd6"
+  },
+  {
+    "path": "core-regression/sources.json",
+    "sha256": "d13034b25f0a8a632e1c85b3a53649ef7545274bb38029ee3bc4b49b51f35333"
+  },
+  {
+    "path": "core-regression/summary.json",
+    "sha256": "95eb6a90df1c26f581e89fc84a2a44ec448767ac0f364e50fb71e39bdfe62c59"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "9ba636f190244693ad186426c8a8c5257e4795f2e9dc6da47295d2a8da1b1fe6"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "8965d2408bc563d83822274637ed55cc90d6e64c799bf63a8881f8334617c41c"
+  },
+  {
+    "path": "run.log",
+    "sha256": "c1ef46132b5af88b44df744d99ab30421e2c01a0b24f7c7a1c3bdfd457b9d0d3"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "f227d2ef90381f41fa5a35c4ddf7b3441f5f9d5becfd3921914c7d2bc99001cc"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "6302c82effd295222c11f05ea31f86d7c0b890a66968270fa0636062a31ad05a"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "93bace18e4c31cde38d939417b9a2f28bf2b4e753c9f5c1662586de6a38d2d80"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "b58e90c430a3c7f451721f773df7b27f02670e19060c92a1556fb00ed3c421a0"
+  }
+]

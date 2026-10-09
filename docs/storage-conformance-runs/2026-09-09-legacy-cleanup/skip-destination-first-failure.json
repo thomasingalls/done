@@ -1,0 +1,23 @@
+{
+  "campaign": "skip-destination",
+  "trial": {
+    "campaign": "skip-destination",
+    "attempt": 1,
+    "stage": "generation",
+    "seed": 8941,
+    "inputHash": "c5425c448b7d3f108f1b1a1fb9cda3120990537a0de16d3a7764899907795039"
+  },
+  "inputHash": "c5425c448b7d3f108f1b1a1fb9cda3120990537a0de16d3a7764899907795039",
+  "error": {
+    "name": "AssertionError",
+    "message": "cold-coverage-refuses\n\n'ok' !== 'refused'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: cold-coverage-refuses\n\n'ok' !== 'refused'\n\n    at damage (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:384:12)\n    at async checkHistories.seed.seed (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:517:13)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:46:7\n    at async AsyncProperty.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)\n    at async asyncRunIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async checkHistories (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:54:19)",
+    "code": "ERR_ASSERTION"
+  },
+  "lastBrowserOperation": {
+    "method": "clean",
+    "started": "2026-09-09T19:43:24.556Z",
+    "finished": "2026-09-09T19:43:24.586Z",
+    "refusals": []
+  }
+}

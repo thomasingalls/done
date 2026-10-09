@@ -1,0 +1,172 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T20:42:30.979Z",
+  "sourcePins": 936,
+  "stages": [
+    {
+      "name": "construction-inventory",
+      "args": [
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 635
+    },
+    {
+      "name": "receive-coverage-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^cold replay refuses missing or changed content$",
+        "test/account-receive/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 10490,
+      "tests": 1
+    },
+    {
+      "name": "http-bound-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^effective HTTP bound omission exposes the forbidden result$",
+        "test/account-receive-transport/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 1828,
+      "tests": 1
+    },
+    {
+      "name": "content-unreadable-control",
+      "args": [
+        "scripts/content/run.mjs",
+        "--case",
+        "C09.unreadable-load",
+        "--output",
+        "test-results/validation-controls/2026-09-12T20-42-30.785Z/content-control"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 5309
+    },
+    {
+      "name": "registry-origin",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-crypto-prep/census.test.mjs",
+        "test/account-first-authority/registry.test.mjs",
+        "test/validation-controls/origin.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 5146,
+      "tests": 18
+    },
+    {
+      "name": "content-full",
+      "args": [
+        "scripts/content/run.mjs",
+        "--output",
+        "test-results/validation-controls/2026-09-12T20-42-30.785Z/content-full-report"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 15971
+    },
+    {
+      "name": "receive-full",
+      "args": [
+        "scripts/account-receive/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 213465,
+      "report": "test-results/account-receive/2026-09-12T20-43-10.411Z"
+    },
+    {
+      "name": "receive-transport-full",
+      "args": [
+        "scripts/account-receive-transport/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 263038,
+      "report": "test-results/account-receive-transport/2026-09-12T20-46-43.876Z"
+    },
+    {
+      "name": "liveness-integration",
+      "args": [
+        "scripts/account-liveness/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 218206,
+      "report": "test-results/account-liveness/2026-09-12T20-51-06.916Z"
+    },
+    {
+      "name": "residue-integration",
+      "args": [
+        "scripts/account-residue/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 186463,
+      "report": "test-results/account-residue/2026-09-12T20-54-45.121Z"
+    },
+    {
+      "name": "private-failures-integration",
+      "args": [
+        "scripts/private-release/run.mjs",
+        "failures"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 288185,
+      "report": "test-results/private-release-failures/2026-09-12T20-57-51.584Z"
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "scripts/validation-controls",
+        "scripts/account-liveness/run.mjs",
+        "scripts/account-residue/run.mjs",
+        "scripts/private-release/run.mjs",
+        "scripts/content",
+        "scripts/check-origin-isolation.mjs",
+        "test/validation-controls",
+        "test/account-receive/fixtures.mjs",
+        "test/account-receive/native.test.mjs",
+        "test/account-receive-transport/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 53
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "scripts/validation-controls",
+        "scripts/account-liveness/run.mjs",
+        "scripts/account-residue/run.mjs",
+        "scripts/private-release/run.mjs",
+        "scripts/content",
+        "scripts/check-origin-isolation.mjs",
+        "test/validation-controls",
+        "test/account-receive/fixtures.mjs",
+        "test/account-receive/native.test.mjs",
+        "test/account-receive-transport/controls.test.mjs",
+        "docs/account-crypto/census.json",
+        "docs/account-crypto/constructions.json",
+        "docs/account-crypto/registry.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 85
+    }
+  ],
+  "completedAt": "2026-09-12T21:02:39.893Z"
+}

@@ -1,0 +1,894 @@
+/*
+ * The responsive shell (TRD §8.1–§8.3).
+ *
+ * A grid with named areas: each breakpoint is one `grid-template-areas`
+ * declaration describing the layout, rather than a scattering of direction,
+ * order and basis changes. Flex is used for one-dimensional runs inside
+ * components; it is not the shell.
+ *
+ * | Breakpoint | Menu             | Today | Goals            |
+ * | ---------- | ---------------- | ----- | ---------------- |
+ * | narrow     | off-screen left  | full  | off-screen right |
+ * | medium     | behind a trigger | panel | panel            |
+ * | wide       | panel            | panel | panel            |
+ *
+ * The days axis is inside the plane rather than in this grid: days are not a
+ * fourth surface, they are the same surface at a different position, and three
+ * of them are mounted at once so a revealed neighbour has real content in it.
+ */
+@layer app {
+  .shell {
+    display: grid;
+    grid-template-areas: 'plane';
+    grid-template-columns: minmax(0, 1fr);
+    block-size: 100dvh;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+    /*
+     * Ours horizontally, the browser's vertically. TRD §8.4 asks for
+     * `touch-action: none` on navigable surfaces; the day body keeps native
+     * scrolling instead, and the README records why. Regions that navigate on
+     * both axes — the day header and the peeks — narrow this to `none`
+     * themselves, which is allowed, where widening it again would not be.
+     */
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Selection is off until the long press asks for it (TRD §8.4). */
+  .shell[data-select='off'] {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .shell[data-select='on'] {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /*
+   * Native text controls may be the nearest scroll target themselves, so the
+   * shell's pan-y never reaches them in the touch-action intersection. Their
+   * vertical behavior stays native; horizontal movement belongs to the shell.
+   */
+  .shell
+    :is(
+      textarea,
+      input:not([type]),
+      input[type='email'],
+      input[type='number'],
+      input[type='password'],
+      input[type='search'],
+      input[type='tel'],
+      input[type='text'],
+      input[type='url']
+    ) {
+    touch-action: pan-y;
+  }
+
+  .shell:not([data-menu='dragging']):not([data-goals='dragging']) {
+    transition:
+      --menu-progress var(--duration-snap) var(--ease-snap),
+      --goals-progress var(--duration-snap) var(--ease-snap);
+  }
+
+  /* ---- Lateral panels --------------------------------------------------- */
+
+  .menu,
+  .goals {
+    block-size: 100%;
+    min-block-size: 0;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu {
+    grid-area: menu;
+    inline-size: var(--menu-width);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* The menu is its own scroll container; horizontal swipes still close it. */
+    touch-action: pan-y;
+    padding: var(--space-4);
+    gap: var(--space-5);
+    border-inline-end: 1px solid var(--color-border);
+  }
+
+  .goals {
+    grid-area: goals;
+    inline-size: var(--goals-width);
+    border-inline-start: 1px solid var(--color-border);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Unfiled is always an overlay: it is exceptional and must remain reachable
+   * without permanently taking space from any of the three primary surfaces. */
+  .unfiled-panel {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 5;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    inline-size: min(25rem, 92vw);
+    min-block-size: 0;
+    overflow: hidden;
+    border-inline-end: 1px solid var(--color-border);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-panel);
+    translate: -100% 0;
+    transition: translate var(--duration-snap) var(--ease-snap);
+  }
+
+  .shell[data-unfiled='open'] .unfiled-panel {
+    translate: 0 0;
+  }
+
+  .unfiled-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: var(--color-scrim);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--duration-snap) var(--ease-snap);
+  }
+
+  .shell[data-unfiled='open'] .unfiled-scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .unfiled-body {
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    padding: var(--space-4);
+  }
+
+  .unfiled-note {
+    margin-block-end: var(--space-4);
+    color: var(--color-text-dim);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .unfiled-list {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .unfiled-item {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .unfiled-origin {
+    color: var(--color-text-faint);
+    font-size: 0.6875rem;
+  }
+
+  .unfiled-count {
+    min-inline-size: 1.5rem;
+    padding: 0.1rem var(--space-1);
+    border-radius: 999px;
+    background: var(--color-warning-surface);
+    color: var(--color-warning);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  /*
+   * Overlays rather than pushes (PRD §7.5): pushing would reflow the panels,
+   * and at these widths none of them has room to give.
+   */
+  .shell[data-breakpoint='narrow'] .menu,
+  .shell[data-breakpoint='medium'] .menu {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: 3;
+    translate: calc((var(--menu-progress) - 1) * var(--menu-width)) 0;
+    box-shadow: var(--shadow-panel);
+  }
+
+  .shell[data-breakpoint='narrow'] .goals {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0;
+    z-index: 3;
+    inline-size: min(var(--goals-width), 88vw);
+    translate: calc((1 - var(--goals-progress)) * min(var(--goals-width), 88vw)) 0;
+    box-shadow: var(--shadow-panel);
+  }
+
+  .scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--color-scrim);
+    opacity: max(var(--menu-progress), var(--goals-progress));
+    pointer-events: none;
+  }
+
+  .shell[data-menu='open'] .scrim,
+  .shell[data-goals='open'] .scrim {
+    pointer-events: auto;
+  }
+
+  .shell[data-breakpoint='medium'] .scrim {
+    opacity: var(--menu-progress);
+  }
+
+  .shell[data-breakpoint='wide'] .scrim {
+    display: none;
+  }
+
+  /* ---- The plane -------------------------------------------------------- */
+
+  /*
+   * Two rows: the ambient stale-item indicator, then the days. `auto` is safe
+   * for the banner because it is one line and usually absent; the days track is
+   * the only one that may absorb slack (TRD §8.2).
+   *
+   * Named areas rather than implicit placement, because the banner is usually
+   * absent: with auto-placement the days would slide into the `auto` row when
+   * it is, and an `auto` row holding nothing but absolutely-positioned panels
+   * is zero pixels tall.
+   */
+  .plane {
+    grid-area: plane;
+    display: grid;
+    grid-template-areas: 'notice' 'days';
+    grid-template-rows: auto minmax(0, 1fr);
+    block-size: 100%;
+    min-block-size: 0;
+    overflow: hidden;
+  }
+
+  .day-plane {
+    --day-scroll-step: 0px;
+    --day-viewport-size: 100%;
+    grid-area: days;
+    position: relative;
+    overflow: hidden;
+    min-block-size: 0;
+    container: plane / inline-size;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
+  }
+
+  .day-plane::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (any-pointer: fine) {
+    .day-plane {
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+    }
+  }
+
+  /*
+   * The overlay stays pinned while the native three-stop range moves beneath
+   * it. Its negative following margin keeps it from adding to that range.
+   */
+  .day-wheel-overlay {
+    position: sticky;
+    inset-block-start: 0;
+    block-size: var(--day-viewport-size);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .day-scroll-range {
+    position: relative;
+    block-size: calc(var(--day-viewport-size) + 2 * var(--day-scroll-step));
+    margin-block-start: calc(-1 * var(--day-viewport-size));
+    pointer-events: none;
+  }
+
+  .day-scroll-stop {
+    position: absolute;
+    inset-inline-start: 0;
+    block-size: 1px;
+    inline-size: 1px;
+    scroll-snap-align: start;
+  }
+
+  .day-scroll-stop[data-position='previous'] {
+    inset-block-start: 0;
+  }
+
+  .day-scroll-stop[data-position='current'] {
+    inset-block-start: var(--day-scroll-step);
+  }
+
+  .day-scroll-stop[data-position='next'] {
+    inset-block-start: calc(2 * var(--day-scroll-step));
+  }
+
+  .day-track {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: var(--day-viewport-size);
+    z-index: 1;
+    translate: 0 calc(var(--day-scroll-step) + var(--day-shift, 0px));
+  }
+
+  .day-track[data-settling='true'] {
+    transition: translate var(--duration-snap) var(--ease-snap);
+  }
+
+  /*
+   * Panels are positioned rather than stacked so the neighbours' edges show as
+   * the peeks of PRD §7.4 — `[peek: Tue] / [header: Wed] / [body: Wed] /
+   * [peek: Thu]`, with the peeks bracketing the header rather than sitting
+   * inside the body. `--day-index` is -1, 0 or 1.
+   */
+  .day-panel {
+    position: absolute;
+    inset-inline: 0;
+    block-size: calc(100% - 2 * var(--peek-height) - 2 * var(--peek-gap));
+    inset-block-start: calc(
+      var(--peek-height) + var(--peek-gap) + var(--day-index) *
+        (100% - 2 * var(--peek-height) - var(--peek-gap))
+    );
+    display: grid;
+    /*
+     * Header then body. `minmax(0, 1fr)` on the body only: an `auto` track
+     * takes its automatic minimum size from its content and would silently push
+     * the panel past its bounds (TRD §8.2).
+     */
+    grid-template-rows: auto minmax(0, 1fr);
+    min-block-size: 0;
+    overflow: hidden;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-3);
+  }
+
+  .day-panel[data-active='false'] {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  /* The peeks are also click targets to move a day (PRD §7.3). */
+  .day-peek {
+    position: absolute;
+    inset-inline: 0;
+    block-size: calc(var(--peek-height) + var(--peek-gap));
+    z-index: 1;
+    touch-action: none;
+    pointer-events: auto;
+  }
+
+  .day-peek[data-edge='top'] {
+    inset-block-start: 0;
+  }
+
+  .day-peek[data-edge='bottom'] {
+    inset-block-end: 0;
+  }
+
+  /*
+   * Pinned, not sticky (TRD §8.2). It lives outside the scrolling region, so
+   * the menu trigger never takes part in scroll repaints and is never reachable
+   * by the gesture handler's scroll logic. `touch-action: none` because both
+   * axes navigate from here.
+   */
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    block-size: var(--header-height);
+    padding-inline: var(--space-3);
+    border-block-end: 1px solid var(--color-border);
+    background: var(--color-bg);
+    touch-action: none;
+  }
+
+  .panel-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+
+  /* The breadcrumb reads from the same left edge as the document text. */
+  .goals-breadcrumbs {
+    display: flex;
+    align-items: center;
+    column-gap: 0.3em;
+    inline-size: 100%;
+    min-inline-size: 0;
+    border-radius: var(--radius-2);
+    text-align: start;
+  }
+
+  .goals-breadcrumbs:hover {
+    color: var(--color-text);
+  }
+
+  .goals-breadcrumb-root {
+    flex: none;
+  }
+
+  .goals-breadcrumb-trail {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .goals-breadcrumb-trail-text {
+    text-align: start;
+  }
+
+  .goals-outline-indicator {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    border-radius: var(--radius-2);
+    background: var(--color-surface);
+    color: var(--color-text-dim);
+  }
+
+  .goals-outline-indicator svg {
+    display: block;
+    transition: rotate var(--duration-snap) var(--ease-snap);
+  }
+
+  .goals-breadcrumbs:hover .goals-outline-indicator,
+  .goals-breadcrumbs[aria-expanded='true'] .goals-outline-indicator {
+    background: var(--color-selection);
+    color: var(--color-text);
+  }
+
+  .goals-breadcrumbs[aria-expanded='true'] .goals-outline-indicator svg {
+    rotate: 180deg;
+  }
+
+  .panel-action,
+  .panel-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem var(--space-2);
+    border-radius: var(--radius-2);
+    color: var(--color-text-dim);
+    flex: none;
+  }
+
+  .panel-action:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .panel-badge {
+    background: var(--color-surface);
+    color: var(--color-text-faint);
+  }
+
+  .day-body {
+    min-block-size: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /*
+     * Pointer Events decides whether the browser owns a touch sequence before
+     * the recognizer sees its direction. Let native scrolling own only a
+     * direction that has actual scroll room; the outward direction at either
+     * edge remains a day-navigation gesture. `pan-down` is a finger-up gesture
+     * in Chromium terminology, and `pan-up` is finger-down.
+     */
+    touch-action: none;
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .day-body[data-touch-scroll='top'] {
+    touch-action: pan-down;
+  }
+
+  .day-body[data-touch-scroll='middle'] {
+    touch-action: pan-y;
+  }
+
+  .day-body[data-touch-scroll='bottom'] {
+    touch-action: pan-up;
+  }
+
+  @media (any-pointer: fine) {
+    .day-body {
+      overscroll-behavior-y: auto;
+    }
+  }
+
+  /*
+   * The band that absorbs the slack in the Goals column (TRD §8.2). Without
+   * `flex: 1` it takes its size from its content, and its content is an editor
+   * asking for `100%` of it — so the master list collapsed to nothing. `flex`
+   * rather than `block-size: 100%` because the header and the actions row are
+   * in the same column and 100% would be 100% of all three.
+   */
+  .goals-body {
+    flex: 1;
+    min-block-size: 0;
+    overflow: hidden;
+    display: grid;
+  }
+
+  .editor-host {
+    min-block-size: 0;
+    block-size: 100%;
+    overflow: hidden;
+  }
+
+  /*
+   * The outline overlays the document rather than reflowing it. Opening a
+   * navigation projection must not move the text it is helping locate.
+   */
+  .goals-outline {
+    position: absolute;
+    z-index: 2;
+    inset-block-start: var(--header-height);
+    inset-inline: 0;
+    max-block-size: min(65%, 32rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    padding: var(--space-2);
+    border-block-end: 1px solid var(--color-border);
+    background: var(--color-bg);
+    box-shadow: 0 0.75rem 1.5rem rgb(28 27 25 / 0.12);
+  }
+
+  .goals-outline-list {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .goals-outline-item {
+    display: block;
+    inline-size: 100%;
+    overflow: hidden;
+    padding: 0.35rem var(--space-2);
+    border-radius: var(--radius-2);
+    color: var(--color-text-dim);
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .goals-outline-item:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .goals-outline-item[aria-current='location'] {
+    background: var(--color-selection);
+    color: var(--color-text);
+  }
+
+  .goals-outline-item[data-level='2'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-3));
+  }
+
+  .goals-outline-item[data-level='3'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-5));
+  }
+
+  .goals-outline-item[data-level='4'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-6));
+  }
+
+  .goals-outline-item[data-level='5'],
+  .goals-outline-item[data-level='6'] {
+    padding-inline-start: calc(var(--space-2) + var(--space-6) + var(--space-3));
+  }
+
+  .goals-outline-empty {
+    padding: var(--space-3);
+    color: var(--color-text-faint);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .menu-trigger {
+    display: grid;
+    place-items: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    border-radius: var(--radius-2);
+    color: var(--color-text-dim);
+    flex: none;
+  }
+
+  .menu-trigger:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .unfiled-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex: none;
+    min-block-size: 2rem;
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-2);
+    background: var(--color-warning);
+    color: var(--color-warning-contrast);
+    font-size: 0.75rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unfiled-trigger:hover,
+  .unfiled-trigger[aria-expanded='true'] {
+    box-shadow: 0 0 0 2px var(--color-warning-surface);
+  }
+
+  /* ---- Menu contents ---------------------------------------------------- */
+
+  .menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .menu-heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-faint);
+  }
+
+  .menu-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+  }
+
+  .menu-value {
+    color: var(--color-text);
+    text-align: end;
+  }
+
+  .menu-input {
+    min-inline-size: 0;
+    max-inline-size: 9rem;
+    padding: 0.2rem var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-1);
+    background: var(--color-bg);
+    color: var(--color-text);
+    text-align: end;
+  }
+
+  .menu-color {
+    inline-size: 2.5rem;
+    block-size: 1.5rem;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-1);
+    background: transparent;
+  }
+
+  .menu-days {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .menu-day,
+  .menu-button {
+    font-size: 0.8125rem;
+    padding: 0.2rem var(--space-2);
+    border-radius: var(--radius-2);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-dim);
+  }
+
+  .menu-day[data-current='true'] {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+
+  .menu-day:hover,
+  .menu-button:hover {
+    color: var(--color-text);
+  }
+
+  .menu-button {
+    align-self: flex-start;
+  }
+
+  .actor-swatch {
+    display: inline-block;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border-radius: 50%;
+    margin-inline-end: var(--space-2);
+    background: var(--actor-color, var(--color-accent));
+  }
+
+  /* ---- Sync ------------------------------------------------------------- */
+
+  /*
+   * A dot, not a banner. PRD principle 3 makes offline the normal state, so
+   * connection state is reported where it is asked for and nowhere else — and
+   * "offline" is drawn as an ordinary muted state rather than as a warning.
+   */
+  .sync-dot {
+    display: inline-block;
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: 50%;
+    margin-inline-end: var(--space-2);
+    background: var(--color-mark);
+  }
+
+  .sync-dot[data-status='connected'] {
+    background: var(--color-accent);
+  }
+
+  .sync-dot[data-status='connecting'] {
+    background: var(--color-accent-dim);
+  }
+
+  .sync-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .sync-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+  }
+
+  /* Full width, unlike .menu-input: an endpoint is longer than a rollover hour. */
+  .sync-input {
+    inline-size: 100%;
+    min-inline-size: 0;
+    padding: 0.25rem var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-1);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.8125rem;
+  }
+
+  .sync-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .sync-actions .menu-button {
+    align-self: auto;
+  }
+
+  .menu-note {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-text-faint);
+  }
+
+  /* ---- Goals ------------------------------------------------------------ */
+
+  .goals-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-block-start: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .goals-hint {
+    flex: 1;
+    min-inline-size: 6rem;
+    font-size: 0.75rem;
+    color: var(--color-text-faint);
+  }
+
+  /* ---- The stale-item indicator (PRD §6) -------------------------------- */
+
+  .stale {
+    grid-area: notice;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-surface);
+    border-block-end: 1px solid var(--color-border);
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+  }
+
+  .stale-text {
+    flex: 1;
+    min-inline-size: 10rem;
+  }
+
+  /* ---- Breakpoints ------------------------------------------------------ */
+
+  /*
+   * The breakpoint is set as an attribute by the shell rather than asked for
+   * twice — the gesture layer has to know it too, and a media query here plus a
+   * `matchMedia` there is two copies of one number that can disagree.
+   * `useBreakpoint.ts` holds the copy. Nothing renders before React, so there
+   * is no unstyled first frame to protect.
+   */
+  .shell[data-breakpoint='medium'] {
+    grid-template-areas: 'plane goals';
+    grid-template-columns: minmax(0, 2fr) minmax(14rem, 3fr);
+  }
+
+  .shell[data-breakpoint='wide'] {
+    grid-template-areas: 'menu plane goals';
+    grid-template-columns: var(--menu-width) minmax(0, 2fr) minmax(24rem, 3fr);
+  }
+
+  .shell[data-breakpoint='medium'] .goals,
+  .shell[data-breakpoint='wide'] .goals {
+    inline-size: 100%;
+  }
+
+  /* Absent at wide, where the menu is already a visible panel (PRD §7.4). */
+  .shell[data-breakpoint='wide'] .menu-trigger {
+    display: none;
+  }
+
+  /* Shown while IndexedDB is read back; see App.tsx on why it is blank. */
+  .boot {
+    display: grid;
+    place-items: center;
+    block-size: 100dvh;
+    padding: var(--space-6);
+    text-align: center;
+    color: var(--color-text-dim);
+    gap: var(--space-2);
+  }
+
+  @container plane (max-width: 26rem) {
+    .panel-header {
+      padding-inline: var(--space-2);
+    }
+
+    .day-body {
+      padding-inline: var(--space-3);
+    }
+  }
+}

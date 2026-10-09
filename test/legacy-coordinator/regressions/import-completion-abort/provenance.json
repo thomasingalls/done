@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "note": "Harness scheduling defect: first import invocation need not reach imported. Exact first failure, not a minimal counterexample; shrink budget expired.",
+  "files": [
+    {
+      "source": "test-results/legacy-coordinator/first-full/baseline-first-failure-input.json",
+      "artifact": "test/legacy-coordinator/regressions/import-completion-abort/input.json",
+      "sha256": "6eaffe64faae2066bdf718ee9de0a0938f5f161156e9dbebe0714b0d144b7c57"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/baseline-first-failure.json",
+      "artifact": "test/legacy-coordinator/regressions/import-completion-abort/diagnostic.json",
+      "sha256": "7afeaf148dbacfb030f2795d673520965e94efab8816de9fca5b6ffb51bfc618"
+    },
+    {
+      "source": "test-results/legacy-coordinator/first-full/report.json",
+      "artifact": "test/legacy-coordinator/regressions/import-completion-abort/report.json",
+      "sha256": "a5e47a6eaeaaeaccba671d7be8fad26bfe7ab733688eef06da3afb3b90291ccd"
+    }
+  ]
+}

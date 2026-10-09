@@ -1,0 +1,105 @@
+{
+  "base": "b201784ee4e72091dc42df45551a1f9925abca81",
+  "claim": "Account genesis native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T08-35-30.807Z",
+  "summary": {
+    "schema": 1,
+    "selection": "genesis-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-genesis/native.test.mjs",
+        "key": "40df9e298279af64d80afef032e829ea27430d1555ae5b9e9d57c8d179718052",
+        "status": "passed",
+        "elapsedMs": 72933,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T08:35:30.810Z",
+    "input": "c1cd19aae8c0b77f05e4482aac09657465869fb132eb0e8a99efa9366bdc3b4c",
+    "completedAt": "2026-09-14T08:37:07.963Z"
+  },
+  "elapsedMs": 97153,
+  "rawInputArchiveSha256": "604437a9574bfe5e404926ffd6f315f5153f63b1f903f601d1538183f896f24d",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "b201784ee4e72091dc42df45551a1f9925abca81",
+    "sourceDigest": "4275d4641ac193c0917000697919de3215acf2fb4356e9d1e145fb50ac397f1a",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 14,
+    "browserFiles": 1,
+    "generatedHistories": 40,
+    "seed": 9222026,
+    "priorGeneralFiles": 188,
+    "priorGeneralCases": 1612,
+    "currentGeneralFiles": 189,
+    "currentGeneralCases": 1626,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 93,
+    "accountFiles": 83,
+    "accountCases": 532,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 228,
+    "unresolvedTestFiles": 69,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 669301
+  },
+  "finalGatesSha256": "f6a18474a23958eaff37b98a046ec66472bc19057247657523b1373e3065f2a3",
+  "preservationSha256": "9ced96d380a7c324de23e12676301a886ccf88950587a6c94805fe2ec9112895",
+  "limits": [
+    "One complete genesis native file retains fourteen cases: thirteen directed cases at 30 seconds and one 40-history case at 90 seconds, seed 9222026, endOnFailure:true. Native bodies, oracles, populations, census and browser owner are unchanged. Before the first run, the adapter and wrapper receive a 180-second outer allowance instead of the wrapper's 120 seconds, informed by preceding admission/handoff timings and the larger generated population. This is a prospective budget, not an observed genesis timeout or loaded-host qualification. Browser startup is 15 seconds and drain grace five.",
+    "The active historical reader a4e1c15:src/crdt/promotionRecord.ts is bound by reference, full revision, path and bytes; its Git subprocess gains 5000-ms/2-MiB bounds. Snapshot and wrap semantic mutants both run against uniquely checked current refusal throws; the helper checks anchor presence. The inherited base-promotion MAC mutant is dormant. The native file reads no vector; the separately integrated crypto sibling retains its own prior vector/interoperability evidence.",
+    "The inherited base registers teardown before setup, creates temporary service/SQLite authority stores and synthetic operator/registration/Local/recovery factors, builds browser scripts in memory and borrows owned loopback CDP. Context closure, browser disconnect, service close and temp cleanup precede owner group drain. Registration/recovery/preparation HTTP runs; the genesis candidate is not admitted or sent to a peer. Assertions during setup are produced by a Node fixture, not a browser/hardware authenticator ceremony. No personal server, profile, build output or origin is changed.",
+    "The primary case combines database and journal updates in reversed delivery, independently decrypts the candidate's recovery wrap/checkpoint and compares full fixture state. It checks custody record equality, exactly two wraps, proposedEpoch 1 and absence of two whole plaintext sentinels from JSON. That last check is not a broad privacy scan. Same-page reload returns exact candidate bytes; preceding preparation preserves inventory, abandonment removes the marker and further genesis refuses. Ordinary Local reading refuses the retained format.",
+    "outsideMarker compares all serialized database/localStorage inventory except every application-upgrade row in done.custody/entries, not only the current slot's marker. It checks all other retained Local carriers; excluded cross-slot promotion mutations are not detected. snapshot() is a logical-shape helper, not an authentication oracle. Native inventory equality does not establish forensic filesystem or copied-profile equality.",
+    "Two directed before/after genesis commit cases abort the actual IDB transaction after request success or hold its completion callback and kill the renderer. Both reopen a new page within the same context, decode full state and preserve filtered inventory. Before commit retains stage prepared; after commit returns the exact won candidate. There is one renderer death, not two. The existing waitForFunction is bounded by the 30-second case limit and does not add an early-result diagnostic. No browser-process, service-process or power-loss crash is exercised.",
+    "Wrong device/recovery codes, foreign account, altered recovery public key and current signed service abandonment refuse with exact unchanged inventory. Separate unattestable actor and card cases refuse without rewriting content. The source permits this Local principal's human actor and system attribution only; arbitrary multi-member attribution and repair are not covered.",
+    "Five semantic forgeries carry fresh valid candidate signatures and promotion MACs: stale checkpoint plaintext, recovery wrap to a wrong generation key, coverage descriptor, recipient ID and actor binding. Current genesis refuses all and leaves the poisoned inventory unchanged. Removing the snapshot refusal actually accepts an incomplete checkpoint whose independent decode differs from expected state. Removing the wrap refusal actually accepts a candidate whose independent recovery opening throws. These are two specific bad-acceptance outcomes, not credit for generic failures or mutations of parser/authentication guards. Signing these fixture forgeries uses production message and custody helpers.",
+    "Cancellation while a committed acknowledgement is held leaves another page pending on the exclusive permit; releasing acknowledgement lets that competitor obtain the exact committed candidate. The test awaits the cancelled call but does not assert its returned value or exhaust cancellation at every awaited operation. The historical reader refuses preparation and abandonment without new network calls or inventory changes. Five malformed raw marker edits also refuse unchanged; they are not re-signed, so the test does not isolate parser checks from MAC/signature refusal. Restoring the original marker restores exact genesis retry.",
+    "Forty generated histories use one to twelve insert/delete operations, mixed disk/journal persistence, optional reverse delivery, optional actual pre-commit abort, optional same-page reload and one of five signed semantic forgeries. An independent string model derives master text, and an independent parity model derives the two card IDs' order. Decrypted state must equal the seeded full Yjs state, exact card order and preserved system/human author identities. The Node/OpenSSL oracle independently opens the recovery envelope, HPKE wrap and AES-GCM checkpoint; browser Yjs decode and application projection helpers are shared. This file does not independently verify candidate signatures, open the device wrap, or zero all intermediate synthetic oracle buffers.",
+    "Generated aborts reload the same page before retry; optional restarts are also page reloads. Exact repeated candidate, forged-candidate refusal, authenticated abandonment and filtered source inventory are checked each history. There is no generated renderer death, service restart, shrink or explicit assertion that every fault/forgery choice occurred. Forty histories share one browser context/service and use fresh slots/accounts; older abandoned slots remain part of the filtered inventory comparisons.",
+    "ACCOUNT_REPORT_DIR is absent from the sanitized stage environment; optional control/history JSON outputs do not run. The original wrapper additionally invokes the crypto sibling and has separate outputs, scheduling and process-ownership obligations. This selection does not grant wrapper/sibling credit or establish service admission, epoch issuance, Account index selection, editor/transport authority, offline Account startup, personal adoption or a real Account receipt.",
+    "All 188 prior general contracts / 1612 case identities and six retired-v8 exclusions remain unchanged. Unchanged 23 Node-owner, five Vitest-process and twelve native-owner checks retain pinned prior evidence. The ledger's initial orphan classification, core receive headroom, capture map-refresh/byte-length oracle follow-ups and preceding editing/handoff timeout records remain visible. Full frozen source/dependency/browser archives are retained locally and hash-bound; no immutable aggregate is claimed. All 52 personal/vector pins, L-2, historical evidence/debts/signing backups and unrelated root files remain unchanged. Admission is the preceding signed, verified base."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 69344.727541,
+    "stageElapsedMs": 72933,
+    "selectionElapsedMs": 97153,
+    "nodeDeadlineMs": 180000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability.",
+    "generatedGenesisMs": 35478.037833
+  },
+  "deadlineDecision": {
+    "previousWrapperMs": 120000,
+    "selectedFileAndWrapperMs": 180000,
+    "unchangedDirectedMs": 30000,
+    "unchangedGeneratedMs": 90000,
+    "basis": "Prospective allowance based on preceding admission/handoff execution (113.829/121.212 seconds) and this 40-history population; no genesis timeout is claimed. Native bodies and case limits unchanged."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "c666c5750303c943a0002b89d835bd09aa342706d3c8672c485e2a35de541f71",
+    "compressedSha256": "dc9144379e387ca450b0167d7ab950fd988e73bb8bd0e9e7f1c06e5298dfd14d"
+  }
+}

@@ -1,0 +1,1026 @@
+{
+  "cells": [
+    {
+      "id": "cell0",
+      "surface": "indexedDB",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell1",
+      "surface": "indexedDB",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell2",
+      "surface": "indexedDB",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell3",
+      "surface": "indexedDB",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell4",
+      "surface": "indexedDB",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell5",
+      "surface": "indexedDB",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell6",
+      "surface": "indexedDB",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell7",
+      "surface": "indexedDB",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell8",
+      "surface": "indexedDB",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell9",
+      "surface": "indexedDB",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell10",
+      "surface": "indexedDB",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell11",
+      "surface": "indexedDB",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell12",
+      "surface": "indexedDB",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell13",
+      "surface": "indexedDB",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell14",
+      "surface": "indexedDB",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell15",
+      "surface": "localStorage",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell16",
+      "surface": "localStorage",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell17",
+      "surface": "localStorage",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell18",
+      "surface": "localStorage",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell19",
+      "surface": "localStorage",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell20",
+      "surface": "localStorage",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell21",
+      "surface": "localStorage",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell22",
+      "surface": "localStorage",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell23",
+      "surface": "localStorage",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell24",
+      "surface": "localStorage",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell25",
+      "surface": "localStorage",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell26",
+      "surface": "localStorage",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell27",
+      "surface": "localStorage",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell28",
+      "surface": "localStorage",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell29",
+      "surface": "localStorage",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell30",
+      "surface": "sessionStorage",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell31",
+      "surface": "sessionStorage",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell32",
+      "surface": "sessionStorage",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell33",
+      "surface": "sessionStorage",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell34",
+      "surface": "sessionStorage",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell35",
+      "surface": "sessionStorage",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell36",
+      "surface": "sessionStorage",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell37",
+      "surface": "sessionStorage",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell38",
+      "surface": "sessionStorage",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell39",
+      "surface": "sessionStorage",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell40",
+      "surface": "sessionStorage",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell41",
+      "surface": "sessionStorage",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell42",
+      "surface": "sessionStorage",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell43",
+      "surface": "sessionStorage",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell44",
+      "surface": "sessionStorage",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell45",
+      "surface": "cacheStorage",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell46",
+      "surface": "cacheStorage",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell47",
+      "surface": "cacheStorage",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell48",
+      "surface": "cacheStorage",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell49",
+      "surface": "cacheStorage",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell50",
+      "surface": "cacheStorage",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell51",
+      "surface": "cacheStorage",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell52",
+      "surface": "cacheStorage",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell53",
+      "surface": "cacheStorage",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell54",
+      "surface": "cacheStorage",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell55",
+      "surface": "cacheStorage",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell56",
+      "surface": "cacheStorage",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell57",
+      "surface": "cacheStorage",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell58",
+      "surface": "cacheStorage",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell59",
+      "surface": "cacheStorage",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell60",
+      "surface": "opfs",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell61",
+      "surface": "opfs",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell62",
+      "surface": "opfs",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell63",
+      "surface": "opfs",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell64",
+      "surface": "opfs",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell65",
+      "surface": "opfs",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell66",
+      "surface": "opfs",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell67",
+      "surface": "opfs",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell68",
+      "surface": "opfs",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell69",
+      "surface": "opfs",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell70",
+      "surface": "opfs",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell71",
+      "surface": "opfs",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell72",
+      "surface": "opfs",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell73",
+      "surface": "opfs",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell74",
+      "surface": "opfs",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell75",
+      "surface": "cookies",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell76",
+      "surface": "cookies",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell77",
+      "surface": "cookies",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell78",
+      "surface": "cookies",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell79",
+      "surface": "cookies",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell80",
+      "surface": "cookies",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell81",
+      "surface": "cookies",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell82",
+      "surface": "cookies",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell83",
+      "surface": "cookies",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell84",
+      "surface": "sql:core",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell85",
+      "surface": "sql:core",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell86",
+      "surface": "sql:core",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell87",
+      "surface": "sql:core",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell88",
+      "surface": "sql:core",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell89",
+      "surface": "sql:core",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell90",
+      "surface": "sql:core",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell91",
+      "surface": "sql:core",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell92",
+      "surface": "sql:core",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell93",
+      "surface": "sql:core",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell94",
+      "surface": "sql:core",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell95",
+      "surface": "sql:core",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell96",
+      "surface": "sql:core",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell97",
+      "surface": "sql:core",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell98",
+      "surface": "sql:core",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell99",
+      "surface": "sql:authority",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell100",
+      "surface": "sql:authority",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell101",
+      "surface": "sql:authority",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell102",
+      "surface": "sql:authority",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell103",
+      "surface": "sql:authority",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell104",
+      "surface": "sql:authority",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell105",
+      "surface": "sql:authority",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell106",
+      "surface": "sql:authority",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell107",
+      "surface": "sql:authority",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell108",
+      "surface": "sql:authority",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell109",
+      "surface": "sql:authority",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell110",
+      "surface": "sql:authority",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell111",
+      "surface": "sql:authority",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell112",
+      "surface": "sql:authority",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell113",
+      "surface": "sql:authority",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell114",
+      "surface": "diagnostics:page",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell115",
+      "surface": "diagnostics:page",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell116",
+      "surface": "diagnostics:page",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell117",
+      "surface": "diagnostics:page",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell118",
+      "surface": "diagnostics:page",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell119",
+      "surface": "diagnostics:page",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell120",
+      "surface": "diagnostics:page",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell121",
+      "surface": "diagnostics:page",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell122",
+      "surface": "diagnostics:page",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell123",
+      "surface": "diagnostics:page",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell124",
+      "surface": "diagnostics:page",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell125",
+      "surface": "diagnostics:page",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell126",
+      "surface": "diagnostics:page",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell127",
+      "surface": "diagnostics:page",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell128",
+      "surface": "diagnostics:page",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell129",
+      "surface": "diagnostics:service",
+      "kind": "plain",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell130",
+      "surface": "diagnostics:service",
+      "kind": "utf16le",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell131",
+      "surface": "diagnostics:service",
+      "kind": "utf16be",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell132",
+      "surface": "diagnostics:service",
+      "kind": "json",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell133",
+      "surface": "diagnostics:service",
+      "kind": "escaped",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell134",
+      "surface": "diagnostics:service",
+      "kind": "hex",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell135",
+      "surface": "diagnostics:service",
+      "kind": "HEX",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell136",
+      "surface": "diagnostics:service",
+      "kind": "base64",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell137",
+      "surface": "diagnostics:service",
+      "kind": "base64url",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell138",
+      "surface": "diagnostics:service",
+      "kind": "unpadded",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell139",
+      "surface": "diagnostics:service",
+      "kind": "offset1",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell140",
+      "surface": "diagnostics:service",
+      "kind": "offset2",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell141",
+      "surface": "diagnostics:service",
+      "kind": "framed",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell142",
+      "surface": "diagnostics:service",
+      "kind": "byteArray",
+      "clean": "absent",
+      "plant": "detected"
+    },
+    {
+      "id": "cell143",
+      "surface": "diagnostics:service",
+      "kind": "nested",
+      "clean": "absent",
+      "plant": "detected"
+    }
+  ],
+  "omissions": [
+    "indexedDB",
+    "localStorage",
+    "sessionStorage",
+    "cacheStorage",
+    "opfs",
+    "cookies",
+    "sql:core",
+    "sql:authority",
+    "diagnostics:page",
+    "diagnostics:service"
+  ],
+  "issues": [],
+  "acquisitionStable": true
+}

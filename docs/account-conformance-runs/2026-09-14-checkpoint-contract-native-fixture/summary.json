@@ -1,0 +1,103 @@
+{
+  "base": "b3b70d80508b234406f2850d57f10197782605be",
+  "claim": "Account checkpoint-contract native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T10-12-58.743Z",
+  "summary": {
+    "schema": 1,
+    "selection": "checkpoint-contract-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-checkpoint-contract/native.test.mjs",
+        "key": "b73d2dbc135df325574b28aa90c779135c29252ef8eb4fd257d345ec3bc8ad6b",
+        "status": "passed",
+        "elapsedMs": 119122,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T10:12:58.747Z",
+    "input": "f42034c4324e9b1980c16a18d5b595ba0a82e61063d668ca1967ae27f3ab7acd",
+    "completedAt": "2026-09-14T10:15:25.566Z"
+  },
+  "elapsedMs": 146819,
+  "rawInputArchiveSha256": "8643b0b82b0d50045c45d252361ba0f6ff63948ffc2d698f547db8e1bb0bc77e",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "b3b70d80508b234406f2850d57f10197782605be",
+    "sourceDigest": "91f8ca3516527aa39474ba0e144af7dfa9806f4d390f7a6962753f15fa5e8164",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 4,
+    "browserFiles": 1,
+    "generatedHistories": 24,
+    "generatedSeed": 5110932,
+    "executedOmissionControls": 3,
+    "authorityTamperInputs": 5,
+    "wrongAuthorityPinControls": 1,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 198,
+    "priorGeneralCases": 1661,
+    "currentGeneralFiles": 199,
+    "currentGeneralCases": 1665,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 103,
+    "accountFiles": 93,
+    "accountCases": 571,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 218,
+    "unresolvedTestFiles": 59,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 680137
+  },
+  "finalGatesSha256": "a41b918ca7a1db0cdcd1a0f8ce1202a7020f656b7dcc874974d3fef216060589",
+  "preservationSha256": "a1cdf9ed872da51bb7b3c266e05291cecfba68e42f0cfa99eb8a7dc7a47496f2",
+  "limits": [
+    "Exactly four complete native cases run under checkpoint-contract-native-fixture. Three directed cases retain 40-second limits and the generated case retains 120 seconds; the existing wrapper provides the 300-second file allowance. CDP startup remains 15 seconds and drain grace 5 seconds. Internal mutations and 24 histories are not additional reporter cases.",
+    "The inherited promotion/genesis/admission/handoff/editing fixture creates synthetic Local custody and Account recovery, completes real temporary-service admission/handoff, and uses a synthetic authenticator binding. Its setup navigates the existing page to the fixture origin and reinstalls in-memory bundles and observation hooks, replacing the page JavaScript realm while retaining browser storage. Browser/context/service remain alive; no renderer/browser/service crash, profile copy or power loss is injected.",
+    "The byte case independently unwraps the synthetic generation key with Node custody oracles, then uses independent LP/HKDF/AES-GCM encoding to reproduce the genesis ciphertext from the seeded full Yjs update. Retrying genesis returns an equal candidate and the observed checkpoint seal count remains one. Persisted startup runs with fetch replaced by a throwing function and no recovery code; it requires Account classification, unchanged serialized IndexedDB/localStorage inventory, decrypt-only non-extractable key usage, exact info/salt/AAD/ciphertext/tag length, no new seals and zeroed observed temporary buffers. This is scoped checkpoint instrumentation, not a heap/whole-profile residue claim.",
+    "The startupWorkspace source control removes the workspace from the checkpoint KDF info. Its bundle requires one unique replacement and one test-helper export; baseline startup succeeds and the mutated startup refuses with unchanged inventory. SelectedCoverage and activeCoverage remove one exact coverage predicate each. Baseline refuses missing journal or erased content with the explicit retained-source error; the corresponding mutant accepts the damaged state. Later admitted editor text is compared after close/reload/open.",
+    "The authority case recomputes a valid local marker MAC around five damaged nested fields: receipt signature, candidate signature, checkpoint salt, nonce or ciphertext. Each must refuse with unchanged inventory and no observed checkpoint traces. A restored marker accepts; a separately wrong pinned authority refuses. These generic refusal assertions do not isolate each verifier or prove GCM rejection of an otherwise fully service-authorized changed checkpoint; damaged nested proofs are intentionally left unauthenticated.",
+    "Twenty-four shrinking-enabled histories use seed 5110932, one to five generated insert/delete operations with disk/journal choice and optional reversed persistence, followed by a mandatory journal-only operation. Each run and shrink attempt has a new scope. An independent string splice calculation is compared to the seeded master, then real admission/handoff and page-reloaded classification succeed. Removing the scoped journal causes refusal without inventory change; restoring it permits classification. The generated case does not separately open the final editor and compare full card/metadata output; classification relies on production checkpoint coverage checks. No failing history or shrink is observed in a passing campaign.",
+    "The browser observer wraps actual SubtleCrypto deriveKey/encrypt/decrypt calls for keys identified by the checkpoint domain. Navigation resets the observer realm. Inventory serializes all IndexedDB stores and localStorage in the disposable origin, expanding Uint8Array bytes. It does not inspect filesystem residue or non-enumerable CryptoKey material. The source export and three native control anchors are checked for uniqueness and transform execution.",
+    "This selection leaves ACCOUNT_REPORT_DIR unset, so optional wrapper-native report JSON and per-history arrays are not written. Exact reporter receipts, the pinned native source, fixed seed and case result establish this bounded run; full wrapper report postconditions remain separate. No historical transforms or vector-file reads execute in the native path; the oracle module imports optional corpus/vector helpers without invoking them. Existing wrapper matrices, regressions, vector/authority chains and output postconditions remain separate obligations.",
+    "All 93 pure runner checks, TypeScript and scoped style/planning/authority/signature checks pass. Initial pure checks caught two integration bookkeeping mistakes (a nonexistent blocked-file example and a missing five-minute deadline expectation); their log is retained and both are corrected. Unchanged Node-owner/native-owner controls (23/14) and five Vitest-process controls retain prior evidence. Product, native fixture/helper code, wrapper, owner and interpreter remain unchanged. All 198 prior general contracts / 1661 identities, 52 personal/vector pins, L-2 and historical evidence remain unchanged. This frozen-input selection with an uncommitted runner patch is not immutable aggregate qualification."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 114457.069542,
+    "stageElapsedMs": 119122,
+    "selectionElapsedMs": 146819,
+    "nodeDeadlineMs": 300000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "directedCaseMs": 40000,
+    "generatedCaseMs": 120000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "06bee0d01a9100dde121fe5394800a2ac041feb8bb62586135fcc8cb7ceb6a7e",
+    "compressedSha256": "a6f69e20ea46acd7fb72480be28dc41e2a6d1d3674a561094fd290435020afc9"
+  }
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "name": "inventory",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 752
+  },
+  {
+    "name": "manifest",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1901
+  },
+  {
+    "name": "authority",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 660
+  },
+  {
+    "name": "signature",
+    "argv": [
+      "git",
+      "verify-commit",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 36
+  },
+  {
+    "name": "release-blocked",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--require-complete"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 1851
+  },
+  {
+    "name": "format",
+    "argv": [
+      "node_modules/.bin/oxfmt",
+      "--check",
+      "scripts/release-validation/execute.mjs",
+      "scripts/release-validation/manifest.mjs",
+      "scripts/release-validation/playwright-adapter.mjs",
+      "test/geometry/reorder.spec.ts",
+      "test/geometry/sync.spec.ts",
+      "test/geometry/wheel.spec.ts",
+      "test/geometry/workflow.spec.ts",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/release-validation/playwright.test.mjs",
+      "docs/release-validation-graph.json"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 125
+  },
+  {
+    "name": "whitespace",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 54
+  }
+]

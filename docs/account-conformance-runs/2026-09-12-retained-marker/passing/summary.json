@@ -1,0 +1,172 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T15:58:57.710Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 68
+    },
+    {
+      "name": "unit",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 33386
+    },
+    {
+      "name": "codec",
+      "args": [
+        "--test",
+        "test/storage-capacity/marker.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 1164
+    },
+    {
+      "name": "native",
+      "args": [
+        "--test",
+        "test/storage-capacity/marker-native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 18554
+    },
+    {
+      "name": "promotion-contract",
+      "args": [
+        "--test",
+        "test/account-promotion-contract/formats.test.mjs"
+      ],
+      "code": 0,
+      "tests": 7,
+      "timedOut": false,
+      "elapsedMs": 4802
+    },
+    {
+      "name": "parsers",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-parser-conformance/baseline.test.mjs",
+        "test/account-parser-conformance/objects.test.mjs",
+        "test/account-parser-conformance/controls.test.mjs",
+        "test/account-parser-conformance/native.test.mjs",
+        "test/account-parser-conformance/wires.test.mjs",
+        "test/account-parser-conformance/submission.test.mjs"
+      ],
+      "code": 0,
+      "tests": 34,
+      "timedOut": false,
+      "elapsedMs": 7289
+    },
+    {
+      "name": "admission-bounds",
+      "args": [
+        "--test",
+        "test/account-admission-bounds/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 6,
+      "timedOut": false,
+      "elapsedMs": 14673
+    },
+    {
+      "name": "refusals",
+      "args": [
+        "--test",
+        "test/account-failures/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 4190
+    },
+    {
+      "name": "sync",
+      "args": [
+        "--test",
+        "test/account-sync/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 7,
+      "timedOut": false,
+      "elapsedMs": 79532
+    },
+    {
+      "name": "privacy",
+      "args": [
+        "--test",
+        "test/account-residue/lifecycle.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 14771
+    },
+    {
+      "name": "profile-before",
+      "args": [
+        "scripts/private-release/profile-marker.mjs",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-marker/2026-09-12T15-58-57.544Z/profile-before/result.json",
+        "063cd72"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 3176
+    },
+    {
+      "name": "profile-after",
+      "args": [
+        "scripts/private-release/profile-marker.mjs",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-release-marker/2026-09-12T15-58-57.544Z/profile-after/result.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 427
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "src/crdt/promotionRecord.ts",
+        "test/account-promotion/browser.ts",
+        "test/storage-capacity",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 82
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/promotionRecord.ts",
+        "test/account-promotion/browser.ts",
+        "test/storage-capacity",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 94
+    }
+  ],
+  "sourcePins": 917,
+  "finishedAt": "2026-09-12T16:02:00.060Z"
+}

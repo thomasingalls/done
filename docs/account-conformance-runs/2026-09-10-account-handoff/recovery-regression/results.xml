@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="control: removing recovery verification actually accepts a one-factor finalization" time="0.154741" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/controls.test.mjs"/>
+	<testcase name="control: removing passkey verification actually accepts a one-factor finalization" time="0.091870" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/controls.test.mjs"/>
+	<testcase name="control: removing the sealed-root check accepts an attacker-substituted authority root" time="0.134425" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/controls.test.mjs"/>
+	<testcase name="both proofs finalize one exact recovery preparation (-8)" time="0.063070" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="both proofs finalize one exact recovery preparation (-7)" time="0.059285" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="wrong code, binding and substituted private keys cannot confirm" time="0.225907" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="unconfirmed registration, another attempt, malformed draft and extra authority fields refuse" time="0.049927" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="finalization rechecks cancel after verification" time="0.062319" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="finalization rechecks expiry after verification" time="0.025293" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="finalization rechecks activation after verification" time="0.090245" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="finalization rechecks key after verification" time="0.057522" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="finalization before-commit write failure has one retry outcome" time="0.137765" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="finalization after-commit write failure has one retry outcome" time="0.132263" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="schema v1 requires an explicit offline additive upgrade and preserves pending registration" time="0.016642" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/core.test.mjs"/>
+	<testcase name="independent Node crypto opens the complete three-part payload and verifies confirmation bytes" time="0.048912" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/crypto.test.mjs"/>
+	<testcase name="sealed root, X25519 private/public and bootstrap private/public checks are independently necessary" time="0.030470" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/crypto.test.mjs"/>
+	<testcase name="normalization preserves the selected full-width alphabet and rejects non-codes" time="0.000318" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/crypto.test.mjs"/>
+	<testcase name="native saved-code reentry, full browser restart, owner exclusion and lost finalization response" time="2.627696" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/native.test.mjs"/>
+	<testcase name="160 generated recovery histories obey an independent durable outcome ledger" time="4.833466" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/properties.test.mjs"/>
+	<testcase name="SIGKILL before-commit begin-recovery resumes from a cold process" time="0.883157" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit begin-recovery resumes from a cold process" time="0.825790" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit finalize-recovery resumes from a cold process" time="0.695793" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit finalize-recovery resumes from a cold process" time="0.640480" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit cancel-recovery resumes from a cold process" time="0.657420" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit cancel-recovery resumes from a cold process" time="0.548257" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-recovery/restart.test.mjs"/>
+	<!-- tests 25 -->
+	<!-- suites 0 -->
+	<!-- pass 25 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 5522.147125 -->
+</testsuites>

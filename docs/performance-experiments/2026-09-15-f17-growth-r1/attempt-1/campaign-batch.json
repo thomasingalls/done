@@ -1,0 +1,14 @@
+[
+  {
+    "session": "campaign-0-300-retain",
+    "days": 20,
+    "condition": "retain",
+    "block": 0,
+    "started": "2026-09-15T09:22:47.275Z",
+    "finished": "2026-09-15T09:23:20.554Z",
+    "code": 1,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  }
+]

@@ -1,0 +1,109 @@
+{
+  "base": "be8749f154658f0be10d4f723cdac09c9feacb2b",
+  "claim": "Account recovery native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T09-06-17.787Z",
+  "summary": {
+    "schema": 1,
+    "selection": "recovery-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-recovery/native.test.mjs",
+        "key": "c321d0a8971e8a6a9ca73f09472691d067116e704bd42dca038ac2939c4556cf",
+        "status": "passed",
+        "elapsedMs": 11013,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T09:06:17.790Z",
+    "input": "67b5296d13e8b7a097bd1ad91036a9c4ffd50155f1f335468642a3b47736be10",
+    "completedAt": "2026-09-14T09:06:51.100Z"
+  },
+  "elapsedMs": 33310,
+  "rawInputArchiveSha256": "357b6ecb6f7366f8e131626c6f8b307542992845a9378f22c79594c353ce956a",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "be8749f154658f0be10d4f723cdac09c9feacb2b",
+    "sourceDigest": "e539f01ffa72829600ec3cabd775f7061b8f8f0ff06e0845c33659f7f93298f8",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 1,
+    "browserFiles": 1,
+    "generatedHistories": 0,
+    "priorGeneralFiles": 191,
+    "priorGeneralCases": 1642,
+    "currentGeneralFiles": 192,
+    "currentGeneralCases": 1643,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 96,
+    "accountFiles": 86,
+    "accountCases": 549,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "nativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 225,
+    "unresolvedTestFiles": 66,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 673303
+  },
+  "finalGatesSha256": "26c59cd53efa7416b2a6c3d4759e133ea13ad96e4db8f444d26db49e7e7b2e50",
+  "preservationSha256": "6a2596a0f1f20af41bece959abd28dc2cade9ee827ec7a0a959e895f2c5ab6e1",
+  "limits": [
+    "One complete native recovery case retains its exact identity, original recovery scenario body and 40-second timeout; the file allowance is the existing wrapper 120 seconds. No generated histories or mutation campaign runs in this file. Setup, cleanup and final ownership assertions are adapted; product code, recovery fixtures, standalone launch path and wrapper remain unchanged.",
+    "The reviewed Chromium-CDP stage still owns its ordinary browser. The scenario uses the existing custody persistent-profile helper to launch additional Chromium processes without detaching from the worker group. The helper now permits at most two reopens, only after its prior generation has closed cleanly. All three scenario generations use one directory and the pinned browser executable; the worker group owner remains responsible if the test process dies. The ordinary stage CDP browser is auxiliary; it is not the persistent profile used by the recovery case.",
+    "The helper removes stale DevToolsActivePort before each launch, retains per-generation PID/endpoint/exit records, and reuses its origin filter, startup/close bounds and singleton-lock checks. A successful case requires three distinct PIDs, one profile, clean exit for every generation and exact prior-PID links. Recovery profile records are retained in the stage directory and archived with the full receipts; they are supplemental fixture evidence, not a new general result adapter.",
+    "Six persistent-profile owner controls pass: the existing cold-copy, timeout, cancellation and worker-death controls plus two new reopen controls. The positive reopen control preserves localStorage across three clean generations and refuses live, unknown, injected-failed-state and excess reopen. Its failed-close refusal is a record-state injection, not an induced OS close failure. Worker death after reopen actually leaves the second generation to outer group cleanup, which checks profile process absence and closed CDP listeners for both generations. Eight existing owned-CDP controls are also rerun.",
+    "The fixture makes a real browser navigator.credentials registration and assertion with a CDP virtual ctap2 internal resident-key/user-verifying authenticator. Service begin/finish for registration is called directly in Node, while recovery begin/finish use the loopback HTTP adapter. Virtual credentials are explicitly exported and restored after the first browser restart; that emulation does not establish operating-system or hardware passkey persistence.",
+    "IndexedDB put interception aborts draft generation before awaiting-code is durable and later aborts confirmation before finalization is durable. Assertions require empty or retained null-finalization state as appropriate; the service remains in recovery-ceremony after the second abort. This is request-time transaction abort, not physical power loss or every commit boundary.",
+    "After a clean full browser restart, the retained draft requires reentry of the saved code, refuses generation of a replacement and rejects a wrong code without starting an assertion. One progress row\u2019s JSON must not contain the literal code and its finalization field must be null. This is a literal-value check on one logical row, not a profile residue or cryptographic non-disclosure oracle.",
+    "A second page cannot acquire the recovery owner while another holds it. Cancellation delays the begin wrapper before its actual HTTP request; owner exclusion persists until release and the cancelled work rejects as closed. This is not an already in-flight network response delay or every asynchronous boundary.",
+    "A held finish wrapper is reached after local finalization is retained. Page.crash kills the renderer and a new page sees finalization-pending. Resume commits service recovery and then simulates response loss; the retained recoveryId must match service recovery-confirmed. A second clean browser restart resumes the same committed result without another assertion. No service process or whole browser is forcibly killed in this recovery scenario.",
+    "After the second browser restart the fixture does not restore virtual credentials, and resumed work must report zero browser assertion calls. A changed finish response stage refuses and a different recovery workspace context refuses. The supplied context is synthetic local-principal/local-workspace/never-admitted with a fixed authRoot; this case does not execute Local promotion preflight or independent service-root pin distribution.",
+    "The service account remains pending. No Local content import, promotion genesis, admission epoch, Account index/editor/transport, full account recovery with a new member/device, key-loss migration or personal Account adoption is performed. The fixture exercises recovery-code preparation and resumable confirmation, not every operation described by the broader recovery feature.",
+    "Service-only siblings retain separate independent-crypto, generated-history, mutation and process-death evidence. This native file reads no historical source or registration data, and does not use ACCOUNT_REPORT_DIR exports. Wrapper output/scheduling/ownership obligations remain separate. Unchanged 23 Node-owner and five Vitest-process controls retain earlier evidence; fourteen native-owner controls run here because the persistent-profile helper changed.",
+    "All previous general contracts and retired-v8 exclusions remain unchanged. Existing ledger orphan classification, core receive loaded-host headroom, capture map-refresh/byte-length follow-ups and historical editing/handoff deadline evidence remain open and preserved. This bounded selection is not immutable aggregate or release qualification."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 8528.89625,
+    "stageElapsedMs": 11013,
+    "selectionElapsedMs": 33310,
+    "nodeDeadlineMs": 120000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 120000,
+    "caseMs": 40000,
+    "profileStartupMs": 15000,
+    "note": "Existing wrapper and case limit retained; persistent startup and close bounds reused."
+  },
+  "persistentProfiles": {
+    "generations": 3,
+    "cleanFullRestarts": 2,
+    "sameProfile": true,
+    "distinctPids": true,
+    "rendererCrashes": 1
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "e0328959a3b5bb90d6fc4bdc3d0f5ed41524735d04a23843edc24fa973b9e7ca",
+    "compressedSha256": "740f317ed279e7f6a617d4e97933b04a7cbfeb3c65aa723660598c4f63678fee"
+  }
+}

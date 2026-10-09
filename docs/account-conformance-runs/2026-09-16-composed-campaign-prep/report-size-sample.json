@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "claim": "Historical report-size sample, not a composed execution or guaranteed future bound. Only four preserved child outputs; all other reports add bytes.",
+  "samples": [
+    {
+      "campaign": "activation",
+      "epoch": "owned",
+      "receiptKey": "04acadfb07ffae79e536d9becf6022d6cfc7bb4d3ae056fe07ad3edc076092bc",
+      "receiptSha256": "f53732590908c59194e1c83c12f8f12d030bdee2c6e65c32cb87a282728b6819",
+      "files": [
+        {
+          "path": "files/generated-activation.json",
+          "bytes": 1249612,
+          "sha256": "383fb9ac85b1c5c3604964b199f7de53dbe57aa74d509e3a78aaa88573946281"
+        }
+      ]
+    },
+    {
+      "campaign": "service-delivery",
+      "epoch": "owned",
+      "receiptKey": "acbd08d8c20074fa33ba68ce6430ac778f5835f249f50c542ca9d62f54c3c694",
+      "receiptSha256": "c4b28f972d1a925a2262f386b727ff8b3b45bfa74e6ed78846bface19655ea4f",
+      "files": [
+        {
+          "path": "files/generated.json",
+          "bytes": 2132968,
+          "sha256": "057ff6e257bd78adfd528248fb88e4a5cab54aad318702f335692dfb364c4706"
+        }
+      ]
+    },
+    {
+      "campaign": "admission-bounds",
+      "epoch": "owned",
+      "receiptKey": "eeed94f87ba3b094090d230217b36c2bd38ae87d1aa231c206a9513d8f4179bb",
+      "receiptSha256": "ebbbd9dfeff7d02dda081b6f4963773b448a81c1b0e6916d0ef3845142eedf1c",
+      "files": [
+        {
+          "path": "files/long-histories.json",
+          "bytes": 1528783,
+          "sha256": "4db8d3685e92323195b7943d77b13f452bfdced93c62e337c03f641bc91efe55"
+        },
+        {
+          "path": "files/generated-codecs.json",
+          "bytes": 1021556,
+          "sha256": "a7e9bdefedb6cf667c909c2193f68fac7092388d3291c827bc307376c65b8455"
+        }
+      ]
+    }
+  ],
+  "totalBytes": 5932919,
+  "currentSingleSetLimit": 4194304
+}

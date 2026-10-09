@@ -1,0 +1,118 @@
+{
+  "base": "379b11590c31f0dcb5ae529edcb8ad58ab222e8d",
+  "claim": "Account growing-history liveness fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T12-33-36.539Z",
+  "summary": {
+    "schema": 1,
+    "selection": "liveness-growth-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-liveness/native.test.mjs",
+        "key": "100174537664cf063a6e1c967d41975817b6fc1aa85f3aa349affb60d4a00335",
+        "status": "passed",
+        "elapsedMs": 27756,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T12:33:36.541Z",
+    "input": "82d44575cbe661ee3618a07db5ca1142298d229890c9cabcff989d1b9a9b55ee",
+    "completedAt": "2026-09-14T12:34:31.169Z"
+  },
+  "elapsedMs": 54628,
+  "rawInputArchiveSha256": "f271df73e74bbf51384160c4294ab006ba421bc132691feb0e2f94b9b9b20305",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "379b11590c31f0dcb5ae529edcb8ad58ab222e8d",
+    "sourceDigest": "66931ea466630066e96841fbda0ab8f6ba644bba0af316073adb9eef32c88b9b",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 1,
+    "browserFiles": 1,
+    "fixtureInstances": 1,
+    "generatedHistories": 0,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "editingJobs": 24,
+    "editingBatches": 3,
+    "largePasteBytes": 7000,
+    "tailDeletions": 3,
+    "ordinaryPollSamples": 2,
+    "measuredControls": 3,
+    "unmeasuredControls": 3,
+    "priorGeneralFiles": 221,
+    "priorGeneralCases": 1748,
+    "currentGeneralFiles": 222,
+    "currentGeneralCases": 1749,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 126,
+    "accountFiles": 116,
+    "accountCases": 655,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 195,
+    "unresolvedTestFiles": 36,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 703831
+  },
+  "finalGatesSha256": "2c2ccc0c026bbf81578841d35dbb7d56db53aaa867c45fbd20fc86614d2187bf",
+  "preservationSha256": "4281ff8af0c1e95a10bcee4b2bce91c3de9b52332244f812da7d5a3cab14628c",
+  "limits": [
+    "One complete unchanged growing-history case retains its 930-second wrapper/file and 900-second case limits. Only six runner/registration-test files and generated snapshots change. Product, native body, owned fixture, instrument, probe, oracles, census, reporters and wrapper remain unchanged. One disposable browser/context and synthetic service execute a fixed directed sequence; no generated property histories run.",
+    "At 0, 8, 16 and 24 editing jobs, the test compares every captured source reference in order against spool positions including additional sources, and requires send/receive prefixes equal the spool length. It samples delivery/receive/spool status three times per size. Two ordinary receive-poll samples, before and after growth, each require exactly one service census; a working-to-idle setup transition is excluded from the observation.",
+    "Three batches of eight edits include a 7000-byte paste and three tail deletions. Every edit must produce the expected text. Each batch waits for genuine send/receive progress without expedited receive retries, and the measured send-wake size must equal an independently counted outgoing local-admission callback count. This detects the tested remote-promotion wake regression; it is not an exhaustive proof over every possible causal schedule.",
+    "Cold pages reopen with instrumentation disabled and enabled in turn, preserving exact expected text; each takes three status samples. The case records those samples but does not assert a latency threshold or compare the full measured/unmeasured status objects against each other. The separate Node instrument fixtures provide their focused result/await/throw controls. The total case/file deadline is the only end-to-end duration bound here.",
+    "Cold is replacement of the page within the live isolated browser context; no process crash or physical power loss occurs. The path uses generated secrets, software authenticators, synthetic Local-to-Account promotion and retained factor options. No personal profile/origin/build, human PRF/passkey ceremony, real Account receipt, second-device adoption or forensic-erasure claim is involved.",
+    "The optional final growth report was copied read-only while the selection ran, using two matching reads and a SHA-256 record. Its path is checked against the owned receipt checkout and its capture time against the selection interval. It records passed, 24 jobs, 17 growth/polling samples, six controls and cold reopen. This auxiliary observation is archived separately from the authoritative owned case receipt; it is not a new performance threshold, wrapper/output or immutable aggregate qualification. Per-test stdout remains suppressed by the existing Node reporter.",
+    "All prior general contracts and exclusions, personal/vector pins, L-2 and historical evidence remain unchanged. Existing ledger orphan classification, receive/delivery-oracle headroom, capture-oracle follow-ups and previous deadline observations stay open. Single-host functional/timing evidence does not establish broad responsiveness or loaded-host reliability."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 23534.781875,
+    "stageElapsedMs": 27756,
+    "selectionElapsedMs": 54628,
+    "nodeDeadlineMs": 930000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 930000,
+    "caseMs": [
+      900000
+    ],
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "auxiliaryGrowthReport": {
+    "retained": true,
+    "rawSha256": "3db7ba88641eedd4f9c14716f4fc3aa54596bdf4d19f6eb4277e2e451003cd74",
+    "sourceMatchedOwnedCheckout": true,
+    "capturedDuringSelection": true,
+    "status": "passed",
+    "jobs": 24,
+    "samples": 17,
+    "controls": 6,
+    "note": "Read-only stable-byte copy collected outside the stage result adapter. It preserves optional observations, not an independent wrapper, threshold or immutable qualification."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "1ce1884bf19368d8022cc5281f3da57deec0f7b7e195eb4044b494a7ac730ec0",
+    "compressedSha256": "c26ffcad0f3eb73e95d668f5a52f6564d6f4643e7332fbc3e9df8864640c77da"
+  }
+}

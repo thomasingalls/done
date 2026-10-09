@@ -1,0 +1,170 @@
+[
+  {
+    "path": "authority-regression/control-nonce.json",
+    "sha256": "c2f53ec96097399018c091f4a2bf4f967b3fa6f2d2a8b38f6d6a461afb143b16"
+  },
+  {
+    "path": "authority-regression/control-pin.json",
+    "sha256": "997ebac99ecad43e65a097ccad94dbc188817582a3043d77c80f8046aff9996f"
+  },
+  {
+    "path": "authority-regression/results.xml",
+    "sha256": "e46d430942fb8b88248f49b06daa7ac8875af49875fe0ea9667bdb05febf8bb2"
+  },
+  {
+    "path": "authority-regression/run.log",
+    "sha256": "ca13d20d1fc82473de695d11ced193164fe48d167d3e6ee253fbfa532211b708"
+  },
+  {
+    "path": "authority-regression/sources.json",
+    "sha256": "f03b9ac4d9ea4961f9c3de764e7cbf5362d44a103242f1c8145834894db7a61b"
+  },
+  {
+    "path": "authority-regression/summary.json",
+    "sha256": "d04516e7c3f0a7d28f07540c76b3075014d9a16b99b470a6161ac06ab76bee3f"
+  },
+  {
+    "path": "build.log",
+    "sha256": "2c298e2e354408602369e4bebb18481558cd6a546db11e1f7c646c550e0890a3"
+  },
+  {
+    "path": "card-schema-reproduction.log",
+    "sha256": "36995167c7c92c207cb65616e7d3e922091da36e49e1e613dfcfb1564a5e5467"
+  },
+  {
+    "path": "control-snapshot.json",
+    "sha256": "0b3938ae1f125a32481662ed2340c9f1ba750d99c1c6a942595ea8e62d9a1c87"
+  },
+  {
+    "path": "control-wrap.json",
+    "sha256": "2562abfc59de368384cc3502b6fc5e985c409eac542632bdf7f1964f339fe0d8"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "073f3dfd27da3bbcb8e7fc847ae07d5ea779320e0fcf2e896a1952ea9d774dbc"
+  },
+  {
+    "path": "generated.json",
+    "sha256": "7f8a67281bb5b90c8d840387f211cbd33c59580e81e6068facaaa6c91dbfc5cc"
+  },
+  {
+    "path": "initial-harness-refusal/run.log",
+    "sha256": "e5c731d2de91c7d0ea08728c02cef76a574f7249b7f75d6179766766d208c418"
+  },
+  {
+    "path": "initial-harness-refusal/summary.json",
+    "sha256": "f7c3111fa8404beca967bfeb52c5a09e9ff24be3dbd8a3f72b965eace535fc37"
+  },
+  {
+    "path": "local-genesis-regression/report.json",
+    "sha256": "6014d2d70421f1f3a7c22769218342406003cf0acdee36c46cdf0ac369459cf6"
+  },
+  {
+    "path": "local-genesis-regression/report.md",
+    "sha256": "fdf3564ae1050a2f02385ad91abdfd97358cce060f1260d481ed9997f49750ea"
+  },
+  {
+    "path": "local-genesis-regression/run.log",
+    "sha256": "165e5804cc7372f03f19750f4881e06ffc64daf20d8fcc5298a315d1fb43ac52"
+  },
+  {
+    "path": "promotion-regression/control-current-state.json",
+    "sha256": "296e79f212c5e52d116e836aea3bf39b216919f2ec02f449ee8f765ff8d4390c"
+  },
+  {
+    "path": "promotion-regression/control-mac.json",
+    "sha256": "c11f8e833b5d5b2cec52ac1b7f52c77ecb29279bc8e4e05345878feb0d7a7d7c"
+  },
+  {
+    "path": "promotion-regression/results.xml",
+    "sha256": "36abe3ad3565914caa04fe21bda20fe892d028fb2212d53a5a5f9cd1b9edba97"
+  },
+  {
+    "path": "promotion-regression/run.log",
+    "sha256": "b3a349ac9869597d6bb51e00f0609de59dcdefbc9b0f13ee2af43e3d8458008c"
+  },
+  {
+    "path": "promotion-regression/sources.json",
+    "sha256": "f5366166b9cd10725898c45665643f5418b86b872fb824c11822cd8e61817e15"
+  },
+  {
+    "path": "promotion-regression/summary.json",
+    "sha256": "860d85baba9105021811cc393dc47cc992246235344297427c0e72e2dc3664f6"
+  },
+  {
+    "path": "recovery-regression/control-passkey-baseline.json",
+    "sha256": "f756962eec5fac782237073d1cfadbdb77309f73c9c6e09ca2532f2d765c0460"
+  },
+  {
+    "path": "recovery-regression/control-passkey-mutant.json",
+    "sha256": "4373bf9c0f60fb6014f359850bfb7520702bd96ef9f487d61bca9334fb451d04"
+  },
+  {
+    "path": "recovery-regression/control-recovery-baseline.json",
+    "sha256": "81f3ecc3fabcaf3ee32b6b5e172f7b41b0499ebec4b9849412d998bba222bd9b"
+  },
+  {
+    "path": "recovery-regression/control-recovery-mutant.json",
+    "sha256": "5a57c7e395bb0ca597fb7f50643843ae277cbadd4c78a81fecaaf88b1b1a1b66"
+  },
+  {
+    "path": "recovery-regression/control-root.json",
+    "sha256": "bf6318284d1b8d7c8f52e5f88d04b0a030275b615aca55b561514c602a0b3830"
+  },
+  {
+    "path": "recovery-regression/results.xml",
+    "sha256": "23b7161154a4ed8396565d74ebcb4d8c0ec49a42512fafdf16276585e039db40"
+  },
+  {
+    "path": "recovery-regression/run.log",
+    "sha256": "c66f8cf5178807c03db80efdaac0272937572841341a4d17fff974ce38ff599e"
+  },
+  {
+    "path": "recovery-regression/sources.json",
+    "sha256": "f4fe785fc7d930fa14e91c650de6951de2ca5796200bdb876eed8bb977c11abe"
+  },
+  {
+    "path": "recovery-regression/summary.json",
+    "sha256": "95d9a5fa754b04e9206b742ab87d3bf8e67233179a938662e4695730782c6afc"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "d390fbc17adab5f5db57dbd0929e2f5369f2f4fef42859191144a2f23177950b"
+  },
+  {
+    "path": "run.log",
+    "sha256": "ae331193500bb48f47c49a0b19e4f11b976d76b1766d1f68924fc3423ff91034"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "d499a798ddda423e7cf071fe3df4dbbd85fde59e21551554916e926ebe774e52"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "f4199029520057811586a3566d727e91a0637d327cc85ed5be5eed0f3d3239d7"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "6e6b4576cef690743b5b5aead8c578e7c66570f6b0ca0fe7365ec5f6ae58184d"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "53d6173a40e1a033d4633f947e4dbd7ab8982390446304bc8615adad125dec59"
+  },
+  {
+    "path": "unit-timeout.log",
+    "sha256": "209bb908483574cd6a10ab4b1357b8f03a6ada2948c3c7ffc2ee7314ebb7d19f"
+  },
+  {
+    "path": "writer-regression/report.json",
+    "sha256": "d7b2199256a8a79b803d90b6603d86664ddb4bdc63f39b148a8883ffc157ae83"
+  },
+  {
+    "path": "writer-regression/report.md",
+    "sha256": "18ab61014056a99925acd050ecb51627d54d0aac9f9d7981a9cd209c1c7f60b9"
+  },
+  {
+    "path": "writer-regression/run.log",
+    "sha256": "f9a148a724e4c94daa41a497a285a0bd510e1ee144896354595429e7cdb2a19e"
+  }
+]

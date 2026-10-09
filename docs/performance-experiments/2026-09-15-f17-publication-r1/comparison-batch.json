@@ -1,0 +1,42 @@
+[
+  {
+    "variant": "selected",
+    "session": "comparison-0",
+    "started": "2026-09-15T10:48:29.430Z",
+    "finished": "2026-09-15T10:49:05.922Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "candidate",
+    "session": "comparison-0",
+    "started": "2026-09-15T10:49:05.993Z",
+    "finished": "2026-09-15T10:49:40.154Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "candidate",
+    "session": "comparison-1",
+    "started": "2026-09-15T10:49:40.187Z",
+    "finished": "2026-09-15T10:50:15.844Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "selected",
+    "session": "comparison-1",
+    "started": "2026-09-15T10:50:15.918Z",
+    "finished": "2026-09-15T10:50:50.388Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  }
+]

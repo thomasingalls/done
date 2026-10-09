@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="runtime and independent oracle open the published AES-256 HPKE generation vector" time="0.005507" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/crypto.test.mjs"/>
+	<testcase name="100 generated runtime seals interoperate with OpenSSL; info and ciphertext substitutions refuse" time="0.205360" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/crypto.test.mjs"/>
+	<testcase name="low-order recipients and malformed generation size refuse" time="0.000624" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/crypto.test.mjs"/>
+	<testcase name="genesis preserves full database+journal state, attribution, source carriers and exact artifacts on restart" time="1.004811" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="renderer restart before genesis commit" time="1.004056" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="renderer restart after genesis commit" time="1.304110" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="wrong factors, foreign owner and current service abandonment preserve preparation" time="0.772942" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="unattestable actor refuses without rewriting content" time="0.664296" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="unattestable card refuses without rewriting content" time="0.650188" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed snapshot forgery is refused" time="1.004906" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed wrap forgery is refused" time="0.978833" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed coverage forgery is refused" time="0.711962" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed recipient forgery is refused" time="0.707587" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="validly signed actor forgery is refused" time="0.724066" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="competing owners converge and cancellation drains before releasing the exclusive permit" time="0.958418" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="previous version refuses the new carrier; malformed fields never gain an owner" time="1.123979" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<testcase name="40 generated delivery/interruption histories preserve independent text and full source state" time="27.692371" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-genesis/native.test.mjs"/>
+	<!-- tests 17 -->
+	<!-- suites 0 -->
+	<!-- pass 17 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 40162.988 -->
+</testsuites>

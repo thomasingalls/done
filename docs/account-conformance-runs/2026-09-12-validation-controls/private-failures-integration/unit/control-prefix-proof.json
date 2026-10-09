@@ -1,0 +1,10 @@
+{
+  "mode": "prefix-proof",
+  "changes": [
+    [
+      "const proof = await verifyPositionResponse(entry.proof, subject(entry.envelope), a, subtle);",
+      "const proof = decodePositionResponse(entry.proof);"
+    ]
+  ],
+  "outcome": "Unheld accepted prefix accepted."
+}

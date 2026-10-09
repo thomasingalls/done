@@ -1,0 +1,44 @@
+Starting selected comparison-0 2026-09-15T12:08:26.914Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected comparison-0 shallow p50 45.80000019073486 p95 51.69999980926514
+selected comparison-0 deeper p50 46 p95 48.19999980926514
+Finished selected comparison-0 passed
+Starting candidate comparison-0 2026-09-15T12:09:08.791Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+candidate comparison-0 shallow p50 36.89999961853027 p95 41.60000038146973
+candidate comparison-0 deeper p50 36.89999961853027 p95 39.30000019073486
+Finished candidate comparison-0 passed
+Starting candidate comparison-1 2026-09-15T12:09:48.622Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+candidate comparison-1 shallow p50 35.5 p95 37.59999942779541
+candidate comparison-1 deeper p50 35.69999980926514 p95 37.60000038146973
+Finished candidate comparison-1 passed
+Starting selected comparison-1 2026-09-15T12:10:28.097Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected comparison-1 shallow p50 46 p95 49.10000038146973
+selected comparison-1 deeper p50 45.30000019073486 p95 47.69999980926514
+Finished selected comparison-1 passed

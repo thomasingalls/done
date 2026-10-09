@@ -1,0 +1,17 @@
+{
+  "history": [
+    {
+      "kind": "accepted",
+      "position": 1,
+      "final": false,
+      "id": ""
+    }
+  ],
+  "detectedPrefixes": 1,
+  "oldOracleComparison": "matches at every prefix",
+  "oldOracleCommit": "77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3",
+  "sourceChange": [
+    "if (e.kind === 'conflict')",
+    "s.submissions.clear();\n  if (e.kind === 'conflict')"
+  ]
+}

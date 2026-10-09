@@ -1,0 +1,30 @@
+(node:79178) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ omitting expected-root pin equality lets the same stored root sign for a different service identity (32.16375ms)
+✔ omitting root private/public correspondence releases an authentically encrypted wrong signing seed (18.727542ms)
+✔ omitting acceptance correspondence allows a valid tag with a wrong seed to pass custody (15.5055ms)
+✔ omitting the proposal ID from actual acceptance AAD permits cross-proposal reuse (15.107375ms)
+✔ omitting private export-format assertion recreates suffix-only extraction (18.683083ms)
+✔ omitting public export-format assertion recreates suffix-only extraction (17.9735ms)
+✔ omitting exported-seed cleanup recreates retention after a failed random draw (14.038666ms)
+✔ omitting the early close guard recreates key generation after close (13.956541ms)
+✔ root creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (16.84125ms)
+✔ acceptance creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (2.828709ms)
+✔ acceptance create refuses after close before generating or exporting a new seed (0.175041ms)
+✔ acceptance create clears an exported seed if randomness fails before derivation (0.441333ms)
+(node:79180) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ eight fixed cases reproduce runtime root/acceptance creation, intermediate key derivation, cold opening and seed formats (23.235125ms)
+✔ all primitive inputs and encoded fields have independent isolating negatives and AAD omission controls (1.304708ms)
+✔ root opening refuses altered expected pin and each stored field; genuine wrong-seed ciphertext reaches correspondence check (3.999916ms)
+✔ acceptance opening binds operator, full pin, proposal and public key; valid tags do not excuse wrong seeds or invalid carriers (1.693792ms)
+✔ each fixed-purpose acceptance method signs its reviewed bytes and every use refuses after close (8.358083ms)
+✔ 200 shrinking-enabled synthetic key/scope histories cold-open independently sealed roots and reject authentic wrong-key payloads (418.288458ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 917.214042

@@ -1,0 +1,60 @@
+{
+  "scope": "Retained development update after fresh operator locked/closed confirmation. No personal browser opened. Release validation paused.",
+  "backup": ".dev/account-enrollment-tailnet/backups/schema-20-25xQob",
+  "build": ".dev/account-enrollment-tailnet/builds/ea120109",
+  "preservation_before_start": {
+    "account.sqlite": {
+      "backup_integrity": "ok",
+      "current_integrity": "ok",
+      "prior_tables": 25,
+      "prior_rows": 42,
+      "prior_columns_unchanged": true,
+      "schema_from": 20,
+      "schema_to": 21
+    },
+    "authority.sqlite": {
+      "backup_integrity": "ok",
+      "current_integrity": "ok",
+      "prior_tables": 1,
+      "prior_rows": 1,
+      "prior_columns_unchanged": true,
+      "schema_from": 1,
+      "schema_to": 1
+    },
+    "pin.json": {
+      "unchanged": true
+    },
+    "operator.key": {
+      "unchanged": true
+    }
+  },
+  "processes_at_cutover": {
+    "service": {
+      "pid": 54398,
+      "log": "/tmp/done-account-service-ea120109.log"
+    },
+    "app": {
+      "pid": 54401,
+      "log": "/tmp/done-account-app-ea120109.log"
+    }
+  },
+  "live_verification": {
+    "checked_at": "2026-10-08T16:53:03.785Z",
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "implementation": "ea120109",
+    "public_config": "matching original pin, sessions and membership continuation enabled",
+    "fresh_authority_proof": true,
+    "boundaries": {
+      "/__account-setup/access": 404,
+      "wrong-origin": 403,
+      "unauthenticated-subscription": 401,
+      "/.dev/account.sqlite": 404,
+      "/.dev/operator.key": 404,
+      "/src/main.tsx": 404,
+      "/assets/missing.js": 404
+    },
+    "precache_urls": 29,
+    "all_assets_identical": true,
+    "worker_sha256": "7cf78e59314c5caacf196d401098e0730b9d075d8b73f082f3ec44a3e52362fa"
+  }
+}

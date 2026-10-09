@@ -1,0 +1,56 @@
+Focused native replacement activation; retained service unchanged; release validation paused.
+
+SOURCE /tmp/done-replacement-activation-native-final.log
+
+Running 2 tests using 1 worker
+
+(node:47641) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/replacement-handoff.spec.ts:9:3 › native promotion producer hands a current-key snapshot to a replacement with removed-device and journal writing (59.0s)
+  ✓  2 test/packaged-account/replacement-handoff.spec.ts:9:3 › native joined producer hands a current-key snapshot to a replacement with removed-device and journal writing (59.5s)
+
+  2 passed (2.0m)
+
+SOURCE /tmp/done-replacement-initial-unit.log
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+
+ Test Files  4 passed (4)
+      Tests  23 passed (23)
+   Start at  17:26:45
+   Duration  1.17s (transform 980ms, setup 191ms, import 1.54s, tests 779ms, environment 0ms)
+
+
+SOURCE /tmp/done-replacement-activation-protocol.log
+(node:47676) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser continuation handoff preserves all recipients and requires persisted installation before certification (179.55625ms)
+✔ wrapped delivery persists before sending and exact bytes survive a lost save or network reply (82.182917ms)
+✔ key installation and countersignature retry from committed custody after interruptions (106.519916ms)
+✔ mismatched approval, missing durable custody and substituted device refuse before key release (85.119417ms)
+✔ continuation progress preserves the first ceremony and refuses an older writer or incomplete value (0.692958ms)
+✔ replacement handoff persists one snapshot before publication and cold-replays before countersigning (198.692375ms)
+✔ replacement refuses unsaved or substituted snapshots and a key that cannot decrypt the writing (177.068042ms)
+(node:47677) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ replacement reader starts at certified cuts with its current key, including removed writing but no removed stream (418.156417ms)
+✔ replacement reader verifies a current-key suffix after the admitted cut and cold-replays its saved prefix (505.502458ms)
+✔ replacement reader refuses changed binding, snapshot, candidate acknowledgement and uncovered receive prefix (433.786209ms)
+✔ replacement loading persists and cold-replays equivalent parsed field ordering (523.248083ms)
+(node:47678) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source replays every accepted publisher including removed writing, then preserves local unaccepted writing (298.432ms)
+✔ source cannot sign when a removed publisher is missing, the terminal link differs, or accepted updates are unresolved (589.079791ms)
+✔ source excludes post-cut updates, rejects substituted readers/pages, and closes after a cancelled operation (278.273333ms)
+✔ source needs the historical opener and cannot borrow a detached or pending producer (118.986375ms)
+✔ an excluded pending device has an empty cutoff, without inventing a certified publisher (185.484375ms)
+✔ a replacement can produce the next snapshot from its own admitted baseline plus a current-key suffix, without historical keys (252.195584ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2390.387458

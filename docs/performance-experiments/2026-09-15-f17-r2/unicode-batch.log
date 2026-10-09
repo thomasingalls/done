@@ -1,0 +1,44 @@
+Starting all unicode-0 2026-09-15T07:44:41.905Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+all unicode-0 shallow p50 60.5 p95 73.59999942779541
+all unicode-0 deeper p50 60.80000019073486 p95 83.40000057220459
+Finished all unicode-0 passed
+Starting no-publication unicode-0 2026-09-15T07:45:26.292Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-publication unicode-0 shallow p50 65.30000019073486 p95 89.39999961853027
+no-publication unicode-0 deeper p50 59.19999980926514 p95 75.30000019073486
+Finished no-publication unicode-0 passed
+Starting no-publication unicode-1 2026-09-15T07:46:10.699Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+no-publication unicode-1 shallow p50 59.5 p95 85.39999961853027
+no-publication unicode-1 deeper p50 59.10000038146973 p95 76.5
+Finished no-publication unicode-1 passed
+Starting all unicode-1 2026-09-15T07:46:54.221Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+all unicode-1 shallow p50 65 p95 93.30000019073486
+all unicode-1 deeper p50 74.19999980926514 p95 93.30000019073486
+Finished all unicode-1 passed

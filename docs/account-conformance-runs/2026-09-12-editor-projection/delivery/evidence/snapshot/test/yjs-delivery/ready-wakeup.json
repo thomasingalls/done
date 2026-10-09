@@ -1,0 +1,97 @@
+{
+  "seed": 8941,
+  "runs": 7,
+  "failed": true,
+  "path": "6",
+  "history": {
+    "edits": [
+      {
+        "lane": 1,
+        "actor": 2,
+        "at": 15,
+        "remove": 1,
+        "text": ""
+      },
+      {
+        "lane": 0,
+        "actor": 2,
+        "at": 16,
+        "remove": 5,
+        "text": "a"
+      },
+      {
+        "lane": 0,
+        "actor": 1,
+        "at": 27,
+        "remove": 4,
+        "text": "   "
+      },
+      {
+        "lane": 2,
+        "actor": 0,
+        "at": 23,
+        "remove": 6,
+        "text": "\n \n"
+      },
+      {
+        "lane": 2,
+        "actor": 0,
+        "at": 11,
+        "remove": 6,
+        "text": "é  "
+      },
+      {
+        "lane": 2,
+        "actor": 0,
+        "at": 1,
+        "remove": 3,
+        "text": "\n\n b"
+      },
+      {
+        "lane": 1,
+        "actor": 1,
+        "at": 1,
+        "remove": 5,
+        "text": "a "
+      },
+      {
+        "lane": 1,
+        "actor": 0,
+        "at": 5,
+        "remove": 6,
+        "text": "\na "
+      },
+      {
+        "lane": 2,
+        "actor": 0,
+        "at": 10,
+        "remove": 8,
+        "text": "bb"
+      }
+    ],
+    "keys": [
+      5340,
+      7351,
+      9996,
+      2109,
+      3001,
+      11,
+      8277,
+      7,
+      5,
+      9988,
+      40,
+      5736,
+      5892,
+      8208,
+      4,
+      9995,
+      9,
+      5928,
+      1518,
+      13
+    ],
+    "split": 13,
+    "early": 20
+  }
+}

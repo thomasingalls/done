@@ -1,0 +1,311 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.private-migration.config.ts"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.private-migration.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-migration/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 90000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/private-migration/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js --config vite/privateMigration.config.ts --host 127.0.0.1 --port 4193 --strictPort",
+      "url": "http://127.0.0.1:4193/private/migration.html",
+      "reuseExistingServer": false,
+      "timeout": 30000
+    }
+  },
+  "suites": [
+    {
+      "title": "rehearsal.spec.ts",
+      "file": "rehearsal.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "one-off pasted cleanup helper authenticates files and factor, removes source and preserves later writing",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8897,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#done-private-cleanup').getByRole('status')\nExpected substring: \u001b[32m\"Source cleanup complete\"\u001b[39m\nReceived string:    \u001b[31m\"local-factor-wrong-or-claim-damaged\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#done-private-cleanup').getByRole('status')\u001b[22m\n\u001b[2m    14 × locator resolved to <p role=\"status\">local-factor-wrong-or-claim-damaged</p>\u001b[22m\n\u001b[2m       - unexpected value \"local-factor-wrong-or-claim-damaged\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#done-private-cleanup').getByRole('status')\nExpected substring: \u001b[32m\"Source cleanup complete\"\u001b[39m\nReceived string:    \u001b[31m\"local-factor-wrong-or-claim-damaged\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#done-private-cleanup').getByRole('status')\u001b[22m\n\u001b[2m    14 × locator resolved to <p role=\"status\">local-factor-wrong-or-claim-damaged</p>\u001b[22m\n\u001b[2m       - unexpected value \"local-factor-wrong-or-claim-damaged\"\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts:168:44",
+                    "location": {
+                      "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts",
+                      "column": 44,
+                      "line": 168
+                    },
+                    "snippet": "  166 |   await dialog.getByLabel('Device-lock code').fill(code);\n  167 |   await dialog.getByRole('button', { name: 'Clean up source' }).click();\n> 168 |   await expect(dialog.getByRole('status')).toContainText('Source cleanup complete');\n      |                                            ^\n  169 |   expect(\n  170 |     await page.evaluate(async () => (await indexedDB.databases()).some((db) => db.name === 'done')),\n  171 |   ).toBe(false);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts",
+                        "column": 44,
+                        "line": 168
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#done-private-cleanup').getByRole('status')\nExpected substring: \u001b[32m\"Source cleanup complete\"\u001b[39m\nReceived string:    \u001b[31m\"local-factor-wrong-or-claim-damaged\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#done-private-cleanup').getByRole('status')\u001b[22m\n\u001b[2m    14 × locator resolved to <p role=\"status\">local-factor-wrong-or-claim-damaged</p>\u001b[22m\n\u001b[2m       - unexpected value \"local-factor-wrong-or-claim-damaged\"\u001b[22m\n\n\n  166 |   await dialog.getByLabel('Device-lock code').fill(code);\n  167 |   await dialog.getByRole('button', { name: 'Clean up source' }).click();\n> 168 |   await expect(dialog.getByRole('status')).toContainText('Source cleanup complete');\n      |                                            ^\n  169 |   expect(\n  170 |     await page.evaluate(async () => (await indexedDB.databases()).some((db) => db.name === 'done')),\n  171 |   ).toBe(false);\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts:168:44"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "buffer": "KG5vZGU6NDU1NjQpIFdhcm5pbmc6IFRoZSAnTk9fQ09MT1InIGVudiBpcyBpZ25vcmVkIGR1ZSB0byB0aGUgJ0ZPUkNFX0NPTE9SJyBlbnYgYmVpbmcgc2V0LgooVXNlIGBub2RlIC0tdHJhY2Utd2FybmluZ3MgLi4uYCB0byBzaG93IHdoZXJlIHRoZSB3YXJuaW5nIHdhcyBjcmVhdGVkKQo="
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:00:31.779Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/private-migration/artifacts/rehearsal-one-off-pasted-c-7acb5-and-preserves-later-writing/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/private-migration/rehearsal.spec.ts",
+                    "column": 44,
+                    "line": 168
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-99d3de217f01947479f9",
+          "file": "rehearsal.spec.ts",
+          "line": 136,
+          "column": 1
+        },
+        {
+          "title": "saved files, renderer death, resumed selection and ordinary editor cold recovery preserve the ledger",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2696,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [
+                    {
+                      "text": "(node:45588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:00:41.138Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "source-input",
+                      "contentType": "application/json",
+                      "body": "eyJtYXN0ZXIiOiIjIEdvYWxzXG5cbktlZXAgdGhlIHZpc2libGUgd3JpdGluZy5cbiIsInN1ZmZpeCI6IiFqb3VybmFsLW9ubHkg4pyUXG4iLCJvcnBoYW4iOiJ1bmZpbGVkIGJvZHlcblxud2l0aCBkZXRhaWwiLCJkYXlzIjpbeyJkYXRlIjoiMjAyNi0wMS0wMiIsIm5leHQiOlsib25lIiwidHdvIiwidGhyZWUiLCJmb3VyIl0sInNjaGVkdWxlZCI6WyJsYXRlclxuXG4jIyBEb25lIl0sImRvbmUiOlsiZmluaXNoZWQiLCIiXSwib2Jzb2xldGVKb3VybmFsIjoiUmVtb3ZlZCBkYXktam91cm5hbCBwcm9zZTogb21pdCBmcm9tIHRoZSBpbXBvcnRlZCB3b3Jrc3BhY2UuIn1dfQ=="
+                    },
+                    {
+                      "name": "source-preservation",
+                      "contentType": "application/json",
+                      "body": "eyJyb3dzIjpbeyJrZXkiOjEsImJ5dGVzIjpbMSw3OSwxMDEsMCw0MCwxLDQsMTA5LDEwMSwxMTYsOTcsMTMsMTE1LDk5LDEwNCwxMDEsMTA5LDk3LDg2LDEwMSwxMTQsMTE1LDEwNSwxMTEsMTEwLDEsMTI1LDQsNDAsMSw0LDEwOSwxMDEsMTE2LDk3LDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSw0LDEwOSwxMDEsMTE2LDk3LDExLDk3LDk5LDExNiwxMTEsMTE0LDU4LDEwNCwxMTcsMTA5LDk3LDExMCwxLDExOCwzLDQsMTA3LDEwNSwxMTAsMTAwLDExOSw1LDEwNCwxMTcsMTA5LDk3LDExMCw0LDExMCw5NywxMDksMTAxLDExOSw1LDcyLDExNywxMDksOTcsMTEwLDUsOTksMTExLDEwOCwxMTEsMTE0LDExOSw3LDM1LDk3LDk3LDQ4LDQ4LDQ4LDQ4LDQsMSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsMzUsMzUsMzIsNzEsMTExLDk3LDEwOCwxMTUsMTAsMTAsNzUsMTAxLDEwMSwxMTIsMzIsMTE2LDEwNCwxMDEsMzIsMTE4LDEwNSwxMTUsMTA1LDk4LDEwOCwxMDEsMzIsMTE5LDExNCwxMDUsMTE2LDEwNSwxMTAsMTAzLDQ2LDEwLDM5LDEsNCwxMDAsOTcsMTIxLDExNSwxMCw1MCw0OCw1MCw1NCw0NSw0OCw0OSw0NSw0OCw1MCwxLDM5LDAsMTAxLDM4LDQsMTEwLDEwMSwxMjAsMTE2LDAsMzksMCwxMDEsMzgsOSwxMTUsOTksMTA0LDEwMSwxMDAsMTE3LDEwOCwxMDEsMTAwLDAsMzksMCwxMDEsMzgsNCwxMDAsMTExLDExMCwxMDEsMCwzOSwwLDEwMSwzOCw3LDEwNiwxMTEsMTE3LDExNCwxMTAsOTcsMTA4LDIsNCwwLDEwMSw0Miw2MCw4MiwxMDEsMTA5LDExMSwxMTgsMTAxLDEwMCwzMiwxMDAsOTcsMTIxLDQ1LDEwNiwxMTEsMTE3LDExNCwxMTAsOTcsMTA4LDMyLDExMiwxMTQsMTExLDExNSwxMDEsNTgsMzIsMTExLDEwOSwxMDUsMTE2LDMyLDEwMiwxMTQsMTExLDEwOSwzMiwxMTYsMTA0LDEwMSwzMiwxMDUsMTA5LDExMiwxMTEsMTE0LDExNiwxMDEsMTAwLDMyLDExOSwxMTEsMTE0LDEwNywxMTUsMTEyLDk3LDk5LDEwMSw0NiwzOSwxLDUsOTksOTcsMTE0LDEwMCwxMTUsMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNDgsMSw0MCwwLDEwMSwxMDMsMiwxMDUsMTAwLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDQ4LDM5LDAsMTAxLDEwMyw0LDExNiwxMDEsMTIwLDExNiwyLDQsMCwxMDEsMTA1LDMsMTExLDExMCwxMDEsNDAsMCwxMDEsMTAzLDYsMTExLDExNCwxMDUsMTAzLDEwNSwxMTAsMSwxMTksNiwxMDksOTcsMTE1LDExNiwxMDEsMTE0LDQwLDAsMTAxLDEwMyw2LDk3LDExNywxMTYsMTA0LDExMSwxMTQsMSwxMTksNSwxMDQsMTE3LDEwOSw5NywxMTAsNDAsMCwxMDEsMTAzLDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSwxMyw5OSw5NywxMTQsMTAwLDc2LDExMSw5OSw5NywxMTYsMTA1LDExMSwxMTAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDQ4LDEsMTE5LDE1LDUwLDQ4LDUwLDU0LDQ1LDQ4LDQ5LDQ1LDQ4LDUwLDU4LDExMCwxMDEsMTIwLDExNiw4LDAsMTAxLDM5LDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDQ4LDM5LDEsNSw5OSw5NywxMTQsMTAwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExMCwxMDEsMTIwLDExNiw0NSw0OSwxLDQwLDAsMTAxLDExNCwyLDEwNSwxMDAsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNDksMzksMCwxMDEsMTE0LDQsMTE2LDEwMSwxMjAsMTE2LDIsNCwwLDEwMSwxMTYsMywxMTYsMTE5LDExMSw0MCwwLDEwMSwxMTQsNiwxMTEsMTE0LDEwNSwxMDMsMTA1LDExMCwxLDExOSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsNDAsMCwxMDEsMTE0LDYsOTcsMTE3LDExNiwxMDQsMTExLDExNCwxLDExOSw1LDEwNCwxMTcsMTA5LDk3LDExMCw0MCwwLDEwMSwxMTQsOSw5OSwxMTQsMTAxLDk3LDExNiwxMDEsMTAwLDY1LDExNiwxLDExOSwyMCw1MCw0OCw1MCw1NCw0NSw0OCw1Niw0NSw0OCw0OSw4NCw0OCw0OCw1OCw0OCw0OCw1OCw0OCw0OCw5MCw0MCwxLDEzLDk5LDk3LDExNCwxMDAsNzYsMTExLDk5LDk3LDExNiwxMDUsMTExLDExMCwxMTUsMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNDksMSwxMTksMTUsNTAsNDgsNTAsNTQsNDUsNDgsNDksNDUsNDgsNTAsNTgsMTEwLDEwMSwxMjAsMTE2LDEzNiwxMDEsMTEzLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDQ5LDM5LDEsNSw5OSw5NywxMTQsMTAwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExMCwxMDEsMTIwLDExNiw0NSw1MCwxLDQwLDAsMTAxLDEyNSwyLDEwNSwxMDAsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNTAsMzksMCwxMDEsMTI1LDQsMTE2LDEwMSwxMjAsMTE2LDIsNCwwLDEwMSwxMjcsNSwxMTYsMTA0LDExNCwxMDEsMTAxLDQwLDAsMTAxLDEyNSw2LDExMSwxMTQsMTA1LDEwMywxMDUsMTEwLDEsMTE5LDYsMTA5LDk3LDExNSwxMTYsMTAxLDExNCw0MCwwLDEwMSwxMjUsNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDEyNSw5LDk5LDExNCwxMDEsOTcsMTE2LDEwMSwxMDAsNjUsMTE2LDEsMTE5LDIwLDUwLDQ4LDUwLDU0LDQ1LDQ4LDU2LDQ1LDQ4LDQ5LDg0LDQ4LDQ4LDU4LDQ4LDQ4LDU4LDQ4LDQ4LDkwLDQwLDEsMTMsOTksOTcsMTE0LDEwMCw3NiwxMTEsOTksOTcsMTE2LDEwNSwxMTEsMTEwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExMCwxMDEsMTIwLDExNiw0NSw1MCwxLDExOSwxNSw1MCw0OCw1MCw1NCw0NSw0OCw0OSw0NSw0OCw1MCw1OCwxMTAsMTAxLDEyMCwxMTYsMTM2LDEwMSwxMjQsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNTAsMzksMSw1LDk5LDk3LDExNCwxMDAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUxLDEsNDAsMCwxMDEsMTM4LDEsMiwxMDUsMTAwLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTEwLDEwMSwxMjAsMTE2LDQ1LDUxLDM5LDAsMTAxLDEzOCwxLDQsMTE2LDEwMSwxMjAsMTE2LDIsNCwwLDEwMSwxNDAsMSw0LDEwMiwxMTEsMTE3LDExNCw0MCwwLDEwMSwxMzgsMSw2LDExMSwxMTQsMTA1LDEwMywxMDUsMTEwLDEsMTE5LDYsMTA5LDk3LDExNSwxMTYsMTAxLDExNCw0MCwwLDEwMSwxMzgsMSw2LDk3LDExNywxMTYsMTA0LDExMSwxMTQsMSwxMTksNSwxMDQsMTE3LDEwOSw5NywxMTAsNDAsMCwxMDEsMTM4LDEsOSw5OSwxMTQsMTAxLDk3LDExNiwxMDEsMTAwLDY1LDExNiwxLDExOSwyMCw1MCw0OCw1MCw1NCw0NSw0OCw1Niw0NSw0OCw0OSw4NCw0OCw0OCw1OCw0OCw0OCw1OCw0OCw0OCw5MCw0MCwxLDEzLDk5LDk3LDExNCwxMDAsNzYsMTExLDk5LDk3LDExNiwxMDUsMTExLDExMCwxMTUsMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNTEsMSwxMTksMTUsNTAsNDgsNTAsNTQsNDUsNDgsNDksNDUsNDgsNTAsNTgsMTEwLDEwMSwxMjAsMTE2LDEzNiwxMDEsMTM3LDEsMSwxMTksMTMsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTAsMTAxLDEyMCwxMTYsNDUsNTEsMzksMSw1LDk5LDk3LDExNCwxMDAsMTE1LDE4LDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTE1LDk5LDEwNCwxMDEsMTAwLDExNywxMDgsMTAxLDEwMCw0NSw0OCwxLDQwLDAsMTAxLDE1MCwxLDIsMTA1LDEwMCwxLDExOSwxOCw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExNSw5OSwxMDQsMTAxLDEwMCwxMTcsMTA4LDEwMSwxMDAsNDUsNDgsMzksMCwxMDEsMTUwLDEsNCwxMTYsMTAxLDEyMCwxMTYsMiw0LDAsMTAxLDE1MiwxLDE0LDEwOCw5NywxMTYsMTAxLDExNCwxMCwxMCwzNSwzNSwzMiw2OCwxMTEsMTEwLDEwMSw0MCwwLDEwMSwxNTAsMSw2LDExMSwxMTQsMTA1LDEwMywxMDUsMTEwLDEsMTE5LDYsMTA5LDk3LDExNSwxMTYsMTAxLDExNCw0MCwwLDEwMSwxNTAsMSw2LDk3LDExNywxMTYsMTA0LDExMSwxMTQsMSwxMTksNSwxMDQsMTE3LDEwOSw5NywxMTAsNDAsMCwxMDEsMTUwLDEsOSw5OSwxMTQsMTAxLDk3LDExNiwxMDEsMTAwLDY1LDExNiwxLDExOSwyMCw1MCw0OCw1MCw1NCw0NSw0OCw1Niw0NSw0OCw0OSw4NCw0OCw0OCw1OCw0OCw0OCw1OCw0OCw0OCw5MCw0MCwxLDEzLDk5LDk3LDExNCwxMDAsNzYsMTExLDk5LDk3LDExNiwxMDUsMTExLDExMCwxMTUsMTgsOTksOTcsMTE0LDEwMCw0NSw0OCw0NSwxMTUsOTksMTA0LDEwMSwxMDAsMTE3LDEwOCwxMDEsMTAwLDQ1LDQ4LDEsMTE5LDIwLDUwLDQ4LDUwLDU0LDQ1LDQ4LDQ5LDQ1LDQ4LDUwLDU4LDExNSw5OSwxMDQsMTAxLDEwMCwxMTcsMTA4LDEwMSwxMDAsOCwwLDEwMSw0MCwxLDExOSwxOCw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDExNSw5OSwxMDQsMTAxLDEwMCwxMTcsMTA4LDEwMSwxMDAsNDUsNDgsMzksMSw1LDk5LDk3LDExNCwxMDAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTAwLDExMSwxMTAsMTAxLDQ1LDQ4LDEsNDAsMCwxMDEsMTcyLDEsMiwxMDUsMTAwLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTAwLDExMSwxMTAsMTAxLDQ1LDQ4LDM5LDAsMTAxLDE3MiwxLDQsMTE2LDEwMSwxMjAsMTE2LDIsNCwwLDEwMSwxNzQsMSw4LDEwMiwxMDUsMTEwLDEwNSwxMTUsMTA0LDEwMSwxMDAsNDAsMCwxMDEsMTcyLDEsNiwxMTEsMTE0LDEwNSwxMDMsMTA1LDExMCwxLDExOSw2LDEwOSw5NywxMTUsMTE2LDEwMSwxMTQsNDAsMCwxMDEsMTcyLDEsNiw5NywxMTcsMTE2LDEwNCwxMTEsMTE0LDEsMTE5LDUsMTA0LDExNywxMDksOTcsMTEwLDQwLDAsMTAxLDE3MiwxLDksOTksMTE0LDEwMSw5NywxMTYsMTAxLDEwMCw2NSwxMTYsMSwxMTksMjAsNTAsNDgsNTAsNTQsNDUsNDgsNTYsNDUsNDgsNDksODQsNDgsNDgsNTgsNDgsNDgsNTgsNDgsNDgsOTAsNDAsMSwxMyw5OSw5NywxMTQsMTAwLDc2LDExMSw5OSw5NywxMTYsMTA1LDExMSwxMTAsMTE1LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTAwLDExMSwxMTAsMTAxLDQ1LDQ4LDEsMTE5LDE1LDUwLDQ4LDUwLDU0LDQ1LDQ4LDQ5LDQ1LDQ4LDUwLDU4LDEwMCwxMTEsMTEwLDEwMSw4LDAsMTAxLDQxLDEsMTE5LDEzLDk5LDk3LDExNCwxMDAsNDUsNDgsNDUsMTAwLDExMSwxMTAsMTAxLDQ1LDQ4LDM5LDEsNSw5OSw5NywxMTQsMTAwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OSwxLDQwLDAsMTAxLDE4OCwxLDIsMTA1LDEwMCwxLDExOSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OSwzOSwwLDEwMSwxODgsMSw0LDExNiwxMDEsMTIwLDExNiwyLDQwLDAsMTAxLDE4OCwxLDYsMTExLDExNCwxMDUsMTAzLDEwNSwxMTAsMSwxMTksNiwxMDksOTcsMTE1LDExNiwxMDEsMTE0LDQwLDAsMTAxLDE4OCwxLDYsOTcsMTE3LDExNiwxMDQsMTExLDExNCwxLDExOSw1LDEwNCwxMTcsMTA5LDk3LDExMCw0MCwwLDEwMSwxODgsMSw5LDk5LDExNCwxMDEsOTcsMTE2LDEwMSwxMDAsNjUsMTE2LDEsMTE5LDIwLDUwLDQ4LDUwLDU0LDQ1LDQ4LDU2LDQ1LDQ4LDQ5LDg0LDQ4LDQ4LDU4LDQ4LDQ4LDU4LDQ4LDQ4LDkwLDQwLDEsMTMsOTksOTcsMTE0LDEwMCw3NiwxMTEsOTksOTcsMTE2LDEwNSwxMTEsMTEwLDExNSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OSwxLDExOSwxNSw1MCw0OCw1MCw1NCw0NSw0OCw0OSw0NSw0OCw1MCw1OCwxMDAsMTExLDExMCwxMDEsMTM2LDEwMSwxODcsMSwxLDExOSwxMyw5OSw5NywxMTQsMTAwLDQ1LDQ4LDQ1LDEwMCwxMTEsMTEwLDEwMSw0NSw0OSwzOSwxLDUsOTksOTcsMTE0LDEwMCwxMTUsNiwxMTEsMTE0LDExMiwxMDQsOTcsMTEwLDEsNDAsMCwxMDEsMTk2LDEsMiwxMDUsMTAwLDEsMTE5LDYsMTExLDExNCwxMTIsMTA0LDk3LDExMCwzOSwwLDEwMSwxOTYsMSw0LDExNiwxMDEsMTIwLDExNiwyLDQsMCwxMDEsMTk4LDEsMjUsMTE3LDExMCwxMDIsMTA1LDEwOCwxMDEsMTAwLDMyLDk4LDExMSwxMDAsMTIxLDEwLDEwLDExOSwxMDUsMTE2LDEwNCwzMiwxMDAsMTAxLDExNiw5NywxMDUsMTA4LDQwLDAsMTAxLDE5NiwxLDYsMTExLDExNCwxMDUsMTAzLDEwNSwxMTAsMSwxMTksNiwxMDksOTcsMTE1LDExNiwxMDEsMTE0LDQwLDAsMTAxLDE5NiwxLDYsOTcsMTE3LDExNiwxMDQsMTExLDExNCwxLDExOSw1LDEwNCwxMTcsMTA5LDk3LDExMCw0MCwwLDEwMSwxOTYsMSw5LDk5LDExNCwxMDEsOTcsMTE2LDEwMSwxMDAsNjUsMTE2LDEsMTE5LDIwLDUwLDQ4LDUwLDU0LDQ1LDQ4LDU2LDQ1LDQ4LDQ5LDg0LDQ4LDQ4LDU4LDQ4LDQ4LDU4LDQ4LDQ4LDkwLDBdfV0sImxvY2FsIjp7ImRvbmUuZGV2aWNlIjoie1wiaWRcIjpcIm9sZC1kZXZpY2VcIixcIm5hbWVcIjpcInByaXZhdGUtbmFtZVwifSIsImRvbmUucGVuZGluZy11cGRhdGUuZG9uZS5maXh0dXJlLjEiOiIxOkFBSEtBUUVBQVE9PSIsImRvbmUuc3luYyI6IntcInRva2VuXCI6XCJwcml2YXRlLXRva2VuXCIsXCJyb29tXCI6XCJsZWdhY3ktcm9vbVwifSIsImRvbmUuYWN0b3IiOiJsZWdhY3ktaHVtYW4iLCJkb25lLnBlbmRpbmctdXBkYXRlLmRvbmUuZml4dHVyZS4wIjoiMTpBUUhLQVFDRVpTVVNJV3B2ZFhKdVlXd3RiMjVzZVNEaW5KUUtBQT09In19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-4f4351df21d7ee848112",
+          "file": "rehearsal.spec.ts",
+          "line": 187,
+          "column": 1
+        },
+        {
+          "title": "wrong saved digest and origin refuse before enrollment; source drift refuses first intent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 942,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:00:43.984Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-07b202631c21429e1fce",
+          "file": "rehearsal.spec.ts",
+          "line": 272,
+          "column": 1
+        },
+        {
+          "title": "an aborted first content write offers resume with the original factor and retains source",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1459,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:00:44.933Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-ea2ef3cca12e3a32f490",
+          "file": "rehearsal.spec.ts",
+          "line": 301,
+          "column": 1
+        },
+        {
+          "title": "a retained service-worker registration blocks observation without removing site data",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 90000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 282,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T12:00:46.399Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5a688984f7417d6db555-e82291a55fbfb50234d7",
+          "file": "rehearsal.spec.ts",
+          "line": 333,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T12:00:31.073Z",
+    "duration": 15665.703000000001,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

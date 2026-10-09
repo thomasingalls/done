@@ -1,0 +1,10 @@
+{
+  "harnessRepair": {
+    "source": "tool transcript; initial failed run was not saved to a log",
+    "failure": "new synchronous journal entry exists assertion failed",
+    "cause": "inventory serializes localStorage as an object; the initial test compared its undefined .length",
+    "repair": "compare Object.keys(...).length, then check unchanged IDB inventory",
+    "final": "real renderer-crash reproduction passes"
+  },
+  "productionScope": "New codec only. Existing Account editing/storage implementations were not changed."
+}

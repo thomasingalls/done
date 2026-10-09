@@ -1,0 +1,399 @@
+{
+  "notes": "Exploratory session summaries, not confidence intervals or independent keystroke observations. Different corpora are not pooled.",
+  "rows": [
+    {
+      "phase": "screen",
+      "name": "allocation",
+      "block": "shallow",
+      "sessions": 2,
+      "p50": 31.949999809265137,
+      "p95": 38.15000009536743,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 31.899999618530273,
+          "p95": 40.60000038146973
+        },
+        {
+          "session": "screen-1",
+          "p50": 32,
+          "p95": 35.69999980926514
+        }
+      ]
+    },
+    {
+      "phase": "screen",
+      "name": "allocation",
+      "block": "deeper",
+      "sessions": 2,
+      "p50": 31.200000286102295,
+      "p95": 35.34999990463257,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 31.90000057220459,
+          "p95": 38
+        },
+        {
+          "session": "screen-1",
+          "p50": 30.5,
+          "p95": 32.69999980926514
+        }
+      ]
+    },
+    {
+      "phase": "screen",
+      "name": "baseline",
+      "block": "shallow",
+      "sessions": 2,
+      "p50": 34.90000009536743,
+      "p95": 38.549999713897705,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 33.5,
+          "p95": 38.09999942779541
+        },
+        {
+          "session": "screen-1",
+          "p50": 36.30000019073486,
+          "p95": 39
+        }
+      ]
+    },
+    {
+      "phase": "screen",
+      "name": "baseline",
+      "block": "deeper",
+      "sessions": 2,
+      "p50": 34.09999990463257,
+      "p95": 37.99999952316284,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 32.80000019073486,
+          "p95": 37.29999923706055
+        },
+        {
+          "session": "screen-1",
+          "p50": 35.39999961853027,
+          "p95": 38.69999980926514
+        }
+      ]
+    },
+    {
+      "phase": "screen",
+      "name": "preparation",
+      "block": "shallow",
+      "sessions": 2,
+      "p50": 32.05000019073486,
+      "p95": 38.5,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 32,
+          "p95": 34.19999980926514
+        },
+        {
+          "session": "screen-1",
+          "p50": 32.10000038146973,
+          "p95": 42.80000019073486
+        }
+      ]
+    },
+    {
+      "phase": "screen",
+      "name": "preparation",
+      "block": "deeper",
+      "sessions": 2,
+      "p50": 32.30000019073486,
+      "p95": 36.74999952316284,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 30.100000381469727,
+          "p95": 32.89999961853027
+        },
+        {
+          "session": "screen-1",
+          "p50": 34.5,
+          "p95": 40.59999942779541
+        }
+      ]
+    },
+    {
+      "phase": "screen",
+      "name": "publication",
+      "block": "shallow",
+      "sessions": 2,
+      "p50": 33.450000286102295,
+      "p95": 38.10000038146973,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 34.10000038146973,
+          "p95": 39.5
+        },
+        {
+          "session": "screen-1",
+          "p50": 32.80000019073486,
+          "p95": 36.70000076293945
+        }
+      ]
+    },
+    {
+      "phase": "screen",
+      "name": "publication",
+      "block": "deeper",
+      "sessions": 2,
+      "p50": 31.299999713897705,
+      "p95": 34.64999961853027,
+      "individual": [
+        {
+          "session": "screen-0",
+          "p50": 31.899999618530273,
+          "p95": 35.59999942779541
+        },
+        {
+          "session": "screen-1",
+          "p50": 30.699999809265137,
+          "p95": 33.69999980926514
+        }
+      ]
+    },
+    {
+      "phase": "confirm",
+      "name": "baseline",
+      "block": "shallow",
+      "sessions": 2,
+      "p50": 61.19999980926514,
+      "p95": 89.14999961853027,
+      "individual": [
+        {
+          "session": "confirm-0",
+          "p50": 61.5,
+          "p95": 90.19999980926514
+        },
+        {
+          "session": "confirm-1",
+          "p50": 60.89999961853027,
+          "p95": 88.09999942779541
+        }
+      ]
+    },
+    {
+      "phase": "confirm",
+      "name": "baseline",
+      "block": "deeper",
+      "sessions": 2,
+      "p50": 60.80000019073486,
+      "p95": 74.5499997138977,
+      "individual": [
+        {
+          "session": "confirm-0",
+          "p50": 60.19999980926514,
+          "p95": 70
+        },
+        {
+          "session": "confirm-1",
+          "p50": 61.40000057220459,
+          "p95": 79.09999942779541
+        }
+      ]
+    },
+    {
+      "phase": "confirm",
+      "name": "combined",
+      "block": "shallow",
+      "sessions": 2,
+      "p50": 55.44999980926514,
+      "p95": 81.50000047683716,
+      "individual": [
+        {
+          "session": "confirm-0",
+          "p50": 55.69999980926514,
+          "p95": 80.40000057220459
+        },
+        {
+          "session": "confirm-1",
+          "p50": 55.19999980926514,
+          "p95": 82.60000038146973
+        }
+      ]
+    },
+    {
+      "phase": "confirm",
+      "name": "combined",
+      "block": "deeper",
+      "sessions": 2,
+      "p50": 55.05000019073486,
+      "p95": 70.19999980926514,
+      "individual": [
+        {
+          "session": "confirm-0",
+          "p50": 55.19999980926514,
+          "p95": 68.39999961853027
+        },
+        {
+          "session": "confirm-1",
+          "p50": 54.90000057220459,
+          "p95": 72
+        }
+      ]
+    }
+  ],
+  "contrasts": [
+    {
+      "phase": "screen",
+      "name": "allocation",
+      "block": "shallow",
+      "pairedRatios": [
+        {
+          "session": "screen-0",
+          "p50": 0.9522387945829932,
+          "p95": 1.0656168239165502
+        },
+        {
+          "session": "screen-1",
+          "p50": 0.8815426950925365,
+          "p95": 0.9153846104939779
+        }
+      ],
+      "medianP50GainPercent": 8.310925516223522,
+      "medianP95GainPercent": 0.9499282794735997
+    },
+    {
+      "phase": "screen",
+      "name": "allocation",
+      "block": "deeper",
+      "pairedRatios": [
+        {
+          "session": "screen-0",
+          "p50": 0.9725609873994909,
+          "p95": 1.0187667768701707
+        },
+        {
+          "session": "screen-1",
+          "p50": 0.8615819301883453,
+          "p95": 0.8449612395459614
+        }
+      ],
+      "medianP50GainPercent": 8.292854120608183,
+      "medianP95GainPercent": 6.813599179193397
+    },
+    {
+      "phase": "screen",
+      "name": "preparation",
+      "block": "shallow",
+      "pairedRatios": [
+        {
+          "session": "screen-0",
+          "p50": 0.9552238805970149,
+          "p95": 0.8976378037505934
+        },
+        {
+          "session": "screen-1",
+          "p50": 0.8842975265235085,
+          "p95": 1.097435902326535
+        }
+      ],
+      "medianP50GainPercent": 8.023929643973826,
+      "medianP95GainPercent": 0.24631469614357915
+    },
+    {
+      "phase": "screen",
+      "name": "preparation",
+      "block": "deeper",
+      "pairedRatios": [
+        {
+          "session": "screen-0",
+          "p50": 0.9176829331230365,
+          "p95": 0.8820375413263141
+        },
+        {
+          "session": "screen-1",
+          "p50": 0.9745762816884561,
+          "p95": 1.0490955976200134
+        }
+      ],
+      "medianP50GainPercent": 5.3870392594253635,
+      "medianP95GainPercent": 3.443343052683634
+    },
+    {
+      "phase": "screen",
+      "name": "publication",
+      "block": "shallow",
+      "pairedRatios": [
+        {
+          "session": "screen-0",
+          "p50": 1.01791045914835,
+          "p95": 1.036745422394501
+        },
+        {
+          "session": "screen-1",
+          "p50": 0.9035812677242538,
+          "p95": 0.9410256605881911
+        }
+      ],
+      "medianP50GainPercent": 3.9254136563698028,
+      "medianP95GainPercent": 1.1114458508654002
+    },
+    {
+      "phase": "screen",
+      "name": "publication",
+      "block": "deeper",
+      "pairedRatios": [
+        {
+          "session": "screen-0",
+          "p50": 0.9725609583240546,
+          "p95": 0.9544235966746066
+        },
+        {
+          "session": "screen-1",
+          "p50": 0.8672316423753603,
+          "p95": 0.8708010329549678
+        }
+      ],
+      "medianP50GainPercent": 8.010369965029252,
+      "medianP95GainPercent": 8.738768518521278
+    },
+    {
+      "phase": "confirm",
+      "name": "combined",
+      "block": "shallow",
+      "pairedRatios": [
+        {
+          "session": "confirm-0",
+          "p50": 0.9056910538091892,
+          "p95": 0.8913525581177006
+        },
+        {
+          "session": "confirm-1",
+          "p50": 0.9064039434323613,
+          "p95": 0.9375709525306711
+        }
+      ],
+      "medianP50GainPercent": 9.395250137922472,
+      "medianP95GainPercent": 8.553824467581418
+    },
+    {
+      "phase": "confirm",
+      "name": "combined",
+      "block": "deeper",
+      "pairedRatios": [
+        {
+          "session": "confirm-0",
+          "p50": 0.9169435213315321,
+          "p95": 0.9771428516932896
+        },
+        {
+          "session": "confirm-1",
+          "p50": 0.8941368088041597,
+          "p95": 0.9102402088602228
+        }
+      ],
+      "medianP50GainPercent": 9.445983493215415,
+      "medianP95GainPercent": 5.6308469723243775
+    }
+  ]
+}

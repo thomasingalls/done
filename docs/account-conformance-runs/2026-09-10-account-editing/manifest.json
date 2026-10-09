@@ -1,0 +1,198 @@
+[
+  {
+    "path": "account-admission-regression/control-certification.json",
+    "sha256": "288d9b072707f65cfc6df1a3210a651e671d02b54613fdf80ef0dedd8346a441"
+  },
+  {
+    "path": "account-admission-regression/control-origin.json",
+    "sha256": "b51dffa563cb5e3bbb5b558f0a704644097e25cdd28a1c950c1781ed48769e64"
+  },
+  {
+    "path": "account-admission-regression/control-receipt.json",
+    "sha256": "6d0897c12dab08343383845b9af395186ec4525d088adbd77fd4335234831950"
+  },
+  {
+    "path": "account-admission-regression/generated-native.json",
+    "sha256": "06e0da701d5587fee9d6e43aa1495818a3d860ae660e15c58cb9de80c9b1b34a"
+  },
+  {
+    "path": "account-admission-regression/generated-service.json",
+    "sha256": "d24c566b46328332edbadf2892176b7705ac41943503ce51b910ac7b03b2bc0b"
+  },
+  {
+    "path": "account-admission-regression/results.xml",
+    "sha256": "dcde95c4d2837cc5baac1b636b82080eb1e072ecd6dbf120425d78621e455a59"
+  },
+  {
+    "path": "account-admission-regression/run.log",
+    "sha256": "a0d9576d6b1e59d2ac40c6086c19968b58c3b1d7b7050db52359162510cc1445"
+  },
+  {
+    "path": "account-admission-regression/sources.json",
+    "sha256": "4980e5cb69bf760c061762663abcc7813beb17ba31669ab618e1964d16e1ef15"
+  },
+  {
+    "path": "account-admission-regression/summary.json",
+    "sha256": "85df9259820158024229a127466a32e5ee2897f4ae317f38c3c6926baf0325f0"
+  },
+  {
+    "path": "admission-regression/report.json",
+    "sha256": "56e96db60f68d6fe1a13333c736773e43b56687b778cbc3d06eb02131c431e10"
+  },
+  {
+    "path": "admission-regression/report.md",
+    "sha256": "d0c97e5eea6baa409833db5d523e2e7bec092e8825e1282813b6ace194f14567"
+  },
+  {
+    "path": "admission-regression/run.log",
+    "sha256": "b3c18e98603a98a5f4c37a5397045d44a41d66e17dfbd4de1befcca328820b0d"
+  },
+  {
+    "path": "build.log",
+    "sha256": "f4e1f616dc3f1e960cb7dbc79a640054999475ae9fc906b4cfd63754e6df2f10"
+  },
+  {
+    "path": "control-ancestry.json",
+    "sha256": "c6c9893012af234b527fb42d6497a530ae38769c8a5bd40e39340978169128e0"
+  },
+  {
+    "path": "control-passkey.json",
+    "sha256": "cef6096cf6347629a6e82a754d816b38c4c041b596d1e61c08b986240d1a512e"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "783998c2a6c5b04281c7a0e07715b48c6764c927ab1c4e9e123493dd54068d54"
+  },
+  {
+    "path": "findings/admission-copy-before.log",
+    "sha256": "66c1c92cd4ebbf63fcfe1a090fea64fa358e69c8856782b183968f036bb95079"
+  },
+  {
+    "path": "findings/generated-fixture-after.log",
+    "sha256": "b89ee0000bcc98ba4bc04037874bb7f269bdd198822b817ceb6681d391b04e74"
+  },
+  {
+    "path": "findings/generated-fixture-before.log",
+    "sha256": "03795e9f48f6840b1442fbd76f1374b1f581b2d34a12dd29ae405f99e8011db5"
+  },
+  {
+    "path": "findings/initial-bundle-option-attempt.log",
+    "sha256": "c36853688b80b1072712ce2d644f651fe2a785ae3960f2fcc6d0b17c9ece34bd"
+  },
+  {
+    "path": "findings/initial-module-boundary.log",
+    "sha256": "7f56930da2ba2bc3ff28b0a9c8add6daf87d16f7cda765126453272c8a0cbf7c"
+  },
+  {
+    "path": "findings/module-boundary-repaired.log",
+    "sha256": "6bb245be3f51f7d08b3741c5f9003b56fed693fe991040fa295cc8c17bb43a6b"
+  },
+  {
+    "path": "generated-ancestry.json",
+    "sha256": "114e236a0e24f0264e5eb1f42b802161c53e675aed402130e665771e27ed32f9"
+  },
+  {
+    "path": "generated-native.json",
+    "sha256": "5be0fa26b74e8ad767068cae43b9fa9187c2dacfad2f569b4554733ac0d47f77"
+  },
+  {
+    "path": "handoff-regression/control-credential.json",
+    "sha256": "52f22924fd119bfc14867d3fcecb4795f89b8be5096eb93d761197c25b8a21bc"
+  },
+  {
+    "path": "handoff-regression/control-passkey.json",
+    "sha256": "ef2b42a1b12472ec8ae2fb944d1598b9da91587de9a58e0b2365e04c71af1688"
+  },
+  {
+    "path": "handoff-regression/generated-der.json",
+    "sha256": "7523b42e11052bf5991d6349c97038f9c7f9ed616d37ce4354514d0a64c29120"
+  },
+  {
+    "path": "handoff-regression/generated-native.json",
+    "sha256": "41246294576824dbd1fb90f520e76c1aaa16468bb2e1b5343fe4ed564037af4f"
+  },
+  {
+    "path": "handoff-regression/generated-service.json",
+    "sha256": "1250b4e20e89049f4a676f414290497cb37e18bfc9149a2e16966ac3823d64f7"
+  },
+  {
+    "path": "handoff-regression/results.xml",
+    "sha256": "0a0099e97815a2bb6ef26d0b1d9242b60ab2f682321bf59c92e00fbc818484ce"
+  },
+  {
+    "path": "handoff-regression/run.log",
+    "sha256": "e2ee7045aacf2377629c1f80bb3f42708cbd2ee6e05d441c9f95466b4b0a4882"
+  },
+  {
+    "path": "handoff-regression/sources.json",
+    "sha256": "db18f492c1680c54589e22e18a383bec3e302e0c5b8d1ff5072299ca97552218"
+  },
+  {
+    "path": "handoff-regression/summary.json",
+    "sha256": "939560c13924450add7921ae5e515bc7ac45a9ddc7bdd885bcc5f90fe8351b29"
+  },
+  {
+    "path": "local-genesis-regression/report.json",
+    "sha256": "74c97368143d9b55702587df03757de3f80ad90a0158cb27245715bbd162c4ac"
+  },
+  {
+    "path": "local-genesis-regression/report.md",
+    "sha256": "e290dd9db0cf10dd8c1afb6b105137dd935552d4aa9815c0740f6489b9a1b2ea"
+  },
+  {
+    "path": "local-genesis-regression/run.log",
+    "sha256": "4e5a6e8408e3cfc20c4a221560c97823943c5cddbdb1c872b54f609c781452ed"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "43191ac04b8afa527525d4b537a8319c8d8bb63767a9e3b55887fd5b73d0449d"
+  },
+  {
+    "path": "run.log",
+    "sha256": "0b429068ccac57be9b8f448919366b9e3779ac2c51e558c31c6e30627c139e26"
+  },
+  {
+    "path": "runs.json",
+    "sha256": "57d7bfe2b14f035504ef023a0d338c38cbf8acf4a9df980ff62412074d169c27"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "edb56816224c5661cc42ef76f9e918f2f86601eaf998b597993161946a52fa93"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "431c564280b7d625ef3788049c854c7239595d6d6ff9011c07c7c2472a5b6f8b"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "3a63a924ef6ed01d7f5aa3808bb127003821883f75f87ba5fa6ffff182c18b5f"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "9ccd1105237e23a906acb412fbaf93f2d12e71c581f2a5cdc0656e13f94ad742"
+  },
+  {
+    "path": "workspace-regression/report.json",
+    "sha256": "b2264857460cfc9e4da2c604f48db0619c8dc666e8bceafce42a054224bf5f9e"
+  },
+  {
+    "path": "workspace-regression/report.md",
+    "sha256": "8c107739f30bd35a3260286e239aa788219e8b1e3950b91510be64926bda2ea2"
+  },
+  {
+    "path": "workspace-regression/run.log",
+    "sha256": "bd1b15bdb7b6efc53d863476ef77883bfd5f56a29e10f148298c0e940b988d99"
+  },
+  {
+    "path": "writer-regression/report.json",
+    "sha256": "2dc42d696c520296f91b719eaa757325df668c6ee8526cc97a4149ec8a42a179"
+  },
+  {
+    "path": "writer-regression/report.md",
+    "sha256": "9e75760455cefbf9a774682e5ba1ebf015e0d6f76428edeb859e2337ed9d345d"
+  },
+  {
+    "path": "writer-regression/run.log",
+    "sha256": "b6a00b86b8c0f0dec01e5b0cb6f87383930d5e606c54e42bb74de6b1b6c2a63a"
+  }
+]

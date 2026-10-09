@@ -1,0 +1,20 @@
+{
+  "field": "sv",
+  "wrong": {
+    "sv": "00",
+    "ds": "01d590a52d032c014e01500100"
+  },
+  "actual": {
+    "sv": "01d590a52d5c",
+    "ds": "01d590a52d032c014e01500100"
+  },
+  "serviceIssued": true,
+  "validSignatures": true,
+  "sourceUnchanged": true,
+  "refused": [
+    "lost-begin",
+    "challenge-receipt",
+    "cold-retained"
+  ],
+  "omissionReturnedReceipt": true
+}

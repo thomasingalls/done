@@ -1,0 +1,4 @@
+{
+  "installedWait": "returned false as successful result",
+  "correctedWait": "waits for true, rejects persistent false"
+}

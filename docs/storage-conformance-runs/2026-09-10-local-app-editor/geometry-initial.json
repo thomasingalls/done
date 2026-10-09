@@ -1,0 +1,3708 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.1/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.config.ts",
+      "--workers=2",
+      "--max-failures=5"
+    ],
+    "configFile": "/Users/thomasingalls/.codex/worktrees/c030/done/playwright.config.ts",
+    "rootDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 5,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/playwright",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "android",
+        "name": "android",
+        "testDir": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/geometry/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 2,
+    "webServer": {
+      "command": "pnpm build && pnpm exec vite preview --port 4173 --strictPort",
+      "url": "http://localhost:4173",
+      "reuseExistingServer": true,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "breadcrumbs.spec.ts",
+      "file": "breadcrumbs.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "the Goals breadcrumb follows the scroll edge rather than the cursor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1055,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:06:51.779Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ad5ff8109e2ffb0e2c58-b8933d93dc97288f54d4",
+          "file": "breadcrumbs.spec.ts",
+          "line": 24,
+          "column": 1
+        },
+        {
+          "title": "the outline navigates without moving the editor selection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 1149,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:06:51.782Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ad5ff8109e2ffb0e2c58-bad4529717524bec46cc",
+          "file": "breadcrumbs.spec.ts",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "Escape closes the outline without closing the narrow Goals surface",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 752,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:06:53.207Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ad5ff8109e2ffb0e2c58-43196da4f28cb6cfdf2c",
+          "file": "breadcrumbs.spec.ts",
+          "line": 106,
+          "column": 1
+        },
+        {
+          "title": "the Goals breadcrumb follows the scroll edge rather than the cursor",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 535,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:07:07.309Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ad5ff8109e2ffb0e2c58-216ac7a1f19d79705db3",
+          "file": "breadcrumbs.spec.ts",
+          "line": 24,
+          "column": 1
+        },
+        {
+          "title": "the outline navigates without moving the editor selection",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 610,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:07:08.065Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ad5ff8109e2ffb0e2c58-2fce1fec6c61084de43b",
+          "file": "breadcrumbs.spec.ts",
+          "line": 55,
+          "column": 1
+        },
+        {
+          "title": "Escape closes the outline without closing the narrow Goals surface",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 717,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:07:08.682Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "ad5ff8109e2ffb0e2c58-f91abd31427a3437691e",
+          "file": "breadcrumbs.spec.ts",
+          "line": 106,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "cards.spec.ts",
+      "file": "cards.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "static render and mounted editor",
+          "file": "cards.spec.ts",
+          "line": 74,
+          "column": 6,
+          "specs": [
+            {
+              "title": "produce identical geometry for every supported construct",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1559,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:53.302Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bcd05545df9e4f3c3981-5ebd96f7a10c43d18f60",
+              "file": "cards.spec.ts",
+              "line": 75,
+              "column": 3
+            },
+            {
+              "title": "produce identical geometry for every supported construct",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1438,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:09.409Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bcd05545df9e4f3c3981-aee4d9e47aad5b52f1b8",
+              "file": "cards.spec.ts",
+              "line": 75,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "the guard on Done cards",
+          "file": "cards.spec.ts",
+          "line": 115,
+          "column": 6,
+          "specs": [
+            {
+              "title": "does not become editable by tapping it (PRD §5)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 514,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:53.970Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bcd05545df9e4f3c3981-5e408f7c95781d621d90",
+              "file": "cards.spec.ts",
+              "line": 116,
+              "column": 3
+            },
+            {
+              "title": "does not become editable by tapping it (PRD §5)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 486,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:10.853Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bcd05545df9e4f3c3981-90ceddc2475600b391bd",
+              "file": "cards.spec.ts",
+              "line": 116,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "the three-item cap",
+          "file": "cards.spec.ts",
+          "line": 131,
+          "column": 6,
+          "specs": [
+            {
+              "title": "is visible before it is hit, and stops at three (PRD §3)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 500,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:54.490Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bcd05545df9e4f3c3981-1384ea38f480ba65cdde",
+              "file": "cards.spec.ts",
+              "line": 132,
+              "column": 3
+            },
+            {
+              "title": "is visible before it is hit, and stops at three (PRD §3)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 484,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:11.344Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "bcd05545df9e4f3c3981-84bf13551fa911be2435",
+              "file": "cards.spec.ts",
+              "line": 132,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "layout.spec.ts",
+      "file": "layout.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "layout",
+          "file": "layout.spec.ts",
+          "line": 25,
+          "column": 6,
+          "specs": [
+            {
+              "title": "the document never scrolls, however much is in it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 589,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:54.872Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-41d04742f0a7171547d6",
+              "file": "layout.spec.ts",
+              "line": 26,
+              "column": 3
+            },
+            {
+              "title": "the day panel stays inside the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 594,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:55.000Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-8826dee2f77dd0317e74",
+              "file": "layout.spec.ts",
+              "line": 38,
+              "column": 3
+            },
+            {
+              "title": "only the day body scrolls, and the header stays put",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 607,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:55.469Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-ad28585505bd6145a366",
+              "file": "layout.spec.ts",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "the four bands are in the order PRD §7.4 gives them",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 427,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:55.600Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-98ce1312f48b87d88d49",
+              "file": "layout.spec.ts",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "the master list fills the Goals column rather than collapsing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 430,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:56.048Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-5fce62a3b3f7919d4393",
+              "file": "layout.spec.ts",
+              "line": 88,
+              "column": 3
+            },
+            {
+              "title": "Goals is wider than Today whenever the two are panels",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 633,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:56.083Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-07325f78b268df4cfd3d",
+              "file": "layout.spec.ts",
+              "line": 117,
+              "column": 3
+            },
+            {
+              "title": "a short day has no phantom scrolling space",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 433,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:56.485Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-7ff5cff48391fd8ebcad",
+              "file": "layout.spec.ts",
+              "line": 132,
+              "column": 3
+            },
+            {
+              "title": "the menu is a panel at wide and behind a trigger below it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 805,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:56.722Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-03432d1dedef526f1f9a",
+              "file": "layout.spec.ts",
+              "line": 147,
+              "column": 3
+            },
+            {
+              "title": "Goals sits beside Today from medium up, and off-screen below it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 802,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:56.924Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-0690593bc64543ed94a4",
+              "file": "layout.spec.ts",
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "the trigger opens and closes the menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 833,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:57.533Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-542da72da6d3d9b02b0b",
+              "file": "layout.spec.ts",
+              "line": 181,
+              "column": 3
+            },
+            {
+              "title": "the day reads Next, Done, Scheduled, in that order",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 530,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:57.736Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-6c88da77629b90531afd",
+              "file": "layout.spec.ts",
+              "line": 196,
+              "column": 3
+            },
+            {
+              "title": "a peek is a click target that moves a day (PRD §7.3)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 447,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:58.271Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-2f43074923740ee5d552",
+              "file": "layout.spec.ts",
+              "line": 221,
+              "column": 3
+            },
+            {
+              "title": "an adjacent day is fully laid out before it moves into focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 454,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:58.372Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-3cc651dde5136b52e93c",
+              "file": "layout.spec.ts",
+              "line": 230,
+              "column": 3
+            },
+            {
+              "title": "the document never scrolls, however much is in it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 602,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:11.839Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-6c78389ee041e92c1c0a",
+              "file": "layout.spec.ts",
+              "line": 26,
+              "column": 3
+            },
+            {
+              "title": "the day panel stays inside the viewport",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 630,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:12.179Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-40602ffbbe5c194124b1",
+              "file": "layout.spec.ts",
+              "line": 38,
+              "column": 3
+            },
+            {
+              "title": "only the day body scrolls, and the header stays put",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 654,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:12.448Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-e5f4070d56d1efad447c",
+              "file": "layout.spec.ts",
+              "line": 49,
+              "column": 3
+            },
+            {
+              "title": "the four bands are in the order PRD §7.4 gives them",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 424,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:13.040Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-c9580ac23456e7666db2",
+              "file": "layout.spec.ts",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "the master list fills the Goals column rather than collapsing",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 451,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:13.110Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-af83862161d70509aa7b",
+              "file": "layout.spec.ts",
+              "line": 88,
+              "column": 3
+            },
+            {
+              "title": "Goals is wider than Today whenever the two are panels",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 668,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:13.473Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-9dc89ca461eec162533f",
+              "file": "layout.spec.ts",
+              "line": 117,
+              "column": 3
+            },
+            {
+              "title": "a short day has no phantom scrolling space",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 457,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:13.570Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-2364e55e9d5f14b0653d",
+              "file": "layout.spec.ts",
+              "line": 132,
+              "column": 3
+            },
+            {
+              "title": "the menu is a panel at wide and behind a trigger below it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 846,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:14.034Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-a0c0ffebf978c7940af5",
+              "file": "layout.spec.ts",
+              "line": 147,
+              "column": 3
+            },
+            {
+              "title": "Goals sits beside Today from medium up, and off-screen below it",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 825,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:14.148Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-4141fc7daa64dc2c3736",
+              "file": "layout.spec.ts",
+              "line": 164,
+              "column": 3
+            },
+            {
+              "title": "the trigger opens and closes the menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 832,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:14.886Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-a96320edff1aaac8dcba",
+              "file": "layout.spec.ts",
+              "line": 181,
+              "column": 3
+            },
+            {
+              "title": "the day reads Next, Done, Scheduled, in that order",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 546,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:14.981Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-c8a197f5231e5b5bd3b5",
+              "file": "layout.spec.ts",
+              "line": 196,
+              "column": 3
+            },
+            {
+              "title": "a peek is a click target that moves a day (PRD §7.3)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 442,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:15.535Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-2d9e6e9b8debae098eff",
+              "file": "layout.spec.ts",
+              "line": 221,
+              "column": 3
+            },
+            {
+              "title": "an adjacent day is fully laid out before it moves into focus",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 445,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:15.723Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "9f98fd8c8d1538f5ebbb-e3be55f73cb3e764acbc",
+              "file": "layout.spec.ts",
+              "line": 230,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "lineHeight.spec.ts",
+      "file": "lineHeight.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "empty editor geometry",
+          "file": "lineHeight.spec.ts",
+          "line": 78,
+          "column": 6,
+          "specs": [
+            {
+              "title": "the native caret matches each placeholder line",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 471,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:58.729Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-0e15ceb44f0977d4e5cb",
+              "file": "lineHeight.spec.ts",
+              "line": 79,
+              "column": 3
+            },
+            {
+              "title": "the native caret matches each placeholder line",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 744,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:15.990Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-acda320b95cf39dca98d",
+              "file": "lineHeight.spec.ts",
+              "line": 79,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "live preview geometry",
+          "file": "lineHeight.spec.ts",
+          "line": 117,
+          "column": 6,
+          "specs": [
+            {
+              "title": "no line changes height as the cursor moves through the document",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 717,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:58.836Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-425322d8d53130f3b778",
+              "file": "lineHeight.spec.ts",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "no line moves vertically as the cursor moves through the document",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 760,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:59.206Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-da68e1c752c214bbc762",
+              "file": "lineHeight.spec.ts",
+              "line": 138,
+              "column": 3
+            },
+            {
+              "title": "the task checkbox does not grow its line",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 486,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:59.561Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-9b7d371782f37274b52b",
+              "file": "lineHeight.spec.ts",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "the horizontal rule keeps the height of an ordinary line",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 492,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:06:59.976Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-c18021ab6d982b25ba56",
+              "file": "lineHeight.spec.ts",
+              "line": 160,
+              "column": 3
+            },
+            {
+              "title": "syntax really is hidden when the cursor is away, and shown when it is not",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 509,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:00.056Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-6fd34556aedc86783010",
+              "file": "lineHeight.spec.ts",
+              "line": 167,
+              "column": 3
+            },
+            {
+              "title": "no line changes height as the cursor moves through the document",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 998,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:16.178Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-116d816227118735c761",
+              "file": "lineHeight.spec.ts",
+              "line": 120,
+              "column": 3
+            },
+            {
+              "title": "no line moves vertically as the cursor moves through the document",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 995,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:16.739Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-80185495cdd388f3c0be",
+              "file": "lineHeight.spec.ts",
+              "line": 138,
+              "column": 3
+            },
+            {
+              "title": "the task checkbox does not grow its line",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 741,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:17.183Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-8cf4111d39e361dee1cc",
+              "file": "lineHeight.spec.ts",
+              "line": 150,
+              "column": 3
+            },
+            {
+              "title": "the horizontal rule keeps the height of an ordinary line",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 739,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:17.741Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-fb92593fe54da2f88f7d",
+              "file": "lineHeight.spec.ts",
+              "line": 160,
+              "column": 3
+            },
+            {
+              "title": "syntax really is hidden when the cursor is away, and shown when it is not",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 760,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:17.930Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "0fc0fea766d895034f88-503442661a094d98491d",
+              "file": "lineHeight.spec.ts",
+              "line": 167,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "reorder.spec.ts",
+      "file": "reorder.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Done-card reordering",
+          "file": "reorder.spec.ts",
+          "line": 45,
+          "column": 6,
+          "specs": [
+            {
+              "title": "a mouse drag on the grip reorders cards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 562,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:00.481Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-6ba7a51213a8c6b31759",
+              "file": "reorder.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "a touch long-press then drag reorders cards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Long-press activation is exercised in the Android project.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                        "line": 71,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 45,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:00.574Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Long-press activation is exercised in the Android project.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                            "line": 71,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-67991944a12c1e206673",
+              "file": "reorder.spec.ts",
+              "line": 70,
+              "column": 3
+            },
+            {
+              "title": "movement before the hold remains day navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "The touch arbitration path is exercised in the Android project.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                        "line": 85,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 54,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:00.626Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "The touch arbitration path is exercised in the Android project.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                            "line": 85,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-314928b99a2744e912f2",
+              "file": "reorder.spec.ts",
+              "line": 84,
+              "column": 3
+            },
+            {
+              "title": "a stationary touch long-press still unlocks Done",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Long-press activation is exercised in the Android project.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                        "line": 115,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 49,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:00.686Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Long-press activation is exercised in the Android project.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                            "line": 115,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-de9180a1478a9c54a0cb",
+              "file": "reorder.spec.ts",
+              "line": 114,
+              "column": 3
+            },
+            {
+              "title": "a mouse drag on the grip reorders cards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "The mouse grip is the desktop activation path.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                        "line": 47,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 48,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:18.492Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "The mouse grip is the desktop activation path.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/reorder.spec.ts",
+                            "line": 47,
+                            "column": 10
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-d4576305ede5d2290ea5",
+              "file": "reorder.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "a touch long-press then drag reorders cards",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 960,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:18.545Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-cd1caaf0f82812af768e",
+              "file": "reorder.spec.ts",
+              "line": 70,
+              "column": 3
+            },
+            {
+              "title": "movement before the hold remains day navigation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 762,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:18.704Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-9afa408173d721dd268b",
+              "file": "reorder.spec.ts",
+              "line": 84,
+              "column": 3
+            },
+            {
+              "title": "a stationary touch long-press still unlocks Done",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 949,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:19.475Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "f32453f85162ba3c8d77-0fe9285a8dcafe73e986",
+              "file": "reorder.spec.ts",
+              "line": 114,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "sync.spec.ts",
+      "file": "sync.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Local editing and reload work with no relay or plaintext identity cache",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 622,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:07:00.746Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0cc518b4e81cfdbffc61-36e75c5923ad7ca690eb",
+          "file": "sync.spec.ts",
+          "line": 5,
+          "column": 1
+        },
+        {
+          "title": "Local editing and reload work with no relay or plaintext identity cache",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 1,
+                  "status": "passed",
+                  "duration": 657,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-10T09:07:19.516Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0cc518b4e81cfdbffc61-2333c56ccbc55f80e7f3",
+          "file": "sync.spec.ts",
+          "line": 5,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "wheel.spec.ts",
+      "file": "wheel.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "desktop wheel navigation",
+          "file": "wheel.spec.ts",
+          "line": 45,
+          "column": 6,
+          "specs": [
+            {
+              "title": "an arbitrarily large wheel moves exactly one day",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 483,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:01.065Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-1ab33c350e7bab25d75f",
+              "file": "wheel.spec.ts",
+              "line": 48,
+              "column": 3
+            },
+            {
+              "title": "a fresh gesture can immediately move one more day",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 516,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:01.384Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-3dcac4a3296d7c70278d",
+              "file": "wheel.spec.ts",
+              "line": 56,
+              "column": 3
+            },
+            {
+              "title": "a large upward wheel moves exactly one day into the past",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 481,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:01.557Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-2bc1da504c451fc709a5",
+              "file": "wheel.spec.ts",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "a wheel stays within a long day while it has scroll room",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 592,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:01.906Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-6a5cacf3251452eb2ffd",
+              "file": "wheel.spec.ts",
+              "line": 74,
+              "column": 3
+            },
+            {
+              "title": "a fresh wheel at the end of a long day changes dates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 522,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:02.047Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-198d07fb6d5625c2fdc7",
+              "file": "wheel.spec.ts",
+              "line": 83,
+              "column": 3
+            },
+            {
+              "title": "an arbitrarily large wheel moves exactly one day",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mouse-wheel navigation is a desktop interaction.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                        "line": 46,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.193Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mouse-wheel navigation is a desktop interaction.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                            "line": 46,
+                            "column": 8
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-38b98a30dca0686d2144",
+              "file": "wheel.spec.ts",
+              "line": 48,
+              "column": 3
+            },
+            {
+              "title": "a fresh gesture can immediately move one more day",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mouse-wheel navigation is a desktop interaction.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                        "line": 46,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.199Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mouse-wheel navigation is a desktop interaction.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                            "line": 46,
+                            "column": 8
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-e04bfde12f01b2143eee",
+              "file": "wheel.spec.ts",
+              "line": 56,
+              "column": 3
+            },
+            {
+              "title": "a large upward wheel moves exactly one day into the past",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mouse-wheel navigation is a desktop interaction.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                        "line": 46,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.204Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mouse-wheel navigation is a desktop interaction.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                            "line": 46,
+                            "column": 8
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-74da0f37510a4c4a9aba",
+              "file": "wheel.spec.ts",
+              "line": 66,
+              "column": 3
+            },
+            {
+              "title": "a wheel stays within a long day while it has scroll room",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mouse-wheel navigation is a desktop interaction.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                        "line": 46,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.208Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mouse-wheel navigation is a desktop interaction.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                            "line": 46,
+                            "column": 8
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-c3686f6eb6047f0842c6",
+              "file": "wheel.spec.ts",
+              "line": 74,
+              "column": 3
+            },
+            {
+              "title": "a fresh wheel at the end of a long day changes dates",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mouse-wheel navigation is a desktop interaction.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                        "line": 46,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.213Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mouse-wheel navigation is a desktop interaction.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                            "line": 46,
+                            "column": 8
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-6c883e8338accfada931",
+              "file": "wheel.spec.ts",
+              "line": 83,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "day scroll reset",
+          "file": "wheel.spec.ts",
+          "line": 93,
+          "column": 6,
+          "specs": [
+            {
+              "title": "leaving a day resets its within-day scroll position",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 535,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:02.505Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-34c16a79f296fafc1962",
+              "file": "wheel.spec.ts",
+              "line": 96,
+              "column": 3
+            },
+            {
+              "title": "leaving a day resets its within-day scroll position",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Mouse-wheel navigation is a desktop interaction.",
+                      "location": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                        "line": 94,
+                        "column": 8
+                      }
+                    }
+                  ],
+                  "expectedStatus": "skipped",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "skipped",
+                      "duration": 0,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.217Z",
+                      "annotations": [
+                        {
+                          "type": "skip",
+                          "description": "Mouse-wheel navigation is a desktop interaction.",
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/wheel.spec.ts",
+                            "line": 94,
+                            "column": 8
+                          }
+                        }
+                      ],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "skipped"
+                }
+              ],
+              "id": "7740f9231b2f57161f87-c5090c0e1a562dca26e1",
+              "file": "wheel.spec.ts",
+              "line": 96,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "workflow.spec.ts",
+      "file": "workflow.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Phase 2 workflow",
+          "file": "workflow.spec.ts",
+          "line": 45,
+          "column": 6,
+          "specs": [
+            {
+              "title": "touch gestures bind after the asynchronous store opens",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 459,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:02.583Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-a6042963602176a1e6ae",
+              "file": "workflow.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "a canceled touch drag snaps back instead of remaining in progress",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 434,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:03.052Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-ead75c47ef101f2983b5",
+              "file": "workflow.spec.ts",
+              "line": 75,
+              "column": 3
+            },
+            {
+              "title": "Goals swipes own the editor surface and restore its caret after reopening",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1588,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:03.049Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-0696fdfb74493d8e053d",
+              "file": "workflow.spec.ts",
+              "line": 102,
+              "column": 3
+            },
+            {
+              "title": "a vertical swipe from the day body navigates instead of being cancelled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 809,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:03.495Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-1667040f7c13b489fbab",
+              "file": "workflow.spec.ts",
+              "line": 139,
+              "column": 3
+            },
+            {
+              "title": "a long day reserves only directions with native scroll room",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 637,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:04.311Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-9533066d645006260b3b",
+              "file": "workflow.spec.ts",
+              "line": 155,
+              "column": 3
+            },
+            {
+              "title": "direct navigation cancels an unfinished day transition",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 720,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:04.644Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-61506c6bac3b81e01ff9",
+              "file": "workflow.spec.ts",
+              "line": 191,
+              "column": 3
+            },
+            {
+              "title": "an install prompt is exposed in the menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 434,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:04.955Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-3f41cf2927b0984b03c6",
+              "file": "workflow.spec.ts",
+              "line": 202,
+              "column": 3
+            },
+            {
+              "title": "merging a card keeps focus at the join point",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 518,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:05.371Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-0af0c5c30ffafb03fbaf",
+              "file": "workflow.spec.ts",
+              "line": 222,
+              "column": 3
+            },
+            {
+              "title": "safety-deferred cards remain visible after the compaction threshold",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 676,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:05.394Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-92b02981d405e79a3526",
+              "file": "workflow.spec.ts",
+              "line": 249,
+              "column": 3
+            },
+            {
+              "title": "the device name is editable, since it is what the other device sees",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1055,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:05.895Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-1ab1a4363e008deb8654",
+              "file": "workflow.spec.ts",
+              "line": 270,
+              "column": 3
+            },
+            {
+              "title": "actor and rollover settings are editable and persist locally",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "desktop",
+                  "projectName": "desktop",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5776,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Phase Two Tester', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Phase Two Tester', { exact: true })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Phase Two Tester', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Phase Two Tester', { exact: true })\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts:293:71",
+                        "location": {
+                          "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts",
+                          "column": 71,
+                          "line": 293
+                        },
+                        "snippet": "  291 |     await page.getByRole('button', { name: 'Save preferences' }).click();\n  292 |     await expect(page.getByText('Preferences saved.')).toBeVisible();\n> 293 |     await expect(page.getByText('Phase Two Tester', { exact: true })).toBeVisible();\n      |                                                                       ^\n  294 |\n  295 |     await page.waitForTimeout(100);\n  296 |     await reloadApp(page);"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts",
+                            "column": 71,
+                            "line": 293
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Phase Two Tester', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Phase Two Tester', { exact: true })\u001b[22m\n\n\n  291 |     await page.getByRole('button', { name: 'Save preferences' }).click();\n  292 |     await expect(page.getByText('Preferences saved.')).toBeVisible();\n> 293 |     await expect(page.getByText('Phase Two Tester', { exact: true })).toBeVisible();\n      |                                                                       ^\n  294 |\n  295 |     await page.waitForTimeout(100);\n  296 |     await reloadApp(page);\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts:293:71"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:06.076Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/playwright/workflow-Phase-2-workflow--230b0-ditable-and-persist-locally-desktop/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts",
+                        "column": 71,
+                        "line": 293
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-86e07b3a108a459ae336",
+              "file": "workflow.spec.ts",
+              "line": 284,
+              "column": 3
+            },
+            {
+              "title": "touch gestures bind after the asynchronous store opens",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 443,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.226Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-b6c581f9c54f84e7936f",
+              "file": "workflow.spec.ts",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "a canceled touch drag snaps back instead of remaining in progress",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 441,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.435Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-62c529ae766ecc23884b",
+              "file": "workflow.spec.ts",
+              "line": 75,
+              "column": 3
+            },
+            {
+              "title": "Goals swipes own the editor surface and restore its caret after reopening",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1590,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.674Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-f549ae83a0aa45da74eb",
+              "file": "workflow.spec.ts",
+              "line": 102,
+              "column": 3
+            },
+            {
+              "title": "a vertical swipe from the day body navigates instead of being cancelled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 843,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:20.887Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-5d5c9c7a742fec648fdc",
+              "file": "workflow.spec.ts",
+              "line": 139,
+              "column": 3
+            },
+            {
+              "title": "a long day reserves only directions with native scroll room",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 597,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:21.737Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-796edc8ce3a106720f57",
+              "file": "workflow.spec.ts",
+              "line": 155,
+              "column": 3
+            },
+            {
+              "title": "direct navigation cancels an unfinished day transition",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 722,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:22.270Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-93b66530367b5fa429a6",
+              "file": "workflow.spec.ts",
+              "line": 191,
+              "column": 3
+            },
+            {
+              "title": "an install prompt is exposed in the menu",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 444,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:22.338Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-ad8d78b062575b5ab552",
+              "file": "workflow.spec.ts",
+              "line": 202,
+              "column": 3
+            },
+            {
+              "title": "merging a card keeps focus at the join point",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 486,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:22.788Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-ceb77da05b8278990912",
+              "file": "workflow.spec.ts",
+              "line": 222,
+              "column": 3
+            },
+            {
+              "title": "safety-deferred cards remain visible after the compaction threshold",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 976,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:22.998Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-23af2cf94cf4a51689b9",
+              "file": "workflow.spec.ts",
+              "line": 249,
+              "column": 3
+            },
+            {
+              "title": "the device name is editable, since it is what the other device sees",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1080,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:23.280Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-a563a30fb4f5602e3596",
+              "file": "workflow.spec.ts",
+              "line": 270,
+              "column": 3
+            },
+            {
+              "title": "actor and rollover settings are editable and persist locally",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "android",
+                  "projectName": "android",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5740,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Phase Two Tester', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Phase Two Tester', { exact: true })\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Phase Two Tester', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Phase Two Tester', { exact: true })\u001b[22m\n\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts:293:71",
+                        "location": {
+                          "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts",
+                          "column": 71,
+                          "line": 293
+                        },
+                        "snippet": "  291 |     await page.getByRole('button', { name: 'Save preferences' }).click();\n  292 |     await expect(page.getByText('Preferences saved.')).toBeVisible();\n> 293 |     await expect(page.getByText('Phase Two Tester', { exact: true })).toBeVisible();\n      |                                                                       ^\n  294 |\n  295 |     await page.waitForTimeout(100);\n  296 |     await reloadApp(page);"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts",
+                            "column": 71,
+                            "line": 293
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Phase Two Tester', { exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Phase Two Tester', { exact: true })\u001b[22m\n\n\n  291 |     await page.getByRole('button', { name: 'Save preferences' }).click();\n  292 |     await expect(page.getByText('Preferences saved.')).toBeVisible();\n> 293 |     await expect(page.getByText('Phase Two Tester', { exact: true })).toBeVisible();\n      |                                                                       ^\n  294 |\n  295 |     await page.waitForTimeout(100);\n  296 |     await reloadApp(page);\n    at /Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts:293:71"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-10T09:07:23.980Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/playwright/workflow-Phase-2-workflow--230b0-ditable-and-persist-locally-android/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/thomasingalls/.codex/worktrees/c030/done/test/geometry/workflow.spec.ts",
+                        "column": 71,
+                        "line": 293
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "c601ceb5ecfc8efa4a14-e7233748e8655709b526",
+              "file": "workflow.spec.ts",
+              "line": 284,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-10T09:06:51.011Z",
+    "duration": 38757.170000000006,
+    "expected": 82,
+    "skipped": 10,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

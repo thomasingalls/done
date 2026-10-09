@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="24" failures="0" errors="0" time="1.831892958">
+    <testsuite name="test/accountDelivery.test.ts" timestamp="2026-09-11T23:08:16.205Z" hostname="Thomass-MacBook-Pro.local" tests="12" failures="0" errors="0" skipped="0" time="0.513184125">
+        <testcase classname="test/accountDelivery.test.ts" name="empty delivery has no retained evidence or publication restriction" time="0.001174208">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="500 generated histories compare full state at every forward, reverse and shuffled prefix" time="0.507328083">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="contradictory claims have no consistent outcome assignment: {&quot;kind&quot;:&quot;refused&quot;,&quot;position&quot;:1,&quot;final&quot;:false,&quot;id&quot;:&quot;r1&quot;}" time="0.000244708">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="contradictory claims have no consistent outcome assignment: {&quot;kind&quot;:&quot;accepted&quot;,&quot;position&quot;:2,&quot;final&quot;:false,&quot;id&quot;:&quot;&quot;}" time="0.000170625">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="contradictory claims have no consistent outcome assignment: {&quot;kind&quot;:&quot;accepted&quot;,&quot;position&quot;:1,&quot;final&quot;:true,&quot;id&quot;:&quot;&quot;}" time="0.000183792">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="contradictory claims have no consistent outcome assignment: {&quot;kind&quot;:&quot;accepted&quot;,&quot;position&quot;:2,&quot;final&quot;:false,&quot;id&quot;:&quot;&quot;}" time="0.000179709">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="contradictory claims have no consistent outcome assignment: {&quot;kind&quot;:&quot;accepted&quot;,&quot;position&quot;:1,&quot;final&quot;:true,&quot;id&quot;:&quot;&quot;}" time="0.000169333">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="contradictory claims have no consistent outcome assignment: {&quot;kind&quot;:&quot;refused&quot;,&quot;position&quot;:2,&quot;final&quot;:false,&quot;id&quot;:&quot;r1&quot;}" time="0.00015575">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="first refusal ID and first final cutoff are retained even when another arrival order chooses differently" time="0.0006">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="noncontradictory closure above a final prefix takes precedence; observations and duplicates remain exact" time="0.001696209">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="conflict is irreversible while low-level folding may continue collecting observations" time="0.000282209">
+        </testcase>
+        <testcase classname="test/accountDelivery.test.ts" name="constraint checks depend on observed positions, including large safe integers" time="0.000266833">
+        </testcase>
+    </testsuite>
+    <testsuite name="test/positionDecision.test.ts" timestamp="2026-09-11T23:08:16.207Z" hostname="Thomass-MacBook-Pro.local" tests="12" failures="0" errors="0" skipped="0" time="1.318708833">
+        <testcase classname="test/positionDecision.test.ts" name="reads the selected refusal and link/head messages without changing their signed bytes" time="0.004324667">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="binds all five refusal subject fields, parent and the current externally held acceptance key" time="0.003377417">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="authenticates a reconstructed link, distinguishes a proved conflicting leaf, and holds unanchored heads" time="0.003733208">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="keeps refusal IDs stable across acceptance-key rotation while requiring the current signature" time="0.001406792">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="rejects unknown, noncanonical, oversized, unsigned and malformed response bytes" time="0.001720209">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes" time="0.962868291">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="signs a separate submission wrapper over exact v2 bytes and parent refusal ID" time="0.003705916">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="rejects swapping a valid parent proof, changing exact wire, skipping positions and stale proof keys" time="0.008029792">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="100 generated successor proofs bind parent bytes, original position and independent signing inputs" time="0.324077167">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="captures response, expected subject and authority before asynchronous verification" time="0.000712917">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="captures submission inputs and rejects malformed/trailing/oversized framing" time="0.0011355">
+        </testcase>
+        <testcase classname="test/positionDecision.test.ts" name="re-signing the same permanent parent under the current key preserves wrapper verification" time="0.002488958">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,10 @@
+{
+  "seed": 9110402,
+  "numShrinks": 1,
+  "counterexample": [
+    [
+      1
+    ]
+  ],
+  "path": "0:0"
+}

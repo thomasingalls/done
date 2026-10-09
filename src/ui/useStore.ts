@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { openStore, type StoragePersistence, type Store } from '../crdt';
+import { LEGACY_STORE, openStore, type StoragePersistence, type Store } from '../crdt';
 
 export interface StoreState {
   store: Store | null;
@@ -28,6 +28,10 @@ export const useStore = (): StoreState => {
     let opened: Store | null = null;
 
     void openStore({
+      // Named rather than defaulted: the app opens the legacy store because
+      // that is the store it means, and the slot index (TRD §6.5) replaces
+      // this one line when it lands.
+      store: LEGACY_STORE,
       onStoragePersistence: setStorage,
       onLocalPersistenceError: (next) => {
         if (!disposed) setPersistenceError(next);

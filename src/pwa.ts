@@ -7,6 +7,8 @@
  * IndexedDB and there is no API to cache responses from.
  */
 
+import { observeAppUpdate } from './appUpdate';
+
 export type InstallState = 'installed' | 'available' | 'unavailable';
 
 interface InstallChoice {
@@ -108,7 +110,11 @@ export const registerServiceWorker = (): void => {
 
   window.addEventListener('load', () => {
     void navigator.serviceWorker
-      .register(`${import.meta.env.BASE_URL}sw.js`, { scope: import.meta.env.BASE_URL })
+      .register(`${import.meta.env.BASE_URL}sw.js`, {
+        scope: import.meta.env.BASE_URL,
+        updateViaCache: 'none',
+      })
+      .then(observeAppUpdate)
       .catch(() => {
         // An app that works offline because of a service worker still has to
         // work when registration fails. Nothing here is load-bearing.

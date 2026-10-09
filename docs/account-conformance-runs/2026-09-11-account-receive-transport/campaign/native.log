@@ -1,0 +1,21 @@
+(node:29215) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:29215) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:29215) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual v2 HTTP pages advance owned durable progress without local recapture, including cold end (9382.505166ms)
+✔ HTTP refusal, truncation, overflow, redirect, lost reply and stale signed page advance no cursor (8702.835875ms)
+✔ fetch serializes outstanding reads; a manually superseding request refuses the older response (6578.894583ms)
+✔ remote native commit holds ordered publication and later local input through HTTP (8275.311416ms)
+✔ close aborts and drains pending fetch before another owner acquires (8161.300958ms)
+✔ close aborts and drains pending stream before another owner acquires (8162.131166ms)
+✔ HTTP receive before native commit crash cold-retries from actual durable progress (8677.542208ms)
+✔ HTTP receive after native commit crash cold-retries from actual durable progress (8642.964542ms)
+✔ local journal admission remains responsive during fetch and the eventual page preserves that edit (8319.803959ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 76781.39775

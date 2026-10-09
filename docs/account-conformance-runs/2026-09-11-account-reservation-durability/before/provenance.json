@@ -1,0 +1,19 @@
+{
+  "base": "ec889d9317da743f225960afea3afe4d3589878f",
+  "files": [
+    {
+      "path": "src/crdt/contentDatabase.ts",
+      "sha256": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "f2c000cce765e7187f0d6173dedc419c7c1b5bbd62dfbd3bdebfec0e966d6b53"
+    },
+    {
+      "path": "src/crdt/custodyRecord.ts",
+      "sha256": "31745246dc22f422f6a9b5af733be52b99eba1f2caabe3ad94712f47aaf1f86f"
+    }
+  ],
+  "result": "Expected assertion failure: retained 1 grant after 2 real AES calls when modeled unflushed reservation is dropped. Legitimate enrollment and event replay passed first. This models loss, not a physical power cut.",
+  "harness": "test/account-reservation-durability/native.test.mjs actual custody/content test, before production repair; later formatting changes no fixture semantics."
+}

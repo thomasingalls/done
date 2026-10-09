@@ -1,0 +1,16 @@
+(node:43987) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43987) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:43987) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ effective queue omission exposes the forbidden result (12487.464291ms)
+✔ effective flight omission exposes the forbidden result (12101.931625ms)
+✔ effective HTTP bound omission exposes the forbidden result (18.088792ms)
+✔ effective HTTP drain omission exposes the forbidden result (12.503583ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26281.047416

@@ -42,66 +42,54 @@ there is one store, and `state` distinguishes what is still owed an answer from 
 | ---------- | -------------------------------------------------------------- | ---------------------------------- |
 | `reserved` | Position granted in the reservation's own transaction; no bytes exist yet (`FU-10`) | Resolve first                      |
 | `minted`   | Persisted, never sent                                          | Resolve first                      |
-| `sent`     | At least one submission made, no authenticated answer          | Resolve first                      |
+| `sent`     | May have been submitted, no authenticated answer          | Resolve first                      |
 | `accepted` | A verified `Head_n` covers this digest                         | Below the second-newest checkpoint |
 | `closed`   | A verified refusal permanently closed this digest              | Below the second-newest checkpoint |
 
 **The row exists from the reservation, not from the mint** (the `S0-4` return). A `reserved` row carries the
-position and the generation whose budget counted it, and no envelope — the sealed bytes arrive when the mint
+position and retained exact source capsules, and no network envelope — the sealed bytes arrive when the mint
 promotes it to `minted`, in the promote's own transaction. `state` and the position are the store's cleartext
-metadata beside the sealed envelope, on §6.1's journal terms: an attacker who can write them can write your
-JavaScript.
+metadata beside the sealed envelope. The private implementation must authenticate position, lifecycle state,
+source coverage and budget metadata and compare exact prior bytes at commit. A metadata flag never grants
+acceptance or refusal authority. A `sent` flag is written before dispatch and means submission may have
+happened; a crash can precede actual network dispatch.
 
 **Nothing is deleted for being old, and nothing unresolved is deleted at all.** Two conditions, and the second
 is row 6's floor rather than a new one.
 
-## 2. `PositionCounter` — reserve before minting, for the reason `P-3` established
+## 2. `PositionCounter` — reserve position and seal permission separately
 
-`seq` is inside the AAD **and** inside the signature, so it is fixed before the envelope exists. Two tabs
-reading the highest position they have sent will choose the same next one.
+**Corrected 2026-09-10 during private outbound preparation.** The old model combines encryption and
+promotion. Three mints interrupted before promotion consume three invocations while its durable count
+remains one; its successor path increments no count. The actual declarations are reproduced by
+`test/account-outbound/preparation.test.mjs`. The original model remains historical evidence, not
+proof of invocation accounting. [Private v2 contract](../../../account-outbound.md) specifies the
+implementation boundary; TRD §7.4 carries its corrected network key domain.
 
-```
-PositionCounter (one record per (workspace, credential))
-  next_position    the allocation point
-  reserved[gen]    positions reserved under each content-key generation
+`PositionCounter.next_position` remains per workspace/credential and monotonic. One atomic transaction
+advances it and stages a reserved row with that position and exact, durably retained source capsules.
+A counter-only grant is forbidden (`FU-10`). Capture must be part of local admission and survive
+journal flush and content compaction; an outgoing observer is insufficient. No reserved position can
+be skipped, and recovery cannot invent a payload from an unattributed current snapshot.
 
-Reserve  one readwrite transaction: grant next_position, advance it, add one to
-         reserved[current_gen], and stage the spool row for the granted position --
-         (position, gen, state: reserved), no bytes yet. Two tabs serialize
-         because IndexedDB does, and a counted position with no durable identity
-         cannot exist, because the count and the identity commit together (FU-10).
-```
+A separate `NetSealCounter.reserved[gen]` counts invocations under the v2 key derived for that
+workspace, credential and generation. Before EVERY invocation, including recovery under the same
+generation and each refusal-licensed successor, strictly commit a fresh reservation. Refuse before
+its count reaches 2^32. Only the live acknowledged continuation may invoke encryption once. A crash
+abandons the permission and keeps the count; a durable abandoned reservation never grants a new seal.
+A generation change requires another reservation under the generation actually used (`FU-09`).
+Counting at promotion is too late because crypto happens before that transaction.
 
-**A gap is not a hole to be filled, and since the return it is not a mystery either.** A crash between the
-grant and the mint leaves a `reserved` row and nothing else — and that row is the carrier the resolution reads
-(`FU-10`). §7.5's chain is `link_n` over `link_(n-1)`, so a gap stalls the chain exactly as a refusal does, and
-the position must be occupied: **the credential occupies it itself, with a fresh first attempt at the row's own
-position**, `parent_refusal` zeros. That needs no licence and loses nothing — a licence is owed only where an
-attempt may exist at the service, and bytes are staged before the first network byte, so a `reserved` row is
-itself durable proof that nothing was ever sent; and occupation needs nothing the crash destroyed, because the
-position and generation are in the row, the content is the client's own, and the bytes are fresh by design. A
-kill after the promote is the other case and re-mints nothing: the row holds exact bytes, and the spool's rule
-is resubmit them.
+After encryption, persist exact network bytes and exact capsule coverage atomically before any
+submission. A reserved row can be occupied at the same position after restart, with a fresh seal
+reservation and its original capsules. A minted row instead requires exact byte retry. Local outer
+StoredRecord encryption independently reserves its own local sequence and seal invocation.
 
-**A refusal is not the resolution here, and cannot be** (`ST-05`): `Refuse` names an exact `refused_digest`,
-and an envelope that was never minted has none — which is exactly why the reservation itself had to become the
-durable carrier rather than a counter movement. An earlier draft resolved a reserved-but-unminted position
-"the same way a refused one is", with neither branch executable: *binding the reservation* had no reservation
-object to bind, and closure-by-refusal had no digest to close. The challenge convicted the draft, and the row
-above is the repair.
-
-**`reserved[gen]` is here for a reason §7.4 states and does not implement.** §7.4 says `seq` bounds the 12-byte
-random nonce's per-generation budget _"in one comparison, exactly as it does in §6.1"_ — and §6.1's version of
-that comparison is the one `f-dbfd01f-record-nonce-ceiling-omitted` reopened and `P-3` repaired. **§7.4
-inherited the defect along with the mechanism**: this `seq` is per credential and does not reset at rotation
-either, so a literal `seq ≥ 2^32` test is conservative until the first rotation and then refuses forever. The
-count the comparison reads is positions **reserved** under the generation, because SP 800-38D bounds
-invocations and a mint abandoned before send is one.
-
-**Recovery composes with that budget the way §6.1's re-reservation does** (`FU-09`'s rule, at this counter). A
-recovery mint under the row's own generation consumes the licence the grant already counted; when the marker
-has moved, the fresh mint counts one against the generation it actually seals under — in the same transaction
-as the promote — and the abandoned licence stays counted where it was, conservatively.
+V1's derivation shares one network key across credentials, so independent credential counters cannot
+bound its aggregate invocations. V2 binds credential and generation into the derivation. This assumes
+fresh credentials at enrollment and one unrewound, unbranched counter history per credential. It does
+not license raw copied-profile writers. No native allocator, rotation, successor or relay integration
+is claimed by this schema correction.
 
 ## 3. `PositionDecision` — the answer, signed by the key that already answers
 

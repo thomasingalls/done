@@ -1,0 +1,126 @@
+(node:34881) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ generated coercible stage values must be rejected by the promotion parser (4.603583ms)
+✖ all nested data nodes reject incompatible types across thirteen promotions and admission (21.820167ms)
+✖ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (0.959167ms)
+✔ generated valid promotion budgets and detached credential bytes preserve independent payloads (201.923083ms)
+✔ generated admission scalar corruptions execute the direct parser (14.042167ms)
+✔ admission nested genesis limits are checked at the declared byte edges (43.290334ms)
+(node:34884) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ generated coercible source hashes must be rejected by the spool decoder (3.844417ms)
+✔ generated source nested type mutations reach the decoder (10.752875ms)
+✖ generated spool nested type mutations reach the decoder (4.213792ms)
+✔ generated delivery nested type mutations reach the decoder (7.957125ms)
+✔ decoder numeric boundaries and nested response/submission damage refuse without encoder prechecks (2.796583ms)
+✔ generated valid reference positions and invocation counts preserve exact independent wire bytes (15.225541ms)
+✔ generated real Yjs updates and both actor kinds round-trip while malformed count and frame data refuse (98.7455ms)
+✔ source wire limit accepts a real near-limit frame and refuses the first larger canonical wire (619.924833ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 9
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1627.808875
+
+✖ failing tests:
+
+test at test/account-parser-conformance/objects.test.mjs:9:1
+✖ generated coercible stage values must be rejected by the promotion parser (4.603583ms)
+  AssertionError [ERR_ASSERTION]: stage-reproduction: AssertionError [ERR_ASSERTION]: Missing expected exception.; path=0:0
+  
+  true !== false
+  
+      at property (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/helpers.mjs:74:10)
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs:10:3)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-parser-conformance/objects.test.mjs:19:1
+✖ all nested data nodes reject incompatible types across thirteen promotions and admission (21.820167ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: prepared:stage:["prepared"]
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs:25:14)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test/account-parser-conformance/objects.test.mjs:33:1
+✖ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (0.959167ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: candidate.actors.1
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/objects.test.mjs:39:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at test/account-parser-conformance/wires.test.mjs:8:1
+✖ generated coercible source hashes must be rejected by the spool decoder (3.844417ms)
+  AssertionError [ERR_ASSERTION]: hash-reproduction: AssertionError [ERR_ASSERTION]: Missing expected exception.; path=0:0
+  
+  true !== false
+  
+      at property (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/helpers.mjs:74:10)
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs:9:3)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-parser-conformance/wires.test.mjs:17:55
+✖ generated spool nested type mutations reach the decoder (4.213792ms)
+  AssertionError [ERR_ASSERTION]: spool-types: AssertionError [ERR_ASSERTION]: Missing expected exception: spool-position:9.2; path=148
+  
+  true !== false
+  
+      at property (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/helpers.mjs:74:10)
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/wires.test.mjs:20:3)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

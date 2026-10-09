@@ -1,0 +1,750 @@
+[
+  {
+    "id": "generated-001",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": false,
+          "reopen": true,
+          "front": true
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-002",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        },
+        {
+          "flush": false,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": false,
+      "lostReply": false,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-003",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": false,
+          "front": true
+        }
+      ],
+      "compact": true,
+      "lostReply": true,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-004",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        },
+        {
+          "flush": true,
+          "reopen": true,
+          "front": true
+        },
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        }
+      ],
+      "compact": false,
+      "lostReply": true,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "edit2",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-005",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": false,
+          "reopen": true,
+          "front": true
+        }
+      ],
+      "compact": false,
+      "lostReply": true,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "edit2",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-006",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": false,
+          "front": false
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": true,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-007",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": false,
+          "reopen": false,
+          "front": false
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": false,
+      "lostReply": false,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "edit2",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-008",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-009",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        }
+      ],
+      "compact": true,
+      "lostReply": true,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-010",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": false,
+      "lostReply": false,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-011",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        },
+        {
+          "flush": true,
+          "reopen": true,
+          "front": true
+        },
+        {
+          "flush": false,
+          "reopen": true,
+          "front": true
+        }
+      ],
+      "compact": false,
+      "lostReply": true,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "edit2",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-012",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": true,
+          "front": false
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": false,
+      "lostReply": true,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-013",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": true,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "recovery",
+      "lost",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-014",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": true,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-015",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": false,
+          "front": false
+        },
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        }
+      ],
+      "compact": false,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-016",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        },
+        {
+          "flush": false,
+          "reopen": true,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-017",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "failed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery"
+    ],
+    "error": "{\"id\":\"generated-017-delivered\",\"matches\":[],\"issues\":[{\"surface\":\"indexedDB\",\"location\":[\"done.b1bd2526da45fafee78c9aa55ae8aee6\",\"heads\",\"value\",26,\"ct\"],\"reason\":\"unsupported-compressed-container\"},{\"surface\":\"indexedDB\",\"location\":[\"done.b1bd2526da45fafee78c9aa55ae8aee6\",\"heads\",\"value\",26,\"ct\"],\"reason\":\"unsupported-compressed-container\"}]}\n+ actual - expected\n\n+ 'incomplete'\n- 'complete-no-prohibited-match'\n"
+  },
+  {
+    "id": "generated-018",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-019",
+    "history": {
+      "edits": [
+        {
+          "flush": false,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-020",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-021",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-022",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": false,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-023",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-024",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": false,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  },
+  {
+    "id": "generated-025",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 1
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 4
+  },
+  {
+    "id": "generated-026",
+    "history": {
+      "edits": [
+        {
+          "flush": true,
+          "reopen": false,
+          "front": true
+        },
+        {
+          "flush": true,
+          "reopen": false,
+          "front": false
+        }
+      ],
+      "compact": true,
+      "lostReply": false,
+      "accountEdits": 2
+    },
+    "status": "passed",
+    "points": [
+      "edit0",
+      "edit1",
+      "recovery",
+      "delivered",
+      "cold"
+    ],
+    "acceptedThrough": 5
+  }
+]

@@ -1,0 +1,295 @@
+{
+  "note": "Descriptive summaries of fresh sessions; keystrokes within a session are dependent. No significance or population confidence claims.",
+  "rows": [
+    {
+      "phase": "ablation",
+      "variant": "all",
+      "block": "shallow",
+      "p50": 54.30000019073486,
+      "p95": 72.4500002861023,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "shallow",
+          "p50": 54.60000038146973,
+          "p95": 75.80000019073486
+        },
+        {
+          "session": "ablation-1",
+          "block": "shallow",
+          "p50": 54,
+          "p95": 69.10000038146973
+        }
+      ]
+    },
+    {
+      "phase": "ablation",
+      "variant": "all",
+      "block": "deeper",
+      "p50": 53.59999990463257,
+      "p95": 63.90000009536743,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "deeper",
+          "p50": 54,
+          "p95": 60.80000019073486
+        },
+        {
+          "session": "ablation-1",
+          "block": "deeper",
+          "p50": 53.19999980926514,
+          "p95": 67
+        }
+      ]
+    },
+    {
+      "phase": "ablation",
+      "variant": "no-pool",
+      "block": "shallow",
+      "p50": 57.44999980926514,
+      "p95": 76.90000009536743,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "shallow",
+          "p50": 57.09999942779541,
+          "p95": 76.80000019073486
+        },
+        {
+          "session": "ablation-1",
+          "block": "shallow",
+          "p50": 57.80000019073486,
+          "p95": 77
+        }
+      ]
+    },
+    {
+      "phase": "ablation",
+      "variant": "no-pool",
+      "block": "deeper",
+      "p50": 57.44999980926514,
+      "p95": 75.30000019073486,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "deeper",
+          "p50": 57.5,
+          "p95": 78.5
+        },
+        {
+          "session": "ablation-1",
+          "block": "deeper",
+          "p50": 57.39999961853027,
+          "p95": 72.10000038146973
+        }
+      ]
+    },
+    {
+      "phase": "ablation",
+      "variant": "no-preparation",
+      "block": "shallow",
+      "p50": 57.65000009536743,
+      "p95": 80.24999952316284,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "shallow",
+          "p50": 58,
+          "p95": 79.69999980926514
+        },
+        {
+          "session": "ablation-1",
+          "block": "shallow",
+          "p50": 57.30000019073486,
+          "p95": 80.79999923706055
+        }
+      ]
+    },
+    {
+      "phase": "ablation",
+      "variant": "no-preparation",
+      "block": "deeper",
+      "p50": 56.94999980926514,
+      "p95": 78.90000009536743,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "deeper",
+          "p50": 57.09999942779541,
+          "p95": 82.40000057220459
+        },
+        {
+          "session": "ablation-1",
+          "block": "deeper",
+          "p50": 56.80000019073486,
+          "p95": 75.39999961853027
+        }
+      ]
+    },
+    {
+      "phase": "ablation",
+      "variant": "no-publication",
+      "block": "shallow",
+      "p50": 55.89999961853027,
+      "p95": 79,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "shallow",
+          "p50": 56.39999961853027,
+          "p95": 81.5
+        },
+        {
+          "session": "ablation-1",
+          "block": "shallow",
+          "p50": 55.39999961853027,
+          "p95": 76.5
+        }
+      ]
+    },
+    {
+      "phase": "ablation",
+      "variant": "no-publication",
+      "block": "deeper",
+      "p50": 55.44999933242798,
+      "p95": 76.84999942779541,
+      "individual": [
+        {
+          "session": "ablation-0",
+          "block": "deeper",
+          "p50": 55.79999923706055,
+          "p95": 79.59999942779541
+        },
+        {
+          "session": "ablation-1",
+          "block": "deeper",
+          "p50": 55.09999942779541,
+          "p95": 74.09999942779541
+        }
+      ]
+    }
+  ],
+  "contrasts": [
+    {
+      "phase": "ablation",
+      "target": "all",
+      "comparator": "no-pool",
+      "block": "shallow",
+      "paired": [
+        {
+          "session": "ablation-0",
+          "p50Ratio": 0.9562171791352292,
+          "p95Ratio": 0.9869791666990042
+        },
+        {
+          "session": "ablation-1",
+          "p50Ratio": 0.9342560522803599,
+          "p95Ratio": 0.8974026023567497
+        }
+      ],
+      "targetMedianGainPct": 5.476338429220551,
+      "targetP95GainPct": 5.780911547212297
+    },
+    {
+      "phase": "ablation",
+      "target": "all",
+      "comparator": "no-pool",
+      "block": "deeper",
+      "paired": [
+        {
+          "session": "ablation-0",
+          "p50Ratio": 0.9391304347826087,
+          "p95Ratio": 0.774522295423374
+        },
+        {
+          "session": "ablation-1",
+          "p50Ratio": 0.9268292711293109,
+          "p95Ratio": 0.9292649049308401
+        }
+      ],
+      "targetMedianGainPct": 6.7020147044040135,
+      "targetP95GainPct": 14.810639982289286
+    },
+    {
+      "phase": "ablation",
+      "target": "all",
+      "comparator": "no-preparation",
+      "block": "shallow",
+      "paired": [
+        {
+          "session": "ablation-0",
+          "p50Ratio": 0.9413793169218918,
+          "p95Ratio": 0.951066504041862
+        },
+        {
+          "session": "ablation-1",
+          "p50Ratio": 0.9424083738263502,
+          "p95Ratio": 0.8551980325981936
+        }
+      ],
+      "targetMedianGainPct": 5.810615462587898,
+      "targetP95GainPct": 9.68677316799722
+    },
+    {
+      "phase": "ablation",
+      "target": "all",
+      "comparator": "no-preparation",
+      "block": "deeper",
+      "paired": [
+        {
+          "session": "ablation-0",
+          "p50Ratio": 0.9457092914385148,
+          "p95Ratio": 0.7378640748607482
+        },
+        {
+          "session": "ablation-1",
+          "p50Ratio": 0.9366197118066744,
+          "p95Ratio": 0.8885941689518803
+        }
+      ],
+      "targetMedianGainPct": 5.883549837740542,
+      "targetP95GainPct": 18.677087809368576
+    },
+    {
+      "phase": "ablation",
+      "target": "all",
+      "comparator": "no-publication",
+      "block": "shallow",
+      "paired": [
+        {
+          "session": "ablation-0",
+          "p50Ratio": 0.968085119694413,
+          "p95Ratio": 0.9300613520335566
+        },
+        {
+          "session": "ablation-1",
+          "p50Ratio": 0.9747292485889838,
+          "p95Ratio": 0.9032679788427416
+        }
+      ],
+      "targetMedianGainPct": 2.8592815858301535,
+      "targetP95GainPct": 8.333533456185094
+    },
+    {
+      "phase": "ablation",
+      "target": "all",
+      "comparator": "no-publication",
+      "block": "deeper",
+      "paired": [
+        {
+          "session": "ablation-0",
+          "p50Ratio": 0.9677419487155647,
+          "p95Ratio": 0.7638191033642671
+        },
+        {
+          "session": "ablation-1",
+          "p50Ratio": 0.965517247944438,
+          "p95Ratio": 0.904183542744642
+        }
+      ],
+      "targetMedianGainPct": 3.3370401669998606,
+      "targetP95GainPct": 16.599867694554547
+    }
+  ]
+}

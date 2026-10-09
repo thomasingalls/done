@@ -1,0 +1,395 @@
+{
+  "base": "95fa715db75509efe1affdf2ec6759c44b6ebe7a",
+  "claim": "Eight service delivery/inbound files at frozen inputs; no whole-wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-13T19-55-31.998Z",
+  "summary": {
+    "schema": 1,
+    "selection": "delivery-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-service-delivery/controls.test.mjs",
+        "key": "cedcbea88313ccc119b94e7835cdb9ba9eca9446cb952b1ee3a904c24e98c624",
+        "status": "passed",
+        "elapsedMs": 4289,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-delivery/core.test.mjs",
+        "key": "2a364cbeb829d675d318f5f7456c8d8c75070a32a5c2abf302ece0bb393190c8",
+        "status": "passed",
+        "elapsedMs": 4882,
+        "cases": 20,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-delivery/generated.test.mjs",
+        "key": "753eb06b519253668a6426db915673bd6c6abea4d63943a6acb9f87552999585",
+        "status": "passed",
+        "elapsedMs": 16862,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-delivery/restart.test.mjs",
+        "key": "efcae12181686acdc6e2c11a067aae6c75fb28d5c8457434a8973cf2ba161be4",
+        "status": "passed",
+        "elapsedMs": 4771,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-inbound/controls.test.mjs",
+        "key": "f6cf5db593a7c2a998250db9c9dd5284d96da70bd4405c36cbc7dcc034b763a6",
+        "status": "passed",
+        "elapsedMs": 2622,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-inbound/core.test.mjs",
+        "key": "80bc43f730dea258e9c9f98176239f2d2c015a05a94bb01ee215f7b2ed900dc1",
+        "status": "passed",
+        "elapsedMs": 44521,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-inbound/generated.test.mjs",
+        "key": "1e57d27838a94cabc719dbcb6fa41567f06dc90b550261fe8a3de11914f59dce",
+        "status": "passed",
+        "elapsedMs": 7989,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-service-inbound/restart.test.mjs",
+        "key": "9af5a26dfc6cb9fed112802dc820444e707e67ae060708b9e8f403dc75aad7d0",
+        "status": "passed",
+        "elapsedMs": 2390,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-13T19:55:32.001Z",
+    "input": "134d504e3f3a38f6692688b66c5d3305cee1ece0e415e2a0ae112c30de38032a",
+    "completedAt": "2026-09-13T19:57:31.580Z"
+  },
+  "elapsedMs": 119579,
+  "rawInputArchiveSha256": "88649ac298511ac33ca776e4b21b885fad2fbd0eea57d06325a39a2679a5b8e1",
+  "input": {
+    "revision": "95fa715db75509efe1affdf2ec6759c44b6ebe7a",
+    "sourceDigest": "65b35e15d3b1fece23a996a367d2d14265b67a858d2e156bf557b1b4dc1d8f77",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    }
+  },
+  "counts": {
+    "selectedFiles": 8,
+    "selectedCases": 52,
+    "newPassingProductHistories": 140,
+    "priorGeneralFiles": 128,
+    "priorGeneralCases": 1206,
+    "currentGeneralFiles": 136,
+    "currentGeneralCases": 1258,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 40,
+    "runnerControls": 114,
+    "generatedControlHistories": 3360,
+    "vitestControlReceipts": 13,
+    "historicalSourceInputs": 2,
+    "manifestObligations": 612,
+    "unresolved": 281,
+    "unresolvedTestFiles": 122,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 588519
+  },
+  "artifacts": [
+    {
+      "path": "selection-receipts.json.gz",
+      "rawSha256": "8056ab5df3fe1033c689e3258e332737156a7f5d6b4cee73cf20777b03f7798c",
+      "normalizedSha256": "897fe9e683f3d4f2f8204bde68f9673300a39b7d3d3eff6313839add1097cd15",
+      "compressedSha256": "459bfcc2caf41356f322fb5e9f22433968278d553499b694b4c0ade350ac5816",
+      "normalizedBytes": 80933,
+      "compressedBytes": 6952
+    },
+    {
+      "path": "historical-inputs.json.gz",
+      "rawSha256": "294f0ca3fb745d521a7f33dc1d4497ef3a10c6cd6a4382491585f2e15f14c093",
+      "normalizedSha256": "294f0ca3fb745d521a7f33dc1d4497ef3a10c6cd6a4382491585f2e15f14c093",
+      "compressedSha256": "d18ca930ac95ea8edae0dcb10f0912e8bfe8b5783cd80ba7edd86fbc36f2aecf",
+      "normalizedBytes": 474,
+      "compressedBytes": 264
+    },
+    {
+      "path": "vitest-controls.json.gz",
+      "rawSha256": "99b4432365b5118de397487acf997f9dc873b589923639da98bd3f4e5984d2cb",
+      "normalizedSha256": "84c8ffe50aa7afd47560b23926cfb45bb5f343ddc04b2d6d92905115d6bd8882",
+      "compressedSha256": "4c18eb2de7ba92f6250d4726bd9363e4a9620133b708b054e6b652700efb229e",
+      "normalizedBytes": 122641,
+      "compressedBytes": 11074
+    },
+    {
+      "path": "selection.log.gz",
+      "rawSha256": "fc89fb6eca96952bf02c2933e8e6f67b1e11a4ab99eda4e52048ee9ef2a40547",
+      "normalizedSha256": "1a3f5d06869cf8022624400883904b3ba1dca1d55e5841ff636ac5a06dbcbb2f",
+      "compressedSha256": "0ea53a28fc4923dd41dab2ef144c5e3f3d5d2daf123bdfe549a0e96ebb827c95",
+      "normalizedBytes": 896,
+      "compressedBytes": 253
+    },
+    {
+      "path": "pure.log.gz",
+      "rawSha256": "152a2305e7597fd5d56a8c815e9efbc5e47d4df8f723ebef5d70ef3be474ebf6",
+      "normalizedSha256": "152a2305e7597fd5d56a8c815e9efbc5e47d4df8f723ebef5d70ef3be474ebf6",
+      "compressedSha256": "3ffcaecb8a77ec106e83487f2265d3a0618120f1fc632d0aa9b041c1f6950364",
+      "normalizedBytes": 10124,
+      "compressedBytes": 3588
+    },
+    {
+      "path": "pure-errors.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "owner-first.log.gz",
+      "rawSha256": "168bc8c04fce4866217ce9ad41edadb6ef13bcb4921ef2922679ea7573ccb5af",
+      "normalizedSha256": "8be4d1a9ab02a731e2c7a95313e5a61e7a25cf5fa4303486473005401cef5ae9",
+      "compressedSha256": "b0ac5df8520268d3844fe8fe227208471f55aab6d33b16681b498c09d6e905f6",
+      "normalizedBytes": 16903,
+      "compressedBytes": 3844
+    },
+    {
+      "path": "owner-final.log.gz",
+      "rawSha256": "8cc327cc09332e6e8accb181ae51b3d492bed53b88d6adda7ddfa5cc4c4b90b1",
+      "normalizedSha256": "668ffaebfde111f9de53811b2bb4ef3d844d77a1fac1eab95d368a57bbafaf1f",
+      "compressedSha256": "5fadeabadd5e4e12539456502c96e6ac56a1bc8398d809b114792da89cef5daf",
+      "normalizedBytes": 25365,
+      "compressedBytes": 4264
+    },
+    {
+      "path": "vitest.log.gz",
+      "rawSha256": "6e874472e95b8f06c8498bd7e68025e6247d8ce2b47200642ac77532cf6386b4",
+      "normalizedSha256": "6e874472e95b8f06c8498bd7e68025e6247d8ce2b47200642ac77532cf6386b4",
+      "compressedSha256": "488e42c085d3cceb449ff09e167f876961db0fee05b06ec45e786523697b875b",
+      "normalizedBytes": 712,
+      "compressedBytes": 432
+    },
+    {
+      "path": "typecheck.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "direct-typecheck.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "lint.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "format.log.gz",
+      "rawSha256": "4e593ce38c84a86c830332fe822e27f1582e52efbba739296b6faa54123f1e49",
+      "normalizedSha256": "4e593ce38c84a86c830332fe822e27f1582e52efbba739296b6faa54123f1e49",
+      "compressedSha256": "1bfc471bf3718e0b976a4964f7651336a7a886118c301cb2a769a85fb7e7a99a",
+      "normalizedBytes": 112,
+      "compressedBytes": 109
+    },
+    {
+      "path": "format-first.log.gz",
+      "rawSha256": "6387c97db610cf798e7bf7704c25d0b4717a97256ef16bb22ce8276b7101cfac",
+      "normalizedSha256": "6387c97db610cf798e7bf7704c25d0b4717a97256ef16bb22ce8276b7101cfac",
+      "compressedSha256": "d5c9799674905a6181182b16192c0be947b95aa517afe093c4cb67874c3d631e",
+      "normalizedBytes": 185,
+      "compressedBytes": 162
+    },
+    {
+      "path": "inventory-record.log.gz",
+      "rawSha256": "db8f4674ec89b709e8f3a1f310724a7a5228436e10f4d331042c8e94d90cec85",
+      "normalizedSha256": "db8f4674ec89b709e8f3a1f310724a7a5228436e10f4d331042c8e94d90cec85",
+      "compressedSha256": "14ba739db597c1ed58918f55a411dd098d655e6adea43e88653f05746b053800",
+      "normalizedBytes": 324,
+      "compressedBytes": 237
+    },
+    {
+      "path": "manifest-record.log.gz",
+      "rawSha256": "69e0a2a645cedde82f5893de1ac37953ac638ca7d32969b6975688256d74c63f",
+      "normalizedSha256": "69e0a2a645cedde82f5893de1ac37953ac638ca7d32969b6975688256d74c63f",
+      "compressedSha256": "554386ee1aeac0bb33ba10818eb1383429545e47ba91d262409c7b9bfd8c5b5f",
+      "normalizedBytes": 100,
+      "compressedBytes": 106
+    },
+    {
+      "path": "existing-contracts.json.gz",
+      "rawSha256": "6d35e7b383685bef7f4b6ecb6e2f9e7f04bd21d2e075db9a23ddf1d83a5ad0ca",
+      "normalizedSha256": "6d35e7b383685bef7f4b6ecb6e2f9e7f04bd21d2e075db9a23ddf1d83a5ad0ca",
+      "compressedSha256": "e70517a2c5412300ca8b6a0387d60a5df3354c113c8d4180502a1bafeb69d64d",
+      "normalizedBytes": 26,
+      "compressedBytes": 41
+    },
+    {
+      "path": "preservation-before.json.gz",
+      "rawSha256": "08979e1f68d550db538c0d17f8733fbaea14eeed70447af1a6c9c2c8f2a29e7e",
+      "normalizedSha256": "08979e1f68d550db538c0d17f8733fbaea14eeed70447af1a6c9c2c8f2a29e7e",
+      "compressedSha256": "80336c118ba50caa40a613105c76addcb9a981a8deee45163ae7a16d35d0a38b",
+      "normalizedBytes": 308,
+      "compressedBytes": 237
+    },
+    {
+      "path": "gates-first.json.gz",
+      "rawSha256": "0249a610c92f253c64eac2d099ecebe857278ea87bf09bb9d2d1b5d3d320e6c0",
+      "normalizedSha256": "269013e84eb014496bc465d5ed94a37fb5b2c7684b8d4bc3474e07072b93cd62",
+      "compressedSha256": "eb27c44d8f0d90194b78313e6efaae168b9af7e9e8b2f8cacdeda4d36e7eea87",
+      "normalizedBytes": 2053,
+      "compressedBytes": 434
+    },
+    {
+      "path": "census-before.json.gz",
+      "rawSha256": "7c4bd3027e876222d9b1502dfa2a7f35234955179bfe9c2afe73ce2ce32d3f31",
+      "normalizedSha256": "7c4bd3027e876222d9b1502dfa2a7f35234955179bfe9c2afe73ce2ce32d3f31",
+      "compressedSha256": "cf12dbbf772788e9253c8398555855ef2096e7002c148e55039323e154a05a77",
+      "normalizedBytes": 688,
+      "compressedBytes": 165
+    },
+    {
+      "path": "gate-inventory.log.gz",
+      "rawSha256": "81899923cdc8d2abf0226cc2c329f8478923cfbfa2a0d4a395e1cf78b2fba529",
+      "normalizedSha256": "81899923cdc8d2abf0226cc2c329f8478923cfbfa2a0d4a395e1cf78b2fba529",
+      "compressedSha256": "59429ac659e5a401b857c35d0373a0780729be1a22d28ef5199412d74697a0b4",
+      "normalizedBytes": 323,
+      "compressedBytes": 237
+    },
+    {
+      "path": "gate-manifest.log.gz",
+      "rawSha256": "69e0a2a645cedde82f5893de1ac37953ac638ca7d32969b6975688256d74c63f",
+      "normalizedSha256": "69e0a2a645cedde82f5893de1ac37953ac638ca7d32969b6975688256d74c63f",
+      "compressedSha256": "554386ee1aeac0bb33ba10818eb1383429545e47ba91d262409c7b9bfd8c5b5f",
+      "normalizedBytes": 100,
+      "compressedBytes": 106
+    },
+    {
+      "path": "gate-authority.log.gz",
+      "rawSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "normalizedSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "compressedSha256": "0413e5616e5972b53f4bd42a80406f465a1bd5497bd50db962e10f51e9db6c4f",
+      "normalizedBytes": 750,
+      "compressedBytes": 447
+    },
+    {
+      "path": "gate-signature.log.gz",
+      "rawSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "normalizedSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "compressedSha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "normalizedBytes": 115,
+      "compressedBytes": 134
+    },
+    {
+      "path": "gate-release-blocked.log.gz",
+      "rawSha256": "228fbe9695494cc8f4c643ecf4f8b1f9f2eb3c12ea07cc1391fbb4a1ee9f48f3",
+      "normalizedSha256": "ec81652b6406fb25e3796b393b23c50c3edd13cfb432879cdc9cbddb2f3e797a",
+      "compressedSha256": "e5fdfc7483ec973a3511379d1d8b685561e39f9377d899a57ce272a9078c0080",
+      "normalizedBytes": 1015,
+      "compressedBytes": 558
+    },
+    {
+      "path": "gate-format.log.gz",
+      "rawSha256": "b0aa0321214a488a1ab03e0aef0a149351a62c647cd2fa946c9de29586c1ea48",
+      "normalizedSha256": "b0aa0321214a488a1ab03e0aef0a149351a62c647cd2fa946c9de29586c1ea48",
+      "compressedSha256": "41f5bee7460162c74ad2c0092c4399b25e10b680cfe90db754643c1875691728",
+      "normalizedBytes": 113,
+      "compressedBytes": 108
+    },
+    {
+      "path": "gate-whitespace.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "gate-manifest-format.log.gz",
+      "rawSha256": "d31502c05d555312d6f819cac26fc210ea8d35f59ea24f8ecc89f3ed4356b7fd",
+      "normalizedSha256": "d31502c05d555312d6f819cac26fc210ea8d35f59ea24f8ecc89f3ed4356b7fd",
+      "compressedSha256": "a82bb3afb96f4a290ba1f61975e145710423f46c1aa0b564dbe102a9d15b42d9",
+      "normalizedBytes": 51,
+      "compressedBytes": 69
+    },
+    {
+      "path": "source-patch.diff.gz",
+      "rawSha256": "eea38914347508f1e3036d53f344d6d8c30addb0b21ea48985a028d59db04624",
+      "normalizedSha256": "eea38914347508f1e3036d53f344d6d8c30addb0b21ea48985a028d59db04624",
+      "compressedSha256": "a9998f85da61511b40f49c9580ecc67748c3e27e8e3b33820409123ebfa613fd",
+      "normalizedBytes": 22560,
+      "compressedBytes": 6006
+    },
+    {
+      "path": "selected-source-pins.json.gz",
+      "rawSha256": "71cb1a393bc74130bf5812ac416b02b81cd35830355976ede6166e0715be8fa3",
+      "normalizedSha256": "71cb1a393bc74130bf5812ac416b02b81cd35830355976ede6166e0715be8fa3",
+      "compressedSha256": "138e30dfae1d4bee6d021db8b768988493c346911c09db51c79273a1a8fbe91c",
+      "normalizedBytes": 10366,
+      "compressedBytes": 2978
+    },
+    {
+      "path": "product-test-preservation.json.gz",
+      "rawSha256": "28d0514f02b2a892842c0d03b67f7f826ce038de7e34f6bed236f1eaf8001292",
+      "normalizedSha256": "28d0514f02b2a892842c0d03b67f7f826ce038de7e34f6bed236f1eaf8001292",
+      "compressedSha256": "ad3861197562874e2bf2625ea4f37bd958bda7966817582af7b75a0accd11772",
+      "normalizedBytes": 1215,
+      "compressedBytes": 470
+    },
+    {
+      "path": "prior-general-contracts.json.gz",
+      "rawSha256": "6c89662a5ecef6183f788ef7865e251ac284e5516740ad0d76ec368913ab0365",
+      "normalizedSha256": "6c89662a5ecef6183f788ef7865e251ac284e5516740ad0d76ec368913ab0365",
+      "compressedSha256": "81f713c43bce92986f5e0b6cfa54449b245a08d7e73f8199528617d6d76836aa",
+      "normalizedBytes": 371508,
+      "compressedBytes": 42400
+    }
+  ],
+  "finalGatesSha256": "6563f8ad1924a0010b8fcd2d4cde856f6b9ae7298f96c1b474bb5ec07869991c",
+  "preservationSha256": "daa1c927fbbd8a35cf61d4309a36a480111eea1809c5b2ef7b791865a93a86e4",
+  "limits": [
+    "The first new reuse control expected an explicit false field; the runner omits reused for fresh receipts. Assertion corrected; passing negative controls retained. No product test required a change, retry or deadline increase.",
+    "pnpm typecheck stalled without starting the compiler, produced no output and was terminated. Direct local TypeScript compiler passed.",
+    "An initial generic-format command included the deliberately compact generated manifest and failed. Corrected scoped format and exact writer-layout check pass; the manifest was not reformatted.",
+    "Only reviewed historical inputs are pinned. Cooperative pre/post checks do not establish immunity to hostile or transient filesystem/Git changes.",
+    "All prior 128 general stage contracts and 1206 identities are unchanged and retain earlier execution evidence. These eight files are the only product files rerun here.",
+    "Optional wrapper reports, other historical variants, native fixtures and prerequisites remain separate obligations. Retired delivery v8 native fixture stays excluded.",
+    "Source/tests and generated snapshots match frozen execution; subsequent docs/evidence changes are not an immutable aggregate.",
+    "Complete raw input archives remain at the recorded local paths; compact evidence retains their hashes and actual source/dependency/runtime digests.",
+    "Eleven existing native ownership controls retain prior evidence; no browser ran in this phase.",
+    "Current host timings do not qualify a supported workload or platform."
+  ],
+  "prospectivePacketCeilingBytes": 150000
+}

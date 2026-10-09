@@ -1,0 +1,5 @@
+{
+  "baseline": "refused",
+  "mutant": "seal opened under different proposal",
+  "actualAadOmission": true
+}

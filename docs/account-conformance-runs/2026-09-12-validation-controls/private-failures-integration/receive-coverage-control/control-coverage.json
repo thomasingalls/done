@@ -1,0 +1,8 @@
+{
+  "omitted": [
+    "startup fallback",
+    "owner reuse"
+  ],
+  "eachSingleOmissionStillRefuses": true,
+  "outcome": "Removing both executed coverage checks admits an event whose unique remote content row was deleted."
+}

@@ -1,0 +1,10 @@
+{
+  "mode": "late-close",
+  "changes": [
+    [
+      "current();\n    if (kind === 'conflict')",
+      "void 0;\n    if (kind === 'conflict')"
+    ]
+  ],
+  "outcome": "Received result returned after the last decrypt completed into a closed lifetime."
+}

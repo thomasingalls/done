@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "script": "scripts/check-debts.mjs",
+  "script_sha256": "a52293411fa1a3c6b0b2024d91e6b076ac4abc8b9e486a12e769c306dcec4918",
+  "argv": [
+    "--check"
+  ],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T08:02:34.660Z",
+  "finished": "2026-09-11T08:02:34.671Z",
+  "tree": {
+    "head": "500630fc85e270728b65d6a6e960def22af47ad2",
+    "dirty_sha256": "f6a1e9211765de91df8afa1ec98c4d0d1f2bca075274438c9371b92acd1d6570"
+  }
+}

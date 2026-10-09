@@ -1,0 +1,16 @@
+(node:5619) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ independent fixed key and all retained claim variants match actual factor-opened authentication (17.672083ms)
+✔ declared field mutations and omission witnesses keep real HMAC operative (8.195708ms)
+✔ every retained claim input leaf is authenticated or rejected, including imported selection and nested cleanup (22.440333ms)
+✔ actual source omissions change the key, progress, imported tuple and cleanup fields (320.486208ms)
+✔ cleanup v1 preserves narrow framing; v2 authenticates long payloads and escaped UTF-16 without collisions (4.107083ms)
+✔ 250 shrinking-enabled retained-claim histories round-trip stage, imported fields and cleanup progress (347.628333ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 952.128583

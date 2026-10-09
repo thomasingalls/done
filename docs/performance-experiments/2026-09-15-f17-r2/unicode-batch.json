@@ -1,0 +1,30 @@
+[
+  {
+    "variant": "all",
+    "session": "unicode-0",
+    "started": "2026-09-15T07:44:41.905Z",
+    "finished": "2026-09-15T07:45:26.291Z",
+    "code": 0
+  },
+  {
+    "variant": "no-publication",
+    "session": "unicode-0",
+    "started": "2026-09-15T07:45:26.292Z",
+    "finished": "2026-09-15T07:46:10.698Z",
+    "code": 0
+  },
+  {
+    "variant": "no-publication",
+    "session": "unicode-1",
+    "started": "2026-09-15T07:46:10.699Z",
+    "finished": "2026-09-15T07:46:54.220Z",
+    "code": 0
+  },
+  {
+    "variant": "all",
+    "session": "unicode-1",
+    "started": "2026-09-15T07:46:54.221Z",
+    "finished": "2026-09-15T07:47:39.471Z",
+    "code": 0
+  }
+]

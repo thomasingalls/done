@@ -1,0 +1,34 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-11T11:32:54.868Z",
+  "stages": [
+    {
+      "name": "types",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "units",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "controls",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native-controls",
+      "code": 1,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private v9 single-owner outbound/receive composition: original source grants, exact retry, full union census, self-stream byte binding, fair two-lane scheduling, native faults, generated histories and effective controls. No new enrollment, default app activation or personal Account deployment.",
+  "error": "Error: native-controls failed",
+  "completedAt": "2026-09-11T11:35:34.814Z"
+}

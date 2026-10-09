@@ -1,25 +1,9 @@
-/**
- * The latency budgets from TRD §12, measured (sequencing.md §3.1, Stage 0).
- *
- * **Why this exists now and not later.** Stage 1 replaces the plaintext store
- * with an encrypted one, adding a key-store read, an unseal and per-record
- * decryption to the boot path. Every number in this file that is not taken
- * before that lands is a number that can never be taken again, and a cold-start
- * regression afterwards would be both invisible and unattributable
- * (docs/performance.md).
- *
- * **Serial, one worker, and deliberately not part of `pnpm check`.** These are
- * measurements, not assertions: two of them running at once measure the
- * contention rather than the app. They are run when someone chooses to take a
- * measurement, which is the same discipline `scripts/check-budget.mjs --record`
- * already uses for the bundle.
- *
- * The budgets are asserted as well as recorded, but softly — a failure here
- * means *go and look*, and sequencing.md §3.2 allows a number the budget has
- * been consciously revised to as an alternative to meeting it.
+/** Current factor-gated Local latency. Factor entry is setup, measured separately from application work.
+ * One worker, no retries, the original workload and numeric budgets. Desktop and CPU-throttled
+ * Android emulation are observations on this host, not handset or immutable-release qualification.
  */
-
-import { expect, test, type Browser, type Page } from '@playwright/test';
+import { test } from '../release-validation/browser-fixture';
+import { expect, type Browser, type Page } from '@playwright/test';
 import {
   CARD_EDITOR,
   COMPOSE,
@@ -29,11 +13,14 @@ import {
   install,
   marks,
   percentile,
-  record,
+  record as saveRecord,
   seed,
   storeProfile,
   timeAction,
-  untilEditable,
+  untilLocalPrompt,
+  unlockLocal,
+  openLocal,
+  lockLocal,
 } from './measure';
 
 test.describe.configure({ mode: 'serial' });
@@ -63,12 +50,46 @@ const typeSlowly = async (target: Page, key: string): Promise<void> => {
   }
 };
 
+// Timing failures are reported after collecting this project; functional failures remain immediate.
+const budgetErrors: string[] = [];
+const budget = (check: () => void) => {
+  try {
+    check();
+  } catch (error) {
+    budgetErrors.push(
+      test.info().title + ': ' + (error instanceof Error ? error.message : String(error)),
+    );
+  }
+};
 let page: Page;
 let project: string;
+const record = (sample: Parameters<typeof saveRecord>[0]) =>
+  saveRecord({
+    ...sample,
+    note:
+      (sample.note ?? 'Single observation.') +
+      ' Viewport ' +
+      JSON.stringify(page.viewportSize()) +
+      '; CPU ' +
+      (project === 'android' ? CPU_THROTTLE : 1) +
+      'x.',
+  });
 
 test.beforeAll(async ({ browser }: { browser: Browser }, info) => {
   project = info.project.name;
-  page = await (await browser.newContext()).newPage();
+  budgetErrors.length = 0;
+  const { baseURL, viewport, deviceScaleFactor, isMobile, hasTouch, userAgent } = info.project.use;
+  if (!baseURL) throw Error('The latency fixture requires its configured origin.');
+  page = await (
+    await browser.newContext({
+      baseURL,
+      ...(viewport === undefined ? {} : { viewport }),
+      ...(deviceScaleFactor === undefined ? {} : { deviceScaleFactor }),
+      ...(isMobile === undefined ? {} : { isMobile }),
+      ...(hasTouch === undefined ? {} : { hasTouch }),
+      ...(userAgent === undefined ? {} : { userAgent }),
+    })
+  ).newPage();
   await install(page);
 
   if (info.project.name === 'android') {
@@ -79,60 +100,101 @@ test.beforeAll(async ({ browser }: { browser: Browser }, info) => {
 
 test.afterAll(async () => {
   await page.context().close();
+  expect(budgetErrors, 'Latency budgets failed; remaining measurements were retained').toEqual([]);
 });
 
 test('start-up, against a seeded store', async () => {
-  // 1. First run: nothing stored, nothing cached, no service worker.
   await page.goto('/');
-  const firstRun = await untilEditable(page);
-  record({ project, metric: 'first run → Today editable', value: firstRun });
-
-  await seed(page);
-
-  // 2. Cold start: a new document, with the corpus on disk and the caches warm.
-  //    This is the returning user opening the app, and the TRD §12 row.
-  await page.goto('/');
-  const cold = await untilEditable(page);
-  const boot = await marks(page);
-  const store = await storeProfile(page);
+  const firstPrompt = await untilLocalPrompt(page);
   record({
     project,
-    metric: 'cold start → Today editable',
-    value: cold,
-    note:
-      `${CORPUS.days}d × ${CORPUS.cardsPerDay} cards, ${CORPUS.masterLines}-line master; ` +
-      `${store.records} update records, ${(store.bytes / 1024).toFixed(1)} kB on disk`,
+    metric: 'fresh launch → create prompt',
+    value: firstPrompt,
+    note: 'Empty disposable origin; no factor entry included.',
   });
+  const creation = await unlockLocal(page);
+  record({
+    project,
+    metric: 'confirm creation → Today editable',
+    value: creation,
+    note: 'Trusted confirmation event after code entry through painted editor; includes Local genesis.',
+  });
+  await seed(page); // returns locked, after verifying the entire corpus through a cold reopen
+  const store = await storeProfile(page);
+  const corpus = `${CORPUS.days}d × ${CORPUS.cardsPerDay} cards, ${CORPUS.masterLines}-line master; ${store.records} encrypted content records, ${store.bytes} ciphertext/nonce bytes; ${store.journalEntries} journal entries, ${store.journalUtf8Bytes} UTF-8 key/value bytes. Payload census, not filesystem allocation.`;
 
-  // Content-root load is bracketed by the app's own marks because there is no
-  // DOM signal for it — and it is the row Stage 1 changes most.
-  const contentRoot = (boot['done:content-root'] ?? 0) - (boot['done:store-open'] ?? 0);
-  record({ project, metric: 'content-root load (encoded state)', value: contentRoot });
+  await page.goto('/');
+  const coldPrompt = await untilLocalPrompt(page),
+    cold = await unlockLocal(page);
+  record({ project, metric: 'cold launch → unlock prompt', value: coldPrompt, note: corpus });
+  record({
+    project,
+    metric: 'cold factor submit → Today editable',
+    value: cold,
+    note: 'Trusted confirmation after factor entry; includes routing, custody, authenticated replay and painted UI.',
+  });
+  const boot = await marks(page);
+  const start = boot['done:admission-load-start'],
+    ready = boot['done:admission-load-ready'],
+    moduleGraph = boot['done:boot'];
+  for (const value of [start, ready, moduleGraph])
+    expect(Number.isFinite(value), 'Required current-path timing mark is missing').toBe(true);
+  expect(ready!).toBeGreaterThanOrEqual(start!);
+  const contentRoot = ready! - start!;
+  record({
+    project,
+    metric: 'encrypted content load and replay',
+    value: contentRoot,
+    note: 'Factor already open: createAdmissionOwner carrier read/decrypt, journal-inclusive Yjs replay and owner initialization. Not the retired plaintext startup boundary.',
+  });
   record({
     project,
     metric: 'boot: module graph evaluated',
-    value: boot['done:boot'] ?? 0,
-    note: 'fetch, parse, compile and initialise, before any store work',
+    value: moduleGraph!,
+    note: 'Navigation through fetch, parse, compile and entry-module initialization.',
   });
 
-  // 3. Warm start: the same document reloaded, so the JS code cache, the
-  //    service worker and the connection are all hot.
+  await lockLocal(page);
   await page.reload();
-  const warm = await untilEditable(page);
-  record({ project, metric: 'warm start → Today editable', value: warm });
-
-  expect(cold, 'cold start → Today editable (TRD §12)').toBeLessThan(2500);
-  expect(warm, 'warm start → Today editable (TRD §12)').toBeLessThan(1000);
-  expect(contentRoot, 'content-root load (TRD §12)').toBeLessThan(500);
+  const warmPrompt = await untilLocalPrompt(page),
+    warm = await unlockLocal(page);
+  record({
+    project,
+    metric: 'warm launch → unlock prompt',
+    value: warmPrompt,
+    note: 'Same tab and warm caches; factor entry excluded.',
+  });
+  record({
+    project,
+    metric: 'warm factor submit → Today editable',
+    value: warm,
+    note: 'Trusted confirmation after factor entry through painted editor.',
+  });
+  budget(() => {
+    expect(
+      coldPrompt + cold,
+      'Cold application work excluding factor entry (TRD §12)',
+    ).toBeLessThan(2500);
+  });
+  budget(() => {
+    expect(
+      warmPrompt + warm,
+      'Warm application work excluding factor entry (TRD §12)',
+    ).toBeLessThan(1000);
+  });
+  budget(() => {
+    expect(contentRoot, 'Encrypted content load/replay (TRD §12)').toBeLessThan(500);
+  });
 });
 
 test('keystroke → paint, in the compose field', async () => {
-  await page.goto('/');
+  await openLocal(page);
   const compose = page.locator(COMPOSE);
   await expect(compose).toBeVisible();
   await compose.click();
 
   await typeSlowly(page, 'a');
+  await expect(compose).toHaveValue('a'.repeat(KEYSTROKES));
   const samples = await page.evaluate(() => window.latencyProbe.readKeystrokes());
   expect(samples.length).toBeGreaterThan(KEYSTROKES / 2);
 
@@ -144,11 +206,13 @@ test('keystroke → paint, in the compose field', async () => {
     samples: samples.length,
     note: 'a plain textarea — the PRD §4 flow, nothing to mount',
   });
-  expect(p95, 'keystroke → paint p95 (TRD §12)').toBeLessThan(16);
+  budget(() => {
+    expect(p95, 'keystroke → paint p95 (TRD §12)').toBeLessThan(16);
+  });
 });
 
 test('keystroke → paint, in a card editor', async () => {
-  await page.goto('/');
+  await openLocal(page);
   await scheduleOneCard(page);
 
   const card = page.locator('.card[data-section="scheduled"]').first();
@@ -156,6 +220,7 @@ test('keystroke → paint, in a card editor', async () => {
   await expect(page.locator(CARD_EDITOR)).toBeVisible();
 
   await typeSlowly(page, 'b');
+  await expect(page.locator(CARD_EDITOR)).toContainText('b'.repeat(KEYSTROKES));
   const samples = await page.evaluate(() => window.latencyProbe.readKeystrokes());
   expect(samples.length).toBeGreaterThan(KEYSTROKES / 2);
 
@@ -167,11 +232,13 @@ test('keystroke → paint, in a card editor', async () => {
     samples: samples.length,
     note: 'CodeMirror with live preview and the decoration path — the sustained-typing surface',
   });
-  expect(p95, 'keystroke → paint p95 (TRD §12)').toBeLessThan(16);
+  budget(() => {
+    expect(p95, 'keystroke → paint p95 (TRD §12)').toBeLessThan(16);
+  });
 });
 
 test('card focus → editable', async () => {
-  await page.goto('/');
+  await openLocal(page);
   await scheduleOneCard(page);
 
   const card = page.locator('.card[data-section="scheduled"]').first();
@@ -185,7 +252,9 @@ test('card focus → editable', async () => {
     value: elapsed,
     note: 'tap on a Scheduled card to a mounted, painted CodeMirror instance',
   });
-  expect(elapsed, 'card focus → editable (TRD §12)').toBeLessThan(50);
+  budget(() => {
+    expect(elapsed, 'card focus → editable (TRD §12)').toBeLessThan(50);
+  });
 });
 
 /**
@@ -206,7 +275,7 @@ const navigate = async (
   path: string,
   act: () => Promise<void>,
 ): Promise<{ response: number; settled: number }> => {
-  await target.goto('/');
+  await openLocal(target);
   await expect(target.locator(COMPOSE)).toBeVisible();
   const before = await target.locator(TITLE).textContent();
 
@@ -252,8 +321,12 @@ test('day-to-day navigation, by peek', async () => {
 
   // `goTo` has no animation in it, so both readings are the app's own cost and
   // the budget applies to either.
-  expect(response, 'day-to-day navigation, first response (TRD §12)').toBeLessThan(100);
-  expect(settled, 'day-to-day navigation, day in place (TRD §12)').toBeLessThan(100);
+  budget(() => {
+    expect(response, 'day-to-day navigation, first response (TRD §12)').toBeLessThan(100);
+  });
+  budget(() => {
+    expect(settled, 'day-to-day navigation, day in place (TRD §12)').toBeLessThan(100);
+  });
 });
 
 test('day-to-day navigation, by keyboard', async () => {
@@ -264,7 +337,9 @@ test('day-to-day navigation, by keyboard', async () => {
   // Only the response. The settled figure is recorded but deliberately not
   // asserted: it is 220 ms of chosen animation plus the work, and asserting it
   // would be asserting SNAP_MS.
-  expect(response, 'day-to-day navigation, first response (TRD §12)').toBeLessThan(100);
+  budget(() => {
+    expect(response, 'day-to-day navigation, first response (TRD §12)').toBeLessThan(100);
+  });
 });
 
 /** Goals is the only way into Scheduled, and Scheduled cards mount on tap. */
@@ -275,6 +350,6 @@ const scheduleOneCard = async (target: Page): Promise<void> => {
   await expect(master).toBeVisible();
   await master.click();
   await target.keyboard.insertText('a card to open and type into');
-  await target.locator('.goals').getByRole('button', { name: 'To Scheduled' }).click();
+  await target.locator('.goals').getByRole('button', { name: 'Scheduled' }).click();
   await expect(target.locator('.card[data-section="scheduled"]').first()).toBeVisible();
 };

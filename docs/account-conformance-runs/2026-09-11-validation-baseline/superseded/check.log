@@ -1,0 +1,305 @@
+Recreating /Users/thomasingalls/.codex/worktrees/c030/done/node_modules
+✓ Lockfile passes supply-chain policies (verified 16h ago)
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+dependencies:
++ @codemirror/commands 6.10.4
++ @codemirror/lang-markdown 6.5.1
++ @codemirror/language 6.12.4
++ @codemirror/state 6.7.1
++ @codemirror/view 6.43.7
++ @lezer/common 1.5.2
++ @lezer/highlight 1.2.3
++ @lezer/markdown 1.7.2
++ @simplewebauthn/server 14.0.0
++ lib0 0.2.117
++ react 19.2.8
++ react-dom 19.2.8
++ temporal-polyfill 1.0.2
++ y-codemirror.next 0.3.5
++ y-indexeddb 9.0.12
++ y-protocols 1.0.7
++ y-websocket 3.0.0
++ yjs 13.6.31
+
+devDependencies:
++ @babel/core 8.0.1
++ @emnapi/core 2.0.0-alpha.3
++ @emnapi/runtime 2.0.0-alpha.3
++ @noble/ciphers 2.3.0
++ @playwright/test 1.62.0
++ @rolldown/plugin-babel 0.2.3
++ @stablelib/xchacha20poly1305 2.0.1
++ @types/babel__core 7.20.5
++ @types/node 26.1.2
++ @types/react 19.2.17
++ @types/react-dom 19.2.3
++ @vitejs/plugin-react 6.0.4
++ babel-plugin-react-compiler 1.0.0
++ fake-indexeddb 6.2.5
++ fast-check 4.9.0
++ jsdom 30.0.1
++ libsodium-wrappers 0.8.4
++ oxfmt 0.61.0
++ oxlint 1.76.0
++ oxlint-tsgolint 7.0.2001
++ typescript 7.0.2
++ vite 8.1.5
++ vitest 4.1.10
+
+Done in 420ms using pnpm v11.20.0
+$ pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor
+$ tsc -b --noEmit
+$ node scripts/check-yjs-patch.mjs
+Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.
+$ node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-private-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && pnpm vectors:coverage
+algorithm-suite.json is current; primitive KATs and the §13.2 separation check pass.
+record-format.json is current, and every negative still fails to authenticate.
+journal-aead.json is current, and the primitive KAT passes.
+recovery-code.json is current; the alphabet and keypair checks pass.
+device-lock.json is current; the alphabet, row 3 and row 14 cross-checks pass.
+finalization.json is current, and every negative still fails.
+enrollment-ceremony.json is current, and every negative still fails.
+envelope.json is current, and every negative still fails.
+Private envelope vectors checked: five independent Node/OpenSSL cases and 20 isolating negatives.
+head-discovery.json is current, and every negative still fails.
+attribution.json is current, and every negative still fails.
+checkpoint.json is current, and every negative still fails.
+antireplay.json is current, and every negative still fails.
+package.json is current, and every negative still fails.
+account-credential.json is current; the keypair and row 1 cross-checks pass.
+transition.json is current; the keypair and row 1 cross-checks pass.
+web-security-baseline.json is current; 17 ASVS 5.0.0 chapters dispositioned.
+$ node scripts/check-aad-coverage.mjs
+  ok  scripts/generate-account-credential-vectors.mjs — slot binding (8), unlock challenge (5)
+  ok  scripts/generate-antireplay-vectors.mjs — heads record (7), position refusal (9)
+  ok  scripts/generate-attribution-vectors.mjs — attribution record (9)
+  ok  scripts/generate-baseline-vectors.mjs — no AAD
+  ok  scripts/generate-checkpoint-vectors.mjs — checkpoint aad (5), checkpoint manifest (11), checkpoint admission (12)
+  ok  scripts/generate-device-lock-vectors.mjs — lock seal (6)
+  ok  scripts/generate-enrollment-vectors.mjs — nonce commitment (3), enrollment transcript (11)
+  ok  scripts/generate-envelope-vectors.mjs — envelope aad (7), envelope signature (9)
+  ok  scripts/generate-finalization-vectors.mjs — accepted link (7), accepted head (7)
+  ok  scripts/generate-head-discovery-vectors.mjs — recovery bootstrap (14), head assertion (6)
+  ok  scripts/generate-journal-vectors.mjs — journal record (4)
+  ok  scripts/generate-package-vectors.mjs — generation wrap info (5), archive envelope (4), package manifest (10)
+  ok  scripts/generate-private-envelope-vectors.mjs — private envelope hkdf_info (4), private envelope aad (7), private envelope signature_message (9)
+  ok  scripts/generate-record-vectors.mjs — content record (8), key envelope (6)
+  ok  scripts/generate-recovery-vectors.mjs — recovery envelope (4), step-up challenge (4)
+  ok  scripts/generate-suite-vectors.mjs — no AAD
+  ok  scripts/generate-transition-vectors.mjs — certified set (8), transition intent (8), transition outcome (8)
+
+225 AAD fields, each isolated by a published negative.
+$ node scripts/check-retention.mjs
+retention: 12 months stated consistently across 6 anchors; every §16 unselected cell is bounded and open; §14.7's 6 states and 6 deletion classes match the executable model and stay disjoint from §13.7's 3 kinds and from §13.5's lineage words; the published deletion-authority domain, §14.7's table and the model agree on one six-class order with the boundary tokens stated in both; and 8 destructive-boundary homes carry the ratified sentences with the superseded ones refused (P-4 falsifiers 17 and 19 — byte rules; the boundary's execution semantics are the model tests' to prove).
+$ node scripts/check-selection-status.mjs
+selection status: 18 selected and 3 unselected rows, disjoint, and the stated counts match; 5 PRD sentences cite a row and none disagrees with its membership.
+  Membership and counts only: a construction cell describing a selected row as open is outside this scan (S0-9 E3/E4; row 3’s cell landed at the S0-3 return, and pnpm admission:check reads it).
+$ node scripts/check-update-limit.mjs
+update limit: 0.0476 µs/byte from 3 measurements; the budget is exhausted at 19.6 kB and §12's 4 extrapolated rows agree; the interim 16 kB is under it and under the module's guard.
+$ node scripts/check-authority-map.mjs
+authority map: 34 entries, 37 chains; every chain terminates at a permitted root for its guard, and every signature and AEAD construction in the 8 swept documents sits in a pinned section.
+  open at their own joint: 0
+  blocked through an open home: 0
+  This proves the rules resolve and their homes are pinned — not that the corpus implements them: each open entry flips only at its return, under that record's falsifiers. Class 1 closes when "open" reads zero.
+$ node scripts/check-recipient-authority.mjs
+recipient authority: the ratified formulas are stated at the named homes, the retired sentences appear in none of them, and the enrollment transcript, hash, wrap info and SAS reconstruct from published inputs alone.
+  Scope: byte rules over the named homes and one vector reconstruction — never construction soundness (the negatives and vectors:coverage own that) and never implementation (the authority map’s status lines own that).
+$ node scripts/check-write-admission.mjs
+write admission: the ratified scope, carrier and fence are stated at the named homes, the retired sentences appear in none of them, and the record vectors — two stores, two subkeys — reconstruct from published inputs alone.
+  Scope: byte rules over the named homes and two vector reconstructions — never construction soundness and never implementation. Vectors cover declared cases; production obligations remain in storage-conformance.md.
+$ node scripts/remediation-status.mjs --check
+remediation census: 48 documents (25 home · 21 record · 1 projection · 1 superseded), 21 pins current; 5 ratified · 3 decided; HANDOFF's dates, options and owed ranges agree in both directions.
+  Scope: standings, pins, readback existence, header/claim agreement, the S0-9 input rule and two named sentence negatives — byte rules, never an execution receipt (FU-14's receipts live at trace:check since the S0-8 regeneration; this stays byte rules).
+$ node scripts/check-debts.mjs --check
+debts: 9 registered (8 open · 1 paid · 0 waived), entries valid, pins current, gate-class census total, homes agree. Scope: the manifest and its byte rules, plus §10.11's evidence table held to the X25519 payment record in both directions — a gate arrival is evaluated by --gate, and blocking happens there.
+$ node scripts/check-wasm-seal.mjs
+journal seal: 28 checks pass — the published KAT, 4 composition vectors, authenticated open/tag refusal, disposal, the length guard in both directions, the key/nonce width guard, and the source↔blob binding (lib.rs, Cargo.toml, Cargo.lock hashes match the generated header — drift detection only; provenance attestation is the registered L-4 debt).
+$ vitest run
+
+ RUN  v4.1.10 /private/tmp/done-validation-500630f
+
+
+ Test Files  84 passed (84)
+      Tests  958 passed (958)
+   Start at  08:31:53
+   Duration  36.80s (transform 8.31s, setup 3.59s, import 21.58s, tests 189.30s, environment 34.01s)
+
+$ node scripts/write-session/run.mjs
+write-session C04.shared-scope: pass
+write-session C04.freeze-barrier: pass
+write-session C04.drain-cleanup: pass
+write-session C04.detached-work: pass
+write-session C04.stale-task: pass
+write-session C04.cancel-queued: pass
+write-session C04.cancel-initialize: pass
+write-session C04.initialize-error: pass
+write-session C04.cleanup-error: pass
+write-session C04.renderer-death: pass
+write-session C04.worker-lifetime: pass
+write-session C04.exclusive-error: pass
+write-session C04.navigation: pass
+split-coordination-domain C04.freeze-barrier: fail
+ignore-session-invalidation C04.drain-cleanup: fail
+release-before-drain C04.detached-work: fail
+skip-cache-cleanup C04.drain-cleanup: fail
+reuse-finished-task C04.stale-task: fail
+Report: /private/tmp/done-validation-500630f/test-results/write-session/2026-09-11T06-32-32.292Z/report.md
+Exit 0 (bounded C04 component scope)
+$ node scripts/custody/run.mjs
+custody C12.genesis: pass
+custody C10.concurrent-creation: pass
+custody C12.reservation-abort: pass
+custody C12.interrupted-creation: pass
+custody C12.completion-abort: pass
+custody C12.metadata-authentication: pass
+custody C10.partial-and-legacy: pass
+custody C12.scope-and-authority: pass
+custody C12.seal-ceiling: pass
+custody C12.session-lifetime: pass
+custody C12.cancel-crypto: pass
+custody C12.cancel-initialize: pass
+custody C13.profile-copy: pass
+skip-nested-crypto-guard C12.cancel-crypto: fail
+accept-unconfirmed-code C12.genesis: fail
+skip-reservation-commit C12.interrupted-creation: fail
+trust-unverified-metadata C12.metadata-authentication: fail
+request-success-as-commit C12.reservation-abort: fail
+Report: /private/tmp/done-validation-500630f/test-results/custody/2026-09-11T06-32-48.274Z/report.md
+Exit 0 (bounded custody component)
+$ node scripts/content/run.mjs
+content C15.concurrent-allocation: pass
+content C15.reservation-abort: pass
+content C15.abandoned-seals: pass
+content C15.content-abort: pass
+content C15.ceiling: pass
+content C14.generation-fence: pass
+content C09.unreadable-load: pass
+content C09.metadata: pass
+content C09.immutable-record: pass
+content C10.content-initialization: pass
+content C04.content-close: pass
+content C01.byte-replay: pass
+content C07.full-snapshot: pass
+early-transaction-success C15.reservation-abort: fail
+skip-reservation C15.abandoned-seals: fail
+omit-generation-fence C14.generation-fence: fail
+swallow-unreadable-record C09.unreadable-load: fail
+allow-ceiling-equality C15.ceiling: fail
+Report: /private/tmp/done-validation-500630f/test-results/content/2026-09-11T06-33-15.598Z/report.md
+Exit 0 (bounded content carrier)
+$ node scripts/journal/run.mjs
+journal C01.synchronous-crash: pass
+journal C01.remote-basis: pass
+journal C03.refusals: pass
+journal C03.watermark: pass
+journal C03.actual-quota: pass
+journal C09.unreadable: pass
+journal C09.enumeration-change: pass
+journal C11.abort-flush: pass
+journal C11.crash-before-cleanup: pass
+journal C11.changed-entry: pass
+journal C11.cleanup-refused: pass
+journal C01.handoff-race: pass
+journal C04.close-and-keys: pass
+journal C04.frozen-writer: pass
+journal C04.concurrent-writers: pass
+journal C11.chunked-flush: pass
+journal C03.host-smoke: pass
+skip-storage-append C01.synchronous-crash: fail
+acknowledge-refusal C03.refusals: fail
+remove-changed-entry C11.changed-entry: fail
+cleanup-before-commit C11.abort-flush: fail
+reread-journal-after-content C01.handoff-race: fail
+skip-wasm-disposal C04.close-and-keys: fail
+Report: /private/tmp/done-validation-500630f/test-results/journal/2026-09-11T06-33-35.591Z/report.md
+Exit 0 (bounded journal carrier)
+$ node scripts/journal-contention/run.mjs
+transient-workspace: passed
+cross-tab-append: passed
+cross-tab-cleanup: passed
+sustained-contention: passed
+startup-transient: passed
+startup-busy: passed
+cancel-retry-flush: passed
+cancel-retry-open: passed
+fatal-after-churn: passed
+corruption-is-not-contention: passed
+content-abort-is-not-retried: passed
+generated-read-histories: passed
+$ node scripts/admission/run.mjs
+admission C01.pending-struct: pass
+admission C03.synchronous: pass
+admission C03.ordered-refusal: pass
+admission C03.retry: pass
+admission C01.remote-basis: pass
+admission C02.pending-delete: pass
+admission C03.slicing: pass
+admission C03.capacity: pass
+admission C03.barrier: pass
+admission C03.timer: pass
+admission C04.close: pass
+admission C09.persisted-yjs: pass
+admission C09.runtime-repair: pass
+admission C03.validation: pass
+admission C04.cross-tab: pass
+publish-before-forced-commit C03.ordered-refusal: fail
+prepare-queued-input-early C03.ordered-refusal: fail
+publish-receive-before-commit C01.remote-basis: fail
+retry-via-journal C03.retry: fail
+early-durability-return C03.barrier: fail
+ignore-byte-capacity C03.capacity: fail
+Report: /private/tmp/done-validation-500630f/test-results/admission/2026-09-11T06-34-18.332Z/report.md
+Exit 0 (bounded ordered admission)
+$ node scripts/editor-admission/run.mjs
+editor E11.repair: pass
+editor E12.multicaret: pass
+editor E09.pending-death: pass
+editor E10.checkbox: pass
+editor E01.typing: pass
+editor E02.pressure: pass
+editor E03.remote: pass
+editor E04.cross-tab: pass
+editor E05.paste: pass
+editor E06.composition: pass
+editor E07.close: pass
+editor E08.profile: pass
+history-before-receipt E02.pressure: fail
+ordinary-view-before-receipt E02.pressure: fail
+remote-in-undo E03.remote: fail
+Report: /private/tmp/done-validation-500630f/test-results/editor-admission/2026-09-11T06-34-40.657Z/report.md
+Exit 0 (bounded Goals editor integration)
+$ node scripts/workspace-admission/run.mjs
+workspace W10.repair: pass
+workspace W01.surfaces: pass
+workspace W02.pressure: pass
+workspace W03.undo-death: pass
+workspace W04.cross-tab: pass
+workspace W05.system: pass
+workspace W06.remote: pass
+workspace W07.history: pass
+workspace W08.rules: pass
+workspace W09.initialize: pass
+pending-history-visible W02.pressure: fail
+system-bulk-in-human-history W05.system: fail
+received-work-in-human-history W06.remote: fail
+lost-redone-links W07.history: fail
+Report: /private/tmp/done-validation-500630f/test-results/workspace-admission/2026-09-11T06-35-12.241Z/report.md
+Exit 0 (bounded workspace command integration)
+$ node scripts/pending-projection/run.mjs
+(node:75127) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+saved-forks: passed
+pending-deletion-forks: passed
+equal-clock-content-check: passed
+pending-workspace-startup: passed
+pending-text-startup: passed
+later-basis-workspace: passed
+pending-promotion-death: passed
+pending-pressure-and-retry: passed
+workspace-projection-drift: passed
+text-projection-drift: passed
+initialization-projection-drift: passed
+[ELIFECYCLE] Command failed.
+[ELIFECYCLE] Command failed with exit code 143.

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="removing exact capsule identity consistency accepts two different original payloads under one ID" time="0.053359" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="real source-digest and envelope-body omissions rescue separately signed and encrypted semantic substitutions" time="0.090778" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="count has two effective checks; hash and count omissions separately weaken completeness" time="0.125858" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories" time="0.112250" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="omitting raw previous-hash bytes in the actual digest input aliases otherwise distinct witness histories" time="0.001069" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<!-- tests 5 -->
+	<!-- suites 0 -->
+	<!-- pass 5 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 635.382917 -->
+</testsuites>

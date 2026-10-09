@@ -1,5 +1,10 @@
 # `P-3` — write admission for oversize and storage failure
 
+**Amended 2026-09-08:** [storage-contract.md](../../../storage-contract.md) SC-01–09 corrects the
+remote-dependency, trim-coverage and cross-storage completeness claims below. The original “option A at
+every joint” selection retains store binding, staging and the IndexedDB commit fence within their actual
+scopes. Earlier model receipts remain partial; the current conformance matrix names what they omit.
+
 **Standing:** home — the decision’s current status lives in the header below; read back by
 `pnpm remediation:status`, which parses it and checks `HANDOFF.md`’s claim of it in both directions.
 
@@ -99,19 +104,11 @@ state `RC-3`'s Branch B says large writes need, arrived at without the group-com
 
 ## Why remote updates leave the journal's contract
 
-The journal exists so that a page kill cannot lose **accepted local work**. A remote update is not local work,
-and §6.1 already protects it by a stronger mechanism: _the content batch commits first and the heads record
-after it_, so a crash before the batch leaves the accepted mark below that position and **sync re-delivers**.
-Journalling remote updates adds a synchronous main-thread cost on the receive path to duplicate a guarantee the
-ordering already makes.
-
-**This also removes the one case that cannot be sliced.** A peer's large paste or an initial sync arrives as
-one update whose size we do not control and cannot split — it is the only genuine counterexample to the rule
-above, and it turns out not to need the rule at all.
-
-**The composition to check** is a local update that causally depends on a remote one which was never persisted.
-On reload the journal replays the local update against a document missing its dependency; Yjs holds it pending,
-the remote update is re-delivered, and it integrates. That is a falsifier below rather than an assumption.
+**Corrected 2026-09-08.** Remote updates remain outside the synchronous journal, but the former
+redelivery argument did not establish offline recovery of a dependent local edit. SC-01/02 now requires
+remote/cross-tab content completion before canonical promotion, including deletion information. A local
+candidate therefore inherits a durable semantic basis. Eventual redelivery is a separate availability
+case; the original model's explicit redelivery does not prove recovery without it.
 
 ## The allocator: per batch, exactly sized
 
@@ -136,16 +133,12 @@ Consume  encrypt and write under the granted range. An abandoned batch leaves
 **One extra transaction per batch, not per record** — at a 250 ms batching window that is about four a second,
 against one per record which would be one per keystroke.
 
-**And it hands the trimmer an exact watermark, which is the second thing it fixes.** A trim that infers its
-boundary from committed records can race a batch that is mid-flight. Reading `next_seq` in the snapshot
-transaction gives a boundary that is correct by construction: everything at or above it is reserved by someone
-and is not the trim's to sweep.
-
-*[Superseded 2026-08-28, `FU-13`. `S0-3` Stage D retired the watermark claim by mutation: swapping a
-covered-set trim for a range trim changed no result, because with unique sequences the two agree. What the
-allocator hands the trimmer is **uniqueness** — a trim deletes what its state record covered, and "what it
-covered" is expressible only because one `seq` is issued once. TRD §6.1, row 3 and `S0-3/A-schemas.md` already
-say so; this record now does too. See the reopening below.]*
+**Corrected 2026-09-08: uniqueness is not coverage.** The earlier watermark claim and its replacement
+claim that unique sequences made range and covered-set deletion equivalent were both false. A sequence
+reserved before a snapshot can commit afterward. State 4 covering committed {1,3} cannot delete late 2.
+SC-05 requires an authenticated merge of the exact observed records and deletion only of that covered
+identity/byte set after replacement completion. The new component counterexample C07 exercises this
+schedule. A green range/covered-set mutation in the old model showed missing schedule coverage.
 
 ## The budget baseline: reserved, not committed
 
@@ -421,8 +414,9 @@ shares the store's database, so the batch's committing transaction spans it: val
 and re-reserve under the successor — the re-reserve rule this record already states, moved from *when the
 batch happens to look* to the one place looking is atomic. IndexedDB serializes overlapping readwrite
 transactions, which is the same property the allocator's two-tab argument already rests on; after
-marker-advance commits, no transaction can commit a `g` record, so step 3's classification is complete the
-moment step 7 consumes it. The buy: the reservation transaction is **completed, not changed** — `FU-09`'s
+marker-advance commits, no IndexedDB transaction can commit a `g` record. **Corrected 2026-09-08:**
+that fact does not fence cached localStorage writers or establish a complete retirement census. SC-03/04
+adds live writer exclusion and fresh all-carrier accounting before retirement. The buy: the reservation transaction is **completed, not changed** — `FU-09`'s
 conditional resolves inside this record, and the fence is one abort branch in a transaction that already
 exists. The costs: a raced batch re-encrypts under the successor (bounded by rotation frequency, which is
 rare), and the marker's store enters the batch transaction's scope — an `S0-2`/`S0-3` interface amendment.
@@ -446,7 +440,8 @@ forfeits the rotation.
 
 - **`K_store` derives per store: one key per counter.** The `info` gains the identifier that separates
   `SeqCounter`s, selected at Stage A under the floor's constraint — it exists at creation for every store, the
-  anonymous Local workspace included, and no two counters ever share it. `reserved[gen]` then counts every
+  anonymous Local workspace included, within an unrewound, unbranched history (SC-09, corrected
+  2026-09-08). Raw clones/rollback duplicate key and counter and are outside this proof. `reserved[gen]` then counts every
   invocation of the key it bounds, the sum over devices is a sum over distinct keys, and the one comparison —
   rotate before the 2^32nd reservation — is again the whole enforcement, firing on time for its own key
   instead of up to `D` times too late for a shared one.
@@ -457,10 +452,10 @@ forfeits the rotation.
   ratified, the plumbing is not prejudged.
 - **A batch's commit validates its generation where the commit lands.** The committing transaction reads the
   active marker under the same IndexedDB serialization the allocator already leans on, and aborts into
-  re-reservation when it moved. After marker-advance commits, no `g` record can commit, so step 3's
-  classification is complete when step 7 consumes it — step 5's claim becomes construction. `FU-09`'s
+  re-reservation when it moved. After marker-advance commits, no IndexedDB `g` record can commit.
+  SC-03/04's later correction supplies the independent journal-writer lifetime barrier and fresh census. `FU-09`'s
   conditional is thereby determinate: **the reservation transaction is completed, not changed** — its return
-  stays at the `S0-2`/`S0-3` interface, and `P-3` reopens no further on that axis.
+  stays at the `S0-2`/`S0-3` interface, and that transaction-local fact remains useful; it is not a cross-storage completeness claim.
 
 The class-2 pattern is now normative beside `P-4`'s and `P-1`'s class-1 halves: **a budget binds only what
 its counter can see; an edit is accepted only when a durable carrier holds it; a reservation is only as

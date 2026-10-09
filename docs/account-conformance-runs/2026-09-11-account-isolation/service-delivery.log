@@ -1,0 +1,55 @@
+(node:25609) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25609) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual commit control demonstrates the protected bad outcome (96.818083ms)
+✔ actual generation control demonstrates the protected bad outcome (102.244666ms)
+✔ actual current control demonstrates the protected bad outcome (76.135958ms)
+✔ actual witness control demonstrates the protected bad outcome (87.928708ms)
+✔ the committed v3 reader refuses schema 4 without modifying it (77.764083ms)
+(node:25615) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25615) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ exact persisted decisions extend a contiguous chain and survive restart without replacing ciphertext (109.88525ms)
+✔ permanent closure cannot reopen; only an owned issued parent permits a different attempt at that position (146.693709ms)
+✔ invalid, foreign, future and unordered submissions never create a permanent refusal (83.508375ms)
+✔ caller bytes are captured before asynchronous verification (41.581792ms)
+✔ before-commit generation 1 decision fault resolves from durable readback (59.193708ms)
+✔ before-commit generation 2 decision fault resolves from durable readback (62.160459ms)
+✔ after-commit generation 1 decision fault resolves from durable readback (70.275417ms)
+✔ after-commit generation 2 decision fault resolves from durable readback (61.531791ms)
+✔ missing-tail damage refuses without signing or repairing the ledger (59.993584ms)
+✔ missing-all damage refuses without signing or repairing the ledger (58.525375ms)
+✔ witness damage refuses without signing or repairing the ledger (61.858958ms)
+✔ submission damage refuses without signing or repairing the ledger (63.74225ms)
+✔ response damage refuses without signing or repairing the ledger (59.200875ms)
+✔ seal damage refuses without signing or repairing the ledger (56.514166ms)
+✔ membership damage refuses without signing or repairing the ledger (50.656084ms)
+✔ membership changes during verification prevent commit (41.115875ms)
+✔ schema 3 upgrade preserves historical rows but cannot invent fresh activation authority (48.448292ms)
+✔ a valid acceptance-key signature is insufficient without the service-issued closure record (42.4775ms)
+✔ closing authority during verification prevents any decision or witness from escaping (38.717625ms)
+(node:25619) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25619) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 80 generated service histories preserve permanent subjects, one accepted leaf, and exact retries across unknown commits (18826.458834ms)
+(node:25645) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25645) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ real v8 browser submissions receive owned service heads and recover a lost acceptance reply (8248.203083ms)
+(node:25676) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25676) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit generation 1 preserves the exact durable decision (575.880958ms)
+✔ SIGKILL before-commit generation 2 preserves the exact durable decision (518.9515ms)
+✔ SIGKILL after-commit generation 1 preserves the exact durable decision (502.27825ms)
+✔ SIGKILL after-commit generation 2 preserves the exact durable decision (511.301917ms)
+✔ two service processes accepting competing leaves converge on one persisted head (535.312ms)
+✔ acceptance racing closure of the same subject can never yield both signed outcomes (487.327708ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 34708.841167

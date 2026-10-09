@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-replay-r1/candidate
+
+
+ Test Files  2 passed (2)
+      Tests  99 passed (99)
+   Start at  14:05:52
+   Duration  10.26s (transform 327ms, setup 90ms, import 613ms, tests 12.03s, environment 0ms)
+

@@ -1,0 +1,50 @@
+{
+  "browser": "151.0.7922.34",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "fixture": "synthetic fresh Local workspace with one admitted card; fresh mobile context and settled panel bounds",
+  "boxes": {
+    ".menu": {
+      "x": -272,
+      "y": 0,
+      "width": 272,
+      "height": 844,
+      "top": 0,
+      "right": 0,
+      "bottom": 844,
+      "left": -272
+    },
+    ".goals": {
+      "x": 390,
+      "y": 0,
+      "width": 336,
+      "height": 844,
+      "top": 0,
+      "right": 726,
+      "bottom": 844,
+      "left": 390
+    },
+    ".plane": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844,
+      "top": 0,
+      "right": 390,
+      "bottom": 844,
+      "left": 0
+    },
+    ".day-panel[data-active=\"true\"]": {
+      "x": 0,
+      "y": 20,
+      "width": 390,
+      "height": 804,
+      "top": 20,
+      "right": 390,
+      "bottom": 824,
+      "left": 0
+    }
+  }
+}

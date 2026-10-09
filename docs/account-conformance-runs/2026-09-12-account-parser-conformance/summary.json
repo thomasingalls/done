@@ -1,0 +1,559 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-11T22:35:54.657Z",
+  "node": "v26.8.2",
+  "scope": "F-21.1 six named parsers: structured generated mutations, declared bounds, exact positives, native data-shape readback and effective omission controls. Four source files repair reproduced type coercion and sparse-array validation; no valid format or personal app change.",
+  "stages": [
+    {
+      "name": "inventory",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-crypto-prep/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "registry",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/registry.xml",
+        "test/account-first-authority/registry.test.mjs",
+        "test/account-crypto-prep/contracts.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 13
+    },
+    {
+      "name": "parser",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/parser.xml",
+        "test/account-parser-conformance/objects.test.mjs",
+        "test/account-parser-conformance/wires.test.mjs",
+        "test/account-parser-conformance/submission.test.mjs",
+        "test/account-parser-conformance/controls.test.mjs",
+        "test/account-parser-conformance/baseline.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 33
+    },
+    {
+      "name": "parser-native",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/parser-native.xml",
+        "test/account-parser-conformance/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 1
+    },
+    {
+      "name": "first-authority",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/first-authority.xml",
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 6
+    },
+    {
+      "name": "promotion-contract",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/promotion-contract.xml",
+        "test/account-promotion-contract/formats.test.mjs",
+        "test/account-promotion-contract/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 10
+    },
+    {
+      "name": "ledger-contract",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/ledger-contract.xml",
+        "test/account-ledger-contract/formats.test.mjs",
+        "test/account-ledger-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 12
+    },
+    {
+      "name": "transport-contract",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/transport-contract.xml",
+        "test/account-transport-contract/formats.test.mjs",
+        "test/account-transport-contract/controls.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 13
+    },
+    {
+      "name": "admission-core",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/admission-core.xml",
+        "test/account-admission/core.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 12
+    },
+    {
+      "name": "genesis",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/genesis.xml",
+        "test/account-genesis/crypto.test.mjs",
+        "test/account-genesis/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 17
+    },
+    {
+      "name": "spool",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "--test-reporter=spec",
+        "--test-reporter-destination=stdout",
+        "--test-reporter=junit",
+        "--test-reporter-destination=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/spool.xml",
+        "test/account-spool/native.test.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 24
+    },
+    {
+      "name": "typecheck",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "unit",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/sourceCapture.test.ts",
+        "test/spoolRecord.test.ts",
+        "test/accountDelivery.test.ts",
+        "test/ownedStartup.test.ts",
+        "--maxWorkers=2",
+        "--reporter=verbose",
+        "--reporter=junit",
+        "--outputFile.junit=/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-parser-conformance/2026-09-11T22-35-54.498Z/unit.xml"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "executedTests": 44
+    },
+    {
+      "name": "vectors-01",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-suite-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-02",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-record-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-03",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-journal-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-04",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-recovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-05",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-device-lock-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-06",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-finalization-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-07",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-enrollment-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-08",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-09",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-private-envelope-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-10",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-head-discovery-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-11",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-attribution-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-12",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-checkpoint-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-13",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-antireplay-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-14",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-package-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-15",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-account-credential-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-16",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-transition-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-17",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/generate-baseline-vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-18",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-admission-bounds/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-19",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-first-authority/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-20",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-recovery-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-21",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-transport-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-22",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-service-custody/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-23",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/check-aad-coverage.mjs"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-24",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-promotion-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-25",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-ledger-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-26",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-counter-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-27",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-store-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-28",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-local-custody/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-29",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-checkpoint-contract/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "vectors-30",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "scripts/account-local-provenance/vectors.mjs",
+        "--check"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "lint",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxlint/bin/oxlint",
+        "test/account-parser-conformance",
+        "scripts/account-parser-conformance",
+        "src/crdt/promotionRecord.ts",
+        "src/crdt/spoolRecord.ts",
+        "src/crdt/startupClassification.ts",
+        "account-protocol/genesis.ts"
+      ],
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "format",
+      "command": [
+        "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "test/account-parser-conformance",
+        "scripts/account-parser-conformance",
+        "src/crdt/promotionRecord.ts",
+        "src/crdt/spoolRecord.ts",
+        "src/crdt/startupClassification.ts",
+        "account-protocol/genesis.ts",
+        "docs/account-crypto/constructions.json",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "sourcePinsVerified": 884,
+  "completedAt": "2026-09-11T22:39:30.918Z"
+}

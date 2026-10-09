@@ -1,0 +1,5 @@
+{
+  "mode": "after-close",
+  "calls": 1,
+  "outcome": "An owner pass starts after a synchronous observer closes the scheduler."
+}

@@ -1,0 +1,36 @@
+Focused browser-coordinator checks with modeled committed custody and real snapshot crypto; not native owner activation.
+
+(node:43426) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ browser continuation handoff preserves all recipients and requires persisted installation before certification (119.946209ms)
+✔ wrapped delivery persists before sending and exact bytes survive a lost save or network reply (62.937625ms)
+✔ key installation and countersignature retry from committed custody after interruptions (86.698708ms)
+✔ mismatched approval, missing durable custody and substituted device refuse before key release (71.266791ms)
+✔ continuation progress preserves the first ceremony and refuses an older writer or incomplete value (0.669375ms)
+✔ replacement handoff persists one snapshot before publication and cold-replays before countersigning (148.549083ms)
+✔ replacement refuses unsaved or substituted snapshots and a key that cannot decrypt the writing (113.808416ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 835.322084
+
+(node:43531) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:43531) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:43531) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ browser comparison by existing composes with the real continuation relay and key handoff after restart (2720.474708ms)
+✔ browser comparison by new composes with the real continuation relay and key handoff after restart (2557.128667ms)
+✔ retained connection coordinates invitation through third-device certification with existing approving (8250.446375ms)
+✔ retained connection coordinates invitation through third-device certification with new approving (8392.983ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22314.769666

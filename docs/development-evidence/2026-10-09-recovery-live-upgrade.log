@@ -1,0 +1,72 @@
+Retained development recovery upgrade, after operator confirmed both devices locked and closed.
+
+(node:23252) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:23252) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+Account preview upgraded: schema 21 → 24. Backup: /Users/thomasingalls/.codex/worktrees/c030/done/.dev/account-enrollment-tailnet/backups/schema-21-OpHaJG
+
+Post-upgrade comparison and public-origin health:
+{
+  "build": "049b9a2912f1ff26d2fd504bec36afa2a9f37f56",
+  "backup": ".dev/account-enrollment-tailnet/backups/schema-21-OpHaJG",
+  "from": 21,
+  "to": 24,
+  "results": {
+    "account.sqlite": {
+      "unchangedTables": 26,
+      "unchangedRows": 66,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    "authority.sqlite": {
+      "unchangedTables": 1,
+      "unchangedRows": 1,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  },
+  "identityUnchanged": true,
+  "status": "running; public-origin health and identity checks passed",
+  "health": [
+    {
+      "path": "/",
+      "status": 200,
+      "sha256": "33208356c6fa8d960bc680f338de0132be6966a3f78c57e37889fa7583f1ba8f"
+    },
+    {
+      "path": "/accounts",
+      "status": 200,
+      "sha256": "33208356c6fa8d960bc680f338de0132be6966a3f78c57e37889fa7583f1ba8f"
+    },
+    {
+      "path": "/recover/enrollment-00000000000000000000000000000000/start",
+      "status": 200,
+      "sha256": "33208356c6fa8d960bc680f338de0132be6966a3f78c57e37889fa7583f1ba8f"
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "sha256": "49fc5acc5fce16bdb1305d835827338b8cd628514de65902a6378b6b90773857"
+    },
+    {
+      "path": "/__account-setup/config",
+      "status": 200,
+      "identityUnchanged": true,
+      "networkSessions": true,
+      "membershipContinuation": true
+    },
+    {
+      "path": "/__account-setup/lost-recovery/begin",
+      "status": 409,
+      "malformedRequestRefused": true
+    }
+  ]
+}
+
+Both prior processes stopped gracefully. New account API PID 23312 listens on 127.0.0.1:53220;
+packaged gateway PID 23313 listens on 127.0.0.1:53219. The Tailscale :8443 origin is unchanged.
+The original 26 account tables (66 rows) and authority table (one row) were compared in full
+against the backup before restart. Account schema is 24, authority schema is 1.
+Pin and operator key bytes match the backup; the pin hash matches the preparation checkpoint.
+After health checks: zero lost-recovery attempts/transitions and zero foreign-key violations.
+No account sign-in or personal recovery was performed. Release validation remains paused.

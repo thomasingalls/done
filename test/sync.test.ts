@@ -32,6 +32,7 @@ import {
   openWebsocket,
   parseEndpoint,
   openStore,
+  storeHandle,
   readSyncConfig,
   transact,
   type OpenWebsocket,
@@ -369,7 +370,7 @@ describe('local state loads before the transport is constructed', () => {
 
   /** A document already on disk, as it would be on any reload after first use. */
   const seed = async (dbName: string): Promise<void> => {
-    const first = await openStore({ dbName });
+    const first = await openStore({ store: storeHandle(dbName) });
     transact(first.doc, first.actor.origin, () => first.master.insert(0, SEEDED));
     await first.local?.provider.whenSynced;
     first.destroy();
@@ -398,7 +399,7 @@ describe('local state loads before the transport is constructed', () => {
     localStorage.setItem(SYNC_KEYS.config, JSON.stringify(CONFIG));
 
     const { open, seen } = observingTransport();
-    const store = await openStore({ dbName, openWebsocket: open });
+    const store = await openStore({ store: storeHandle(dbName), openWebsocket: open });
     await settle();
 
     // Exact rather than "not empty", which would also pass on a partial read.

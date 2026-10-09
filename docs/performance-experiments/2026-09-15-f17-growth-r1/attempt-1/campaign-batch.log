@@ -1,0 +1,29 @@
+Starting campaign-0-300-retain 2026-09-15T09:22:47.275Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-0-300-retain early 49.30000019073486 56.80000019073486
+campaign-0-300-retain growth 188
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ 'goal 16 — a line of the master listgrowth diagnostic card 🚀wwwwwwwwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg'
+- 'goal 16 — a line of the master listgrowth diagnostic card 🚀wwwwwwwwaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg'
+
+    at type (file:///private/tmp/done-f17-growth-r1/screen.mjs:40:35)
+    at async run (file:///private/tmp/done-f17-growth-r1/screen.mjs:53:15)
+    at async file:///private/tmp/done-f17-growth-r1/screen.mjs:78:5
+Finished campaign-0-300-retain failed
+file:///private/tmp/done-f17-growth-r1/batch.mjs:19
+ if(code!==0||timedOut||!drained)throw Error('Session failed; batch stopped and evidence retained');
+                                       ^
+
+Error: Session failed; batch stopped and evidence retained
+    at file:///private/tmp/done-f17-growth-r1/batch.mjs:19:40
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v26.8.2

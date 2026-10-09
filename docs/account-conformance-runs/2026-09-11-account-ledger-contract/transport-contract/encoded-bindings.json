@@ -1,0 +1,7 @@
+{
+  "negatives": 314,
+  "omissions": 314,
+  "signatureChecks": 105,
+  "aeadChecks": 14,
+  "note": "Independent encoding/primitive controls; production controls and composite state checks are separate."
+}

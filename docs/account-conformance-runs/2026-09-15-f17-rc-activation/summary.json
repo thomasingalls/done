@@ -1,0 +1,228 @@
+{
+  "schema": 1,
+  "base": "e38be54caa1d16b1782c5eb8e5ab952cc2314f4c",
+  "claim": "One unchanged application gate and separate explicit RC debt disposition; no immutable release or fleet pass.",
+  "artifactsSha256": "6ee873585658a3e46100eb61f2a8b3cd0345fdfbcaaef4aa71270f71cf3600e6",
+  "rawIndexSha256": "4d37c3fd8b8e227932150014a9500f68021d6fd0e75cbf16c9717af3198168bf",
+  "payloads": 153,
+  "analysis": {
+    "base": "e38be54caa1d16b1782c5eb8e5ab952cc2314f4c",
+    "applicationInput": "4b8dd124dc491affa1c668160f6a8e22bb6d4114b5ee80f9c814829d58cea7fa",
+    "gateStatus": "failed",
+    "elapsedMs": 130632,
+    "completeCases": 12,
+    "measurementRows": 30,
+    "trustedTypingSamples": 480,
+    "budgets": {
+      "desktop": {
+        "cold app work": [
+          235.70000076293945,
+          2500
+        ],
+        "warm app work": [
+          222.99999904632568,
+          1000
+        ],
+        "encrypted replay": [
+          5,
+          500
+        ],
+        "compose p95": [
+          2.3999996185302734,
+          16
+        ],
+        "card p95": [
+          9,
+          16
+        ],
+        "focus": [
+          6.59999942779541,
+          50
+        ],
+        "goTo (response)": [
+          8.5,
+          100
+        ],
+        "goTo (settled)": [
+          23.100000381469727,
+          100
+        ],
+        "step (response)": [
+          0.6000003814697266,
+          100
+        ]
+      },
+      "android": {
+        "cold app work": [
+          819.2000007629395,
+          2500
+        ],
+        "warm app work": [
+          754.0999994277954,
+          1000
+        ],
+        "encrypted replay": [
+          24.699999809265137,
+          500
+        ],
+        "compose p95": [
+          11.300000190734863,
+          16
+        ],
+        "card p95": [
+          38.69999980926514,
+          16
+        ],
+        "focus": [
+          35.39999961853027,
+          50
+        ],
+        "goTo (response)": [
+          43.19999980926514,
+          100
+        ],
+        "goTo (settled)": [
+          113.60000038146973,
+          100
+        ],
+        "step (response)": [
+          22.199999809265137,
+          100
+        ]
+      }
+    },
+    "failures": [
+      {
+        "project": "android",
+        "metric": "card p95",
+        "valueMs": 38.69999980926514,
+        "strictLimitMs": 16
+      },
+      {
+        "project": "android",
+        "metric": "goTo (settled)",
+        "valueMs": 113.60000038146973,
+        "strictLimitMs": 100
+      }
+    ],
+    "onlyAuthorizedKnownTimingShortfalls": false,
+    "functionalAndDrainChecksPassed": true,
+    "activationEligiblePendingFunctionalChecks": false,
+    "claim": "Original failed gate remains failed; RC disposition is separate; no population or causal speedup claim."
+  },
+  "functional": {
+    "schema": 1,
+    "selection": "frozen RC Local activation functional qualification",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/workspaceAdmission.test.ts",
+        "key": "39db2698375003444dbd5cdd34760cd092e66c9d56b446ebb9ba40367740ee92",
+        "status": "passed",
+        "elapsedMs": 12872,
+        "cases": 99,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/historyReplay.test.ts",
+        "key": "985cd9b621cac2313d57b7b189819f91d11d547ec3cc9ff6084f61109eb34dda",
+        "status": "passed",
+        "elapsedMs": 4871,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/historyRetirement.test.ts",
+        "key": "6edaaaa6d327e877769dd0761f16f1fdd9ce5cf94d69f8d3ed44ac2398c40eac",
+        "status": "passed",
+        "elapsedMs": 2676,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/selectionHistory.test.ts",
+        "key": "138f5cfd526cd783776946a85cf149432104e66c07bc2e69651e157e3c5de628",
+        "status": "passed",
+        "elapsedMs": 2877,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/selectionSnapshots.test.ts",
+        "key": "e2df0159b674d1c279d9818477283658614358667f60d921b6bae6ce6e9ec6d7",
+        "status": "passed",
+        "elapsedMs": 3431,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/membershipEligibility.test.ts",
+        "key": "59fef93e6e4dd4ffc41ad6a47a2e34ce81af01d5d8b97594a36b4233b57a11c8",
+        "status": "passed",
+        "elapsedMs": 3578,
+        "cases": 18,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/admittedEditorProjection.test.ts",
+        "key": "d65972f4fb9fd5acf19ad4b70ce60bd2fa4f3b315673ff31a7b5e20f2c7e7f0b",
+        "status": "passed",
+        "elapsedMs": 3342,
+        "cases": 11,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "catalogue:scripts/workspace-admission/catalog.mjs",
+        "key": "481b84073bfed9421bb8094660f493dbcff4dbae674e56f3c798bea016fc6c91",
+        "status": "passed",
+        "elapsedMs": 50538,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/local-app/editor.spec.ts",
+        "key": "9011eb95faee980221d1ee03e319a783899a5b67b71cd4902a4dfaa403e5eb43",
+        "status": "passed",
+        "elapsedMs": 64540,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/local-app/startup.spec.ts",
+        "key": "5bd77ad1b371d5b3a3b8825ae48a525d9a3bb2939c57d975c1381fcb5a3407da",
+        "status": "passed",
+        "elapsedMs": 15006,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T14:29:25.575Z",
+    "input": "4b8dd124dc491affa1c668160f6a8e22bb6d4114b5ee80f9c814829d58cea7fa",
+    "completedAt": "2026-09-15T14:32:48.884Z"
+  },
+  "activation": {
+    "activated": true,
+    "at": "2026-09-15T14:33:25.099Z",
+    "afterFunctional": "2026-09-15T14:32:48.884Z",
+    "base": "e38be54caa1d16b1782c5eb8e5ab952cc2314f4c",
+    "sha256": "5512e4071018b32a8c211cfbd354f8b9a5bd3cc643c2591fbad4a18a3b37bf9e",
+    "sourceDigest": "982adce0389e2554f401fece72028ac107c83b7c52cebc98bc6b8583e1932654",
+    "applicationInput": "4b8dd124dc491affa1c668160f6a8e22bb6d4114b5ee80f9c814829d58cea7fa",
+    "accountUnchanged": true,
+    "change": "src/crdt/admittedWorkspace.ts",
+    "gateStillFailed": true,
+    "prospectiveExceptionRulePassed": false,
+    "disposition": "Explicit RC amendment under existing operator authorization accepts Android card and settled-navigation latency debt; original gate/analysis remain failed."
+  }
+}

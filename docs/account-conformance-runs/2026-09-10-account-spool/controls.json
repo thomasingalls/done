@@ -1,0 +1,10 @@
+{
+  "earlyReturn": {
+    "returnedBytes": 300,
+    "persistedEnvelopes": 0
+  },
+  "reuse": {
+    "nativeInvocations": 2,
+    "durableAttempts": 1
+  }
+}

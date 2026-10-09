@@ -1,0 +1,16 @@
+(node:74148) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ inspection retains real Yjs history and returns detached facts (9.21125ms)
+✔ clear preserves content/selection/state, including redo, and later undo works (3.045792ms)
+✔ closed probe rejects inspection and clearing (1.257458ms)
+✔ no-op clear fault is caught (3.251ms)
+✔ content mutation during clear fault is caught (1.382375ms)
+✔ existing canonical mismatch refuses inspection (0.946875ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 137.354958

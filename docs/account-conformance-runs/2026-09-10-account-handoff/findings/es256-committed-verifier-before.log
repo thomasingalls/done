@@ -1,0 +1,28 @@
+(node:84950) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:84950) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ real browser ES256 passkey assertion completes handoff and offline startup (1466.375959ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2326.865291
+
+✖ failing tests:
+
+test at test/account-handoff/native.test.mjs:25:1
+✖ real browser ES256 passkey assertion completes handoff and offline startup (1466.375959ms)
+  page.evaluate: Error: Account passkey refused: assertion-signature-invalid
+      at requireAccountAccess (eval at evaluate (:311:30), <anonymous>:32891:29)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32943:4)
+      at async withRecoveryUnderPermit (eval at evaluate (:311:30), <anonymous>:26343:12)
+      at async withRecoveryKeys (eval at evaluate (:311:30), <anonymous>:31527:11)
+      at async eval (eval at evaluate (:311:30), <anonymous>:32256:12)
+      at async eval (eval at evaluate (:311:30), <anonymous>:25840:23)
+      at handoff (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/fixtures.mjs:45:45)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs:50:23) {
+    log: []
+  }

@@ -1,0 +1,254 @@
+{
+  "rows": [
+    {
+      "variant": "selected",
+      "pair": 0,
+      "block": "shallow",
+      "components": {
+        "fresh-doc": {
+          "count": 40,
+          "meanMs": 9.157500076293946,
+          "sumMs": 366.3000030517578,
+          "minMs": 5,
+          "maxMs": 11.199999809265137
+        },
+        "fresh-stacks": {
+          "count": 40,
+          "meanMs": 0.05749998092651367,
+          "sumMs": 2.299999237060547,
+          "minMs": 0,
+          "maxMs": 0.8000001907348633
+        },
+        "fresh-total": {
+          "count": 40,
+          "meanMs": 9.454999923706055,
+          "sumMs": 378.1999969482422,
+          "minMs": 5.09999942779541,
+          "maxMs": 12.199999809265137
+        }
+      },
+      "freshOtherMeanMs": 0.239999866485595
+    },
+    {
+      "variant": "selected",
+      "pair": 0,
+      "block": "deeper",
+      "components": {
+        "fresh-doc": {
+          "count": 40,
+          "meanMs": 8.777499914169312,
+          "sumMs": 351.09999656677246,
+          "minMs": 7.699999809265137,
+          "maxMs": 10.5
+        },
+        "fresh-stacks": {
+          "count": 40,
+          "meanMs": 0.47750005722045896,
+          "sumMs": 19.10000228881836,
+          "minMs": 0.09999942779541016,
+          "maxMs": 1.1999998092651367
+        },
+        "fresh-total": {
+          "count": 40,
+          "meanMs": 9.5625,
+          "sumMs": 382.5,
+          "minMs": 8.5,
+          "maxMs": 11.600000381469727
+        }
+      },
+      "freshOtherMeanMs": 0.3075000286102295
+    },
+    {
+      "variant": "selected",
+      "pair": 1,
+      "block": "shallow",
+      "components": {
+        "fresh-doc": {
+          "count": 40,
+          "meanMs": 8.787500023841858,
+          "sumMs": 351.5000009536743,
+          "minMs": 5.199999809265137,
+          "maxMs": 10.59999942779541
+        },
+        "fresh-stacks": {
+          "count": 40,
+          "meanMs": 0.08749995231628419,
+          "sumMs": 3.499998092651367,
+          "minMs": 0,
+          "maxMs": 0.5999994277954102
+        },
+        "fresh-total": {
+          "count": 40,
+          "meanMs": 8.995000004768372,
+          "sumMs": 359.80000019073486,
+          "minMs": 5.300000190734863,
+          "maxMs": 11
+        }
+      },
+      "freshOtherMeanMs": 0.12000002861022949
+    },
+    {
+      "variant": "selected",
+      "pair": 1,
+      "block": "deeper",
+      "components": {
+        "fresh-doc": {
+          "count": 40,
+          "meanMs": 8.930000042915344,
+          "sumMs": 357.20000171661377,
+          "minMs": 7.399999618530273,
+          "maxMs": 10.100000381469727
+        },
+        "fresh-stacks": {
+          "count": 40,
+          "meanMs": 0.3400000333786011,
+          "sumMs": 13.600001335144043,
+          "minMs": 0,
+          "maxMs": 1
+        },
+        "fresh-total": {
+          "count": 40,
+          "meanMs": 9.62000002861023,
+          "sumMs": 384.8000011444092,
+          "minMs": 7.800000190734863,
+          "maxMs": 10.600000381469727
+        }
+      },
+      "freshOtherMeanMs": 0.3499999523162849
+    },
+    {
+      "variant": "guarded",
+      "pair": 0,
+      "block": "shallow",
+      "components": {
+        "catchup-compare": {
+          "count": 40,
+          "meanMs": 11.36500005722046,
+          "sumMs": 454.60000228881836,
+          "minMs": 9.899999618530273,
+          "maxMs": 12.59999942779541
+        },
+        "catchup-replay": {
+          "count": 40,
+          "meanMs": 0.9524999380111694,
+          "sumMs": 38.09999752044678,
+          "minMs": 0.5,
+          "maxMs": 1.5999994277954102
+        },
+        "catchup-stacks": {
+          "count": 40,
+          "meanMs": 0.05249996185302734,
+          "sumMs": 2.0999984741210938,
+          "minMs": 0,
+          "maxMs": 0.5
+        }
+      }
+    },
+    {
+      "variant": "guarded",
+      "pair": 0,
+      "block": "deeper",
+      "components": {
+        "catchup-compare": {
+          "count": 40,
+          "meanMs": 11.040000176429748,
+          "sumMs": 441.60000705718994,
+          "minMs": 10,
+          "maxMs": 12.40000057220459
+        },
+        "catchup-replay": {
+          "count": 40,
+          "meanMs": 0.9875,
+          "sumMs": 39.5,
+          "minMs": 0.19999980926513672,
+          "maxMs": 2.3999996185302734
+        },
+        "catchup-stacks": {
+          "count": 40,
+          "meanMs": 0.4274998426437378,
+          "sumMs": 17.09999370574951,
+          "minMs": 0,
+          "maxMs": 1
+        }
+      }
+    },
+    {
+      "variant": "guarded",
+      "pair": 1,
+      "block": "shallow",
+      "components": {
+        "catchup-compare": {
+          "count": 40,
+          "meanMs": 10.702499938011169,
+          "sumMs": 428.0999975204468,
+          "minMs": 9.399999618530273,
+          "maxMs": 12
+        },
+        "catchup-replay": {
+          "count": 40,
+          "meanMs": 0.9474999904632568,
+          "sumMs": 37.89999961853027,
+          "minMs": 0.10000038146972656,
+          "maxMs": 1.6000003814697266
+        },
+        "catchup-stacks": {
+          "count": 40,
+          "meanMs": 0.12750000953674318,
+          "sumMs": 5.100000381469727,
+          "minMs": 0,
+          "maxMs": 0.9000005722045898
+        }
+      }
+    },
+    {
+      "variant": "guarded",
+      "pair": 1,
+      "block": "deeper",
+      "components": {
+        "catchup-compare": {
+          "count": 40,
+          "meanMs": 10.465000009536743,
+          "sumMs": 418.6000003814697,
+          "minMs": 9.300000190734863,
+          "maxMs": 11.5
+        },
+        "catchup-replay": {
+          "count": 40,
+          "meanMs": 0.9500000476837158,
+          "sumMs": 38.00000190734863,
+          "minMs": 0.19999980926513672,
+          "maxMs": 1.5
+        },
+        "catchup-stacks": {
+          "count": 40,
+          "meanMs": 0.5124999284744263,
+          "sumMs": 20.49999713897705,
+          "minMs": 0,
+          "maxMs": 1.1000003814697266
+        }
+      }
+    }
+  ],
+  "summaryMeanOfSessionMeansMs": {
+    "selected-shallow": {
+      "fresh-doc": 8.972500050067902,
+      "fresh-stacks": 0.07249996662139893,
+      "fresh-total": 9.224999964237213
+    },
+    "selected-deeper": {
+      "fresh-doc": 8.853749978542329,
+      "fresh-stacks": 0.40875004529953,
+      "fresh-total": 9.591250014305114
+    },
+    "guarded-shallow": {
+      "catchup-compare": 11.033749997615814,
+      "catchup-replay": 0.9499999642372131,
+      "catchup-stacks": 0.08999998569488527
+    },
+    "guarded-deeper": {
+      "catchup-compare": 10.752500092983245,
+      "catchup-replay": 0.9687500238418579,
+      "catchup-stacks": 0.469999885559082
+    }
+  }
+}

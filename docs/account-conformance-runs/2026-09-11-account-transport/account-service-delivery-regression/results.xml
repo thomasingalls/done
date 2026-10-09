@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual commit control demonstrates the protected bad outcome" time="0.102811" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/controls.test.mjs"/>
+	<testcase name="actual generation control demonstrates the protected bad outcome" time="0.089261" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/controls.test.mjs"/>
+	<testcase name="actual current control demonstrates the protected bad outcome" time="0.073153" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/controls.test.mjs"/>
+	<testcase name="actual witness control demonstrates the protected bad outcome" time="0.089764" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/controls.test.mjs"/>
+	<testcase name="the committed v3 reader refuses schema 4 without modifying it" time="0.085756" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/controls.test.mjs"/>
+	<testcase name="exact persisted decisions extend a contiguous chain and survive restart without replacing ciphertext" time="0.126392" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="permanent closure cannot reopen; only an owned issued parent permits a different attempt at that position" time="0.201625" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="invalid, foreign, future and unordered submissions never create a permanent refusal" time="0.102752" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="caller bytes are captured before asynchronous verification" time="0.045665" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="before-commit generation 1 decision fault resolves from durable readback" time="0.070503" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="before-commit generation 2 decision fault resolves from durable readback" time="0.070434" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="after-commit generation 1 decision fault resolves from durable readback" time="0.058019" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="after-commit generation 2 decision fault resolves from durable readback" time="0.064620" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="missing-tail damage refuses without signing or repairing the ledger" time="0.080463" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="missing-all damage refuses without signing or repairing the ledger" time="0.061720" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="witness damage refuses without signing or repairing the ledger" time="0.051775" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="submission damage refuses without signing or repairing the ledger" time="0.055362" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="response damage refuses without signing or repairing the ledger" time="0.051763" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="seal damage refuses without signing or repairing the ledger" time="0.062318" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="membership damage refuses without signing or repairing the ledger" time="0.043493" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="membership changes during verification prevent commit" time="0.033859" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="schema 3 requires explicit offline upgrade and retains admission authority" time="0.045067" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="a valid acceptance-key signature is insufficient without the service-issued closure record" time="0.040984" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="closing authority during verification prevents any decision or witness from escaping" time="0.032366" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/core.test.mjs"/>
+	<testcase name="80 generated service histories preserve permanent subjects, one accepted leaf, and exact retries across unknown commits" time="18.189107" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/generated.test.mjs"/>
+	<testcase name="SIGKILL before-commit generation 1 preserves the exact durable decision" time="0.597273" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/restart.test.mjs"/>
+	<testcase name="SIGKILL before-commit generation 2 preserves the exact durable decision" time="0.537335" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit generation 1 preserves the exact durable decision" time="0.497647" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/restart.test.mjs"/>
+	<testcase name="SIGKILL after-commit generation 2 preserves the exact durable decision" time="0.554455" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/restart.test.mjs"/>
+	<testcase name="two service processes accepting competing leaves converge on one persisted head" time="0.522781" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/restart.test.mjs"/>
+	<testcase name="acceptance racing closure of the same subject can never yield both signed outcomes" time="0.473116" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-delivery/restart.test.mjs"/>
+	<!-- tests 31 -->
+	<!-- suites 0 -->
+	<!-- pass 31 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 18500.341709 -->
+</testsuites>

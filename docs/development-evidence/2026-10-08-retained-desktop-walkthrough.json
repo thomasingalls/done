@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-08",
+  "scope": "Bounded computer-use walkthrough on the retained development service; release validation remains paused.",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443/",
+  "displayed_build_on_both_devices": "ea120109",
+  "method": "Native Firefox Developer Edition UI through computer use, with two isolated Multi-Account Containers and real Bitwarden passkey prompts.",
+  "starting_state": "Neither disposable container offered a saved account. The operator authorized creating a fresh pair. This does not establish preservation of the previous browser accounts.",
+  "operator_actions": [
+    "Saved and confirmed credentials for the fresh disposable account and joining device.",
+    "Explicitly confirmed intentional reuse of the older-labelled disposable Bitwarden entry before further login use.",
+    "Authorized persistent storage and entered a short Goals marker on A.",
+    "Completed the comparison-code approval and opened B's editor."
+  ],
+  "observations": [
+    "B displayed A's original Goals marker and the same account identity.",
+    "A received B's first day card after returning from the certified ceremony page and unlocking.",
+    "B received A's reply card without a page reload.",
+    "A received a second B card without a page reload while both editors were open.",
+    "A was locked, its tab closed and restored, and its saved account opened through the chooser using the existing device-lock code and passkey. The Goals marker and all three cards remained visible.",
+    "B was locked, its tab closed and restored, and its saved device connection opened through the chooser using the existing device-lock code and passkey. No invitation was re-entered; the Goals marker and all three cards remained visible.",
+    "Both reopened editors displayed that the account login was remembered.",
+    "A received a fourth card added by B after both reopens, without another network-login ceremony or page reload."
+  ],
+  "test_cards": [
+    "Device B — live sync check 2026-10-08.",
+    "Device A — live sync reply 2026-10-08.",
+    "Device B — second live delivery 2026-10-08.",
+    "Device B — delivery after reopen 2026-10-08."
+  ],
+  "result": "Passed the fresh enrollment, initial content transfer, two-way editing, saved-connection reopen and post-reopen delivery walkthrough. Both disposable editors were left open for the operator.",
+  "product_notes": [
+    "B's chooser entry still says Device connection with a workspace ID; its unlock page still says Connect this device and Unlock enrollment. Reopening nevertheless reached the editor directly after ordinary unlock."
+  ],
+  "not_established_by_this_walkthrough": [
+    "Preservation or update uptake of an existing personal browser account",
+    "Physical-phone behavior",
+    "Offline reopening, browser-process crash recovery or eviction resistance",
+    "Device removal, replacement or repeated rotation through manual UI",
+    "Release qualification"
+  ],
+  "application_changes_required": false
+}

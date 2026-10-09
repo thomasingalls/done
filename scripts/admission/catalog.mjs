@@ -1,0 +1,85 @@
+export const cases = [
+  [
+    'C01.pending-struct',
+    'Unresolved remote structs remain durable through local admission and cold replay',
+  ],
+  ['C03.synchronous', 'Local publication follows the synchronous journal receipt'],
+  [
+    'C03.ordered-refusal',
+    'A refused predecessor withholds every later input before actual renderer death',
+  ],
+  ['C03.retry', 'Failed content forces an exact retry without preparing the suffix early'],
+  [
+    'C01.remote-basis',
+    'Received dependency and deletion commit before local preparation and survive offline',
+  ],
+  [
+    'C02.pending-delete',
+    'Out-of-order delete bytes remain durable through admission and cold replay',
+  ],
+  ['C03.slicing', 'Large command slices commit in order; death retains an accepted prefix'],
+  ['C03.capacity', 'Queue capacity refuses before copying without losing pending input'],
+  [
+    'C03.barrier',
+    'whenDurable covers previously observed pending input and excludes a later suffix',
+  ],
+  ['C03.timer', 'The 250 ms automatic flush reaches content durability'],
+  ['C04.close', 'Close drains native crypto and clears custody before exclusion'],
+  ['C09.persisted-yjs', 'Authenticated malformed Yjs refuses normal admission open'],
+  ['C09.runtime-repair', 'Unreadable journal disables snapshots, retry and pending discard'],
+  ['C03.validation', 'Rejected receive bytes do not reach content or publication'],
+  [
+    'C04.cross-tab',
+    'Cross-tab accepted bytes commit locally before a dependent edit and cold replay',
+  ],
+].map(([id, title]) => ({ id, title }));
+export const mutants = [
+  {
+    id: 'publish-before-forced-commit',
+    file: 'admissionQueue.ts',
+    case: 'C03.ordered-refusal',
+    assertion: 'refused-prefix-is-private',
+    from: 'const forceLocal = async (job: InputJob) => {',
+    to: 'const forceLocal = async (job: InputJob) => { promote(job, job.prepared!.update);',
+  },
+  {
+    id: 'prepare-queued-input-early',
+    file: 'admissionQueue.ts',
+    case: 'C03.ordered-refusal',
+    assertion: 'only-head-prepared',
+    from: 'queue.push(job);',
+    to: 'queue.push(job); if (busy && kind === "local") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);',
+  },
+  {
+    id: 'publish-receive-before-commit',
+    file: 'admissionQueue.ts',
+    case: 'C01.remote-basis',
+    assertion: 'remote-is-private-until-commit',
+    from: "return carrier.appendBatch([{ kind: 'update', bytes: job.input }]).then(() => {",
+    to: "promote(job, job.input); return carrier.appendBatch([{ kind: 'update', bytes: job.input }]).then(() => {",
+  },
+  {
+    id: 'retry-via-journal',
+    file: 'admissionQueue.ts',
+    case: 'C03.retry',
+    assertion: 'retry-forces-second-content-invocation',
+    from: 'job.force = attempt.reason;',
+    to: 'void attempt.reason;',
+  },
+  {
+    id: 'early-durability-return',
+    file: 'admissionQueue.ts',
+    case: 'C03.barrier',
+    assertion: 'barrier-waits-for-prior-input',
+    from: 'const barrier = (): Promise<void> => {',
+    to: 'const barrier = (): Promise<void> => { return Promise.resolve();',
+  },
+  {
+    id: 'ignore-byte-capacity',
+    file: 'admissionQueue.ts',
+    case: 'C03.capacity',
+    assertion: 'byte-capacity-refuses',
+    from: 'current.reservedBytes + reservation > MAX_PENDING_BYTES',
+    to: 'false',
+  },
+];

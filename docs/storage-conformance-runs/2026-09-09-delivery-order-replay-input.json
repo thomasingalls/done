@@ -1,0 +1,48 @@
+{
+  "arm": "handoff",
+  "history": {
+    "edits": [
+      {
+        "lane": 0,
+        "actor": 1,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      },
+      {
+        "lane": 0,
+        "actor": 0,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      },
+      {
+        "lane": 0,
+        "actor": 0,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      },
+      {
+        "lane": 0,
+        "actor": 0,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      }
+    ],
+    "keys": [
+      3,
+      1,
+      4,
+      0,
+      5,
+      2,
+      6
+    ],
+    "split": 3,
+    "early": 0,
+    "hops": 3,
+    "duplicate": true
+  }
+}

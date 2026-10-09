@@ -1,0 +1,48 @@
+{
+  "name": "selected",
+  "session": "profile-0",
+  "corpus": {
+    "days": 20,
+    "cardsPerDay": 15,
+    "masterLines": 400
+  },
+  "started": "2026-09-15T08:13:49.993Z",
+  "profiling": true,
+  "unicode": false,
+  "rows": [],
+  "checks": [
+    "exact text after every block",
+    "undo/redo exact roundtrip",
+    "cold reopen exact text"
+  ],
+  "errors": [],
+  "browser": "151.0.7922.34",
+  "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+  "setupMarkerPresent": true,
+  "setupEmojiPresent": false,
+  "heapBefore": {
+    "usedSize": 12033760,
+    "totalSize": 13500416,
+    "embedderHeapUsedSize": 2773312,
+    "backingStorageSize": 1554579
+  },
+  "heapAfter": {
+    "usedSize": 12720004,
+    "totalSize": 13762560,
+    "embedderHeapUsedSize": 2316232,
+    "backingStorageSize": 1537491
+  },
+  "undoImmediateUnchanged": false,
+  "undoSettledMs": 199.96474999999919,
+  "redoImmediateUnchanged": false,
+  "redoSettledMs": 172.11920899999677,
+  "heapLocked": {
+    "usedSize": 10557832,
+    "totalSize": 11665408,
+    "embedderHeapUsedSize": 1866768,
+    "backingStorageSize": 1474308
+  },
+  "status": "passed",
+  "finished": "2026-09-15T08:14:25.912Z",
+  "closed": true
+}

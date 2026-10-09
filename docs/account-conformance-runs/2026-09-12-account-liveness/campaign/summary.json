@@ -1,0 +1,93 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T13:02:38.039Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 133
+    },
+    {
+      "name": "instrument",
+      "args": [
+        "--test",
+        "test/account-liveness/instrument.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 309
+    },
+    {
+      "name": "coverage",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/accountLiveness.test.ts"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 1516
+    },
+    {
+      "name": "controlled",
+      "args": [
+        "--test",
+        "test/account-liveness/controlled.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 10305
+    },
+    {
+      "name": "growth",
+      "args": [
+        "--test",
+        "test/account-liveness/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 256593
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 82
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness",
+        "docs/account-sync-liveness.md",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 93
+    }
+  ],
+  "sourcePins": 883,
+  "generatedHistories": 40,
+  "nativeReproductions": 2,
+  "finishedAt": "2026-09-12T13:07:07.246Z"
+}

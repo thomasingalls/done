@@ -1,0 +1,218 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T20:51:07.147Z",
+  "stages": [
+    {
+      "name": "construction-inventory",
+      "args": [
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 746
+    },
+    {
+      "name": "receive-coverage-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^cold replay refuses missing or changed content$",
+        "test/account-receive/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 9992
+    },
+    {
+      "name": "http-bound-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^effective HTTP bound omission exposes the forbidden result$",
+        "test/account-receive-transport/controls.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 1759
+    },
+    {
+      "name": "content-unreadable-control",
+      "args": [
+        "scripts/content/run.mjs",
+        "--case",
+        "C09.unreadable-load",
+        "--output",
+        "test-results/account-liveness/2026-09-12T20-51-06.916Z/content-control"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 5675
+    },
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 114
+    },
+    {
+      "name": "instrument",
+      "args": [
+        "--test",
+        "test/account-liveness/instrument.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 263
+    },
+    {
+      "name": "coverage",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/accountLiveness.test.ts",
+        "test/verifiedRecords.test.ts",
+        "test/verificationMemo.test.ts",
+        "test/spoolRecord.test.ts",
+        "test/accountSyncDriver.test.ts"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 2616
+    },
+    {
+      "name": "controlled",
+      "args": [
+        "--test",
+        "test/account-liveness/controlled.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 7600
+    },
+    {
+      "name": "ownership",
+      "args": [
+        "--test",
+        "test/account-sync/native.test.mjs",
+        "test/account-sync/controls.test.mjs",
+        "test/account-receive-transport/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 21,
+      "timedOut": false,
+      "elapsedMs": 80424
+    },
+    {
+      "name": "service-cache",
+      "args": [
+        "--test",
+        "test/account-liveness/service-cache.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 859
+    },
+    {
+      "name": "service-delivery",
+      "args": [
+        "--test",
+        "test/account-service-delivery/core.test.mjs",
+        "test/account-service-delivery/generated.test.mjs",
+        "test/account-service-delivery/controls.test.mjs",
+        "test/account-service-delivery/restart.test.mjs"
+      ],
+      "code": 0,
+      "tests": 31,
+      "timedOut": false,
+      "elapsedMs": 15031
+    },
+    {
+      "name": "service-inbound",
+      "args": [
+        "--test",
+        "test/account-service-inbound/core.test.mjs",
+        "test/account-service-inbound/generated.test.mjs",
+        "test/account-service-inbound/controls.test.mjs",
+        "test/account-service-inbound/restart.test.mjs"
+      ],
+      "code": 0,
+      "tests": 19,
+      "timedOut": false,
+      "elapsedMs": 22713
+    },
+    {
+      "name": "view",
+      "args": [
+        "--test",
+        "test/account-liveness/view.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 8010
+    },
+    {
+      "name": "growth",
+      "args": [
+        "--test",
+        "test/account-liveness/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 61763
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "src/crdt/accountReceive.ts",
+        "src/crdt/accountSyncDriver.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/deliveryVerification.ts",
+        "test/accountSyncDriver.test.ts",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 78
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/accountReceive.ts",
+        "src/crdt/accountSyncDriver.ts",
+        "account-service/core.ts",
+        "account-service/delivery.ts",
+        "account-service/deliveryVerification.ts",
+        "test/accountSyncDriver.test.ts",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness",
+        "docs/account-sync-liveness.md",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 109
+    }
+  ],
+  "sourcePins": 936,
+  "generatedHistories": 40,
+  "nativeLivenessRegressions": 3,
+  "finishedAt": "2026-09-12T20:54:45.070Z"
+}

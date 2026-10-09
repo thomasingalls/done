@@ -1,0 +1,43 @@
+{
+  "status": "completed-with-card-budget-failures",
+  "order": [
+    "R",
+    "C",
+    "C",
+    "R"
+  ],
+  "sessions": 4,
+  "trustedKeySamples": 960,
+  "allSemanticChecksPassed": true,
+  "budgetFailures": [
+    {
+      "index": 0,
+      "metric": "card"
+    },
+    {
+      "index": 1,
+      "metric": "card"
+    },
+    {
+      "index": 2,
+      "metric": "card"
+    },
+    {
+      "index": 3,
+      "metric": "card"
+    }
+  ],
+  "cardP95PairReductions": [
+    0.19277108504283225,
+    0.1975992620612561
+  ],
+  "defaultActivation": false,
+  "manualKeyboardPending": true,
+  "artifactsSha256": "362864ae14b10096c88a60a7c27c82a0f808da46f87af468c43a329924f47fce",
+  "analysisSha256": "e878a6f1bd27dcbd195a6ec516d096308bced01399384d1eeeaad2ce63369eef",
+  "rawIndexSha256": "b187243fb615486adb017767efbc610ed9942a777e4a9e0a05b9fc62fd7b485d",
+  "fileCount": 142,
+  "uniqueBlobCount": 93,
+  "priorEvidence": "../2026-09-14-f17-local-performance/README.md",
+  "qualificationChecksSha256": "9bded68919290b82bbd64a2b4f7a097f45c1779c13b3dfa35a67afdfb2f6e7f9"
+}

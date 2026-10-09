@@ -1,0 +1,13 @@
+{
+  "baselineRef": "f0b6acd2e624d89034c88706d4053a830ab50cc6",
+  "cases": [
+    "credentials",
+    "actors",
+    "wraps",
+    "promotionId",
+    "requestDigest",
+    "epochHead"
+  ],
+  "old": "accepted",
+  "current": "refused"
+}

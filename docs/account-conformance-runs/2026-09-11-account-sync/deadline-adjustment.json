@@ -1,0 +1,14 @@
+[
+  {
+    "path": "scripts/account-sync/run.mjs",
+    "executedSha256": "eb81418c4325d54a1a390ced17d33bacd6cb71d0d3b1f9fad968afc2f22b0d51",
+    "currentSha256": "97efea56ccf0dd61ebe193339e99ec981d66449e26fc76f4b3949d2f9b8e550d",
+    "change": "Only outer harness deadline increased after 291-second passing generated stage; histories, seed, assertions and runtime unchanged."
+  },
+  {
+    "path": "test/account-sync/generated.test.mjs",
+    "executedSha256": "ac57c74e27bc3f541ddd0ff77b4e2b6af1bbb795cd6380f0c290a56b52db5ffc",
+    "currentSha256": "27918fdee7b22b60923057aa9bda47406633c5b8c49d411b4ba167ecae42d82f",
+    "change": "Only outer harness deadline increased after 291-second passing generated stage; histories, seed, assertions and runtime unchanged."
+  }
+]

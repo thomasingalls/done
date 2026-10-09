@@ -1,0 +1,22 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery 1098ms
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 200 generated route and actor substitutions refuse without accepting a different authority 19ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap 2ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > requires original sources to cover all prepared state, including deletions 2ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor 15ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input 4ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  21:47:18
+   Duration  1.63s (transform 212ms, setup 38ms, import 342ms, tests 1.14s, environment 0ms)
+

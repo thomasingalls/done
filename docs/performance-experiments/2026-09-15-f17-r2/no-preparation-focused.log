@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r2/no-preparation
+
+
+ Test Files  2 passed (2)
+      Tests  99 passed (99)
+   Start at  09:36:16
+   Duration  7.78s (transform 568ms, setup 122ms, import 962ms, tests 7.99s, environment 0ms)
+

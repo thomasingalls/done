@@ -1,0 +1,11 @@
+✔ runtime and independent oracle open the published AES-256 HPKE generation vector (4.438583ms)
+✔ 100 generated runtime seals interoperate with OpenSSL; info and ciphertext substitutions refuse (175.993166ms)
+✔ low-order recipients and malformed generation size refuse (0.455416ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 278.082583

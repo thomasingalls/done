@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "base": "f2c3658b",
+  "payloads": 215,
+  "compressedBytes": 611480,
+  "artifactsSha256": "8c44d109a60f7a957f1a80cac17e8d3c9a212bcccf967ed3094d7ff521273af0",
+  "rawIndexSha256": "6f2e4a4bb5d88561d65e45f21738ba5ade7cce46dd9bc5c88cef80b57b6dd86a",
+  "qualification": {
+    "schema": 1,
+    "selection": "planning-batch-headroom-with-activation-service-inbound-historical-controls-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "2ef7add019dd462bdb1f10c71b6fe3350220fe1c97e2f10a1c5a8676d29bf187",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 46668,
+        "cases": 70,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "4a94f3e0bad2775ff228c8587355c0b765374e996663dd6d336af74990a5be79",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 8638,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "0250c35b873c95bec4a0d7d1213782a85482dbd95255bed4990370a50e199254",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 6815,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/account-fixtures.test.mjs",
+        "key": "20eca8bac39cf3ca8086423f667e9e577e10e43164a3a10d5fd7a367c240f9fa",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 7504,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/campaign-wrappers.test.mjs",
+        "key": "5dce6d220d88c03c2f88c90bbf3da7c56a0786fb5cbdfd3154f881a07dfd3f66",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 53442,
+        "cases": 50,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-activation/run.mjs",
+        "key": "7e4614e5d1d1be2fe1f9c32e0000659936506b0e7b1320efa3be434e63662e44",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 38716,
+        "cases": 25,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-service-inbound/run.mjs",
+        "key": "acb75971bd036df8b4780f108f4d403dbbcece2375bc579fa50aa43fec9f7361",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 72620,
+        "cases": 21,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/stage.test.mjs",
+        "key": "b1796e8b55536b102a7f9a826d7e39e734908c3d84f47d3d5ede7b6fc8a6e5b6",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 39797,
+        "cases": 38,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:activation-reuse",
+        "key": "7e4614e5d1d1be2fe1f9c32e0000659936506b0e7b1320efa3be434e63662e44",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 38716,
+        "cases": 25,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-16T07:41:34.381Z",
+    "input": "d043dbf0a7362171e40a9f328a20b19626120ed8cebe1e3738b7fe44d6ee3c28",
+    "completedAt": "2026-09-16T07:47:18.980Z"
+  },
+  "unresolved": {
+    "test": 0,
+    "command": 71,
+    "campaign": 39
+  },
+  "claim": "Historical planning batch headroom only; no immutable aggregate or personal Account rehearsal."
+}

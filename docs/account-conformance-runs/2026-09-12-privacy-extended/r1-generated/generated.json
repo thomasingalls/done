@@ -1,0 +1,11 @@
+{
+  "seed": 1121040,
+  "numRuns": 24,
+  "numShrinks": 0,
+  "failed": false,
+  "interrupted": false,
+  "counterexample": null,
+  "counterexamplePath": null,
+  "attempts": 24,
+  "scope": "Seed determines operation schedules. Each attempt generates independent synthetic markers, factors and cryptographic randomness after compilation."
+}

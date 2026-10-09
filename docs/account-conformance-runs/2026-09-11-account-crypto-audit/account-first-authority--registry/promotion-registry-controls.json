@@ -1,0 +1,50 @@
+{
+  "controls": 9,
+  "evidence": [
+    {
+      "name": "D2 corpus",
+      "expected": "specified phase/blocker mismatch",
+      "caught": true
+    },
+    {
+      "name": "MAC edge",
+      "expected": "missing MAC custody authority entry",
+      "caught": true
+    },
+    {
+      "name": "MAC guard",
+      "expected": "missing MAC custody authority entry",
+      "caught": true
+    },
+    {
+      "name": "MAC role",
+      "expected": "primitive vector misclassified",
+      "caught": true
+    },
+    {
+      "name": "MAC omission obligation",
+      "expected": "missing evidence obligation",
+      "caught": true
+    },
+    {
+      "name": "identity source",
+      "expected": "source-site census changed",
+      "caught": true
+    },
+    {
+      "name": "version case",
+      "expected": "orphan executed vector",
+      "caught": true
+    },
+    {
+      "name": "negatives",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "encodedBindingControls",
+      "caught": true,
+      "aggregatePinUpdated": true
+    }
+  ]
+}

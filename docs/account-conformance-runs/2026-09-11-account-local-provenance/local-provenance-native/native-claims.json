@@ -1,0 +1,35 @@
+{
+  "evidence": [
+    {
+      "kind": "fresh",
+      "mac": "f4d441e4607795d9f2367997976f4baf1777dcf80a3470bcb6097458dba67071",
+      "readOnly": true,
+      "outsideAccountCalls": 0
+    },
+    {
+      "kind": "imported",
+      "mac": "2e32dbd19182f65f08fe1ae26fbc4f1ae4ca09d2101d2183adb8e3363e036065",
+      "readOnly": true,
+      "outsideAccountCalls": 0
+    },
+    {
+      "kind": "cleanup1",
+      "mac": "341f4d657d3465e61c883a83c5c0c052968aab0da67187b54533c9e7f709a3c5",
+      "readOnly": true,
+      "outsideAccountCalls": 0
+    },
+    {
+      "kind": "cleanup2",
+      "mac": "920e83511f6e91863b85fab7d95a1041e41840506dc59e18b23f4bb5ae7f152c",
+      "readOnly": true,
+      "outsideAccountCalls": 0
+    }
+  ],
+  "probes": [
+    "Error: D8 excluded call: clear",
+    "Error: D8 excluded call: import",
+    "Error: D8 excluded call: source",
+    "Error: D8 excluded call: fingerprint"
+  ],
+  "scope": "Imported provenance is synthetically factor-authenticated for this boundary test; existing migration campaigns qualify creation of it."
+}

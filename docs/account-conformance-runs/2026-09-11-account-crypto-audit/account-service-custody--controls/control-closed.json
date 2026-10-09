@@ -1,0 +1,5 @@
+{
+  "baseline": "no new generation",
+  "mutant": "new key generated then refused",
+  "noEscapedSignature": true
+}

@@ -1,0 +1,104 @@
+{
+  "observed": "invalid service receipt retained with verification disabled",
+  "accepted": {
+    "v": 2,
+    "kind": "promotion-receipt",
+    "offer": {
+      "v": 1,
+      "kind": "promotion-offer",
+      "epoch": {
+        "v": 1,
+        "kind": "first-authorization-epoch",
+        "pin": {
+          "v": 1,
+          "serviceId": "91c6d98898c95f0c778cf2d7b8312b9d",
+          "origin": "http://localhost:64495",
+          "rpId": "localhost",
+          "authRoot": "4e7306b0064883193a0fe9311e5e27f4a4503b42601781687f2f3b370c5d1263"
+        },
+        "requestDigest": "e027479e8f54f85faf9d0483094e3992ee45a3c79bdddabcfe420fc4021299e0",
+        "accountId": "t5Y3C3xmPunekFEJe9nVVY8QtO5_3pwhZIjq2pKI09Y",
+        "principalId": "b829b2963afd4c3a614fae22026ef59a",
+        "workspaceId": "66636ada33de4997750dab8e59de7242",
+        "lineageId": "4a18940a4b0401d4ed9d4d8f2dde82e86ea06d3cc360fadabb0838d477973d42",
+        "epoch": 1,
+        "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "generation": 1,
+        "certification": {
+          "members": [
+            {
+              "id": "2c2a2ddb6f2fe9aa2b323a49f5ea17f1",
+              "wPub": "a3a94978f5ac5e684278c847f4c90210da09047596ea01eea211be14c55eef27",
+              "sPub": "5cd36ba895c0495c1b32db2739ad9245ed6386e625cfa4febc292687e6a2d4e2"
+            }
+          ],
+          "recoveryStateDigest": "c33044f50d81ec8f2871c74056ded43ff17dc72205c642a7ead6561f64b12c7e",
+          "approver": "2c2a2ddb6f2fe9aa2b323a49f5ea17f1",
+          "signature": "bf060c219488bd1b28f99f999149d66b5f0af2dd1ef7338d25e05eb56dd64f5d403a98da18d56d542f06988a799f5ecded647703a040f37958fd4f03d7a3b000"
+        },
+        "owner": "2c2a2ddb6f2fe9aa2b323a49f5ea17f1",
+        "capabilities": [
+          "read",
+          "write",
+          "admit",
+          "manage"
+        ],
+        "acceptancePublicKey": "ff3866e64983aac0e3031be39c9ada6d9edce06f4dce4ca3745c9346d9757508",
+        "heads": []
+      },
+      "head": "0c08f644d32682ba3e2b35889eacd4683ee2803bed9dc4cb67b1a5b128d1f493",
+      "signature": "30a26176b5860f61d2422c48314d0c0afacd67a4371afc2baa33e589c85179c88aa43136da2f8f909883520eec688941bcbe4394902f66d5932189a7962d4802"
+    },
+    "completion": {
+      "manifest": {
+        "v": 2,
+        "workspaceId": "66636ada33de4997750dab8e59de7242",
+        "epoch": 1,
+        "epochHead": "0c08f644d32682ba3e2b35889eacd4683ee2803bed9dc4cb67b1a5b128d1f493",
+        "generation": 1,
+        "checkpointDigest": "35d35d2eefab6b39f42e9af2ab96f1d969a2854fede9d47e13c3699266dbbf6c",
+        "sv": "01a9ded3c0016a",
+        "ds": "01a9ded3c001022c014e0200",
+        "headVectorDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+        "producer": "2c2a2ddb6f2fe9aa2b323a49f5ea17f1",
+        "signature": "d5eb2fd5266439d36446f8694fcba396d2c51ae5bb6f0723f27d92956c938c801211871464caa1fbab14a7ff17af9fa0dcc0dfa404b66cd1c0b4cd3721ad3402"
+      },
+      "admission": {
+        "v": 2,
+        "workspaceId": "66636ada33de4997750dab8e59de7242",
+        "checkpointDigest": "35d35d2eefab6b39f42e9af2ab96f1d969a2854fede9d47e13c3699266dbbf6c",
+        "manifestDigest": "473e3b3e1e68388561b78e28299e92f6fa16e56827751cd7ac6b1614d6511a49",
+        "derivedSv": "01a9ded3c0016a",
+        "derivedDs": "01a9ded3c001022c014e0200",
+        "headBaselineDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+        "derivation": "yjs-13.6.31-sv-ds-v1",
+        "admittingCredential": "2c2a2ddb6f2fe9aa2b323a49f5ea17f1",
+        "selfAdmitted": 1,
+        "decisionParent": "0000000000000000000000000000000000000000000000000000000000000000",
+        "signature": "66d2d36df04d4cbf5d302a2083078deb52c0f1fb181643120ae72c4d9b30928cc0bdcad6854c6192868701b8ea792cacba15baa421934f1cff09fce06e960f07"
+      }
+    },
+    "epochSignature": "0f4dbc14f498c9c6ac1d8df73db4ef196a084f76240bc7442e641a63217acfb60b925faf84e2636b294ea856d94273273d60f969bbe7591c65f9bf5e6d36ea03",
+    "activation": {
+      "context": {
+        "v": 1,
+        "pin": {
+          "v": 1,
+          "serviceId": "91c6d98898c95f0c778cf2d7b8312b9d",
+          "origin": "http://localhost:64495",
+          "rpId": "localhost",
+          "authRoot": "4e7306b0064883193a0fe9311e5e27f4a4503b42601781687f2f3b370c5d1263"
+        },
+        "accountId": "t5Y3C3xmPunekFEJe9nVVY8QtO5_3pwhZIjq2pKI09Y",
+        "requestDigest": "e027479e8f54f85faf9d0483094e3992ee45a3c79bdddabcfe420fc4021299e0",
+        "offerHead": "0c08f644d32682ba3e2b35889eacd4683ee2803bed9dc4cb67b1a5b128d1f493",
+        "completionDigest": "8019e78b0d6f6f31d7198e473241dcf337290b70fd56ef45f3359bee420e1239",
+        "credentialId": "bHLNJF2nmieZDvspXzp97JTjYMLGIIPWeHIPwIL8Lc8",
+        "nonce": "35f549e71e75477f17e7ecc0f17ae5120723a64f29e98c0c81b9509c7254a335",
+        "expiresAt": 1789169675707
+      },
+      "proofHash": "1ff3d938c594335dce2ef97e875745bde35fa0305b3c9732a1847e8bfb6f9510"
+    },
+    "signature": "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  }
+}

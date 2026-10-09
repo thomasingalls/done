@@ -1,0 +1,60 @@
+{
+  "scope": "Retained development cutover after operator confirmed both devices locked/closed; no personal browser opened; release validation paused",
+  "backup": ".dev/account-enrollment-tailnet/backups/schema-14-hYJ1yZ",
+  "build": ".dev/account-enrollment-tailnet/builds/2bea3437",
+  "preservation_before_start": {
+    "account.sqlite": {
+      "backup_integrity": "ok",
+      "current_integrity": "ok",
+      "prior_tables": 19,
+      "prior_rows": 42,
+      "prior_columns_unchanged": true,
+      "schema_from": 14,
+      "schema_to": 20
+    },
+    "authority.sqlite": {
+      "backup_integrity": "ok",
+      "current_integrity": "ok",
+      "prior_tables": 1,
+      "prior_rows": 1,
+      "prior_columns_unchanged": true,
+      "schema_from": 1,
+      "schema_to": 1
+    },
+    "pin.json": {
+      "unchanged": true
+    },
+    "operator.key": {
+      "unchanged": true
+    }
+  },
+  "live_verification": {
+    "checked_at": "2026-10-08T11:17:52.192Z",
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "implementation": "2bea3437",
+    "public_config": "matching original pin, sessions and membership continuation enabled",
+    "fresh_authority_proof": true,
+    "boundaries": {
+      "/__account-setup/access": 404,
+      "wrong-origin": 403,
+      "unauthenticated-subscription": 401,
+      "/.dev/account.sqlite": 404,
+      "/.dev/operator.key": 404,
+      "/src/main.tsx": 404,
+      "/assets/missing.js": 404
+    },
+    "precache_urls": 28,
+    "all_assets_identical": true,
+    "worker_sha256": "744682bac7157313fbfc06b7ed897a18051ec69ffbbae1ebbb909cd52f69edde"
+  },
+  "processes_at_cutover": {
+    "service": {
+      "pid": 29654,
+      "log": "/tmp/done-account-service-2bea3437.log"
+    },
+    "app": {
+      "pid": 29655,
+      "log": "/tmp/done-account-app-2bea3437.log"
+    }
+  }
+}

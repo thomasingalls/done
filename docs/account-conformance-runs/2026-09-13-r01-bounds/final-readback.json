@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "note": "Planning source pins refreshed after final historical fixture edits; counts and dispositions unchanged. This supersedes earlier planning snapshots only.",
+  "inventorySha256": "6709a33f6d5a0a02e97526170652f25f964719ec5a48b02f8899f333b02dcbd5",
+  "manifestSha256": "76559c9a0637dcc767c5dc2532d29bdf8508e1d306012388cd94d277d10e99f9",
+  "logs": [
+    {
+      "path": "inventory-readback.log.gz",
+      "rawSha256": "7511fc310fc1e8321f1acf7271557c04e45d42419b9d451804a08ee437b36d29",
+      "normalizedSha256": "7511fc310fc1e8321f1acf7271557c04e45d42419b9d451804a08ee437b36d29",
+      "compressedSha256": "e8256daad1faad9ddeae016b9eb9ea607987c8030e7aa5ed1900fa18a74de3d1"
+    },
+    {
+      "path": "plan-readback.log.gz",
+      "rawSha256": "b85f61693d8712017469417fa676f3af6440d79583d07b35ec2f26815963e12f",
+      "normalizedSha256": "b85f61693d8712017469417fa676f3af6440d79583d07b35ec2f26815963e12f",
+      "compressedSha256": "52bd15d7e5dc1785590efe5d82a1fe1d846d5f39a9e0730051396347aa74b425"
+    },
+    {
+      "path": "planning-readback-tests.log.gz",
+      "rawSha256": "0ac5097f7c83016ec48e27502c0ce76a95662ff8e278f31247ecef8bbdf5af5d",
+      "normalizedSha256": "0ac5097f7c83016ec48e27502c0ce76a95662ff8e278f31247ecef8bbdf5af5d",
+      "compressedSha256": "d3d4e7747d421a4b0d844ca4b73f6cf81066484879b240d9ee101a401fc74b17"
+    }
+  ],
+  "sourcePatchMatches": true,
+  "appendOnlyRecords": true,
+  "personalPackageAndVectorsUnchanged": true,
+  "l2Unchanged": true
+}

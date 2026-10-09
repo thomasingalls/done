@@ -1,0 +1,88 @@
+{
+  "original": {
+    "principalId": "local-principal",
+    "workspaceId": "local-workspace",
+    "lineageId": "never-admitted",
+    "authRoot": "abababababababababababababababababababababababababababababababab",
+    "v": 1,
+    "rootCommitment": "7344781dad63a31c4e34c75a0aacf90aae9dcd9fa90db3dfa15a21dc9804a441",
+    "rPub": "9d62034c9045dc576fcc6b8be9fa93c76caa361b900af657fea0030d4fd55151",
+    "bootstrapSigner": "ad95537c89606389a98d531ed505d82c319e9b1714e6474c9e8fcf88c19b3059",
+    "envelope": {
+      "v": 1,
+      "salt": "6fa7ee14f18cfca32ff79c1803170631",
+      "nonce": "112570c8c228cd2a2781fbe9",
+      "ct": "1243a606318f814133b5ec08de8d5a855af0eff78784cde16ba4127159dfc494aa2f78c4a2f94a997784075d9cdbd136d56524e9818a2b0fa89e79de20559218f07f662238b316e202f0497bf27fadf80112559f53e81dd6b02a5169dc8012da7d5f14e0dbc2e198c7eeb3087ffe2600"
+    }
+  },
+  "draft": {
+    "principalId": "local-principal",
+    "workspaceId": "local-workspace",
+    "lineageId": "never-admitted",
+    "authRoot": "cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "v": 1,
+    "rootCommitment": "b82f673c2bc1d7f5a2a98c10c4a1a161807e6ee860eb7c458b34b5ec356c196a",
+    "rPub": "9d62034c9045dc576fcc6b8be9fa93c76caa361b900af657fea0030d4fd55151",
+    "bootstrapSigner": "ad95537c89606389a98d531ed505d82c319e9b1714e6474c9e8fcf88c19b3059",
+    "envelope": {
+      "v": 1,
+      "salt": "6fa7ee14f18cfca32ff79c1803170631",
+      "nonce": "112570c8c228cd2a2781fbe9",
+      "ct": "1243a606318f814133b5ec08de8d5a855af0eff78784cde16ba4127159dfc494aa2f78c4a2f94a997784075d9cdbd136d56524e9818a2b0fa89e79de20559218f07f662238b316e202f0497bf27fadf80112559f53e81dd6b02a5169dc8012da7d5f14e0dbc2e198c7eeb3087ffe2600"
+    }
+  },
+  "proof": {
+    "retryKey": "ii9ilShk510U6YxhvRDeY9VFhg4tpZF8tMvNsohKcyE",
+    "recoveryId": "ua8C23VTv4MxfkaDxfQXZeMel5ERW_6DEYWXTBTZzeA",
+    "response": {
+      "id": "lxpUJUKZWH4C4on8UmKDDzha8lxsOFt7JsNg01ZIo2k",
+      "rawId": "lxpUJUKZWH4C4on8UmKDDzha8lxsOFt7JsNg01ZIo2k",
+      "type": "public-key",
+      "clientExtensionResults": {},
+      "response": {
+        "clientDataJSON": "ewogInR5cGUiOiAid2ViYXV0aG4uZ2V0IiwKICJjaGFsbGVuZ2UiOiAib19pR3dmMDROa3kzbUQ5eVVtUzd2aENPMU1haklYSDYwdWR2VXVGTy1fQSIsCiAib3JpZ2luIjogImh0dHA6Ly9sb2NhbGhvc3Q6NDk5OSIsCiAiY3Jvc3NPcmlnaW4iOiBmYWxzZQp9",
+        "authenticatorData": "SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MFAAAAAA",
+        "signature": "5KDKK6FyHUR4dLkmEdz2Cy80IRJXYKue_JSA3dMLIOHEDQe4zaNqvm77BES7uDYdbNHeseH4jmiXcOCzjSyGDA",
+        "userHandle": "xvEVnTPPNtX9Iq2atH-DvCRdVgFdCc8B7bCjGSpFogs"
+      }
+    },
+    "recoveryProof": "e7246ffca262dfcc512abf7424d2910dae32885f4352e5833ae7cac51c638520f98244081f7b98416b84aa5fe6a174f0019a8280a8d222f2e8b0aa6aab20c809"
+  },
+  "before": [
+    {
+      "account_id": "xvEVnTPPNtX9Iq2atH-DvCRdVgFdCc8B7bCjGSpFogs",
+      "attempt_id": "KTFXsoZOTN_V5zOMJo-iCB3XLqZ859DXdHP2sujtFjQ",
+      "id": "ua8C23VTv4MxfkaDxfQXZeMel5ERW_6DEYWXTBTZzeA",
+      "draft": "{\"authRoot\":\"cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd\",\"bootstrapSigner\":\"ad95537c89606389a98d531ed505d82c319e9b1714e6474c9e8fcf88c19b3059\",\"envelope\":{\"ct\":\"1243a606318f814133b5ec08de8d5a855af0eff78784cde16ba4127159dfc494aa2f78c4a2f94a997784075d9cdbd136d56524e9818a2b0fa89e79de20559218f07f662238b316e202f0497bf27fadf80112559f53e81dd6b02a5169dc8012da7d5f14e0dbc2e198c7eeb3087ffe2600\",\"nonce\":\"112570c8c228cd2a2781fbe9\",\"salt\":\"6fa7ee14f18cfca32ff79c1803170631\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"9d62034c9045dc576fcc6b8be9fa93c76caa361b900af657fea0030d4fd55151\",\"rootCommitment\":\"b82f673c2bc1d7f5a2a98c10c4a1a161807e6ee860eb7c458b34b5ec356c196a\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "64ed0b0ccc6f2bc6da00315a39a8eda127555e53693394519b46e4e518245991",
+      "challenge": "o_iGwf04Nky3mD9yUmS7vhCO1MajIXH60udvUuFO-_A",
+      "expires": 1789163355236,
+      "state": "open",
+      "proof_hash": null,
+      "result": null
+    }
+  ],
+  "result": {
+    "ok": true,
+    "stage": "recovery-confirmed",
+    "recoveryId": "ua8C23VTv4MxfkaDxfQXZeMel5ERW_6DEYWXTBTZzeA",
+    "accountId": "xvEVnTPPNtX9Iq2atH-DvCRdVgFdCc8B7bCjGSpFogs",
+    "draftDigest": "64ed0b0ccc6f2bc6da00315a39a8eda127555e53693394519b46e4e518245991",
+    "recoveryStateDigest": "ec620a70f5b4469929053fdf45e71bbfa1585567009af6119ed632e8cf8d47e0",
+    "receiptId": "nh5D_hWa6I5W3GgvMQQFj5hQOh-NG0loEOp5Cv1U3YU"
+  },
+  "after": [
+    {
+      "account_id": "xvEVnTPPNtX9Iq2atH-DvCRdVgFdCc8B7bCjGSpFogs",
+      "attempt_id": "KTFXsoZOTN_V5zOMJo-iCB3XLqZ859DXdHP2sujtFjQ",
+      "id": "ua8C23VTv4MxfkaDxfQXZeMel5ERW_6DEYWXTBTZzeA",
+      "draft": "{\"authRoot\":\"cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd\",\"bootstrapSigner\":\"ad95537c89606389a98d531ed505d82c319e9b1714e6474c9e8fcf88c19b3059\",\"envelope\":{\"ct\":\"1243a606318f814133b5ec08de8d5a855af0eff78784cde16ba4127159dfc494aa2f78c4a2f94a997784075d9cdbd136d56524e9818a2b0fa89e79de20559218f07f662238b316e202f0497bf27fadf80112559f53e81dd6b02a5169dc8012da7d5f14e0dbc2e198c7eeb3087ffe2600\",\"nonce\":\"112570c8c228cd2a2781fbe9\",\"salt\":\"6fa7ee14f18cfca32ff79c1803170631\",\"v\":1},\"lineageId\":\"never-admitted\",\"principalId\":\"local-principal\",\"rPub\":\"9d62034c9045dc576fcc6b8be9fa93c76caa361b900af657fea0030d4fd55151\",\"rootCommitment\":\"b82f673c2bc1d7f5a2a98c10c4a1a161807e6ee860eb7c458b34b5ec356c196a\",\"v\":1,\"workspaceId\":\"local-workspace\"}",
+      "digest": "64ed0b0ccc6f2bc6da00315a39a8eda127555e53693394519b46e4e518245991",
+      "challenge": "o_iGwf04Nky3mD9yUmS7vhCO1MajIXH60udvUuFO-_A",
+      "expires": 1789163355236,
+      "state": "done",
+      "proof_hash": "d27189fe325f7517140999e91da695daad9052c2b7b97ab9672417627d292254",
+      "result": "{\"accountId\":\"xvEVnTPPNtX9Iq2atH-DvCRdVgFdCc8B7bCjGSpFogs\",\"draftDigest\":\"64ed0b0ccc6f2bc6da00315a39a8eda127555e53693394519b46e4e518245991\",\"ok\":true,\"receiptId\":\"nh5D_hWa6I5W3GgvMQQFj5hQOh-NG0loEOp5Cv1U3YU\",\"recoveryId\":\"ua8C23VTv4MxfkaDxfQXZeMel5ERW_6DEYWXTBTZzeA\",\"recoveryStateDigest\":\"ec620a70f5b4469929053fdf45e71bbfa1585567009af6119ed632e8cf8d47e0\",\"stage\":\"recovery-confirmed\"}"
+    }
+  ]
+}

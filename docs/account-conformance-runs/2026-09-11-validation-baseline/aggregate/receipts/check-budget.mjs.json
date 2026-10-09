@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-budget.mjs",
+  "script_sha256": "df005d4125d275f4347c21ddfb274299c9f11546c9c0761dc7e48274eceb91e0",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T08:48:27.917Z",
+  "finished": "2026-09-11T08:48:27.996Z",
+  "tree": {
+    "head": "500630fc85e270728b65d6a6e960def22af47ad2",
+    "dirty_sha256": "f6a1e9211765de91df8afa1ec98c4d0d1f2bca075274438c9371b92acd1d6570"
+  }
+}

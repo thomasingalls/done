@@ -1,0 +1,80 @@
+[
+  {
+    "v": 1,
+    "stage": "reserved",
+    "payloadBytes": 2092,
+    "mac": "28d991f3c58313f27159d2fb451575db5fd11a59c720b6a8429a179903d41524"
+  },
+  {
+    "v": 1,
+    "stage": "prepared",
+    "payloadBytes": 2574,
+    "mac": "bc61171e5bb387927f8f5518e4155990a28da73385a8601a82aa19f32bcabace"
+  },
+  {
+    "v": 2,
+    "stage": "genesis-prepared",
+    "payloadBytes": 4321,
+    "mac": "d8bbe3968eac7260c4bc27f6d8896e756718048a9780657c6d6b7184117aea95"
+  },
+  {
+    "v": 3,
+    "stage": "admission-requested",
+    "payloadBytes": 7633,
+    "mac": "0ddc16b042b3134083ae25e39a9044c984e132120d77b289653d70013255f15a"
+  },
+  {
+    "v": 3,
+    "stage": "admission-offered",
+    "payloadBytes": 10489,
+    "mac": "2038516fd7f46396a45a2ca275a0f06fd8a946a59bb39ba14afc8cfe4f9b2295"
+  },
+  {
+    "v": 3,
+    "stage": "admission-receipted",
+    "payloadBytes": 14482,
+    "mac": "617558b8e0d18fa4e2e85203785d708de7af18c86eae6a737eafa2890fe0d8e3"
+  },
+  {
+    "v": 4,
+    "stage": "handoff-prepared",
+    "payloadBytes": 16085,
+    "mac": "c13f6c85bd6ffab4cbba4ef58024e852ebb97cc09ddc31fe6ba9a2b754bec53e"
+  },
+  {
+    "v": 4,
+    "stage": "handoff-selected",
+    "payloadBytes": 16085,
+    "mac": "a3c8ade0242e17417e14aec917b968e692fc543822863c29af9f1dd993a47114"
+  },
+  {
+    "v": 5,
+    "stage": "account-active",
+    "payloadBytes": 16083,
+    "mac": "8f7ccbbd62d8468cde577b485d72dfbc577bdca23463bdd3f9cdd68b1184023f"
+  },
+  {
+    "v": 6,
+    "stage": "account-capturing",
+    "payloadBytes": 16086,
+    "mac": "2e261a0749435afb7ff3401acc3b1515765414b3e872d1850635412c9cf406d9"
+  },
+  {
+    "v": 7,
+    "stage": "account-spooling",
+    "payloadBytes": 16085,
+    "mac": "29887b95da9b0b6f7cb1a08ef611211d157c3ab7b54ff27b4ac7f22b7cd6e855"
+  },
+  {
+    "v": 8,
+    "stage": "account-delivering",
+    "payloadBytes": 16087,
+    "mac": "08ce7cce7a42bab59236bd9b39b731cd1e9473758274a56ab3ec244c7929b4b0"
+  },
+  {
+    "v": 9,
+    "stage": "account-receiving",
+    "payloadBytes": 16086,
+    "mac": "a08d64543416b6662b79bd20bcf0ff19c3ac55d10bdb5665a50500500e525fb5"
+  }
+]

@@ -1,0 +1,42 @@
+{
+  "changedRuntimeFiles": [
+    "crdt/yjs.ts"
+  ],
+  "sourceRestoredAfterFaults": true,
+  "yjsSha256": "1bfc4a8e717fc2b92a02fecc896dc9b5d5782d1146dab06652822df88d4b7199",
+  "testSha256": "829dea731d1218621a110da5cfacba7969547d73fe30e1f1e41861b91c416b2b",
+  "affectedTests": {
+    "files": 5,
+    "cases": 126,
+    "exitCode": 0
+  },
+  "newTests": {
+    "files": 1,
+    "cases": 8,
+    "generatedTrials": 150,
+    "exitCode": 0
+  },
+  "faultControlsDetected": 2,
+  "typeScriptExitCode": 0,
+  "note": "New test file formatted after agent checks; restored candidate new-file suite passed again. Runtime bytes unchanged by formatting. Agent delta and initial fixture/format failures retained.",
+  "commands": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run test/workspaceAdmission.test.ts test/projectionEquality.test.ts test/exploratoryPreparation.test.ts test/selectionHistory.test.ts test/pendingProjection.test.ts",
+      "cwd": "/private/tmp/done-f17-exploration-r3/candidate",
+      "log": "affected-tests.log",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run test/exploratoryAnyStrings.test.ts",
+      "cwd": "/private/tmp/done-f17-exploration-r3/candidate",
+      "log": "any-final-restored-tests.log",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/oxfmt/bin/oxfmt --check src/crdt/yjs.ts test/exploratoryAnyStrings.test.ts",
+      "cwd": "/private/tmp/done-f17-exploration-r3/candidate",
+      "log": "format-final.log",
+      "exitCode": 0
+    }
+  ]
+}

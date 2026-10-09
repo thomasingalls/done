@@ -1,0 +1,74 @@
+[
+  {
+    "name": "inventory",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1006
+  },
+  {
+    "name": "manifest",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1956
+  },
+  {
+    "name": "authority",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 833
+  },
+  {
+    "name": "signature",
+    "argv": [
+      "git",
+      "verify-commit",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 35
+  },
+  {
+    "name": "release-blocked",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--require-complete"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 1803
+  },
+  {
+    "name": "format",
+    "argv": [
+      "node_modules/.bin/oxfmt",
+      "--check",
+      "scripts/release-validation/general-tests.json",
+      "src/crdt/workspacePreparation.ts",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/workspacePreparation.test.ts",
+      "docs/release-validation-graph.json"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 144
+  },
+  {
+    "name": "whitespace",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 58
+  }
+]

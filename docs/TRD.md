@@ -1,6 +1,9 @@
 # done — Technical Requirements
 
 **Status:** v8 — current and normative. Supersedes v7 in full.
+**Storage contract amended 2026-09-08:** mandatory factor custody, writer lifetime, offline causal recovery,
+exact coverage and failure dispositions are consolidated here and in [storage-contract.md](./storage-contract.md).
+The [conformance matrix](./storage-conformance.md) separates current requirements from existing partial evidence.
 **Date:** 2026-08-17
 **Companion to:** [PRD.md](./PRD.md)
 
@@ -76,7 +79,7 @@ the rest in and passing it to review remains the work between this draft and an 
 | **Authorization lineage**   | The signed, service-serialized chain of authorization epochs for one workspace. Absent, live, or terminally retired (§13.5).  |
 | **Epoch**                   | One committed state of the lineage: membership, credentials, capabilities and current content-key generation.                 |
 | **Content-key generation**  | `K_g` — one symmetric secret per generation, from which domain-separated subkeys are derived (§13.2).                         |
-| **Local-custody key**       | `L_local` — the device-local key that opens this slot's sealed `K_g` envelopes. Promptless by default (§13.3).                |
+| **Local-custody key**       | `L_lock` — the factor-sealed local-custody root opening this slot's sealed `K_g` envelopes. `L_local` is legacy migration input only (§13.3).                |
 | **Recovery keypair**        | `R_pub` wraps every generation; `R_priv` is ordinarily absent and persists only sealed to user-held factors (§13.2).          |
 | **Envelope**                | One outbound unit: encrypted Yjs update, clear routing metadata, sealed attributed actor, source signature (§7.4).            |
 | **Acceptance evidence**     | Authorization-service attestation that a specific envelope entered the accepted set (§7.5).                                   |
@@ -97,8 +100,8 @@ the rest in and passing it to review remains the work between this draft and an 
 | Crash journal              | **Encrypted synchronous localStorage write-ahead log; reviewed synchronous AEAD (§6.1)**             |
 | Query/search index         | **In memory, rebuilt lazily. Persistent SQLite-WASM only once encrypted at rest (§6.2)**             |
 | Content encryption         | **Every app-managed persistent store, from genesis, under `K_g` (§13.2)**                            |
-| Key custody, default       | **Promptless `L_local` as a structured-cloned non-extractable `CryptoKey`; optional device lock (§13.3)** |
-| Device credentials         | **Separate signing and wrapping keypairs, non-extractable at runtime, two persistence tiers (§13.4)** |
+| Key custody, default       | **Factor-sealed `L_lock` from genesis; generated code and optional additional PRF seals (§13.3)** |
+| Device credentials         | **Separate signing and wrapping keypairs, factor-sealed at rest, non-extractable at runtime (§13.4)** |
 | Authorization              | **Service-authoritative signed lineage; no authority outside the service (§13.5)**                   |
 | Attribution                | **Source-signed envelopes; attributed actor inside the seal (§4.8, §7.4)**                           |
 | Sync transport             | **Relay-mediated only, opaque envelopes, service-issued acceptance evidence (§7.3–§7.5)**            |
@@ -617,12 +620,12 @@ Constraints on it:
   ordinary local retention question and is **separate from** the attribution retention floor (§13.7) — those are
   different objects and conflating them will over-retain.
 - **Trimming is crash-safe in that order**: write one `kind: 'state'` record under the current generation, wait
-  for its transaction to complete, and only then delete the records it supersedes in a second transaction. A
+  for its transaction to complete, and only then delete the exact authenticated records it covers in a second transaction. A
   crash between the two leaves duplicate coverage, which is harmless; the reverse order loses data. **The trim
   covers content records only** — a `heads` record is not superseded by a state record and is not swept by it.
 - **Trim discharges old generations locally.** Once a single state record under the current generation covers
-  everything, older generations are droppable from this device's local custody — subject to nothing else needing
-  them.
+  its authenticated input set, those records no longer require predecessor openers. Retiring any opener
+  still requires SC-03/04 exclusion, a fresh all-reference census and the existing fallback gates.
 
 **Two of the four kinds are not content records** (§15 rows 6 and 4). `heads` carries the anti-replay high-water
 mark §7.5 requires — one `(seq, link)` per credential — and **`outbound` carries this device's own outbound
@@ -655,9 +658,9 @@ same way. Three constraints on `heads`:
 creation, held cleartext in the store's metadata, entering the HKDF `info` beside the workspace id (`P-3`,
 `S0-3`) — with 12 random nonce bytes per record. **Every cleartext field is in the associated data — `v`,
 `gen`, `seq` and `kind`, plus the principal, workspace and store ids** — and `kind` is why that matters rather
-than being thorough: IndexedDB holds a structured clone whose properties the load path trusts, a `state` record
-supersedes everything before it, and an editable `kind` is therefore a way to make the store delete its own
-history through its own trim path. **`seq` does not reset at trim**, because the nonce budget is argued from it.
+than being thorough: IndexedDB holds a structured clone whose properties must authenticate before use. A
+`state` record supplies replacement content; its kind alone authorizes no deletion. Trim proves exact
+authenticated coverage, including record identity and observed bytes (SC-05). **`seq` does not reset at trim**; record identity remains unique, while `reserved[gen]` counts nonce-budget invocations.
 
 **That budget has a number and an action, and the writer needs both.** NIST SP 800-38D §8.3 bounds a key to 2^32
 invocations when its nonces are random, which is what holds the collision probability at or below 2^-32.
@@ -670,7 +673,11 @@ keys, so the budget is per (store, generation): **a store whose next write would
 the current generation rotates before that write rather than after it.** Equality is the first disallowed value,
 and the writer rotates or refuses rather than proceeding. This is one comparison in front of a field that exists
 for other reasons, and it is the whole enforcement behind the conditional argument the random nonce rests on — a
-counter that is observed but never compared enforces nothing.
+counter that is observed but never compared enforces nothing. **The theorem assumes an unrewound,
+unbranched key/counter history** (SC-09). Raw profile copies/restores duplicate the store id, keys and
+counters; two writable copies or a rollback evade local accounting. The application cannot reliably
+detect an unannounced clone. Supported writable restore uses verified import into a fresh independent
+`store_id`, derived store-key scope and reservation history, never a restored writable counter.
 
 **The count that comparison reads is now selected, and it is not `seq`** (`P-3`, `S0-3`). `seq` is monotonic
 across the store and does not reset, while the budget is per generation; the two agree only for the first
@@ -693,34 +700,41 @@ ratified 2026-08-28; `S0-2` §4's fence): the active marker's home shares the st
 transaction reads it under the same IndexedDB serialization the allocator already leans on, and when the marker
 moved past the reservation's generation the commit **aborts into re-reservation under the successor** — checked
 where looking is atomic, never merely when the batch happens to look. The abandoned range stays counted against
-the old generation, and after marker-advance commits no record can commit under it, so a generation's
-classification is complete the moment retirement consumes it.
+the old generation. After marker-advance commits, no IndexedDB record can commit under it. This does not
+fence localStorage: cached journal writers require SC-03's shared lifetime permit and exclusive local
+activation/retirement barrier. Only a fresh reference census under that exclusion can support retirement.
 
-**What the allocator gives the trimmer is uniqueness, not a watermark**, and the difference is worth stating
-because the obvious reading is the other one. A trim deletes what its state record covered; *what it covered*
-is expressible only because one `seq` is issued once. Two tabs each choosing `max + 1` produce two records at
-one number, and then no rule stated over numbers — a covered set, a boundary, anything — can separate the one
-the snapshot saw from the one it did not. **The race `f-3bea0e6` names is upstream of the trim's rule, in the
-numbering**, which is why the repair is the allocator and not a cleverer trim.
+**What the allocator gives the trimmer is uniqueness, not a watermark.** A trim deletes what its state
+record covered: authenticate and merge the exact observed disk records, durably commit the replacement,
+then delete only that set if its identities and bytes still match. Sequence uniqueness does not equate
+coverage with a range: reserve 1,2,3; snapshot committed {1,3} into state 4; commit 2 late. Deleting `<4`
+loses 2. One tab's document is not proof of another tab's disk state. SC-05 selects whole-trim refusal on
+unreadable input; neither skipped records nor heads/outbound records count as covered content.
 
 **The journal, and why it is the sharp edge.** Every update is first written synchronously to localStorage as one
 immutable, per-page, per-store journal entry. A reload replays those idempotent Yjs deltas. At the end of a short
-batching window the adapter writes every captured delta in one relaxed IndexedDB transaction, waits for its
+batching window the adapter reserves encryption invocations, then writes captured deltas in a strict
+IndexedDB transaction, waits for its
 `complete` event, and only then removes the corresponding journal entries. `whenDurable()` forces that batch
 immediately and resolves only after every update observed before the call has committed. Journal or batch failures
 remain observable and leave recoverable entries intact.
+
+The recovery boundary assumes intact completed carriers and a valid factor after page/navigation loss.
+Synchronous journal acknowledgement is not an OS/power-loss promise. The private implementation requires
+requested/reported strict reservation and content commits under the [F-15 platform assumptions](./account-reservation-durability.md). Recovery includes all acknowledged
+operations and their dependencies and may include a committed, not-yet-displayed suffix (SC-01).
 
 The journal is a short-lived write-ahead log, not a second document representation. It closes the browser
 lifecycle gap where navigation can terminate the page between a Yjs transaction and IndexedDB's asynchronous
 commit.
 
-**Every update means every *locally originated* update, and the narrowing is a repair rather than a
-concession** (`S0-3`). The journal exists so a page kill cannot lose **accepted local work**. A remote update is
-not local work, and the ordering above already protects it by a stronger mechanism: the content batch commits
-before the heads record, so a crash beforehand leaves the accepted mark below that position and **sync
-re-delivers it**. Journalling remote updates would add synchronous main-thread cost on the receive path to
-duplicate a guarantee the ordering already makes — and it removes the one case that cannot be bounded, since a
-peer's large paste arrives as one update whose size this device does not control.
+**The synchronous journal covers locally originated updates.** Remote and cross-tab updates use the
+asynchronous content path, but **commit before canonical promotion** (SC-01–02). Validate into a private
+receive buffer, persist encrypted update bytes, await content completion, then apply to editable state;
+heads advance after content. This makes remote dependencies locally recoverable before local input can
+rely on them. Persist deletion information and pending update bytes too; a state vector is not a coverage
+oracle. Redelivery remains useful for unpromoted receive work, but acknowledged local recovery does not
+require it. Stage 1 cannot inherit a future accepted-head service's availability guarantee.
 
 **What bounds the rest is an operation limit, not a bigger buffer** (`P-3`,
 `f-9b49b74-journal-seal-64k-gap`). The seal refuses above 65,536 bytes and throws **after** the Yjs transaction
@@ -743,7 +757,10 @@ has the change and nothing durable does* can no longer outlive a handler. Under 
 appears when it is durable rather than immediately, which is the recorded cost. PRD §7.10 already governs the
 disclosure — *an app whose central claim is local-first must not be quiet about a context where the data is not
 durable* — and what is withheld is the acknowledgement rather than a new warning, because §7.10's own rule is
-that a warning nobody can clear is noise.
+that a warning nobody can clear is noise. **Later input cannot bypass an uncommitted predecessor.** Queue
+intent and prepare it against recoverable state after the predecessor promotes. Pending content is absent
+from ordinary editor text, export, accepted undo and transport; native IME preedit is provisional input,
+not an accepted CRDT mutation. SC-02 applies the same owned gate to every mutation/receive path.
 
 **Back-pressure is measured in stored characters, never in entries.** The append probe measured this origin's
 wall at about 5.3 M UTF-16 characters — roughly 60,000 entries at the common keystroke size and about **241** at
@@ -755,9 +772,9 @@ writer forces a flush well below quota rather than discovering it at `setItem`.
 promise-based and cannot complete inside a handler that must not return until the write has happened.
 
 > **Decision: preserve the crash-safety contract.** A reviewed **synchronous AEAD** — JS or WASM — on this one
-> narrow path, with a low-end-device latency benchmark, is a requirement. The alternative is a deliberate
-> redesign of the crash-safety contract, which trades a guarantee the product already makes for an
-> implementation convenience.
+> narrow path, with a low-end-device latency benchmark, is a requirement. Commit-first IndexedDB could
+> preserve acknowledgement safety by withholding every edit until completion, but would change the selected
+> synchronous interaction budget. It is not the construction selected here.
 
 Three constraints on that construction, and the third is the one that is easy to miss:
 
@@ -773,31 +790,41 @@ Three constraints on that construction, and the third is the one that is easy to
    a different key. **Selected** (§15 row 2): XChaCha20-Poly1305 with 24 random bytes per record, so there is no
    counter and no durable state for a crash to lose.
 
-**Start-up order changes, and this is a concrete consequence nothing upstream states.** Today `openLocalStore`
-constructs the provider and then replays the journal **synchronously**, before the IndexedDB load resolves.
-Encrypted, the journal cannot be read without the journal subkey, which needs `K_g` unsealed, which needs
-`L_local` — a structured-cloned `CryptoKey` that only IndexedDB can hold. So the order becomes:
+**Startup first classifies the installation** (SC-06): fresh, complete, resumable creation/migration,
+clearing/cleared, or repair-required. Any surviving identity, custody, counter/marker, content or journal
+material for the target prevents casual reminting. Concurrent creation converges on one verified identity
+and factor custody; cross-database creation carries a durable intent. Local genesis needs no account or
+service-signed account binding. Existing legacy data retains its selected carrier until explicit cutover.
 
 ```
-open key store → unseal K_g (and prompt, only if a device lock is enabled)
-  → derive store + journal subkeys → replay journal → load content records → construct transport
+classify slot/store → acquire shared lifetime permit → open key store
+  → confirm factor at fresh genesis / unlock existing factor custody
+  → unseal K_g → derive subkeys → replay journal and load authenticated content
+  → initialize application content through admission → bind UI and construct transport
 ```
 
-**The key store carries a custody record per slot, written at genesis.** On the default tier it says promptless and
-nothing reads it; it is what §13.3's device lock later moves. It is required from the first version that writes a
-key store, because a store whose tier is implied by what is present would need a migration over key material to
-gain an explicit one — the class of migration §14.6 exists to avoid. It also makes *this slot is on the default
-tier* something §11.1 can assert in both directions rather than an absence.
+**The key store carries an explicit factor-custody record from genesis.** New persistent stores never
+create `L_local`; promptless records are legacy migration input. Missing custody beside existing data
+means resume a verified intent or refuse, never create an empty replacement. No persistent edit is
+acknowledged before complete, recoverable genesis. Cold-start budgeting includes storage/key opening;
+human factor interaction is measured separately, not represented as zero cost.
 
-Journal replay is no longer synchronous at open. Two consequences: the cold-start budget absorbs a key store
-read and an unseal before any content is available (§12), and the load-before-connect rule below gains a step in
-front of it.
+**Unreadable persistence refuses normal open** (SC-05). Retain and report malformed, unsupported or
+unauthenticatable content/journals and missing required keys with typed repair-required state. Do not
+bind an editable document, run content initialization/repair, connect transport, trim or retire its keys.
+No ordinary export may imply complete recovery. Diagnostic encrypted-carrier recovery is explicit.
+Unreadable input during trim refuses the entire trim; no skipped carrier becomes covered.
 
-**Local state must finish loading before any transport is constructed.** This is the ordering behind the most
-common data-loss report against Yjs in production, and it fails in one direction: the socket syncs first, a
-document not yet populated from disk looks authoritative, and the near-empty state is what both ends converge on.
-Sync then propagates the loss to every replica. **In v8 the rule extends: keys load before local state, and local
-state loads before transport.** A workspace whose keys have not been opened must not construct a provider at all.
+**Local state finishes loading before application initialization and transport.** Pure Yjs synchronization
+of an empty replica does not erase populated peers. The real hazard is application writes/repairs derived
+from an incomplete view, or promotion of state without durable dependencies. Test those actual startup
+paths (C16), not the false claim that absence of Yjs inserts is a deletion.
+
+**Writer lifetime is owned per slot** (SC-03–04). Every runtime with write keys holds a shared Web Lock;
+local activation, custody swap, clear and opener retirement require exclusive ownership. Invalidate
+capabilities and quiesce delayed callbacks before release. Notifications request cooperation only: no
+timeout or lock steal retires a live writer. Suspended holders may delay completion indefinitely.
+Reacquire and recensus after interruption; retain every checkpoint/package/journal opener still needed.
 
 Request `navigator.storage.persist()` on the first human write. Surface the granted/denied state in settings.
 
@@ -915,20 +942,31 @@ no claim that two principals in one slot are the same person.
 and a name that can be guessed from a workspace identifier alone would let a picker enumerate by construction
 rather than by lookup. Enumerate through the index, never through `indexedDB.databases()`.
 
+**The derivation is `SHA-256( LP("done/store-name/v1") || LP(principal) || LP(workspace) )`, truncated to 128
+bits, and it is deliberately unsalted.** The rule above asks only that a workspace identifier alone not name a
+store, which binding the principal satisfies; it does not ask that a holder of *both* identifiers be unable to
+compute the name. Deriving rather than minting an opaque name is what keeps a store re-discoverable when the
+index is lost, since re-discovery through a database listing is the one route this section forbids. **If the
+principal identifier ever becomes guessable, the augmentation is one further `LP()` of device-local salt in
+that input** — it is a rename of every existing store, so it is a migration rather than an edit.
+
 **Lifecycle:**
 
 | Operation                       | Slot index                                                     | Stores                       | Service            |
 | ------------------------------- | -------------------------------------------------------------- | ---------------------------- | ------------------ |
 | Sign out                        | Mark this slot closed; retain its entries                      | Retained, sealed             | Sessions ended     |
-| Reopen (offline)                | Verify slot binding, mark active                                | Opened                       | Nothing            |
+| Reopen (offline)                | Verify applicable Local/account binding and unlock factor custody | Opened after complete replay | Nothing            |
 | Remove account from this device | Delete this slot's entries                                     | Cleared                      | Revocation requested |
 | Reset for handoff               | Delete **every** slot's entries                                | All cleared                  | All revocations requested |
 
-**Destructive clears must be crash-safe across the slot index, the key material and the stores.** Clearing
-IndexedDB is asynchronous and interruptible; navigating away mid-clear must resume or roll back. A clear that
-leaves a store with no identity manufactures precisely the state the product says must never be reachable
-(PRD §6.11). Order matters: remove the index entry last on a delete, so an interrupted clear is re-discoverable
-and resumable rather than orphaned.
+**Destructive clears include the journal and are resumable** (SC-07). After the existing authorization
+checks, acquire exclusive slot ownership and persist a target-bound `ClearIntent` outside the content
+store being deleted. Refused/blocked content deletion preserves the journal, required keys and index.
+After content deletion succeeds, remove its journal and derived-index carriers, then unneeded
+store-specific openers, then the index entry. Retain shared custody required by any other store.
+Failure after the first destructive commit resumes cleanup rather than promising rollback. A terminal
+non-content `cleared` marker prevents accidental autogenesis; explicit new-identity creation is separate.
+Never put journal/key removal in a `finally` path that runs after refused content deletion.
 
 **Must not happen.** No picker enumerates by database name. No slot's stores are reachable while that slot is
 closed. No clear leaves capability behind while removing identity and content, and none removes the content key
@@ -966,8 +1004,14 @@ things follow that are easy to get wrong individually:
   they do not open the local store (§13.4).
 - An expired account session degrades to "sync is offline", never to "the app is locked".
 
-The one ceremony that may precede local reads is the **optional** device lock, which is local and not a network
-wait (§13.3).
+The 2026-10-07 product decision sets a remembered network login's absolute deadline to 30 days from
+sign-in. Lock preserves resumability after local unlock; sign-out disables it. Background renewal cannot
+move that deadline. The [session/subscription design](./account-sessions-subscriptions.md) specifies the
+implementation sequence. The session core and opt-in client integration are implemented; protected
+route cutover and live notifications remain pending. See the [client construction](./account-session-client.md).
+
+Persistent local reads require factor unlock at cold start. This is a local ceremony, not a network
+wait (§13.3); no account session is required for Local.
 
 **Test.** §11, sync-absent; load before connect.
 
@@ -1026,6 +1070,12 @@ status.
 
 ### 7.4 The envelope
 
+**Private implementation amendment, 2026-09-10.** New envelopes use v2 below. The
+[concrete outbound contract](./account-outbound.md) corrects the key domain, separates position grants
+from per-invocation seal reservations, and requires durable source capture before publication. The v1
+reference vectors remain historical readback; v1 minting and implicit downgrade are refused. No relay
+or native spool is implemented by this amendment.
+
 **Constraint.** Every mutation admitted to the shared lineage is authenticated by a credential authorized at the
 referenced epoch, and its attributed actor is derived from that credential or explicitly authorized for it to
 represent.
@@ -1037,22 +1087,22 @@ relay is not entitled to a per-write record of which member wrote. The signature
 **The format is selected** (§15 row 4):
 
 ```
-Clear header  v, workspace_id, credential_id, epoch, gen, seq, nonce[12], digest
+Clear header  v=2, workspace_id, credential_id, epoch, gen, seq, nonce[12], digest
 Sealed body   LP("done/env-body/v1") || LP(actor_id) || LP(actor_kind)
               || u32be(count) || ( u32be(len) || update )*
 
-K_net = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/envelope/v1") || LP(workspace_id), L = 32)
-AAD   = LP("done/env/v1") || LP(dec v) || LP(workspace_id) || LP(credential_id)
+K_net = HKDF-SHA256(ikm = K_g, salt = "", info = LP("done/envelope/v2") || LP(workspace_id) || LP(credential_id) || LP(dec gen), L = 32)
+AAD   = LP("done/env/v2") || LP(dec v) || LP(workspace_id) || LP(credential_id)
         || LP(dec epoch) || LP(dec gen) || LP(dec seq)
 ct    = AES-256-GCM(K_net; body, AAD)
-sig   = Ed25519( device signing credential ; LP("done/env-sig/v1") || <the AAD's fields>
+sig   = Ed25519( device signing credential ; LP("done/env-sig/v2") || <the AAD's fields>
         || LP(hex nonce) || LP(hex digest) )
 ```
 
-**There are two bound field lists because one of them structurally cannot do the whole job.** The nonce is the
-AEAD's own input and `digest` is a function of the ciphertext the AAD helps produce, so neither can be inside
-the AAD — and both are fields a reader trusts. **The signature is what reaches them**, which is why its message
-is a separate list rather than the header repeated.
+**The signature binds nonce and digest as well as the AAD fields.** The nonce is known before
+encryption and could also be in AAD; the historical claim that this would be circular was incorrect.
+The ciphertext digest cannot be an input to its own construction. Keeping the two selected lists binds
+both fields without that circularity.
 
 **`digest` is SHA-256 of the ciphertext**, not the plaintext, so §7.2's relay validates it with no content key
 and §7.5's accepted chain binds the same value the relay checked.
@@ -1061,25 +1111,31 @@ and §7.5's accepted chain binds the same value the relay checked.
 by §7.5 rather than chosen here.** A client can only replay its own chain if it can compute each position
 unaided; a service-assigned position would mean it cannot verify anything until told where its own writes
 landed. The cost is that a client cannot skip — a refused envelope stalls that credential's chain until it is
-re-minted at the same position — and the benefit beyond §7.5 is that `seq` bounds the 12-byte random nonce's
-per-generation budget in one comparison, exactly as it does in §6.1.
+re-minted at the same position. Network position does not count encryption invocations.
 
-**Which means it inherited §6.1's defect along with its mechanism, and `S0-4` is where that is said.** This
-`seq` is per credential and does not reset at rotation either, so a literal `seq ≥ 2^32` test is conservative
-until the first rotation and then refuses every write for the rest of the credential's life. The count the
-comparison reads is positions **reserved** under the current generation — SP 800-38D bounds invocations, and a
-mint abandoned before send is one. *Exactly as it does in §6.1* is now true of the repair as well as of the
-idea.
+**Count every seal attempt, under the key actually used.** V2 derives distinct network keys per
+workspace, credential and generation. A durable `NetSealCounter.reserved[gen]` for that credential
+strictly commits one fresh reservation before each AES invocation, including abandoned attempts and
+authenticated-refusal successors. Refuse before the count reaches 2^32. Only the live continuation of
+the acknowledged reservation may seal once; recovery never reuses its permission. The generation fence
+applies at reservation and envelope persistence. Rotation needs a fresh key-domain count; old counts
+remain conservative. This assumes one unrewound, unbranched counter history per credential.
+
+The prior position-count argument failed twice: several crashed mints can reuse one reserved position,
+and v1 derives the same key for different credentials with separate budgets. The corrected v2 key
+domain and split reservation remove those assumptions. The codec verifies bytes; the durable counter
+and spool still require native implementation and testing.
 
 **And the position is reserved before the envelope exists**, because `seq` is inside both bound field lists
 above. Two tabs that each read the highest position they have sent choose the same next one. One durable
 `PositionCounter` per _(workspace, credential)_ grants it in a transaction, which is what serializes them —
 **and the same transaction stages the spool row for the granted position** (`S0-4` return, `FU-10`): a
-counted position with no durable identity cannot exist, because the count and the identity commit together. A
+granted position with no durable identity cannot exist, because the allocation and the identity commit together. A
 gap left by a crash between reservation and minting is not a hole to fill — §7.5's chain links *n* to *n-1*,
 so an unoccupied position stalls the chain exactly as a refused one does — and the `reserved` row is what
 resolves it: **the credential occupies its own position with a fresh first attempt**, which needs no licence
-and nothing the crash destroyed, because bytes are staged before the first network byte, so a `reserved` row
+and uses its retained exact source capsules plus a new seal-budget reservation. Bytes are staged before
+the first network byte, so a `reserved` row
 is durable proof that nothing was ever sent. A refusal cannot resolve it — `Refuse` names an exact digest,
 and no envelope was ever minted — which is why the carrier had to be the reservation itself rather than a
 counter movement.
@@ -1130,6 +1186,15 @@ from a stall is what breaks the chain permanently. Re-minting position *n* over 
 second, different link at a position the service may already have accepted, which every other device refuses
 under §7.5 and reads as a compromised credential. **A definite refusal is the only thing that licenses a
 re-mint; silence is not one**, and a timeout is silence.
+
+**Admission-only continuity does not require re-minting** (2026-09-16 private successor scope).
+When the verified successor only adds an uncertified device, preserving an existing publisher's
+identity, signing key, rights, generation and acceptance key, its already-sealed parent-epoch envelope
+may still be accepted at the next unresolved position. Preserve the original signed bytes and issue
+new acceptance under current authority. Newly minted envelopes use the adopted epoch. This rule does
+not extend through revocation, rotation or arbitrary ancestor epochs, and permanent refusals still
+hold. [The successor-admission plan](./account-successor-admission-prep.md) requires historical-evidence
+verification and owned client adoption before this path is enabled.
 
 **And a definite refusal has to be authenticated, or forging one is the attack** (§15 row 15). This rule licenses
 a client to act on a refusal, so anything that can withhold an answer can manufacture one; §13.7 makes the same
@@ -1337,6 +1402,12 @@ of the checkpoint (§7.5, §15 row 5). That is what lets a device starting from 
 forward from authenticated heads instead of replaying every chain from genesis, and it is the same field the
 epoch payload carries (§13.5). §7.5's third candidate shape was this composition; it is not a separate mechanism.
 
+**First-genesis exception.** Before any Account envelope has been accepted, both carriers use an empty
+vector, digest `SHA256(LP("done/headvec/v1"))`. Certification still includes the creating member; Local
+history is represented by the checkpoint. An explicit member-at-zero/zero-link entry is a different digest
+and is refused, while position one's predecessor remains zero link. This exception permits no dropping of
+existing streams in later epochs, successor baselines or pruning (§15 rows 5/7).
+
 **The coverage attestation must cover insertions *and* deletions, and a bare state vector cannot.** A Yjs state
 vector maps client to clock over insertions; deletions live separately in the `DeleteSet`. Two replicas can carry
 identical state vectors and disagree about what has been deleted, so "the checkpoint's state vector is dominated"
@@ -1398,13 +1469,21 @@ K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP("done/checkpoint/v1"
 cp_salt = 16 fresh random bytes per seal, carried in the clear beside the nonce and ciphertext
 AAD  = LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)
 
-M    = Ed25519( producing credential ; LP("done/cp-manifest/v1") || LP(dec v)
+M    = Ed25519( producing credential ; LP("done/cp-manifest/v2") || LP("2")
        || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen)
-       || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds)
+       || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds))
        || LP(hex head_vector_digest) || LP(producing_credential) )
 
-head_vector = for each credential ASCENDING BY ID: LP(credential_id) || LP(dec seq) || LP(hex link)
+head_vector = empty at first genesis; otherwise for each credential ASCENDING BY ID: LP(credential_id) || LP(dec seq) || LP(hex link)
 ```
+
+
+**2026-09-11 encoding amendment.** Manifest and SemanticAdmission are v2; checkpoint cipher/AAD
+remains v1. The two descriptor fields bind separate SHA-256 hashes of decoded opaque bytes,
+while full raw descriptors remain required and are rederived by every restorer. The private
+adapter bounds each SV/DS pair to 16 MiB combined before hashing or admission progress.
+Private v1 completions/receipts and mixed versions refuse without rewriting retained state;
+pre-completion requests/offers may resume. See [the compatibility and bounds contract](./account-admission-bounds.md).
 
 `checkpoint_digest` is SHA-256 of the ciphertext, so the durable store validates it with no content key, exactly
 as the relay validates an envelope's (§7.2, §7.4). **`sv` and `ds` are bound separately and as opaque bytes** —
@@ -2172,18 +2251,24 @@ into the document (§6.1).
 
 ### 11.1 Storage and slot tests
 
-**No plaintext at rest.** A profile snapshot taken after ordinary use — every IndexedDB store, the localStorage
-journal, and any derived index — is inspected for recognizable content at genesis, at Local, at Account, and after
-deletion, retention expiry and migration. The journal is checked specifically for an unencrypted window between
-transaction and commit. **The complementary negative is asserted rather than omitted:** on the default custody tier
-a restored profile executing the app's origin **does** open the workspace, and the test records that as expected so
-the claim's scope is exercised rather than assumed.
+**No plaintext at rest and copied-profile custody.** Inspect all app-managed carriers at genesis, Local,
+Account and every lifecycle transition. Separately copy a complete isolated supported-browser profile:
+without an external factor it cannot open retained content or obtain successor keys; with the factor,
+offline recovery succeeds. Include a planted promptless opener as a positive control. A plaintext scan
+or a non-extractable-key assertion alone does not establish this property (C12–C14).
 
-**Journal replay ordering.** After a simulated page kill mid-batch, reopening derives keys, replays the journal and
-converges to the pre-kill state. Replay never runs before the key store is open.
+**Journal replay ordering.** Kill between admission, content completion and journal deletion. After
+factor unlock, replay recovers all acknowledged operations and their semantic dependencies offline,
+including deletions and a durably committed but not yet displayed suffix (C01–C03).
 
-**Trim crash-safety.** A crash between writing a `state` record and deleting the records it supersedes leaves a
-readable store with duplicate coverage and no loss.
+**Trim crash-safety.** Kill between authenticated replacement commit and exact covered-record deletion;
+recover with duplicate coverage and no loss. Test late unique-sequence commits, two writers and damaged
+records (C07–C09). Range deletion and skipped-unreadable coverage are failing mutations.
+
+**Lifecycle exclusion and partial state.** Exercise frozen writers, transition-actor restart, every
+reference class, partial genesis, two creators and journal-inclusive clear through production adapters
+and real browser lifecycle events. [storage-conformance.md](./storage-conformance.md) C04–C16 states the
+oracles and which evidence remains pending. Earlier abstract models are not full-protocol certificates.
 
 **Store isolation.** Two workspaces open on one device, exercised concurrently including teardown, retry and error
 paths: neither provider writes a byte into the other's store, and no update crosses.
@@ -2191,9 +2276,9 @@ paths: neither provider writes a byte into the other's store, and no update cros
 **Slot scoping.** A picker in one slot enumerates only that slot's workspaces, with a second slot present and
 closed. Enumeration never falls back to a database listing.
 
-**Crash-safe clear and promotion.** Remove-from-device and handoff reset interrupted at each step resume or roll
-back, never leaving a store without identity or capability without a store. An interrupted promotion resolves to
-exactly one of its two states on next launch.
+**Crash-safe clear and promotion.** Before destructive commit a clear can refuse with carriers retained;
+afterward it resumes its authorized intent to a terminal cleared marker (SC-07). Test blocked content
+delete and failed journal delete specifically. An interrupted promotion resumes to its verified outcome.
 
 **Slot reopening, with no network.** A closed slot reopens only on a user-verified assertion from a credential its
 binding names. The binding is refused if **any** of its bound fields is altered, including the case that matters:
@@ -2407,8 +2492,8 @@ Everything below is downstream of that, and any construction that violates it is
 | **Device / agent wrapping credential**     | Unwrap content keys if read-capable                                                                   | Sign mutations, change authorization, represent an arbitrary actor                              |
 | **Certified recipient set** (§13.5)        | Name the exact `(credential, W_pub, S_pub)` triples and the `R_pub` a rotator may wrap to; certify the signing key a set approval verifies under | Be authored or amended by the service; grant capability; assert accepted positions              |
 | **Recovery-bootstrap signer** (§13.8)      | Authenticate one successor binding when no eligible client survives, from the factor-opened recovery object | Be held by the service; exist outside the content factor's seal; be reused for a second binding |
-| **Local-custody key `L_local`**            | Open this slot's encrypted `K_g` envelopes on the default tier                                       | Sign, authenticate an account, unwrap `R_priv`, travel to another device                        |
-| **Optional device-lock custody `L_lock`**  | Replace promptless opening of those envelopes with a user-factor gate (§13.3)                        | Sign, authenticate an account, become a recovery factor implicitly, be opened by recovery       |
+| **Local-custody key `L_local`**            | Legacy opener retained only during verified migration; absent from new genesis                                       | Sign, authenticate an account, unwrap `R_priv`, travel to another device                        |
+| **Factor custody `L_lock`**  | Open local envelopes after the mandatory user-factor gate (§13.3)                        | Sign, authenticate an account, become a recovery factor implicitly, be opened by recovery       |
 | **Service authorization authority**        | Admit and revoke credentials, choose capabilities, sign epochs, finalize accepted sets               | Decrypt, sign a device's mutations, represent its actor, deliver a content key by authorization alone, resolve a recipient-authority verification key |
 | **Content-key generation `K_g`**           | Derive domain-separated subkeys for one workspace generation                                          | Admit or revoke anything; authorize its own distribution; be reused across stores or protocols  |
 | **Recovery public key `R_pub`**            | Wrap each `K_g` for recovery                                                                          | Unwrap any generation, authorize anything                                                       |
@@ -2449,101 +2534,77 @@ violates it, and the narrow rule above follows from it.
 **Edit implies read.** Under one symmetric key per generation there is no cryptographic write-without-read. This is a
 capability limit, not a policy one, and the agent feature inherits it (§10.6).
 
-### 13.3 Local custody and the optional device lock
+### 13.3 Mandatory factor custody and legacy migration
 
-**Constraint.** Opening a workspace requires no prompt by default, and the default tier makes **no claim against an
-attacker who can execute the app's origin from a copied profile**. That scoping sentence travels with the property
-everywhere it is described.
+**Constraint.** Persistent Local and Account workspaces use factor custody from genesis and unlock at
+cold start. No promptless persisted handle or fallback independently opens content or receives future
+generation keys. This intentionally replaces the former optional-lock default (SC-08). Each custody root retains row 13’s
+principal/workspace factor binding; the slot-wide writer barrier does not broaden that authority.
 
-**Approach.** `L_local` persists as a structured-cloned non-extractable `CryptoKey` — the one representation the
-browser offers that cannot be trivially serialized out — and every locally needed `K_g` persists **only** as bytes
-sealed under it. Opening a workspace briefly unseals those bytes and derives the subkeys; promotion, rotation and
-recovery may use the same brief plaintext interval to create reader and `R_pub` wraps before erasing it.
+**Construction, selected** (§15 row 13). A generated **125-bit device-lock code is always enrolled**;
+WebAuthn PRF, where supported, adds an independent seal of the same random `L_lock`. A user-chosen
+password is rejected. Retain row 13's seal format, HKDF/AAD and role/slot-bound PRF inputs. The factor
+must be outside the copied-profile exposure domain; authenticator capability and user verification
+assumptions require support-matrix evidence. Code-only unlock works offline without an account.
 
-**With the optional device lock, factor-gated custody replaces the promptless handle.** No default handle capable of
-opening the envelopes remains. It unlocks at cold start, and it **strengthens custody of a key that already exists**;
-it is not the switch that turns encryption on.
+`L_lock` opens each retained `K_g` envelope. Persist only sealed root/credential bytes; import ordinary
+private credentials as non-extractable runtime keys after unlock. Plaintext factors, generation keys
+and raw journal subkeys stay in the coordinated live session, never in a persisted remember-unlocked
+cache. Confirm the factor and complete recoverable custody before acknowledging the first persistent edit.
 
-**The construction, selected** (§15 row 13). A **generated 125-bit code is always enrolled and is the root**; a
-WebAuthn PRF output, where the platform supplies one (§10.11 — and it is a matrix rather than a version), is an
-**additional seal of the same key** rather than an
-alternative to it — §13.8's rule that PRF's optionality is not a product branch, applied a second time. A
-user-chosen passphrase is **rejected**: the seal sits in the profile beside the ciphertext it protects, so guessing
-is offline and unrateable for the attacker this feature exists to resist, and a browser origin has no rate-limiting
-anchor except the authenticator.
+**Legacy promptless migration is explicit and resumable.** `L_local` and old non-extractable operational
+credentials cannot be exported for resealing. Generate `L_lock`, stage factor seals and resealed retained
+generation envelopes, and generate factor-sealed replacement receiving credentials. Under exclusive
+slot ownership, atomically swap custody where its records share a database; durable transition progress
+bridges databases. P-2's certified recipient-set successor and committed generation outcome must be
+recoverable before predecessor removal. Advance locally through SC-03–04 and retain all required old
+openers. Never recreate `L_local` as fallback or remint over partial state.
 
-**Factors seal a random `L_lock`, which takes `L_local`'s place in §6.1's key envelope** — same format, same AAD,
-different key. So adding, replacing or removing a factor is one 32-byte seal that moves no content and no content
-key. **The separation between §13.4's four factor roles lives inside the PRF evaluation input**, not in a derivation
-label applied afterwards: one evaluation and four labels would leave whoever holds that output holding all four keys.
-The input binds the role and the slot, so one assertion yields one slot's key for one role.
+**Protection pending is derived from durable completion.** A custody swap alone does not complete
+receiver replacement and forward rotation. Older copies retain old history; other devices can still
+write an old generation until observing its successor. No interface claims instant global propagation
+or retroactive protection. Fresh factor-sealed genesis has no promptless predecessor to migrate.
 
-**Enrollment reseals and then rotates.** `L_local` is non-extractable, so the lock cannot adopt it: enrollment
-generates `L_lock`, seals it under every factor, reseals each retained generation's envelope, and deletes `L_local`
-and swaps the envelopes **in one transaction** — the state that must never exist is no `L_local` and unresealed
-envelopes. **It then rotates the content key forward**, because resealing leaves `K_g` unchanged and a profile copy
-taken before enrollment would otherwise keep opening content written after it. Rotation is forward-only: history is
-not re-keyed, because the copy that motivates the rotation already holds it.
+**What is protected.** A copied supported-browser profile without the external factor or an unlocked
+runtime cannot recover content through the application's persisted custody paths. Complete-profile
+negative tests, including future receiver paths and a planted promptless-opener control, must support
+that claim. WebCrypto non-extractability restricts API export and does not itself guarantee underlying
+disk-key confidentiality or secure zeroization. No claim covers hostile origin code after unlock,
+OS memory/swap images, historical plaintext, old copies or secure deletion of freed blocks.
 
-**The custody record is written at genesis on the default tier**, saying promptless, and is read by nothing until a
-lock is enrolled. Adding it later would be a migration over the first deployment's key material.
+**Failure and roles.** Losing the last Local factor with no independent readable replica/archive can
+be final loss. Explain and confirm the generated code at genesis. Account login/support proof cannot
+open a locked slot; recovery can separately re-enroll a device using its existing user-held recovery
+material or a surviving authorized device. Neither `L_lock` nor the device-lock factor authenticates
+an account, signs mutations or unwraps `R_priv`. There is no ordinary disable-lock downgrade; factor
+replacement leaves a valid enrolled factor. Session teardown uses SC-03's capability lifetime rules.
 
-**What this buys and what it does not.** It defeats **file-level** exposure: an OS backup, a disk image, a synced
-profile directory, a forensic tool, a support person with filesystem access, freed blocks after deletion, and a
-trivially-readable plaintext journal. It defeats **nothing at the code level**.
-
-**Failure.** Forgetting the device-lock factor loses this device's readable copy. At a never-admitted Local workspace
-whose last readable replica this is, that is total and final — accepted, on the same terms as the recovery code.
-**The disclosure at enrollment is therefore two texts, not one**, because the consequence has two sizes: at an account
-workspace the workspace survives and the device re-enrolls, and at Local there is no second copy anywhere.
-
-**The copy must not claim the lock is retroactive.** A backup or profile copy made before enrollment was made without
-it and stays readable; what rotation buys is everything written from that point on.
-
-**Must not happen.** `L_local` may not sign, authenticate an account, unwrap `R_priv`, or leave the device. No
-lifecycle event may materialize a plaintext store. **Recovery may not open a locked slot**: a device whose factor is
-lost re-enrolls as a device, and a lock that `R_priv` can bypass is a preference rather than a lock.
-
-**Test.** §11.1, no plaintext at rest.
+**Test.** §11.1 and C10–C14. Existing seal vectors exercise bytes, not mandatory genesis or full custody.
 
 ### 13.4 Device and agent credentials
 
-**Constraint.** Device signing and wrapping private keys are **non-extractable at runtime**, with two honest
-persisted representations:
-
-- **Where PRF is absent**, each persists as a structured-cloned non-extractable `CryptoKey`.
-- **Where PRF is available**, encrypted private-key bytes persist under a PRF-derived wrapping key and are imported
-  as non-extractable runtime keys after unlock.
+**Constraint.** Device signing and wrapping private keys are **non-extractable at runtime**. New
+persistent private credentials are sealed under factor-protected custody; a role-bound device-key PRF
+may protect an additional representation without supplying a promptless path. Generate exportable bytes
+only for sealing, then import runtime keys non-extractably. `L_lock` gates local custody; a separate
+operational-key unlock may additionally gate sync. Promptless structured-cloned private credentials
+are legacy migration input only, not a no-PRF fallback.
 
 A non-extractable target key is **not** described as "wrapped": WebCrypto wrapping is an export operation and cannot
 wrap a key whose extractability forbids export.
 
-**Those two tiers are keyed on PRF availability, and a locked slot needs a third** (`S0-2`, `P-2`). Where PRF is
-absent the wrapping private key persists as a structured-cloned non-extractable `CryptoKey` — promptless, and
-therefore usable from a copied profile. §13.3's lock protects the `KeyEnvelope` and leaves that credential
-untouched, so rotation publishes a reader wrap the pre-lock copy can open: the lock is bypassed without being
-attacked, on the tier the code factor makes the common one (§10.11).
+**Every promptless credential capable of receiving future generations is replaced during legacy
+migration** (P-2, SC-08). A factor-sealed local envelope with a promptless receiving credential beside
+it is bypassable through future reader wraps. Replacement is a certified-set successor, so later
+rotators name the new receiving key. Keep predecessors until the verified successor/outcome and
+required local recovery material are durable, with protection pending through that interval.
 
-**Enabling the lock therefore replaces the wrapping credential rather than re-sealing it**, and the sentence above
-is why it must: the existing key cannot be exported, so it cannot be brought under a factor. The replacement is
-generated as extractable bytes, sealed under `L_lock`, and imported as a non-extractable runtime key after unlock
-— the PRF tier's own pattern with `L_lock` as the factor source, not a new carrier. Its introduction is a
-certified-set successor (§13.5), so every future rotator wraps to the replacement automatically. **The predecessor
-stays valid until that successor and the generation winner are both durably known**, which keeps an interrupted
-lock recoverable; the interval in which a pre-lock copy still holds `K_g` is exactly what `rotation_owed` exists
-to state, and no interface may claim future-copy protection while it is true.
-
-**The device list shows which tier a device is on.** A two-tier assurance bar is acceptable; a silent one is not.
-
-**This unlock gates sync, not the app** (§7.1). These credentials sign envelopes and receive new keys; they do not
-open the local store.
-
-**What the PRF wrap buys, precisely.** It protects the *persisted wrapper* against an attacker who has the browser
-profile but cannot produce a platform assertion — a stolen laptop, a copied profile, an OS backup — and the value is
-concentrated in the window *before the owner knows to revoke*. It buys nothing against live same-origin code (§10.9).
+**The device list reports factor-protected or migration-pending custody accurately.** A separate
+operational-key unlock gates sync, not local reading; local factor custody still gates cold-start content
+access. Non-extractability is a runtime misuse guard, not containment of live hostile origin code.
 
 **Four factor roles are distinct even where one authenticator ceremony supplies more than one, and their outputs are
-domain-separated and never substituted:** the account authenticator / slot verifier, the device-key PRF, the optional
+domain-separated and never substituted:** the account authenticator / slot verifier, the device-key PRF, the mandatory
 content device lock, and any optional recovery-factor PRF. Opening a slot is not creating an account session;
 unlocking a signing key is not recovering `R_priv`; recovering `R_priv` is not an account assertion.
 
@@ -2572,6 +2633,15 @@ current content-key generation, **the acceptance-signing key `K_accept` in force
 — `(credential, position, link)` for every credential as of that epoch (§7.5, §15 row 5). **Generation is broader
 than membership**, because admitting a second device changes authorization without creating a second member.
 
+The first epoch before any Account acceptance uses §7.6's empty accepted-head vector, not an explicit
+position-zero entry. Its private initial encodings are pinned in
+[the first-authority byte contract](./account-crypto/first-authority.md) and
+[the construction registry](./account-crypto/constructions.json): candidate/certification/origin dependencies,
+ordered FirstEpoch, offer, receipt v2, activation context and slot binding. Input JSON property order is
+reconstructed recursively; arrays retain their order. K_auth serializes the proposal/commit and does not
+replace the factor-origin, creating-member or independently rederived coverage predicates. These private
+first-epoch formats do not define successor-epoch or second-device enrollment formats.
+
 **A service-signed epoch does not by itself license key delivery, and that is the correction §15 row 11 forced**
 (`S0-2`). The epoch is simultaneously the roster a rotator reads and a document only the service signs, which is
 how account authorization alone could cause *delayed* content-key delivery: a credential the service admitted and
@@ -2585,6 +2655,16 @@ epoch therefore additionally carries a **certified recipient set**, which the se
 > `recovery_state_digest = SHA-256( LP("done/recovery-state/v1") || LP(dec counter) || LP(hex R_pub) || LP(hex recovery_envelope_digest) || LP(hex root_commitment) || LP(hex bootstrap_signer) )`
 >
 > `approval = Ed25519( the named approver's signing credential ; LP("done/certified-set-approval/v1") || LP(approver_credential_id) || CertifiedSet )`
+
+**Admission alone carries the existing certification forward unchanged** (2026-09-16 clarification).
+An authorization successor that only admits an uncertified device does not activate a new recipient set.
+It binds the complete existing certified object's digest and preserves that object's original approval
+context, including its original epoch pair. Verify the approval at its origin and equality with the
+parent's effective certified set; do not reinterpret the signature as approval of a new pair or add the
+pending device to recipients. Otherwise §13.6's first gate would require an existing client online, or
+the service would acquire power to author recipient approvals. Changes to recipients, certified keys
+or recovery state still require their specified client/factor authorization. The bounded private
+[successor-admission plan](./account-successor-admission-prep.md) implements neither of those changes.
 
 **The binding is credential-to-exact-wrapping-key, not credential-to-boolean**, because the roster was never the
 thing that was missing — the service does enumerate credentials. What was missing is an approval of the exact key
@@ -2604,6 +2684,15 @@ what makes the resolution checkable at all: flipping the name breaks the signatu
 cannot replay another's approval as its own, and an approval naming no approver is malformed.
 `recovery_state_digest` gains the bootstrap-signer commitment under the same rule at the factor edge (§13.8).
 A member's signing-key rotation is a set successor, priced by the machinery removal already uses.
+
+**`credential_id` is unique within a set, and a duplicate is malformed.** A certified set carrying two
+member entries for the same `credential_id` is malformed, and a verifier refuses the set rather than
+resolving under either entry. `members_digest` sorts by `credential_id` and nothing else, so a tie leaves
+the order — and therefore the digest, and therefore which `S_pub` an approval resolves under — undetermined
+between two conforming verifiers. Refusing is the rule rather than picking a side, because a verifier that
+took the first or the lesser entry would still disagree with another that took the other, and the
+idempotency-key property this sort exists for (§15 row 15: two devices building the same object produce the
+same key) holds only while the key is unique (`R3-4`).
 
 **One eligible content-holding client's signature suffices** (`P-1`). `approvals[]` is a list, so a threshold is
 later a verifier policy change rather than a format migration; a hard quorum is not selected, because it would
@@ -2710,12 +2799,20 @@ reader-eligible. A crash resumes the same transcript or restarts with a fresh cr
 credential. **Key delivery and set activation either commit together or leave a resumable pending certificate**
 (`P-1` criterion 11): the releasing device durably stages the signed successor with the delivery, so every crash
 point between delivery and activation is recoverable from that record rather than from anyone's memory.
-**Two enrollments racing at one `parent_epoch` serialize, and the loser resumes.** The service serializes set
-successors exactly as it serializes epochs, so of two siblings differing only in `members_digest` exactly one
-activates; the loser's pending certificate is refused as stale-parent, its existing device rebuilds the
-successor against the winner — the same members plus its own new entry — and re-activates, so a device a person
-authenticated by typing five symbols reaches `certified` rather than stranding at installed-and-countersigned
-(`S0-2` return, `test/enrollmentStates.test.ts`).
+**A competing epoch change requires a fresh ceremony** (operator ruling, 2026-09-16).
+The service still serializes successors at one parent, but the loser must not rebase an old
+human approval onto the winner's head. Restart requires a fresh credential, admission, transcript
+and typed code; the same credential cannot gain another guess. Exact crash resumption keeps the
+original transcript and durable decision. The ceremony's own verified, exact certification successor
+is completion, not a competing change. Authenticate changed authority before treating an untrusted
+stale-parent response as a restart instruction.
+
+Keep any already-staged delivery/pending certificate as durable evidence, including after key release;
+restart cannot take back a disclosed key or activate that certificate against another parent. The
+candidate remains uncertified. This replaces the former automatic sibling-rebuild liveness rule:
+`test/enrollmentStates.test.ts` models that historical rule without transcript binding and does not
+establish the new behavior. The bounded [content-approval plan](./account-content-approval-prep.md)
+defines the implementation sequence, explicit restart availability boundary and later delivery gates.
 
 **The ceremony that discharges the second gate is selected** (§15 row 11): a **short authentication string over
 an in-band agreement**, with both nonces **committed before either is revealed**, derived from a transcript
@@ -2735,7 +2832,9 @@ bits mean 25 bits: whoever reveals second and is uncommitted can grind its nonce
 it likes, and §15 row 5's companion record demonstrates the search rather than asserting it. **A mismatch spends
 the credential** — refusal reaches the authorization service, re-enrolling mints a new credential and a new
 transcript, and there is no retry of the same ceremony — which is what makes the strength per admitted
-credential rather than per attempt. **And QR is an accelerator, not an alternative**: where `BarcodeDetector`
+credential rather than per attempt. The existing client durably retains the consumed comparison too;
+a service-reported reset cannot grant another guess. Missing local attempt state does not authorize
+resumption. **And QR is an accelerator, not an alternative**: where `BarcodeDetector`
 exists the same transcript may be read by camera instead of by person, with the same bits and the same failure
 mode. It cannot be the root — a decoder does not fit §12's bundle headroom, and camera availability is a matrix
 of browser, OS, permission and hardware, which is §13.3's finding about PRF applied a third time.
@@ -2808,9 +2907,10 @@ the third case discards a live content key and anything that can withhold an out
 rule that a definite refusal licenses a re-mint and silence does not is the same rule; **what this adds is where a
 definite refusal comes from.**
 
-**Neither half of a rotation may precede the commit.** No content is written under the target generation before a
-verified committed outcome and none under the previous generation after it, so the atomic commit is one transition
-point rather than a window in which the excluded credential can still read new writes. **The pending intent is
+**Target-generation writes require the verified service outcome where a service exists.** An observing
+runtime stops old-generation acknowledgements immediately; completed local activation additionally
+requires SC-03's exclusive barrier and durable successor installation. Other contexts/devices may lag
+observation. No ordinary local write uses the predecessor after completed local activation. **The pending intent is
 persisted before the first network byte**, which is what makes a crash between commit and local switch resolvable:
 the client resubmits and is told its own id.
 
@@ -2824,8 +2924,10 @@ licence to start one, and every step between is a crash point:
 > its own durable record, so a kill inside this step resumes through both · 7 old openers retired under this
 > section's predicate · 8 the apply record itself discharged
 
-Each step is idempotent and restart resumes at the recorded step. Steps 1–4 are reversible; step 5 is not, and it
-may only be taken once no new write can select `g` and `g+1` is reopenable. **Device lock (§13.3) and recovery
+Each step is idempotent, but restart must reacquire exclusive slot ownership and revalidate current
+carriers before resuming. Steps 1–4 retain predecessor recovery; step 5 activates locally only when no
+live old writer overlaps and `g+1` is reopenable. Exclusion may be released during network waits, with
+old openers retained; retirement takes a fresh census under renewed exclusion (SC-03/04). **Device lock (§13.3) and recovery
 replacement (§13.8) apply through this same machine** rather than each defining its own, which is what stops a
 committed transition, a locked device and a replaced recovery set from having three different crash semantics. **Three states must never exist** — a committed transition with no
 local record it was intended, content under a generation no committed epoch names, and a dropped generation with
@@ -2864,7 +2966,7 @@ silence (§15 row 5).
 generation, and §11.2 test 6 requires admitting a genuine late-arriving old-epoch update from a still-authorized
 offline device — so an excluded credential can read those writes. It cannot be closed without refusing to write
 while possibly stale, which is §7.1's rule inverted. **The promise is therefore: from the commit, content written
-by devices that have observed it is closed to that credential** — not that the workspace is closed to it, which
+by runtimes that observed it and completed local activation is closed to that credential** — not that the workspace is closed to it, which
 was never true of its history. The window is one device's propagation delay, the exclusion is legible to the
 excluded credential through the finalized head, and obtaining the ciphertext at all is what the finalization
 boundary refuses (§11.2 test 6).
@@ -2880,7 +2982,10 @@ boundary refuses (§11.2 test 6).
   what §11.3 test 8 falls back to. **The predicate is stated over openers rather than over the local key
   envelope**, because deleting that envelope does not necessarily end access — a retained recovery or reader wrap
   may still open the generation — so a reference ledger over journals, batches, outbound envelopes, accepted
-  marks, checkpoints, suffixes, packages and wraps is what the drop consults. An interrupted rotation is exactly what violates
+  marks, checkpoints, suffixes, packages, wraps and transition records is what the drop consults.
+  SC-03/04 requires fresh enumeration under exclusive writer-lifetime ownership, with unknown/unreadable
+  references blocking retirement. No timeout, journal omission or stale census establishes absence.
+  An interrupted rotation is exactly what violates
   §7.6's cadence rule, because the obvious implementation clears the obligation when the epoch commits — which is
   before the checkpoint exists.
 - **Attribution retention**: the attributed actor sits **inside the seal**, so verifying historical authorship
@@ -2952,8 +3057,14 @@ account exists**.
 The alphabet omits `I`, `L`, `O` and `U`, which is what lets the input field map `O` to `0` and `I`/`L` to `1`
 without collision — a correct transcription of a badly rendered code still opens the workspace. The envelope seals
 `R_priv`, **the recovery-bootstrap signing key (below)** and **§14.2's root commitment** under HKDF-SHA-256 of the
-code with a fresh per-seal salt, so exactly one
-message is ever encrypted under that key and nonce reuse is structurally unreachable. **The commitment and the
+code with a fresh per-seal salt. The private v1 plaintext is exactly **96 bytes**, in this order:
+raw X25519 scalar `[0,32)`, binary root commitment `[32,64)`, raw Ed25519 bootstrap seed `[64,96)`.
+AES-256-GCM adds a 16-byte tag, making exactly **112 ciphertext bytes**. The root segment is not hex text;
+the seed is not an expanded secret or PKCS#8. The current parser refuses the historical 48-byte scalar-only
+ciphertext. [The private recovery byte contract](./account-crypto/recovery-layout.md) pins KDF/AAD,
+digests, confirmation/challenge purpose and exact exported PKCS#8 prefixes/lengths before raw extraction.
+One message per derived key requires nonrepeating fresh salt randomness across seals, including restores
+and clones; a vector does not establish that host assumption. **The commitment and the
 signer ride here rather than in their own objects** because each must be protected by exactly what protects
 `R_priv` and must be available at exactly the moment `R_priv` is: one AEAD, one seal, and nothing further for the
 user to keep. **The no-stretching decision rests on the invariant in
@@ -3069,7 +3180,7 @@ reproducible, checksummed artifacts and the implementation audit the add-on trig
 **Constraint.** Reopening a closed slot requires proof, it is local, and it grants nothing on the network.
 
 Account enrollment leaves an offline-verifiable slot-unlock binding on the device. Reopening requires proof of the
-same account credential, plus the optional device-lock factor if that slot uses one; **knowing that a closed slot
+same account credential, plus the required local-custody factor; **knowing that a closed slot
 exists is not enough.** That proof reopens already-local state and grants **no relay token, no account session and no
 authorization change.** When the service is reachable it separately authenticates the account and restores network
 capabilities.
@@ -3118,6 +3229,15 @@ assertion being presented to the service as a sign-in; the service's own challen
 single-use is the second and independent refusal. Verification checks the binding first, then the returned
 credential id, then the client data — **parsed, never rebuilt** — then `rpIdHash` and both the UP and UV flags, then
 the assertion signature.
+
+**Optional combined ceremony (operator decision, 2026-10-07).** When an online login is needed and its
+challenge is already ready, the explicit `done/account-session-and-slot-unlock/v1` domain permits one
+assertion for both purposes. It binds the full service pin, selected account/principal/credential,
+attempt and retry hash, service nonce, fresh browser nonce and expiry. Local verification still checks
+the retained signed binding and recomputes that complete challenge; a service response alone cannot
+open the slot. Offline/slow service takes the ordinary construction above immediately, and a later
+online check requires an explicit Connect/Reconnect action. The ordinary verifier does not accept
+arbitrary service challenges. See [the implementation contract](./account-session-client.md).
 
 **The embedding policy is same-origin only, and it is two checks rather than one** (`S0-1`, §15 rows 12 and 14).
 `crossOrigin` must not be `true` and `topOrigin` must be absent. The specification emits `topOrigin` only when
@@ -3497,29 +3617,24 @@ hand on each device against a shared bearer token and a **plaintext** relay docu
 authorization lineage, and it occupies no supported configuration — it is multi-device sync with no account, which
 works because it has exactly one user who trusts every device on his own tailnet.
 
-**The proposed cutover is to export from the development installation and import into the first real deployment, and
-to treat that as the migration** rather than carrying a live document across. It is not selected until §15 row 21
-decides whether the resulting system attribution is acceptable; if it is not, the fidelity archive moves forward and
-carries the CRDT state instead. Then comes a versioning and upgrade story, built preventatively rather than at the
-first incompatible change.
+**Selected 2026-09-10: one operator-assisted migration of the author's development installation, using
+the existing private `markdown-system-v1` importer.** There is no deployed instance or external user to
+upgrade. Keep verified Markdown and raw source backups before importing; the current importer consumes
+a verified, source-bound diagnostic recovery packet, not an arbitrary ZIP or relay snapshot. A general
+ZIP import UI, fidelity archive and automatic browser-profile migration host are separate work.
 
-**One consequence has to be decided rather than discovered: the Markdown cutover re-attributes everything.** Import is a
-system-actor write and the export carries no `author` (§9.1), so every card written before the cutover arrives
-attributed to the system actor, and provenance mode (PRD §5.7) shows nothing for any of it. For a single-user
-development installation where the answer to *who wrote this* is always the same, that may be an acceptable price
-for using the escape format as the migration path; it is not something to find out afterwards. The alternative is
-to bring the fidelity archive (§9.3) forward and migrate through **it** instead, since CRDT state is what carries
-identity and attribution — which costs a continuity item early and is the only route that does not put metadata
-into the markdown. Adding `author` to the day files is rejected on §4.6's grounds: the format has already had
-hidden per-item identity syntax removed once, and putting it back to serve a one-off migration is the wrong
-direction for the dependency to run.
+The author accepts the documented losses: fresh card IDs, system authorship, absent origin links, import
+timestamps, and reset actor/device/settings/history metadata. Written content, dates, sections, captured
+order and unfiled card bodies must survive. Import still bypasses freeze and cap; this choice does not
+authorize dropped text or bypass authenticated import, selection or cleanup checks. No metadata is added
+to Markdown. [Row 21](./selections/row-21-development-cutover.md) and sequencing §5.4 record the choice.
 
 **Two further consequences, and the second is a sequencing win available in one direction only:**
 
 1. **The import must not be gated by the freeze** (§4.5, §9.2), or a ten-day export silently loses everything older
    than three days.
 2. **If encryption-at-rest lands before any external user exists, the first-deployment cutover _is_ its migration,
-   whichever carrier row 21 selects.** The alternative is a one-time in-place conversion state machine — open the old
+   with row 21's selected Markdown/system semantics.** The alternative is a one-time in-place conversion state machine — open the old
    plaintext store, mint `K0`, write and verify the encrypted store, atomically select it, remove the plaintext store
    only after verification, resume safely after interruption. That machine is well-understood and entirely avoidable,
    and it is only avoidable now.
@@ -3678,13 +3793,12 @@ is published with the package vectors and cross-checked against this section and
 
 ## 15. The selection register
 
-The constraints above are fixed; this is the register of the constructions built on them. **Seventeen rows are
-selected and four are open**, with row 20 split — closed for the seventeen, open for the rest. **That count said
-*eighteen* until `S0-1`, and §15.1 has always listed seventeen**: the prose counted row 20's closed half as a
-selected row while the table did not, and the arithmetic below inherited it. A count stated in words beside a
-table it does not match is the smallest version of this section's own subject, so `scripts/check-selection-status.mjs`
-now reads the table and fails when the two disagree. **The design reviews wait on the selections in their scope, and the cutover
-waits separately on row 21** (§13.11, §14.6).
+The constraints above are fixed; this is the register of the constructions built on them. **Eighteen rows are
+selected and three are open**, with row 20 split between the selected constructions and remaining work.
+The count increased from seventeen when the author selected row 21 on 2026-09-10; it does not count row 20
+as selected. `scripts/check-selection-status.mjs` checks the printed count against table membership.
+Design reviews wait on the selections in their scope; the author has now settled the separate migration
+choice (§13.11, §14.6), without discharging implementation or review requirements.
 
 **The register has two review scopes and two independent scopes.** Rows **1, 2, 3 and 13**, plus the storage-facing
 part of 14, are what a local encrypted store needs; they gate the storage work and are the scope of review **3a**, answered
@@ -3701,7 +3815,7 @@ rather than a position. **What is left for the reviewer is one question rather t
 rate-limits envelope fetch, which changes nothing about the code's entropy because the attacker who matters has
 already fetched (§15 row 14's record, §5). Rows **18 and 19**
 retain their own empirical triggers and gate neither review nor
-cutover. Row **21** is the migration choice: it gates cutover but neither design review. Closing one scope does not
+cutover. Row **21** is the selected migration choice; its implementation remains separate from either design review. Closing one scope does not
 require another, which is what lets encryption at rest land before the protocol is specified.
 
 ### 15.1 Selected
@@ -3714,12 +3828,12 @@ true**, and where the two disagree this one wins.
 | - | -------- | ---------------- | ------ |
 | 1 | Algorithm suite and crypto-agility | **Suite 1** — AES-256-GCM on every asynchronous path, XChaCha20-Poly1305 on the synchronous one, HKDF-SHA-256, Ed25519, HPKE base with X25519, SHA-256. **A carrier version selects the whole suite**: no per-record algorithm field, so nothing to negotiate and nothing to downgrade | [row 1](./selections/row-1-algorithm-suite.md) |
 | 2 | Synchronous journal AEAD and its nonce discipline | **XChaCha20-Poly1305**, 24 random bytes per record, **no counter and no durable state** — so there is nothing for a crash to lose. Subkey derived once at open from `K_g`. **The implementation is the audited RustCrypto crate compiled to a 6.5 kB inlined wasm module**, instantiated synchronously, which closes §12's measured 4 kB breach and costs 0.7 kB _less_ than the pure-JS library it replaces (§13.10) | [row 2](./selections/row-2-journal-aead.md) |
-| 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. **The store subkey binds the store instance** — one key per `SeqCounter`, because a key's scope can be no wider than the state that counts its invocations (`P-3`). 12 random nonce bytes under a per-(store, generation) budget **counted by `reserved[gen]`, reserved before encryption** so an abandoned invocation is counted — **and `seq` does not reset at trim**. The budget is NIST SP 800-38D §8.3's 2^32 invocations per key: **the store rotates before the 2^32nd reservation under a generation**, equality being the first disallowed value. The crash-safe allocator issues `seq` across tabs per batch, exactly sized, and the commit validates its generation where it lands (§6.1, `S0-3`) | [row 3](./selections/row-3-record-format.md) |
-| 13 | Device-lock derivation, enrollment migration and copy | A **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Enrollment reseals the key envelopes and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
+| 3 | Encrypted record and local key-envelope formats | AES-256-GCM under domain-separated subkeys; **every cleartext field is in the AAD**, because IndexedDB holds a structured clone whose properties the load path trusts. **The store subkey binds the store instance** — one key per `SeqCounter` within an unrewound, unbranched history (SC-09), because a key's scope can be no wider than the state that counts its invocations (`P-3`). 12 random nonce bytes under a per-(store, generation) budget **counted by `reserved[gen]`, reserved before encryption** so an abandoned invocation is counted — **and `seq` does not reset at trim**. The budget is NIST SP 800-38D §8.3's 2^32 invocations per key: **the store rotates before the 2^32nd reservation under a generation**, equality being the first disallowed value. The crash-safe allocator issues `seq` across tabs per batch, exactly sized, the commit validates its generation where it lands, and journal retirement separately requires SC-03/04 lifetime exclusion and a fresh census (§6.1, `S0-3`). Trim deletes exact authenticated coverage (SC-05) | [row 3](./selections/row-3-record-format.md) |
+| 13 | Device-lock derivation, enrollment migration and copy | Mandatory factor custody from persistent genesis and at cold start: a **generated 125-bit code always**, with WebAuthn PRF as an additional seal of the same `L_lock` rather than an alternative to it. Legacy migration reseals custody, replaces promptless future receivers and **rotates the content key forward** (§13.3) | [row 13](./selections/row-13-device-lock.md) |
 | 14 | Recovery-code entropy, generation, step-up and confirmation UX | 125 bits, Crockford Base32, five groups of five, **and no stretching at all**. Step-up is **a bound challenge rather than a freshness window** — `SHA-256( LP("done/recovery-replace/v1") \|\| LP(dec v) \|\| LP(hex intent_id) \|\| LP(hex nonce) )`, answered by the account credential, with 32 service-issued nonce bytes retired on use. **It binds §13.7's transition id, not the new public key**, so a `replace-recovery` step-up cannot be redirected to a `retire`; and no principal or credential id, because a service-issued challenge names the operation as the service knows it (§13.8) | [row 14](./selections/row-14-recovery-code.md) |
 | 5 | Finalization shape | An **append-only per-credential accepted chain** of SHA-256 links, with **service-signed heads amortized over a batch** rather than one receipt per envelope. A separate hot acceptance-signing key, certified by the authorization key in the epoch. `final: true` is the cutoff. The epoch payload and the checkpoint manifest each gain the head vector (§7.5, §7.6, §13.5) | [row 5](./selections/row-5-finalization.md) |
 | 11 | Device-to-device ceremony | A **short authentication string over an in-band agreement**, nonces **committed before revealed**, five Crockford Base32 symbols **typed** from the new device into the existing one. QR is an accelerator of the same transcript where a decoder exists, never a second protocol. The transcript binds the epoch head as well as the wrapping key, and the wrap's HPKE `info` binds the transcript hash (§13.6) | [row 11](./selections/row-11-enrollment-ceremony.md) |
-| 4 | Envelope wire format and batching granularity | Clear header — `v`, workspace, credential, epoch, generation, `seq`, nonce, `digest` — under AES-256-GCM with a network subkey, the actor inside the seal, and **two bound field lists**: an AAD for what the reader trusts, and a signature reaching the nonce and digest the AAD structurally cannot. `digest` is of the **ciphertext**, so the relay validates it with no content key. **`seq` is the credential's own position and the accepted position both**, because row 5 requires the client to compute its chain unaided (§7.4) | [row 4](./selections/row-4-envelope-format.md) |
+| 4 | Envelope wire format and batching granularity | Clear header — `v`, workspace, credential, epoch, generation, `seq`, nonce, `digest` — under AES-256-GCM with a network subkey, the actor inside the seal, and **two bound field lists**: an AAD for what the reader trusts, and a signature reaching nonce and digest. New private envelopes use v2 with a credential/generation-bound network subkey and separate per-seal budget; nonce can also be AAD, while ciphertext digest cannot be its own input. `digest` is of the **ciphertext**, so the relay validates it with no content key. **`seq` is the credential's own position and the accepted position both**, because row 5 requires the client to compute its chain unaided (§7.4) | [row 4](./selections/row-4-envelope-format.md) |
 | 9 | Chain-head discovery for a brand-new device | **Two of three arrival paths are not brand-new**: enrollment carries the head through the person (row 11), and migration carries it in a user-held package. The third — recovery with no surviving device — gets a **nonce-bound signed head assertion**, which moves replay from *anyone in the path* to *the authorization service itself*. The residual is bounded: a hidden revocation is a hidden rotation, so a stale head cannot come with current content (§13.5) | [row 9](./selections/row-9-chain-head-discovery.md) |
 | 8 | Attribution-preserving representation and its storage bound | A **standing signed claim, minted by the writing credential at card creation and living in the content root** beside the card it attributes — so §6.1's trim re-seals it under the current generation and **verifying historical authorship stops requiring historical generations**. The body commitment makes the claim falsifiable, not unforgeable: a card edited since creation verifies and is not exact. One record per card, retiring on exactly the event §4.5 already says retires a claim (§13.7) | [row 8](./selections/row-8-attribution-record.md) |
 | 7 | Checkpoint construction, cadence and retention | One **full snapshot under one generation** plus a signed manifest binding the epoch and its head, the generation, the checkpoint digest, **`sv` and `ds` separately**, row 5's accepted-head vector and the producing credential. **Attribution is preserved by row 8 rather than here**, so §7.6's forbidden re-signing shape is unreachable. **A rotation forces a checkpoint before the old generation may be dropped**; at least two are retained (§7.6) | [row 7](./selections/row-7-checkpoint.md) |
@@ -3729,15 +3843,13 @@ true**, and where the two disagree this one wins.
 | 12 | Account-credential and slot-verifier construction | The account credential is a **WebAuthn discoverable credential** and the verifier **checks a signature rather than a secret** — so §13.10's Argon2id candidate answers *none* for the third time and on the strongest argument: there is no secret in the profile to grind. Each credential gets a **service-signed binding** in the slot index, because an asymmetric verifier trades a guessable secret for a **substitutable public key** and §6.5's index is a structured clone. The unlock assertion is bound to the slot and the credential, never to a clock; the signature counter is read and ignored (§13.9) | [row 12](./selections/row-12-account-credential.md) |
 | 16 | Hosted-content retention duration after a lapse | **Twelve months**, from the moment hosted synchronization stops rather than from the missed payment, so grace is not deducted from it. **A floor on the promise and a ceiling on the data**: a plan may offer longer and none may offer shorter, and at expiry the ciphertext and wraps are *deleted*. One number for two paths because both are gated by one artifact — the ciphertext — so a shorter recovery window would save nothing and produce the state §6.10 refuses. **The condition was one bit of PRD §11's pricing question**, not its answer. **§14.7 is the machine that executes it** — one clock, created by whichever event stops synchronization; a six-class ledger whose cause decides whether the recovery anchor is kept; and the deadline as a **floor on expiry deletion and a ceiling on both causes**, which is what bounds §14.4's lost acknowledgement (`S0-7`) (PRD §6.10, §16) | [row 16](./selections/row-16-hosted-retention.md) |
 | 10 | Terminal and portable cutover-package formats | **One format at §13.5's three lineage states**, not two: §14.2's cutover package, §14.4's terminal package and §9.3's fidelity archive. A **retired package is a complete package signed by the terminal authority**, not a live manifest upgraded in place — `lineage_state` is inside what the assembler signs, so there is no in-place upgrade to verify. §14.2's trust root is bound in the **HPKE `info` of every generation wrap** *and* committed in a digest **sealed beside `R_priv` under the recovery code**: `info` alone stops a wrap being reinterpreted and not one being minted, since base mode needs only the public `R_pub`. The commitment is the anchor that terminates in user-held material; the importer checks it before any unwrap. §9.3's archive uses the same shape under its own per-workspace code (§14.2, §14.4, `S0-6`) | [row 10](./selections/row-10-portable-package.md) |
+| 21 | First-development cutover attribution and scope | **Accept system attribution** through the existing private `markdown-system-v1` importer for the author's sole development installation. Preserve written content and placement; accept the documented metadata losses. Operator-assisted capture and verification; no automatic old-profile host or early fidelity archive | [row 21](./selections/row-21-development-cutover.md) |
 
-**Row 20 — test vectors — is closed for these seventeen and open for the rest.** Rows 16 and 17 are the two whose
-artifacts are not vector files in the same sense — a number and a profile rather than constructions — and each
-earns its place the same way: checked against what it names rather than restating it, and build-failing when the
-two stop agreeing. Row 17's profile is generated from a pinned index of the standard; row 16's number is read
-back out of this document and the PRD by `scripts/check-retention.mjs`, which also audits §16's `unselected`
-cells against §15.1. Each carries a generated,
-self-verifying vector file; `pnpm vectors:check` fails the build if any has drifted from its generator, and
-`pnpm vectors:coverage` fails it if any field bound in one is isolated by no published negative.
+**Row 20 — test vectors — remains closed for the original seventeen constructions.** Fifteen carry
+generated vector files; rows 16 and 17 carry checked artifacts appropriate to a duration and a profile.
+Row 21 adds an author decision, supported by the existing import semantics and its executed component
+tests; it does not claim a new cryptographic vector or completed real-data cutover. `pnpm vectors:check`
+and `pnpm vectors:coverage` continue to verify their existing generated constructions.
 
 ### 15.2 Unselected
 
@@ -3745,8 +3857,7 @@ self-verifying vector file; `pnpm vectors:check` fails the build if any has drif
 | - | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | 18 | Whether a persistent encrypted search index is needed at all | Deferred; gates neither review nor cutover; measure the in-memory rebuild first (§6.2, §12) |
 | 19 | Root-type day collections (§10.8)              | Deferred; one of its four costs has lapsed and should be re-counted                            |
-| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the seventeen selected above** — fifteen carry a generated, self-verifying vector file, and rows 16 and 17 carry the checked artifact their subject admits instead |
-| 21 | First-deployment cutover attribution: accept system attribution, or bring the fidelity archive forward | §14.6; must be selected before cutover; adding authorship fields to Markdown is rejected (§9.1) |
+| 20 | Test vectors for every construction still open | §11.2; required before level 3 review. **Closed for the original seventeen constructions** — fifteen vector files and checked artifacts for rows 16 and 17; row 21 is an author decision with import-adapter evidence, not a new cryptographic construction |
 
 **No row remains in this scope.** Envelope, acceptance, retention, checkpoint, attribution, enrollment, discovery,
 the package that carries all of it out, the credential the account is reached by, the rule for what happens when any

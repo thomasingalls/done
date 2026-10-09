@@ -1,0 +1,1454 @@
+diff --git a/account-service/acceptance.ts b/account-service/acceptance.ts
+index 024b4d1..38d95c9 100644
+--- a/account-service/acceptance.ts
++++ b/account-service/acceptance.ts
+@@ -3,6 +3,11 @@ import {
+   readPageMessage,
+   type ReadPage,
+ } from '../account-protocol/deliveryTransport.ts';
++import {
++  encodeInboundPage,
++  inboundPageMessage,
++  type InboundReadPage,
++} from '../account-protocol/inboundTransport.ts';
+ /** Private acceptance-seed custody. Fixed-purpose response and ledger-witness signing stays inside this owner. */
+ import {
+   sign,
+@@ -173,6 +178,20 @@ export class AcceptanceCustody {
+       }),
+     );
+   }
++  inboundPage(
++    input: unknown,
++    id: string,
++    pub: string,
++    value: InboundReadPage,
++  ): Uint8Array<ArrayBuffer> {
++    encodeInboundPage(value);
++    return this.#withKey(input, id, pub, (key) =>
++      encodeInboundPage({
++        ...value,
++        signature: sign(null, inboundPageMessage(value), key).toString('hex'),
++      }),
++    );
++  }
+   close() {
+     this.#key = null;
+   }
+diff --git a/account-service/authority.ts b/account-service/authority.ts
+index 11b9065..057947f 100644
+--- a/account-service/authority.ts
++++ b/account-service/authority.ts
+@@ -1,4 +1,4 @@
+-import type { ReadIssuer } from './delivery.ts';
++import type { ReadIssuer, InboundReadIssuer } from './delivery.ts';
+ import type { ReadPage } from '../account-protocol/deliveryTransport.ts';
+ import { bindingMessage } from '../account-protocol/slot.ts';
+ import { AcceptanceCustody } from './acceptance.ts';
+@@ -314,7 +314,7 @@ export class PrivateAuthority {
+   promotionBinding(core: AccountCore, input: unknown) {
+     return core.promotionBinding(input, this.#issuer());
+   }
+-  #deliveryIssuer(): ReadIssuer {
++  #deliveryIssuer(): ReadIssuer & InboundReadIssuer {
+     if (!this.#key) throw Error('Authority closed');
+     return {
+       pin: { ...this.#pin },
+@@ -324,6 +324,8 @@ export class PrivateAuthority {
+         this.#acceptance.witness(seal, id, pub, scope, value),
+       page: (seal: unknown, id: string, pub: string, value: ReadPage) =>
+         this.#acceptance.page(seal, id, pub, value),
++      inboundPage: (seal: unknown, id: string, pub: string, value: ReadPage) =>
++        this.#acceptance.inboundPage(seal, id, pub, value),
+     };
+   }
+   decideSubmission(core: AccountCore, input: unknown) {
+@@ -332,6 +334,9 @@ export class PrivateAuthority {
+   readAccepted(core: AccountCore, input: unknown) {
+     return core.readAccepted(input, this.#deliveryIssuer());
+   }
++  readInbound(core: AccountCore, input: unknown) {
++    return core.readInbound(input, this.#deliveryIssuer());
++  }
+   close(): void {
+     this.#key = null;
+     this.#acceptance.close();
+diff --git a/account-service/core.ts b/account-service/core.ts
+index a7d1352..157001d 100644
+--- a/account-service/core.ts
++++ b/account-service/core.ts
+@@ -1,6 +1,8 @@
+ import {
+   decideSubmission,
+   readAccepted,
++  readInbound,
++  type InboundReadIssuer,
+   type ReadIssuer,
+   type DeliveryIssuer,
+ } from './delivery.ts';
+@@ -198,6 +200,9 @@ export class AccountCore {
+   readAccepted(input: unknown, issuer: ReadIssuer) {
+     return readAccepted(this.#db, input, issuer, this.#hook);
+   }
++  readInbound(input: unknown, issuer: InboundReadIssuer) {
++    return readInbound(this.#db, input, issuer, this.#hook);
++  }
+   decideSubmission(input: unknown, issuer: DeliveryIssuer) {
+     return decideSubmission(this.#db, input, issuer, this.#hook);
+   }
+diff --git a/account-service/delivery.ts b/account-service/delivery.ts
+index 41d377e..4defbea 100644
+--- a/account-service/delivery.ts
++++ b/account-service/delivery.ts
+@@ -8,6 +8,13 @@ import {
+   READ_REQUEST_LIMIT,
+   type ReadPage,
+ } from '../account-protocol/deliveryTransport.ts';
++import {
++  decodeInboundRequest,
++  encodeInboundPage,
++  inboundRequestMessage,
++  type InboundReadRequest,
++  type InboundReadPage,
++} from '../account-protocol/inboundTransport.ts';
+ import type { DatabaseSync } from 'node:sqlite';
+ import { createHash } from 'node:crypto';
+ import {
+@@ -103,7 +110,7 @@ interface Snapshot {
+   account: { id: string; state: string };
+   credential: { id: string; state: string };
+   recovery: { attempt_id: string; state: string; draft: string; result: string | null };
+-  attempt: { id: string; account_id: string; mode: string; state: string };
++  attempt: { id: string; account_id: string; mode: string; state: string; result: string | null };
+   rows: DecisionRow[];
+ }
+ function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+@@ -123,7 +130,7 @@ function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+   const attempt =
+     recovery &&
+     (db
+-      .prepare('SELECT id,account_id,mode,state FROM attempts WHERE id=?')
++      .prepare('SELECT id,account_id,mode,state,result FROM attempts WHERE id=?')
+       .get(recovery.attempt_id) as Snapshot['attempt']);
+   if (
+     promotion.state !== 'admitted' ||
+@@ -137,6 +144,24 @@ function snapshot(db: DatabaseSync, workspace: string): Snapshot | null {
+     attempt.account_id !== account.id
+   )
+     return null;
++  // This is a WebAuthn credential, not the workspace's certified signing member.
++  // Bind it to the completed registration that authorized this recovery/promotion.
++  const registration = closed(JSON.parse(attempt.result ?? 'null'), [
++    'ok',
++    'stage',
++    'attemptId',
++    'accountId',
++    'credentialId',
++    'receiptId',
++  ]);
++  if (
++    registration['ok'] !== true ||
++    registration['stage'] !== 'credential-confirmed' ||
++    registration['attemptId'] !== attempt.id ||
++    registration['accountId'] !== account.id ||
++    registration['credentialId'] !== credential.id
++  )
++    return null;
+   const rows = db
+     .prepare('SELECT * FROM delivery_decisions WHERE account_id=? ORDER BY ordinal')
+     .all(account.id) as unknown as DecisionRow[];
+@@ -212,7 +237,15 @@ async function authority(s: Snapshot, issuer: DeliveryIssuer) {
+     head: a.head,
+     request: p.request_digest,
+   };
+-  return { a, scope, key, seal, generation: epoch.generation, credential: member.id };
++  return {
++    a,
++    scope,
++    key,
++    seal,
++    generation: epoch.generation,
++    credential: member.id,
++    members: [{ id: member.id, key }],
++  };
+ }
+ type Authority = Awaited<ReturnType<typeof authority>>;
+ async function verifyWire(bytes: Bytes, auth: Authority) {
+@@ -485,6 +518,9 @@ export async function decideSubmission(
+ export interface ReadIssuer extends DeliveryIssuer {
+   page(seal: unknown, id: string, pub: string, value: ReadPage): Bytes;
+ }
++export interface InboundReadIssuer extends DeliveryIssuer {
++  inboundPage(seal: unknown, id: string, pub: string, value: InboundReadPage): Bytes;
++}
+ /** Reuses decision authority and the witnessed census; a workspace selector is never read authority. */
+ export async function readAccepted(
+   db: DatabaseSync,
+@@ -565,3 +601,120 @@ export async function readAccepted(
+   }
+   return unknown('state-changed');
+ }
++
++function resolveInboundRoles(auth: Authority, request: InboundReadRequest) {
++  // Membership comes only from the verified admission/epoch. These are separate
++  // lookups even though the closed first epoch certifies only its creating member.
++  const reader = auth.members.find((member) => member.id === request.reader);
++  const publisher = auth.members.find((member) => member.id === request.publisher);
++  if (!reader || !publisher) throw Error('Unsupported inbound member');
++  return { reader, publisher };
++}
++
++/** V2 is a separate purpose and route; it cannot reinterpret a v1 spool read. */
++export async function readInbound(
++  db: DatabaseSync,
++  input: unknown,
++  issuer: InboundReadIssuer,
++  hook: DeliveryHook,
++): Promise<ServiceDeliveryResult> {
++  let bytes: Bytes, request: InboundReadRequest;
++  try {
++    if (!(input instanceof Uint8Array) || input.length > READ_REQUEST_LIMIT)
++      throw Error('Read bytes required');
++    bytes = new Uint8Array(input);
++    request = decodeInboundRequest(bytes);
++  } catch {
++    return unknown('invalid-request');
++  }
++  const live = () => {
++    const now = Date.now();
++    return request.expires > now && request.expires <= now + 60000;
++  };
++  for (let retry = 0; retry < 4; retry++) {
++    try {
++      const s = read(db, request.workspace);
++      if (!s) return unknown('unavailable');
++      const auth = await authority(s, issuer),
++        { reader, publisher } = resolveInboundRoles(auth, request);
++      if (
++        request.serviceId !== issuer.pin.serviceId ||
++        request.origin !== issuer.pin.origin ||
++        request.workspace !== auth.a.workspace ||
++        request.lineage !== auth.a.lineage ||
++        request.head !== auth.a.head ||
++        request.epoch !== auth.a.tip ||
++        auth.a.tip !== 1 ||
++        auth.generation !== 1 ||
++        !live() ||
++        !(await crypto.subtle.verify(
++          'Ed25519',
++          reader.key,
++          unhex(request.signature, 64),
++          inboundRequestMessage(request),
++        ))
++      )
++        return unknown('invalid-request');
++      // The current ledger belongs to exactly one certified publisher. Expanding
++      // membership requires a new ledger scope/schema, not selecting another key.
++      if (publisher.id !== auth.scope.credential) return unknown('unavailable');
++      const ledger = await census(s, auth);
++      if (request.after > ledger.through) return unknown('out-of-order');
++      const page: InboundReadPage = {
++        request: hash(bytes),
++        through: ledger.through,
++        next: request.after,
++        entries: [],
++        signature: '00'.repeat(64),
++      };
++      for (const row of s.rows) {
++        if (row.kind !== 'accepted' || row.position <= request.after) continue;
++        page.entries.push({
++          envelope: decodeSubmission(new Uint8Array(row.submission)).envelope,
++          proof: new Uint8Array(row.response),
++        });
++        page.next++;
++        try {
++          encodeInboundPage(page);
++        } catch {
++          page.entries.pop();
++          page.next--;
++          break;
++        }
++        if (page.entries.length === request.limit) break;
++      }
++      if (!page.entries.length && page.next < page.through) return unknown('unavailable');
++      hook('after-verify', 'read-inbound');
++      db.exec('BEGIN IMMEDIATE');
++      const current = snapshotBytes(snapshot(db, request.workspace)) === snapshotBytes(s);
++      if (!current) {
++        db.exec('ROLLBACK');
++        continue;
++      }
++      if (!live()) {
++        db.exec('ROLLBACK');
++        return unknown('invalid-request');
++      }
++      issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
++      const answer = issuer.inboundPage(
++        auth.seal,
++        s.promotion.request_digest,
++        auth.a.acceptanceKey,
++        page,
++      );
++      // Fixed-purpose signing is synchronous; expiry/closed custody can still
++      // change during a slow signing call. Withhold bytes on its far side too.
++      issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);
++      if (!live()) {
++        db.exec('ROLLBACK');
++        return unknown('invalid-request');
++      }
++      db.exec('COMMIT');
++      return { kind: 'decision', bytes: answer };
++    } catch {
++      if (db.isTransaction) db.exec('ROLLBACK');
++      return unknown('unavailable');
++    }
++  }
++  return unknown('state-changed');
++}
+diff --git a/account-service/private-server.ts b/account-service/private-server.ts
+index 873c386..9aaee73 100644
+--- a/account-service/private-server.ts
++++ b/account-service/private-server.ts
+@@ -49,7 +49,9 @@ export async function createPrivateAccountServer(options: {
+       return;
+     }
+     const deliveryRoute =
+-      request.url === '/account/delivery/submit' || request.url === '/account/delivery/read';
++      request.url === '/account/delivery/submit' ||
++      request.url === '/account/delivery/read' ||
++      request.url === '/account/delivery/read-v2';
+     try {
+       const supplied = request.headers.authorization?.replace(/^Bearer /, '');
+       if (
+@@ -90,7 +92,9 @@ export async function createPrivateAccountServer(options: {
+         const result =
+           request.url === '/account/delivery/submit'
+             ? await authority?.decideSubmission(core, decodeSubmit(body))
+-            : await authority?.readAccepted(core, body);
++            : request.url === '/account/delivery/read-v2'
++              ? await authority?.readInbound(core, body)
++              : await authority?.readAccepted(core, body);
+         if (result?.kind === 'decision') {
+           response.writeHead(200, { 'Content-Type': 'application/octet-stream' });
+           response.end(result.bytes);
+diff --git a/docs/progress.md b/docs/progress.md
+index 6960a75..ce42c0b 100644
+--- a/docs/progress.md
++++ b/docs/progress.md
+@@ -48,8 +48,8 @@ that is no longer active.
+ gate: L-1
+ seat: /Users/thomasingalls/.codex/worktrees/c030/done
+ branch: codex/encrypted-store-contract-corrections
+-status: not started
+-blocks_on: none for bounded private service work; real Account use remains gated below
++status: in flight
++blocks_on: focused service and native validation; real Account use remains gated below
+ debts: consult docs/review/remediation/debts.json
+ updated: 2026-09-11
+ ```
+diff --git a/package.json b/package.json
+index 5df80b0..2f0e260 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+     "lint:fix": "oxlint --react-plugin --fix",
+     "format": "oxfmt --check .",
+     "format:fix": "oxfmt --write .",
+-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor",
++    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound",
+     "test": "vitest run",
+     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
+     "test:watch": "vitest",
+@@ -92,6 +92,7 @@
+     "account:decisions": "node scripts/account-decisions/run.mjs",
+     "account:spool": "node scripts/account-spool/run.mjs",
+     "account:delivery": "node scripts/account-delivery/run.mjs",
++    "account:service-inbound": "node scripts/account-service-inbound/run.mjs",
+     "account:service-delivery": "node scripts/account-service-delivery/run.mjs",
+     "account:transport": "node scripts/account-transport/run.mjs",
+     "account:driver": "node scripts/account-driver/run.mjs",
+diff --git a/docs/account-service-inbound.md b/docs/account-service-inbound.md
+new file mode 100644
+index 0000000..12e268b
+--- /dev/null
++++ b/docs/account-service-inbound.md
+@@ -0,0 +1,79 @@
++# Private v2 service reader and publisher resolution
++
++This phase adds `PrivateAuthority.readInbound(core, exactRequestBytes)` and the private binary
++`POST /account/delivery/read-v2` route. It implements the existing
++[v2 framing](./account-inbound-verification.md) without changing the v1 spool read route or database
++schema. The private server is a disposable development adapter; the personal app and relay do not mount it.
++
++## Held authority and separate roles
++
++The service reconstructs admission from the active account, completed registration and recovery,
++original candidate/certification, root-signed first epoch and receipt, configured authority pin and
++original acceptance seal. Both reader and publisher are looked up by their own requested ID in that
++verified membership. The reader signs the entire v2 request, including the selected publisher. The
++publisher must own the witnessed ledger being scanned. Neither an operator token nor a request installs
++membership, a signing key or a baseline.
++
++Only the creating member of epoch 1, generation 1 is supported. Accordingly, the supported reader and
++publisher resolve to the same member today, through separate lookups. Foreign readers and publishers
++are refused independently. New-member enrollment and multiple publisher ledgers require another
++authenticated transition and schema scope; this phase does not infer them from the more expressive wire.
++
++**Correction to review F-11 and its initial response.** `credentials.id` identifies a WebAuthn passkey;
++`certification.members[0].id` identifies a workspace signing credential. They intentionally differ.
++The review's suggested equality would refuse valid accounts. The existing admission parser already
++requires candidate signer and certified member identity/wrapping-key agreement, followed by verification
++of the creating signatures and signed receipt. Those checks remain in place and have a mismatch negative.
++
++The actual service improvement binds the confirmed passkey row to `attempts.result` from its completed
++registration: successful credential confirmation, attempt ID, account ID and passkey ID must agree. This
++shared authority check also strengthens submission and v1 readback. It does not claim to detect coordinated
++database rewriting or replace the separately planned fresh assertion at initial service activation.
++The [historical review](./review/implementation/af8941e-96a2040.md) remains unchanged; this is its later
++disposition.
++
++## Read and signing boundary
++
++The service copies the bounded request before any crypto await, then checks the closed v2 parser,
++service/origin/workspace/lineage/head/epoch, current roles, reader signature and expiry. Requests have the
++existing 60-second maximum remaining lifetime. There is no persistent read nonce or cursor write.
++
++Every original decision is reverified, including publisher signatures, acceptance/refusal proofs, issued
++parents, contiguous positions and the signed completeness witness. Pages contain exact original accepted
++envelopes and proofs, in order. The caller's cursor cannot exceed the authenticated prefix. The existing
++eight-entry/10 MiB page limits apply; size pressure ends a nonempty page without skipping the next position.
++A page that cannot fit its next entry is refused. The current receive owner still requests one entry and
++enforces its narrower local batch bounds independently.
++
++Asynchronous verification holds no SQLite transaction. Immediately before signing, `BEGIN IMMEDIATE`
++rereads the complete authority/ledger snapshot and compares it to the verified snapshot. Concurrent changes
++cause fresh verification, bounded to four attempts. The short synchronous signing section holds writer
++exclusion so another service process cannot commit changed membership or ledger state during signing.
++The acceptance owner signs only the exact v2 page purpose; expiry and custody are checked on both sides of
++signing, and bytes return after transaction completion. Reads create no ledger, key, counter, nonce or
++cursor records. A lost reply or process death is retried against fresh current authority.
++
++The HTTP route retains the private operator/origin/host/content-type gates, 4096-byte request bound,
++`no-store`, bounded failure responses and separate v1 dispatch. Passing those gates alone never yields a
++page. No content decryption happens in the service, and an acceptance does not attest to plaintext validity.
++
++## Validation and remaining boundaries
++
++`pnpm account:service-inbound` records the tested source inventory, command outcomes, generated histories,
++mutation evidence and native HTTP result. Independent Node framing checks signed request/page bytes and
++exact original ciphertext/proofs. Generated histories exercise append, bounded read, replay, restart,
++foreign reader/publisher and ledger corruption. Actual source omissions must produce a positively verified
++prohibited page against a refusing baseline; timeout, import failure and harness errors are not detections.
++Service processes are killed after verification and after signing; restart must return the original
++accepted bytes without a read-side database change.
++
++The disposable browser case uses the actual admitted self-stream, submits persisted v8 envelopes, then
++consumes service-issued v2 pages under the existing owned receiver and cold-replays them. This tests the
++service/receiver byte boundary; it does not install another device, transfer keys, compose the v9 sender,
++or establish production multi-member enrollment. The browser receives through a test-owned HTTP call;
++the next bounded phase is owned receive transport/reconnect and v9 outbound composition.
++
++All real-Account gates recorded in the checkpoint remain open, including fresh activation assertions,
++protocol capacity corrections, exact Account construction registration, recovery alignment, invocation
++accounting across power loss and production provisioning/restore. Witnesses do not detect coordinated
++rewind of both data and witness. No whole-protocol debt is paid by this phase.
+diff --git a/scripts/account-service-inbound/run.mjs b/scripts/account-service-inbound/run.mjs
+new file mode 100644
+index 0000000..d0111a4
+--- /dev/null
++++ b/scripts/account-service-inbound/run.mjs
+@@ -0,0 +1,151 @@
++import { spawn } from 'node:child_process';
++import { createHash } from 'node:crypto';
++import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
++import { join, resolve } from 'node:path';
++
++const output = resolve(
++  'test-results/account-service-inbound',
++  new Date().toISOString().replaceAll(':', '-'),
++);
++mkdirSync(output, { recursive: true });
++console.log(`Account service inbound evidence: ${output}`);
++const walk = (dir) =>
++  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
++  );
++const files = [
++  ...new Set([
++    'package.json',
++    'pnpm-lock.yaml',
++    'tsconfig.app.json',
++    'tsconfig.node.json',
++    'vite.config.ts',
++    'docs/account-source-capture.md',
++    'docs/account-service-inbound.md',
++    'docs/account-inbound.md',
++    'docs/account-inbound-verification.md',
++    'docs/account-delivery.md',
++    'docs/account-admission.md',
++    'docs/account-decisions.md',
++    'docs/account-spool.md',
++    'docs/selections/row-5-finalization.md',
++    'docs/selections/row-6-antireplay-retention.md',
++    'docs/account-outbound.md',
++    'docs/TRD.md',
++    'docs/review/remediation/S0-4/A-schemas.md',
++    'docs/review/remediation/S0-2/authority-map.md',
++    'docs/selections/row-4-envelope-format.md',
++    'scripts/account-service-inbound/run.mjs',
++    'scripts/generate-private-envelope-vectors.mjs',
++    'scripts/generate-envelope-vectors.mjs',
++    'scripts/lib/aad-coverage.mjs',
++    ...['src', 'account-protocol', 'account-service', 'test', 'vite', 'wasm/journal-seal']
++      .flatMap(walk)
++      .filter((f) => /\.(ts|tsx|mjs|json|wasm)$/.test(f)),
++  ]),
++].sort();
++writeFileSync(
++  join(output, 'sources.json'),
++  JSON.stringify(
++    files.map((path) => ({
++      path,
++      sha256: createHash('sha256').update(readFileSync(path)).digest('hex'),
++    })),
++    null,
++    2,
++  ) + '\n',
++);
++const summary = {
++  status: 'running',
++  startedAt: new Date().toISOString(),
++  stages: [],
++  scope:
++    'Private v2 service read with independent reader/publisher resolution, registration binding, witnessed census, restart cuts and actual omission controls; native HTTP interoperability with the owned self-stream receiver. No enrollment, v9 sender composition, personal operations or deployment.',
++};
++const save = () =>
++  writeFileSync(join(output, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
++save();
++async function run(name, args, timeoutMs) {
++  console.log(`Starting ${name}`);
++  const log = createWriteStream(join(output, name + '.log'));
++  const child = spawn(process.execPath, args, {
++    detached: true,
++    stdio: ['ignore', 'pipe', 'pipe'],
++    env: { ...process.env, ACCOUNT_REPORT_DIR: output },
++  });
++  let timedOut = false,
++    forced,
++    launchError;
++  const kill = (signal) => {
++    try {
++      process.kill(-child.pid, signal);
++    } catch {}
++  };
++  const deadline = setTimeout(() => {
++    timedOut = true;
++    kill('SIGTERM');
++    forced = setTimeout(() => kill('SIGKILL'), 5000);
++  }, timeoutMs);
++  const heartbeat = setInterval(() => console.log(`${name} still running; see ${name}.log`), 15000);
++  for (const stream of [child.stdout, child.stderr])
++    stream.on('data', (b) => {
++      process.stdout.write(b);
++      log.write(b);
++    });
++  const code = await new Promise((resolve) => {
++    child.once('error', (e) => {
++      launchError = String(e);
++      resolve(1);
++    });
++    child.once('close', (code) => resolve(code ?? 1));
++  });
++  clearTimeout(deadline);
++  clearTimeout(forced);
++  clearInterval(heartbeat);
++  await new Promise((resolve) => log.end(resolve));
++  const result = { name, code, timedOut, ...(launchError ? { launchError } : {}) };
++  summary.stages.push(result);
++  save();
++  return code === 0 && !timedOut;
++}
++try {
++  const stages = [
++    ['types', ['node_modules/typescript/bin/tsc', '-b'], 60000],
++    [
++      'service',
++      [
++        '--test',
++        '--test-concurrency=1',
++        '--test-reporter=spec',
++        '--test-reporter-destination=stdout',
++        '--test-reporter=junit',
++        `--test-reporter-destination=${join(output, 'results.xml')}`,
++        ...['core', 'generated', 'controls', 'restart'].map(
++          (name) => `test/account-service-inbound/${name}.test.mjs`,
++        ),
++      ],
++      120000,
++    ],
++    [
++      'native',
++      [
++        '--test',
++        '--test-reporter=spec',
++        '--test-concurrency=1',
++        'test/account-service-inbound/native.test.mjs',
++      ],
++      90000,
++    ],
++  ];
++  for (const [name, args, timeout] of stages)
++    if (!(await run(name, args, timeout))) throw Error(`${name} failed`);
++  summary.status = 'passed';
++} catch (e) {
++  summary.status = 'failed';
++  summary.error = String(e);
++  process.exitCode = 1;
++} finally {
++  summary.completedAt = new Date().toISOString();
++  save();
++  console.log(`${summary.status}: ${output}`);
++}
+diff --git a/test/account-service-inbound/controls.test.mjs b/test/account-service-inbound/controls.test.mjs
+new file mode 100644
+index 0000000..9dd3e00
+--- /dev/null
++++ b/test/account-service-inbound/controls.test.mjs
+@@ -0,0 +1,167 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { readFileSync, writeFileSync, mkdirSync, readdirSync, mkdtempSync, rmSync } from 'node:fs';
++import { join, resolve } from 'node:path';
++import { pathToFileURL } from 'node:url';
++import { generateKeyPairSync } from 'node:crypto';
++import { ready, mutate } from '../account-service-delivery/fixtures.mjs';
++import { query, read, pageProof } from './oracle.mjs';
++
++const replace = (code, from, to) => {
++  assert.equal(code.split(from).length, 2, 'Unique mutation anchor');
++  return code.replace(from, to);
++};
++for (const control of [
++  'reader',
++  'publisher',
++  'signature',
++  'current',
++  'registration',
++  'witness',
++  'expiry',
++  'custody',
++])
++  test(
++    `actual ${control} omission produces a signed page forbidden by the baseline`,
++    { timeout: 15000 },
++    async (t) => {
++      const parent = resolve('test-results/account-service-inbound-controls');
++      mkdirSync(parent, { recursive: true });
++      const dir = mkdtempSync(join(parent, control + '-'));
++      t.after(() => rmSync(dir, { recursive: true, force: true }));
++      for (const folder of ['account-protocol', 'account-service']) {
++        mkdirSync(join(dir, folder));
++        for (const file of readdirSync(folder).filter((f) => f.endsWith('.ts'))) {
++          let code = readFileSync(join(folder, file), 'utf8');
++          if (folder === 'account-service' && file === 'delivery.ts') {
++            if (control === 'reader' || control === 'publisher')
++              code = replace(
++                code,
++                `auth.members.find((member) => member.id === request.${control})`,
++                'auth.members[0]',
++              );
++            if (control === 'signature') {
++              const re =
++                /!\(await crypto\.subtle\.verify\(\s*'Ed25519',\s*reader.key,\s*unhex\(request.signature, 64\),\s*inboundRequestMessage\(request\),\s*\)\)/g;
++              assert.equal([...code.matchAll(re)].length, 1);
++              code = code.replace(re, 'false');
++            }
++            if (control === 'current') code = replace(code, 'if (!current) {', 'if (false) {');
++            if (control === 'registration')
++              code = replace(code, "registration['credentialId'] !== credential.id", 'false');
++            if (control === 'witness')
++              code = replace(
++                code,
++                'await verifyLedgerWitness(witness, auth, count, commitment);',
++                'void witness;',
++              );
++            if (control === 'expiry' || control === 'custody') {
++              const marker =
++                '// change during a slow signing call. Withhold bytes on its far side too.';
++              assert.equal(code.split(marker).length, 2);
++              const [before, after] = code.split(marker);
++              code =
++                before +
++                marker +
++                (control === 'expiry'
++                  ? replace(after, 'if (!live()) {', 'if (false) {')
++                  : replace(
++                      after,
++                      'issuer.check(auth.seal, s.promotion.request_digest, auth.a.acceptanceKey);',
++                      'void auth.seal;',
++                    ));
++            }
++          }
++          writeFileSync(join(dir, folder, file), code);
++        }
++      }
++      const load = (file) => import(pathToFileURL(join(dir, 'account-service', file + '.ts')).href);
++      const Core = (await load('core')).AccountCore,
++        Authority = (await load('authority')).PrivateAuthority,
++        MutantCustody = (await load('acceptance')).AcceptanceCustody;
++      let armed = false,
++        x;
++      const hook = (point, op) => {
++        if (armed && point === 'after-verify' && op === 'read-inbound') {
++          armed = false;
++          mutate(x, (db) => db.exec("UPDATE accounts SET state='pending'"));
++        }
++      };
++      x = await ready(t, { hook });
++      const core = new Core(
++        x.f.path,
++        { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
++        { hook },
++      );
++      const owner = Authority.open(x.authority.path, x.authority.pin, x.authority.key);
++      t.after(() => {
++        core.close();
++        owner.close();
++      });
++      const w = x.make(),
++        r = await x.call(w),
++        good = query(x),
++        retained = [{ w, r }];
++      pageProof(await read(x, good), good, x, retained);
++      pageProof(await owner.readInbound(core, good), good, x, retained);
++      let q = query(
++        x,
++        0,
++        1,
++        control === 'reader' || control === 'publisher' ? { [control]: 'aa'.repeat(16) } : {},
++        control === 'signature' ? generateKeyPairSync('ed25519').privateKey : x.s.privateKey,
++      );
++      if (control === 'registration')
++        mutate(x, (db) => db.exec("UPDATE credentials SET id='replaced'"));
++      if (control === 'witness') mutate(x, (db) => db.exec('DELETE FROM delivery_decisions'));
++      if (control === 'current') armed = true;
++      const now = Date.now;
++      if (control === 'expiry' || control === 'custody') {
++        const { AcceptanceCustody } = await import('../../account-service/acceptance.ts');
++        const original = AcceptanceCustody.prototype.inboundPage;
++        const mutated = MutantCustody.prototype.inboundPage;
++        let clock = now();
++        Date.now = () => clock;
++        const wrap = (fn) =>
++          function (...args) {
++            const value = fn.apply(this, args);
++            if (control === 'expiry') clock += 60001;
++            else this.close();
++            return value;
++          };
++        AcceptanceCustody.prototype.inboundPage = wrap(original);
++        MutantCustody.prototype.inboundPage = wrap(mutated);
++        try {
++          q = query(x);
++          assert.equal((await read(x, q)).kind, 'unknown');
++          q = query(x);
++          pageProof(await owner.readInbound(core, q), q, x, retained);
++        } finally {
++          Date.now = now;
++          AcceptanceCustody.prototype.inboundPage = original;
++          MutantCustody.prototype.inboundPage = mutated;
++        }
++      } else {
++        assert.equal((await read(x, q)).kind, 'unknown');
++        if (control === 'current') {
++          mutate(x, (db) => db.exec("UPDATE accounts SET state='active'"));
++          armed = true;
++        }
++        pageProof(await owner.readInbound(core, q), q, x, control === 'witness' ? [] : retained);
++      }
++      if (process.env.ACCOUNT_REPORT_DIR)
++        writeFileSync(
++          join(process.env.ACCOUNT_REPORT_DIR, 'control-' + control + '.json'),
++          JSON.stringify(
++            {
++              control,
++              baseline: 'refused',
++              mutant: 'signed page escaped',
++              request: Buffer.from(q).toString('hex'),
++            },
++            null,
++            2,
++          ) + '\n',
++        );
++    },
++  );
+diff --git a/test/account-service-inbound/core.test.mjs b/test/account-service-inbound/core.test.mjs
+new file mode 100644
+index 0000000..9be288c
+--- /dev/null
++++ b/test/account-service-inbound/core.test.mjs
+@@ -0,0 +1,265 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { generateKeyPairSync } from 'node:crypto';
++import { spawnSync } from 'node:child_process';
++import { ready, inventory, mutate } from '../account-service-delivery/fixtures.mjs';
++import { query, read, pageProof, json } from './oracle.mjs';
++import { query as oldQuery, pageProof as oldProof } from '../account-transport/oracle.mjs';
++import { decodeInboundPage } from '../../account-protocol/inboundTransport.ts';
++import { decodeReadPage, READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport.ts';
++import { AcceptanceCustody } from '../../account-service/acceptance.ts';
++
++test('v2 returns exact bounded witnessed originals across restart; v1 remains a separate purpose', async (t) => {
++  const x = await ready(t),
++    retained = [];
++  assert.notEqual(x.f.rows('credentials')[0].id, x.credential, 'Passkey and workspace IDs differ');
++  let q = query(x);
++  pageProof(await read(x, q), q, x, []);
++  for (let i = 1; i <= 5; i++) {
++    const w = x.make(i, 'original-' + i),
++      r = await x.call(w);
++    retained.push({ w, r });
++  }
++  const before = inventory(x);
++  for (let after = 0; after <= 5; after += after < 4 ? 2 : 1) {
++    q = query(x, after, 2);
++    const r = await read(x, q),
++      p = pageProof(r, q, x, retained);
++    assert.equal(p.count, Math.min(2, 5 - after));
++    assert.throws(() => decodeReadPage(r.bytes));
++    x.f.restart();
++    x.authority.restart();
++  }
++  const old = oldQuery(x),
++    prior = await x.authority.owner.readAccepted(x.f.core, old);
++  oldProof(prior, old, x, retained);
++  assert.throws(() => decodeInboundPage(prior.bytes));
++  assert.equal((await read(x, old)).kind, 'unknown');
++  assert.equal((await x.authority.owner.readAccepted(x.f.core, q)).kind, 'unknown');
++  assert.equal(inventory(x), before);
++});
++
++test('each role, pin field, signature, expiry and extent is checked with no service writes', async (t) => {
++  const x = await ready(t),
++    before = inventory(x);
++  const invalid = [
++    query(x, 0, 1, {}, generateKeyPairSync('ed25519').privateKey),
++    ...[
++      { reader: 'aa'.repeat(16) },
++      { publisher: 'aa'.repeat(16) },
++      { reader: 'aa'.repeat(16), publisher: 'aa'.repeat(16) },
++      { reader: x.account.key.id },
++      { serviceId: 'aa'.repeat(16) },
++      { origin: 'https://foreign.test' },
++      { workspace: 'aa'.repeat(16) },
++      { lineage: 'aa'.repeat(32) },
++      { head: 'aa'.repeat(32) },
++      { epoch: 2 },
++      { expires: Date.now() - 1 },
++      { expires: Date.now() + 120000 },
++      { limit: 0 },
++      { limit: 9 },
++      { after: 1 },
++      { after: -1 },
++    ].map((v) => query(x, 0, 1, v)),
++    new Uint8Array(4097),
++    new Uint8Array([255]),
++    json([]),
++    new Uint8Array([...query(x), 32]),
++  ];
++  const good = query(x),
++    changed = JSON.parse(Buffer.from(good).toString());
++  changed[12] = 'ab'.repeat(32);
++  invalid.push(json(changed));
++  for (const q of invalid) assert.equal((await read(x, q)).kind, 'unknown');
++  pageProof(await read(x, good), good, x, []);
++  assert.equal(inventory(x), before);
++});
++
++test(
++  'maximum wire sizes still produce byte-bounded pages without losing a position',
++  { timeout: 40000 },
++  async (t) => {
++    const x = await ready(t),
++      retained = [];
++    for (let i = 1; i <= 2; i++) {
++      const w = x.make(i, 'large', { ct: Buffer.alloc(4 * 1024 * 1024 + 16, i) });
++      retained.push({ w, r: await x.call(w) });
++    }
++    for (const after of [0, 1]) {
++      const q = query(x, after, 8),
++        r = await read(x, q);
++      assert.ok(r.bytes.length <= READ_PAGE_LIMIT);
++      assert.equal(pageProof(r, q, x, retained).count, 1);
++    }
++  },
++);
++
++test('registration identity is checked in its own namespace; candidate/member mismatch and lost witness refuse', async (t) => {
++  const x = await ready(t),
++    w = x.make(),
++    r = await x.call(w),
++    q = query(x);
++  pageProof(await read(x, q), q, x, [{ w, r }]);
++  const id = x.f.rows('credentials')[0].id,
++    request = x.f.rows('promotions')[0].request;
++  mutate(x, (db) => db.prepare('UPDATE credentials SET id=?').run('replaced-passkey'));
++  const before = inventory(x);
++  assert.equal((await read(x, q)).kind, 'unknown');
++  assert.equal((await x.call(w)).kind, 'unknown');
++  assert.equal(inventory(x), before);
++  mutate(x, (db) => db.prepare('UPDATE credentials SET id=?').run(id));
++  const changed = JSON.parse(request);
++  changed.certification.members[0].id = 'dd'.repeat(16);
++  mutate(x, (db) => db.prepare('UPDATE promotions SET request=?').run(JSON.stringify(changed)));
++  assert.equal((await read(x, q)).kind, 'unknown');
++  mutate(x, (db) => db.prepare('UPDATE promotions SET request=?').run(request));
++  pageProof(await read(x, q), q, x, [{ w, r }]);
++  mutate(x, (db) => db.exec('DELETE FROM delivery_decisions'));
++  assert.equal((await read(x, q)).kind, 'unknown');
++});
++
++test('state change after verification refuses and four racing snapshots exhaust retries', async (t) => {
++  let action,
++    x,
++    hits = 0;
++  x = await ready(t, {
++    hook(point, op) {
++      if (point === 'after-verify' && op === 'read-inbound' && action) {
++        hits++;
++        action();
++      }
++    },
++  });
++  const q = query(x);
++  action = () => mutate(x, (db) => db.exec("UPDATE accounts SET state='pending'"));
++  assert.equal((await read(x, q)).kind, 'unknown');
++  mutate(x, (db) => db.exec("UPDATE accounts SET state='active'"));
++  action = () =>
++    mutate(x, (db) => {
++      const row = db.prepare('SELECT result FROM attempts WHERE mode=?').get('register');
++      const value = JSON.parse(row.result);
++      value.receiptId = 'changed-' + hits;
++      db.prepare('UPDATE attempts SET result=? WHERE mode=?').run(
++        JSON.stringify(value),
++        'register',
++      );
++    });
++  hits = 0;
++  assert.deepEqual(await read(x, q), { kind: 'unknown', reason: 'state-changed' });
++  assert.equal(hits, 4);
++  action = null;
++  pageProof(await read(x, q), q, x, []);
++});
++
++test('caller bytes are copied and a concurrent append forces fresh census after crypto', async (t) => {
++  const x = await ready(t),
++    q = query(x),
++    saved = q.slice(),
++    original = crypto.subtle.verify;
++  let release, hit;
++  const reached = new Promise((r) => {
++    hit = r;
++  });
++  const gate = new Promise((r) => {
++    release = r;
++  });
++  let armed = true;
++  crypto.subtle.verify = async function (...args) {
++    if (armed) {
++      armed = false;
++      hit();
++      await gate;
++    }
++    return original.apply(this, args);
++  };
++  try {
++    const pending = read(x, q);
++    await reached;
++    q.fill(0);
++    const w = x.make(),
++      r = await x.call(w);
++    assert.equal(r.kind, 'decision', 'No read transaction held during async verification');
++    release();
++    pageProof(await pending, saved, x, [{ w, r }]);
++  } finally {
++    release();
++    crypto.subtle.verify = original;
++  }
++});
++
++test('expiry and custody loss on the far side of signing withhold every page byte', async (t) => {
++  const x = await ready(t),
++    original = AcceptanceCustody.prototype.inboundPage,
++    now = Date.now;
++  let clock = now();
++  Date.now = () => clock;
++  try {
++    const q = query(x);
++    AcceptanceCustody.prototype.inboundPage = function (...args) {
++      const bytes = original.apply(this, args);
++      clock += 60001;
++      return bytes;
++    };
++    assert.equal((await read(x, q)).kind, 'unknown');
++    AcceptanceCustody.prototype.inboundPage = function (...args) {
++      const bytes = original.apply(this, args);
++      this.close();
++      return bytes;
++    };
++    assert.equal((await read(x, query(x))).kind, 'unknown');
++    x.authority.restart();
++    AcceptanceCustody.prototype.inboundPage = original;
++    const good = query(x);
++    pageProof(await read(x, good), good, x, []);
++  } finally {
++    Date.now = now;
++    AcceptanceCustody.prototype.inboundPage = original;
++  }
++});
++
++test(
++  'another service process cannot change membership during synchronous page signing',
++  { timeout: 15000 },
++  async (t) => {
++    const x = await ready(t),
++      q = query(x),
++      original = AcceptanceCustody.prototype.inboundPage;
++    const attempt = () => {
++      const child = spawnSync(
++        process.execPath,
++        [
++          '--input-type=module',
++          '-e',
++          `
++      import { DatabaseSync } from 'node:sqlite';
++      const db = new DatabaseSync(process.argv[1]);
++      try {
++        db.exec("PRAGMA busy_timeout=20; UPDATE accounts SET state='pending'");
++        console.log(JSON.stringify({changed:true}));
++      } catch(e) { console.log(JSON.stringify({changed:false,error:e.message})); }
++      finally { db.close(); }
++    `,
++          x.f.path,
++        ],
++        { encoding: 'utf8', timeout: 3000 },
++      );
++      assert.equal(child.status, 0, child.stderr);
++      return JSON.parse(child.stdout);
++    };
++    let observed;
++    AcceptanceCustody.prototype.inboundPage = function (...args) {
++      observed = attempt();
++      return original.apply(this, args);
++    };
++    try {
++      pageProof(await read(x, q), q, x, []);
++    } finally {
++      AcceptanceCustody.prototype.inboundPage = original;
++    }
++    assert.equal(observed.changed, false);
++    assert.match(observed.error, /locked/);
++    assert.equal(attempt().changed, true, 'Competing write works after read releases exclusion');
++    assert.equal((await read(x, q)).kind, 'unknown');
++  },
++);
+diff --git a/test/account-service-inbound/generated.test.mjs b/test/account-service-inbound/generated.test.mjs
+new file mode 100644
+index 0000000..08eee98
+--- /dev/null
++++ b/test/account-service-inbound/generated.test.mjs
+@@ -0,0 +1,114 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fc from 'fast-check';
++import { writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import { ready, inventory, mutate } from '../account-service-delivery/fixtures.mjs';
++import { query, read, pageProof } from './oracle.mjs';
++
++test(
++  '60 generated append/read/restart/replay/role/ledger histories preserve original prefixes',
++  { timeout: 90000 },
++  async () => {
++    const seed = 9112031,
++      histories = [],
++      coverage = {};
++    const save = (status, details) => {
++      if (process.env.ACCOUNT_REPORT_DIR)
++        writeFileSync(
++          join(process.env.ACCOUNT_REPORT_DIR, 'generated.json'),
++          JSON.stringify({ seed, status, coverage, histories, details }, null, 2) + '\n',
++        );
++    };
++    const property = fc.asyncProperty(
++      fc.array(
++        fc.record({
++          op: fc.constantFrom(
++            'append',
++            'read',
++            'restart',
++            'replay',
++            'reader',
++            'publisher',
++            'ledger',
++          ),
++          limit: fc.integer({ min: 1, max: 8 }),
++          cursor: fc.nat(20),
++        }),
++        { minLength: 4, maxLength: 14 },
++      ),
++      async (commands) => {
++        // Each generated case owns and promptly closes its resources, including a failing case.
++        const cleanup = [],
++          scope = { after: (f) => cleanup.push(f) };
++        histories.push(commands);
++        save('running');
++        try {
++          const x = await ready(scope),
++            retained = [];
++          let saved;
++          for (const c of commands) {
++            coverage[c.op] = (coverage[c.op] ?? 0) + 1;
++            if (c.op === 'append') {
++              const w = x.make(retained.length + 1, 'authored-' + retained.length),
++                r = await x.call(w);
++              assert.equal(r.kind, 'decision');
++              retained.push({ w, r });
++              continue;
++            }
++            if (c.op === 'restart') {
++              x.f.restart();
++              x.authority.restart();
++              continue;
++            }
++            const after = c.cursor % (retained.length + 1),
++              q = c.op === 'replay' && saved ? saved : query(x, after, c.limit);
++            const before = inventory(x);
++            if (c.op === 'reader' || c.op === 'publisher') {
++              assert.equal(
++                (await read(x, query(x, after, c.limit, { [c.op]: 'ac'.repeat(16) }))).kind,
++                'unknown',
++              );
++            } else if (c.op === 'ledger' && retained.length) {
++              const ordinal = x.f.rows('delivery_decisions').at(-1).ordinal;
++              mutate(x, (db) =>
++                db
++                  .prepare('UPDATE delivery_decisions SET ordinal=? WHERE ordinal=?')
++                  .run(ordinal + 1, ordinal),
++              );
++              assert.equal((await read(x, q)).kind, 'unknown');
++              mutate(x, (db) =>
++                db
++                  .prepare('UPDATE delivery_decisions SET ordinal=? WHERE ordinal=?')
++                  .run(ordinal, ordinal + 1),
++              );
++            } else {
++              pageProof(await read(x, q), q, x, retained);
++              saved = q;
++            }
++            assert.equal(inventory(x), before);
++          }
++          let after = 0;
++          do {
++            const q = query(x, after, 1);
++            after = pageProof(await read(x, q), q, x, retained).next;
++          } while (after < retained.length);
++        } finally {
++          for (const close of cleanup.reverse()) await close();
++        }
++      },
++    );
++    const result = await fc.check(property, { seed, numRuns: 60, endOnFailure: true });
++    save(result.failed ? 'failed' : 'passed', {
++      failed: result.failed,
++      numRuns: result.numRuns,
++      numShrinks: result.numShrinks,
++      counterexample: result.counterexample,
++      counterexamplePath: result.counterexamplePath,
++      error: result.errorInstance ? String(result.errorInstance.stack) : null,
++    });
++    assert.equal(result.failed, false, String(result.errorInstance?.stack));
++    for (const op of ['append', 'read', 'restart', 'replay', 'reader', 'publisher', 'ledger'])
++      assert.ok(coverage[op] > 0, 'Missing generated coverage: ' + op);
++  },
++);
+diff --git a/test/account-service-inbound/native.test.mjs b/test/account-service-inbound/native.test.mjs
+new file mode 100644
+index 0000000..94e21b6
+--- /dev/null
++++ b/test/account-service-inbound/native.test.mjs
+@@ -0,0 +1,97 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {
++  native,
++  selected,
++  openReceive,
++  closeReceive,
++  request,
++  receive,
++  status,
++  open,
++  close,
++  edit,
++  prepare,
++  submission,
++  cold,
++} from '../account-receive/fixtures.mjs';
++import { decodeInboundPage } from '../../account-protocol/inboundTransport.ts';
++import { envelope } from '../account-transport/oracle.mjs';
++
++test(
++  'owned browser request consumes original service v2 pages over HTTP and cold-replays them',
++  { timeout: 60000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'service-inbound-http');
++    await open(f.page, item);
++    await edit(f.page, 0, 0, 'v2 HTTP retained writing ');
++    const originals = [];
++    for (let position = 1; position <= 2; position++) {
++      await prepare(f.page);
++      const w = await submission(f.page, position);
++      originals.push(w);
++      const r = await f.page.evaluate((token) => opened.submitPending(token), f.testOperatorToken);
++      assert.equal(r.kind, 'accepted');
++    }
++    await close(f.page);
++    const send = async (q, path = '/account/delivery/read-v2', headers = {}) => {
++      const r = await fetch(f.server.origin + path, {
++        method: 'POST',
++        headers: {
++          Origin: f.server.origin,
++          'Content-Type': 'application/octet-stream',
++          Authorization: 'Bearer ' + f.testOperatorToken,
++          ...headers,
++        },
++        body: new Uint8Array(q),
++      });
++      return {
++        status: r.status,
++        cache: r.headers.get('cache-control'),
++        type: r.headers.get('content-type'),
++        bytes: new Uint8Array(await r.arrayBuffer()),
++      };
++    };
++    await openReceive(f.page, item);
++    let q = await request(f.page);
++    assert.equal((await send(q, '/account/delivery/read')).status, 409);
++    for (const headers of [
++      { Origin: 'https://foreign.test' },
++      { 'Content-Type': 'application/json' },
++      { Authorization: 'Bearer ' + 'B'.repeat(43) },
++    ])
++      assert.equal((await send(q, undefined, headers)).status, 403);
++    assert.equal((await send(new Uint8Array(4097))).status, 413);
++    const forged = JSON.parse(Buffer.from(q).toString());
++    forged[14] = '00'.repeat(64);
++    assert.equal((await send(Buffer.from(JSON.stringify(forged)))).status, 409);
++    let saved;
++    for (let position = 1; position <= 2; position++) {
++      q = await request(f.page);
++      const r = await send(q);
++      assert.equal(r.status, 200);
++      assert.equal(r.cache, 'no-store');
++      assert.equal(r.type, 'application/octet-stream');
++      const p = decodeInboundPage(r.bytes);
++      assert.deepEqual(Buffer.from(p.entries[0].envelope), envelope(originals[position - 1]));
++      assert.equal(p.through, 2);
++      assert.equal(p.next, position);
++      assert.equal(p.entries.length, 1);
++      // Lost HTTP response adds no service state; exact replay returns the same signed bytes.
++      assert.deepEqual((await send(q)).bytes, r.bytes);
++      assert.equal((await receive(f.page, r.bytes)).kind, 'received');
++      saved = r.bytes;
++    }
++    assert.equal((await receive(f.page, saved)).kind, 'duplicate');
++    assert.equal((await status(f.page)).receivedThrough, 2);
++    await closeReceive(f.page);
++    await cold(f);
++    await openReceive(f.page, item);
++    assert.equal((await status(f.page)).receivedThrough, 2);
++    q = await request(f.page);
++    const end = await send(q);
++    assert.equal((await receive(f.page, end.bytes)).kind, 'empty');
++    await closeReceive(f.page);
++  },
++);
+diff --git a/test/account-service-inbound/oracle.mjs b/test/account-service-inbound/oracle.mjs
+new file mode 100644
+index 0000000..f302757
+--- /dev/null
++++ b/test/account-service-inbound/oracle.mjs
+@@ -0,0 +1,63 @@
++/** Independent Node framing and verification: no production v2 encoder is used. */
++import assert from 'node:assert/strict';
++import { randomBytes, sign, verify, createPublicKey, createHash } from 'node:crypto';
++import { envelope } from '../account-transport/oracle.mjs';
++import { proof, link, ZERO } from '../account-service-delivery/fixtures.mjs';
++export const hash = (b) => createHash('sha256').update(b).digest('hex');
++export const json = (v) => new Uint8Array(Buffer.from(JSON.stringify(v)));
++export function query(x, after = 0, limit = 1, changes = {}, key = x.s.privateKey) {
++  const fields = {
++    serviceId: x.authority.pin.serviceId,
++    origin: x.authority.pin.origin,
++    workspace: x.workspace,
++    reader: x.credential,
++    publisher: x.credential,
++    lineage: x.offer.epoch.lineageId,
++    head: x.offer.head,
++    epoch: 1,
++    after,
++    limit,
++    nonce: randomBytes(32).toString('hex'),
++    expires: Date.now() + 60000,
++    ...changes,
++  };
++  const unsigned = ['done/private-read/v2', 2, ...Object.values(fields)];
++  return json([...unsigned, sign(null, json(unsigned), key).toString('hex')]);
++}
++export const read = (x, q) => x.authority.owner.readInbound(x.f.core, q);
++export function pageProof(result, request, x, retained) {
++  assert.equal(result.kind, 'decision', JSON.stringify(result));
++  const bytes = Buffer.from(result.bytes),
++    v = JSON.parse(bytes.toString()),
++    q = JSON.parse(Buffer.from(request).toString());
++  assert.equal(bytes.toString(), JSON.stringify(v));
++  assert.equal(v.length, 7);
++  assert.deepEqual(v.slice(0, 2), ['done/private-read-page/v2', 2]);
++  assert.equal(v[2], hash(request));
++  assert.equal(v[3], retained.length);
++  assert.ok(v[5].length <= q[11]);
++  assert.equal(v[4], q[10] + v[5].length);
++  assert.ok(v[4] <= v[3]);
++  assert.ok(v[4] === v[3] || v[5].length > 0);
++  const key = createPublicKey({
++    key: Buffer.from('302a300506032b6570032100' + x.offer.epoch.acceptancePublicKey, 'hex'),
++    format: 'der',
++    type: 'spki',
++  });
++  assert.ok(verify(null, json(v.slice(0, 6)), key, Buffer.from(v[6], 'hex')));
++  let previous = ZERO;
++  for (let i = 0; i < q[10]; i++) previous = link(retained[i].w.subject, previous);
++  for (const [i, entry] of v[5].entries()) {
++    const original = retained[q[10] + i];
++    assert.deepEqual(Buffer.from(entry[0], 'hex'), envelope(original.w));
++    assert.deepEqual(Buffer.from(entry[1], 'hex'), Buffer.from(original.r.bytes));
++    proof(
++      { kind: 'decision', bytes: Buffer.from(entry[1], 'hex') },
++      x.offer.epoch.acceptancePublicKey,
++      original.w.subject,
++      previous,
++    );
++    previous = link(original.w.subject, previous);
++  }
++  return { next: v[4], through: v[3], count: v[5].length };
++}
+diff --git a/test/account-service-inbound/restart.test.mjs b/test/account-service-inbound/restart.test.mjs
+new file mode 100644
+index 0000000..c2a53cc
+--- /dev/null
++++ b/test/account-service-inbound/restart.test.mjs
+@@ -0,0 +1,58 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { fork } from 'node:child_process';
++import { once } from 'node:events';
++import { ready, inventory } from '../account-service-delivery/fixtures.mjs';
++import { query, read, pageProof } from './oracle.mjs';
++for (const cut of ['verified', 'signed'])
++  test(
++    `service SIGKILL after ${cut} read leaves no writes and retry returns originals`,
++    { timeout: 12000 },
++    async (t) => {
++      const x = await ready(t),
++        w = x.make(),
++        r = await x.call(w),
++        q = query(x);
++      const before = inventory(x),
++        child = fork(
++          new URL('./worker.mjs', import.meta.url),
++          [
++            x.f.path,
++            x.authority.path,
++            JSON.stringify(x.authority.pin),
++            x.authority.key.toString('hex'),
++            cut,
++          ],
++          { stdio: ['ignore', 'ignore', 'pipe', 'ipc'], serialization: 'advanced' },
++        );
++      let errors = '';
++      child.stderr.on('data', (b) => {
++        errors += b;
++      });
++      t.after(() => {
++        if (child.exitCode === null && child.signalCode === null) child.kill('SIGKILL');
++      });
++      const readyMessage = await Promise.race([
++        once(child, 'message'),
++        once(child, 'exit').then(() => {
++          throw Error(errors);
++        }),
++      ]);
++      assert.equal(readyMessage[0].ready, true);
++      let replies = 0;
++      child.on('message', () => {
++        replies++;
++      });
++      const death = once(child, 'exit');
++      child.send({ bytes: q });
++      const [code, signal] = await death;
++      assert.equal(code, null);
++      assert.equal(signal, 'SIGKILL');
++      assert.equal(replies, 0);
++      assert.equal(inventory(x), before);
++      x.f.restart();
++      x.authority.restart();
++      pageProof(await read(x, q), q, x, [{ w, r }]);
++      assert.equal(inventory(x), before);
++    },
++  );
+diff --git a/test/account-service-inbound/worker.mjs b/test/account-service-inbound/worker.mjs
+new file mode 100644
+index 0000000..2d9c711
+--- /dev/null
++++ b/test/account-service-inbound/worker.mjs
+@@ -0,0 +1,37 @@
++import { AccountCore } from '../../account-service/core.ts';
++import { PrivateAuthority } from '../../account-service/authority.ts';
++import { AcceptanceCustody } from '../../account-service/acceptance.ts';
++const [path, rootPath, pinJSON, keyHex, cut] = process.argv.slice(2),
++  pin = JSON.parse(pinJSON);
++const die = () => process.kill(process.pid, 'SIGKILL');
++const core = new AccountCore(
++  path,
++  { origin: pin.origin, rpId: pin.rpId },
++  {
++    hook(at, op) {
++      if (op === 'read-inbound' && at === 'after-verify' && cut === 'verified') die();
++    },
++  },
++);
++if (cut === 'signed') {
++  const original = AcceptanceCustody.prototype.inboundPage;
++  AcceptanceCustody.prototype.inboundPage = function (...args) {
++    original.apply(this, args);
++    die();
++  };
++}
++const owner = PrivateAuthority.open(rootPath, pin, Buffer.from(keyHex, 'hex'));
++process.on('message', async (input) => {
++  if (input.close) {
++    owner.close();
++    core.close();
++    process.disconnect();
++    return;
++  }
++  try {
++    process.send({ result: await owner.readInbound(core, input.bytes) });
++  } catch (e) {
++    process.send({ error: String(e) });
++  }
++});
++process.send({ ready: true });

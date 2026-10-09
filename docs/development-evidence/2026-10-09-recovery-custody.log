@@ -1,0 +1,25 @@
+Focused recovery custody checks, 2026-10-09
+
+$ vitest run test/localGenesis.test.ts
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+
+ Test Files  1 passed (1)
+      Tests  17 passed (17)
+   Start at  12:21:46
+   Duration  1.12s (transform 514ms, setup 38ms, import 715ms, tests 240ms, environment 0ms)
+
+
+$ node --test --test-timeout=45000 test/account-recovery/seed-native.test.mjs
+✔ native recovery custody resumes the same candidate and exact progress after death during lock setup (1707.162833ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2169.551583
+
+TypeScript, scoped oxlint/oxfmt and git diff --check passed.

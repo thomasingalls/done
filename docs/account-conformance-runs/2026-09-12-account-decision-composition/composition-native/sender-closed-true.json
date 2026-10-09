@@ -1,0 +1,6 @@
+{
+  "sends": 2,
+  "exactRetry": true,
+  "noReseal": true,
+  "localEditRecovered": true
+}

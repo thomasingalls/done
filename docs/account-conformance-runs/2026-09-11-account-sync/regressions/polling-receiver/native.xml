@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="actual service empty-to-later-data polling advances durable progress without a local wake" time="14.064681" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/native.test.mjs"/>
+	<testcase name="lost replies back off at the unchanged cursor then catch up original remote text without recapture" time="10.007906" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/native.test.mjs"/>
+	<testcase name="invalid page halts across edits and offline/online, with an explicit retry rechecking durable state" time="12.255007" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/native.test.mjs"/>
+	<testcase name="native storage failure pauses the suffix and requires explicit driver retry after Local repair" time="6.866607" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/native.test.mjs"/>
+	<testcase name="close aborts and drains the active poll before releasing exclusion; backoff closes promptly" time="8.642480" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-driver/native.test.mjs"/>
+	<!-- tests 5 -->
+	<!-- suites 0 -->
+	<!-- pass 5 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 53496.146875 -->
+</testsuites>

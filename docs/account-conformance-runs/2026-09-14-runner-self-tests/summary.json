@@ -1,0 +1,95 @@
+{
+  "base": "ff61b085e8c0e97b197cbf71209c60ae93871b74",
+  "selection": "runner-self-regression",
+  "integrationGroup": "runner-self-tests",
+  "rawOutput": "test-results/release-validation/2026-09-14T14-52-53.707Z",
+  "result": {
+    "schema": 1,
+    "selection": "runner-self-regression",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/legacy-cleanup/harness.node.mjs",
+        "key": "7b3f84089c65fe1f6b68b8154e368ccb9629fa7a296aa56f3b067248e8033df5",
+        "status": "passed",
+        "elapsedMs": 4369,
+        "cases": 14,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/content-native.test.mjs",
+        "key": "159e7fd9c9b2d8a248ae1a4cb430ccd05ea0faac8318b67a2fcac351f6bc543d",
+        "status": "passed",
+        "elapsedMs": 24649,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/custody-native.test.mjs",
+        "key": "57adb12bbae98ffe60f2a2440d59385aad2d238aadf9323efe43744039849141",
+        "status": "passed",
+        "elapsedMs": 34230,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/stage.test.mjs",
+        "key": "db8b3de30705af7f46f6ecb0fa761fad11bd1d9c08bfb7785dae57a811f1f601",
+        "status": "passed",
+        "elapsedMs": 35176,
+        "cases": 31,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/vitest-process.test.mjs",
+        "key": "8c75f92a1fa2a0cab38371ef497d762549b9861b3d8d87ec9fa80349c2179d19",
+        "status": "passed",
+        "elapsedMs": 14554,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storage-harness/lifecycle.node.mjs",
+        "key": "f26a1c5a3e8048cf73d13ddc50b7e9ac6bc7c22a3feb626fcf9205376eeeddcc",
+        "status": "passed",
+        "elapsedMs": 28967,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T14:52:53.710Z",
+    "input": "85671f6e7439d021ad5abed80267738fd5fe4b3cdbc7a9f7ee4df0649bd178ee",
+    "completedAt": "2026-09-14T14:55:55.324Z"
+  },
+  "counts": {
+    "generalFiles": 242,
+    "generalCases": 1861,
+    "accountFiles": 123,
+    "unresolved": 175,
+    "unresolvedTestFiles": 16
+  },
+  "priorContractsPreserved": 238,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "a07b8773f4be87b71ba31dbb176d0013e9f3f4bd4c327f193738d084c3b5a512",
+  "sourceDigest": "1d140c2dcc33e1cfab4c4c9527be5105f00a03c5c644a13ab4925bbd89e0124d",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1044,
+  "scope": "The four runner self-test files now run with exact independent Node case census and registered group ownership; their two native files bind installed Chromium without launching an unused outer browser. The combined qualification contains all 50 self-tests and the 18 previously integrated cleanup/lifecycle regression cases. The first owned run exposed inherited NODE_TEST_CONTEXT suppressing nested Node execution and inner ownership refusals being charged to the outer stage. An explicit stage boundary now supplies its fresh environment and scoped violation sink; ordinary children retain the inherited guard. Reviewed boundaries allow temporary fixtures and the existing disposable checkout output. The initial nesting failures, checkout-boundary refusal and macOS /var versus /private/var alias refusal are retained. Boundary checks resolve existing paths before comparing ownership, including symlink targets. The additional registered stage leader remains in the cleanup census. No case or file deadline was increased. All other Node suites and runner self-test files are integrated; browser application tests remain next. This cooperative process ownership is not hostile-code confinement, and wrapper/output contracts and immutable qualification remain separate.",
+  "artifactIndexSha256": "76767bfd534171cebbebc40e342bab52dbda754d7d1b77efb78ee490fa79ccd2",
+  "gatesSha256": "d17153abd1d81611f62f951bac3d6a780542425f1c3196360ae0603efb3aea84",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

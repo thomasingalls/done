@@ -1,0 +1,7 @@
+{
+  "refused": 106,
+  "bytesDetached": true,
+  "legacy": "migration-required",
+  "stateDomain": "primitive strings only",
+  "negativeZero": "equivalent to zero"
+}

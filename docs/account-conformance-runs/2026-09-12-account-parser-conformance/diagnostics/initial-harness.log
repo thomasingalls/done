@@ -1,0 +1,59 @@
+(node:35080) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ promotion omission control rescues its rejected malformed input (44.76425ms)
+✔ admission omission control rescues its rejected malformed input (42.802084ms)
+✔ source omission control rescues its rejected malformed input (44.436375ms)
+✔ spool omission control rescues its rejected malformed input (42.567875ms)
+✔ delivery omission control rescues its rejected malformed input (41.334958ms)
+✔ submission omission control rescues its rejected malformed input (44.914458ms)
+(node:35090) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated coercible stage values must be rejected by the promotion parser (7.103625ms)
+✔ all nested data nodes reject incompatible types across thirteen promotions and admission (3186.58ms)
+✔ sparse retained arrays cannot skip validation of credentials, actors or recipients (49.192375ms)
+✔ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (15.217292ms)
+✔ generated valid promotion budgets and detached credential bytes preserve independent payloads (199.870125ms)
+✔ generated admission scalar corruptions execute the direct parser (13.259708ms)
+✔ admission nested genesis limits are checked at the declared byte edges (47.429083ms)
+(node:35096) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated internal length-prefix changes refuse for first and successor submissions (8.97025ms)
+✔ parent framing must be refusal and canonical; nested corruption cannot hide behind a valid outer frame (1.049ms)
+✖ generated detached signature bytes round-trip structurally without conferring signature authority (49.339875ms)
+(node:35097) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ generated coercible source hashes must be rejected by the spool decoder (5.7435ms)
+✔ generated source nested type mutations reach the decoder (10.802042ms)
+✔ generated spool nested type mutations reach the decoder (7.525042ms)
+✔ generated delivery nested type mutations reach the decoder (7.034042ms)
+✔ decoder numeric boundaries and nested response/submission damage refuse without encoder prechecks (2.915792ms)
+✔ generated valid reference positions and invocation counts preserve exact independent wire bytes (15.300458ms)
+✔ generated real Yjs updates and both actor kinds round-trip while malformed count and frame data refuse (99.488875ms)
+✔ source wire limit accepts a real near-limit frame and refuses the first larger canonical wire (664.984333ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 23
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5760.459666
+
+✖ failing tests:
+
+test at test/account-parser-conformance/submission.test.mjs:51:1
+✖ generated detached signature bytes round-trip structurally without conferring signature authority (49.339875ms)
+  Error: error:1E08010C:DECODER routines::unsupported
+      at verifyOneShot (node:internal/crypto/sig:288:15)
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-parser-conformance/submission.test.mjs:63:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    opensslErrorStack: [ 'error:1E08010C:DECODER routines::unsupported' ],
+    library: 'DECODER routines',
+    reason: 'unsupported',
+    code: 'ERR_OSSL_UNSUPPORTED'
+  }

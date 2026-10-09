@@ -1,0 +1,19 @@
+(node:31154) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31154) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ closed service SIGKILL before-commit then browser readback preserves one issued outcome (7672.0595ms)
+✔ closed service SIGKILL after-commit then browser readback preserves one issued outcome (7421.420209ms)
+✔ conflict service SIGKILL before-commit then browser readback preserves one issued outcome (7491.147166ms)
+✔ conflict service SIGKILL after-commit then browser readback preserves one issued outcome (7369.286542ms)
+✔ closed renderer dies before response commit and cold owner derives only durable proof (9303.694583ms)
+✔ closed renderer dies after response commit and cold owner derives only durable proof (9315.349458ms)
+✔ conflict renderer dies before response commit and cold owner derives only durable proof (9323.014667ms)
+✔ conflict renderer dies after response commit and cold owner derives only durable proof (9235.913917ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69051.087583

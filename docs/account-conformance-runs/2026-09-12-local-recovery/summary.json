@@ -1,0 +1,104 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T15:28:26.283Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 98
+    },
+    {
+      "name": "unit",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 35518
+    },
+    {
+      "name": "native",
+      "args": [
+        "--test",
+        "test/local-recovery/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 4069
+    },
+    {
+      "name": "custody",
+      "args": [
+        "scripts/custody/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 17110
+    },
+    {
+      "name": "trim",
+      "args": [
+        "scripts/content-trim/run.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 19837
+    },
+    {
+      "name": "packaged",
+      "args": [
+        "--test",
+        "--test-concurrency=1",
+        "test/account-residue/packaged.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 12522
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "src/crdt/localRecovery.ts",
+        "src/crdt/custody.ts",
+        "src/ui/LocalRecovery.tsx",
+        "src/ui/LocalApp.tsx",
+        "test/localRecovery.test.ts",
+        "test/local-recovery",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 80
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/crdt/localRecovery.ts",
+        "src/crdt/custody.ts",
+        "src/ui/LocalRecovery.tsx",
+        "src/ui/LocalApp.tsx",
+        "test/localRecovery.test.ts",
+        "test/local-recovery",
+        "scripts/private-release"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 91
+    }
+  ],
+  "sourcePins": 909,
+  "finishedAt": "2026-09-12T15:29:55.739Z"
+}

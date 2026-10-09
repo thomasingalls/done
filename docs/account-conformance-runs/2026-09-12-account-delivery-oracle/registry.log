@@ -1,0 +1,25 @@
+(node:38282) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:38282) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ prep probes: six declared message encodings, first-head distinction and old/current recovery payloads (65.984833ms)
+ℹ {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}}
+✔ D8 requires live claim evidence and cannot relabel it as inherited migration scope (395.350084ms)
+✔ D7 cannot discard native startup, genesis scope, shrinking or inherited cipher evidence (217.262042ms)
+✔ D6 custody cannot drop correspondence, parser repair, native comparison or inherited byte obligations (319.059208ms)
+✔ D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence (283.866875ms)
+✔ registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups (266.16425ms)
+✔ registration omission controls fail for the missing obligation, not just a stale aggregate hash (672.1845ms)
+✔ recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes (234.307458ms)
+✔ transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content (349.404ms)
+✔ D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives (245.233833ms)
+✔ D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source (314.891375ms)
+✔ D3 ledger byte coverage cannot discard canonical negatives or its counter witness dependency (315.68175ms)
+✔ D4 metadata cannot drop its scoped MAC owner, native coupling or negative corpus (314.254209ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4407.862333

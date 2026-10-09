@@ -1,0 +1,195 @@
+{
+  "campaign": {
+    "status": "passed",
+    "startedAt": "2026-09-11T11:38:17.918Z",
+    "stages": [
+      {
+        "name": "types",
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "units",
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "native",
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "controls",
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "native-controls",
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "generated",
+        "code": 0,
+        "timedOut": false
+      }
+    ],
+    "scope": "Private v9 single-owner outbound/receive composition: original source grants, exact retry, full union census, self-stream byte binding, fair two-lane scheduling, native faults, generated histories and effective controls. No new enrollment, default app activation or personal Account deployment.",
+    "completedAt": "2026-09-11T11:46:00.897Z"
+  },
+  "regressions": {
+    "started": "2026-09-11T11:47:17.254Z",
+    "stages": [
+      {
+        "name": "unit",
+        "command": [
+          "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "--maxWorkers=2"
+        ],
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "manual-receive",
+        "command": [
+          "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+          "scripts/account-receive-transport/run.mjs"
+        ],
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "v8-driver",
+        "command": [
+          "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+          "scripts/account-driver/run.mjs"
+        ],
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "spool",
+        "command": [
+          "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+          "scripts/account-spool/run.mjs"
+        ],
+        "code": 0,
+        "timedOut": false
+      },
+      {
+        "name": "polling-receiver",
+        "command": [
+          "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+          "scripts/account-receive-driver/run.mjs"
+        ],
+        "code": 0,
+        "timedOut": false
+      }
+    ],
+    "status": "passed",
+    "finished": "2026-09-11T12:00:37.971Z"
+  },
+  "build": {
+    "head": "83eed0b1acc89f0cdb8b3f05e4ad45ca826bfddd",
+    "started": "2026-09-11T12:01:37.544076+00:00",
+    "stages": [
+      {
+        "command": [
+          "node",
+          "scripts/check-yjs-patch.mjs"
+        ],
+        "code": 0,
+        "log": "00.log"
+      },
+      {
+        "command": [
+          "node",
+          "node_modules/typescript/bin/tsc",
+          "-b"
+        ],
+        "code": 0,
+        "log": "01.log"
+      },
+      {
+        "command": [
+          "node",
+          "node_modules/vite/bin/vite.js",
+          "build"
+        ],
+        "code": 0,
+        "log": "02.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-budget.mjs"
+        ],
+        "code": 0,
+        "log": "03.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-origin-isolation.mjs"
+        ],
+        "code": 0,
+        "log": "04.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-debts.mjs",
+          "--check"
+        ],
+        "code": 0,
+        "log": "05.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-retention.mjs"
+        ],
+        "code": 0,
+        "log": "06.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-selection-status.mjs"
+        ],
+        "code": 0,
+        "log": "07.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-update-limit.mjs"
+        ],
+        "code": 0,
+        "log": "08.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-wasm-seal.mjs"
+        ],
+        "code": 0,
+        "log": "09.log"
+      },
+      {
+        "command": [
+          "node",
+          "scripts/check-traceability.mjs",
+          "--check"
+        ],
+        "code": 0,
+        "log": "10.log"
+      }
+    ],
+    "status": "passed",
+    "finished": "2026-09-11T12:01:48.857564+00:00"
+  },
+  "notRun": "Full historical pnpm check aggregate; prior e835243 record remains its baseline."
+}

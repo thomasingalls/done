@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="removing exact capsule identity consistency accepts two different original payloads under one ID" time="0.041840" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="real source-digest and envelope-body omissions rescue separately signed and encrypted semantic substitutions" time="0.082712" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="count has two effective checks; hash and count omissions separately weaken completeness" time="0.111726" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories" time="0.098712" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="omitting raw previous-hash bytes in the actual digest input aliases otherwise distinct witness histories" time="0.000686" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/controls.test.mjs"/>
+	<testcase name="twenty fixed carriers, chain steps, source digest and baseline agree with actual encoders and crypto" time="0.022676" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="all carrier leaves are rejected or retained as distinct canonical bytes; omissions cannot disappear unnoticed" time="0.015963" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="canonical framing rejects whitespace, BOM, alternate spellings, bad UTF-8, extra fields and all truncated prefixes" time="0.130388" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="capsules require bounded original Yjs frames and exact identity deduplication, not snapshot equivalence" time="0.002474" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="ledger census composes all families, validates signed source correspondence and reconstructs conflict with cold expiry" time="0.062062" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="chain binds raw previous hash, u32 big-endian length and exact event bytes; count is checked separately" time="0.000697" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled generated spool histories compare retained prefixes, retries and omission faults to an independent ledger" time="0.898009" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/formats.test.mjs"/>
+	<!-- tests 12 -->
+	<!-- suites 0 -->
+	<!-- pass 12 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 1863.467834 -->
+</testsuites>

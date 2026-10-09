@@ -1,0 +1,302 @@
+[
+  {
+    "label": "failed-byte-encoding",
+    "selection": "standalone-local-genesis",
+    "source": "test-results/local-genesis/2026-09-13T12-03-46.138Z",
+    "status": "failed",
+    "input": "8348448932bc93af8d23b734e9f26b6bab094a0f1d008205fd433f12a003ea51",
+    "stageCases": [
+      null
+    ],
+    "stageElapsedMs": [
+      7904
+    ],
+    "totalMs": 25969,
+    "native": [
+      {
+        "scope": "local-genesis-browser",
+        "baselineAssertions": 9,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "genesis",
+            "origin": "http://127.0.0.1:63127",
+            "closed": false
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-genesis/2026-09-13T12-03-46.138Z/stages/33f8ba1175ac5b0e709696664f9dad8c207b48f2dcd8aca411f1e54ba4837382/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-full",
+    "selection": "standalone-local-genesis",
+    "source": "test-results/local-genesis/2026-09-13T12-06-40.258Z",
+    "status": "passed",
+    "input": "7a21557a94fe359906dd3de17bf0eb05ca581c79ecb1dd33609c9d4196227d66",
+    "stageCases": [
+      21
+    ],
+    "stageElapsedMs": [
+      73827
+    ],
+    "totalMs": 95207,
+    "native": [
+      {
+        "scope": "local-genesis-browser",
+        "baselineAssertions": 160,
+        "baselines": 17,
+        "mutants": 4,
+        "mutations": [
+          {
+            "id": "skip-factor-confirmation",
+            "assertion": "mismatched-confirmation-refused",
+            "status": "detected"
+          },
+          {
+            "id": "forget-completed-stage",
+            "assertion": "missing-complete-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "skip-progress-authentication",
+            "assertion": "damaged-progress-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "legacy-overwrites-local",
+            "assertion": "legacy-cannot-close-local",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "genesis",
+            "origin": "http://127.0.0.1:63189",
+            "closed": true
+          },
+          {
+            "variant": "skip-factor-confirmation",
+            "origin": "http://127.0.0.1:63351",
+            "closed": true
+          },
+          {
+            "variant": "forget-completed-stage",
+            "origin": "http://127.0.0.1:63359",
+            "closed": true
+          },
+          {
+            "variant": "skip-progress-authentication",
+            "origin": "http://127.0.0.1:63368",
+            "closed": true
+          },
+          {
+            "variant": "legacy-overwrites-local",
+            "origin": "http://127.0.0.1:63375",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-genesis/2026-09-13T12-06-40.258Z/stages/84075fa6826a426e59c0aa1cb665f435cb2c85d9fc9b66b12d485d752f12f0bf/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-provenance",
+    "selection": "standalone-local-genesis",
+    "source": "test-results/local-genesis-adapter-selected-provenance",
+    "status": "passed",
+    "input": "7a21557a94fe359906dd3de17bf0eb05ca581c79ecb1dd33609c9d4196227d66",
+    "stageCases": [
+      9
+    ],
+    "stageElapsedMs": [
+      35590
+    ],
+    "totalMs": 51132,
+    "native": [
+      {
+        "scope": "local-genesis-browser",
+        "baselineAssertions": 64,
+        "baselines": 7,
+        "mutants": 2,
+        "mutations": [
+          {
+            "id": "forget-completed-stage",
+            "assertion": "missing-complete-refuses",
+            "status": "detected"
+          },
+          {
+            "id": "skip-progress-authentication",
+            "assertion": "damaged-progress-refuses",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "genesis",
+            "origin": "http://127.0.0.1:63410",
+            "closed": true
+          },
+          {
+            "variant": "forget-completed-stage",
+            "origin": "http://127.0.0.1:63480",
+            "closed": true
+          },
+          {
+            "variant": "skip-progress-authentication",
+            "origin": "http://127.0.0.1:63490",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-genesis-adapter-selected-provenance/stages/ab30ce6cced4fa4dcc35995a28ec1008fe785beeaef126ccc46f29f78f4154d8/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-local-genesis",
+    "source": "test-results/local-genesis-adapter-baseline-counter",
+    "status": "passed",
+    "input": "7a21557a94fe359906dd3de17bf0eb05ca581c79ecb1dd33609c9d4196227d66",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      12545
+    ],
+    "totalMs": 38611,
+    "native": [
+      {
+        "scope": "local-genesis-browser",
+        "baselineAssertions": 11,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "genesis",
+            "origin": "http://127.0.0.1:63511",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-genesis-adapter-baseline-counter/stages/66f5a5755d785311f21a7ba3287f6e5eec70f0ae79b518c4a2b0deea8e7aecaf/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "startup-regression",
+    "selection": "standalone-owned-startup",
+    "source": "test-results/local-genesis-adapter-startup-regression",
+    "status": "passed",
+    "input": "7a21557a94fe359906dd3de17bf0eb05ca581c79ecb1dd33609c9d4196227d66",
+    "stageCases": [
+      3
+    ],
+    "stageElapsedMs": [
+      12069
+    ],
+    "totalMs": 30446,
+    "native": [
+      {
+        "scope": "owned-startup-browser",
+        "baselineAssertions": 16,
+        "baselines": 2,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "skip-open-classification",
+            "assertion": "open-rechecks-after-grant",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "startup",
+            "origin": "http://127.0.0.1:63570",
+            "closed": true
+          },
+          {
+            "variant": "skip-open-classification",
+            "origin": "http://127.0.0.1:63616",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-genesis-adapter-startup-regression/stages/a3e68b75a6cd62268ae94bac665ed87f61b6b7bb049d97b42d8dc3009c5912be/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T12-11-50.093Z",
+    "status": "passed",
+    "input": "3a3f2669e296b7bd4d00fa8ef4955fc9bbb56232f6f6a24418ed7241c3a103b7",
+    "stageCases": [
+      4,
+      3,
+      5,
+      4,
+      10,
+      4,
+      5,
+      6,
+      4,
+      4,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2187,
+      1752,
+      1787,
+      3522,
+      1666,
+      1769,
+      1858,
+      1763,
+      1782,
+      1790,
+      4408,
+      1866
+    ],
+    "totalMs": 52321,
+    "native": []
+  }
+]

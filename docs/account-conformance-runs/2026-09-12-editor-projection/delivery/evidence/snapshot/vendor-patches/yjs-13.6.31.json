@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "package": "yjs",
+  "version": "13.6.31",
+  "upstream": "https://github.com/yjs/yjs/tree/v13.6.31",
+  "patch": "vendor-patches/yjs@13.6.31.patch",
+  "patchHash": "d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1",
+  "files": {
+    "src/utils/encoding.js": {
+      "upstream": "d70278b94e74049c0a699d44275629aea1cf3b4c14596f0e872ae1d793cc1497",
+      "patched": "dadeb87f5abfc3f7734e6236ac45980a964f3e316fd5aec1ffc1d3de03b265f9"
+    },
+    "dist/yjs.mjs": {
+      "upstream": "da487316488770c06877210d76e30b7d4daaef826731b1630fcea18ea2a3365a",
+      "patched": "fd569a091caf4eb2ef7a3f3d9a2dfe5e2561e5c31175e9ee4963c6394ce69753"
+    },
+    "dist/yjs.cjs": {
+      "upstream": "f91c9c1fc9c2ae566149176ddd221764a3635c0c22e424142b98a946735441e5",
+      "patched": "81369aaeeb565df49d07348e71a52b49c740416f9f42165369c35949b37c4a25"
+    }
+  }
+}

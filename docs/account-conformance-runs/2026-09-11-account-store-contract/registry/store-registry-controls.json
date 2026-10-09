@@ -1,0 +1,45 @@
+{
+  "controls": 8,
+  "evidence": [
+    {
+      "name": "native owner",
+      "caught": true,
+      "expected": "missing evidence obligation"
+    },
+    {
+      "name": "inherited agreement",
+      "caught": true,
+      "expected": "missing evidence obligation"
+    },
+    {
+      "name": "AEAD entry",
+      "caught": true,
+      "expected": "missing AEAD authority entry"
+    },
+    {
+      "name": "digest role",
+      "caught": true,
+      "expected": "digest vector misclassified"
+    },
+    {
+      "name": "KDF source",
+      "caught": true,
+      "expected": "source-site census changed"
+    },
+    {
+      "name": "owner entrypoint",
+      "caught": true,
+      "expected": "missing entrypoint"
+    },
+    {
+      "name": "negatives",
+      "caught": true,
+      "aggregatePinUpdated": true
+    },
+    {
+      "name": "encodedBindingControls",
+      "caught": true,
+      "aggregatePinUpdated": true
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+[WebServer] (node:95722) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 2 tests using 1 worker
+
+(node:95740) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/storage-compatibility/compatibility.spec.ts:39:1 › fixture calls await a deliberately delayed module initialization (779ms)
+  ✘  2 test/storage-compatibility/readiness-control.spec.ts:31:1 › fixture calls await a deliberately delayed module initialization (250ms)
+
+
+  1) test/storage-compatibility/readiness-control.spec.ts:31:1 › fixture calls await a deliberately delayed module initialization 
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 5
+    + Received  + 1
+
+      Object {
+    -   "ok": true,
+    -   "value": Object {
+    -     "initializations": 0,
+    -     "operations": Object {},
+    -   },
+    +   "ok": false,
+      }
+
+      52 |     ).releaseCompatibilityFixture(),
+      53 |   );
+    > 54 |   expect(await pending).toMatchObject({ ok: true, value: { initializations: 0, operations: {} } });
+         |                         ^
+      55 | });
+      56 |
+      57 | test('two live writers block an upgrade; a queued opener rechecks before loading keys', async ({
+        at /private/tmp/done-validation-500630f/test/storage-compatibility/readiness-control.spec.ts:54:25
+
+    Error Context: test-results/storage-compatibility/artifacts/readiness-control-fixture--e2a87-layed-module-initialization/error-context.md
+
+  1 failed
+    test/storage-compatibility/readiness-control.spec.ts:31:1 › fixture calls await a deliberately delayed module initialization 
+  1 passed (2.7s)

@@ -1,0 +1,15 @@
+{
+  "effective": true,
+  "observations": [
+    {
+      "changed": false,
+      "cancelled": true,
+      "settledBeforeCancellationCompleted": false
+    },
+    {
+      "changed": true,
+      "cancelled": true,
+      "settledBeforeCancellationCompleted": true
+    }
+  ]
+}

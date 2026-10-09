@@ -1,0 +1,543 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+··stdout | test/legacySelection.test.ts > verified imported Local selection > cold-verifies, selects, opens through the normal owner, and preserves post-selection work on retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > cold-verifies, selects, opens through the normal owner, and preserves post-selection work on retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > removes only bound DB/WAL/ancillary carriers; preserves later journal-only edits and permits imported clear
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > discovers without writing; one action never implicitly selects or deletes
+[yjs] Changed the client-id because another client seems to be using it.
+
+············stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > refuses changed material on partial cleanup
+[yjs] Changed the client-id because another client seems to be using it.
+
+······stdout | test/legacyCleanupBounds.test.ts > cleanup bulk encoding boundaries > cleans the confirmed generated database exceeding the old field width
+[yjs] Changed the client-id because another client seems to be using it.
+
+···stdout | test/legacyCoordinator.test.ts > private migration coordinator > keeps selected work open without a packet, rejects reimport, and defers cleared slots to their owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > keeps selected work open without a packet, rejects reimport, and defers cleared slots to their owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > refuses unknown material on partial cleanup
+[yjs] Changed the client-id because another client seems to be using it.
+
+····stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > refuses early-missing material on partial cleanup
+[yjs] Changed the client-id because another client seems to be using it.
+
+··stdout | test/legacyCleanupBounds.test.ts > cleanup bulk encoding boundaries > accepts an allowed large local value and preserves a cold-openable destination
+[yjs] Changed the client-id because another client seems to be using it.
+
+·······stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > refuses reappeared material on partial cleanup
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanupBounds.test.ts > cleanup bulk encoding boundaries > cleans a large valid legacy journal entry and retains its text
+[yjs] Changed the client-id because another client seems to be using it.
+
+···stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > refuses an overlong manifest key before persisting an unreadable Local claim
+[yjs] Changed the client-id because another client seems to be using it.
+
+···stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+··stdout | test/legacyCleanupBounds.test.ts > cleanup bulk encoding boundaries > persists, authenticates and resumes a manifest larger than 64 KiB
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > checks source absence after the terminal progress observer runs
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+···stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanupBounds.test.ts > cleanup version compatibility > resumes an existing v1 intent and rejects changing its authenticated version
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+···stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+···········stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+···········stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/pendingProjection.test.ts > pending document forks > preserves a projection failure raised during admitted initialization through lifecycle shutdown
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacySelection.test.ts > verified imported Local selection > generated interruption states either refuse damage or converge to the same external master text
+[yjs] Changed the client-id because another client seems to be using it.
+
+··stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+··········stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+···stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+······stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+·······stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+·····stdout | test/localGenesis.test.ts > verified Local genesis > opens through real factor verification, replay and admitted initialization
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+········stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+························stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+············stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+··stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+············stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·············stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+·····stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+····stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+········stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+·························stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+··············stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+······stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > projects retained legacy archives as read-only bodies without creating live cards
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > preserves null business results without treating them as a storage failure
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > preserves null business results without treating them as a storage failure
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps returned projections and submitted commands detached from the owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps returned projections and submitted commands detached from the owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps returned projections and submitted commands detached from the owner
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > follows local redone links when undoing an edit inside a restored parent
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > durably initializes the actor and schema without adding human undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > shares human history across Goals, cards and movement
+[yjs] Changed the client-id because another client seems to be using it.
+
+········stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retains repeated undo/redo links through private history forks
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > restores a deleted nested card and its text through undo, redo, and undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not publish a failed move or advance its undo stack before forced retry
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retries refused undo without making its history authoritative
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > retries refused undo without making its history authoritative
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > evaluates Next capacity at the head after earlier accepted commands
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > excludes bulk, settings and actor housekeeping from human content undo
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps the day container and a remote card when undoing the first human card
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps the day container and a remote card when undoing the first human card
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > keeps the day container and a remote card when undoing the first human card
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > does not undo a remote text insertion or remote location change
+[yjs] Changed the client-id because another client seems to be using it.
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > splits and merges through existing card rules and export
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > rechecks freeze while preserving Goals editing
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > rechecks freeze while preserving Goals editing
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > rechecks freeze while preserving Goals editing
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > slices Unicode text and groups the accepted paste in workspace history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+···········stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > discards an entire refused suffix and starts a fresh private candidate
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > drains close without late publication and does not persist runtime history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > drains close without late publication and does not persist runtime history
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > drains close without late publication and does not persist runtime history
+[yjs] Changed the client-id because another client seems to be using it.
+
+···stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+···············stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·········stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+··············stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+····························stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+····stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+········stdout | test/legacyCleanup.test.ts > authenticated journal-inclusive legacy cleanup > generated Unicode sources and interrupted native-progress writes converge; missing future keys refuse
+[yjs] Changed the client-id because another client seems to be using it.
+
+··················stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·····························stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+·······························································stdout | test/legacyCoordinator.test.ts > private migration coordinator > generated bounded imports survive repeated coordinator disposal, missing input, and wrong-step requests
+[yjs] Changed the client-id because another client seems to be using it.
+
+··············································································································································································································································································································································································
+
+ Test Files  73 passed (73)
+      Tests  825 passed (825)
+   Start at  18:01:44
+   Duration  34.50s (transform 6.93s, setup 2.34s, import 16.65s, tests 139.93s, environment 25.95s)
+

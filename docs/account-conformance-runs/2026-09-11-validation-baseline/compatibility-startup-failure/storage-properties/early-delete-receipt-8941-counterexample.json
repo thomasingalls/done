@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "seed": 8941,
+  "path": "0:1:0:1:2:0:0:0:0:0:0",
+  "shrinks": 10,
+  "prunedTrailingSteps": 0,
+  "history": {
+    "edits": [],
+    "steps": [
+      {
+        "op": "abort",
+        "at": "reserve",
+        "ids": [
+          0
+        ]
+      }
+    ]
+  },
+  "error": {
+    "type": "property",
+    "invariant": "abort-is-storage-failure",
+    "actual": "repair-required",
+    "expected": "storage-failed",
+    "message": "abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"",
+    "stack": "Error: abort-is-storage-failure: \"repair-required\" !== \"storage-failed\"\n    at equal (http://127.0.0.1:5186/test/storage-properties/oracle.ts:14:65)\n    at step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:348:7)\n    at async Object.step (http://127.0.0.1:5186/test/storage-properties/browser.mjs:393:14)\n    at async <anonymous>:337:30"
+  }
+}

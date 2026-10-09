@@ -1,0 +1,34 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > keeps reader authority distinct from publisher authority and begins from held zero links
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains cross-stream pending structs/deletions across commit and restart before their dependency arrives
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > rejects a gap, deduplicates exact entries and retains advertised high-water marks across restart
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > binds fresh input to the actual pending request; committed evidence remains usable after expiry
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses foreign input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses retired input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses reader-retired input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses epoch input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses generation input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses actor input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses agent input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses final input without changing content or progress
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains a proved conflicting digest without applying it or advancing the receive cursor
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains the exact verified request/page when caller buffers change during crypto 13ms
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > leaves malformed or unproved evidence unconsumed and refuses local size/count overflow
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > commits content and progress together across abort, lost acknowledgement and close before commit
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > rechecks membership at commit and fails cold open on omitted evidence or a wrong reader fence
+ ↓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > 300 generated delivery/crash/compaction histories preserve the external receipt and source ledger
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > equal state vectors can hide different deletion coverage in a proposed baseline
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > a valid head cannot choose its own prefix, and a complete accepted suffix cannot replace genesis
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > a cursor-first split commit is detected after the content half is lost
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > dropping pending data from a snapshot loses a received deletion when its target arrives later
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > promoting a remote dependency before commit can acknowledge a local edit that disappears on cold replay
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > one global receive cursor skips a different publisher at the same position
+ ↓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > the raw capture primitive can relabel received bytes, so it cannot serve as authenticated ingress
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 24 skipped (25)
+   Start at  01:33:52
+   Duration  274ms (transform 82ms, setup 28ms, import 138ms, tests 14ms, environment 0ms)
+

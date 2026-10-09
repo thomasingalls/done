@@ -1,0 +1,46 @@
+[
+  {
+    "fault": "no-remote-invalidation-final",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/membershipEligibility.test.ts",
+      "-t",
+      "repairs a dirty remote basis",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-repair-r1/no-remote-invalidation-final.json"
+    ],
+    "exit": 1,
+    "originalSourceSha256": "cf2f7f984db0e6c144380f31812f0ddc0540dcf6152f5e42acc6b549493bc4bb",
+    "testSha256": "c26bc82453fdd7c3e53af1eaa5e9fdca2f4e259359530cc6a6697d973a6efece",
+    "caughtBy": [
+      "repair eligibility owner reference repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage",
+      "repair eligibility owner local-handoff repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage",
+      "repair eligibility owner local-snapshots repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage",
+      "repair eligibility owner account repairs a dirty remote basis before reentrant subscriber text and preserves system/human coverage"
+    ]
+  },
+  {
+    "fault": "unaccepted-cleanliness-final",
+    "command": [
+      "node",
+      "node_modules/vitest/vitest.mjs",
+      "run",
+      "test/membershipEligibility.test.ts",
+      "-t",
+      "does not transfer unaccepted cleanliness",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-f17-repair-r1/unaccepted-cleanliness-final.json"
+    ],
+    "exit": 1,
+    "originalSourceSha256": "d04615dc731b769437473185f81b3ff2bb38d7b15ff35872ff005b30a1af767e",
+    "testSha256": "c26bc82453fdd7c3e53af1eaa5e9fdca2f4e259359530cc6a6697d973a6efece",
+    "caughtBy": [
+      "repair eligibility owner reference does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate",
+      "repair eligibility owner local-handoff does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate",
+      "repair eligibility owner local-snapshots does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate",
+      "repair eligibility owner account does not transfer unaccepted cleanliness after refusal and discard; retry reuses the repaired candidate"
+    ]
+  }
+]

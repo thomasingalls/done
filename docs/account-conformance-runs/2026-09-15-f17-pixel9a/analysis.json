@@ -1,0 +1,417 @@
+{
+  "sessions": [
+    {
+      "index": 0,
+      "variant": "R",
+      "budgets": {
+        "cold": {
+          "value": 504.8000000715256,
+          "limit": 2500,
+          "pass": true
+        },
+        "warm": {
+          "value": 496.3000000715256,
+          "limit": 1000,
+          "pass": true
+        },
+        "replay": {
+          "value": 21.899999976158142,
+          "limit": 500,
+          "pass": true
+        },
+        "compose": {
+          "value": 14.799999952316284,
+          "limit": 16,
+          "pass": true
+        },
+        "card": {
+          "value": 107.89999997615814,
+          "limit": 16,
+          "pass": false
+        },
+        "focus": {
+          "value": 43.199999928474426,
+          "limit": 50,
+          "pass": true
+        }
+      },
+      "semantics": [
+        "Entire corpus matches after lock and cold reopen",
+        "Exact measured card text survives lock and cold reopen"
+      ],
+      "typing": {
+        "compose": {
+          "p50": 9.800000071525574,
+          "p95": 14.799999952316284,
+          "count": 120,
+          "gapP50": 67.79999995231628,
+          "gapP95": 74.80000007152557,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        },
+        "card": {
+          "p50": 98.70000004768372,
+          "p95": 107.89999997615814,
+          "count": 120,
+          "gapP50": 158.79999995231628,
+          "gapP95": 168.20000004768372,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        }
+      },
+      "frameP50": 16.699999999999818
+    },
+    {
+      "index": 1,
+      "variant": "C",
+      "budgets": {
+        "cold": {
+          "value": 547.4999998807907,
+          "limit": 2500,
+          "pass": true
+        },
+        "warm": {
+          "value": 496.89999997615814,
+          "limit": 1000,
+          "pass": true
+        },
+        "replay": {
+          "value": 31.09999990463257,
+          "limit": 500,
+          "pass": true
+        },
+        "compose": {
+          "value": 14.399999976158142,
+          "limit": 16,
+          "pass": true
+        },
+        "card": {
+          "value": 87.09999990463257,
+          "limit": 16,
+          "pass": false
+        },
+        "focus": {
+          "value": 40.799999952316284,
+          "limit": 50,
+          "pass": true
+        }
+      },
+      "semantics": [
+        "Entire corpus matches after lock and cold reopen",
+        "Exact measured card text survives lock and cold reopen"
+      ],
+      "typing": {
+        "compose": {
+          "p50": 9.299999952316284,
+          "p95": 14.399999976158142,
+          "count": 120,
+          "gapP50": 67.89999997615814,
+          "gapP95": 75.30000007152557,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        },
+        "card": {
+          "p50": 80.19999992847443,
+          "p95": 87.09999990463257,
+          "count": 120,
+          "gapP50": 141.79999995231628,
+          "gapP95": 149.39999997615814,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        }
+      },
+      "frameP50": 16.600000000000136
+    },
+    {
+      "index": 2,
+      "variant": "C",
+      "budgets": {
+        "cold": {
+          "value": 548.7999999523163,
+          "limit": 2500,
+          "pass": true
+        },
+        "warm": {
+          "value": 531.5,
+          "limit": 1000,
+          "pass": true
+        },
+        "replay": {
+          "value": 21.899999976158142,
+          "limit": 500,
+          "pass": true
+        },
+        "compose": {
+          "value": 14.199999928474426,
+          "limit": 16,
+          "pass": true
+        },
+        "card": {
+          "value": 86.89999997615814,
+          "limit": 16,
+          "pass": false
+        },
+        "focus": {
+          "value": 40.5,
+          "limit": 50,
+          "pass": true
+        }
+      },
+      "semantics": [
+        "Entire corpus matches after lock and cold reopen",
+        "Exact measured card text survives lock and cold reopen"
+      ],
+      "typing": {
+        "compose": {
+          "p50": 9.600000023841858,
+          "p95": 14.199999928474426,
+          "count": 120,
+          "gapP50": 68,
+          "gapP95": 73.5,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        },
+        "card": {
+          "p50": 80.70000004768372,
+          "p95": 86.89999997615814,
+          "count": 120,
+          "gapP50": 140.89999997615814,
+          "gapP95": 148.89999997615814,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        }
+      },
+      "frameP50": 16.600000000000136
+    },
+    {
+      "index": 3,
+      "variant": "R",
+      "budgets": {
+        "cold": {
+          "value": 530.7000000476837,
+          "limit": 2500,
+          "pass": true
+        },
+        "warm": {
+          "value": 541.6000000238419,
+          "limit": 1000,
+          "pass": true
+        },
+        "replay": {
+          "value": 24.899999976158142,
+          "limit": 500,
+          "pass": true
+        },
+        "compose": {
+          "value": 15.699999928474426,
+          "limit": 16,
+          "pass": true
+        },
+        "card": {
+          "value": 108.30000007152557,
+          "limit": 16,
+          "pass": false
+        },
+        "focus": {
+          "value": 40.10000002384186,
+          "limit": 50,
+          "pass": true
+        }
+      },
+      "semantics": [
+        "Entire corpus matches after lock and cold reopen",
+        "Exact measured card text survives lock and cold reopen"
+      ],
+      "typing": {
+        "compose": {
+          "p50": 9.399999976158142,
+          "p95": 15.699999928474426,
+          "count": 120,
+          "gapP50": 67.70000004768372,
+          "gapP95": 73.39999997615814,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        },
+        "card": {
+          "p50": 98.30000007152557,
+          "p95": 108.30000007152557,
+          "count": 120,
+          "gapP50": 157.89999997615814,
+          "gapP95": 171.0,
+          "viewport": {
+            "screen": {
+              "width": 412,
+              "height": 924
+            },
+            "inner": {
+              "width": 411,
+              "height": 404
+            },
+            "visual": {
+              "width": 411.4285583496094,
+              "height": 403.80950927734375,
+              "offsetTop": 0,
+              "scale": 1
+            },
+            "dpr": 2.625,
+            "breakpoint": "narrow",
+            "visibility": "visible"
+          }
+        }
+      },
+      "frameP50": 16.600000000000136
+    }
+  ],
+  "pairs": [
+    {
+      "reference": 0,
+      "candidate": 1,
+      "cardP95Reduction": 0.19277108504283225
+    },
+    {
+      "reference": 3,
+      "candidate": 2,
+      "cardP95Reduction": 0.1975992620612561
+    }
+  ],
+  "trustedKeySamples": 960,
+  "budgetFailures": [
+    {
+      "index": 0,
+      "metric": "card"
+    },
+    {
+      "index": 1,
+      "metric": "card"
+    },
+    {
+      "index": 2,
+      "metric": "card"
+    },
+    {
+      "index": 3,
+      "metric": "card"
+    }
+  ],
+  "defaultActivation": false,
+  "manualKeyboardPending": true
+}

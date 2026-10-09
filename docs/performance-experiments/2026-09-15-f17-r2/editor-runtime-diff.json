@@ -1,0 +1,6 @@
+{
+  "comparator": "no-publication",
+  "changedRuntimeFiles": [
+    "src/editor/admittedEditor.ts"
+  ]
+}

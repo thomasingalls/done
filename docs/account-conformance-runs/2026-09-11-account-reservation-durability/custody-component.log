@@ -1,0 +1,20 @@
+custody C12.genesis: pass
+custody C10.concurrent-creation: pass
+custody C12.reservation-abort: pass
+custody C12.interrupted-creation: pass
+custody C12.completion-abort: pass
+custody C12.metadata-authentication: pass
+custody C10.partial-and-legacy: pass
+custody C12.scope-and-authority: pass
+custody C12.seal-ceiling: pass
+custody C12.session-lifetime: pass
+custody C12.cancel-crypto: pass
+custody C12.cancel-initialize: pass
+custody C13.profile-copy: pass
+skip-nested-crypto-guard C12.cancel-crypto: fail
+accept-unconfirmed-code C12.genesis: fail
+skip-reservation-commit C12.interrupted-creation: fail
+trust-unverified-metadata C12.metadata-authentication: fail
+request-success-as-commit C12.reservation-abort: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-reservation-durability/2026-09-11T21-07-50.027Z/custody-component-evidence/report.md
+Exit 0 (bounded custody component)

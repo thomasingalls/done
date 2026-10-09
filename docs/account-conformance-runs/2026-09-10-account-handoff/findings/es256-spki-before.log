@@ -1,0 +1,27 @@
+(node:84819) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:84819) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ real browser ES256 passkey assertion completes handoff and offline startup (1567.291833ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2408.471208
+
+✖ failing tests:
+
+test at test/account-handoff/native.test.mjs:25:1
+✖ real browser ES256 passkey assertion completes handoff and offline startup (1567.291833ms)
+  page.evaluate: Error: Malformed preparation
+      at closed (eval at evaluate (:311:30), <anonymous>:24019:139)
+      at parseBindingProof (eval at evaluate (:311:30), <anonymous>:24718:13)
+      at verifyBindingProof (eval at evaluate (:311:30), <anonymous>:24756:13)
+      at eval (eval at evaluate (:311:30), <anonymous>:32942:42)
+      at eval (eval at evaluate (:311:30), <anonymous>:25840:29)
+      at handoff (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/fixtures.mjs:43:45)
+      at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-handoff/native.test.mjs:50:23) {
+    log: []
+  }

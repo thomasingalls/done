@@ -1,0 +1,33 @@
+{
+  "baseline": "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+  "claim": "Combined sync-liveness repair regressions in disposable v9 Account; no release-capacity claim",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "jobs": 24,
+  "observations": [
+    0,
+    8,
+    16,
+    24
+  ],
+  "statusRepeats": 3,
+  "generatedHistories": 40,
+  "seed": 120907,
+  "protocol": "docs/account-sync-liveness.md",
+  "seams": [
+    "source-level inclusive function probes",
+    "client crypto timing wrappers",
+    "IPC service metrics via Node module hook",
+    "genuine read response barrier",
+    "final receive commit clock offset only",
+    "synthetic authenticator",
+    "navigator online gate for isolated status samples"
+  ],
+  "limits": [
+    "one host/browser/history; descriptive timings only",
+    "v9 creating-member stream; independent multi-publisher verifier fixture separately",
+    "no real network outage or personal installation",
+    "raw service/client durations are inclusive and overlap"
+  ]
+}

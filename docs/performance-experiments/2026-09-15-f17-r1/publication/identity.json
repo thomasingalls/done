@@ -1,0 +1,8 @@
+{
+  "base": "20a535c44d2c33b394306fa67023c62d2d9c5f40",
+  "files": {
+    "src/crdt/admittedWorkspace.ts": "7353819bd16f3883d69f4b28ac30f1f9745fff1b990ac1c80afd2ee05e4ebfca",
+    "test/workspaceAdmission.test.ts": "4303e86b9a6dca39a642f1e9499f8b25f8dccd9c6a21feaa619ae54841fee685"
+  },
+  "patchSha256": "077db86c414fb8b50736127dcd9b36a1bece1e4f67d5ef4fed2f05b9e7253ce9"
+}

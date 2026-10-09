@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r1/allocation
+
+
+ Test Files  2 passed (2)
+      Tests  24 passed (24)
+   Start at  09:05:03
+   Duration  3.89s (transform 334ms, setup 98ms, import 602ms, tests 4.08s, environment 0ms)
+

@@ -1,0 +1,74 @@
+[
+  {
+    "path": [
+      "candidate",
+      "coverage",
+      "snapshot"
+    ],
+    "n": 1,
+    "accepted": false
+  },
+  {
+    "path": [
+      "candidate",
+      "coverage",
+      "snapshot"
+    ],
+    "n": 2,
+    "accepted": true
+  },
+  {
+    "path": [
+      "candidate",
+      "coverage",
+      "snapshot"
+    ],
+    "n": 16777216,
+    "accepted": true
+  },
+  {
+    "path": [
+      "candidate",
+      "coverage",
+      "snapshot"
+    ],
+    "n": 16777217,
+    "accepted": false
+  },
+  {
+    "path": [
+      "candidate",
+      "checkpoint",
+      "ct"
+    ],
+    "n": 17,
+    "accepted": false
+  },
+  {
+    "path": [
+      "candidate",
+      "checkpoint",
+      "ct"
+    ],
+    "n": 18,
+    "accepted": true
+  },
+  {
+    "path": [
+      "candidate",
+      "checkpoint",
+      "ct"
+    ],
+    "n": 16777232,
+    "accepted": true
+  },
+  {
+    "path": [
+      "candidate",
+      "checkpoint",
+      "ct"
+    ],
+    "n": 16777233,
+    "accepted": false
+  }
+]

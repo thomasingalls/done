@@ -1,0 +1,9 @@
+{
+  "sameWitnessPasses": true,
+  "missingContentRefused": true,
+  "invisiblePendingOriginalRefusedWhenMissing": true,
+  "witness": {
+    "events": 2,
+    "hash": "4e31f49f3095ac3ef32a39e6181b2c0fdb8d4b188b8373f325b5f4b6228e5e2e"
+  }
+}

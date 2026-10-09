@@ -1,0 +1,614 @@
+{
+  "base": "5334a7c1aea698c926a626c8618daa527ef42f58",
+  "claim": "36 files in two bounded selections at identical frozen inputs; no whole-wrapper or immutable aggregate qualification",
+  "selections": [
+    {
+      "rawOutput": "test-results/release-validation/2026-09-13T19-37-03.201Z",
+      "summary": {
+        "schema": 1,
+        "selection": "account-fixtures",
+        "claim": "Only this bounded selection; no native aggregate or release qualification.",
+        "status": "passed",
+        "stages": [
+          {
+            "id": "test:test/account-activation/controls.test.mjs",
+            "key": "7468c199a465267d660996116fa62808a1a0f37b671c54800edd901fae83e661",
+            "status": "passed",
+            "elapsedMs": 2161,
+            "cases": 4,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-activation/core.test.mjs",
+            "key": "e976bb5a5a6889a9f4d5bd345fee983473d0ccb33419b9bdbf5ae8be5e29a61c",
+            "status": "passed",
+            "elapsedMs": 6889,
+            "cases": 14,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-activation/restart.test.mjs",
+            "key": "008259dd19e48fb8e39ec26c7fdb3e623677705a6f9277f50019aad5bc5d39b0",
+            "status": "passed",
+            "elapsedMs": 2775,
+            "cases": 2,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-admission/controls.test.mjs",
+            "key": "b1acaafe20c8ee9a6ca99e5d31f345ce5932f4bbabd62151968b57ce6e298f31",
+            "status": "passed",
+            "elapsedMs": 1971,
+            "cases": 2,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-admission/core.test.mjs",
+            "key": "72bfe1600d3d5426d711dd9a8efacd5380a7ba9a5978dc934de3265d23511007",
+            "status": "passed",
+            "elapsedMs": 4813,
+            "cases": 12,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-admission/restart.test.mjs",
+            "key": "9be35d315a25f615557413704abf46539338fe7732901eea68a95f6543133d23",
+            "status": "passed",
+            "elapsedMs": 4246,
+            "cases": 5,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-authority/controls.test.mjs",
+            "key": "94c3c9bd2793417d51a3b6db97a29b5a357c00b3097d4cd02359be51b48aac38",
+            "status": "passed",
+            "elapsedMs": 1736,
+            "cases": 2,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-authority/core.test.mjs",
+            "key": "289f022b5896736b5aec9303d0a98128b73d5afe22eb67a6370e967c47c67641",
+            "status": "passed",
+            "elapsedMs": 1753,
+            "cases": 4,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-authority/properties.test.mjs",
+            "key": "9274ef6e696f20bcc3a4b82de90745804b2d239d35e3e33ac453627c00d2edd3",
+            "status": "passed",
+            "elapsedMs": 3167,
+            "cases": 1,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-authority/restart.test.mjs",
+            "key": "82e159a6f876dc5cd6991fcc5efc8348d4395646556e5d71931fcb84398e4c51",
+            "status": "passed",
+            "elapsedMs": 2529,
+            "cases": 3,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-core/controls.test.mjs",
+            "key": "809c6073e38079a430c6c288de3e5732e8d51518fe0d8bbdd292b3029319d86d",
+            "status": "passed",
+            "elapsedMs": 1955,
+            "cases": 3,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-core/properties.test.mjs",
+            "key": "57463dc7e6aadf2eb1ab7e05680dca0bbf28163f429ae5d0c29fafe98918bc97",
+            "status": "passed",
+            "elapsedMs": 5377,
+            "cases": 2,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-core/restart.test.mjs",
+            "key": "63cac34540d839d93da7a9469b471d8a8dfa829e61ac59e172abbd16c3275f26",
+            "status": "passed",
+            "elapsedMs": 5957,
+            "cases": 10,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-handoff/core.test.mjs",
+            "key": "a47950a3e565a1b4f1e37b49840b7d44b30bc7ff96cde88e14402f4d6d990fdf",
+            "status": "passed",
+            "elapsedMs": 5023,
+            "cases": 5,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-handoff/es256.test.mjs",
+            "key": "152653592bcd39b7392f4478d33ad09426f6ecfe33ae36c70693f81c0a5b62d8",
+            "status": "passed",
+            "elapsedMs": 1595,
+            "cases": 1,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-promotion/core.test.mjs",
+            "key": "2bce461900ba7981ae083f9a105e80200664cfbd257c1f8d7c33539f7f008b9e",
+            "status": "passed",
+            "elapsedMs": 4017,
+            "cases": 6,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-recovery/controls.test.mjs",
+            "key": "ce1148f84fd6bde469446b371e372c2ad12ac6c184bd0a9e17fe382ac43835f7",
+            "status": "passed",
+            "elapsedMs": 1921,
+            "cases": 3,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-recovery/core.test.mjs",
+            "key": "993b743b332708587373f553d12087c009482de2588f520eb3c5c2d9341d5f49",
+            "status": "passed",
+            "elapsedMs": 1965,
+            "cases": 11,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-recovery/crypto.test.mjs",
+            "key": "6524f325ca64d4bd6debbaeb27cb2e60c59f88fd9ef7bce200b391b86f2da31f",
+            "status": "passed",
+            "elapsedMs": 1687,
+            "cases": 3,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-recovery/properties.test.mjs",
+            "key": "700c3cf308715e88d1c0ff3f90cb55ecffaed5152a6bd52487ac1cbf73114453",
+            "status": "passed",
+            "elapsedMs": 3904,
+            "cases": 1,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/account-recovery/restart.test.mjs",
+            "key": "3efef1d84cbd530218b9cf72acf37910da8c415e4d337c2f886d5b69435add15",
+            "status": "passed",
+            "elapsedMs": 4393,
+            "cases": 6,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/accountDelivery.test.ts",
+            "key": "15502361017d0752f0d59af6b489156a963febcdcf17a2fb21b909e15403fdbc",
+            "status": "passed",
+            "elapsedMs": 5704,
+            "cases": 12,
+            "reason": null,
+            "groupDrained": true
+          }
+        ],
+        "startedAt": "2026-09-13T19:37:03.204Z",
+        "input": "30c7777289e9183c542f14de238e94f3dfdd795f9a5605a597898f4bc07da493",
+        "completedAt": "2026-09-13T19:39:10.847Z"
+      },
+      "elapsedMs": 127643,
+      "rawInputArchiveSha256": "2cd7f55166e8841039b9e1662b07e0a2fe6524c14fd23f2a4f33cbb7786c7913"
+    },
+    {
+      "rawOutput": "test-results/release-validation/2026-09-13T19-39-11.969Z",
+      "summary": {
+        "schema": 1,
+        "selection": "generated-tests",
+        "claim": "Only this bounded selection; no native aggregate or release qualification.",
+        "status": "passed",
+        "stages": [
+          {
+            "id": "test:test/account-core/core.test.mjs",
+            "key": "a11383167fb16f074962f20d628d337e34c421ee00366880cc4c84b511707c88",
+            "status": "passed",
+            "elapsedMs": 2225,
+            "cases": 13,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/accountInboundControls.test.ts",
+            "key": "2047c0004946b0f7a84c047ecc192f29a5243c967e79b6a9ffc788e1b208ec11",
+            "status": "passed",
+            "elapsedMs": 5531,
+            "cases": 8,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/contentRecord.test.ts",
+            "key": "13886d86cb68fd443a2068287aa7364f1046424240ff0c059ea481dee036e17b",
+            "status": "passed",
+            "elapsedMs": 4217,
+            "cases": 13,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/custodyCrypto.test.ts",
+            "key": "6ecca5730f2a0f7a2744f1dcbda85d2188cfbe718f6e06b0a39965e837b9e602",
+            "status": "passed",
+            "elapsedMs": 4009,
+            "cases": 12,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/journalCodec.test.ts",
+            "key": "e3010829c94b1e64c69b519ba0d1d3367912072bc5521a72f63aa7e3b60c7af7",
+            "status": "passed",
+            "elapsedMs": 4259,
+            "cases": 9,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/legacyExport.test.ts",
+            "key": "b1207254ce9a9fb468adc6f18750f85cf3957718a8183acd67c1eb8d5c91c175",
+            "status": "passed",
+            "elapsedMs": 5052,
+            "cases": 23,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/legacySource.test.ts",
+            "key": "283ca047b18ddfb909e749b9dd42a9b2b179c8879d5f1931dafadd9b7f08de6e",
+            "status": "passed",
+            "elapsedMs": 4385,
+            "cases": 18,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/localGenesis.test.ts",
+            "key": "329a19741cc4628eeaf629f4115699572c70fb3f367b26d5e43815354ffdaf76",
+            "status": "passed",
+            "elapsedMs": 4761,
+            "cases": 15,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/networkEnvelope.test.ts",
+            "key": "c9353d3929fd01f3a2895acdc5a0104f561b70b62410ce5bf937b4216bf69941",
+            "status": "passed",
+            "elapsedMs": 4450,
+            "cases": 22,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/ownedStartup.test.ts",
+            "key": "7797fffe09a133903183928c17b5b7e80e7c51b74acffcfbb9996b6732c27d4d",
+            "status": "passed",
+            "elapsedMs": 4292,
+            "cases": 27,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/seam.test.ts",
+            "key": "9172c162998c03aeb3adcec6578850b915567f1016b1ed72bab7810d8401ec07",
+            "status": "passed",
+            "elapsedMs": 4426,
+            "cases": 5,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/storageProperties.test.ts",
+            "key": "c3a06a5bdbcb8b0d3b009a3f9af466f3cbe0e60649cf662b5e8a42e4e76de26c",
+            "status": "passed",
+            "elapsedMs": 4425,
+            "cases": 7,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/storageSchedule.test.ts",
+            "key": "cf5d7564ee399e9bb54921f2eb83fd9c89ac1c11f42ec531e0062bae88f2fde8",
+            "status": "passed",
+            "elapsedMs": 4426,
+            "cases": 33,
+            "reason": null,
+            "groupDrained": true
+          },
+          {
+            "id": "test:test/syncProperties.test.ts",
+            "key": "8d81a4c246e8a3394c9e2125e715bcd7a287ed144da3264f0d35824e944a9be0",
+            "status": "passed",
+            "elapsedMs": 37171,
+            "cases": 17,
+            "reason": null,
+            "groupDrained": true
+          }
+        ],
+        "startedAt": "2026-09-13T19:39:11.972Z",
+        "input": "30c7777289e9183c542f14de238e94f3dfdd795f9a5605a597898f4bc07da493",
+        "completedAt": "2026-09-13T19:41:21.757Z"
+      },
+      "elapsedMs": 129785,
+      "rawInputArchiveSha256": "2cd7f55166e8841039b9e1662b07e0a2fe6524c14fd23f2a4f33cbb7786c7913"
+    }
+  ],
+  "input": {
+    "revision": "5334a7c1aea698c926a626c8618daa527ef42f58",
+    "sourceDigest": "029db6e657ac6ab263d2d5b2d3e6cdc9b0113d28f563df89d1b837e1a6994337",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "sourceCount": 15179,
+    "dependencyCount": 8761
+  },
+  "counts": {
+    "selectedFiles": 36,
+    "selectedCases": 334,
+    "newNodeFiles": 11,
+    "newNodeCases": 56,
+    "newPassingProductHistories": 660,
+    "activationExpectedFailureSeed": 9110402,
+    "activationExpectedFailureRequestedRuns": 12,
+    "priorGeneralFiles": 117,
+    "priorGeneralCases": 1150,
+    "currentGeneralFiles": 128,
+    "currentGeneralCases": 1206,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 32,
+    "runnerControls": 111,
+    "generatedControlHistories": 3200,
+    "vitestControlReceipts": 13,
+    "manifestObligations": 612,
+    "unresolved": 289,
+    "unresolvedTestFiles": 130,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 577448
+  },
+  "artifacts": [
+    {
+      "path": "account-selection-receipts.json.gz",
+      "rawSha256": "dd730f7bdd15ee71082f9de728b0ee8e59a7c550cfe8ae8fae10d1b93ec48afc",
+      "normalizedSha256": "5fe1298674d236d2fdad43b800942e7725ca285ed19da3f7db40fede4219eae3",
+      "compressedSha256": "9262aa135ae60e0c330f82db2b52ef6265487634a1897931ef021b8b7167820e",
+      "normalizedBytes": 198974,
+      "compressedBytes": 15788
+    },
+    {
+      "path": "generated-selection-receipts.json.gz",
+      "rawSha256": "b74b4b29867b4aa9f3f5500b6fbc3a8b4bbb21be056eaf06d51d3593f495fe6b",
+      "normalizedSha256": "97f26f455d77f5323c668056e7fde4af2f18bdbb84d2a378ce8090aeda13c328",
+      "compressedSha256": "d17c0b02e026aace409e6ffbad0079b074cac23a814fd1fc060860527ce21d00",
+      "normalizedBytes": 312478,
+      "compressedBytes": 25116
+    },
+    {
+      "path": "vitest-controls.json.gz",
+      "rawSha256": "5cd3f484681bd0eb7b927875acdba150592d02256c7672337162dad717c841c6",
+      "normalizedSha256": "b228bde271f8a6b136d8a9eae81ddbec3ef47e236ea4ca5bd8dd6d32879c52b6",
+      "compressedSha256": "56ec2b7429f557775034e6c6f9d21edf62de27815cb44698fff9dde4ec01239d",
+      "normalizedBytes": 122639,
+      "compressedBytes": 11116
+    },
+    {
+      "path": "account-selection.log.gz",
+      "rawSha256": "84244954f836fb0f4e345f94f39761f130c50bdd2117090b8195c7fb08433ea2",
+      "normalizedSha256": "ed2d44e1c8753c1393493cb4f1066a8e946e60ffba725fab0b769cdb5ae51c9a",
+      "compressedSha256": "18eddaba94f663fb0684df9e20ea35dfb46d192d1ee91dd74f37786b072e67fd",
+      "normalizedBytes": 1375,
+      "compressedBytes": 300
+    },
+    {
+      "path": "generated-selection.log.gz",
+      "rawSha256": "b222683455ad4440c3bf590eb45a1a27dc8399d847a6dd431fe0bc164107a55f",
+      "normalizedSha256": "6a77639987c28ad416a3e6c3b825a3306edbddd8b1244ad0b0a122c88e04be50",
+      "compressedSha256": "71570c5e4047ef4b7f047f0ebe1a793d3d13b8522aa2031acb070b2a9d80a343",
+      "normalizedBytes": 899,
+      "compressedBytes": 316
+    },
+    {
+      "path": "pure-first.log.gz",
+      "rawSha256": "c796d9f77bd400834f2bca790198850886d34c44fda97125b273becf3695a9cd",
+      "normalizedSha256": "9beb072a89635190dfc1d979b6b53654fbdae0a46d409e5f1c586a3c43df67e2",
+      "compressedSha256": "0e4eea53973cb5a62ec67c68949ea6e8cd0282e62c3ba3f9776acbee3a90a2ad",
+      "normalizedBytes": 4224,
+      "compressedBytes": 1575
+    },
+    {
+      "path": "pure-final.log.gz",
+      "rawSha256": "241aa93df12900ba35ed94f35e49f434b0a94a72787b9b5358d4326a85cee991",
+      "normalizedSha256": "241aa93df12900ba35ed94f35e49f434b0a94a72787b9b5358d4326a85cee991",
+      "compressedSha256": "7cad5cb4dd1265fef706d0f95c769092e439e0b327c9a8cc3276d8559e0c0bc3",
+      "normalizedBytes": 10134,
+      "compressedBytes": 3604
+    },
+    {
+      "path": "ownership.log.gz",
+      "rawSha256": "7364267411fd526aa577024fa0d769e3d3d3a6d27a5aee6377c08a232dd4ed06",
+      "normalizedSha256": "e6a3f88e36f78d2bcd9f06acd684a4c2ced88df7c84e725e709b3505a737fe32",
+      "compressedSha256": "f57506f0a10cbf9b9ab74b20e342463b4972004636d346333ade707c3a391135",
+      "normalizedBytes": 10834,
+      "compressedBytes": 2662
+    },
+    {
+      "path": "process.log.gz",
+      "rawSha256": "b39b93ca7dfe18835692116ceda9c5cd3ace12f70dfb1f9490c4495902092d53",
+      "normalizedSha256": "b39b93ca7dfe18835692116ceda9c5cd3ace12f70dfb1f9490c4495902092d53",
+      "compressedSha256": "c2fc6255e871ffb92e673669233a41dc20e132206d92d0da2748cd1c1c61c25c",
+      "normalizedBytes": 707,
+      "compressedBytes": 427
+    },
+    {
+      "path": "typecheck.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "lint.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "inventory-record.log.gz",
+      "rawSha256": "208b3fea9b23cacffbb62b133f8b75717ff528ec57b0e27b9af2f35fc020257a",
+      "normalizedSha256": "208b3fea9b23cacffbb62b133f8b75717ff528ec57b0e27b9af2f35fc020257a",
+      "compressedSha256": "4c833374d482530af769f087d554695203f6285433c0164b78e2fb9c64d29374",
+      "normalizedBytes": 324,
+      "compressedBytes": 237
+    },
+    {
+      "path": "manifest-record.log.gz",
+      "rawSha256": "65f535f74dcf84daa9a41973bce42533c733dc553051495b0b8d15916f455f37",
+      "normalizedSha256": "65f535f74dcf84daa9a41973bce42533c733dc553051495b0b8d15916f455f37",
+      "compressedSha256": "223373a6f111ccee40af57a73e8654eeff73fb0fe371a3d30e7e8af7a0521926",
+      "normalizedBytes": 100,
+      "compressedBytes": 106
+    },
+    {
+      "path": "census-before.json.gz",
+      "rawSha256": "bc0e28f5a01bda29c1ce9229fa3370273a111e09a4a318469a1eb465c16b1444",
+      "normalizedSha256": "bc0e28f5a01bda29c1ce9229fa3370273a111e09a4a318469a1eb465c16b1444",
+      "compressedSha256": "26013ad67d53c083c52f60c9bdb46489623cbfa59b04eccd63682d608eb0bb5e",
+      "normalizedBytes": 927,
+      "compressedBytes": 238
+    },
+    {
+      "path": "preservation-before.json.gz",
+      "rawSha256": "a7deebf1b7710aacb137a392f3032170f927b8030b0a01675219e39108dc3dce",
+      "normalizedSha256": "a7deebf1b7710aacb137a392f3032170f927b8030b0a01675219e39108dc3dce",
+      "compressedSha256": "7b685f6da861c66e61b545861081902cc805f41cf29bb3dcf5fad8e4f643def2",
+      "normalizedBytes": 1159,
+      "compressedBytes": 301
+    },
+    {
+      "path": "gate-signature.log.gz",
+      "rawSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "normalizedSha256": "1660471ddbab7774678f415ed7a6cd9a40f68347aaba2bcc932668fe7b017910",
+      "compressedSha256": "ef67f7843fb941ebd1f443b47807195bbf26360f2186ff4508861497f7d6d450",
+      "normalizedBytes": 115,
+      "compressedBytes": 134
+    },
+    {
+      "path": "gate-inventory.log.gz",
+      "rawSha256": "dfcc076dcec052ee37456b5cb32eed5b3a4fb77b0ea41915e5eb47b5f1880415",
+      "normalizedSha256": "dfcc076dcec052ee37456b5cb32eed5b3a4fb77b0ea41915e5eb47b5f1880415",
+      "compressedSha256": "10cdfaa56542a468378678b47c18b16de434168a0ba2f3190287c197b96309d0",
+      "normalizedBytes": 323,
+      "compressedBytes": 237
+    },
+    {
+      "path": "gate-manifest.log.gz",
+      "rawSha256": "65f535f74dcf84daa9a41973bce42533c733dc553051495b0b8d15916f455f37",
+      "normalizedSha256": "65f535f74dcf84daa9a41973bce42533c733dc553051495b0b8d15916f455f37",
+      "compressedSha256": "223373a6f111ccee40af57a73e8654eeff73fb0fe371a3d30e7e8af7a0521926",
+      "normalizedBytes": 100,
+      "compressedBytes": 106
+    },
+    {
+      "path": "gate-authority.log.gz",
+      "rawSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "normalizedSha256": "9b9f19c04766bb0c43114e7b93e42311f625f676b14215eb3608583fbf0862b8",
+      "compressedSha256": "0413e5616e5972b53f4bd42a80406f465a1bd5497bd50db962e10f51e9db6c4f",
+      "normalizedBytes": 750,
+      "compressedBytes": 447
+    },
+    {
+      "path": "gate-release-blocked.log.gz",
+      "rawSha256": "13dc7379213eefa63d36381ef8362e4de5e8a88e3561186474cc24271c31e63e",
+      "normalizedSha256": "c48be94207cb074a333cbf686962747982f5f647694c49271e55bb90a6bff6bd",
+      "compressedSha256": "7dbca40d4c41e799af7d6efdbebe23710a1f9ac8c3369710ca721d99a0381951",
+      "normalizedBytes": 1015,
+      "compressedBytes": 558
+    },
+    {
+      "path": "gate-format.log.gz",
+      "rawSha256": "4ef4a751e46c0d360aedf7c06c77f1360a26976e48126bacf06b5d9e7d5ff83b",
+      "normalizedSha256": "4ef4a751e46c0d360aedf7c06c77f1360a26976e48126bacf06b5d9e7d5ff83b",
+      "compressedSha256": "6419712739a9692251027fb8a2c64aba80faaf5c266786f59c5e1c2d5260c2e6",
+      "normalizedBytes": 112,
+      "compressedBytes": 109
+    },
+    {
+      "path": "gate-whitespace.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalizedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "compressedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "normalizedBytes": 0,
+      "compressedBytes": 20
+    },
+    {
+      "path": "source-patch.diff.gz",
+      "rawSha256": "3692bd9f6bc27bf6ca74a3c15a2c280c008b0aab1b5a4bfa70fdd781c235739b",
+      "normalizedSha256": "3692bd9f6bc27bf6ca74a3c15a2c280c008b0aab1b5a4bfa70fdd781c235739b",
+      "compressedSha256": "602f9e640cfb04207eedf87c69eddeb8d7fa1d0a87f087131990cdc051c9d852",
+      "normalizedBytes": 13533,
+      "compressedBytes": 3640
+    },
+    {
+      "path": "selected-source-pins.json.gz",
+      "rawSha256": "6abc6c4c994bda91e0f6291095373f66a529fc6ed8aea98718a63671bfcd4d93",
+      "normalizedSha256": "6abc6c4c994bda91e0f6291095373f66a529fc6ed8aea98718a63671bfcd4d93",
+      "compressedSha256": "ee6d51e59105f2a4c8ee65c2cbf057a3cb2f9629a852b2992f9993458a9f4b31",
+      "normalizedBytes": 12128,
+      "compressedBytes": 3611
+    },
+    {
+      "path": "product-test-preservation.json.gz",
+      "rawSha256": "1467d8d03b0ca87b4a8c3c379845d04b1d77da84c9ca7c541d7cac693a7ee7c8",
+      "normalizedSha256": "1467d8d03b0ca87b4a8c3c379845d04b1d77da84c9ca7c541d7cac693a7ee7c8",
+      "compressedSha256": "45c465f80fcb65f494f808f0390dd4619d671c106074a48fb8094742802df312",
+      "normalizedBytes": 5011,
+      "compressedBytes": 1822
+    }
+  ],
+  "finalGatesSha256": "da01d5f9b8963f563f68d198b4af1417a0a14b6d7e1818a0ac2431ae28029ba3",
+  "preservationSha256": "daa1c927fbbd8a35cf61d4309a36a480111eea1809c5b2ef7b791865a93a86e4",
+  "limits": [
+    "First new control asserted the wrong capitalization of a duplicate-census error. Actual refusal was correct; corrected control passes. No product selection failed or needed a retry/deadline increase.",
+    "Only boolean conditional data expressions are admitted; nonboolean truthiness, active helper calls and conditional registrations still refuse.",
+    "All prior 117 general stage contracts and 1150 identities are unchanged. These two runs cover 36 files; remaining 92 general files retain earlier evidence.",
+    "Optional wrapper reports, explicit historical-source variants, native fixtures and prerequisites remain separate obligations.",
+    "Source/tests and generated snapshots match frozen execution; subsequent docs/evidence changes are not an immutable aggregate.",
+    "Complete raw input archives remain at the recorded local paths; compact evidence retains their hashes and actual source/dependency/runtime digests.",
+    "Eleven existing native ownership controls retain prior evidence; no browser ran in this phase.",
+    "Current host timings do not qualify a supported workload or platform."
+  ],
+  "prospectivePacketCeilingBytes": 150000
+}

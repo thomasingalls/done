@@ -1,0 +1,33 @@
+{
+  "points": [
+    "P0-empty",
+    "P1-genesis",
+    "P2-journal",
+    "P3-flushed",
+    "P3-locked",
+    "P3-compacted",
+    "P3-cold",
+    "P4-generated",
+    "P4-finalization-pending",
+    "P4-confirmed",
+    "P5-prepared",
+    "P5-genesis",
+    "P5-lost-reply",
+    "P5-receipted",
+    "P5-selected",
+    "P5-openOwnedCapturedAccountWorkspace",
+    "P5-openOwnedAccountSpoolWorkspace",
+    "P5-openOwnedAccountDeliveryWorkspace",
+    "P6-delivered",
+    "P6-locked",
+    "P6-cold"
+  ],
+  "assertions": {
+    "journalOnly": true,
+    "localColdReplay": true,
+    "realBrowserRecovery": true,
+    "lostActualFinalReply": true,
+    "accountColdReplay": true
+  },
+  "acceptedThrough": 4
+}

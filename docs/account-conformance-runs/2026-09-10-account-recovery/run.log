@@ -1,0 +1,51 @@
+(node:65455) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65455) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ control: removing recovery verification actually accepts a one-factor finalization (55.89575ms)
+✔ control: removing passkey verification actually accepts a one-factor finalization (35.556959ms)
+✔ control: removing the sealed-root check accepts an attacker-substituted authority root (28.343125ms)
+(node:65456) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65456) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ both proofs finalize one exact recovery preparation (-8) (34.472917ms)
+✔ both proofs finalize one exact recovery preparation (-7) (18.93475ms)
+✔ wrong code, binding and substituted private keys cannot confirm (24.56375ms)
+✔ unconfirmed registration, another attempt, malformed draft and extra authority fields refuse (21.043834ms)
+✔ finalization rechecks cancel after verification (10.538ms)
+✔ finalization rechecks expiry after verification (10.792459ms)
+✔ finalization rechecks activation after verification (10.620916ms)
+✔ finalization rechecks key after verification (10.312833ms)
+✔ finalization before-commit write failure has one retry outcome (15.009875ms)
+✔ finalization after-commit write failure has one retry outcome (10.557958ms)
+✔ schema v1 requires an explicit offline additive upgrade and preserves pending registration (7.272125ms)
+(node:65457) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65457) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ independent Node crypto opens the complete three-part payload and verifies confirmation bytes (20.290875ms)
+✔ sealed root, X25519 private/public and bootstrap private/public checks are independently necessary (8.634667ms)
+✔ normalization preserves the selected full-width alphabet and rejects non-codes (0.36425ms)
+(node:65458) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65458) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native saved-code reentry, full browser restart, owner exclusion and lost finalization response (1628.311542ms)
+(node:65459) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65459) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 160 generated recovery histories obey an independent durable outcome ledger (2094.963583ms)
+(node:65460) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65460) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit begin-recovery resumes from a cold process (416.379292ms)
+✔ SIGKILL after-commit begin-recovery resumes from a cold process (397.543042ms)
+✔ SIGKILL before-commit finalize-recovery resumes from a cold process (414.33325ms)
+✔ SIGKILL after-commit finalize-recovery resumes from a cold process (399.158209ms)
+✔ SIGKILL before-commit cancel-recovery resumes from a cold process (407.465125ms)
+✔ SIGKILL after-commit cancel-recovery resumes from a cold process (364.956375ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2716.705458

@@ -1,0 +1,41 @@
+Account handoff evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-handoff/2026-09-11T13-05-43.771Z
+(node:56078) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56078) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ binding is derived from the exact admitted credential, signed in row-12 bytes and stable across restart (72.219958ms)
+✔ pending, wrong-capability, forged SPKI and changed current eligibility refuse issuance (40.139333ms)
+✔ credential state changed after signing cannot return a binding from a stale observation (43.098083ms)
+✔ 60 generated issuance histories preserve the independent active/pending eligibility ledger (3289.700458ms)
+✔ credential-integrity control actually signs a substituted key only when the COSE/SPKI guard is disabled (67.39425ms)
+✔ 200 generated OpenSSL DER signatures convert to valid WebCrypto/P1363 scalars; malformed DER refuses (33.103583ms)
+(node:56080) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56080) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ handoff selects exactly one Account route and cold classifies offline with passkey plus device factor (1822.082666ms)
+✔ real browser ES256 passkey assertion completes handoff and offline startup (1857.09625ms)
+✔ renderer interruption before handoff-prepared commit resumes exactly (2148.024542ms)
+✔ renderer interruption after handoff-prepared commit resumes exactly (2469.859459ms)
+✔ renderer interruption before index commit resumes exactly (2146.418417ms)
+✔ renderer interruption after index commit resumes exactly (2423.628125ms)
+Account handoff campaign is still running; results stream to run.log.
+✔ renderer interruption before handoff-selected commit resumes exactly (2129.956ms)
+✔ renderer interruption after handoff-selected commit resumes exactly (2411.595042ms)
+✔ binding and passkey refusals precede any index mutation; replay cannot reopen a new attempt (1790.382708ms)
+✔ missing, closed and changed Account routes refuse without repair or Local fallback (1745.041ms)
+✔ passkey fault control actually selects and classifies with an invalid assertion (1829.137166ms)
+✔ cancelled index acknowledgement retains the permit until the native commit drains (1929.794958ms)
+Account handoff campaign is still running; results stream to run.log.
+Account handoff campaign is still running; results stream to run.log.
+Account handoff campaign is still running; results stream to run.log.
+✔ 24 generated handoff histories preserve independent writing and source inventory across aborted commits and restart (39750.632166ms)
+✔ actual previous reader and Local owners refuse the Account handoff carrier (1847.506833ms)
+✔ missing or damaged provenance refuses startup without creating or rewriting carriers (1569.05575ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 68795.282875
+Account handoff campaign passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-handoff/2026-09-11T13-05-43.771Z

@@ -1,0 +1,361 @@
+[
+  {
+    "label": "initial-control",
+    "selection": "content-control",
+    "source": "test-results/release-validation/2026-09-13T09-37-50.105Z",
+    "status": "passed",
+    "input": "137e25fadc6d07cfdf143fa161a6b57294605fccf89e0c5ae612f191c4d90ff4",
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      12569
+    ],
+    "totalMs": 34156,
+    "content": [
+      {
+        "baselines": 1,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "swallow-unreadable-record",
+            "assertion": "tag-refuses-whole-load",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          },
+          {
+            "variant": "swallow-unreadable-record",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "initial-full",
+    "selection": "standalone-content",
+    "source": "test-results/content/2026-09-13T09-39-00.445Z",
+    "status": "passed",
+    "input": "137e25fadc6d07cfdf143fa161a6b57294605fccf89e0c5ae612f191c4d90ff4",
+    "stageCases": [
+      18
+    ],
+    "stageElapsedMs": [
+      47475
+    ],
+    "totalMs": 67371,
+    "content": [
+      {
+        "baselines": 13,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "early-transaction-success",
+            "assertion": "no-encryption-after-aborted-reservation",
+            "status": "detected"
+          },
+          {
+            "id": "skip-reservation",
+            "assertion": "abandoned-encryption-remains-counted",
+            "status": "detected"
+          },
+          {
+            "id": "omit-generation-fence",
+            "assertion": "changed-generation-refuses-commit",
+            "status": "detected"
+          },
+          {
+            "id": "swallow-unreadable-record",
+            "assertion": "tag-refuses-whole-load",
+            "status": "detected"
+          },
+          {
+            "id": "allow-ceiling-equality",
+            "assertion": "ceiling-refuses-before-encryption",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          },
+          {
+            "variant": "early-transaction-success",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          },
+          {
+            "variant": "skip-reservation",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          },
+          {
+            "variant": "omit-generation-fence",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          },
+          {
+            "variant": "swallow-unreadable-record",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          },
+          {
+            "variant": "allow-ceiling-equality",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "initial-selected-baseline",
+    "selection": "standalone-content",
+    "source": "test-results/content-adapter-selected-baseline",
+    "status": "passed",
+    "input": "137e25fadc6d07cfdf143fa161a6b57294605fccf89e0c5ae612f191c4d90ff4",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      8644
+    ],
+    "totalMs": 29241,
+    "content": [
+      {
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:5173",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-full",
+    "selection": "standalone-content",
+    "source": "test-results/content/2026-09-13T09-43-00.873Z",
+    "status": "passed",
+    "input": "c0641b3b302355e624e0424552e4f61f206343e11e13e7986ba19dc0c0eb1038",
+    "stageCases": [
+      18
+    ],
+    "stageElapsedMs": [
+      47312
+    ],
+    "totalMs": 70448,
+    "content": [
+      {
+        "baselines": 13,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "early-transaction-success",
+            "assertion": "no-encryption-after-aborted-reservation",
+            "status": "detected"
+          },
+          {
+            "id": "skip-reservation",
+            "assertion": "abandoned-encryption-remains-counted",
+            "status": "detected"
+          },
+          {
+            "id": "omit-generation-fence",
+            "assertion": "changed-generation-refuses-commit",
+            "status": "detected"
+          },
+          {
+            "id": "swallow-unreadable-record",
+            "assertion": "tag-refuses-whole-load",
+            "status": "detected"
+          },
+          {
+            "id": "allow-ceiling-equality",
+            "assertion": "ceiling-refuses-before-encryption",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:49678",
+            "closed": true
+          },
+          {
+            "variant": "early-transaction-success",
+            "origin": "http://127.0.0.1:49802",
+            "closed": true
+          },
+          {
+            "variant": "skip-reservation",
+            "origin": "http://127.0.0.1:49810",
+            "closed": true
+          },
+          {
+            "variant": "omit-generation-fence",
+            "origin": "http://127.0.0.1:49821",
+            "closed": true
+          },
+          {
+            "variant": "swallow-unreadable-record",
+            "origin": "http://127.0.0.1:49833",
+            "closed": true
+          },
+          {
+            "variant": "allow-ceiling-equality",
+            "origin": "http://127.0.0.1:49848",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-control",
+    "selection": "content-control",
+    "source": "test-results/release-validation/2026-09-13T09-46-42.536Z",
+    "status": "passed",
+    "input": "3229b0004e6d49e0ef3878765167be5156978ede92b0374fd53f1db03acd832a",
+    "stageCases": [
+      2
+    ],
+    "stageElapsedMs": [
+      16257
+    ],
+    "totalMs": 39937,
+    "content": [
+      {
+        "baselines": 1,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "swallow-unreadable-record",
+            "assertion": "tag-refuses-whole-load",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:49986",
+            "closed": true
+          },
+          {
+            "variant": "swallow-unreadable-record",
+            "origin": "http://127.0.0.1:50013",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-selected-baseline",
+    "selection": "standalone-content",
+    "source": "test-results/content-adapter-selected-baseline-vite",
+    "status": "passed",
+    "input": "3229b0004e6d49e0ef3878765167be5156978ede92b0374fd53f1db03acd832a",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      10793
+    ],
+    "totalMs": 34659,
+    "content": [
+      {
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "content",
+            "origin": "http://127.0.0.1:49996",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T09-48-10.221Z",
+    "status": "passed",
+    "input": "99de03658c0018e8301793df7a976f98024a3664825a6077f97921ef1e399abc",
+    "stageCases": [
+      3,
+      4,
+      10,
+      6,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2097,
+      4221,
+      1726,
+      1893,
+      5291,
+      2164
+    ],
+    "totalMs": 41042,
+    "content": []
+  }
+]

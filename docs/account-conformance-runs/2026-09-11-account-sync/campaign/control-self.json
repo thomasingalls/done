@@ -1,0 +1,15 @@
+{
+  "effective": true,
+  "observations": [
+    {
+      "mode": "baseline",
+      "advanced": false,
+      "editorState": "active"
+    },
+    {
+      "mode": "self",
+      "advanced": true,
+      "editorState": "active"
+    }
+  ]
+}

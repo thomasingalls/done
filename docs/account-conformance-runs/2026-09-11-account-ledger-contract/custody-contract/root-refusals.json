@@ -1,0 +1,14 @@
+{
+  "wrongOperator": true,
+  "expectedPinFields": 4,
+  "storedFields": 3,
+  "authenticatedWrongSeed": true,
+  "lengths": [
+    31,
+    33
+  ],
+  "versions": [
+    0,
+    2
+  ]
+}

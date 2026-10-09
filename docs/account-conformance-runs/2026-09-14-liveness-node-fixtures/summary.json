@@ -1,0 +1,122 @@
+{
+  "base": "b5b83ce279bbb7d8a8ac43e8aff7645136fdd042",
+  "claim": "Account liveness Node fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T12-13-51.959Z",
+  "summary": {
+    "schema": 1,
+    "selection": "liveness-node-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-liveness/instrument.test.mjs",
+        "key": "9f1e33e5b3e0a42d0e0fe1ca790ed754c70db7ac8cda3cb2dac7d63fb7343a8b",
+        "status": "passed",
+        "elapsedMs": 1778,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-liveness/service-cache.test.mjs",
+        "key": "f5bbe481a46a0be7c83ea022a07f07c4909258e2b1accc086554da39a643c5b7",
+        "status": "passed",
+        "elapsedMs": 12690,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T12:13:51.962Z",
+    "input": "dd14fbf901852f0f7eb1118d6ae86539c44ac94354042ccbefd7fa5476f99168",
+    "completedAt": "2026-09-14T12:14:31.197Z"
+  },
+  "elapsedMs": 39235,
+  "rawInputArchiveSha256": "27094f8ba989a0024c6b9a3d33dec1f5fca83c46b5f04e667e075f0579d84629",
+  "rawBrowserArchiveSha256": null,
+  "input": {
+    "revision": "b5b83ce279bbb7d8a8ac43e8aff7645136fdd042",
+    "sourceDigest": "f53a632fdd323a89db345f7ecf040586fee105ca8d3a92840b0f89fbe6a5867d",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    }
+  },
+  "counts": {
+    "selectedFiles": 2,
+    "selectedCases": 6,
+    "browserFiles": 0,
+    "fixtureInstances": 0,
+    "serviceFixtures": 3,
+    "generatedHistories": 0,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 216,
+    "priorGeneralCases": 1739,
+    "currentGeneralFiles": 218,
+    "currentGeneralCases": 1745,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 122,
+    "accountFiles": 112,
+    "accountCases": 651,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 199,
+    "unresolvedTestFiles": 40,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 701575
+  },
+  "finalGatesSha256": "5f5f6890da992ca9d52bbe69a6d1b532a053d86a1c66c0f4a98e161e32dd509e",
+  "preservationSha256": "d60d5690b9d273543401de6371e92ca789bccdb918c08c2bfd648782a382bdc0",
+  "limits": [
+    "Six cases in two complete Node files retain their 60-second wrapper/file limits and have no explicit inner timeout. No Chromium fixture is launched. Two instrumentation checks and four service-cache cases run; three of those cache cases construct synthetic service stores. Product, cache implementation, instrumentation, probe and shared fixtures remain unchanged.",
+    "The declaration array now uses literal 65536/1048576 rather than 64*1024/1024*1024. The former arithmetic was refused by the finite registration reader. A source comparison establishes that only this declaration and its explanatory comment changed; every test body is unchanged and the two byte sizes and resulting titles are identical. The census reader is not broadened.",
+    "Instrumentation checks all thirteen current source anchors, refusal on missing/duplicate anchors, and exact clock/verification seams. A synthetic instrumented module preserves awaited completion, result and throw behavior. The probe sees expected call/size counters and a real digest, refuses stop while active, and excludes a sentinel argument from its result. These are focused instrument invariants rather than timing/performance qualification.",
+    "Two service cases submit 35 larger rows under 64 KiB/1 MiB checkpoints. Warm and cold reads match, and the cold path performs exactly 105 additional signature checks. Changed request digest and checkpoint bytes refuse until restored. A four-row case also checks changed SQL digest, account state and response bytes; the logical inventory is unchanged for the earlier read comparison.",
+    "The cache unit case checks owned bytes, context-sensitive misses, eviction after 513 keys, no caching of a 17 MiB input and clearing across in-flight work. The delayed result cannot repopulate the cleared cache. These are structural reuse and invalidation assertions, not a real Account device, browser responsiveness, physical memory census or exhaustive corruption proof.",
+    "The compact manifest grows to 701575 bytes. The writer ceiling and independent regression assertion both move from 700000 to 750000 bytes, with no schema/layout change, removed obligations or altered prior general contracts. The failed check from initially updating only the test ceiling is retained. Runtime reporter/log limits remain unchanged.",
+    "Optional liveness reports are written inside the disposable execution checkout and removed with it. Exact case assertions/outcomes, owned receipts, source identities and patch are retained; no separately retained performance reports or whole wrapper-output credit is claimed. Existing owner/headroom/oracle observations, prior deadline evidence and immutable aggregate qualification remain separate."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-liveness/instrument.test.mjs",
+        "nodeSummaryMs": 247.755584,
+        "stageElapsedMs": 1778,
+        "fileDeadlineMs": 60000
+      },
+      {
+        "id": "test:test/account-liveness/service-cache.test.mjs",
+        "nodeSummaryMs": 11046.678542,
+        "stageElapsedMs": 12690,
+        "fileDeadlineMs": 60000
+      }
+    ],
+    "selectionElapsedMs": 39235,
+    "note": "Existing file bounds apply to Node execution; stage/selection include setup, fingerprinting and drain. One pass does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 60000,
+    "caseMs": null,
+    "note": "Existing wrapper and case limits retained."
+  },
+  "manifestSizeBudget": {
+    "previous": 700000,
+    "current": 750000,
+    "serializedBytes": 701575,
+    "note": "Only bound changed; schema, serialization and all prior general contracts preserved."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "089197a96a583f1ebddbc319323f63195ca5309e240fafd56a7edc491d28c3b5",
+    "compressedSha256": "5e65caae19d6a3e6a5474be8f6861520eefbfa344bec2b68a1cabc2fb25cc6e6"
+  }
+}

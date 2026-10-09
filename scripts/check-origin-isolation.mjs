@@ -57,7 +57,11 @@ import { installReceipt } from './lib/receipts.mjs';
 
 installReceipt(import.meta.url);
 
-const DIST = 'dist';
+const args = process.argv.slice(2);
+if (args.length && (args.length !== 2 || args[0] !== '--dist' || !args[1]))
+  throw Error('Usage: node scripts/check-origin-isolation.mjs [--dist <built-directory>]');
+// Allow validation of a fresh disposable build without overwriting the author's offline package.
+const DIST = args[1] ?? 'dist';
 
 /**
  * Remote origins the built app may reference at all. Empty, and it is meant to
@@ -156,7 +160,7 @@ const files = readdirSync(DIST, { recursive: true })
   .sort();
 
 if (files.length === 0) {
-  console.error('origin isolation: found nothing to scan in dist/ — has the build run?');
+  console.error(`origin isolation: found nothing to scan in ${DIST} — has the build run?`);
   process.exit(1);
 }
 

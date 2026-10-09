@@ -1,0 +1,363 @@
+{
+  "$schema": "https://done.invalid/vectors/recovery-code/1",
+  "generated_by": "scripts/generate-recovery-vectors.mjs",
+  "selection": "docs/selections/row-14-recovery-code.md",
+  "trd_row": 14,
+  "construction": {
+    "entropy": "125 bits — 25 symbols of 5 bits, generated, never chosen by a human",
+    "alphabet": "Crockford Base32: 0123456789ABCDEFGHJKMNPQRSTVWXYZ (no I, L, O, U)",
+    "generation": "25 bytes from crypto.getRandomValues(); symbol i = ALPHABET[byte_i & 0x1f]. 256 = 8 x 32, so the mask is uniform: no rejection sampling, no modulo bias",
+    "display": "Five groups of five, hyphen-separated, uppercase",
+    "normalization": "Drop hyphens and whitespace, uppercase, then O->0 and I->1 and L->1. U is rejected rather than folded. Exactly 25 symbols",
+    "stretching": "None. No Argon2id, no PBKDF2. At 125 generated bits an offline attack on the service-held envelope is infeasible without a work factor, and a work factor would make the argument conditional on hardware",
+    "kdf": "K_rec = HKDF-SHA256(ikm = utf8(canonical code), salt = salt[16], info = LP(\"done/recovery/v1\") || LP(principal_id), L = 32)",
+    "aad": "LP(\"done/recovery/v1\") || LP(principal_id) || LP(decimal v) || LP(hex r_pub)",
+    "length_prefix": "uint16be(byteLength) || utf8 — injective, so no field can shift another",
+    "envelope": "RecoveryEnvelope = { v: 1, salt: 16 bytes, nonce: 12 bytes, ct: AES-256-GCM over the 32-byte X25519 scalar, tag included }",
+    "nonce_note": "The salt is fresh per seal, so K_rec is fresh per seal and exactly one message is ever encrypted under it. Nonce reuse is structurally unreachable rather than avoided by discipline",
+    "step_up": "Replacement requires content access proven by use, plus a single-use service challenge SHA-256( LP(\"done/recovery-replace/v1\") || LP(dec v) || LP(hex intent_id) || LP(hex nonce) ) answered by an assertion from the account credential. No freshness window: the challenge is bound to the operation. See step_up below",
+    "not_carried": "The code is never sent to the service, never persisted by the client, and never re-displayed once the account exists"
+  },
+  "keypair_kat": {
+    "source": "RFC 7748 §6.1",
+    "note": "Alice's X25519 keypair. Used so the vector's own keypair is itself a known-answer test; the generator derives the public key from the scalar and fails if they do not match.",
+    "r_priv": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a",
+    "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+  },
+  "encoding_vectors": [
+    {
+      "name": "all-zero-bytes",
+      "why": "Pins symbol 0. A code of all zeroes is a legal code, and an implementation that special-cases it is wrong.",
+      "inputs": {
+        "random_bytes": "00000000000000000000000000000000000000000000000000"
+      },
+      "expected": {
+        "canonical": "0000000000000000000000000",
+        "display": "00000-00000-00000-00000-00000"
+      }
+    },
+    {
+      "name": "ascending-bytes",
+      "why": "Bytes 0x00..0x18 walk the first 25 symbols in order, pinning the alphabet itself.",
+      "inputs": {
+        "random_bytes": "000102030405060708090a0b0c0d0e0f101112131415161718"
+      },
+      "expected": {
+        "canonical": "0123456789ABCDEFGHJKMNPQR",
+        "display": "01234-56789-ABCDE-FGHJK-MNPQR"
+      }
+    },
+    {
+      "name": "high-bits-set",
+      "why": "Bytes 0xE0..0xF8 must encode identically to 0x00..0x18. Proves the three discarded bits are discarded, and catches an implementation that reaches for a modulo instead of a mask.",
+      "inputs": {
+        "random_bytes": "e0e1e2e3e4e5e6e7e8e9eaebecedeeeff0f1f2f3f4f5f6f7f8"
+      },
+      "expected": {
+        "canonical": "0123456789ABCDEFGHJKMNPQR",
+        "display": "01234-56789-ABCDE-FGHJK-MNPQR"
+      }
+    },
+    {
+      "name": "generated-code",
+      "why": "A realistic draw, and the code the seal vectors below use.",
+      "inputs": {
+        "random_bytes": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY",
+        "display": "AZC52-QK9FE-HC6M7-VS01J-DA3NY"
+      }
+    }
+  ],
+  "normalization_vectors": [
+    {
+      "name": "already-canonical",
+      "why": "The identity case.",
+      "inputs": {
+        "typed": "AZC52-QK9FE-HC6M7-VS01J-DA3NY"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    },
+    {
+      "name": "lowercase",
+      "why": "A user transcribing into a phone keyboard gets lowercase for free.",
+      "inputs": {
+        "typed": "azc52-qk9fe-hc6m7-vs01j-da3ny"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    },
+    {
+      "name": "letter-o-for-zero",
+      "why": "The confusion Crockford exists to absorb, in the direction people actually make it.",
+      "inputs": {
+        "typed": "AZC52-QK9FE-HC6M7-VSO1J-DA3NY"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    },
+    {
+      "name": "letter-i-for-one",
+      "why": "A handwritten 1 read back as I.",
+      "inputs": {
+        "typed": "AZC52-QK9FE-HC6M7-VS0IJ-DA3NY"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    },
+    {
+      "name": "letter-l-for-one",
+      "why": "The same 1 read back as l, which is the worse of the two in a sans-serif face.",
+      "inputs": {
+        "typed": "AZC52-QK9FE-HC6M7-VS0LJ-DA3NY"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    },
+    {
+      "name": "spaces-instead-of-hyphens",
+      "why": "Separators are presentation. Any run of them, anywhere, is dropped.",
+      "inputs": {
+        "typed": "AZC52  QK9FE  HC6M7  VS01J  DA3NY"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    },
+    {
+      "name": "no-separators",
+      "why": "Pasted out of a password manager that stored the canonical form.",
+      "inputs": {
+        "typed": "AZC52QK9FEHC6M7VS01JDA3NY"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    },
+    {
+      "name": "mixed-confusables",
+      "why": "Lowercase, both substitutions and the wrong separator at once — one person copying handwriting into a phone. Every rule fires on the same input, which is the case an implementation that applies them in the wrong order gets wrong.",
+      "inputs": {
+        "typed": "azc52 qk9fe hc6m7 vsolj da3ny"
+      },
+      "expected": {
+        "canonical": "AZC52QK9FEHC6M7VS01JDA3NY"
+      }
+    }
+  ],
+  "rejected_inputs": [
+    {
+      "input": "ABCDE-FGHJK-MNPQR-STVWX-YZUZ0",
+      "reason": "Contains U, which the generator can never emit"
+    },
+    {
+      "input": "ABCDE-FGHJK-MNPQR-STVWX-YZ01",
+      "reason": "24 symbols — too short"
+    },
+    {
+      "input": "ABCDE-FGHJK-MNPQR-STVWX-YZ0123",
+      "reason": "26 symbols — too long"
+    },
+    {
+      "input": "ABCDE-FGHJK-MNPQR-STVWX-YZ01!",
+      "reason": "Punctuation is not a separator and not a symbol"
+    }
+  ],
+  "seal_vectors": [
+    {
+      "name": "primary-envelope",
+      "why": "The envelope as account creation writes it, with RFC 7748 §6.1 as the recovery keypair.",
+      "inputs": {
+        "code": "AZC52QK9FEHC6M7VS01JDA3NY",
+        "code_display": "AZC52-QK9FE-HC6M7-VS01J-DA3NY",
+        "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "v": 1,
+        "salt": "9f3c1a70d4b28e6501fa47c39b0d5e82",
+        "nonce": "0b1d2e3f4a5b6c7d8e9fa0b1",
+        "r_priv": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a",
+        "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+      },
+      "derived": {
+        "hkdf_info": "0010646f6e652f7265636f766572792f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744",
+        "k_rec": "cc4a0d00bf6c0bd8fe8c6711636a72727eaec1f9f58329cd2c261ef89ed613c1",
+        "aad": "0010646f6e652f7265636f766572792f7631001d70725f3031485a5851374d344b395032523654385630593342354e3744000131004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661"
+      },
+      "expected": {
+        "ct": "4489795a0eea268d167d3d929daa0a96c720340c7d6b1ae7cf8d0acc3ccb8d7c75988914a418018366d6bd45c1f448d3"
+      }
+    },
+    {
+      "name": "second-principal",
+      "why": "Same code, same salt, same nonce, different principal. Proves the principal is bound in both the derivation and the AAD — two principals on one profile is the ordinary path, not an attack (row 3 §3).",
+      "inputs": {
+        "code": "AZC52QK9FEHC6M7VS01JDA3NY",
+        "code_display": "AZC52-QK9FE-HC6M7-VS01J-DA3NY",
+        "principal_id": "pr_01J0000000000000000000000A",
+        "v": 1,
+        "salt": "9f3c1a70d4b28e6501fa47c39b0d5e82",
+        "nonce": "0b1d2e3f4a5b6c7d8e9fa0b1",
+        "r_priv": "77076d0a7318a57d3c16c17251b26645df4c2f87ebc0992ab177fba51db92c2a",
+        "r_pub": "8520f0098930a754748b7ddcb43ef75a0dbf3a0d26381af4eba4a98eaa9b4e6a"
+      },
+      "derived": {
+        "hkdf_info": "0010646f6e652f7265636f766572792f7631001d70725f30314a3030303030303030303030303030303030303030303041",
+        "k_rec": "37f8c645738dc92db826962af6c519a6f84bc03cc3ca3993a1a219f4a47a13f4",
+        "aad": "0010646f6e652f7265636f766572792f7631001d70725f30314a3030303030303030303030303030303030303030303041000131004038353230663030393839333061373534373438623764646362343365663735613064626633613064323633383161663465626134613938656161396234653661"
+      },
+      "expected": {
+        "ct": "8ed5e6a8eadf06bd6f8f086e6faa6f1781a25567aa70db4893f390b58f33d032114db528780e46f1f7f3b1d069f4f037"
+      }
+    }
+  ],
+  "must_fail": [
+    {
+      "name": "wrong-code",
+      "mutate": "Change one symbol of the code, then derive and unseal."
+    },
+    {
+      "name": "wrong-salt",
+      "mutate": "Derive with a salt of 16 zero bytes."
+    },
+    {
+      "name": "wrong-principal",
+      "mutate": "Derive and authenticate against a second principal id. Changes both halves at once -- the AAD half alone is aad-only-other-principal."
+    },
+    {
+      "name": "rebound-public-key",
+      "mutate": "Authenticate with Bob's public key in the AAD — the envelope re-paired with a public key that is not its own."
+    },
+    {
+      "name": "downgraded-version",
+      "mutate": "Authenticate with v=0 in the AAD."
+    },
+    {
+      "name": "flipped-tag-bit",
+      "mutate": "Flip the low bit of the final tag byte."
+    },
+    {
+      "name": "truncated-ciphertext",
+      "mutate": "Drop the final byte of the sealed envelope."
+    },
+    {
+      "name": "aad-only-other-principal",
+      "isolates": "recovery envelope.principal_id",
+      "mutate": "The correct K_rec, with the AAD naming a second principal. Isolates the AAD binding from the derivation."
+    },
+    {
+      "name": "aad-only-devicelock-label",
+      "isolates": "recovery envelope.label",
+      "mutate": "Authenticate with row 13's device-lock label. Both constructions seal a key under a 125-bit generated code, so the label is what stops a local device-lock seal being presented as this service-held envelope."
+    },
+    {
+      "name": "stepup-other-passkey",
+      "mutate": "The correct challenge, signed by a passkey the account does not know. Not an aad-only: it tests that the credential matters, which is the thing every other step-up negative holds constant."
+    },
+    {
+      "name": "stepup-framed-ceremony",
+      "falsifies": [
+        "f-b9ff071-webauthn-cross-origin-policy"
+      ],
+      "mutate": "The correct challenge, the right passkey, and crossOrigin true: a step-up collected in a delegated iframe. The origin check does not cover it, because in a cross-origin frame the caller IS this origin while the top-level one differs. Same-origin only is the selected policy (S0-1, P-5), and this omission was in row 12s verifier and this one identically -- one gap in two files, which is what scripts/lib/webauthn.mjs exists to prevent."
+    },
+    {
+      "name": "stepup-embedding-origin-claimed",
+      "falsifies": [
+        "f-b9ff071-webauthn-cross-origin-policy"
+      ],
+      "mutate": "crossOrigin false with a topOrigin present, signed over its own bytes. The specification emits topOrigin only when crossOrigin is true, so this is a client contradicting itself, and a verifier reading only the boolean accepts an embedding recorded in the bytes it just hashed. Deliberately separate from the negative above: one setting both members would pass with either check present and prove neither."
+    },
+    {
+      "name": "aad-only-stepup-label",
+      "isolates": "step-up challenge.label",
+      "mutate": "An assertion collected for row 12's slot unlock, re-presented as a step-up. The label is the purpose, and this is the negative that says so."
+    },
+    {
+      "name": "aad-only-stepup-version",
+      "isolates": "step-up challenge.v",
+      "mutate": "An assertion collected under v=0, presented against a v=1 challenge."
+    },
+    {
+      "name": "aad-only-stepup-intent",
+      "isolates": "step-up challenge.intent_id",
+      "mutate": "An assertion collected for a different transition id. Since row 15 binds `kind` inside the Intent, this is also what stops a `replace-recovery` step-up being redirected to a `retire`."
+    },
+    {
+      "name": "aad-only-stepup-nonce",
+      "isolates": "step-up challenge.nonce",
+      "mutate": "The replay the nonce exists for: an assertion collected under a nonce the service has since retired, presented against a fresh one. Without the nonce field this negative cannot be built at all, because the challenge would be identical."
+    }
+  ],
+  "step_up": {
+    "why": "PRD §7.6 requires replacement to run \"from a device that already has content access: after fresh account authentication and an explicit confirmation\", and leaves the mechanism here. Three gates, and two of them are free.",
+    "gates": {
+      "content_access": "Proven by use rather than by a flag. Replacement must rewrap every required content-key generation to the new R_pub, so it has already opened them; checking a permission and then doing the work is two things that can disagree, and requiring the work is the check.",
+      "device_lock": "Implied, not a second prompt. §13.3 makes the lock the gate on opening K_g envelopes and gate 1 opens them, so an implementation that adds a prompt has misread where the lock sits.",
+      "account_authentication": "This construction, and the only one of the three that needed designing."
+    },
+    "challenge": "challenge = SHA-256( LP(\"done/recovery-replace/v1\") || LP(dec v) || LP(hex intent_id) || LP(hex nonce) )",
+    "answered_by": "An assertion from the account credential (row 12) over that challenge. The relying party, the origin and the credential are row 12's; only the challenge is this row's.",
+    "nonce": "32 fresh bytes per attempt, issued by the service and retired on use. Without it the challenge is a pure function of the operation, so an assertion collected for a replacement that never completed would stay presentable forever -- row 9's standing artifact, replayable with no key at all.",
+    "no_freshness_window": "A five-minute window is a parameter with no principled value, and the thing it approximates is \"this assertion was collected for this operation\". The operation is bound directly instead. No clock, nothing to tune, nothing to get wrong on a device whose clock is off.",
+    "binds_the_transition_id": "Not the new public key, which is a change from the selection's §5 draft and is row 15's doing: when §5 was written the operation had no name. The id covers kind, lineage, parent epoch and the payload -- the new public key among them -- so binding the key beside it would be a second binding of a fact already inside it. It also means a replace-recovery step-up cannot be redirected to a retire, which is PRD §6.10's requirement one level further out.",
+    "not_bound": "No principal id and no credential id, where §13.9's slot-unlock challenge binds both. The two have opposite provenance: that one is client-constructed for a device-local gate and names device-local things; this one is service-issued for a service operation and names the operation as the service knows it. Binding a credential id would also forbid answering from a second passkey the account has registered.",
+    "old_code_not_required": "Deliberately. Replacement exists for the user who still holds their devices and has lost or exposed the code, so demanding the lost object is the one requirement guaranteed to be unmeetable exactly when the flow is needed.",
+    "residual": "Someone holding a device and the account credential can replace the recovery envelope and destroy the legitimate owner's recovery path. That party already has content access, so this widens no confidentiality boundary: it is an availability loss, strictly less than what the same party can already do by deleting the account, and the explicit confirmation is where it is surfaced.",
+    "keys": {
+      "account_credential": {
+        "role": "The account credential (row 12), where the authenticator offers Ed25519.",
+        "source": "RFC 8032 §7.1, TEST 2",
+        "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+        "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+      },
+      "other_passkey": {
+        "role": "A passkey the account does not know. Whoever runs the origin can enroll one; what they cannot do is make it the account's.",
+        "source": "RFC 8032 §7.1, TEST 1",
+        "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+        "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+      }
+    },
+    "transition_ids": {
+      "note": "Row 15 transition ids, opaque 32-byte digests to this construction. Their structure is row 15's and is tested there.",
+      "intent_id": "2b8f5c1e90a7d34f6e21c058bb47f9a3d5602e8c17439fbd0a6e2c5148d37b09",
+      "rival_intent_id": "c47a0d3f18be62915d0fa7c3462b8e10935cd7f4a20e6b8815c3d9027ef4a6b2"
+    },
+    "vector": {
+      "name": "replacement-step-up",
+      "why": "Fully pinned: Ed25519 is deterministic, so the signature is a fact about the construction rather than about this generator's RNG. The generator verifies it against the published public key before writing the file, so the seed and the key are checked by use.",
+      "inputs": {
+        "v": 1,
+        "intent_id": "2b8f5c1e90a7d34f6e21c058bb47f9a3d5602e8c17439fbd0a6e2c5148d37b09",
+        "nonce": "3f9a1c47e0b85d26fa74310c9e5b8d02a1c76f3e40b295d8c3ea617f0492bd53",
+        "rp_id": "app.done.invalid",
+        "origin": "https://app.done.invalid",
+        "flags": "0x05 (UP | UV)",
+        "sign_count": 0
+      },
+      "derived": {
+        "challenge": "5c81a9f2972e447e44a8814b7a7deeba488f36ef6fd85f06d9be023468dcb79f",
+        "challenge_b64url": "XIGp8pcuRH5EqIFLen3uukiPNu9v2F8G2b4CNGjct58",
+        "authenticator_data": "7d83a233ec8198ad65f20a8d38adcf8aac17adae4bf42d86925763023650af490500000000",
+        "client_data_json": "{\"type\":\"webauthn.get\",\"challenge\":\"XIGp8pcuRH5EqIFLen3uukiPNu9v2F8G2b4CNGjct58\",\"origin\":\"https://app.done.invalid\",\"crossOrigin\":false}",
+        "signed_bytes": "7d83a233ec8198ad65f20a8d38adcf8aac17adae4bf42d86925763023650af490500000000d96c47329d8ac75133a862b3c67a9d5a702f7cc97cc7b0781898089b47bec166"
+      },
+      "expected": {
+        "signature": "d4ff1f79fe7c58a0723fecf1ee2b3fcd27a0a56ac02e714c66f4e472e3549703fe238760e524a42930d681833e989658d6d37320685367b5f58bd1aae5c2990f",
+        "verifies": true
+      }
+    },
+    "demonstration": {
+      "name": "naive-replay-stops-at-the-comparison",
+      "why": "A demonstration rather than a negative, because it fails for a reason that is not the one being tested. The retired assertion presented unmodified is refused by a string comparison between the challenge it carries and the one the service issued -- a comparison that would refuse it just as readily if the challenge were signed by nobody. Every aad-only-stepup negative rewrites clientDataJSON to carry the wanted challenge, which forces the refusal onto the signature and is also what a real attacker would do.",
+      "retired_nonce": "8e40c31d75af69b208e5f1c34d7092ab6e1503f8c9d24b7e0a31f6584c9d2b70",
+      "stops_at": "challenge is not the one issued",
+      "asserted": "The generator requires that message on every run."
+    }
+  }
+}

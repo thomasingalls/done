@@ -1,0 +1,99 @@
+Focused previous-device recovery detachment checks.
+
+
+Running 1 test using 1 worker
+
+(node:18148) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:5:1 › packaged recovery resumes from the chooser and opens accepted writing with the existing passkey (29.0s)
+
+  1 passed (29.5s)
+
+(node:18126) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18126) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:18126) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ a recovered first-device account gives its old device only its terminal proof, not current authority (214.937333ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 646.94375
+
+✔ committed successor verifies client distribution, outcome, recovery and final head as one authority transition (231.522667ms)
+✔ authorization signature cannot replace the signed distribution, move the excluded cutoff, or omit finalization (43.707667ms)
+✔ removed publisher accepted history survives, but later writes and current read rights do not (167.163167ms)
+✔ a joined owner can remove the original publisher without inheriting its finalization (111.042875ms)
+(node:18084) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18084) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ current certified member obtains a purpose-bound grant; ordinary appends do not invalidate it (94.48775ms)
+✔ account login, a public challenge and a different device key cannot substitute for possession (63.507666ms)
+✔ a different login for the same account cannot claim a challenge; another account cannot request it (54.739084ms)
+✔ a pending participant obtains only its exact preparation scope; admission retires its old grant (140.401291ms)
+✔ competing prepared attempt and another actor cannot borrow a participant grant (79.894584ms)
+✔ empty and populated ceremony reads check the exact participant grant (164.811ms)
+✔ session revocation during asynchronous operation verification prevents acceptance (48.761292ms)
+✔ deadline crossing after a write but before COMMIT rolls back the domain write (46.765833ms)
+✔ a live challenge expires, grants expire, and restart permits renewal but loses ephemeral grants (64.7255ms)
+✔ account/credential retirement invalidates an existing grant (81.82425ms)
+✔ a valid signed operation in another workspace cannot borrow the first workspace grant (85.104917ms)
+✔ returned challenge objects cannot mutate retained service identity or challenge authority (47.43225ms)
+✔ authority change between challenge and proof forces a new device proof (90.323666ms)
+✔ grants cannot use another database or escape its domain transaction (46.903292ms)
+✔ per-session challenge and grant storage is bounded; expiry recovers capacity (338.84175ms)
+✔ membership changes reclaim unusable grants without expiring the remembered login (268.039334ms)
+✔ both read versions withhold content after revocation during verification (99.184042ms)
+✔ certification needs a fresh workspace grant; inbound scope follows the reader, not the publisher (512.534125ms)
+✔ grant lifetime is capped by the parent login absolute expiry (45.594417ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2810.257375
+
+(node:18296) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18296) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:18296) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ native recovery coordinator uses one passkey ceremony for the first editor opening (1614.38175ms)
+✔ native recovery coordinator resolves a lost commit reply after browser death (2132.31925ms)
+(node:18330) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18330) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:18330) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ recovery native installation resumes after partial activation, then edits and cold-opens with the new key only (2592.766083ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7753.099667
+
+(node:18385) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18385) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ offline additive upgrade keeps pending identity and backs up committed WAL plus authority (69.424833ms)
+✔ current state is a validated no-op without a backup (15.85525ms)
+✔ a live state owner or pre-lock preview port prevents an upgrade (9.491208ms)
+✔ missing state, a different origin, invalid authority, and a newer schema fail without replacement (15.519375ms)
+✔ a failed core migration rolls back and retains the complete pre-upgrade snapshot (48.628583ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 440.839125
+
+Native files run serially (--test-concurrency=1): they share fixture port 4999.
+TypeScript, scoped static checks and packaged build pass.

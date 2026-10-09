@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "scope": "legacy-source-preparation",
+  "started": "2026-09-09T08:04:08.761Z",
+  "commit": "0399567a965fb2b24128d03aee29ac54caec3f19",
+  "files": {
+    "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+    "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+    "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+    "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+    "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+    "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+    "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+    "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+    "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+    "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+    "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+    "src/crdt/custody.ts": "59ba157582901cfba8120ba7306bd99e16d0fc5c7bf476918605fa408955b953",
+    "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+    "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+    "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+    "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+    "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+    "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+    "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+    "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+    "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+    "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+    "src/crdt/legacySource.ts": "0b75e1ed672c486675963b942e4d7bf56099003afd91cc6e7d9b713203124a5a",
+    "src/crdt/localClear.ts": "2a654c36f17a17da807b03346cd67949079d06d4b17954da9080b2b9525c36e6",
+    "src/crdt/localClearCrypto.ts": "b3c042521298b0408dfb2c55663b2ab5f22c7050df10e6c5eae4d8c1a0b11b25",
+    "src/crdt/localClearState.ts": "1451d59657c6c2be4cd92869870f771aac53f1b6e4ba177f89b917239e2de391",
+    "src/crdt/localClearStorage.ts": "8e57651b4707acf4db527800542c0b23d6c38d2571bc56244209d9ec123f66aa",
+    "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+    "src/crdt/localGenesisRecord.ts": "264a5e2fb845b0bbfa053a9d7ea1ea685d7e6d245b39049f554678eea918d20d",
+    "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+    "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+    "src/crdt/ownedStartup.ts": "505bfd0a98947740dfe2dd6799b9c9b0c45b3e1912a7a332c4bb35211b70d876",
+    "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+    "src/crdt/serialize.ts": "4820519c4727482a1182ee1e8281ea92e83bd8698f5407df1fd4159a88cf4e2f",
+    "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+    "src/crdt/startupClassification.ts": "803d58793e0236e4af21361156be0ee5011ace8d272b127cd0afe9f191870080",
+    "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+    "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+    "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+    "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+    "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+    "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+    "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+    "src/crdt/yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+    "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+    "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+    "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+    "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+    "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+    "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+    "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+    "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+    "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+    "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+    "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+    "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+    "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+    "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+    "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+    "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+    "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+    "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+    "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+    "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+    "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+    "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+    "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+    "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+    "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+    "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+    "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+    "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+    "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+    "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+    "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+    "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+    "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+    "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+    "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+    "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+    "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+    "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+    "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+    "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+    "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+    "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+    "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+    "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+    "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+    "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+    "test/legacy-source/browser.mjs": "b9b242001c385b8a08720b8612268a65ee23556c3b1656c3e66da02b3ceef5cc",
+    "test/legacy-source/fixture.ts": "b832a38836238527eac12cda2d89605ecc63fd3dbca8bdc300965ccb2c8fb0ae",
+    "test/legacy-source/index.html": "c249933bc76326fbb6d047b5be409d316155c3b1cc4984a3b8aa1fdb36024ad4",
+    "scripts/legacy-source/run.mjs": "7a49c8bffa071236c6d58c5affe58085b6cf847557cf848113266ef0e3d3c875",
+    "test/legacySource.test.ts": "f2116d61559483904d0efcd529d4d027446711b67926fb57808e255e5c2b6830",
+    "test/storage-properties/oracle.ts": "08aaad91335c21a078ce1b9461d25ad46038b2e7c213d705c0677c472d292140",
+    "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+    "pnpm-lock.yaml": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e",
+    "package.json": "f3e05b5e4e6b9eb37da2fe6daa8dd4086676ec3a3d4b425ab66bcf914204be08",
+    "docs/legacy-migration-prep.md": "d65576d99317c357e867ef22c873250eff61cc26ff7c885dfd1c35040fb7bd87",
+    "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f"
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "node": "v26.8.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "id": "journal",
+      "passed": true
+    },
+    {
+      "id": "pending",
+      "passed": true
+    },
+    {
+      "id": "custom",
+      "passed": true
+    },
+    {
+      "id": "absence-is-not-origin-freshness",
+      "passed": true
+    },
+    {
+      "id": "absent-probe-creates-nothing",
+      "passed": true
+    },
+    {
+      "id": "native-abort",
+      "passed": true
+    },
+    {
+      "id": "failure-retains-database-abort",
+      "passed": true
+    },
+    {
+      "id": "native-journal-change",
+      "passed": true
+    },
+    {
+      "id": "failure-retains-database-journal-change",
+      "passed": true
+    },
+    {
+      "id": "old-writer-bypasses-exclusive",
+      "passed": true
+    },
+    {
+      "id": "observation-does-not-fence-late-commit",
+      "passed": true
+    },
+    {
+      "id": "reader-crash-preserves-source",
+      "passed": true
+    }
+  ],
+  "properties": {
+    "seed": 8941,
+    "numRuns": 100,
+    "comparisons": 400,
+    "failed": false,
+    "numShrinks": 0,
+    "counterexample": null,
+    "path": null,
+    "error": null
+  },
+  "mutations": [
+    {
+      "id": "omit-journal",
+      "detected": true,
+      "assertion": "journal-only-update-retained\n+ actual - expected\n\n+ []\n- [\n-   [\n-     0,\n-     1,\n-     102,\n-     1,\n-     6,\n-     4\n-   ]\n- ]\n",
+      "code": "ERR_ASSERTION",
+      "sourceHash": "1032cafb37c837033d0542039a9b3eaf122ecb6a3b88fb5400a18a8dc122eabb",
+      "from": ".filter((e) => e.key.startsWith(PREFIX))",
+      "to": ".filter(() => false)"
+    },
+    {
+      "id": "ignore-pending",
+      "detected": true,
+      "assertion": "pending-dependencies-retained\n+ actual - expected\n\n+ 'complete'\n- 'missing'\n",
+      "code": "ERR_ASSERTION",
+      "sourceHash": "b1cc0842ad97034f0ebd5ed8daf3033dcbb2b3c0b081bfe5ff23b6ed32d151f6",
+      "from": "return hasPendingUpdates(doc) ? 'missing' : 'complete';",
+      "to": "return 'complete';"
+    },
+    {
+      "id": "ignore-custom",
+      "detected": true,
+      "assertion": "custom-data-not-omitted\n+ actual - expected\n\n+ undefined\n- 'unsupported-legacy-custom-data'\n",
+      "code": "ERR_ASSERTION",
+      "sourceHash": "058d6f0df4d6746e5495514ed2fdb2e0226d906ba29012fc3937254f3158c4ca",
+      "from": "if (custom.result !== 0) refuse('unsupported-legacy-custom-data');",
+      "to": "void custom.result;"
+    },
+    {
+      "id": "writable-inspection",
+      "detected": true,
+      "assertion": "all-native-reads-readonly",
+      "code": "ERR_ASSERTION",
+      "sourceHash": "74519274d1b89e50d5d3febd13c0204b6969095b0b47d160b60eb64e72d4413d",
+      "from": "'readonly',",
+      "to": "'readwrite',"
+    }
+  ],
+  "limits": [
+    "Fixed legacy done database and its 1: journal, plus four known ancillary localStorage keys. Not an origin-wide inventory or authenticated authority.",
+    "Native Chromium, disposable synthetic fixtures. One source-reader crash; no executed migration/selection/deletion kill matrix, no real-data cutover.",
+    "The exclusive-lock counterexample uses the actual legacy provider. It demonstrates a missing fence; no production old-writer exclusion is implemented.",
+    "The digest is an observation fingerprint, never permission to select a store or delete source carriers."
+  ],
+  "status": "passed",
+  "finished": "2026-09-09T08:04:15.036Z"
+}

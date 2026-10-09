@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-origin-isolation.mjs",
+  "script_sha256": "67778f08961aea726de2ec54694862e49c4d86829efcf9a76d3ee91013d3fa7d",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T12:36:24.552Z",
+  "finished": "2026-09-11T12:36:24.562Z",
+  "tree": {
+    "head": "6398e33da4fd4b5b413de23078a04707557599bf",
+    "dirty_sha256": "2e264708bf2d23f62d3b1552d362646aba6def04f87e9b89a592cec3a0b894f9"
+  }
+}

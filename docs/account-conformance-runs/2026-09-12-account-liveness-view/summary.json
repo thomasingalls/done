@@ -1,0 +1,105 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T13:32:15.714Z",
+  "stages": [
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 107
+    },
+    {
+      "name": "instrument",
+      "args": [
+        "--test",
+        "test/account-liveness/instrument.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 303
+    },
+    {
+      "name": "coverage",
+      "args": [
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/accountLiveness.test.ts",
+        "test/verifiedRecords.test.ts"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 1823
+    },
+    {
+      "name": "controlled",
+      "args": [
+        "--test",
+        "test/account-liveness/controlled.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 7697
+    },
+    {
+      "name": "view",
+      "args": [
+        "--test",
+        "test/account-liveness/view.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 8542
+    },
+    {
+      "name": "growth",
+      "args": [
+        "--test",
+        "test/account-liveness/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 128648
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 79
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "test/account-liveness",
+        "test/accountLiveness.test.ts",
+        "scripts/account-liveness",
+        "docs/account-sync-liveness.md",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 101
+    }
+  ],
+  "sourcePins": 886,
+  "generatedHistories": 40,
+  "nativeReproductions": 2,
+  "finishedAt": "2026-09-12T13:34:43.170Z"
+}

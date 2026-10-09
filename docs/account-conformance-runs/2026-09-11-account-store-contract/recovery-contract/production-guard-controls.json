@@ -1,0 +1,22 @@
+[
+  {
+    "name": "public context",
+    "actualRefused": true,
+    "omittedCheckReleased": true
+  },
+  {
+    "name": "sealed root",
+    "actualRefused": true,
+    "omittedCheckReleased": true
+  },
+  {
+    "name": "wrapping key pair",
+    "actualRefused": true,
+    "omittedCheckReleased": true
+  },
+  {
+    "name": "bootstrap key pair",
+    "actualRefused": true,
+    "omittedCheckReleased": true
+  }
+]

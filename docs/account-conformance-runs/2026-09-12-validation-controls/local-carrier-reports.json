@@ -1,0 +1,3266 @@
+[
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/calibration/calibration-matrix.raw.json",
+    "rawSha256": "0dcb377010e4ba9109cb7a35228b77846f0f1ea5ccd36ff30e6511b64793ea45",
+    "rawBytes": 985758,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-cold.json",
+    "rawSha256": "0ec7628db6a31138ef766cae649650e502bf64be9759326c9b9f595b8f940042",
+    "rawBytes": 1934821,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-cold.needles.raw.json",
+    "rawSha256": "a4a9ca6411c5f081170ff3c750caac7d7ae0963db60af3c94b0b772f544ee991",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-cold.raw.json",
+    "rawSha256": "dcca33dcc1e364d60cf3b14a82ba1fd14ef48190a19a5212587eb3096f230330",
+    "rawBytes": 1796069,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-delivered.json",
+    "rawSha256": "8de9559b56cadbb58813d0ef8bd6ece68ef9aca249fc8bb69b6f43145ba45aea",
+    "rawBytes": 1934821,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-delivered.needles.raw.json",
+    "rawSha256": "a4a9ca6411c5f081170ff3c750caac7d7ae0963db60af3c94b0b772f544ee991",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-delivered.raw.json",
+    "rawSha256": "2db8d277f4915c748db7c91ea21147e0fa82f2fd582f65efb666e59bc9d2864e",
+    "rawBytes": 1795881,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit0.json",
+    "rawSha256": "ea9c0a10849cfe266ea614de938f8423a41ca2e37e192a992b48404aabaadfde",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit0.needles.raw.json",
+    "rawSha256": "bfb96c703c363b0353eef0cfb03c1b2132a8ac3119f96875c0e0be574444eadc",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit0.raw.json",
+    "rawSha256": "7cd06abebbf9065f967942b2c44fe8d30dab9f44bff8e7e91dd7aac44430c502",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit1.json",
+    "rawSha256": "a015012ec766185a7bed0262c9aa9150c3384a2723ee560d36fdda741952df7c",
+    "rawBytes": 913918,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit1.needles.raw.json",
+    "rawSha256": "0fa8d9c2e8e0585066c6ec3a978ffbf719735020270db9b7642cbc641603df66",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit1.raw.json",
+    "rawSha256": "1eb60dd490f8145989fbc201a5ee6c853968cf88828b046ca76f436d56d147e9",
+    "rawBytes": 742545,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-recovery.json",
+    "rawSha256": "36f9ab68597d753fb415dd434a7dd8d017e3a751a328135554c16a810aa0a8d1",
+    "rawBytes": 1008153,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-recovery.needles.raw.json",
+    "rawSha256": "fa9ad66727f6c2503eb1906dcfdb3d4a01cdf140f626e45705d610566e932f96",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-recovery.raw.json",
+    "rawSha256": "fc1c9ab7c55638ac670017987b93c51464fc8ed4b9f0ea6e1a2a62e479f0003a",
+    "rawBytes": 830519,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-cold.json",
+    "rawSha256": "0ce8f515aa5a8504e6b53776749e012b9d4730f535937bfcc8c67b7cdd21b439",
+    "rawBytes": 1959509,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-cold.needles.raw.json",
+    "rawSha256": "d15d91fefe099b1c4dbcf9de22bc9dd224e2f02f0a64db700dae6bcee6ed891a",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-cold.raw.json",
+    "rawSha256": "c6ae4662caedb4d16de2b1a974d8faec92cffc0a11949a23b7b394d109159e6a",
+    "rawBytes": 1816287,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-delivered.json",
+    "rawSha256": "3b2337a6bb7c695b7edba9f4a155fea468ca8fd027c66b40db70e736ec80d1f5",
+    "rawBytes": 1959509,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-delivered.needles.raw.json",
+    "rawSha256": "d15d91fefe099b1c4dbcf9de22bc9dd224e2f02f0a64db700dae6bcee6ed891a",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-delivered.raw.json",
+    "rawSha256": "3a982735b5993b7e21d86d1f4cfab9054c3e42187fdbb119f7aa01ce126227a3",
+    "rawBytes": 1816099,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit0.json",
+    "rawSha256": "dd22b5d5b2ac03a8be34527a513e67576b23e746aaa8a7ba57b874f286bfb37d",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit0.needles.raw.json",
+    "rawSha256": "256186340a40ac482f635af43f82d081d72f4d56880c6d9f710f7f80d7b8b3e9",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit0.raw.json",
+    "rawSha256": "5657a42827d797a76751fa4cb1588f9104b2fabc52c24db3edbfb6697d242dd2",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit1.json",
+    "rawSha256": "4f2dfd82596ca2d8d67871846b31c7f753d27c3cb68538c18e445660a35d2883",
+    "rawBytes": 922154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit1.needles.raw.json",
+    "rawSha256": "bc46936f25baeeaf267c5135e1a4a26eb7f259cc4c3a847e2fbe34567d4cbd60",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit1.raw.json",
+    "rawSha256": "0f5a80211e085480a5a47df1891400aa45547909a489aff0b07259627d3093a8",
+    "rawBytes": 749163,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-recovery.json",
+    "rawSha256": "59c733630f37119c315fb1b7231b2807dbe04c0f7d297bcc3b38ee4cd9c5b9d2",
+    "rawBytes": 1032861,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-recovery.needles.raw.json",
+    "rawSha256": "07e07dccc1d186e1a22fdd4e35a9f65757d3b5e72d22cfaead162b3b1bb420d0",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-recovery.raw.json",
+    "rawSha256": "0216d99aa71478a96f3fed12471a0e6972e730fd7724c6290afba44ff93247a1",
+    "rawBytes": 850413,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-cold.json",
+    "rawSha256": "0b84413ab2ade2949a2c1bfe88945a37d1ebfefcdba070fe8f1321c943ce1b6b",
+    "rawBytes": 1919337,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-cold.needles.raw.json",
+    "rawSha256": "10642ae07dd4fa24b70becce6717ed4ec4db54466c3ee158da33d0637a5df849",
+    "rawBytes": 1038,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-cold.raw.json",
+    "rawSha256": "9f4add656f5b013da475d6ff0c8714b341d450d87e3de082181c66a20b76eae9",
+    "rawBytes": 1782903,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-delivered.json",
+    "rawSha256": "5d1fd87c5768515ecd96f343a31bf80136cd65f07ccfc9350c99369d87d38edc",
+    "rawBytes": 1919337,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-delivered.needles.raw.json",
+    "rawSha256": "10642ae07dd4fa24b70becce6717ed4ec4db54466c3ee158da33d0637a5df849",
+    "rawBytes": 1038,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-delivered.raw.json",
+    "rawSha256": "5c772fb788a3fe733c937a971c843cb4687789bce8141f046e94e17f99b7f810",
+    "rawBytes": 1782715,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-edit0.json",
+    "rawSha256": "8dec25e5ffbd3e42b810cb1995ec57e2dd5a03f108a53f6a17cf83caa24dbc9e",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-edit0.needles.raw.json",
+    "rawSha256": "455c3a4e48b047a3c900ad2d3b8bd59674a4bd867c1d8f28b9ecc13510d67c9d",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-edit0.raw.json",
+    "rawSha256": "c7982402979ab79ea06c678fc2a8b9b0a84dcb79db2a3bbd90a10ba1fbc3a627",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-lost.json",
+    "rawSha256": "cdab2aaa8c8990d56ef2a8c43e8e1f3392853162516e71cdf314e9865705186d",
+    "rawBytes": 1338637,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-lost.needles.raw.json",
+    "rawSha256": "76f44fe7330d4cfe0ae87af08f0b00ade02c171280585988c798e9293698fdd6",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-lost.raw.json",
+    "rawSha256": "f5980682022287d119bdae99c030dd0d714726cbada110ab3b191d5bdaf8f56a",
+    "rawBytes": 1176131,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-recovery.json",
+    "rawSha256": "5ba753c47d42db35f86ed20618bb3457ed9658fa751b942afb1721ac9b11f4c9",
+    "rawBytes": 987782,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-recovery.needles.raw.json",
+    "rawSha256": "76f44fe7330d4cfe0ae87af08f0b00ade02c171280585988c798e9293698fdd6",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-recovery.raw.json",
+    "rawSha256": "a1dcdf991c368cdcf7e0a76424c38ae774e684e2abba1571f39fc7e5d35001bf",
+    "rawBytes": 814433,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-cold.json",
+    "rawSha256": "d5dc5e5df987968f0279ef04663b96d97a26ce653a38dd65f4a2fd31895cbcac",
+    "rawBytes": 2001337,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-cold.needles.raw.json",
+    "rawSha256": "0d717240170a4b31b8b7cb929aad26bce87ac7e61a951d5d464cf9fa97be33a3",
+    "rawBytes": 1270,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-cold.raw.json",
+    "rawSha256": "8173355f6d2933c8dcec25376b9699be3fea1adab959a0844c3b596c3c148c3f",
+    "rawBytes": 1849837,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-delivered.json",
+    "rawSha256": "a0df07c12ae5940720d9e8e48a6e259bcd0443b0f2e48fa2e1f19b508ebd753c",
+    "rawBytes": 2001337,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-delivered.needles.raw.json",
+    "rawSha256": "0d717240170a4b31b8b7cb929aad26bce87ac7e61a951d5d464cf9fa97be33a3",
+    "rawBytes": 1270,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-delivered.raw.json",
+    "rawSha256": "8ddae57b523edcfc344377d6a26c0fa69823772a9f134569fcf74a57d17f0ad6",
+    "rawBytes": 1849645,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit0.json",
+    "rawSha256": "5a798632c119cf89bda76b014cb3e8bd83ca813470e44a9ab56e971b61baba6a",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit0.needles.raw.json",
+    "rawSha256": "0b6d2401420040d2f234f761de882f822e6ec84b6ed09c8be79be3b24d9189af",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit0.raw.json",
+    "rawSha256": "aa33a087bdd051e6a5f2617aa8f7b6eea6260c5d92058381d5929110bd8a94c6",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit1.json",
+    "rawSha256": "161426ace6e3d6442d1a75c6c44d18931cd7f6a59e9bdee29aa5bbb0425d3841",
+    "rawBytes": 920678,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit1.needles.raw.json",
+    "rawSha256": "73aed3b7ebf5b0afa14c6c4c6b766a6b794466f9ccc2654a58465515b81187da",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit1.raw.json",
+    "rawSha256": "00b7ff69637a8b10be222c216f903750dee9a683c903a54c663fc3a731932713",
+    "rawBytes": 747419,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit2.json",
+    "rawSha256": "c489357d75b1c8d30b86595c4bc75ef6ff652d3e3aedda8235bb09a14491ba59",
+    "rawBytes": 950761,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit2.needles.raw.json",
+    "rawSha256": "03055373ca9430390676ddb3595090295e628e0eda8f259fcf28f5150467a394",
+    "rawBytes": 809,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit2.raw.json",
+    "rawSha256": "d38d1414801902be9d271ca4462fdcdad9a686b389fcaa40243e466c81648e91",
+    "rawBytes": 771883,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-lost.json",
+    "rawSha256": "a46865eaaaddd90ed3ca5407301459d37c620641e474136792185db54d4f61a0",
+    "rawBytes": 1420558,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-lost.needles.raw.json",
+    "rawSha256": "d6faffc20e7ada86eb314851b4406b520a011b96d458ecf5bce4c7812e715197",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-lost.raw.json",
+    "rawSha256": "c5bd1413239a2e7337077717344ddae0f493f87213c8a79079f2534d66660e0d",
+    "rawBytes": 1242893,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-recovery.json",
+    "rawSha256": "cc512ddcff003527af281a7e0b84f42739b32545c62ae5e9040f461a266d39a1",
+    "rawBytes": 1069704,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-recovery.needles.raw.json",
+    "rawSha256": "d6faffc20e7ada86eb314851b4406b520a011b96d458ecf5bce4c7812e715197",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-recovery.raw.json",
+    "rawSha256": "1ed4fc393e6f39ce6124ed7f720f413f39715e5e254363315fc14c00df5b3eec",
+    "rawBytes": 879755,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-cold.json",
+    "rawSha256": "576c3cd811e3bf3fe532c829a5d1786733d9da39cc7b4081f98318eb78b744f6",
+    "rawBytes": 2105669,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-cold.needles.raw.json",
+    "rawSha256": "02ae8669760d2a655f578d91e5d36107832367b5b6642276319c0e0d8c74b875",
+    "rawBytes": 1392,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-cold.raw.json",
+    "rawSha256": "24c78ffc1381568ecdd6d03bdf5df43b02bd690c50c29774881aa791c4920557",
+    "rawBytes": 1960357,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-delivered.json",
+    "rawSha256": "b23dbc3f0d28c7f7aded4d5a82c010dd1e472f5c0ee54a4a26ed4f1777ad7632",
+    "rawBytes": 2105669,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-delivered.needles.raw.json",
+    "rawSha256": "02ae8669760d2a655f578d91e5d36107832367b5b6642276319c0e0d8c74b875",
+    "rawBytes": 1392,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-delivered.raw.json",
+    "rawSha256": "7c9575c8908e4d7d2617118019d3ba6aafb6cdf829e4d288ef8312eaceef017d",
+    "rawBytes": 1960165,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit0.json",
+    "rawSha256": "32b651ad109c13b630b9b2aa9bacda206007e45d126a2581449bd306d4217451",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit0.needles.raw.json",
+    "rawSha256": "0cedf0b0f79a92e7f7d6e19ad54fb216a8f03ffe25f6b5cf88a6f6ee978a08b6",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit0.raw.json",
+    "rawSha256": "f507747d34cd14e9efa7d950ba2e2910c6dd9b41350169c3045a39858a5b97c2",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit1.json",
+    "rawSha256": "5369f29e3f85d4fad1fd6a0233b434f46e6311a86e7372a3386ed84ef8b5a958",
+    "rawBytes": 928914,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit1.needles.raw.json",
+    "rawSha256": "f488f4d5aa10d7abbc2fddf60d7f80482769736c9c4eee01b697a964ef5c1efc",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit1.raw.json",
+    "rawSha256": "6aff5e09312e8d8734463408e2f5603d00bc82169db6950f996c4ff2f3daf467",
+    "rawBytes": 754037,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit2.json",
+    "rawSha256": "1c9061d8c0faf37d6f9e8b852c893bae61e9a7c9fa82fb5a436ad8c3cabed891",
+    "rawBytes": 950761,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit2.needles.raw.json",
+    "rawSha256": "3a1ba04564bc46ea1aeaecc28cec2a8952c11df9c3f85826ec5ed877af50aed6",
+    "rawBytes": 809,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit2.raw.json",
+    "rawSha256": "350b09b037626efde4f8bd714cf6fc293b216d3afe2230dcc110905e184cec6a",
+    "rawBytes": 771883,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-lost.json",
+    "rawSha256": "a980558bbda3a11342aa6ba6b8ca4844fba7211aae497a6cd878f3fb9720b175",
+    "rawBytes": 1420558,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-lost.needles.raw.json",
+    "rawSha256": "25a54440503e6cfcb2616724a724573cb459f2600df1ec53c2aa6e01e50408b0",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-lost.raw.json",
+    "rawSha256": "eb8bcc5527346b077b45f947ed2cf4d40697fac776e80a0575e56c48d7eb9206",
+    "rawBytes": 1242909,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-recovery.json",
+    "rawSha256": "0c403f1ac41e3dfa0cc3fcf9afa6880f087c802790ec26add6ff8d2ba401818a",
+    "rawBytes": 1069704,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-recovery.needles.raw.json",
+    "rawSha256": "25a54440503e6cfcb2616724a724573cb459f2600df1ec53c2aa6e01e50408b0",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-recovery.raw.json",
+    "rawSha256": "18fc7113da08a6e9a89d28e24bc13349f9ec77f51a8c26106dbe06367f133a25",
+    "rawBytes": 879755,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-cold.json",
+    "rawSha256": "7c821041d917a89e4ef93b728a7a757566c85b0fe4e485b00066d85e80429596",
+    "rawBytes": 1939731,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-cold.needles.raw.json",
+    "rawSha256": "fef56bee1ca223c2e9e775c29931c1e7e132e44d0e9e255def97c336b3ec4c63",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-cold.raw.json",
+    "rawSha256": "13487607c4795192b3b18a5a115f42db0918b974cce1f5201cc4f494a1133784",
+    "rawBytes": 1799601,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-delivered.json",
+    "rawSha256": "3c9a1eb6e8a404d97749db98c1735095bc04f90f88105ffbefd78738205d9a5e",
+    "rawBytes": 1939731,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-delivered.needles.raw.json",
+    "rawSha256": "fef56bee1ca223c2e9e775c29931c1e7e132e44d0e9e255def97c336b3ec4c63",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-delivered.raw.json",
+    "rawSha256": "b9e31d5c13f1800dfd30ce7e183dadff95e4d385bd5fa968d59e0f65863f6c32",
+    "rawBytes": 1799409,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit0.json",
+    "rawSha256": "9f0e7c4c3e8f2e6af9df00168e685eb86671fd78c877a5b85a6c39aee1681637",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit0.needles.raw.json",
+    "rawSha256": "1746710fa1d736cdb82565d94f9f5ee277983cf96e8d6248d15ea6b19c5ff780",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit0.raw.json",
+    "rawSha256": "e147224b623f7123d9bcd34ca7f0d582726563d34bd34bf9e4a21be8385cf22f",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit1.json",
+    "rawSha256": "503162fba8818f1bf46c5b92cc041cb8b33c66c3496ab6dedd56c5565b7ec2e3",
+    "rawBytes": 920678,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit1.needles.raw.json",
+    "rawSha256": "67153244a1c9d1472a0fa97e7443e77a5f2d0efee39ee5d6f9a6004c7cd099df",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit1.raw.json",
+    "rawSha256": "9d52d3e9c2685efa167eab51839030c54f04911c51467d1391ba84b73823e63f",
+    "rawBytes": 747419,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-lost.json",
+    "rawSha256": "1c5e50a4a9bb7ad37bebd506c1233d2410668690c270136c01b0f1b219725958",
+    "rawBytes": 1359008,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-lost.needles.raw.json",
+    "rawSha256": "3d3a3535e6378b0a5c9c9f25be9bd891da8034e08c5568aad152ff215aa175bc",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-lost.raw.json",
+    "rawSha256": "4234082ff6288d10eb420024ead72baea8a98d137583bba2b5129c028dee0509",
+    "rawBytes": 1192749,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-recovery.json",
+    "rawSha256": "385ded63cd1246bd3ae74ff008079ab04019f4b13f4312f02d87171a4cc82cb6",
+    "rawBytes": 1008153,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-recovery.needles.raw.json",
+    "rawSha256": "3d3a3535e6378b0a5c9c9f25be9bd891da8034e08c5568aad152ff215aa175bc",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-recovery.raw.json",
+    "rawSha256": "b3b8cd2cbb73aa60f4a591d2e88a1b36f7788624d130d8b2cead9f3f5f05b76a",
+    "rawBytes": 830519,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-cold.json",
+    "rawSha256": "a8a12d2b9d984c099bb791772107a83e40afa17dcd4e71d03c0387cc06abdbbb",
+    "rawBytes": 1979879,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-cold.needles.raw.json",
+    "rawSha256": "455d96adb379f428af47a5259266a7b63b393d59b277ffd0b1b0236b7c1c4253",
+    "rawBytes": 1270,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-cold.raw.json",
+    "rawSha256": "a0ab31313c98004aedb29cf5869069a0b0a23389c9dac17e5197627b54c60786",
+    "rawBytes": 1832569,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-delivered.json",
+    "rawSha256": "63e7ab692618cc7a3066e8e098c58c6f04b4c944be45334a8ee4f4ebe7eb9318",
+    "rawBytes": 1979879,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-delivered.needles.raw.json",
+    "rawSha256": "455d96adb379f428af47a5259266a7b63b393d59b277ffd0b1b0236b7c1c4253",
+    "rawBytes": 1270,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-delivered.raw.json",
+    "rawSha256": "4e45a8841a9cfb9cb532787edf6896d5ef9491ea42fc5c4575e5cfb0aab37e89",
+    "rawBytes": 1832377,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit0.json",
+    "rawSha256": "c9d28c76d13ad85b6079acf6ad74660e4d5f99dd18f5c87e9160a5edcde4f838",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit0.needles.raw.json",
+    "rawSha256": "ca4dede8f69fd2a77bdb0fcd8aaca40d27ba40fe43135ef975d878740f3d30e8",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit0.raw.json",
+    "rawSha256": "3d33adac2c86227463eaa7e16a92b37d6d47431b3b0e36a4a4ae6ba31d06dd28",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit1.json",
+    "rawSha256": "42b74628b82f2e8b08036c1a1153317d1c26dec5ebf7646b0eb28559b8324a57",
+    "rawBytes": 913918,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit1.needles.raw.json",
+    "rawSha256": "52e882e39a11e04e77c60deffa7234b2832b7660d82a09f471bf36e8049bbbe9",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit1.raw.json",
+    "rawSha256": "8404df5e878f6e5f9965cfa522e87d56ce53163b2d686d0c11b0cc405e2c5844",
+    "rawBytes": 742545,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit2.json",
+    "rawSha256": "c88f1c8afad09dab74e07d644f687fa89addc688349b7f1e6c54c711c7a3763f",
+    "rawBytes": 949285,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit2.needles.raw.json",
+    "rawSha256": "adeddfc3ccabccf5e0301ea72c7bcfd45b0932572f698ac206af3ed5f526cf32",
+    "rawBytes": 809,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit2.raw.json",
+    "rawSha256": "f267251f1aaada9915ea9cec25ecb76a215991952a01e1ec83d7ee178949a026",
+    "rawBytes": 770139,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-recovery.json",
+    "rawSha256": "38a6b06e53ff1d57440ba2b29f61bf6c195eff04a12ffc8483cc0bb8f3e9796b",
+    "rawBytes": 1053232,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-recovery.needles.raw.json",
+    "rawSha256": "d12a7d3ee37a36a3b898d041f4fb0439fd162610b8ae1e0744f1f629c9f840c1",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-recovery.raw.json",
+    "rawSha256": "b45975225a4a6dfee778d28f309b50756d159306e8c27baea3aacc666309a0d5",
+    "rawBytes": 866519,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-cold.json",
+    "rawSha256": "f3413c06540c325b44f9ffa315942eb428dbb96ae0d118b981cfbb40686bf1a5",
+    "rawBytes": 2018757,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-cold.needles.raw.json",
+    "rawSha256": "aed1eda8ca4d21c6704733f7464c88fd54f1520a3395b4fe5610602ce6a6e0a0",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-cold.raw.json",
+    "rawSha256": "9767b4f1ed204a8ca834ddca2e9071a8e3741c84c55b94c4b0931c692b4c2bee",
+    "rawBytes": 1889869,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-delivered.json",
+    "rawSha256": "5d0d8e24d1830b59fd651a089115f0204587e3fc75ff249741b9d5509fc44c8b",
+    "rawBytes": 2018756,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-delivered.needles.raw.json",
+    "rawSha256": "aed1eda8ca4d21c6704733f7464c88fd54f1520a3395b4fe5610602ce6a6e0a0",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-delivered.raw.json",
+    "rawSha256": "7c782d779da8ef8df8c2fcb2df33dbeb2ba24fe44bffabbdf8928eed5698117e",
+    "rawBytes": 1889685,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-edit0.json",
+    "rawSha256": "66cd9a081b717a7e3e61dd54e4381e54f96e3942c79f50056dfe1e6773021031",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-edit0.needles.raw.json",
+    "rawSha256": "9dd3f5ed5dcf19d680c091e1fc8af11f50296355b81fe81f0f4e356d61d5cc89",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-edit0.raw.json",
+    "rawSha256": "fc49fab0e43dbac2181d0b113a03222ce3c190ecbc78fe110cb535fd2fd53719",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-recovery.json",
+    "rawSha256": "3ad1f057d75be5ff807e15770f44dfc3523921444fd2ba895072d706a7d57dfd",
+    "rawBytes": 987782,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-recovery.needles.raw.json",
+    "rawSha256": "06da6af5dfb4a16faa849ecc4e1108e763b9fad85374d2b1db734d0d1a9be14e",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-recovery.raw.json",
+    "rawSha256": "ef63a513a03a817f6b40ab79152f542356e560f640712a557be4c1b16f4315aa",
+    "rawBytes": 814433,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-cold.json",
+    "rawSha256": "17240992e8646782e5a731437fbc869124b065206d2da8371c33183de0dbb43c",
+    "rawBytes": 2023667,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-cold.needles.raw.json",
+    "rawSha256": "aef3adb22fd44286f20b6d49989a4f0242242669b4b8422367a07dcf601c720f",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-cold.raw.json",
+    "rawSha256": "3be29081130c43cf89027151e7b703af4d2348bec3e8848157e0a6e2d621401d",
+    "rawBytes": 1893469,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-delivered.json",
+    "rawSha256": "d47992a0f9f99515ac7fbbe99ac3b0f43946cc2359d1f63547321f5367923d2d",
+    "rawBytes": 2023667,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-delivered.needles.raw.json",
+    "rawSha256": "aef3adb22fd44286f20b6d49989a4f0242242669b4b8422367a07dcf601c720f",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-delivered.raw.json",
+    "rawSha256": "27242ddc90dd9e2ca20b147afad3e69e7af8f7580e803c019ccf068311742d00",
+    "rawBytes": 1893281,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-edit0.json",
+    "rawSha256": "f1bf012bfa78749b28fb7922264a8dd77e4641eb324d080c46b9073919a2244f",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-edit0.needles.raw.json",
+    "rawSha256": "c956dc2bf2093398054ad56b32c57327273e297a45989ae16770022039c4aad9",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-edit0.raw.json",
+    "rawSha256": "421f0e16497214c31b94f13fd949b36ec5ea0b821a89b1675de1c198cebf3fe9",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-lost.json",
+    "rawSha256": "ab99b037d3b94a96c90c60e2f25c244202d673a5c960c3f5d2aa6733162dad10",
+    "rawBytes": 1338637,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-lost.needles.raw.json",
+    "rawSha256": "a3a2773aeb3a6b64589a1b23c700f612095db9de553836f099ff26463c9ad985",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-lost.raw.json",
+    "rawSha256": "1418ac6d0b4939af534e6c05dac3fbccee21bc62f2ba0820775647ae8c188702",
+    "rawBytes": 1176179,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-recovery.json",
+    "rawSha256": "2b2d3877409ecc90602494e2b6975b5cb357131450bd0ccc473add3c6a4a5393",
+    "rawBytes": 987782,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-recovery.needles.raw.json",
+    "rawSha256": "a3a2773aeb3a6b64589a1b23c700f612095db9de553836f099ff26463c9ad985",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-recovery.raw.json",
+    "rawSha256": "370ecd5b96364b11f0aec373516d048b227d1d6140dc95501b67ef221d98d4c9",
+    "rawBytes": 814433,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-cold.json",
+    "rawSha256": "bd74c86cb501e6103b1141dcd9224a386eeb64240111fdc931d4fa71d1192282",
+    "rawBytes": 1951247,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-cold.needles.raw.json",
+    "rawSha256": "f4b6baa9523fdebbdd8774fbf56ee36d49472ed5c1e2b7d86a2384f31fd49844",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-cold.raw.json",
+    "rawSha256": "b259805cf34cde6dd9234ffb8ad65d16b3c39d36d17a5ec8904d8e0e85068118",
+    "rawBytes": 1809227,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-delivered.json",
+    "rawSha256": "c52e98f586ffe70eff3856280e76cd7e7e025642af8b7cbfb63a37530059c955",
+    "rawBytes": 1951247,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-delivered.needles.raw.json",
+    "rawSha256": "f4b6baa9523fdebbdd8774fbf56ee36d49472ed5c1e2b7d86a2384f31fd49844",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-delivered.raw.json",
+    "rawSha256": "a11db62b51c807d5f645cbb9f965f2e06b30338db27d605d8c3bf9da77a7c86a",
+    "rawBytes": 1809039,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit0.json",
+    "rawSha256": "e02c269dafcb1079b1475fd51785e6b4de55819fc10b0f7542abd9f75f645b6f",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit0.needles.raw.json",
+    "rawSha256": "c7f89e36a46307f054ca84da3e07d7cb9f085c99b2887c23217078a88cf58981",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit0.raw.json",
+    "rawSha256": "9716e79eced394eaeff9957827e7c395ef2461b78e4a8fdfa7edd76e12f7cdcf",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit1.json",
+    "rawSha256": "d24c8b9d477e8ea7096255616374ff4dfca87030f17308a78a803ddbafb79935",
+    "rawBytes": 920678,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit1.needles.raw.json",
+    "rawSha256": "17e071df6813dffce5718b0755daa668935f09f29e653bec4772c7e1d3c08456",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit1.raw.json",
+    "rawSha256": "1270191b566aee44111ed5f2e039c3d223fe7838dbfe52202489d7019f1a738d",
+    "rawBytes": 747419,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-recovery.json",
+    "rawSha256": "4145737e3f20ddc594ea518f3deaf23d9218494509faddfc8e9744c3676c59b7",
+    "rawBytes": 1024625,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-recovery.needles.raw.json",
+    "rawSha256": "2993289b56c280468b792847d312f048097dfaaac687c5d2b97533fa94f418bd",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-recovery.raw.json",
+    "rawSha256": "d0a610c0883a9593345c1241dff982b8ea0c5b3a4272c4ab5940c9e38476963a",
+    "rawBytes": 843795,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-cold.json",
+    "rawSha256": "6b9f0226690e289981c5e3106e00d4f91a594d152717cc7054cab18fbbbf7d9a",
+    "rawBytes": 2113931,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-cold.needles.raw.json",
+    "rawSha256": "4dd57ee247a3bdb6c0d37e7f1931f958819dded65c1817bb7bfa37e96741bc35",
+    "rawBytes": 1392,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-cold.raw.json",
+    "rawSha256": "6cd0a012fc3b92a123b81cb90f71114e306391f040864e2d2ef98ed3820323b1",
+    "rawBytes": 1967225,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-delivered.json",
+    "rawSha256": "0a0d46814595d2782452b38853b4bd93fa12a60413853a282ad256b1c34cdfa4",
+    "rawBytes": 2113931,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-delivered.needles.raw.json",
+    "rawSha256": "4dd57ee247a3bdb6c0d37e7f1931f958819dded65c1817bb7bfa37e96741bc35",
+    "rawBytes": 1392,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-delivered.raw.json",
+    "rawSha256": "7809a92256fca0772826907e3c201655305cb0e38e7d9911820a86a09b4bd53e",
+    "rawBytes": 1967033,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit0.json",
+    "rawSha256": "42a3348c0d668858bc45ecd22c1deb4ab543bb27513b0a12603fd7cd5b490781",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit0.needles.raw.json",
+    "rawSha256": "52b12904cec26ecedb947f5e17624e3d02bb9a2ffc44e3ddaa63003eaa76713a",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit0.raw.json",
+    "rawSha256": "fdf8fb8a5187d318228649e174ad23b6543b39ce18bc42759cb9eae37ea13253",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit1.json",
+    "rawSha256": "ef322b5d15ec01a1b77023b6e7046e3bbdf6433991eb9a03addbdb0b04c49bf4",
+    "rawBytes": 928914,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit1.needles.raw.json",
+    "rawSha256": "eccb2656e5fc701a60d952c4880a26cd46c84e8b26be622157deb6bea9598090",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit1.raw.json",
+    "rawSha256": "91a16e442b77f3ce3bd01375c03e390d692d7802928a092a8879398624844152",
+    "rawBytes": 754037,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit2.json",
+    "rawSha256": "5f658308bfdc84fc7a10b750aa3016983dcb6836937c46a9c4ab9c532dd67b72",
+    "rawBytes": 958997,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit2.needles.raw.json",
+    "rawSha256": "2b287c8929ef95a11bfd0e5901cdf9c75f05abca242fed2ea70dfda99b36f224",
+    "rawBytes": 809,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit2.raw.json",
+    "rawSha256": "04bab081d35e26217b283563f4ad29a9718f5bdd93ecbe41155beebf2087f8f5",
+    "rawBytes": 778501,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-lost.json",
+    "rawSha256": "0ee9d75b6b92218dd279ace97cd5e77db69e4664ff7f2944d9d8b7635e7ee010",
+    "rawBytes": 1428794,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-lost.needles.raw.json",
+    "rawSha256": "038e25dc48c2367bcba99272b410b0326fed1a81b5ee82737934a96d9950897d",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-lost.raw.json",
+    "rawSha256": "9e3ab0f834457f966659d6ee4f16a32a29065e2296f08c03248e3952e0f9bc85",
+    "rawBytes": 1249735,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-recovery.json",
+    "rawSha256": "1d25fcb8a57c16b6dda7d69784b2bcbcc7e16d255401b6911abc436075d0cde3",
+    "rawBytes": 1077940,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-recovery.needles.raw.json",
+    "rawSha256": "038e25dc48c2367bcba99272b410b0326fed1a81b5ee82737934a96d9950897d",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-recovery.raw.json",
+    "rawSha256": "1f0ba7d702e3389f19051751b0748ea82b66ef029d13f84018abb49b519d46d7",
+    "rawBytes": 886373,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-cold.json",
+    "rawSha256": "3d112e087a047721bd5e04b58152d036d6da64389b13b0962d226d5d3b12a10e",
+    "rawBytes": 1964443,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-cold.needles.raw.json",
+    "rawSha256": "050fb638cae17fe571bb2fb19e4deb303183246da9f729d5cb227b9117d0f82c",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-cold.raw.json",
+    "rawSha256": "60ce9339cd3e1d8586530138b5318a5242a6827f776caf6b4a829d285bff1df9",
+    "rawBytes": 1819819,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-delivered.json",
+    "rawSha256": "e0804d379b4381fd5d0236221b86115ff9e382dd88b12f21467b2379640aec74",
+    "rawBytes": 1964443,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-delivered.needles.raw.json",
+    "rawSha256": "050fb638cae17fe571bb2fb19e4deb303183246da9f729d5cb227b9117d0f82c",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-delivered.raw.json",
+    "rawSha256": "84ce70fc0c86f150f52233d2d81ab4eee80e2b5efa90d0d2a00567c105ef1767",
+    "rawBytes": 1819627,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit0.json",
+    "rawSha256": "adf8e00d11a6c9f382c14c345f949d5aa7155b0c5fe30b4cc459eaba5cb4eac6",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit0.needles.raw.json",
+    "rawSha256": "7745b7516737319997e5dd612c2ae5f6e2bf432904a91f9676cf944b469e503e",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit0.raw.json",
+    "rawSha256": "385b07d38b34731572ca8b192425bdd5ee33354d90c88dcb05cb23c49d129318",
+    "rawBytes": 724691,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit1.json",
+    "rawSha256": "7d65a7c7a318a073b238f3bb2fc94f2428841e26a06122de9aaf2d19f4748aa0",
+    "rawBytes": 928914,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit1.needles.raw.json",
+    "rawSha256": "79e002c48918c3174fdda50ae8af0d24db626aea4d921c9145f3eb37da822fb2",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit1.raw.json",
+    "rawSha256": "60743da91db020b0048e3c86bd664b44025d5e09d9bcdb41ac36df10c4e22d6a",
+    "rawBytes": 754029,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-lost.json",
+    "rawSha256": "9665af6d7f2d3ed931c0c3c01738e57c069db6d4e6eabb7ca71537197f887844",
+    "rawBytes": 1383716,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-lost.needles.raw.json",
+    "rawSha256": "5a6b264deeb72628a599f9ecc5be5c2cad3b4e356a939d4caee974044966ec24",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-lost.raw.json",
+    "rawSha256": "0ae48c54c2b943db001bac5f4e1bbbdf81e5a91031fa4fd4051d06c9e984f243",
+    "rawBytes": 1212915,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-recovery.json",
+    "rawSha256": "76294b865a6994fd38a9d59dbd33b146f4ce1cea8841ab305a819aaa0516164d",
+    "rawBytes": 1032861,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-recovery.needles.raw.json",
+    "rawSha256": "5a6b264deeb72628a599f9ecc5be5c2cad3b4e356a939d4caee974044966ec24",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-recovery.raw.json",
+    "rawSha256": "b05618e483fa6c95725695d823a6f259c378a142e7ec9aaeab07b4be24e8d7f7",
+    "rawBytes": 850405,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-cold.json",
+    "rawSha256": "3a24b23f9ab26aa8607db192f71928318dba4efb93c5ef2d796afa94144326a0",
+    "rawBytes": 2023691,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-cold.needles.raw.json",
+    "rawSha256": "2962552735214362932f654569de5adb3b5277319ce80d27d17fee0715ef3fdd",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-cold.raw.json",
+    "rawSha256": "4fc630b665add7d9af5bd309ed955b00fed198f44a90edcbb7c31df2bf711a79",
+    "rawBytes": 1893493,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-delivered.json",
+    "rawSha256": "7b6208bf04115ba31140fe9d32eaa65e760dc920236e0e7f09d284896faf0f11",
+    "rawBytes": 2023691,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-delivered.needles.raw.json",
+    "rawSha256": "2962552735214362932f654569de5adb3b5277319ce80d27d17fee0715ef3fdd",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-delivered.raw.json",
+    "rawSha256": "3ec3f6e2ca2ef92445cd97215654e451297ea278beb013542028cf5c50a32a2a",
+    "rawBytes": 1893305,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-edit0.json",
+    "rawSha256": "24a68f41d8b9a81608354f75700f16daf4d1c8ae123a6c0ac967b9c3423dc7cc",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-edit0.needles.raw.json",
+    "rawSha256": "760bea6233a6fb5d00766f19853ee04ff19aeeca7f72b052e9957050072098e6",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-edit0.raw.json",
+    "rawSha256": "493d47c22b36202f8f60660572f832babc39500eb35d222f4e6b941240383bed",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-lost.json",
+    "rawSha256": "27311e7f819ca356aa49f86c9bb46634babf8d861bb14154488366fd00c2a290",
+    "rawBytes": 1338637,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-lost.needles.raw.json",
+    "rawSha256": "6db31b9486f359c598f9cfcf5c3de062f792c4ab074ce9e4b1697a6dd41e0eb2",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-lost.raw.json",
+    "rawSha256": "b9645939ccec4295f56caa87db8940c95a01a3c3f9da1a17801a786e89c74f19",
+    "rawBytes": 1176179,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-recovery.json",
+    "rawSha256": "b05bc74727cce41b0e6b8d93307de0d272b05427dc3949e95e10efabc7f8f3f2",
+    "rawBytes": 987782,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-recovery.needles.raw.json",
+    "rawSha256": "6db31b9486f359c598f9cfcf5c3de062f792c4ab074ce9e4b1697a6dd41e0eb2",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-recovery.raw.json",
+    "rawSha256": "56ed40537313cd9497ff09e7a2c2a046591c6a8a09e5ea7c5a9d1e5e921d6f5d",
+    "rawBytes": 814433,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-cold.json",
+    "rawSha256": "84433d0787ddfc74eee8f6d48bc0b1cadbdbb49001a81a1e426ddab198989276",
+    "rawBytes": 1914427,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-cold.needles.raw.json",
+    "rawSha256": "657b33401b4181b346cc1a9b29ebbd572b1cbff1dfade4ba9cada3458d3e579f",
+    "rawBytes": 1038,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-cold.raw.json",
+    "rawSha256": "f9230f12e185da6c965cc4e244f55b99fda7ab275822e0ba5129954110bc5eb8",
+    "rawBytes": 1779399,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-delivered.json",
+    "rawSha256": "b8a3f02030c42c4b51730433f0c925154b31b0cb378a1c8e3330e7191f96676e",
+    "rawBytes": 1914426,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-delivered.needles.raw.json",
+    "rawSha256": "657b33401b4181b346cc1a9b29ebbd572b1cbff1dfade4ba9cada3458d3e579f",
+    "rawBytes": 1038,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-delivered.raw.json",
+    "rawSha256": "bc6e36db6e74040b9bc7fe41513846f3c86dad1705518245626683ed8a2af3d8",
+    "rawBytes": 1779215,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-edit0.json",
+    "rawSha256": "cbd86f2683daf664a3039c275dad4ce9c961e209ac5ce1e093aa4aa796bbf267",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-edit0.needles.raw.json",
+    "rawSha256": "609e1201d1f442e5943a02b886217c32e62fc2165bf5cb000519107dd9c3d878",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-edit0.raw.json",
+    "rawSha256": "2066bbf92c9135b4ca5d92399e03bf266bb48c58a4975a02aa145c21ec1e1639",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-recovery.json",
+    "rawSha256": "55db33621856d7808a44bf87bd0657c52cf9e65c1bb69f98f577ebfda910edec",
+    "rawBytes": 987782,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-recovery.needles.raw.json",
+    "rawSha256": "d9809e2651f52c4c0c5efda8f4fa7961940e217c6cc728ca3fbfa4a9ee13b3b5",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-recovery.raw.json",
+    "rawSha256": "221fadc50a4312ed6ba9e17bf0e7af6368c39429314bfbc53901f48ce45c51bf",
+    "rawBytes": 814433,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-cold.json",
+    "rawSha256": "eff34ca27b2ee132b260fb7705cf1386b80b49274bd218fba40e880670d01af3",
+    "rawBytes": 2063841,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-cold.needles.raw.json",
+    "rawSha256": "8c026891c7b6e5e74685cd38cabcee296b917174d0bca69bbaa17803d40dc416",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-cold.raw.json",
+    "rawSha256": "4ac26f65b58880c75cf9a53606c459e4782895f6ce62788947f71cbe7cf79133",
+    "rawBytes": 1926343,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-delivered.json",
+    "rawSha256": "e49455becf4f22403529d8779ec7f93e4ea09cee5f5973db469f61bf1f01161e",
+    "rawBytes": 2063841,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-delivered.needles.raw.json",
+    "rawSha256": "8c026891c7b6e5e74685cd38cabcee296b917174d0bca69bbaa17803d40dc416",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-delivered.raw.json",
+    "rawSha256": "4777821b1d0dc04353bec0e3f6c8bc4d09d67bf8f273825e2b5cc0d31faa52c4",
+    "rawBytes": 1926155,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit0.json",
+    "rawSha256": "899daf9ab562d963131cc606f78e5c0f1465e5307e92ede22ce769905365da6c",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit0.needles.raw.json",
+    "rawSha256": "f80845184a9d94375f92982a4d75e4257ce5720d9ec5b49bf6599d3851af027a",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit0.raw.json",
+    "rawSha256": "470c6f01fd9294fda0577844bf477024cbe733ae61f01755ac9d28409b76634c",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit1.json",
+    "rawSha256": "0b3ae8bc07d2c6780f567d843a0058770a495514ca50e629059647aa226bddc9",
+    "rawBytes": 907158,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit1.needles.raw.json",
+    "rawSha256": "4ea25e29a336f745f82860ef84ff9d0d180622023d59adb200855be1eee3f5d7",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit1.raw.json",
+    "rawSha256": "da8943198e6098e5036c22834af9c0656c862b064bff81b81057cc06aa7a4d45",
+    "rawBytes": 737651,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-recovery.json",
+    "rawSha256": "35f36f394fbe652c399469281da3d57e43122844e7520548dff84805a3f17595",
+    "rawBytes": 1032861,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-recovery.needles.raw.json",
+    "rawSha256": "7e7b643e1a4a2942069b70470deb2410f94777b5d2616ce90755902fce247ad0",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-recovery.raw.json",
+    "rawSha256": "d6a4127d3961bc6bd20213751f63b79e826838dcc76e9570f2569f7d03a90be4",
+    "rawBytes": 850413,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-cold.json",
+    "rawSha256": "1cc88dbe5f59e749eb0d2bd770396595ff1528c357e8e988bac8ae8615492cf1",
+    "rawBytes": 1934821,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-cold.needles.raw.json",
+    "rawSha256": "27156e859dfa70fabba103d25d38fb6882ac2d06b0cbde7f72b174f4586e9055",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-cold.raw.json",
+    "rawSha256": "17ea2e38c21ae97606940b5b3271d12fd44adbed85d2b9472047f1cc8488881d",
+    "rawBytes": 1795885,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-delivered.json",
+    "rawSha256": "0b41ca410e47694e6b5933b1720dcbcac2c83c80011fa3d708fe3a5914a03051",
+    "rawBytes": 1934821,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-delivered.needles.raw.json",
+    "rawSha256": "27156e859dfa70fabba103d25d38fb6882ac2d06b0cbde7f72b174f4586e9055",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-delivered.raw.json",
+    "rawSha256": "30c2441cc852b51386383ebc1e9614c185e206070763b6c0aae2f1ba7e488ee8",
+    "rawBytes": 1795697,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit0.json",
+    "rawSha256": "00403937b62f627f4245bddf2b36c0bba6c0d9b256fb860ce94d8f6c13c8619b",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit0.needles.raw.json",
+    "rawSha256": "68ee5e6006d1549e48c751107a4bb971cd86168ab934391edff93e3ec680bb66",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit0.raw.json",
+    "rawSha256": "563cb315521f25e9e6b9326aa34f7abaf89b8e073ba6e7d7679fac1f842c0429",
+    "rawBytes": 724691,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit1.json",
+    "rawSha256": "2f386734f1546fca6cb7b5ac67f7affaefbd79479d3ef72bd98ff2503d078974",
+    "rawBytes": 913918,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit1.needles.raw.json",
+    "rawSha256": "672d8d3e115a4fd8645c161ee3c969bcbe43d46757a752f459054ba74107be77",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit1.raw.json",
+    "rawSha256": "94fd910f834ef215105850723a972b489386e3a0d20e95fc6866ab4983b7a29a",
+    "rawBytes": 742529,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-recovery.json",
+    "rawSha256": "5eee56a6007d5a556267d20e524eeed4dc51c4c67d560f0a2e2427d068869841",
+    "rawBytes": 1008153,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-recovery.needles.raw.json",
+    "rawSha256": "f847d0346f5fa370d8a9a08e72a995652b7a96898e14c8b92533a7290f95dd6b",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-recovery.raw.json",
+    "rawSha256": "3bfff699dd18ba039099a431ba4b345c707ee4dc546d2d2a317c12875417e481",
+    "rawBytes": 830511,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-cold.json",
+    "rawSha256": "54b4ac1ae8194dc020271452049771c686a0f55bb5bf0f200d28011936825163",
+    "rawBytes": 2039127,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-cold.needles.raw.json",
+    "rawSha256": "55a673165e34dc2037cae6ef015a0ec449e2768afeb1871fa0503fc1812acd3f",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-cold.raw.json",
+    "rawSha256": "b298a0253fdca280abc13f34561349f7a18da2a677981edef72def79d8a41df1",
+    "rawBytes": 1906443,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-delivered.json",
+    "rawSha256": "83f93dabfa7ed031b8f6f3d486dbc15b32148078fca6d006bfa3aeca334ca575",
+    "rawBytes": 2039127,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-delivered.needles.raw.json",
+    "rawSha256": "55a673165e34dc2037cae6ef015a0ec449e2768afeb1871fa0503fc1812acd3f",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-delivered.raw.json",
+    "rawSha256": "657741667fec2b316c9c7813604bb82ca7cf68274b596de73abb5c7cee770259",
+    "rawBytes": 1906255,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit0.json",
+    "rawSha256": "93ef1ebaa8a21ebf0a8ff3a2fa19b59791cc5e355cfaf54b9113dcc77f5f64e6",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit0.needles.raw.json",
+    "rawSha256": "5831c9a901b4eb71a43c104a3d33307df93db9d4e60ca199e2de6ec87f61ec31",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit0.raw.json",
+    "rawSha256": "8c269a8c1b2b9f7c0ff3dff5f60aa9f5d3ad1d98b0e07bacf6f8c1331e602dd4",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit1.json",
+    "rawSha256": "d0d0a50b53cc4b5cd39c67e944aef203d8d7887adfe84832c26369a416577375",
+    "rawBytes": 920678,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit1.needles.raw.json",
+    "rawSha256": "1d35e5a4e10cedc6c198148cf1d0443a3912b88ad01a1dfeaa245a5090b50370",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit1.raw.json",
+    "rawSha256": "6d1a7429983444063c8cc9f4f1ac3fc5ad98a364c5c8bf51667839d59883cb42",
+    "rawBytes": 747419,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-recovery.json",
+    "rawSha256": "cf9f70ceda8cca9d6f8f5660bf0344bc84ab42cf45563b58a01c4e9fc6b4e5df",
+    "rawBytes": 1008153,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-recovery.needles.raw.json",
+    "rawSha256": "5282623822a1be0dac1ca609b8ca0b969c8f57d255d04b5aa8f06859d5841342",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-recovery.raw.json",
+    "rawSha256": "fb4a39a3c9cfa44d08337e8158cd7296d3d8e9795e13f99b4dba11610da0eb4e",
+    "rawBytes": 830519,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-cold.json",
+    "rawSha256": "e7d37263cdc7621f8f9d6d2f0a6db02a4d636b03a2f76e176c2e724a085e7c0b",
+    "rawBytes": 2039127,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-cold.needles.raw.json",
+    "rawSha256": "8cba55056ca8b6b9195178bd2c8551145e9450b1e6a4003186d9c8258abac778",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-cold.raw.json",
+    "rawSha256": "2236d6d3c5c8e5ecd58e269f89539bc5a36cc357c25ae3e8edae46d794c3cba6",
+    "rawBytes": 1906443,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-delivered.json",
+    "rawSha256": "d19d2d70e7334734b7935d2191c10e00c4bd9c3a074f714a67e42f6a115888cc",
+    "rawBytes": 2039127,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-delivered.needles.raw.json",
+    "rawSha256": "8cba55056ca8b6b9195178bd2c8551145e9450b1e6a4003186d9c8258abac778",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-delivered.raw.json",
+    "rawSha256": "72b8957cc8f54efbe7d630ca7ab1dd5cca81ccc598d0bab1112d1c5de50e9d4a",
+    "rawBytes": 1906255,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit0.json",
+    "rawSha256": "bb551d652129dc15c51675579bccc39539841788d40860be1893d2e82b78e4a6",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit0.needles.raw.json",
+    "rawSha256": "f5dceb00308628968cb2c10e7be5cb341dc1074bf37d651e1604cf5cfc1db51d",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit0.raw.json",
+    "rawSha256": "ebe9b03058c4383714acc4f4b76fb13d273b290efe91649396930288f3ad0713",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit1.json",
+    "rawSha256": "cdba407aed08cb4db98e10515cc44f57440e11416968b71a40e78727928a6f92",
+    "rawBytes": 920678,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit1.needles.raw.json",
+    "rawSha256": "8e5bc38afcf942e7a67d2dde23aa92425e254b83cb5c531da91c3d486eea5097",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit1.raw.json",
+    "rawSha256": "df5f2f08762dc53219b30a471b90d589980ffadf9ff0eb143014c910740c6793",
+    "rawBytes": 747419,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-recovery.json",
+    "rawSha256": "6bcbdd1d85f014309a270d099ae60f57354a226c635f1b74d9af04c32154be96",
+    "rawBytes": 1008153,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-recovery.needles.raw.json",
+    "rawSha256": "3437d140c8d055615cecad56a7b44f08ca1a160bf527e9fc8e749a0e31f1353d",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-recovery.raw.json",
+    "rawSha256": "968d30a30ee1b69e56f92964621c21d83eb0e8677aefe60e8d3cbc76b782d1c0",
+    "rawBytes": 830519,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-cold.json",
+    "rawSha256": "8b1f78c5360c9c924359a5773b9338bb6abe3564645203adf05b10e1a84f0468",
+    "rawBytes": 1914427,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-cold.needles.raw.json",
+    "rawSha256": "625efab2e0a049261cc7ea9581f24c2354b3067991f37fdad6d95957a28bbca7",
+    "rawBytes": 1038,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-cold.raw.json",
+    "rawSha256": "890f8e8290e2732a6f8f0cbc0a34644457cc8371f9096c5993597202d84f03fa",
+    "rawBytes": 1779399,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-delivered.json",
+    "rawSha256": "bda5074c7d2376094fa458f6d17f9108b029ee9c1fa66e1250e051335cf2807f",
+    "rawBytes": 1914426,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-delivered.needles.raw.json",
+    "rawSha256": "625efab2e0a049261cc7ea9581f24c2354b3067991f37fdad6d95957a28bbca7",
+    "rawBytes": 1038,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-delivered.raw.json",
+    "rawSha256": "8bb257d7bd065de8106d73f173b79f5f0ac71e44207cd44ac6681b9d1f48336e",
+    "rawBytes": 1779215,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-edit0.json",
+    "rawSha256": "50f4fcc5984764127531e3b29bf1d13cfe66dc8d972aa0f100a93e3d0f4dc536",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-edit0.needles.raw.json",
+    "rawSha256": "869129611d0e3e59a0b41dc8d5fdf37299d36502f5c7cd14d8bbc77a57c5adff",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-edit0.raw.json",
+    "rawSha256": "4752fbcf1d51ac186f9d754efe412bfe8eae2645c752ba392c3c2a7d227e375e",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-recovery.json",
+    "rawSha256": "c609064bcb0005eefac5bc784b3ab412d1eb6835308b560e98d3af92d1699c5c",
+    "rawBytes": 987782,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-recovery.needles.raw.json",
+    "rawSha256": "3b6ddd1113703b2c4f62087d6aa2b775552dd20f27c1cf54d077fbe1d446d951",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-recovery.raw.json",
+    "rawSha256": "3bd2ebed5bc2ca96562351af624c9ccc015a73f123b1f55004c1216a021fabf8",
+    "rawBytes": 814433,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-cold.json",
+    "rawSha256": "53bbc298c065b155bc38128a01908bc8690540d183c94b9d56cd074496e3c7f2",
+    "rawBytes": 1955215,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-cold.needles.raw.json",
+    "rawSha256": "4b042f25b946d0d0cac85b397e09e4971f76d0628f33dcfde11c3702f4ff8539",
+    "rawBytes": 1270,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-cold.raw.json",
+    "rawSha256": "ea6eae3f4a9732c12eaafac9c9e96871380b69d0b0e9e28a160bfa6b53953eca",
+    "rawBytes": 1813119,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-delivered.json",
+    "rawSha256": "b9b26701b87af7d6b1dd5929ebb37f6de05ff51c431d4ca0eae2d340913eb10b",
+    "rawBytes": 1955215,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-delivered.needles.raw.json",
+    "rawSha256": "4b042f25b946d0d0cac85b397e09e4971f76d0628f33dcfde11c3702f4ff8539",
+    "rawBytes": 1270,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-delivered.raw.json",
+    "rawSha256": "9175bc467eb316c365a1bd8a51d6fb3bae00d07b26a49951682e45bd1131e23a",
+    "rawBytes": 1812927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit0.json",
+    "rawSha256": "8820ec53df166ba804cc37c0177828b2303a69a982e3979dcf21a450748f24d4",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit0.needles.raw.json",
+    "rawSha256": "316bf4690acc57379dfac287775fa636f8915b414927fc51e2e82f441eb27511",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit0.raw.json",
+    "rawSha256": "c16c5fe1eac301c7cc43d879a5f3ee71fe1f974c33fa9b484fa4ae1db4d69acd",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit1.json",
+    "rawSha256": "2082030a5c845d0a4e718401894fb893f0dee2d9bcf5f8d009d84543ccab55a4",
+    "rawBytes": 920678,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit1.needles.raw.json",
+    "rawSha256": "b418dfdb751bebc79d0804421ec93a3a47d6443a2223f6823a8446b7b394e5e1",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit1.raw.json",
+    "rawSha256": "3f3cc2d68d6e71cc7c4c7a0ccea31f828ac607df76ee4e71376811aca80974b0",
+    "rawBytes": 747419,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit2.json",
+    "rawSha256": "8e96f78d422b06d4f47bab3d9c633386fde73a5f31d106789491f8ab1003b96f",
+    "rawBytes": 957521,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit2.needles.raw.json",
+    "rawSha256": "94796ca9b9d5516ffba982bd210de0468cd534e46766b786eff43a0363ef2e45",
+    "rawBytes": 809,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit2.raw.json",
+    "rawSha256": "a3fb76354ca32782ee5ae9005b26c41d3bac5a42d7b34acc53a8de5111d2d9fa",
+    "rawBytes": 776757,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-recovery.json",
+    "rawSha256": "670072b96718c4968115199d5d8464d2fc2d699b61acc22db85e3ea9dd739c31",
+    "rawBytes": 1028524,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-recovery.needles.raw.json",
+    "rawSha256": "e4281dcc3e48c82219a6373749cb4b749b3bfd471ad473e0368770ca0e7bfac1",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-recovery.raw.json",
+    "rawSha256": "ddb68f64da9360f326a96e0a1cdad390134bda9d8f8e0190b1b59ba323c22cfc",
+    "rawBytes": 846625,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-cold.json",
+    "rawSha256": "6d91152f3dc98668057c5c68aced3594fc464101d38d0e56ff5676902db04a6a",
+    "rawBytes": 2064479,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-cold.needles.raw.json",
+    "rawSha256": "05dccba3100d574e7c775f9024adb531e46a9af75915c815b31497bfbb7a30f6",
+    "rawBytes": 1392,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-cold.raw.json",
+    "rawSha256": "cbc2b2d60177bb086221156bf709d774ca86dc6638bc1ef8cf7f88d40707db0e",
+    "rawBytes": 1927217,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-delivered.json",
+    "rawSha256": "04c6c348cca9b9d3566aae8f2e9ec645928895f73ae50f5bb44fefc71879cac7",
+    "rawBytes": 2064479,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-delivered.needles.raw.json",
+    "rawSha256": "05dccba3100d574e7c775f9024adb531e46a9af75915c815b31497bfbb7a30f6",
+    "rawBytes": 1392,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-delivered.raw.json",
+    "rawSha256": "e5af76e224a7647a7d1c4d3c0cadac60a8e1f949c6ff4bdc5182ca311bc97d0e",
+    "rawBytes": 1927025,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit0.json",
+    "rawSha256": "982319f0d7a264c8468a823fe1684c07b63d3d7b55d34b2041573d02151cc537",
+    "rawBytes": 892072,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit0.needles.raw.json",
+    "rawSha256": "0413ff559fde3ef70267451337a5c088a2fa695dcc23a941c12f0716b25e283c",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit0.raw.json",
+    "rawSha256": "5b641182fc9c8b7c7258988a0bbeba81f71896a2540215d206ca8ab3b8e05b0d",
+    "rawBytes": 724699,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit1.json",
+    "rawSha256": "211b3ea0f71d1ea52723d80e6bf330146f004b2286f2b690633b88beda2d664a",
+    "rawBytes": 928914,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit1.needles.raw.json",
+    "rawSha256": "78e82cfac50d3cee15650a996dd24eff44258c9970e0590866e0be928eccee8a",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit1.raw.json",
+    "rawSha256": "2b307111334f2ae99e0a2912a54948b386ac0d3c3dc983723ca19f59f220b974",
+    "rawBytes": 754037,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit2.json",
+    "rawSha256": "8889fb26da1d9fccbc9db3125a08af1babdaf0792407aef2318191ba47a11dae",
+    "rawBytes": 957521,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit2.needles.raw.json",
+    "rawSha256": "1c43e5f57dec21c01232d550a609f87fe5883eda779173e72b88962ca2194910",
+    "rawBytes": 809,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit2.raw.json",
+    "rawSha256": "41511f008b76187a4ba9082303afec1d6211f095f1b77b01df15c4944c95f09d",
+    "rawBytes": 776757,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-lost.json",
+    "rawSha256": "9a115c4edf5bf02b652963bd79cbdeaa708e1e176ccda0f7564cca05252053b7",
+    "rawBytes": 1379378,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-lost.needles.raw.json",
+    "rawSha256": "4fe90f1c6654da2bc383aaa1cc1cb4e3dd3a210e8921a00494e3e9332469a723",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-lost.raw.json",
+    "rawSha256": "9eba6e918836206cd690abbff7255a4c3c12b9f5766f4d479c5c002f77ab77df",
+    "rawBytes": 1209779,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-recovery.json",
+    "rawSha256": "7f97b9e3b66e8ebda2c278ca56f28d4a2d602cea08f71e554682319fc87bf6d5",
+    "rawBytes": 1028524,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-recovery.needles.raw.json",
+    "rawSha256": "4fe90f1c6654da2bc383aaa1cc1cb4e3dd3a210e8921a00494e3e9332469a723",
+    "rawBytes": 1148,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-recovery.raw.json",
+    "rawSha256": "eb5f224b586fccba33094f2c58eaacd45c08120f38ae36e6e7de99a7c3206415",
+    "rawBytes": 846625,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-cold.json",
+    "rawSha256": "ed32073b46eefe7e227c4f063850ad687844de7970b5b1444e9c9c2d64dfa681",
+    "rawBytes": 2018757,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-cold.needles.raw.json",
+    "rawSha256": "394d0e4f2f472639de82356dd3ec97af7ceae8dd9ff628b3c03b5b5d61cbb568",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-cold.raw.json",
+    "rawSha256": "c80c8a6179f8e8385b36f2dcba701195f92be35753c92f212b3722462fe018d7",
+    "rawBytes": 1889869,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-delivered.json",
+    "rawSha256": "efb986eab6d7710125d3950c2a78db14e6d87db5c18df66340749975dd85bf0f",
+    "rawBytes": 2018756,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-delivered.needles.raw.json",
+    "rawSha256": "394d0e4f2f472639de82356dd3ec97af7ceae8dd9ff628b3c03b5b5d61cbb568",
+    "rawBytes": 1160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-delivered.raw.json",
+    "rawSha256": "d66a750171b625cebc6dc246b71da55c7db7f0529e3794f751b94154f73e8c6d",
+    "rawBytes": 1889685,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-edit0.json",
+    "rawSha256": "40bc19f6d08c969c15014e2a6517562cddfb05f0553beb00cabf60f184eb776a",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-edit0.needles.raw.json",
+    "rawSha256": "b623f971f78e2c2dbd2f4c813514730b4f3da745be703094c55c609ef27b5098",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-edit0.raw.json",
+    "rawSha256": "c78665a9e7a97d46349af97b10cae214b3ee103d5244b97a0c67cb27ecf8d530",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-recovery.json",
+    "rawSha256": "f817133629bf1caec0e12499fea3d72e84644640af73fb08f80d380ab339f9b8",
+    "rawBytes": 987782,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-recovery.needles.raw.json",
+    "rawSha256": "4f2461300118a0ff13918d31ecc3f23295ead4a0ccac60f988c018312e04eba7",
+    "rawBytes": 916,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-recovery.raw.json",
+    "rawSha256": "3c1cf084ae78e0c6fb348a3913e7e94fc495cb813c686a14db4162e7ae41e158",
+    "rawBytes": 814433,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-cold.json",
+    "rawSha256": "2039764cb554bba8210f18a6cd4093d162efa3a322598a77c7fd81a0f45a3eff",
+    "rawBytes": 1934845,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-cold.needles.raw.json",
+    "rawSha256": "754d74ac9458c2cd392ec3d3549d545c117c0213100d551df497ad1803ddc02a",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-cold.raw.json",
+    "rawSha256": "d227e2a6663f30207d4a05567049874f067759b124c39057d2210331ac604fdc",
+    "rawBytes": 1796453,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-delivered.json",
+    "rawSha256": "deed9d01905f79b12ba5aa34ea90bfd0fe8b68b56604a3387fdcd624711d222f",
+    "rawBytes": 1934845,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-delivered.needles.raw.json",
+    "rawSha256": "754d74ac9458c2cd392ec3d3549d545c117c0213100d551df497ad1803ddc02a",
+    "rawBytes": 1154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-delivered.raw.json",
+    "rawSha256": "4d1a17b26747b75eccb50e116f1abed3797500519a373e95ca32e47f0cffde4b",
+    "rawBytes": 1796265,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit0.json",
+    "rawSha256": "6db6eedd8e2c9b0ebc7ca7f54cb0f428580733d184a96a4706cc467782bbe2a6",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit0.needles.raw.json",
+    "rawSha256": "5baff995dc01f1cc4115b333666506625eae714066d4d3773d145f21920b89c2",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit0.raw.json",
+    "rawSha256": "752f4b097efac978eabab7c436853eceebc76dbcbf897a3ea97153d380e9700d",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit1.json",
+    "rawSha256": "1d32cc140298551b782ba381063f3170624b2ebb5513377225324e271f9e39f2",
+    "rawBytes": 922154,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit1.needles.raw.json",
+    "rawSha256": "33907c15dca2891e93891f13b1e109b6072feea77b51d03a3d0bd4508ccfdca4",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit1.raw.json",
+    "rawSha256": "ec82bd7fb0cedd9424d75fbd9f54d51dd590896fd6bca49546761aa43f0b3a54",
+    "rawBytes": 749163,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-recovery.json",
+    "rawSha256": "26cecf06ba3941046b75d225de07b1a4e00908c8d64a56521ad85cbec1916dec",
+    "rawBytes": 1008153,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-recovery.needles.raw.json",
+    "rawSha256": "2a49c66356715350d37ed1ec677870e45ed3272d53dfe978ab58437ede08f804",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-recovery.raw.json",
+    "rawSha256": "846888880bf256959296e6488716b564eb3f032506661a02dc0b8e0a619a788b",
+    "rawBytes": 830535,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-cold.json",
+    "rawSha256": "9b445180cc75ca1f2ada545b7cbb53f7660c4150b1f5e3679edc8f25e1162037",
+    "rawBytes": 2068775,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-cold.needles.raw.json",
+    "rawSha256": "98f040a62afafad3f981f57fe8421320dc77a754340d9b0768ab18aef06d01b7",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-cold.raw.json",
+    "rawSha256": "29f7e168971f0a8c9012e4793dba052a1a188f816186139aa06543d3741c6319",
+    "rawBytes": 1930387,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-delivered.json",
+    "rawSha256": "f64a577c14b7f85f98b69469d39893b9ea198462340b8ed314970a66bba8297a",
+    "rawBytes": 2068775,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-delivered.needles.raw.json",
+    "rawSha256": "98f040a62afafad3f981f57fe8421320dc77a754340d9b0768ab18aef06d01b7",
+    "rawBytes": 1276,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-delivered.raw.json",
+    "rawSha256": "de65388cca536112788fd033f41a4916be638c28cc5be9197178ca8744a6c116",
+    "rawBytes": 1930195,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit0.json",
+    "rawSha256": "45d5a894754fa1c3562ac4386677ed36dec8d4aaeffeaa09da8098b4b38cd19c",
+    "rawBytes": 885312,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit0.needles.raw.json",
+    "rawSha256": "0872aaafb42425991ddb2a09d758175c8200b378dab2e073f461abf04a35c4ac",
+    "rawBytes": 577,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit0.raw.json",
+    "rawSha256": "ef8c41115770d56f618cd53db9099db69ac4eb3fb9a764b63b6effa0c5bc8c46",
+    "rawBytes": 719817,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit1.json",
+    "rawSha256": "b635e4fc2ac2ce5e8cc816b14ec36169d0574b88cd0c4fa3773cee5685e46ab0",
+    "rawBytes": 928914,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit1.needles.raw.json",
+    "rawSha256": "08c00729f873df6ed1b39d47f0c491fd849fcbade16947fc05294a26ef349501",
+    "rawBytes": 693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit1.raw.json",
+    "rawSha256": "10c6c6e266d4708c56328a6c5eac3ce67a6c6c37468a6df54e78cde5a773005c",
+    "rawBytes": 754037,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-lost.json",
+    "rawSha256": "cd1ed47bf00372d5d2093ccae486a43cd0f137d7dab6b048bd879b3e35a77ead",
+    "rawBytes": 1383716,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-lost.needles.raw.json",
+    "rawSha256": "53a5c257153bc07b682b41fdc0775219495f3a78edf273a22c75ff4421c41160",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-lost.raw.json",
+    "rawSha256": "6cb0823eca12527abb892cec52e92d691bf23c341b42fbdc7aca5c9b20a83cf3",
+    "rawBytes": 1212995,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-recovery.json",
+    "rawSha256": "b7bd1e6d896b4b3448b0912782518388a4acbeb6ffa79a2068111f283fde3dd7",
+    "rawBytes": 1032861,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-recovery.needles.raw.json",
+    "rawSha256": "53a5c257153bc07b682b41fdc0775219495f3a78edf273a22c75ff4421c41160",
+    "rawBytes": 1032,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-recovery.raw.json",
+    "rawSha256": "559d29e53189dd8412ab8ffa497685709532c7774e602ee661925d4599af5561",
+    "rawBytes": 850413,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P0-empty.json",
+    "rawSha256": "b0f0574bd680bd588f42c1c20155b74f21d8f2aabd5bf72f69b436d7c8d8db39",
+    "rawBytes": 635074,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P0-empty.needles.raw.json",
+    "rawSha256": "2429bfc7c24f5c2ec231c5ba135869517365dbad7bfddc40c161e8b4d95ef9f5",
+    "rawBytes": 783,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P0-empty.raw.json",
+    "rawSha256": "02c1e0f8c25c0ddb50cf691054852cc605b803b2f775a00f08aaba5e2b8ca236",
+    "rawBytes": 502971,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P1-genesis.json",
+    "rawSha256": "4371e4fe5a9dd5b82359d4273c5f844f74346dc0498c79885df889f032553a74",
+    "rawBytes": 834190,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P1-genesis.needles.raw.json",
+    "rawSha256": "db63104b17be5c0ccb65afc4b7dff5be4e4149ad2dcbb288b90ef7cadf3f66c5",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P1-genesis.raw.json",
+    "rawSha256": "50e58ee95df2066a9c761d15faf1866750636af66396c6790572af675dcc9541",
+    "rawBytes": 678659,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P2-journal.json",
+    "rawSha256": "36f114aa3ea084a9e7a09c71a33df3ebba63ad919dc4e5e08560f2ca98893a35",
+    "rawBytes": 972029,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P2-journal.needles.raw.json",
+    "rawSha256": "db63104b17be5c0ccb65afc4b7dff5be4e4149ad2dcbb288b90ef7cadf3f66c5",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P2-journal.raw.json",
+    "rawSha256": "08daf5145e4564a2084b76d933344d43021df7206707ec5014e129097adff965",
+    "rawBytes": 791693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-cold.json",
+    "rawSha256": "4146f921a965f8f8cb56833714f5f83244fc7348c45197fc49a1bb78fdb544f1",
+    "rawBytes": 972886,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-cold.needles.raw.json",
+    "rawSha256": "db63104b17be5c0ccb65afc4b7dff5be4e4149ad2dcbb288b90ef7cadf3f66c5",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-cold.raw.json",
+    "rawSha256": "55ef9d53bdd1bc226fc122dd3fc3916b1d9c2f02ed3b85679308590d2d179659",
+    "rawBytes": 789931,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-compacted.json",
+    "rawSha256": "005b21033931ab430d57609e9e03a09fab211baa645f9a72de330fab827b015b",
+    "rawBytes": 964650,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-compacted.needles.raw.json",
+    "rawSha256": "db63104b17be5c0ccb65afc4b7dff5be4e4149ad2dcbb288b90ef7cadf3f66c5",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-compacted.raw.json",
+    "rawSha256": "6d66e0c3d12d0bc0ea177ac0d30fcae3b2986e13a031e56e60a98adcc2b8a15d",
+    "rawBytes": 783121,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-flushed.json",
+    "rawSha256": "ef9b657816b9abb60b7540da2c1f3f3aae6bfaae857f4aaa8b3e4540c486fac2",
+    "rawBytes": 1005836,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-flushed.needles.raw.json",
+    "rawSha256": "db63104b17be5c0ccb65afc4b7dff5be4e4149ad2dcbb288b90ef7cadf3f66c5",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-flushed.raw.json",
+    "rawSha256": "c53f615c6b57440b28c49db3c6f1a8355b5817c6379c86c1452fd040d83aeac9",
+    "rawBytes": 815935,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-locked.json",
+    "rawSha256": "5dec09082bffc3ac40753ef6b9232e0914ff5f694e1607cba3c3a4c1bb10d26a",
+    "rawBytes": 1005836,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-locked.needles.raw.json",
+    "rawSha256": "db63104b17be5c0ccb65afc4b7dff5be4e4149ad2dcbb288b90ef7cadf3f66c5",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-locked.raw.json",
+    "rawSha256": "0d67dc621582a8fce7818fa5691cb7ffb3bc7d4d702bb51cd912065fbf80c378",
+    "rawBytes": 816123,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-confirmed.json",
+    "rawSha256": "1270a9b73f2559e50bcb7cc7be92a623120597556c774892977f6599832d330a",
+    "rawBytes": 1076832,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-confirmed.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-confirmed.raw.json",
+    "rawSha256": "4a8a718e6a324cbbc4c513f0f72dc309c9b457ae35adf73024c86abde150c88f",
+    "rawBytes": 886703,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-finalization-pending.json",
+    "rawSha256": "d5d5888be470c84c77af5093ec6fe664e5b18bf243da717e6e55742bc092b66a",
+    "rawBytes": 1076826,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-finalization-pending.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-finalization-pending.raw.json",
+    "rawSha256": "57be37a46e0100bfde745acbe9e52ad4dcfe82996ec033a144ee8a2b216312fc",
+    "rawBytes": 885335,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-generated.json",
+    "rawSha256": "4cce061df0b2c19efd6f381b6c88d1776d0a6bc88579d8bbb8a75648427354eb",
+    "rawBytes": 1046160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-generated.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-generated.raw.json",
+    "rawSha256": "a82b7f92da9384f7d74f7ba84e3a691680900d088bdf4c95ac414829e47fbe20",
+    "rawBytes": 856439,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-genesis.json",
+    "rawSha256": "4922af7e438d7abb7573ccddb955a06e68c4a49314c0be705116b6abcb5499f7",
+    "rawBytes": 1247744,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-genesis.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-genesis.raw.json",
+    "rawSha256": "2582c1dd42dd6f9876cf15869f94446c4feb5bf05f28f5663fea1542b451130b",
+    "rawBytes": 1052227,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-lost-reply.json",
+    "rawSha256": "17b7acafb753e1237a86c712402d3fb53ca266c5f83a23f5fe23604a046358c7",
+    "rawBytes": 1426112,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-lost-reply.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-lost-reply.raw.json",
+    "rawSha256": "f2c4d962219ea4835a34b09121e6013ae63916e7767cf9d23531f894bf4c9359",
+    "rawBytes": 1254545,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountDeliveryWorkspace.json",
+    "rawSha256": "fc0dcb71f1bf4f738ac491e7b7a58fb4baffbd050278a3252c687c366491dc02",
+    "rawBytes": 1699409,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountDeliveryWorkspace.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountDeliveryWorkspace.raw.json",
+    "rawSha256": "f7fb2001e8fdac7d520f60e387ec894c051edec49fe91d5fb66fa00e2a7544c2",
+    "rawBytes": 1514309,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountSpoolWorkspace.json",
+    "rawSha256": "fc7c409ac4722bc3e7036c9f0cb6fe8cbd41dd72013f02b2fff4d4353e10d94c",
+    "rawBytes": 1682861,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountSpoolWorkspace.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountSpoolWorkspace.raw.json",
+    "rawSha256": "c52a2d6e695e9ce52d154ee32bce48cb7b8dfea5badab6438092006ac8ca4905",
+    "rawBytes": 1500199,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedCapturedAccountWorkspace.json",
+    "rawSha256": "d49fbee1f437df607390469ae671244487b67a8ed679654aa86a71f8bff1e831",
+    "rawBytes": 1662891,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedCapturedAccountWorkspace.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedCapturedAccountWorkspace.raw.json",
+    "rawSha256": "a8514298ed48557a3b8dde1a38f630fcf82b7b8371ab9130d55e845cd56fa3a6",
+    "rawBytes": 1483091,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-prepared.json",
+    "rawSha256": "01e744eb4f513d11625382b00eb7791bc3b80354307c52c05d6c846bd3d42c9c",
+    "rawBytes": 1179852,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-prepared.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-prepared.raw.json",
+    "rawSha256": "e82c0c44899787855c7b21a378338a540e898f99c7e4a4a7b42bb12a4891ea81",
+    "rawBytes": 982867,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-receipted.json",
+    "rawSha256": "13cfadc9440ff622f55a5247b102a5019082a300660a8579c603ced6f7a783df",
+    "rawBytes": 1573196,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-receipted.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-receipted.raw.json",
+    "rawSha256": "182c0ef677e4d1b8b118e786532d007e9c5643a6dfad6e7fef8582d898ff65c8",
+    "rawBytes": 1398745,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-selected.json",
+    "rawSha256": "8c3b99193b825ba8c00171db1ad78225d7c5575c934b0b57d39bef47ad2e6761",
+    "rawBytes": 1646367,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-selected.needles.raw.json",
+    "rawSha256": "97cc37f13277cd3705dde26419b4149761aa72df6b8f610c0d8c4293e8f392b2",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-selected.raw.json",
+    "rawSha256": "2e659da69efcaa42348d7837904b515d366f8746815fd25bca20c8afc997cdf3",
+    "rawBytes": 1469005,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-cold.json",
+    "rawSha256": "efecae2f2d0736317e0a7c240d16892ba4d96281f92f9c2594748c6211ce3a8d",
+    "rawBytes": 1931667,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-cold.needles.raw.json",
+    "rawSha256": "02878e8c43ea66d909b6dd6d3cec2bbab9f5790b432d4481ee84cd06248c5446",
+    "rawBytes": 1382,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-cold.raw.json",
+    "rawSha256": "c5399fe160ed4a6809d95d4b73d1b7d8ec60e742987ae31b8977a7088a3dc3a8",
+    "rawBytes": 1801755,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-delivered.json",
+    "rawSha256": "45a557d980b4bc175f8acb4262ddd42acef30cc822817994161035c89654968d",
+    "rawBytes": 2005932,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-delivered.needles.raw.json",
+    "rawSha256": "02878e8c43ea66d909b6dd6d3cec2bbab9f5790b432d4481ee84cd06248c5446",
+    "rawBytes": 1382,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-delivered.raw.json",
+    "rawSha256": "cd0a8f62ebc894474235fb12238d10a867be5eb8c69d63727be7eeae4f08051e",
+    "rawBytes": 1861237,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-locked.json",
+    "rawSha256": "fee5f3b405d285da086f958865038c5b2456a7f8100f88c12d5f24c5110eb213",
+    "rawBytes": 1931667,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-locked.needles.raw.json",
+    "rawSha256": "02878e8c43ea66d909b6dd6d3cec2bbab9f5790b432d4481ee84cd06248c5446",
+    "rawBytes": 1382,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-locked.raw.json",
+    "rawSha256": "1cfe7319be12ca0211c6f851f43e08fe997a55893c20c286e7ba82b377224e4e",
+    "rawBytes": 1801563,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-cold.json",
+    "rawSha256": "4e59033c08aa46eab0f2b0c284d1f35985ee90aeb8c7b9a6f004fd779df00b54",
+    "rawBytes": 936483,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-cold.needles.raw.json",
+    "rawSha256": "8f559b70e8bf53cb2e5edb15a141521e5400752f17d87f1c4fc5fe9733344caa",
+    "rawBytes": 848,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-cold.raw.json",
+    "rawSha256": "a3764d3c4b2835737258c9d56b19f2a975f6798bb4c9e2dc42befd8253129046",
+    "rawBytes": 760183,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-journal-failure.json",
+    "rawSha256": "490e7b491cd1bd32cb8fe93a865fb685a85ef4bbd661c4c435806d0034d090b8",
+    "rawBytes": 928246,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-journal-failure.needles.raw.json",
+    "rawSha256": "8f559b70e8bf53cb2e5edb15a141521e5400752f17d87f1c4fc5fe9733344caa",
+    "rawBytes": 848,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-journal-failure.raw.json",
+    "rawSha256": "c4914400be2b342f70f0b72beee70e30bc3d2834b52eac76e3b6e1b7cd867399",
+    "rawBytes": 753385,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-refused.json",
+    "rawSha256": "aa671f531b8d45c1d2d3e1c943e0514347790ef435ad91cda51c11e0f6fb96b9",
+    "rawBytes": 891404,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-refused.needles.raw.json",
+    "rawSha256": "933e2f1ff59f886212f8e0aa1db4d6421ee5b3c1c22e9b67e43c262b28ac3c68",
+    "rawBytes": 726,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-refused.raw.json",
+    "rawSha256": "6d1656ebd9d90fb54003ae6cf565df07ba5cc09a16121ea8bb552bdccd85ad41",
+    "rawBytes": 724039,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-baseline.json",
+    "rawSha256": "da38f96e639d608205bc128f0590087bbcc9a524a93bea33351fcd64a1d6f7be",
+    "rawBytes": 884644,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-baseline.needles.raw.json",
+    "rawSha256": "99cbf383e7af5a5c9dc9cf4f2132e3ea5897cbbd2ae2c2852cb0f34d501c66da",
+    "rawBytes": 585,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-baseline.raw.json",
+    "rawSha256": "32539e26f8db1ab9d641e2d9e82802e0beab7b4a0ce206c531fbf2f74a891c7f",
+    "rawBytes": 719173,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-leak.json",
+    "rawSha256": "c7f64c6e1ed4c647f74827a5a8bef6062801613413f31d0574262788c18a46eb",
+    "rawBytes": 886624,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-leak.needles.raw.json",
+    "rawSha256": "1612024e373d0272e751ef7c4d7926389b1d23246627fa6165a4a0449442ae3f",
+    "rawBytes": 585,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-leak.raw.json",
+    "rawSha256": "d8415dea649ae2cd024d1c05b6bcd4db3e9fd28fc5d3ec16693910a5b1939bb6",
+    "rawBytes": 720549,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P0-empty.json",
+    "rawSha256": "9d1915a8d2d92668bc1b57faec033ac193b9e00fccb93d23e9dc9be382825a28",
+    "rawBytes": 635074,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P0-empty.needles.raw.json",
+    "rawSha256": "d973d8d300acb1574f3da4e05303cc118000f0b9c0e6059ad0d406aa729e9f9f",
+    "rawBytes": 783,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P0-empty.raw.json",
+    "rawSha256": "5ce118998e477c1f7c3f185265bf5878414fe9bf1244dfd3e22cd0bd377626f9",
+    "rawBytes": 502971,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P1-genesis.json",
+    "rawSha256": "7c605c1aba8ff8d71687e7183fec0bffa17827d6c0d0966b0c19108575565ff5",
+    "rawBytes": 834190,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P1-genesis.needles.raw.json",
+    "rawSha256": "7f3f0e123bac1a30abfe16300db9ade46d80fbde7e10e2e5944681007116491f",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P1-genesis.raw.json",
+    "rawSha256": "42de6aaf9d4b9b61058154b73c89be106a8778a692a723f191d231122c9d8fcb",
+    "rawBytes": 678659,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P2-journal.json",
+    "rawSha256": "0b4af31c410c6320f8c71a7f3a09a711d7c87dd8d63d2bf2ab7a309dfc3b836f",
+    "rawBytes": 972029,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P2-journal.needles.raw.json",
+    "rawSha256": "7f3f0e123bac1a30abfe16300db9ade46d80fbde7e10e2e5944681007116491f",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P2-journal.raw.json",
+    "rawSha256": "5e5635f40dea585f80e710ed4bcf32b79a20fc948756b5c8cbcc12477131fe75",
+    "rawBytes": 791693,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-cold.json",
+    "rawSha256": "189f1c2f3de493189d670493b8ddb626684908f252a36d4c2c585aeb1bd62406",
+    "rawBytes": 972886,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-cold.needles.raw.json",
+    "rawSha256": "7f3f0e123bac1a30abfe16300db9ade46d80fbde7e10e2e5944681007116491f",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-cold.raw.json",
+    "rawSha256": "3fec73ffcde31b55b7eaaf4a5335ada2186906a987d7a415323479204d974bda",
+    "rawBytes": 789931,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-compacted.json",
+    "rawSha256": "b352952e73719a34c41566cd6ebc474d17118e28ebb4e252993a7f6f333680b1",
+    "rawBytes": 964650,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-compacted.needles.raw.json",
+    "rawSha256": "7f3f0e123bac1a30abfe16300db9ade46d80fbde7e10e2e5944681007116491f",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-compacted.raw.json",
+    "rawSha256": "02b22513ee0bc81ce77da95df81790a8ceff4ebac2d0b478a778151da0dc400d",
+    "rawBytes": 783121,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-flushed.json",
+    "rawSha256": "eacca7872dfed89416bab201c6158578afc5368d6d742bcea78f9d39c6f6d8b3",
+    "rawBytes": 1005836,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-flushed.needles.raw.json",
+    "rawSha256": "7f3f0e123bac1a30abfe16300db9ade46d80fbde7e10e2e5944681007116491f",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-flushed.raw.json",
+    "rawSha256": "e7b230b11ef20c76813171d30b0e1dd2b67b4dac5c0af7bfa476f5336135b5df",
+    "rawBytes": 815935,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-locked.json",
+    "rawSha256": "7cc147e243fd27c7d135e5e067e74d6bf8e47673f021507d6100724b93a6d27c",
+    "rawBytes": 1005836,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-locked.needles.raw.json",
+    "rawSha256": "7f3f0e123bac1a30abfe16300db9ade46d80fbde7e10e2e5944681007116491f",
+    "rawBytes": 927,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-locked.raw.json",
+    "rawSha256": "4c8cafaa3984fcab518086fe1923af528bc4c02d2a120266915a1aa7f649081f",
+    "rawBytes": 816123,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-confirmed.json",
+    "rawSha256": "bb24274657300ab025f0012d003a805769276e8b3c1f4b7ee8399907e2d8b0a7",
+    "rawBytes": 1076832,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-confirmed.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-confirmed.raw.json",
+    "rawSha256": "5e00e70d952f223fdf8284f2798694f0bbde89c89832190510d2d800da741d64",
+    "rawBytes": 886703,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-finalization-pending.json",
+    "rawSha256": "197725f352f9bb91e400b1fea6c42f82fdaef08ca7402f664099defa78f0893c",
+    "rawBytes": 1076826,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-finalization-pending.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-finalization-pending.raw.json",
+    "rawSha256": "a74554fe3f97cff3839e1f12a39775545ae4f8f2be4b0817fea0e52d7faf46ff",
+    "rawBytes": 885335,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-generated.json",
+    "rawSha256": "166c14214d5d9d984b0175d31301a28d25073a215fe1629455c3c00f625b1049",
+    "rawBytes": 1046160,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-generated.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-generated.raw.json",
+    "rawSha256": "81eecdeb353dd674f10e0b7c9348de714f2b7dd1927312c8b1d5ace9bab17778",
+    "rawBytes": 856439,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-genesis.json",
+    "rawSha256": "3d769455c73661beb5e94b777f31a902c812515b9c6d84504fefa03fcbb487c4",
+    "rawBytes": 1247744,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-genesis.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-genesis.raw.json",
+    "rawSha256": "291400d0082c01e32925148a50e42ef6cae22878b5f40a59b6844f7e5e1536c6",
+    "rawBytes": 1052227,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-lost-reply.json",
+    "rawSha256": "a593408f15e638ae910ff0ad2cb414e8b72aef7ffbe3475e2f939ca83a9423e8",
+    "rawBytes": 1426112,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-lost-reply.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-lost-reply.raw.json",
+    "rawSha256": "46432fe51075210c86552db53864c7763b2a41a26dabf559d55a3be9a5f66fdd",
+    "rawBytes": 1254545,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountDeliveryWorkspace.json",
+    "rawSha256": "b69f0dc12886f0973b7a981f37440f482023f1995f3e5b8e311f585ac9861caa",
+    "rawBytes": 1699409,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountDeliveryWorkspace.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountDeliveryWorkspace.raw.json",
+    "rawSha256": "23de784760c36b800117145712f96928eb2ccb59a24f94bc20e8c5bd61260f7b",
+    "rawBytes": 1514309,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountSpoolWorkspace.json",
+    "rawSha256": "68a5e5b65d94ab6bee0c75aceeeefa7847db53acec173d4170fb680bee5e7f25",
+    "rawBytes": 1682861,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountSpoolWorkspace.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountSpoolWorkspace.raw.json",
+    "rawSha256": "6b1841767b69c58e6ba97f9f5abef1466ed3f143ea232a02ce48e6bc4d49dfb1",
+    "rawBytes": 1500199,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedCapturedAccountWorkspace.json",
+    "rawSha256": "fb3de5edb275772302a31b9da71c2086fba55589677a2eb6fc4bfece189c8ecc",
+    "rawBytes": 1662891,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedCapturedAccountWorkspace.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedCapturedAccountWorkspace.raw.json",
+    "rawSha256": "dad8db2987531d5b69f8fecc55e5511250238ed9424786cf86ee5cc6dda6849c",
+    "rawBytes": 1483091,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-prepared.json",
+    "rawSha256": "3b86e49f560531147fe79ab03286419c063425824780f2186992c71f61a9db20",
+    "rawBytes": 1179852,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-prepared.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-prepared.raw.json",
+    "rawSha256": "d3de2cea996cd2ecc30b21d93947c9af1f6aecebf99e445d804751a77f1c902c",
+    "rawBytes": 982867,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-receipted.json",
+    "rawSha256": "04c23b3c129098052665c6ea371fb0f7f1de2800d5a292b20c6701862d44a49c",
+    "rawBytes": 1573196,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-receipted.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-receipted.raw.json",
+    "rawSha256": "56e9b2e219c18d4d3c4199b524fb674b600e88858591678c363e43e40fdb0513",
+    "rawBytes": 1398745,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-selected.json",
+    "rawSha256": "1ea6cb21eb4f3746e712fd28e0b5727218930290734f36bbc8da376485e4300f",
+    "rawBytes": 1646367,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-selected.needles.raw.json",
+    "rawSha256": "a1e2677fda9f584c092e9d14a90bc3dbbb3f8e05984e41b338593a25b1591e21",
+    "rawBytes": 1266,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-selected.raw.json",
+    "rawSha256": "0314b7bc29b2418cba079013c225bc2edcfd89ea1324cf7b8299175d411aef44",
+    "rawBytes": 1469005,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-cold.json",
+    "rawSha256": "d2cc515300cdea6a9347e5a23f885e0bd2901cbe113202341e15b8a4a02f0e8d",
+    "rawBytes": 1931667,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-cold.needles.raw.json",
+    "rawSha256": "ba4144d29cdaf5ad61a84855d2860209408acf114d8f51d98c74266831ea21af",
+    "rawBytes": 1382,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-cold.raw.json",
+    "rawSha256": "33d50ac73caebf611545bd7237367cd448c7c9c307eaa9eaa7bae59cb6ceb6cf",
+    "rawBytes": 1801755,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-delivered.json",
+    "rawSha256": "9db47c94ac14a391d11980c31410b0c80f3d985fceb1461b350bfd7440622067",
+    "rawBytes": 2005932,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-delivered.needles.raw.json",
+    "rawSha256": "ba4144d29cdaf5ad61a84855d2860209408acf114d8f51d98c74266831ea21af",
+    "rawBytes": 1382,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-delivered.raw.json",
+    "rawSha256": "cfee4eb99af00900b5bab0ea1d004328dfc492c5fa2307a1ec32145777f051e3",
+    "rawBytes": 1861237,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-locked.json",
+    "rawSha256": "9ffd2f4221866cbacbfd3d41578f29643cfb03663df92853afd53a2adfcd2917",
+    "rawBytes": 1931667,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-locked.needles.raw.json",
+    "rawSha256": "ba4144d29cdaf5ad61a84855d2860209408acf114d8f51d98c74266831ea21af",
+    "rawBytes": 1382,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-locked.raw.json",
+    "rawSha256": "a15136d4b6f78f7a9bbacc130839caf82c3b61d8ea13e5d77a76792281cd08c6",
+    "rawBytes": 1801563,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-cold.json",
+    "rawSha256": "6259f602e26e5bc4790fa3511c7053f73c3a25c2217e2a51cb79c36f310c87ca",
+    "rawBytes": 936483,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-cold.needles.raw.json",
+    "rawSha256": "9e50b2597e8212e12fecd38f16a9ccada984b628d9aaa6674d6bf1cfc9745eec",
+    "rawBytes": 848,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-cold.raw.json",
+    "rawSha256": "3f25619152b425d8bbe22b9bad443013d755a24c3cf940e9843151abad71c6fd",
+    "rawBytes": 760183,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-journal-failure.json",
+    "rawSha256": "70ba85c8ada5b7ef474bca3fa849da4c73590cd8bfa6bfebbf691c87a85780c5",
+    "rawBytes": 928246,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-journal-failure.needles.raw.json",
+    "rawSha256": "9e50b2597e8212e12fecd38f16a9ccada984b628d9aaa6674d6bf1cfc9745eec",
+    "rawBytes": 848,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-journal-failure.raw.json",
+    "rawSha256": "dc6d2fc9a4c66215bfe30abb91d9dea7c39494204e455b9668930bb18833c37e",
+    "rawBytes": 753385,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-refused.json",
+    "rawSha256": "4f48de676539be2a69e5ffb0c7e56fc2c9a705c5cbd74f81c04e65b86ea0d3f9",
+    "rawBytes": 891404,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-refused.needles.raw.json",
+    "rawSha256": "b833ed6fa2d4769ba9fe15feb0e97f37ac5faa712da605c94e1390be44ca56a0",
+    "rawBytes": 726,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-refused.raw.json",
+    "rawSha256": "85cc8f7f857226b0be0377b194761bd5991047840e44d2435e725575d74d0117",
+    "rawBytes": 724039,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-baseline.json",
+    "rawSha256": "7902d8b4e5190bae17a677af48740e6f36ed2d3f15b2878191d922d3e03f7dab",
+    "rawBytes": 884644,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-baseline.needles.raw.json",
+    "rawSha256": "2ff3cf9d3963be6d0db4271322eb7a908024c8d93d84d97b0b04a16367b63868",
+    "rawBytes": 585,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-baseline.raw.json",
+    "rawSha256": "8a790d7219530371825f43e7b8298df6fb093828706a280088bbfb1259b9116a",
+    "rawBytes": 719173,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-leak.json",
+    "rawSha256": "e49aabaae46416fb8549accad53e1178a2e8d505f0623d3ca17473a90c131883",
+    "rawBytes": 886624,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-leak.needles.raw.json",
+    "rawSha256": "14919cee9e3079228a0d56618bd39ad62dc5f461af9440b0a103a16c2c832f7c",
+    "rawBytes": 585,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-leak.raw.json",
+    "rawSha256": "038412a903eb35b4dbb3229764acd5f1b47208e47f600a5d1ea7a306cb9d46fd",
+    "rawBytes": 720549,
+    "reason": "Repeated regression carrier dump; retained locally, summarized here. No new privacy qualification claimed."
+  }
+]

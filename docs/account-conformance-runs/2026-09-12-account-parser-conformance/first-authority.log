@@ -1,0 +1,17 @@
+(node:35558) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35558) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ published fixed vectors match runtime and independent encoders with every declared binding exercised (221.429541ms)
+✔ 200 shrinking-enabled recursive property reorderings preserve the complete byte contracts (63.464166ms)
+✔ fixed proofs cross actual verifier boundaries; genuinely signed wrong purpose, scope and key namespace refuse (25.000667ms)
+✔ signed descriptors are not plaintext evidence; explicit zero-position genesis baseline refuses (3.743542ms)
+✔ closed nested objects, versions and array order are enforced before durable authority acceptance (3.424208ms)
+✔ six production message-builder field omissions rescue real signature failures (9.012167ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 544.639542

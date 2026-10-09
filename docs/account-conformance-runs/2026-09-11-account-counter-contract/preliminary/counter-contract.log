@@ -1,0 +1,13 @@
+✔ fixed metadata key, both initialization states and all counter variants agree with independent bytes (5.271625ms)
+✔ every specified metadata input binds or refuses; encoded omission witnesses preserve real HMAC checks (14.664625ms)
+✔ closed structured-clone parsers reject malformed counters without inferring missing allocation state (2.156625ms)
+✔ 200 generated allocation/restart histories match an independent integer budget and authenticate retained counters (259.927167ms)
+✔ actual source omissions lose root/state/spool MAC bindings and allocator guards; crypto remains operative (54.37125ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 516.043208

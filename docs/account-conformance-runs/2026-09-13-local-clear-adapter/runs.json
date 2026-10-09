@@ -1,0 +1,296 @@
+[
+  {
+    "label": "passing-full",
+    "selection": "standalone-local-clear",
+    "source": "test-results/local-clear-adapter-full",
+    "status": "passed",
+    "input": "15290986791364788867a4b58be84a43a9015055c39882151c00922399b8e117",
+    "stageCases": [
+      22
+    ],
+    "stageElapsedMs": [
+      53690
+    ],
+    "totalMs": 73229,
+    "native": [
+      {
+        "scope": "local-clear-browser",
+        "baselineAssertions": 172,
+        "baselines": 17,
+        "mutants": 5,
+        "mutations": [
+          {
+            "id": "blocked-as-success",
+            "assertion": "blocked-delete-not-complete",
+            "status": "detected"
+          },
+          {
+            "id": "journal-before-content",
+            "assertion": "delete-refusal-keeps-journal",
+            "status": "detected"
+          },
+          {
+            "id": "retain-genesis-opener",
+            "assertion": "terminal-has-no-content-openers",
+            "status": "detected"
+          },
+          {
+            "id": "skip-resume-authentication",
+            "assertion": "wrong-factor-cannot-finish-keyless-clear",
+            "status": "detected"
+          },
+          {
+            "id": "allow-component-open",
+            "assertion": "component-refuses-before-key-access",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "clear",
+            "origin": "http://127.0.0.1:64555",
+            "closed": true
+          },
+          {
+            "variant": "blocked-as-success",
+            "origin": "http://127.0.0.1:64709",
+            "closed": true
+          },
+          {
+            "variant": "journal-before-content",
+            "origin": "http://127.0.0.1:64719",
+            "closed": true
+          },
+          {
+            "variant": "retain-genesis-opener",
+            "origin": "http://127.0.0.1:64731",
+            "closed": true
+          },
+          {
+            "variant": "skip-resume-authentication",
+            "origin": "http://127.0.0.1:64740",
+            "closed": true
+          },
+          {
+            "variant": "allow-component-open",
+            "origin": "http://127.0.0.1:64750",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-clear-adapter-full/stages/0fc1368033b93d827e24a7823a1a1cd265f1358a008bc18c969b09cbd02b5330/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-controls",
+    "selection": "standalone-local-clear",
+    "source": "test-results/local-clear-adapter-selected-controls",
+    "status": "passed",
+    "input": "15290986791364788867a4b58be84a43a9015055c39882151c00922399b8e117",
+    "stageCases": [
+      8
+    ],
+    "stageElapsedMs": [
+      23967
+    ],
+    "totalMs": 43859,
+    "native": [
+      {
+        "scope": "local-clear-browser",
+        "baselineAssertions": 33,
+        "baselines": 4,
+        "mutants": 4,
+        "mutations": [
+          {
+            "id": "blocked-as-success",
+            "assertion": "blocked-delete-not-complete",
+            "status": "detected"
+          },
+          {
+            "id": "journal-before-content",
+            "assertion": "delete-refusal-keeps-journal",
+            "status": "detected"
+          },
+          {
+            "id": "skip-resume-authentication",
+            "assertion": "wrong-factor-cannot-finish-keyless-clear",
+            "status": "detected"
+          },
+          {
+            "id": "allow-component-open",
+            "assertion": "component-refuses-before-key-access",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "clear",
+            "origin": "http://127.0.0.1:64894",
+            "closed": true
+          },
+          {
+            "variant": "blocked-as-success",
+            "origin": "http://127.0.0.1:64956",
+            "closed": true
+          },
+          {
+            "variant": "journal-before-content",
+            "origin": "http://127.0.0.1:64972",
+            "closed": true
+          },
+          {
+            "variant": "skip-resume-authentication",
+            "origin": "http://127.0.0.1:64982",
+            "closed": true
+          },
+          {
+            "variant": "allow-component-open",
+            "origin": "http://127.0.0.1:65000",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-clear-adapter-selected-controls/stages/4059a0a4fd9ec7e20f28593606c47c379cd3e2e11a97ce79c43983acaef4ac5f/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "selected-baseline",
+    "selection": "standalone-local-clear",
+    "source": "test-results/local-clear-adapter-baseline-index",
+    "status": "passed",
+    "input": "15290986791364788867a4b58be84a43a9015055c39882151c00922399b8e117",
+    "stageCases": [
+      1
+    ],
+    "stageElapsedMs": [
+      10221
+    ],
+    "totalMs": 33109,
+    "native": [
+      {
+        "scope": "local-clear-browser",
+        "baselineAssertions": 10,
+        "baselines": 1,
+        "mutants": 0,
+        "mutations": [],
+        "servers": [
+          {
+            "variant": "clear",
+            "origin": "http://127.0.0.1:64913",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-clear-adapter-baseline-index/stages/a182d559818b9b9392de75171731d37f8ac550269a458c1dece0ac58b6a136b3/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "genesis-regression",
+    "selection": "standalone-local-genesis",
+    "source": "test-results/local-clear-adapter-genesis-regression",
+    "status": "passed",
+    "input": "15290986791364788867a4b58be84a43a9015055c39882151c00922399b8e117",
+    "stageCases": [
+      3
+    ],
+    "stageElapsedMs": [
+      13117
+    ],
+    "totalMs": 32949,
+    "native": [
+      {
+        "scope": "local-genesis-browser",
+        "baselineAssertions": 17,
+        "baselines": 2,
+        "mutants": 1,
+        "mutations": [
+          {
+            "id": "skip-progress-authentication",
+            "assertion": "damaged-progress-refuses",
+            "status": "detected"
+          }
+        ],
+        "servers": [
+          {
+            "variant": "genesis",
+            "origin": "http://127.0.0.1:64945",
+            "closed": true
+          },
+          {
+            "variant": "skip-progress-authentication",
+            "origin": "http://127.0.0.1:64992",
+            "closed": true
+          }
+        ],
+        "browser": {
+          "version": "151.0.7922.34",
+          "executablePath": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/local-clear-adapter-genesis-regression/stages/4612cacc398f22c89af627479db758105971760e4681f2aab117e8165b1eefd3/home/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+          "ownership": "stage-owned-cdp",
+          "platform": "darwin",
+          "arch": "arm64",
+          "playwright": "1.62.0"
+        }
+      }
+    ]
+  },
+  {
+    "label": "passing-infrastructure",
+    "selection": "infrastructure",
+    "source": "test-results/release-validation/2026-09-13T13-25-28.282Z",
+    "status": "passed",
+    "input": "b453aa90fa702e4fff052cfb6f6752c807440f4770485bd99088cd7c5962c4dd",
+    "stageCases": [
+      4,
+      3,
+      5,
+      4,
+      10,
+      4,
+      4,
+      5,
+      6,
+      4,
+      4,
+      null,
+      null
+    ],
+    "stageElapsedMs": [
+      2023,
+      1754,
+      1818,
+      1799,
+      1671,
+      1775,
+      1802,
+      1828,
+      1767,
+      1783,
+      1796,
+      3001,
+      1847
+    ],
+    "totalMs": 52050,
+    "native": []
+  }
+]

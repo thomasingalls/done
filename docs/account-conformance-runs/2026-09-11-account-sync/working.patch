@@ -1,0 +1,2655 @@
+diff --git a/package.json b/package.json
+index 23c5c81..fe45359 100644
+--- a/package.json
++++ b/package.json
+@@ -14,7 +14,7 @@
+     "lint:fix": "oxlint --react-plugin --fix",
+     "format": "oxfmt --check .",
+     "format:fix": "oxfmt --write .",
+-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport && pnpm account:receive-driver",
++    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor && pnpm account:service-inbound && pnpm account:receive-transport && pnpm account:receive-driver && pnpm account:sync",
+     "test": "vitest run",
+     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
+     "test:watch": "vitest",
+@@ -101,7 +101,8 @@
+     "account:receive": "node scripts/account-receive/run.mjs",
+     "account:receive-editor": "node scripts/account-receive-editor/run.mjs",
+     "account:receive-transport": "node scripts/account-receive-transport/run.mjs",
+-    "account:receive-driver": "node scripts/account-receive-driver/run.mjs"
++    "account:receive-driver": "node scripts/account-receive-driver/run.mjs",
++    "account:sync": "node scripts/account-sync/run.mjs"
+   },
+   "dependencies": {
+     "@codemirror/commands": "^6.10.4",
+diff --git a/src/crdt/accountDelivery.ts b/src/crdt/accountDelivery.ts
+index 465d098..adda6f9 100644
+--- a/src/crdt/accountDelivery.ts
++++ b/src/crdt/accountDelivery.ts
+@@ -35,6 +35,8 @@ import type { prepareAccountCustody } from './custody';
+ type Owner = ReturnType<typeof prepareAccountCustody>;
+ export interface DeliveryContext {
+   authority(): DecisionAuthority;
++  /** Internal owner census; v8 stays strict, v9 accounts for the complete receive union. */
++  inspect?: typeof inspectDelivery;
+   pin(): AuthorityPin;
+   canSubmit?(): boolean;
+   signer(): CryptoKey;
+@@ -56,6 +58,7 @@ export function describeDelivery(s: DeliveryState) {
+   };
+ }
+ export function createDeliveryOperations(context: DeliveryContext) {
++  const inspect = context.inspect ?? inspectDelivery;
+   const withState = <T>(
+     operation: (
+       task: SessionTask,
+@@ -68,7 +71,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
+     context.run(async (task, owner, route) => {
+       const records = await owner.carrier.load(task);
+       try {
+-        const c = inspectDelivery(records, route, context.authority()),
++        const c = inspect(records, route, context.authority()),
+           s = await task.wait(() =>
+             verifyDelivery(c, route, context.authority(), context.publicKey(), subtleFor(task)),
+           );
+@@ -110,7 +113,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
+               ];
+               await task.wait(() =>
+                 verifyDelivery(
+-                  inspectDelivery(proposed, route, context.authority()),
++                  inspect(proposed, route, context.authority()),
+                   route,
+                   context.authority(),
+                   context.publicKey(),
+@@ -154,7 +157,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
+     try {
+       const checked = await task.wait(() =>
+         verifyDelivery(
+-          inspectDelivery(rows, route, context.authority()),
++          inspect(rows, route, context.authority()),
+           route,
+           context.authority(),
+           context.publicKey(),
+@@ -206,7 +209,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
+           try {
+             const checked = await task.wait(() =>
+                 verifyDelivery(
+-                  inspectDelivery(rows, route, context.authority()),
++                  inspect(rows, route, context.authority()),
+                   route,
+                   context.authority(),
+                   context.publicKey(),
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index d4dee6e..218a01d 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,8 @@
++import { createEnvelopePreparation } from './accountEnvelopePreparation';
++import { createDeliveryOperations, describeDelivery } from './accountDelivery';
++import { publicationState } from './deliveryRecord';
++import { requireSelfEnvelope, verifySyncState } from './accountSyncState';
++import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
+ import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
+ import type { DriverGate } from './accountDriver';
+ /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
+@@ -10,6 +15,7 @@ import {
+   encodeInboundRequest,
+   inboundRequestMessage,
+   decodeInboundRequest,
++  decodeInboundPage,
+ } from '../../account-protocol/inboundTransport';
+ import { privateDeliveryPost } from '../account/privateDeliveryHttp';
+ import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
+@@ -46,6 +52,7 @@ async function openAccountReceiveOwner(
+   input: AccountStartupOptions,
+   principalId?: string,
+   canReceive: () => boolean = () => true,
++  composed = false,
+ ) {
+   const options = captureAccountOptions(input);
+   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
+@@ -99,8 +106,15 @@ async function openAccountReceiveOwner(
+         subtle = subtleFor(task);
+       await verifySpoolWitness(census.delivery.spool, counter, subtle);
+       await verifySpool(census.delivery.spool, route, base.generationKey, publicKey, subtle);
+-      await verifyDelivery(census.delivery, route, base.authority, publicKey, subtle);
+-      await verifyInboundLedger(census, records, base, lifetime(task));
++      const delivery = await verifyDelivery(
++        census.delivery,
++        route,
++        base.authority,
++        publicKey,
++        subtle,
++      );
++      const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
++      if (composed) verifySyncState(census.delivery, delivery, inbound);
+     },
+     dispose() {
+       base?.generationKey.fill(0);
+@@ -258,6 +272,38 @@ async function openAccountReceiveOwner(
+               promote([]);
+               return { kind: result!.kind, recorded: false, status: describe(s) };
+             });
++          if (composed && result.kind === 'received') {
++            const rows = await owner.carrier.load(task);
++            try {
++              const census = inspectInbound(rows, route, base).delivery;
++              const delivery = await verifyDelivery(
++                census,
++                route,
++                base.authority,
++                publicKey,
++                subtleFor(task),
++              );
++              try {
++                requireSelfEnvelope(
++                  census,
++                  result.position,
++                  decodeInboundPage(page).entries[0]!.envelope,
++                );
++                verifySyncState(census, delivery, {
++                  ...s,
++                  prefix: { ...s.prefix, observedThrough: result.through },
++                });
++              } catch (cause) {
++                // The local census already verified. A contradictory network candidate is refused
++                // before persistence, not diagnosed as corruption of the existing Local workspace.
++                throw new AdmissionError('receive-refused', 'Self-stream history differs', {
++                  cause,
++                });
++              }
++            } finally {
++              for (const row of rows) row.bytes.fill(0);
++            }
++          }
+           const evidence = result.record;
+           const before = await owner.carrier.spoolWitness(task),
+             after = await task.wait(() => extendSpoolWitness(before, evidence, subtleFor(task))),
+@@ -305,7 +351,102 @@ async function openAccountReceiveOwner(
+     },
+     compactContent: () => carrier.compactContent(),
+   });
+-  return { api, account, carrier, listCaptures, fetchPage };
++  const createOutbound = (whenDurable: () => Promise<unknown>) => {
++    if (!composed) throw Error('Outbound composition was not opened');
++    const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
++      records,
++      route,
++    ) => inspectInbound(records, route, base).delivery;
++    const checkPublication = async (
++      task: SessionTask,
++      owner: ReturnType<typeof prepareAccountCustody>,
++      route: CaptureRoute,
++    ) => {
++      await assertCurrent(task);
++      const records = await owner.carrier.load(task);
++      try {
++        const census = inspectInbound(records, route, base);
++        const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
++        const delivery = await verifyDelivery(
++          census.delivery,
++          route,
++          base.authority,
++          publicKey,
++          subtleFor(task),
++        );
++        if (inbound.conflict || publicationState(delivery) !== 'ready')
++          throw Error('Publication is halted by retained evidence');
++      } finally {
++        for (const r of records) r.bytes.fill(0);
++      }
++    };
++    const delivery = createDeliveryOperations({
++      authority: () => base.authority,
++      pin: () => options.pin,
++      signer: () => signer!,
++      publicKey: () => publicKey,
++      assertCurrent,
++      inspect,
++      canSubmit: canReceive,
++      run: (operation) =>
++        runCaptureTask(async (task, owner, route) => {
++          const inbound = await state(task, owner, route);
++          if (inbound.conflict) throw Error('Publication halted by inbound conflict');
++          return operation(task, owner, route);
++        }),
++    });
++    return {
++      ...delivery,
++      deliveryStatus: () =>
++        runCaptureTask(async (task, owner, route) => {
++          const records = await owner.carrier.load(task);
++          try {
++            const census = inspectInbound(records, route, base);
++            const inbound = await verifyInboundLedger(census, records, base, lifetime(task));
++            const delivery = await verifyDelivery(
++              census.delivery,
++              route,
++              base.authority,
++              publicKey,
++              subtleFor(task),
++            );
++            return {
++              ...describeDelivery(delivery),
++              state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
++            };
++          } finally {
++            for (const row of records) row.bytes.fill(0);
++          }
++        }),
++      ...createEnvelopePreparation({
++        key: () => base.generationKey,
++        signer: () => signer!,
++        whenDurable,
++        checkPublication,
++        inspect: (records, route) => inspect(records, route, base.authority).spool,
++        run: runCaptureTask,
++      }),
++      spoolStatus: () =>
++        runCaptureTask(async (task, owner, route) => {
++          const records = await owner.carrier.load(task);
++          try {
++            const spool = inspect(records, route, base.authority).spool;
++            return {
++              attempts: spool.attempts,
++              positions: spool.positions.map((p) => ({
++                position: p.position,
++                source: { ...p.source },
++                attempts: [...p.attempts],
++                persisted: !!p.wire,
++              })),
++            };
++          } finally {
++            for (const r of records) r.bytes.fill(0);
++          }
++        }),
++    };
++  };
++  return { api, account, carrier, listCaptures, fetchPage, createOutbound };
+ }
+ 
+ /** Storage-only surface retained for independent conformance and preparation. */
+@@ -314,7 +455,11 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
+   return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
+ }
+ 
+-async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorToken?: string) {
++async function openReceivingWorkspace(
++  input: AccountWorkspaceOptions,
++  operatorToken?: string,
++  composed = false,
++) {
+   const driven = operatorToken !== undefined;
+   if (driven && !/^[A-Za-z0-9_-]{43}$/.test(operatorToken!))
+     throw Error('Invalid private operator token');
+@@ -324,11 +469,13 @@ async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorTo
+     identity: structuredClone(input.identity),
+     today: input.today,
+   };
+-  const { api, account, carrier, listCaptures, fetchPage } = await openAccountReceiveOwner(
+-    options,
+-    options.identity.id,
+-    () => !driven || gate() === 'ready',
+-  );
++  const { api, account, carrier, listCaptures, fetchPage, createOutbound } =
++    await openAccountReceiveOwner(
++      options,
++      options.identity.id,
++      () => !driven || gate() === 'ready',
++      composed,
++    );
+   let enqueue!: OwnedReceiveQueue;
+   try {
+     const workspace = await createAdmittedWorkspace(
+@@ -407,7 +554,54 @@ async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorTo
+       },
+       listCaptures,
+     });
+-    if (!driven) return Object.freeze({ ...result, receiver: undefined });
++    if (composed) {
++      const outbound = createOutbound(() => workspace.whenDurable());
++      let unsubscribe: (() => void) | undefined;
++      const online = () => scheduler.wake('online'),
++        offline = () => scheduler.wake('gate');
++      const scheduler = createSyncScheduler({
++        signal: carrier.signal,
++        gate,
++        send: () => driveOutboundStep(outbound, operatorToken ?? '', gate),
++        receive: () => driveReceiveStep(result, operatorToken ?? '', gate),
++        detach() {
++          operatorToken = undefined;
++          unsubscribe?.();
++          globalThis.removeEventListener?.('online', online);
++          globalThis.removeEventListener?.('offline', offline);
++        },
++      });
++      try {
++        let revision = workspace.status.revision,
++          previousGate = gate();
++        unsubscribe = workspace.onStatus((status) => {
++          const changed = status.revision !== revision,
++            current = gate();
++          revision = status.revision;
++          if (changed) scheduler.wake('local');
++          if (current !== previousGate) {
++            previousGate = current;
++            scheduler.wake('gate');
++          }
++        });
++        globalThis.addEventListener?.('online', online);
++        globalThis.addEventListener?.('offline', offline);
++        if (!carrier.beforeRelease) throw Error('Missing composed driver cleanup ownership');
++        carrier.beforeRelease(scheduler.dispose);
++        scheduler.wake('start');
++      } catch (cause) {
++        await scheduler.dispose();
++        throw cause;
++      }
++      return Object.freeze({ ...result, outbound, sync: scheduler.runtime, receiver: undefined });
++    }
++    if (!driven)
++      return Object.freeze({
++        ...result,
++        receiver: undefined,
++        sync: undefined,
++        outbound: undefined,
++      });
+     let unsubscribe: (() => void) | undefined;
+     const online = () => scheduler.wake('online'),
+       offline = () => scheduler.wake('gate');
+@@ -442,6 +636,8 @@ async function openReceivingWorkspace(input: AccountWorkspaceOptions, operatorTo
+     }
+     return {
+       ...result,
++      sync: undefined,
++      outbound: undefined,
+       receiver: Object.freeze({
+         get status() {
+           return scheduler.status();
+@@ -470,3 +666,26 @@ export async function openOwnedPollingAccountWorkspace(
+   const { prepareRead: _prepare, receivePage: _receive, receiveNext: _next, ...owned } = result;
+   return Object.freeze({ ...owned, receiver: result.receiver });
+ }
++
++/** Explicit private single-owner round trip. It cannot enroll or clone another writer. */
++export async function openOwnedSyncingAccountWorkspace(
++  input: AccountWorkspaceOptions,
++  operatorToken: string,
++) {
++  if (typeof operatorToken !== 'string') throw Error('Private operator token required');
++  const result = await openReceivingWorkspace(input, operatorToken, true);
++  if (!result.sync || !result.outbound) throw Error('Missing outbound composition');
++  const {
++    prepareRead: _prepare,
++    receivePage: _receive,
++    receiveNext: _next,
++    outbound,
++    receiver: _receiver,
++    ...owned
++  } = result;
++  return Object.freeze({
++    ...owned,
++    deliveryStatus: outbound.deliveryStatus,
++    spoolStatus: outbound.spoolStatus,
++  });
++}
+diff --git a/src/crdt/accountSpool.ts b/src/crdt/accountSpool.ts
+index f701556..d1d2bc2 100644
+--- a/src/crdt/accountSpool.ts
++++ b/src/crdt/accountSpool.ts
+@@ -8,31 +8,9 @@ import { createDeliveryOperations } from './accountDelivery';
+ import { same } from '../../account-protocol/admission';
+ import { readPromotion, promotionPayload, withPromotionRoot } from './promotionRecord';
+ import { claimScope } from './localGenesisRecord';
+-import {
+-  openEnvelope,
+-  openCredential,
+-  guardedSubtle,
+-  random,
+-  hex,
+-  type Bytes,
+-} from './custodyCrypto';
+-import {
+-  captureError,
+-  decodeSourceCapsule,
+-  eraseCapsule,
+-  type CaptureRoute,
+-} from './sourceCapture';
+-import {
+-  inspectSpool,
+-  verifySpool,
+-  verifySpoolWitness,
+-  extendSpoolWitness,
+-  encodeSpoolEntry,
+-  networkRoute,
+-  NET_SEAL_LIMIT,
+-  type SpoolEntry,
+-  type SpoolState,
+-} from './spoolRecord';
++import { openEnvelope, openCredential, guardedSubtle, hex, type Bytes } from './custodyCrypto';
++import { captureError, type CaptureRoute } from './sourceCapture';
++import { inspectSpool, verifySpool, verifySpoolWitness, type SpoolState } from './spoolRecord';
+ import {
+   acceptanceLink,
+   verifyPositionResponse,
+@@ -41,16 +19,13 @@ import {
+   type DecisionAuthority,
+   type DecisionEvidence,
+ } from '../../account-protocol/positionDecision';
+-import { decodeNetworkEnvelope, sealNetworkEnvelope } from '../../account-protocol/envelope';
++import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
+ import { createAdmissionOwner } from './admissionQueue';
+ import { createAdmittedWorkspace } from './admittedWorkspace';
+-import { ContentError } from './contentRecord';
++import { createEnvelopePreparation } from './accountEnvelopePreparation';
++export type { PersistedEnvelope } from './accountEnvelopePreparation';
+ import type { SessionTask } from './writeSession';
+ import type { prepareAccountCustody } from './custody';
+-export interface PersistedEnvelope {
+-  position: number;
+-  bytes: Bytes;
+-}
+ async function openSpoolWorkspace(
+   input: AccountWorkspaceOptions,
+   deliveryMode: boolean,
+@@ -179,29 +154,6 @@ async function openSpoolWorkspace(
+     options.identity.id,
+     extension,
+   );
+-  const append = async (
+-    task: SessionTask,
+-    owner: ReturnType<typeof prepareAccountCustody>,
+-    route: CaptureRoute,
+-    entry: SpoolEntry,
+-  ) => {
+-    const bytes = encodeSpoolEntry(entry, route);
+-    try {
+-      const before = await owner.carrier.spoolWitness(task);
+-      const after = await task.wait(() => extendSpoolWitness(before, bytes, subtleFor(task)));
+-      await owner.carrier.appendSpool(
+-        task,
+-        { kind: entry.type === 'envelope' ? 'outbound' : 'heads', bytes },
+-        {
+-          before,
+-          after,
+-          ...(deliveryMode ? { beforeCommit: () => checkPublication(task, owner, route) } : {}),
+-        },
+-      );
+-    } finally {
+-      bytes.fill(0);
+-    }
+-  };
+   const useState = <T>(operation: (state: SpoolState) => T) =>
+     runCaptureTask(async (task, owner, route) => {
+       const { records, state } = await verified(task, owner, route);
+@@ -323,90 +275,14 @@ async function openSpoolWorkspace(
+           captured.fill(0);
+         }
+       },
+-      prepareNextEnvelope: async (): Promise<PersistedEnvelope | null> => {
+-        await workspace.whenDurable();
+-        return runCaptureTask(async (task, owner, route) => {
+-          await checkPublication(task, owner, route);
+-          // Sources are now durable. New journal appends during this operation belong to a later grant.
+-          let { records, state } = await verified(task, owner, route);
+-          let wire: Bytes | undefined;
+-          try {
+-            let position = state.positions.at(-1);
+-            if (!position || position.wire) {
+-              const used = new Set(state.positions.map((p) => p.source.id + ':' + p.source.index));
+-              let selected;
+-              for (const [id, bytes] of state.sources) {
+-                const c = decodeSourceCapsule(bytes, route);
+-                try {
+-                  const index = c.sources.findIndex((_, i) => !used.has(id + ':' + i));
+-                  if (index >= 0) {
+-                    selected = {
+-                      id,
+-                      index,
+-                      hash: hex(
+-                        new Uint8Array(
+-                          await task.wait(() => subtleFor(task).digest('SHA-256', bytes)),
+-                        ),
+-                      ),
+-                    };
+-                    break;
+-                  }
+-                } finally {
+-                  eraseCapsule(c);
+-                }
+-              }
+-              if (!selected) return null;
+-              await append(task, owner, route, {
+-                type: 'position',
+-                position: state.positions.length + 1,
+-                source: selected,
+-              });
+-              for (const r of records) r.bytes.fill(0);
+-              ({ records, state } = await verified(task, owner, route));
+-              position = state.positions.at(-1)!;
+-            }
+-            if (state.attempts + 1 >= NET_SEAL_LIMIT)
+-              throw new ContentError('rotation-required', 'Network invocation budget exhausted');
+-            const attempt = state.attempts + 1;
+-            await append(task, owner, route, {
+-              type: 'attempt',
+-              position: position.position,
+-              attempt,
+-            });
+-            // This acknowledged continuation owns exactly one invocation. No persisted grant is reusable.
+-            const capsule = decodeSourceCapsule(state.sources.get(position.source.id)!, route);
+-            try {
+-              const source = capsule.sources[position.source.index]!;
+-              wire = await task.wait(() =>
+-                sealNetworkEnvelope(
+-                  { ...networkRoute(route), seq: position.position },
+-                  { actor_id: source.actor, actor_kind: source.kind, updates: [source.bytes] },
+-                  kg!,
+-                  signer!,
+-                  task.step(() => random(12)),
+-                  subtleFor(task),
+-                ),
+-              );
+-            } finally {
+-              eraseCapsule(capsule);
+-            }
+-            await append(task, owner, route, {
+-              type: 'envelope',
+-              position: position.position,
+-              attempt,
+-              wire,
+-            });
+-            for (const r of records) r.bytes.fill(0);
+-            ({ records, state } = await verified(task, owner, route));
+-            const saved = state.positions.find((p) => p.position === position!.position)?.wire;
+-            if (!saved) captureError('Persisted envelope missing after commit');
+-            return task.step(() => ({ position: position!.position, bytes: saved!.slice() }));
+-          } finally {
+-            wire?.fill(0);
+-            for (const r of records) r.bytes.fill(0);
+-          }
+-        });
+-      },
++      ...createEnvelopePreparation({
++        key: () => kg!,
++        signer: () => signer!,
++        whenDurable: () => workspace.whenDurable(),
++        checkPublication,
++        inspect,
++        run: runCaptureTask,
++      }),
+     });
+     if (!driven) return { ...result, driver: undefined };
+     if (!delivery) throw Error('Sending requires delivery ownership');
+diff --git a/test/account-receive/browser.ts b/test/account-receive/browser.ts
+index d3037d7..fffd7b5 100644
+--- a/test/account-receive/browser.ts
++++ b/test/account-receive/browser.ts
+@@ -63,7 +63,7 @@ export async function fixtureInboundEnvelope(
+ export async function inboundCensus(
+   slot: string,
+   code: string,
+-  fault?: 'event' | 'content' | 'ciphertext',
++  fault?: 'event' | 'last-event' | 'content' | 'ciphertext',
+ ) {
+   return withPromotionSlot(slot, code, async (task) => {
+     const v = await readPromotion(task, slot, code),
+@@ -80,7 +80,7 @@ export async function inboundCensus(
+       try {
+         const result = rows.map((r) => ({ ...r, bytes: [...r.bytes] }));
+         if (fault) {
+-          const event = rows.find(
++          const event = (fault === 'last-event' ? [...rows].reverse() : rows).find(
+             (r) =>
+               r.kind === 'heads' &&
+               new TextDecoder().decode(r.bytes).startsWith('["done/account-inbound/v1"'),
+diff --git a/test/account-spool/fixtures.mjs b/test/account-spool/fixtures.mjs
+index 7998554..d842fae 100644
+--- a/test/account-spool/fixtures.mjs
++++ b/test/account-spool/fixtures.mjs
+@@ -26,7 +26,7 @@ export async function spoolBundle(control) {
+               }
+               if (control === 'budget' && id.endsWith('/src/crdt/spoolRecord.ts'))
+                 return code.replace('NET_SEAL_LIMIT = 2 ** 32', 'NET_SEAL_LIMIT = 3');
+-              if (id.endsWith('/src/crdt/accountSpool.ts')) {
++              if (id.endsWith('/src/crdt/accountEnvelopePreparation.ts')) {
+                 const replace = (input, pattern, replacement) => {
+                   const matches = [...input.matchAll(pattern)];
+                   if (matches.length !== 1) throw Error('Missing/ambiguous spool control');
+diff --git a/scripts/account-sync/run.mjs b/scripts/account-sync/run.mjs
+new file mode 100644
+index 0000000..0f780a0
+--- /dev/null
++++ b/scripts/account-sync/run.mjs
+@@ -0,0 +1,154 @@
++import { spawn } from 'node:child_process';
++import { createHash } from 'node:crypto';
++import { mkdirSync, readdirSync, readFileSync, writeFileSync, createWriteStream } from 'node:fs';
++import { join, resolve } from 'node:path';
++
++const output = resolve('test-results/account-sync', new Date().toISOString().replaceAll(':', '-'));
++mkdirSync(output, { recursive: true });
++console.log(`Account composition evidence: ${output}`);
++const walk = (dir) =>
++  readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
++  );
++const files = [
++  ...new Set([
++    'package.json',
++    'pnpm-lock.yaml',
++    'tsconfig.app.json',
++    'tsconfig.node.json',
++    'vite.config.ts',
++    'docs/account-source-capture.md',
++    'docs/account-outbound-composition.md',
++    'docs/account-inbound.md',
++    'docs/account-inbound-verification.md',
++    'docs/account-delivery.md',
++    'docs/account-admission.md',
++    'docs/account-decisions.md',
++    'docs/account-spool.md',
++    'docs/selections/row-5-finalization.md',
++    'docs/selections/row-6-antireplay-retention.md',
++    'docs/account-outbound.md',
++    'docs/TRD.md',
++    'docs/review/remediation/S0-4/A-schemas.md',
++    'docs/review/remediation/S0-2/authority-map.md',
++    'docs/selections/row-4-envelope-format.md',
++    'scripts/account-sync/run.mjs',
++    'scripts/generate-private-envelope-vectors.mjs',
++    'scripts/generate-envelope-vectors.mjs',
++    'scripts/lib/aad-coverage.mjs',
++    ...['src', 'account-protocol', 'account-service', 'test', 'vite', 'wasm/journal-seal']
++      .flatMap(walk)
++      .filter((f) => /\.(ts|tsx|mjs|json|wasm)$/.test(f)),
++  ]),
++].sort();
++writeFileSync(
++  join(output, 'sources.json'),
++  JSON.stringify(
++    files.map((path) => ({
++      path,
++      sha256: createHash('sha256').update(readFileSync(path)).digest('hex'),
++    })),
++    null,
++    2,
++  ) + '\n',
++);
++const summary = {
++  status: 'running',
++  startedAt: new Date().toISOString(),
++  stages: [],
++  scope:
++    'Private v9 single-owner outbound/receive composition: original source grants, exact retry, full union census, self-stream byte binding, fair two-lane scheduling, native faults, generated histories and effective controls. No new enrollment, default app activation or personal Account deployment.',
++};
++const save = () =>
++  writeFileSync(join(output, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
++save();
++async function run(name, args, timeoutMs) {
++  console.log(`Starting ${name}`);
++  const log = createWriteStream(join(output, name + '.log'));
++  const child = spawn(process.execPath, args, {
++    detached: true,
++    stdio: ['ignore', 'pipe', 'pipe'],
++    env: { ...process.env, ACCOUNT_REPORT_DIR: output },
++  });
++  let timedOut = false,
++    forced,
++    launchError;
++  const kill = (signal) => {
++    try {
++      process.kill(-child.pid, signal);
++    } catch {}
++  };
++  const deadline = setTimeout(() => {
++    timedOut = true;
++    kill('SIGTERM');
++    forced = setTimeout(() => kill('SIGKILL'), 5000);
++  }, timeoutMs);
++  const heartbeat = setInterval(() => console.log(`${name} still running; see ${name}.log`), 15000);
++  for (const stream of [child.stdout, child.stderr])
++    stream.on('data', (b) => {
++      process.stdout.write(b);
++      log.write(b);
++    });
++  const code = await new Promise((resolve) => {
++    child.once('error', (e) => {
++      launchError = String(e);
++      resolve(1);
++    });
++    child.once('close', (code) => resolve(code ?? 1));
++  });
++  clearTimeout(deadline);
++  clearTimeout(forced);
++  clearInterval(heartbeat);
++  await new Promise((resolve) => log.end(resolve));
++  const result = { name, code, timedOut, ...(launchError ? { launchError } : {}) };
++  summary.stages.push(result);
++  save();
++  return code === 0 && !timedOut;
++}
++try {
++  const stages = [
++    ['types', ['node_modules/typescript/bin/tsc', '-b'], 60000],
++    [
++      'units',
++      [
++        'node_modules/vitest/vitest.mjs',
++        'run',
++        'test/accountSyncDriver.test.ts',
++        'test/accountReceiveDriver.test.ts',
++        'test/ownedReceiveQueue.test.ts',
++        '--maxWorkers=2',
++        '--reporter=verbose',
++      ],
++      60000,
++    ],
++    ...[
++      ['native', 180000],
++      ['controls', 90000],
++      ['native-controls', 150000],
++      ['generated', 450000],
++    ].map(([name, deadline]) => [
++      name,
++      [
++        '--test',
++        '--test-concurrency=1',
++        '--test-reporter=spec',
++        '--test-reporter-destination=stdout',
++        '--test-reporter=junit',
++        `--test-reporter-destination=${join(output, name + '.xml')}`,
++        `test/account-sync/${name}.test.mjs`,
++      ],
++      deadline,
++    ]),
++  ];
++  for (const [name, args, timeout] of stages)
++    if (!(await run(name, args, timeout))) throw Error(`${name} failed`);
++  summary.status = 'passed';
++} catch (e) {
++  summary.status = 'failed';
++  summary.error = String(e);
++  process.exitCode = 1;
++} finally {
++  summary.completedAt = new Date().toISOString();
++  save();
++  console.log(`${summary.status}: ${output}`);
++}
+diff --git a/src/crdt/accountEnvelopePreparation.ts b/src/crdt/accountEnvelopePreparation.ts
+new file mode 100644
+index 0000000..48ef39c
+--- /dev/null
++++ b/src/crdt/accountEnvelopePreparation.ts
+@@ -0,0 +1,157 @@
++/** Internal original-source envelope preparation. The caller owns the sole carrier and authority. */
++import { guardedSubtle, hex, random, type Bytes } from './custodyCrypto';
++import {
++  decodeSourceCapsule,
++  eraseCapsule,
++  captureError,
++  type CaptureRoute,
++} from './sourceCapture';
++import {
++  encodeSpoolEntry,
++  extendSpoolWitness,
++  networkRoute,
++  NET_SEAL_LIMIT,
++  type SpoolEntry,
++  type SpoolState,
++} from './spoolRecord';
++import { sealNetworkEnvelope } from '../../account-protocol/envelope';
++import { ContentError } from './contentRecord';
++import type { SessionTask } from './writeSession';
++import type { prepareAccountCustody } from './custody';
++export interface PersistedEnvelope {
++  position: number;
++  bytes: Bytes;
++}
++type Owner = ReturnType<typeof prepareAccountCustody>;
++export interface EnvelopePreparationContext {
++  key(): Bytes;
++  signer(): CryptoKey;
++  whenDurable(): Promise<unknown>;
++  checkPublication(task: SessionTask, owner: Owner, route: CaptureRoute): Promise<void>;
++  inspect(records: Awaited<ReturnType<Owner['carrier']['load']>>, route: CaptureRoute): SpoolState;
++  run<T>(
++    operation: (task: SessionTask, owner: Owner, route: CaptureRoute) => Promise<T>,
++  ): Promise<T>;
++}
++export function createEnvelopePreparation(context: EnvelopePreparationContext) {
++  const runCaptureTask = context.run;
++  const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
++  const verified = async (task: SessionTask, owner: Owner, route: CaptureRoute) => {
++    const records = await owner.carrier.load(task);
++    try {
++      return { records, state: context.inspect(records, route) };
++    } catch (cause) {
++      for (const r of records) r.bytes.fill(0);
++      throw cause;
++    }
++  };
++  const append = async (
++    task: SessionTask,
++    owner: ReturnType<typeof prepareAccountCustody>,
++    route: CaptureRoute,
++    entry: SpoolEntry,
++  ) => {
++    const bytes = encodeSpoolEntry(entry, route);
++    try {
++      const before = await owner.carrier.spoolWitness(task);
++      const after = await task.wait(() => extendSpoolWitness(before, bytes, subtleFor(task)));
++      await owner.carrier.appendSpool(
++        task,
++        { kind: entry.type === 'envelope' ? 'outbound' : 'heads', bytes },
++        {
++          before,
++          after,
++          beforeCommit: () => context.checkPublication(task, owner, route),
++        },
++      );
++    } finally {
++      bytes.fill(0);
++    }
++  };
++  return {
++    prepareNextEnvelope: async (): Promise<PersistedEnvelope | null> => {
++      await context.whenDurable();
++      return runCaptureTask(async (task, owner, route) => {
++        await context.checkPublication(task, owner, route);
++        // Sources are now durable. New journal appends during this operation belong to a later grant.
++        let { records, state } = await verified(task, owner, route);
++        let wire: Bytes | undefined;
++        try {
++          let position = state.positions.at(-1);
++          if (!position || position.wire) {
++            const used = new Set(state.positions.map((p) => p.source.id + ':' + p.source.index));
++            let selected;
++            for (const [id, bytes] of state.sources) {
++              const c = decodeSourceCapsule(bytes, route);
++              try {
++                const index = c.sources.findIndex((_, i) => !used.has(id + ':' + i));
++                if (index >= 0) {
++                  selected = {
++                    id,
++                    index,
++                    hash: hex(
++                      new Uint8Array(
++                        await task.wait(() => subtleFor(task).digest('SHA-256', bytes)),
++                      ),
++                    ),
++                  };
++                  break;
++                }
++              } finally {
++                eraseCapsule(c);
++              }
++            }
++            if (!selected) return null;
++            await append(task, owner, route, {
++              type: 'position',
++              position: state.positions.length + 1,
++              source: selected,
++            });
++            for (const r of records) r.bytes.fill(0);
++            ({ records, state } = await verified(task, owner, route));
++            position = state.positions.at(-1)!;
++          }
++          if (state.attempts + 1 >= NET_SEAL_LIMIT)
++            throw new ContentError('rotation-required', 'Network invocation budget exhausted');
++          const attempt = state.attempts + 1;
++          await append(task, owner, route, {
++            type: 'attempt',
++            position: position.position,
++            attempt,
++          });
++          // This acknowledged continuation owns exactly one invocation. No persisted grant is reusable.
++          const capsule = decodeSourceCapsule(state.sources.get(position.source.id)!, route);
++          try {
++            const source = capsule.sources[position.source.index]!;
++            wire = await task.wait(() =>
++              sealNetworkEnvelope(
++                { ...networkRoute(route), seq: position.position },
++                { actor_id: source.actor, actor_kind: source.kind, updates: [source.bytes] },
++                context.key(),
++                context.signer(),
++                task.step(() => random(12)),
++                subtleFor(task),
++              ),
++            );
++          } finally {
++            eraseCapsule(capsule);
++          }
++          await append(task, owner, route, {
++            type: 'envelope',
++            position: position.position,
++            attempt,
++            wire,
++          });
++          for (const r of records) r.bytes.fill(0);
++          ({ records, state } = await verified(task, owner, route));
++          const saved = state.positions.find((p) => p.position === position!.position)?.wire;
++          if (!saved) captureError('Persisted envelope missing after commit');
++          return task.step(() => ({ position: position!.position, bytes: saved!.slice() }));
++        } finally {
++          wire?.fill(0);
++          for (const r of records) r.bytes.fill(0);
++        }
++      });
++    },
++  };
++}
+diff --git a/src/crdt/accountSyncDriver.ts b/src/crdt/accountSyncDriver.ts
+new file mode 100644
+index 0000000..cc2732e
+--- /dev/null
++++ b/src/crdt/accountSyncDriver.ts
+@@ -0,0 +1,301 @@
++/** Two lanes, one pass. Runtime scheduling contains no account or storage authority. */
++import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
++import type { ReceiveStep } from './accountReceiveDriver';
++export type SyncLane = 'send' | 'receive';
++export type SyncHalt = 'closed' | 'conflict' | 'finalized' | 'operation-failed';
++export type OutboundStep =
++  | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
++  | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt };
++export interface SyncLaneStatus {
++  readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
++  readonly failures: number;
++  readonly nextAttemptAt: number | null;
++  readonly reason: SyncHalt | 'local-storage' | null;
++}
++export interface SyncStatus {
++  readonly send: SyncLaneStatus & { readonly acceptedThrough: number };
++  readonly receive: SyncLaneStatus & { readonly receivedThrough: number };
++}
++interface Lane {
++  phase: 'starting' | 'working' | 'idle' | 'retrying';
++  position: number;
++  failures: number;
++  due?: number | undefined;
++  halt?: SyncHalt | undefined;
++  expedite: boolean;
++  dirty: boolean;
++}
++const clockDefault: DriverClock = {
++  now: () => Date.now(),
++  set: (fn, delay) => setTimeout(fn, delay),
++  clear: (timer) => clearTimeout(timer as ReturnType<typeof setTimeout>),
++};
++const names: SyncLane[] = ['send', 'receive'];
++export function createSyncScheduler(options: {
++  signal: AbortSignal;
++  gate(): DriverGate;
++  send(): Promise<OutboundStep>;
++  receive(): Promise<ReceiveStep>;
++  detach(): void;
++  clock?: DriverClock;
++}) {
++  const clock = options.clock ?? clockDefault;
++  const fresh = (): Lane => ({
++    phase: 'starting',
++    position: 0,
++    failures: 0,
++    expedite: false,
++    dirty: false,
++  });
++  const lanes = { send: fresh(), receive: fresh() };
++  const listeners = new Set<(status: SyncStatus) => void>();
++  let stopped = false,
++    timer: unknown,
++    work: Promise<void> | undefined;
++  let active: SyncLane | undefined,
++    last: SyncLane = 'receive';
++  const laneStatus = (name: SyncLane): SyncLaneStatus => {
++    const lane = lanes[name],
++      gate = options.gate();
++    return {
++      phase: stopped
++        ? 'closed'
++        : lane.halt
++          ? 'blocked'
++          : gate === 'offline'
++            ? 'offline'
++            : gate === 'local-storage'
++              ? 'blocked'
++              : lane.phase,
++      failures: lane.failures,
++      nextAttemptAt:
++        !stopped && gate === 'ready' && !lane.halt && active !== name ? (lane.due ?? null) : null,
++      reason: stopped ? null : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : null)),
++    };
++  };
++  const snapshot = (): SyncStatus =>
++    Object.freeze({
++      send: Object.freeze({ ...laneStatus('send'), acceptedThrough: lanes.send.position }),
++      receive: Object.freeze({ ...laneStatus('receive'), receivedThrough: lanes.receive.position }),
++    });
++  let value = snapshot();
++  const publish = () => {
++    const next = snapshot();
++    if (JSON.stringify(next) === JSON.stringify(value)) return;
++    value = next;
++    for (const listener of [...listeners]) {
++      try {
++        listener(value);
++      } catch {
++        /* Observers own their errors. */
++      }
++    }
++  };
++  const clear = () => {
++    if (timer !== undefined) {
++      clock.clear(timer);
++      timer = undefined;
++    }
++  };
++  const stop = () => {
++    if (stopped) return;
++    stopped = true;
++    clear();
++    for (const name of names) {
++      lanes[name].due = undefined;
++      lanes[name].dirty = lanes[name].expedite = false;
++    }
++    options.signal.removeEventListener('abort', stop);
++    options.detach();
++    publish();
++    listeners.clear();
++  };
++  const ready = () => {
++    if (options.gate() === 'closed') stop();
++    publish();
++    return !stopped && options.gate() === 'ready';
++  };
++  const eligible = () => names.filter((name) => !lanes[name].halt && lanes[name].due !== undefined);
++  const arm = () => {
++    if (!ready() || work) {
++      clear();
++      return;
++    }
++    // Observers can reenter arm; replace any timer they installed after notification too.
++    clear();
++    const pending = eligible();
++    if (!pending.length) return;
++    const due = Math.min(...pending.map((name) => lanes[name].due!));
++    timer = clock.set(
++      () => {
++        timer = undefined;
++        begin();
++      },
++      Math.max(0, due - clock.now()),
++    );
++  };
++  const begin = () => {
++    if (stopped || work || !ready()) return;
++    const due = eligible().filter((name) => lanes[name].due! <= clock.now());
++    const name = due.find((n) => n !== last) ?? due[0];
++    if (!name) {
++      arm();
++      return;
++    }
++    active = name;
++    const lane = lanes[name];
++    work = Promise.resolve()
++      .then(async () => {
++        if (!ready() || lane.halt) return;
++        lane.phase = 'working';
++        // Keep the deadline until after observers have had their last opportunity to pause this pass.
++        if (!ready() || lane.halt) return;
++        lane.due = undefined;
++        lane.dirty = lane.expedite = false;
++        last = name;
++        const result = await options[name]();
++        if (stopped) return;
++        const position =
++          'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
++        if (position < lane.position) throw Error('Durable lane position regressed');
++        lane.position = position;
++        if (result.kind === 'blocked') {
++          lane.halt = result.reason;
++          lane.due = undefined;
++          lane.expedite = lane.dirty = false;
++        } else if (result.kind === 'paused') {
++          lane.due = clock.now() + (lane.expedite ? 0 : 50);
++          lane.expedite = false;
++        } else {
++          lane.phase =
++            result.kind === 'unknown' ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
++          lane.failures = result.kind === 'unknown' ? Math.min(lane.failures + 1, 6) : 0;
++          const delay =
++            result.kind === 'unknown'
++              ? Math.min(1000 * 2 ** (lane.failures - 1), 30000)
++              : result.kind === 'progress'
++                ? 50
++                : name === 'receive'
++                  ? 5000
++                  : undefined;
++          lane.due = lane.expedite
++            ? clock.now()
++            : delay !== undefined
++              ? clock.now() + delay
++              : lane.dirty
++                ? clock.now() + 50
++                : undefined;
++          lane.expedite = lane.dirty = false;
++        }
++        ready();
++      })
++      .catch(() => {
++        if (!stopped) {
++          lane.halt = 'operation-failed';
++          lane.due = undefined;
++          lane.expedite = lane.dirty = false;
++          ready();
++        }
++      })
++      .finally(() => {
++        active = undefined;
++        work = undefined;
++        arm();
++      });
++  };
++  const wake = (cause: 'start' | 'gate' | 'online' | 'local' | 'retry', target?: SyncLane) => {
++    if (stopped) return;
++    for (const name of names) {
++      if (cause === 'retry' && name !== target) continue;
++      const lane = lanes[name];
++      if (cause === 'retry') lane.halt = undefined;
++      if (cause === 'local' && name === 'send') {
++        lane.dirty = true;
++        if (!lane.halt && active !== name && lane.due === undefined) lane.due = clock.now() + 50;
++      }
++      if (cause === 'start' && lane.due === undefined && active !== name && !lane.halt)
++        lane.due = clock.now();
++      if ((cause === 'online' || cause === 'retry') && !lane.halt) {
++        if (active === name) lane.expedite = true;
++        else lane.due = clock.now();
++      }
++    }
++    arm();
++  };
++  options.signal.addEventListener('abort', stop, { once: true });
++  if (options.signal.aborted) stop();
++  return {
++    wake,
++    dispose: async () => {
++      stop();
++      await work;
++    },
++    runtime: Object.freeze({
++      get status() {
++        return value;
++      },
++      retry: (lane: SyncLane) => {
++        if (names.includes(lane)) wake('retry', lane);
++      },
++      onStatus(listener: (status: SyncStatus) => void) {
++        if (!stopped) listeners.add(listener);
++        return () => {
++          listeners.delete(listener);
++        };
++      },
++    }),
++  };
++}
++/** Private v9 outbound step, retaining v8's byte retry with explicit paused outcomes. */
++export async function driveOutboundStep(
++  ops: DriverOperations,
++  token: string,
++  gate: () => DriverGate,
++): Promise<OutboundStep> {
++  let status = await ops.deliveryStatus();
++  const pause = (): OutboundStep | null => {
++    if (status.state !== 'ready')
++      return { kind: 'blocked', acceptedThrough: status.acceptedThrough, reason: status.state };
++    if (gate() !== 'ready') return { kind: 'paused', acceptedThrough: status.acceptedThrough };
++    return null;
++  };
++  let paused = pause();
++  if (paused) return paused;
++  const position = status.acceptedThrough + 1;
++  if (!status.submissions.includes(position)) {
++    const spool = await ops.spoolStatus();
++    paused = pause();
++    if (paused) return paused;
++    if (!spool.positions.some((p) => p.position === position && p.persisted)) {
++      const prepared = await ops.prepareNextEnvelope();
++      if (!prepared) return pause() ?? { kind: 'idle', acceptedThrough: status.acceptedThrough };
++      prepared.bytes.fill(0);
++      if (prepared.position !== position) throw Error('Unexpected delivery position');
++    }
++    paused = pause();
++    if (paused) return paused;
++    const submission = await ops.prepareSubmission(position);
++    if ('bytes' in submission && submission.bytes instanceof Uint8Array) submission.bytes.fill(0);
++    if (submission.kind !== 'ready') {
++      status = await ops.deliveryStatus();
++      return pause() ?? { kind: 'progress', acceptedThrough: status.acceptedThrough };
++    }
++  }
++  paused = pause();
++  if (paused) return paused;
++  await ops.submitPending(token);
++  const next = await ops.deliveryStatus();
++  if (next.acceptedThrough < status.acceptedThrough)
++    throw Error('Durable delivery prefix regressed');
++  if (next.state !== 'ready')
++    return { kind: 'blocked', acceptedThrough: next.acceptedThrough, reason: next.state };
++  return {
++    kind:
++      next.acceptedThrough > status.acceptedThrough
++        ? 'progress'
++        : gate() !== 'ready'
++          ? 'paused'
++          : 'unknown',
++    acceptedThrough: next.acceptedThrough,
++  };
++}
+diff --git a/src/crdt/accountSyncState.ts b/src/crdt/accountSyncState.ts
+new file mode 100644
+index 0000000..76978e7
+--- /dev/null
++++ b/src/crdt/accountSyncState.ts
+@@ -0,0 +1,24 @@
++/** Joining the creating member's two ledgers never manufactures a source or an acceptance decision. */
++import type { DeliveryCensus, DeliveryState } from './deliveryRecord';
++import type { InboundState } from './inboundLedger';
++import { captureError } from './sourceCapture';
++import { hex, type Bytes } from './custodyCrypto';
++export function requireSelfEnvelope(census: DeliveryCensus, position: number, envelope: Bytes) {
++  const local = census.spool.positions.find((p) => p.position === position)?.wire;
++  if (!local || hex(local) !== hex(envelope))
++    captureError('Unsupported branched or missing self-stream history');
++}
++export function verifySyncState(
++  census: DeliveryCensus,
++  delivery: DeliveryState,
++  inbound: InboundState,
++) {
++  for (const [position, retained] of inbound.retained)
++    requireSelfEnvelope(census, position, retained.envelope);
++  const accepted = inbound.prefix.observedThrough;
++  if (
++    [...delivery.refusals.keys()].some((n) => n <= accepted) ||
++    (delivery.finalThrough !== null && accepted > delivery.finalThrough)
++  )
++    captureError('Inbound acceptance contradicts outbound decision');
++}
+diff --git a/test/account-sync/browser.ts b/test/account-sync/browser.ts
+new file mode 100644
+index 0000000..8cb4511
+--- /dev/null
++++ b/test/account-sync/browser.ts
+@@ -0,0 +1,2 @@
++export * from '../account-receive-driver/browser';
++export { openOwnedSyncingAccountWorkspace } from '../../src/crdt/accountReceive';
+diff --git a/test/account-sync/controls.test.mjs b/test/account-sync/controls.test.mjs
+new file mode 100644
+index 0000000..4032287
+--- /dev/null
++++ b/test/account-sync/controls.test.mjs
+@@ -0,0 +1,155 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { readFileSync, writeFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
++import { join, resolve } from 'node:path';
++import { pathToFileURL } from 'node:url';
++const flush = async () => {
++  for (let i = 0; i < 30; i++) await Promise.resolve();
++};
++async function load(t, mode) {
++  const dir = resolve('test-results/sync-scheduler-controls');
++  mkdirSync(dir, { recursive: true });
++  const temp = mkdtempSync(join(dir, 'case-'));
++  t.after(() => rmSync(temp, { recursive: true, force: true }));
++  let code = readFileSync('src/crdt/accountSyncDriver.ts', 'utf8');
++  const changes = {
++    fairness: [['const name = due.find((n) => n !== last) ?? due[0];', 'const name = due[0];']],
++    overlap: [
++      ['if (!ready() || work) {', 'if (!ready()) {'],
++      ['if (stopped || work || !ready()) return;', 'if (stopped || !ready()) return;'],
++    ],
++    halt: [
++      [
++        "if (cause === 'retry') lane.halt = undefined;",
++        "if (cause === 'retry' || cause === 'online') lane.halt = undefined;",
++      ],
++    ],
++    resume: [["lane.phase = 'working';", "lane.phase = 'working'; lane.due = undefined;"]],
++    wake: [['lane.dirty = true;', 'lane.dirty = active === name ? false : true;']],
++  };
++  if (mode)
++    for (const [from, to] of changes[mode]) {
++      assert.equal(code.split(from).length, 2, 'anchor ' + mode);
++      code = code.replace(from, to);
++    }
++  const file = join(temp, 'scheduler.ts');
++  writeFileSync(file, code);
++  return import(pathToFileURL(file).href);
++}
++for (const mode of ['fairness', 'overlap', 'halt', 'resume', 'wake'])
++  test('effective composed ' + mode + ' mutation', async (t) => {
++    const observations = [];
++    for (const mutant of [false, true]) {
++      const { createSyncScheduler } = await load(t, mutant ? mode : null);
++      let now = 0,
++        serial = 0,
++        gate = 'ready';
++      const timers = new Map(),
++        calls = [],
++        controller = new AbortController();
++      const step = (lane) =>
++        new Promise((resolve) =>
++          calls.push({
++            lane,
++            resolve: (kind = 'idle') =>
++              resolve({
++                kind,
++                ...(lane === 'send' ? { acceptedThrough: 0 } : { receivedThrough: 0 }),
++                ...(kind === 'blocked' ? { reason: 'conflict' } : {}),
++              }),
++          }),
++        );
++      const s = createSyncScheduler({
++        signal: controller.signal,
++        gate: () => gate,
++        send: () => step('send'),
++        receive: () => step('receive'),
++        detach() {},
++        clock: {
++          now: () => now,
++          set(run, delay) {
++            timers.set(++serial, { run, at: now + delay });
++            return serial;
++          },
++          clear(id) {
++            timers.delete(id);
++          },
++        },
++      });
++      const tick = async (ms = 0) => {
++        now += ms;
++        const entries = [...timers]
++          .filter(([, v]) => v.at <= now)
++          .sort((a, b) => a[1].at - b[1].at);
++        for (const [id, v] of entries) {
++          if (timers.delete(id)) {
++            v.run();
++            await flush();
++          }
++        }
++      };
++      let observed;
++      if (mode === 'resume') {
++        let once = false;
++        s.runtime.onStatus((v) => {
++          if (!once && v.send.phase === 'working') {
++            once = true;
++            gate = 'local-storage';
++            s.wake('gate');
++          }
++        });
++        s.wake('start');
++        await tick();
++        gate = 'ready';
++        s.wake('gate');
++        await tick();
++        observed = calls[0]?.lane;
++        assert.equal(observed, mutant ? 'receive' : 'send');
++      } else {
++        s.wake('start');
++        await tick();
++        if (mode === 'overlap') {
++          s.runtime.retry('receive');
++          await tick();
++          observed = calls.length;
++          assert.equal(observed, mutant ? 2 : 1);
++        } else if (mode === 'fairness') {
++          calls[0].resolve('progress');
++          await flush();
++          now = 50;
++          await tick();
++          observed = calls.at(-1).lane;
++          assert.equal(observed, mutant ? 'send' : 'receive');
++        } else if (mode === 'halt') {
++          calls[0].resolve('blocked');
++          await flush();
++          await tick();
++          calls[1].resolve();
++          await flush();
++          s.wake('online');
++          await tick();
++          observed = calls.at(-1).lane;
++          assert.equal(observed, mutant ? 'send' : 'receive');
++        } else {
++          s.wake('local');
++          calls[0].resolve();
++          await flush();
++          await tick();
++          calls[1].resolve();
++          await flush();
++          await tick(50);
++          observed = calls.length;
++          assert.equal(observed, mutant ? 2 : 3);
++        }
++      }
++      const closing = s.dispose();
++      for (const call of calls) call.resolve();
++      await closing;
++      observations.push({ mutant, observed });
++    }
++    if (process.env.ACCOUNT_REPORT_DIR)
++      writeFileSync(
++        join(process.env.ACCOUNT_REPORT_DIR, 'control-' + mode + '.json'),
++        JSON.stringify({ effective: true, observations }, null, 2) + '\n',
++      );
++  });
+diff --git a/test/account-sync/fixtures.mjs b/test/account-sync/fixtures.mjs
+new file mode 100644
+index 0000000..8845c56
+--- /dev/null
++++ b/test/account-sync/fixtures.mjs
+@@ -0,0 +1,119 @@
++import { build } from 'vite';
++import { resolve } from 'node:path';
++import { native as base, args, waitPredicate } from '../account-receive-driver/fixtures.mjs';
++export * from '../account-receive-driver/fixtures.mjs';
++export async function syncBundle(control) {
++  let hits = 0;
++  const targets = {
++    classification: [
++      '/src/crdt/accountReceive.ts',
++      "throw new AdmissionError('receive-refused', 'Self-stream history differs', {\n                  cause,\n                });",
++      'throw cause;',
++    ],
++    self: [
++      '/src/crdt/accountSyncState.ts',
++      'if (!local || hex(local) !== hex(envelope))',
++      'if (false)',
++    ],
++    dispatch: [
++      '/src/crdt/accountDelivery.ts',
++      'context.canSubmit?.() === false',
++      '(globalThis.syncDispatchBoundary?.(), false)',
++    ],
++    'dispatch-baseline': [
++      '/src/crdt/accountDelivery.ts',
++      'context.canSubmit?.() === false',
++      '(globalThis.syncDispatchBoundary?.(), context.canSubmit?.() === false)',
++    ],
++  };
++  const target = targets[control];
++  const result = await build({
++    configFile: false,
++    logLevel: 'error',
++    plugins: control
++      ? [
++          {
++            name: 'sync-control',
++            enforce: 'pre',
++            transform(code, id) {
++              if (control === 'witness' && id.endsWith('/src/crdt/spoolRecord.ts')) {
++                const pattern =
++                  /(export async function verifySpoolWitness\([\s\S]*?\): Promise<void> \{)/g;
++                if ([...code.matchAll(pattern)].length !== 1) throw Error('Missing witness anchor');
++                hits++;
++                return code.replace(pattern, '$1 return;');
++              }
++              if (!target || !id.endsWith(target[0])) return;
++              if (code.split(target[1]).length !== 2)
++                throw Error('Missing mutation anchor ' + control);
++              hits++;
++              return code.replace(target[1], target[2]);
++            },
++          },
++        ]
++      : [],
++    build: {
++      write: false,
++      minify: false,
++      lib: { entry: resolve('test/account-sync/browser.ts'), name: 'Harness', formats: ['iife'] },
++    },
++  });
++  if (control && hits !== 1) throw Error('Mutation did not apply');
++  return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
++}
++const script = await syncBundle();
++export async function configure(page, token) {
++  await page.evaluate((token) => {
++    window.openSync = async (item) => {
++      window.opened = await Harness.openOwnedSyncingAccountWorkspace(optionsFor(item), token);
++      window.editor = opened.workspace;
++      window.surface = editor.text({ kind: 'master' });
++      return editor.read();
++    };
++  }, token);
++}
++export async function native(t) {
++  const f = await base(t),
++    setup = f.setup;
++  f.setup = async (page) => {
++    await setup(page);
++    await page.evaluate(script);
++    await configure(page, f.testOperatorToken);
++    await page.evaluate(() => {
++      if (window.__syncInstrumented) return;
++      window.__syncInstrumented = true;
++      window.netBodies = [];
++      const encrypt = crypto.subtle.encrypt.bind(crypto.subtle);
++      crypto.subtle.encrypt = async function (alg, key, bytes) {
++        if (
++          alg.additionalData &&
++          new TextDecoder().decode(alg.additionalData).includes('done/env/v2')
++        )
++          netBodies.push([...new Uint8Array(bytes)]);
++        return encrypt(alg, key, bytes);
++      };
++    });
++  };
++  await f.setup(f.page);
++  return f;
++}
++export const syncing = (page, item) => page.evaluate((item) => openSync(item), args(item));
++export const syncStatus = (page) => page.evaluate(() => opened.sync.status);
++export const retryLane = (page, lane) => page.evaluate((lane) => opened.sync.retry(lane), lane);
++export const settled = (page) =>
++  waitPredicate(
++    page,
++    async () => {
++      if (opened.sync.status.send.phase !== 'idle') return false;
++      const c = await opened.listCaptures();
++      const n = c.reduce((sum, c) => sum + c.sources.length, 0);
++      for (const item of c) Harness.eraseCapsule(item);
++      return (
++        opened.sync.status.send.phase === 'idle' &&
++        opened.sync.status.send.acceptedThrough === n &&
++        opened.sync.status.receive.receivedThrough === n
++      );
++    },
++    30000,
++  );
++export const requestWire = (route) => JSON.parse(route.request().postData())[3];
+diff --git a/test/account-sync/generated.test.mjs b/test/account-sync/generated.test.mjs
+new file mode 100644
+index 0000000..ea3eae0
+--- /dev/null
++++ b/test/account-sync/generated.test.mjs
+@@ -0,0 +1,142 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fc from 'fast-check';
++import { writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import {
++  native,
++  selected,
++  syncing,
++  settled,
++  syncStatus,
++  retryLane,
++  close,
++  cold,
++  edit,
++  view,
++  captures,
++  online,
++  requestWire,
++} from './fixtures.mjs';
++import { decodeSubmission } from '../../account-protocol/submission.ts';
++import { decodeNetworkEnvelope } from '../../account-protocol/envelope.ts';
++
++test(
++  'generated actual-service histories preserve authored text, source identity, exact position retry and cold receive progress',
++  { timeout: 420000 },
++  async (t) => {
++    const seed = 9112062,
++      histories = [],
++      coverage = {};
++    const save = () => {
++      if (process.env.ACCOUNT_REPORT_DIR)
++        writeFileSync(
++          join(process.env.ACCOUNT_REPORT_DIR, 'generated-native.json'),
++          JSON.stringify({ seed, histories, coverage }, null, 2) + '\n',
++        );
++    };
++    await fc.assert(
++      fc.asyncProperty(
++        fc.array(
++          fc.constantFrom('edit', 'offline-edit', 'lost-send', 'lost-read', 'compact', 'restart'),
++          { minLength: 3, maxLength: 5 },
++        ),
++        async (generated) => {
++          const actions = [...generated, 'edit', 'restart'],
++            entry = { actions, completed: false };
++          histories.push(entry);
++          save();
++          const f = await native(t),
++            item = await selected(f, 'sync-generated-' + histories.length);
++          try {
++            let mode = 'good',
++              expected,
++              counter = 0;
++            const wires = new Map(),
++              invocationsAt = new Map();
++            await f.context.route(f.server.origin + '/account/delivery/submit', async (route) => {
++              const wire = requestWire(route),
++                envelope = decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope,
++                n = decodeNetworkEnvelope(envelope).seq;
++              if (wires.has(n)) assert.equal(wire, wires.get(n));
++              else {
++                wires.set(n, wire);
++                invocationsAt.set(n, f.invocations.length);
++              }
++              const response = await route.fetch();
++              if (mode === 'lost-send') await route.abort();
++              else await route.fulfill({ response });
++            });
++            await f.context.route(f.server.origin + '/account/delivery/read-v2', async (route) => {
++              if (mode === 'lost-read') await route.abort();
++              else await route.continue();
++            });
++            await syncing(f.page, item);
++            expected = await view(f.page);
++            await settled(f.page);
++            const baseline = await captures(f.page);
++            for (const action of actions) {
++              coverage[action] = (coverage[action] ?? 0) + 1;
++              if (action === 'restart') {
++                const before = await captures(f.page);
++                await close(f.page);
++                await cold(f);
++                await syncing(f.page, item);
++                await settled(f.page);
++                assert.deepEqual(await captures(f.page), before);
++              } else if (action === 'compact') {
++                await f.page.evaluate(() => opened.compactContent());
++              } else {
++                if (action === 'offline-edit') await online(f.page, false);
++                if (action.startsWith('lost')) mode = action;
++                const text = ' [' + counter++ + ']';
++                await edit(f.page, expected.length, 0, text);
++                expected += text;
++                if (action === 'offline-edit') await online(f.page, true);
++                if (action.startsWith('lost')) {
++                  if (action === 'lost-read') await retryLane(f.page, 'receive');
++                  // Wait for evidence of the actual unknown reply before restarting; status polling is bounded.
++                  const lane = action === 'lost-send' ? 'send' : 'receive';
++                  const until = Date.now() + 10000;
++                  while ((await syncStatus(f.page))[lane].failures === 0) {
++                    if (Date.now() > until) throw Error('No unknown transport result');
++                    await new Promise((r) => setTimeout(r, 20));
++                  }
++                  await close(f.page);
++                  await cold(f);
++                  mode = 'good';
++                  await syncing(f.page, item);
++                }
++                await settled(f.page);
++              }
++              assert.equal(await view(f.page), expected);
++              const c = await captures(f.page);
++              assert.equal(c.length, baseline.length + counter);
++              const n = c.reduce((n, c) => n + c.sources.length, 0),
++                status = await syncStatus(f.page);
++              assert.equal(status.send.acceptedThrough, n);
++              assert.equal(status.receive.receivedThrough, n);
++              assert.equal(wires.size, n);
++              assert.equal(f.invocations.length, n);
++              const spool = await f.page.evaluate(() => opened.spoolStatus());
++              assert.deepEqual(
++                spool.positions.map((p) => [p.source.id, p.source.index]),
++                c.flatMap((c) => c.sources.map((_, i) => [c.id, i])),
++              );
++            }
++            await close(f.page);
++            entry.completed = true;
++            entry.positions = wires.size;
++            save();
++          } finally {
++            await f.context.close();
++          }
++        },
++      ),
++      { seed, numRuns: 8, endOnFailure: true },
++    );
++    for (const action of ['edit', 'offline-edit', 'lost-send', 'lost-read', 'compact', 'restart'])
++      assert.ok(coverage[action] > 0, action);
++    save();
++  },
++);
+diff --git a/test/account-sync/native-controls.test.mjs b/test/account-sync/native-controls.test.mjs
+new file mode 100644
+index 0000000..a358db3
+--- /dev/null
++++ b/test/account-sync/native-controls.test.mjs
+@@ -0,0 +1,174 @@
++import * as Y from 'yjs';
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import { writeFileSync } from 'node:fs';
++import { join } from 'node:path';
++import {
++  native,
++  selected,
++  syncBundle,
++  configure,
++  syncing,
++  settled,
++  close,
++  cold,
++  census,
++  waitPredicate,
++  syncStatus,
++  path,
++  answer,
++  envelope,
++  open,
++} from './fixtures.mjs';
++const save = (mode, observations) => {
++  if (process.env.ACCOUNT_REPORT_DIR)
++    writeFileSync(
++      join(process.env.ACCOUNT_REPORT_DIR, 'control-' + mode + '.json'),
++      JSON.stringify({ effective: true, observations }, null, 2) + '\n',
++    );
++};
++for (const gate of ['offline', 'pressure'])
++  test('actual final ' + gate + ' submit dispatch control', { timeout: 60000 }, async (t) => {
++    const observations = [];
++    for (const mutant of [false, true]) {
++      const f = await native(t),
++        item = await selected(f, 'sync-' + gate + '-' + mutant);
++      let calls = 0;
++      await f.context.route(f.server.origin + '/account/delivery/submit', (route) => {
++        calls++;
++        return route.continue();
++      });
++      await f.page.evaluate(await syncBundle(mutant ? 'dispatch' : 'dispatch-baseline'));
++      await configure(f.page, f.testOperatorToken);
++      await f.page.evaluate((gate) => {
++        window.hit = false;
++        window.syncDispatchBoundary = () => {
++          window.hit = true;
++          if (gate === 'offline') {
++            Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => false });
++            dispatchEvent(new Event('offline'));
++          } else {
++            Storage.prototype.setItem = function () {
++              throw new DOMException('fixture quota', 'QuotaExceededError');
++            };
++            IDBDatabase.prototype.transaction = function () {
++              throw new DOMException('fixture unavailable', 'InvalidStateError');
++            };
++            const n = editor.read().master.length;
++            window.localJob = surface
++              .input(
++                { name: 'insert', text: 'PRESSURE' },
++                { ranges: [{ anchor: n, head: n }], main: 0 },
++              )
++              .accepted.catch(() => {});
++          }
++        };
++      }, gate);
++      await syncing(f.page, item);
++      await waitPredicate(f.page, () => hit);
++      // Drain the operation, not just its runtime gate publication, before counting actual requests.
++      await f.page.evaluate(() => opened.deliveryStatus().catch(() => {}));
++      assert.equal(calls, mutant ? 1 : 0);
++      await close(f.page);
++      observations.push({ mutant, calls });
++      await f.context.close();
++    }
++    save('dispatch-' + gate, observations);
++  });
++
++test(
++  'omitting the union witness admits missing retained receive evidence on cold open',
++  { timeout: 60000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'sync-witness');
++    await syncing(f.page, item);
++    await settled(f.page);
++    await close(f.page);
++    await census(f.page, item, 'last-event');
++    await cold(f);
++    let refused = false;
++    try {
++      await syncing(f.page, item);
++    } catch {
++      refused = true;
++    }
++    assert.equal(refused, true);
++    await f.page.evaluate(await syncBundle('witness'));
++    await configure(f.page, f.testOperatorToken);
++    // Pause network; the prohibited observation is successful cold admission with a missing ledger entry.
++    await f.page.evaluate(() =>
++      Object.defineProperty(navigator, 'onLine', { configurable: true, get: () => false }),
++    );
++    await syncing(f.page, item);
++    await close(f.page);
++    save('witness', [
++      { mutant: false, opened: false },
++      { mutant: true, opened: true },
++    ]);
++  },
++);
++
++test(
++  'self-stream byte binding refuses a different valid envelope from the same synthetic credential',
++  { timeout: 60000 },
++  async (t) => {
++    const observations = [];
++    for (const mode of ['baseline', 'self', 'classification']) {
++      const mutant = mode === 'self';
++      const f = await native(t),
++        item = await selected(f, 'sync-self-' + mode);
++      await open(f.page, item);
++      const snapshot = await f.page.evaluate(() => [...editor.snapshot()]);
++      await close(f.page);
++      const doc = new Y.Doc({ gc: false });
++      Y.applyUpdate(doc, new Uint8Array(snapshot));
++      let original;
++      doc.on('update', (b) => (original = [...b]));
++      doc.getText('master').insert(0, 'REMOTE ');
++      doc.destroy();
++      const wire = await envelope(f.page, item, 1, [original]);
++      await f.context.route(f.server.origin + '/account/delivery/submit', (r) => r.abort());
++      await f.context.route(path(f), (r) => {
++        const q = Buffer.from(r.request().postData()),
++          after = JSON.parse(q)[10];
++        return r.fulfill({
++          status: 200,
++          contentType: 'application/octet-stream',
++          body: answer(f, item, q, after === 0 ? wire : null).bytes,
++        });
++      });
++      if (mode !== 'baseline') {
++        await f.page.evaluate(await syncBundle(mode));
++        await configure(f.page, f.testOperatorToken);
++      }
++      await syncing(f.page, item);
++      await waitPredicate(
++        f.page,
++        () =>
++          opened.sync.status.receive.receivedThrough === 1 ||
++          opened.sync.status.receive.reason === 'operation-failed' ||
++          editor.status.state === 'blocked' ||
++          editor.status.state === 'closed',
++      ).catch(async (cause) => {
++        console.log(
++          JSON.stringify({
++            mutant,
++            sync: await syncStatus(f.page),
++            editor: await f.page.evaluate(() => editor.status),
++          }),
++        );
++        throw cause;
++      });
++      const advanced = (await syncStatus(f.page)).receive.receivedThrough === 1;
++      assert.equal(advanced, mutant);
++      const editorState = await f.page.evaluate(() => editor.status.state);
++      assert.equal(editorState, mode === 'classification' ? 'closed' : 'active');
++      await close(f.page);
++      observations.push({ mode, advanced, editorState });
++      await f.context.close();
++    }
++    save('self', observations.slice(0, 2));
++    save('classification', [observations[0], observations[2]]);
++  },
++);
+diff --git a/test/account-sync/native.test.mjs b/test/account-sync/native.test.mjs
+new file mode 100644
+index 0000000..35c8df7
+--- /dev/null
++++ b/test/account-sync/native.test.mjs
+@@ -0,0 +1,306 @@
++import { prepare, open, request, receive, envelope, answer } from './fixtures.mjs';
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {
++  native,
++  selected,
++  syncing,
++  settled,
++  syncStatus,
++  close,
++  cold,
++  edit,
++  view,
++  captures,
++  path,
++  waitPredicate,
++  requestWire,
++  args,
++  census,
++  deliveryBoundary,
++  receiveBoundary,
++} from './fixtures.mjs';
++import { decodeSubmission } from '../../account-protocol/submission.ts';
++import { decodeEnvelopeBody, decodeNetworkEnvelope } from '../../account-protocol/envelope.ts';
++const sendPath = (f) => f.server.origin + '/account/delivery/submit';
++const parsed = (wire) =>
++  decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
++
++test(
++  'one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay',
++  { timeout: 60000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'sync-roundtrip');
++    const sent = [],
++      reads = [];
++    let active = 0,
++      maximum = 0;
++    for (const [endpoint, list] of [
++      [sendPath(f), sent],
++      [path(f), reads],
++    ])
++      await f.context.route(endpoint, async (route) => {
++        active++;
++        maximum = Math.max(maximum, active);
++        list.push(route.request().postData());
++        try {
++          await route.fulfill({ response: await route.fetch() });
++        } finally {
++          active--;
++        }
++      });
++    await syncing(f.page, item);
++    const initial = await view(f.page);
++    await settled(f.page);
++    const baseline = await captures(f.page);
++    await edit(f.page, initial.length, 0, ' COMPOSED');
++    await settled(f.page);
++    const c = await captures(f.page),
++      expected = c.reduce((n, c) => n + c.sources.length, 0);
++    assert.equal(c.length, baseline.length + 1);
++    assert.equal(await view(f.page), initial + ' COMPOSED');
++    assert.equal(maximum, 1);
++    assert.deepEqual(
++      sent.map((s) => parsed(JSON.parse(s)[3]).seq),
++      Array.from({ length: expected }, (_, i) => i + 1),
++    );
++    assert.equal(f.invocations.length, expected);
++    const bodies = (await f.page.evaluate(() => netBodies)).map((b) =>
++      decodeEnvelopeBody(new Uint8Array(b)),
++    );
++    assert.deepEqual(
++      bodies.map((b) => [b.actor_id, b.actor_kind, b.updates.map((b) => [...b])]),
++      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, [s.bytes]])),
++    );
++    assert.equal((await syncStatus(f.page)).receive.receivedThrough, expected);
++    assert.deepEqual(
++      await f.page.evaluate(() =>
++        [
++          'prepareNextEnvelope',
++          'prepareSubmission',
++          'submitPending',
++          'recordResponse',
++          'readAcceptedPage',
++          'prepareRead',
++          'receiveNext',
++          'receivePage',
++          'outbound',
++        ].filter((k) => k in opened),
++      ),
++      [],
++    );
++    const spool = await f.page.evaluate(() => opened.spoolStatus());
++    assert.deepEqual(
++      spool.positions.map((p) => [p.source.id, p.source.index]),
++      c.flatMap((c) => c.sources.map((_, i) => [c.id, i])),
++    );
++    await f.page.evaluate(() => opened.compactContent());
++    await close(f.page);
++    const rows = await census(f.page, item),
++      entries = rows
++        .filter((r) => r.kind === 'heads')
++        .map((r) => JSON.parse(Buffer.from(r.bytes)))
++        .filter((r) => r[0] === 'done/account-inbound/v1');
++    assert.equal(entries.length, expected);
++    await cold(f);
++    await syncing(f.page, item);
++    await settled(f.page);
++    assert.equal(await view(f.page), initial + ' COMPOSED');
++    assert.deepEqual(await captures(f.page), c);
++    await close(f.page);
++    for (const factory of ['openOwnedAccountDeliveryWorkspace', 'openOwnedAccountSpoolWorkspace']) {
++      const result = await f.page.evaluate(
++        async ({ item, factory }) => {
++          try {
++            const o = await Harness[factory](optionsFor(item));
++            await o.workspace.close();
++            return 'opened';
++          } catch (e) {
++            return String(e);
++          }
++        },
++        { item: args(item), factory },
++      );
++      assert.notEqual(result, 'opened');
++    }
++  },
++);
++
++test(
++  'lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing',
++  { timeout: 60000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'sync-lost'),
++      sent = [];
++    let lose = true;
++    await f.context.route(sendPath(f), async (route) => {
++      sent.push(requestWire(route));
++      const answer = await route.fetch();
++      if (lose) await route.abort();
++      else await route.fulfill({ response: answer });
++    });
++    await syncing(f.page, item);
++    await waitPredicate(f.page, () => opened.sync.status.receive.receivedThrough >= 1);
++    const status = await syncStatus(f.page);
++    assert.equal(status.send.acceptedThrough, 0);
++    assert.ok(status.receive.receivedThrough >= 1);
++    const c = await captures(f.page),
++      count = f.invocations.length;
++    await close(f.page);
++    await cold(f);
++    lose = false;
++    await syncing(f.page, item);
++    await settled(f.page);
++    assert.equal(sent[0], sent[1]);
++    assert.equal(f.invocations.length, count + c.reduce((n, c) => n + c.sources.length, 0) - 1);
++    assert.deepEqual(await captures(f.page), c);
++    await close(f.page);
++  },
++);
++
++for (const fault of ['submission', 'receive'])
++  test(
++    'native ' + fault + ' abort retains work for cold restart',
++    { timeout: 60000 },
++    async (t) => {
++      const f = await native(t),
++        item = await selected(f, 'sync-abort-' + fault);
++      if (fault === 'submission') await deliveryBoundary(f.page, 'submission', 'before');
++      else await receiveBoundary(f.page, 'before');
++      await syncing(f.page, item);
++      const initial = await view(f.page);
++      await waitPredicate(
++        f.page,
++        () =>
++          opened.sync.status.send.reason === 'operation-failed' ||
++          editor.status.state === 'blocked',
++      );
++      const c = await captures(f.page);
++      await close(f.page);
++      await cold(f);
++      await syncing(f.page, item);
++      await settled(f.page);
++      assert.equal(await view(f.page), initial);
++      assert.deepEqual(await captures(f.page), c);
++      await close(f.page);
++    },
++  );
++
++test(
++  'close drains a delayed send and prevents queued receive dispatch before releasing the shared permit',
++  { timeout: 45000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'sync-close');
++    await f.page.evaluate(() => {
++      window.hits = [];
++      window.fetch = async (url, init) => {
++        hits.push(String(url));
++        window.pendingSignal = init.signal;
++        await new Promise((r) => (window.release = r));
++        return new Response('late', { status: 409 });
++      };
++    });
++    await syncing(f.page, item);
++    await waitPredicate(f.page, () => hits.length === 1);
++    await f.page.evaluate((slot) => {
++      window.done = false;
++      window.closing = editor.close().then(() => (window.done = true));
++      window.competed = false;
++      window.competitor = navigator.locks.request(Harness.slotPermitName(slot), () => {
++        window.competed = true;
++      });
++    }, item.slotId);
++    await waitPredicate(f.page, async () => (await navigator.locks.query()).pending.length > 0);
++    assert.equal(await f.page.evaluate(() => pendingSignal.aborted), true);
++    assert.equal(await f.page.evaluate(() => done || competed), false);
++    await f.page.evaluate(() => release());
++    await f.page.evaluate(() => closing);
++    await f.page.evaluate(() => competitor);
++    assert.equal(await f.page.evaluate(() => hits.length), 1);
++    assert.equal((await syncStatus(f.page)).send.phase, 'closed');
++    assert.equal((await syncStatus(f.page)).receive.phase, 'closed');
++  },
++);
++
++test(
++  'local journal admission during an outbound seal is captured once and sent after readback gets a turn',
++  { timeout: 60000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'sync-seal-local');
++    const order = [];
++    for (const endpoint of ['submit', 'read-v2'])
++      await f.context.route(f.server.origin + '/account/delivery/' + endpoint, async (route) => {
++        order.push(endpoint);
++        await route.continue();
++      });
++    await f.page.evaluate(() => {
++      window.pauseNet = true;
++      window.hit = false;
++    });
++    await syncing(f.page, item);
++    await waitPredicate(f.page, () => hit);
++    const initial = await view(f.page);
++    await edit(f.page, initial.length, 0, ' DURING SEAL');
++    assert.equal(order.length, 0);
++    await f.page.evaluate(() => {
++      window.pauseNet = false;
++      release();
++    });
++    await settled(f.page);
++    assert.equal(await view(f.page), initial + ' DURING SEAL');
++    assert.deepEqual(order.slice(0, 3), ['submit', 'read-v2', 'submit']);
++    const c = await captures(f.page),
++      bodies = (await f.page.evaluate(() => netBodies)).map((b) =>
++        decodeEnvelopeBody(new Uint8Array(b)),
++      );
++    assert.deepEqual(
++      bodies.map((b) => [b.actor_id, b.actor_kind, b.updates.map((b) => [...b])]),
++      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, [s.bytes]])),
++    );
++    await close(f.page);
++  },
++);
++
++test(
++  'retained signed receive conflict halts both lanes without closing valid Local content',
++  { timeout: 45000 },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'sync-retained-conflict');
++    await f.page.evaluate(async (item) => {
++      window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
++      window.editor = opened.workspace;
++      window.surface = editor.text({ kind: 'master' });
++    }, args(item));
++    const wire = await prepare(f.page),
++      snapshot = await f.page.evaluate(() => [...editor.snapshot()]);
++    await close(f.page);
++    const other = await envelope(f.page, item, 1, [snapshot]);
++    await open(f.page, item);
++    let query = await request(f.page, 0);
++    await receive(f.page, answer(f, item, query, wire.bytes).bytes);
++    query = await request(f.page, 0);
++    await receive(f.page, answer(f, item, query, other).bytes);
++    assert.equal(
++      await f.page.evaluate(async () => (await opened.receiveStatus()).state),
++      'conflict',
++    );
++    const text = await view(f.page);
++    await close(f.page);
++    await cold(f);
++    await syncing(f.page, item);
++    await waitPredicate(
++      f.page,
++      () =>
++        opened.sync.status.send.reason === 'conflict' &&
++        opened.sync.status.receive.reason === 'conflict',
++    );
++    assert.equal(await f.page.evaluate(() => editor.status.state), 'active');
++    assert.equal(await view(f.page), text);
++    await close(f.page);
++  },
++);
+diff --git a/test/account-sync/scheduler-fixture.ts b/test/account-sync/scheduler-fixture.ts
+new file mode 100644
+index 0000000..1d9ae7a
+--- /dev/null
++++ b/test/account-sync/scheduler-fixture.ts
+@@ -0,0 +1,107 @@
++import {
++  createSyncScheduler,
++  type SyncLane,
++  type OutboundStep,
++} from '../../src/crdt/accountSyncDriver';
++import type { ReceiveStep } from '../../src/crdt/accountReceiveDriver';
++import type { DriverGate } from '../../src/crdt/accountDriver';
++export const flush = async () => {
++  for (let n = 0; n < 30; n++) await Promise.resolve();
++};
++export function fixture(factory = createSyncScheduler) {
++  let now = 0,
++    serial = 0,
++    gate: DriverGate = 'ready',
++    active = 0,
++    maximum = 0,
++    detached = 0;
++  const controller = new AbortController(),
++    timers = new Map<number, { at: number; run: () => void }>();
++  const calls: {
++    lane: SyncLane;
++    at: number;
++    finish: (
++      kind: 'idle' | 'progress' | 'unknown' | 'paused' | 'blocked' | 'error',
++      position?: number,
++    ) => void;
++  }[] = [];
++  const step = (lane: SyncLane) => {
++    active++;
++    maximum = Math.max(maximum, active);
++    return new Promise<OutboundStep | ReceiveStep>((yes, no) => {
++      calls.push({
++        lane,
++        at: now,
++        finish(kind, position = 0) {
++          active--;
++          if (kind === 'error') {
++            no(Error('controlled failure'));
++            return;
++          }
++          const progress =
++            lane === 'send' ? { acceptedThrough: position } : { receivedThrough: position };
++          if (kind === 'blocked') yes({ kind, ...progress, reason: 'conflict' });
++          else yes({ kind, ...progress });
++        },
++      });
++    });
++  };
++  const scheduler = factory({
++    signal: controller.signal,
++    gate: () => gate,
++    detach() {
++      detached++;
++    },
++    clock: {
++      now: () => now,
++      set(run, delay) {
++        timers.set(++serial, { at: now + delay, run });
++        return serial;
++      },
++      clear(id) {
++        timers.delete(id as number);
++      },
++    },
++    send: () => step('send') as Promise<OutboundStep>,
++    receive: () => step('receive') as Promise<ReceiveStep>,
++  });
++  return {
++    scheduler,
++    controller,
++    timers,
++    calls,
++    setGate(value: DriverGate) {
++      gate = value;
++    },
++    get gate() {
++      return gate;
++    },
++    get now() {
++      return now;
++    },
++    get active() {
++      return active;
++    },
++    get maximum() {
++      return maximum;
++    },
++    get detached() {
++      return detached;
++    },
++    async tick(ms: number) {
++      const end = now + ms;
++      let budget = 100;
++      for (;;) {
++        const next = [...timers].sort((a, b) => a[1].at - b[1].at || a[0] - b[0])[0];
++        if (!next || next[1].at > end) break;
++        if (--budget === 0) throw Error('spin');
++        now = next[1].at;
++        timers.delete(next[0]);
++        next[1].run();
++        await flush();
++      }
++      now = end;
++      await flush();
++    },
++  };
++}
+diff --git a/test/accountSyncDriver.test.ts b/test/accountSyncDriver.test.ts
+new file mode 100644
+index 0000000..152b37a
+--- /dev/null
++++ b/test/accountSyncDriver.test.ts
+@@ -0,0 +1,325 @@
++// @vitest-environment node
++import { expect, it } from 'vitest';
++import fc from 'fast-check';
++import { fixture, flush } from './account-sync/scheduler-fixture';
++import { driveOutboundStep, type SyncLane } from '../src/crdt/accountSyncDriver';
++import type { DriverGate, DriverOperations } from '../src/crdt/accountDriver';
++
++it('alternates ready lanes, keeps independent idle deadlines and wakes an idle sender', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  expect(f.calls.map((c) => c.lane)).toEqual(['send']);
++  f.calls[0]!.finish('progress', 1);
++  await flush();
++  await f.tick(0);
++  expect(f.calls.map((c) => c.lane)).toEqual(['send', 'receive']);
++  f.calls[1]!.finish('idle');
++  await flush();
++  await f.tick(50);
++  f.calls[2]!.finish('idle', 1);
++  await flush();
++  expect([...f.timers.values()].map((t) => t.at)).toEqual([5000]);
++  f.scheduler.wake('local');
++  await f.tick(50);
++  expect(f.calls[3]!.lane).toBe('send');
++  f.calls[3]!.finish('idle', 1);
++  await flush();
++  await f.tick(4900);
++  expect(f.calls[4]!.lane).toBe('receive');
++  f.calls[4]!.finish('idle');
++  await flush();
++  expect(f.maximum).toBe(1);
++  await f.scheduler.dispose();
++});
++it('retains local wakes during send, but cannot accelerate unknown backoff or clear a halt', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  f.scheduler.wake('local');
++  f.calls[0]!.finish('idle');
++  await flush();
++  await f.tick(0);
++  f.calls[1]!.finish('idle');
++  await flush();
++  await f.tick(50);
++  expect(f.calls[2]!.lane).toBe('send');
++  f.calls[2]!.finish('unknown');
++  await flush();
++  for (let i = 0; i < 20; i++) f.scheduler.wake('local');
++  await f.tick(999);
++  expect(f.calls.length).toBe(3);
++  await f.tick(1);
++  expect(f.calls[3]!.lane).toBe('send');
++  f.setGate('offline');
++  f.scheduler.wake('gate');
++  f.calls[3]!.finish('error');
++  await flush();
++  f.setGate('ready');
++  f.scheduler.wake('online');
++  await f.tick(0);
++  expect(f.calls[4]!.lane).toBe('receive');
++  f.calls[4]!.finish('idle');
++  await flush();
++  expect(f.scheduler.runtime.status.send.reason).toBe('operation-failed');
++  f.scheduler.runtime.retry('send');
++  await f.tick(0);
++  expect(f.calls[5]!.lane).toBe('send');
++  f.calls[5]!.finish('idle');
++  await flush();
++  await f.scheduler.dispose();
++});
++it('observer pause before dispatch retains the startup deadline; observer close drains without dispatch', async () => {
++  for (const action of ['pause', 'close']) {
++    const f = fixture();
++    let done = false;
++    f.scheduler.runtime.onStatus((s) => {
++      if (!done && s.send.phase === 'working') {
++        done = true;
++        if (action === 'pause') {
++          f.setGate('local-storage');
++          f.scheduler.wake('gate');
++        } else f.controller.abort();
++      }
++    });
++    f.scheduler.wake('start');
++    await f.tick(0);
++    expect(f.calls.length).toBe(0);
++    if (action === 'pause') {
++      f.setGate('ready');
++      f.scheduler.wake('gate');
++      await f.tick(0);
++      expect(f.calls.length).toBe(1);
++      f.calls[0]!.finish('idle');
++      await flush();
++    }
++    await f.scheduler.dispose();
++    expect(f.detached).toBe(1);
++    expect(f.timers.size).toBe(0);
++  }
++});
++it('close waits for active work and cannot start the due opposite lane', async () => {
++  const f = fixture();
++  f.scheduler.wake('start');
++  await f.tick(0);
++  let closed = false;
++  const closing = f.scheduler.dispose().then(() => (closed = true));
++  await flush();
++  expect(closed).toBe(false);
++  expect(f.timers.size).toBe(0);
++  f.calls[0]!.finish('progress', 1);
++  await closing;
++  await f.tick(10000);
++  expect(f.calls.length).toBe(1);
++  expect(f.scheduler.runtime.status.send.acceptedThrough).toBe(0);
++});
++it('outbound progress comes only from durable decisions and pending exact submissions bypass all sealing', async () => {
++  let gate: DriverGate = 'ready',
++    accepted = 0;
++  const events: string[] = [];
++  const ops: DriverOperations = {
++    deliveryStatus: async () => ({ state: 'ready', acceptedThrough: accepted, submissions: [1] }),
++    spoolStatus: async () => {
++      throw Error('must not allocate');
++    },
++    prepareNextEnvelope: async () => {
++      throw Error('must not seal');
++    },
++    prepareSubmission: async () => {
++      throw Error('must not sign');
++    },
++    submitPending: async (token) => {
++      events.push(token);
++      return { kind: 'accepted' };
++    },
++  };
++  expect(await driveOutboundStep(ops, 'token', () => gate)).toEqual({
++    kind: 'unknown',
++    acceptedThrough: 0,
++  });
++  gate = 'offline';
++  expect((await driveOutboundStep(ops, 'token', () => gate)).kind).toBe('paused');
++  expect(events.length).toBe(1);
++  gate = 'ready';
++  ops.submitPending = async () => {
++    accepted = 1;
++    return { kind: 'unknown' };
++  };
++  expect(await driveOutboundStep(ops, 'token', () => gate)).toEqual({
++    kind: 'progress',
++    acceptedThrough: 1,
++  });
++});
++
++it('400 generated deferred histories agree with an independent two-lane event model', async () => {
++  await fc.assert(
++    fc.asyncProperty(
++      fc.array(
++        fc.record({
++          action: fc.constantFrom(
++            'tick',
++            'finish',
++            'local',
++            'online',
++            'offline',
++            'pressure',
++            'resume',
++            'retrySend',
++            'retryReceive',
++            'close',
++          ),
++          ms: fc.integer({ min: 0, max: 6000 }),
++          result: fc.constantFrom('idle', 'progress', 'unknown', 'paused', 'blocked', 'error'),
++        }),
++        { minLength: 20, maxLength: 65 },
++      ),
++      async (actions) => {
++        const f = fixture();
++        type Name = SyncLane;
++        const m = {
++          time: 0,
++          ready: true,
++          closed: false,
++          last: 'receive' as Name,
++          active: undefined as Name | undefined,
++          log: [] as { lane: Name; at: number }[],
++          lanes: {
++            send: {
++              at: 0 as number | undefined,
++              fail: 0,
++              pos: 0,
++              halt: false,
++              dirty: false,
++              fast: false,
++            },
++            receive: {
++              at: 0 as number | undefined,
++              fail: 0,
++              pos: 0,
++              halt: false,
++              dirty: false,
++              fast: false,
++            },
++          },
++        };
++        const names: Name[] = ['send', 'receive'];
++        const advance = (ms: number) => {
++          const end = m.time + ms;
++          if (!m.closed && m.ready && !m.active) {
++            const available = names.filter((n) => !m.lanes[n].halt && m.lanes[n].at !== undefined);
++            const next = Math.min(...available.map((n) => m.lanes[n].at!));
++            if (next <= end) {
++              m.time = Math.max(m.time, next);
++              const due = available.filter((n) => m.lanes[n].at! <= m.time),
++                name = due.find((n) => n !== m.last) ?? due[0]!;
++              m.active = name;
++              m.last = name;
++              const l = m.lanes[name];
++              l.at = undefined;
++              l.dirty = l.fast = false;
++              m.log.push({ lane: name, at: m.time });
++            }
++          }
++          m.time = end;
++        };
++        f.scheduler.wake('start');
++        advance(0);
++        await f.tick(0);
++        for (const a of actions) {
++          if (a.action === 'tick') {
++            advance(a.ms);
++            await f.tick(a.ms);
++          } else if (a.action === 'finish' && m.active) {
++            const n = m.active,
++              l = m.lanes[n],
++              pos = l.pos + (a.result === 'progress' ? 1 : 0);
++            f.calls.at(-1)!.finish(a.result, pos);
++            if (!m.closed) {
++              l.pos = pos;
++              if (a.result === 'blocked' || a.result === 'error') {
++                l.halt = true;
++                l.at = undefined;
++                l.fast = l.dirty = false;
++              } else if (a.result === 'paused') {
++                l.at = m.time + (l.fast ? 0 : 50);
++                l.fast = false;
++              } else {
++                l.fail = a.result === 'unknown' ? Math.min(6, l.fail + 1) : 0;
++                const wait =
++                  a.result === 'unknown'
++                    ? Math.min(30000, 1000 * 2 ** (l.fail - 1))
++                    : a.result === 'progress'
++                      ? 50
++                      : n === 'receive'
++                        ? 5000
++                        : undefined;
++                l.at = l.fast
++                  ? m.time
++                  : wait !== undefined
++                    ? m.time + wait
++                    : l.dirty
++                      ? m.time + 50
++                      : undefined;
++                l.fast = l.dirty = false;
++              }
++            }
++            m.active = undefined;
++            await flush();
++          } else if (a.action === 'close') {
++            m.closed = true;
++            for (const n of names) m.lanes[n].at = undefined;
++            f.controller.abort();
++            await flush();
++          } else if (!m.closed) {
++            if (['offline', 'pressure', 'resume', 'online'].includes(a.action)) {
++              m.ready = ['resume', 'online'].includes(a.action);
++              f.setGate(
++                a.action === 'offline'
++                  ? 'offline'
++                  : a.action === 'pressure'
++                    ? 'local-storage'
++                    : 'ready',
++              );
++            }
++            if (a.action === 'local') {
++              const l = m.lanes.send;
++              l.dirty = true;
++              if (!l.halt && m.active !== 'send' && l.at === undefined) l.at = m.time + 50;
++              f.scheduler.wake('local');
++            } else if (a.action === 'online' || a.action.startsWith('retry')) {
++              const target =
++                a.action === 'retrySend'
++                  ? 'send'
++                  : a.action === 'retryReceive'
++                    ? 'receive'
++                    : undefined;
++              for (const n of names) {
++                if (target && target !== n) continue;
++                const l = m.lanes[n];
++                if (target) l.halt = false;
++                if (!l.halt) {
++                  if (m.active === n) l.fast = true;
++                  else l.at = m.time;
++                }
++              }
++              if (target) f.scheduler.runtime.retry(target);
++              else f.scheduler.wake('online');
++            } else f.scheduler.wake('gate');
++            await flush();
++          }
++          expect(f.calls.map(({ lane, at }) => ({ lane, at }))).toEqual(m.log);
++          expect(f.maximum).toBeLessThanOrEqual(1);
++          expect(f.timers.size).toBeLessThanOrEqual(1);
++          for (const n of names)
++            expect(f.scheduler.runtime.status[n].failures).toBe(m.lanes[n].fail);
++        }
++        const done = f.scheduler.dispose();
++        if (m.active) {
++          f.calls.at(-1)!.finish('idle', m.lanes[m.active].pos);
++        }
++        await done;
++      },
++    ),
++    { seed: 9112061, numRuns: 400, endOnFailure: true },
++  );
++});

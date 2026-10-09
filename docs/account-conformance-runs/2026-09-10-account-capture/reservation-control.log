@@ -1,0 +1,41 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+(node:6799) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ↓ test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery
+ ↓ test/sourceCapture.test.ts > Account source capsule conformance > 200 generated route and actor substitutions refuse without accepting a different authority
+ ↓ test/sourceCapture.test.ts > Account source capsule conformance > refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources
+ ↓ test/sourceCapture.test.ts > Account source capsule conformance > conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap
+ ↓ test/sourceCapture.test.ts > Account source capsule conformance > requires original sources to cover all prepared state, including deletions
+ ↓ test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+ × test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input 10ms
+   → expected 49806 to be 33101 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input
+AssertionError: expected 49806 to be 33101 // Object.is equality
+
+- Expected
++ Received
+
+- 33101
++ 49806
+
+ ❯ test/sourceCapture.test.ts:304:48
+    302|         expect(admission.status.pressure?.code).toBe('slice-required');
+    303|         admission.retry();
+    304|         expect(admission.status.reservedBytes).toBe(reservation);
+       |                                                ^
+    305|       }
+    306|       expect(writes).toBe(0);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 skipped (7)
+   Start at  21:51:01
+   Duration  451ms (transform 177ms, setup 0ms, import 334ms, tests 11ms, environment 0ms)
+

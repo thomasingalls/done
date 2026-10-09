@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-decisions/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-decisions/owned/inputs.json.gz",
+    "bytes": 1223451,
+    "sha256": "3d2eb32e6ec23ae6f59ab8a967487d945002f95150717fdfe2ddcf8cb63f4547"
+  }
+]

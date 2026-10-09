@@ -1,0 +1,8 @@
+{
+  "fixed": 13,
+  "negatives": 64,
+  "omissions": 64,
+  "signatureChecks": 10,
+  "aeadChecks": 8,
+  "note": "Encoded-field controls use independent primitives; production guard controls are reported separately."
+}

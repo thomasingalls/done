@@ -1,0 +1,11 @@
+# Disposition: retain membership-repair eligibility in the experimental combination
+
+The candidate removes the text command's pre-repair scan only when a private owner has a completed repair basis. The two-file runtime increment passes focused dirty-basis, unaccepted-candidate, pending-dependency, source replay and broader affected checks. Both discriminating faults fail all four selected owner-mode assertions; restored source is pinned before measurement.
+
+All six fresh browser sessions /480 measured keys /624 warmups pass semantic checks and process drain. Ordinary paired median gains are 5.5% early and 10.1% later; the individual gains are 6.25%/4.83% early and 4.50%/15.64% later. Median paired p95 gains are 12.1%/9.4%, and every individual p95 decreases. Unicode medians improve 4.86%/4.41%, with p95 also lower. The later effect varies substantially; the two-session-per-variant screen cannot establish a population effect or stable percentage prediction. No valid run is omitted or repeated for a better result.
+
+Retain this additive change on the fixed R3 preparation + comparison pool + editor shortcut + primitive value-string combination. Preserve optional R4 UI indexing and earlier publication patches separately. Do not promote application defaults or claim a budget/GC/memory win. No full gate runs; absolute timings from other protocols are not interchangeable.
+
+Next bounded experiment: incremental publication on this retained combination. Keep full document verification, detached public reads, current status/action/selection semantics and conservative fallback after structural/remote changes. Persistent text-history buffers with full verification follow separately; incremental verification remains a distinct proof/policy decision. Native ownership/memory/Account composition qualification and the unchanged application gate precede RC entry.
+
+The original sandbox launch failure has no samples and remains in its log/batch record. Missing-WASM sparse setup and fixture typecheck corrections are also retained. The measured runtime needed no correctness repair during this experiment. Main runtime/tests/defaults, release counts, historical packet, personal/package/vector files and L-2 remain unchanged. New phase artifacts and records are uncommitted.

@@ -1,0 +1,30 @@
+{
+  "checked": "2026-09-09T08:11:44.800Z",
+  "node": "v26.8.1",
+  "packageManager": "pnpm 11.20.0",
+  "installation": {
+    "command": "pnpm install --offline --frozen-lockfile --ignore-scripts",
+    "exitCode": 0,
+    "log": "✓ Lockfile passes supply-chain policies (verified 6m ago)\nLockfile is up to date, resolution step is skipped\nProgress: resolved 1, reused 0, downloaded 0, added 0\nPackages: +198\n++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nPackages are cloned from the content-addressable store to the virtual store.\n  Content-addressable store is at: /Users/thomasingalls/Library/pnpm/store/v11\n  Virtual store is at:             node_modules/.pnpm\nProgress: resolved 198, reused 198, downloaded 0, added 197\nProgress: resolved 198, reused 198, downloaded 0, added 198, done\n\ndependencies:\n+ @codemirror/commands 6.10.4\n+ @codemirror/lang-markdown 6.5.1\n+ @codemirror/language 6.12.4\n+ @codemirror/state 6.7.1\n+ @codemirror/view 6.43.7\n+ @lezer/common 1.5.2\n+ @lezer/highlight 1.2.3\n+ @lezer/markdown 1.7.2\n+ lib0 0.2.117\n+ react 19.2.8\n+ react-dom 19.2.8\n+ temporal-polyfill 1.0.2\n+ y-codemirror.next 0.3.5\n+ y-indexeddb 9.0.12\n+ y-protocols 1.0.7\n+ y-websocket 3.0.0\n+ yjs 13.6.31\n\ndevDependencies:\n+ @babel/core 8.0.1\n+ @emnapi/core 2.0.0-alpha.3\n+ @emnapi/runtime 2.0.0-alpha.3\n+ @noble/ciphers 2.3.0\n+ @playwright/test 1.62.0\n+ @rolldown/plugin-babel 0.2.3\n+ @stablelib/xchacha20poly1305 2.0.1\n+ @types/babel__core 7.20.5\n+ @types/node 26.1.2\n+ @types/react 19.2.17\n+ @types/react-dom 19.2.3\n+ @vitejs/plugin-react 6.0.4\n+ babel-plugin-react-compiler 1.0.0\n+ fake-indexeddb 6.2.5\n+ fast-check 4.9.0\n+ jsdom 30.0.1\n+ libsodium-wrappers 0.8.4\n+ oxfmt 0.61.0\n+ oxlint 1.76.0\n+ oxlint-tsgolint 7.0.2001\n+ typescript 7.0.2\n+ vite 8.1.5\n+ vitest 4.1.10\n\nDone in 1.6s using pnpm v11.20.0\n"
+  },
+  "files": {
+    "package.json": "f3e05b5e4e6b9eb37da2fe6daa8dd4086676ec3a3d4b425ab66bcf914204be08",
+    "pnpm-lock.yaml": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e",
+    "pnpm-workspace.yaml": "c47ec22acbc22d2c84ecf0e3eb3d55d4b4b39e6e8e20eff4b62d16d3bd22720a",
+    "scripts/check-yjs-patch.mjs": "d15685ad0f02422ff234e18b1538f2056c5bc128dc26e514984636680eed9423",
+    "vendor-patches/yjs@13.6.31.patch": "d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1",
+    "vendor-patches/yjs-13.6.31.json": "c69caba120ae24679ae0e097f7303d0bb1e0bcd723c3388a807f42a18a8e6210"
+  },
+  "rows": [
+    {
+      "cwd": "/Users/thomasingalls/.codex/worktrees/c030/done",
+      "exitCode": 0,
+      "output": "Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.\n"
+    },
+    {
+      "cwd": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/yjs-delivery/clean-install",
+      "exitCode": 0,
+      "output": "Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.\n"
+    }
+  ]
+}

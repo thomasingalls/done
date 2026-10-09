@@ -1,0 +1,74 @@
+{
+  "commands": [
+    {
+      "account": 1,
+      "op": "offer"
+    },
+    {
+      "account": 1,
+      "op": "challenge"
+    },
+    {
+      "account": 0,
+      "op": "lose-offer",
+      "cut": "after-commit"
+    },
+    {
+      "account": 0,
+      "op": "offer"
+    },
+    {
+      "account": 0,
+      "op": "lose-challenge",
+      "cut": "after-commit"
+    },
+    {
+      "account": 0,
+      "op": "challenge"
+    },
+    {
+      "account": 0,
+      "op": "lose-finish",
+      "cut": "after-commit"
+    },
+    {
+      "account": 0,
+      "op": "finish"
+    },
+    {
+      "account": 1,
+      "op": "cross-finish"
+    },
+    {
+      "account": 1,
+      "op": "finish"
+    },
+    {
+      "account": 0,
+      "op": "restart"
+    },
+    {
+      "account": 0,
+      "op": "finish"
+    },
+    {
+      "account": 1,
+      "op": "finish"
+    },
+    {
+      "account": 0,
+      "op": "cross-binding"
+    }
+  ],
+  "metrics": {
+    "offer": 2,
+    "challenge": 2,
+    "lose-offer": 1,
+    "lose-challenge": 1,
+    "lose-finish": 1,
+    "finish": 4,
+    "cross-finish": 1,
+    "restart": 1,
+    "cross-binding": 1
+  }
+}

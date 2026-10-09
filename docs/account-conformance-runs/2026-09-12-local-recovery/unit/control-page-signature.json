@@ -1,0 +1,10 @@
+{
+  "mode": "page-signature",
+  "changes": [
+    [
+      "if (!pageVerified) fail('unverified');",
+      "void pageVerified;"
+    ]
+  ],
+  "outcome": "Unsigned page extent accepted."
+}

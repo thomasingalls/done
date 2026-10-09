@@ -1,0 +1,444 @@
+{
+  "v": 1,
+  "baseCommit": "2ba50aa",
+  "status": "prep-open; inventory coverage is not authority-map or vector completion",
+  "groups": [
+    {
+      "id": "authority-bootstrap",
+      "kind": "Ed25519 and pin digest",
+      "authority": "independently configured K_auth public pin; fingerprint alone supplies no trust",
+      "home": "docs/account-authority.md",
+      "next": "A: exact root-message vectors and authority registration",
+      "labels": [
+        "done/service-authority-pin/v1",
+        "done/service-authority-bootstrap/v1",
+        "done/pending-account-observation/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "service-custody",
+      "kind": "HKDF-SHA256 and AES-256-GCM",
+      "authority": "operator-held 32-byte wrapping key; root and acceptance seeds are separate custody domains",
+      "home": "docs/account-admission.md",
+      "next": "D: key schedule/seal vectors and operator-key authority entries",
+      "labels": [
+        "done/service-authority-seal/v1",
+        "done/acceptance-custody/v1",
+        "done/acceptance-seal/v1"
+      ],
+      "note": "Root seal AAD is pinBytes; acceptance seal AAD is pinBytes plus request digest/public key. These labels have different KDF and AAD uses; see source sites."
+    },
+    {
+      "id": "account-assertion",
+      "kind": "WebAuthn challenge hashes",
+      "authority": "registration uses submitted attested key; confirmation/authentication/recovery/activation use the actual registered passkey with operation-specific binding and RP/origin verification",
+      "home": "docs/account-activation.md",
+      "next": "A/B: exact challenge bindings; keep account authentication distinct from content authority",
+      "labels": [
+        "done/account/${operation}/v1",
+        "done/account/finalize-recovery/v1",
+        "done/promotion-activation/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "recovery-factor",
+      "kind": "HKDF-SHA256, AES-256-GCM, Ed25519 key/possession proof",
+      "authority": "saved generated code opens R_priv, sealed root commitment and bootstrap seed; resulting signer must match committed public key",
+      "home": "docs/account-recovery.md",
+      "next": "B: 96-byte payload, 112-byte ciphertext, amended row-14 vectors and prefix checks",
+      "labels": [
+        "done/recovery/v1",
+        "done/recovery-key-check/v1",
+        "done/account-recovery-confirm/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "recovery-commitments",
+      "kind": "structural SHA256 commitments",
+      "authority": "hashes alone grant no authority; root commitment is checked inside code seal and state digest is client-certified",
+      "home": "docs/account-recovery.md",
+      "next": "B: publish root/envelope/state/draft digest bytes and isolation cases",
+      "labels": [
+        "done/pkg-root/v1",
+        "done/recovery-envelope/v1",
+        "done/recovery-state/v1",
+        "done/account-recovery-draft/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "first-authority",
+      "kind": "Ed25519 over LP(label, SHA256(ordered JSON))",
+      "authority": "K_auth signs serialization only; independent pin plus client certification/origin and semantic replay remain required",
+      "home": "docs/account-crypto/first-authority.md",
+      "next": "A: exact first-epoch/offer/receipt-v2/activation vectors and mapped homes",
+      "labels": [
+        "done/first-epoch/v1",
+        "done/promotion-offer/v1",
+        "done/promotion-receipt/v2",
+        "done/promotion-activation-challenge/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "creating-endorsement",
+      "kind": "Ed25519 and structural member digest",
+      "authority": "prepared device signing key signs candidate/set; factor-resolved bootstrap signer endorses complete admission request",
+      "home": "docs/account-admission.md",
+      "next": "A: recursive field order, trust chain and per-field negative vectors",
+      "labels": [
+        "done/promotion-genesis-candidate/v1",
+        "done/certified-members/v1",
+        "done/certified-set-approval/v1",
+        "done/certified-set/v1",
+        "done/genesis-origin/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "checkpoint-admission",
+      "kind": "Ed25519 and head-vector digest",
+      "authority": "eligible signing member at pinned epoch; raw SV/DS independently rederived from plaintext; digest alone is not coverage",
+      "home": "docs/account-admission-bounds.md",
+      "next": "A: explicit empty first-epoch vector; retain current v2 descriptor vectors",
+      "labels": ["done/cp-manifest/v2", "done/cp-admit/v2", "done/headvec/v1"],
+      "note": ""
+    },
+    {
+      "id": "genesis-encryption",
+      "kind": "HPKE info, HKDF and AES-GCM",
+      "authority": "K_g comes from factor-opened Local custody; HPKE base-mode recipient authority comes from authenticated candidate/recovery state",
+      "home": "docs/account-admission.md",
+      "next": "B/D: bridge runtime HPKE/checkpoint to published suite vectors",
+      "labels": ["done/gen-wrap/v1", "done/checkpoint/v1", "done/cp/v1"],
+      "note": ""
+    },
+    {
+      "id": "slot-access",
+      "kind": "Ed25519 binding and WebAuthn unlock challenge",
+      "authority": "K_auth binds actual registered passkey; offline assertion checks that pinned binding; signing credential ID is a different namespace",
+      "home": "docs/account-handoff.md",
+      "next": "A: reuse selected slot encodings, pin receipt-passkey dependency",
+      "labels": ["done/slotbind/v1", "done/slotunlock/v1"],
+      "note": ""
+    },
+    {
+      "id": "local-promotion",
+      "kind": "HKDF/HMAC-SHA256 and deterministic hashes",
+      "authority": "mandatory-factor-opened custody root authenticates promotion; lineage/retry hashes name operations without authorizing them",
+      "home": "docs/account-promotion.md",
+      "next": "D: versioned v1-v9 MAC payload and deterministic hash vectors",
+      "labels": [
+        "done/local-promotion/v1",
+        "done/promotion-lineage/v1",
+        "done/promotion-attempt/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "envelope",
+      "kind": "HKDF/AES-GCM, Ed25519 and binary framing",
+      "authority": "K_g for content and certified publisher signing key for attribution, resolved independently of envelope-supplied fields",
+      "home": "docs/account-inbound.md",
+      "next": "C: register v1/v2 envelope families and current implementation vectors",
+      "labels": [
+        "done/envelope/v1",
+        "done/envelope/v2",
+        "done/env/v${h.v}",
+        "done/env-sig/v${h.v}",
+        "done/env-body/v1",
+        "done/envelope-wire/v${e.v}",
+        "done/envelope-wire/v${version}"
+      ],
+      "note": ""
+    },
+    {
+      "id": "submission",
+      "kind": "Ed25519 and binary framing",
+      "authority": "device signing key certified at active root-pinned epoch; parent must be an owned issued closure",
+      "home": "docs/account-decisions.md",
+      "next": "C: wire/submission signing vectors and independent negative corpus",
+      "labels": ["done/envelope-submission/v1", "done/envelope-submission-wire/v1"],
+      "note": ""
+    },
+    {
+      "id": "acceptance",
+      "kind": "Ed25519, hash chain and response carrier",
+      "authority": "K_accept certified by epoch K_auth; client replays links and service verifies issued closure history",
+      "home": "docs/account-decisions.md",
+      "next": "C: response/head/refusal vectors, field isolation and trust-root map",
+      "labels": [
+        "done/accept/v1",
+        "done/accept-head/v1",
+        "done/position-refuse/v1",
+        "done/position-response/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "transport-read",
+      "kind": "Ed25519 over ordered JSON arrays",
+      "authority": "requests use certified reader signing key; pages use epoch-certified K_accept; decoding is not authorization",
+      "home": "docs/account-receive-transport.md",
+      "next": "C: separate v1/v2 request and page formats; exact canonical-byte policy",
+      "labels": [
+        "done/private-read/v1",
+        "done/private-read/v2",
+        "done/private-read-page/v1",
+        "done/private-read-page/v2"
+      ],
+      "note": ""
+    },
+    {
+      "id": "submit-carrier",
+      "kind": "unsigned JSON transport carrier",
+      "authority": "enclosed submission signature and service membership checks, not this frame label",
+      "home": "docs/account-transport.md",
+      "next": "C: document carrier versus signature and cover size/canonical decoding",
+      "labels": ["done/private-submit/v1"],
+      "note": ""
+    },
+    {
+      "id": "service-ledger",
+      "kind": "Ed25519 completeness witness and hash chain",
+      "authority": "K_accept under pinned epoch; witness authenticates local census and never substitutes for an acceptance head",
+      "home": "docs/account-service-delivery.md",
+      "next": "C: witness/chain vectors and tamper/omission cases",
+      "labels": ["done/service-delivery-witness/v1", "done/service-delivery-chain/v1"],
+      "note": ""
+    },
+    {
+      "id": "local-account-ledger",
+      "kind": "JSON carriers and completeness hash",
+      "authority": "outer encrypted records use K_store; counter-v2 HMAC under K_meta commits complete ordered census",
+      "home": "docs/account-spool.md",
+      "next": "D: capsule/spool/delivery/inbound formats and counter-witness coupling",
+      "labels": [
+        "done/source-capture/v1",
+        "done/account-spool/v1",
+        "done/account-spool-chain/v1\u0000",
+        "done/account-delivery/v1",
+        "done/account-inbound/v1"
+      ],
+      "note": "Spool chain domain ends in a literal NUL and uses binary u32be length, not LP. Carrier labels do not themselves authenticate records."
+    },
+    {
+      "id": "shared-store",
+      "kind": "HKDF, AES-GCM, HMAC and naming hash",
+      "authority": "factor-opened K_g derives store and metadata subkeys; store name is routing only",
+      "home": "docs/storage-conformance.md",
+      "next": "D: bridge Account counter-v2/current storage to existing Local contracts without requalifying all Local work",
+      "labels": [
+        "done/store/v1",
+        "done/store-name/v1",
+        "done/content-metadata/v1",
+        "done/content-witness/v1",
+        "done/content-counter/v1",
+        "done/content-counter/v2",
+        "done/journal/v1",
+        "done/jrnl/v1"
+      ],
+      "note": ""
+    },
+    {
+      "id": "shared-custody",
+      "kind": "HKDF, AES-GCM, HMAC and key correspondence check",
+      "authority": "mandatory saved device-lock factor opens custody root; credential-role/id/public-key bound; no extractability-to-disk-security inference",
+      "home": "docs/custody.md",
+      "next": "D: review actual runtime v2 credential/key checks and inherited custody entries",
+      "labels": [
+        "done/devicelock/v1",
+        "done/keyenv/v1",
+        "done/custody-credential/v2",
+        "done/custody-key-check/v2",
+        "done/custody-metadata/v2"
+      ],
+      "note": ""
+    },
+    {
+      "id": "local-provenance",
+      "kind": "MAC/KDF/fingerprint and progress carriers",
+      "authority": "factor-opened Local custody/provenance roots; hashes alone are not cleanup permission",
+      "home": "docs/legacy-cleanup-preparation.md",
+      "next": "bridge: preserve inherited Local/migration contracts; keep explicitly outside Account vector closure",
+      "labels": [
+        "done/local-genesis-metadata/v1",
+        "done/local-genesis-progress/v1",
+        "done/local-import-selection/v1",
+        "done/local-import-cleanup",
+        "done/local-clear-authentication/v1",
+        "done/local-clear-progress/v1",
+        "done/local-import-clear/v1",
+        "done/legacy-source-observation/v1",
+        "done/legacy-import-progress/v1",
+        "done/legacy-import-metadata/v1",
+        "done/legacy-cleanup-entry",
+        "done/legacy-cleanup-fingerprint/v${version}"
+      ],
+      "note": ""
+    },
+    {
+      "id": "coordination-names",
+      "kind": "non-cryptographic channel/lock names",
+      "authority": "no cryptographic authority; data still passes authenticated storage/admission owners",
+      "home": "docs/account-crypto-prep.md",
+      "next": "retain as explicit non-crypto exclusions, not authority-map constructions",
+      "labels": [
+        "done/slot-writer/${JSON.stringify(slotId)}",
+        "done/accepted-workspace/v1/",
+        "done/accepted-text/v1/"
+      ],
+      "note": ""
+    },
+    {
+      "id": "enrollment-preparation",
+      "kind": "Ed25519 signatures and purpose-bound WebAuthn challenge hash",
+      "authority": "pinned service root, confirmed account passkey and exact candidate signer are independent; preparation grants no membership or content",
+      "home": "docs/account-crypto/enrollment-preparation.md",
+      "next": "Publish the enrollment authority-map/vector extension before release qualification; private preparation only.",
+      "labels": [
+        "done/enrollment-preparation-assertion/v1",
+        "done/enrollment-preparation-challenge/v1",
+        "done/enrollment-preparation-possession/v1",
+        "done/enrollment-preparation-receipt/v1"
+      ],
+      "note": "Focused backend tests are separate from the paused aggregate campaign."
+    },
+    {
+      "id": "admission-successor",
+      "kind": "Ed25519 admission-only successor and authenticated discovery",
+      "authority": "pinned service root serializes admission; original certified client approval remains recipient authority",
+      "home": "docs/account-crypto/admission-successor.md",
+      "next": "Integrate durable admission and client adoption; qualify the authority-map extension before release.",
+      "labels": [
+        "done/admission-successor/v1",
+        "done/authority-discovery-request/v1",
+        "done/authority-discovery-response/v1"
+      ],
+      "note": "Pure protocol; no live consumption, content grant or delivery-prefix assertion."
+    },
+    {
+      "id": "enrollment-ceremony",
+      "kind": "SHA-256 commitments/context/pair identity, HKDF-SHA256 SAS, HPKE info and Ed25519 exchange",
+      "authority": "Pure selected bytes only; existing certified approver, committed exchange chronology and durable human decision remain later owner obligations",
+      "home": "docs/account-crypto/enrollment-ceremony.md",
+      "next": "Durable single-attempt/one-comparison ownership, private relay and two-device integration, followed by construction qualification",
+      "labels": [
+        "done/enroll-commit/v1",
+        "done/enroll/v1",
+        "done/enroll-sas/v1",
+        "done/enroll-wrap/v1",
+        "done/enrollment-ceremony-context/v1",
+        "done/enrollment-ceremony-commitment/v1",
+        "done/enrollment-ceremony-reveal/v1"
+      ],
+      "note": "Row-11 vectors unchanged. Signed exchange and ordering model implemented; model saves do not establish native persistence or human approval."
+    }
+  ],
+  "templates": [
+    {
+      "pattern": "done/account/${operation}/v1",
+      "values": [
+        "done/account/register/v1",
+        "done/account/confirm-registration/v1",
+        "done/account/authenticate/v1"
+      ],
+      "source": "account-service/protocol.ts: Operation union and challenge"
+    },
+    {
+      "pattern": "done/legacy-cleanup-fingerprint/v${version}",
+      "values": ["done/legacy-cleanup-fingerprint/v1", "done/legacy-cleanup-fingerprint/v2"],
+      "source": "src/crdt/legacyCleanupRecord.ts: CleanupVersion"
+    },
+    {
+      "pattern": "done/env/v${h.v}",
+      "values": ["done/env/v1", "done/env/v2"],
+      "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
+    },
+    {
+      "pattern": "done/env-sig/v${h.v}",
+      "values": ["done/env-sig/v1", "done/env-sig/v2"],
+      "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
+    },
+    {
+      "pattern": "done/envelope-wire/v${e.v}",
+      "values": ["done/envelope-wire/v1", "done/envelope-wire/v2"],
+      "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
+    },
+    {
+      "pattern": "done/envelope-wire/v${version}",
+      "values": ["done/envelope-wire/v1", "done/envelope-wire/v2"],
+      "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
+    },
+    {
+      "pattern": "done/slot-writer/${JSON.stringify(slotId)}",
+      "values": ["non-crypto: arbitrary validated slot name encoded as JSON"],
+      "source": "src/crdt/writeSession.ts: slotLockName; no finite crypto-domain expansion"
+    }
+  ],
+  "unlabelled": [
+    {
+      "path": "src/account/generationWrap.ts",
+      "review": "RFC9180 standard HPKE-v1/KEM/HPKE labels, suite 32/1/2; one message, sequence zero, empty AAD; inspect directly rather than counting done/ labels"
+    },
+    {
+      "path": "account-service/webauthn.ts",
+      "review": "COSE/SPKI correspondence and WebAuthn assertion/registration through the verifier dependency; standard signed authData/clientDataJSON hash has no done/ prefix"
+    },
+    {
+      "path": "account-service/protocol.ts",
+      "review": "sorted-key canonical JSON proof hashes and raw decoded retry-key hashes; neither uses the ordered parser JSON signature format"
+    },
+    {
+      "path": "account-protocol/admission.ts",
+      "review": "unlabelled request/completion/ciphertext SHA256 commitments consumed under signed contexts"
+    },
+    {
+      "path": "src/crdt/custodyCrypto.ts",
+      "review": "raw custody-root AES opener and credential key correspondence primitives; inherited Local bridge, not new Account trust"
+    },
+    {
+      "path": "wasm/journal-seal",
+      "review": "outside TS scan; inherited Local journal crypto remains under storage conformance, not qualified by this prep census"
+    },
+    {
+      "path": "src/crdt/verifiedRecords.ts",
+      "review": "Owner-local complete-record verification reuse; exact headers/bytes and private load identity, detached results and disposal invalidation. No standalone verification or commit authority. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "src/crdt/verificationMemo.ts",
+      "review": "Owner-local unlabelled verification-result memo; exact inputs/context, current lifetime and revision checks. Callers still authenticate completeness and replay semantic/commit checks. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "account-service/deliveryVerification.ts",
+      "review": "Core-local bounded verification-result reuse; authority and scope are supplied only after fresh service authentication, exact row bytes and predecessor remain bound. Eviction falls back to verification; Q-03 request-size inefficiency remains open. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "src/crdt/localRecovery.ts",
+      "review": "Explicit read-only partial Local salvage through factor-authenticated claim/custody and inherited record/journal openers. No allocation, seal, content write, admission or cleanup authority. Reviewed in docs/review/implementation/validation-controls.md."
+    },
+    {
+      "path": "account-service/enrollment.ts",
+      "review": "Bounded retry/request/proof hashes and authority snapshot comparison. Equality checks grant no authority; two verified proofs and a current transactional snapshot precede preparation."
+    },
+    {
+      "path": "account-protocol/successor.ts",
+      "review": "Ordered full-request and carried-certification hashes are commitments under independently verified signed contexts. Pure continuity does not establish live consumption or ledger coverage."
+    },
+    {
+      "path": "account-service/successor.ts",
+      "review": "Atomic preparation consumption and delivery-boundary ownership. Full row/authority/delivery comparison and current eligibility precede commit; signed historical artifacts alone cannot consume an operation."
+    },
+    {
+      "path": "account-protocol/admissionHistory.ts",
+      "review": "Read-only verified admission history: exact first/current authority, compatible creator routes, historical proof issuance bounds and incremental signed-envelope prefix comparison. No durable head installation or content-coverage authority."
+    },
+    {
+      "path": "account-protocol/ceremonyExchange.ts",
+      "review": "Complete signed-commitment JSON hashes bind each reveal to both exact messages. Private context/pair brands carry checked source authority, not persistence, current service eligibility or approval grants."
+    }
+  ]
+}

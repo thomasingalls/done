@@ -14,9 +14,9 @@
     "stored_record": "{ v, gen, seq, kind, nonce[12], ct } as a structured clone; ct carries the 16-byte tag",
     "key_envelope": "{ v, gen, nonce[12], ct } as a structured clone; ct carries the 16-byte tag",
     "nonce": "12 bytes from crypto.getRandomValues() per record, under a 2^32-per-(store, generation) budget counted by the SeqCounter's reserved[gen] -- reserved before encryption, so an abandoned invocation is counted; never read from seq (P-3, S0-3)",
-    "store_id": "minted from local randomness at store creation beside the SeqCounter it names; one key per counter, so the nonce budget binds the key it protects for every device count",
+    "store_id": "minted from local randomness at store creation beside its SeqCounter; accounting assumes an unrewound, unbranched key/counter history (SC-09). Writable import mints a fresh store/key scope; raw profile clones duplicate the counter and are outside that guarantee",
     "nonce_caveat": "Nonces are fixed inputs in these vectors so the composition is testable. Production generates them randomly; the fixed nonce is not the discipline.",
-    "l_local_caveat": "L_local is raw bytes here because a vector needs bytes. In production it is a structured-cloned non-extractable CryptoKey with no extractable representation (§13.3)."
+    "l_local_caveat": "L_local is raw fixture bytes for the legacy envelope. Current custody uses factor-sealed L_lock; these bytes test the unchanged envelope construction, not profile confidentiality or lifecycle metadata (SC-08)."
   },
   "vectors": [
     {
@@ -53,7 +53,7 @@
     },
     {
       "name": "state-record",
-      "why": "Same store, same generation, kind=state. Proves kind is bound: a state record supersedes every record before it, so a record whose kind can be edited can delete the store.",
+      "why": "Same store, same generation, kind=state. Proves kind is bound: a state record may replace only authenticated records its payload covers; editing kind must not turn an update into a trim candidate.",
       "inputs": {
         "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
         "principal_id": "pr_01HZXQ7M4K9P2R6T8V0Y3B5N7D",

@@ -1,0 +1,5 @@
+{
+  "mode": "overlap",
+  "calls": 2,
+  "outcome": "Two owner passes invoked concurrently."
+}

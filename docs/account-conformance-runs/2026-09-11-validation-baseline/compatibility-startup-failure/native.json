@@ -1,0 +1,290 @@
+{
+  "config": {
+    "argv": [
+      "/opt/homebrew/Cellar/node/26.8.2/bin/node",
+      "/private/tmp/done-validation-500630f/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.storage-compatibility.config.ts"
+    ],
+    "configFile": "/private/tmp/done-validation-500630f/playwright.storage-compatibility.config.ts",
+    "rootDir": "/private/tmp/done-validation-500630f/test/storage-compatibility",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-validation-500630f/test-results/storage-compatibility/artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/private/tmp/done-validation-500630f/test/storage-compatibility",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 35000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/storage-compatibility/native.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "node node_modules/vite/bin/vite.js --host 127.0.0.1 --port 4198 --strictPort",
+      "url": "http://127.0.0.1:4198/test/storage-compatibility/",
+      "reuseExistingServer": false
+    }
+  },
+  "suites": [
+    {
+      "title": "compatibility.spec.ts",
+      "file": "compatibility.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "two live writers block an upgrade; a queued opener rechecks before loading keys",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 193,
+                  "error": {
+                    "message": "Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'seed')\n    at eval (eval at evaluate (:311:30), <anonymous>:4:20)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                    "stack": "Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'seed')\n    at eval (eval at evaluate (:311:30), <anonymous>:4:20)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:311:30), <anonymous>:4:20)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at call (/private/tmp/done-validation-500630f/test/storage-compatibility/compatibility.spec.ts:4:8)\n    at seed (/private/tmp/done-validation-500630f/test/storage-compatibility/compatibility.spec.ts:22:25)\n    at /private/tmp/done-validation-500630f/test/storage-compatibility/compatibility.spec.ts:34:20",
+                    "location": {
+                      "file": "eval at evaluate (:311:30), <anonymous>",
+                      "column": 20,
+                      "line": 4
+                    }
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "eval at evaluate (:311:30), <anonymous>",
+                        "column": 20,
+                        "line": 4
+                      },
+                      "message": "Error: page.evaluate: TypeError: Cannot read properties of undefined (reading 'seed')\n    at eval (eval at evaluate (:311:30), <anonymous>:4:20)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:311:30), <anonymous>:4:20)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at call (/private/tmp/done-validation-500630f/test/storage-compatibility/compatibility.spec.ts:4:8)\n    at seed (/private/tmp/done-validation-500630f/test/storage-compatibility/compatibility.spec.ts:22:25)\n    at /private/tmp/done-validation-500630f/test/storage-compatibility/compatibility.spec.ts:34:20"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T07:27:52.394Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/private/tmp/done-validation-500630f/test-results/storage-compatibility/artifacts/compatibility-two-live-wri-28bca-echecks-before-loading-keys/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "eval at evaluate (:311:30), <anonymous>",
+                    "column": 20,
+                    "line": 4
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "b0b409d468a60194358f-e1d2e4751b5f03937336",
+          "file": "compatibility.spec.ts",
+          "line": 30,
+          "column": 1
+        },
+        {
+          "title": "renderer death after intent commits leaves cold open and exclusive cleanup blocked",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1168,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T07:27:53.032Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b0b409d468a60194358f-732c01a304bdef88cff9",
+          "file": "compatibility.spec.ts",
+          "line": 85,
+          "column": 1
+        },
+        {
+          "title": "a cancelled blocked IndexedDB probe retains its permit until native settlement",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 350,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T07:27:54.395Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b0b409d468a60194358f-ace92de5942aef9b7ea7",
+          "file": "compatibility.spec.ts",
+          "line": 119,
+          "column": 1
+        },
+        {
+          "title": "a future document schema held only in the journal refuses without rewriting carriers",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1248,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T07:27:54.751Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b0b409d468a60194358f-e1d578baffb908bdde2f",
+          "file": "compatibility.spec.ts",
+          "line": 147,
+          "column": 1
+        },
+        {
+          "title": "unrelated slots remain usable and omitting the marker check actually admits an incompatible writer",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 35000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 421,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-09-11T07:27:56.006Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b0b409d468a60194358f-17c0709a709784a53090",
+          "file": "compatibility.spec.ts",
+          "line": 167,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-11T07:27:51.739Z",
+    "duration": 4749.847,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

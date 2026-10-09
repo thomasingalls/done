@@ -1,0 +1,176 @@
+Starting campaign-v2-0-300-retain 2026-09-15T09:27:23.599Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-0-300-retain early 47.30000019073486 51
+campaign-v2-0-300-retain growth 188
+campaign-v2-0-300-retain growth 288
+campaign-v2-0-300-retain growth 388
+campaign-v2-0-300-retain growth 488
+campaign-v2-0-300-retain growth 588
+campaign-v2-0-300-retain growth 688
+campaign-v2-0-300-retain growth 788
+campaign-v2-0-300-retain growth 888
+campaign-v2-0-300-retain growth 988
+campaign-v2-0-300-retain deep 48.5 51.39999961853027 undo 1010 → 1090
+Finished campaign-v2-0-300-retain passed
+Starting campaign-v2-0-300-clear 2026-09-15T09:28:13.598Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-0-300-clear early 48.09999942779541 51.19999980926514
+campaign-v2-0-300-clear growth 188
+campaign-v2-0-300-clear growth 288
+campaign-v2-0-300-clear growth 388
+campaign-v2-0-300-clear growth 488
+campaign-v2-0-300-clear growth 588
+campaign-v2-0-300-clear growth 688
+campaign-v2-0-300-clear growth 788
+campaign-v2-0-300-clear growth 888
+campaign-v2-0-300-clear growth 988
+campaign-v2-0-300-clear deep 53.5 69.59999942779541 undo 8 → 88
+Finished campaign-v2-0-300-clear passed
+Starting campaign-v2-0-600-clear 2026-09-15T09:29:03.049Z
+Seeding the Local latency corpus through the editor
+Seeded 5/40 days
+Seeded 10/40 days
+Seeded 15/40 days
+Seeded 20/40 days
+Seeded 25/40 days
+Seeded 30/40 days
+Seeded 35/40 days
+Seeded 40/40 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-0-600-clear early 73.69999980926514 79.30000019073486
+campaign-v2-0-600-clear growth 188
+campaign-v2-0-600-clear growth 288
+campaign-v2-0-600-clear growth 388
+campaign-v2-0-600-clear growth 488
+campaign-v2-0-600-clear growth 588
+campaign-v2-0-600-clear growth 688
+campaign-v2-0-600-clear growth 788
+campaign-v2-0-600-clear growth 888
+campaign-v2-0-600-clear growth 988
+campaign-v2-0-600-clear deep 72.70000076293945 78.89999961853027 undo 8 → 88
+Finished campaign-v2-0-600-clear passed
+Starting campaign-v2-0-600-retain 2026-09-15T09:30:21.850Z
+Seeding the Local latency corpus through the editor
+Seeded 5/40 days
+Seeded 10/40 days
+Seeded 15/40 days
+Seeded 20/40 days
+Seeded 25/40 days
+Seeded 30/40 days
+Seeded 35/40 days
+Seeded 40/40 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-0-600-retain early 75.90000057220459 82.20000076293945
+campaign-v2-0-600-retain growth 188
+campaign-v2-0-600-retain growth 288
+campaign-v2-0-600-retain growth 388
+campaign-v2-0-600-retain growth 488
+campaign-v2-0-600-retain growth 588
+campaign-v2-0-600-retain growth 688
+campaign-v2-0-600-retain growth 788
+campaign-v2-0-600-retain growth 888
+campaign-v2-0-600-retain growth 988
+campaign-v2-0-600-retain deep 77.79999923706055 83.10000038146973 undo 1010 → 1090
+Finished campaign-v2-0-600-retain passed
+Starting campaign-v2-1-600-retain 2026-09-15T09:31:40.763Z
+Seeding the Local latency corpus through the editor
+Seeded 5/40 days
+Seeded 10/40 days
+Seeded 15/40 days
+Seeded 20/40 days
+Seeded 25/40 days
+Seeded 30/40 days
+Seeded 35/40 days
+Seeded 40/40 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-1-600-retain early 76.40000057220459 83.60000038146973
+campaign-v2-1-600-retain growth 188
+campaign-v2-1-600-retain growth 288
+campaign-v2-1-600-retain growth 388
+campaign-v2-1-600-retain growth 488
+campaign-v2-1-600-retain growth 588
+campaign-v2-1-600-retain growth 688
+campaign-v2-1-600-retain growth 788
+campaign-v2-1-600-retain growth 888
+campaign-v2-1-600-retain growth 988
+campaign-v2-1-600-retain deep 80.19999980926514 88.10000038146973 undo 1010 → 1090
+Finished campaign-v2-1-600-retain passed
+Starting campaign-v2-1-600-clear 2026-09-15T09:33:00.172Z
+Seeding the Local latency corpus through the editor
+Seeded 5/40 days
+Seeded 10/40 days
+Seeded 15/40 days
+Seeded 20/40 days
+Seeded 25/40 days
+Seeded 30/40 days
+Seeded 35/40 days
+Seeded 40/40 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-1-600-clear early 76.19999980926514 82.40000057220459
+campaign-v2-1-600-clear growth 188
+campaign-v2-1-600-clear growth 288
+campaign-v2-1-600-clear growth 388
+campaign-v2-1-600-clear growth 488
+campaign-v2-1-600-clear growth 588
+campaign-v2-1-600-clear growth 688
+campaign-v2-1-600-clear growth 788
+campaign-v2-1-600-clear growth 888
+campaign-v2-1-600-clear growth 988
+campaign-v2-1-600-clear deep 77.39999961853027 85.10000038146973 undo 8 → 88
+Finished campaign-v2-1-600-clear passed
+Starting campaign-v2-1-300-clear 2026-09-15T09:34:18.925Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-1-300-clear early 50.60000038146973 57.30000019073486
+campaign-v2-1-300-clear growth 188
+campaign-v2-1-300-clear growth 288
+campaign-v2-1-300-clear growth 388
+campaign-v2-1-300-clear growth 488
+campaign-v2-1-300-clear growth 588
+campaign-v2-1-300-clear growth 688
+campaign-v2-1-300-clear growth 788
+campaign-v2-1-300-clear growth 888
+campaign-v2-1-300-clear growth 988
+campaign-v2-1-300-clear deep 50.10000038146973 63 undo 8 → 88
+Finished campaign-v2-1-300-clear passed
+Starting campaign-v2-1-300-retain 2026-09-15T09:35:09.085Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+campaign-v2-1-300-retain early 48.59999942779541 55.40000057220459
+campaign-v2-1-300-retain growth 188
+campaign-v2-1-300-retain growth 288
+campaign-v2-1-300-retain growth 388
+campaign-v2-1-300-retain growth 488
+campaign-v2-1-300-retain growth 588
+campaign-v2-1-300-retain growth 688
+campaign-v2-1-300-retain growth 788
+campaign-v2-1-300-retain growth 888
+campaign-v2-1-300-retain growth 988
+campaign-v2-1-300-retain deep 50.69999980926514 55.39999961853027 undo 1010 → 1090
+Finished campaign-v2-1-300-retain passed

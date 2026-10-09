@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "sources": 8,
+  "positions": 1,
+  "attempts": 2,
+  "observedInvocations": 2,
+  "coldReopen": true
+}

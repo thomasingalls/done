@@ -1,0 +1,106 @@
+{
+  "base": "85a58bd4ef247612cfbfe66215ec084ca4ace2a3",
+  "cwd": "/private/tmp/done-f17-buffers-r1/candidate",
+  "controls": [
+    {
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/workspacePreparation.test.ts",
+        "test/historyRetirement.test.ts",
+        "test/textBufferBasis.test.ts",
+        "test/textBufferNormalizationProbe.test.ts",
+        "test/workspaceAdmission.test.ts",
+        "test/membershipEligibility.test.ts",
+        "test/membership.test.ts",
+        "test/membership.property.test.ts",
+        "test/selectionHistory.test.ts",
+        "test/selectionSnapshots.test.ts",
+        "test/sourceCapture.test.ts",
+        "test/pendingProjection.test.ts",
+        "test/projectionEquality.test.ts",
+        "test/admittedText.test.ts"
+      ],
+      "exit": 0,
+      "log": "affected-tests.log",
+      "files": 14,
+      "tests": 213
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/admittedEditorProjection.test.ts"
+      ],
+      "exit": 0,
+      "log": "editor-tests.log",
+      "files": 1,
+      "tests": 11
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "test/historyRetirement.test.ts",
+        "test/workspacePreparation.test.ts",
+        "test/workspaceAdmission.test.ts"
+      ],
+      "exit": 0,
+      "log": "retention-repair-tests.log",
+      "files": 3,
+      "tests": 121,
+      "note": "Repeat after removing the strong adoption reference; not additional unique tests."
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "exit": 0,
+      "log": "typecheck-retention-final.log",
+      "note": "Successful compiler emits no output; tool returned exit zero."
+    }
+  ],
+  "faults": "fault-controls.json binds three final exact mutations, source/test hashes, commands and catching assertions.",
+  "finalMeasurement": [
+    [
+      "node",
+      "build.mjs",
+      "candidate"
+    ],
+    [
+      "python3",
+      "freeze-final.py"
+    ],
+    [
+      "node",
+      "batch-final.mjs",
+      "comparison"
+    ],
+    [
+      "node",
+      "batch-final.mjs",
+      "unicode"
+    ],
+    [
+      "node",
+      "analyze-final.mjs"
+    ]
+  ],
+  "beforeRepair": "before-retention-repair retains the original four sessions, source/freeze/build/control inputs; all pass but are separate from the final candidate.",
+  "measurementPermission": "Disposable loopback and Chromium fixtures only; no personal instance or profile.",
+  "uniqueTests": 224,
+  "uniqueFiles": 15,
+  "newTests": 14,
+  "newGeneratedHistories": 60,
+  "generatedSeed": 171510,
+  "finalSessions": 6,
+  "finalMeasuredKeys": 480,
+  "beforeRepairSessions": 4,
+  "beforeRepairMeasuredKeys": 320
+}

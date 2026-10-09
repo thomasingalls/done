@@ -1,0 +1,26 @@
+[
+  {
+    "path": "owner-final.log.gz",
+    "rawSha256": "4bde53d1dd5936fbbd3fbfa41b1c4bd87273780992dba3c045b7e4df0619d389",
+    "normalizedSha256": "d4fc4322e8c9249f6173352348a1a19b0854a6d964b09c3496bee81bea89d517",
+    "compressedSha256": "ea60304ce2b36abc83bb6796e60017a73fd13f6548ef0963629aa50cbadbe7a5",
+    "tests": 31,
+    "scope": "Intermediate passing run before final implementation; full final 50-case output retained in ownership-qualified.log.gz."
+  },
+  {
+    "path": "owner-first.log.gz",
+    "rawSha256": "4e3bd6b67b23170a9e0845a6034710f3e08e8f2056c187a2d03767afdb26a5f3",
+    "normalizedSha256": "54cb78a0975b8a7dee4fe6aee6f876dea724bf0cd19209ebaa61a7ff8b29a7cd",
+    "compressedSha256": "021c7b485e97ce2d59963f5d7e0647c7b83e45511640b8ace59be44dd35df41c",
+    "tests": 30,
+    "scope": "Intermediate passing run before final implementation; full final 50-case output retained in ownership-qualified.log.gz."
+  },
+  {
+    "path": "owner.log.gz",
+    "rawSha256": "b8c20ba36aeb70ac3b5c36f02cfa5d07b831aaa79b68efdd1ef9b97e2fc686c0",
+    "normalizedSha256": "e73b65e1870b14a58f96db8da770d115c379c288a9f7494f99fc58f56fca9403",
+    "compressedSha256": "736630e0e0f7e67b66c26ac4bcbcaa816dcab751f755d109b97095a9109869e0",
+    "tests": 49,
+    "scope": "Intermediate passing run before final implementation; full final 50-case output retained in ownership-qualified.log.gz."
+  }
+]

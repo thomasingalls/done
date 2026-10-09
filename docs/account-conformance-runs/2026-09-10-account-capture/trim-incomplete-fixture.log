@@ -1,0 +1,395 @@
+9:53:08 PM [vite] (client) Pre-transform error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+9:53:08 PM [vite] (client) Pre-transform error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+9:53:08 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+9:53:08 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+9:53:08 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:53:08 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+9:53:08 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+trim T01.union: error — page.waitForFunction: Timeout 15000ms exceeded.
+9:53:23 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:53:23 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+9:53:23 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+trim T02.late: error — page.waitForFunction: Timeout 15000ms exceeded.
+9:53:38 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:53:38 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+9:53:38 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+trim T03.concurrent: error — page.waitForFunction: Timeout 15000ms exceeded.
+9:53:54 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:53:54 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+9:53:54 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+trim T04.dependencies: error — page.waitForFunction: Timeout 15000ms exceeded.
+9:54:09 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:54:09 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+9:54:09 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+trim T05.unreadable: error — page.waitForFunction: Timeout 15000ms exceeded.
+9:54:24 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:54:24 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+9:54:24 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+trim T06.changed: error — page.waitForFunction: Timeout 15000ms exceeded.
+9:54:40 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:54:40 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+9:54:40 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+trim T07.recheck: error — page.waitForFunction: Timeout 15000ms exceeded.
+9:54:55 PM [vite] Internal server error: Failed to resolve import "./legacyImportState" from "test-results/account-capture/regressions/content-trim-retry/trim/custody.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/custody.ts:7:40
+  5  |  */
+  6  |  import { assertNoLocalClear } from "./localClearState";
+  7  |  import { assertNoPreactiveImport } from "./legacyImportState";
+     |                                           ^
+  8  |  import { validateContentUpdates } from "./contentCompaction";
+  9  |  import { deriveStoreName } from "./storeName";
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+      at async viteTransformMiddleware (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:24604:20)
+9:54:55 PM [vite] Internal server error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});
+      at TransformPluginContext._formatLog (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30416:39)
+      at TransformPluginContext.error (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30413:14)
+      at normalizeUrl (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27438:18)
+      at async file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27506:30
+      at async Promise.all (index 1)
+      at async TransformPluginContext.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:27474:4)
+      at async EnvironmentPluginContainer.transform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:14)
+      at async loadAndTransform (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26)
+9:54:55 PM [vite] (client) Pre-transform error: Failed to resolve import "./promotionRecord" from "test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-capture/regressions/content-trim-retry/trim/writeSession.ts:318:75
+  217 |  export const withPromotionSlot = async (slotId, code, operation, signal) => {
+  218 |  	const session = await acquire(slotId, "exclusive", signal ? { signal } : {}, async (task, slot) => {
+  219 |  		const { checkPromotionCompatibility } = await task.wait(() => import("./promotionRecord"));
+      |                                                                         ^
+  220 |  		await checkPromotionCompatibility(task, slot, code);
+  221 |  	});

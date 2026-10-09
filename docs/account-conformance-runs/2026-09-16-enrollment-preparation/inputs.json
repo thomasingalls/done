@@ -1,0 +1,107 @@
+{
+  "baseCommit": "d942cd1c445447be06ca75049ebc53e71a9e59b3",
+  "scope": "Final private enrollment phase sources; regression timing is qualified in README. No release identity claim.",
+  "node": "v26.8.2",
+  "seeds": {
+    "histories": 160902,
+    "keySubstitutions": 160901
+  },
+  "sources": [
+    {
+      "path": "account-protocol/diagnostics.ts",
+      "sha256": "bd16e39c08b32ca4d21d2bfc7d75a93903c23451c810aa7a479059533badd2b8"
+    },
+    {
+      "path": "account-protocol/enrollment.ts",
+      "sha256": "542f20036703a1ae64c3f19e77d0fe724d630b7104913102a4f59c878c24b033"
+    },
+    {
+      "path": "account-service/authority.ts",
+      "sha256": "acc7a444c48e0102983bc88feb5fa8f13a4679242d66d28288606d8f8c4aa3d8"
+    },
+    {
+      "path": "account-service/core.ts",
+      "sha256": "454be1ab1c673ac0b86cfe2c8036ef840c46ad2d387c99168ce9c8f519839818"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "31ffcf62abe9e4029dadd63a2cbfc2ba70cfe5a78138e034b67f5056b8a8e51c"
+    },
+    {
+      "path": "account-service/enrollment.ts",
+      "sha256": "b988408349be7922538be63a7b06e40b12cac60e1f8e2f688ff80d291b84660f"
+    },
+    {
+      "path": "account-service/private-server.ts",
+      "sha256": "ebfe3890cbfb4c167b10f9a8b7bc16f5161b8d50c396e4c258adad0f048895ef"
+    },
+    {
+      "path": "docs/account-crypto/census.json",
+      "sha256": "4345582fe71b4405f0ac0465c81cd6fdbe4b5a127b284ff003ca1174325949f2"
+    },
+    {
+      "path": "docs/account-crypto/constructions.json",
+      "sha256": "62d80850fb71b5c643478d7846e9906cf8a718d3220bbd570680a011943f0e0f"
+    },
+    {
+      "path": "docs/account-crypto/enrollment-preparation.md",
+      "sha256": "23205c581aacf07dcc72877cf0fc4c58544ad9e7151fe289914c3abf389712ad"
+    },
+    {
+      "path": "docs/account-crypto/registry.json",
+      "sha256": "38da69518769166a4328cb9121d84dcd30b8a69c58da45338c43f1aee25973db"
+    },
+    {
+      "path": "docs/account-enrollment-prep.md",
+      "sha256": "ba5355c8da5cd279adf2f25860b8d3b7ecddcc6129bd44b85a0d9fc667f0bf39"
+    },
+    {
+      "path": "package.json",
+      "sha256": "73726d634c1a06639d20fae5bc682fe1c03092a7773c6c86e52875c65e46d640"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "d1a235a6fa7e533e526d2eb6a79b2c60c26b7193235330578c6b9c12ecee334d"
+    },
+    {
+      "path": "scripts/account-first-authority/registry.mjs",
+      "sha256": "4ea74bd772fb5bccf2b8242ceca2c6dc828fb12fef922ccb38c6fb767a334e0c"
+    },
+    {
+      "path": "test/account-enrollment/controls.test.mjs",
+      "sha256": "f9bc4ca2c4cfe5d52606e6a5a702ec57122cd7b9adcd9e255f3e457c63c26589"
+    },
+    {
+      "path": "test/account-enrollment/core.test.mjs",
+      "sha256": "081f547947b6512c66227b416210ec84b522d180b7729767e5c56571700b2f82"
+    },
+    {
+      "path": "test/account-enrollment/fixtures.mjs",
+      "sha256": "4d974c7e0c93fbc36bf854107347dbb5b7d821e2ac38acebddbbcfe38db1f557"
+    },
+    {
+      "path": "test/account-enrollment/generated.test.mjs",
+      "sha256": "cca0638242329e02957ff53adf95c7accea8573b4b3c36a7f3fc88a0cf208404"
+    },
+    {
+      "path": "test/account-enrollment/http.test.mjs",
+      "sha256": "b12b2768e794d61b7fb3ddfa92a967edc0c44eb5c1df33221826ad7bb37ebfd9"
+    },
+    {
+      "path": "test/account-enrollment/protocol.test.mjs",
+      "sha256": "7abf0edd3991247d50828e9483d5610e2bfb54627c1c9e2e55e90f5f4f6592ae"
+    },
+    {
+      "path": "test/account-enrollment/restart.test.mjs",
+      "sha256": "3306296568e4c8aa8a4567fc93021664a19b306154026884731c64478c05182f"
+    },
+    {
+      "path": "test/account-enrollment/worker.mjs",
+      "sha256": "89a14cc8b2216bd374c224b82fd42f719f3b92e20d16611a21d5655ed7b6b51f"
+    },
+    {
+      "path": "test/account-first-authority/registry.test.mjs",
+      "sha256": "42ca5d4c75b2e9f7ff7c33e9150d7464e8afe1824b48343d8041fe232f71a3d4"
+    }
+  ]
+}

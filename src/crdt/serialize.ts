@@ -124,6 +124,13 @@ const parseCollection = (lines: readonly string[]): string[] => {
   });
 };
 
+/** Strict standalone list reader for the explicit Markdown import adapter. */
+export const parseCardList = (source: string): string[] => {
+  const cards = parseCollection(source.split('\n'));
+  if (serializeCardList(cards) !== source) throw Error('Noncanonical card list.');
+  return cards;
+};
+
 /* -------------------------------------------------------------------------- */
 /* Days                                                                        */
 

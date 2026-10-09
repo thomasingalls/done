@@ -1,0 +1,47 @@
+[
+  {
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "-b",
+      "--noEmit"
+    ],
+    "status": 0,
+    "output": ""
+  },
+  {
+    "args": [
+      "node_modules/oxlint/bin/oxlint",
+      "--react-plugin",
+      "account-protocol",
+      "account-service",
+      "src/account/recovery.ts",
+      "src/account/recoveryOwner.ts",
+      "test/account-recovery",
+      "test/account-core",
+      "scripts/account-core",
+      "scripts/account-recovery"
+    ],
+    "status": 0,
+    "output": ""
+  },
+  {
+    "args": [
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "account-protocol",
+      "account-service",
+      "src/account/recovery.ts",
+      "src/account/recoveryOwner.ts",
+      "test/account-recovery",
+      "test/account-core/controls.test.mjs",
+      "test/account-core/core.test.mjs",
+      "scripts/account-core",
+      "scripts/account-recovery",
+      "package.json",
+      "tsconfig.app.json",
+      "tsconfig.node.json"
+    ],
+    "status": 0,
+    "output": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 43ms on 22 files using 10 threads.\n"
+  }
+]

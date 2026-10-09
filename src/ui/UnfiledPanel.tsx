@@ -7,22 +7,13 @@
  * it as a live source collection.
  */
 
-import {
-  NEXT_CAP,
-  cardId,
-  countIn,
-  isFrozen,
-  fileCardTo,
-  fileCardToGoals,
-  removeUnfiledCard,
-  type UnfiledCard,
-  type Store,
-  type Workspace,
-} from '../crdt';
+import { NEXT_CAP } from '../crdt/days';
+import { isFrozen } from '../crdt/freeze';
+import type { WorkspaceSnapshot } from '../crdt/admittedWorkspace';
+import { useWorkspaceUi } from './workspaceUi';
 import type { CardHooks } from '../editor/cardCommands';
 import { formatDayLong, type ISODate } from '../lib/date';
 import { Card, type CardAction } from './Card';
-import { useYValue } from './useYjs';
 
 const unfiledHooks: CardHooks = {
   split: () => false,
@@ -31,59 +22,53 @@ const unfiledHooks: CardHooks = {
 };
 
 export interface UnfiledPanelProps {
-  store: Store;
-  workspace: Workspace;
   today: ISODate;
-  cards: readonly UnfiledCard[];
+  cards: WorkspaceSnapshot['cards'];
   open: boolean;
   onClose: () => void;
 }
 
 export const UnfiledPanel = ({
-  store,
-  workspace,
   today,
   cards,
   open,
   onClose,
 }: UnfiledPanelProps): React.ReactElement => {
-  const nextIsFull = useYValue(
-    store.days,
-    () => `${countIn(store.doc, today, 'next')}`,
-    () => countIn(store.doc, today, 'next') >= NEXT_CAP,
-  );
+  const { snapshot, execute } = useWorkspaceUi();
+  const nextIsFull =
+    (snapshot.days.find((day) => day.date === today)?.next.length ?? 0) >= NEXT_CAP;
 
-  const actionsFor = (entry: UnfiledCard): CardAction[] => {
-    const id = cardId(entry.card);
+  const actionsFor = (entry: WorkspaceSnapshot['cards'][number]): CardAction[] => {
+    const id = entry.id;
     const deletionDisabled = entry.location ? isFrozen(entry.location.date, today) : false;
     return [
       {
         label: 'Scheduled',
         hint: 'File into Scheduled today',
-        run: () => void fileCardTo(workspace, id, { date: today, section: 'scheduled' }),
+        run: () => void execute({ kind: 'file', id, to: { date: today, section: 'scheduled' } }),
       },
       {
         label: 'Next',
         hint: 'File into Next today',
         disabled: nextIsFull,
-        run: () => void fileCardTo(workspace, id, { date: today, section: 'next' }),
+        run: () => void execute({ kind: 'file', id, to: { date: today, section: 'next' } }),
       },
       {
         label: 'Done',
         hint: 'File into Done today',
-        run: () => void fileCardTo(workspace, id, { date: today, section: 'done' }),
+        run: () => void execute({ kind: 'file', id, to: { date: today, section: 'done' } }),
       },
       {
         label: 'Goals',
         hint: 'File into Goals',
         disabled: deletionDisabled,
-        run: () => void fileCardToGoals(workspace, store.master, id),
+        run: () => void execute({ kind: 'file', id, to: 'master' }),
       },
       {
         label: 'Remove',
         hint: 'Remove this unfiled card',
         disabled: deletionDisabled,
-        run: () => void removeUnfiledCard(workspace, id),
+        run: () => void execute({ kind: 'remove', id }),
       },
     ];
   };
@@ -112,7 +97,7 @@ export const UnfiledPanel = ({
 
         <div className="unfiled-list">
           {cards.map((entry) => {
-            const id = cardId(entry.card);
+            const id = entry.id;
             const location = entry.location;
             const provenance = location
               ? `Last seen in ${location.section}, ${formatDayLong(location.date)}`
@@ -121,15 +106,13 @@ export const UnfiledPanel = ({
               <section className="unfiled-item" key={id}>
                 <p className="unfiled-origin">{provenance}</p>
                 <Card
-                  store={store}
-                  card={entry.card}
+                  card={entry}
                   section="scheduled"
                   frozen={false}
                   guarded={false}
                   actions={actionsFor(entry)}
                   hooks={unfiledHooks}
-                  editable={true}
-                  origin={workspace.origin}
+                  editable={false}
                 />
               </section>
             );

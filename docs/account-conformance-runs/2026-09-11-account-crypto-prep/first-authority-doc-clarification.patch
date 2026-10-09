@@ -1,0 +1,28 @@
+--- docs/account-crypto/first-authority.md (at validation)
++++ docs/account-crypto/first-authority.md (final clarification)
+@@ -8,19 +8,21 @@
+ 
+ ## 1. Primitive encodings and nested object order
+ 
+-`LP(s)` is a two-byte **unsigned big-endian byte length**, followed by ASCII bytes of `s`; maximum 65,535
+-bytes per field. Hex means lowercase ASCII, two characters per byte. Digests and Ed25519 public keys are
++`LP(s)` is a two-byte **unsigned big-endian byte length**, followed by printable ASCII bytes of `s`
++(U+0020–U+007E); maximum 65,535 bytes per field. Hex means lowercase ASCII, two characters per byte.
++Digests and Ed25519 public keys are
+ 32 bytes; signatures 64; workspace/principal/device signing IDs 16; service account/attempt IDs are
+ canonical unpadded base64url of 32 bytes. The actual WebAuthn credential ID is a separate base64url
+ namespace (1–1,023 bytes). Fixed protocol integers use decimal ASCII inside LP and JSON numbers inside
+ objects. They are not interchangeable encodings.
+ 
+-`J_T(x)` means: validate the closed object using schema T, reconstruct **all nested objects** in the
++`J_T(x)` means: enforce the protocol's value predicates and closed fields, reconstruct **all nested objects** in the
+ field order in first-authority.json, retain array order, then UTF-8 encode compact JSON with no whitespace
+ or BOM. Strings use JSON escaping; no Unicode normalization or locale collation is applied. Input property
+ order is immaterial; output order is fixed. Current protocol string fields are constrained by their parsers
+ (hex/base64url IDs, exact origin/RP, fixed ASCII tags). This is **not** the service's recursively sorted-key
+-`canonical()` representation, which is used for proof hashes and equality checks elsewhere.
++`canonical()` representation, which is used for proof hashes and equality checks elsewhere. The schema
++file pins field order and nesting; it is not a standalone validator for all value and cross-object predicates.
+ 
+ For the six messages in the schema's `messages` array:
+ 

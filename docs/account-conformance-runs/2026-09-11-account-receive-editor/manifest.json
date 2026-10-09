@@ -1,0 +1,214 @@
+[
+  {
+    "path": "aad-gate.log",
+    "sha256": "bb80cbb132a3b5a27210d8be9cdbd578b145e1a8ecd668916747026148d7c189"
+  },
+  {
+    "path": "build.log",
+    "sha256": "05c83bc678ce4b5f1a95a26aabc6b3aa6c6d6a900add3b09fe670ae9719a9060"
+  },
+  {
+    "path": "composition-before/accountReceive.ts.txt",
+    "sha256": "19c0d0eb71a344a0c91cf327fe8a9ab50785df869dadb42527d79660937a3644"
+  },
+  {
+    "path": "composition-before/generated-editor.json",
+    "sha256": "b9db3a62271001049f9db433dace64f6f2a75bce28b751158bdb294c338b6576"
+  },
+  {
+    "path": "composition-before/native.log",
+    "sha256": "7e5749b4fc532a8419a5074ce9dbb88dafed43b7686de7e25bab8b60df5851c7"
+  },
+  {
+    "path": "composition-before/properties.log",
+    "sha256": "6e3d9834815a0595c506c7869f98a1c60683249da76dd5f363030bbc72e5c671"
+  },
+  {
+    "path": "composition-before/results.xml",
+    "sha256": "1b1f5e7c635b65811ce8a9b3a08e0a5f6912c1bd55c09d989d32abf884f543c9"
+  },
+  {
+    "path": "composition-before/sources.json",
+    "sha256": "6b1066f1a387f9949c5e41bbe9de7cc5c135cbd34d2338856a83e2cc6ef17b53"
+  },
+  {
+    "path": "composition-before/summary.json",
+    "sha256": "9ce935fb5039bfd447e23936030285bb67d16c7a798e3807ece4cd6a643cba64"
+  },
+  {
+    "path": "control-early.json",
+    "sha256": "15e0b1976812be9dc48a8e3b1497226c743b0bf0135a2ad6d5823c845ac10956"
+  },
+  {
+    "path": "control-relabel.json",
+    "sha256": "8b69ba215f52cbdfa2e1bdec495ccef5dda1066b83e74c57dff5d9beaac9d080"
+  },
+  {
+    "path": "delivery-regression/authority-control.json",
+    "sha256": "06e0a18d15135e0bdc66fafec486a276b5dddf32002a2526bdde74daf91e6512"
+  },
+  {
+    "path": "delivery-regression/controls.json",
+    "sha256": "9d2ce12264f1d0d42b3d5baec2c277561e65152bdfa6e82833e2e4d72ee863ba"
+  },
+  {
+    "path": "delivery-regression/generated.json",
+    "sha256": "10d8f5c69840b24ec021f53773ce8c7a60aedddae429d2c45ab7f3cdba28ffa0"
+  },
+  {
+    "path": "delivery-regression/native.log",
+    "sha256": "af4ccfb4f2ee7815137d7b44b2368fe4fb8942dac58a02ac6aebcf4fc3daf1fc"
+  },
+  {
+    "path": "delivery-regression/prefix-control.json",
+    "sha256": "ecc1adf89bc5c540c78c610a2596711da496b348f30d8cce3f2f7e69255f9a85"
+  },
+  {
+    "path": "delivery-regression/properties.log",
+    "sha256": "6e75511a75b6430d6cd5b69cd25bebc6b6bdc3b756fd3c953e0c7f69d9512efb"
+  },
+  {
+    "path": "delivery-regression/results.xml",
+    "sha256": "567569dafe7c8ca75db83967582827e56202cc99d36c05bbcab194fc4eebd690"
+  },
+  {
+    "path": "delivery-regression/sources.json",
+    "sha256": "88d0d56f8adb0f7f64207e979a924b7fc53ac776502434c8073aac62ac978880"
+  },
+  {
+    "path": "delivery-regression/summary.json",
+    "sha256": "ecde58438b3766185f1b9e01a0a5ad026234a28d31b6fb95bfde7c0d601fed06"
+  },
+  {
+    "path": "findings.json",
+    "sha256": "004c13e1899f6e02900ce869ab2412a47fc52582bf47019600bb9223a7dc73c3"
+  },
+  {
+    "path": "gates.json",
+    "sha256": "43a7e589bf47f5f24afb58579c3523910871b348ba30e3a050f55810a0daeac9"
+  },
+  {
+    "path": "generated-editor.json",
+    "sha256": "994bbbe90d1fe4e2a5bbf8c93dd6f44c09a8d5c62e4f06382e9a51dcb653c6cd"
+  },
+  {
+    "path": "harness-first.log",
+    "sha256": "dfbe4415805ee6e2ce0905d5ccc5ef007df831cd57c622a3408c255f819af7c3"
+  },
+  {
+    "path": "harness-generated-first.log",
+    "sha256": "84987dbccc1f357a01600b96d0670bd5232715500f802da1c585d694dcf0fc6a"
+  },
+  {
+    "path": "native.log",
+    "sha256": "2bb608b77b46c92e643fdb1b238787f03c18cc6beaf3a81ef63b9eacaba1fd5e"
+  },
+  {
+    "path": "properties.log",
+    "sha256": "88ef6e52007c18603f733459977ecd6eafd2656b39799d559fb3ed3224d74170"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "fd61f32cca28010ea8c0a0426b897e83ea2323654689b9c74d575d51d0c27940"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "ad91f9476147cf27ecd69f3bf612db1af1e81c263bc5c514a6eeb84a986730bb"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "0d06eff8da7d83e020a401735515efc8a98cd57a0477345e019ec37dda90959e"
+  },
+  {
+    "path": "storage-regression/control-actor.json",
+    "sha256": "2e438990f17248b4c9358d753e2b9da47117947feadce7f28d41406ab28f84b3"
+  },
+  {
+    "path": "storage-regression/control-batch-count.json",
+    "sha256": "8a578b3858550977726ee1b65dd159803adde99cda7734c3d698a36bdfd9d14b"
+  },
+  {
+    "path": "storage-regression/control-buffer-copy.json",
+    "sha256": "e167693130d46f52575361f4d31badc593db06850506ca0b17b43052d430dcf2"
+  },
+  {
+    "path": "storage-regression/control-coverage.json",
+    "sha256": "5db1834713eff8a5f4adcf3963d7d58a695b92c99cd995513d3bd05f6bec34b8"
+  },
+  {
+    "path": "storage-regression/control-late-close.json",
+    "sha256": "bb6ab89b16d1017a89ca1b87e8d4dd760e07a753371d632a9f38ff4a94dd95e7"
+  },
+  {
+    "path": "storage-regression/control-page-signature.json",
+    "sha256": "e09285f181ebd3ec8fa828d3b972b05be3dbcad9e7fcc878fac30fa7185b1e26"
+  },
+  {
+    "path": "storage-regression/control-prefix-proof.json",
+    "sha256": "03f404aaf787cba33e66f184f5bc0c4ea9048d30ab37dde591ffc1657b7cd0f4"
+  },
+  {
+    "path": "storage-regression/control-record-binding.json",
+    "sha256": "3f9aead792fedc3463e942c72040f233da73414f145a84757cd170f9c0831321"
+  },
+  {
+    "path": "storage-regression/control-request-binding.json",
+    "sha256": "7d2ba3f54e4eadb325490b51b90550ca93ce28641e8a23c1bd50d3d0662d0504"
+  },
+  {
+    "path": "storage-regression/control-split.json",
+    "sha256": "396e3209f8ef79ba87e3d0d3eb6e80967056113d638b58154ef7b5132027c413"
+  },
+  {
+    "path": "storage-regression/control-stored-page.json",
+    "sha256": "2993d728f1baff669f8c5acd595f72d82d3981d9db18e4bc9e626e90eed27b38"
+  },
+  {
+    "path": "storage-regression/control-witness.json",
+    "sha256": "10192f395b1b292944acfc49dbdf988edc02ee03b1a6da18a7b937195dc16434"
+  },
+  {
+    "path": "storage-regression/generated-native.json",
+    "sha256": "3ce6d5656805e3b16925a5bd22660688d540aae90ce297817c18ab2d02aa7acf"
+  },
+  {
+    "path": "storage-regression/generated.json",
+    "sha256": "86c1a6557717afb4e5c225ab79410a09bb7cedaedd7f808f44120607ad54a600"
+  },
+  {
+    "path": "storage-regression/independent-bytes.json",
+    "sha256": "32ec49d3910de173b4b868b4281a5f2e62aa6eec9d5475fa2752aab47671ad34"
+  },
+  {
+    "path": "storage-regression/native.log",
+    "sha256": "7f3bde1b899b24c09b8f1bda18675213753f97cd6ef56e2b0829866e9cfe1c32"
+  },
+  {
+    "path": "storage-regression/properties.log",
+    "sha256": "c91cd22c1efef05f0ec61b9528de0987e7af352d24498a44ab24b3c3df2d82c1"
+  },
+  {
+    "path": "storage-regression/results.xml",
+    "sha256": "a5fc5a3126a1552d3e1bbf58d02c1c92bf6bcf9de5407017470ce98a1814be70"
+  },
+  {
+    "path": "storage-regression/sources.json",
+    "sha256": "b188879cd0e05a7aa45ca797113fd7a1b37135b7d16382c42a14cbfc228682e0"
+  },
+  {
+    "path": "storage-regression/summary.json",
+    "sha256": "5221f1e0b540d538315bbd354851be9c2416b99562fa22b594c25a725ed6e4b2"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "a21b441e9f48502751663df591f6c3cb35eb0f938f813bbac7fd9b5cac80ea1e"
+  },
+  {
+    "path": "types.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "f549a27e81da683b11eda5090dbdceaaed814ad53eac76c6e7d441ee00939640"
+  }
+]

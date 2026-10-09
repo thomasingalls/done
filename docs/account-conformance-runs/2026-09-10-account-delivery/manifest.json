@@ -1,0 +1,138 @@
+[
+  {
+    "path": "authority-control.json",
+    "sha256": "06e0a18d15135e0bdc66fafec486a276b5dddf32002a2526bdde74daf91e6512"
+  },
+  {
+    "path": "build.log",
+    "sha256": "1d02927f1b91552f0460d663375c76b8b49ec34e832b560116095fbc6495cc1a"
+  },
+  {
+    "path": "controls.json",
+    "sha256": "9d2ce12264f1d0d42b3d5baec2c277561e65152bdfa6e82833e2e4d72ee863ba"
+  },
+  {
+    "path": "decisions-regression/controls.json",
+    "sha256": "c93c04d687fc271058fd23f628d84c5347d52a32da170bf9e225fd2e89e02e0d"
+  },
+  {
+    "path": "decisions-regression/generated.json",
+    "sha256": "adc1601500bdd4149759e022736bf7bd5a99b40cf81e29dd530e6dd85c207089"
+  },
+  {
+    "path": "decisions-regression/native.log",
+    "sha256": "bbe3c15b8bceef8ab9dcdaf7227903a15000a327b4703fa5d98c9d08519d0359"
+  },
+  {
+    "path": "decisions-regression/properties.log",
+    "sha256": "2cfcec23c5833b1654eee758b8f99a9f0a332c882671944c8669761d36e360f2"
+  },
+  {
+    "path": "decisions-regression/results.xml",
+    "sha256": "1072a4d141457c1ef29c4cc1f5ab94e2c919d6f77aca1135aeb372c4437ec2fd"
+  },
+  {
+    "path": "decisions-regression/sources.json",
+    "sha256": "33cfa5561c9b03e5048bb476929331927c5d7fb5092656492c2110083ec88536"
+  },
+  {
+    "path": "decisions-regression/summary.json",
+    "sha256": "9fb25820ef9b7846fa734b0837dfd775dd07b4abeb5e8b7fc97b67add843ca6d"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "4ce6302488804dd03e4bb692087e88a4ac0c9350ab9a0386374a08dcf4c2269a"
+  },
+  {
+    "path": "findings.json",
+    "sha256": "44df9cb1ecb5f7e7d8ce2338a85b485f8f32c1cddb095d4e80bcd1092d50216c"
+  },
+  {
+    "path": "generated.json",
+    "sha256": "10d8f5c69840b24ec021f53773ce8c7a60aedddae429d2c45ab7f3cdba28ffa0"
+  },
+  {
+    "path": "initial-retention-fixture-failure.log",
+    "sha256": "3aea835d665fce140e52d70de19b5b5805a61a36a90d6fdb9e85236bb9753fe9"
+  },
+  {
+    "path": "initial-unit-timeout.log",
+    "sha256": "47f1afa4fe8209156bf4a0326ceb351b980c0c6685323aeb3e6cd6a5b02f54ae"
+  },
+  {
+    "path": "native.log",
+    "sha256": "056f99a77f1202b400e39e3c40c097d7b49ae923ac7a48e068362ed6070b1d68"
+  },
+  {
+    "path": "prefix-control.json",
+    "sha256": "ecc1adf89bc5c540c78c610a2596711da496b348f30d8cce3f2f7e69255f9a85"
+  },
+  {
+    "path": "properties.log",
+    "sha256": "5835da988a60f648a0da741eabc8710a43afb7bdbeabedd4c9fb7e1d5740dadb"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "f66b6f5dd5d3bd24433cdfb4ebe8dc9b4915f5b858507fd55750f8e9d2b2d7a1"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "b77466c36b2d53e8de765dab5e71f4940c049eac31e24d488eb024267425abb9"
+  },
+  {
+    "path": "spool-regression/controls.json",
+    "sha256": "e20a973ba153046ee6ab967903d8900b74e358377a05c5c0ff69cc69ec42546e"
+  },
+  {
+    "path": "spool-regression/generated.json",
+    "sha256": "7b2a00e91a264e89940fefcb49256a59fd6dc13f2efa08531352292a21a40243"
+  },
+  {
+    "path": "spool-regression/missing-tail-control.json",
+    "sha256": "216c7e7c7c69bb2a3a2b1511105985c7f0dc269d579917dc0a8e858666c00f40"
+  },
+  {
+    "path": "spool-regression/native.log",
+    "sha256": "7717a73c5086f547cc672223ef94a3b61f354c75bb73ca62de5a73f237533ee0"
+  },
+  {
+    "path": "spool-regression/properties.log",
+    "sha256": "2b7ce3d1da839ec3e25f2ce906feb15453a2bc12739402ae585f053bd74a5b9a"
+  },
+  {
+    "path": "spool-regression/results.xml",
+    "sha256": "c7a6c259799256f2081f6781b8c34fe9bb273f20d5f7d8c4dcdb1dd9aa326b56"
+  },
+  {
+    "path": "spool-regression/sources.json",
+    "sha256": "95b67143d169aa181bf18c2abfd3a3747c47e59e8c3b073d01b2c845939ebddf"
+  },
+  {
+    "path": "spool-regression/summary.json",
+    "sha256": "6ff528bba1ce92fd5b5e31fb25fd765f27387020bba493b6efb479ddcea0decc"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "60a7d5058e30f66e359f29e35993dd302c40d8a266db25c73e79f6e4abb7ad3e"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "c0c14d5ed784163f85a4e2d48aca3dc6a05b2effb83ef5354cf8b6d26067aa20"
+  },
+  {
+    "path": "trim-regression/console.log",
+    "sha256": "90908cd83c72be9de6d50e775a569a62245ff11b249d0e9eb45c76ecfdf82bde"
+  },
+  {
+    "path": "trim-regression/report.json",
+    "sha256": "ea4db850204bfea461bb439d168f3ab561bf7f1d2b3914a8cadce82b315aa38c"
+  },
+  {
+    "path": "trim-regression/report.md",
+    "sha256": "6dc8b20c1b6977941a84fff886eec0dbe0bf3b567befb08bdbb236bbaa7692ce"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "ab8a3987076e61638ce20b6d94447c91d647786d714dedcf75b559aa81e48577"
+  }
+]

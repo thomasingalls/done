@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "base": "52a6aa8076ba307ec53a883a9e706a8864fce463",
+  "scope": "One investigation/repair round, one owned qualification pass; no application latency or immutable release claim.",
+  "artifactsSha256": "57c302cddc1745587bf581d6307586105a094c8914263c90e813a0575d24b991",
+  "rawIndexSha256": "13bf9a17511976414bf8b1dd36065f30cdbcf84123e5cc2a916ab078cb7a44a9",
+  "payloads": 64,
+  "qualification": {
+    "schema": 1,
+    "selection": "single-round-core-receive-headroom",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-receive-editor/native.test.mjs",
+        "key": "b2b85ddd0f4d50069eb695e47d7ef101d362cd910b45deb7b03be09e2a498f0a",
+        "status": "passed",
+        "elapsedMs": 150515,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-receive/native.test.mjs",
+        "key": "5225684b4a3239a49db2d4237105d827d02d32c0c234ae7ef86f5a474ea0d80f",
+        "status": "passed",
+        "elapsedMs": 149007,
+        "cases": 17,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T14:07:12.700Z",
+    "input": "10f8afc21961cc03afe721cef29c5f5f05de20c6b6cc786e177d3cb9a25278e6",
+    "completedAt": "2026-09-15T14:12:54.470Z"
+  }
+}

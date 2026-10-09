@@ -1,5 +1,11 @@
 # Handoff — Stage 0 remediation execution
 
+**2026-09-08 correction:** [storage-contract.md](../../storage-contract.md) and
+[storage-conformance.md](../../storage-conformance.md) supersede the old journal-fence,
+range-trim, redelivery and optional-custody assumptions. Existing closure evidence is limited to its
+represented cases. New production conformance is registered as unpaid debt; this amendment does not
+recertify Stage 0 or change historical finding dispositions.
+
 **Standing:** home — the one home of the open queue; read back by `pnpm remediation:status`, which checks
 each per-decision claim below — its ratification date, its ratified option, and its owed falsifier ranges —
 against the decision records in both directions (the option facet joined at the `S0-9` round-3 return,
@@ -442,8 +448,8 @@ In order. An item is done when its disposition entry's earliest-return stage has
    expired or input-changed; the refusal negatives live in `test/debtManifest.test.ts`; and the source↔blob
    header binding landed — one cargo regeneration stamped `seal.generated.ts` with the source hashes and
    toolchain string, `WASM_BASE64` byte-identical, and `pnpm wasm:verify` compares toolchain-free, drift
-   detection only. The registered debts block: `L-1` — 1 (the plaintext cutover kill matrix) · `L-4` — 4
-   (population, audit delta, provenance, append burst) — `pnpm debts` computes this and `debts:check` holds
+   detection only. The registered debts block: `L-1` — 2 (legacy cutover and storage conformance) · `L-3` — 1
+   (generation/writer lifetime) · `L-4` — 5 (population, audit delta, provenance, append burst, factor/profile conformance) — `pnpm debts` computes this and `debts:check` holds
    this sentence to it in both directions; the migrated X25519 entry was paid at the `S0-10` arrival
    (2026-08-29) and blocks nothing. A 21-mutation battery caught 21.
 6. **`S0-9` round 3, with a changed perspective — done 2026-08-29, and the round-3 return landed the same
@@ -475,14 +481,18 @@ In order. An item is done when its disposition entry's earliest-return stage has
 
 ## The exact next command
 
+Run from the corrected checkout named in [progress.md](../../progress.md). The next implementation
+action is the shared production harness in [storage-conformance.md](../../storage-conformance.md);
+the final gate consult below is expected to block while its executed evidence remains owed.
+
 ```bash
-cd /Users/thomasingalls/Code/done/.claude/worktrees/stage0-repairs && pnpm install --frozen-lockfile && pnpm check && pnpm review:check && node scripts/check-debts.mjs --gate L-1
+pnpm install --frozen-lockfile && pnpm check && pnpm review:check && node scripts/check-debts.mjs --gate L-1
 ```
 
 That establishes the baseline, mints the execution receipts in one motion (`pnpm check`'s last step consumes
 them, so the full chain is the baseline), runs the disposition readback, and then asks the one question the
-queue is now at: the `L-1` consult, which **blocks today, correctly**, until the executed cutover kill
-matrix is paid. What changed 2026-08-29: the `S0-10` consult **lifts** (`node scripts/check-debts.mjs
+queue is now at: the `L-1` consult, which **blocks today, correctly**, until the cutover and corrected storage conformance
+matrices are paid. What changed 2026-08-29: the `S0-10` consult **lifts** (`node scripts/check-debts.mjs
 --gate S0-10`)
 — the X25519 debt is paid into TRD §10.11's table with source, date and expiry, and `debts:check` holds the
 table and the payment record to each other. **Queue items 1–7 are complete** — the decision sprint, the two
@@ -496,8 +506,8 @@ census comparing each claim's ratified **option** beside its date and owed range
 write-admission and retention readbacks, the debt manifest on exact-case paths with §10.11's evidence table
 held to the payment record, the source↔blob binding inside `pnpm wasm:verify`, and the traceability matrix
 crediting execution receipts — 28 of 28 current defects carrying a named falsifier. `pnpm remediation:status`
-reads **nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`L-1` — 1 ·
-`L-4` — 4; the `S0-10` entry is paid).
+reads **nothing owed at any return**; `pnpm debts` computes what blocks the gates ahead (`L-1` — 2 ·
+`L-3` — 1 · `L-4` — 5; the `S0-10` entry is paid).
 **Next is `L-1`** — Stage 1's encrypted local store and legacy cutover; `docs/progress.md` is the
 active-slice home now, and `action-tree.md`'s node is the plan. It arrives against its registered
 kill-matrix debt: `node scripts/check-debts.mjs --gate L-1` names it, and design prose is refused as

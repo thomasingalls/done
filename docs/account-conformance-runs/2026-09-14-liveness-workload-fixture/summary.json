@@ -1,0 +1,111 @@
+{
+  "base": "c85e5483db002be209d1d9180054e6412657f751",
+  "claim": "Account ordinary-scheduling workload fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T12-23-34.838Z",
+  "summary": {
+    "schema": 1,
+    "selection": "liveness-workload-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-liveness/workload.test.mjs",
+        "key": "54f8a9d816a9c7060e2e044ad1f91c66cfd2dd6b6bb4da3c4f72f23900cbf09d",
+        "status": "passed",
+        "elapsedMs": 181052,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T12:23:34.840Z",
+    "input": "684c8e7b5595f4d2e888f9a50cb8a57e121661209c066befdea039568470b95a",
+    "completedAt": "2026-09-14T12:27:03.382Z"
+  },
+  "elapsedMs": 208542,
+  "rawInputArchiveSha256": "6920c3ae8589bfe089da07c147fc6865be46f4ac9189bc2a548ae9380bfa395b",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "c85e5483db002be209d1d9180054e6412657f751",
+    "sourceDigest": "e8364cd5e8a887b534b32042e0df5eaf38be342a3b60e8466514209cc67d4eab",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 1,
+    "browserFiles": 1,
+    "fixtureInstances": 1,
+    "generatedHistories": 0,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 0,
+    "sequentialEdits": 80,
+    "burstEdits": 30,
+    "postGrowthMeasuredEdits": 1,
+    "priorGeneralFiles": 220,
+    "priorGeneralCases": 1747,
+    "currentGeneralFiles": 221,
+    "currentGeneralCases": 1748,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 125,
+    "accountFiles": 115,
+    "accountCases": 654,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 196,
+    "unresolvedTestFiles": 37,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 703271
+  },
+  "finalGatesSha256": "278cbc45be0c0f009997611df410d76fd0f49657ee5acb3f9c4c76d2cbf8ff71",
+  "preservationSha256": "6007895bf6161505b3aaa43cabf4ee6cefa681cb7a1ff2c2082fe68fa22d2ee9",
+  "limits": [
+    "One complete unchanged workload case retains its 750-second wrapper/file and 720-second case limits. Only six runner/registration-test files and generated snapshots change. Product, shared fixture, test body, instrumentation, probe, oracle, census, reporters and wrapper remain unchanged. The already-qualified owned-CDP fixture supplies one disposable browser/context and synthetic service.",
+    "After synthetic Local promotion and sync setup, a fresh page loads the ordinary product bundle with measurement transforms disabled and crypto wrappers restored. Eighty sequential edits each await actual send and receive progress without expedited receive retries. The source logs milestones at 10, 40 and 80 positions and checks expected writing after each edit. These are a fixed directed workload, not generated histories.",
+    "Thirty further edits are spaced by 40-millisecond host timers. The subsequent prefix advances by at least one and at most thirty positions, permitting real batching. An instrumented cold reopen preserves writing, then one measured edit reaches the next prefix. A final uninstrumented offline reopen preserves the complete expected text.",
+    "The case asserts functional progress, prefix/batching bounds and cold content equality; it does not assert per-edit or round-trip latency ceilings. The only total duration bounds are the existing case/file deadlines. A single passing host run is not a loaded-host reliability or broad responsiveness guarantee. Instrumentation is disabled for the 80-edit/burst sequence but the synthetic service retains its measurement support.",
+    "Cold means a replacement page in the same live isolated browser context. No browser/renderer/service process is killed, no physical power loss is attempted, and no second device connects. Generated authority/service secrets, software authentication and retained factor options support this synthetic path. No personal profile/origin/build, human PRF/passkey ceremony, real Account receipt or forensic-erasure claim is involved.",
+    "Detailed workload/timing reports are written inside the disposable execution checkout and removed with it. A read-only inspection during execution observed status running with all 80 sequential edits recorded. Cleanup finished before a stable raw report copy could be captured. The general Node reporter also suppresses per-test stdout, so milestone console output is not archived. The exact passing case receipt, file timing and frozen source/browser identities are retained; no latency table or whole wrapper-output credit is claimed. The distinct growing-history fixture remains blocked until its own stage.",
+    "All prior general contracts and exclusions, personal/vector pins, L-2 and historical evidence remain unchanged. Existing ledger orphan classification, receive/delivery-oracle headroom, capture-oracle follow-ups and deadline evidence remain open. Full wrapper/campaign outputs and immutable release qualification are separate."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 176674.4975,
+    "stageElapsedMs": 181052,
+    "selectionElapsedMs": 208542,
+    "nodeDeadlineMs": 750000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 750000,
+    "caseMs": [
+      720000
+    ],
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "optionalWorkloadReport": {
+    "retained": false,
+    "observedProgress": {
+      "status": "running",
+      "sequentialEdits": 80
+    },
+    "note": "Read-only progress inspection; the raw report disappeared during normal checkout cleanup before a stable copy could be saved. Milestone stdout is suppressed by the existing Node reporter. Passing case and timing receipts are retained."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "008b211163c6faf29c41afc56a3290dc29f1aa140ed21a699e6400735f61720f",
+    "compressedSha256": "a2b49d94ad690a25018cae335a1a4fe30ae8650c80952e20392fd4f1b8049332"
+  }
+}

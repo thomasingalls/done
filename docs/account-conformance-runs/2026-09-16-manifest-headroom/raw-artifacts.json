@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/private/tmp/done-manifest-headroom/owned/inputs.json.gz",
+    "bytes": 1226509,
+    "sha256": "f77ebb01aa72360e1480a22cc26bc2fce5d0a2aba22df81bccc349948e206e2c"
+  },
+  {
+    "path": "/private/tmp/done-manifest-headroom/owned-failed-census/inputs.json.gz",
+    "bytes": 1226507,
+    "sha256": "bdb8adcd6e74ef69b321c5f574945b7346e7a3776da7e18c444629dc981ffa64"
+  }
+]

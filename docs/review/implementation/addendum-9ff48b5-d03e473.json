@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 1,
+  "kind": "implementation-review-addendum-intake",
+  "assessedAt": "2026-09-13",
+  "assessmentRevision": "6ba7c22b31590f97d561b543d8918219dc279cc5",
+  "method": "Current-source/static lifetime analysis; synthetic SQLite service acceptance/read plus bundled actual receiver verification; focused generated batch property; direct package style payloads; read-only construction registry and Git/reference census. No browser or full aggregate.",
+  "originalPath": "review-packet-9ff48b5-d03e473.md",
+  "archivedPath": "docs/review/implementation/9ff48b5-d03e473.md",
+  "reviewedTip": "d03e473b3b8bcb807f4183bbdeb60ac9895f6f54",
+  "interveningCommits": 13,
+  "originalSha256": "8d4629af7ad8dbacd366e5499ff79300d8f98aa3411fcab0e9d01104ce8a29bf",
+  "annotatedSha256": "8ac3ed42d96b2bf0a9c99ad240a1f88bdd94245bbb2ef219a1566ba735a8521b",
+  "originalRecoveredByRemovingMarkedAdditions": true,
+  "reconstructionPattern": "<!-- current-assessment:([^:]+):start -->\\n.*?<!-- current-assessment:\\1:end -->\\n(?:\\n)?",
+  "responseBlocks": 27,
+  "responseIds": [
+    "F-07",
+    "N-01",
+    "N-02",
+    "P-01",
+    "Q-01",
+    "Q-02",
+    "Q-03",
+    "Q-04",
+    "Q-05",
+    "Q-06",
+    "Q-07",
+    "Q-08",
+    "F-05",
+    "F-20",
+    "N-06",
+    "P-05",
+    "F-21.1",
+    "F-21.2",
+    "F-21.3",
+    "F-21.6",
+    "F-21.7",
+    "F-15",
+    "F-16",
+    "R-01",
+    "R-02",
+    "R-03",
+    "R-04"
+  ],
+  "newLeafIds": ["R-01", "R-02", "R-03", "R-04"],
+  "totalImplementationLeafIds": 59,
+  "totalResponseBlocksAcrossAnnotatedAddenda": 132,
+  "priorIntake": "docs/review/implementation/addendum-393ef43-9ff48b5.json",
+  "priorStatusAssessments": {
+    "F-07": {
+      "intendToFix": "yes, remaining workload/capacity qualification and justified further repair.",
+      "importance": "high Account usability.",
+      "assessment": "The batching improvement is real; the relevant production sources are unchanged since d03e473. Retained history still drives repeated carrier work. The reviewer\u2019s larger-history timings are attributed measurements, not independently rerun here; 300/1,000-position extrapolations are not measured limits. Preserve a supported workload and recovery policy before cutover; a ceiling must not strand already accepted edits."
+    },
+    "N-01": {
+      "intendToFix": "no new expiry repair; retain recovery regressions.",
+      "importance": "high liveness; bounded repair remains closed.",
+      "assessment": "The grouped F-07 row should not reopen this distinct expiry bug. Fresh request retry and commit-time refusal remain; Q-05 adds the reason. Residual history cost belongs to F-07/Q-02, even though it can make expiries more frequent."
+    },
+    "N-02": {
+      "intendToFix": "yes, residual F-07 qualification.",
+      "importance": "high Account usability.",
+      "assessment": "Verification reuse, compact service context and batching reduce different multipliers; none bounds all retained-history reads. Route to F-07/Q-02 without claiming that the service cache repair failed. Larger-history performance was not rerun in this intake."
+    },
+    "P-01": {
+      "intendToFix": "yes, residual F-07 workload envelope.",
+      "importance": "high Account usability.",
+      "assessment": "The former thirty-position burst has a bounded batching repair and preserved cold-writing evidence. The reviewer\u2019s slower settled edits and larger-history bursts support keeping capacity open. They do not establish a universal linear slope or loss of acknowledged writing."
+    },
+    "Q-01": {
+      "intendToFix": "no further repair of the cited census defect; maintain the gate.",
+      "importance": "high validation integrity; bounded repair closed.",
+      "assessment": "The read-only construction-registry check passes at 6ba7c22: 78 specified, four inherited, one excluded, zero open, no failures. The repaired entrypoints and shared preflight remain. This check alone is not the full authority/vector or release aggregate."
+    },
+    "Q-02": {
+      "intendToFix": "yes, residual qualification; bounded load/batch repair stands.",
+      "importance": "high Account usability.",
+      "assessment": "The relevant production files are unchanged since d03e473. Repeated full carrier reads and unpruned proof history remain. Route the residual to F-07, keeping exact original-source batching and current publication checks. This intake does not rerun the reviewer\u2019s slope probes."
+    },
+    "Q-03": {
+      "intendToFix": "no additional cache-context repair.",
+      "importance": "medium performance; bounded repair closed.",
+      "assessment": "authority() recomputes the request digest, compares it with the stored digest, and checks the acceptance seal before using the compact context. The changed request is still bound. The reviewer\u2019s 13/118 verification counts corroborate prior bounded evidence, not a current maximum-capacity guarantee."
+    },
+    "Q-04": {
+      "intendToFix": "no new repair of the cited anchors; keep discriminating controls.",
+      "importance": "high validation integrity; bounded repair closed.",
+      "assessment": "The two coverage guards and effective joint-omission control remain. The content catalogue subsequently passed all thirteen cases and five mutations under the owned runner. Broader reviewer campaign passes describe d03e473; no immutable aggregate is inferred at this HEAD."
+    },
+    "Q-05": {
+      "intendToFix": "no additional count-based expiry halt.",
+      "importance": "medium recovery/diagnostics; bounded repair closed.",
+      "assessment": "request-expired remains observable with bounded diagnostics and capped fresh retry. A fixed failure-count halt would discard recoverable progress and is not warranted. R-01 concerns a different terminal inbound rejection and has its own exit criteria."
+    },
+    "Q-06": {
+      "intendToFix": "yes, sign after the user confirms being at the keyboard.",
+      "importance": "low provenance; required before choosing the final aggregate revision.",
+      "assessment": "The eleven-entry Q intake is a historical snapshot, not an incorrect manifest to rewrite. This HEAD has thirty consecutive unsigned commits after signed 1372c39, all now inventoried with trees. Preserve old evidence IDs, retain original objects, and add a verified signing crosswalk. No signing has started."
+    },
+    "Q-07": {
+      "intendToFix": "yes, correct the new current-facing sentence under R-02.",
+      "importance": "low record accuracy.",
+      "assessment": "The earlier three statements were corrected; validation-controls.md introduced another stale \u201cremains uncommitted\u201d statement in dceec5c itself. Correct current navigation, while preserving append-only phase outcomes and the original Q intake."
+    },
+    "Q-08": {
+      "intendToFix": "yes, prospective retention/publication policy remains open.",
+      "importance": "low storage cost; medium publication privacy.",
+      "assessment": "Later catalogue phases retain bounded, normalized evidence. That does not erase historical paths or qualify public publication of the repository. R-04 adds a style-tool exclusion boundary, not permission to delete or reformat hash-pinned archives. No archive/history cleanup is performed here."
+    },
+    "F-05": {
+      "intendToFix": "no reopening of the evidenced construction contract; maintain current checks.",
+      "importance": "high assurance; bounded closure stands.",
+      "assessment": "The current registry readback is green and relevant runtime sources match the review tip. The reviewer\u2019s successful crypto campaign supports d03e473 only. P-06\u2019s prose sweep and the final immutable aggregate remain separate obligations; this intake did not rerun that campaign."
+    },
+    "F-20": {
+      "intendToFix": "yes, complete general test/wrapper adapters and the immutable aggregate.",
+      "importance": "high release assurance.",
+      "assessment": "The review predates thirteen foundation/catalogue commits. All eleven current catalogues now cover 163 cases and 54 mutations, with 81 non-native controls including 2,400 generated histories. The manifest still has 416 unresolved test/command/campaign obligations. Staged evidence is not one aggregate; R-03/R-04 are explicit integration obligations."
+    },
+    "N-06": {
+      "intendToFix": "yes, general-runner and property deadline work.",
+      "importance": "low test robustness; required for trustworthy aggregate execution.",
+      "assessment": "The new R-03 instance belongs to this existing queue. Catalogue deadlines/process ownership do not add an explicit Vitest timeout to spoolBatch.test.ts. Preserve generated seeds/counts and failure output; distinguish a diagnosed deadline from a correctness failure before retrying."
+    },
+    "P-05": {
+      "intendToFix": "yes, finish F-20 and run the selected graph at one immutable revision.",
+      "importance": "medium validation freshness and cost.",
+      "assessment": "The bounded runner now binds revision, source/dependency identity, variants, actual cases and postconditions. Wrapper integration and shared prerequisite qualification are incomplete. Signing changes the identity key even with identical trees; old receipts remain evidence of their original runs, not fresh receipts for the replacement revision."
+    },
+    "F-21.1": {
+      "intendToFix": "no new repair; preserve the existing bounded evidence and aggregate obligation.",
+      "importance": "medium-high assurance; bounded closure stands.",
+      "assessment": "The reviewer reports the parser conformance campaign passing at d03e473, corroborating the recorded malformed representation and boundary repair. Relevant runtime sources are unchanged, but those reported passes are not independently rerun or credited as a current immutable aggregate here. General campaign integration remains F-20."
+    },
+    "F-21.2": {
+      "intendToFix": "no new repair; preserve the existing bounded evidence and aggregate obligation.",
+      "importance": "medium-high assurance; bounded closure stands.",
+      "assessment": "The reviewer reports the admission evidence campaign passing at d03e473, corroborating the recorded coverage and byte-size repair. Relevant runtime sources are unchanged, but those reported passes are not independently rerun or credited as a current immutable aggregate here. General campaign integration remains F-20."
+    },
+    "F-21.3": {
+      "intendToFix": "no new repair; preserve the existing bounded evidence and aggregate obligation.",
+      "importance": "medium-high assurance; bounded closure stands.",
+      "assessment": "The reviewer reports the account isolation campaign passing at d03e473, corroborating the recorded cross-account authority repair. Relevant runtime sources are unchanged, but those reported passes are not independently rerun or credited as a current immutable aggregate here. General campaign integration remains F-20."
+    },
+    "F-21.6": {
+      "intendToFix": "no new repair; preserve the existing bounded evidence and aggregate obligation.",
+      "importance": "medium-high assurance; bounded closure stands.",
+      "assessment": "The reviewer reports the delivery oracle campaign passing at d03e473, corroborating the recorded independent framing and verification repair. Relevant runtime sources are unchanged, but those reported passes are not independently rerun or credited as a current immutable aggregate here. General campaign integration remains F-20."
+    },
+    "F-21.7": {
+      "intendToFix": "no new repair; preserve the existing bounded evidence and aggregate obligation.",
+      "importance": "medium-high assurance; bounded closure stands.",
+      "assessment": "The reviewer reports the decision composition campaign passing at d03e473, corroborating the recorded service-issued refusal/conflict repair. Relevant runtime sources are unchanged, but those reported passes are not independently rerun or credited as a current immutable aggregate here. General campaign integration remains F-20."
+    },
+    "F-15": {
+      "intendToFix": "no new relaxation repair.",
+      "importance": "high durability; bounded closure stands.",
+      "assessment": "Strict reservation persistence remains unchanged, and the reviewer reports the durability campaign passing at d03e473. Platform power-loss and restore assumptions remain the documented limits; the later catalogue work and this intake do not provide new OS/filesystem durability evidence."
+    },
+    "F-16": {
+      "intendToFix": "no reopening of the content-compaction caller; retain growth qualification.",
+      "importance": "medium storage/capacity.",
+      "assessment": "Owned exact-coverage content maintenance is implemented; the newer compaction adapter supplies owned execution evidence. Content compaction does not prune authenticated Account proof history. That residual belongs to supported capacity/proof-retention design and must not be \u201cfixed\u201d by deleting evidence needed for cold authentication."
+    }
+  },
+  "findings": {
+    "R-01": {
+      "intendToFix": "yes, before the first durable Account cutover.",
+      "importance": "high cutover availability; medium current exposure.",
+      "assessment": "Confirmed on 6ba7c22 with synthetic service fixtures and the actual bundled receiver verifier: a 614,400-byte update is accepted and served as a 614,698-byte envelope, then verification refuses size. A 16 KiB fixture fits the wire limit; 4 MiB is refused by the service. This is an authenticated nonconforming-member/future-sender risk, not a demonstrated unauthenticated attack or loss of stored writing. Reopening repeats the blocking position; \u201cpermanent\u201d means persistent for unchanged readers. The scheduler does retain generic operation-failed, while the useful inbound cause/diagnostic is lost.\n\nUse a shared service-visible wire policy, sender pre-seal/count/decoded-byte checks, aligned codec/receiver counts and bounded terminal diagnostics. The service cannot inspect encrypted counts or Yjs validity; a size cap alone cannot guarantee progress against arbitrary malformed member ciphertext. Preserve refusal safety and existing ledger bytes, define recovery for an already accepted bad position, and test exact boundaries, unchanged accepted prefix on refusal, and cause visibility. Do not equate the 64 KiB batch policy with every single-source envelope. This is more than an isolated constant edit; R-01 stays distinct, with diagnostic overlap under F-10.",
+      "queue": "distinct availability; diagnostic extension related to F-10"
+    },
+    "R-02": {
+      "intendToFix": "yes: current documentation corrected in this intake; signing waits for confirmation.",
+      "importance": "low record accuracy; important aggregate provenance.",
+      "assessment": "The uncommitted sentence is still present at HEAD and is wrong. Replace it with dceec5c and point to current follow-up status. The old eleven-commit intake and append-only decision are accurate historical snapshots; label them, rather than rewriting their provenance. The current chain is thirty, not seventeen. Signatures change descendant IDs, but evidence need not become orphaned: retain original objects and an identical-tree crosswalk, migrate executable baseline references, and preserve original receipts. A signed tag alone would not satisfy the user\u2019s request to sign each unsigned commit. New aggregate receipts must bind the final selected revision.",
+      "queue": "Q-06/Q-07/P-04 record and signing sweep"
+    },
+    "R-03": {
+      "intendToFix": "yes, in the general Vitest/runner integration work.",
+      "importance": "low test robustness; prerequisite for reliable aggregate execution.",
+      "assessment": "Confirmed missing explicit timeout in the unchanged property and no global override in vite.config.ts. Focused current execution passes both tests; the 120-history property takes 2.636 seconds here. That does not disprove the reviewer\u2019s 5.007-second failure under load, nor prove every timeout harmless. Add a measured finite per-property deadline and retain seed 1209032, all 120 histories, duration/failure output and a bounded outer owner. Avoid reducing coverage or blindly treating 60 seconds as sufficient. Route to N-06/F-20; this intake changes no test.",
+      "queue": "N-06/F-20 generated-property deadline"
+    },
+    "R-04": {
+      "intendToFix": "yes, as explicit style-gate scope and cleanup before the aggregate.",
+      "importance": "low housekeeping; medium validation credibility.",
+      "assessment": "Current direct execution of both package command payloads reproduces red gates: 83 lint errors, all in archived Account snapshots; 1,170 format files, comprising 1,053 Account archive files, 79 storage archive files, 18 scripts, 17 tests and three other documentation files. Counts differ from the review. Excluding only the Account archive and formatting 35 live files will therefore not finish the current task. Preserve immutable evidence and intake bytes, explicitly exclude/archive-scope both evidence families, and inspect remaining live documentation/battery code individually. Do not ignore all docs: some contain executable gates. Keep full style commands distinct from scoped phase checks in F-20. No evidence deletion or formatting repair is performed in this intake.",
+      "queue": "F-20 whole-tree style; Q-08 evidence preservation"
+    }
+  },
+  "sourcePins": [
+    {
+      "path": "account-protocol/submission.ts",
+      "sha256": "c87f6e0b24104382bb14aa9629fb25db50b10d0c2b3038008ed5b6ad64453846"
+    },
+    {
+      "path": "account-protocol/envelope.ts",
+      "sha256": "7e827a50acf931feda796693d1de2721c0bdef0cdff06d7bc9593d1f162e1cb1"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "0756660148627462a89f6498096661ebebc8bdf43db67585685403bf817fff73"
+    },
+    {
+      "path": "account-service/deliveryVerification.ts",
+      "sha256": "3b86fad6a157858d950b0fc867c68ff70c2858b4519bc0caa4dce86558fac02d"
+    },
+    {
+      "path": "src/crdt/accountInbound.ts",
+      "sha256": "7d9e082ce9bcac257eeb88c3c55ce8223088ca48f48e09330039d27a8ee73920"
+    },
+    {
+      "path": "src/crdt/inboundRecord.ts",
+      "sha256": "47d2e7a82b4dc87190f52d1201388e091c36e97d8f4ce3f0c9e36a7d42238a80"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "abc0182eb6c138b27a2b96517e4d17becf883a0e55195c4cf183089738892b97"
+    },
+    {
+      "path": "src/crdt/accountReceiveDriver.ts",
+      "sha256": "971a6970223160cf3bd90f2efad87d0741a85f200a9e6dfdc6002f6fdb598ddf"
+    },
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "34648555c7e3949cc87603151e7cef146b88538c661ba214dff2ffc900e884cb"
+    },
+    {
+      "path": "src/crdt/accountEnvelopePreparation.ts",
+      "sha256": "15026708bb8961bca7df9045f8109aa8f0cdb3b726a285f389f20b0aefd82ee6"
+    },
+    {
+      "path": "src/crdt/spoolRecord.ts",
+      "sha256": "de111717ec3ab5492eac0dcfb340962735431a455d3a79af1cb96a0686786019"
+    },
+    {
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "fe88f1e2d02d28970f436983a226de9473d3d94fd5668a85a7a196571f7ace26"
+    },
+    {
+      "path": "src/crdt/contentRecord.ts",
+      "sha256": "2f52e2a7bffd18a4e7e7d16200c3ed484fe7691705faab85787ec6c573096427"
+    },
+    {
+      "path": "src/crdt/yjs.ts",
+      "sha256": "08ffe1af47a28a951560685fa5cd2cdf05c225fcd8a36020063ebd17d35f4dc4"
+    },
+    {
+      "path": "src/account/privateDeliveryHttp.ts",
+      "sha256": "a5dcde2c42ea8ef89c7afb51a8c69cc073f2914336b4f71e8c799e7363c4629c"
+    },
+    {
+      "path": "test/spoolBatch.test.ts",
+      "sha256": "0752df87ee7c0c429f39912f89180501f69204ec969c05ac464ae36cf6acd7a6"
+    },
+    {
+      "path": "test/account-service-delivery/fixtures.mjs",
+      "sha256": "8d5d0192b2362484c010877cd48165c078793a88169a0e96969b0d79afcd7e25"
+    },
+    {
+      "path": "test/account-service-inbound/oracle.mjs",
+      "sha256": "4cf862e74c4a750901b0d495577652c41eee3bbf5a1437a2bfe8cbd8905cfa7f"
+    },
+    {
+      "path": "test/account-admission/core-fixtures.mjs",
+      "sha256": "9fd085de6dff2b709d6521ff2341c056914251ba7a3af29cbdc5fab6dd47099c"
+    },
+    {
+      "path": "test/account-core/fixtures.mjs",
+      "sha256": "cd1b12cb73e53c2cbd14f297484cb13a93f46e38447d36827bd0e32c5f106746"
+    },
+    {
+      "path": "test/account-authority/fixtures.mjs",
+      "sha256": "6872ec17d4a8f72aa54756a3b787ee7fe2ecea80c0c19a5a781268c93400ce3f"
+    },
+    {
+      "path": "test/account-receive/fixtures.mjs",
+      "sha256": "ab6f1c1e7bb5f79303ed5f7afadba30671bbfcdfdf238b599f844d2b5e49330b"
+    },
+    {
+      "path": "test/account-ledger-contract/runtime.mjs",
+      "sha256": "5b9c44b7f1ed686c3e103569d35e4e05346fe5d23ecf17754d701431b0de044c"
+    },
+    {
+      "path": "test/release-validation/manifest.test.mjs",
+      "sha256": "f0fcfe4e75052c2cb1c9fc9dafba27ef48bc44f17c0df099afe182ad89e49b99"
+    },
+    {
+      "path": "test/release-validation/stage.test.mjs",
+      "sha256": "4aa21f9b91c70edd98f61e76ef538076c20110f4e9f51cb56bcb46c479a156f7"
+    },
+    {
+      "path": "scripts/private-release/run.mjs",
+      "sha256": "0e7b1a58c428996cf7458e46bdbe29d68a38a7316b340caff9865c8d3812b3b7"
+    },
+    {
+      "path": "scripts/release-validation/identity.mjs",
+      "sha256": "7c6c8f878f76f801a5983dd856485d87c96128ecbad8ec98c4771cb5cdb3470e"
+    },
+    {
+      "path": "scripts/account-first-authority/registry.mjs",
+      "sha256": "a95efacc9777f7a243a0f0334ad17d3e743cb3f2ec48ddef58209b085db13a63"
+    },
+    {
+      "path": "vite.config.ts",
+      "sha256": "5e249294bdfba86b20dd8aef1d6be467d2de269e99597b0816ed802364e0f0b1"
+    },
+    {
+      "path": "package.json",
+      "sha256": "809e7e837f5c6910dff15dae05b794e5e112021ab324541842ebd7c946f38a61"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "d1a235a6fa7e533e526d2eb6a79b2c60c26b7193235330578c6b9c12ecee334d"
+    },
+    {
+      "path": ".oxlintrc.json",
+      "sha256": "cee3a0df1775883f317cb72090842d9c2c90f9244c5e9ffcab197ff6de9190af"
+    },
+    {
+      "path": ".oxfmtrc.json",
+      "sha256": "2571a599d0e900345d6fd483978eb10800e692aa17971c5ac9cd66916ed4dc32"
+    },
+    {
+      "path": "docs/review/implementation/validation-controls.md",
+      "sha256": "4c5d6be5e5f59d15b29918aa1a75474149a03779dc376db9c44eaa3f305bb1d9"
+    },
+    {
+      "path": "docs/account-crypto/account-ledger.md",
+      "sha256": "0a1374f741de98078fb516e6d0be00f80c0b4606b19f12e93dce89a47677809e"
+    },
+    {
+      "path": "docs/release-validation-graph.json",
+      "sha256": "dd95158b9d0cf07f2f19e8479891a5a3193abd8117b8ad1ba95642f930570d05"
+    },
+    {
+      "path": "docs/release-validation-manifest.json",
+      "sha256": "269ec6c947761c0d81726aa5d90800b346e90187e9532ccd8283d597ff4d521a"
+    }
+  ],
+  "sourcePinMethod": "SHA-256 of tracked blobs at assessmentRevision, including pre-correction current documentation. These are assessment inputs, not hashes of the later intake patch.",
+  "localChecks": {
+    "productionAndFindingSourceDrift": {
+      "command": "git diff --stat d03e473..HEAD -- src account-service account-protocol test/spoolBatch.test.ts .oxlintrc.json .oxfmtrc.json vite.config.ts docs/review/implementation/validation-controls.md",
+      "result": "no differences"
+    },
+    "constructionRegistry": {
+      "command": "node --input-type=module: checkConstructionRegistry(process.cwd()) from scripts/account-first-authority/registry.mjs",
+      "result": {
+        "failures": [],
+        "specified": 78,
+        "open": 0,
+        "excluded": 1,
+        "inherited": 4
+      },
+      "limits": "Read-only registry function only; does not run full authority/map/vector gate or write a receipt."
+    },
+    "boundsProbe": {
+      "invocation": "Save source to a temporary .mjs file and run node <probe> from repository root. Uses installed Vite and disposable synthetic SQLite directories; no listener, browser profile, personal account or network.",
+      "source": "import assert from 'node:assert/strict';\nimport { createRequire } from 'node:module';\nimport { pathToFileURL } from 'node:url';\nimport { mkdtemp, rm } from 'node:fs/promises';\nimport { tmpdir } from 'node:os';\nimport { join } from 'node:path';\nconst root = process.cwd();\nconst fromRoot = (path) => pathToFileURL(join(root, path)).href;\nconst { ready } = await import(fromRoot('test/account-service-delivery/fixtures.mjs'));\nconst { query, read } = await import(fromRoot('test/account-service-inbound/oracle.mjs'));\nconst { decodeInboundPage } = await import(fromRoot('account-protocol/inboundTransport.ts'));\nconst { build } = await import(pathToFileURL(createRequire(join(root, 'package.json')).resolve('vite')).href);\nconst temp = await mkdtemp(join(tmpdir(), 'done-r01-bundle-'));\ntry {\n  await build({ configFile: false, logLevel: 'silent', build: { outDir: temp, emptyOutDir: false, minify: false,\n    lib: { entry: join(root, 'src/crdt/accountInbound.ts'), formats: ['es'], fileName: () => 'inbound.mjs' } } });\n  const { verifyInboundPage, InboundError } = await import(pathToFileURL(join(temp, 'inbound.mjs')).href);\n  for (const bytes of [16384, 614400, 4 * 1024 * 1024]) {\n    const cleanups = [];\n    try {\n      const x = await ready({ after: (fn) => cleanups.push(fn) });\n      const result = await x.call(x.make(1, 'x'.repeat(bytes)));\n      const output = { updateBytes: bytes, serviceKind: result.kind, serviceReason: result.reason ?? null };\n      if (result.kind === 'decision') {\n        const q = query(x), page = await read(x, q);\n        assert.equal(page.kind, 'decision');\n        const wireBytes = decodeInboundPage(page.bytes).entries[0].envelope.length;\n        Object.assign(output, { readKind: page.kind, envelopeBytes: wireBytes, exceedsReceiverWireLimit: wireBytes > 512 * 1024 });\n        if (bytes === 614400) {\n          const publicKey = x.s.publicKey.export({ format: 'der', type: 'spki' }).subarray(-32).toString('hex');\n          const context = {\n            baseline: { kind: 'promotion-genesis', id: '00'.repeat(32) },\n            service: { id: x.authority.pin.serviceId, origin: x.authority.pin.origin },\n            authority: { workspace: x.workspace, lineage: x.offer.epoch.lineageId,\n              head: x.offer.head, tip: 1, acceptanceKey: x.offer.epoch.acceptancePublicKey },\n            creatingCredential: x.credential,\n            reader: { id: x.credential, publicKey, active: true },\n            publisher: { id: x.credential, publicKey, active: true,\n              principal: x.request.candidate.principalId, system: true },\n            generation: 1, generationKey: new Uint8Array(32),\n            prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },\n          };\n          await assert.rejects(verifyInboundPage(context, q, page.bytes, { assertCurrent() {} }),\n            (e) => { output.receiverError = e.name; output.receiverReason = e.reason;\n              return e instanceof InboundError && e.reason === 'size'; });\n        }\n      }\n      console.log(JSON.stringify(output));\n    } finally { for (const cleanup of cleanups.reverse()) await cleanup(); }\n  }\n} finally { await rm(temp, { recursive: true, force: true }); }\n",
+      "sourceSha256": "f5460223ef2f0f99f81d486ae4aa45ff07ae75366b5820c6c83c17699dd84588",
+      "exitCode": 0,
+      "node": "v26.8.2",
+      "results": [
+        {
+          "updateBytes": 16384,
+          "serviceKind": "decision",
+          "serviceReason": null,
+          "readKind": "decision",
+          "envelopeBytes": 16682,
+          "exceedsReceiverWireLimit": false
+        },
+        {
+          "updateBytes": 614400,
+          "serviceKind": "decision",
+          "serviceReason": null,
+          "readKind": "decision",
+          "envelopeBytes": 614698,
+          "exceedsReceiverWireLimit": true,
+          "receiverError": "Error",
+          "receiverReason": "size"
+        },
+        {
+          "updateBytes": 4194304,
+          "serviceKind": "unknown",
+          "serviceReason": "invalid-request"
+        }
+      ],
+      "setupAttempt": "Initial setup attempted unavailable esbuild and failed before service assertions; rerun used installed Vite and passed. No dependency installed.",
+      "limits": "The fixture encrypts arbitrary update bytes; this is a size/framing probe, not proof of valid Yjs import. The large-page refusal executes real receiver verification before decryption, with a placeholder generation key; no actual scheduler, cold reopen or second device is exercised. The small fixture only proves service acceptance and receiver wire-limit fit. Fixture cleanup and temporary bundle removal completed."
+    },
+    "focusedBatchProperty": {
+      "command": "node node_modules/vitest/vitest.mjs run test/spoolBatch.test.ts --reporter=json --outputFile=<temporary report>",
+      "exitCode": 0,
+      "passedTests": 2,
+      "failedTests": 0,
+      "histories": 120,
+      "seed": 1209032,
+      "cases": [
+        {
+          "name": "120 generated source/actor/burn histories batch exact originals in order and keep detached warm verification",
+          "status": "passed",
+          "durationMs": 2635.975958
+        },
+        {
+          "name": "batch count, bytes, actor boundary, duplicate, order and late-source controls refuse unsafe allocations",
+          "status": "passed",
+          "durationMs": 219.71912499999962
+        }
+      ],
+      "limits": "One focused run on the current shared host, not a loaded-host reproduction or full unit aggregate."
+    },
+    "wholeTreeStyle": {
+      "commands": [
+        {
+          "argv": ["node_modules/.bin/oxlint", "--react-plugin"],
+          "exitCode": 1,
+          "seconds": 0.43
+        },
+        {
+          "argv": ["node_modules/.bin/oxfmt", "--check", "."],
+          "exitCode": 1,
+          "seconds": 0.91
+        }
+      ],
+      "counts": {
+        "lintErrors": 83,
+        "lintErrorsInAccountArchive": 83,
+        "formatFiles": 1170,
+        "formatAccountArchiveFiles": 1053,
+        "formatStorageArchiveFiles": 79,
+        "formatScripts": 18,
+        "formatTests": 17,
+        "formatOtherDocs": 3
+      },
+      "otherDocPaths": [
+        "docs/review/implementation/addenda-2026-09-12.json",
+        "docs/review/remediation/S0-9/isolation-battery.mjs",
+        "docs/review/remediation/S0-9/round-3-battery.mjs"
+      ],
+      "limits": "Package command payloads executed directly, read-only, before intake edits. No formatter fix mode used on existing files; pnpm wrappers and aggregate not executed."
+    },
+    "intakeIntegrity": {
+      "packetReconstruction": true,
+      "uniqueResponseBlocks": 27,
+      "sourcePinsVerified": 37,
+      "unsignedCommitObjectsUnchanged": 30,
+      "appendOnlyCompletedAndDecisions": true,
+      "L2Sha256": "e053bf287bb8020201d067e2b33e66189920efc9b4bae8e7b3d373266bf65b95",
+      "personalFileHashesUnchanged": 21,
+      "priorVectorHashesUnchanged": 31,
+      "productionTestsAndHistoricalEvidenceDiff": "empty",
+      "missingRelativeDocLinks": 0,
+      "newCommits": 0,
+      "stagedChanges": 0
+    },
+    "planningInventory": {
+      "command": "node scripts/release-validation/check.mjs",
+      "exitCode": 0,
+      "status": "passed",
+      "packageScripts": 122,
+      "campaigns": 78,
+      "testFiles": 277,
+      "requiredTestFiles": 271,
+      "excludedProductTestFiles": 6,
+      "catalogues": 12,
+      "vectorCorpora": 29,
+      "constructions": 83,
+      "vectorChainConsumers": 18,
+      "limits": "Planning inventory readback only; no test bodies or aggregate executed."
+    }
+  },
+  "signingPreflight": {
+    "path": "docs/review/implementation/signing-preflight-2026-09-13.json",
+    "sha256": "09968f896f5df65f39a156a18cc81cf05ee19995186f7ef8bd94c86c442a71e0",
+    "unsignedCommits": 30,
+    "base": "1372c39f9cd495f75ddf8a438ab314af14df4380",
+    "trackedTextReferenceFiles": 126,
+    "signingStarted": false,
+    "requires": "Explicit user confirmation of being at the keyboard."
+  },
+  "limitations": [
+    "Reviewer scratch probes/raw campaigns were not supplied; their measurements stay attributed, not reproduced by this intake.",
+    "No production/test repair; R-01/R-03/R-04 stay open. R-02 current documentation is corrected, but signing is pending.",
+    "No full crypto/vector/traceability/release aggregate, browser run, capacity guarantee or public qualification.",
+    "Original packets/intake JSON, historical evidence, append-only prior text, formal debt namespaces, prior vectors and personal installation remain unchanged."
+  ]
+}

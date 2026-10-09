@@ -14,13 +14,10 @@
  */
 
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react';
-import type { Store, Workspace } from '../crdt';
 import { addDays, relativeDay, type ISODate } from '../lib/date';
 import { DayPanel } from './DayPanel';
 
 export interface DayPlaneProps {
-  store: Store;
-  workspace: Workspace;
   date: ISODate;
   today: ISODate;
   /** Live drag offset in pixels; positive reveals the past. */
@@ -29,6 +26,9 @@ export interface DayPlaneProps {
   settling: boolean;
   showMenuTrigger: boolean;
   menuOpen: boolean;
+  showGoalsTrigger: boolean;
+  goalsOpen: boolean;
+  onOpenGoals: () => void;
   onOpenMenu: () => void;
   onGoTo: (date: ISODate) => void;
   unfiledCount: number;
@@ -37,14 +37,15 @@ export interface DayPlaneProps {
 }
 
 export const DayPlane = ({
-  store,
-  workspace,
   date,
   today,
   shift,
   settling,
   showMenuTrigger,
   menuOpen,
+  showGoalsTrigger,
+  goalsOpen,
+  onOpenGoals,
   onOpenMenu,
   onGoTo,
   unfiledCount,
@@ -151,8 +152,6 @@ export const DayPlane = ({
         {[previous, date, next].map((panelDate, index) => (
           <DayPanel
             key={panelDate}
-            store={store}
-            workspace={workspace}
             date={panelDate}
             today={today}
             offset={index - 1}
@@ -161,6 +160,9 @@ export const DayPlane = ({
             // thing to keep in step for no gain.
             showMenuTrigger={showMenuTrigger && index === 1}
             menuOpen={menuOpen}
+            showGoalsTrigger={showGoalsTrigger && index === 1}
+            goalsOpen={goalsOpen}
+            onOpenGoals={onOpenGoals}
             onOpenMenu={onOpenMenu}
             onGoTo={onGoTo}
             unfiledCount={unfiledCount}

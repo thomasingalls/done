@@ -1,0 +1,70 @@
+Account spool evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-spool/2026-09-11T11-55-21.504Z
+Starting properties
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > 150 generated real-wire histories retain exact source coverage and reject removed grant events 1164ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > 150 generated authority substitutions reject a well-framed entry in the wrong domain 6ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > rejects gaps, duplicate coverage, missing source indexes and envelope-before-attempt transitions 2ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > verifies exact source hash, original actor/update, digest and prepared signature before exposure 3ms
+ ✓ test/spoolRecord.test.ts > Account spool ledger conformance > rejects unknown versions, noncanonical bytes, unsafe positions, exhausted budgets and wrong physical placement 1ms
+ ✓ test/spoolRecord.test.ts > counter v2 is closed and authenticated separately while v1 bytes stay unchanged 1ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  13:55:21
+   Duration  1.40s (transform 60ms, setup 27ms, import 104ms, tests 1.18s, environment 0ms)
+
+Starting native
+(node:44840) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44840) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ spool persists exact v2 envelopes with separate positions/attempts and retains sources through restart and compaction (3930.096042ms)
+✔ position before commit restarts with contiguous positions and counts every fresh invocation (4072.420958ms)
+✔ position after commit restarts with contiguous positions and counts every fresh invocation (4107.503667ms)
+native still running; see native.log
+✔ attempt before commit restarts with contiguous positions and counts every fresh invocation (4063.252625ms)
+✔ attempt after commit restarts with contiguous positions and counts every fresh invocation (4059.897167ms)
+✔ envelope before commit restarts with contiguous positions and counts every fresh invocation (4058.179959ms)
+✔ envelope after commit restarts with contiguous positions and counts every fresh invocation (4060.104ms)
+native still running; see native.log
+✔ v7 activation before commit fences old capture without exposing an editor (4349.445791ms)
+✔ v7 activation after commit fences old capture without exposing an editor (4314.288334ms)
+✔ prepared signer and each original actor bind the actual wire; stored sources remain after mixed work (3154.78425ms)
+✔ authenticated-at-rest source-missing corruption refuses restart without writes or new crypto (2886.727625ms)
+native still running; see native.log
+✔ authenticated-at-rest source-changed corruption refuses restart without writes or new crypto (2892.30475ms)
+✔ authenticated-at-rest wire corruption refuses restart without writes or new crypto (2950.772875ms)
+✔ authenticated-at-rest attempt corruption refuses restart without writes or new crypto (2910.035542ms)
+✔ authenticated-at-rest ledger-missing corruption refuses restart without writes or new crypto (2874.537125ms)
+✔ close drains a paused encryption, withholds wire, and prevents stale and queued owners from reusing its grant (3783.4975ms)
+native still running; see native.log
+✔ a lowered budget fence refuses before the first prohibited encryption (3120.816416ms)
+✔ actual controls expose return-before-persistence and invocation-grant reuse after crash (6457.23075ms)
+✔ one mixed capsule maps to separate exact actor envelopes, including a pending frame and a large source (4998.4115ms)
+native still running; see native.log
+spool history 1/8: [{"text":"🙂","boundary":"position-before"},{"text":"x","boundary":"envelope-after"},{"text":"é","boundary":"position-before"}]
+spool history 2/8: [{"text":"🙂","boundary":"normal"},{"text":"🙂","boundary":"attempt-before"},{"text":"x","boundary":"attempt-before"}]
+spool history 3/8: [{"text":"é","boundary":"compact"},{"text":"🙂","boundary":"envelope-before"},{"text":"é","boundary":"envelope-before"}]
+spool history 4/8: [{"text":"🙂","boundary":"attempt-after"},{"text":"🙂","boundary":"envelope-after"},{"text":"é","boundary":"attempt-before"}]
+native still running; see native.log
+spool history 5/8: [{"text":"é","boundary":"envelope-after"},{"text":"é","boundary":"position-after"}]
+spool history 6/8: [{"text":"x","boundary":"envelope-after"},{"text":"é","boundary":"position-before"},{"text":"x","boundary":"position-before"},{"text":"é","boundary":"compact"}]
+spool history 7/8: [{"text":"🙂","boundary":"position-after"},{"text":"🙂","boundary":"position-before"},{"text":"x","boundary":"position-after"}]
+spool history 8/8: [{"text":"🙂","boundary":"attempt-before"},{"text":"x","boundary":"position-before"},{"text":"é","boundary":"attempt-before"}]
+native still running; see native.log
+✔ generated native crash histories preserve exact wire, source references and an external invocation bound (35060.817667ms)
+✔ missing final envelope refuses reopening a previously exposed position (2917.626125ms)
+✔ spool metadata activation before commit resumes before admission (4021.204167ms)
+native still running; see native.log
+✔ spool metadata activation after commit resumes before admission (4015.615125ms)
+✔ removing the actual witness check reproduces remint after a missing final row (3161.839ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 123366.038208
+passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-spool/2026-09-11T11-55-21.504Z

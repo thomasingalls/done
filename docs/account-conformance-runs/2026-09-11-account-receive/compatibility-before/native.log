@@ -1,0 +1,92 @@
+(node:48693) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:48693) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ first submission is persisted exactly, idempotent, retained through compaction and suppressed after acceptance (7407.559333ms)
+✔ closed evidence survives cold restart, blocks outbound preparation and preserves local editing (5947.654875ms)
+✔ conflict evidence survives cold restart, blocks outbound preparation and preserves local editing (5804.759542ms)
+✔ finalized evidence survives cold restart, blocks outbound preparation and preserves local editing (5877.956875ms)
+✔ submission before native commit recovers without rewriting acknowledged bytes (6143.1275ms)
+✔ submission after native commit recovers without rewriting acknowledged bytes (6004.106041ms)
+✔ response before native commit recovers without rewriting acknowledged bytes (6218.469542ms)
+✔ response after native commit recovers without rewriting acknowledged bytes (6056.196125ms)
+✖ v8 activation before commit fences v7 readers before returning the editor (5923.662833ms)
+✖ v8 activation after commit fences v7 readers before returning the editor (5913.009208ms)
+✔ invalid responses and exact duplicates change no persistent inventory (4501.546ms)
+✔ missing final submission refuses reopening with its retained ledger witness (4543.606333ms)
+✔ missing final response refuses reopening with its retained ledger witness (4556.410792ms)
+✔ contradictory prefix acceptance, refusals and final heads halt in either order (14569.701375ms)
+✔ actual early-return and witness controls expose lost submission and resurrected closed delivery (6531.388542ms)
+✔ close drains device signing and withholds uncommitted submission bytes (5723.154417ms)
+✔ authority is reauthenticated after signing; an actual omitted-recheck control commits behind a changed fence (7864.777709ms)
+✔ actual leaf-only control misses contradictory prefix proofs in both orders (8458.116583ms)
+delivery history 1/8: {"side":"before","compact":false,"answers":[{"kind":"finalized","position":2},{"kind":"accepted","position":1},{"kind":"junk","position":2},{"kind":"accepted","position":2},{"kind":"finalized","position":1},{"kind":"conflict","position":2}]}
+delivery history 2/8: {"side":"before","compact":false,"answers":[{"kind":"junk","position":2},{"kind":"finalized","position":1},{"kind":"refused","position":2}]}
+delivery history 3/8: {"side":"before","compact":false,"answers":[{"kind":"finalized","position":1},{"kind":"junk","position":1},{"kind":"conflict","position":2},{"kind":"refused","position":2}]}
+delivery history 4/8: {"side":"after","compact":true,"answers":[{"kind":"finalized","position":1},{"kind":"refused","position":1},{"kind":"finalized","position":2},{"kind":"junk","position":2}]}
+delivery history 5/8: {"side":"after","compact":true,"answers":[{"kind":"finalized","position":1},{"kind":"conflict","position":1},{"kind":"finalized","position":1}]}
+delivery history 6/8: {"side":"before","compact":true,"answers":[{"kind":"conflict","position":2},{"kind":"junk","position":1},{"kind":"refused","position":1},{"kind":"refused","position":2}]}
+delivery history 7/8: {"side":"after","compact":false,"answers":[{"kind":"accepted","position":2},{"kind":"refused","position":1},{"kind":"junk","position":2}]}
+delivery history 8/8: {"side":"before","compact":true,"answers":[{"kind":"accepted","position":2},{"kind":"finalized","position":1},{"kind":"refused","position":2},{"kind":"junk","position":2}]}
+✔ eight generated durable histories preserve exact retries, proof-derived status and sources across faults and cold restarts (34888.64925ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 17
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 154417.327917
+
+✖ failing tests:
+
+test at test/account-delivery/native.test.mjs:180:3
+✖ v8 activation before commit fences v7 readers before returning the editor (5923.662833ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Spool requires/. Input:
+  
+  'Error: page.evaluate: Error: Account handoff needs resumption\n' +
+    '    at verifyAccountUnderPermit (eval at evaluate (:311:30), <anonymous>:45440:394)\n' +
+    '    at async initialize (eval at evaluate (:311:30), <anonymous>:45780:15)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:27777:7)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)'
+  
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs:201:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: Error: Account handoff needs resumption
+        at verifyAccountUnderPermit (eval at evaluate (:311:30), <anonymous>:45440:394)
+        at async initialize (eval at evaluate (:311:30), <anonymous>:45780:15)
+        at async eval (eval at evaluate (:311:30), <anonymous>:27777:7)
+        at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)
+        at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs:202:16),
+    expected: /Spool requires/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/account-delivery/native.test.mjs:180:3
+✖ v8 activation after commit fences v7 readers before returning the editor (5913.009208ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Spool requires/. Input:
+  
+  'Error: page.evaluate: Error: Account handoff needs resumption\n' +
+    '    at verifyAccountUnderPermit (eval at evaluate (:311:30), <anonymous>:45440:394)\n' +
+    '    at async initialize (eval at evaluate (:311:30), <anonymous>:45780:15)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:27777:7)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)'
+  
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs:201:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: Error: Account handoff needs resumption
+        at verifyAccountUnderPermit (eval at evaluate (:311:30), <anonymous>:45440:394)
+        at async initialize (eval at evaluate (:311:30), <anonymous>:45780:15)
+        at async eval (eval at evaluate (:311:30), <anonymous>:27777:7)
+        at async eval (eval at evaluate (:311:30), <anonymous>:27687:20)
+        at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-delivery/native.test.mjs:202:16),
+    expected: /Spool requires/,
+    operator: 'rejects',
+    diff: 'simple'
+  }

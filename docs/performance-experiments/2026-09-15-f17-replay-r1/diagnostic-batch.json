@@ -1,0 +1,42 @@
+[
+  {
+    "variant": "selected",
+    "session": "cost-0",
+    "started": "2026-09-15T12:02:42.498Z",
+    "finished": "2026-09-15T12:03:23.710Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "guarded",
+    "session": "cost-0",
+    "started": "2026-09-15T12:03:23.982Z",
+    "finished": "2026-09-15T12:04:04.777Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "guarded",
+    "session": "cost-1",
+    "started": "2026-09-15T12:04:05.047Z",
+    "finished": "2026-09-15T12:04:46.109Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "variant": "selected",
+    "session": "cost-1",
+    "started": "2026-09-15T12:04:46.383Z",
+    "finished": "2026-09-15T12:05:27.211Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  }
+]

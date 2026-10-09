@@ -1,0 +1,80 @@
+[
+  {
+    "v": 1,
+    "stage": "reserved",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 1,
+    "stage": "prepared",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 2,
+    "stage": "genesis-prepared",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 3,
+    "stage": "admission-requested",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 3,
+    "stage": "admission-offered",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 3,
+    "stage": "admission-receipted",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 4,
+    "stage": "handoff-prepared",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 4,
+    "stage": "handoff-selected",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 5,
+    "stage": "account-active",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 6,
+    "stage": "account-capturing",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 7,
+    "stage": "account-spooling",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 8,
+    "stage": "account-delivering",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  },
+  {
+    "v": 9,
+    "stage": "account-receiving",
+    "correctMac": "read",
+    "changedId": "authentication refusal"
+  }
+]

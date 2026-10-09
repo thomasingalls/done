@@ -1,0 +1,56 @@
+{
+  "seed": 9132026,
+  "histories": [
+    [
+      "retry",
+      "restart",
+      "restart"
+    ],
+    [
+      "retry",
+      "lost",
+      "restart",
+      "edit",
+      "lost"
+    ],
+    [
+      "lost",
+      "edit",
+      "lost",
+      "offline",
+      "offline",
+      "lost"
+    ],
+    [
+      "retry",
+      "lost",
+      "restart",
+      "lost",
+      "offline",
+      "restart"
+    ],
+    [
+      "retry",
+      "retry",
+      "lost"
+    ],
+    [
+      "retry",
+      "restart",
+      "lost",
+      "restart"
+    ],
+    [
+      "lost",
+      "offline",
+      "offline"
+    ],
+    [
+      "restart",
+      "retry",
+      "retry",
+      "lost"
+    ]
+  ],
+  "status": "passed"
+}

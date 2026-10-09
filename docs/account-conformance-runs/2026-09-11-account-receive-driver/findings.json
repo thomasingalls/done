@@ -1,0 +1,29 @@
+{
+  "reproducedDefect": {
+    "trigger": "Status observer introduces Local pressure before the first owned step begins; ordinary pressure restoration follows.",
+    "before": "Pending due time erased before readiness check; no next pass after ordinary restoration.",
+    "after": "Keep due until the step actually starts. Focused regression, 100 generated pause durations and effective resume control pass."
+  },
+  "classificationCorrection": "A readiness skip is paused, not a verified empty response; it does not reset the unknown streak. The independent generated oracle now includes paused completions.",
+  "controls": [
+    "overlap",
+    "missing idle polling",
+    "online clearing halt",
+    "dispatch after observer close",
+    "lost pending attempt after observer pressure",
+    "final offline dispatch gate",
+    "final storage-pressure dispatch gate"
+  ],
+  "initialWeakControl": "The first overlap mutation left the expedited-work guard intact and did not produce overlap. Removing the complete in-flight guard group now gives two concurrent invocations; baseline gives one. That first direct output was not separately saved.",
+  "unitFailure": {
+    "result": "10 per-test deadline failures across 9 files, 964 other tests passed.",
+    "context": "Concurrent browser campaigns and isolated build were also running.",
+    "resolution": "Final full suite rerun alone with maxWorkers=2; original test deadlines retained. Both logs archived."
+  },
+  "generatedFinalCounterexamples": [],
+  "limits": [
+    "Private first epoch and creating publisher; no v9 outbound composition or enrollment",
+    "No real Account or deployment and no complete pnpm check rerun",
+    "Unrewound/unbranched client and service history, existing receiver size bounds, and remaining review gates still apply"
+  ]
+}

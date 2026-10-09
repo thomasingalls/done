@@ -1,0 +1,94 @@
+{
+  "base": "d85036e453fc4e6ce42ef36ac7bf27dc6ba447cc",
+  "claim": "Account decisions native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T07-26-55.280Z",
+  "summary": {
+    "schema": 1,
+    "selection": "decisions-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-decisions/native.test.mjs",
+        "key": "ba81f0bcd14b9d5f4b634c2ff99669c03150488f4bea4493bffd893482aab16a",
+        "status": "passed",
+        "elapsedMs": 71743,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T07:26:55.283Z",
+    "input": "dcdc8bc1efd45c20f04a32ff49e4e0202620b0c35b829f5b1a96be6528113dea",
+    "completedAt": "2026-09-14T07:28:30.157Z"
+  },
+  "elapsedMs": 94874,
+  "rawInputArchiveSha256": "9aa6942f53e0f1a1d1e029862396006c5242fb98f4d0ad81806b7efa4ee186fd",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "d85036e453fc4e6ce42ef36ac7bf27dc6ba447cc",
+    "sourceDigest": "a1cb5ccfd6505d504c31f1ac5bcfa4e26ed0975ae521638d2bff7a043afde35e",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 6,
+    "browserFiles": 1,
+    "generatedHistories": 8,
+    "seed": 9622026,
+    "priorGeneralFiles": 183,
+    "priorGeneralCases": 1545,
+    "currentGeneralFiles": 184,
+    "currentGeneralCases": 1551,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 88,
+    "accountFiles": 78,
+    "accountCases": 457,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 233,
+    "unresolvedTestFiles": 74,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 655629
+  },
+  "finalGatesSha256": "b7efa10731be5e471b0df4f26d68dc906a57652cee5cdcc2804e54ef616475fd",
+  "preservationSha256": "b1d3c111fff998747e8136790976dc81a1bb3ef5137031fd490be2a7dbb5ff3f",
+  "limits": [
+    "One complete existing native file retains six cases: five directed, including one five-mutation case, and one eight-history generated campaign. The original 120-second wrapper deadline remains, with four ordinary cases at 30 seconds, the mutation case at 45, and generated histories at 90. Browser startup stays 15 seconds and drain grace five. Product code, test bodies, helpers, mutation bodies, vectors, wrapper, census and browser owner are unchanged. This phase changes only runner registrations, checked snapshots and records.",
+    "The base registers cleanup before setup, borrows a validated owned loopback CDP endpoint, and creates synthetic credentials/recovery data, contexts and temporary Account service/SQLite files. Setup performs actual synthetic registration/preparation/admission/handoff. Builds are in memory; generated histories use distinct workspaces in a shared context/service. Cleanup closes contexts, connections and services before temporary-file removal, and the owner drains Chromium. No historical reader branch runs under the sanitized environment, so the stage has no historical inputs. Both antireplay and private-envelope runtime vector files are included in frozen source identity and explicit packet pins, not registration-data inputs.",
+    "The independent Node/OpenSSL oracle frames/signs response proofs and reconstructs acceptance links. It opens only the disposable service acceptance seal under the synthetic operator key, closes its read-only DB and clears intermediate key buffers. Subjects come from the current product envelope decoder. This is local verification of independently signed evidence, not HTTP decision issuance, general lineage advancement or enforcement of permanent closure by a service.",
+    "Owned inspection returns accepted/refused evidence while exact envelopes, source capsules, spool status and the native IDB/localStorage inventory remain unchanged. After new-page reopen the directed case compares envelope bytes and re-inspects the accepted proof. Foreign-key, wrong workspace/credential/epoch/digest/parent, foreign-prefix and malformed proofs stay unknown; an authenticated different accepted digest is conflict, and an unminted next position is unknown. Later-position positives independently reconstruct predecessor links over the retained envelope sequence. These observations do not persist terminal delivery state.",
+    "The cancellation case pauses actual browser verification of a refusal, closes the owner, and checks that a competing Web Lock cannot enter until verification drains. No evidence escapes the cancelled continuation; a stale inspect call refuses and a fresh-page owner can inspect the same proof. This is graceful close/drain and new-page reopen. The selected file invokes no renderer crash, whole-browser restart or power-loss boundary.",
+    "Eight generated histories retain seed 9622026, numRuns:8, endOnFailure:true and 90 seconds. Two to five answers draw accepted/refused/foreign-key/foreign-prefix/conflict/junk. Every answer is compared with its expected evidence kind and an unchanged IDB/localStorage inventory. Spool status is compared before closing; final unconditional new-page reopen compares exact stored envelope bytes. Generated source capsules and counters are not separately compared after final reopen, nor is final visible text. The case title is broader than those direct final assertions. No all-kind coverage or shrinking claim is made.",
+    "Five source mutations exercise the actual protocol primitives: removed signature rejection admits a retired-key refusal, omitted epoch equality admits a different-epoch refusal, removed link verification admits an unanchored acceptance head, and omitted parent-message or position binding admits altered-parent or mismatched-position submissions. Anchors require unique matches. The parent control changes the shared signing/verification message builder in the mutant bundle, signs under that bundle, then substitutes another valid refusal. This does not show that an unmutated existing submission signature can be replaced. These are primitive mutation observations with synthetic vector keys, not durable successor issuance or end-to-end remint authorization.",
+    "Optional ACCOUNT_REPORT_DIR exports remain disabled. Exact saved-output requirements, original wrapper ordering, vector/prerequisite regeneration and whole-wrapper process ownership remain independent unresolved obligations. Public fixture vectors are read as frozen runtime inputs; this selection does not rerun their generators. Existing retired-v8 exclusions stay and no intermediate app gains supported status.",
+    "All 92 pure runner checks pass. Unchanged 23 Node owner, five Vitest-process and twelve native-owner checks retain pinned prior evidence rather than new execution. The initial ledger owner historical-path orphan classification remains unresolved, and core receive previously used 297.025 seconds of its 300-second Node bound. Both stay at the owner/loaded-host reliability gate; this phase establishes no fix.",
+    "All 183 prior general contracts / 1545 case identities and six retired-v8 exclusions are unchanged. Full frozen source/dependency/browser archives remain locally with hashes here. Later documentation changes do not establish an immutable aggregate. The preceding delivery phase is signed and verified. Personal profiles/services/builds/recovery/factors, earlier vectors/evidence/debts/signing backups, root done-space and L-2 remain untouched."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 67424.422041,
+    "stageElapsedMs": 71743,
+    "selectionElapsedMs": 94874,
+    "nodeDeadlineMs": 120000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "e59b73ca744e855d2646cf26f270120f83b901f8a7c5edd878f62e8403edf67c",
+    "compressedSha256": "ff79a818a372f6a4fee1992338092d741414a2f9c4649fcfe856893dfa6c761d"
+  }
+}

@@ -1,0 +1,18 @@
+(node:40799) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:40799) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:40799) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ long sv history survives HTTP admission, independent decrypt and cold retry; old reader refuses (3741.183208ms)
+✔ long ds history survives HTTP admission, independent decrypt and cold retry; old reader refuses (4082.843ms)
+✔ genuine retained sv lie refuses without a completion submission or carrier change (1567.344917ms)
+✔ genuine retained ds lie refuses without a completion submission or carrier change (1536.008917ms)
+✔ genuine v1 offered carrier is retained unchanged and refused by new owner (1761.613875ms)
+✔ coverage preflight refuses before requested carrier or admission network call (1410.871166ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15099.292042

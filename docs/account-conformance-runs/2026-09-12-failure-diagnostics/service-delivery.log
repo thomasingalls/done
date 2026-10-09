@@ -1,0 +1,34 @@
+(node:96292) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96292) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ exact persisted decisions extend a contiguous chain and survive restart without replacing ciphertext (85.972084ms)
+✔ permanent closure cannot reopen; only an owned issued parent permits a different attempt at that position (103.841709ms)
+✔ invalid, foreign, future and unordered submissions never create a permanent refusal (70.131375ms)
+✔ caller bytes are captured before asynchronous verification (32.731084ms)
+✔ before-commit generation 1 decision fault resolves from durable readback (46.705125ms)
+✔ before-commit generation 2 decision fault resolves from durable readback (45.924708ms)
+✔ after-commit generation 1 decision fault resolves from durable readback (46.218917ms)
+✔ after-commit generation 2 decision fault resolves from durable readback (47.139375ms)
+✔ missing-tail damage refuses without signing or repairing the ledger (44.970042ms)
+✔ missing-all damage refuses without signing or repairing the ledger (44.694625ms)
+✔ witness damage refuses without signing or repairing the ledger (45.393125ms)
+✔ submission damage refuses without signing or repairing the ledger (43.7295ms)
+✔ response damage refuses without signing or repairing the ledger (44.576875ms)
+✔ seal damage refuses without signing or repairing the ledger (48.342084ms)
+✔ membership damage refuses without signing or repairing the ledger (40.203584ms)
+✔ membership changes during verification prevent commit (31.956042ms)
+✔ schema 3 upgrade preserves historical rows but cannot invent fresh activation authority (33.166542ms)
+✔ a valid acceptance-key signature is insufficient without the service-issued closure record (37.415708ms)
+✔ closing authority during verification prevents any decision or witness from escaping (33.344917ms)
+(node:96293) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96293) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 80 generated service histories preserve permanent subjects, one accepted leaf, and exact retries across unknown commits (11743.236125ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13077.950292

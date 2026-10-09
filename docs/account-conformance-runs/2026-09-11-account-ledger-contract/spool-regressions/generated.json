@@ -1,0 +1,118 @@
+{
+  "seed": 9502026,
+  "histories": [
+    [
+      {
+        "text": "🙂",
+        "boundary": "position-before"
+      },
+      {
+        "text": "x",
+        "boundary": "envelope-after"
+      },
+      {
+        "text": "é",
+        "boundary": "position-before"
+      }
+    ],
+    [
+      {
+        "text": "🙂",
+        "boundary": "normal"
+      },
+      {
+        "text": "🙂",
+        "boundary": "attempt-before"
+      },
+      {
+        "text": "x",
+        "boundary": "attempt-before"
+      }
+    ],
+    [
+      {
+        "text": "é",
+        "boundary": "compact"
+      },
+      {
+        "text": "🙂",
+        "boundary": "envelope-before"
+      },
+      {
+        "text": "é",
+        "boundary": "envelope-before"
+      }
+    ],
+    [
+      {
+        "text": "🙂",
+        "boundary": "attempt-after"
+      },
+      {
+        "text": "🙂",
+        "boundary": "envelope-after"
+      },
+      {
+        "text": "é",
+        "boundary": "attempt-before"
+      }
+    ],
+    [
+      {
+        "text": "é",
+        "boundary": "envelope-after"
+      },
+      {
+        "text": "é",
+        "boundary": "position-after"
+      }
+    ],
+    [
+      {
+        "text": "x",
+        "boundary": "envelope-after"
+      },
+      {
+        "text": "é",
+        "boundary": "position-before"
+      },
+      {
+        "text": "x",
+        "boundary": "position-before"
+      },
+      {
+        "text": "é",
+        "boundary": "compact"
+      }
+    ],
+    [
+      {
+        "text": "🙂",
+        "boundary": "position-after"
+      },
+      {
+        "text": "🙂",
+        "boundary": "position-before"
+      },
+      {
+        "text": "x",
+        "boundary": "position-after"
+      }
+    ],
+    [
+      {
+        "text": "🙂",
+        "boundary": "attempt-before"
+      },
+      {
+        "text": "x",
+        "boundary": "position-before"
+      },
+      {
+        "text": "é",
+        "boundary": "attempt-before"
+      }
+    ]
+  ],
+  "status": "passed"
+}

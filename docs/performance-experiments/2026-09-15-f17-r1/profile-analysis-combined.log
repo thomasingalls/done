@@ -1,0 +1,289 @@
+{
+  "summary": {
+    "sampledAllocationBytes": 87298576,
+    "gcMs": 90.771
+  },
+  "topAllocation": [
+    {
+      "id": 671,
+      "function": "Set",
+      "source": "",
+      "selfBytes": 5679008,
+      "children": [],
+      "inclusiveBytes": 5679008
+    },
+    {
+      "id": 810,
+      "function": "read",
+      "source": "../../../combined/src/crdt/admittedWorkspace.ts",
+      "line": 699,
+      "selfBytes": 3940260,
+      "children": [
+        1442
+      ],
+      "inclusiveBytes": 3981444
+    },
+    {
+      "id": 811,
+      "function": "x",
+      "source": "../../../combined/src/editor/admittedEditor.ts",
+      "line": 194,
+      "selfBytes": 3717656,
+      "children": [
+        812,
+        1787,
+        1009,
+        2621,
+        2576,
+        815,
+        1734,
+        1394,
+        1733,
+        851,
+        2454
+      ],
+      "inclusiveBytes": 10360056
+    },
+    {
+      "id": 66,
+      "function": "MG",
+      "source": "../../../combined/src/ui/Card.tsx",
+      "line": 76,
+      "selfBytes": 3447608,
+      "children": [
+        1175,
+        80,
+        67,
+        77,
+        1234,
+        1235,
+        1420,
+        1417,
+        72,
+        918,
+        912,
+        1044,
+        1207,
+        1306
+      ],
+      "inclusiveBytes": 6655264
+    },
+    {
+      "id": 62,
+      "function": "set",
+      "source": "",
+      "selfBytes": 2842160,
+      "children": [],
+      "inclusiveBytes": 2842160
+    },
+    {
+      "id": 648,
+      "function": "e",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9752,
+      "selfBytes": 2400216,
+      "children": [],
+      "inclusiveBytes": 2400216
+    },
+    {
+      "id": 795,
+      "function": "so",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 2066,
+      "selfBytes": 2100888,
+      "children": [
+        806,
+        798
+      ],
+      "inclusiveBytes": 2368732
+    },
+    {
+      "id": 60,
+      "function": "",
+      "source": "../../../combined/src/ui/Collection.tsx",
+      "line": 70,
+      "selfBytes": 1994376,
+      "children": [],
+      "inclusiveBytes": 1994376
+    },
+    {
+      "id": 2180,
+      "function": "Fc",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9246,
+      "selfBytes": 1752940,
+      "children": [
+        2181,
+        2189,
+        2251
+      ],
+      "inclusiveBytes": 2555004
+    },
+    {
+      "id": 799,
+      "function": "writeString",
+      "source": "../../../combined/src/crdt/yjs.ts",
+      "line": 195,
+      "selfBytes": 1309820,
+      "children": [
+        800
+      ],
+      "inclusiveBytes": 1350880
+    },
+    {
+      "id": 670,
+      "function": "set",
+      "source": "",
+      "selfBytes": 1017464,
+      "children": [],
+      "inclusiveBytes": 1017464
+    },
+    {
+      "id": 587,
+      "function": "writeString",
+      "source": "../../../combined/src/crdt/yjs.ts",
+      "line": 77,
+      "selfBytes": 979380,
+      "children": [
+        588,
+        595
+      ],
+      "inclusiveBytes": 1648556
+    }
+  ],
+  "topCpu": [
+    {
+      "id": 12,
+      "function": "(idle)",
+      "source": "",
+      "selfUs": 2093418,
+      "children": [],
+      "inclusiveUs": 2093418
+    },
+    {
+      "id": 2,
+      "function": "(program)",
+      "source": "",
+      "selfUs": 862539,
+      "children": [],
+      "inclusiveUs": 862539
+    },
+    {
+      "id": 395,
+      "function": "collapse",
+      "source": "",
+      "selfUs": 95140,
+      "children": [],
+      "inclusiveUs": 95140
+    },
+    {
+      "id": 3,
+      "function": "(garbage collector)",
+      "source": "",
+      "selfUs": 90771,
+      "children": [],
+      "inclusiveUs": 90771
+    },
+    {
+      "id": 431,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 57779,
+      "children": [],
+      "inclusiveUs": 57779
+    },
+    {
+      "id": 32,
+      "function": "HG",
+      "source": "../../../combined/src/ui/Collection.tsx",
+      "line": 61,
+      "selfUs": 49453,
+      "children": [
+        670,
+        990,
+        991,
+        1107,
+        1192,
+        1319
+      ],
+      "inclusiveUs": 71277
+    },
+    {
+      "id": 296,
+      "function": "integrate",
+      "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9910,
+      "selfUs": 47385,
+      "children": [
+        297,
+        554,
+        880,
+        1204
+      ],
+      "inclusiveUs": 71047
+    },
+    {
+      "id": 489,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 41850,
+      "children": [],
+      "inclusiveUs": 41850
+    },
+    {
+      "id": 345,
+      "function": "read",
+      "source": "../../../combined/src/crdt/admittedWorkspace.ts",
+      "line": 699,
+      "selfUs": 40241,
+      "children": [
+        577
+      ],
+      "inclusiveUs": 48005
+    },
+    {
+      "id": 397,
+      "function": "UK",
+      "source": "../../../combined/src/ui/App.tsx",
+      "line": 49,
+      "selfUs": 28516,
+      "children": [
+        925,
+        1141,
+        1256,
+        1330,
+        1410
+      ],
+      "inclusiveUs": 38238
+    },
+    {
+      "id": 252,
+      "function": "w",
+      "source": "../../../combined/src/crdt/admittedWorkspace.ts",
+      "line": 238,
+      "selfUs": 23662,
+      "children": [
+        253,
+        306,
+        565,
+        597,
+        1365,
+        1486
+      ],
+      "inclusiveUs": 752333
+    },
+    {
+      "id": 308,
+      "function": "",
+      "source": "../../../combined/src/crdt/days.ts",
+      "line": 495,
+      "selfUs": 21510,
+      "children": [
+        309,
+        413,
+        905
+      ],
+      "inclusiveUs": 38314
+    }
+  ]
+}

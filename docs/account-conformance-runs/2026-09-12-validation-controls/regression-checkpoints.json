@@ -1,0 +1,3161 @@
+[
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-cold.json",
+    "rawSha256": "0ec7628db6a31138ef766cae649650e502bf64be9759326c9b9f595b8f940042",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 173986,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-delivered.json",
+    "rawSha256": "8de9559b56cadbb58813d0ef8bd6ece68ef9aca249fc8bb69b6f43145ba45aea",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 173844,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit0.json",
+    "rawSha256": "ea9c0a10849cfe266ea614de938f8423a41ca2e37e192a992b48404aabaadfde",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25810,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-edit1.json",
+    "rawSha256": "a015012ec766185a7bed0262c9aa9150c3384a2723ee560d36fdda741952df7c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27390,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-001-recovery.json",
+    "rawSha256": "36f9ab68597d753fb415dd434a7dd8d017e3a751a328135554c16a810aa0a8d1",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39476,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-cold.json",
+    "rawSha256": "0ce8f515aa5a8504e6b53776749e012b9d4730f535937bfcc8c67b7cdd21b439",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174618,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-delivered.json",
+    "rawSha256": "3b2337a6bb7c695b7edba9f4a155fea468ca8fd027c66b40db70e736ec80d1f5",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174476,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit0.json",
+    "rawSha256": "dd22b5d5b2ac03a8be34527a513e67576b23e746aaa8a7ba57b874f286bfb37d",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-edit1.json",
+    "rawSha256": "4f2dfd82596ca2d8d67871846b31c7f753d27c3cb68538c18e445660a35d2883",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27508,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-002-recovery.json",
+    "rawSha256": "59c733630f37119c315fb1b7231b2807dbe04c0f7d297bcc3b38ee4cd9c5b9d2",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39856,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-cold.json",
+    "rawSha256": "0b84413ab2ade2949a2c1bfe88945a37d1ebfefcdba070fe8f1321c943ce1b6b",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 172670,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-delivered.json",
+    "rawSha256": "5d1fd87c5768515ecd96f343a31bf80136cd65f07ccfc9350c99369d87d38edc",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 172528,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-edit0.json",
+    "rawSha256": "8dec25e5ffbd3e42b810cb1995ec57e2dd5a03f108a53f6a17cf83caa24dbc9e",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26142,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-lost.json",
+    "rawSha256": "cdab2aaa8c8990d56ef2a8c43e8e1f3392853162516e71cdf314e9865705186d",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 77972,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-003-recovery.json",
+    "rawSha256": "5ba753c47d42db35f86ed20618bb3457ed9658fa751b942afb1721ac9b11f4c9",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 38362,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-cold.json",
+    "rawSha256": "d5dc5e5df987968f0279ef04663b96d97a26ce653a38dd65f4a2fd31895cbcac",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 176678,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-delivered.json",
+    "rawSha256": "a0df07c12ae5940720d9e8e48a6e259bcd0443b0f2e48fa2e1f19b508ebd753c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 176534,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit0.json",
+    "rawSha256": "5a798632c119cf89bda76b014cb3e8bd83ca813470e44a9ab56e971b61baba6a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25810,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit1.json",
+    "rawSha256": "161426ace6e3d6442d1a75c6c44d18931cd7f6a59e9bdee29aa5bbb0425d3841",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27054,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-edit2.json",
+    "rawSha256": "c489357d75b1c8d30b86595c4bc75ef6ff652d3e3aedda8235bb09a14491ba59",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 28750,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-lost.json",
+    "rawSha256": "a46865eaaaddd90ed3ca5407301459d37c620641e474136792185db54d4f61a0",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 81902,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-004-recovery.json",
+    "rawSha256": "cc512ddcff003527af281a7e0b84f42739b32545c62ae5e9040f461a266d39a1",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 41214,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-cold.json",
+    "rawSha256": "576c3cd811e3bf3fe532c829a5d1786733d9da39cc7b4081f98318eb78b744f6",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 199332,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-delivered.json",
+    "rawSha256": "b23dbc3f0d28c7f7aded4d5a82c010dd1e472f5c0ee54a4a26ed4f1777ad7632",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 199188,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit0.json",
+    "rawSha256": "32b651ad109c13b630b9b2aa9bacda206007e45d126a2581449bd306d4217451",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit1.json",
+    "rawSha256": "5369f29e3f85d4fad1fd6a0233b434f46e6311a86e7372a3386ed84ef8b5a958",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27172,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-edit2.json",
+    "rawSha256": "1c9061d8c0faf37d6f9e8b852c893bae61e9a7c9fa82fb5a436ad8c3cabed891",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 28752,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-lost.json",
+    "rawSha256": "a980558bbda3a11342aa6ba6b8ca4844fba7211aae497a6cd878f3fb9720b175",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 81912,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-005-recovery.json",
+    "rawSha256": "0c403f1ac41e3dfa0cc3fcf9afa6880f087c802790ec26add6ff8d2ba401818a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 41216,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-cold.json",
+    "rawSha256": "7c821041d917a89e4ef93b728a7a757566c85b0fe4e485b00066d85e80429596",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174224,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-delivered.json",
+    "rawSha256": "3c9a1eb6e8a404d97749db98c1735095bc04f90f88105ffbefd78738205d9a5e",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174080,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit0.json",
+    "rawSha256": "9f0e7c4c3e8f2e6af9df00168e685eb86671fd78c877a5b85a6c39aee1681637",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-edit1.json",
+    "rawSha256": "503162fba8818f1bf46c5b92cc041cb8b33c66c3496ab6dedd56c5565b7ec2e3",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27056,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-lost.json",
+    "rawSha256": "1c5e50a4a9bb7ad37bebd506c1233d2410668690c270136c01b0f1b219725958",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 79480,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-006-recovery.json",
+    "rawSha256": "385ded63cd1246bd3ae74ff008079ab04019f4b13f4312f02d87171a4cc82cb6",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39478,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-cold.json",
+    "rawSha256": "a8a12d2b9d984c099bb791772107a83e40afa17dcd4e71d03c0387cc06abdbbb",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 175868,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-delivered.json",
+    "rawSha256": "63e7ab692618cc7a3066e8e098c58c6f04b4c944be45334a8ee4f4ebe7eb9318",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 175724,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit0.json",
+    "rawSha256": "c9d28c76d13ad85b6079acf6ad74660e4d5f99dd18f5c87e9160a5edcde4f838",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit1.json",
+    "rawSha256": "42b74628b82f2e8b08036c1a1153317d1c26dec5ebf7646b0eb28559b8324a57",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27392,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-edit2.json",
+    "rawSha256": "c88f1c8afad09dab74e07d644f687fa89addc688349b7f1e6c54c711c7a3763f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 28300,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-007-recovery.json",
+    "rawSha256": "38a6b06e53ff1d57440ba2b29f61bf6c195eff04a12ffc8483cc0bb8f3e9796b",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 40984,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-cold.json",
+    "rawSha256": "f3413c06540c325b44f9ffa315942eb428dbb96ae0d118b981cfbb40686bf1a5",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 195066,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-delivered.json",
+    "rawSha256": "5d0d8e24d1830b59fd651a089115f0204587e3fc75ff249741b9d5509fc44c8b",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 194930,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-edit0.json",
+    "rawSha256": "66cd9a081b717a7e3e61dd54e4381e54f96e3942c79f50056dfe1e6773021031",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-008-recovery.json",
+    "rawSha256": "3ad1f057d75be5ff807e15770f44dfc3523921444fd2ba895072d706a7d57dfd",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 38364,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-cold.json",
+    "rawSha256": "17240992e8646782e5a731437fbc869124b065206d2da8371c33183de0dbb43c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 195356,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-delivered.json",
+    "rawSha256": "d47992a0f9f99515ac7fbbe99ac3b0f43946cc2359d1f63547321f5367923d2d",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 195214,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-edit0.json",
+    "rawSha256": "f1bf012bfa78749b28fb7922264a8dd77e4641eb324d080c46b9073919a2244f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-lost.json",
+    "rawSha256": "ab99b037d3b94a96c90c60e2f25c244202d673a5c960c3f5d2aa6733162dad10",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 78006,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-009-recovery.json",
+    "rawSha256": "2b2d3877409ecc90602494e2b6975b5cb357131450bd0ccc473add3c6a4a5393",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 38364,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-cold.json",
+    "rawSha256": "bd74c86cb501e6103b1141dcd9224a386eeb64240111fdc931d4fa71d1192282",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174186,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-delivered.json",
+    "rawSha256": "c52e98f586ffe70eff3856280e76cd7e7e025642af8b7cbfb63a37530059c955",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174044,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit0.json",
+    "rawSha256": "e02c269dafcb1079b1475fd51785e6b4de55819fc10b0f7542abd9f75f645b6f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-edit1.json",
+    "rawSha256": "d24c8b9d477e8ea7096255616374ff4dfca87030f17308a78a803ddbafb79935",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27056,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-010-recovery.json",
+    "rawSha256": "4145737e3f20ddc594ea518f3deaf23d9218494509faddfc8e9744c3676c59b7",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39740,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-cold.json",
+    "rawSha256": "6b9f0226690e289981c5e3106e00d4f91a594d152717cc7054cab18fbbbf7d9a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 199620,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-delivered.json",
+    "rawSha256": "0a0d46814595d2782452b38853b4bd93fa12a60413853a282ad256b1c34cdfa4",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 199476,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit0.json",
+    "rawSha256": "42a3348c0d668858bc45ecd22c1deb4ab543bb27513b0a12603fd7cd5b490781",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26142,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit1.json",
+    "rawSha256": "ef322b5d15ec01a1b77023b6e7046e3bbdf6433991eb9a03addbdb0b04c49bf4",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27166,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-edit2.json",
+    "rawSha256": "5f658308bfdc84fc7a10b750aa3016983dcb6836937c46a9c4ab9c532dd67b72",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 28862,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-lost.json",
+    "rawSha256": "0ee9d75b6b92218dd279ace97cd5e77db69e4664ff7f2944d9d8b7635e7ee010",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 82182,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-011-recovery.json",
+    "rawSha256": "1d25fcb8a57c16b6dda7d69784b2bcbcc7e16d255401b6911abc436075d0cde3",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 41326,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-cold.json",
+    "rawSha256": "3d112e087a047721bd5e04b58152d036d6da64389b13b0962d226d5d3b12a10e",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174850,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-delivered.json",
+    "rawSha256": "e0804d379b4381fd5d0236221b86115ff9e382dd88b12f21467b2379640aec74",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174706,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit0.json",
+    "rawSha256": "adf8e00d11a6c9f382c14c345f949d5aa7155b0c5fe30b4cc459eaba5cb4eac6",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25806,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-edit1.json",
+    "rawSha256": "7d65a7c7a318a073b238f3bb2fc94f2428841e26a06122de9aaf2d19f4748aa0",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27164,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-lost.json",
+    "rawSha256": "9665af6d7f2d3ed931c0c3c01738e57c069db6d4e6eabb7ca71537197f887844",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 80066,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-012-recovery.json",
+    "rawSha256": "76294b865a6994fd38a9d59dbd33b146f4ce1cea8841ab305a819aaa0516164d",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39848,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-cold.json",
+    "rawSha256": "3a24b23f9ab26aa8607db192f71928318dba4efb93c5ef2d796afa94144326a0",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 195360,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-delivered.json",
+    "rawSha256": "7b6208bf04115ba31140fe9d32eaa65e760dc920236e0e7f09d284896faf0f11",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 195218,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-edit0.json",
+    "rawSha256": "24a68f41d8b9a81608354f75700f16daf4d1c8ae123a6c0ac967b9c3423dc7cc",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-lost.json",
+    "rawSha256": "27311e7f819ca356aa49f86c9bb46634babf8d861bb14154488366fd00c2a290",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 78006,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-013-recovery.json",
+    "rawSha256": "b05bc74727cce41b0e6b8d93307de0d272b05427dc3949e95e10efabc7f8f3f2",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 38364,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-cold.json",
+    "rawSha256": "84433d0787ddfc74eee8f6d48bc0b1cadbdbb49001a81a1e426ddab198989276",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 172448,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-delivered.json",
+    "rawSha256": "b8a3f02030c42c4b51730433f0c925154b31b0cb378a1c8e3330e7191f96676e",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 172312,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-edit0.json",
+    "rawSha256": "cbd86f2683daf664a3039c275dad4ce9c961e209ac5ce1e093aa4aa796bbf267",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-014-recovery.json",
+    "rawSha256": "55db33621856d7808a44bf87bd0657c52cf9e65c1bb69f98f577ebfda910edec",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 38364,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-cold.json",
+    "rawSha256": "eff34ca27b2ee132b260fb7705cf1386b80b49274bd218fba40e880670d01af3",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 196924,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-delivered.json",
+    "rawSha256": "e49455becf4f22403529d8779ec7f93e4ea09cee5f5973db469f61bf1f01161e",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 196782,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit0.json",
+    "rawSha256": "899daf9ab562d963131cc606f78e5c0f1465e5307e92ede22ce769905365da6c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-edit1.json",
+    "rawSha256": "0b3ae8bc07d2c6780f567d843a0058770a495514ca50e629059647aa226bddc9",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27724,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-015-recovery.json",
+    "rawSha256": "35f36f394fbe652c399469281da3d57e43122844e7520548dff84805a3f17595",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39856,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-cold.json",
+    "rawSha256": "1cc88dbe5f59e749eb0d2bd770396595ff1528c357e8e988bac8ae8615492cf1",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 173852,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-delivered.json",
+    "rawSha256": "0b41ca410e47694e6b5933b1720dcbcac2c83c80011fa3d708fe3a5914a03051",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 173710,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit0.json",
+    "rawSha256": "00403937b62f627f4245bddf2b36c0bba6c0d9b256fb860ce94d8f6c13c8619b",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25806,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-edit1.json",
+    "rawSha256": "2f386734f1546fca6cb7b5ac67f7affaefbd79479d3ef72bd98ff2503d078974",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27378,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-016-recovery.json",
+    "rawSha256": "5eee56a6007d5a556267d20e524eeed4dc51c4c67d560f0a2e2427d068869841",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39472,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-cold.json",
+    "rawSha256": "54b4ac1ae8194dc020271452049771c686a0f55bb5bf0f200d28011936825163",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 196546,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-delivered.json",
+    "rawSha256": "83f93dabfa7ed031b8f6f3d486dbc15b32148078fca6d006bfa3aeca334ca575",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 196404,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit0.json",
+    "rawSha256": "93ef1ebaa8a21ebf0a8ff3a2fa19b59791cc5e355cfaf54b9113dcc77f5f64e6",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-edit1.json",
+    "rawSha256": "d0d0a50b53cc4b5cd39c67e944aef203d8d7887adfe84832c26369a416577375",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27056,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-017-recovery.json",
+    "rawSha256": "cf9f70ceda8cca9d6f8f5660bf0344bc84ab42cf45563b58a01c4e9fc6b4e5df",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39478,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-cold.json",
+    "rawSha256": "e7d37263cdc7621f8f9d6d2f0a6db02a4d636b03a2f76e176c2e724a085e7c0b",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 196546,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-delivered.json",
+    "rawSha256": "d19d2d70e7334734b7935d2191c10e00c4bd9c3a074f714a67e42f6a115888cc",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 196404,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit0.json",
+    "rawSha256": "bb551d652129dc15c51675579bccc39539841788d40860be1893d2e82b78e4a6",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-edit1.json",
+    "rawSha256": "cdba407aed08cb4db98e10515cc44f57440e11416968b71a40e78727928a6f92",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27056,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-018-recovery.json",
+    "rawSha256": "6bcbdd1d85f014309a270d099ae60f57354a226c635f1b74d9af04c32154be96",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39478,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-cold.json",
+    "rawSha256": "8b1f78c5360c9c924359a5773b9338bb6abe3564645203adf05b10e1a84f0468",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 172448,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-delivered.json",
+    "rawSha256": "bda5074c7d2376094fa458f6d17f9108b029ee9c1fa66e1250e051335cf2807f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 172312,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-edit0.json",
+    "rawSha256": "50f4fcc5984764127531e3b29bf1d13cfe66dc8d972aa0f100a93e3d0f4dc536",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-019-recovery.json",
+    "rawSha256": "c609064bcb0005eefac5bc784b3ab412d1eb6835308b560e98d3af92d1699c5c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 38364,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-cold.json",
+    "rawSha256": "53bbc298c065b155bc38128a01908bc8690540d183c94b9d56cd074496e3c7f2",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 175808,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-delivered.json",
+    "rawSha256": "b9b26701b87af7d6b1dd5929ebb37f6de05ff51c431d4ca0eae2d340913eb10b",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 175664,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit0.json",
+    "rawSha256": "8820ec53df166ba804cc37c0177828b2303a69a982e3979dcf21a450748f24d4",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit1.json",
+    "rawSha256": "2082030a5c845d0a4e718401894fb893f0dee2d9bcf5f8d009d84543ccab55a4",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27056,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-edit2.json",
+    "rawSha256": "8e96f78d422b06d4f47bab3d9c633386fde73a5f31d106789491f8ab1003b96f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 28416,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-020-recovery.json",
+    "rawSha256": "670072b96718c4968115199d5d8464d2fc2d699b61acc22db85e3ea9dd739c31",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 40606,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-cold.json",
+    "rawSha256": "6d91152f3dc98668057c5c68aced3594fc464101d38d0e56ff5676902db04a6a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 198722,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-delivered.json",
+    "rawSha256": "04c6c348cca9b9d3566aae8f2e9ec645928895f73ae50f5bb44fefc71879cac7",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 198578,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit0.json",
+    "rawSha256": "982319f0d7a264c8468a823fe1684c07b63d3d7b55d34b2041573d02151cc537",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25812,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit1.json",
+    "rawSha256": "211b3ea0f71d1ea52723d80e6bf330146f004b2286f2b690633b88beda2d664a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27172,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-edit2.json",
+    "rawSha256": "8889fb26da1d9fccbc9db3125a08af1babdaf0792407aef2318191ba47a11dae",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 28416,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-lost.json",
+    "rawSha256": "9a115c4edf5bf02b652963bd79cbdeaa708e1e176ccda0f7564cca05252053b7",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 81302,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-021-recovery.json",
+    "rawSha256": "7f97b9e3b66e8ebda2c278ca56f28d4a2d602cea08f71e554682319fc87bf6d5",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 40606,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-cold.json",
+    "rawSha256": "ed32073b46eefe7e227c4f063850ad687844de7970b5b1444e9c9c2d64dfa681",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 195066,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-delivered.json",
+    "rawSha256": "efb986eab6d7710125d3950c2a78db14e6d87db5c18df66340749975dd85bf0f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 194930,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-edit0.json",
+    "rawSha256": "40bc19f6d08c969c15014e2a6517562cddfb05f0553beb00cabf60f184eb776a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-022-recovery.json",
+    "rawSha256": "f817133629bf1caec0e12499fea3d72e84644640af73fb08f80d380ab339f9b8",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 38364,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-cold.json",
+    "rawSha256": "2039764cb554bba8210f18a6cd4093d162efa3a322598a77c7fd81a0f45a3eff",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174262,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-delivered.json",
+    "rawSha256": "deed9d01905f79b12ba5aa34ea90bfd0fe8b68b56604a3387fdcd624711d222f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 174120,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit0.json",
+    "rawSha256": "6db6eedd8e2c9b0ebc7ca7f54cb0f428580733d184a96a4706cc467782bbe2a6",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-edit1.json",
+    "rawSha256": "1d32cc140298551b782ba381063f3170624b2ebb5513377225324e271f9e39f2",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27508,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-023-recovery.json",
+    "rawSha256": "26cecf06ba3941046b75d225de07b1a4e00908c8d64a56521ad85cbec1916dec",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39492,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-cold.json",
+    "rawSha256": "9b445180cc75ca1f2ada545b7cbb53f7660c4150b1f5e3679edc8f25e1162037",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 197532,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-delivered.json",
+    "rawSha256": "f64a577c14b7f85f98b69469d39893b9ea198462340b8ed314970a66bba8297a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 197388,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit0.json",
+    "rawSha256": "45d5a894754fa1c3562ac4386677ed36dec8d4aaeffeaa09da8098b4b38cd19c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26144,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-edit1.json",
+    "rawSha256": "b635e4fc2ac2ce5e8cc816b14ec36169d0574b88cd0c4fa3773cee5685e46ab0",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27172,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-lost.json",
+    "rawSha256": "cd1ed47bf00372d5d2093ccae486a43cd0f137d7dab6b048bd879b3e35a77ead",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 80122,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/generated/generated-024-recovery.json",
+    "rawSha256": "b7bd1e6d896b4b3448b0912782518388a4acbeb6ffa79a2068111f283fde3dd7",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39856,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P0-empty.json",
+    "rawSha256": "b0f0574bd680bd588f42c1c20155b74f21d8f2aabd5bf72f69b436d7c8d8db39",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 17872,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P1-genesis.json",
+    "rawSha256": "4371e4fe5a9dd5b82359d4273c5f844f74346dc0498c79885df889f032553a74",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 23354,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P2-journal.json",
+    "rawSha256": "36f114aa3ea084a9e7a09c71a33df3ebba63ad919dc4e5e08560f2ca98893a35",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 33340,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-cold.json",
+    "rawSha256": "4146f921a965f8f8cb56833714f5f83244fc7348c45197fc49a1bb78fdb544f1",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31412,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-compacted.json",
+    "rawSha256": "005b21033931ab430d57609e9e03a09fab211baa645f9a72de330fab827b015b",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31152,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-flushed.json",
+    "rawSha256": "ef9b657816b9abb60b7540da2c1f3f3aae6bfaae857f4aaa8b3e4540c486fac2",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31518,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P3-locked.json",
+    "rawSha256": "5dec09082bffc3ac40753ef6b9232e0914ff5f694e1607cba3c3a4c1bb10d26a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31660,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-confirmed.json",
+    "rawSha256": "1270a9b73f2559e50bcb7cc7be92a623120597556c774892977f6599832d330a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 44392,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-finalization-pending.json",
+    "rawSha256": "d5d5888be470c84c77af5093ec6fe664e5b18bf243da717e6e55742bc092b66a",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 43366,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P4-generated.json",
+    "rawSha256": "4cce061df0b2c19efd6f381b6c88d1776d0a6bc88579d8bbb8a75648427354eb",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39266,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-genesis.json",
+    "rawSha256": "4922af7e438d7abb7573ccddb955a06e68c4a49314c0be705116b6abcb5499f7",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 56370,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-lost-reply.json",
+    "rawSha256": "17b7acafb753e1237a86c712402d3fb53ca266c5f83a23f5fe23604a046358c7",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 89786,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountDeliveryWorkspace.json",
+    "rawSha256": "fc0dcb71f1bf4f738ac491e7b7a58fb4baffbd050278a3252c687c366491dc02",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 103724,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedAccountSpoolWorkspace.json",
+    "rawSha256": "fc7c409ac4722bc3e7036c9f0cb6fe8cbd41dd72013f02b2fff4d4353e10d94c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 102884,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-openOwnedCapturedAccountWorkspace.json",
+    "rawSha256": "d49fbee1f437df607390469ae671244487b67a8ed679654aa86a71f8bff1e831",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 101890,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-prepared.json",
+    "rawSha256": "01e744eb4f513d11625382b00eb7791bc3b80354307c52c05d6c846bd3d42c9c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 49288,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-receipted.json",
+    "rawSha256": "13cfadc9440ff622f55a5247b102a5019082a300660a8579c603ced6f7a783df",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 97122,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P5-selected.json",
+    "rawSha256": "8c3b99193b825ba8c00171db1ad78225d7c5575c934b0b57d39bef47ad2e6761",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 101052,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-cold.json",
+    "rawSha256": "efecae2f2d0736317e0a7c240d16892ba4d96281f92f9c2594748c6211ce3a8d",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 184206,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-delivered.json",
+    "rawSha256": "45a557d980b4bc175f8acb4262ddd42acef30cc822817994161035c89654968d",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 185106,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P6-locked.json",
+    "rawSha256": "fee5f3b405d285da086f958865038c5b2456a7f8100f88c12d5f24c5110eb213",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 184062,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-cold.json",
+    "rawSha256": "4e59033c08aa46eab0f2b0c284d1f35985ee90aeb8c7b9a6f004fd779df00b54",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27408,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-journal-failure.json",
+    "rawSha256": "490e7b491cd1bd32cb8fe93a865fb685a85ef4bbd661c4c435806d0034d090b8",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27156,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/P7-refused.json",
+    "rawSha256": "aa671f531b8d45c1d2d3e1c943e0514347790ef435ad91cda51c11e0f6fb96b9",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25790,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-baseline.json",
+    "rawSha256": "da38f96e639d608205bc128f0590087bbcc9a524a93bea33351fcd64a1d6f7be",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26130,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/account-residue/2026-09-12T20-54-45.121Z/lifecycle/write-control-leak.json",
+    "rawSha256": "c7f64c6e1ed4c647f74827a5a8bef6062801613413f31d0574262788c18a46eb",
+    "verdict": "prohibited-match",
+    "matches": [
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/utf8",
+        "offset": 18
+      },
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/json-escaped",
+        "offset": 18
+      },
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/utf8",
+        "offset": 18
+      },
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/json-escaped",
+        "offset": 18
+      }
+    ],
+    "issues": [],
+    "totalBytes": 26644,
+    "bundleSha256": "0782e0c35deffcebb3da31c6dd858660bc68c56179f3676d712e1be08acc29a9",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P0-empty.json",
+    "rawSha256": "9d1915a8d2d92668bc1b57faec033ac193b9e00fccb93d23e9dc9be382825a28",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 17872,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P1-genesis.json",
+    "rawSha256": "7c605c1aba8ff8d71687e7183fec0bffa17827d6c0d0966b0c19108575565ff5",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 23354,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P2-journal.json",
+    "rawSha256": "0b4af31c410c6320f8c71a7f3a09a711d7c87dd8d63d2bf2ab7a309dfc3b836f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 33340,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-cold.json",
+    "rawSha256": "189f1c2f3de493189d670493b8ddb626684908f252a36d4c2c585aeb1bd62406",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31412,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-compacted.json",
+    "rawSha256": "b352952e73719a34c41566cd6ebc474d17118e28ebb4e252993a7f6f333680b1",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31152,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-flushed.json",
+    "rawSha256": "eacca7872dfed89416bab201c6158578afc5368d6d742bcea78f9d39c6f6d8b3",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31518,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P3-locked.json",
+    "rawSha256": "7cc147e243fd27c7d135e5e067e74d6bf8e47673f021507d6100724b93a6d27c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 31660,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-confirmed.json",
+    "rawSha256": "bb24274657300ab025f0012d003a805769276e8b3c1f4b7ee8399907e2d8b0a7",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 44392,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-finalization-pending.json",
+    "rawSha256": "197725f352f9bb91e400b1fea6c42f82fdaef08ca7402f664099defa78f0893c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 43366,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P4-generated.json",
+    "rawSha256": "166c14214d5d9d984b0175d31301a28d25073a215fe1629455c3c00f625b1049",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 39266,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-genesis.json",
+    "rawSha256": "3d769455c73661beb5e94b777f31a902c812515b9c6d84504fefa03fcbb487c4",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 56370,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-lost-reply.json",
+    "rawSha256": "a593408f15e638ae910ff0ad2cb414e8b72aef7ffbe3475e2f939ca83a9423e8",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 89786,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountDeliveryWorkspace.json",
+    "rawSha256": "b69f0dc12886f0973b7a981f37440f482023f1995f3e5b8e311f585ac9861caa",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 103724,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedAccountSpoolWorkspace.json",
+    "rawSha256": "68a5e5b65d94ab6bee0c75aceeeefa7847db53acec173d4170fb680bee5e7f25",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 102884,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-openOwnedCapturedAccountWorkspace.json",
+    "rawSha256": "fb3de5edb275772302a31b9da71c2086fba55589677a2eb6fc4bfece189c8ecc",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 101890,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-prepared.json",
+    "rawSha256": "3b86e49f560531147fe79ab03286419c063425824780f2186992c71f61a9db20",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 49288,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-receipted.json",
+    "rawSha256": "04c23b3c129098052665c6ea371fb0f7f1de2800d5a292b20c6701862d44a49c",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 97122,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P5-selected.json",
+    "rawSha256": "1ea6cb21eb4f3746e712fd28e0b5727218930290734f36bbc8da376485e4300f",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 101052,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-cold.json",
+    "rawSha256": "d2cc515300cdea6a9347e5a23f885e0bd2901cbe113202341e15b8a4a02f0e8d",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 184206,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-delivered.json",
+    "rawSha256": "9db47c94ac14a391d11980c31410b0c80f3d985fceb1461b350bfd7440622067",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 185106,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P6-locked.json",
+    "rawSha256": "9ffd2f4221866cbacbfd3d41578f29643cfb03663df92853afd53a2adfcd2917",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 184062,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-cold.json",
+    "rawSha256": "6259f602e26e5bc4790fa3511c7053f73c3a25c2217e2a51cb79c36f310c87ca",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27408,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-journal-failure.json",
+    "rawSha256": "70ba85c8ada5b7ef474bca3fa849da4c73590cd8bfa6bfebbf691c87a85780c5",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 27156,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/P7-refused.json",
+    "rawSha256": "4f48de676539be2a69e5ffb0c7e56fc2c9a705c5cbd74f81c04e65b86ea0d3f9",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 25790,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-baseline.json",
+    "rawSha256": "7902d8b4e5190bae17a677af48740e6f36ed2d3f15b2878191d922d3e03f7dab",
+    "verdict": "complete-no-prohibited-match",
+    "matches": [],
+    "issues": [],
+    "totalBytes": 26132,
+    "bundleSha256": "d8e4e48e358b089d940421c0205e8c33fdbb93b456fdcc0ed38baa0fbfd01fd7",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  },
+  {
+    "source": "test-results/private-release-failures/2026-09-12T20-57-51.584Z/privacy/write-control-leak.json",
+    "rawSha256": "e49aabaae46416fb8549accad53e1178a2e8d505f0623d3ca17473a90c131883",
+    "verdict": "prohibited-match",
+    "matches": [
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/utf8",
+        "offset": 18
+      },
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/json-escaped",
+        "offset": 18
+      },
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/utf8",
+        "offset": 18
+      },
+      {
+        "surface": "localStorage",
+        "location": [
+          "value",
+          "unexpected-plaintext-side-write"
+        ],
+        "needle": "writeLeak",
+        "representation": "raw/json-byte-array/json-escaped",
+        "offset": 18
+      }
+    ],
+    "issues": [],
+    "totalBytes": 26644,
+    "bundleSha256": "0782e0c35deffcebb3da31c6dd858660bc68c56179f3676d712e1be08acc29a9",
+    "runtime": {
+      "node": "v26.8.2",
+      "browser": "151.0.7922.34",
+      "platform": "darwin",
+      "osRelease": "25.5.0",
+      "arch": "arm64"
+    },
+    "stable": true
+  }
+]

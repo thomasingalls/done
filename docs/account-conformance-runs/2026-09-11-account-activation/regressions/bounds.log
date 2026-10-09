@@ -1,0 +1,49 @@
+Admission descriptor evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-admission-bounds/2026-09-11T13-07-19.920Z
+Starting types
+Starting reproduction
+{"output":"/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-admission-bounds/2026-09-11T13-07-19.920Z","histories":[{"history":"sv","count":12000,"svBytes":41618,"dsBytes":2,"updateBytes":131239,"refusedBoth":true},{"history":"ds","count":12000,"svBytes":6,"dsBytes":39750,"updateBytes":215247,"refusedBoth":true}],"boundaries":18}
+(node:56390) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Starting vectors
+Four v2 implementation vectors agree with independent OpenSSL bytes; 92 field mutations refuse.
+Starting protocol
+(node:56398) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56398) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:56398) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ v2 binds both decoded descriptors at old boundaries and generated sizes through independent OpenSSL bytes (5848.296709ms)
+protocol still running; see protocol.log
+protocol still running; see protocol.log
+✔ inclusive combined 16 MiB bound fits service limit; malformed/oversize refuse before digesting (31908.282209ms)
+✔ correctly signed independent SV and DS lies pass content-blind service but fail client-derived coverage; omissions are effective (81.083375ms)
+✔ v1, mixed, unknown versions and old readers refuse without rewriting completed service rows (57.375625ms)
+✔ real generated writer and deletion histories exceed the old limit and retain exact descriptors (665.750042ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38844.530625
+Starting native
+(node:56509) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56509) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:56509) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ long sv history survives HTTP admission, independent decrypt and cold retry; old reader refuses (3730.43825ms)
+✔ long ds history survives HTTP admission, independent decrypt and cold retry; old reader refuses (4063.760208ms)
+✔ genuine retained sv lie refuses without a completion submission or carrier change (1563.138917ms)
+✔ genuine retained ds lie refuses without a completion submission or carrier change (1511.690959ms)
+✔ genuine v1 offered carrier is retained unchanged and refused by new owner (1674.726417ms)
+✔ coverage preflight refuses before requested carrier or admission network call (1407.588584ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14953.9645
+native still running; see native.log
+passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-admission-bounds/2026-09-11T13-07-19.920Z

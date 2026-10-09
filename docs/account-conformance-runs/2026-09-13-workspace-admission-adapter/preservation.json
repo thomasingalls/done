@@ -1,0 +1,13 @@
+{
+  "baseline": "docs/account-conformance-runs/2026-09-12-account-residue/preservation.json",
+  "personalFilesUnchanged": 21,
+  "priorVectorFilesUnchanged": 31,
+  "L2SuffixSha256": "e053bf287bb8020201d067e2b33e66189920efc9b4bae8e7b3d373266bf65b95",
+  "L2MatchesHEAD": true,
+  "completedAndDecisionsAppendOnly": true,
+  "rootDoneFileNotReadOrChanged": true,
+  "personalBrowserProfileServiceBuildNotUsed": true,
+  "priorCommit": "3f1afc5",
+  "newPhaseCommitted": false,
+  "existingHashesRewritten": false
+}

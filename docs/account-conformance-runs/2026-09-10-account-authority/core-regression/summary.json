@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T15:23:35.123Z",
+  "completedAt": "2026-09-10T15:23:41.610Z",
+  "code": 0,
+  "timedOut": false,
+  "scope": "Private account ceremony core; generated ledgers, deliberate controls, SIGKILL restarts and disposable Chromium WebAuthn. No personal browser/account/content operations."
+}

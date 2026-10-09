@@ -1,0 +1,6 @@
+{
+  "claim": "Transcript observation, not a reconstructed raw log",
+  "command": "node --test --test-concurrency=1 test/release-validation/*.test.mjs",
+  "observed": "An earlier 30-test run passed 29 and threw kill EPERM from the output-flood data callback. The exact full raw log was not saved. The subsequent failed 31-test gate run and all 90 focused probes are retained in full here.",
+  "followup": "Idempotent stop/error recording prevented the uncaught callback failure; bounded uncertain-probe retry then required explicit ESRCH before crediting drain."
+}

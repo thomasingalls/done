@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "origin": "Generated source-mutant counterexample, not a production defect",
+  "mutant": "partial-disk-union",
+  "seed": 8941,
+  "path": "1:0:1:0:0:1:1:2:3:2:3:3:3:3:4:4:4:4:5:5:5:5",
+  "shrinks": 21,
+  "history": {
+    "edits": [],
+    "steps": [
+      {
+        "op": "late",
+        "ids": [0],
+        "after": [4, 0]
+      },
+      {
+        "op": "overlap",
+        "background": "disk",
+        "boundary": "seal",
+        "ids": [0],
+        "during": [
+          {
+            "op": "compact"
+          },
+          {
+            "op": "journal",
+            "id": 0
+          }
+        ],
+        "finish": "release"
+      }
+    ]
+  },
+  "invariant": "recovery-visible"
+}

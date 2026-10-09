@@ -1,0 +1,52 @@
+{
+  "base": "d8b8e00e418918f462a4129f3c751ccbc059b008",
+  "selection": "browser-application-latency",
+  "integrationGroup": "browser-application-latency",
+  "rawOutput": "test-results/release-validation/2026-09-14T16-08-50.517Z",
+  "result": {
+    "schema": 1,
+    "selection": "browser-application-latency",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "failed",
+    "stages": [
+      {
+        "id": "test:test/latency/latency.spec.ts",
+        "key": "48be7e7b4b5287eb5558190da68ee8ea9e659af6093f12d21f5f344b01ea42cf",
+        "status": "failed",
+        "elapsedMs": 145085,
+        "cases": null,
+        "reason": "AssertionError [ERR_ASSERTION]: Nonzero or missing exit\n\n1 !== 0\n",
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T16:08:50.520Z",
+    "input": "dce427f444fc52b36842efb2ba7959080a08ec95ffc7d58b38e9959f02bb4ff2",
+    "error": "AssertionError [ERR_ASSERTION]: Stage failed: test:test/latency/latency.spec.ts: AssertionError [ERR_ASSERTION]: Nonzero or missing exit\n\n1 !== 0\n\n\n'failed' !== 'passed'\n",
+    "completedAt": "2026-09-14T16:11:41.022Z"
+  },
+  "counts": {
+    "generalFiles": 259,
+    "generalCases": 2003,
+    "generalNotApplicable": 11,
+    "accountFiles": 123,
+    "unresolved": 159,
+    "unresolvedTestFiles": 0
+  },
+  "priorContractsPreserved": 258,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "13aba5557b9cab11018b7cce61eaeb925efbd3b1842396b4035c8cf9007d1560",
+  "sourceDigest": "fb1993ce9e956c843b55b2156e3a86a935c90a7e2076dda7d8dc1000a06d47a8",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1053,
+  "scope": "The last browser file now creates and unlocks the current mandatory-factor Local workspace instead of assuming plaintext startup. Its manually created contexts receive the configured origin and device options. The unchanged 20-day \u00d7 15-card and 400-line workload is admitted through the UI, drained, cold-reopened and fully verified on both projects. A locked read-only probe counts the sole existing encrypted store and journal; it aborts accidental DB creation and reports ciphertext/nonce payload and UTF-8 journal bytes, never physical allocation. Two guarded, metadata-only timing marks bracket the real factor-unlocked carrier load/decryption and Yjs replay/owner initialization. Missing timing marks refuse instead of becoming zero. The authority census changes only the hashes of these two source files; classifications and construction labels are unchanged. Factor entry is excluded explicitly: launch-to-prompt and confirmation-to-editor are separate measured segments, whose sums retain the existing cold/warm numeric budgets. Actual viewport and CPU rate are included in every measurement note. Input completion is asserted for both 120-keystroke typing tests. The first run preserved a desktop card-typing p95 of 16.7 ms and exposed an Android fixture timeout clicking Lock workspace in a closed off-screen menu. The repaired helper opens that menu normally; no execution allowance or performance threshold was increased. Timing assertion failures are collected until project teardown, with functional failures still immediate, so later measurements survive a slow earlier result. All nine numeric budget predicates are independently checked by the output adapter; controls reject threshold equality and malformed/missing/repeated metrics. The final desktop card-typing p95 is 18.3 ms and the CPU-throttled Android value is 84.2 ms against <16 ms; Android card focus is 61.4 ms against <50 ms. Other timing checks pass in this observation: cold application work totals 254.2/817.3 ms, warm 229.0/737.2 ms, and encrypted load/replay 6.4/27.5 ms, desktop/Android respectively. The full retained rows preserve precision. These are observations on this host with a 4x-throttled emulator, including wide viewports for seeded editor work; they do not establish handset performance or isolate the cause of an overrun. Both projects and their browser/server/worker groups drain. The failure and earlier fixture defect remain preserved; no rerun is used to erase the measured overrun. All declared test-file adapters are integrated, but native performance qualification and the command/campaign/immutable-release gates remain open.",
+  "artifactIndexSha256": "a942f2ba1975b0023fbcbb49d22ceac012ae9f97c2c67024895754023ec84243",
+  "gatesSha256": "1b67bcfa3d44e3a1196419a4290e1410af2d10dae8efdf9f6bc56fb2d3a24f0b",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

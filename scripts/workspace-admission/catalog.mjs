@@ -1,0 +1,46 @@
+export const cases = [
+  ['W10.repair', 'Known journal damage disables the whole ordinary workspace surface'],
+  ['W01.surfaces', 'Goals, card text and moves share accepted human undo'],
+  ['W02.pressure', 'Failed structural commands and queued text keep their history private'],
+  ['W03.undo-death', 'An uncommitted undo cannot change the visible or recovered workspace'],
+  ['W04.cross-tab', 'State handshake supplies actor dependencies and receives before local edits'],
+  ['W05.system', 'Bulk and membership repair stay outside human history'],
+  ['W06.remote', 'Undo after a committed receive preserves remote text'],
+  ['W07.history', 'Nested content and redo links survive private history forks'],
+  ['W08.rules', 'Capacity, freeze, split and merge use the existing command rules'],
+  ['W09.initialize', 'Actor initialization finishes on disk before an editor is exposed'],
+].map(([id, title]) => ({ id, title }));
+export const mutants = [
+  {
+    id: 'pending-history-visible',
+    file: 'src/crdt/admittedWorkspace.ts',
+    case: 'W02.pressure',
+    assertion: 'pending-history-private',
+    from: 'state.value = result.value;',
+    to: 'state.value = result.value; accepted!.history.undoStack = history.undoStack;',
+  },
+  {
+    id: 'system-bulk-in-human-history',
+    file: 'src/crdt/workspaceCommands.ts',
+    case: 'W05.system',
+    assertion: 'bulk-outside-human-history',
+    from: 'const system = { ...workspace, origin: context.system };',
+    to: 'const system = { ...workspace, origin: context.human };',
+  },
+  {
+    id: 'received-work-in-human-history',
+    file: 'src/crdt/admittedWorkspace.ts',
+    case: 'W06.remote',
+    assertion: 'undo-preserves-remote',
+    from: "applyUpdate(accepted!.history.doc, event.update, 'received');",
+    to: 'applyUpdate(accepted!.history.doc, event.update, human);',
+  },
+  {
+    id: 'lost-redone-links',
+    file: 'src/crdt/yjs.ts',
+    case: 'W07.history',
+    assertion: 'undo-edit-in-restored-card',
+    from: 'copied.redone = Y.createID(item.redone.client, item.redone.clock);',
+    to: 'copied.redone = null;',
+  },
+];

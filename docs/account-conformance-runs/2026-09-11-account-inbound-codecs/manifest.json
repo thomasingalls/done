@@ -1,0 +1,126 @@
+[
+  {
+    "path": "build.log",
+    "sha256": "e73c927b0c2b53adf3b1e4c24c5d46e3b229632627ac27de476038213edb8667"
+  },
+  {
+    "path": "codecs.log",
+    "sha256": "3caeccddbcd5f342ad6011df3e9aab274f1d1b623edfe34095c8920995216247"
+  },
+  {
+    "path": "control-actor.json",
+    "sha256": "2e438990f17248b4c9358d753e2b9da47117947feadce7f28d41406ab28f84b3"
+  },
+  {
+    "path": "control-batch-count.json",
+    "sha256": "8a578b3858550977726ee1b65dd159803adde99cda7734c3d698a36bdfd9d14b"
+  },
+  {
+    "path": "control-buffer-copy.json",
+    "sha256": "e167693130d46f52575361f4d31badc593db06850506ca0b17b43052d430dcf2"
+  },
+  {
+    "path": "control-late-close.json",
+    "sha256": "bb6ab89b16d1017a89ca1b87e8d4dd760e07a753371d632a9f38ff4a94dd95e7"
+  },
+  {
+    "path": "control-page-signature.json",
+    "sha256": "e09285f181ebd3ec8fa828d3b972b05be3dbcad9e7fcc878fac30fa7185b1e26"
+  },
+  {
+    "path": "control-prefix-proof.json",
+    "sha256": "03f404aaf787cba33e66f184f5bc0c4ea9048d30ab37dde591ffc1657b7cd0f4"
+  },
+  {
+    "path": "control-record-binding.json",
+    "sha256": "3f9aead792fedc3463e942c72040f233da73414f145a84757cd170f9c0831321"
+  },
+  {
+    "path": "control-request-binding.json",
+    "sha256": "7d2ba3f54e4eadb325490b51b90550ca93ce28641e8a23c1bd50d3d0662d0504"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "1eeae4cbe3c65719fcf3fb2cd09855f0ba31e1a73fcbe2a41827420a990f72b7"
+  },
+  {
+    "path": "findings.json",
+    "sha256": "db0ad94c3eae57a700974d5f3d96edde2c4b96b2d355e47e9334d8a50eeb72cb"
+  },
+  {
+    "path": "generated.json",
+    "sha256": "86c1a6557717afb4e5c225ab79410a09bb7cedaedd7f808f44120607ad54a600"
+  },
+  {
+    "path": "independent-bytes.json",
+    "sha256": "32ec49d3910de173b4b868b4281a5f2e62aa6eec9d5475fa2752aab47671ad34"
+  },
+  {
+    "path": "lifetime-counterexample.log",
+    "sha256": "4858cb2cc8d9c36bbc521a157bba1f6de051e60a11a43d75c2b4c471f63694dd"
+  },
+  {
+    "path": "node-import.log",
+    "sha256": "ee45227f85961dcbea0da59d38613cea943e172f7aa22691d645b8527b86dc0f"
+  },
+  {
+    "path": "regression-artifacts/control-baseline.json",
+    "sha256": "7a145c67f0efc2f43d69c34aa07683f0f55252b3d7301b9a3a1ae9293f910735"
+  },
+  {
+    "path": "regression-artifacts/control-deletion-coverage.json",
+    "sha256": "fa54cddea38e6b16ef05596629eba62fe3c521a9a9f5515146d0457312b8e36d"
+  },
+  {
+    "path": "regression-artifacts/control-early-promotion.json",
+    "sha256": "9acf248e0b6bdc6b4d65990aeb40c61f3d3270008d267062cd6e8de8ce9009e4"
+  },
+  {
+    "path": "regression-artifacts/control-global-cursor.json",
+    "sha256": "30ebd1498f7e70cab98f0e50d24bfdc815eed5f4205b2ebad9a7f28cd9d6bfd5"
+  },
+  {
+    "path": "regression-artifacts/control-pending.json",
+    "sha256": "a21711798a1f5d8f9aa8805ef6be226f59effe5238a5ee684d1b974080780517"
+  },
+  {
+    "path": "regression-artifacts/control-relabel.json",
+    "sha256": "bb1697823ae108601b855ebfb9d0ebe1dd8bd225a9041e24ac40691ab433d833"
+  },
+  {
+    "path": "regression-artifacts/control-split.json",
+    "sha256": "c898f6055dbc3a984124fb463191fae8116382dd3bc24920b00c8d0fadff0bdb"
+  },
+  {
+    "path": "regression-artifacts/fixtures.json",
+    "sha256": "11588cb35877196269f564ae5f57789b3c9308531daea5299fdcb36b834190b8"
+  },
+  {
+    "path": "regression-artifacts/generated.json",
+    "sha256": "b1b6e6b8655433bfe793b68708fdc8a1c093760a2d4c25da21f4eec0d7dfa487"
+  },
+  {
+    "path": "regressions.log",
+    "sha256": "8b2fed35b36985fedf4bf88c4db1413c45fd3a804d4d27eac12f61e85ca9ea5a"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "ec7e065c3a89a2de051f127b0b3a2c8a9e1b7743527a2364f666a25c514d704d"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "69f52d02ce41db3f72cef8ea2e7e51ff54d0a169666512f086c745c8ec5f5fb7"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "3f71b41ccdf13e154301dd93cdd705dcf13332410d90b625c8d8e9d92de4250c"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "8dd38521b0b56b0dfa6d090f3ee65a4e5719a6be245b14ec7808e8ddf263de42"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "c428348487d1f0d5094243f4361b65a2206c2384d88e4b7e5b9de9fbb7f2dc7d"
+  }
+]

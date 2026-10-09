@@ -1,0 +1,467 @@
+{
+  "v": 1,
+  "vectors": [
+    {
+      "id": "checkpoint-key-genesis",
+      "kind": "kdf",
+      "signer": null,
+      "input": {
+        "name": "genesis",
+        "key": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "salt": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "nonce": "c3c3c3c3c3c3c3c3c3c3c3c3",
+        "workspaceId": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+        "generation": 1,
+        "proposedEpoch": 1,
+        "plaintext": "0000"
+      },
+      "expected": {
+        "messageHex": "0012646f6e652f636865636b706f696e742f763100206434643464346434643464346434643464346434643464346434643464346434",
+        "resultHex": "4e40f5f41dc8965613013553faed5c88ff49a58ac7728bc01a3f7b846b711b34"
+      },
+      "negatives": [
+        {
+          "field": "key",
+          "input": {
+            "name": "genesis",
+            "key": "01a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+            "salt": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+            "nonce": "c3c3c3c3c3c3c3c3c3c3c3c3",
+            "workspaceId": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+            "generation": 1,
+            "proposedEpoch": 1,
+            "plaintext": "0000"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f763100206434643464346434643464346434643464346434643464346434643464346434",
+          "resultHex": "c3cb86a948d047e1c6d23933da713b56e6f0067cdb3135fd11594adf3f82c382"
+        },
+        {
+          "field": "salt",
+          "input": {
+            "name": "genesis",
+            "key": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+            "salt": "02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+            "nonce": "c3c3c3c3c3c3c3c3c3c3c3c3",
+            "workspaceId": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+            "generation": 1,
+            "proposedEpoch": 1,
+            "plaintext": "0000"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f763100206434643464346434643464346434643464346434643464346434643464346434",
+          "resultHex": "9020a8b870771cc64f9babe7d2e3b1e1638ffb7423f536d006e6d03f9a28ef8f"
+        },
+        {
+          "field": "workspaceId",
+          "input": {
+            "name": "genesis",
+            "key": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+            "salt": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+            "nonce": "c3c3c3c3c3c3c3c3c3c3c3c3",
+            "workspaceId": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4x",
+            "generation": 1,
+            "proposedEpoch": 1,
+            "plaintext": "0000"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f76310021643464346434643464346434643464346434643464346434643464346434643478",
+          "resultHex": "892a55dd2da5d9d0a170d3c987c4d421fcf37983ab74b7fa883cc1db812ee368"
+        },
+        {
+          "field": "label",
+          "input": {
+            "name": "genesis",
+            "key": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+            "salt": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+            "nonce": "c3c3c3c3c3c3c3c3c3c3c3c3",
+            "workspaceId": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+            "generation": 1,
+            "proposedEpoch": 1,
+            "plaintext": "0000"
+          },
+          "messageHex": "0013646f6e652f636865636b706f696e742f76317800206434643464346434643464346434643464346434643464346434643464346434",
+          "resultHex": "6b95a3d2c2a0e813c8c2cc10a047b1de634873f2fb4b5e8cc70967a314a1647f"
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-seal-genesis",
+      "kind": "aead",
+      "signer": null,
+      "input": {
+        "name": "genesis",
+        "key": "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "salt": "b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+        "nonce": "c3c3c3c3c3c3c3c3c3c3c3c3",
+        "workspaceId": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+        "generation": 1,
+        "proposedEpoch": 1,
+        "plaintext": "0000"
+      },
+      "expected": {
+        "messageHex": "000a646f6e652f63702f763100013100206434643464346434643464346434643464346434643464346434643464346434000131000131",
+        "resultHex": "919b97f38bbd3c8334f4ee69c4a83b0bbb19"
+      },
+      "negatives": [
+        {
+          "field": "label",
+          "messageHex": "000b646f6e652f63702f76317800013100206434643464346434643464346434643464346434643464346434643464346434000131000131",
+          "resultHex": "919bc5b63f5631fd4231a5ff3fc9f15d7cbf"
+        },
+        {
+          "field": "version",
+          "messageHex": "000a646f6e652f63702f76310002317800206434643464346434643464346434643464346434643464346434643464346434000131000131",
+          "resultHex": "919bf37d987c3fb874b7f30f0e8e970b62bb"
+        },
+        {
+          "field": "workspace",
+          "messageHex": "000a646f6e652f63702f76310001310021643464346434643464346434643464346434643464346434643464346434643478000131000131",
+          "resultHex": "919bb89ee32a2789b767352499bc9428bdb0"
+        },
+        {
+          "field": "generation",
+          "messageHex": "000a646f6e652f63702f76310001310020643464346434643464346434643464346434643464346434643464346434643400023178000131",
+          "resultHex": "919beec4ddc34772d3d4b24818890969623c"
+        },
+        {
+          "field": "epoch",
+          "messageHex": "000a646f6e652f63702f76310001310020643464346434643464346434643464346434643464346434643464346434643400013100023178",
+          "resultHex": "919bf0ed01fc75cfe38f8c94b8f92a17cd0b"
+        }
+      ],
+      "encodedBindingControls": [
+        {
+          "omitted": "label",
+          "messageHex": "00013100206434643464346434643464346434643464346434643464346434643464346434000131000131",
+          "resultHex": "919b2636437b9dfc7c62b7a59a4d9356c767"
+        },
+        {
+          "omitted": "version",
+          "messageHex": "000a646f6e652f63702f763100206434643464346434643464346434643464346434643464346434643464346434000131000131",
+          "resultHex": "919b84b27eb753ce703594c0af2dce161f2d"
+        },
+        {
+          "omitted": "workspace",
+          "messageHex": "000a646f6e652f63702f7631000131000131000131",
+          "resultHex": "919b57cd240be574c0a79b19061aa4106744"
+        },
+        {
+          "omitted": "generation",
+          "messageHex": "000a646f6e652f63702f763100013100206434643464346434643464346434643464346434643464346434643464346434000131",
+          "resultHex": "919bdffa0a8f3634d50635c293cb0e78f84c"
+        },
+        {
+          "omitted": "epoch",
+          "messageHex": "000a646f6e652f63702f763100013100206434643464346434643464346434643464346434643464346434643464346434000131",
+          "resultHex": "919bdffa0a8f3634d50635c293cb0e78f84c"
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-key-inherited",
+      "kind": "kdf",
+      "signer": null,
+      "input": {
+        "name": "inherited",
+        "key": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "salt": "5a17c2e94d0b386f1e8a4c7d92b5063f",
+        "nonce": "404142434445464748494a4b",
+        "workspaceId": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "generation": 3,
+        "proposedEpoch": 9,
+        "plaintext": "6120596a732066756c6c20736e617073686f74206f662074686520636f6e74656e7420726f6f742c20696e636c7564696e6720726f772038e2809973206174747269627574696f6e207265636f726473"
+      },
+      "expected": {
+        "messageHex": "0012646f6e652f636865636b706f696e742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "resultHex": "bd9774f89b68eeafa30017abd63686a62c44d336ad35f6d36d079d72ceb3d03a"
+      },
+      "negatives": [
+        {
+          "field": "key",
+          "input": {
+            "name": "inherited",
+            "key": "0a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+            "salt": "5a17c2e94d0b386f1e8a4c7d92b5063f",
+            "nonce": "404142434445464748494a4b",
+            "workspaceId": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+            "generation": 3,
+            "proposedEpoch": 9,
+            "plaintext": "6120596a732066756c6c20736e617073686f74206f662074686520636f6e74656e7420726f6f742c20696e636c7564696e6720726f772038e2809973206174747269627574696f6e207265636f726473"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+          "resultHex": "586ed27c47b9db78206b31e9ee74f4d19fc2ad91b558e097496eb71385b3aadf"
+        },
+        {
+          "field": "salt",
+          "input": {
+            "name": "inherited",
+            "key": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+            "salt": "0a17c2e94d0b386f1e8a4c7d92b5063f",
+            "nonce": "404142434445464748494a4b",
+            "workspaceId": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+            "generation": 3,
+            "proposedEpoch": 9,
+            "plaintext": "6120596a732066756c6c20736e617073686f74206f662074686520636f6e74656e7420726f6f742c20696e636c7564696e6720726f772038e2809973206174747269627574696f6e207265636f726473"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+          "resultHex": "8cd0dc1888ca6e175eacd2acae567a165eb342611f692725e33930c49828a1bd"
+        },
+        {
+          "field": "workspaceId",
+          "input": {
+            "name": "inherited",
+            "key": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+            "salt": "5a17c2e94d0b386f1e8a4c7d92b5063f",
+            "nonce": "404142434445464748494a4b",
+            "workspaceId": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7Dx",
+            "generation": 3,
+            "proposedEpoch": 9,
+            "plaintext": "6120596a732066756c6c20736e617073686f74206f662074686520636f6e74656e7420726f6f742c20696e636c7564696e6720726f772038e2809973206174747269627574696f6e207265636f726473"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f7631001e77735f3031485a5851374d344b395032523654385630593342354e374478",
+          "resultHex": "ad535b1cbb8e818ce67a294be3b033ec28311e220250639596ce5390e32999c6"
+        },
+        {
+          "field": "label",
+          "input": {
+            "name": "inherited",
+            "key": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+            "salt": "5a17c2e94d0b386f1e8a4c7d92b5063f",
+            "nonce": "404142434445464748494a4b",
+            "workspaceId": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+            "generation": 3,
+            "proposedEpoch": 9,
+            "plaintext": "6120596a732066756c6c20736e617073686f74206f662074686520636f6e74656e7420726f6f742c20696e636c7564696e6720726f772038e2809973206174747269627574696f6e207265636f726473"
+          },
+          "messageHex": "0013646f6e652f636865636b706f696e742f763178001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+          "resultHex": "c18c627b4b9e21fa86f71c67e4ed7973719535218ab6add8e500f5801a6fb8b9"
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-seal-inherited",
+      "kind": "aead",
+      "signer": null,
+      "input": {
+        "name": "inherited",
+        "key": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "salt": "5a17c2e94d0b386f1e8a4c7d92b5063f",
+        "nonce": "404142434445464748494a4b",
+        "workspaceId": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "generation": 3,
+        "proposedEpoch": 9,
+        "plaintext": "6120596a732066756c6c20736e617073686f74206f662074686520636f6e74656e7420726f6f742c20696e636c7564696e6720726f772038e2809973206174747269627574696f6e207265636f726473"
+      },
+      "expected": {
+        "messageHex": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+        "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d9b121dbfd5221457a5ac01e5c5c46c18"
+      },
+      "negatives": [
+        {
+          "field": "label",
+          "messageHex": "000b646f6e652f63702f763178000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0def0541b6b0ea99f178ccb18831e0b3bf"
+        },
+        {
+          "field": "version",
+          "messageHex": "000a646f6e652f63702f763100023178001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0df673af7ea767e38d4ecee6a90c950860"
+        },
+        {
+          "field": "workspace",
+          "messageHex": "000a646f6e652f63702f7631000131001e77735f3031485a5851374d344b395032523654385630593342354e374478000133000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d9bb0bda52c04f00b1350979389c60bbb"
+        },
+        {
+          "field": "generation",
+          "messageHex": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e374400023378000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d88cf5e60ca6baa180792ef2fd1d407fb"
+        },
+        {
+          "field": "epoch",
+          "messageHex": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e374400013300023978",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d24937912ea39a462b0e713cd5e576818"
+        }
+      ],
+      "encodedBindingControls": [
+        {
+          "omitted": "label",
+          "messageHex": "000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0dd285a3c7ece5148cc480ca259b132bac"
+        },
+        {
+          "omitted": "version",
+          "messageHex": "000a646f6e652f63702f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d03f16c8ac54d1a9f80924b3c0d3cb8f2"
+        },
+        {
+          "omitted": "workspace",
+          "messageHex": "000a646f6e652f63702f7631000131000133000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d1a780ae91abb6f47b3d593878c5091fa"
+        },
+        {
+          "omitted": "generation",
+          "messageHex": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000139",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d38072414642d0b7b180f450a2357ec65"
+        },
+        {
+          "omitted": "epoch",
+          "messageHex": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133",
+          "resultHex": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d0172934c2d7e79d3646a90c0f1e26615"
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-key-decimal-helper",
+      "kind": "kdf",
+      "signer": null,
+      "input": {
+        "name": "decimal-helper",
+        "key": "0101010101010101010101010101010101010101010101010101010101010101",
+        "salt": "02020202020202020202020202020202",
+        "nonce": "030303030303030303030303",
+        "workspaceId": "workspace-helper",
+        "generation": 12,
+        "proposedEpoch": 345,
+        "plaintext": "000102ff"
+      },
+      "expected": {
+        "messageHex": "0012646f6e652f636865636b706f696e742f76310010776f726b73706163652d68656c706572",
+        "resultHex": "09ab68ef167de009728f43372be97b848961fac2919512baf92465108137da03"
+      },
+      "negatives": [
+        {
+          "field": "key",
+          "input": {
+            "name": "decimal-helper",
+            "key": "1101010101010101010101010101010101010101010101010101010101010101",
+            "salt": "02020202020202020202020202020202",
+            "nonce": "030303030303030303030303",
+            "workspaceId": "workspace-helper",
+            "generation": 12,
+            "proposedEpoch": 345,
+            "plaintext": "000102ff"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f76310010776f726b73706163652d68656c706572",
+          "resultHex": "2b1f764391eda434ce175a50ce626f630620f3363bd23875acb837ee74b61759"
+        },
+        {
+          "field": "salt",
+          "input": {
+            "name": "decimal-helper",
+            "key": "0101010101010101010101010101010101010101010101010101010101010101",
+            "salt": "12020202020202020202020202020202",
+            "nonce": "030303030303030303030303",
+            "workspaceId": "workspace-helper",
+            "generation": 12,
+            "proposedEpoch": 345,
+            "plaintext": "000102ff"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f76310010776f726b73706163652d68656c706572",
+          "resultHex": "756ce575bd1e6fc506313dfb0787e02765f871325e4407cf32d82576675ad120"
+        },
+        {
+          "field": "workspaceId",
+          "input": {
+            "name": "decimal-helper",
+            "key": "0101010101010101010101010101010101010101010101010101010101010101",
+            "salt": "02020202020202020202020202020202",
+            "nonce": "030303030303030303030303",
+            "workspaceId": "workspace-helperx",
+            "generation": 12,
+            "proposedEpoch": 345,
+            "plaintext": "000102ff"
+          },
+          "messageHex": "0012646f6e652f636865636b706f696e742f76310011776f726b73706163652d68656c70657278",
+          "resultHex": "bc02dcb98de570b8bbe9602e36fae970883867703f67f710a4f1c979d90fd79f"
+        },
+        {
+          "field": "label",
+          "input": {
+            "name": "decimal-helper",
+            "key": "0101010101010101010101010101010101010101010101010101010101010101",
+            "salt": "02020202020202020202020202020202",
+            "nonce": "030303030303030303030303",
+            "workspaceId": "workspace-helper",
+            "generation": 12,
+            "proposedEpoch": 345,
+            "plaintext": "000102ff"
+          },
+          "messageHex": "0013646f6e652f636865636b706f696e742f7631780010776f726b73706163652d68656c706572",
+          "resultHex": "477781ea2d7a6493c4093a7e5809c53c2b3c79b58b909bbf4736ce28f4f57049"
+        }
+      ]
+    },
+    {
+      "id": "checkpoint-seal-decimal-helper",
+      "kind": "aead",
+      "signer": null,
+      "input": {
+        "name": "decimal-helper",
+        "key": "0101010101010101010101010101010101010101010101010101010101010101",
+        "salt": "02020202020202020202020202020202",
+        "nonce": "030303030303030303030303",
+        "workspaceId": "workspace-helper",
+        "generation": 12,
+        "proposedEpoch": 345,
+        "plaintext": "000102ff"
+      },
+      "expected": {
+        "messageHex": "000a646f6e652f63702f76310001310010776f726b73706163652d68656c706572000231320003333435",
+        "resultHex": "a1108a9b0222151563b74e04ed08a777fa475770"
+      },
+      "negatives": [
+        {
+          "field": "label",
+          "messageHex": "000b646f6e652f63702f7631780001310010776f726b73706163652d68656c706572000231320003333435",
+          "resultHex": "a1108a9bfe90b71d9b59267232e0a758d62e4594"
+        },
+        {
+          "field": "version",
+          "messageHex": "000a646f6e652f63702f7631000231780010776f726b73706163652d68656c706572000231320003333435",
+          "resultHex": "a1108a9b2f9afe6dc6f061c5c5d7a66be5586141"
+        },
+        {
+          "field": "workspace",
+          "messageHex": "000a646f6e652f63702f76310001310011776f726b73706163652d68656c70657278000231320003333435",
+          "resultHex": "a1108a9bad9de23a1c043f82ddb797d15d065749"
+        },
+        {
+          "field": "generation",
+          "messageHex": "000a646f6e652f63702f76310001310010776f726b73706163652d68656c70657200033132780003333435",
+          "resultHex": "a1108a9baf65bc0ece44091118f113d949fb1d9c"
+        },
+        {
+          "field": "epoch",
+          "messageHex": "000a646f6e652f63702f76310001310010776f726b73706163652d68656c70657200023132000433343578",
+          "resultHex": "a1108a9b83e278765ce223bd2a0a24226a9ad20c"
+        }
+      ],
+      "encodedBindingControls": [
+        {
+          "omitted": "label",
+          "messageHex": "0001310010776f726b73706163652d68656c706572000231320003333435",
+          "resultHex": "a1108a9bd87eb835f92931958e3e97eb90dd8d1a"
+        },
+        {
+          "omitted": "version",
+          "messageHex": "000a646f6e652f63702f76310010776f726b73706163652d68656c706572000231320003333435",
+          "resultHex": "a1108a9bb07b278614b9d609430e240368988dcb"
+        },
+        {
+          "omitted": "workspace",
+          "messageHex": "000a646f6e652f63702f7631000131000231320003333435",
+          "resultHex": "a1108a9bb45f7df765ba609a7a9422c54daf1a3b"
+        },
+        {
+          "omitted": "generation",
+          "messageHex": "000a646f6e652f63702f76310001310010776f726b73706163652d68656c7065720003333435",
+          "resultHex": "a1108a9b853a6174374b01ddaf0d1eaffedd1b8e"
+        },
+        {
+          "omitted": "epoch",
+          "messageHex": "000a646f6e652f63702f76310001310010776f726b73706163652d68656c70657200023132",
+          "resultHex": "a1108a9b0dfbfb478745edd5b334a1185bb454e6"
+        }
+      ]
+    }
+  ]
+}

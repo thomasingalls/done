@@ -1,0 +1,9 @@
+{
+  "refused": 44,
+  "current": {
+    "generation": 1,
+    "epoch": 1,
+    "version": 1,
+    "maxPlaintext": 16777216
+  }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="native fresh/imported/cleanup claims retain exact authentication through full Account handoff and cold startup" time="5.910618" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/native.test.mjs"/>
+	<testcase name="claim MAC refusal is effective before promotion; Account also binds the exact winning claim MAC" time="3.557003" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/native.test.mjs"/>
+	<testcase name="preactive import and Local clear carriers only block Account open; scoped deletion never runs" time="2.916599" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/native.test.mjs"/>
+	<testcase name="20 shrinking-enabled imported-claim histories reject changed provenance and recover after exact restoration" time="30.885741" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/native.test.mjs"/>
+	<!-- tests 4 -->
+	<!-- suites 0 -->
+	<!-- pass 4 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 44585.854125 -->
+</testsuites>

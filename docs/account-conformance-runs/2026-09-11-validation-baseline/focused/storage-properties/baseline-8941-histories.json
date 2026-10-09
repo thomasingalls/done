@@ -1,0 +1,4749 @@
+[
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "disk",
+          "ids": [
+            11,
+            7,
+            37
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            5,
+            37
+          ]
+        },
+        {
+          "op": "quota",
+          "id": 1
+        },
+        {
+          "op": "journal",
+          "id": 1
+        },
+        {
+          "op": "disk",
+          "ids": [
+            37,
+            38
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 10
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33,
+            27,
+            26
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 11,
+        "disk": 3,
+        "quota": 1,
+        "journal": 2,
+        "remove-failure": 1,
+        "fault:abort-delete": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 79,
+      "index": 7
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 30,
+          "text": "",
+          "remove": 4
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 35,
+          "text": "aaca",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "late",
+          "ids": [
+            0,
+            12,
+            3,
+            20
+          ],
+          "after": [
+            18,
+            18,
+            1
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            1,
+            35,
+            39,
+            14
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 39
+            },
+            {
+              "op": "disk",
+              "ids": [
+                22
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                23,
+                6,
+                4,
+                40
+              ]
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "late",
+          "ids": [
+            10,
+            5
+          ],
+          "after": [
+            1,
+            38,
+            7
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            0
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            13,
+            0
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "journal",
+          "id": 5
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "published",
+          "ids": [
+            12
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 8
+            },
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "close"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 8,
+        "recovery": 15,
+        "fault:seal": 4,
+        "disk": 4,
+        "late-deferred": 1,
+        "overlap-inapplicable": 1,
+        "journal": 3,
+        "fault:published": 1,
+        "late-reservation": 1,
+        "fault:abort-delete": 1,
+        "overlap:flush:seal:crash": 1,
+        "compact": 3,
+        "renderer-crash": 1,
+        "overlap:flush:seal:close": 1,
+        "flush": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 87,
+      "index": 9
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 2,
+          "text": "",
+          "remove": 8
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 3,
+          "text": "aé b ",
+          "remove": 0
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 2,
+          "text": "",
+          "remove": 3
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 39,
+          "text": "  c",
+          "remove": 3
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 11,
+          "text": "bébb",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 37,
+          "text": " bcb",
+          "remove": 3
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 28,
+          "text": "a",
+          "remove": 2
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 22,
+          "text": " céc",
+          "remove": 2
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 35,
+          "text": "",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 19,
+          "text": "c\na",
+          "remove": 1
+        }
+      ],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            40
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 4,
+        "fault:abort-reserve": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 98,
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 11,
+          "text": "ba\n\n ",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 27,
+          "text": "a \na ",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 40,
+          "text": "a\n",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 5,
+          "text": "",
+          "remove": 4
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 18,
+          "text": "\n",
+          "remove": 1
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            29,
+            0,
+            3,
+            28
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 23
+            },
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "late",
+          "ids": [
+            12,
+            32,
+            28
+          ],
+          "after": [
+            27
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 5,
+        "overlap-inapplicable": 1,
+        "journal": 1,
+        "compact": 1,
+        "fault:seal": 1,
+        "disk": 1,
+        "late-deferred": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 53,
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 31,
+          "text": "é abb",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 6,
+          "text": "bb \nc",
+          "remove": 3
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 11,
+          "text": "",
+          "remove": 1
+        }
+      ],
+      "steps": [
+        {
+          "op": "disk",
+          "ids": [
+            13
+          ]
+        },
+        {
+          "op": "late",
+          "ids": [
+            14,
+            4,
+            13,
+            13
+          ],
+          "after": [
+            11,
+            17
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "seal",
+          "ids": [
+            31,
+            7,
+            32
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                8,
+                17,
+                36
+              ]
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                13,
+                11
+              ]
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 5
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "seal",
+          "ids": [
+            13,
+            39,
+            15
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                14,
+                11,
+                18,
+                29
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            33
+          ]
+        },
+        {
+          "op": "late",
+          "ids": [
+            12,
+            14
+          ],
+          "after": [
+            11,
+            33,
+            15
+          ]
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "late",
+          "ids": [
+            25
+          ],
+          "after": [
+            27
+          ]
+        },
+        {
+          "op": "quota",
+          "id": 27
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            11,
+            14,
+            3,
+            33
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 15,
+        "disk": 9,
+        "fault:seal": 3,
+        "late-deferred": 1,
+        "overlap-deferred": 2,
+        "compact": 4,
+        "journal": 1,
+        "fault:published": 2,
+        "late-reservation": 2,
+        "flush": 1,
+        "quota": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 97,
+      "index": 11
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 12,
+          "text": "",
+          "remove": 6
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 4,
+          "text": "a\nb",
+          "remove": 3
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 13,
+          "text": "aéa\n",
+          "remove": 8
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 36,
+          "text": "acc a",
+          "remove": 0
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 28,
+          "text": " \n",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            1
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "published",
+          "ids": [
+            34,
+            14,
+            17,
+            32
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 16
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "quota",
+          "id": 28
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "journal",
+          "id": 33
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "published",
+          "ids": [
+            29
+          ],
+          "during": [
+            {
+              "op": "flush"
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "close"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 5,
+        "recovery": 11,
+        "abort-inapplicable": 1,
+        "fault:seal": 2,
+        "overlap:disk:seal:crash": 1,
+        "journal": 2,
+        "renderer-crash": 1,
+        "quota": 1,
+        "flush": 4,
+        "overlap:disk:seal:close": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 191,
+      "index": 5
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 29,
+          "text": "b\nac",
+          "remove": 4
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 40,
+          "text": "",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 4,
+          "text": "ébca",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 37,
+          "text": "céa",
+          "remove": 5
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 32,
+          "text": "ccab ",
+          "remove": 8
+        }
+      ],
+      "steps": [
+        {
+          "op": "late",
+          "ids": [
+            18,
+            37,
+            0
+          ],
+          "after": [
+            22,
+            35
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 4,
+        "fault:seal": 1,
+        "disk": 1,
+        "late-deferred": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 44,
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "published",
+          "ids": [
+            2,
+            3
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                30
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            1,
+            4,
+            35,
+            15
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                32
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "journal",
+          "id": 22
+        },
+        {
+          "op": "quota",
+          "id": 3
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 8,
+        "overlap-inapplicable": 2,
+        "disk": 2,
+        "flush": 1,
+        "journal": 1,
+        "quota": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 56,
+      "index": 4
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 28,
+          "text": "ca",
+          "remove": 6
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 6,
+          "text": "\nc b",
+          "remove": 2
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 6,
+          "text": "\na ",
+          "remove": 0
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 34,
+          "text": "\na",
+          "remove": 4
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 7,
+          "text": "",
+          "remove": 4
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 13,
+          "text": "aéb",
+          "remove": 8
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 13,
+          "text": "éb",
+          "remove": 6
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "published",
+          "ids": [
+            18,
+            13,
+            29
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                34,
+                22,
+                33,
+                20
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 30
+            },
+            {
+              "op": "journal",
+              "id": 14
+            },
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "crash"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 4,
+        "overlap-inapplicable": 1,
+        "disk": 1,
+        "journal": 2,
+        "compact": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 64,
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 18,
+          "text": "\n",
+          "remove": 4
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 12,
+          "text": "béba",
+          "remove": 4
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 24,
+          "text": "b",
+          "remove": 6
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 35,
+          "text": "c",
+          "remove": 4
+        }
+      ],
+      "steps": [
+        {
+          "op": "quota",
+          "id": 30
+        },
+        {
+          "op": "disk",
+          "ids": [
+            32,
+            32
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            9,
+            0
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 30
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "published",
+          "ids": [
+            13,
+            16
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                6,
+                18
+              ]
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                1
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 23
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "abort",
+          "at": "publish",
+          "ids": [
+            11,
+            24,
+            37,
+            34
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            1,
+            2,
+            18,
+            12
+          ]
+        },
+        {
+          "op": "late",
+          "ids": [
+            32
+          ],
+          "after": [
+            8,
+            9,
+            23,
+            13
+          ]
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "journal",
+          "id": 23
+        },
+        {
+          "op": "compact"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 16,
+        "quota": 1,
+        "disk": 6,
+        "journal": 3,
+        "fault:seal": 2,
+        "overlap:flush:seal:release": 1,
+        "compact": 2,
+        "remove-failure": 1,
+        "fault:abort-publish": 1,
+        "fault:published": 1,
+        "late-reservation": 1,
+        "flush": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 158,
+      "index": 11
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 40,
+          "text": "é é\n",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 39
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "seal",
+          "ids": [
+            28
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                35
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 18
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                28,
+                32
+              ]
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "late",
+          "ids": [
+            2,
+            7,
+            15
+          ],
+          "after": [
+            15,
+            32,
+            29,
+            19
+          ]
+        },
+        {
+          "op": "quota",
+          "id": 33
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 8,
+        "journal": 2,
+        "overlap-inapplicable": 1,
+        "disk": 3,
+        "compact": 1,
+        "fault:seal": 1,
+        "late-deferred": 1,
+        "quota": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 48,
+      "index": 4
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 5,
+          "text": "bcb\n\n",
+          "remove": 1
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 17,
+          "text": "é\na ",
+          "remove": 7
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 21,
+          "text": "ca",
+          "remove": 8
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 11,
+          "text": " ",
+          "remove": 1
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 25,
+          "text": "",
+          "remove": 8
+        }
+      ],
+      "steps": [
+        {
+          "op": "compact"
+        },
+        {
+          "op": "abort",
+          "at": "publish",
+          "ids": [
+            28,
+            9,
+            38,
+            36
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 5,
+        "compact": 1,
+        "abort-inapplicable": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 89,
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 0,
+          "text": "a",
+          "remove": 0
+        }
+      ],
+      "steps": [
+        {
+          "op": "flush"
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "published",
+          "ids": [
+            6,
+            20
+          ],
+          "during": [
+            {
+              "op": "flush"
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "journal",
+              "id": 3
+            },
+            {
+              "op": "disk",
+              "ids": [
+                31,
+                36
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 12
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            20
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 23
+        },
+        {
+          "op": "quota",
+          "id": 29
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            2
+          ]
+        },
+        {
+          "op": "quota",
+          "id": 11
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 12,
+        "flush": 3,
+        "overlap-inapplicable": 1,
+        "journal": 3,
+        "disk": 3,
+        "quota": 2,
+        "remove-failure": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 82,
+      "index": 8
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 38,
+          "text": " é ",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 39,
+          "text": "a\né",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 1,
+          "text": "",
+          "remove": 5
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 22,
+          "text": "\n é\na",
+          "remove": 1
+        }
+      ],
+      "steps": [
+        {
+          "op": "flush"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            22,
+            23,
+            31,
+            36
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            21
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            30,
+            5,
+            38,
+            12
+          ]
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            17,
+            31,
+            9
+          ]
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            26,
+            32,
+            23
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            13
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                5
+              ]
+            }
+          ],
+          "finish": "release"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 13,
+        "flush": 1,
+        "disk": 5,
+        "fault:abort-delete": 1,
+        "compact": 2,
+        "fault:seal": 1,
+        "overlap:disk:seal:release": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 135,
+      "index": 8
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 23,
+          "text": "\n\nébc",
+          "remove": 5
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 22,
+          "text": "aac",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 23,
+          "text": " b",
+          "remove": 5
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 15,
+          "text": "a aa",
+          "remove": 8
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 30,
+          "text": "bé b\n",
+          "remove": 0
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 6,
+          "text": "",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 10,
+          "text": "é\n",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 34,
+          "text": "éc",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 10,
+          "text": "\na",
+          "remove": 2
+        }
+      ],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "record",
+          "ids": [
+            34,
+            21
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 33
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            4
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                27,
+                20,
+                35
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                28,
+                33,
+                16
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                23,
+                13
+              ]
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "published",
+          "ids": [
+            30
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                30,
+                8,
+                2
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 21
+            },
+            {
+              "op": "disk",
+              "ids": [
+                3,
+                4
+              ]
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "published",
+          "ids": [
+            4
+          ],
+          "during": [
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "late",
+          "ids": [
+            34,
+            2,
+            18,
+            10
+          ],
+          "after": [
+            1
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 2
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            1
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 0
+            },
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "quota",
+          "id": 26
+        },
+        {
+          "op": "disk",
+          "ids": [
+            33
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 5,
+        "recovery": 16,
+        "fault:abort-record": 1,
+        "journal": 4,
+        "fault:seal": 4,
+        "overlap:disk:seal:crash": 1,
+        "disk": 7,
+        "renderer-crash": 2,
+        "overlap-deferred": 1,
+        "overlap:disk:seal:release": 1,
+        "flush": 1,
+        "late-deferred": 1,
+        "overlap:flush:seal:crash": 1,
+        "compact": 2,
+        "quota": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 134,
+      "index": 9
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 7,
+          "text": "c",
+          "remove": 2
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 30,
+          "text": "",
+          "remove": 4
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 2,
+          "text": "b\ncc\n",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 35,
+          "text": "\n ",
+          "remove": 0
+        }
+      ],
+      "steps": [
+        {
+          "op": "flush"
+        },
+        {
+          "op": "abort",
+          "at": "publish",
+          "ids": [
+            12
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            7,
+            14,
+            34
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "journal",
+              "id": 2
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "journal",
+          "id": 21
+        },
+        {
+          "op": "journal",
+          "id": 33
+        },
+        {
+          "op": "quota",
+          "id": 14
+        },
+        {
+          "op": "compact"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 10,
+        "flush": 2,
+        "abort-inapplicable": 1,
+        "overlap-inapplicable": 1,
+        "compact": 2,
+        "journal": 3,
+        "quota": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 130,
+      "index": 6
+    }
+  },
+  {
+    "history": {
+      "edits": [],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 24
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "late",
+          "ids": [
+            33,
+            19,
+            9,
+            30
+          ],
+          "after": [
+            1,
+            20
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            10,
+            36,
+            0,
+            23
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            30
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 8,
+        "journal": 1,
+        "fault:seal": 1,
+        "disk": 2,
+        "fault:published": 1,
+        "late-reservation": 1,
+        "fault:abort-delete": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 54,
+      "index": 4
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 15,
+          "text": "b",
+          "remove": 2
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 17,
+          "text": "",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 26,
+          "text": "cb\n ",
+          "remove": 1
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 12,
+          "text": "ac",
+          "remove": 4
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 14,
+          "text": "caaé",
+          "remove": 0
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 1,
+          "text": "c",
+          "remove": 2
+        }
+      ],
+      "steps": [
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "journal",
+          "id": 1
+        },
+        {
+          "op": "disk",
+          "ids": [
+            28,
+            14,
+            27
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "published",
+          "ids": [
+            32,
+            2
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                14,
+                38,
+                32
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 39
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "journal",
+              "id": 20
+            },
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            23,
+            11,
+            25
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            32,
+            25
+          ]
+        },
+        {
+          "op": "remove-failure"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 11,
+        "compact": 1,
+        "journal": 3,
+        "disk": 4,
+        "overlap-deferred": 1,
+        "flush": 2,
+        "remove-failure": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 119,
+      "index": 7
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 17,
+          "text": "ac",
+          "remove": 4
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 8,
+          "text": "éé ",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 24,
+          "text": "ab",
+          "remove": 3
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 26,
+          "text": "é éa",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 38,
+          "text": "",
+          "remove": 8
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 32,
+          "text": "",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 16,
+          "text": "bac",
+          "remove": 8
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 27,
+          "text": "cé\n",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 0,
+          "text": "cb ",
+          "remove": 6
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 20,
+          "text": "éé\n",
+          "remove": 2
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            35,
+            7,
+            26
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                17,
+                36,
+                24,
+                17
+              ]
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "late",
+          "ids": [
+            4,
+            27
+          ],
+          "after": [
+            2
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 6,
+        "fault:seal": 2,
+        "overlap:disk:seal:crash": 1,
+        "disk": 2,
+        "renderer-crash": 1,
+        "late-deferred": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 102,
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 7,
+          "text": "caca",
+          "remove": 6
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 8,
+          "text": "c\naca",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 40,
+          "text": " é\nc",
+          "remove": 7
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 22,
+          "text": "\naéé",
+          "remove": 8
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 31,
+          "text": " c",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 13,
+          "text": "bé\nc",
+          "remove": 1
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 28,
+          "text": " bbéc",
+          "remove": 6
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 31,
+          "text": "b c",
+          "remove": 7
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 22,
+          "text": "\n ",
+          "remove": 8
+        }
+      ],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 28
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "published",
+          "ids": [
+            21
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                39
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 31
+            },
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            22,
+            18,
+            7,
+            26
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "publish",
+          "ids": [
+            15,
+            25,
+            7,
+            38
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 30
+        },
+        {
+          "op": "journal",
+          "id": 3
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            17
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            36,
+            40
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 17
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 15,
+        "journal": 5,
+        "fault:seal": 1,
+        "overlap:flush:seal:release": 1,
+        "disk": 3,
+        "compact": 3,
+        "abort-deferred": 2,
+        "eventual-compaction": 1
+      },
+      "comparisons": 225,
+      "index": 10
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 28,
+          "text": "",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 22,
+          "text": "\n",
+          "remove": 2
+        }
+      ],
+      "steps": [
+        {
+          "op": "disk",
+          "ids": [
+            39,
+            19
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "record",
+          "ids": [
+            35,
+            21
+          ]
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            2
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            19,
+            0,
+            18
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "publish",
+          "ids": [
+            25,
+            8,
+            7,
+            33
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            32
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                1,
+                37,
+                11,
+                11
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 15
+            }
+          ],
+          "finish": "crash"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 10,
+        "disk": 3,
+        "fault:abort-record": 1,
+        "abort-deferred": 2,
+        "overlap-deferred": 1,
+        "journal": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 82,
+      "index": 6
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 30,
+          "text": " é ",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 5,
+          "text": "\n",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 28,
+          "text": "\n é",
+          "remove": 8
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 39,
+          "text": "",
+          "remove": 0
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 31,
+          "text": " bb",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 39,
+          "text": "",
+          "remove": 1
+        }
+      ],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 24
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "published",
+          "ids": [
+            8
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 38
+            },
+            {
+              "op": "journal",
+              "id": 23
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "late",
+          "ids": [
+            20,
+            16
+          ],
+          "after": [
+            3,
+            27,
+            15
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 8,
+        "journal": 3,
+        "fault:seal": 2,
+        "overlap:disk:seal:release": 1,
+        "flush": 1,
+        "disk": 1,
+        "late-deferred": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 84,
+      "index": 3
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 32,
+          "text": "",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 35,
+          "text": "cbé",
+          "remove": 3
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 32,
+          "text": "",
+          "remove": 2
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 5,
+          "text": "",
+          "remove": 8
+        }
+      ],
+      "steps": [
+        {
+          "op": "flush"
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            11,
+            31,
+            17,
+            14
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 40
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 6,
+        "flush": 1,
+        "abort-inapplicable": 1,
+        "journal": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 78,
+      "index": 2
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 32,
+          "text": "cé",
+          "remove": 0
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 12,
+          "text": "\n\nacc",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 39,
+          "text": " a",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 5,
+          "text": "aéc\n",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 24,
+          "text": " \nb",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 37
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 4,
+        "journal": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 44,
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 39,
+          "text": "b\n",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 33,
+          "text": "é\nb",
+          "remove": 8
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 37,
+          "text": "é c",
+          "remove": 3
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 8,
+          "text": "",
+          "remove": 6
+        }
+      ],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 24
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "late",
+          "ids": [
+            35,
+            32,
+            4
+          ],
+          "after": [
+            35
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            26,
+            11,
+            6
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 7,
+        "journal": 1,
+        "compact": 1,
+        "fault:seal": 1,
+        "disk": 2,
+        "fault:published": 1,
+        "late-reservation": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 65,
+      "index": 3
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 40,
+          "text": "éé\n",
+          "remove": 0
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 36,
+          "text": "\n bb ",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 25,
+          "text": "é",
+          "remove": 7
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 23,
+          "text": "",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 26,
+          "text": "é",
+          "remove": 2
+        }
+      ],
+      "steps": [
+        {
+          "op": "disk",
+          "ids": [
+            30,
+            17,
+            29
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            11
+          ]
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            34,
+            33,
+            19,
+            17
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                17,
+                35
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 24
+            },
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            3,
+            24,
+            3,
+            40
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 8,
+        "disk": 4,
+        "flush": 2,
+        "overlap-deferred": 1,
+        "compact": 1,
+        "journal": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 76,
+      "index": 4
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 3,
+          "text": "\né",
+          "remove": 0
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 14,
+          "text": "a ",
+          "remove": 2
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 5,
+          "text": "\n a",
+          "remove": 5
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 33,
+          "text": "baécé",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 35,
+          "text": "",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 11,
+          "text": "",
+          "remove": 8
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 35,
+          "text": "",
+          "remove": 0
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 3,
+          "text": " ",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 7,
+          "text": "é",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "quota",
+          "id": 40
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            26,
+            13,
+            12,
+            9
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                1
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                30
+              ]
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "abort",
+          "at": "publish",
+          "ids": [
+            11,
+            6,
+            26,
+            10
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            16,
+            7
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 6
+            },
+            {
+              "op": "disk",
+              "ids": [
+                31
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                9,
+                33,
+                4
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 6
+            },
+            {
+              "op": "journal",
+              "id": 27
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "remove-failure"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 5,
+        "recovery": 11,
+        "quota": 1,
+        "flush": 1,
+        "fault:seal": 1,
+        "overlap:disk:seal:close": 1,
+        "disk": 4,
+        "fault:abort-publish": 1,
+        "overlap-inapplicable": 1,
+        "journal": 3,
+        "remove-failure": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 183,
+      "index": 6
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 39,
+          "text": "caca",
+          "remove": 3
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 29,
+          "text": "é",
+          "remove": 2
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 12,
+          "text": "",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 12,
+          "text": " c bé",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 23,
+          "text": "",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 36,
+          "text": "é\n\n",
+          "remove": 5
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 11,
+          "text": "\n\n",
+          "remove": 7
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            5
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 37
+            },
+            {
+              "op": "journal",
+              "id": 9
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 22
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "journal",
+          "id": 19
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 6,
+        "fault:seal": 1,
+        "overlap:disk:seal:close": 1,
+        "journal": 4,
+        "compact": 2,
+        "eventual-compaction": 1
+      },
+      "comparisons": 80,
+      "index": 1
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 40,
+          "text": "a\nc",
+          "remove": 3
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 10,
+          "text": "",
+          "remove": 7
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "deleted",
+          "ids": [
+            16
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 20
+            },
+            {
+              "op": "disk",
+              "ids": [
+                14,
+                14,
+                11
+              ]
+            },
+            {
+              "op": "journal",
+              "id": 34
+            },
+            {
+              "op": "disk",
+              "ids": [
+                15
+              ]
+            }
+          ],
+          "finish": "close"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 5,
+        "fault:seal": 1,
+        "overlap:disk:seal:close": 1,
+        "journal": 2,
+        "disk": 2,
+        "eventual-compaction": 1
+      },
+      "comparisons": 35,
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 4,
+          "text": "c\nc",
+          "remove": 4
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 22,
+          "text": "ééa",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 1,
+          "text": "\naa",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 16,
+          "text": "ca\n\na",
+          "remove": 5
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 12,
+          "text": "",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 40,
+          "text": "  é",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 22,
+          "text": "a",
+          "remove": 1
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 30,
+          "text": "ab",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            3,
+            6,
+            32
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            36
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "seal",
+          "ids": [
+            4,
+            21
+          ],
+          "during": [
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            15,
+            38,
+            40
+          ]
+        },
+        {
+          "op": "quota",
+          "id": 5
+        },
+        {
+          "op": "disk",
+          "ids": [
+            8
+          ]
+        },
+        {
+          "op": "late",
+          "ids": [
+            22,
+            40,
+            10,
+            27
+          ],
+          "after": [
+            1
+          ]
+        },
+        {
+          "op": "disk",
+          "ids": [
+            36
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            36,
+            30,
+            17
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                13
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "seal",
+          "ids": [
+            0,
+            38
+          ],
+          "during": [
+            {
+              "op": "disk",
+              "ids": [
+                17,
+                27
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                12
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                28,
+                3,
+                18
+              ]
+            }
+          ],
+          "finish": "close"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 14,
+        "disk": 9,
+        "abort-deferred": 1,
+        "overlap-deferred": 1,
+        "flush": 1,
+        "quota": 1,
+        "fault:seal": 1,
+        "late-deferred": 1,
+        "overlap-inapplicable": 2,
+        "eventual-compaction": 1
+      },
+      "comparisons": 152,
+      "index": 10
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 33,
+          "text": " ",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 6,
+          "text": "",
+          "remove": 5
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 4,
+          "text": "b",
+          "remove": 0
+        }
+      ],
+      "steps": [
+        {
+          "op": "flush"
+        },
+        {
+          "op": "quota",
+          "id": 28
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            20,
+            12
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 20
+            },
+            {
+              "op": "journal",
+              "id": 38
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            21,
+            37
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 9
+            },
+            {
+              "op": "disk",
+              "ids": [
+                4,
+                13
+              ]
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                10,
+                7,
+                15
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "quota",
+          "id": 4
+        },
+        {
+          "op": "quota",
+          "id": 15
+        },
+        {
+          "op": "abort",
+          "at": "publish",
+          "ids": [
+            40,
+            39,
+            8
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 13,
+        "flush": 2,
+        "quota": 3,
+        "overlap-inapplicable": 1,
+        "compact": 2,
+        "journal": 3,
+        "remove-failure": 2,
+        "fault:seal": 1,
+        "overlap:disk:seal:release": 1,
+        "disk": 2,
+        "abort-deferred": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 135,
+      "index": 8
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 36,
+          "text": " bé",
+          "remove": 3
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 18,
+          "text": "",
+          "remove": 0
+        },
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 31,
+          "text": "",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 36,
+          "text": "abé  ",
+          "remove": 4
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 12,
+          "text": "c\nab",
+          "remove": 2
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 1,
+          "text": "é\na",
+          "remove": 2
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 4,
+          "text": " bb a",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 1,
+          "text": " éc\n\n",
+          "remove": 4
+        }
+      ],
+      "steps": [
+        {
+          "op": "disk",
+          "ids": [
+            3,
+            0,
+            10
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "seal",
+          "ids": [
+            25,
+            39,
+            13,
+            30
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 39
+            },
+            {
+              "op": "disk",
+              "ids": [
+                39
+              ]
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "published",
+          "ids": [
+            20,
+            16,
+            11,
+            6
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 14
+            },
+            {
+              "op": "disk",
+              "ids": [
+                4,
+                14,
+                11,
+                29
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "abort",
+          "at": "reserve",
+          "ids": [
+            0,
+            37
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 8,
+        "disk": 3,
+        "overlap-inapplicable": 2,
+        "journal": 2,
+        "flush": 1,
+        "compact": 1,
+        "fault:abort-reserve": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 74,
+      "index": 4
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 1,
+          "at": 7,
+          "text": "cbac",
+          "remove": 8
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 11,
+          "text": "a c\nc",
+          "remove": 2
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 9,
+          "text": "é\n",
+          "remove": 8
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 25,
+          "text": "b\n aa",
+          "remove": 6
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 15,
+          "text": "\nécé\n",
+          "remove": 5
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 4,
+          "text": " ac",
+          "remove": 5
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 9,
+          "text": " \n",
+          "remove": 6
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 8,
+          "text": "bb",
+          "remove": 4
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 33,
+          "text": "ab",
+          "remove": 1
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 9,
+          "text": "c\nc",
+          "remove": 7
+        }
+      ],
+      "steps": [
+        {
+          "op": "abort",
+          "at": "record",
+          "ids": [
+            9
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 2
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "late",
+          "ids": [
+            3,
+            27,
+            24,
+            40
+          ],
+          "after": [
+            2,
+            5,
+            38,
+            19
+          ]
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "seal",
+          "ids": [
+            37
+          ],
+          "during": [
+            {
+              "op": "flush"
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "journal",
+              "id": 3
+            },
+            {
+              "op": "disk",
+              "ids": [
+                20,
+                3
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "late",
+          "ids": [
+            26,
+            29,
+            2
+          ],
+          "after": [
+            4
+          ]
+        },
+        {
+          "op": "late",
+          "ids": [
+            40
+          ],
+          "after": [
+            20
+          ]
+        },
+        {
+          "op": "late",
+          "ids": [
+            24,
+            7,
+            1,
+            2
+          ],
+          "after": [
+            3,
+            4
+          ]
+        },
+        {
+          "op": "flush"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 14,
+        "fault:abort-record": 1,
+        "journal": 2,
+        "fault:seal": 4,
+        "disk": 5,
+        "late-deferred": 4,
+        "flush": 4,
+        "compact": 1,
+        "overlap-inapplicable": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 188,
+      "index": 10
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 2,
+          "text": "c\n b\n",
+          "remove": 1
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 10,
+          "text": "",
+          "remove": 7
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 24,
+          "text": "",
+          "remove": 3
+        }
+      ],
+      "steps": [
+        {
+          "op": "compact"
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "late",
+          "ids": [
+            15
+          ],
+          "after": [
+            35,
+            0,
+            11,
+            40
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 6,
+        "compact": 2,
+        "fault:seal": 1,
+        "disk": 1,
+        "late-deferred": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 66,
+      "index": 2
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 10,
+          "text": "",
+          "remove": 3
+        }
+      ],
+      "steps": [
+        {
+          "op": "journal",
+          "id": 38
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "published",
+          "ids": [
+            28,
+            5
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 13
+            },
+            {
+              "op": "disk",
+              "ids": [
+                28,
+                32,
+                40
+              ]
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "journal",
+              "id": 40
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "journal",
+          "id": 3
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            36,
+            19
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "deleted",
+          "ids": [
+            14,
+            25
+          ],
+          "during": [
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "deleted",
+          "ids": [
+            6,
+            5,
+            17,
+            3
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 19
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 35
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            6,
+            28,
+            23,
+            33
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 18
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 15,
+        "journal": 7,
+        "fault:seal": 3,
+        "overlap:flush:seal:release": 1,
+        "disk": 2,
+        "flush": 4,
+        "fault:abort-delete": 1,
+        "overlap:disk:seal:close": 1,
+        "compact": 2,
+        "overlap:disk:seal:release": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 95,
+      "index": 8
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 5,
+          "text": " b é",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 39,
+          "text": "  ",
+          "remove": 0
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 2,
+          "text": "ébc",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            19,
+            13,
+            12,
+            17
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "remove-failure"
+        },
+        {
+          "op": "reopen"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 6,
+        "overlap-inapplicable": 1,
+        "compact": 2,
+        "flush": 1,
+        "remove-failure": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 90,
+      "index": 2
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 24,
+          "text": "éb\ncé",
+          "remove": 6
+        },
+        {
+          "lane": 1,
+          "actor": 0,
+          "at": 25,
+          "text": "a céc",
+          "remove": 6
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 2,
+          "text": " \na \n",
+          "remove": 4
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 20,
+          "text": "",
+          "remove": 1
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 15,
+          "text": "\ncac ",
+          "remove": 0
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 14,
+          "text": "\n\n\n",
+          "remove": 2
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 6,
+          "text": "\ncéé\n",
+          "remove": 7
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 5,
+          "text": "cb ",
+          "remove": 0
+        },
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 27,
+          "text": "  a",
+          "remove": 5
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "seal",
+          "ids": [
+            0
+          ],
+          "during": [
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            4,
+            28,
+            6,
+            16
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 24
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            33,
+            19,
+            35
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 36
+        },
+        {
+          "op": "reopen"
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            39,
+            1,
+            3
+          ],
+          "during": [
+            {
+              "op": "flush"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                34,
+                26,
+                38,
+                32
+              ]
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "seal",
+          "ids": [
+            21,
+            16,
+            8,
+            5
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 28
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            20
+          ],
+          "during": [
+            {
+              "op": "flush"
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            13,
+            31,
+            32
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 28
+            },
+            {
+              "op": "compact"
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                32,
+                36
+              ]
+            },
+            {
+              "op": "disk",
+              "ids": [
+                37,
+                34
+              ]
+            }
+          ],
+          "finish": "release"
+        },
+        {
+          "op": "quota",
+          "id": 30
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 5,
+        "recovery": 16,
+        "overlap-inapplicable": 2,
+        "compact": 4,
+        "journal": 4,
+        "disk": 4,
+        "fault:seal": 3,
+        "overlap:disk:seal:release": 2,
+        "flush": 4,
+        "overlap-deferred": 1,
+        "overlap:disk:seal:close": 1,
+        "quota": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 168,
+      "index": 9
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 14,
+          "text": "é é  ",
+          "remove": 2
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 28,
+          "text": " ab",
+          "remove": 4
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 9,
+          "text": "",
+          "remove": 3
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 22,
+          "text": " ébaa",
+          "remove": 1
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 23,
+          "text": "c \na",
+          "remove": 3
+        }
+      ],
+      "steps": [
+        {
+          "op": "flush"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 3,
+        "recovery": 4,
+        "flush": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 68,
+      "index": 0
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 2,
+          "at": 12,
+          "text": "caéb",
+          "remove": 2
+        },
+        {
+          "lane": 0,
+          "actor": 2,
+          "at": 13,
+          "text": "",
+          "remove": 2
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 39,
+          "text": "a",
+          "remove": 2
+        },
+        {
+          "lane": 0,
+          "actor": 0,
+          "at": 24,
+          "text": "é\nbb",
+          "remove": 0
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 25,
+          "text": "b",
+          "remove": 5
+        },
+        {
+          "lane": 2,
+          "actor": 0,
+          "at": 11,
+          "text": "ca",
+          "remove": 5
+        },
+        {
+          "lane": 0,
+          "actor": 1,
+          "at": 1,
+          "text": "",
+          "remove": 4
+        }
+      ],
+      "steps": [
+        {
+          "op": "compact"
+        },
+        {
+          "op": "disk",
+          "ids": [
+            38
+          ]
+        },
+        {
+          "op": "journal",
+          "id": 2
+        },
+        {
+          "op": "late",
+          "ids": [
+            38
+          ],
+          "after": [
+            26,
+            3,
+            36
+          ]
+        },
+        {
+          "op": "abort",
+          "at": "delete",
+          "ids": [
+            33
+          ]
+        },
+        {
+          "op": "late",
+          "ids": [
+            33,
+            3
+          ],
+          "after": [
+            27,
+            25,
+            7
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "disk",
+          "boundary": "seal",
+          "ids": [
+            31,
+            22,
+            36,
+            8
+          ],
+          "during": [
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "published",
+          "ids": [
+            20,
+            9
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 25
+            },
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "close"
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 4,
+        "recovery": 12,
+        "compact": 3,
+        "disk": 3,
+        "journal": 2,
+        "fault:seal": 3,
+        "late-deferred": 2,
+        "abort-deferred": 1,
+        "overlap:disk:seal:close": 1,
+        "overlap-deferred": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 128,
+      "index": 7
+    }
+  },
+  {
+    "history": {
+      "edits": [
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 36,
+          "text": " é b ",
+          "remove": 0
+        },
+        {
+          "lane": 2,
+          "actor": 2,
+          "at": 39,
+          "text": "ba a",
+          "remove": 2
+        },
+        {
+          "lane": 1,
+          "actor": 1,
+          "at": 34,
+          "text": " b é",
+          "remove": 7
+        }
+      ],
+      "steps": [
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            5,
+            34
+          ],
+          "during": [
+            {
+              "op": "compact"
+            },
+            {
+              "op": "journal",
+              "id": 33
+            },
+            {
+              "op": "journal",
+              "id": 21
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "late",
+          "ids": [
+            39,
+            27,
+            34
+          ],
+          "after": [
+            23,
+            35,
+            31,
+            31
+          ]
+        },
+        {
+          "op": "overlap",
+          "background": "flush",
+          "boundary": "deleted",
+          "ids": [
+            4,
+            35
+          ],
+          "during": [
+            {
+              "op": "flush"
+            },
+            {
+              "op": "flush"
+            },
+            {
+              "op": "disk",
+              "ids": [
+                29
+              ]
+            }
+          ],
+          "finish": "close"
+        },
+        {
+          "op": "late",
+          "ids": [
+            24,
+            9
+          ],
+          "after": [
+            4,
+            8,
+            1,
+            1
+          ]
+        },
+        {
+          "op": "quota",
+          "id": 1
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            25,
+            29,
+            10,
+            30
+          ],
+          "during": [
+            {
+              "op": "journal",
+              "id": 2
+            },
+            {
+              "op": "disk",
+              "ids": [
+                16,
+                33,
+                10,
+                12
+              ]
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "flush"
+        },
+        {
+          "op": "compact"
+        },
+        {
+          "op": "overlap",
+          "background": "compact",
+          "boundary": "deleted",
+          "ids": [
+            21,
+            3
+          ],
+          "during": [
+            {
+              "op": "compact"
+            }
+          ],
+          "finish": "crash"
+        },
+        {
+          "op": "journal",
+          "id": 25
+        },
+        {
+          "op": "abort",
+          "at": "record",
+          "ids": [
+            29
+          ]
+        }
+      ]
+    },
+    "outcome": {
+      "counts": {
+        "reopen": 5,
+        "recovery": 16,
+        "overlap-inapplicable": 2,
+        "compact": 3,
+        "journal": 4,
+        "fault:seal": 3,
+        "disk": 4,
+        "late-deferred": 1,
+        "overlap:flush:seal:close": 1,
+        "flush": 3,
+        "fault:published": 1,
+        "late-reservation": 1,
+        "quota": 1,
+        "fault:deleted": 1,
+        "overlap:compact:deleted:crash": 1,
+        "renderer-crash": 1,
+        "fault:abort-record": 1,
+        "eventual-compaction": 1
+      },
+      "comparisons": 98,
+      "index": 10
+    }
+  }
+]

@@ -1,0 +1,57 @@
+Command: node --test --test-timeout=30000 test/account-recovery/transition.test.mjs test/account-recovery/preparation.test.mjs test/account-recovery/source.test.mjs test/account-membership/admission.test.mjs test/account-membership/history.test.mjs test/account-membership/locator.test.mjs test/account-membership/replacement-source.test.mjs test/account-membership/rotation-history.test.mjs
+✔ versioned admission preserves both approved recipients and their original certificate through repeated pending admissions (222.190291ms)
+✔ service signatures cannot substitute recipients, grant pending rights, skip a parent or omit accepted boundaries (100.8055ms)
+✔ continuation history records reader eligibility and each publisher starting epoch without retroactive rights (430.372084ms)
+✔ later publisher prefixes use actual issuance epochs and keep all prior accepted boundaries (462.308833ms)
+✔ versioned bootstrap and discovery independently verify the complete current chain and captured request (511.431208ms)
+✔ nonce, pin, fork, epoch and reader eligibility cannot be replaced by a correctly signed locator (989.9525ms)
+✔ service-signed omission or replacement of device approval cannot authenticate a membership chain (218.20425ms)
+(node:11229) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ source replays every accepted publisher including removed writing, then preserves local unaccepted writing (718.624167ms)
+✔ source cannot sign when a removed publisher is missing, the terminal link differs, or accepted updates are unresolved (528.256916ms)
+✔ source excludes post-cut updates, rejects substituted readers/pages, and closes after a cancelled operation (241.634416ms)
+✔ source needs the historical opener and cannot borrow a detached or pending producer (161.3635ms)
+✔ an excluded pending device has an empty cutoff, without inventing a certified publisher (170.683042ms)
+✔ a replacement can produce the next snapshot from its own admitted baseline plus a current-key suffix, without historical keys (199.725125ms)
+✔ committed successor verifies client distribution, outcome, recovery and final head as one authority transition (727.571959ms)
+✔ authorization signature cannot replace the signed distribution, move the excluded cutoff, or omit finalization (149.276833ms)
+✔ removed publisher accepted history survives, but later writes and current read rights do not (296.266958ms)
+✔ a joined owner can remove the original publisher without inheriting its finalization (160.690334ms)
+(node:11231) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11231) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh discoverable passkey + new-key possession yields a code-verifiable first-device recovery preparation, never membership or login (309.036292ms)
+✔ restart retains exact challenge, nonce and prepared bytes; a different assertion cannot reuse the attempt (277.798125ms)
+✔ old login, enrollment/creation proofs and substituted candidate possession do not authorize recovery (57.867417ms)
+✔ discoverable assertion chooses its own account, never an attacker-supplied workspace; inactive account refuses (82.272167ms)
+✔ before-commit interruption retries without fresh challenge or second preparation (91.927709ms)
+✔ after-commit interruption retries without fresh challenge or second preparation (78.755292ms)
+✔ credential change across verification invalidates finish; counter observations do not (91.392584ms)
+✔ cancel and expiry during verification cannot leak a preparation (53.963541ms)
+✔ the offline schema upgrade is explicit and preserves existing rows (43.992417ms)
+✔ a competing admission invalidates prepared recovery; a fresh attempt includes the pending second-device history (121.380125ms)
+(node:11232) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11232) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:11232) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ the saved code cold-opens the original admitted snapshot plus accepted edits and returns an exact replay cut (330.896458ms)
+✔ cold replay rejects a wrong saved code and unresolved Yjs dependencies before returning writing (142.3085ms)
+✔ cancellation during a read cannot return decrypted writing; corrupted pages are never applied (138.139458ms)
+✔ empty first-device history works without a certification checkpoint or another device (87.393ms)
+✔ recovery at epoch 1 excludes every old device and can admit another device (100.95225ms)
+✔ recovery at epoch 2 excludes every old device and can admit another device (126.030709ms)
+✔ recovery at epoch 3 excludes every old device and can admit another device (391.884167ms)
+✔ recovery after rotation retains historical final cuts and establishes another key floor (272.71875ms)
+✔ valid service signatures cannot substitute the recovery signer or omit a finalized writer (25.37625ms)
+✔ intent verification captures caller data before crypto and preserves exact retry identity (21.540917ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2947.516292
+
+TypeScript build, scoped oxlint/oxfmt, git diff --check: passed.

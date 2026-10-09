@@ -1,0 +1,67 @@
+[
+  {
+    "stage": "reserved",
+    "reconstructedObjects": "same bytes",
+    "destination": "absent"
+  },
+  {
+    "stage": "prepared",
+    "reconstructedObjects": "same bytes",
+    "destination": "absent"
+  },
+  {
+    "stage": "genesis-prepared",
+    "reconstructedObjects": "same bytes",
+    "destination": "absent"
+  },
+  {
+    "stage": "admission-requested",
+    "reconstructedObjects": "same bytes",
+    "destination": "absent"
+  },
+  {
+    "stage": "admission-offered",
+    "reconstructedObjects": "same bytes",
+    "destination": "absent"
+  },
+  {
+    "stage": "admission-receipted",
+    "reconstructedObjects": "same bytes",
+    "destination": "absent"
+  },
+  {
+    "stage": "handoff-prepared",
+    "reconstructedObjects": "same bytes",
+    "destination": "order preserved, changed MAC"
+  },
+  {
+    "stage": "handoff-selected",
+    "reconstructedObjects": "same bytes",
+    "destination": "order preserved, changed MAC"
+  },
+  {
+    "stage": "account-active",
+    "reconstructedObjects": "same bytes",
+    "destination": "order preserved, changed MAC"
+  },
+  {
+    "stage": "account-capturing",
+    "reconstructedObjects": "same bytes",
+    "destination": "order preserved, changed MAC"
+  },
+  {
+    "stage": "account-spooling",
+    "reconstructedObjects": "same bytes",
+    "destination": "order preserved, changed MAC"
+  },
+  {
+    "stage": "account-delivering",
+    "reconstructedObjects": "same bytes",
+    "destination": "order preserved, changed MAC"
+  },
+  {
+    "stage": "account-receiving",
+    "reconstructedObjects": "same bytes",
+    "destination": "order preserved, changed MAC"
+  }
+]

@@ -1,10 +1,23 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { afterEach, describe, expect, it } from 'vitest';
-import { cardId, cardsIn, compose, dayAt, unfiledCards, transact } from '../src/crdt';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import {
+  cardId,
+  cardBody,
+  cardAuthor,
+  cardOrigin,
+  cardsIn,
+  compose,
+  dayAt,
+  unfiledCards,
+  transact,
+} from '../src/crdt';
 import { UnfiledPanel } from '../src/ui/UnfiledPanel';
 import { harness, TODAY, type Harness } from './workspace';
 
 let context: Harness;
+vi.mock('../src/ui/workspaceUi', () => ({
+  useWorkspaceUi: () => ({ snapshot: { days: [] }, execute: async () => true }),
+}));
 afterEach(() => context?.destroy());
 
 describe('the unfiled panel', () => {
@@ -21,10 +34,14 @@ describe('the unfiled panel', () => {
 
     const html = renderToStaticMarkup(
       <UnfiledPanel
-        store={context.store}
-        workspace={context.me}
         today={TODAY}
-        cards={cards}
+        cards={cards.map(({ id, card, location }) => ({
+          id,
+          text: cardBody(card),
+          author: cardAuthor(card),
+          origin: cardOrigin(card),
+          location,
+        }))}
         open={true}
         onClose={() => {}}
       />,

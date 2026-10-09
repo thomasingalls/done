@@ -1,0 +1,7 @@
+{
+  "docs/performance-experiments/2026-09-15-f17-r1/publication/candidate.patch": "077db86c414fb8b50736127dcd9b36a1bece1e4f67d5ef4fed2f05b9e7253ce9",
+  "docs/performance-experiments/2026-09-15-f17-r1/publication/candidate-before-normalization-repair.patch": "19e68da215f8f692acf9333b8058f73dade0dc69ee23596c8c3eb146cc7de0c4",
+  "docs/performance-experiments/2026-09-15-f17-r1/publication/notes.md": "91f85709183930c18873d11675892045edc2dea2f0d0f04d135c3a4f94300ea3",
+  "docs/performance-experiments/2026-09-15-f17-r2/editor-result/candidate.patch": "34f87cfd61e42240786f7faa54d0eb64ada631415b4579ccf3662d27561a4a5a",
+  "node_modules/yjs/src/structs/ContentString.js": "07ad2962b6d0cba38aa6c4b57fe59a1e585b023b8d744a2aeb9257b77ad1cc94"
+}

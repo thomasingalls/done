@@ -1,0 +1,13 @@
+{
+  "results": [
+    {
+      "delta": 1,
+      "combinedBytes": 16777217,
+      "injectedAtVerifiedGenesisReturn": true,
+      "refusedBeforeRequestedAndBegin": true,
+      "omissionReachedRequestedAndBegin": true,
+      "realRetryCompleted": true
+    }
+  ],
+  "limitation": "Synthetic descriptors at the verified-genesis callback; not a 16 MiB Yjs coverage history."
+}

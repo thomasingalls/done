@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T22:23:47.495Z",
+  "stages": [
+    {
+      "name": "service",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private HTTP submission of exact v8 bytes; membership-authenticated bounded signed readback; service and native fault controls, cancellation, lost reply and restart. No inbound application, deployment or personal operations.",
+  "completedAt": "2026-09-10T22:25:02.819Z"
+}

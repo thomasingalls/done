@@ -1,0 +1,3799 @@
+{
+  "schema": 1,
+  "started": "2026-09-08T14:45:42.276Z",
+  "scope": "catalog",
+  "requestedCandidates": ["codex", "contract", "encrypted"],
+  "requestedCases": [
+    "C01.receive-order",
+    "C01.offline-replay",
+    "C01.large-remote-offline",
+    "C02.delete-order",
+    "C03.pending-input",
+    "C04.writer-lifetime",
+    "C07.late-reservation",
+    "C08.other-writer",
+    "C09.corrupt-open",
+    "C09.version-open",
+    "C09.corrupt-trim",
+    "C09.changed-trim-input",
+    "C09.corrupt-journal",
+    "C10.partial-metadata",
+    "C11.clear-refusal",
+    "C11.clear-success",
+    "C12.factor-genesis",
+    "C13.copied-profile",
+    "C16.legacy-routing"
+  ],
+  "harness": {
+    "commit": "f87997d94da9c1fe4ebd587849365f6c5240129d",
+    "dirty": true,
+    "scripts": {
+      "files": 6,
+      "sha256": "f37d1332316380d024f0256a8cd593d48bcb4c78b85191f966953d077d609da2"
+    },
+    "browserAdapter": {
+      "files": 6,
+      "sha256": "b7930eb325d8e9da7f9662870d4a386aba604eff7400b4e5c441a1c19fa6f658"
+    },
+    "contract": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+    "matrix": "0edb8b58a821dc35b2815e6d9bb6bc1b659c783369ac96c458f96492d8174ce9",
+    "lockfile": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+    "dependencies": {
+      "vite": "8.1.5",
+      "@playwright/test": "1.62.0",
+      "yjs": "13.6.31",
+      "@codemirror/state": "6.7.1",
+      "@codemirror/view": "6.43.7",
+      "y-codemirror.next": "0.3.5"
+    },
+    "node": "v26.8.1"
+  },
+  "browser": {
+    "engine": "chromium",
+    "version": "151.0.7922.34",
+    "platform": "darwin",
+    "arch": "arm64",
+    "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing"
+  },
+  "candidates": [
+    {
+      "id": "codex",
+      "branch": "codex/L1-items-3-to-6",
+      "revision": "d306b49e9c3246c8512725e4696f9981c62f6549",
+      "originalTree": {
+        "files": 443,
+        "sha256": "fe38e92af58975e4dce8907e9f986acfe59b1db516104fae2c77d272f3003bbe"
+      },
+      "lockfile": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+      "sourceTree": {
+        "files": 443,
+        "sha256": "fe38e92af58975e4dce8907e9f986acfe59b1db516104fae2c77d272f3003bbe"
+      },
+      "mutation": null,
+      "evidenceClass": "browser-adapter-subcases",
+      "cases": [
+        {
+          "id": "C01.receive-order",
+          "requirement": "C01",
+          "title": "Receive must commit before editor promotion",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "receive-waits-for-content-commit",
+              "actual": "R",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "receive-not-yet-visible",
+              "actual": "R",
+              "expected": "",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.65847253d3b77c684d580fcf4de97525",
+            "prefix": "done.pending-update.done.65847253d3b77c684d580fcf4de97525.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C01.receive-order"
+        },
+        {
+          "id": "C01.offline-replay",
+          "requirement": "C01",
+          "title": "Dependent local input recovers without redelivery after renderer crash",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "offline-semantic-replay",
+              "actual": "",
+              "expected": "RL",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit",
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "New page replays local carriers only; no remote update is delivered"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.178ee72ce167645533c51b44bd4991ba",
+            "prefix": "done.pending-update.done.178ee72ce167645533c51b44bd4991ba.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C01.offline-replay"
+        },
+        {
+          "id": "C01.large-remote-offline",
+          "requirement": "C01",
+          "title": "Remote update beyond the journal ceiling followed by dependent input and crash",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "offline-semantic-replay",
+              "actual": "",
+              "expected": "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRL",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit",
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "New page replays local carriers only; no remote update is delivered"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.82fad0e5fde6da78f09eb4a51dcf6afb",
+            "prefix": "done.pending-update.done.82fad0e5fde6da78f09eb4a51dcf6afb.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C01.large-remote-offline"
+        },
+        {
+          "id": "C02.delete-order",
+          "requirement": "C02",
+          "title": "Deletion-only receive must commit before promotion",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "deletion-does-not-advance-vector",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "delete-waits-for-content-commit",
+              "actual": "",
+              "expected": "R",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.abbd823904efb25ae3941910a1656caf",
+            "prefix": "done.pending-update.done.abbd823904efb25ae3941910a1656caf.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C02.delete-order"
+        },
+        {
+          "id": "C03.pending-input",
+          "requirement": "C03",
+          "title": "First refusal and later input stay out of editor/export/undo/transport",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "refused-input-not-visible",
+              "actual": "first",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "later-input-cannot-bypass",
+              "actual": "firstsecond",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "pending-not-exported",
+              "actual": [
+                {
+                  "path": "master.md",
+                  "content": "firstsecond"
+                }
+              ],
+              "expected": [
+                {
+                  "path": "master.md",
+                  "content": ""
+                }
+              ],
+              "passed": false
+            },
+            {
+              "id": "pending-not-in-undo",
+              "actual": 1,
+              "expected": 0,
+              "passed": false
+            },
+            {
+              "id": "pending-not-in-transport",
+              "actual": "",
+              "expected": "",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "Refuse first WAL append, allow the next, pause content encryption, dispatch real CodeMirror edits, crash"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.f7749b7d01ed3f04ff13fbf7ec8f44c3",
+            "prefix": "done.pending-update.done.f7749b7d01ed3f04ff13fbf7ec8f44c3.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C03.pending-input"
+        },
+        {
+          "id": "C04.writer-lifetime",
+          "requirement": "C04",
+          "title": "Write-key holder retains a shared permit while frozen",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "writer-holds-shared-permit",
+              "actual": false,
+              "expected": true,
+              "passed": false
+            },
+            {
+              "id": "freeze-retains-permit",
+              "actual": false,
+              "expected": true,
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Observe LockManager from a second page while CDP freezes the real writer page"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.3402b1b1777aba485c10434935a4be94",
+            "prefix": "done.pending-update.done.3402b1b1777aba485c10434935a4be94.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C04.writer-lifetime"
+        },
+        {
+          "id": "C07.late-reservation",
+          "requirement": "C07",
+          "title": "Late sequence survives between state commit and trim deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "late-reservation-gap-is-present",
+              "actual": [1, 3],
+              "expected": [1, 3],
+              "passed": true
+            },
+            {
+              "id": "late-row-committed-before-delete",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "late-record-survives",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "replay-union",
+              "actual": {
+                "B": "durable B",
+                "A": "durable A",
+                "C": "durable C"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B",
+                "C": "durable C"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "A commits 1; B reserves 2 and stalls encryption; A commits 3 and state 4; B commits 2; A deletes coverage"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.08d5c4c568e0f01f56d4d1fcbdafdfa6",
+            "prefix": "done.pending-update.done.08d5c4c568e0f01f56d4d1fcbdafdfa6.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C07.late-reservation"
+        },
+        {
+          "id": "C08.other-writer",
+          "requirement": "C08",
+          "title": "Trim recovers the union of independently committed writers",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "snapshot-excludes-other-writer",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A"
+              },
+              "passed": true
+            },
+            {
+              "id": "replay-union",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Two independent pages commit; first page invokes production trim; reopen from disk"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.9b0e8da06e2462a48aaf01dd1b93682f",
+            "prefix": "done.pending-update.done.9b0e8da06e2462a48aaf01dd1b93682f.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C08.other-writer"
+        },
+        {
+          "id": "C09.corrupt-open",
+          "requirement": "C09",
+          "title": "Corrupt content refuses normal open and preserves carriers",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "normal-open-refuses",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "unreadable-carriers-retained",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "721e11d845a1c0bdbfa1dce38e3587b3c17611c8b74b782fc4f02c91ef7167be8f5f92105c49ea6b3fc2e8e3b53a6d"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "1a7641917c4304f6694c9db3"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "b80a947c1ed5147e940f0b9159406d77da9ac43f852983db04007c076ebb1dc0262d8b70bacc115beea5c1e29e6a56"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "ee0d6df0cbb043a0d05598d0"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "721e11d845a1c0bdbfa1dce38e3587b3c17611c8b74b782fc4f02c91ef7167be8f5f92105c49ea6b3fc2e8e3b53a6d"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "1a7641917c4304f6694c9db3"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "b80a947c1ed5147e940f0b9159406d77da9ac43f852983db04007c076ebb1dc0262d8b70bacc115beea5c1e29e6a56"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "ee0d6df0cbb043a0d05598d0"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.bcee4ff9120cd6557c9be73bea94ddf6",
+            "prefix": "done.pending-update.done.bcee4ff9120cd6557c9be73bea94ddf6.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C09.corrupt-open"
+        },
+        {
+          "id": "C09.version-open",
+          "requirement": "C09",
+          "title": "Unsupported content refuses normal open and preserves carriers",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "normal-open-refuses",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "unreadable-carriers-retained",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "8a13ba84d5853bde6b254816518759158beeb21409f413ef5730db61f3cd2cc493267a49bbfec739bf0c2b87f292fb"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "cb4cb75774d491cf315a9b11"
+                  },
+                  "seq": 1,
+                  "v": 999
+                },
+                {
+                  "ct": {
+                    "hex": "61723a7064530187e271d9f46012f8654dd0cd5bf5d646ffe326204a3591c0211bf35b19c6784567c97979ec069166"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "8c5e0d0b6bfa299e1bf63f25"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "8a13ba84d5853bde6b254816518759158beeb21409f413ef5730db61f3cd2cc493267a49bbfec739bf0c2b87f292fb"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "cb4cb75774d491cf315a9b11"
+                  },
+                  "seq": 1,
+                  "v": 999
+                },
+                {
+                  "ct": {
+                    "hex": "61723a7064530187e271d9f46012f8654dd0cd5bf5d646ffe326204a3591c0211bf35b19c6784567c97979ec069166"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "8c5e0d0b6bfa299e1bf63f25"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.f5859980ea23b35421eaa23c2ed3b94c",
+            "prefix": "done.pending-update.done.f5859980ea23b35421eaa23c2ed3b94c.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C09.version-open"
+        },
+        {
+          "id": "C09.corrupt-trim",
+          "requirement": "C09",
+          "title": "Unreadable input refuses the entire trim",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "trim-refuses",
+              "actual": "resolved",
+              "expected": "rejected",
+              "passed": false
+            },
+            {
+              "id": "whole-trim-preserves-input",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "40f2025de2276604bf2f806bf2d943be8217aa2d68317576bcf2f91cd5e66263ce2aa5c2d991a3684942af10cc7e46b1b46303f3a68aa3a5cdf5ec78403bbe0fb2bf0464e69f7b4e80760a07"
+                  },
+                  "gen": 1,
+                  "kind": "state",
+                  "nonce": {
+                    "hex": "89b4c4066416afc9a18efbae"
+                  },
+                  "seq": 3,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "7a53a6e627b43d093fcb7918a0008ab6a527ecd332aeca8fbe9a0a40f4c3316a7cfcb1c093da7f0d49532318add836"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "6f8324d57576c7f0b96e2db2"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "d02ef2cef4cccc02eec25158ebef41595df77308cc7eb6e1c8bd76ca1a6d0f03a6065ad7107004646e19da4ab3a636"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "0117eab95264b4a49c077ba7"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.8435e881aa5bebdf9f03e9fe58962daa",
+            "prefix": "done.pending-update.done.8435e881aa5bebdf9f03e9fe58962daa.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C09.corrupt-trim"
+        },
+        {
+          "id": "C09.changed-trim-input",
+          "requirement": "C09",
+          "title": "Trim refuses deletion if an observed record changed",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "changed-record-retained",
+              "actual": null,
+              "expected": {
+                "ct": {
+                  "hex": "a76dddc91debdec744cfce40706eb47510ad8ecd61e98590d5ab70d1697ef7b5eeed123119af6f693339d19d6fe9b6"
+                },
+                "gen": 1,
+                "kind": "update",
+                "nonce": {
+                  "hex": "b11823185c39ac3a53a07e1c"
+                },
+                "seq": 1,
+                "v": 1
+              },
+              "passed": false
+            }
+          ],
+          "schedule": ["Mutate observed record bytes after replacement commit but before deletion"],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.b4d912b6b10ed0403a82dc265c336085",
+            "prefix": "done.pending-update.done.b4d912b6b10ed0403a82dc265c336085.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C09.changed-trim-input"
+        },
+        {
+          "id": "C09.corrupt-journal",
+          "requirement": "C09",
+          "title": "Unreadable journal refuses normal open after crash",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "unreadable-journal-refuses-open",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "unreadable-journal-retained",
+              "actual": "unsupported journal fixture",
+              "expected": "unsupported journal fixture",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.051d2bab18c9494fed05a33f46b5344b",
+            "prefix": "done.pending-update.done.051d2bab18c9494fed05a33f46b5344b.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C09.corrupt-journal"
+        },
+        {
+          "id": "C10.partial-metadata",
+          "requirement": "C10",
+          "title": "Missing metadata beside ciphertext refuses without reminting",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "partial-genesis-refuses",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "partial-refusal-is-typed",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "partial-metadata-not-reminted",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "existing-ciphertext-preserved",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "ec7af14428fe7de72215c564c3c3f28df0a69d51a46ad05bc3a9c164079d0807b66c316680468fc74d9de585ac3187"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "e70bed5b33f852c6e2a0a74f"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "ec7af14428fe7de72215c564c3c3f28df0a69d51a46ad05bc3a9c164079d0807b66c316680468fc74d9de585ac3187"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "e70bed5b33f852c6e2a0a74f"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Remove metadata only, retain ciphertext and custody, then use the existing-store open path"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.67d171fccbd9ba4e796c2c946fc40298",
+            "prefix": "done.pending-update.done.67d171fccbd9ba4e796c2c946fc40298.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C10.partial-metadata"
+        },
+        {
+          "id": "C11.clear-refusal",
+          "requirement": "C11",
+          "title": "Content deletion refusal preserves journal and content",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "clear-reports-refusal",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "refused-clear-preserves-journal",
+              "actual": {
+                "done.pending-update.done.fc0770685219aa479cae544308d52b03.b9cad310-1c8d-44f2-9cc8-be78e3097fed.1": "2:AAAAAadHWYGS2R5359r5yb0w7rBQJXudEty7Es4k8wJGWFdvwFryFDMf4GKvF/nqaE7BTh2JuK5ZyiHZEfB6xj4QkR+9LDRNE4J7"
+              },
+              "expected": {
+                "done.pending-update.done.fc0770685219aa479cae544308d52b03.b9cad310-1c8d-44f2-9cc8-be78e3097fed.1": "2:AAAAAadHWYGS2R5359r5yb0w7rBQJXudEty7Es4k8wJGWFdvwFryFDMf4GKvF/nqaE7BTh2JuK5ZyiHZEfB6xj4QkR+9LDRNE4J7"
+              },
+              "passed": true
+            },
+            {
+              "id": "refused-clear-preserves-content",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "38fcb1dc366bc1c826522b4bace6d6055e19755c2f9f8f052b0cee89aa95d50af0fbd3ebf4f1d611f68b3bcc671525"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "859cd576e0cce29a9cb6d7b3"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "38fcb1dc366bc1c826522b4bace6d6055e19755c2f9f8f052b0cee89aa95d50af0fbd3ebf4f1d611f68b3bcc671525"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "859cd576e0cce29a9cb6d7b3"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.fc0770685219aa479cae544308d52b03",
+            "prefix": "done.pending-update.done.fc0770685219aa479cae544308d52b03.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C11.clear-refusal"
+        },
+        {
+          "id": "C11.clear-success",
+          "requirement": "C11",
+          "title": "Completed destructive clear removes the target journal",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "clear-completes",
+              "actual": "resolved",
+              "expected": "resolved",
+              "passed": true
+            },
+            {
+              "id": "clear-removes-journal",
+              "actual": {
+                "done.pending-update.done.fbfc30371722f13b9fe9661440af9f35.13ddd271-a6ef-4a7d-bc3b-1802acac94e8.1": "2:AAAAAX0tqFaxvsGGTH2OgJu4hhklwyQt4ba1IzPJ2YtbxIlL4CViFwUeQbWDdGaLZ8Al3R+qylL4g85WB6q+fumAw5otYPrd7xws"
+              },
+              "expected": {},
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.fbfc30371722f13b9fe9661440af9f35",
+            "prefix": "done.pending-update.done.fbfc30371722f13b9fe9661440af9f35.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C11.clear-success"
+        },
+        {
+          "id": "C12.factor-genesis",
+          "requirement": "C12",
+          "title": "Persistent genesis cannot acknowledge without a confirmed factor",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "no-acknowledgement-without-factor",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {},
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Invoke the candidate’s exported persistent genesis/key APIs with no supplied factor; write and flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.8299333e8cebc94cc77244c23d3c610e",
+            "prefix": "done.pending-update.done.8299333e8cebc94cc77244c23d3c610e.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C12.factor-genesis"
+        },
+        {
+          "id": "C13.copied-profile",
+          "requirement": "C13",
+          "title": "A full copied browser profile cannot reopen without a factor",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "copied-profile-refuses-without-factor",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "copy-positive-content-control",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Write real encrypted IndexedDB in a new persistent Chromium profile; close browser",
+            "Copied complete closed profile reopened at the same origin without any factor; same-host test only"
+          ],
+          "profileEvidence": {
+            "source": {
+              "files": 322,
+              "sha256": "40fd0bf8862d5ddb93133f3a876876e5cdd6031dded6383dceeef5201eb5eb5a"
+            },
+            "copy": {
+              "files": 322,
+              "sha256": "40fd0bf8862d5ddb93133f3a876876e5cdd6031dded6383dceeef5201eb5eb5a"
+            },
+            "launch": "Playwright Chromium defaults, including mock keychain, same host"
+          },
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.ba7a97b9b3bd288171d228f9617651b5",
+            "prefix": "done.pending-update.done.ba7a97b9b3bd288171d228f9617651b5.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C13.copied-profile"
+        },
+        {
+          "id": "C16.legacy-routing",
+          "requirement": "C16",
+          "title": "Default startup preserves the selected legacy installation",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "selected-legacy-still-visible",
+              "actual": "",
+              "expected": "legacy survives",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Seed actual legacy openStore, then call the candidate’s default application startup"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.20bfc3f55a562fe3ff64c75790cd4c64",
+            "prefix": "done.pending-update.done.20bfc3f55a562fe3ff64c75790cd4c64.",
+            "recordStore": "records",
+            "metaStore": "meta"
+          },
+          "artifacts": "codex/C16.legacy-routing"
+        },
+        {
+          "id": "C01.remaining",
+          "requirement": "C01",
+          "title": "Remaining production obligation",
+          "reason": "Encrypted wire admission and accepted-head ordering require the future integrated transport.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C02.remaining",
+          "requirement": "C02",
+          "title": "Remaining production obligation",
+          "reason": "Unresolved structs and pending delete-set compositions beyond the executed deletion case.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C03.remaining",
+          "requirement": "C03",
+          "title": "Remaining production obligation",
+          "reason": "Native IME composition, paste slicing and every undo/export action under interrupted admission.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C04.remaining",
+          "requirement": "C04",
+          "title": "Remaining production obligation",
+          "reason": "No candidate exposes an integrated exclusive retirement worker or supported-version cutover.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C05.remaining",
+          "requirement": "C05",
+          "title": "Remaining production obligation",
+          "reason": "No candidate exposes the integrated generation/custody actor with interruption/resume phases.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C06.remaining",
+          "requirement": "C06",
+          "title": "Remaining production obligation",
+          "reason": "No integrated all-reference census/checkpoint/package/fallback retirement path exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C07.remaining",
+          "requirement": "C07",
+          "title": "Remaining production obligation",
+          "reason": "Repeated concurrent trims and the complete writer/transition composition.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C09.remaining",
+          "requirement": "C09",
+          "title": "Remaining production obligation",
+          "reason": "Typed repair UI, unrelated-store isolation and the complete malformed carrier inventory.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C10.remaining",
+          "requirement": "C10",
+          "title": "Remaining production obligation",
+          "reason": "Every genesis phase, two competing creators/factors and verified Account binding.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C11.remaining",
+          "requirement": "C11",
+          "title": "Remaining production obligation",
+          "reason": "Complete ClearIntent/resume, journal-deletion failure, terminal marker and shared-key isolation.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C12.remaining",
+          "requirement": "C12",
+          "title": "Remaining production obligation",
+          "reason": "No candidate has mandatory factor genesis/unlock; valid-code and wrong-code controls are unavailable.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C13.remaining",
+          "requirement": "C13",
+          "title": "Remaining production obligation",
+          "reason": "Supported browser/authenticator population, future receivers and valid-factor positive controls are absent.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C14.remaining",
+          "requirement": "C14",
+          "title": "Remaining production obligation",
+          "reason": "No integrated legacy receiver replacement/certified generation activation path exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C15.remaining",
+          "requirement": "C15",
+          "title": "Remaining production obligation",
+          "reason": "No selected writable import or per-root custody-seal reservation implementation exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C16.remaining",
+          "requirement": "C16",
+          "title": "Remaining production obligation",
+          "reason": "The full application initialization/repair/import interruption matrix remains owed.",
+          "status": "not-implemented"
+        }
+      ]
+    },
+    {
+      "id": "contract",
+      "branch": "claude/l1-contract-pass",
+      "revision": "6330412897dcac665741e1a928b497e5f2dd7266",
+      "originalTree": {
+        "files": 444,
+        "sha256": "b22c564f505632e2409f0db965ea947bbc3bee476dfb01b49b57b4fdc367e885"
+      },
+      "lockfile": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+      "sourceTree": {
+        "files": 444,
+        "sha256": "b22c564f505632e2409f0db965ea947bbc3bee476dfb01b49b57b4fdc367e885"
+      },
+      "mutation": null,
+      "evidenceClass": "browser-adapter-subcases",
+      "cases": [
+        {
+          "id": "C01.receive-order",
+          "requirement": "C01",
+          "title": "Receive must commit before editor promotion",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "receive-waits-for-content-commit",
+              "actual": "R",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "receive-not-yet-visible",
+              "actual": "R",
+              "expected": "",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.65847253d3b77c684d580fcf4de97525",
+            "prefix": "done.pending-update.done.65847253d3b77c684d580fcf4de97525.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C01.receive-order"
+        },
+        {
+          "id": "C01.offline-replay",
+          "requirement": "C01",
+          "title": "Dependent local input recovers without redelivery after renderer crash",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "offline-semantic-replay",
+              "actual": "RL",
+              "expected": "RL",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit",
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "New page replays local carriers only; no remote update is delivered"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.178ee72ce167645533c51b44bd4991ba",
+            "prefix": "done.pending-update.done.178ee72ce167645533c51b44bd4991ba.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C01.offline-replay"
+        },
+        {
+          "id": "C01.large-remote-offline",
+          "requirement": "C01",
+          "title": "Remote update beyond the journal ceiling followed by dependent input and crash",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "offline-semantic-replay",
+              "actual": "",
+              "expected": "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRL",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit",
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "New page replays local carriers only; no remote update is delivered"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.82fad0e5fde6da78f09eb4a51dcf6afb",
+            "prefix": "done.pending-update.done.82fad0e5fde6da78f09eb4a51dcf6afb.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C01.large-remote-offline"
+        },
+        {
+          "id": "C02.delete-order",
+          "requirement": "C02",
+          "title": "Deletion-only receive must commit before promotion",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "deletion-does-not-advance-vector",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "delete-waits-for-content-commit",
+              "actual": "",
+              "expected": "R",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.abbd823904efb25ae3941910a1656caf",
+            "prefix": "done.pending-update.done.abbd823904efb25ae3941910a1656caf.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C02.delete-order"
+        },
+        {
+          "id": "C03.pending-input",
+          "requirement": "C03",
+          "title": "First refusal and later input stay out of editor/export/undo/transport",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "refused-input-not-visible",
+              "actual": "first",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "later-input-cannot-bypass",
+              "actual": "firstsecond",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "pending-not-exported",
+              "actual": [
+                {
+                  "path": "master.md",
+                  "content": "firstsecond"
+                }
+              ],
+              "expected": [
+                {
+                  "path": "master.md",
+                  "content": ""
+                }
+              ],
+              "passed": false
+            },
+            {
+              "id": "pending-not-in-undo",
+              "actual": 1,
+              "expected": 0,
+              "passed": false
+            },
+            {
+              "id": "pending-not-in-transport",
+              "actual": "firstsecond",
+              "expected": "",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "Refuse first WAL append, allow the next, pause content encryption, dispatch real CodeMirror edits, crash"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.f7749b7d01ed3f04ff13fbf7ec8f44c3",
+            "prefix": "done.pending-update.done.f7749b7d01ed3f04ff13fbf7ec8f44c3.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C03.pending-input"
+        },
+        {
+          "id": "C04.writer-lifetime",
+          "requirement": "C04",
+          "title": "Write-key holder retains a shared permit while frozen",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "writer-holds-shared-permit",
+              "actual": false,
+              "expected": true,
+              "passed": false
+            },
+            {
+              "id": "freeze-retains-permit",
+              "actual": false,
+              "expected": true,
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Observe LockManager from a second page while CDP freezes the real writer page"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.3402b1b1777aba485c10434935a4be94",
+            "prefix": "done.pending-update.done.3402b1b1777aba485c10434935a4be94.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C04.writer-lifetime"
+        },
+        {
+          "id": "C07.late-reservation",
+          "requirement": "C07",
+          "title": "Late sequence survives between state commit and trim deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "late-reservation-gap-is-present",
+              "actual": [1, 3],
+              "expected": [1, 3],
+              "passed": true
+            },
+            {
+              "id": "late-row-committed-before-delete",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "late-record-survives",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "replay-union",
+              "actual": {
+                "B": "durable B",
+                "A": "durable A",
+                "C": "durable C"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B",
+                "C": "durable C"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "A commits 1; B reserves 2 and stalls encryption; A commits 3 and state 4; B commits 2; A deletes coverage"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.08d5c4c568e0f01f56d4d1fcbdafdfa6",
+            "prefix": "done.pending-update.done.08d5c4c568e0f01f56d4d1fcbdafdfa6.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C07.late-reservation"
+        },
+        {
+          "id": "C08.other-writer",
+          "requirement": "C08",
+          "title": "Trim recovers the union of independently committed writers",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "snapshot-excludes-other-writer",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A"
+              },
+              "passed": true
+            },
+            {
+              "id": "replay-union",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Two independent pages commit; first page invokes production trim; reopen from disk"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.9b0e8da06e2462a48aaf01dd1b93682f",
+            "prefix": "done.pending-update.done.9b0e8da06e2462a48aaf01dd1b93682f.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C08.other-writer"
+        },
+        {
+          "id": "C09.corrupt-open",
+          "requirement": "C09",
+          "title": "Corrupt content refuses normal open and preserves carriers",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "normal-open-refuses",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "unreadable-carriers-retained",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "f05ef0452300376b997dc25108c386a250cf2a99854003cbf4bb327a2abac2300d909727f09c3f9eaf4c5b1e82c2ed"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "3b80109ac767b76907a435e7"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "4c6fb21b85e9113d3dd7b3368024ac9b34e0d65c24fce4bac30ca30d4430e86407b92abec5372fbef8e9b687b063ea"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "48fd0aa9b66da076651755c4"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "f05ef0452300376b997dc25108c386a250cf2a99854003cbf4bb327a2abac2300d909727f09c3f9eaf4c5b1e82c2ed"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "3b80109ac767b76907a435e7"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "4c6fb21b85e9113d3dd7b3368024ac9b34e0d65c24fce4bac30ca30d4430e86407b92abec5372fbef8e9b687b063ea"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "48fd0aa9b66da076651755c4"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.bcee4ff9120cd6557c9be73bea94ddf6",
+            "prefix": "done.pending-update.done.bcee4ff9120cd6557c9be73bea94ddf6.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C09.corrupt-open"
+        },
+        {
+          "id": "C09.version-open",
+          "requirement": "C09",
+          "title": "Unsupported content refuses normal open and preserves carriers",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "normal-open-refuses",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "unreadable-carriers-retained",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "f4cb87bdfbaf93ce9ae596cc298ea835a850a91ded9a2776c521f030de559ba18e330a408332c8aa62853f429ea615"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "8e38361363a83536fa24e1a3"
+                  },
+                  "seq": 1,
+                  "v": 999
+                },
+                {
+                  "ct": {
+                    "hex": "9a21a3a32b6d288240d97b22befec23a6bf37c49d657dd78abb7497f37770711ec215f5e08cefe87a8e6b7a7b36043"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "3eb49b2c60a3114b19e04940"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "f4cb87bdfbaf93ce9ae596cc298ea835a850a91ded9a2776c521f030de559ba18e330a408332c8aa62853f429ea615"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "8e38361363a83536fa24e1a3"
+                  },
+                  "seq": 1,
+                  "v": 999
+                },
+                {
+                  "ct": {
+                    "hex": "9a21a3a32b6d288240d97b22befec23a6bf37c49d657dd78abb7497f37770711ec215f5e08cefe87a8e6b7a7b36043"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "3eb49b2c60a3114b19e04940"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.f5859980ea23b35421eaa23c2ed3b94c",
+            "prefix": "done.pending-update.done.f5859980ea23b35421eaa23c2ed3b94c.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C09.version-open"
+        },
+        {
+          "id": "C09.corrupt-trim",
+          "requirement": "C09",
+          "title": "Unreadable input refuses the entire trim",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "trim-refuses",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "whole-trim-preserves-input",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "22a413b61f0e6ee1b8880d643cc175cdc181b62cec3fdfc146868e7da6145988c98d9d47443392e8d13318f915c2a2"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "bade4b2aae40f910eada11ba"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "2de56644e06a28144663f8d7ba6f2f24854d63de7f2e5fc6927c178883ec2595f62843f47e54a814227bb9e79bb088"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "946f366ed0748d6f27a6585e"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "22a413b61f0e6ee1b8880d643cc175cdc181b62cec3fdfc146868e7da6145988c98d9d47443392e8d13318f915c2a2"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "bade4b2aae40f910eada11ba"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "2de56644e06a28144663f8d7ba6f2f24854d63de7f2e5fc6927c178883ec2595f62843f47e54a814227bb9e79bb088"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "946f366ed0748d6f27a6585e"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.8435e881aa5bebdf9f03e9fe58962daa",
+            "prefix": "done.pending-update.done.8435e881aa5bebdf9f03e9fe58962daa.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C09.corrupt-trim"
+        },
+        {
+          "id": "C09.changed-trim-input",
+          "requirement": "C09",
+          "title": "Trim refuses deletion if an observed record changed",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "changed-record-retained",
+              "actual": null,
+              "expected": {
+                "ct": {
+                  "hex": "0f3e9d24b1698ef823f9a1dd204981ccd31b2578278bdd2502485322f97bd829f5415463889436438ef7b855af67f1"
+                },
+                "gen": 1,
+                "kind": "update",
+                "nonce": {
+                  "hex": "e446341877594bb819e92150"
+                },
+                "seq": 1,
+                "v": 1
+              },
+              "passed": false
+            }
+          ],
+          "schedule": ["Mutate observed record bytes after replacement commit but before deletion"],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.b4d912b6b10ed0403a82dc265c336085",
+            "prefix": "done.pending-update.done.b4d912b6b10ed0403a82dc265c336085.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C09.changed-trim-input"
+        },
+        {
+          "id": "C09.corrupt-journal",
+          "requirement": "C09",
+          "title": "Unreadable journal refuses normal open after crash",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "unreadable-journal-refuses-open",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "unreadable-journal-retained",
+              "actual": "unsupported journal fixture",
+              "expected": "unsupported journal fixture",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.051d2bab18c9494fed05a33f46b5344b",
+            "prefix": "done.pending-update.done.051d2bab18c9494fed05a33f46b5344b.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C09.corrupt-journal"
+        },
+        {
+          "id": "C10.partial-metadata",
+          "requirement": "C10",
+          "title": "Missing metadata beside ciphertext refuses without reminting",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "partial-genesis-refuses",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "partial-refusal-is-typed",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "partial-metadata-not-reminted",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "existing-ciphertext-preserved",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "fe8a343202a8b2acfd7fd2073532fa78d9b2062ca5ab46071c3e868f72560627301bcdb8a85191dfdbedf346eb1569"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "fa3dddd913523907b032ff31"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "fe8a343202a8b2acfd7fd2073532fa78d9b2062ca5ab46071c3e868f72560627301bcdb8a85191dfdbedf346eb1569"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "fa3dddd913523907b032ff31"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Remove metadata only, retain ciphertext and custody, then use the existing-store open path"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.67d171fccbd9ba4e796c2c946fc40298",
+            "prefix": "done.pending-update.done.67d171fccbd9ba4e796c2c946fc40298.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C10.partial-metadata"
+        },
+        {
+          "id": "C11.clear-refusal",
+          "requirement": "C11",
+          "title": "Content deletion refusal preserves journal and content",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "clear-reports-refusal",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "refused-clear-preserves-journal",
+              "actual": {
+                "done.pending-update.done.fc0770685219aa479cae544308d52b03.014d6347-ca15-470e-b119-03f1ddc594a9.1": "2:AAAAAa+IcAhpXq7390rI7K0uebYW68j75MdcNY3vFbVJi6I8m7TykqPcpnWNeb7SW6D0bQlXxDsWbfOpQTQucDypRa5wMj7tHrHY"
+              },
+              "expected": {
+                "done.pending-update.done.fc0770685219aa479cae544308d52b03.014d6347-ca15-470e-b119-03f1ddc594a9.1": "2:AAAAAa+IcAhpXq7390rI7K0uebYW68j75MdcNY3vFbVJi6I8m7TykqPcpnWNeb7SW6D0bQlXxDsWbfOpQTQucDypRa5wMj7tHrHY"
+              },
+              "passed": true
+            },
+            {
+              "id": "refused-clear-preserves-content",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "78a13e09aa64fb891073e36885aaec0e605ee3b89770a2539a8ceab40656a29a94c243f126d9196166fd444bea92e6"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "2a6ee8ecdbc532680ad31949"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "78a13e09aa64fb891073e36885aaec0e605ee3b89770a2539a8ceab40656a29a94c243f126d9196166fd444bea92e6"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "2a6ee8ecdbc532680ad31949"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.fc0770685219aa479cae544308d52b03",
+            "prefix": "done.pending-update.done.fc0770685219aa479cae544308d52b03.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C11.clear-refusal"
+        },
+        {
+          "id": "C11.clear-success",
+          "requirement": "C11",
+          "title": "Completed destructive clear removes the target journal",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "clear-completes",
+              "actual": "resolved",
+              "expected": "resolved",
+              "passed": true
+            },
+            {
+              "id": "clear-removes-journal",
+              "actual": {
+                "done.pending-update.done.fbfc30371722f13b9fe9661440af9f35.2df4ab52-12a7-4f2c-8106-0e68e3008d5e.1": "2:AAAAAX/c0im7UUGVF9/zy5Hu6jbsNn4dkq8TxV0SMNRwJpmhP9deoU8fNnOx/OPc04yPQg/vMtp5zf2hbeG8R13WcoQhVibqLncT"
+              },
+              "expected": {},
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.fbfc30371722f13b9fe9661440af9f35",
+            "prefix": "done.pending-update.done.fbfc30371722f13b9fe9661440af9f35.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C11.clear-success"
+        },
+        {
+          "id": "C12.factor-genesis",
+          "requirement": "C12",
+          "title": "Persistent genesis cannot acknowledge without a confirmed factor",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "no-acknowledgement-without-factor",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {},
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Invoke the candidate’s exported persistent genesis/key APIs with no supplied factor; write and flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.8299333e8cebc94cc77244c23d3c610e",
+            "prefix": "done.pending-update.done.8299333e8cebc94cc77244c23d3c610e.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C12.factor-genesis"
+        },
+        {
+          "id": "C13.copied-profile",
+          "requirement": "C13",
+          "title": "A full copied browser profile cannot reopen without a factor",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "copied-profile-refuses-without-factor",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "copy-positive-content-control",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Write real encrypted IndexedDB in a new persistent Chromium profile; close browser",
+            "Copied complete closed profile reopened at the same origin without any factor; same-host test only"
+          ],
+          "profileEvidence": {
+            "source": {
+              "files": 322,
+              "sha256": "ca25a2df9970c2ae6c1e4ec74e14ee2e29d71bfb4d1af82d69fe36511c699d3d"
+            },
+            "copy": {
+              "files": 322,
+              "sha256": "ca25a2df9970c2ae6c1e4ec74e14ee2e29d71bfb4d1af82d69fe36511c699d3d"
+            },
+            "launch": "Playwright Chromium defaults, including mock keychain, same host"
+          },
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.ba7a97b9b3bd288171d228f9617651b5",
+            "prefix": "done.pending-update.done.ba7a97b9b3bd288171d228f9617651b5.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C13.copied-profile"
+        },
+        {
+          "id": "C16.legacy-routing",
+          "requirement": "C16",
+          "title": "Default startup preserves the selected legacy installation",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "selected-legacy-still-visible",
+              "actual": "legacy survives",
+              "expected": "legacy survives",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Seed actual legacy openStore, then call the candidate’s default application startup"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/contentStore.ts",
+              "src/crdt/keyStore.ts",
+              "src/crdt/slotIndex.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.20bfc3f55a562fe3ff64c75790cd4c64",
+            "prefix": "done.pending-update.done.20bfc3f55a562fe3ff64c75790cd4c64.",
+            "recordStore": "content",
+            "metaStore": "store-meta"
+          },
+          "artifacts": "contract/C16.legacy-routing"
+        },
+        {
+          "id": "C01.remaining",
+          "requirement": "C01",
+          "title": "Remaining production obligation",
+          "reason": "Encrypted wire admission and accepted-head ordering require the future integrated transport.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C02.remaining",
+          "requirement": "C02",
+          "title": "Remaining production obligation",
+          "reason": "Unresolved structs and pending delete-set compositions beyond the executed deletion case.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C03.remaining",
+          "requirement": "C03",
+          "title": "Remaining production obligation",
+          "reason": "Native IME composition, paste slicing and every undo/export action under interrupted admission.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C04.remaining",
+          "requirement": "C04",
+          "title": "Remaining production obligation",
+          "reason": "No candidate exposes an integrated exclusive retirement worker or supported-version cutover.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C05.remaining",
+          "requirement": "C05",
+          "title": "Remaining production obligation",
+          "reason": "No candidate exposes the integrated generation/custody actor with interruption/resume phases.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C06.remaining",
+          "requirement": "C06",
+          "title": "Remaining production obligation",
+          "reason": "No integrated all-reference census/checkpoint/package/fallback retirement path exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C07.remaining",
+          "requirement": "C07",
+          "title": "Remaining production obligation",
+          "reason": "Repeated concurrent trims and the complete writer/transition composition.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C09.remaining",
+          "requirement": "C09",
+          "title": "Remaining production obligation",
+          "reason": "Typed repair UI, unrelated-store isolation and the complete malformed carrier inventory.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C10.remaining",
+          "requirement": "C10",
+          "title": "Remaining production obligation",
+          "reason": "Every genesis phase, two competing creators/factors and verified Account binding.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C11.remaining",
+          "requirement": "C11",
+          "title": "Remaining production obligation",
+          "reason": "Complete ClearIntent/resume, journal-deletion failure, terminal marker and shared-key isolation.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C12.remaining",
+          "requirement": "C12",
+          "title": "Remaining production obligation",
+          "reason": "No candidate has mandatory factor genesis/unlock; valid-code and wrong-code controls are unavailable.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C13.remaining",
+          "requirement": "C13",
+          "title": "Remaining production obligation",
+          "reason": "Supported browser/authenticator population, future receivers and valid-factor positive controls are absent.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C14.remaining",
+          "requirement": "C14",
+          "title": "Remaining production obligation",
+          "reason": "No integrated legacy receiver replacement/certified generation activation path exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C15.remaining",
+          "requirement": "C15",
+          "title": "Remaining production obligation",
+          "reason": "No selected writable import or per-root custody-seal reservation implementation exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C16.remaining",
+          "requirement": "C16",
+          "title": "Remaining production obligation",
+          "reason": "The full application initialization/repair/import interruption matrix remains owed.",
+          "status": "not-implemented"
+        }
+      ]
+    },
+    {
+      "id": "encrypted",
+      "branch": "claude/l1-encrypted-store",
+      "revision": "a3ab893880262027e94c41a7a50690cf42538862",
+      "originalTree": {
+        "files": 444,
+        "sha256": "7864224729accb154bdf441f7bf720efcc50c0d63d1eff685a3ec2b528541e1a"
+      },
+      "lockfile": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+      "sourceTree": {
+        "files": 444,
+        "sha256": "7864224729accb154bdf441f7bf720efcc50c0d63d1eff685a3ec2b528541e1a"
+      },
+      "mutation": null,
+      "evidenceClass": "browser-adapter-subcases",
+      "cases": [
+        {
+          "id": "C01.receive-order",
+          "requirement": "C01",
+          "title": "Receive must commit before editor promotion",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "receive-waits-for-content-commit",
+              "actual": "R",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "receive-not-yet-visible",
+              "actual": "R",
+              "expected": "",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.65847253d3b77c684d580fcf4de97525",
+            "prefix": "done.pending-update.done.65847253d3b77c684d580fcf4de97525.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C01.receive-order"
+        },
+        {
+          "id": "C01.offline-replay",
+          "requirement": "C01",
+          "title": "Dependent local input recovers without redelivery after renderer crash",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "offline-semantic-replay",
+              "actual": "RL",
+              "expected": "RL",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit",
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "New page replays local carriers only; no remote update is delivered"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.178ee72ce167645533c51b44bd4991ba",
+            "prefix": "done.pending-update.done.178ee72ce167645533c51b44bd4991ba.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C01.offline-replay"
+        },
+        {
+          "id": "C01.large-remote-offline",
+          "requirement": "C01",
+          "title": "Remote update beyond the journal ceiling followed by dependent input and crash",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "offline-semantic-replay",
+              "actual": "",
+              "expected": "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRL",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit",
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "New page replays local carriers only; no remote update is delivered"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.82fad0e5fde6da78f09eb4a51dcf6afb",
+            "prefix": "done.pending-update.done.82fad0e5fde6da78f09eb4a51dcf6afb.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C01.large-remote-offline"
+        },
+        {
+          "id": "C02.delete-order",
+          "requirement": "C02",
+          "title": "Deletion-only receive must commit before promotion",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "deletion-does-not-advance-vector",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "delete-waits-for-content-commit",
+              "actual": "",
+              "expected": "R",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Apply receive at the production provider-document seam; hold content encryption before its commit"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.abbd823904efb25ae3941910a1656caf",
+            "prefix": "done.pending-update.done.abbd823904efb25ae3941910a1656caf.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C02.delete-order"
+        },
+        {
+          "id": "C03.pending-input",
+          "requirement": "C03",
+          "title": "First refusal and later input stay out of editor/export/undo/transport",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "refused-input-not-visible",
+              "actual": "first",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "later-input-cannot-bypass",
+              "actual": "firstsecond",
+              "expected": "",
+              "passed": false
+            },
+            {
+              "id": "pending-not-exported",
+              "actual": [
+                {
+                  "path": "master.md",
+                  "content": "firstsecond"
+                }
+              ],
+              "expected": [
+                {
+                  "path": "master.md",
+                  "content": ""
+                }
+              ],
+              "passed": false
+            },
+            {
+              "id": "pending-not-in-undo",
+              "actual": 1,
+              "expected": 0,
+              "passed": false
+            },
+            {
+              "id": "pending-not-in-transport",
+              "actual": "firstsecond",
+              "expected": "",
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush",
+            "Refuse first WAL append, allow the next, pause content encryption, dispatch real CodeMirror edits, crash"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.f7749b7d01ed3f04ff13fbf7ec8f44c3",
+            "prefix": "done.pending-update.done.f7749b7d01ed3f04ff13fbf7ec8f44c3.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C03.pending-input"
+        },
+        {
+          "id": "C04.writer-lifetime",
+          "requirement": "C04",
+          "title": "Write-key holder retains a shared permit while frozen",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "writer-holds-shared-permit",
+              "actual": false,
+              "expected": true,
+              "passed": false
+            },
+            {
+              "id": "freeze-retains-permit",
+              "actual": false,
+              "expected": true,
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Observe LockManager from a second page while CDP freezes the real writer page"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.3402b1b1777aba485c10434935a4be94",
+            "prefix": "done.pending-update.done.3402b1b1777aba485c10434935a4be94.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C04.writer-lifetime"
+        },
+        {
+          "id": "C07.late-reservation",
+          "requirement": "C07",
+          "title": "Late sequence survives between state commit and trim deletion",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "late-reservation-gap-is-present",
+              "actual": [1, 3],
+              "expected": [1, 3],
+              "passed": true
+            },
+            {
+              "id": "late-row-committed-before-delete",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "late-record-survives",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "replay-union",
+              "actual": {
+                "B": "durable B",
+                "A": "durable A",
+                "C": "durable C"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B",
+                "C": "durable C"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "A commits 1; B reserves 2 and stalls encryption; A commits 3 and state 4; B commits 2; A deletes coverage"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.08d5c4c568e0f01f56d4d1fcbdafdfa6",
+            "prefix": "done.pending-update.done.08d5c4c568e0f01f56d4d1fcbdafdfa6.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C07.late-reservation"
+        },
+        {
+          "id": "C08.other-writer",
+          "requirement": "C08",
+          "title": "Trim recovers the union of independently committed writers",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "snapshot-excludes-other-writer",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A"
+              },
+              "passed": true
+            },
+            {
+              "id": "replay-union",
+              "actual": {
+                "B": "durable B",
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Two independent pages commit; first page invokes production trim; reopen from disk"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.9b0e8da06e2462a48aaf01dd1b93682f",
+            "prefix": "done.pending-update.done.9b0e8da06e2462a48aaf01dd1b93682f.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C08.other-writer"
+        },
+        {
+          "id": "C09.corrupt-open",
+          "requirement": "C09",
+          "title": "Corrupt content refuses normal open and preserves carriers",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "normal-open-refuses",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "unreadable-carriers-retained",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "539cd99a902317eec1f21baf85ff5aef992366defc59ca0810663b4e062d17e6c0ae688c210b1ae99331b96ecd211d"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "bff33cdc5ebfd9365a9f9119"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "e4eb471da1049716a1589fb41b39dbfcfd9fbf6f204cbadc0388a9f62dc063945883605fa647e903f987fb40d12d5f"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "6d07f8913537787e5e7e47e0"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "539cd99a902317eec1f21baf85ff5aef992366defc59ca0810663b4e062d17e6c0ae688c210b1ae99331b96ecd211d"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "bff33cdc5ebfd9365a9f9119"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "e4eb471da1049716a1589fb41b39dbfcfd9fbf6f204cbadc0388a9f62dc063945883605fa647e903f987fb40d12d5f"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "6d07f8913537787e5e7e47e0"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.bcee4ff9120cd6557c9be73bea94ddf6",
+            "prefix": "done.pending-update.done.bcee4ff9120cd6557c9be73bea94ddf6.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C09.corrupt-open"
+        },
+        {
+          "id": "C09.version-open",
+          "requirement": "C09",
+          "title": "Unsupported content refuses normal open and preserves carriers",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "normal-open-refuses",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "unreadable-carriers-retained",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "3b50beba5376637b7e3ace81ac3dda9df8d43f3ab01b275fa1bf8dc9a553da8b33627d0b7ff89f1e366b67a2fe46"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "21376ba54ce7334004418892"
+                  },
+                  "seq": 1,
+                  "v": 999
+                },
+                {
+                  "ct": {
+                    "hex": "5ebff36d305b0fb5d403bb3bd0d0d1e6af39c5eb23e4e423685961e1baaa332ab312f1cd2825dd60940ad2421f19"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "f0f3407b74ec340e8118e351"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "3b50beba5376637b7e3ace81ac3dda9df8d43f3ab01b275fa1bf8dc9a553da8b33627d0b7ff89f1e366b67a2fe46"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "21376ba54ce7334004418892"
+                  },
+                  "seq": 1,
+                  "v": 999
+                },
+                {
+                  "ct": {
+                    "hex": "5ebff36d305b0fb5d403bb3bd0d0d1e6af39c5eb23e4e423685961e1baaa332ab312f1cd2825dd60940ad2421f19"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "f0f3407b74ec340e8118e351"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.f5859980ea23b35421eaa23c2ed3b94c",
+            "prefix": "done.pending-update.done.f5859980ea23b35421eaa23c2ed3b94c.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C09.version-open"
+        },
+        {
+          "id": "C09.corrupt-trim",
+          "requirement": "C09",
+          "title": "Unreadable input refuses the entire trim",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "trim-refuses",
+              "actual": "resolved",
+              "expected": "rejected",
+              "passed": false
+            },
+            {
+              "id": "whole-trim-preserves-input",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "7d9d8c57a38cc4a4422ffcf43ee4113194cf475e746c1970d075fa0b466beac6a2c38ea128b7f5e91d9bce149c3d73f6080727ed8a0f6b1ad0fd9c508abc219dcb788236c8"
+                  },
+                  "gen": 1,
+                  "kind": "state",
+                  "nonce": {
+                    "hex": "0c447696939fcf365b9bec88"
+                  },
+                  "seq": 3,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "1c1b4e65da424a4143d2c58d05459f7d16714649ba656c49e69281d94e99a9af71160d4eb3f7f7b267256c755682df"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "4edd41725f363ca724ba4f63"
+                  },
+                  "seq": 1,
+                  "v": 1
+                },
+                {
+                  "ct": {
+                    "hex": "466ed7f07936e24fb35f79e738a72c65b67180a1bb3b7d57e8abc8cbb5b55c1c9611dedba34159cc1c17b522adfc56"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "b0bd7eef67ed63cd0ed291f5"
+                  },
+                  "seq": 2,
+                  "v": 1
+                }
+              ],
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Damage a real persisted ciphertext/version and invoke production load or trim"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.8435e881aa5bebdf9f03e9fe58962daa",
+            "prefix": "done.pending-update.done.8435e881aa5bebdf9f03e9fe58962daa.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C09.corrupt-trim"
+        },
+        {
+          "id": "C09.changed-trim-input",
+          "requirement": "C09",
+          "title": "Trim refuses deletion if an observed record changed",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "readable-reopen-control",
+              "actual": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "expected": {
+                "A": "durable A",
+                "B": "durable B"
+              },
+              "passed": true
+            },
+            {
+              "id": "changed-record-retained",
+              "actual": null,
+              "expected": {
+                "ct": {
+                  "hex": "490cc3ec1f8ea2f99549d820ae297e35f41a65d9ff4083c0b6bd33ed20569d84dced12d8d06f4fb834ac5bee2f72c1"
+                },
+                "gen": 1,
+                "kind": "update",
+                "nonce": {
+                  "hex": "3d09e7acd71dc1cbce8eade7"
+                },
+                "seq": 1,
+                "v": 1
+              },
+              "passed": false
+            }
+          ],
+          "schedule": ["Mutate observed record bytes after replacement commit but before deletion"],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.b4d912b6b10ed0403a82dc265c336085",
+            "prefix": "done.pending-update.done.b4d912b6b10ed0403a82dc265c336085.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C09.changed-trim-input"
+        },
+        {
+          "id": "C09.corrupt-journal",
+          "requirement": "C09",
+          "title": "Unreadable journal refuses normal open after crash",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "unreadable-journal-refuses-open",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "unreadable-journal-retained",
+              "actual": "unsupported journal fixture",
+              "expected": "unsupported journal fixture",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.051d2bab18c9494fed05a33f46b5344b",
+            "prefix": "done.pending-update.done.051d2bab18c9494fed05a33f46b5344b.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C09.corrupt-journal"
+        },
+        {
+          "id": "C10.partial-metadata",
+          "requirement": "C10",
+          "title": "Missing metadata beside ciphertext refuses without reminting",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "partial-genesis-refuses",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "partial-refusal-is-typed",
+              "actual": false,
+              "expected": true,
+              "passed": false
+            },
+            {
+              "id": "partial-metadata-not-reminted",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "existing-ciphertext-preserved",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "8c8aec3b02db8602fabecea8359a79a88f23617f97aa43282bc4d60bdf3150ee953521c19c0274842414d38a8e4efb"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "28ec92b6fff5b6f43864a6f2"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "8c8aec3b02db8602fabecea8359a79a88f23617f97aa43282bc4d60bdf3150ee953521c19c0274842414d38a8e4efb"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "28ec92b6fff5b6f43864a6f2"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Remove metadata only, retain ciphertext and custody, then use the existing-store open path"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.67d171fccbd9ba4e796c2c946fc40298",
+            "prefix": "done.pending-update.done.67d171fccbd9ba4e796c2c946fc40298.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C10.partial-metadata"
+        },
+        {
+          "id": "C11.clear-refusal",
+          "requirement": "C11",
+          "title": "Content deletion refusal preserves journal and content",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "clear-reports-refusal",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "refused-clear-preserves-journal",
+              "actual": {},
+              "expected": {
+                "done.pending-update.done.fc0770685219aa479cae544308d52b03.fd8c9553-c908-41a7-a415-785112f1cb15.1": "2:AAAAAdJnQ8XaOW/CToDlvovWlEjjG5nDOrXV/N24NFJ6xrr5ypaRKQdeYJw4ppVp2pCCSX/ZIgL6fms9l2UHFysSmC0MU9mv8Kjt"
+              },
+              "passed": false
+            },
+            {
+              "id": "refused-clear-preserves-content",
+              "actual": [
+                {
+                  "ct": {
+                    "hex": "3c9f6747a43f5e474f3d15acfaec0bd610dab5cb7be091b8e0a234c144060a0889a6dcee5195981cad059f9e8c23e3"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "651911784b055640ea92abf5"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "expected": [
+                {
+                  "ct": {
+                    "hex": "3c9f6747a43f5e474f3d15acfaec0bd610dab5cb7be091b8e0a234c144060a0889a6dcee5195981cad059f9e8c23e3"
+                  },
+                  "gen": 1,
+                  "kind": "update",
+                  "nonce": {
+                    "hex": "651911784b055640ea92abf5"
+                  },
+                  "seq": 1,
+                  "v": 1
+                }
+              ],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.fc0770685219aa479cae544308d52b03",
+            "prefix": "done.pending-update.done.fc0770685219aa479cae544308d52b03.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C11.clear-refusal"
+        },
+        {
+          "id": "C11.clear-success",
+          "requirement": "C11",
+          "title": "Completed destructive clear removes the target journal",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "clear-completes",
+              "actual": "resolved",
+              "expected": "resolved",
+              "passed": true
+            },
+            {
+              "id": "clear-removes-journal",
+              "actual": {},
+              "expected": {},
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "CDP Page.crash terminates the renderer; no application destroy or unload flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.fbfc30371722f13b9fe9661440af9f35",
+            "prefix": "done.pending-update.done.fbfc30371722f13b9fe9661440af9f35.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C11.clear-success"
+        },
+        {
+          "id": "C12.factor-genesis",
+          "requirement": "C12",
+          "title": "Persistent genesis cannot acknowledge without a confirmed factor",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "no-acknowledgement-without-factor",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {},
+              "passed": false
+            }
+          ],
+          "schedule": [
+            "Invoke the candidate’s exported persistent genesis/key APIs with no supplied factor; write and flush"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.8299333e8cebc94cc77244c23d3c610e",
+            "prefix": "done.pending-update.done.8299333e8cebc94cc77244c23d3c610e.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C12.factor-genesis"
+        },
+        {
+          "id": "C13.copied-profile",
+          "requirement": "C13",
+          "title": "A full copied browser profile cannot reopen without a factor",
+          "status": "fail",
+          "assertions": [
+            {
+              "id": "copied-profile-refuses-without-factor",
+              "actual": true,
+              "expected": false,
+              "passed": false
+            },
+            {
+              "id": "copy-positive-content-control",
+              "actual": {
+                "A": "durable A"
+              },
+              "expected": {
+                "A": "durable A"
+              },
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Write real encrypted IndexedDB in a new persistent Chromium profile; close browser",
+            "Copied complete closed profile reopened at the same origin without any factor; same-host test only"
+          ],
+          "profileEvidence": {
+            "source": {
+              "files": 324,
+              "sha256": "dc556d619084d7b7e10ea3025a1667234a278f6ef528bdb65d42fe0e4809fb9e"
+            },
+            "copy": {
+              "files": 324,
+              "sha256": "dc556d619084d7b7e10ea3025a1667234a278f6ef528bdb65d42fe0e4809fb9e"
+            },
+            "launch": "Playwright Chromium defaults, including mock keychain, same host"
+          },
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.ba7a97b9b3bd288171d228f9617651b5",
+            "prefix": "done.pending-update.done.ba7a97b9b3bd288171d228f9617651b5.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C13.copied-profile"
+        },
+        {
+          "id": "C16.legacy-routing",
+          "requirement": "C16",
+          "title": "Default startup preserves the selected legacy installation",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "selected-legacy-still-visible",
+              "actual": "legacy survives",
+              "expected": "legacy survives",
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Seed actual legacy openStore, then call the candidate’s default application startup"
+          ],
+          "fixture": {
+            "productionEntryFiles": [
+              "src/crdt/index.ts",
+              "src/crdt/encryptedPersistence.ts",
+              "src/crdt/encryptedStore.ts",
+              "src/crdt/keys.ts",
+              "src/editor/createEditor.ts"
+            ],
+            "db": "done.20bfc3f55a562fe3ff64c75790cd4c64",
+            "prefix": "done.pending-update.done.20bfc3f55a562fe3ff64c75790cd4c64.",
+            "recordStore": "updates",
+            "metaStore": "meta"
+          },
+          "artifacts": "encrypted/C16.legacy-routing"
+        },
+        {
+          "id": "C01.remaining",
+          "requirement": "C01",
+          "title": "Remaining production obligation",
+          "reason": "Encrypted wire admission and accepted-head ordering require the future integrated transport.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C02.remaining",
+          "requirement": "C02",
+          "title": "Remaining production obligation",
+          "reason": "Unresolved structs and pending delete-set compositions beyond the executed deletion case.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C03.remaining",
+          "requirement": "C03",
+          "title": "Remaining production obligation",
+          "reason": "Native IME composition, paste slicing and every undo/export action under interrupted admission.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C04.remaining",
+          "requirement": "C04",
+          "title": "Remaining production obligation",
+          "reason": "No candidate exposes an integrated exclusive retirement worker or supported-version cutover.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C05.remaining",
+          "requirement": "C05",
+          "title": "Remaining production obligation",
+          "reason": "No candidate exposes the integrated generation/custody actor with interruption/resume phases.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C06.remaining",
+          "requirement": "C06",
+          "title": "Remaining production obligation",
+          "reason": "No integrated all-reference census/checkpoint/package/fallback retirement path exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C07.remaining",
+          "requirement": "C07",
+          "title": "Remaining production obligation",
+          "reason": "Repeated concurrent trims and the complete writer/transition composition.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C09.remaining",
+          "requirement": "C09",
+          "title": "Remaining production obligation",
+          "reason": "Typed repair UI, unrelated-store isolation and the complete malformed carrier inventory.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C10.remaining",
+          "requirement": "C10",
+          "title": "Remaining production obligation",
+          "reason": "Every genesis phase, two competing creators/factors and verified Account binding.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C11.remaining",
+          "requirement": "C11",
+          "title": "Remaining production obligation",
+          "reason": "Complete ClearIntent/resume, journal-deletion failure, terminal marker and shared-key isolation.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C12.remaining",
+          "requirement": "C12",
+          "title": "Remaining production obligation",
+          "reason": "No candidate has mandatory factor genesis/unlock; valid-code and wrong-code controls are unavailable.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C13.remaining",
+          "requirement": "C13",
+          "title": "Remaining production obligation",
+          "reason": "Supported browser/authenticator population, future receivers and valid-factor positive controls are absent.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C14.remaining",
+          "requirement": "C14",
+          "title": "Remaining production obligation",
+          "reason": "No integrated legacy receiver replacement/certified generation activation path exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C15.remaining",
+          "requirement": "C15",
+          "title": "Remaining production obligation",
+          "reason": "No selected writable import or per-root custody-seal reservation implementation exists.",
+          "status": "not-implemented"
+        },
+        {
+          "id": "C16.remaining",
+          "requirement": "C16",
+          "title": "Remaining production obligation",
+          "reason": "The full application initialization/repair/import interruption matrix remains owed.",
+          "status": "not-implemented"
+        }
+      ]
+    }
+  ],
+  "mutations": [
+    {
+      "id": "trim-own-document",
+      "assertion": "replay-union",
+      "status": "detected",
+      "result": {
+        "id": "contract",
+        "branch": "claude/l1-contract-pass",
+        "revision": "6330412897dcac665741e1a928b497e5f2dd7266",
+        "originalTree": {
+          "files": 444,
+          "sha256": "b22c564f505632e2409f0db965ea947bbc3bee476dfb01b49b57b4fdc367e885"
+        },
+        "lockfile": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+        "sourceTree": {
+          "files": 444,
+          "sha256": "ebe9701eb947320586d18417fb33aa97be6928396f59f90bffd0f640d8320ce3"
+        },
+        "mutation": {
+          "path": "src/crdt/contentStore.ts",
+          "original": "b55f5f908df2675e378dae3c5f6aafa9b562ff16c53f2c843dc119fc0d95884d",
+          "mutated": "9ae2a80e9f5827b3887d118e286101659482ab734756ca5bc33244cc8cfd803a",
+          "from": "await writeRecords([Y.mergeUpdates(updates)], 'state');",
+          "to": "await writeRecords([Y.encodeStateAsUpdate(doc)], 'state');"
+        },
+        "evidenceClass": "browser-adapter-subcases",
+        "cases": [
+          {
+            "id": "C08.other-writer",
+            "requirement": "C08",
+            "title": "Trim recovers the union of independently committed writers",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "snapshot-excludes-other-writer",
+                "actual": {
+                  "A": "durable A"
+                },
+                "expected": {
+                  "A": "durable A"
+                },
+                "passed": true
+              },
+              {
+                "id": "replay-union",
+                "actual": {
+                  "A": "durable A"
+                },
+                "expected": {
+                  "A": "durable A",
+                  "B": "durable B"
+                },
+                "passed": false
+              }
+            ],
+            "schedule": [
+              "Two independent pages commit; first page invokes production trim; reopen from disk"
+            ],
+            "fixture": {
+              "productionEntryFiles": [
+                "src/crdt/index.ts",
+                "src/crdt/contentStore.ts",
+                "src/crdt/keyStore.ts",
+                "src/crdt/slotIndex.ts",
+                "src/editor/createEditor.ts"
+              ],
+              "db": "done.9b0e8da06e2462a48aaf01dd1b93682f",
+              "prefix": "done.pending-update.done.9b0e8da06e2462a48aaf01dd1b93682f.",
+              "recordStore": "content",
+              "metaStore": "store-meta"
+            },
+            "artifacts": "contract--trim-own-document/C08.other-writer"
+          }
+        ]
+      }
+    },
+    {
+      "id": "trim-by-range",
+      "assertion": "late-record-survives",
+      "status": "detected",
+      "result": {
+        "id": "contract",
+        "branch": "claude/l1-contract-pass",
+        "revision": "6330412897dcac665741e1a928b497e5f2dd7266",
+        "originalTree": {
+          "files": 444,
+          "sha256": "b22c564f505632e2409f0db965ea947bbc3bee476dfb01b49b57b4fdc367e885"
+        },
+        "lockfile": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+        "sourceTree": {
+          "files": 444,
+          "sha256": "9027805af63325152fe9ed43524b8aa3bc29bb5d90153f90f275edd543972f59"
+        },
+        "mutation": {
+          "path": "src/crdt/contentStore.ts",
+          "original": "b55f5f908df2675e378dae3c5f6aafa9b562ff16c53f2c843dc119fc0d95884d",
+          "mutated": "f075b0c188f0cf679381771e0426de82badb093fec0cadfd5d936e3feb16b662",
+          "from": "for (const record of covered) content.delete(record.seq);",
+          "to": "content.delete(IDBKeyRange.upperBound(Math.max(...covered.map(record => record.seq))));"
+        },
+        "evidenceClass": "browser-adapter-subcases",
+        "cases": [
+          {
+            "id": "C07.late-reservation",
+            "requirement": "C07",
+            "title": "Late sequence survives between state commit and trim deletion",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "late-reservation-gap-is-present",
+                "actual": [1, 3],
+                "expected": [1, 3],
+                "passed": true
+              },
+              {
+                "id": "late-row-committed-before-delete",
+                "actual": true,
+                "expected": true,
+                "passed": true
+              },
+              {
+                "id": "late-record-survives",
+                "actual": false,
+                "expected": true,
+                "passed": false
+              },
+              {
+                "id": "replay-union",
+                "actual": {
+                  "A": "durable A",
+                  "C": "durable C"
+                },
+                "expected": {
+                  "A": "durable A",
+                  "B": "durable B",
+                  "C": "durable C"
+                },
+                "passed": false
+              }
+            ],
+            "schedule": [
+              "A commits 1; B reserves 2 and stalls encryption; A commits 3 and state 4; B commits 2; A deletes coverage"
+            ],
+            "fixture": {
+              "productionEntryFiles": [
+                "src/crdt/index.ts",
+                "src/crdt/contentStore.ts",
+                "src/crdt/keyStore.ts",
+                "src/crdt/slotIndex.ts",
+                "src/editor/createEditor.ts"
+              ],
+              "db": "done.08d5c4c568e0f01f56d4d1fcbdafdfa6",
+              "prefix": "done.pending-update.done.08d5c4c568e0f01f56d4d1fcbdafdfa6.",
+              "recordStore": "content",
+              "metaStore": "store-meta"
+            },
+            "artifacts": "contract--trim-by-range/C07.late-reservation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "trim-skips-unreadable",
+      "assertion": "whole-trim-preserves-input",
+      "status": "detected",
+      "result": {
+        "id": "contract",
+        "branch": "claude/l1-contract-pass",
+        "revision": "6330412897dcac665741e1a928b497e5f2dd7266",
+        "originalTree": {
+          "files": 444,
+          "sha256": "b22c564f505632e2409f0db965ea947bbc3bee476dfb01b49b57b4fdc367e885"
+        },
+        "lockfile": "52153631a8196a6317dbbf68eb85b67622482d0df2c7c2cd69bd8f512a27a1ac",
+        "sourceTree": {
+          "files": 444,
+          "sha256": "7fd3b2e439a78e36747115143ea27ad1f1c2c0252e4fb5ef4d56b5e88329272f"
+        },
+        "mutation": {
+          "path": "src/crdt/contentStore.ts",
+          "original": "b55f5f908df2675e378dae3c5f6aafa9b562ff16c53f2c843dc119fc0d95884d",
+          "mutated": "63bd219f2f64329bcb5c0b496f20795a4ad93354092400639efe5a950aabd9cb",
+          "from": "if (!opened.opened) throw new Error(`A content record will not open: ${opened.refusal}.`);",
+          "to": "if (!opened.opened) continue;"
+        },
+        "evidenceClass": "browser-adapter-subcases",
+        "cases": [
+          {
+            "id": "C09.corrupt-trim",
+            "requirement": "C09",
+            "title": "Unreadable input refuses the entire trim",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "readable-reopen-control",
+                "actual": {
+                  "A": "durable A",
+                  "B": "durable B"
+                },
+                "expected": {
+                  "A": "durable A",
+                  "B": "durable B"
+                },
+                "passed": true
+              },
+              {
+                "id": "trim-refuses",
+                "actual": "resolved",
+                "expected": "rejected",
+                "passed": false
+              },
+              {
+                "id": "whole-trim-preserves-input",
+                "actual": [
+                  {
+                    "ct": {
+                      "hex": "6951c6221e286f3f68e686cc09c742def744b1396974efe6e91b822092fb99e06559664e06d955d5708603a943039c"
+                    },
+                    "gen": 1,
+                    "kind": "state",
+                    "nonce": {
+                      "hex": "bf82332ff7a9952dde2c9bc1"
+                    },
+                    "seq": 3,
+                    "v": 1
+                  }
+                ],
+                "expected": [
+                  {
+                    "ct": {
+                      "hex": "f493826e8cdb5a7b6b4a54c58ae54ca5e3832beb36f5589dbd4ec7ce1979f5e8b7cad45920a22c1d581ef07613d4a7"
+                    },
+                    "gen": 1,
+                    "kind": "update",
+                    "nonce": {
+                      "hex": "e04a3c24efe9f2c7c46e755d"
+                    },
+                    "seq": 1,
+                    "v": 1
+                  },
+                  {
+                    "ct": {
+                      "hex": "ab402a187023b5268a248b354352feba0ea73e380378574f892d3f10b270537696df2afc753502d2631de058e07b5a"
+                    },
+                    "gen": 1,
+                    "kind": "update",
+                    "nonce": {
+                      "hex": "da32792233ce5bc82784a339"
+                    },
+                    "seq": 2,
+                    "v": 1
+                  }
+                ],
+                "passed": false
+              }
+            ],
+            "schedule": [
+              "Damage a real persisted ciphertext/version and invoke production load or trim"
+            ],
+            "fixture": {
+              "productionEntryFiles": [
+                "src/crdt/index.ts",
+                "src/crdt/contentStore.ts",
+                "src/crdt/keyStore.ts",
+                "src/crdt/slotIndex.ts",
+                "src/editor/createEditor.ts"
+              ],
+              "db": "done.8435e881aa5bebdf9f03e9fe58962daa",
+              "prefix": "done.pending-update.done.8435e881aa5bebdf9f03e9fe58962daa.",
+              "recordStore": "content",
+              "metaStore": "store-meta"
+            },
+            "artifacts": "contract--trim-skips-unreadable/C09.corrupt-trim"
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Chromium on this host only; no hardware latency or supported-platform assurance.",
+    "Receive injection uses the production provider-document seam; encrypted wire admission is not implemented.",
+    "No factor/authenticator implementation or positive factor control exists at these candidate revisions.",
+    "CryptoKey inventory records metadata, never exports keys. Full-profile copy uses Chromium test launch settings on the same host.",
+    "Page.crash is a renderer crash, not an OS/power-loss test.",
+    "Missing integrated APIs remain explicit not-implemented obligations."
+  ],
+  "finished": "2026-09-08T14:46:28.742Z",
+  "exitCode": 1
+}

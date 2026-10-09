@@ -1,0 +1,33 @@
+{
+  "base": "3af765d3d96e452488242b51b2969b4da81b66ef",
+  "claim": "Read-only preparation checks; no campaign or product test executed.",
+  "checks": [
+    "current and signed-baseline inventories identical",
+    "unknown calls refused",
+    "manifest and graph unchanged/passing",
+    "append-only records and L-2 preserved",
+    "whitespace check passed"
+  ],
+  "files": {
+    "initial-inventory.json": {
+      "bytes": 140921,
+      "sha256": "b7edcadda0b6e1c7e6c3e3294171438fe7a51e5714a11af1a7b75b6ccffee306"
+    },
+    "README.md": {
+      "bytes": 2105,
+      "sha256": "7724429d2baac7b1c11aefacf00582bbf8e854a293c32e7bd2d96c93bf4208db"
+    },
+    "report-size-sample.json": {
+      "bytes": 1823,
+      "sha256": "be201d06ffea4b19daac19b1cf183f9b3d1d114c559a6b1b39c754faf6035ac7"
+    },
+    "inventory.json": {
+      "bytes": 137551,
+      "sha256": "4121dae856e32f8f8c55a21927bacd70d72b02d3273587986e88bebce16f046c"
+    },
+    "inspect.mjs": {
+      "bytes": 7553,
+      "sha256": "13867cd95a17121fd7edff292e247464c0a75b30d73a9724491efdcd5b88760a"
+    }
+  }
+}

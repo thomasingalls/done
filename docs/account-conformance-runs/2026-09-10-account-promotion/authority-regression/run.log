@@ -1,0 +1,25 @@
+✔ control: resolving the anchor from the reply accepts a self-signed attacker root (54.878042ms)
+✔ control: trusting the returned nonce accepts a captured bootstrap response (26.241709ms)
+✔ durable encrypted root, independent proof bytes and close/restart (48.436167ms)
+✔ missing, damaged, wrong-factor, substituted-root and unknown-version states never create a new root (20.411292ms)
+✔ root proof refuses changed nonce, policy, pin and signature; service accepts only a nonce request (25.56375ms)
+✔ private files only and initialization failures preserve a classified prior outcome (24.636125ms)
+(node:73679) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:73679) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native Local+encrypted-journal preflight, independent pin, repeatable recovery context and refusal boundaries (1676.832ms)
+✔ native preflight cancellation holds slot exclusion until the network attempt settles (926.29075ms)
+✔ 40 generated native histories preserve carriers and keep the recovery context stable (15736.596333ms)
+✔ preflight snapshots caller input before queued acquisition (644.926208ms)
+✔ 160 generated authority histories preserve the root through corruption, restart and competing setup (3436.072625ms)
+✔ SIGKILL before-commit: cold operator recovery never silently rekeys (364.903209ms)
+✔ SIGKILL after-commit: cold operator recovery never silently rekeys (606.556542ms)
+✔ competing processes initialize exactly one root and can cold-recover the winner (301.349042ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20110.293291

@@ -1,0 +1,23 @@
+(node:38290) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ refusalId source control fails the complete oracle at the affected prefix (43.800417ms)
+✔ finalCutoff source control fails the complete oracle at the affected prefix (40.757208ms)
+✔ prefix source control fails the complete oracle at the affected prefix (42.059334ms)
+✔ closure source control fails the complete oracle at the affected prefix (39.6795ms)
+✔ refusalAfterHead source control fails the complete oracle at the affected prefix (39.581ms)
+✔ headAfterRefusal source control fails the complete oracle at the affected prefix (37.912167ms)
+✔ headAfterFinal source control fails the complete oracle at the affected prefix (43.218334ms)
+✔ finalAfterHead source control fails the complete oracle at the affected prefix (40.78925ms)
+✔ finalState source control fails the complete oracle at the affected prefix (38.941625ms)
+✔ conflict source control fails the complete oracle at the affected prefix (38.639542ms)
+✔ submissions source control fails the complete oracle at the affected prefix (38.015292ms)
+✔ responses source control fails the complete oracle at the affected prefix (39.277417ms)
+✔ constraint consistency agrees with enumeration of 80 concrete service histories for all 2197 proof triples (12.521541ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 901.708875

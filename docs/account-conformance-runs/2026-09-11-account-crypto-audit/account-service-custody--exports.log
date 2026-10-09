@@ -1,0 +1,12 @@
+✔ root creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (21.244125ms)
+✔ acceptance creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports (3.261667ms)
+✔ acceptance create refuses after close before generating or exporting a new seed (0.283834ms)
+✔ acceptance create clears an exported seed if randomness fails before derivation (0.567083ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 145.920292

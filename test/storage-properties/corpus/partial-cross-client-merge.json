@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "origin": "Production defect isolated from generated cross-client partial-merge failure; independent bare-Yjs property shrank to four edits and three selected updates in 86 reductions. Native replay required.",
+  "history": {
+    "edits": [
+      {
+        "lane": 0,
+        "actor": 1,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      },
+      {
+        "lane": 0,
+        "actor": 0,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      },
+      {
+        "lane": 0,
+        "actor": 0,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      },
+      {
+        "lane": 0,
+        "actor": 0,
+        "at": 0,
+        "text": "a",
+        "remove": 0
+      }
+    ],
+    "steps": [
+      {
+        "op": "disk",
+        "ids": [3, 1, 5]
+      },
+      {
+        "op": "compact"
+      },
+      {
+        "op": "reopen"
+      }
+    ]
+  }
+}

@@ -108,6 +108,17 @@ same object produce the same digest*) is unproven at the tie. Repair: one malfor
 schema and §13.5, under the pin discipline. Return: `S0-2`'s homes, at the owner's convenience before `L-2`
 implements a verifier.
 
+> **Addendum, 2026-08-29 — landed at the `L-2` opening.** The named repair is in both homes: the schema block
+> gained a `uniqueness` clause and its reasoning paragraph
+> ([`S0-2/A-schemas.md`](../S0-2/A-schemas.md) §1), TRD §13.5 gained the malformedness paragraph, and the four
+> map entries pinning those two sections were re-read and re-pinned with the entry held — additive, no status
+> flip, since `member-signing-keys`' resolution line already read *the named signer's member entry* in the
+> singular and this makes the singular true by construction. One thing the verdict did not ask for was added,
+> for the reason the verdict itself gives: because the generator's object-keyed `members` cannot express a
+> duplicate, no published negative can carry this rule and prose is its only carrier — so
+> `pnpm recipient:check` now holds the sentence at both homes as a byte rule, falsified by deleting it. The
+> verifier duty this reserved is `L-2`'s and is not discharged here.
+
 ## Observations, not blockers
 
 - **The tree digest is blind to untracked-file content** — demonstrated with `treeDigest()`: two different

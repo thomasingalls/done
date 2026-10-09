@@ -1,0 +1,140 @@
+{
+  "checkedAt": "2026-09-10T13:53:56.298Z",
+  "commit": "17d87c23fe888ed577b558002c3bf94bca4cad98",
+  "records": [
+    {
+      "url": "http://127.0.0.1:8082/favicon.svg",
+      "status": 200,
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/icon-192.png",
+      "status": 200,
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/icon-512.png",
+      "status": 200,
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/icon-maskable-512.png",
+      "status": 200,
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/index.html",
+      "status": 200,
+      "sha256": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/local.html",
+      "status": 200,
+      "sha256": "99e7ec751210d91ab39ee2e0483e2b6a5c38b66399e3a7543074457dc52b43f6",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/manifest.webmanifest",
+      "status": 200,
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/sw.js",
+      "status": 200,
+      "sha256": "65f527e9badb8eb4f803814cd0725ebe3e4594cbf19fc5fced68d5f18431834a",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/assets/main-BBv1bmH8.css",
+      "status": 200,
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/assets/main-QtGIH--m.js",
+      "status": 200,
+      "sha256": "3b588eb645d245e7a2cbbf2a200c714f8420ebfaaf7dc78e6986fe8eb7e07563",
+      "matchesBuild": true
+    },
+    {
+      "url": "http://127.0.0.1:8082/",
+      "status": 200,
+      "sha256": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/favicon.svg",
+      "status": 200,
+      "sha256": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/icon-192.png",
+      "status": 200,
+      "sha256": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/icon-512.png",
+      "status": 200,
+      "sha256": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/icon-maskable-512.png",
+      "status": 200,
+      "sha256": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/index.html",
+      "status": 200,
+      "sha256": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/local.html",
+      "status": 200,
+      "sha256": "99e7ec751210d91ab39ee2e0483e2b6a5c38b66399e3a7543074457dc52b43f6",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/manifest.webmanifest",
+      "status": 200,
+      "sha256": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/sw.js",
+      "status": 200,
+      "sha256": "65f527e9badb8eb4f803814cd0725ebe3e4594cbf19fc5fced68d5f18431834a",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/assets/main-BBv1bmH8.css",
+      "status": 200,
+      "sha256": "d9e9ed22182d29dfc623c0d365d67d5160a309ac17a4ae27523d51a1e50fdc25",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/assets/main-QtGIH--m.js",
+      "status": 200,
+      "sha256": "3b588eb645d245e7a2cbbf2a200c714f8420ebfaaf7dc78e6986fe8eb7e07563",
+      "matchesBuild": true
+    },
+    {
+      "url": "https://mbp.tail0e0d4.ts.net/",
+      "status": 200,
+      "sha256": "d5017032fc4d2e3381caa20db7b25dc3b96d79196c25423817e552bd750106e8",
+      "matchesBuild": true
+    }
+  ],
+  "allMatch": true,
+  "personalBrowserConfirmed": false
+}

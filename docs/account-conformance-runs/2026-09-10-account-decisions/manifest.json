@@ -1,0 +1,90 @@
+[
+  {
+    "path": "build.log",
+    "sha256": "f1f37bea4019362a6836ed5b14b30ed8c22c2510f0d24364798fd1473f8bffb9"
+  },
+  {
+    "path": "controls.json",
+    "sha256": "c93c04d687fc271058fd23f628d84c5347d52a32da170bf9e225fd2e89e02e0d"
+  },
+  {
+    "path": "final-gates.json",
+    "sha256": "c162e4626db40f1b0e1e6bbe79270c049a7c7174d7fee0feacdbb4e1874f1961"
+  },
+  {
+    "path": "findings.json",
+    "sha256": "b6605e9411696d70b069788ea00e5b90cc5b09b598c1ddaddd869b31e26071ff"
+  },
+  {
+    "path": "generated.json",
+    "sha256": "adc1601500bdd4149759e022736bf7bd5a99b40cf81e29dd530e6dd85c207089"
+  },
+  {
+    "path": "initial-native-fixture-failure.log",
+    "sha256": "bce38c77d9d793a70937585afbcfbf19a3b124d8359029430581fce215d1095c"
+  },
+  {
+    "path": "native.log",
+    "sha256": "ecfd10536c9ba6c532db397934884b7e58de5a1b0c86fdcd3e590c6668790361"
+  },
+  {
+    "path": "package-at-regression.json",
+    "sha256": "a7ff0d097a8643b78799231a3a673fd63052ce03ac5eb6486eb985bf9bdfebce"
+  },
+  {
+    "path": "properties.log",
+    "sha256": "4dd3e76705f6d3dded7d2430c8bb45d42971bcdc9b10d014091de63b6506426c"
+  },
+  {
+    "path": "results.xml",
+    "sha256": "64d79334e1606e86bb253cd9cb4f67fe4da753a5747aef530b8026fede5617c9"
+  },
+  {
+    "path": "sources.json",
+    "sha256": "9738cc4453c3974357fb09ce4466067ed7a394de4ea85f5c36145122ffd9d23e"
+  },
+  {
+    "path": "spool-regression/controls.json",
+    "sha256": "e20a973ba153046ee6ab967903d8900b74e358377a05c5c0ff69cc69ec42546e"
+  },
+  {
+    "path": "spool-regression/generated.json",
+    "sha256": "7b2a00e91a264e89940fefcb49256a59fd6dc13f2efa08531352292a21a40243"
+  },
+  {
+    "path": "spool-regression/missing-tail-control.json",
+    "sha256": "04c2428ef563c600576ea5a7c687ef6942dac218b845c5ab3fc63fc0dcd285fe"
+  },
+  {
+    "path": "spool-regression/native.log",
+    "sha256": "f11114ea3f135c96cbda9ce757714e9d5814c7b4c9faaddc7b1a8e3b9e075486"
+  },
+  {
+    "path": "spool-regression/properties.log",
+    "sha256": "7c67b4fac0f614aaa7e7a8d1020fdcbf78b4bc7008033616d7385ba5a9432e73"
+  },
+  {
+    "path": "spool-regression/results.xml",
+    "sha256": "12313c1dd15b867b0a345e2a55e39a6b1ca8c0c8fbfd5a0a69153f9e369ee328"
+  },
+  {
+    "path": "spool-regression/sources.json",
+    "sha256": "2d6cd0a33c47e0ba119392e04513412eed77c71dc37b6f00ae838a9e0c89fb2c"
+  },
+  {
+    "path": "spool-regression/summary.json",
+    "sha256": "52b9f352d40cacfd9f3af9d3debb840c9f13baf97f98a51823959effca60d940"
+  },
+  {
+    "path": "static-checks.json",
+    "sha256": "df6662daf3692ff324a882bb9d26907c204d1328424a187718a4bb98fd31078f"
+  },
+  {
+    "path": "summary.json",
+    "sha256": "d940327f6486889db611185e62b982608809c490cc2347c1bdb47084c60e4269"
+  },
+  {
+    "path": "unit-tests.log",
+    "sha256": "ca36d3ea640ab8000c311a56feb71dced59ee8df870f287f268c969ca7df9275"
+  }
+]

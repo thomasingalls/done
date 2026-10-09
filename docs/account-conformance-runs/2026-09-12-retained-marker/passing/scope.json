@@ -1,0 +1,9 @@
+{
+  "baseline": "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+  "phase": "marker",
+  "node": "v26.8.2",
+  "platform": "darwin",
+  "arch": "arm64",
+  "protocol": "docs/account-privacy-recovery-capacity.md",
+  "claim": "Versioned retained candidate reference with exact original signed and MACed bytes; resource reduction, not service capacity qualification"
+}

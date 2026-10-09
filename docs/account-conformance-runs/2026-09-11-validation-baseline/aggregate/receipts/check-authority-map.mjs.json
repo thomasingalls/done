@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "script": "scripts/check-authority-map.mjs",
+  "script_sha256": "104a9b8ae9ad366b8b3528f4b87437672f67bd7c326bc2fc8a5f166d715e4b59",
+  "argv": [],
+  "ok": true,
+  "exit": 0,
+  "started": "2026-09-11T08:02:26.511Z",
+  "finished": "2026-09-11T08:02:26.543Z",
+  "tree": {
+    "head": "500630fc85e270728b65d6a6e960def22af47ad2",
+    "dirty_sha256": "f6a1e9211765de91df8afa1ec98c4d0d1f2bca075274438c9371b92acd1d6570"
+  }
+}

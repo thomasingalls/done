@@ -1,0 +1,18 @@
+(node:42150) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42150) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:42150) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ self-stream byte binding refuses a different valid envelope from the same synthetic credential (26559.5265ms)
+(node:42258) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:42258) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:42258) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ retained signed receive conflict halts both lanes without closing valid Local content (10661.351666ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 41169.157791

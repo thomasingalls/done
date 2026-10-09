@@ -1,0 +1,13 @@
+# Decision after the fixed R4 screen
+
+All four ordinary sessions and the separate Unicode pair complete with exact text, bounded undo/redo, cold reopen and browser/server closure. Keep every observation. No extra timing session or diagnostic profile is added to seek a different outcome.
+
+Ordinary paired median gains are0.292% early and2.689% later. Early effects have opposite signs (50.0→50.5ms and50.5→49.7ms); later medians improve in both pairs (52.5→50.2ms and50.1→49.6ms). Later p95 improves4.927% on the paired summary, but early p95 worsens8.029%, with nearly identical8% increases in both opposite-order pairs. The one Unicode guard has slightly better medians but later p95 worsens7.568%. This is mixed descriptive evidence, with small session counts and imprecise40-sample p95 estimates, not proof of a population regression or improvement.
+
+Preserve the small, tested UI patch and its favorable later observations as an optional experimental component, but do not add it to the selected baseline now. The repeated early-tail cost is the reason to defer selection; there is no minimum percentage win requirement. The emitted-build check establishes removal of repeated Collection index-construction sites, not measured GC savings or a general latency improvement. Future composition work may revisit it if new evidence gives a reason. Do not discard it solely because the possible median gain is small.
+
+The next selected baseline remains round three's preparation + bounded comparison pool + editor shortcut + primitive value-string reuse, without this UI index or the parked publication cache. Its complete patch is byte-identical to the previous packet's candidate.patch, applied above signed55ab217e. R4 candidate.patch includes the optional UI addition; ui-index.patch isolates it.
+
+Next bounded phase: refresh two diagnostic CPU/allocation profiles of that selected combination on the existing full corpus, then choose one narrow repair from the measured remaining complete-comparison byte loop, document/history allocation or membership repair. The earlier profiles predate primitive value-string reuse, so do not treat their cost ranking as current. Preserve full comparison/normalization and ownership; a simpler byte loop is a candidate, not an assumed win. Use focused semantics and the same short uninstrumented paired screen for a chosen change; reserve broad native/integration/memory and unchanged application-gate qualification for RC entry.
+
+No main runtime/test/default changes, release receipts, phone/personal app/server operations or deployment. F-17 remains partial, counts unchanged. The phase ends with this disposition.

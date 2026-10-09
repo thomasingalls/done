@@ -1,0 +1,52 @@
+[
+  {
+    "field": "source.slotId",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "source.principalId",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "source.workspaceId",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "source.storeId",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "source.rootId",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "source.genesisIntentId",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "claimMac",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "custodyMac",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "sealReserved",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  },
+  {
+    "field": "credentialIds",
+    "baseline": "authentic source mismatch refused",
+    "control": "accepted after source guard omission"
+  }
+]

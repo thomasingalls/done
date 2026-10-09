@@ -1,0 +1,462 @@
+import { prepare, open, request, receive, envelope, answer } from './fixtures.mjs';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  native,
+  selected,
+  syncing,
+  settled,
+  syncStatus,
+  close,
+  cold,
+  edit,
+  view,
+  captures,
+  path,
+  waitPredicate,
+  requestWire,
+  args,
+  census,
+  deliveryBoundary,
+  receiveBoundary,
+} from './fixtures.mjs';
+import { decodeSubmission } from '../../account-protocol/submission.ts';
+import { decodeEnvelopeBody, decodeNetworkEnvelope } from '../../account-protocol/envelope.ts';
+const sendPath = (f) => f.server.origin + '/account/delivery/submit';
+const parsed = (wire) =>
+  decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
+
+test(
+  'one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'sync-roundtrip');
+    const sent = [],
+      reads = [];
+    let active = 0,
+      maximum = 0;
+    for (const [endpoint, list] of [
+      [sendPath(f), sent],
+      [path(f), reads],
+    ])
+      await f.context.route(endpoint, async (route) => {
+        active++;
+        maximum = Math.max(maximum, active);
+        list.push(route.request().postData());
+        try {
+          await route.fulfill({ response: await route.fetch() });
+        } finally {
+          active--;
+        }
+      });
+    await syncing(f.page, item);
+    const initial = await view(f.page);
+    await settled(f.page);
+    const baseline = await captures(f.page);
+    await edit(f.page, initial.length, 0, ' COMPOSED');
+    await settled(f.page);
+    const c = await captures(f.page),
+      expected = (await f.page.evaluate(() => opened.spoolStatus())).positions.length;
+    assert.equal(c.length, baseline.length + 1);
+    assert.equal(await view(f.page), initial + ' COMPOSED');
+    assert.equal(maximum, 1);
+    assert.deepEqual(
+      sent.map((s) => parsed(JSON.parse(s)[3]).seq),
+      Array.from({ length: expected }, (_, i) => i + 1),
+    );
+    assert.equal(f.invocations.length, expected);
+    const bodies = (await f.page.evaluate(() => netBodies)).map((b) =>
+      decodeEnvelopeBody(new Uint8Array(b)),
+    );
+    assert.deepEqual(
+      bodies.flatMap((b) => b.updates.map((u) => [b.actor_id, b.actor_kind, [...u]])),
+      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, s.bytes])),
+    );
+    assert.equal((await syncStatus(f.page)).receive.receivedThrough, expected);
+    assert.deepEqual(
+      await f.page.evaluate(() =>
+        [
+          'prepareNextEnvelope',
+          'prepareSubmission',
+          'submitPending',
+          'recordResponse',
+          'readAcceptedPage',
+          'prepareRead',
+          'receiveNext',
+          'receivePage',
+          'outbound',
+        ].filter((k) => k in opened),
+      ),
+      [],
+    );
+    const spool = await f.page.evaluate(() => opened.spoolStatus());
+    assert.deepEqual(
+      spool.positions.flatMap((p) =>
+        [p.source, ...(p.additional ?? [])].map((s) => [s.id, s.index]),
+      ),
+      c.flatMap((c) => c.sources.map((_, i) => [c.id, i])),
+    );
+    await f.page.evaluate(() => opened.compactContent());
+    await close(f.page);
+    const rows = await census(f.page, item),
+      entries = rows
+        .filter((r) => r.kind === 'heads')
+        .map((r) => JSON.parse(Buffer.from(r.bytes)))
+        .filter((r) => r[0] === 'done/account-inbound/v1');
+    assert.equal(entries.length, expected);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(await view(f.page), initial + ' COMPOSED');
+    assert.deepEqual(await captures(f.page), c);
+    await close(f.page);
+    for (const factory of ['openOwnedAccountDeliveryWorkspace', 'openOwnedAccountSpoolWorkspace']) {
+      const result = await f.page.evaluate(
+        async ({ item, factory }) => {
+          try {
+            const o = await Harness[factory](optionsFor(item));
+            await o.workspace.close();
+            return 'opened';
+          } catch (e) {
+            return String(e);
+          }
+        },
+        { item: args(item), factory },
+      );
+      assert.notEqual(result, 'opened');
+    }
+  },
+);
+
+test(
+  'lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'sync-lost'),
+      sent = [];
+    let lose = true;
+    await f.context.route(sendPath(f), async (route) => {
+      sent.push(requestWire(route));
+      const answer = await route.fetch();
+      if (lose) await route.abort();
+      else await route.fulfill({ response: answer });
+    });
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => opened.sync.status.receive.receivedThrough >= 1);
+    const status = await syncStatus(f.page);
+    assert.equal(status.send.acceptedThrough, 0);
+    assert.ok(status.receive.receivedThrough >= 1);
+    const c = await captures(f.page),
+      count = f.invocations.length;
+    await close(f.page);
+    await cold(f);
+    lose = false;
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(sent[0], sent[1]);
+    assert.equal(
+      f.invocations.length,
+      count + (await f.page.evaluate(() => opened.spoolStatus())).positions.length - 1,
+    );
+    assert.deepEqual(await captures(f.page), c);
+    await close(f.page);
+  },
+);
+
+for (const fault of ['submission', 'receive'])
+  test(
+    'native ' + fault + ' abort retains work for cold restart',
+    { timeout: 60000 },
+    async (t) => {
+      const f = await native(t),
+        item = await selected(f, 'sync-abort-' + fault);
+      if (fault === 'submission') await deliveryBoundary(f.page, 'submission', 'before');
+      else await receiveBoundary(f.page, 'before');
+      await syncing(f.page, item);
+      const initial = await view(f.page);
+      await waitPredicate(
+        f.page,
+        () =>
+          opened.sync.status.send.reason === 'operation-failed' ||
+          editor.status.state === 'blocked',
+      );
+      const c = await captures(f.page);
+      await close(f.page);
+      await cold(f);
+      await syncing(f.page, item);
+      await settled(f.page);
+      assert.equal(await view(f.page), initial);
+      assert.deepEqual(await captures(f.page), c);
+      await close(f.page);
+    },
+  );
+
+test(
+  'close drains a delayed send and prevents queued receive dispatch before releasing the shared permit',
+  { timeout: 45000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'sync-close');
+    await f.page.evaluate(() => {
+      window.hits = [];
+      window.fetch = async (url, init) => {
+        hits.push(String(url));
+        window.pendingSignal = init.signal;
+        await new Promise((r) => (window.release = r));
+        return new Response('late', { status: 409 });
+      };
+    });
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => hits.length === 1);
+    await f.page.evaluate((slot) => {
+      window.done = false;
+      window.closing = editor.close().then(() => (window.done = true));
+      window.competed = false;
+      window.competitor = navigator.locks.request(Harness.slotPermitName(slot), () => {
+        window.competed = true;
+      });
+    }, item.slotId);
+    await waitPredicate(f.page, async () => (await navigator.locks.query()).pending.length > 0);
+    assert.equal(await f.page.evaluate(() => pendingSignal.aborted), true);
+    assert.equal(await f.page.evaluate(() => done || competed), false);
+    await f.page.evaluate(() => release());
+    await f.page.evaluate(() => closing);
+    await f.page.evaluate(() => competitor);
+    assert.equal(await f.page.evaluate(() => hits.length), 1);
+    assert.equal((await syncStatus(f.page)).send.phase, 'closed');
+    assert.equal((await syncStatus(f.page)).receive.phase, 'closed');
+  },
+);
+
+test(
+  'local journal admission during an outbound seal is captured once and sent after readback gets a turn',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'sync-seal-local');
+    const order = [];
+    for (const endpoint of ['submit', 'read-v2'])
+      await f.context.route(f.server.origin + '/account/delivery/' + endpoint, async (route) => {
+        order.push(endpoint);
+        await route.continue();
+      });
+    await f.page.evaluate(() => {
+      window.pauseNet = true;
+      window.hit = false;
+    });
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => hit);
+    const initial = await view(f.page);
+    await edit(f.page, initial.length, 0, ' DURING SEAL');
+    assert.equal(order.length, 0);
+    await f.page.evaluate(() => {
+      window.pauseNet = false;
+      release();
+    });
+    await settled(f.page);
+    assert.equal(await view(f.page), initial + ' DURING SEAL');
+    assert.deepEqual(order.slice(0, 3), ['submit', 'read-v2', 'submit']);
+    const c = await captures(f.page),
+      bodies = (await f.page.evaluate(() => netBodies)).map((b) =>
+        decodeEnvelopeBody(new Uint8Array(b)),
+      );
+    assert.deepEqual(
+      bodies.flatMap((b) => b.updates.map((u) => [b.actor_id, b.actor_kind, [...u]])),
+      c.flatMap((c) => c.sources.map((s) => [s.actor, s.kind, s.bytes])),
+    );
+    await close(f.page);
+  },
+);
+
+test(
+  'retained signed receive conflict halts both lanes without closing valid Local content',
+  { timeout: 45000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'sync-retained-conflict');
+    await f.page.evaluate(async (item) => {
+      window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+      window.editor = opened.workspace;
+      window.surface = editor.text({ kind: 'master' });
+    }, args(item));
+    const wire = await prepare(f.page),
+      snapshot = await f.page.evaluate(() => [...editor.snapshot()]);
+    await close(f.page);
+    const other = await envelope(f.page, item, 1, [snapshot]);
+    await open(f.page, item);
+    let query = await request(f.page, 0);
+    await receive(f.page, answer(f, item, query, wire.bytes).bytes);
+    query = await request(f.page, 0);
+    await receive(f.page, answer(f, item, query, other).bytes);
+    assert.equal(
+      await f.page.evaluate(async () => (await opened.receiveStatus()).state),
+      'conflict',
+    );
+    const text = await view(f.page);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await waitPredicate(
+      f.page,
+      () =>
+        opened.sync.status.send.reason === 'conflict' &&
+        opened.sync.status.receive.reason === 'conflict',
+    );
+    assert.equal(await f.page.evaluate(() => editor.status.state), 'active');
+    assert.equal(await view(f.page), text);
+    await close(f.page);
+  },
+);
+
+// Seed a single actual Yjs original: the text surface intentionally slices large paste intents.
+import { selected as captureSelected } from '../account-spool/fixtures.mjs';
+import { syncBundle, configure } from './fixtures.mjs';
+async function singleSource(f, id, length, bundle, historical) {
+  if (bundle) await f.page.evaluate(bundle);
+  const item = await captureSelected(f, id);
+  await f.page.evaluate(
+    async ({ item, length, historical }) => {
+      const { carrier } = await Harness.openAccountCaptureSession(
+        optionsFor(item),
+        item.scope.principalId,
+      );
+      const doc = new Harness.Y.Doc({ gc: false });
+      try {
+        doc.getText('r01-source').insert(0, 'x'.repeat(length));
+        const update = Harness.Y.encodeStateAsUpdate(doc);
+        const capsule = carrier.captureLocal(update, [
+          { actor: item.scope.principalId, kind: 'human', bytes: update },
+        ]);
+        await carrier.appendBatch([{ kind: 'update', bytes: capsule }]);
+      } finally {
+        doc.destroy();
+        await carrier.close();
+      }
+      const spool = await Harness.openOwnedAccountSpoolWorkspace(optionsFor(item));
+      await spool.workspace.close();
+      if (!historical) {
+        const delivery = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+        await delivery.workspace.close();
+      }
+    },
+    { item: args(item), length, historical },
+  );
+  return item;
+}
+const originalLength = (page) =>
+  page.evaluate(() => {
+    const doc = new Harness.Y.Doc({ gc: false });
+    try {
+      Harness.Y.applyUpdate(doc, editor.snapshot());
+      return doc.getText('r01-source').length;
+    } finally {
+      doc.destroy();
+    }
+  });
+for (const mode of ['fitting', 'oversized', 'no-preflight', 'sealed', 'submitted'])
+  test(
+    `R-01 v9 singleton ${mode} preserves originals and diagnoses bounds without burning retries`,
+    { timeout: mode === 'sealed' || mode === 'submitted' ? 240000 : 90000 },
+    async (t) => {
+      const f = await native(t),
+        historical = mode === 'sealed' || mode === 'submitted';
+      const length = mode === 'fitting' ? 80 * 1024 : 600 * 1024;
+      const bundle = historical
+        ? await syncBundle('r01-old-writer')
+        : mode === 'no-preflight'
+          ? await syncBundle('r01-no-preflight')
+          : null;
+      console.log('R01', mode, 'seed original');
+      const item = await singleSource(f, 'r01-' + mode, length, bundle, historical);
+      console.log('R01', mode, 'seeded');
+      if (historical) {
+        await f.page.evaluate(async (item) => {
+          window.opened = await Harness.openOwnedAccountSpoolWorkspace(optionsFor(item));
+          window.editor = opened.workspace;
+          let count = 0;
+          while (await opened.prepareNextEnvelope()) {
+            if (++count > 4) throw Error('Historical fixture allocation loop');
+          }
+          await editor.close();
+          window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+          window.editor = opened.workspace;
+        }, args(item));
+        console.log('R01', mode, 'old envelopes sealed');
+        const target = await f.page.evaluate(async () => {
+          const envelopes = await opened.listEnvelopes();
+          try {
+            const large = envelopes.filter((e) => e.bytes.length > 512 * 1024);
+            if (large.length !== 1)
+              throw Error('Expected exactly one historical oversized envelope');
+            return large[0].position;
+          } finally {
+            for (const e of envelopes) e.bytes.fill(0);
+          }
+        });
+        // Bootstrap may contain several originals. Resolve every earlier position in order.
+        await f.page.evaluate(
+          async ({ token, target }) => {
+            for (let p = 1; p < target; p++) {
+              await opened.prepareSubmission(p);
+              const result = await opened.submitPending(token);
+              if (result.kind !== 'accepted')
+                throw Error('Historical prefix submission failed: ' + result.kind);
+            }
+          },
+          { token: f.testOperatorToken, target },
+        );
+        if (mode === 'submitted')
+          await f.page.evaluate(async (position) => {
+            await opened.prepareSubmission(position);
+          }, target);
+        const status = await f.page.evaluate(() => opened.deliveryStatus());
+        assert.equal(status.acceptedThrough, target - 1);
+        assert.equal(status.submissions.includes(target), mode === 'submitted');
+        await close(f.page);
+        await cold(f); // restore the current bundle
+      }
+      console.log('R01', mode, 'open current sender');
+      await configure(f.page, f.testOperatorToken);
+      await syncing(f.page, item);
+      if (mode === 'fitting') await settled(f.page);
+      else
+        await waitPredicate(
+          f.page,
+          () => opened.sync.status.send.reason === 'envelope-size',
+          30000,
+        );
+      console.log('R01', mode, 'current state reached');
+      assert.equal(await originalLength(f.page), length);
+      const before = await f.page.evaluate(() => opened.spoolStatus());
+      if (historical) {
+        const status = await f.page.evaluate(() => opened.deliveryStatus());
+        assert.equal(status.submissions.includes(status.acceptedThrough + 1), mode === 'submitted');
+      }
+      // The omission control must expose the forbidden allocation, not merely throw another error.
+      assert.equal(
+        before.positions.some((p) => !p.persisted),
+        mode === 'no-preflight',
+      );
+      const calls = f.invocations.length;
+      await close(f.page);
+      await cold(f);
+      await syncing(f.page, item);
+      if (mode === 'fitting') await settled(f.page);
+      else
+        await waitPredicate(
+          f.page,
+          () => opened.sync.status.send.reason === 'envelope-size',
+          30000,
+        );
+      console.log('R01', mode, 'current state reached');
+      assert.equal(await originalLength(f.page), length);
+      assert.deepEqual(
+        (await f.page.evaluate(() => opened.spoolStatus())).positions,
+        before.positions,
+      );
+      assert.equal(f.invocations.length, calls);
+      await close(f.page);
+    },
+  );

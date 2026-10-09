@@ -1,0 +1,6 @@
+{
+  "reason": "Agent intentionally interrupted receive-regressions to repair the missing-MAC parser fixture. It had thrown in fixture conversion before reaching production parsing. No test failure or production defect caused this interruption.",
+  "runtimeChanges": false,
+  "earlierFixtureSha256": "dbb4da8dfcdac597dff3ef7b310e1a1145199a75566d0dc0eca46f215e057199",
+  "interruptedAt": "2026-09-11T17:54:36.573683+00:00"
+}

@@ -1,0 +1,106 @@
+{
+  "base": "f59d5f209d3d7bab5d7c30b2bbb6ad0c2d9839b2",
+  "claim": "Account authority native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T08-56-04.256Z",
+  "summary": {
+    "schema": 1,
+    "selection": "authority-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-authority/native.test.mjs",
+        "key": "f1b257d1b4ca343662a8cf0c4cd45e3595369d33d26ab9101fcb4786e11e1e9a",
+        "status": "passed",
+        "elapsedMs": 32592,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T08:56:04.258Z",
+    "input": "bd0c9c73419b888e212bc7b8addc687b8ba1a03a9972dd851183c08705d8c5ef",
+    "completedAt": "2026-09-14T08:57:07.711Z"
+  },
+  "elapsedMs": 63453,
+  "rawInputArchiveSha256": "8b8dd53bcbed37a6d45446a0ceb468acaeb0404114200c98102db9f45d0d9903",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "f59d5f209d3d7bab5d7c30b2bbb6ad0c2d9839b2",
+    "sourceDigest": "31fadad5bd7f30ccb8f40b138d4572fa6b24ac32692b94cf0b29dffe5f6c87c9",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 4,
+    "browserFiles": 1,
+    "generatedHistories": 40,
+    "seed": 9182026,
+    "priorGeneralFiles": 190,
+    "priorGeneralCases": 1638,
+    "currentGeneralFiles": 191,
+    "currentGeneralCases": 1642,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 95,
+    "accountFiles": 85,
+    "accountCases": 548,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 226,
+    "unresolvedTestFiles": 67,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 672735
+  },
+  "finalGatesSha256": "66f7b17848eaa16ec548c92d1d7109dae1d6ad31640892aea7f8f4ba7796b799",
+  "preservationSha256": "ea8613b437ebadede0da18be6c30a44d4ce0bcb52f56baf50ab84507602746bc",
+  "limits": [
+    "One complete four-case authority native file with the same test bodies, static identities, 40 generated histories, seed 9182026 and case limits. Only its local setup/cleanup changes: register cleanup before asynchronous setup, explicitly close context, borrow the validated loopback CDP endpoint through the unchanged shared helper; standalone launch remains available outside the owned runner. Product, browser helper and whole wrapper remain unchanged.",
+    "An in-memory Vite bundle exercises actual Local genesis, journal and disk custody, cold replay, promotion preflight, recovery code generation/confirmation and the private authority HTTP adapter. Each case has temporary service/root SQLite stores, a random synthetic operator key/token and a fresh browser context. The preconfigured pin comes from fixture initialization, separately from the proof response; this does not test real operator pin distribution or a remote TLS deployment.",
+    "The main case journals fixed writing, requires one recovered journal entry, checks the expected pin and Local scope, compares the complete preflight result after a same-page reload, and observes fixed text through production recovery. Its before/after inventory compares logical keys and values across all IndexedDB stores and localStorage, serializing Uint8Array bytes. This is not an independent disk/forensic or physical power-loss oracle.",
+    "Synthetic authenticated imported-claim metadata is written by the harness; preflight preserves the resulting inventory and context. No importer is executed. Recovery confirmation checks a 128-character signature using a generated challenge and the production draft digest; this native file does not independently verify that signature or complete account registration/recovery at the service.",
+    "Wrong device code and a missing Yjs dependency refuse with no extra authority HTTP calls. A changed configured authRoot refuses with pin-changed, and heads material refuses with admission-material (that branch does not assert a network count or full unchanged inventory). The HTTP probe verifies a same-origin signed proof and rejects one foreign Origin with 403; it does not exhaust policy, signature, nonce or parser mutations.",
+    "Cancellation holds an asynchronous prove wrapper before the HTTP request, aborts the owner and observes a competing tab has not acquired the slot, then releases the wrapper, requires the cancelled call not to return success and permits the competitor to acquire and inspect. It does not hold an already in-flight HTTP reply, assert a specific cancellation error or query lock-manager state.",
+    "Forty generated histories use one to eight labels from inspect, wrong-code, restart, disk-edit and journal-edit, with numRuns:40, seed:9182026, endOnFailure:true and an explicit count of 40. Histories share one service/context and create fresh Local slots/accounts. Restart reloads and reruns page setup; it does not kill a renderer/browser/service or reopen a full browser profile.",
+    "The generated oracle compares each non-edit operation\u2019s before/after logical inventory and retains the first observed recovery context for repeated equality. That context is observed from the implementation, not independently computed. Edit steps continue without an inventory assertion, and append results are not checked for journalled status. There is no independent expected writing model, full-state reconstruction, fault/mutation control, action-coverage assertion or shrinking in this native property.",
+    "The input-snapshot case calls preflight and immediately replaces top-level caller fields with a second Local target; the result must retain the first slot and principal. It does not hold a competing lock to force queued acquisition or mutate nested pin fields, despite the case title mentioning a queue.",
+    "No runtime registration-data or historical source is read by this native file. Its optional ACCOUNT_REPORT_DIR counterexample export is disabled in the selection. Complete identities/diagnostics/receipts are preserved by the runner; saved wrapper outputs, scheduling, whole-wrapper ownership, service-only siblings and their root mutation/restart controls remain separate obligations.",
+    "The unchanged shared browser and Node owners retain earlier 12 native-owner, 23 Node-owner and five Vitest-process controls. Existing ledger orphan classification, core receive loaded-host headroom, capture comparison-map/byte-length follow-ups and historical editing/handoff deadline evidence remain open and preserved. The native selection adds evidence for this new caller of the owner helper without rerunning those unchanged controls.",
+    "The 120-second file allowance follows the existing whole authority wrapper bound; the main case keeps 30 seconds, cancellation and input snapshot 20 each, and generated case 40. Startup stays 15 seconds and drain grace five. No allowance, workload or population changed. One passing run does not qualify loaded-host reliability.",
+    "This is read-only Local promotion preflight and authority-proof integration. It issues no epoch or admission and grants no recipient authority. No prepared promotion, service activation, Account index/editor/transport, full recovery/adoption, hardware passkey, personal Account cutover or second-device result follows. General adapter coverage is not an immutable aggregate qualification."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 28635.398834,
+    "stageElapsedMs": 32592,
+    "selectionElapsedMs": 63453,
+    "nodeDeadlineMs": 120000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability.",
+    "generatedAuthorityMs": 21182.082125
+  },
+  "deadlines": {
+    "fileMs": 120000,
+    "mainMs": 30000,
+    "cancellationMs": 20000,
+    "inputSnapshotMs": 20000,
+    "generatedMs": 40000,
+    "note": "Existing wrapper and all case limits retained; no allowance changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "1d9cb31af79f8c51e9ff411d623faed3109a01e333a2c325cd5e43abfeaf1920",
+    "compressedSha256": "d273a4d15ba527aaf0f5c69e28fd0c3925e74165fd4a45e85d26c36c62688f8e"
+  }
+}

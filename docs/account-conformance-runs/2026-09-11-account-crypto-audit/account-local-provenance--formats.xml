@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="independent fixed key and all retained claim variants match actual factor-opened authentication" time="0.017672" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/formats.test.mjs"/>
+	<testcase name="declared field mutations and omission witnesses keep real HMAC operative" time="0.008196" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/formats.test.mjs"/>
+	<testcase name="every retained claim input leaf is authenticated or rejected, including imported selection and nested cleanup" time="0.022440" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/formats.test.mjs"/>
+	<testcase name="actual source omissions change the key, progress, imported tuple and cleanup fields" time="0.320486" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/formats.test.mjs"/>
+	<testcase name="cleanup v1 preserves narrow framing; v2 authenticates long payloads and escaped UTF-16 without collisions" time="0.004107" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/formats.test.mjs"/>
+	<testcase name="250 shrinking-enabled retained-claim histories round-trip stage, imported fields and cleanup progress" time="0.347628" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-local-provenance/formats.test.mjs"/>
+	<!-- tests 6 -->
+	<!-- suites 0 -->
+	<!-- pass 6 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 952.128583 -->
+</testsuites>

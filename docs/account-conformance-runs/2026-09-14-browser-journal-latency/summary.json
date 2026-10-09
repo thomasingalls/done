@@ -1,0 +1,60 @@
+{
+  "base": "e29e3510b744b602b6d55c1f2851c91d9a71f0d5",
+  "selection": "browser-journal-latency-qualification",
+  "integrationGroup": "browser-journal-latency",
+  "rawOutput": "test-results/release-validation/2026-09-14T15-51-10.353Z",
+  "result": {
+    "schema": 1,
+    "selection": "browser-journal-latency-qualification",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/playwright-native.test.mjs",
+        "key": "d2ba8eba32979ee53808d213536b88345bab31827cdec2883f57f0d852d19a70",
+        "status": "passed",
+        "elapsedMs": 32379,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/latency/journal.spec.ts",
+        "key": "2bcb7b462e832f87119d61ea6a0ab0a23092943380c44f179bd50ffe1042250b",
+        "status": "passed",
+        "elapsedMs": 60042,
+        "cases": 4,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T15:51:10.355Z",
+    "input": "94c08f5ffb1038b0b83a6c253ec1644a9322c03c477cb2046132e76d0bb0148c",
+    "completedAt": "2026-09-14T15:53:18.025Z"
+  },
+  "counts": {
+    "generalFiles": 258,
+    "generalCases": 1991,
+    "generalNotApplicable": 11,
+    "accountFiles": 123,
+    "unresolved": 160,
+    "unresolvedTestFiles": 1
+  },
+  "priorContractsPreserved": 257,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "3c023bbe5dae3949e984bb5c3cb3639b2536328b345245bef0e700c0da57d511",
+  "sourceDigest": "7a8fdadbb9e5bd692b3db1e0c0012ec623b7572019898041a72592f3db8efe57",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1053,
+  "scope": "The journal file contributes four desktop/Android-emulated cases: published-vector reproduction and the existing payload/level microbenchmark on each project. The configured origin, viewport, device scale, user agent and touch options are now passed to the manually created contexts; Android retains its existing four-times CPU throttle and the fine-clock isolation assertion. The selected historical construction, payload sizes, seven measurement levels, sampling rules and one-millisecond budget assertions are unchanged. These measurements do not cover the full production admission path, and a throttled single-write tail does not establish a handset p95. Each run must retain exactly 44 project/metric rows with finite values, positive sample counts, interpretations and bounded canonical bytes. Missing, duplicate, substituted, malformed, truncated or oversized output refuses independently of test success. Measurements live beside the owned case report, so partial rows survive worker interruption; the native timeout and cancellation controls prove this and drain browser, server and subprocesses. Global setup resets only that fresh output. The final qualification includes the two native controls. File allowance is 720 seconds including build, both projects and benchmark preparation; existing 300-second case bounds remain. The first successful diagnostic run preceded the partial-output retention improvement and supplies no final qualification credit. Standalone result filenames remain compatible; the wrapper/output qualification backlog is not closed by this one artifact contract.",
+  "artifactIndexSha256": "d947c5dd16d1607201c70c5c1904940a4999b4460b037290094f0518eb0e50b9",
+  "gatesSha256": "2c052d2029aeec8b063992cc9d3bf25a004d7d1b36a057e640b21b28df666d53",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

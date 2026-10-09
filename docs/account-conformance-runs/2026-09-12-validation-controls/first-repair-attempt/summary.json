@@ -1,0 +1,29 @@
+{
+  "status": "failed",
+  "startedAt": "2026-09-12T20:40:30.993Z",
+  "sourcePins": 936,
+  "stages": [
+    {
+      "name": "construction-inventory",
+      "args": [
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 562
+    },
+    {
+      "name": "receive-coverage-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^cold replay refuses missing or changed content$",
+        "test/account-receive/native.test.mjs"
+      ],
+      "code": 1,
+      "timedOut": false,
+      "elapsedMs": 9523
+    }
+  ],
+  "error": "Error: Stage failed: receive-coverage-control",
+  "completedAt": "2026-09-12T20:40:41.081Z"
+}

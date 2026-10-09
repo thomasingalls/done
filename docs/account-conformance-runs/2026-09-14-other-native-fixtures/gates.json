@@ -1,0 +1,75 @@
+[
+  {
+    "name": "inventory",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 789
+  },
+  {
+    "name": "manifest",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1768
+  },
+  {
+    "name": "authority",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 662
+  },
+  {
+    "name": "signature",
+    "argv": [
+      "git",
+      "verify-commit",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 33
+  },
+  {
+    "name": "release-blocked",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--require-complete"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 1682
+  },
+  {
+    "name": "format",
+    "argv": [
+      "node_modules/.bin/oxfmt",
+      "--check",
+      "scripts/release-validation/execute.mjs",
+      "scripts/release-validation/manifest.mjs",
+      "scripts/release-validation/other-node-tests.mjs",
+      "test/account-residue/packaged-fixture.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "docs/release-validation-graph.json"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 139
+  },
+  {
+    "name": "whitespace",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 50
+  }
+]

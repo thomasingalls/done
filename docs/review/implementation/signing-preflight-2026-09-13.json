@@ -1,0 +1,1371 @@
+{
+  "schemaVersion": 1,
+  "kind": "unsigned-history-signing-preflight",
+  "assessedAt": "2026-09-13",
+  "branch": "refs/heads/codex/encrypted-store-contract-corrections",
+  "base": "1372c39f9cd495f75ddf8a438ab314af14df4380",
+  "oldTip": "6ba7c22b31590f97d561b543d8918219dc279cc5",
+  "tipTree": "84dcadd60384c862a5122d8fbb60d6ae186e5c01",
+  "status": "prepared-awaiting-user-at-keyboard",
+  "commits": [
+    {
+      "old": "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+      "tree": "ba63de0a9a62f2441e946945135194bfff3447fc",
+      "parents": ["1372c39f9cd495f75ddf8a438ab314af14df4380"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789218922 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789218967 +0200",
+      "subject": "Measure sync liveness and define verified-view repair boundaries",
+      "rawCommitSha256": "e595cfc6373869dc225c763939013800fdbedb9b942c0d8eb22aa0470fb48640",
+      "messageSha256": "e1414db4987469afd5ae7804ca93a17f0f1e20dd8f79ea9d158157dc602b27a4",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "280221eded8a3fe517310afbca069f8b58d76150",
+      "tree": "f6c256aa766f2043eca0e9418b2ef5c83ed9a862",
+      "parents": ["0e07fe4a2e46247440c342a3a49c39aadb31c183"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789220232 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789220232 +0200",
+      "subject": "Reuse complete verified Account views within the owned lifetime",
+      "rawCommitSha256": "5f3eec4af8745abb4e5c9c7d7f4d94022c95f8666eb3398a310e4a4255a3d07c",
+      "messageSha256": "9d1d72b7038712c235bd477f48cd2502ccec1c1612f534708ed92fe9995fc853",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+      "tree": "9bbd181a2c91d12079cf48525bb61f1dde618645",
+      "parents": ["280221eded8a3fe517310afbca069f8b58d76150"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789221022 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789221022 +0200",
+      "subject": "Reuse verified events and exact content coverage in private sync",
+      "rawCommitSha256": "867e1fbf37fe09277556bf19ab375b2304518b02da581e954276059204d950fd",
+      "messageSha256": "8df05776d6929bca556d089e8aba549ec4b1b5c743bd58bb4e4f89d52e051d7d",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+      "tree": "23e14a56547f7674339bee1ed68069e1bd975189",
+      "parents": ["879ce38509fd66f0a6e7e0cd4a69939b5186c2b1"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789221548 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789221548 +0200",
+      "subject": "Keep HTTP waits outside storage order and retry expired reads",
+      "rawCommitSha256": "cf06a05f0e86d6cb3c645e34af52acf6c983d3a5463727eee077c46d11992c5f",
+      "messageSha256": "ac65d3a130b73807de899caaea9881c135eb882d42893343029e13dba452e62d",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "f42b4a70b4301ad76545f343bcf185f99c189857",
+      "tree": "9d9047568aadfc1622c0d1decb132f54c08c6a99",
+      "parents": ["902d3528b07055e0a1720ecd5c1f68da2989d80b"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789222300 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789222341 +0200",
+      "subject": "Complete sync liveness with precise wakes and bounded service verification",
+      "rawCommitSha256": "5220156840126a6fabee7dee4d46e5357511ae30aaa227fbce9e68c538e76b67",
+      "messageSha256": "3105372f519f98e1bb719ea3f010ecbf9a2b73ad6b8ae5cbbc60fd54e7a9e264",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "67304f345f0e852867a49c750858374eff1dce22",
+      "tree": "c931799dd20e8718618b27f9f4164019cb378ebc",
+      "parents": ["f42b4a70b4301ad76545f343bcf185f99c189857"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789225244 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789225244 +0200",
+      "subject": "Extend privacy evidence through packaged migration and physical carriers",
+      "rawCommitSha256": "e89ad40c6581c54b47da2de71508dfde3fa1ff4bc4c3660f8289bba590ac08a7",
+      "messageSha256": "8c82fb1af06dbf6efe5876314726e8e68370d2639e165a4e98a7cfed9c96b984",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+      "tree": "d12a34f45a8027f5d2788189b518530fe835fdf5",
+      "parents": ["67304f345f0e852867a49c750858374eff1dce22"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789226108 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789226108 +0200",
+      "subject": "Preserve bounded failure diagnostics without granting unsigned authority",
+      "rawCommitSha256": "877387e430925326fc6c8c08efc4c5e5c7b466722aed5ef3dbe4d39ff58c7c43",
+      "messageSha256": "266ac056a671944c191c869b0674de12ed2ab78e655f7e8e68e667efab9a81ea",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+      "tree": "d766861af29db0c863f6a36e41d6dc0d54dfc524",
+      "parents": ["8ebccfd7edf5e2a1c73068c7afa052c872114123"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789227073 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789227073 +0200",
+      "subject": "Offer authenticated read-only partial Local recovery",
+      "rawCommitSha256": "4ab0aa5ce1f6afc82f1b46ea0f82a4b83f9075e63ab5a4597567330c48e30768",
+      "messageSha256": "3a6dedfcd43fe28433f1e784eda729b9c32a4d536c502cad0d715f421ba1308b",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+      "tree": "b9b39d47a32a4899c66bbc3deaca3ea97773b8aa",
+      "parents": ["01b3036dffe09bcaeb0cca6652195cd3bc26afd4"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789228134 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789228134 +0200",
+      "subject": "Schedule owned exact-coverage content maintenance after durable idle",
+      "rawCommitSha256": "15ce0598f0fa809ccf6a4d29ae3d7bc5a6a7bc1c74c3164ecd4787c3c2f02351",
+      "messageSha256": "21930518e2f42f216d172f932385a1c6d8f0e1f90822b768abbc899deea264c1",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+      "tree": "58022622a09f914da0dce2636a5eedb0248b0ce5",
+      "parents": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789228582 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789228582 +0200",
+      "subject": "Reduce projection cost while preserving complete state checks",
+      "rawCommitSha256": "b9beb66623ebbc72896d3121ee06758d82c236b72851fb6baaf0463c1e89e28b",
+      "messageSha256": "663eb444a46163d588760ffe7125d33f47d5a296206e1d83a219840ca0832c58",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+      "tree": "337422a5cd7a300846a0e9eaee1204588c6eae02",
+      "parents": ["063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789229080 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789229080 +0200",
+      "subject": "Reduce retained promotion duplication and preserve exact authentication",
+      "rawCommitSha256": "cf564ba5a6fe36260c3142f4dab67a550eba102106dd1f0c7ab4e816041ff409",
+      "messageSha256": "1a6322a34d37bec9882f896e6559df21ef91bf230f730a4cb33c56459fe5100f",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "409fbd09768561393431378d076bc71939f24ac3",
+      "tree": "b345a2578d013ba44c6925a12875a54c17e03bbd",
+      "parents": ["9ff48b58edd63761884d9bae97ea00de9f1b1b63"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789244995 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789244995 +0200",
+      "subject": "Assess Q review addendum and reconcile remaining validation and liveness work",
+      "rawCommitSha256": "f92c36676e15a74895c1565179211da8e36aa210f611627c679088447842091b",
+      "messageSha256": "df657df08f9c4757eb11dfd7e9303227b3fde35ae5ec421a6d575a0e2f02862b",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "dceec5c40779ae80253a7fa31142e071bd95b558",
+      "tree": "f59bd3265b134335bc8cb1d084957a5fbf2945e3",
+      "parents": ["409fbd09768561393431378d076bc71939f24ac3"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789248539 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789248539 +0200",
+      "subject": "Restore reviewed construction inventory and effective validation controls",
+      "rawCommitSha256": "8e5b79914014f5e242b438e95b34512176637b22cb8403bc6c6e08efde69852b",
+      "messageSha256": "883c05e699e9c55e5f7c7c9a98f5e30625e696303badffe766ea7791ecac2fe6",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "2dcd89787fbd35f4454a0b1684f8226d36687c87",
+      "tree": "648563bac0509e96dc0fb41bec9a304f8801aac6",
+      "parents": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789248945 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789248945 +0200",
+      "subject": "Bind service verification reuse to the authenticated request digest",
+      "rawCommitSha256": "180609c173fd9fa9cbc497a7ddccba514c8b6712daebec3e2cea789ceb372d4f",
+      "messageSha256": "06ad0fbdeeede86b3585da40022f83e797c905dc116e14d9159134fd90688edb",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+      "tree": "08377f80124233979e01c63e43b87b1a3a83b8e6",
+      "parents": ["2dcd89787fbd35f4454a0b1684f8226d36687c87"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789249877 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789249877 +0200",
+      "subject": "Reduce redundant carrier work and preserve the natural sync workload",
+      "rawCommitSha256": "008bb550d67f0611c3d6311f4cf2bef134b14889b1c02d4b6acd265a78b00542",
+      "messageSha256": "14d1fba89e720dc6ebc9eaf780137e65e3829f5f796f9a20a6b76403483db6a7",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "7cbb063f31102ce1303c74e2d78b03b4956cd42b",
+      "tree": "f61d7e203d4092f0d5dfadc2f667685e966cb7d3",
+      "parents": ["77a2753566fa2a51b0b8616687eafb946d8ed24e"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789251246 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789251246 +0200",
+      "subject": "Batch bounded original sources with durable allocation and exact retry",
+      "rawCommitSha256": "643148c9cb257a857b08b50e0dc2a1fb7fc4151ea4f4b9171d410feb0e23f16a",
+      "messageSha256": "bfa35e64ccfef20593cff08f3e8691bc86eee5de9ee56b5612ac5f583377e805",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "d03e473b3b8bcb807f4183bbdeb60ac9895f6f54",
+      "tree": "dff18de29c004d40edbaf7c164518a6108267bbf",
+      "parents": ["7cbb063f31102ce1303c74e2d78b03b4956cd42b"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789252129 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789252129 +0200",
+      "subject": "Expose receive expiry while preserving bounded automatic recovery",
+      "rawCommitSha256": "94cba407fb0dae43c3fe7abb5559ecf23dccc867a47ee2b58c3359105b8195ff",
+      "messageSha256": "a25d6f551804089fc3aa46a0b592499bdec689af8577033bb9380e0f23df10c7",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "f13bdd1b0995e3122826dc24f1ea0201b805354b",
+      "tree": "24df3b42cc4f08562f02875f0495cb80727b5125",
+      "parents": ["d03e473b3b8bcb807f4183bbdeb60ac9895f6f54"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789287889 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789287889 +0200",
+      "subject": "Inventory release validation coverage and preserve explicit execution gaps",
+      "rawCommitSha256": "2112ea2dcee862d4f1f93e24cb0dd680c7a1fa1725cf0135e62269736cf4eec8",
+      "messageSha256": "c99556873483244fe6ccf3decbe1dfd880ffd98a76f349af6071b8c23754c4ff",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "f14c68f51b10105374fe911783185be8246c2be1",
+      "tree": "dea6fb47b0d8cbc685cffeea247444febe8a6e07",
+      "parents": ["f13bdd1b0995e3122826dc24f1ea0201b805354b"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789291191 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789291191 +0200",
+      "subject": "Add bounded validation execution and preserve unresolved release obligations",
+      "rawCommitSha256": "711a38875ff68b14870982c2b9e558415852b7b5402284ab1d40a0a106e06065",
+      "messageSha256": "98570c44a2a7a4770e2d68e77bfc9fb47bece384d30936588b2935d79cbe059c",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "b9f09847a2790f10f86be9c05f6de26ee4b91738",
+      "tree": "ec797fd5bbe00640ad2e40c8db301300112854c8",
+      "parents": ["f14c68f51b10105374fe911783185be8246c2be1"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789293277 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789293277 +0200",
+      "subject": "Integrate content catalogue with owned native validation",
+      "rawCommitSha256": "080591eb1ed03372bda35a40498fdef6a4271b1da10448d6137d9d59824c498a",
+      "messageSha256": "972bb17249c660a3cd80a771e7664ed3e99c23a4a904b26e426b02f20c3f49e3",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "1a86453c6b8cc63a224c6389895a9d4048b2fd2f",
+      "tree": "7ad45d496d3b237bcac3a9101e5366b413fa22fe",
+      "parents": ["b9f09847a2790f10f86be9c05f6de26ee4b91738"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789296033 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789296033 +0200",
+      "subject": "Integrate journal catalogue with owned native validation",
+      "rawCommitSha256": "52581515613de398beb16fa679d94489db17cdf0e01b8faba4da55d0b32457cd",
+      "messageSha256": "0cc7b18f70e3b3a995d8c1cb2d304efcfbb2a17a11d4b67a03697a4110137c63",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "4fc3af06fc863cc87776cb922b2efc7c49f59e0d",
+      "tree": "a4f17da667b1aaf5a2be298c4af03cb1f5a13c65",
+      "parents": ["1a86453c6b8cc63a224c6389895a9d4048b2fd2f"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789297591 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789297591 +0200",
+      "subject": "Integrate admission catalogue with owned native validation",
+      "rawCommitSha256": "ef5ad61ed476798b5ee4277c79f1a53f3060d40ec29bfdf9ee3976c8d75441b8",
+      "messageSha256": "0435dc4af2109f4083203d7b8e97948065d099005f6c1602a8311066826817a2",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "3f1afc5fff69a15416b3f9767a2d12dbb90d256d",
+      "tree": "6a9bca98d837c2ac0cb7996b49441f1f49fcb41d",
+      "parents": ["4fc3af06fc863cc87776cb922b2efc7c49f59e0d"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789299063 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789299063 +0200",
+      "subject": "Integrate editor catalogue and repair native runner evidence boundaries",
+      "rawCommitSha256": "df47e9c3610676f3dc8a22854c53cbfe04c34516be50d613858dd7483b88332b",
+      "messageSha256": "d9f36a515b058ea859f619faf80ef54328f33100c0f5181bd6bc64812d3211a6",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a",
+      "tree": "0a0dc0ef3a4ead3502fc53386dc70bde3975ac2c",
+      "parents": ["3f1afc5fff69a15416b3f9767a2d12dbb90d256d"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789300070 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789300070 +0200",
+      "subject": "Integrate workspace admission catalogue with owned validation",
+      "rawCommitSha256": "263322b02bdd37619373d29291be962c1217abb7c896c7b080bc6780b2a3e159",
+      "messageSha256": "8708d6b5ef55d7c1f11aa23d3f3d3a92b50fd0705449b554e1c221b9ce775051",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "6348b6cc93ca99f9703561c094eb779510e5bade",
+      "tree": "d3f10d4bad746931004ad0e5daa9e9c0c1f8426f",
+      "parents": ["ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789300805 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789300805 +0200",
+      "subject": "Integrate owned startup catalogue with bounded validation",
+      "rawCommitSha256": "9ad8166810659b34ca9e2cf3f0eb309f05a9bce290a78dff79419930c9daca71",
+      "messageSha256": "be02872d388e965599bfe8c0cab98610d784992c79f29e1de1557e16b78e3249",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "be5d6a0f8b7dc5fddbc455e121a7d805460b0cda",
+      "tree": "ddaac333ba60174e49c9e73c9349b7aa0e1172da",
+      "parents": ["6348b6cc93ca99f9703561c094eb779510e5bade"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789305320 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789305320 +0200",
+      "subject": "Integrate Local genesis catalogue and byte-array evidence",
+      "rawCommitSha256": "c7e88b0ae4b84952c88d938ffaa53b3eaf59c110377e836dae570731cec66c9d",
+      "messageSha256": "74d4e2f8e79ac06c460bfd982b5fc9aa63ad2d4f892d8a1a5155b57a68720b35",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "f1926f960e32c6a96358f193e551d29352c0b261",
+      "tree": "dd7c7ff1ee344a0b96e3e9e0110511cb8c97f7a5",
+      "parents": ["be5d6a0f8b7dc5fddbc455e121a7d805460b0cda"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789306042 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789306042 +0200",
+      "subject": "Integrate authenticated Local-clear catalogue execution",
+      "rawCommitSha256": "45dd9845ef5b08ea517ee1651a06c4772c572cf3aee1a6700d2568df8efdb74a",
+      "messageSha256": "a815928c00eaa1b5f007877f10882ede20749c91a9c454b8b202032c791d035a",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "d65bda01e6e9d0cff984c58b905a6f156af1990a",
+      "tree": "84e6c01026b60328403181579666a4b7f5eef443",
+      "parents": ["f1926f960e32c6a96358f193e551d29352c0b261"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789306440 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789306440 +0200",
+      "subject": "Integrate exact-coverage compaction catalogue execution",
+      "rawCommitSha256": "d568c8a27c243182ffa55f7f7d7cb8a87972924c7d26a56c7f8c48c85fe8ae49",
+      "messageSha256": "4b711b73e033c93ac78c949151002ef2b03b6254344fee4dd2a235ed69ea76df",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "2c5f4b95d21b165ad2610d8ddf5b09ff0319eade",
+      "tree": "bac53496a8f141b920fd131e3a5533780e2b6a03",
+      "parents": ["d65bda01e6e9d0cff984c58b905a6f156af1990a"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789307327 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789307327 +0200",
+      "subject": "Integrate custody catalogue and owned synthetic profile copies",
+      "rawCommitSha256": "bffffa91d398dfa56922ad163ff75f8f8af536baf460c8e7fcd522ef170d4fff",
+      "messageSha256": "d48c731640036111cb2737b4cdf2025ea1c5f3d53a9af701c7559eee31695979",
+      "hasSignatureHeader": false
+    },
+    {
+      "old": "6ba7c22b31590f97d561b543d8918219dc279cc5",
+      "tree": "84dcadd60384c862a5122d8fbb60d6ae186e5c01",
+      "parents": ["2c5f4b95d21b165ad2610d8ddf5b09ff0319eade"],
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1789307870 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1789307870 +0200",
+      "subject": "Complete lifecycle catalogue adapter and restored-page validation",
+      "rawCommitSha256": "64a7b43a96fe160485ae40e1479b6faefee9a87500eb6fdb625e680bb19764e9",
+      "messageSha256": "f2225eff443a2a81b2e943bcfd9e96bb70b617090220ca623698dfcce7b8e25e",
+      "hasSignatureHeader": false
+    }
+  ],
+  "referenceInventory": {
+    "method": "git grep -I on tracked HEAD text; exact 7\u201340 digit commit-prefix tokens; binary/compressed evidence excluded and preserved",
+    "files": [
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-complete/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["902d3528b07055e0a1720ecd5c1f68da2989d80b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-complete/interrupted-counter-lint/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["902d3528b07055e0a1720ecd5c1f68da2989d80b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-complete/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["902d3528b07055e0a1720ecd5c1f68da2989d80b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-incremental/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["280221eded8a3fe517310afbca069f8b58d76150"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-incremental/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["280221eded8a3fe517310afbca069f8b58d76150"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-network/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["879ce38509fd66f0a6e7e0cd4a69939b5186c2b1"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-network/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["879ce38509fd66f0a6e7e0cd4a69939b5186c2b1"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-view/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["0e07fe4a2e46247440c342a3a49c39aadb31c183"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-account-liveness-view/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["0e07fe4a2e46247440c342a3a49c39aadb31c183"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-content-maintenance/grouped-timeout-attempt/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["01b3036dffe09bcaeb0cca6652195cd3bc26afd4"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-content-maintenance/passing/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["01b3036dffe09bcaeb0cca6652195cd3bc26afd4"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-content-maintenance/passing/trim-evidence/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["01b3036dffe09bcaeb0cca6652195cd3bc26afd4"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-content-maintenance/typecheck-attempt/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["01b3036dffe09bcaeb0cca6652195cd3bc26afd4"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-editor-projection/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [29],
+        "oldCommits": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-editor-projection/exploratory/before.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-editor-projection/exploratory/before.log",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [23],
+        "oldCommits": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-editor-projection/profile-before.log",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [23],
+        "oldCommits": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-editor-projection/profile-before/result.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-editor-projection/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-editor-projection/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [31],
+        "oldCommits": ["70e6d5bc132e30baf92baffbd7cffcedf903c7d0"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-failure-diagnostics/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["67304f345f0e852867a49c750858374eff1dce22"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-local-recovery/custody-evidence/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["8ebccfd7edf5e2a1c73068c7afa052c872114123"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-local-recovery/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["8ebccfd7edf5e2a1c73068c7afa052c872114123"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-local-recovery/trim-evidence/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["8ebccfd7edf5e2a1c73068c7afa052c872114123"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-privacy-extended/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["f42b4a70b4301ad76545f343bcf185f99c189857"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-privacy-zip-prefix-control/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["f42b4a70b4301ad76545f343bcf185f99c189857"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-batch/2026-09-12T22-02-58.754Z/content-control/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["77a2753566fa2a51b0b8616687eafb946d8ed24e"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-batch/2026-09-12T22-02-58.754Z/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["77a2753566fa2a51b0b8616687eafb946d8ed24e"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-batch/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["77a2753566fa2a51b0b8616687eafb946d8ed24e"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-batch/q02-batch-2026-09-12T22-02-18+00-00/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 93],
+        "oldCommits": [
+          "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+          "dceec5c40779ae80253a7fa31142e071bd95b558"
+        ],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-batch/q02-batch-2026-09-12T22-02-18+00-00/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["77a2753566fa2a51b0b8616687eafb946d8ed24e"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-carrier/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["2dcd89787fbd35f4454a0b1684f8226d36687c87"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-carrier/q02-before-2026-09-12T21-36-45+00-00/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-carrier/q02-before-2026-09-12T21-36-45+00-00/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["2dcd89787fbd35f4454a0b1684f8226d36687c87"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-carrier/q02-carrier-2026-09-12T21-43-36+00-00/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-carrier/q02-carrier-2026-09-12T21-43-36+00-00/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["2dcd89787fbd35f4454a0b1684f8226d36687c87"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q02-carrier/q02-carrier-content/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["2dcd89787fbd35f4454a0b1684f8226d36687c87"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q03/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q03/q03-2026-09-12T21-31-55+00-00/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q03/q03-2026-09-12T21-31-55+00-00/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q03/q03-2026-09-12T21-32-57+00-00/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q03/q03-2026-09-12T21-32-57+00-00/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["dceec5c40779ae80253a7fa31142e071bd95b558"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q05/2026-09-12T22-20-58.735Z/content-control/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["7cbb063f31102ce1303c74e2d78b03b4956cd42b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q05/2026-09-12T22-20-58.735Z/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["7cbb063f31102ce1303c74e2d78b03b4956cd42b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q05/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["7cbb063f31102ce1303c74e2d78b03b4956cd42b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q05/q05-2026-09-12T22-20-23+00-00/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 93],
+        "oldCommits": [
+          "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+          "dceec5c40779ae80253a7fa31142e071bd95b558"
+        ],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-q05/q05-2026-09-12T22-20-23+00-00/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["7cbb063f31102ce1303c74e2d78b03b4956cd42b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-retained-marker/passing/profile-before.log",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [1],
+        "oldCommits": ["063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-retained-marker/passing/profile-before/result.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-retained-marker/passing/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 79, 148],
+        "oldCommits": [
+          "67304f345f0e852867a49c750858374eff1dce22",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+          "f42b4a70b4301ad76545f343bcf185f99c189857"
+        ],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-retained-marker/passing/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-retained-marker/passing/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [125],
+        "oldCommits": ["063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/archive-files.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2382, 2394, 2406, 2418, 2430, 2442, 2454],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/before/content/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [6],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/first-repair-attempt/protocol.before.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 10, 73],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/first-repair-attempt/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 10, 73],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/first-repair-attempt/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-authority-map.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [11],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-debts.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [13],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-origin-isolation.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [7, 14],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-retention.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [11],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-selection-status.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [11],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-traceability.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [13],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-update-limit.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [11],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/receipts/check-wasm-seal.mjs.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [11],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-final/results.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [7],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/gates-pilot/results.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [7],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/liveness-integration/content-control/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/liveness-integration/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/passing/content-control/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/passing/content-full-report/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/passing/protocol.tested.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 10, 74],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/passing/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/private-failures-integration/content-control/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/private-failures-integration/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/residue-integration/content-control/report.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-12-validation-controls/residue-integration/scope.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [59],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-admission-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 107],
+        "oldCommits": ["1a86453c6b8cc63a224c6389895a9d4048b2fd2f"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-admission-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["1a86453c6b8cc63a224c6389895a9d4048b2fd2f"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-content-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 89],
+        "oldCommits": ["f14c68f51b10105374fe911783185be8246c2be1"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-content-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["f14c68f51b10105374fe911783185be8246c2be1"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-content-trim-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["f1926f960e32c6a96358f193e551d29352c0b261"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-content-trim-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["f1926f960e32c6a96358f193e551d29352c0b261"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-custody-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["d65bda01e6e9d0cff984c58b905a6f156af1990a"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-custody-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["d65bda01e6e9d0cff984c58b905a6f156af1990a"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-editor-admission-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 148],
+        "oldCommits": ["4fc3af06fc863cc87776cb922b2efc7c49f59e0d"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-editor-admission-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["4fc3af06fc863cc87776cb922b2efc7c49f59e0d"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-journal-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 105],
+        "oldCommits": ["b9f09847a2790f10f86be9c05f6de26ee4b91738"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-journal-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["b9f09847a2790f10f86be9c05f6de26ee4b91738"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-local-clear-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["be5d6a0f8b7dc5fddbc455e121a7d805460b0cda"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-local-clear-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["be5d6a0f8b7dc5fddbc455e121a7d805460b0cda"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-local-genesis-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 141],
+        "oldCommits": ["6348b6cc93ca99f9703561c094eb779510e5bade"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-local-genesis-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["6348b6cc93ca99f9703561c094eb779510e5bade"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-owned-startup-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 123],
+        "oldCommits": ["ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-owned-startup-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-validation-inventory/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["d03e473b3b8bcb807f4183bbdeb60ac9895f6f54"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-validation-inventory/passing/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["d03e473b3b8bcb807f4183bbdeb60ac9895f6f54"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-validation-inventory/summary.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["d03e473b3b8bcb807f4183bbdeb60ac9895f6f54"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-validation-runner/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["f13bdd1b0995e3122826dc24f1ea0201b805354b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-validation-runner/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["f13bdd1b0995e3122826dc24f1ea0201b805354b"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-workspace-admission-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3, 120],
+        "oldCommits": ["3f1afc5fff69a15416b3f9767a2d12dbb90d256d"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-workspace-admission-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["3f1afc5fff69a15416b3f9767a2d12dbb90d256d"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-write-session-adapter/README.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [3],
+        "oldCommits": ["2c5f4b95d21b165ad2610d8ddf5b09ff0319eade"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-conformance-runs/2026-09-13-write-session-adapter/preservation.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [10],
+        "oldCommits": ["2c5f4b95d21b165ad2610d8ddf5b09ff0319eade"],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/account-privacy-recovery-capacity.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [3, 79, 148, 219, 220],
+        "oldCommits": [
+          "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "67304f345f0e852867a49c750858374eff1dce22",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+          "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+          "f42b4a70b4301ad76545f343bcf185f99c189857"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/account-sync-liveness-repairs.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [5, 32, 48, 66],
+        "oldCommits": [
+          "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+          "280221eded8a3fe517310afbca069f8b58d76150",
+          "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+          "902d3528b07055e0a1720ecd5c1f68da2989d80b"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/completed.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [
+          3275, 3292, 3304, 3315, 3348, 3358, 3367, 3377, 3388, 3404, 3406, 3414, 3429, 3455, 3468,
+          3479, 3493, 3514, 3538, 3563, 3589, 3614, 3641, 3673, 3700, 3727, 3760, 3796, 3832, 3873,
+          3905
+        ],
+        "oldCommits": [
+          "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+          "1a86453c6b8cc63a224c6389895a9d4048b2fd2f",
+          "280221eded8a3fe517310afbca069f8b58d76150",
+          "2c5f4b95d21b165ad2610d8ddf5b09ff0319eade",
+          "2dcd89787fbd35f4454a0b1684f8226d36687c87",
+          "3f1afc5fff69a15416b3f9767a2d12dbb90d256d",
+          "409fbd09768561393431378d076bc71939f24ac3",
+          "4fc3af06fc863cc87776cb922b2efc7c49f59e0d",
+          "6348b6cc93ca99f9703561c094eb779510e5bade",
+          "67304f345f0e852867a49c750858374eff1dce22",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+          "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+          "7cbb063f31102ce1303c74e2d78b03b4956cd42b",
+          "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+          "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+          "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+          "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+          "b9f09847a2790f10f86be9c05f6de26ee4b91738",
+          "be5d6a0f8b7dc5fddbc455e121a7d805460b0cda",
+          "d03e473b3b8bcb807f4183bbdeb60ac9895f6f54",
+          "d65bda01e6e9d0cff984c58b905a6f156af1990a",
+          "dceec5c40779ae80253a7fa31142e071bd95b558",
+          "ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a",
+          "f13bdd1b0995e3122826dc24f1ea0201b805354b",
+          "f14c68f51b10105374fe911783185be8246c2be1",
+          "f1926f960e32c6a96358f193e551d29352c0b261"
+        ],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/decisions.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [2379, 2386, 2387],
+        "oldCommits": [
+          "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+          "9ff48b58edd63761884d9bae97ea00de9f1b1b63"
+        ],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/private-release-validation-prep.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [3, 12, 14],
+        "oldCommits": [
+          "409fbd09768561393431378d076bc71939f24ac3",
+          "9ff48b58edd63761884d9bae97ea00de9f1b1b63"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/progress.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [65, 66],
+        "oldCommits": [
+          "2c5f4b95d21b165ad2610d8ddf5b09ff0319eade",
+          "be5d6a0f8b7dc5fddbc455e121a7d805460b0cda",
+          "d65bda01e6e9d0cff984c58b905a6f156af1990a",
+          "f1926f960e32c6a96358f193e551d29352c0b261"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/release-validation-execution.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [3, 4],
+        "oldCommits": [
+          "1a86453c6b8cc63a224c6389895a9d4048b2fd2f",
+          "3f1afc5fff69a15416b3f9767a2d12dbb90d256d",
+          "4fc3af06fc863cc87776cb922b2efc7c49f59e0d",
+          "6348b6cc93ca99f9703561c094eb779510e5bade",
+          "b9f09847a2790f10f86be9c05f6de26ee4b91738",
+          "ddd77a373416f41ecb5c490dbe32d5a6cdd1cf6a",
+          "f13bdd1b0995e3122826dc24f1ea0201b805354b",
+          "f14c68f51b10105374fe911783185be8246c2be1"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/release-validation-graph.json",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [4791, 4827],
+        "oldCommits": [
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/release-validation-graph.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [6],
+        "oldCommits": ["d03e473b3b8bcb807f4183bbdeb60ac9895f6f54"],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/release-validation-manifest.json",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [8623, 8659],
+        "oldCommits": [
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/review/implementation/393ef43-9ff48b5.md",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [
+          1, 5, 7, 11, 13, 15, 17, 139, 143, 146, 147, 148, 149, 150, 152, 153, 154, 157, 382, 396,
+          410, 424, 438, 466, 587, 596, 613, 618, 619, 620, 621, 622, 623, 760, 762, 763, 764, 766,
+          820, 823, 824, 825, 826, 827, 828, 829, 830, 831, 832, 833, 865, 876, 909, 915, 916, 917,
+          918, 919, 920, 921, 922, 923
+        ],
+        "oldCommits": [
+          "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+          "280221eded8a3fe517310afbca069f8b58d76150",
+          "67304f345f0e852867a49c750858374eff1dce22",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+          "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+          "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+          "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+          "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+          "f42b4a70b4301ad76545f343bcf185f99c189857"
+        ],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/review/implementation/README.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [31, 32, 33],
+        "oldCommits": ["9ff48b58edd63761884d9bae97ea00de9f1b1b63"],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/review/implementation/account-sync-liveness.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [111],
+        "oldCommits": ["0e07fe4a2e46247440c342a3a49c39aadb31c183"],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/review/implementation/addendum-393ef43-9ff48b5.json",
+        "category": "preserve-historical-evidence-or-append-only-record",
+        "lines": [5, 7, 8, 9, 117, 380, 385, 390, 395, 400, 405, 410, 415, 420, 425, 430],
+        "oldCommits": [
+          "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+          "280221eded8a3fe517310afbca069f8b58d76150",
+          "67304f345f0e852867a49c750858374eff1dce22",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+          "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+          "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+          "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+          "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+          "f42b4a70b4301ad76545f343bcf185f99c189857"
+        ],
+        "plannedAction": "Keep original bytes and commit references; add external signed-history crosswalk."
+      },
+      {
+        "path": "docs/review/implementation/findings.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [
+          4, 27, 29, 123, 125, 138, 183, 184, 185, 186, 187, 188, 189, 190, 231, 237, 238, 239, 240,
+          241, 242, 243, 244, 245, 246, 247, 250
+        ],
+        "oldCommits": [
+          "01b3036dffe09bcaeb0cca6652195cd3bc26afd4",
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "0e07fe4a2e46247440c342a3a49c39aadb31c183",
+          "280221eded8a3fe517310afbca069f8b58d76150",
+          "409fbd09768561393431378d076bc71939f24ac3",
+          "67304f345f0e852867a49c750858374eff1dce22",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0",
+          "879ce38509fd66f0a6e7e0cd4a69939b5186c2b1",
+          "8ebccfd7edf5e2a1c73068c7afa052c872114123",
+          "902d3528b07055e0a1720ecd5c1f68da2989d80b",
+          "9ff48b58edd63761884d9bae97ea00de9f1b1b63",
+          "f42b4a70b4301ad76545f343bcf185f99c189857"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/review/implementation/liveness-followups.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [3, 93],
+        "oldCommits": [
+          "77a2753566fa2a51b0b8616687eafb946d8ed24e",
+          "dceec5c40779ae80253a7fa31142e071bd95b558"
+        ],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "docs/review/implementation/validation-controls.md",
+        "category": "inspect-current-navigation-or-protocol-record",
+        "lines": [3, 10, 74, 106],
+        "oldCommits": ["409fbd09768561393431378d076bc71939f24ac3"],
+        "plannedAction": "Classify each reference: current navigation can point to signed replacement; before-source variants and historical phase facts retain explicit provenance. Regenerate generated inventory via its owner after executable argument changes."
+      },
+      {
+        "path": "scripts/private-release/run.mjs",
+        "category": "inspect-executable-baseline-do-not-blindly-replace",
+        "lines": [215, 235],
+        "oldCommits": [
+          "063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6",
+          "70e6d5bc132e30baf92baffbd7cffcedf903c7d0"
+        ],
+        "plannedAction": "Replace the two executable before-version arguments (063cd72, 70e6d5b) with full mapped signed IDs after verifying source-tree equality; regenerate graph/manifest."
+      },
+      {
+        "path": "test/account-ledger-contract/runtime.mjs",
+        "category": "inspect-executable-baseline-do-not-blindly-replace",
+        "lines": [56],
+        "oldCommits": ["77a2753566fa2a51b0b8616687eafb946d8ed24e"],
+        "plannedAction": "Replace git show 77a2753 baseline with the full signed counterpart after comparing spoolRecord.ts bytes."
+      },
+      {
+        "path": "test/release-validation/manifest.test.mjs",
+        "category": "inspect-executable-baseline-do-not-blindly-replace",
+        "lines": [91, 111],
+        "oldCommits": ["063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6"],
+        "plannedAction": "Keep arbitrary test variant/hash strings: these two unit fixtures do not resolve revisions."
+      },
+      {
+        "path": "test/release-validation/stage.test.mjs",
+        "category": "inspect-executable-baseline-do-not-blindly-replace",
+        "lines": [87],
+        "oldCommits": ["063cd72d2dfd5db37fb92a0ccaf910e6cc2a51b6"],
+        "plannedAction": "Keep arbitrary test variant/hash strings: these two unit fixtures do not resolve revisions."
+      }
+    ]
+  },
+  "existingHistoricalBackupRef": "refs/heads/codex/pre-sign-contract-history-2026-09-11",
+  "proposedBackupRef": "refs/heads/codex/pre-sign-review-history-2026-09-13",
+  "remoteTrackingRefsContainingFirstUnsigned": [],
+  "refsContainingOldTip": ["refs/heads/codex/encrypted-store-contract-corrections"],
+  "limits": [
+    "Snapshot at 6ba7c22 before intake documentation changes; rescan worktree plus index at execution.",
+    "Compressed/binary evidence is intentionally not rewritten or claimed absent from this text census.",
+    "No remote fetch or push; absence from local remote-tracking refs is not proof that nobody has a copy.",
+    "No signer invocation, backup ref creation, new commit or branch rewrite performed."
+  ]
+}

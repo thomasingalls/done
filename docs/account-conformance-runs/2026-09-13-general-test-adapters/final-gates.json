@@ -1,0 +1,111 @@
+[
+  {
+    "name": "signature",
+    "argv": [
+      "git",
+      "verify-commit",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 32,
+    "log": "<tmp>/done-general-gate-signature.log"
+  },
+  {
+    "name": "typecheck",
+    "argv": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b",
+      "--noEmit"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 112,
+    "log": "<tmp>/done-general-gate-typecheck.log"
+  },
+  {
+    "name": "lint",
+    "argv": [
+      "node_modules/.bin/oxlint",
+      "--react-plugin",
+      "scripts/release-validation/execute.mjs",
+      "scripts/release-validation/manifest.mjs",
+      "scripts/release-validation/node-reporter.mjs",
+      "scripts/release-validation/stage.mjs",
+      "scripts/release-validation/vitest-adapter.mjs",
+      "test/release-validation/stage.test.mjs",
+      "scripts/release-validation/general-tests.mjs",
+      "test/release-validation/general-tests.test.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 74,
+    "log": "<tmp>/done-general-gate-lint.log"
+  },
+  {
+    "name": "format",
+    "argv": [
+      "node_modules/.bin/oxfmt",
+      "--check",
+      "scripts/release-validation/execute.mjs",
+      "scripts/release-validation/manifest.mjs",
+      "scripts/release-validation/node-reporter.mjs",
+      "scripts/release-validation/stage.mjs",
+      "scripts/release-validation/vitest-adapter.mjs",
+      "test/release-validation/stage.test.mjs",
+      "scripts/release-validation/general-tests.mjs",
+      "scripts/release-validation/general-tests.json",
+      "test/release-validation/general-tests.test.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 110,
+    "log": "<tmp>/done-general-gate-format.log"
+  },
+  {
+    "name": "inventory",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 716,
+    "log": "<tmp>/done-general-gate-inventory.log"
+  },
+  {
+    "name": "manifest",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 1060,
+    "log": "<tmp>/done-general-gate-manifest.log"
+  },
+  {
+    "name": "authority",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 679,
+    "log": "<tmp>/done-general-gate-authority.log"
+  },
+  {
+    "name": "release-blocked",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--require-complete"
+    ],
+    "exitCode": 1,
+    "expectedExitCode": 1,
+    "elapsedMs": 1061,
+    "log": "<tmp>/done-general-gate-release-blocked.log"
+  }
+]

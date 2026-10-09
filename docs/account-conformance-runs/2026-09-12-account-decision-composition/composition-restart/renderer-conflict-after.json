@@ -1,0 +1,6 @@
+{
+  "crashed": true,
+  "durableAtCut": true,
+  "exactRecovery": true,
+  "noReseal": true
+}

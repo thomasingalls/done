@@ -1,0 +1,15 @@
+(node:5589) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ removing exact capsule identity consistency accepts two different original payloads under one ID (53.359417ms)
+✔ real source-digest and envelope-body omissions rescue separately signed and encrypted semantic substitutions (90.777667ms)
+✔ count has two effective checks; hash and count omissions separately weaken completeness (125.857792ms)
+✔ delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories (112.249583ms)
+✔ omitting raw previous-hash bytes in the actual digest input aliases otherwise distinct witness histories (1.06925ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 635.382917

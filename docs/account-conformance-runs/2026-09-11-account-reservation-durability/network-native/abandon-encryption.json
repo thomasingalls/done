@@ -1,0 +1,58 @@
+{
+  "trace": [
+    {
+      "kind": "grant",
+      "attempt": 1,
+      "requested": "strict",
+      "reported": "strict"
+    },
+    {
+      "kind": "invoke"
+    },
+    {
+      "kind": "grant",
+      "attempt": 2,
+      "requested": "strict",
+      "reported": "strict"
+    },
+    {
+      "kind": "invoke"
+    }
+  ],
+  "afterFault": {
+    "attempts": 1,
+    "positions": [
+      {
+        "position": 1,
+        "source": {
+          "id": "f9b41548e381489d264881bff81323ee",
+          "index": 0,
+          "hash": "92a16ef5d2173b7ff912991a2ef568ba206b49112cb199d170ecec8eef3f0dbc"
+        },
+        "attempts": [
+          1
+        ],
+        "persisted": false
+      }
+    ]
+  },
+  "final": {
+    "attempts": 2,
+    "positions": [
+      {
+        "position": 1,
+        "source": {
+          "id": "f9b41548e381489d264881bff81323ee",
+          "index": 0,
+          "hash": "92a16ef5d2173b7ff912991a2ef568ba206b49112cb199d170ecec8eef3f0dbc"
+        },
+        "attempts": [
+          1,
+          2
+        ],
+        "persisted": true
+      }
+    ]
+  },
+  "invocations": 2
+}

@@ -1,0 +1,113 @@
+{
+  "head": "82daaac0f9d9590bf2b3961fcacd84775caab0c2",
+  "recentPhases": [
+    {
+      "commit": "dbc64150",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-browser-application-latency",
+          "verifiedArtifacts": 26,
+          "bytes": 241108
+        }
+      ]
+    },
+    {
+      "commit": "5ffce895",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-application-latency-diagnosis",
+          "verifiedArtifacts": 28,
+          "bytes": 248526
+        }
+      ]
+    },
+    {
+      "commit": "e2c93b05",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-f17-comparison",
+          "verifiedArtifacts": 65,
+          "bytes": 245905
+        }
+      ]
+    },
+    {
+      "commit": "1fd04afa",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-f17-forks",
+          "verifiedArtifacts": 64,
+          "bytes": 228891
+        }
+      ]
+    },
+    {
+      "commit": "8c5fdaee",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-f17-history-profile",
+          "verifiedArtifacts": 33,
+          "bytes": 243162
+        }
+      ]
+    },
+    {
+      "commit": "213ada08",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-f17-metadata",
+          "verifiedArtifacts": 58,
+          "bytes": 157669
+        }
+      ]
+    },
+    {
+      "commit": "6c5502fd",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-f17-preparation-contract",
+          "verifiedArtifacts": 51,
+          "bytes": 118545
+        }
+      ]
+    },
+    {
+      "commit": "82daaac0",
+      "signature": "verified",
+      "appendOnlyRecords": 3,
+      "packets": [
+        {
+          "path": "docs/account-conformance-runs/2026-09-14-f17-handoff",
+          "verifiedArtifacts": 66,
+          "bytes": 139653
+        }
+      ]
+    }
+  ],
+  "preservationPins": 52,
+  "L2Unchanged": true,
+  "inventoryCheck": "passed",
+  "manifestCheck": {
+    "consistent": true,
+    "status": "blocked",
+    "obligations": 616,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "unresolvedTestFiles": 0
+  },
+  "scope": "Recent eight phase signatures, append-only completed/decisions/performance transitions, 391 archived gzip payload hashes and packet metadata; 52 preservation pins and L-2. No runtime tests or aggregate rerun."
+}

@@ -1,0 +1,83 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > keeps reader authority distinct from publisher authority and begins from held zero links 20ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains cross-stream pending structs/deletions across commit and restart before their dependency arrives 15ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > rejects a gap, deduplicates exact entries and retains advertised high-water marks across restart 9ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > binds fresh input to the actual pending request; committed evidence remains usable after expiry 6ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses foreign input without changing content or progress 2ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses retired input without changing content or progress 2ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses reader-retired input without changing content or progress 2ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses epoch input without changing content or progress 3ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses generation input without changing content or progress 3ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses actor input without changing content or progress 4ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses agent input without changing content or progress 4ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > refuses final input without changing content or progress 3ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains a proved conflicting digest without applying it or advancing the receive cursor 6ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > retains the exact verified request/page when caller buffers change during crypto 7ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > leaves malformed or unproved evidence unconsumed and refuses local size/count overflow 26ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > commits content and progress together across abort, lost acknowledgement and close before commit 18ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > rechecks membership at commit and fails cold open on omitted evidence or a wrong reader fence 6ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > retains the earlier cross-client wake-up when its supplied reader starts after the dependency 5ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > completes every order of the saved seven original records without redelivery 533ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > preserves the external ledger under generated originals histories 709ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > preserves the external ledger under generated handoff histories 817ms
+ ✓ test/yjsDelivery.test.ts > pinned Yjs delivery wake-ups > preserves the external ledger under generated concurrent-handoff histories 2535ms
+ ✓ test/positionDecision.test.ts > reads the selected refusal and link/head messages without changing their signed bytes 4ms
+ ✓ test/positionDecision.test.ts > binds all five refusal subject fields, parent and the current externally held acceptance key 4ms
+ ✓ test/positionDecision.test.ts > authenticates a reconstructed link, distinguishes a proved conflicting leaf, and holds unanchored heads 6ms
+ ✓ test/positionDecision.test.ts > keeps refusal IDs stable across acceptance-key rotation while requiring the current signature 2ms
+ ✓ test/positionDecision.test.ts > rejects unknown, noncanonical, oversized, unsigned and malformed response bytes 2ms
+ ✓ test/positionDecision.test.ts > 200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes 1212ms
+ ✓ test/positionDecision.test.ts > signs a separate submission wrapper over exact v2 bytes and parent refusal ID 4ms
+ ✓ test/positionDecision.test.ts > rejects swapping a valid parent proof, changing exact wire, skipping positions and stale proof keys 10ms
+ ✓ test/positionDecision.test.ts > 100 generated successor proofs bind parent bytes, original position and independent signing inputs 389ms
+ ✓ test/positionDecision.test.ts > captures response, expected subject and authority before asynchronous verification 1ms
+ ✓ test/positionDecision.test.ts > captures submission inputs and rejects malformed/trailing/oversized framing 1ms
+ ✓ test/positionDecision.test.ts > re-signing the same permanent parent under the current key preserves wrapper verification 3ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 250 generated transaction histories recover exact bytes, actors and independent text across carrier overlap and reverse delivery 1110ms
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > 200 generated route and actor substitutions refuse without accepting a different authority 18ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > conflicting stable identity refuses journal/disk, disk/disk and journal/journal overlap 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > requires original sources to cover all prepared state, including deletions 1ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > private initialization retains system attribution and subsequent editing retains the human actor 14ms
+ ✓ test/sourceCapture.test.ts > Account source capsule conformance > repeated oversized preparation does not accumulate capsule reservations or acknowledge input 6ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separates v2 keys by credential and generation and refuses v1 mint/downgrade 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: single-update 4ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: batched-updates 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: system-actor 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 1 bytes: rotated-generation 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: single-update 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: batched-updates 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: system-actor 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: rotated-generation 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > reproduces version 2 bytes: other-credential 2ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for workspace_id 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for credential_id 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for epoch 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for gen 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > separately checks the signature and seal binding for seq 1ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > checks version, domains, nonce, digest, ciphertext, signer and workspace subkey 4ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > refuses malformed framing and authenticated malformed bodies without returning updates 14ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > captures mutable input before asynchronous crypto and returns detached output 3ms
+ ✓ test/networkEnvelope.test.ts > row-4 envelope codec > generated bodies roundtrip exactly; arbitrary changed wire bytes cannot authenticate 89ms
+ ✓ test/accountInboundPrep.test.ts > inbound candidate contract — synthetic authority and atomic model only > 300 generated delivery/crash/compaction histories preserve the external receipt and source ledger 8667ms
+ ✓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > equal state vectors can hide different deletion coverage in a proposed baseline 2ms
+ ✓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > a valid head cannot choose its own prefix, and a complete accepted suffix cannot replace genesis 5ms
+ ✓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > a cursor-first split commit is detected after the content half is lost 4ms
+ ✓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > dropping pending data from a snapshot loses a received deletion when its target arrives later 2ms
+ ✓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > promoting a remote dependency before commit can acknowledge a local edit that disappears on cold replay 2ms
+ ✓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > one global receive cursor skips a different publisher at the same position 2ms
+ ✓ test/accountInboundPrep.test.ts > effective counterexamples to tempting receive shortcuts > the raw capture primitive can relabel received bytes, so it cannot serve as authenticated ingress 4ms
+
+ Test Files  5 passed (5)
+      Tests  68 passed (68)
+   Start at  02:00:24
+   Duration  9.12s (transform 357ms, setup 113ms, import 657ms, tests 16.36s, environment 0ms)
+

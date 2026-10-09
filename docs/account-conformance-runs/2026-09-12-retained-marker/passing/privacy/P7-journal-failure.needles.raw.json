@@ -1,0 +1,40 @@
+{
+  "notice": "Controller-held synthetic needles. Outside the tested app/service exposure domain.",
+  "needles": [
+    {
+      "id": "retained",
+      "values": [
+        "needle_retained_b2c5f49740c9b533a5560ba32598a741"
+      ]
+    },
+    {
+      "id": "wrongFactor",
+      "values": [
+        "RX5GV-ZBRD8-4130H-GYBDB-MZR9W",
+        "RX5GVZBRD84130HGYBDBMZR9W"
+      ]
+    },
+    {
+      "id": "fallback",
+      "values": [
+        "needle_fallback_e9f5d1f868956d578c87232bf744759e"
+      ]
+    },
+    {
+      "id": "deviceFactor",
+      "values": [
+        "R89EE-C0V5K-5TNDQ-DT8D3-DB0SD",
+        "R89EEC0V5K5TNDQDT8D3DB0SD"
+      ]
+    },
+    {
+      "id": "httpToken",
+      "values": [
+        "Ah_hBUOVkQf22q8Ir7CivGJLVsVzvR2HrmnfjzX0vbU"
+      ],
+      "raw": [
+        "Ah/hBUOVkQf22q8Ir7CivGJLVsVzvR2HrmnfjzX0vbU="
+      ]
+    }
+  ]
+}

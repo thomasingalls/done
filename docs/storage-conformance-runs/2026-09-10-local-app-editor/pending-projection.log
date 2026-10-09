@@ -1,0 +1,24 @@
+(node:27061) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+saved-forks: passed
+pending-deletion-forks: passed
+equal-clock-content-check: passed
+pending-workspace-startup: passed
+pending-text-startup: passed
+later-basis-workspace: passed
+pending-promotion-death: passed
+pending-pressure-and-retry: passed
+workspace-projection-drift: passed
+text-projection-drift: passed
+initialization-projection-drift: passed
+generated histories: 10
+generated histories: 20
+generated histories: 30
+generated histories: 40
+generated histories: 50
+generated histories: 60
+generated histories: 70
+generated histories: 80
+generated histories: 90
+generated histories: 100
+generated-workspace-histories: passed

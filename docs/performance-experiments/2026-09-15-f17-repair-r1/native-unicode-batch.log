@@ -1,0 +1,22 @@
+Starting selected native-unicode-0 2026-09-15T10:07:54.351Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected native-unicode-0 shallow p50 28.799999237060547 p95 31.600000381469727
+selected native-unicode-0 deeper p50 29.5 p95 32.89999961853027
+Finished selected native-unicode-0 passed
+Starting candidate native-unicode-0 2026-09-15T10:08:29.150Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+candidate native-unicode-0 shallow p50 27.399999618530273 p95 29.300000190734863
+candidate native-unicode-0 deeper p50 28.200000762939453 p95 31.100000381469727
+Finished candidate native-unicode-0 passed

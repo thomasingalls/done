@@ -11,5 +11,19 @@
     "noEmit": true,
     "composite": true
   },
-  "include": ["vite.config.ts", "vite", "playwright.config.ts", "playwright.latency.config.ts"]
+  "include": [
+    "account-service",
+    "vite.config.ts",
+    "vite",
+    "playwright.config.ts",
+    "playwright.account-setup.config.ts",
+    "playwright.device-enrollment.config.ts",
+    "playwright.account-upgrade.config.ts",
+    "playwright.latency.config.ts",
+    "playwright.private-migration.config.ts",
+    "playwright.local-startup.config.ts",
+    "playwright.app-upgrades.config.ts",
+    "playwright.storage-compatibility.config.ts",
+    "account-protocol"
+  ]
 }

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r2/no-pool
+
+
+ Test Files  2 passed (2)
+      Tests  96 passed (96)
+   Start at  09:36:24
+   Duration  6.16s (transform 453ms, setup 64ms, import 684ms, tests 6.39s, environment 0ms)
+

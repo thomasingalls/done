@@ -1,0 +1,2785 @@
+{
+  "schema": 1,
+  "scope": "local-clear-browser",
+  "started": "2026-09-10T18:05:17.316Z",
+  "requestedCandidates": [
+    "clear"
+  ],
+  "requestedCases": [
+    "L01.success",
+    "L02.blocked",
+    "L03.refused",
+    "L04.kill-intent",
+    "L05.kill-content-delete",
+    "L06.kill-stage-journal",
+    "L07.kill-stage-custody",
+    "L08.kill-stage-index",
+    "L09.kill-index-delete",
+    "L10.kill-stage-cleared",
+    "L11.journal",
+    "L12.aborts",
+    "L13.factor",
+    "L14.guards",
+    "L15.lifetime",
+    "L16.recheck",
+    "L17.cancel"
+  ],
+  "harness": {
+    "commit": "beed8cfcf9d6d845ce8d055d4ab8cfe0344a94b6",
+    "dirty": true,
+    "files": {
+      "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+      "wasm/journal-seal/src/lib.rs": "716be05c199b8796b654c8935b466f30c16ac4ac1fadb783ae4f597474218b78",
+      "wasm/journal-seal/Cargo.toml": "8f8c138c9ee1a8b3a7edf5371163d253c597b93bc374eadb0eb587a50d0706c9",
+      "wasm/journal-seal/Cargo.lock": "6339c5b066678ce11cb27f70e1bc7a31ffaa9f2ff4c416e45b67ff6344dc5998",
+      "scripts/build-wasm-seal.mjs": "e10af46d1aaf514937c289cd8d2d5b57bc40ad4ee071e138be8c71849c5ca335",
+      "src/account/es256Signature.ts": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+      "src/account/generationWrap.ts": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+      "src/account/recovery.ts": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d",
+      "src/account/recoveryOwner.ts": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65",
+      "src/account/slotUnlock.ts": "a32713bc321c62ab51a488039fe923015b03c133c13a37e5055571e65401ae7f",
+      "src/appUpdate.ts": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df",
+      "src/crdt/accountAccess.ts": "ef45a0bbd0fd123808024bb6a6032e2f46c9b83fab690d2696762c33e1f41413",
+      "src/crdt/accountStartup.ts": "011a5add8cb30180aba3f501809f0a59c7e8c8658611e6d13d672a5efe58d787",
+      "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+      "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+      "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+      "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+      "src/crdt/admittedWorkspace.ts": "de18324ca5f55a2a5e04528a95f1a50daa47036c84da6e1199b6c8cad6aa37ab",
+      "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+      "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+      "src/crdt/contentDatabase.ts": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847",
+      "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+      "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+      "src/crdt/custody.ts": "b97f7cf43c2626f05044234fc30cf22726e3b7ca5a43b22a64028e11f5e8ffd1",
+      "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+      "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+      "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+      "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+      "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+      "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+      "src/crdt/handoffRecord.ts": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+      "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+      "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+      "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+      "src/crdt/legacyCleanup.ts": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187",
+      "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+      "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+      "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+      "src/crdt/legacyCoordinator.ts": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5",
+      "src/crdt/legacyCoordinatorState.ts": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43",
+      "src/crdt/legacyExport.ts": "70e873c056fd32bf58ee6ce4cf06ba2c907af5690304764c1d9840350a323e7f",
+      "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+      "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+      "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+      "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+      "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+      "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+      "src/crdt/localClear.ts": "7621b4ff6313495ede37d8e44089c21537e38bd93d699fccb885347e87dc545c",
+      "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+      "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+      "src/crdt/localClearStorage.ts": "6f9f5082088aa0be7a3ab88525c8c2eadfe894c64f57909b8bc831c110fc17b2",
+      "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+      "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+      "src/crdt/localGenesisStorage.ts": "a634d251e2f58971cdbb780fa98b6e312c02275f890d2158cd4c08b04b55eab0",
+      "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+      "src/crdt/ownedStartup.ts": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+      "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+      "src/crdt/promotionAdmission.ts": "d3d77f33ceba46797739bea9c66b5294ca2008afe61dfca25e3249a2a4d900aa",
+      "src/crdt/promotionGenesis.ts": "bded45eb90f6453d55d891344af596cb12324d1a53410e190da7b68bf6e9ba04",
+      "src/crdt/promotionHandoff.ts": "c055f120b870ada7ac9bff382f9ffeea9ca0a430a8733801dff9acaa7ca34bb3",
+      "src/crdt/promotionOwner.ts": "62d960f18cd839dfe7e0429fe565f8f5334b8ed68350fb6b720720a30a959c1e",
+      "src/crdt/promotionPreparation.ts": "986755274653389ba6960444fab6a1b7e04b83d4e766f8a5f2e57920a0224e93",
+      "src/crdt/promotionRecord.ts": "df21829dccaa7c64092bc7594216901b06a971371694da6f543edc9e7f4b0f3b",
+      "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+      "src/crdt/slotIndex.ts": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6",
+      "src/crdt/startupClassification.ts": "99d907f6427afc12231461bdb7d3251837465367cdcb10c8de1600f5c874f568",
+      "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+      "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+      "src/crdt/storageCompatibility.ts": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+      "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+      "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+      "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+      "src/crdt/workspaceCommands.ts": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e",
+      "src/crdt/writeSession.ts": "02b83e8b0a98753a16b9a1ccf0764300bceda9dc3255c8bb5687fa9ddf7aa6f7",
+      "src/crdt/yjs.ts": "ec2f457ae561e8864cb83880365d62dbbbd6ba80cea56e0cff07adc15b87ba1e",
+      "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+      "src/editor/admittedEditor.ts": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e",
+      "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+      "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+      "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+      "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+      "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+      "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+      "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+      "src/editor/masterLineSelection.ts": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+      "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+      "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+      "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+      "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+      "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+      "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+      "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+      "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+      "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+      "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+      "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+      "src/local.tsx": "aadde7e3b60a3e31f7ee9cb7a7b7fb9ec9d5b29e5f77d55c0393804a1e5d0c93",
+      "src/main.tsx": "d7f94435a44e6d0ab86ac101ae57ec61118131e965e683306a422462c77a7933",
+      "src/pwa.ts": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587",
+      "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+      "src/styles/index.css": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+      "src/styles/local-startup.css": "1ba291dfc50b6d6e21d25e5dc9953a9814a45eccb084a77bf529fa520cb942d7",
+      "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+      "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+      "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+      "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+      "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+      "src/ui/App.tsx": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a",
+      "src/ui/AppUpdateNotice.tsx": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47",
+      "src/ui/Card.tsx": "c0e323b07223f6baccf747d75cc11df6ff337d3e64e0d2bc77d11cbdba199a72",
+      "src/ui/Collection.tsx": "6ff97205e299478492a1d554a2df7c9c1e53493dff0e23a0edfdf53dd25ca8a0",
+      "src/ui/Compose.tsx": "04c833a59127cab84b2af8c9a01220121b6e77552ec66aa32bcf280d09d46afa",
+      "src/ui/DayPanel.tsx": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7",
+      "src/ui/DayPlane.tsx": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f",
+      "src/ui/Goals.tsx": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3",
+      "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+      "src/ui/LocalApp.tsx": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d",
+      "src/ui/Menu.tsx": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8",
+      "src/ui/PrivateMigrationApp.tsx": "8c9c8e011aa3bbd167d608d5344c0ee97fb04bd1341e5afd5a532396d4a57b38",
+      "src/ui/StaleBanner.tsx": "5ae8789ad752952f8e9de24e918a04d87ee1a2e58c85c060349c9f05b8c327cc",
+      "src/ui/UnfiledPanel.tsx": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601",
+      "src/ui/localStartup.ts": "8371b23f33e975096bac911ba3984a183cedb41996f41119476a99caecf924d4",
+      "src/ui/privateMigration.ts": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50",
+      "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+      "src/ui/useCardReorder.ts": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529",
+      "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+      "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+      "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+      "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+      "src/ui/workspaceUi.tsx": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34",
+      "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+      "pnpm-lock.yaml": "d1a235a6fa7e533e526d2eb6a79b2c60c26b7193235330578c6b9c12ecee334d",
+      "package.json": "3ff0e5b5c5d6192ba072e5c6f9e5462e587091cdb6ea63cce64918cea3df4aad",
+      "test/localClear.test.ts": "bc6b6d75bf99cd0df15e38fc5fcad6eb0a46f2d0f318424cc1210a06ab2c8b12",
+      "test/local-genesis/browser.mjs": "150550659a23d3c04175b9ce82f233e04f8baf1b57e17e027dc953db94dc9881",
+      "test/journal/browser.mjs": "f5488148137f9879fbc140de5602a06decaac01a2be9c0ad12de6e52c7d6836c",
+      "test/vectors/journal-aead.json": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7",
+      "test/content/browser.mjs": "00830bff7ec24592c429ccd7d62626ad8bb25739c44975f9e3028c75a73f4ae6",
+      "docs/local-clear.md": "3dc7768cbafdab46e895948d8031adc2bb1ed2add270665a8cd92b07cc5ffd5a",
+      "scripts/storage-conformance/report.mjs": "3213b63e0e5f4a39af85ef798a7f7e1eb09fee07e8006d78a2dc141263feb506",
+      "scripts/local-clear/catalog.mjs": "0e760a365bc7f2ad5b2bd9a5a718b8ad4fbf29f6aa8312cf8f0d2e0b376aee8a",
+      "scripts/local-clear/run.mjs": "23573938440c4397625ef3e20f7fe3ecc8b11df46c8f651a8cbe46276a13337f",
+      "scripts/local-clear/scenarios.mjs": "c31d803ef53a25f4d99fa2ed1327dc1f251135ecbd35ebddfc4e01c5041b2d88",
+      "test/local-clear/browser.mjs": "929fa34415c394a61abe597bf4ab55c149dd27825d6b99344ec86d86d6689f5f",
+      "test/local-clear/index.html": "e39ae78b03229e81356bd04d7d1f5e93c5dbce91291723012b0a63820cc53fb2"
+    },
+    "node": "v26.8.2",
+    "vite": "8.1.5"
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "executablePath": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    "platform": "darwin",
+    "arch": "arm64",
+    "playwright": "1.62.0"
+  },
+  "candidates": [
+    {
+      "id": "clear",
+      "source": {
+        "files": {
+          "src/account/es256Signature.ts": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+          "src/account/generationWrap.ts": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+          "src/account/recovery.ts": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d",
+          "src/account/recoveryOwner.ts": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65",
+          "src/account/slotUnlock.ts": "a32713bc321c62ab51a488039fe923015b03c133c13a37e5055571e65401ae7f",
+          "src/appUpdate.ts": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df",
+          "src/crdt/accountAccess.ts": "ef45a0bbd0fd123808024bb6a6032e2f46c9b83fab690d2696762c33e1f41413",
+          "src/crdt/accountStartup.ts": "011a5add8cb30180aba3f501809f0a59c7e8c8658611e6d13d672a5efe58d787",
+          "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+          "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+          "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+          "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+          "src/crdt/admittedWorkspace.ts": "de18324ca5f55a2a5e04528a95f1a50daa47036c84da6e1199b6c8cad6aa37ab",
+          "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+          "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+          "src/crdt/contentDatabase.ts": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847",
+          "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+          "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+          "src/crdt/custody.ts": "b97f7cf43c2626f05044234fc30cf22726e3b7ca5a43b22a64028e11f5e8ffd1",
+          "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+          "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+          "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+          "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+          "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+          "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+          "src/crdt/handoffRecord.ts": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+          "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+          "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+          "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+          "src/crdt/legacyCleanup.ts": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187",
+          "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+          "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+          "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+          "src/crdt/legacyCoordinator.ts": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5",
+          "src/crdt/legacyCoordinatorState.ts": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43",
+          "src/crdt/legacyExport.ts": "70e873c056fd32bf58ee6ce4cf06ba2c907af5690304764c1d9840350a323e7f",
+          "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+          "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+          "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+          "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+          "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+          "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+          "src/crdt/localClear.ts": "7621b4ff6313495ede37d8e44089c21537e38bd93d699fccb885347e87dc545c",
+          "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+          "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+          "src/crdt/localClearStorage.ts": "6f9f5082088aa0be7a3ab88525c8c2eadfe894c64f57909b8bc831c110fc17b2",
+          "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+          "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+          "src/crdt/localGenesisStorage.ts": "a634d251e2f58971cdbb780fa98b6e312c02275f890d2158cd4c08b04b55eab0",
+          "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+          "src/crdt/ownedStartup.ts": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+          "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+          "src/crdt/promotionAdmission.ts": "d3d77f33ceba46797739bea9c66b5294ca2008afe61dfca25e3249a2a4d900aa",
+          "src/crdt/promotionGenesis.ts": "bded45eb90f6453d55d891344af596cb12324d1a53410e190da7b68bf6e9ba04",
+          "src/crdt/promotionHandoff.ts": "c055f120b870ada7ac9bff382f9ffeea9ca0a430a8733801dff9acaa7ca34bb3",
+          "src/crdt/promotionOwner.ts": "62d960f18cd839dfe7e0429fe565f8f5334b8ed68350fb6b720720a30a959c1e",
+          "src/crdt/promotionPreparation.ts": "986755274653389ba6960444fab6a1b7e04b83d4e766f8a5f2e57920a0224e93",
+          "src/crdt/promotionRecord.ts": "df21829dccaa7c64092bc7594216901b06a971371694da6f543edc9e7f4b0f3b",
+          "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+          "src/crdt/slotIndex.ts": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6",
+          "src/crdt/startupClassification.ts": "99d907f6427afc12231461bdb7d3251837465367cdcb10c8de1600f5c874f568",
+          "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+          "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+          "src/crdt/storageCompatibility.ts": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+          "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+          "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+          "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+          "src/crdt/workspaceCommands.ts": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e",
+          "src/crdt/writeSession.ts": "02b83e8b0a98753a16b9a1ccf0764300bceda9dc3255c8bb5687fa9ddf7aa6f7",
+          "src/crdt/yjs.ts": "ec2f457ae561e8864cb83880365d62dbbbd6ba80cea56e0cff07adc15b87ba1e",
+          "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+          "src/editor/admittedEditor.ts": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e",
+          "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+          "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+          "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+          "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+          "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+          "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+          "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+          "src/editor/masterLineSelection.ts": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+          "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+          "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+          "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+          "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+          "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+          "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+          "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+          "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+          "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+          "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+          "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+          "src/local.tsx": "aadde7e3b60a3e31f7ee9cb7a7b7fb9ec9d5b29e5f77d55c0393804a1e5d0c93",
+          "src/main.tsx": "d7f94435a44e6d0ab86ac101ae57ec61118131e965e683306a422462c77a7933",
+          "src/pwa.ts": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587",
+          "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+          "src/styles/index.css": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+          "src/styles/local-startup.css": "1ba291dfc50b6d6e21d25e5dc9953a9814a45eccb084a77bf529fa520cb942d7",
+          "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+          "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+          "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+          "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+          "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+          "src/ui/App.tsx": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a",
+          "src/ui/AppUpdateNotice.tsx": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47",
+          "src/ui/Card.tsx": "c0e323b07223f6baccf747d75cc11df6ff337d3e64e0d2bc77d11cbdba199a72",
+          "src/ui/Collection.tsx": "6ff97205e299478492a1d554a2df7c9c1e53493dff0e23a0edfdf53dd25ca8a0",
+          "src/ui/Compose.tsx": "04c833a59127cab84b2af8c9a01220121b6e77552ec66aa32bcf280d09d46afa",
+          "src/ui/DayPanel.tsx": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7",
+          "src/ui/DayPlane.tsx": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f",
+          "src/ui/Goals.tsx": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3",
+          "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+          "src/ui/LocalApp.tsx": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d",
+          "src/ui/Menu.tsx": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8",
+          "src/ui/PrivateMigrationApp.tsx": "8c9c8e011aa3bbd167d608d5344c0ee97fb04bd1341e5afd5a532396d4a57b38",
+          "src/ui/StaleBanner.tsx": "5ae8789ad752952f8e9de24e918a04d87ee1a2e58c85c060349c9f05b8c327cc",
+          "src/ui/UnfiledPanel.tsx": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601",
+          "src/ui/localStartup.ts": "8371b23f33e975096bac911ba3984a183cedb41996f41119476a99caecf924d4",
+          "src/ui/privateMigration.ts": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50",
+          "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+          "src/ui/useCardReorder.ts": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529",
+          "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+          "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+          "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+          "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+          "src/ui/workspaceUi.tsx": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34",
+          "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+        }
+      },
+      "mutation": null,
+      "cases": [
+        {
+          "id": "L01.success",
+          "title": "Explicit clear removes content, journal, every opener and index, retaining only the terminal marker",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "real-encrypted-journal-seeded",
+              "actual": 3,
+              "expected": 3,
+              "passed": true
+            },
+            {
+              "id": "real-content-seeded",
+              "actual": true,
+              "expected": true,
+              "passed": true
+            },
+            {
+              "id": "clear-receipt",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-marker-no-factor-copy",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "terminal-prevents-normal-open",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-prevents-autogenesis",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-refusal-no-new-carriers",
+              "actual": "9c79eaaf11414fb23e878123ecd3ab258509ae1bd9b1663a8992e9784bf7fd63",
+              "expected": "9c79eaaf11414fb23e878123ecd3ab258509ae1bd9b1663a8992e9784bf7fd63",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "L02.blocked",
+          "title": "Blocked native content deletion retains the writer permit and every later carrier",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "blocked-delete-not-complete",
+              "actual": "content",
+              "expected": "content",
+              "passed": true
+            },
+            {
+              "id": "blocked-keeps-journal",
+              "actual": "0b72d3681a09770bc14223c71afb4f0874fbf178c0b40df2d770eaa8bfbe58bc",
+              "expected": "0b72d3681a09770bc14223c71afb4f0874fbf178c0b40df2d770eaa8bfbe58bc",
+              "passed": true
+            },
+            {
+              "id": "blocked-keeps-custody",
+              "actual": "bd2079efd4685728f593ebe2f4f20ed8e436ca1e4474df4ae400903660951be3",
+              "expected": "bd2079efd4685728f593ebe2f4f20ed8e436ca1e4474df4ae400903660951be3",
+              "passed": true
+            },
+            {
+              "id": "blocked-keeps-index",
+              "actual": "d3349d97477e6f45e3e412af8b924af82fad8faa3bb8eeb6c3d91907a685e6b5",
+              "expected": "d3349d97477e6f45e3e412af8b924af82fad8faa3bb8eeb6c3d91907a685e6b5",
+              "passed": true
+            },
+            {
+              "id": "blocked-retains-exclusive-permit",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual native deleteDatabase blocked by a retained connection; no timeout or lease release; continuation after connection close"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L03.refused",
+          "title": "Refused content deletion leaves journal, custody and index untouched",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "delete-refusal-no-success",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "delete-refusal-keeps-journal",
+              "actual": "8cb50bd71c5d39a97f036679bf25ce9318fc6bc6feeb857058e8da2427460e54",
+              "expected": "8cb50bd71c5d39a97f036679bf25ce9318fc6bc6feeb857058e8da2427460e54",
+              "passed": true
+            },
+            {
+              "id": "delete-refusal-keeps-content",
+              "actual": "ecc778531dc1ab747519469156c672583b20fc16bce0166970cc5233b7a2b85f",
+              "expected": "ecc778531dc1ab747519469156c672583b20fc16bce0166970cc5233b7a2b85f",
+              "passed": true
+            },
+            {
+              "id": "delete-refusal-keeps-custody",
+              "actual": "aa1112d2b1520700fe063756d722f36587c1b3e57963c00b25a8fa93db35bbcf",
+              "expected": "aa1112d2b1520700fe063756d722f36587c1b3e57963c00b25a8fa93db35bbcf",
+              "passed": true
+            },
+            {
+              "id": "delete-refusal-keeps-index",
+              "actual": "c792a1c7b9db8ec2b1f91fd67e6c056dbc1a5f7f4ad570e170fb8fb9aa2f9491",
+              "expected": "c792a1c7b9db8ec2b1f91fd67e6c056dbc1a5f7f4ad570e170fb8fb9aa2f9491",
+              "passed": true
+            },
+            {
+              "id": "delete-refusal-retains-intent",
+              "actual": "content",
+              "expected": "content",
+              "passed": true
+            },
+            {
+              "id": "delete-refusal-resumes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Adapter throws SecurityError at native deleteDatabase invocation before issuing a request"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L04.kill-intent",
+          "title": "Renderer death after intent resumes authenticated cleanup",
+          "boundary": "intent",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-waits-for-completion",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumer-waits-for-exclusive-owner",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumed-clear-completes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-startup-refusal",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "Creator killed after native intent completion; waiting resumer rereads and authenticates remaining stages"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L05.kill-content-delete",
+          "title": "Renderer death after content-delete resumes authenticated cleanup",
+          "boundary": "content-delete",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-waits-for-completion",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumer-waits-for-exclusive-owner",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumed-clear-completes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-startup-refusal",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "Creator killed after native content-delete completion; waiting resumer rereads and authenticates remaining stages"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L06.kill-stage-journal",
+          "title": "Renderer death after stage-journal resumes authenticated cleanup",
+          "boundary": "stage-journal",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-waits-for-completion",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumer-waits-for-exclusive-owner",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumed-clear-completes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-startup-refusal",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "Creator killed after native stage-journal completion; waiting resumer rereads and authenticates remaining stages"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L07.kill-stage-custody",
+          "title": "Renderer death after stage-custody resumes authenticated cleanup",
+          "boundary": "stage-custody",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-waits-for-completion",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumer-waits-for-exclusive-owner",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumed-clear-completes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-startup-refusal",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "Creator killed after native stage-custody completion; waiting resumer rereads and authenticates remaining stages"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L08.kill-stage-index",
+          "title": "Renderer death after stage-index resumes authenticated cleanup",
+          "boundary": "stage-index",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-waits-for-completion",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumer-waits-for-exclusive-owner",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumed-clear-completes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-startup-refusal",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "Creator killed after native stage-index completion; waiting resumer rereads and authenticates remaining stages"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L09.kill-index-delete",
+          "title": "Renderer death after index-delete resumes authenticated cleanup",
+          "boundary": "index-delete",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-waits-for-completion",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumer-waits-for-exclusive-owner",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumed-clear-completes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-startup-refusal",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "Creator killed after native index-delete completion; waiting resumer rereads and authenticates remaining stages"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L10.kill-stage-cleared",
+          "title": "Renderer death after stage-cleared resumes authenticated cleanup",
+          "boundary": "stage-cleared",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "receipt-waits-for-completion",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumer-waits-for-exclusive-owner",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "resumed-clear-completes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "terminal-startup-refusal",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "Creator killed after native stage-cleared completion; waiting resumer rereads and authenticates remaining stages"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L11.journal",
+          "title": "Partial and refused journal deletion retain openers and resume after death",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "partial-journal-no-success",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "partial-journal-retains-suffix",
+              "actual": 2,
+              "expected": 2,
+              "passed": true
+            },
+            {
+              "id": "partial-stage",
+              "actual": "journal",
+              "expected": "journal",
+              "passed": true
+            },
+            {
+              "id": "partial-keeps-every-opener",
+              "actual": "ece1f435f807d5cb0898e6c3e24736a3ac7a769e157fc774c6023275becc07da",
+              "expected": "ece1f435f807d5cb0898e6c3e24736a3ac7a769e157fc774c6023275becc07da",
+              "passed": true
+            },
+            {
+              "id": "partial-keeps-index",
+              "actual": "fe5700d02f17e163a42ac86a4acc2fc247d115d0d1944e8ceec46462bedee2ac",
+              "expected": "fe5700d02f17e163a42ac86a4acc2fc247d115d0d1944e8ceec46462bedee2ac",
+              "passed": true
+            },
+            {
+              "id": "refused-suffix-stays-exact",
+              "actual": "cc8d4de3cefb6e059e7cfe09081e09d3ede98f71fc386265fa762d73988df438",
+              "expected": "cc8d4de3cefb6e059e7cfe09081e09d3ede98f71fc386265fa762d73988df438",
+              "passed": true
+            },
+            {
+              "id": "silent-removal-no-success",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "silent-removal-keeps-state",
+              "actual": "cc8d4de3cefb6e059e7cfe09081e09d3ede98f71fc386265fa762d73988df438",
+              "expected": "cc8d4de3cefb6e059e7cfe09081e09d3ede98f71fc386265fa762d73988df438",
+              "passed": true
+            },
+            {
+              "id": "journal-resume",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Actual renderer death without graceful close",
+            "One real synchronous journal removal, injected throw, renderer death, refused/no-op removals, then successful resumption"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L12.aborts",
+          "title": "Aborted intent, custody cleanup and index removal remain resumable at their prior stage",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "intent-request-success-provisional",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "intent-abort-preserves-all",
+              "actual": "47edfb4ddca9fa4262053ed3248fdc2bb036a6c93f1f750381b4c19cc8465ad8",
+              "expected": "47edfb4ddca9fa4262053ed3248fdc2bb036a6c93f1f750381b4c19cc8465ad8",
+              "passed": true
+            },
+            {
+              "id": "key-delete-abort-keeps-stage",
+              "actual": "custody",
+              "expected": "custody",
+              "passed": true
+            },
+            {
+              "id": "key-delete-abort-keeps-openers",
+              "actual": "0f28d2a66a73d73873c80d43e1c9f3612090fd99b5cf0884482a7410cbb96a60",
+              "expected": "0f28d2a66a73d73873c80d43e1c9f3612090fd99b5cf0884482a7410cbb96a60",
+              "passed": true
+            },
+            {
+              "id": "index-abort-keeps-stage",
+              "actual": "index",
+              "expected": "index",
+              "passed": true
+            },
+            {
+              "id": "index-abort-has-no-openers",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "index-abort-keeps-route",
+              "actual": "4e0d19de121ebdde98272d9a937b5f819c770f9c9963ee56178bad8a338b8d8a",
+              "expected": "4e0d19de121ebdde98272d9a937b5f819c770f9c9963ee56178bad8a338b8d8a",
+              "passed": true
+            },
+            {
+              "id": "aborted-phases-resume",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Native transaction.abort after request success at intent, atomic custody removal/progress, and index deletion"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L13.factor",
+          "title": "After removing content openers, only the valid factor can finish index cleanup",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "no-content-opener-for-resume",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "wrong-factor-cannot-finish-keyless-clear",
+              "actual": "unlock-failed",
+              "expected": "unlock-failed",
+              "passed": true
+            },
+            {
+              "id": "wrong-factor-preserves-keyless-progress",
+              "actual": "f36a56909568b465aa2463f78cc4e6be1d06d66bfa4cd527aa7c0ec9adcf0ee5",
+              "expected": "f36a56909568b465aa2463f78cc4e6be1d06d66bfa4cd527aa7c0ec9adcf0ee5",
+              "passed": true
+            },
+            {
+              "id": "valid-factor-finishes-keyless-clear",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "L14.guards",
+          "title": "Pending intent blocks low-level key access, ordinary open and new genesis",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "component-refuses-before-key-access",
+              "actual": [
+                "clearing",
+                0
+              ],
+              "expected": [
+                "clearing",
+                0
+              ],
+              "passed": true
+            },
+            {
+              "id": "owned-open-refuses",
+              "actual": "clearing",
+              "expected": "clearing",
+              "passed": true
+            },
+            {
+              "id": "fresh-creation-refuses",
+              "actual": "clearing",
+              "expected": "clearing",
+              "passed": true
+            },
+            {
+              "id": "refused-opens-retain-carriers",
+              "actual": "1e8d34675a61cec848c41d0d7e97e59b18c59376f8bffa6a64b0672955bd452c",
+              "expected": "1e8d34675a61cec848c41d0d7e97e59b18c59376f8bffa6a64b0672955bd452c",
+              "passed": true
+            },
+            {
+              "id": "guarded-clear-resumes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "L15.lifetime",
+          "title": "Clear waits for a live writer and preserves unrelated Local state",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "writer-opens",
+              "actual": "ready",
+              "expected": "ready",
+              "passed": true
+            },
+            {
+              "id": "frozen-writer-blocks-clear",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "other-slot-continues",
+              "actual": "ready",
+              "expected": "ready",
+              "passed": true
+            },
+            {
+              "id": "clear-after-writer-drain",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "terminal-has-no-content-openers",
+              "actual": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "expected": [
+                [
+                  "local-clear-v1",
+                  "cleared"
+                ]
+              ],
+              "passed": true
+            },
+            {
+              "id": "target-database-absent",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "target-journal-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "target-index-absent",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            },
+            {
+              "id": "independent-content-survives",
+              "actual": "d380143d513b93552f50e52e957c89294498a9ff714b40c0731476b126590a10",
+              "expected": "d380143d513b93552f50e52e957c89294498a9ff714b40c0731476b126590a10",
+              "passed": true
+            },
+            {
+              "id": "independent-editor-still-active",
+              "actual": 1,
+              "expected": 1,
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Real frozen shared writer blocks clear; unrelated slot opens; resumed writer admits late input and closes before exclusive cleanup"
+          ],
+          "artifacts": []
+        },
+        {
+          "id": "L16.recheck",
+          "title": "Stale targets and unknown references refuse before destructive work",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "stale-target-refuses",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "stale-target-no-writes",
+              "actual": "cb324192e1250ec58b9f00525f0bfa83b237a238d9e9e25b8abae6b09b927d04",
+              "expected": "cb324192e1250ec58b9f00525f0bfa83b237a238d9e9e25b8abae6b09b927d04",
+              "passed": true
+            },
+            {
+              "id": "grant-rereads-unknown-reference",
+              "actual": "repair-required",
+              "expected": "repair-required",
+              "passed": true
+            },
+            {
+              "id": "unknown-reference-not-swept",
+              "actual": "147399b2eecb73250e37fc758325944ceb097fc38aff84e843f60e3b8a404ee4",
+              "expected": "147399b2eecb73250e37fc758325944ceb097fc38aff84e843f60e3b8a404ee4",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [],
+          "artifacts": []
+        },
+        {
+          "id": "L17.cancel",
+          "title": "Cancellation during blocked native deletion drains before permit release",
+          "status": "pass",
+          "assertions": [
+            {
+              "id": "cancelled-delete-still-retains-permit",
+              "actual": "pending",
+              "expected": "pending",
+              "passed": true
+            },
+            {
+              "id": "cancelled-block-keeps-journal",
+              "actual": "215231dcf23b421e3fdcd2733f32904e0516708cfe5a97d64f2d8d3c9ec9a0bd",
+              "expected": "215231dcf23b421e3fdcd2733f32904e0516708cfe5a97d64f2d8d3c9ec9a0bd",
+              "passed": true
+            },
+            {
+              "id": "cancelled-call-no-success",
+              "actual": "rejected",
+              "expected": "rejected",
+              "passed": true
+            },
+            {
+              "id": "native-delete-cannot-rollback",
+              "actual": false,
+              "expected": false,
+              "passed": true
+            },
+            {
+              "id": "cancel-retains-authorized-intent",
+              "actual": "content",
+              "expected": "content",
+              "passed": true
+            },
+            {
+              "id": "cancel-keeps-openers",
+              "actual": "95265616e44b01603d41c9f615c309694ea41e6a62f79d66d181dda4f0ae6bb0",
+              "expected": "95265616e44b01603d41c9f615c309694ea41e6a62f79d66d181dda4f0ae6bb0",
+              "passed": true
+            },
+            {
+              "id": "cancelled-delete-resumes",
+              "actual": "cleared",
+              "expected": "cleared",
+              "passed": true
+            },
+            {
+              "id": "production-does-not-enumerate-databases",
+              "actual": 0,
+              "expected": 0,
+              "passed": true
+            },
+            {
+              "id": "no-unhandled-page-errors",
+              "actual": [],
+              "expected": [],
+              "passed": true
+            }
+          ],
+          "schedule": [
+            "Cancellation while actual native deletion is blocked; request still settles before permit release; intent resumes after irreversible deletion"
+          ],
+          "artifacts": []
+        }
+      ]
+    }
+  ],
+  "mutations": [
+    {
+      "id": "blocked-as-success",
+      "assertion": "blocked-delete-not-complete",
+      "status": "detected",
+      "result": {
+        "id": "blocked-as-success",
+        "source": {
+          "files": {
+            "src/account/es256Signature.ts": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+            "src/account/generationWrap.ts": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+            "src/account/recovery.ts": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d",
+            "src/account/recoveryOwner.ts": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65",
+            "src/account/slotUnlock.ts": "a32713bc321c62ab51a488039fe923015b03c133c13a37e5055571e65401ae7f",
+            "src/appUpdate.ts": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df",
+            "src/crdt/accountAccess.ts": "ef45a0bbd0fd123808024bb6a6032e2f46c9b83fab690d2696762c33e1f41413",
+            "src/crdt/accountStartup.ts": "011a5add8cb30180aba3f501809f0a59c7e8c8658611e6d13d672a5efe58d787",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "de18324ca5f55a2a5e04528a95f1a50daa47036c84da6e1199b6c8cad6aa37ab",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "b97f7cf43c2626f05044234fc30cf22726e3b7ca5a43b22a64028e11f5e8ffd1",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/handoffRecord.ts": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyCleanup.ts": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187",
+            "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+            "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+            "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+            "src/crdt/legacyCoordinator.ts": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5",
+            "src/crdt/legacyCoordinatorState.ts": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43",
+            "src/crdt/legacyExport.ts": "70e873c056fd32bf58ee6ce4cf06ba2c907af5690304764c1d9840350a323e7f",
+            "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+            "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+            "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+            "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+            "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+            "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+            "src/crdt/localClear.ts": "7621b4ff6313495ede37d8e44089c21537e38bd93d699fccb885347e87dc545c",
+            "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+            "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+            "src/crdt/localClearStorage.ts": "5c0274f58b16554957d0e97343569005db841610582c7d1b342bea3ae67b3510",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+            "src/crdt/localGenesisStorage.ts": "a634d251e2f58971cdbb780fa98b6e312c02275f890d2158cd4c08b04b55eab0",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/promotionAdmission.ts": "d3d77f33ceba46797739bea9c66b5294ca2008afe61dfca25e3249a2a4d900aa",
+            "src/crdt/promotionGenesis.ts": "bded45eb90f6453d55d891344af596cb12324d1a53410e190da7b68bf6e9ba04",
+            "src/crdt/promotionHandoff.ts": "c055f120b870ada7ac9bff382f9ffeea9ca0a430a8733801dff9acaa7ca34bb3",
+            "src/crdt/promotionOwner.ts": "62d960f18cd839dfe7e0429fe565f8f5334b8ed68350fb6b720720a30a959c1e",
+            "src/crdt/promotionPreparation.ts": "986755274653389ba6960444fab6a1b7e04b83d4e766f8a5f2e57920a0224e93",
+            "src/crdt/promotionRecord.ts": "df21829dccaa7c64092bc7594216901b06a971371694da6f543edc9e7f4b0f3b",
+            "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+            "src/crdt/slotIndex.ts": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6",
+            "src/crdt/startupClassification.ts": "99d907f6427afc12231461bdb7d3251837465367cdcb10c8de1600f5c874f568",
+            "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+            "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "src/crdt/storageCompatibility.ts": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+            "src/crdt/workspaceCommands.ts": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e",
+            "src/crdt/writeSession.ts": "02b83e8b0a98753a16b9a1ccf0764300bceda9dc3255c8bb5687fa9ddf7aa6f7",
+            "src/crdt/yjs.ts": "ec2f457ae561e8864cb83880365d62dbbbd6ba80cea56e0cff07adc15b87ba1e",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/masterLineSelection.ts": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/local.tsx": "aadde7e3b60a3e31f7ee9cb7a7b7fb9ec9d5b29e5f77d55c0393804a1e5d0c93",
+            "src/main.tsx": "d7f94435a44e6d0ab86ac101ae57ec61118131e965e683306a422462c77a7933",
+            "src/pwa.ts": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+            "src/styles/local-startup.css": "1ba291dfc50b6d6e21d25e5dc9953a9814a45eccb084a77bf529fa520cb942d7",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a",
+            "src/ui/AppUpdateNotice.tsx": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47",
+            "src/ui/Card.tsx": "c0e323b07223f6baccf747d75cc11df6ff337d3e64e0d2bc77d11cbdba199a72",
+            "src/ui/Collection.tsx": "6ff97205e299478492a1d554a2df7c9c1e53493dff0e23a0edfdf53dd25ca8a0",
+            "src/ui/Compose.tsx": "04c833a59127cab84b2af8c9a01220121b6e77552ec66aa32bcf280d09d46afa",
+            "src/ui/DayPanel.tsx": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7",
+            "src/ui/DayPlane.tsx": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f",
+            "src/ui/Goals.tsx": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/LocalApp.tsx": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d",
+            "src/ui/Menu.tsx": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8",
+            "src/ui/PrivateMigrationApp.tsx": "8c9c8e011aa3bbd167d608d5344c0ee97fb04bd1341e5afd5a532396d4a57b38",
+            "src/ui/StaleBanner.tsx": "5ae8789ad752952f8e9de24e918a04d87ee1a2e58c85c060349c9f05b8c327cc",
+            "src/ui/UnfiledPanel.tsx": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601",
+            "src/ui/localStartup.ts": "8371b23f33e975096bac911ba3984a183cedb41996f41119476a99caecf924d4",
+            "src/ui/privateMigration.ts": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "src/ui/workspaceUi.tsx": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/localClearStorage.ts",
+          "from": "if (!task.signal.aborted) blocked();",
+          "to": "if (!task.signal.aborted) blocked(); resolve();"
+        },
+        "cases": [
+          {
+            "id": "L02.blocked",
+            "title": "Blocked native content deletion retains the writer permit and every later carrier",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "blocked-delete-not-complete",
+                "actual": "journal",
+                "expected": "content",
+                "passed": false
+              },
+              {
+                "id": "blocked-keeps-journal",
+                "actual": "480dcd6c866f1cf1a4f06fe19a9945196e519e90e8a979490bff25d5fc938e03",
+                "expected": "480dcd6c866f1cf1a4f06fe19a9945196e519e90e8a979490bff25d5fc938e03",
+                "passed": true
+              },
+              {
+                "id": "blocked-keeps-custody",
+                "actual": "827a74901127749e6ff4c3a62a8923756c3618a4209e42deca4015eef3b649d9",
+                "expected": "827a74901127749e6ff4c3a62a8923756c3618a4209e42deca4015eef3b649d9",
+                "passed": true
+              },
+              {
+                "id": "blocked-keeps-index",
+                "actual": "002224a7812776c6a0ee652cabc8956b81e98302bd13002254ece8d9c53c69f7",
+                "expected": "002224a7812776c6a0ee652cabc8956b81e98302bd13002254ece8d9c53c69f7",
+                "passed": true
+              },
+              {
+                "id": "blocked-retains-exclusive-permit",
+                "actual": "pending",
+                "expected": "pending",
+                "passed": true
+              },
+              {
+                "id": "terminal-has-no-content-openers",
+                "actual": [
+                  [
+                    "local-clear-v1",
+                    "cleared"
+                  ]
+                ],
+                "expected": [
+                  [
+                    "local-clear-v1",
+                    "cleared"
+                  ]
+                ],
+                "passed": true
+              },
+              {
+                "id": "target-database-absent",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "target-journal-absent",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              },
+              {
+                "id": "target-index-absent",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              },
+              {
+                "id": "production-does-not-enumerate-databases",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [
+              "Actual native deleteDatabase blocked by a retained connection; no timeout or lease release; continuation after connection close"
+            ],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "journal-before-content",
+      "assertion": "delete-refusal-keeps-journal",
+      "status": "detected",
+      "result": {
+        "id": "journal-before-content",
+        "source": {
+          "files": {
+            "src/account/es256Signature.ts": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+            "src/account/generationWrap.ts": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+            "src/account/recovery.ts": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d",
+            "src/account/recoveryOwner.ts": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65",
+            "src/account/slotUnlock.ts": "a32713bc321c62ab51a488039fe923015b03c133c13a37e5055571e65401ae7f",
+            "src/appUpdate.ts": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df",
+            "src/crdt/accountAccess.ts": "ef45a0bbd0fd123808024bb6a6032e2f46c9b83fab690d2696762c33e1f41413",
+            "src/crdt/accountStartup.ts": "011a5add8cb30180aba3f501809f0a59c7e8c8658611e6d13d672a5efe58d787",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "de18324ca5f55a2a5e04528a95f1a50daa47036c84da6e1199b6c8cad6aa37ab",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "b97f7cf43c2626f05044234fc30cf22726e3b7ca5a43b22a64028e11f5e8ffd1",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/handoffRecord.ts": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyCleanup.ts": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187",
+            "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+            "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+            "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+            "src/crdt/legacyCoordinator.ts": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5",
+            "src/crdt/legacyCoordinatorState.ts": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43",
+            "src/crdt/legacyExport.ts": "70e873c056fd32bf58ee6ce4cf06ba2c907af5690304764c1d9840350a323e7f",
+            "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+            "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+            "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+            "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+            "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+            "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+            "src/crdt/localClear.ts": "8f135900473d91687ca12816c6e2072742c8c0e8b4470811d95e9fb1f52a03cd",
+            "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+            "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+            "src/crdt/localClearStorage.ts": "6f9f5082088aa0be7a3ab88525c8c2eadfe894c64f57909b8bc831c110fc17b2",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+            "src/crdt/localGenesisStorage.ts": "a634d251e2f58971cdbb780fa98b6e312c02275f890d2158cd4c08b04b55eab0",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/promotionAdmission.ts": "d3d77f33ceba46797739bea9c66b5294ca2008afe61dfca25e3249a2a4d900aa",
+            "src/crdt/promotionGenesis.ts": "bded45eb90f6453d55d891344af596cb12324d1a53410e190da7b68bf6e9ba04",
+            "src/crdt/promotionHandoff.ts": "c055f120b870ada7ac9bff382f9ffeea9ca0a430a8733801dff9acaa7ca34bb3",
+            "src/crdt/promotionOwner.ts": "62d960f18cd839dfe7e0429fe565f8f5334b8ed68350fb6b720720a30a959c1e",
+            "src/crdt/promotionPreparation.ts": "986755274653389ba6960444fab6a1b7e04b83d4e766f8a5f2e57920a0224e93",
+            "src/crdt/promotionRecord.ts": "df21829dccaa7c64092bc7594216901b06a971371694da6f543edc9e7f4b0f3b",
+            "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+            "src/crdt/slotIndex.ts": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6",
+            "src/crdt/startupClassification.ts": "99d907f6427afc12231461bdb7d3251837465367cdcb10c8de1600f5c874f568",
+            "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+            "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "src/crdt/storageCompatibility.ts": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+            "src/crdt/workspaceCommands.ts": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e",
+            "src/crdt/writeSession.ts": "02b83e8b0a98753a16b9a1ccf0764300bceda9dc3255c8bb5687fa9ddf7aa6f7",
+            "src/crdt/yjs.ts": "ec2f457ae561e8864cb83880365d62dbbbd6ba80cea56e0cff07adc15b87ba1e",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/masterLineSelection.ts": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/local.tsx": "aadde7e3b60a3e31f7ee9cb7a7b7fb9ec9d5b29e5f77d55c0393804a1e5d0c93",
+            "src/main.tsx": "d7f94435a44e6d0ab86ac101ae57ec61118131e965e683306a422462c77a7933",
+            "src/pwa.ts": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+            "src/styles/local-startup.css": "1ba291dfc50b6d6e21d25e5dc9953a9814a45eccb084a77bf529fa520cb942d7",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a",
+            "src/ui/AppUpdateNotice.tsx": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47",
+            "src/ui/Card.tsx": "c0e323b07223f6baccf747d75cc11df6ff337d3e64e0d2bc77d11cbdba199a72",
+            "src/ui/Collection.tsx": "6ff97205e299478492a1d554a2df7c9c1e53493dff0e23a0edfdf53dd25ca8a0",
+            "src/ui/Compose.tsx": "04c833a59127cab84b2af8c9a01220121b6e77552ec66aa32bcf280d09d46afa",
+            "src/ui/DayPanel.tsx": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7",
+            "src/ui/DayPlane.tsx": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f",
+            "src/ui/Goals.tsx": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/LocalApp.tsx": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d",
+            "src/ui/Menu.tsx": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8",
+            "src/ui/PrivateMigrationApp.tsx": "8c9c8e011aa3bbd167d608d5344c0ee97fb04bd1341e5afd5a532396d4a57b38",
+            "src/ui/StaleBanner.tsx": "5ae8789ad752952f8e9de24e918a04d87ee1a2e58c85c060349c9f05b8c327cc",
+            "src/ui/UnfiledPanel.tsx": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601",
+            "src/ui/localStartup.ts": "8371b23f33e975096bac911ba3984a183cedb41996f41119476a99caecf924d4",
+            "src/ui/privateMigration.ts": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "src/ui/workspaceUi.tsx": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/localClear.ts",
+          "from": "await deleteLocalContent(task, record.target, () => notify(options, 'content', true));",
+          "to": "removeLocalJournal(task, record.target); await deleteLocalContent(task, record.target, () => notify(options, 'content', true));"
+        },
+        "cases": [
+          {
+            "id": "L03.refused",
+            "title": "Refused content deletion leaves journal, custody and index untouched",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "delete-refusal-no-success",
+                "actual": "rejected",
+                "expected": "rejected",
+                "passed": true
+              },
+              {
+                "id": "delete-refusal-keeps-journal",
+                "actual": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+                "expected": "32438d3c42af25f9eb5b8a959a1682341f64e91148a035657f5a860f5c845908",
+                "passed": false
+              },
+              {
+                "id": "delete-refusal-keeps-content",
+                "actual": "5d7a92827fd423ec510569a9c7ed324461a2caa81dc4fa81b25fed718b37684b",
+                "expected": "5d7a92827fd423ec510569a9c7ed324461a2caa81dc4fa81b25fed718b37684b",
+                "passed": true
+              },
+              {
+                "id": "delete-refusal-keeps-custody",
+                "actual": "8491789a2cb407d78e16fd962fe9852596cad734a981c1fac9a37401dda5619d",
+                "expected": "8491789a2cb407d78e16fd962fe9852596cad734a981c1fac9a37401dda5619d",
+                "passed": true
+              },
+              {
+                "id": "delete-refusal-keeps-index",
+                "actual": "c1a14f45403479f7d4c4f9bc65d76ef91485c0745693007626713273c7f8fdc1",
+                "expected": "c1a14f45403479f7d4c4f9bc65d76ef91485c0745693007626713273c7f8fdc1",
+                "passed": true
+              },
+              {
+                "id": "delete-refusal-retains-intent",
+                "actual": "content",
+                "expected": "content",
+                "passed": true
+              },
+              {
+                "id": "delete-refusal-resumes",
+                "actual": "cleared",
+                "expected": "cleared",
+                "passed": true
+              },
+              {
+                "id": "production-does-not-enumerate-databases",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [
+              "Adapter throws SecurityError at native deleteDatabase invocation before issuing a request"
+            ],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "retain-genesis-opener",
+      "assertion": "terminal-has-no-content-openers",
+      "status": "detected",
+      "result": {
+        "id": "retain-genesis-opener",
+        "source": {
+          "files": {
+            "src/account/es256Signature.ts": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+            "src/account/generationWrap.ts": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+            "src/account/recovery.ts": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d",
+            "src/account/recoveryOwner.ts": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65",
+            "src/account/slotUnlock.ts": "a32713bc321c62ab51a488039fe923015b03c133c13a37e5055571e65401ae7f",
+            "src/appUpdate.ts": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df",
+            "src/crdt/accountAccess.ts": "ef45a0bbd0fd123808024bb6a6032e2f46c9b83fab690d2696762c33e1f41413",
+            "src/crdt/accountStartup.ts": "011a5add8cb30180aba3f501809f0a59c7e8c8658611e6d13d672a5efe58d787",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "de18324ca5f55a2a5e04528a95f1a50daa47036c84da6e1199b6c8cad6aa37ab",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "b97f7cf43c2626f05044234fc30cf22726e3b7ca5a43b22a64028e11f5e8ffd1",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/handoffRecord.ts": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyCleanup.ts": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187",
+            "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+            "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+            "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+            "src/crdt/legacyCoordinator.ts": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5",
+            "src/crdt/legacyCoordinatorState.ts": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43",
+            "src/crdt/legacyExport.ts": "70e873c056fd32bf58ee6ce4cf06ba2c907af5690304764c1d9840350a323e7f",
+            "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+            "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+            "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+            "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+            "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+            "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+            "src/crdt/localClear.ts": "7621b4ff6313495ede37d8e44089c21537e38bd93d699fccb885347e87dc545c",
+            "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+            "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+            "src/crdt/localClearStorage.ts": "b9d2d58b0040df56bf90c16ae6563b7fdf88718c746f9ec0f45120fe0777cd2d",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+            "src/crdt/localGenesisStorage.ts": "a634d251e2f58971cdbb780fa98b6e312c02275f890d2158cd4c08b04b55eab0",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/promotionAdmission.ts": "d3d77f33ceba46797739bea9c66b5294ca2008afe61dfca25e3249a2a4d900aa",
+            "src/crdt/promotionGenesis.ts": "bded45eb90f6453d55d891344af596cb12324d1a53410e190da7b68bf6e9ba04",
+            "src/crdt/promotionHandoff.ts": "c055f120b870ada7ac9bff382f9ffeea9ca0a430a8733801dff9acaa7ca34bb3",
+            "src/crdt/promotionOwner.ts": "62d960f18cd839dfe7e0429fe565f8f5334b8ed68350fb6b720720a30a959c1e",
+            "src/crdt/promotionPreparation.ts": "986755274653389ba6960444fab6a1b7e04b83d4e766f8a5f2e57920a0224e93",
+            "src/crdt/promotionRecord.ts": "df21829dccaa7c64092bc7594216901b06a971371694da6f543edc9e7f4b0f3b",
+            "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+            "src/crdt/slotIndex.ts": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6",
+            "src/crdt/startupClassification.ts": "99d907f6427afc12231461bdb7d3251837465367cdcb10c8de1600f5c874f568",
+            "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+            "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "src/crdt/storageCompatibility.ts": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+            "src/crdt/workspaceCommands.ts": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e",
+            "src/crdt/writeSession.ts": "02b83e8b0a98753a16b9a1ccf0764300bceda9dc3255c8bb5687fa9ddf7aa6f7",
+            "src/crdt/yjs.ts": "ec2f457ae561e8864cb83880365d62dbbbd6ba80cea56e0cff07adc15b87ba1e",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/masterLineSelection.ts": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/local.tsx": "aadde7e3b60a3e31f7ee9cb7a7b7fb9ec9d5b29e5f77d55c0393804a1e5d0c93",
+            "src/main.tsx": "d7f94435a44e6d0ab86ac101ae57ec61118131e965e683306a422462c77a7933",
+            "src/pwa.ts": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+            "src/styles/local-startup.css": "1ba291dfc50b6d6e21d25e5dc9953a9814a45eccb084a77bf529fa520cb942d7",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a",
+            "src/ui/AppUpdateNotice.tsx": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47",
+            "src/ui/Card.tsx": "c0e323b07223f6baccf747d75cc11df6ff337d3e64e0d2bc77d11cbdba199a72",
+            "src/ui/Collection.tsx": "6ff97205e299478492a1d554a2df7c9c1e53493dff0e23a0edfdf53dd25ca8a0",
+            "src/ui/Compose.tsx": "04c833a59127cab84b2af8c9a01220121b6e77552ec66aa32bcf280d09d46afa",
+            "src/ui/DayPanel.tsx": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7",
+            "src/ui/DayPlane.tsx": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f",
+            "src/ui/Goals.tsx": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/LocalApp.tsx": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d",
+            "src/ui/Menu.tsx": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8",
+            "src/ui/PrivateMigrationApp.tsx": "8c9c8e011aa3bbd167d608d5344c0ee97fb04bd1341e5afd5a532396d4a57b38",
+            "src/ui/StaleBanner.tsx": "5ae8789ad752952f8e9de24e918a04d87ee1a2e58c85c060349c9f05b8c327cc",
+            "src/ui/UnfiledPanel.tsx": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601",
+            "src/ui/localStartup.ts": "8371b23f33e975096bac911ba3984a183cedb41996f41119476a99caecf924d4",
+            "src/ui/privateMigration.ts": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "src/ui/workspaceUi.tsx": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/localClearStorage.ts",
+          "from": "for (const row of remove) {",
+          "to": "for (const row of remove.filter(r => !(Array.isArray(r.key) && r.key[1] === 'local-genesis-v1'))) {"
+        },
+        "cases": [
+          {
+            "id": "L01.success",
+            "title": "Explicit clear removes content, journal, every opener and index, retaining only the terminal marker",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "real-encrypted-journal-seeded",
+                "actual": 3,
+                "expected": 3,
+                "passed": true
+              },
+              {
+                "id": "real-content-seeded",
+                "actual": true,
+                "expected": true,
+                "passed": true
+              },
+              {
+                "id": "clear-receipt",
+                "expected": "cleared",
+                "passed": false
+              },
+              {
+                "id": "terminal-has-no-content-openers",
+                "actual": [
+                  [
+                    "local-clear-v1",
+                    "index"
+                  ],
+                  [
+                    "local-genesis-v1",
+                    "ready"
+                  ]
+                ],
+                "expected": [
+                  [
+                    "local-clear-v1",
+                    "cleared"
+                  ]
+                ],
+                "passed": false
+              },
+              {
+                "id": "target-database-absent",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "target-journal-absent",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              },
+              {
+                "id": "target-index-absent",
+                "actual": [
+                  {
+                    "key": "local-slot",
+                    "value": {
+                      "id": "local-slot",
+                      "status": "active",
+                      "unlockBinding": null,
+                      "local": {
+                        "principalId": "3a20853580058422ca903d59ddea84b7",
+                        "workspaceId": "8372ed6ed33114f3adff1c25279c789b",
+                        "intentId": "72fa665c1160243511eeec7deb1923e3"
+                      },
+                      "stores": [
+                        {
+                          "principal": "3a20853580058422ca903d59ddea84b7",
+                          "workspace": "8372ed6ed33114f3adff1c25279c789b",
+                          "dbName": "done.76af26d7d90808a1760cde5b50d022e0"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "expected": [],
+                "passed": false
+              },
+              {
+                "id": "terminal-marker-no-factor-copy",
+                "actual": false,
+                "expected": false,
+                "passed": true
+              },
+              {
+                "id": "terminal-prevents-normal-open",
+                "actual": "clearing",
+                "expected": "cleared",
+                "passed": false
+              },
+              {
+                "id": "terminal-prevents-autogenesis",
+                "actual": "clearing",
+                "expected": "cleared",
+                "passed": false
+              },
+              {
+                "id": "terminal-refusal-no-new-carriers",
+                "actual": "e01b009a05186de9c4c4e9e1de9555a9976e69e2bfb3fc9682025397d5f18b61",
+                "expected": "e01b009a05186de9c4c4e9e1de9555a9976e69e2bfb3fc9682025397d5f18b61",
+                "passed": true
+              },
+              {
+                "id": "production-does-not-enumerate-databases",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "skip-resume-authentication",
+      "assertion": "wrong-factor-cannot-finish-keyless-clear",
+      "status": "detected",
+      "result": {
+        "id": "skip-resume-authentication",
+        "source": {
+          "files": {
+            "src/account/es256Signature.ts": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+            "src/account/generationWrap.ts": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+            "src/account/recovery.ts": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d",
+            "src/account/recoveryOwner.ts": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65",
+            "src/account/slotUnlock.ts": "a32713bc321c62ab51a488039fe923015b03c133c13a37e5055571e65401ae7f",
+            "src/appUpdate.ts": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df",
+            "src/crdt/accountAccess.ts": "ef45a0bbd0fd123808024bb6a6032e2f46c9b83fab690d2696762c33e1f41413",
+            "src/crdt/accountStartup.ts": "011a5add8cb30180aba3f501809f0a59c7e8c8658611e6d13d672a5efe58d787",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "de18324ca5f55a2a5e04528a95f1a50daa47036c84da6e1199b6c8cad6aa37ab",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "b97f7cf43c2626f05044234fc30cf22726e3b7ca5a43b22a64028e11f5e8ffd1",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/handoffRecord.ts": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyCleanup.ts": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187",
+            "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+            "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+            "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+            "src/crdt/legacyCoordinator.ts": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5",
+            "src/crdt/legacyCoordinatorState.ts": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43",
+            "src/crdt/legacyExport.ts": "70e873c056fd32bf58ee6ce4cf06ba2c907af5690304764c1d9840350a323e7f",
+            "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+            "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+            "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+            "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+            "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+            "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+            "src/crdt/localClear.ts": "6d9316431e5a8e85b8fea53d0bd2c1b3d39c69beae0a32241e4c583b586e693a",
+            "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+            "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+            "src/crdt/localClearStorage.ts": "6f9f5082088aa0be7a3ab88525c8c2eadfe894c64f57909b8bc831c110fc17b2",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+            "src/crdt/localGenesisStorage.ts": "a634d251e2f58971cdbb780fa98b6e312c02275f890d2158cd4c08b04b55eab0",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/promotionAdmission.ts": "d3d77f33ceba46797739bea9c66b5294ca2008afe61dfca25e3249a2a4d900aa",
+            "src/crdt/promotionGenesis.ts": "bded45eb90f6453d55d891344af596cb12324d1a53410e190da7b68bf6e9ba04",
+            "src/crdt/promotionHandoff.ts": "c055f120b870ada7ac9bff382f9ffeea9ca0a430a8733801dff9acaa7ca34bb3",
+            "src/crdt/promotionOwner.ts": "62d960f18cd839dfe7e0429fe565f8f5334b8ed68350fb6b720720a30a959c1e",
+            "src/crdt/promotionPreparation.ts": "986755274653389ba6960444fab6a1b7e04b83d4e766f8a5f2e57920a0224e93",
+            "src/crdt/promotionRecord.ts": "df21829dccaa7c64092bc7594216901b06a971371694da6f543edc9e7f4b0f3b",
+            "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+            "src/crdt/slotIndex.ts": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6",
+            "src/crdt/startupClassification.ts": "99d907f6427afc12231461bdb7d3251837465367cdcb10c8de1600f5c874f568",
+            "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+            "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "src/crdt/storageCompatibility.ts": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+            "src/crdt/workspaceCommands.ts": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e",
+            "src/crdt/writeSession.ts": "02b83e8b0a98753a16b9a1ccf0764300bceda9dc3255c8bb5687fa9ddf7aa6f7",
+            "src/crdt/yjs.ts": "ec2f457ae561e8864cb83880365d62dbbbd6ba80cea56e0cff07adc15b87ba1e",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/masterLineSelection.ts": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/local.tsx": "aadde7e3b60a3e31f7ee9cb7a7b7fb9ec9d5b29e5f77d55c0393804a1e5d0c93",
+            "src/main.tsx": "d7f94435a44e6d0ab86ac101ae57ec61118131e965e683306a422462c77a7933",
+            "src/pwa.ts": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+            "src/styles/local-startup.css": "1ba291dfc50b6d6e21d25e5dc9953a9814a45eccb084a77bf529fa520cb942d7",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a",
+            "src/ui/AppUpdateNotice.tsx": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47",
+            "src/ui/Card.tsx": "c0e323b07223f6baccf747d75cc11df6ff337d3e64e0d2bc77d11cbdba199a72",
+            "src/ui/Collection.tsx": "6ff97205e299478492a1d554a2df7c9c1e53493dff0e23a0edfdf53dd25ca8a0",
+            "src/ui/Compose.tsx": "04c833a59127cab84b2af8c9a01220121b6e77552ec66aa32bcf280d09d46afa",
+            "src/ui/DayPanel.tsx": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7",
+            "src/ui/DayPlane.tsx": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f",
+            "src/ui/Goals.tsx": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/LocalApp.tsx": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d",
+            "src/ui/Menu.tsx": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8",
+            "src/ui/PrivateMigrationApp.tsx": "8c9c8e011aa3bbd167d608d5344c0ee97fb04bd1341e5afd5a532396d4a57b38",
+            "src/ui/StaleBanner.tsx": "5ae8789ad752952f8e9de24e918a04d87ee1a2e58c85c060349c9f05b8c327cc",
+            "src/ui/UnfiledPanel.tsx": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601",
+            "src/ui/localStartup.ts": "8371b23f33e975096bac911ba3984a183cedb41996f41119476a99caecf924d4",
+            "src/ui/privateMigration.ts": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "src/ui/workspaceUi.tsx": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/localClear.ts",
+          "from": "await auth.verify(record);",
+          "to": ";"
+        },
+        "cases": [
+          {
+            "id": "L13.factor",
+            "title": "After removing content openers, only the valid factor can finish index cleanup",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "no-content-opener-for-resume",
+                "actual": 1,
+                "expected": 1,
+                "passed": true
+              },
+              {
+                "id": "wrong-factor-cannot-finish-keyless-clear",
+                "expected": "unlock-failed",
+                "passed": false
+              },
+              {
+                "id": "wrong-factor-preserves-keyless-progress",
+                "actual": "172ba01e7b6ded6ed94d2ff0ddf22e706745052fc5d0c291baaa0139f587f11e",
+                "expected": "849c5674d42c0dde1d7c5b22343432ea148f609b560cfe12b7f78f71e33ef575",
+                "passed": false
+              },
+              {
+                "id": "valid-factor-finishes-keyless-clear",
+                "actual": "cleared",
+                "expected": "cleared",
+                "passed": true
+              },
+              {
+                "id": "production-does-not-enumerate-databases",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "allow-component-open",
+      "assertion": "component-refuses-before-key-access",
+      "status": "detected",
+      "result": {
+        "id": "allow-component-open",
+        "source": {
+          "files": {
+            "src/account/es256Signature.ts": "3bee2d90cd2ebd27933b3a45f429c4ad0cfd7cf187f33065af0762fc286f923b",
+            "src/account/generationWrap.ts": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3",
+            "src/account/recovery.ts": "af9ff710341fa347e87f7edbaadeb4e8263d71ff7ee8e7992bd0b13ebb1f986d",
+            "src/account/recoveryOwner.ts": "a65e8c4d27205e962a2f65e633d837d23049775b0693a33c4469b1455a6a0c65",
+            "src/account/slotUnlock.ts": "a32713bc321c62ab51a488039fe923015b03c133c13a37e5055571e65401ae7f",
+            "src/appUpdate.ts": "81db296ed4f95f70aba67a153b57f10e32cf10ce2d90dbe8774a5c9db29e73df",
+            "src/crdt/accountAccess.ts": "ef45a0bbd0fd123808024bb6a6032e2f46c9b83fab690d2696762c33e1f41413",
+            "src/crdt/accountStartup.ts": "011a5add8cb30180aba3f501809f0a59c7e8c8658611e6d13d672a5efe58d787",
+            "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+            "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+            "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+            "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+            "src/crdt/admittedWorkspace.ts": "de18324ca5f55a2a5e04528a95f1a50daa47036c84da6e1199b6c8cad6aa37ab",
+            "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+            "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+            "src/crdt/contentDatabase.ts": "23da81acfeca81946ed4dab3e42ea0106c5dc2b42faf8726fe54f5ad41097847",
+            "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+            "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+            "src/crdt/custody.ts": "4f51d559aac5547199d28a071dacbb4d50ec2712acac306964fdb62e616ddd67",
+            "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+            "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+            "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+            "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+            "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+            "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+            "src/crdt/handoffRecord.ts": "3fce968fd38f0a8f98a1a3d651e5b19dab442634b4b549355164b838d83bde20",
+            "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+            "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+            "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+            "src/crdt/legacyCleanup.ts": "ecb557e1503bf823762621a0463a8f341bc70fa5f3a144f7686b58195e1ba187",
+            "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+            "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+            "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+            "src/crdt/legacyCoordinator.ts": "7e703f93cd324dca876940589dcdc4b32d623d9e342cf3aa590b9855ec4d0fd5",
+            "src/crdt/legacyCoordinatorState.ts": "2f2cffca05dca02e766a75a8944158ad27c2466662bfdb772c1e1406ae2d8f43",
+            "src/crdt/legacyExport.ts": "70e873c056fd32bf58ee6ce4cf06ba2c907af5690304764c1d9840350a323e7f",
+            "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+            "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+            "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+            "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+            "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+            "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+            "src/crdt/localClear.ts": "7621b4ff6313495ede37d8e44089c21537e38bd93d699fccb885347e87dc545c",
+            "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+            "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+            "src/crdt/localClearStorage.ts": "6f9f5082088aa0be7a3ab88525c8c2eadfe894c64f57909b8bc831c110fc17b2",
+            "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+            "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+            "src/crdt/localGenesisStorage.ts": "a634d251e2f58971cdbb780fa98b6e312c02275f890d2158cd4c08b04b55eab0",
+            "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+            "src/crdt/ownedStartup.ts": "b73e5df0686f7e2460a80f030e04eadfc791e350320316e2913aacb5bb84a3db",
+            "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+            "src/crdt/promotionAdmission.ts": "d3d77f33ceba46797739bea9c66b5294ca2008afe61dfca25e3249a2a4d900aa",
+            "src/crdt/promotionGenesis.ts": "bded45eb90f6453d55d891344af596cb12324d1a53410e190da7b68bf6e9ba04",
+            "src/crdt/promotionHandoff.ts": "c055f120b870ada7ac9bff382f9ffeea9ca0a430a8733801dff9acaa7ca34bb3",
+            "src/crdt/promotionOwner.ts": "62d960f18cd839dfe7e0429fe565f8f5334b8ed68350fb6b720720a30a959c1e",
+            "src/crdt/promotionPreparation.ts": "986755274653389ba6960444fab6a1b7e04b83d4e766f8a5f2e57920a0224e93",
+            "src/crdt/promotionRecord.ts": "df21829dccaa7c64092bc7594216901b06a971371694da6f543edc9e7f4b0f3b",
+            "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+            "src/crdt/slotIndex.ts": "351dd8fc2066cf12c606a067c261fe251980a9abfc558f93f6b5ff1a204cd6a6",
+            "src/crdt/startupClassification.ts": "99d907f6427afc12231461bdb7d3251837465367cdcb10c8de1600f5c874f568",
+            "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+            "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+            "src/crdt/storageCompatibility.ts": "59cbc688eeb942b57b8b53a4332bf9cd4e1060de915a8ad9b9360e631f5329f4",
+            "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+            "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+            "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+            "src/crdt/workspaceCommands.ts": "70fa5060fbaf8be7019e4e11e4270308b45843e687770618501324c7a673ba8e",
+            "src/crdt/writeSession.ts": "02b83e8b0a98753a16b9a1ccf0764300bceda9dc3255c8bb5687fa9ddf7aa6f7",
+            "src/crdt/yjs.ts": "ec2f457ae561e8864cb83880365d62dbbbd6ba80cea56e0cff07adc15b87ba1e",
+            "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+            "src/editor/admittedEditor.ts": "3b814618daca7be62dbcbf355582566fc021c35ac916cff1f0d513d4ef4fca3e",
+            "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+            "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+            "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+            "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+            "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+            "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+            "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+            "src/editor/masterLineSelection.ts": "5787b6b3417a92e176872945d747d3eac727b05711aefb9982d4b959aaa2dbb9",
+            "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+            "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+            "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+            "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+            "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+            "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+            "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+            "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+            "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+            "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+            "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+            "src/local.tsx": "aadde7e3b60a3e31f7ee9cb7a7b7fb9ec9d5b29e5f77d55c0393804a1e5d0c93",
+            "src/main.tsx": "d7f94435a44e6d0ab86ac101ae57ec61118131e965e683306a422462c77a7933",
+            "src/pwa.ts": "7aecbd810d04941a449b129f441249cf1b9b22655b3d7472525623ca590c3587",
+            "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+            "src/styles/index.css": "5145c8730f05c1a03fef7288444d71168e8b1e5a2cf439df28d1a5ee991c1911",
+            "src/styles/local-startup.css": "1ba291dfc50b6d6e21d25e5dc9953a9814a45eccb084a77bf529fa520cb942d7",
+            "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+            "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+            "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+            "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+            "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+            "src/ui/App.tsx": "05ed3c5191aaaadc369b8767e6357e622aed973941081d9f2b3acb44f5bb4a6a",
+            "src/ui/AppUpdateNotice.tsx": "5df725b95e000ddc9e49258e487506dd1dc6cf8705417961c96bc764b853ed47",
+            "src/ui/Card.tsx": "c0e323b07223f6baccf747d75cc11df6ff337d3e64e0d2bc77d11cbdba199a72",
+            "src/ui/Collection.tsx": "6ff97205e299478492a1d554a2df7c9c1e53493dff0e23a0edfdf53dd25ca8a0",
+            "src/ui/Compose.tsx": "04c833a59127cab84b2af8c9a01220121b6e77552ec66aa32bcf280d09d46afa",
+            "src/ui/DayPanel.tsx": "b48858d16c1b29d5f77c8aefe7e7d9c8124a784f9e9db8ddf923564a144c1ac7",
+            "src/ui/DayPlane.tsx": "a8598900b7fc3843f1e610e99f622d534b55d3d0c823fa691077fdc480e4391f",
+            "src/ui/Goals.tsx": "07a0286a7ac1bac747079c7f1d709f4dd4ea1ef2912c60711b4831d2b29036f3",
+            "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+            "src/ui/LocalApp.tsx": "a6a78e805d9cd4d6888c601beada54b8d892412d04f2fee0caff763c7c6ff35d",
+            "src/ui/Menu.tsx": "32ab7a59baf2f558ae0f6d8e2f8348fc1daee634a8c24cf833ed365604ff79c8",
+            "src/ui/PrivateMigrationApp.tsx": "8c9c8e011aa3bbd167d608d5344c0ee97fb04bd1341e5afd5a532396d4a57b38",
+            "src/ui/StaleBanner.tsx": "5ae8789ad752952f8e9de24e918a04d87ee1a2e58c85c060349c9f05b8c327cc",
+            "src/ui/UnfiledPanel.tsx": "cee138880784268b336e76e647bc2a404fb308629c6e2e245218c11d4befb601",
+            "src/ui/localStartup.ts": "8371b23f33e975096bac911ba3984a183cedb41996f41119476a99caecf924d4",
+            "src/ui/privateMigration.ts": "8f6170c09ec2117ce927dd3766dc3c9f798fcd797ff2b8ed9f91d6a9e6885d50",
+            "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+            "src/ui/useCardReorder.ts": "0dced82eed31e91b6880c067c9929fcb9eab81f72850cf4dd448a34061412529",
+            "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+            "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+            "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+            "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+            "src/ui/workspaceUi.tsx": "53f9a181a355d8a87fd457b098db92c52be8a5894a7d63add7f2ea985d164a34",
+            "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265"
+          }
+        },
+        "mutation": {
+          "file": "src/crdt/custody.ts",
+          "from": "await assertNoLocalClear(task, a.slotId);",
+          "to": ";"
+        },
+        "cases": [
+          {
+            "id": "L14.guards",
+            "title": "Pending intent blocks low-level key access, ordinary open and new genesis",
+            "status": "fail",
+            "assertions": [
+              {
+                "id": "component-refuses-before-key-access",
+                "actual": [
+                  null,
+                  5
+                ],
+                "expected": [
+                  "clearing",
+                  0
+                ],
+                "passed": false
+              },
+              {
+                "id": "owned-open-refuses",
+                "actual": "clearing",
+                "expected": "clearing",
+                "passed": true
+              },
+              {
+                "id": "fresh-creation-refuses",
+                "actual": "clearing",
+                "expected": "clearing",
+                "passed": true
+              },
+              {
+                "id": "refused-opens-retain-carriers",
+                "actual": "cd7d130acb9608a6dc59064ba625250d793d1376334c0d35825c4eb819d2e41b",
+                "expected": "cd7d130acb9608a6dc59064ba625250d793d1376334c0d35825c4eb819d2e41b",
+                "passed": true
+              },
+              {
+                "id": "guarded-clear-resumes",
+                "actual": "cleared",
+                "expected": "cleared",
+                "passed": true
+              },
+              {
+                "id": "production-does-not-enumerate-databases",
+                "actual": 0,
+                "expected": 0,
+                "passed": true
+              },
+              {
+                "id": "no-unhandled-page-errors",
+                "actual": [],
+                "expected": [],
+                "passed": true
+              }
+            ],
+            "schedule": [],
+            "artifacts": []
+          }
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Explicit clear of the first completed Local workspace/slot. Account removal, service revocation, origin-wide reset, shared/multiple-workspace custody, partial genesis cleanup and default application cutover remain outside this checkpoint.",
+    "Real Chromium IndexedDB/Web Locks, native blocked deletion, WebCrypto, WASM journal and renderer death. Injected native request/refusal boundaries are identified in the schedules; no OS/power-loss or forensic erasure claim.",
+    "No supported-population, low-end latency, native IME, raw clone/rollback or independent cryptographic review claim."
+  ],
+  "exitCode": 0,
+  "finished": "2026-09-10T18:06:00.435Z"
+}

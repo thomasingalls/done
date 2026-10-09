@@ -1,0 +1,19 @@
+(node:56594) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:56594) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:56594) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay (19228.972833ms)
+✔ lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing (17146.461667ms)
+✔ native submission abort retains work for cold restart (12450.527084ms)
+✔ native receive abort retains work for cold restart (12521.204709ms)
+✔ close drains a delayed send and prevents queued receive dispatch before releasing the shared permit (8626.632625ms)
+✔ local journal admission during an outbound seal is captured once and sent after readback gets a turn (11640.756792ms)
+✔ retained signed receive conflict halts both lanes without closing valid Local content (10914.892917ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94414.406583

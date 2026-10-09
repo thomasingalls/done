@@ -1,0 +1,57 @@
+{
+  "review": {
+    "packet": "docs/review/implementation/af8941e-96a2040.md",
+    "addressed": [
+      "F-01",
+      "F-02",
+      "F-20"
+    ],
+    "otherFindings": "Remain scoped as assessed in the archived packet and checkpoint."
+  },
+  "portCollision": {
+    "cause": "Changing the four runners to port 0 during parallel focused validation made Vite 8.1.5 choose its default 5173. Three collided with the first runner. Original distinct strict ports were restored.",
+    "resourceDefect": "After logging the listen error, three runners remained live because listen was outside the server-close finally. The agent observed their processes alive for more than three minutes and sent SIGTERM only to those test-owned processes.",
+    "observedPids": [
+      70748,
+      70783,
+      70825
+    ],
+    "repair": "Move listen inside finally-protected server lifetime; four deliberate occupied-port controls now require exit 2 within 20 seconds and zero mutation credit."
+  },
+  "escapedMutation": {
+    "gate": "storage:session",
+    "mutation": "release-before-drain",
+    "priorAssertion": "detached-work-blocks-exclusive",
+    "observation": "The mutated test reported pass and the aggregate exited 1 because the mutation survived.",
+    "repair": "Record work gate release and disposal in the same renderer; require release before disposal. Await native lock and worker predicates in a bounded Node polling loop.",
+    "productionChange": false
+  },
+  "positiveVectors": {
+    "existingCases": 5,
+    "changed": false,
+    "newIsolatingNegatives": 20,
+    "totalAuditedFields": 225
+  },
+  "runnerPreflight": {
+    "commandStarted": false,
+    "failure": "The aggregate source inventory tried to read the untracked node_modules symlink as a file (EISDIR). Excluding that dependency-directory symlink fixed the inventory."
+  },
+  "limits": [
+    "Validation repair only; no production protocol change or whole protocol correctness claim.",
+    "Actual full-chain status is recorded separately; partial or superseded attempts do not establish a green aggregate.",
+    "No personal browser, factors, Account, app release, relay or deployment is modified.",
+    "Other historical harnesses are exercised, not comprehensively audited for assertion strength or all possible timing failures."
+  ],
+  "compatibilityStartup": {
+    "gate": "storage:compatibility",
+    "failure": "The first cold navigation finished before the async fixture module initialized window.compat; the test called seed on undefined.",
+    "repair": "Wait explicitly for the requested fixture method, and hold module initialization behind a gate in a regression test.",
+    "productionChange": false
+  },
+  "editorRefusalAssertion": {
+    "gate": "account:receive-editor",
+    "failure": "Random signature-character XOR sometimes produced noncanonical hex, and the correct parser refusal did not match the expected message regex.",
+    "repair": "Deterministic malformed-hex and canonical invalid-signature cases assert receive-refused inside the browser and unchanged visible content/source captures.",
+    "productionChange": false
+  }
+}

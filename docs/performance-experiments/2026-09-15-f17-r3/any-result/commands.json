@@ -1,0 +1,38 @@
+{
+  "base": "602e4cee + round-two selected.patch, isolated candidate checkout",
+  "scope": [
+    "src/crdt/yjs.ts",
+    "test/exploratoryAnyStrings.test.ts"
+  ],
+  "baselineYjsSha256": "3c9041b45d1760c6a4721a82169de45db2e4d8f79673958b7f0d15f6a5cbdf2c",
+  "candidateYjsSha256": "1bfc4a8e717fc2b92a02fecc896dc9b5d5782d1146dab06652822df88d4b7199",
+  "newTestSha256": "943e472c36002082daf00648d24a20378e8f859ce58b17769c5bc23fcca53758",
+  "commands": [
+    {
+      "command": "node node_modules/vitest/vitest.mjs run test/exploratoryAnyStrings.test.ts",
+      "log": "focused-initial.log",
+      "exitCode": 1,
+      "assessment": "Fixture failure before codec: native Y.Array insertion rejects undefined. Seven other tests passed. Replaced with accepted placeholder plus pinned ContentAny mutation; production candidate unchanged."
+    },
+    {
+      "command": "node node_modules/vitest/vitest.mjs run test/exploratoryAnyStrings.test.ts",
+      "log": "focused-final.log",
+      "exitCode": 0,
+      "tests": 8,
+      "generatedRuns": 150,
+      "generatedSeed": 193917
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+      "log": "typecheck.log",
+      "exitCode": 0
+    }
+  ],
+  "pinnedNativeSources": {
+    "lib0/encoding.js": "e5c782283528460e02a517628d7fdf48f793b2c792d2a780242dac9df6522fa2",
+    "lib0/decoding.js": "fe717aa2d2572b396fd3332a7287915d7972e859a4df9fc81e3d18c11a463ab8",
+    "yjs/src/utils/UpdateEncoder.js": "7a3317371a40113677e5323fc7f38c4162e8b8a611cf5c1f82387743450a8af3",
+    "yjs/src/utils/UpdateDecoder.js": "5815691e7dabd41dbe64458e4169f89f64e8886f5a89da52c02df0564c6b3d82",
+    "yjs/src/structs/ContentAny.js": "7b297804742c758edfb8e3f1fc838ae35237cbeda96fe9b70f9d4b1ff7e3432a"
+  }
+}

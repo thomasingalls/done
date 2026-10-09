@@ -1,0 +1,57 @@
+{
+  "control": "snapshot",
+  "observed": "forged artifact accepted with semantic refusal disabled",
+  "candidate": {
+    "v": 1,
+    "kind": "promotion-genesis-candidate",
+    "preparation": "2f6e2314d8a2c3c784cd77372604742cf555c28a8e27dd2b75760a6d41a22228",
+    "accountId": "SqVKfU52TU2hFxflSsZ6y7KBd07esXuHAOUZWADCNuo",
+    "principalId": "5e46760aafd674f0e51106dc080d926e",
+    "workspaceId": "3df3087ef98ff21717bf519ea5d92e6b",
+    "lineageId": "ffdd2c1e54db664f9e6cab41137b1f7133ab7d7c573598b6e3ecb85863697374",
+    "authRoot": "1028c65edd5952b088a92d117dbd956340eb1f2ba5a577f042141baadc17d537",
+    "generation": 1,
+    "proposedEpoch": 1,
+    "signer": "9b2c11f3dcf12fd7f0a1d4f3d698c174",
+    "actors": [
+      {
+        "id": "5e46760aafd674f0e51106dc080d926e",
+        "kind": "human",
+        "credential": "9b2c11f3dcf12fd7f0a1d4f3d698c174"
+      },
+      {
+        "id": "system",
+        "kind": "system",
+        "credential": "9b2c11f3dcf12fd7f0a1d4f3d698c174"
+      }
+    ],
+    "coverage": {
+      "derivation": "yjs-13.6.31-snapshot-v1",
+      "snapshot": "01cfb4d746022c014e0201cfb4d74674",
+      "heads": []
+    },
+    "checkpoint": {
+      "v": 1,
+      "salt": "d250358b0e14c7698c13bb226939f852",
+      "nonce": "b5e60d7e8a7c9374988e8c61",
+      "ct": "26f7b317efc6d1a4fe4d0f78b759926e516762f48adae8efc44557ef81c0ab06e2c8f8004ce5e32a36212cbc1ef68f5251990f3c0fbac86be29add53573b0bc7d9e2c8036ae681ebd7aa71179f1754fc81d07de0292676ccdfaeb0319e086f0ac1ab00624c65e5d5db9ffe16d5d71e9bfbab6c4c008ee7deb3ad3a444b2a26cfdca9a3cb55be444682682235485b665557cdb1b4f7558a67eeaa85cf6b24a4e2f7a81a96499f392196c5e54d724dbcd00a7d5a1290d2d03772003aee05dcd1e7f6ff30f77d18ef42c65022a21c563facf335c886a335de8fc89d5e6a32e5a2a67081f9b5040214c88640d78fe32cd2c46110fa155b09e7904d1369e84f72aa3a9f8267759b94ee58b31fefd7ee0342d0e727f43f3fb21985c28e325628793bfb905d41ba61f4b5a12b2320e941810cbaabaa2bdcc3ac1bf1ec7e789209cc1945443a019739a0ba5b49cc4feaba4d6c9fa923d5645acd2194441a4061e25d3309d3db29f21a29597254502187344df0ca20ecdc41f968f877406eb93dc95327b9dc7ec1b04dbe3d73c0aedde6e868e8549ea7b8d8b937bc2a0c1de7e29a056ec0952c11484fbeb7b68fceede00eccf595ef8a083ddb7dc001e66eef4447a4bccee5711cde12656497880ddd137cb4e5de68c1b79fd27a9f71fca60da1c24dd6e051f47355cad5b8132df4584e70318e4ade29afb60b0e3ca17a174798946b0a59efafce1aba4225bb19a150fdbff3d22fd71d5647c951fa700c7dc3fc8b8ea2aa4fedd524fe6f5b14b0c32282cfd85e1568699b08d909a89020ffbf6321ecd2933fc53ed9df756e859c0abb7c5edf1e13cc19b06c00509994ebb0c63b69c23ed92e440b905256ed3b099e1418004d7b149ed3d1366769f1f1b3e0910ea32c50ce91ee062b3262fd332f0560ad79da836ef472c439b43001aca45d2353b526a8a4bf2b9630689a79d7ac3a5f6ae173742432c3e1d9ba38ad2cb5e5bddf5b32cb3f713c6256b63b9fad28797685f81d6db7aafb6b31dddc8a9a2f802615f812605e2b4a4d0c17fec366bb62157409abdfb9d303e7a24530ff28918d263d1341510f8ec169660eba2727a83a4a88272d1144d8861228dd17298730e6335a9186497df595c487fd449bcd722ff8cc4c1663de1c7bb17c9ece5726e9b886fc6f99495105de47bf9c3207411763d1a617925cbb7cafbd4f604be5d056955a86afdd27fff4d77653fe594b56ba0310"
+    },
+    "wraps": [
+      {
+        "recipient": "device",
+        "id": "86bcf7cdcf7959b81f020bc036b44cac",
+        "publicKey": "60926ed80c499ad89689c95e07873ac11d320cc19d8aafe2b13054f5b88e961e",
+        "enc": "729a106a6e9be001e3d6348543554446835d4b36ee0e4712872841f375306d01",
+        "ct": "603d15d4a69c22c572407674ebc28421ad250ad98f1653ee43738674e8d0d50b438f793f0982cc7220fffce9dcbaa9c7"
+      },
+      {
+        "recipient": "recovery",
+        "id": "VCuHbXBG2OQaja4QMXjAJfC8UlcGkYxuKZ-p64XmEZg",
+        "publicKey": "a66135a57bacb5fba845b4321adaf1ff4b4112c0ac1d738337d44ffec94ebe10",
+        "enc": "41ca16a360a8ac772d65500d7a5e8c5ab3f5742e5015190593c566a2da1e0769",
+        "ct": "19a09e95a7fb3b2daf509819137808feb5615949ba4c9e6c2091fac0778b5747abb5e5f656a90c2e9e9ed1ac9a088319"
+      }
+    ],
+    "signature": "c3a65ea2d190331c187999bca090e69a1b16ddc372435854d72f14d1406418b90b444e56b09fc71743d26d9ce16c8effddf7e51997b5c59348df6198c9fbb70f"
+  }
+}

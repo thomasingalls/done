@@ -1,0 +1,5 @@
+{
+  "baseline": "export buffer zeroed",
+  "mutant": "export buffer retained after failure",
+  "boundedBufferClaim": true
+}

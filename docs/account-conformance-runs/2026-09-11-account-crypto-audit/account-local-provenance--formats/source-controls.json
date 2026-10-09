@@ -1,0 +1,38 @@
+[
+  {
+    "name": "keySlot",
+    "changedMac": "18f8cdda0f56463c8a78cb87d496991494b2f68c07162a69b9b9f35fd893d530",
+    "caught": true
+  },
+  {
+    "name": "keyRoot",
+    "changedMac": "2c18cb4f79c4f98d8451b643dc74add63ef25460df9d715f14ea9795e3d1e89e",
+    "caught": true
+  },
+  {
+    "name": "initialMac",
+    "changedMac": "54e0d1c99eaa6d00a6ff1149bdede05fbe30d402f4a2c6b121f4e7478fb91000",
+    "caught": true
+  },
+  {
+    "name": "stage",
+    "changedMac": "4f653da72ab4fbe9d50b76adbd89c6bb0ec8a2b9bd18ed2df1bb4e6e730789a6",
+    "caught": true,
+    "acceptsChangedStage": true
+  },
+  {
+    "name": "selectionMac",
+    "changedMac": "4e5e0628cef13c06ab370b59a3bdf21017310d369fbc02f6b9c29c38bfeb5347",
+    "caught": true
+  },
+  {
+    "name": "cleanupNext",
+    "changedMac": "c713db8c13428cf8f0c96003b7b4ce8e4cba23c15f2f2871bd6fa84270277a58",
+    "caught": true
+  },
+  {
+    "name": "cleanupDigest",
+    "changedMac": "634d1063bc1bb4ad6ba8638a67ba84ad09a38cdf32f7b629be42468abb67f188",
+    "caught": true
+  }
+]

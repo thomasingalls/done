@@ -1,0 +1,31 @@
+{
+  "baseCommit": "add6fd7ff1e2cec3e983b6195f8e886b30069903",
+  "sha256": "94d8361bca1f62afc2f81a5d5012b394751bb3bf487ff2760ea02fcf16ebbf04",
+  "bytes": 576063,
+  "paths": [
+    "docs/account-conformance-runs/2026-09-11-account-local-custody.md",
+    "docs/account-crypto/census.json",
+    "docs/account-crypto/constructions.json",
+    "docs/account-crypto/local-custody.md",
+    "docs/completed.md",
+    "docs/custody.md",
+    "docs/progress.md",
+    "docs/review/remediation/S0-2/authority-map.md",
+    "package.json",
+    "scripts/account-first-authority/registry.mjs",
+    "scripts/account-local-custody/run.mjs",
+    "scripts/account-local-custody/vectors.mjs",
+    "scripts/check-authority-map.mjs",
+    "src/crdt/custodyRecord.ts",
+    "test/account-first-authority/registry.test.mjs",
+    "test/account-local-custody/browser.ts",
+    "test/account-local-custody/formats.test.mjs",
+    "test/account-local-custody/native-browser.ts",
+    "test/account-local-custody/native.test.mjs",
+    "test/account-local-custody/oracle.mjs",
+    "test/account-local-custody/runtime.mjs",
+    "test/vectors/account-local-custody.json"
+  ],
+  "scope": "D6 contracts, tests, vector bridges, registrations, strict custody state-parser repair and checkpoint. Raw evidence and patch/manifest excluded to avoid recursive packaging. Only production change is the reproduced one-line state guard.",
+  "indexEmpty": true
+}

@@ -1,0 +1,8 @@
+{
+  "incident": "Validation script accidentally ran in root and replaced dist. No server was started. Personal release unchanged.",
+  "restoredFrom": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/app-upgrades/2026-09-10T12-45-12.641Z/prior",
+  "allSavedHashesMatch": {
+    "/Users/thomasingalls/.codex/worktrees/c030/done/dist": true,
+    "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app": true
+  }
+}

@@ -1,0 +1,36 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity
+[yjs] Changed the client-id because another client seems to be using it.
+
+stdout | test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity
+[yjs] Changed the client-id because another client seems to be using it.
+
+ ❯ test/workspaceAdmission.test.ts (20 tests | 1 failed) 240ms
+     × admits device display labels into encrypted content and recovers them without changing identity 31ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspaceAdmission.test.ts > admitted workspace commands and history > admits device display labels into encrypted content and recovers them without changing identity
+AssertionError: expected 'Kitchen laptop' to be 'test device' // Object.is equality
+
+Expected: "test device"
+Received: "Kitchen laptop"
+
+ ❯ test/workspaceAdmission.test.ts:121:39
+    119|       expect(reopened.doc.read().actors.find((actor) => actor.id === i…
+    120|       await f.doc.command({ kind: 'undo' }).accepted;
+    121|       expect(f.doc.read().deviceName).toBe('test device');
+       |                                       ^
+    122|     } finally {
+    123|       await f.doc.close();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 28 passed (29)
+   Start at  11:13:22
+   Duration  1.63s (transform 859ms, setup 279ms, import 1.30s, tests 330ms, environment 1.13s)
+

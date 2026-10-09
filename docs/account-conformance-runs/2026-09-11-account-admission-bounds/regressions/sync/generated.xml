@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="generated actual-service histories preserve authored text, source identity, exact position retry and cold receive progress" time="288.194104" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/generated.test.mjs"/>
+	<!-- tests 1 -->
+	<!-- suites 0 -->
+	<!-- pass 1 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 290080.983708 -->
+</testsuites>

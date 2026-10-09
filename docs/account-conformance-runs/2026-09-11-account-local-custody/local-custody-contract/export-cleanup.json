@@ -1,0 +1,14 @@
+{
+  "formats": 6,
+  "cleanup": [
+    "signing failed-open",
+    "wrapping failed-open",
+    "failed-create"
+  ],
+  "controls": [
+    "privateFormat",
+    "exportCleanup",
+    "openCleanup"
+  ],
+  "logicalDisposalOnly": true
+}

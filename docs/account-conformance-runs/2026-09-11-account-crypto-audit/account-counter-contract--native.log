@@ -1,0 +1,13 @@
+✔ real custody metadata derivation, native HMAC bytes and v1 to v2 activation match independent construction (415.0035ms)
+✔ correctly MACed allocation and witness lies refuse at their owning boundary (398.765125ms)
+✔ native final abort preserves burned reservations but commits neither ledger event nor witness; observes actual durability (328.905375ms)
+✔ actual MAC comparison omission overwrites a counter changed after authentication; retained comparison refuses (643.990083ms)
+✔ actual reservation omission invokes AES before allocation even though the later rewind guard still refuses (635.833125ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2904.420459

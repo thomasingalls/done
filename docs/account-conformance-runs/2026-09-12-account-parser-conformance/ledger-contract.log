@@ -1,0 +1,24 @@
+(node:35589) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ removing exact capsule identity consistency accepts two different original payloads under one ID (46.525667ms)
+✔ real source-digest and envelope-body omissions rescue separately signed and encrypted semantic substitutions (95.90925ms)
+✔ count has two effective checks; hash and count omissions separately weaken completeness (123.034458ms)
+✔ delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories (110.247209ms)
+✔ omitting raw previous-hash bytes in the actual digest input aliases otherwise distinct witness histories (0.869875ms)
+(node:35590) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ twenty fixed carriers, chain steps, source digest and baseline agree with actual encoders and crypto (25.652375ms)
+✔ all carrier leaves are rejected or retained as distinct canonical bytes; omissions cannot disappear unnoticed (17.73475ms)
+✔ canonical framing rejects whitespace, BOM, alternate spellings, bad UTF-8, extra fields and all truncated prefixes (138.331667ms)
+✔ capsules require bounded original Yjs frames and exact identity deduplication, not snapshot equivalence (3.19625ms)
+✔ ledger census composes all families, validates signed source correspondence and reconstructs conflict with cold expiry (69.583292ms)
+✔ chain binds raw previous hash, u32 big-endian length and exact event bytes; count is checked separately (0.928459ms)
+✔ 200 shrinking-enabled generated spool histories compare retained prefixes, retries and omission faults to an independent ledger (1120.749875ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2206.413459

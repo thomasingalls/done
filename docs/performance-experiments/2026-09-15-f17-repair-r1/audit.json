@@ -1,0 +1,58 @@
+{
+  "signedBase": "62b19f94136ec25da8ff76391fd216d381dd9957",
+  "sessions": [
+    {
+      "variant": "selected",
+      "session": "native-comparison-0",
+      "sha256": "731ef5bc7cdb8e1f581d5506b4bad22a9f57d66c29cf568f0fcbd3b68ab7fb0c",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "candidate",
+      "session": "native-comparison-0",
+      "sha256": "38380e9229c837e937d6e33f2873228180e4c8a2d557c9ab42090adea7541362",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "candidate",
+      "session": "native-comparison-1",
+      "sha256": "3ee3f6baaaa9280a0fcaf8e4107383c94e3d342257188f6427163ecd92cb8cbb",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "selected",
+      "session": "native-comparison-1",
+      "sha256": "ed3d932fb839c6f9262bb8482299b2e88b55f94a2ba309d42f7fba285aab98a8",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "selected",
+      "session": "native-unicode-0",
+      "sha256": "3040bdd2f43573c85c0a65ddb998b0923be54a0e7b480da2f96b50442b54adfa",
+      "measuredKeys": 80
+    },
+    {
+      "variant": "candidate",
+      "session": "native-unicode-0",
+      "sha256": "c057a19cb41ab3a2f5b0736a3b5d26aa009326219a69415819f6a5f83332f28a",
+      "measuredKeys": 80
+    }
+  ],
+  "measuredKeys": 480,
+  "warmupKeys": 624,
+  "sourceBundleAndHelpersUnchanged": 412,
+  "focusedTests": 18,
+  "generatedHistories": 60,
+  "affectedTests": 176,
+  "affectedFiles": 9,
+  "discriminatingFaults": 2,
+  "ownerModesPerFault": 4,
+  "typecheckPassed": true,
+  "previousPacketFiles": 73,
+  "personalAndVectorPins": 52,
+  "rootPerspectiveUnchanged": true,
+  "appendOnlyPrefixesPreserved": true,
+  "L2Unchanged": true,
+  "mainRuntimeTestsUnchanged": true,
+  "originalLaunchFailureRetained": true
+}

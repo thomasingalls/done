@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-10T22:53:23.305Z",
+  "stages": [
+    {
+      "name": "properties",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "name": "native",
+      "code": 0,
+      "timedOut": false
+    }
+  ],
+  "scope": "Private v8 durable response and exact first-attempt submission ledger, atomic completeness witness, authority rechecks, proof-derived halt, cancellation, crash histories and controls. No successor minting, dispatch, relay, lineage advancement or personal operations.",
+  "completedAt": "2026-09-10T22:56:11.699Z"
+}

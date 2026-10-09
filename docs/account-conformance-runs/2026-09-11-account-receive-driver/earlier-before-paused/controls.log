@@ -1,0 +1,13 @@
+✔ actual overlap omission exposes prohibited scheduling (33.944083ms)
+✔ actual poll omission exposes prohibited scheduling (4.232125ms)
+✔ actual halt omission exposes prohibited scheduling (4.483417ms)
+✔ actual observer omission exposes prohibited scheduling (3.583208ms)
+✔ actual resume omission exposes prohibited scheduling (3.351791ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 117.509084

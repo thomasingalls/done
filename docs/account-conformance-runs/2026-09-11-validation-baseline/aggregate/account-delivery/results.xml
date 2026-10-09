@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="first submission is persisted exactly, idempotent, retained through compaction and suppressed after acceptance" time="7.860123" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="closed evidence survives cold restart, blocks outbound preparation and preserves local editing" time="6.123647" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="conflict evidence survives cold restart, blocks outbound preparation and preserves local editing" time="6.150769" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="finalized evidence survives cold restart, blocks outbound preparation and preserves local editing" time="6.175796" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="submission before native commit recovers without rewriting acknowledged bytes" time="6.394532" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="submission after native commit recovers without rewriting acknowledged bytes" time="6.407373" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="response before native commit recovers without rewriting acknowledged bytes" time="6.399399" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="response after native commit recovers without rewriting acknowledged bytes" time="6.349392" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="v8 activation before commit fences v7 readers before returning the editor" time="6.627476" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="v8 activation after commit fences v7 readers before returning the editor" time="6.634784" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="invalid responses and exact duplicates change no persistent inventory" time="4.794001" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="missing final submission refuses reopening with its retained ledger witness" time="4.864145" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="missing final response refuses reopening with its retained ledger witness" time="4.833825" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="contradictory prefix acceptance, refusals and final heads halt in either order" time="15.547447" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="actual early-return and witness controls expose lost submission and resurrected closed delivery" time="7.027975" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="close drains device signing and withholds uncommitted submission bytes" time="6.070102" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="authority is reauthenticated after signing; an actual omitted-recheck control commits behind a changed fence" time="8.409552" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="actual leaf-only control misses contradictory prefix proofs in both orders" time="9.206817" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<testcase name="eight generated durable histories preserve exact retries, proof-derived status and sources across faults and cold restarts" time="38.949808" classname="test" file="/private/tmp/done-validation-500630f/test/account-delivery/native.test.mjs"/>
+	<!-- tests 19 -->
+	<!-- suites 0 -->
+	<!-- pass 19 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 166352.62 -->
+</testsuites>

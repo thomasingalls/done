@@ -1,0 +1,30 @@
+[
+  {
+    "sub": "",
+    "source": "test-results/account-editing/2026-09-10T18-35-12.942Z"
+  },
+  {
+    "sub": "handoff-regression",
+    "source": "test-results/account-handoff/2026-09-10T18-37-21.005Z"
+  },
+  {
+    "sub": "account-admission-regression",
+    "source": "test-results/account-admission/2026-09-10T18-36-34.550Z"
+  },
+  {
+    "sub": "writer-regression",
+    "source": "test-results/write-session/2026-09-10T18-35-55.350Z"
+  },
+  {
+    "sub": "local-genesis-regression",
+    "source": "test-results/local-genesis/2026-09-10T18-36-41.074Z"
+  },
+  {
+    "sub": "admission-regression",
+    "source": "test-results/admission/2026-09-10T18-35-19.594Z"
+  },
+  {
+    "sub": "workspace-regression",
+    "source": "test-results/workspace-admission/2026-09-10T18-37-28.642Z"
+  }
+]

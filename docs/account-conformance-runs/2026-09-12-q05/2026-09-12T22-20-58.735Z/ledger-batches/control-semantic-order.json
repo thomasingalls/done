@@ -1,0 +1,8 @@
+{
+  "delivery": "source guard removal accepts signed submission before persisted envelope",
+  "coverage": "coverage call omission accepts valid signed receive evidence with no disk content",
+  "witness": {
+    "events": 7,
+    "hash": "ea8f8a78bdd05594c9c04e44727b4a8104fbe6d33dc5586c30a97aaff7713fbf"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "baseline": "invalid signature refused",
+  "accepted": {
+    "kind": "account-selected",
+    "slotId": "control",
+    "accountId": "BKLXcrlmmwFHkSaZwNtv0UtpsDkWKVEXyniBJWYC4UE",
+    "principalId": "5281db62252d957cae59a988f04d0ee5",
+    "workspaceId": "2a58ec810f271fb87c73e25869f9f385",
+    "dbName": "done.6d547e3ef68ae6cbd0ab9b3cb24a20a3",
+    "epochHead": "2914b1a90a71e1394294897fc4129067f718e103b5f1ed05c2daba393d9945ed"
+  },
+  "classified": {
+    "kind": "account",
+    "slotId": "control",
+    "accountId": "BKLXcrlmmwFHkSaZwNtv0UtpsDkWKVEXyniBJWYC4UE",
+    "principalId": "5281db62252d957cae59a988f04d0ee5",
+    "workspaceId": "2a58ec810f271fb87c73e25869f9f385",
+    "dbName": "done.6d547e3ef68ae6cbd0ab9b3cb24a20a3",
+    "epochHead": "2914b1a90a71e1394294897fc4129067f718e103b5f1ed05c2daba393d9945ed"
+  }
+}

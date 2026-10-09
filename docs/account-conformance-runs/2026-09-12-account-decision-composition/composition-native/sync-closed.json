@@ -1,0 +1,20 @@
+{
+  "status": {
+    "send": {
+      "phase": "blocked",
+      "failures": 0,
+      "nextAttemptAt": null,
+      "reason": "closed",
+      "acceptedThrough": 0
+    },
+    "receive": {
+      "phase": "idle",
+      "failures": 0,
+      "nextAttemptAt": 1789164207311,
+      "reason": null,
+      "receivedThrough": 0
+    }
+  },
+  "coldHalt": true,
+  "preservedWriting": true
+}

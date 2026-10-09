@@ -1,0 +1,338 @@
+{
+  "seed": 112107,
+  "numRuns": 16,
+  "failed": false,
+  "metrics": {
+    "invalid": 16,
+    "restart": 43,
+    "lose": 15,
+    "deliver": 31,
+    "duplicate": 38,
+    "edit": 15,
+    "compact": 16
+  },
+  "histories": [
+    {
+      "kind": "closed",
+      "commands": [
+        "invalid",
+        "restart",
+        "lose",
+        "restart",
+        "deliver",
+        "restart",
+        "duplicate"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "96e41092de5e915b780c158d09f49feae0701ea7eccd3a413470eb3e27ef4656",
+      "witness": {
+        "events": 5,
+        "hash": "f37a00f7e3ca02d61aaf171c7b2f8f3ec5c867729c1d3da3ccb842afae04093f"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "lose",
+        "duplicate",
+        "edit",
+        "lose",
+        "restart",
+        "invalid"
+      ],
+      "recorded": true,
+      "textDigest": "94549bcbcfa6ddc49cddd8cd0b4808650eb9915a84bb6d72ec04ec9648f49b45",
+      "responseDigest": "000c583c43509e6e9101bb1f31f7e1eee1a421f64d7004c5fc9beb9c88f59d72",
+      "witness": {
+        "events": 5,
+        "hash": "a822b8704b66c12f497229f48c37532d9d086c5d1d58c595c838027d00db5339"
+      }
+    },
+    {
+      "kind": "conflict",
+      "commands": [
+        "lose",
+        "compact",
+        "lose",
+        "duplicate",
+        "restart",
+        "compact",
+        "deliver"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "6d2ab5c14a060085afb5249be25f9ac5471c6f50b5f85e9cd41c370601b68b05",
+      "witness": {
+        "events": 5,
+        "hash": "e185fd7329daf1555b9309ecc754b11c9b4ab2d7f643abacedc3dad5eb2bee5b"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "invalid",
+        "compact",
+        "duplicate",
+        "deliver",
+        "edit",
+        "duplicate",
+        "restart",
+        "invalid"
+      ],
+      "recorded": true,
+      "textDigest": "94549bcbcfa6ddc49cddd8cd0b4808650eb9915a84bb6d72ec04ec9648f49b45",
+      "responseDigest": "15bc8ec01e1a28d15fdfb8f7bcf846966b27f59b9bec6739e9ea0b7e40aeaad2",
+      "witness": {
+        "events": 5,
+        "hash": "53f86bbc9a47457cb027db0f1cd1b7142ffe4b03516414aa4bd9ff2299e8f934"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "restart",
+        "duplicate",
+        "compact",
+        "invalid",
+        "restart"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "f54e0b00455dc76f85d7814d8efd81ecb0b42ad13ca474033a8bc9281cee3f4b",
+      "witness": {
+        "events": 5,
+        "hash": "ec4074af0a35cadc6753ac3472b5647c81668cf2d68795d9429767cebd54eccb"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "deliver",
+        "duplicate",
+        "compact",
+        "invalid",
+        "restart",
+        "restart",
+        "duplicate",
+        "compact",
+        "invalid",
+        "compact",
+        "deliver",
+        "duplicate"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "09c9ba10c3be4f647d4b695e4d7ad2ab2350f36e374cbc60ffc2f231a81dea68",
+      "witness": {
+        "events": 5,
+        "hash": "68dbabd860a4a4fde2715627ea3e201115d25d2716fc0d63a0c5f395d7ec2c30"
+      }
+    },
+    {
+      "kind": "conflict",
+      "commands": [
+        "edit",
+        "invalid",
+        "invalid",
+        "restart",
+        "edit",
+        "invalid",
+        "edit",
+        "compact",
+        "duplicate",
+        "invalid",
+        "duplicate",
+        "edit"
+      ],
+      "recorded": true,
+      "textDigest": "a6659c3800bb97df2f55c468bce25c063a265c926dd4e4b478a258578b7181d8",
+      "responseDigest": "4d45fb4d815dc255f986c52f0d0c36f94c697660aa83077275272b509580197f",
+      "witness": {
+        "events": 5,
+        "hash": "3fb611407e4ef04b9e9d07727a9c2d99b8cf183d24ed2604524ca190aa3f6b1a"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "restart",
+        "edit",
+        "edit",
+        "edit",
+        "compact"
+      ],
+      "recorded": true,
+      "textDigest": "916068e5115d212d415bb2ae8db239197be93162380ab0ac0525df310fd0071a",
+      "responseDigest": "e5c51ea89cf3bd349bb95bfa8e7c63719371bd717bffe50b650a89d2f4c6d9a1",
+      "witness": {
+        "events": 5,
+        "hash": "e22bc044907cf93992b5263579fb381ce56c7fd1ed157f859bc95713be44af74"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "edit",
+        "duplicate",
+        "duplicate",
+        "deliver",
+        "lose",
+        "edit"
+      ],
+      "recorded": true,
+      "textDigest": "e2623e9d1339f4dc18a52ee9ac51588bb15143f2e4fdbfea1a5c7b6097601f08",
+      "responseDigest": "81f15c89b1f54b04b4b8aff1299c3982716a6e05a0b93e5cf7611011d26bd04d",
+      "witness": {
+        "events": 5,
+        "hash": "993d1082b39a3157e3414a2d3ad51eaeb72d3058674f70d9a6b7f4b85673a172"
+      }
+    },
+    {
+      "kind": "conflict",
+      "commands": [
+        "deliver",
+        "lose",
+        "compact",
+        "deliver",
+        "lose",
+        "restart",
+        "compact",
+        "lose",
+        "invalid",
+        "restart"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "5019b50b940c0110e63094f8b2d6b5a4f6b5ebb2ce292b6b538406547b574589",
+      "witness": {
+        "events": 5,
+        "hash": "c420ef2d70d1214727c2acf0de13088c22db03ec85715ec254d60a0c523d0b26"
+      }
+    },
+    {
+      "kind": "conflict",
+      "commands": [
+        "duplicate",
+        "duplicate",
+        "invalid",
+        "compact",
+        "duplicate"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "86e01d39669e65035fd2732a9289c5c65f1331b1fe041b40ffe38e8c2b3b74fe",
+      "witness": {
+        "events": 5,
+        "hash": "57c0083c932e468ece8d3548faf012d50f6091e2b92d2adfcab92f6f6f7070ed"
+      }
+    },
+    {
+      "kind": "conflict",
+      "commands": [
+        "deliver",
+        "edit",
+        "edit",
+        "restart",
+        "compact",
+        "lose",
+        "lose",
+        "compact",
+        "deliver"
+      ],
+      "recorded": true,
+      "textDigest": "e2623e9d1339f4dc18a52ee9ac51588bb15143f2e4fdbfea1a5c7b6097601f08",
+      "responseDigest": "0b9e54f971671be877ae1617ab49c7b4ae40e8af67edb49d9431d205e410fcd0",
+      "witness": {
+        "events": 5,
+        "hash": "659f0f4fe96b45016eb8b2c822473a4b45ddf456098d39e24faaf00d09dda39b"
+      }
+    },
+    {
+      "kind": "conflict",
+      "commands": [
+        "restart",
+        "duplicate",
+        "compact",
+        "lose",
+        "edit",
+        "lose",
+        "restart",
+        "duplicate",
+        "restart",
+        "edit"
+      ],
+      "recorded": true,
+      "textDigest": "e2623e9d1339f4dc18a52ee9ac51588bb15143f2e4fdbfea1a5c7b6097601f08",
+      "responseDigest": "817b51a70bc6baafa93a66f3b5a39c3caf185a5397c73d9407fbe7c597c9ce1a",
+      "witness": {
+        "events": 5,
+        "hash": "11346f8d1fbe39563f460de22d043325a95c029e0043c483886ab0241ab8e550"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "duplicate",
+        "deliver",
+        "duplicate",
+        "restart",
+        "deliver",
+        "restart",
+        "compact",
+        "deliver",
+        "restart"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "052026728faa959452bdefcc57832eadfda85a737bba5518ab42f5de550fa522",
+      "witness": {
+        "events": 5,
+        "hash": "f915bf64d34cb7708f7fc5db5977658fecc611371f4e482930b4ce7daffa0637"
+      }
+    },
+    {
+      "kind": "conflict",
+      "commands": [
+        "restart",
+        "lose",
+        "restart",
+        "deliver",
+        "restart",
+        "restart",
+        "restart",
+        "lose"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "8358dcda877c756d431b198506b1a414f313fb89da3ea2599ba226a3b42f31b5",
+      "witness": {
+        "events": 5,
+        "hash": "ed3567f00b087ebf4c6701080fa8e59ecbd275a61d928a1491afe128905a020d"
+      }
+    },
+    {
+      "kind": "closed",
+      "commands": [
+        "duplicate",
+        "restart",
+        "invalid",
+        "duplicate",
+        "invalid",
+        "invalid",
+        "deliver"
+      ],
+      "recorded": true,
+      "textDigest": "ad17dbdd5fd13449730ed604322318dba6595260f2b916504a78fbb075d10752",
+      "responseDigest": "bf8053332a3735cd59230852fe61bcdf906891b2d7d789e11578070c53f4f680",
+      "witness": {
+        "events": 5,
+        "hash": "2d73768680506ba89e5ee2cd51b0d11a942b79c0dd739ae2a3a7fa4bb851a113"
+      }
+    }
+  ],
+  "path": null,
+  "counterexample": null,
+  "numShrinks": 0,
+  "error": null
+}

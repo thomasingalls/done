@@ -1,0 +1,363 @@
+{
+  "schema": 1,
+  "base": "132bc7d3f78578555fcad86a15bc55fe3f2f372c",
+  "scope": "Selected F-17 lifetime and Account composition qualification",
+  "claim": "No runtime/default change, latency result or immutable release pass.",
+  "artifactsSha256": "90994869d7106567eb351052061b866aa8b1e37b6cc7851e0c75ac0701ee8f28",
+  "rawIndexSha256": "18688ce533590fccabe79decbb867816ec3e0fce4b32c41e850a4bff9136da2e",
+  "files": 349,
+  "blobs": 328,
+  "memory": {
+    "scope": "Controlled-carrier Chromium lifetime only; native Account qualification separate.",
+    "sessions": [
+      {
+        "index": 0,
+        "mode": "reference",
+        "observations": 38,
+        "createdHistories": 508,
+        "destroyedHistories": 508,
+        "maxLiveHistories": 2,
+        "retainedClosedFacades": 5,
+        "openingHeap": {
+          "usedSize": 9026936,
+          "totalSize": 10256384,
+          "embedderHeapUsedSize": 657416,
+          "backingStorageSize": 7297797
+        },
+        "closingHeap": {
+          "usedSize": 10786196,
+          "totalSize": 11829248,
+          "embedderHeapUsedSize": 478016,
+          "backingStorageSize": 7303865
+        },
+        "scratchProbe": {
+          "returns": 13,
+          "maxBytes": 1362854,
+          "maxFields": 1601,
+          "maxChunks": 10
+        },
+        "maxWarmUndo": 121
+      },
+      {
+        "index": 1,
+        "mode": "local-snapshots",
+        "observations": 38,
+        "createdHistories": 36,
+        "destroyedHistories": 36,
+        "maxLiveHistories": 2,
+        "retainedClosedFacades": 5,
+        "openingHeap": {
+          "usedSize": 8988628,
+          "totalSize": 10518528,
+          "embedderHeapUsedSize": 663856,
+          "backingStorageSize": 7297797
+        },
+        "closingHeap": {
+          "usedSize": 10802096,
+          "totalSize": 11829248,
+          "embedderHeapUsedSize": 477944,
+          "backingStorageSize": 7303865
+        },
+        "scratchProbe": {
+          "returns": 13,
+          "maxBytes": 1362854,
+          "maxFields": 1601,
+          "maxChunks": 10
+        },
+        "maxWarmUndo": 121
+      },
+      {
+        "index": 2,
+        "mode": "local-snapshots",
+        "observations": 38,
+        "createdHistories": 36,
+        "destroyedHistories": 36,
+        "maxLiveHistories": 2,
+        "retainedClosedFacades": 5,
+        "openingHeap": {
+          "usedSize": 8988428,
+          "totalSize": 9994240,
+          "embedderHeapUsedSize": 662976,
+          "backingStorageSize": 7297797
+        },
+        "closingHeap": {
+          "usedSize": 10802656,
+          "totalSize": 11829248,
+          "embedderHeapUsedSize": 478016,
+          "backingStorageSize": 7303850
+        },
+        "scratchProbe": {
+          "returns": 13,
+          "maxBytes": 1362854,
+          "maxFields": 1601,
+          "maxChunks": 10
+        },
+        "maxWarmUndo": 121
+      },
+      {
+        "index": 3,
+        "mode": "reference",
+        "observations": 38,
+        "createdHistories": 508,
+        "destroyedHistories": 508,
+        "maxLiveHistories": 2,
+        "retainedClosedFacades": 5,
+        "openingHeap": {
+          "usedSize": 9027128,
+          "totalSize": 9994240,
+          "embedderHeapUsedSize": 662976,
+          "backingStorageSize": 7297797
+        },
+        "closingHeap": {
+          "usedSize": 10787104,
+          "totalSize": 11829248,
+          "embedderHeapUsedSize": 478016,
+          "backingStorageSize": 7303865
+        },
+        "scratchProbe": {
+          "returns": 13,
+          "maxBytes": 1362852,
+          "maxFields": 1601,
+          "maxChunks": 10
+        },
+        "maxWarmUndo": 121
+      }
+    ],
+    "faults": [
+      {
+        "name": "retain-history",
+        "file": null,
+        "marker": "histories collectible",
+        "originalSha256": null,
+        "changedSha256": null,
+        "caughtBy": "opened: histories collectible",
+        "drained": true
+      },
+      {
+        "name": "idle-listener",
+        "file": "src/crdt/admittedWorkspace.ts",
+        "from": "old.unwatch();",
+        "to": "void 0; // controlled omission of idle-listener removal",
+        "count": 3,
+        "marker": "idle listeners bounded",
+        "originalSha256": "e4759c7ab14fede6d492431c4c10dd9d17b0cf0155122613a9f078e1720c153d",
+        "changedSha256": "ec05a4e235f3b9ae648c680eb60db41f09050f816d5bd078b5c1a1a0e622c3d3",
+        "caughtBy": "warm-0: idle listeners bounded",
+        "drained": true
+      },
+      {
+        "name": "dirty-scratch",
+        "file": "src/crdt/yjs.ts",
+        "from": "field.value = '';",
+        "to": "void 0; // controlled omission of scratch string clearing",
+        "count": 1,
+        "marker": "scratch cleared",
+        "originalSha256": "a0b0731e73c44c41f108d2729fa91bfcfe604dc9d3dba9216e0c23069bafbce0",
+        "changedSha256": "7ad039df6c82395fe23f7b9499e1b757698448310c505c59a2ac3783a60ef7bb",
+        "caughtBy": "scratch cleared",
+        "drained": true
+      }
+    ]
+  },
+  "account": {
+    "attempts": [
+      {
+        "epoch": "account",
+        "status": "failed",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "stages": [
+          {
+            "id": "test:test/account-receive-editor/native.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 307237,
+            "groupDrained": true,
+            "reportedCases": 12,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-receive/native.test.mjs",
+            "status": "failed",
+            "reason": "timeout",
+            "elapsedMs": 300612,
+            "groupDrained": true,
+            "reportedCases": 16,
+            "phase": "running"
+          }
+        ]
+      },
+      {
+        "epoch": "account-remaining",
+        "status": "passed",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "stages": [
+          {
+            "id": "test:test/account-sync/batch.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 139871,
+            "groupDrained": true,
+            "reportedCases": 7,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-sync/controls.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 2143,
+            "groupDrained": true,
+            "reportedCases": 5,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-sync/generated.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 209355,
+            "groupDrained": true,
+            "reportedCases": 1,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-sync/native-controls.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 129360,
+            "groupDrained": true,
+            "reportedCases": 4,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-sync/native.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 506416,
+            "groupDrained": true,
+            "reportedCases": 12,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-editing/native.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 193272,
+            "groupDrained": true,
+            "reportedCases": 16,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-handoff/native.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 136987,
+            "groupDrained": true,
+            "reportedCases": 15,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-capture/native.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 164794,
+            "groupDrained": true,
+            "reportedCases": 15,
+            "phase": "complete"
+          },
+          {
+            "id": "test:test/account-admission/native.test.mjs",
+            "status": "passed",
+            "reason": null,
+            "elapsedMs": 119775,
+            "groupDrained": true,
+            "reportedCases": 15,
+            "phase": "complete"
+          }
+        ]
+      },
+      {
+        "epoch": "account-receive-repeat",
+        "status": "failed",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "stages": [
+          {
+            "id": "test:test/account-receive/native.test.mjs",
+            "status": "failed",
+            "reason": "timeout",
+            "elapsedMs": 300660,
+            "groupDrained": true,
+            "reportedCases": 15,
+            "phase": "running"
+          }
+        ]
+      }
+    ],
+    "completedFiles": 10,
+    "completedCases": 102,
+    "completed": {
+      "test:test/account-receive-editor/native.test.mjs": {
+        "cases": 12,
+        "epoch": "account",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 307237
+      },
+      "test:test/account-sync/batch.test.mjs": {
+        "cases": 7,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 139871
+      },
+      "test:test/account-sync/controls.test.mjs": {
+        "cases": 5,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 2143
+      },
+      "test:test/account-sync/generated.test.mjs": {
+        "cases": 1,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 209355
+      },
+      "test:test/account-sync/native-controls.test.mjs": {
+        "cases": 4,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 129360
+      },
+      "test:test/account-sync/native.test.mjs": {
+        "cases": 12,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 506416
+      },
+      "test:test/account-editing/native.test.mjs": {
+        "cases": 16,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 193272
+      },
+      "test:test/account-handoff/native.test.mjs": {
+        "cases": 15,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 136987
+      },
+      "test:test/account-capture/native.test.mjs": {
+        "cases": 15,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 164794
+      },
+      "test:test/account-admission/native.test.mjs": {
+        "cases": 15,
+        "epoch": "account-remaining",
+        "input": "55abd1a38c1919bd8f4ee611e139af4a9083ff02259729e5791ff456050950fe",
+        "elapsedMs": 119775
+      }
+    },
+    "missing": [
+      "test:test/account-receive/native.test.mjs"
+    ],
+    "scope": "Separate bounded input epochs, not one immutable aggregate. Original failures remain authoritative for their attempts."
+  }
+}

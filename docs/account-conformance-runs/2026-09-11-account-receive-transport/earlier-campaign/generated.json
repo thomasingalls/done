@@ -1,0 +1,207 @@
+{
+  "seed": 9112042,
+  "histories": [
+    {
+      "actions": [
+        "lost",
+        "receive",
+        "receive",
+        "local",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "restart",
+        "lost",
+        "receive",
+        "restart",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "compact",
+        "receive",
+        "lost",
+        "local",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "lost",
+        "corrupt",
+        "corrupt",
+        "compact",
+        "corrupt",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "corrupt",
+        "compact",
+        "restart",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "lost",
+        "compact",
+        "receive",
+        "local",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "restart",
+        "lost",
+        "lost",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "lost",
+        "receive",
+        "compact",
+        "compact",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "receive",
+        "restart",
+        "corrupt",
+        "corrupt",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "lost",
+        "receive",
+        "corrupt",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "restart",
+        "restart",
+        "restart",
+        "local",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "receive",
+        "receive",
+        "local",
+        "receive",
+        "local",
+        "compact",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "compact",
+        "receive",
+        "compact",
+        "restart",
+        "restart",
+        "compact",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "restart",
+        "local",
+        "receive",
+        "lost",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "compact",
+        "lost",
+        "corrupt",
+        "receive",
+        "compact",
+        "receive",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    },
+    {
+      "actions": [
+        "lost",
+        "local",
+        "local",
+        "corrupt",
+        "receive",
+        "restart"
+      ],
+      "completed": true
+    }
+  ],
+  "coverage": {
+    "lost": 26,
+    "receive": 31,
+    "local": 9,
+    "restart": 27,
+    "compact": 12,
+    "corrupt": 9
+  }
+}

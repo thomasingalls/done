@@ -1,0 +1,975 @@
+{
+  "bound": 17,
+  "refused": 101,
+  "total": 118,
+  "omissions": 118,
+  "results": [
+    {
+      "id": "source-human",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        2
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        8,
+        0,
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        8,
+        0,
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-human",
+      "path": [
+        8,
+        0,
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        2
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        8,
+        0,
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        8,
+        0,
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        8,
+        0,
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        8,
+        1,
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        8,
+        1,
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "source-mixed",
+      "path": [
+        8,
+        1,
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        8
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        9,
+        0
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        9,
+        1
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-position",
+      "path": [
+        9,
+        2
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        8
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-attempt",
+      "path": [
+        9
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        8
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-retry",
+      "path": [
+        9
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        8
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        9,
+        0
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "spool-envelope",
+      "path": [
+        9,
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        8
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        9
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        10
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-submission",
+      "path": [
+        11
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        2
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        8
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        9
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        10
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "delivery-response",
+      "path": [
+        11
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        2
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        8
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        9
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        10
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        11
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-received",
+      "path": [
+        12
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        0
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        1
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        2
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        3
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        4
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        5
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        6
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        7
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        8
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        9
+      ],
+      "result": "different canonical bytes",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        10
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        11
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    },
+    {
+      "id": "inbound-conflict",
+      "path": [
+        12
+      ],
+      "result": "parser refusal",
+      "omission": "parser refusal"
+    }
+  ]
+}

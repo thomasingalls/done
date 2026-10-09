@@ -1,0 +1,74 @@
+{
+  "statuses": [
+    {
+      "jobs": 0,
+      "positions": 3,
+      "documentBytes": 19,
+      "statusMs": [
+        139.07458300000053,
+        90.83129200000076,
+        90.72249999999985
+      ],
+      "coverageRebuilds": 15,
+      "contentRecordApplications": 120,
+      "signatureVerifications": 112,
+      "decryptions": 113
+    },
+    {
+      "jobs": 8,
+      "positions": 11,
+      "documentBytes": 44,
+      "statusMs": [
+        311.1522499999992,
+        329.7609589999993,
+        314.71854099999837
+      ],
+      "coverageRebuilds": 55,
+      "contentRecordApplications": 1320,
+      "signatureVerifications": 392,
+      "decryptions": 393
+    },
+    {
+      "jobs": 16,
+      "positions": 27,
+      "documentBytes": 8478,
+      "statusMs": [
+        1100.374542000005,
+        1107.5406669999938,
+        1105.7756669999799
+      ],
+      "coverageRebuilds": 135,
+      "contentRecordApplications": 7560,
+      "signatureVerifications": 952,
+      "decryptions": 953
+    },
+    {
+      "jobs": 24,
+      "positions": 35,
+      "documentBytes": 8502,
+      "statusMs": [
+        1396.5965420000139,
+        1385.4240420000278,
+        1387.9522079999733
+      ],
+      "coverageRebuilds": 175,
+      "contentRecordApplications": 12600,
+      "signatureVerifications": 1232,
+      "decryptions": 1233
+    }
+  ],
+  "ordinaryTerminalStatusMs": [
+    1378.2769170000101,
+    1232.4880420000118,
+    1278.5228329999954
+  ],
+  "instrumentedTerminalStatusMs": [
+    1281.7436670000025,
+    1246.100375000009,
+    1274.680874999991
+  ],
+  "idleMs": [
+    5173.5745830000005,
+    7031.244000000006
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "file": "synthetic-observations.tar.gz",
+  "sha256": "b95060a64027032928ccec87f71719cd124dd6033dbbffd3c3560cff4d715d4f",
+  "bytes": 27994820,
+  "verifiedOriginalMembers": 472,
+  "scope": "All JSON stage observations, including raw acquired values and controller-held synthetic factor/needle manifests. Synthetic only; deliberately outside the app/service exposure domain. Not a filesystem-profile sample."
+}

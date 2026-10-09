@@ -1,0 +1,79 @@
+{
+  "date": "2026-09-10T06:47:00.310Z",
+  "results": [
+    {
+      "program": "node",
+      "args": [
+        "--test",
+        "test/legacy-cleanup/harness.node.mjs",
+        "test/legacy-host/harness.node.mjs",
+        "test/legacy-host-cold/harness.node.mjs"
+      ],
+      "exit": 0,
+      "stdout": "✔ historical evidence retains its exact archived bytes and unresolved status (1.910875ms)\n✔ browser error diagnostics retain original stack, cause, code and disposition (0.678041ms)\n✔ first failing input and stack are durable before fast-check starts shrinking (11.176666ms)\n✔ a stuck browser call records the trial and stops further generation or shrinking (32.843125ms)\n✔ shrinking has its own budget and retains the original failure when a shrink wedges (37.850583ms)\n✔ campaign budget bounds a sequence of individually successful trials (93.86075ms)\n✔ teardown tries all resources, preserves partial checks, and cannot turn timeout into success (41.431583ms)\n✔ deadline options reject unsafe timers and preserve existing seed/replay arguments (0.513292ms)\nHARNESS STOP run exceeded 1500 ms; partial report preserved in /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/cleanup-harness-o7TlVF\n✔ external watchdog terminates a wedged worker and its registered disposable process (1510.961291ms)\nHARNESS STOP worker did not exit after final report; partial report preserved in /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/cleanup-harness-LqYk6Q\n✔ completed assertions with a leaked handle fail the exit deadline (97.622667ms)\n✔ only a successful report AND clean worker exit pass supervision (139.051625ms)\n✔ worker import failure is bounded and writes a failed report (39.860166ms)\n✔ a worker that exits successfully but leaves its browser is still rejected (44.929334ms)\n✔ an unrelated refusal cannot masquerade as an injected progress abort (0.254875ms)\n✔ generated exact binary readback rejects missing bytes and always releases objects (10.915583ms)\n✔ byte decoder refuses accessors, out-of-range bytes, duplicates, unsupported objects and previews (0.297875ms)\n✔ observation facade refuses source-string evaluation, mutation and fallback permissions (0.129458ms)\n✔ generated paged inventory agrees with independent ledger and catches page omission (17.380542ms)\n✔ observer refuses duplicate pages, moving storage, navigation and unknown values (0.419959ms)\n✔ denial preconditions reject missing/malformed/ignored/recommended/late/exception configurations (1.103083ms)\n✔ poll timeout terminates its process without an orphan polling loop (76.01825ms)\n✔ generated file readback detects actual replacement and loss after save (563.849792ms)\n✔ save refusal cannot overwrite an existing recovery file (1.931792ms)\n✔ connection epochs reject stale handles independently of coverage gaps (0.481209ms)\n✔ the experiment refuses production authority even for an empty target census (0.15275ms)\n✔ unknown carriers and configured remote sources never become known-source-only (0.239833ms)\n✔ debugger timeouts and disconnects reject pending work and clear its bookkeeping (21.16725ms)\n✔ debugger results are correlated by request id across out-of-order completion (2.059083ms)\nℹ tests 28\nℹ suites 0\nℹ pass 28\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 2126.809542\n",
+      "stderr": ""
+    },
+    {
+      "program": "node_modules/.bin/tsc",
+      "args": [
+        "-b",
+        "--noEmit"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "program": "node_modules/.bin/oxlint",
+      "args": [
+        "scripts/legacy-host-cold",
+        "test/legacy-host-cold"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "program": "node_modules/.bin/oxfmt",
+      "args": [
+        "--check",
+        "scripts/legacy-host-cold/browser.mjs",
+        "scripts/legacy-host-cold/checks.mjs",
+        "scripts/legacy-host-cold/fixtures.mjs",
+        "scripts/legacy-host-cold/guest.mjs",
+        "scripts/legacy-host-cold/native-policy.mjs",
+        "scripts/legacy-host-cold/observer.mjs",
+        "scripts/legacy-host-cold/run.mjs",
+        "test/legacy-host-cold/harness.node.mjs",
+        "package.json"
+      ],
+      "exit": 0,
+      "stdout": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 31ms on 9 files using 10 threads.\n",
+      "stderr": ""
+    },
+    {
+      "program": "sh",
+      "args": [
+        "-n",
+        "scripts/legacy-host-cold/provision.sh",
+        "scripts/legacy-host-cold/policies.sh",
+        "scripts/legacy-host-cold/enter.sh"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "program": "git",
+      "args": [
+        "diff",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "scope": "Harness checks; no full application/browser suite rerun",
+  "pnpmWrapper": "pnpm typecheck separately failed registry identity verification under restricted network; installed tsc invoked directly with no verification-setting changes"
+}

@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-repair-r1/candidate
+
+
+ Test Files  9 passed (9)
+      Tests  176 passed (176)
+   Start at  12:00:08
+   Duration  9.16s (transform 6.09s, setup 1.26s, import 11.37s, tests 17.42s, environment 4.75s)
+

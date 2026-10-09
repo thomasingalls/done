@@ -1,0 +1,42 @@
+[
+  {
+    "obligation": "native-claim-owner",
+    "caught": true
+  },
+  {
+    "obligation": "initial-custody-authentication",
+    "caught": true
+  },
+  {
+    "obligation": "retained-import-cleanup",
+    "caught": true
+  },
+  {
+    "obligation": "shrinking-claim-histories",
+    "caught": true
+  },
+  {
+    "name": "hide live claim",
+    "caught": true
+  },
+  {
+    "name": "historical evidence",
+    "caught": true
+  },
+  {
+    "name": "native barrier",
+    "caught": true
+  },
+  {
+    "name": "stale evidence",
+    "caught": true
+  },
+  {
+    "name": "primitive erasure",
+    "caught": true
+  },
+  {
+    "name": "noncrypto disguise",
+    "caught": true
+  }
+]

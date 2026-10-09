@@ -1,0 +1,1364 @@
+[
+  {
+    "session": "profile-0",
+    "leaf": {
+      "id": 444,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 226202,
+      "inclusiveUs": 226202
+    },
+    "ancestors": [
+      {
+        "id": 443,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 344,
+        "selfUs": 55218,
+        "inclusiveUs": 325368
+      },
+      {
+        "id": 442,
+        "function": "yn",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 544,
+        "selfUs": 2864,
+        "inclusiveUs": 330073
+      },
+      {
+        "id": 441,
+        "function": "writeAny",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1080,
+        "selfUs": 5894,
+        "inclusiveUs": 335967
+      },
+      {
+        "id": 440,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 9225,
+        "selfUs": 2013,
+        "inclusiveUs": 341161
+      },
+      {
+        "id": 439,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 10146,
+        "selfUs": 20313,
+        "inclusiveUs": 749630
+      },
+      {
+        "id": 438,
+        "function": "La",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1326,
+        "selfUs": 1269,
+        "inclusiveUs": 753141
+      },
+      {
+        "id": 437,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1368,
+        "selfUs": 11910,
+        "inclusiveUs": 770786
+      },
+      {
+        "id": 436,
+        "function": "Ra",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1350,
+        "selfUs": 6854,
+        "inclusiveUs": 778893
+      },
+      {
+        "id": 435,
+        "function": "Ga",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1776,
+        "selfUs": 2417,
+        "inclusiveUs": 789373
+      },
+      {
+        "id": 434,
+        "function": "Ka",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1794,
+        "selfUs": 1282,
+        "inclusiveUs": 792236
+      },
+      {
+        "id": 433,
+        "function": "n_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 248,
+        "selfUs": 2322,
+        "inclusiveUs": 794558
+      },
+      {
+        "id": 432,
+        "function": "s_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 314,
+        "selfUs": 3727,
+        "inclusiveUs": 999312
+      },
+      {
+        "id": 431,
+        "function": "",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 368,
+        "selfUs": 0,
+        "inclusiveUs": 1000677
+      },
+      {
+        "id": 430,
+        "function": "adopt",
+        "source": "../../../selected/src/crdt/workspacePreparation.ts",
+        "line": 357,
+        "selfUs": 2092,
+        "inclusiveUs": 1004788
+      },
+      {
+        "id": 429,
+        "function": "M",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 356,
+        "selfUs": 1383,
+        "inclusiveUs": 1606311
+      },
+      {
+        "id": 329,
+        "function": "N",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 464,
+        "selfUs": 1256,
+        "inclusiveUs": 3590752
+      },
+      {
+        "id": 328,
+        "function": "ue",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 697,
+        "selfUs": 1419,
+        "inclusiveUs": 3593394
+      },
+      {
+        "id": 13,
+        "function": "de",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 720,
+        "selfUs": 0,
+        "inclusiveUs": 3597672
+      },
+      {
+        "id": 12,
+        "function": "submit",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 799,
+        "selfUs": 0,
+        "inclusiveUs": 3597672
+      },
+      {
+        "id": 11,
+        "function": "O",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 403,
+        "selfUs": 0,
+        "inclusiveUs": 3606353
+      },
+      {
+        "id": 10,
+        "function": "input",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 678,
+        "selfUs": 8944,
+        "inclusiveUs": 3634594
+      },
+      {
+        "id": 9,
+        "function": "g",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 43,
+        "selfUs": 0,
+        "inclusiveUs": 3634594
+      },
+      {
+        "id": 8,
+        "function": "",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 86,
+        "selfUs": 0,
+        "inclusiveUs": 3635914
+      },
+      {
+        "id": 5,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4343,
+        "selfUs": 0,
+        "inclusiveUs": 3636985
+      },
+      {
+        "id": 4,
+        "function": "Dm",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4315,
+        "selfUs": 1445,
+        "inclusiveUs": 3638430
+      },
+      {
+        "id": 3,
+        "function": "handlers.textupdate",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 7605,
+        "selfUs": 3918,
+        "inclusiveUs": 3649312
+      },
+      {
+        "id": 1,
+        "function": "(root)",
+        "source": "",
+        "selfUs": 0,
+        "inclusiveUs": 7591484
+      }
+    ]
+  },
+  {
+    "session": "profile-0",
+    "leaf": {
+      "id": 451,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 162434,
+      "inclusiveUs": 162434
+    },
+    "ancestors": [
+      {
+        "id": 450,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 344,
+        "selfUs": 67559,
+        "inclusiveUs": 243292
+      },
+      {
+        "id": 449,
+        "function": "writeString",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1050,
+        "selfUs": 2285,
+        "inclusiveUs": 245577
+      },
+      {
+        "id": 448,
+        "function": "writeString",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 195,
+        "selfUs": 6265,
+        "inclusiveUs": 253277
+      },
+      {
+        "id": 439,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 10146,
+        "selfUs": 20313,
+        "inclusiveUs": 749630
+      },
+      {
+        "id": 438,
+        "function": "La",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1326,
+        "selfUs": 1269,
+        "inclusiveUs": 753141
+      },
+      {
+        "id": 437,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1368,
+        "selfUs": 11910,
+        "inclusiveUs": 770786
+      },
+      {
+        "id": 436,
+        "function": "Ra",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1350,
+        "selfUs": 6854,
+        "inclusiveUs": 778893
+      },
+      {
+        "id": 435,
+        "function": "Ga",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1776,
+        "selfUs": 2417,
+        "inclusiveUs": 789373
+      },
+      {
+        "id": 434,
+        "function": "Ka",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1794,
+        "selfUs": 1282,
+        "inclusiveUs": 792236
+      },
+      {
+        "id": 433,
+        "function": "n_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 248,
+        "selfUs": 2322,
+        "inclusiveUs": 794558
+      },
+      {
+        "id": 432,
+        "function": "s_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 314,
+        "selfUs": 3727,
+        "inclusiveUs": 999312
+      },
+      {
+        "id": 431,
+        "function": "",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 368,
+        "selfUs": 0,
+        "inclusiveUs": 1000677
+      },
+      {
+        "id": 430,
+        "function": "adopt",
+        "source": "../../../selected/src/crdt/workspacePreparation.ts",
+        "line": 357,
+        "selfUs": 2092,
+        "inclusiveUs": 1004788
+      },
+      {
+        "id": 429,
+        "function": "M",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 356,
+        "selfUs": 1383,
+        "inclusiveUs": 1606311
+      },
+      {
+        "id": 329,
+        "function": "N",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 464,
+        "selfUs": 1256,
+        "inclusiveUs": 3590752
+      },
+      {
+        "id": 328,
+        "function": "ue",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 697,
+        "selfUs": 1419,
+        "inclusiveUs": 3593394
+      },
+      {
+        "id": 13,
+        "function": "de",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 720,
+        "selfUs": 0,
+        "inclusiveUs": 3597672
+      },
+      {
+        "id": 12,
+        "function": "submit",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 799,
+        "selfUs": 0,
+        "inclusiveUs": 3597672
+      },
+      {
+        "id": 11,
+        "function": "O",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 403,
+        "selfUs": 0,
+        "inclusiveUs": 3606353
+      },
+      {
+        "id": 10,
+        "function": "input",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 678,
+        "selfUs": 8944,
+        "inclusiveUs": 3634594
+      },
+      {
+        "id": 9,
+        "function": "g",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 43,
+        "selfUs": 0,
+        "inclusiveUs": 3634594
+      },
+      {
+        "id": 8,
+        "function": "",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 86,
+        "selfUs": 0,
+        "inclusiveUs": 3635914
+      },
+      {
+        "id": 5,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4343,
+        "selfUs": 0,
+        "inclusiveUs": 3636985
+      },
+      {
+        "id": 4,
+        "function": "Dm",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4315,
+        "selfUs": 1445,
+        "inclusiveUs": 3638430
+      },
+      {
+        "id": 3,
+        "function": "handlers.textupdate",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 7605,
+        "selfUs": 3918,
+        "inclusiveUs": 3649312
+      },
+      {
+        "id": 1,
+        "function": "(root)",
+        "source": "",
+        "selfUs": 0,
+        "inclusiveUs": 7591484
+      }
+    ]
+  },
+  {
+    "session": "profile-0",
+    "leaf": {
+      "id": 351,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 115171,
+      "inclusiveUs": 115171
+    },
+    "ancestors": [
+      {
+        "id": 350,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 344,
+        "selfUs": 34596,
+        "inclusiveUs": 178650
+      },
+      {
+        "id": 349,
+        "function": "yn",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 544,
+        "selfUs": 2214,
+        "inclusiveUs": 184941
+      },
+      {
+        "id": 348,
+        "function": "writeAny",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1246,
+        "selfUs": 0,
+        "inclusiveUs": 184941
+      },
+      {
+        "id": 347,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 9225,
+        "selfUs": 1850,
+        "inclusiveUs": 189786
+      },
+      {
+        "id": 342,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 10146,
+        "selfUs": 27358,
+        "inclusiveUs": 345497
+      },
+      {
+        "id": 341,
+        "function": "La",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1326,
+        "selfUs": 2618,
+        "inclusiveUs": 350766
+      },
+      {
+        "id": 340,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1368,
+        "selfUs": 5536,
+        "inclusiveUs": 356302
+      },
+      {
+        "id": 339,
+        "function": "Ra",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1350,
+        "selfUs": 6359,
+        "inclusiveUs": 363923
+      },
+      {
+        "id": 338,
+        "function": "Ga",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1776,
+        "selfUs": 0,
+        "inclusiveUs": 373655
+      },
+      {
+        "id": 337,
+        "function": "Ka",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1794,
+        "selfUs": 1162,
+        "inclusiveUs": 427143
+      },
+      {
+        "id": 336,
+        "function": "Yg",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 137,
+        "selfUs": 2491,
+        "inclusiveUs": 1340427
+      },
+      {
+        "id": 335,
+        "function": "m_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 581,
+        "selfUs": 0,
+        "inclusiveUs": 1385958
+      },
+      {
+        "id": 334,
+        "function": "fork",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 653,
+        "selfUs": 922,
+        "inclusiveUs": 1388073
+      },
+      {
+        "id": 333,
+        "function": "b",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 182,
+        "selfUs": 18486,
+        "inclusiveUs": 1929488
+      },
+      {
+        "id": 332,
+        "function": "command",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 319,
+        "selfUs": 1715,
+        "inclusiveUs": 1931203
+      },
+      {
+        "id": 331,
+        "function": "prepare",
+        "source": "../../../selected/src/crdt/workspacePreparation.ts",
+        "line": 355,
+        "selfUs": 3443,
+        "inclusiveUs": 1937181
+      },
+      {
+        "id": 329,
+        "function": "N",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 464,
+        "selfUs": 1256,
+        "inclusiveUs": 3590752
+      },
+      {
+        "id": 328,
+        "function": "ue",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 697,
+        "selfUs": 1419,
+        "inclusiveUs": 3593394
+      },
+      {
+        "id": 13,
+        "function": "de",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 720,
+        "selfUs": 0,
+        "inclusiveUs": 3597672
+      },
+      {
+        "id": 12,
+        "function": "submit",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 799,
+        "selfUs": 0,
+        "inclusiveUs": 3597672
+      },
+      {
+        "id": 11,
+        "function": "O",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 403,
+        "selfUs": 0,
+        "inclusiveUs": 3606353
+      },
+      {
+        "id": 10,
+        "function": "input",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 678,
+        "selfUs": 8944,
+        "inclusiveUs": 3634594
+      },
+      {
+        "id": 9,
+        "function": "g",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 43,
+        "selfUs": 0,
+        "inclusiveUs": 3634594
+      },
+      {
+        "id": 8,
+        "function": "",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 86,
+        "selfUs": 0,
+        "inclusiveUs": 3635914
+      },
+      {
+        "id": 5,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4343,
+        "selfUs": 0,
+        "inclusiveUs": 3636985
+      },
+      {
+        "id": 4,
+        "function": "Dm",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4315,
+        "selfUs": 1445,
+        "inclusiveUs": 3638430
+      },
+      {
+        "id": 3,
+        "function": "handlers.textupdate",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 7605,
+        "selfUs": 3918,
+        "inclusiveUs": 3649312
+      },
+      {
+        "id": 1,
+        "function": "(root)",
+        "source": "",
+        "selfUs": 0,
+        "inclusiveUs": 7591484
+      }
+    ]
+  },
+  {
+    "session": "profile-1",
+    "leaf": {
+      "id": 394,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 179059,
+      "inclusiveUs": 179059
+    },
+    "ancestors": [
+      {
+        "id": 386,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 344,
+        "selfUs": 72998,
+        "inclusiveUs": 291904
+      },
+      {
+        "id": 385,
+        "function": "yn",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 544,
+        "selfUs": 2126,
+        "inclusiveUs": 294030
+      },
+      {
+        "id": 382,
+        "function": "writeAny",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1080,
+        "selfUs": 13354,
+        "inclusiveUs": 307384
+      },
+      {
+        "id": 381,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 9225,
+        "selfUs": 3474,
+        "inclusiveUs": 315727
+      },
+      {
+        "id": 380,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 10146,
+        "selfUs": 37776,
+        "inclusiveUs": 750713
+      },
+      {
+        "id": 379,
+        "function": "La",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1326,
+        "selfUs": 9496,
+        "inclusiveUs": 772921
+      },
+      {
+        "id": 378,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1368,
+        "selfUs": 1878,
+        "inclusiveUs": 774799
+      },
+      {
+        "id": 377,
+        "function": "Ra",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1350,
+        "selfUs": 1685,
+        "inclusiveUs": 778868
+      },
+      {
+        "id": 376,
+        "function": "Ga",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1776,
+        "selfUs": 2213,
+        "inclusiveUs": 797021
+      },
+      {
+        "id": 375,
+        "function": "Ka",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1794,
+        "selfUs": 1739,
+        "inclusiveUs": 801313
+      },
+      {
+        "id": 374,
+        "function": "n_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 248,
+        "selfUs": 0,
+        "inclusiveUs": 801313
+      },
+      {
+        "id": 373,
+        "function": "s_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 314,
+        "selfUs": 579,
+        "inclusiveUs": 996333
+      },
+      {
+        "id": 372,
+        "function": "",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 368,
+        "selfUs": 1041,
+        "inclusiveUs": 997374
+      },
+      {
+        "id": 371,
+        "function": "adopt",
+        "source": "../../../selected/src/crdt/workspacePreparation.ts",
+        "line": 357,
+        "selfUs": 772,
+        "inclusiveUs": 999253
+      },
+      {
+        "id": 370,
+        "function": "M",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 356,
+        "selfUs": 4636,
+        "inclusiveUs": 1641944
+      },
+      {
+        "id": 286,
+        "function": "N",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 464,
+        "selfUs": 6845,
+        "inclusiveUs": 3654165
+      },
+      {
+        "id": 285,
+        "function": "ue",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 697,
+        "selfUs": 1478,
+        "inclusiveUs": 3655643
+      },
+      {
+        "id": 20,
+        "function": "de",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 720,
+        "selfUs": 3685,
+        "inclusiveUs": 3663504
+      },
+      {
+        "id": 19,
+        "function": "submit",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 799,
+        "selfUs": 0,
+        "inclusiveUs": 3663504
+      },
+      {
+        "id": 18,
+        "function": "O",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 403,
+        "selfUs": 1277,
+        "inclusiveUs": 3677859
+      },
+      {
+        "id": 17,
+        "function": "input",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 678,
+        "selfUs": 6792,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 16,
+        "function": "g",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 43,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 15,
+        "function": "",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 86,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 14,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4343,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 13,
+        "function": "Dm",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4315,
+        "selfUs": 1272,
+        "inclusiveUs": 3706927
+      },
+      {
+        "id": 12,
+        "function": "handlers.textupdate",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 7605,
+        "selfUs": 4177,
+        "inclusiveUs": 3724649
+      },
+      {
+        "id": 1,
+        "function": "(root)",
+        "source": "",
+        "selfUs": 0,
+        "inclusiveUs": 7703324
+      }
+    ]
+  },
+  {
+    "session": "profile-1",
+    "leaf": {
+      "id": 391,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 167256,
+      "inclusiveUs": 167256
+    },
+    "ancestors": [
+      {
+        "id": 390,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 344,
+        "selfUs": 77276,
+        "inclusiveUs": 260372
+      },
+      {
+        "id": 384,
+        "function": "writeString",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1050,
+        "selfUs": 3631,
+        "inclusiveUs": 264003
+      },
+      {
+        "id": 383,
+        "function": "writeString",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 195,
+        "selfUs": 9314,
+        "inclusiveUs": 273317
+      },
+      {
+        "id": 380,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 10146,
+        "selfUs": 37776,
+        "inclusiveUs": 750713
+      },
+      {
+        "id": 379,
+        "function": "La",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1326,
+        "selfUs": 9496,
+        "inclusiveUs": 772921
+      },
+      {
+        "id": 378,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1368,
+        "selfUs": 1878,
+        "inclusiveUs": 774799
+      },
+      {
+        "id": 377,
+        "function": "Ra",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1350,
+        "selfUs": 1685,
+        "inclusiveUs": 778868
+      },
+      {
+        "id": 376,
+        "function": "Ga",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1776,
+        "selfUs": 2213,
+        "inclusiveUs": 797021
+      },
+      {
+        "id": 375,
+        "function": "Ka",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1794,
+        "selfUs": 1739,
+        "inclusiveUs": 801313
+      },
+      {
+        "id": 374,
+        "function": "n_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 248,
+        "selfUs": 0,
+        "inclusiveUs": 801313
+      },
+      {
+        "id": 373,
+        "function": "s_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 314,
+        "selfUs": 579,
+        "inclusiveUs": 996333
+      },
+      {
+        "id": 372,
+        "function": "",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 368,
+        "selfUs": 1041,
+        "inclusiveUs": 997374
+      },
+      {
+        "id": 371,
+        "function": "adopt",
+        "source": "../../../selected/src/crdt/workspacePreparation.ts",
+        "line": 357,
+        "selfUs": 772,
+        "inclusiveUs": 999253
+      },
+      {
+        "id": 370,
+        "function": "M",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 356,
+        "selfUs": 4636,
+        "inclusiveUs": 1641944
+      },
+      {
+        "id": 286,
+        "function": "N",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 464,
+        "selfUs": 6845,
+        "inclusiveUs": 3654165
+      },
+      {
+        "id": 285,
+        "function": "ue",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 697,
+        "selfUs": 1478,
+        "inclusiveUs": 3655643
+      },
+      {
+        "id": 20,
+        "function": "de",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 720,
+        "selfUs": 3685,
+        "inclusiveUs": 3663504
+      },
+      {
+        "id": 19,
+        "function": "submit",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 799,
+        "selfUs": 0,
+        "inclusiveUs": 3663504
+      },
+      {
+        "id": 18,
+        "function": "O",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 403,
+        "selfUs": 1277,
+        "inclusiveUs": 3677859
+      },
+      {
+        "id": 17,
+        "function": "input",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 678,
+        "selfUs": 6792,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 16,
+        "function": "g",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 43,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 15,
+        "function": "",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 86,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 14,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4343,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 13,
+        "function": "Dm",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4315,
+        "selfUs": 1272,
+        "inclusiveUs": 3706927
+      },
+      {
+        "id": 12,
+        "function": "handlers.textupdate",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 7605,
+        "selfUs": 4177,
+        "inclusiveUs": 3724649
+      },
+      {
+        "id": 1,
+        "function": "(root)",
+        "source": "",
+        "selfUs": 0,
+        "inclusiveUs": 7703324
+      }
+    ]
+  },
+  {
+    "session": "profile-1",
+    "leaf": {
+      "id": 307,
+      "function": "encodeInto",
+      "source": "",
+      "selfUs": 110209,
+      "inclusiveUs": 110209
+    },
+    "ancestors": [
+      {
+        "id": 306,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 344,
+        "selfUs": 34186,
+        "inclusiveUs": 169824
+      },
+      {
+        "id": 305,
+        "function": "yn",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 544,
+        "selfUs": 1904,
+        "inclusiveUs": 175229
+      },
+      {
+        "id": 304,
+        "function": "writeAny",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1246,
+        "selfUs": 2478,
+        "inclusiveUs": 177707
+      },
+      {
+        "id": 303,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 9225,
+        "selfUs": 0,
+        "inclusiveUs": 177707
+      },
+      {
+        "id": 302,
+        "function": "write",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 10146,
+        "selfUs": 27805,
+        "inclusiveUs": 332279
+      },
+      {
+        "id": 301,
+        "function": "La",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1326,
+        "selfUs": 12564,
+        "inclusiveUs": 348093
+      },
+      {
+        "id": 300,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1368,
+        "selfUs": 0,
+        "inclusiveUs": 348093
+      },
+      {
+        "id": 299,
+        "function": "Ra",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1350,
+        "selfUs": 948,
+        "inclusiveUs": 350365
+      },
+      {
+        "id": 298,
+        "function": "Ga",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1776,
+        "selfUs": 0,
+        "inclusiveUs": 359921
+      },
+      {
+        "id": 297,
+        "function": "Ka",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1794,
+        "selfUs": 1854,
+        "inclusiveUs": 415138
+      },
+      {
+        "id": 292,
+        "function": "Yg",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 137,
+        "selfUs": 1532,
+        "inclusiveUs": 1351262
+      },
+      {
+        "id": 291,
+        "function": "m_",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 581,
+        "selfUs": 0,
+        "inclusiveUs": 1404943
+      },
+      {
+        "id": 290,
+        "function": "fork",
+        "source": "../../../selected/src/crdt/yjs.ts",
+        "line": 653,
+        "selfUs": 0,
+        "inclusiveUs": 1404943
+      },
+      {
+        "id": 289,
+        "function": "b",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 182,
+        "selfUs": 11748,
+        "inclusiveUs": 1952587
+      },
+      {
+        "id": 288,
+        "function": "command",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 319,
+        "selfUs": 0,
+        "inclusiveUs": 1952587
+      },
+      {
+        "id": 287,
+        "function": "prepare",
+        "source": "../../../selected/src/crdt/workspacePreparation.ts",
+        "line": 355,
+        "selfUs": 1268,
+        "inclusiveUs": 1955168
+      },
+      {
+        "id": 286,
+        "function": "N",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 464,
+        "selfUs": 6845,
+        "inclusiveUs": 3654165
+      },
+      {
+        "id": 285,
+        "function": "ue",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 697,
+        "selfUs": 1478,
+        "inclusiveUs": 3655643
+      },
+      {
+        "id": 20,
+        "function": "de",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 720,
+        "selfUs": 3685,
+        "inclusiveUs": 3663504
+      },
+      {
+        "id": 19,
+        "function": "submit",
+        "source": "../../../selected/src/crdt/admissionQueue.ts",
+        "line": 799,
+        "selfUs": 0,
+        "inclusiveUs": 3663504
+      },
+      {
+        "id": 18,
+        "function": "O",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 403,
+        "selfUs": 1277,
+        "inclusiveUs": 3677859
+      },
+      {
+        "id": 17,
+        "function": "input",
+        "source": "../../../selected/src/crdt/admittedWorkspace.ts",
+        "line": 678,
+        "selfUs": 6792,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 16,
+        "function": "g",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 43,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 15,
+        "function": "",
+        "source": "../../../selected/src/editor/admittedEditor.ts",
+        "line": 86,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 14,
+        "function": "",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4343,
+        "selfUs": 0,
+        "inclusiveUs": 3705655
+      },
+      {
+        "id": 13,
+        "function": "Dm",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 4315,
+        "selfUs": 1272,
+        "inclusiveUs": 3706927
+      },
+      {
+        "id": 12,
+        "function": "handlers.textupdate",
+        "source": "../../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+view@6.43.7/node_modules/@codemirror/view/dist/index.js",
+        "line": 7605,
+        "selfUs": 4177,
+        "inclusiveUs": 3724649
+      },
+      {
+        "id": 1,
+        "function": "(root)",
+        "source": "",
+        "selfUs": 0,
+        "inclusiveUs": 7703324
+      }
+    ]
+  }
+]

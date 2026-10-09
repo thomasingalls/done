@@ -1,0 +1,21 @@
+✔ all thirteen accepted stage/version carriers match independent bytes and WebCrypto MACs (48.254625ms)
+✔ every input leaf is bound or rejected, including all nested signatures and empty arrays (1638.856792ms)
+✔ encoded omissions demonstrably remove each binding while real HMACs still run (1275.506875ms)
+✔ closed parser, version/stage matrix, credentials and handoff correspondence boundaries (89.448ms)
+✔ property order is canonical except the retained handoff destination; array order remains significant (62.59075ms)
+✔ KDF context and deterministic names bind their exact fields without becoming authority (4.263292ms)
+✔ 200 shrinking-enabled generated authentication histories preserve the last accepted marker (1554.923584ms)
+(node:35566) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:35566) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native reader authenticates every stage version against real Local custody; all tampered IDs refuse (1178.9155ms)
+✔ correct MACs do not replace source, budget and credential collision checks; actual guard removal rescues each lie (1456.883042ms)
+✔ native verifier message omissions rescue forged carrier bindings while WebCrypto verification still runs (672.2385ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8997.211

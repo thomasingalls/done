@@ -1,0 +1,100 @@
+{
+  "base": "a946620f1a4b47a7d2ae0422471520add2892868",
+  "claim": "Account delivery-oracle native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T09-38-54.021Z",
+  "summary": {
+    "schema": 1,
+    "selection": "delivery-oracle-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-delivery-oracle/native.test.mjs",
+        "key": "d1db799f34f852451473ff0f43a1474602b67eb58aa44133e50a4ef46e729495",
+        "status": "passed",
+        "elapsedMs": 117760,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T09:38:54.024Z",
+    "input": "365d3ca289533a45a982ed97b00c40fba5dfb8912ef0ceeb14fd40e29dba1ce0",
+    "completedAt": "2026-09-14T09:41:17.719Z"
+  },
+  "elapsedMs": 143695,
+  "rawInputArchiveSha256": "29f9acb4c10523f4fe8267199b2c7a846451d9a7055c39d53006b8dfead68f49",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "a946620f1a4b47a7d2ae0422471520add2892868",
+    "sourceDigest": "bd4444c359b871842963ddde47143fd2073c341274b294fd9b6abc3fba6afcfb",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 6,
+    "browserFiles": 1,
+    "generatedHistories": 0,
+    "executedMutationControls": 2,
+    "rendererCrashes": 0,
+    "priorGeneralFiles": 195,
+    "priorGeneralCases": 1651,
+    "currentGeneralFiles": 196,
+    "currentGeneralCases": 1657,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 100,
+    "accountFiles": 90,
+    "accountCases": 563,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "currentVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 221,
+    "unresolvedTestFiles": 62,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 677364
+  },
+  "finalGatesSha256": "18dc0c4982437cebd47c68e21ab2e1825a9bcac168bbe2859e62cbbdf8d555ee",
+  "preservationSha256": "c78a9d27cb60de7419283e390e86c41acfc3aab5309bb41797d205964adb4410",
+  "limits": [
+    "Exactly six unchanged native cases run under delivery-oracle-native-fixture: refusals/finals in forward/reverse order, plus refusalId and finalCutoff mutation controls in forward order. Existing 120-second wrapper/file allowance, 60-second per-case limits, 15-second browser startup and 5-second drain grace are retained. No generated native histories or crash cuts execute.",
+    "The static census previously refused string-plus-boolean titles. A six-line finite-interpreter extension supports only string/boolean concatenation in either order. Boolean arithmetic, object/function coercion, dynamic calls, null/undefined concatenation and duplicate names still refuse. The focused generated test failed before repair and all 160 generated populations pass afterward for Node and Vitest; all 195 prior general contracts and 1651 identities remain unchanged.",
+    "Each case uses existing owned CDP, in-memory builds, a selected synthetic Account and temporary service custody. The Node oracle independently opens the synthetic service acceptance seal and signs contradictory refusal or final-head claims. These proofs are not issued by the live HTTP service state machine. Shared active delivery-ledger code is exercised; this does not reinstate retired-v8 product paths or prove real multi-device service composition.",
+    "The independent constraint reference imports no production reducer or verifier. Expected full state includes accepted prefix, first final cutoff, first refusal identity, conflict/publication and exact submitted/response wires. A single checked observation injection copies those fields from describeDelivery into a test-only object in both baseline and mutant builds. Native cases compare full state after each proof, page replacement and compaction. The separate finite-world/oracle histories are not rerun by this native selection.",
+    "Each mutation anchor is unique and exactly one transform hit is required. refusalId changes first-identity retention to last-identity replacement; finalCutoff changes first-cutoff retention to last-cutoff replacement. Native controls require a full-state inequality after the second claim while publication is still conflict, and a positive mismatch count. The assertion does not separately name the differing field; the constrained mutation and retained exact anchors identify the intended defect. Baseline cases must equal the independent reference.",
+    "Logical census reads decrypted authenticated heads/outbound records and spool witness after closing the editor. It compares original ledger rows, exact response-wire order and witness event count increasing once per retained proof. Duplicate and later terminal claims must report recorded=false. The census does not compare physical ciphertext files or assert its returned counter value.",
+    "Visible master text and original envelopes are compared throughout. Each original capture must remain byte-equal by identity. New captures are permitted only with expected principal, human actor and empty [0,0] updates; this is not an exact no-new-capture count. The instrumented done/env/v2 encryption invocation count remains unchanged after initial preparation. These assertions do not claim zero disk writes, all cryptographic activity or an exhaustive nonce audit.",
+    "Cold closes the page and creates another in the same browser context. No renderer/browser/service crash or fresh-profile restore is induced. Product/native/helper/wrapper bytes remain unchanged. Optional old-reader branches are not called, so no historical inputs are credited. Complete wrapper outputs, generated service/oracle histories, vector ordering and reproduction remain separate obligations.",
+    "All 93 pure runner checks, five current Vitest-process controls, typecheck and scoped style/planning/authority/signature checks pass. Unchanged 23 Node-owner and 14 native-owner controls retain prior evidence. The 52 personal/vector pins, L-2 and historical evidence remain unchanged. Ledger orphan classification, core receive loaded-host headroom, capture map-refresh/byte-length follow-ups and previous editing/handoff deadline evidence remain open. This frozen-input selection with uncommitted adapter changes is not immutable release qualification.",
+    "The passing Node file took 113.095 seconds of 120, leaving 6.905 seconds (about 5.8%) of execution headroom. Stage time was 117.760 seconds including setup/drain; total selection time was 143.695 including fingerprinting. Preserve the existing allowance and this loaded-host observation; a single pass does not establish aggregate timing reliability."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 113094.986834,
+    "stageElapsedMs": 117760,
+    "selectionElapsedMs": 143695,
+    "nodeDeadlineMs": 120000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 120000,
+    "caseMs": 60000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "1ad8bf3b5a822fa6ef0b2cbfa1d9f5bd271685fe48ac3d7dc9dcd193ac98ff87",
+    "compressedSha256": "727a2462bd8aa7441a30c78e89424ba098151ba114b0134b7423f879fc391e92"
+  }
+}

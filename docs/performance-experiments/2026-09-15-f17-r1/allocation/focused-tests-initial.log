@@ -1,0 +1,41 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r1/allocation
+
+ ❯ test/projectionEquality.test.ts (7 tests | 1 failed) 1468ms
+   × keeps simultaneously borrowed comparison scratch separate under encoding reentry 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/projectionEquality.test.ts > keeps simultaneously borrowed comparison scratch separate under encoding reentry
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ Object.get nested [as nested] test/projectionEquality.test.ts:199:50
+    197|       get nested() {
+    198|         reentries++;
+    199|         expect(sameDocState(docs[2]!, docs[3]!)).toBe(true);
+       |                                                  ^
+    200|         return 'same';
+    201|       },
+ ❯ Module.writeAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:594:33
+ ❯ UpdateEncoderV1.writeAny ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1081:14
+ ❯ ContentAny.write ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:9230:15
+ ❯ Item.write ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:10188:18
+ ❯ writeStructs ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1338:16
+ ❯ ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1369:5
+ ❯ writeClientsStructs ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1368:56
+ ❯ writeStateAsUpdate ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1777:3
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 23 passed (24)
+   Start at  09:04:31
+   Duration  4.92s (transform 557ms, setup 101ms, import 858ms, tests 5.51s, environment 0ms)
+

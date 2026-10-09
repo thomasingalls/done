@@ -1,0 +1,9 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r1/publication
+
+
+ Test Files  1 passed (1)
+      Tests  89 passed (89)
+   Start at  09:07:28
+   Duration  5.94s (transform 248ms, setup 44ms, import 412ms, tests 5.37s, environment 0ms)
+

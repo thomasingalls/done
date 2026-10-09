@@ -1,0 +1,31 @@
+{
+  "acceptedText": "base retained original",
+  "observerCalls": 1,
+  "observerFailed": true,
+  "journalOnlyBeforeRendererCrash": true,
+  "recoveredText": "base retained original",
+  "replayedOutgoingCallbacks": 0,
+  "recovery": {
+    "kinds": [
+      "state"
+    ],
+    "journal": 0,
+    "fields": [
+      [
+        "bytes",
+        "gen",
+        "kind",
+        "seq"
+      ]
+    ]
+  },
+  "persistedStoresAfterCompaction": [
+    "done.3beb6b7055a1cf887ef1ef895542ad93",
+    "done.3beb6b7055a1cf887ef1ef895542ad93",
+    "done.3beb6b7055a1cf887ef1ef895542ad93",
+    "done.3beb6b7055a1cf887ef1ef895542ad93",
+    "done.custody",
+    "done.slots"
+  ],
+  "scope": "Current document durability works. An asynchronous observer is insufficient as a future outbox; this does not claim current sync lost data, because no Account relay is connected."
+}

@@ -1,0 +1,23 @@
+(node:68879) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68879) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ certified first epoch and receipt bind exact recovery, recipients and separate semantic bytes (78.155708ms)
+✔ validly signed changes of recovery, recipient and candidate cannot replace the offer (38.984917ms)
+✔ proposal cannot be replayed as an epoch or completion; malformed and wrong-purpose signatures refuse (38.141292ms)
+✔ abandonment during asynchronous verification wins before activation (33.028875ms)
+✔ unreadable acceptance custody refuses cold reopen without replacing its key (22.615458ms)
+✔ before-commit offer-promotion commit failure has one recoverable result (29.747667ms)
+✔ after-commit offer-promotion commit failure has one recoverable result (28.508291ms)
+✔ before-commit admit-promotion commit failure has one recoverable result (52.478375ms)
+✔ after-commit admit-promotion commit failure has one recoverable result (47.233ms)
+✔ schema 2 upgrade is explicit and preserves all prior rows (14.311208ms)
+✔ 80 generated service histories match an independent pending/offered/active/cancelled ledger (2037.827916ms)
+✔ a cancelled proposal permits a fresh registration for the same retained workspace (38.398708ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2720.948833

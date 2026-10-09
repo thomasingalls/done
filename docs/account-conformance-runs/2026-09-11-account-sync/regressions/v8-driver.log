@@ -1,0 +1,69 @@
+Account driver evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-driver/2026-09-11T11-52-14.519Z
+Starting properties
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > coalesces wake storms, keeps one pass, and does not lose an edit arriving during idle detection 2ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > unknown backoff caps at 30 seconds and ordinary edits cannot accelerate it 1ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > offline and Local pressure cancel timers, and restore/manual retry expedite work 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > permanent evidence and unexpected operation failures suppress automatic retries 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > abort clears backoff immediately and drains unfinished work; observers cannot start work after close 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > 200 generated deferred event histories preserve single ownership, bounded timers and the retry floor 47ms
+ ✓ test/accountDriver.test.ts > owned delivery step > resolves persisted wrappers before preparation and never reseals a persisted envelope on an unknown reply 1ms
+ ✓ test/accountDriver.test.ts > owned delivery step > derives progress only from durable status and halts on owned publication evidence 0ms
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  13:52:14
+   Duration  815ms (transform 183ms, setup 151ms, import 63ms, tests 53ms, environment 455ms)
+
+Starting native
+✔ actual scheduler overlap control demonstrates its prohibited invocation (30.605958ms)
+✔ actual scheduler after-close control demonstrates its prohibited invocation (3.090834ms)
+(node:44432) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44432) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual dispatch guard control sends after connectivity changes at the final fetch boundary (10856.241917ms)
+(node:44454) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:44454) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+native still running; see native.log
+✔ startup and rapid edits drain automatically, Local remains usable and idle notifications do not spin (11968.35425ms)
+native still running; see native.log
+✔ unknown replies back off despite edits, then online wake retries exact bytes before new content (6500.284917ms)
+✔ cold restart resolves a persisted unknown wrapper before any new seal (7867.26925ms)
+native still running; see native.log
+✔ verified closed evidence halts automatic publication and retains later Local edits (6546.722459ms)
+✔ verified conflict evidence halts automatic publication and retains later Local edits (6541.403625ms)
+✔ verified finalized evidence halts automatic publication and retains later Local edits (6507.944541ms)
+native still running; see native.log
+✔ close during backoff removes wake sources and never waits for the retry deadline (6303.178833ms)
+✔ close drains a late fetch while retaining the native slot permit (5042.73475ms)
+native still running; see native.log
+driver history 1/8: ["retry","restart","restart"]
+✔ Local storage failure pauses publication and restoring admission wakes retained work (6385.266875ms)
+driver history 2/8: ["retry","lost","restart","edit","lost"]
+native still running; see native.log
+driver history 3/8: ["lost","edit","lost","offline","offline","lost"]
+native still running; see native.log
+native still running; see native.log
+driver history 4/8: ["retry","lost","restart","lost","offline","restart"]
+native still running; see native.log
+driver history 5/8: ["retry","retry","lost"]
+driver history 6/8: ["retry","restart","lost","restart"]
+native still running; see native.log
+driver history 7/8: ["lost","offline","offline"]
+native still running; see native.log
+driver history 8/8: ["restart","retry","retry","lost"]
+native still running; see native.log
+✔ eight generated native edit/disconnect/lost-reply/restart histories preserve each exact wrapper and drain all captures (103541.471542ms)
+✔ browser polling awaits false results instead of treating their Promise as success (4546.046584ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 185674.980375
+passed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-driver/2026-09-11T11-52-14.519Z

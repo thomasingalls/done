@@ -1,0 +1,392 @@
+{
+  "$schema": "https://done.invalid/vectors/checkpoint/2",
+  "generated_by": "scripts/generate-checkpoint-vectors.mjs",
+  "falsifies": {
+    "the opener predicate": [
+      "f-b997cdb-checkpoint-key-retention-inverted"
+    ]
+  },
+  "selection": "docs/selections/row-7-checkpoint.md",
+  "trd_row": 7,
+  "construction": {
+    "checkpoint": "AES-256-GCM(K_cp; a Yjs full snapshot of the content root, AAD) — the snapshot includes row 8’s attribution records",
+    "kdf": "K_cp = HKDF-SHA256(ikm = K_g, salt = cp_salt[16], info = LP(\"done/checkpoint/v1\") || LP(workspace_id), L = 32)",
+    "seal_discipline": "cp_salt is 16 fresh random bytes per seal, carried in the clear beside the nonce — one message per derived key, so nonce reuse is structurally unreachable and no invocation counter exists because none is needed (§13.8’s discipline at the fifth subkey; the k-checkpoint census entry)",
+    "checkpoint_aad": "LP(\"done/cp/v1\") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)",
+    "manifest": "Ed25519( producing credential ; LP(\"done/cp-manifest/v2\") || LP(\"2\") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds)) || LP(hex head_vector_digest) || LP(producing_credential) )",
+    "head_vector": "For each credential ascending by id: LP(credential_id) || LP(dec seq) || LP(hex link). Digest = SHA-256( LP(\"done/headvec/v1\") || head_vector ). The sort is the canonicalization",
+    "coverage": "`sv` and `ds` bound separately, as opaque bytes. §7.6 forbids a bare state vector as a coverage claim; opacity means §10.1’s deferred Yjs upgrade changes what the bytes say rather than what this construction is",
+    "attribution": "Preserved by row 8 rather than by anything here. Each claim is signed by its own author and lives in the snapshotted content; the producer signs the container and nothing inside it, so §7.6’s forbidden shape is unreachable",
+    "cadence": [
+      "A rotation forces a checkpoint under the new generation **before the old generation may be dropped** — a checkpoint is only openable while its generation is retained.",
+      "Otherwise: whichever comes first of an accepted-position count since the last checkpoint, or elapsed time. Both are tunables whose ground is first-sync cost (§12’s 1.5 s checkpoint verify), and neither can be set honestly before there is a service to measure."
+    ],
+    "retention": [
+      "At least two checkpoints and their suffixes, because §11.3 test 8 requires falling back to the next-newest when the newest is unavailable.",
+      "Never drop a checkpoint whose generation is the newest one any retained checkpoint uses."
+    ],
+    "not_here": {
+      "primitives": "AES-256-GCM, HKDF, SHA-256 and Ed25519 KATs are row 1’s, in test/vectors/algorithm-suite.json.",
+      "attribution": "The records inside the snapshot are row 8’s.",
+      "heads": "The links and heads the vector collects are row 5’s.",
+      "packages": "What a migration or terminal package carries is row 10’s."
+    }
+  },
+  "keys": {
+    "producer": {
+      "role": "The credential that produced this checkpoint. It signs the container and nothing inside it.",
+      "source": "RFC 8032 §7.1, TEST 2",
+      "seed": "4ccd089b28ff96da9db6c346ec114e0f5b8a319f35aba624da8cf6ed4fb8a6fb",
+      "public_key": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+    },
+    "other_credential": {
+      "role": "Another admitted credential, present so \"produced by somebody else\" is a vector rather than a sentence.",
+      "source": "RFC 8032 §7.1, TEST 1",
+      "seed": "9d61b19deffd5a60ba844af492ec2cc44449c5697b326919703bac031cae7f60",
+      "public_key": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+    },
+    "uncertified": {
+      "role": "A keypair whose signatures are genuine and whose credential no certified set names — the eligibility lookup’s negative (FU-11). Without it, a valid signature by an ineligible credential is outside the model.",
+      "source": "RFC 8032 §7.1, TEST 3",
+      "seed": "c5aa8df43f9f837bedb7442f31dcb7b166d38535076f094b85ce3a2e0b4458f7",
+      "public_key": "fc51cd8e6218a1a38da47ed00230f0580816ed13ba3303ac5deb911548908025"
+    }
+  },
+  "vectors": [
+    {
+      "name": "checkpoint-at-epoch-9",
+      "why": "A laptop checkpointing a two-device workspace at epoch 9, generation 3. The snapshot includes row 8’s attribution records, which is what makes this preserve attribution without anyone re-signing anything.",
+      "inputs": {
+        "k_g": "4a1f8c05e2b7d3690fae512c86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "v": 1,
+        "manifest_v": 2,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "epoch": 9,
+        "epoch_head": "2b7f0a9c14e6d3850fa2c51e86d4073bb9e0c1f24d8a63759e0b2f4c7a1d8e36",
+        "gen": 3,
+        "cp_salt": "5a17c2e94d0b386f1e8a4c7d92b5063f",
+        "nonce": "404142434445464748494a4b",
+        "producing_credential": "cred_01HZXR0000000000000000LAPT",
+        "sv": "01a8e0c9d20503b1c4f70a02",
+        "ds": "02a8e0c9d2050107b1c4f70a0304",
+        "accepted_heads": [
+          {
+            "credential": "cred_01HZXR0000000000000000PHON",
+            "seq": 4,
+            "link": "7f3e1d0c9b8a5647382910fedcba98765432100fedcba9876543210fedcba987"
+          },
+          {
+            "credential": "cred_01HZXR0000000000000000LAPT",
+            "seq": 12,
+            "link": "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90"
+          }
+        ],
+        "snapshot_utf8": "a Yjs full snapshot of the content root, including row 8’s attribution records"
+      },
+      "derived": {
+        "hkdf_info": "0012646f6e652f636865636b706f696e742f7631001d77735f3031485a5851374d344b395032523654385630593342354e3744",
+        "checkpoint_aad": "000a646f6e652f63702f7631000131001d77735f3031485a5851374d344b395032523654385630593342354e3744000133000139",
+        "head_vector": "001f637265645f3031485a5852303030303030303030303030303030304c41505400023132004061316232633364346535663630373138323933613462356336643765386639306131623263336434653566363037313832393361346235633664376538663930001f637265645f3031485a58523030303030303030303030303030303050484f4e000134004037663365316430633962386135363437333832393130666564636261393837363534333231303066656463626139383736353433323130666564636261393837",
+        "head_vector_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+        "manifest_message": "0013646f6e652f63702d6d616e69666573742f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744000139004032623766306139633134653664333835306661326335316538366434303733626239653063316632346438613633373539653062326634633761316438653336000133004036646461363334333131363263303962643239643734613866366163393163643835313732343135623362353766633039386234326430353933366634666238004039643564313239613530383638376464343635626634353538623535636633623732306262383732616362373935386165383837636466316365393163323333004030316432373731373932636336643765303366623937616263373938363932323633363263626237616431623962613934396363613636633139393031333736004038306137613262613133313736353565326361636263373432366235623533316632613436623736326334646461663734326235393839623062653562626437001f637265645f3031485a5852303030303030303030303030303030304c415054"
+      },
+      "expected": {
+        "ciphertext": "7ab4250f161e3385b419daca2c4fb14bad669a7e5b0422767ae1f9b071118e5409301c286a53e58379b59c42a8934cd4acdb13a4106c42decdec725522d0bda728e80406bbcf62ad0231b188b0c49c0d9b121dbfd5221457a5ac01e5c5c46c18",
+        "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+        "signature": "5865f3a824ff583a567d5919ee3920987e437daa2008e7e9b3e1bde02fc5c240785a8ae6b25c0104a4a044fc3e02b7721b0860684d5fbfc57fdaa2a00154c80f"
+      }
+    }
+  ],
+  "admission": {
+    "why": "The authority half of RC-5A, as published values. The verifier for an admission resolves from the certified set at the manifest’s epoch — S0-2’s member entries — never from a key the evidence happens to hold; self_admitted equals the derived producer relation in both directions; and a producer self-admission is refused while the set holds a second eligible client.",
+    "producer": "cred_01HZXR0000000000000000LAPT",
+    "certified_at_epoch_9": {
+      "cred_01HZXR0000000000000000LAPT": {
+        "s_pub": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+      },
+      "cred_01HZXR0000000000000000PHON": {
+        "s_pub": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a"
+      }
+    },
+    "second_party": {
+      "fields": {
+        "label": "done/cp-admit/v2",
+        "v": 2,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+        "manifest_digest": "a8b5c1bdcc983ba69b7d51ca95ee79e43085013534a54d6de5a112fbe41424fa",
+        "derived_sv": "01a8e0c9d20503b1c4f70a02",
+        "derived_ds": "02a8e0c9d2050107b1c4f70a0304",
+        "head_baseline_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+        "derivation_version": "yjs-v13-sv-ds",
+        "admitting_credential": "cred_01HZXR0000000000000000PHON",
+        "self_admitted": "0",
+        "decision_parent": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "signed_by": "d75a980182b10ab7d54bfed3c964073a0ee172f3daa62325af021a68f707511a",
+      "signature": "572ea1c51ef334377d311b98f34bfc983c6a35b781099118ac6b14eecb093b9bd1e84cef484f70f90a3aac786ed44efcbe9fa2c6acbbc2497ca10e8c37815b0a",
+      "accepted": "in the two-device set: eligible, not the producer, flag agrees"
+    },
+    "self_admission": {
+      "certified_set": {
+        "cred_01HZXR0000000000000000LAPT": {
+          "s_pub": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c"
+        }
+      },
+      "fields": {
+        "label": "done/cp-admit/v2",
+        "v": 2,
+        "workspace_id": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D",
+        "checkpoint_digest": "6dda63431162c09bd29d74a8f6ac91cd85172415b3b57fc098b42d05936f4fb8",
+        "manifest_digest": "a8b5c1bdcc983ba69b7d51ca95ee79e43085013534a54d6de5a112fbe41424fa",
+        "derived_sv": "01a8e0c9d20503b1c4f70a02",
+        "derived_ds": "02a8e0c9d2050107b1c4f70a0304",
+        "head_baseline_digest": "80a7a2ba1317655e2cacbc7426b5b531f2a46b762c4ddaf742b5989b0be5bbd7",
+        "derivation_version": "yjs-v13-sv-ds",
+        "admitting_credential": "cred_01HZXR0000000000000000LAPT",
+        "self_admitted": "1",
+        "decision_parent": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "signed_by": "3d4017c3e843895a92b70aa74d1b7ebc9c982ccf2ec4968cc0cd55f12af4660c",
+      "signature": "01a6e7f616a2a0a9a61a80ec2c3d1b72b837bacceb7d19cf19bd8a6cd318d2367e911e90bc08af630c121d7b165d84c6ac605999ba66e4554d78648f82f7190a",
+      "accepted": "only in the single-device set, and the record says it was self-admitted; the identical bytes beside certified_at_epoch_9 are the self-admission-beside-a-second-eligible negative"
+    }
+  },
+  "retention_interlock": {
+    "why": "The rule read \"never drop a checkpoint whose generation any retained checkpoint still needs\", which constrains each checkpoint by reference to itself -- the only checkpoint that needs g is the one sealed under g -- and never constrains the generation. §13.7 forces a checkpoint under the new generation before the old one is dropped; it says nothing about whether the second-newest stays openable, and that is the one §11.3 test 8 falls back to.",
+    "subject": "the generation, not the checkpoint",
+    "stated_over": "the opener set, not the local key envelope -- a retained recovery or reader wrap may still open a generation whose envelope is gone",
+    "after_two_rotations": {
+      "retained": [
+        {
+          "gen": 5,
+          "role": "newest"
+        },
+        {
+          "gen": 4,
+          "role": "second-newest, the mandated fallback"
+        }
+      ],
+      "droppable": [
+        3
+      ],
+      "not_droppable": [
+        4,
+        5
+      ]
+    },
+    "expected": "a generation is droppable only when no retained checkpoint is sealed under it, and one opener is retirable only while another survives"
+  },
+  "must_fail": [
+    {
+      "name": "coverage-ignores-deletions",
+      "mutate": "A manifest whose delete set differs while its state vector is identical. **This is §7.6’s stated failure as a vector**: two replicas can agree on `sv` and disagree about what has been deleted, so a bare state vector is not a coverage claim and `ds` has to be bound on its own."
+    },
+    {
+      "name": "coverage-ignores-insertions",
+      "mutate": "The same manifest with a different state vector and the same delete set — the mirror of the negative above. Both halves are bound independently, so neither can be moved against the other, and the pair is published as a pair because §7.6’s point is that one of them alone is not a coverage claim."
+    },
+    {
+      "name": "substituted-checkpoint-digest",
+      "mutate": "The manifest’s own digest field altered while the bytes beside it are untouched — a manifest pointing at a checkpoint nobody signed for. Distinct from `substituted-checkpoint`, which is the store’s keyless hash check: this is the signature, and only it survives a store that does not run the check."
+    },
+    {
+      "name": "reordered-head-vector",
+      "mutate": "Serialize the accepted-head vector in insertion order rather than ascending by credential id. Isolates `head_vector_digest`, and the sort is what makes two devices checkpointing the same state agree."
+    },
+    {
+      "name": "produced-by-another-credential",
+      "mutate": "A well-formed manifest signed by a different admitted credential. The producing credential is named in the message, so this fails on the binding and not only on the key."
+    },
+    {
+      "name": "substituted-checkpoint",
+      "mutate": "A manifest paired with checkpoint bytes it does not digest. The durable store can check this without a content key, exactly as the relay checks an envelope’s digest (§7.2)."
+    },
+    {
+      "name": "wrong-workspace",
+      "mutate": "Verify the manifest against another workspace."
+    },
+    {
+      "name": "wrong-generation",
+      "mutate": "Claim a generation the checkpoint was not sealed under. **A checkpoint is only openable while its generation is retained**, which is why rotation forces a new one before the old generation may be dropped."
+    },
+    {
+      "name": "wrong-epoch",
+      "mutate": "Move the manifest to another epoch number."
+    },
+    {
+      "name": "stale-epoch-head",
+      "mutate": "A current epoch number paired with an older head. Row 9’s pairing, applied to the artifact a recovering device reads first."
+    },
+    {
+      "name": "wrong-version",
+      "mutate": "Claim manifest version 2 for a version-1 manifest."
+    },
+    {
+      "name": "aad-only-renumbered-manifest-label",
+      "isolates": "checkpoint manifest.label",
+      "mutate": "Verify under \"done/cp-manifest/v2\"."
+    },
+    {
+      "name": "cp-aad-only-workspace",
+      "isolates": "checkpoint aad.workspace_id",
+      "mutate": "Open the checkpoint as though it belonged to another workspace, subkey unchanged."
+    },
+    {
+      "name": "cp-aad-only-generation",
+      "isolates": "checkpoint aad.gen",
+      "mutate": "Open it claiming another generation."
+    },
+    {
+      "name": "cp-aad-only-epoch",
+      "isolates": "checkpoint aad.epoch",
+      "mutate": "Open it claiming another epoch."
+    },
+    {
+      "name": "cp-aad-only-version",
+      "isolates": "checkpoint aad.v",
+      "mutate": "Open it claiming another format version."
+    },
+    {
+      "name": "cp-aad-only-renumbered-label",
+      "isolates": "checkpoint aad.label",
+      "mutate": "Open it under \"done/cp/v2\"."
+    },
+    {
+      "name": "wrong-workspace-subkey",
+      "mutate": "Derive K_cp for another workspace. The AAD half is `cp-aad-only-workspace`."
+    },
+    {
+      "name": "wrong-cp-salt",
+      "mutate": "Derive K_cp under another seal’s salt. One message per derived key is the key’s entire invocation discipline (§13.8’s, at the fifth subkey — the k-checkpoint census entry), so the salt is part of what opens a checkpoint, carried in the clear beside the nonce, and no other salt’s key opens it."
+    },
+    {
+      "name": "admission-derived-sv-disagrees",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The check that needs nobody's signature. A restorer materialises the snapshot, derives {sv, ds} itself, and compares against BOTH the manifest and the admission. A disagreement is a refusal reached without trusting anyone, and it is mandatory even when every signature verifies -- an encoding or selection bug produces this as readily as a malicious producer."
+    },
+    {
+      "name": "admission-derived-ds-disagrees",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The same at the deletion half, which is bound separately for §7.6's reason: two replicas can carry identical state vectors and disagree about what has been deleted."
+    },
+    {
+      "name": "admission-signed-over-a-wrong-derivation",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The case the local re-derivation exists for, and the only one that proves it runs. Here the admitter signs an admission whose derived coverage genuinely disagrees with the snapshot -- a colluding admitter, or an honest one with a bug. Every signature verifies. The refusal has to come from the restorer recomputing {sv, ds} itself, which is why that check is first and why it is mandatory even when the admission is valid. The sibling negatives above cannot show this: with the local check removed they still fail, on the signature, which is the fails-twice-isolates-nothing shape."
+    },
+    {
+      "name": "admission-of-another-manifest",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "An admission lifted onto a different manifest. It binds the manifest digest, so a checked coverage claim cannot be moved to a checkpoint nobody checked."
+    },
+    {
+      "name": "admission-with-a-substituted-head-baseline",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The one trusted field, doing its job. Proving the head vector does not reach past the snapshot needs the accepted events that trim removes, so the baseline is what the admitter attests to and it may not be swapped afterwards."
+    },
+    {
+      "name": "admission-under-an-unimplemented-derivation-version",
+      "why": "sv and ds are a library's opaque encoding. Unversioned, a change to it turns every stored admission into a silent mismatch that reads as corruption; versioned, it is a legible refusal that names its cause."
+    },
+    {
+      "name": "admission-signed-by-a-credential-that-did-not-admit",
+      "why": "The admitting credential is named in the message, so this fails on the binding rather than only on the key."
+    },
+    {
+      "name": "admission-forked-from-another-parent",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "Incomparable proposals serialise by an authenticated decision parent and never by wall clock, which is row 7's own rule at the object that now settles it."
+    },
+    {
+      "name": "admission-by-an-uncertified-credential",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The eligibility lookup, doing its job (FU-11, P-8 requirement 5’s other half). The signature is genuine — the fixture asserts so under the signer’s own key first — and the credential it names has no entry in the certified set at the manifest’s epoch, so the refusal comes from the lookup, before any signature runs. Before the return the verifier was a constant this file imported, and this state was outside the model."
+    },
+    {
+      "name": "self-admission-beside-a-second-eligible",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "P-8 requirement 5, and the inversion of the acceptance ST-06 convicted: the producer properly signs its own admission — the signature is genuine and asserted so — while the certified set at the manifest’s epoch holds a second eligible client. The cardinality rule refuses it: a second eligible client must admit where one exists, and before the return this exact admission was unconditionally accepted in this exact two-device world."
+    },
+    {
+      "name": "self-admission-unmarked",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "P-8 requirement 6’s second clause. In the one-device world a producer self-admission is accepted — and the record must say it is one. Here the producer admits its own proposal with self_admitted 0, properly signed; the flag disagrees with the derived relation (the admitting credential IS the producing credential), so a restorer would infer the stronger provenance, and the refusal is the honesty rule executing."
+    },
+    {
+      "name": "second-party-admission-marked-self",
+      "falsifies": [
+        "f-b997cdb-checkpoint-coverage-unchecked"
+      ],
+      "why": "The same flag rule in the other direction: a second party’s admission claiming to be a self-admission is refused. The flag equals the derived producer relation in both directions or the admission does not verify — self_admitted is honest, never merely present."
+    },
+    {
+      "name": "aad-only-admission-label",
+      "isolates": "checkpoint admission.label",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-version",
+      "isolates": "checkpoint admission.v",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-workspace-id",
+      "isolates": "checkpoint admission.workspace_id",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-checkpoint-digest",
+      "isolates": "checkpoint admission.checkpoint_digest",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-manifest-digest",
+      "isolates": "checkpoint admission.manifest_digest",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-derived-sv",
+      "isolates": "checkpoint admission.derived_sv",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-derived-ds",
+      "isolates": "checkpoint admission.derived_ds",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-derivation-version",
+      "isolates": "checkpoint admission.derivation_version",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-admitting-credential",
+      "isolates": "checkpoint admission.admitting_credential",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    },
+    {
+      "name": "aad-only-admission-self-admitted",
+      "isolates": "checkpoint admission.self_admitted",
+      "why": "The binding on its own. The semantic negatives above stop at the local re-derivation, which would refuse them just as readily if nothing were signed -- so each of these carries what the restorer expects and forces the refusal onto the signature."
+    }
+  ]
+}

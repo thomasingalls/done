@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="real service-issued sv lie refuses at all receipt paths; retained-part omission returns it" time="3.745464" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-evidence/receipt.test.mjs"/>
+	<testcase name="real service-issued ds lie refuses at all receipt paths; retained-part omission returns it" time="3.481783" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-evidence/receipt.test.mjs"/>
+	<testcase name="12 generated journal/disk histories rederive receipt coverage on cold reopen and detect the omission" time="41.058531" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-evidence/receipt.test.mjs"/>
+	<!-- tests 3 -->
+	<!-- suites 0 -->
+	<!-- pass 3 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 49076.367375 -->
+</testsuites>

@@ -1,0 +1,44 @@
+Starting selected cost-0 2026-09-15T12:02:42.498Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected cost-0 shallow p50 45.29999923706055 p95 49.70000076293945
+selected cost-0 deeper p50 44 p95 47
+Finished selected cost-0 passed
+Starting guarded cost-0 2026-09-15T12:03:23.982Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+guarded cost-0 shallow p50 47.10000038146973 p95 51
+guarded cost-0 deeper p50 46.5 p95 51.70000076293945
+Finished guarded cost-0 passed
+Starting guarded cost-1 2026-09-15T12:04:05.047Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+guarded cost-1 shallow p50 46.89999961853027 p95 52.69999980926514
+guarded cost-1 deeper p50 46 p95 49.30000019073486
+Finished guarded cost-1 passed
+Starting selected cost-1 2026-09-15T12:04:46.383Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+selected cost-1 shallow p50 43.80000019073486 p95 46.60000038146973
+selected cost-1 deeper p50 43.80000019073486 p95 46.60000038146973
+Finished selected cost-1 passed

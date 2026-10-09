@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-local-profile/candidate/inputs.json.gz",
+    "bytes": 1179854,
+    "sha256": "4dd868c4d275f14facd866e753acc42919a1ba9bb66a2a6a163568aa80fb4fda"
+  },
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-local-profile/candidate/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-f17-local-profile/before-inputs.json.gz",
+    "bytes": 1179790,
+    "sha256": "379af74739a8f72fe264ced59018d3e8866cce2ca732724bfc93ed7493f0789b"
+  },
+  {
+    "path": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/f17-local-profile/candidate/stages/20de7dd95b2b795025001ba48ddb796d95a17472953ebfa3c71a9e5e42782ad5/tmp/playwright/app/assets/main-BfNk6HWo.js.map",
+    "bytes": 4527229,
+    "sha256": "9ec8b43fb39836d7d091b473bedb383c58bd2589827852e6dd4b1e968b4bf4a7"
+  }
+]

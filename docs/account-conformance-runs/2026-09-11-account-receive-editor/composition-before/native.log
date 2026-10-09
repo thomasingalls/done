@@ -1,0 +1,182 @@
+(node:65556) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:65556) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:65556) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source (5617.065042ms)
+✖ ordered receive before commit crash leaves no early edit or local recapture (5551.9405ms)
+✖ ordered receive after commit crash leaves no early edit or local recapture (5561.674958ms)
+✖ a local command queued during receive is prepared only after commit and ordered publication (5545.0235ms)
+✖ invalid page and authenticated stream conflict preserve local editor availability (5531.594084ms)
+✖ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (5546.325292ms)
+✖ storage pressure holds the entire remote/local suffix and discard cannot acknowledge it (5546.706167ms)
+✖ close drains a committed receive before releasing the slot, with no late acknowledgement or source (5549.520584ms)
+✖ actual early source mutation violates the publication/source oracle (5874.597542ms)
+✖ actual relabel source mutation violates the publication/source oracle (5825.310625ms)
+✖ 10 generated native histories preserve authored content, receive progress and exact local source counts (5851.681916ms)
+✖ close from a publication observer stops remaining promotion and cold replay restores the whole committed batch (5811.202583ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 0
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69379.164125
+
+✖ failing tests:
+
+test at test/account-receive-editor/native.test.mjs:73:1
+✖ owned remote publication bypasses source capture/undo/outgoing; startup and duplicates allocate no source (5617.065042ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:77:44) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:121:3
+✖ ordered receive before commit crash leaves no early edit or local recapture (5551.9405ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:125:46) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:121:3
+✖ ordered receive after commit crash leaves no early edit or local recapture (5561.674958ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:125:46) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:150:1
+✖ a local command queued during receive is prepared only after commit and ordered publication (5545.0235ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:154:44) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:179:1
+✖ invalid page and authenticated stream conflict preserve local editor availability (5531.594084ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:183:44) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:209:1
+✖ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (5546.325292ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:213:44) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:245:1
+✖ storage pressure holds the entire remote/local suffix and discard cannot acknowledge it (5546.706167ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:249:44) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:288:1
+✖ close drains a committed receive before releasing the slot, with no late acknowledgement or source (5549.520584ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:292:44) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:333:3
+✖ actual early source mutation violates the publication/source oracle (5874.597542ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:337:46) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:333:3
+✖ actual relabel source mutation violates the publication/source oracle (5825.310625ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:337:46) {
+    log: []
+  }
+
+test at test/account-receive-editor/native.test.mjs:371:1
+✖ 10 generated native histories preserve authored content, receive progress and exact local source counts (5851.681916ms)
+  Error: Property failed after 1 tests
+  { seed: 9202026, path: "0", endOnFailure: true }
+  Counterexample: [["invalid","local","receive","local","compact"]]
+  Shrunk 0 time(s)
+  
+  Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+      at buildError (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2462:16)
+      at asyncThrowIfFailed (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2474:8) {
+    [cause]: page.evaluate: ReferenceError: account is not defined
+        at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+        at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+        at async <anonymous>:337:30
+        at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+        at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+        at async file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:387:50
+        at async AsyncProperty.run (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)
+        at async asyncRunIt (/Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)
+        at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:377:5) {
+      log: []
+    }
+  }
+
+test at test/account-receive-editor/native.test.mjs:462:1
+✖ close from a publication observer stops remaining promotion and cold replay restores the whole committed batch (5811.202583ms)
+  page.evaluate: ReferenceError: account is not defined
+      at Module.openOwnedReceivingAccountWorkspace (eval at evaluate (:311:30), <anonymous>:47320:8)
+      at async window.openEditor (eval at evaluate (:311:30), <anonymous>:3:23)
+      at async <anonymous>:337:30
+      at open (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:77:42)
+      at ready (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/fixtures.mjs:94:9)
+      at async TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive-editor/native.test.mjs:466:44) {
+    log: []
+  }

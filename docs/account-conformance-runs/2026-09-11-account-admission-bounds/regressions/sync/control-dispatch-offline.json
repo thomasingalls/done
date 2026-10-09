@@ -1,0 +1,13 @@
+{
+  "effective": true,
+  "observations": [
+    {
+      "mutant": false,
+      "calls": 0
+    },
+    {
+      "mutant": true,
+      "calls": 1
+    }
+  ]
+}

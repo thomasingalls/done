@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="captured Account activates, journals exact sources, cold reopens and retains capsules through compaction" time="5.156086" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="capture activation before commit prevents premature initialization" time="3.522049" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="capture activation after commit prevents premature initialization" time="3.626521" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="v5 histories and old readers refuse; public receive cannot acquire capture authority" time="4.225886" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="pressured database admission is atomic; aborted capture leaves input pending and retry captures once" time="3.527795" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="journal cleanup failure retains exact overlap; cold recovery deduplicates capsule identity" time="4.004497" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="capture controls expose lost durable attribution and wrong-workspace acceptance" time="5.007926" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="generated real editing, flush, compaction and cold restart histories preserve source bytes" time="46.425104" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="exclusive lifetime queues another editor; cancellation, pagehide and stale surfaces revoke access" time="3.766772" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="cancelled native flush holds permit until drain and destroys projections before release" time="3.590044" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="wrong pin, factor, passkey and actor refuse activation; receive cannot reach persistence" time="2.889365" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="human undo and system bulk moves retain each transaction actor" time="3.670286" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="original pending structs and delete frames survive journal, flush and compaction until their parent arrives" time="4.875860" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="capsule overhead forces atomic database admission while preserving the original source bytes" time="3.588994" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<testcase name="carrier refuses changed routes and conflicting intent reuse before database mutation" time="3.607626" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-capture/native.test.mjs"/>
+	<!-- tests 15 -->
+	<!-- suites 0 -->
+	<!-- pass 15 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 102747.418959 -->
+</testsuites>

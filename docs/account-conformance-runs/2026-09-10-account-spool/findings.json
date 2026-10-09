@@ -1,0 +1,40 @@
+{
+  "designDefect": {
+    "discovery": "Code review of missing final records followed by an executed native reproduction; not discovered by the generated campaign.",
+    "failure": "After an envelope had been returned, deleting its final ledger row left a legal unfinished prefix. The initial owner reopened and returned different wire bytes for the same network position.",
+    "initialEvidence": "pre-repair-missing-tail.log: expected refusal fails after the test verified same position and different bytes. The initial 19-case passing campaign was insufficient and is superseded.",
+    "repair": "Private content counter v2 carries an authenticated hash-chain witness. Every ledger event and next signed witness commit in one native transaction. Census verifies completeness before startup, compaction or envelope exposure. V7 activation installs the witness before admission; interrupted activation resumes.",
+    "regression": "Missing final row and entire ledger refuse with current metadata retained. Before/after native commits verify atomicity and interrupted activation.",
+    "control": "The no-witness actual-module mutation reproduces remint; missing-tail-control.json retains synthetic before/after wire and external invocation counts.",
+    "limits": "Coordinated restoration of old authenticated metadata and its matching ledger remains outside local rollback detection."
+  },
+  "harnessRetry": "The shared regression wrapper reused the previous compaction output directory. The harness correctly refused overwrite; the final direct Node compaction run uses content-trim-witness. Source capture passed and was not repeated.",
+  "otherControls": {
+    "earlyReturn": "Actual owner returns encrypted bytes before persistence; no envelope exists on cold restart.",
+    "reuseAttempt": "Actual owner reuses an abandoned reservation; two observed network encryption calls with only one durable grant.",
+    "budget": "Reduced limit permits two native calls and refuses the prohibited third before AES.",
+    "oldReader": "Previous signed promotion parser rejects v7."
+  },
+  "implementationReview": "Asynchronous census verification now drains inside the lifecycle task; prepared keys initialize before carrier initialization invokes that validator. Internal composition alone receives spool counter and task authority.",
+  "generated": {
+    "ledger": {
+      "seed": 9512026,
+      "runs": 150,
+      "maxPositions": 7,
+      "burnsPerPosition": "0..2",
+      "includes": "Real signed/encrypted wire, exact sources/actors, removed grants, missing suffix/all ledger, changed witness, independent invocation accounting and reservation preservation."
+    },
+    "routes": {
+      "seed": 9512027,
+      "runs": 150
+    },
+    "native": {
+      "seed": 9502026,
+      "runs": 8,
+      "steps": "2..4",
+      "inputs": "generated.json",
+      "includes": "Real editing with allocation/attempt/envelope before/after commits, renderer death, compaction, retained exact wire and external crypto observations."
+    }
+  },
+  "scope": "Disposable Chromium and synthetic fixtures; strict native transaction completion and renderer death, not physical power loss, large-backlog performance or whole-protocol proof. No personal browser, real Account or server operations. Relay and response/refusal authority remain absent."
+}

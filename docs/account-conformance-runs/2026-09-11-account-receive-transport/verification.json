@@ -1,0 +1,24 @@
+{
+  "baseCommit": "9598ca6d78eaa7bad831e46f62218da3d147a261",
+  "campaignCodeInputsMatch": 492,
+  "isolatedRuntimeInputsMatch": 169,
+  "reviewUnchanged": true,
+  "otherSeatUnchanged": true,
+  "personalBundles": {
+    "/Users/thomasingalls/.codex/worktrees/c030/done/dist": {
+      "files": 11,
+      "allHashesMatch": true
+    },
+    "/Users/thomasingalls/.codex/worktrees/c030/done/.dev/releases/17d87c2/app": {
+      "files": 10,
+      "allHashesMatch": true
+    }
+  },
+  "documentationOnlyAfterCampaign": [
+    "docs/account-receive-transport.md",
+    "docs/progress.md",
+    "docs/completed.md",
+    "docs/account-conformance-runs/2026-09-11-account-receive-transport.md"
+  ],
+  "fullAggregateRerun": false
+}

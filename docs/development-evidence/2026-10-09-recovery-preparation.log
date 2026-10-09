@@ -1,0 +1,80 @@
+Recovery proof and preparation
+✔ recovery proofs use selected LP bytes and both independently verified signatures (34.305625ms)
+✔ fresh-nonce correlation and a held pin reject relay replay or a substituted authority (5.146208ms)
+✔ service signatures and a proposed verifier cannot replace the factor-opened bootstrap signer (6.054917ms)
+✔ valid signatures for another candidate, head or conflict cannot be redirected into this attempt (9.882916ms)
+✔ a self-consistent substituted service root still fails the code-sealed root anchor (4.714791ms)
+✔ wrong code, damaged envelope and mismatched local signing key do not produce a bootstrap (6.007708ms)
+✔ an old recovery capability cannot authorize a fresh bootstrap after recovery state changes (7.011083ms)
+✔ input mutation across crypto awaits cannot change the checked target or retained result (4.704583ms)
+✔ strict proof parsing rejects ambiguous and oversized inputs before verification (4.43875ms)
+✔ first-epoch recovery and clock-independent head assertions work; exact proof retry is stateless (10.684084ms)
+(node:3721) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3721) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ independent Node crypto opens the complete three-part payload and verifies confirmation bytes (9.339167ms)
+✔ sealed root, X25519 private/public and bootstrap private/public checks are independently necessary (4.081083ms)
+✔ normalization preserves the selected full-width alphabet and rejects non-codes (0.276958ms)
+(node:3722) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3722) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh discoverable passkey + new-key possession yields a code-verifiable first-device recovery preparation, never membership or login (84.543125ms)
+✔ restart retains exact challenge, nonce and prepared bytes; a different assertion cannot reuse the attempt (73.610417ms)
+✔ old login, enrollment/creation proofs and substituted candidate possession do not authorize recovery (34.945916ms)
+✔ discoverable assertion chooses its own account, never an attacker-supplied workspace; inactive account refuses (34.288458ms)
+✔ before-commit interruption retries without fresh challenge or second preparation (57.36825ms)
+✔ after-commit interruption retries without fresh challenge or second preparation (49.978167ms)
+✔ credential change across verification invalidates finish; counter observations do not (65.300375ms)
+✔ cancel and expiry during verification cannot leak a preparation (46.282ms)
+✔ the offline schema upgrade is explicit and preserves existing rows (37.988667ms)
+✔ a competing admission invalidates prepared recovery; a fresh attempt includes the pending second-device history (108.569583ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 985.222917
+
+
+HTTP/host and offline upgrade
+(node:4003) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4003) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ session host preserves capability-protected bootstrap through restart without exposing shared access (108.97875ms)
+✔ public bootstrap rejects wrong origin, oversized bodies, aliases and invalid attempt capabilities (26.008292ms)
+✔ retained schema 11 requires offline opt-in; upgrade preserves pending account, pin and backup (70.024917ms)
+✔ continuation host requires offline opt-in and preserves the account and identity across schema 14 to 22 (81.131917ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 710.001
+
+
+Historical schema regressions
+(node:4076) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4076) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ continuation schema requires explicit offline opt-in and preserves retained session/account rows (247.002292ms)
+✔ private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes (462.43ms)
+✔ schema ten upgrade preserves the checkpoint, admission and original publisher history (475.587292ms)
+✔ schema nine requires explicit upgrade and retains certified content access (270.950083ms)
+✔ schema eight opens only through the explicit offline upgrade, preserving retained attempts (134.134209ms)
+✔ schema-16 pending comparison upgrades explicitly without replacing its messages (572.832459ms)
+✔ schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt (421.559917ms)
+✔ removal schema upgrades only offline from 18 and refuses an older host (204.593959ms)
+✔ rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host (281.266625ms)
+✔ replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows (194.393333ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3773.106042

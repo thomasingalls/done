@@ -1,4 +1,12 @@
 /**
+ * Evidence-scope amendment (2026-09-08): the linear eight-step model has no
+ * concurrent cached writer or generation-tagged journal. It does not test
+ * exclusive-barrier ownership or re-census after a released-lock gap.
+ * SC-03/04 production conformance remains owed at L-3; see
+ * docs/storage-conformance.md. Preserve this as evidence for its represented
+ * durable-intent schedule, not a complete lifecycle proof.
+ */
+/**
  * `GenerationApply`, as an executable model (TRD §13.7, §15 row 15).
  *
  * **This tests a construction, not shipped code, and the distinction matters.**
@@ -148,7 +156,7 @@ const killAfter = (k: Step): World => {
 /** Steps 1–4 are reversible: discard the record and nothing moved. */
 const rollback = (_w: World): World => initial();
 
-// falsifies: f-4259822-generation-switch-local-durability-undefined
+// falsifies: f-4259822-generation-switch-local-durability-undefined -> L-3
 describe('GenerationApply — a kill at every step', () => {
   it('settles to the same state from every kill point', () => {
     const settled = resume(initial());

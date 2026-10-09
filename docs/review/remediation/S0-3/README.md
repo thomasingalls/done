@@ -1,5 +1,11 @@
 # `S0-3` — total local-write admission, the allocator, and the budget nobody could compute
 
+**2026-09-08 correction:** [storage-contract.md](../../../storage-contract.md) and
+[storage-conformance.md](../../../storage-conformance.md) supersede the old journal-fence,
+range-trim, redelivery and optional-custody assumptions. Existing closure evidence is limited to its
+represented cases. New production conformance is registered as unpaid debt; this amendment does not
+recertify Stage 0 or change historical finding dispositions.
+
 **Standing:** home — the findings table below is an ownership source of the traceability population; read
 back by `pnpm trace:check`.
 
@@ -7,7 +13,8 @@ back by `pnpm trace:check`.
 
 The last of the seven actions, and the one whose cluster the review diagnosed most precisely: _the composition
 mistake is treating a record format plus a component benchmark as a total concurrent write-admission machine._
-Every individual piece is sound. What is missing is the entry conditions.
+The component evidence does not establish the composed protocol. Its entry conditions and represented
+state must match the real persistence paths; the 2026-09-08 amendment corrects further omitted cases.
 
 ## Findings this action must close
 

@@ -1,0 +1,50 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountSyncDriver.test.ts > alternates ready lanes, keeps independent idle deadlines and wakes an idle sender 2ms
+ ✓ test/accountSyncDriver.test.ts > retains local wakes during send, but cannot accelerate unknown backoff or clear a halt 0ms
+ ✓ test/accountSyncDriver.test.ts > observer pause before dispatch retains the startup deadline; observer close drains without dispatch 0ms
+ ✓ test/accountSyncDriver.test.ts > close waits for active work and cannot start the due opposite lane 0ms
+ ✓ test/accountSyncDriver.test.ts > outbound progress comes only from durable decisions and pending exact submissions bypass all sealing 0ms
+ ✓ test/accountSyncDriver.test.ts > 400 generated deferred histories agree with an independent two-lane event model 390ms
+ ✓ test/accountReceiveDriver.test.ts > polls five seconds after empty, yields 50ms between pages, and coalesces wakes including reentrant observers 2ms
+ ✓ test/accountReceiveDriver.test.ts > caps unknown backoff, preserves its floor through Local pauses, and allows only explicit expedite 1ms
+ ✓ test/accountReceiveDriver.test.ts > offline and pressure pause timers without deleting a permanent halt, including failures while paused 1ms
+ ✓ test/accountReceiveDriver.test.ts > close drains its pass and suppresses late notifications; synchronous observer closure prevents dispatch 0ms
+ ✓ test/accountReceiveDriver.test.ts > a gate transition during an unfinished pass cannot overlap work or lose polling after resume 0ms
+ ✓ test/accountReceiveDriver.test.ts > 400 generated deferred schedules obey an independent timer/deadline and halt oracle 102ms
+ ✓ test/accountReceiveDriver.test.ts > uses durable progress only and treats a verified empty result as polling idle 1ms
+ ✓ test/accountReceiveDriver.test.ts > resumes after reentrant Local pressure interrupts startup before the owned step begins 0ms
+ ✓ test/accountReceiveDriver.test.ts > 100 generated observer-pause durations resume the unstarted pass through an ordinary gate wake 7ms
+ ✓ test/accountReceiveDriver.test.ts > a pass skipped for readiness neither claims a verified end nor resets the unknown streak 0ms
+ ✓ test/accountDelivery.test.ts > 500 generated proof histories agree with independent prefix and closure propositions at every step 67ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (true) 0ms
+ ✓ test/accountDelivery.test.ts > a later head contradicts an earlier closure in either delivery order (false) 0ms
+ ✓ test/accountDelivery.test.ts > acceptance and closure duplicates are propositions, and conflict is irreversible 0ms
+ ✓ test/positionDecision.test.ts > reads the selected refusal and link/head messages without changing their signed bytes 4ms
+ ✓ test/positionDecision.test.ts > binds all five refusal subject fields, parent and the current externally held acceptance key 3ms
+ ✓ test/positionDecision.test.ts > authenticates a reconstructed link, distinguishes a proved conflicting leaf, and holds unanchored heads 3ms
+ ✓ test/positionDecision.test.ts > keeps refusal IDs stable across acceptance-key rotation while requiring the current signature 1ms
+ ✓ test/positionDecision.test.ts > rejects unknown, noncanonical, oversized, unsigned and malformed response bytes 1ms
+ ✓ test/positionDecision.test.ts > 200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes 944ms
+ ✓ test/positionDecision.test.ts > signs a separate submission wrapper over exact v2 bytes and parent refusal ID 3ms
+ ✓ test/positionDecision.test.ts > rejects swapping a valid parent proof, changing exact wire, skipping positions and stale proof keys 8ms
+ ✓ test/positionDecision.test.ts > 100 generated successor proofs bind parent bytes, original position and independent signing inputs 321ms
+ ✓ test/positionDecision.test.ts > captures response, expected subject and authority before asynchronous verification 1ms
+ ✓ test/positionDecision.test.ts > captures submission inputs and rejects malformed/trailing/oversized framing 1ms
+ ✓ test/positionDecision.test.ts > re-signing the same permanent parent under the current key preserves wrapper verification 2ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > coalesces wake storms, keeps one pass, and does not lose an edit arriving during idle detection 2ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > unknown backoff caps at 30 seconds and ordinary edits cannot accelerate it 1ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > offline and Local pressure cancel timers, and restore/manual retry expedite work 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > permanent evidence and unexpected operation failures suppress automatic retries 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > abort clears backoff immediately and drains unfinished work; observers cannot start work after close 0ms
+ ✓ test/accountDriver.test.ts > owned delivery scheduling > 200 generated deferred event histories preserve single ownership, bounded timers and the retry floor 44ms
+ ✓ test/accountDriver.test.ts > owned delivery step > resolves persisted wrappers before preparation and never reseals a persisted envelope on an unknown reply 1ms
+ ✓ test/accountDriver.test.ts > owned delivery step > derives progress only from durable status and halts on owned publication evidence 0ms
+
+ Test Files  5 passed (5)
+      Tests  40 passed (40)
+   Start at  00:17:21
+   Duration  2.02s (transform 316ms, setup 244ms, import 315ms, tests 1.92s, environment 585ms)
+
+JUNIT report written to /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-decision-composition/2026-09-11T22-01-53.540Z/unit.xml

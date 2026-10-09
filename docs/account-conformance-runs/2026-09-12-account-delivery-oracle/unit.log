@@ -1,0 +1,34 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ✓ test/accountDelivery.test.ts > empty delivery has no retained evidence or publication restriction 1ms
+ ✓ test/accountDelivery.test.ts > 500 generated histories compare full state at every forward, reverse and shuffled prefix 507ms
+ ✓ test/accountDelivery.test.ts > contradictory claims have no consistent outcome assignment: {"kind":"refused","position":1,"final":false,"id":"r1"} 0ms
+ ✓ test/accountDelivery.test.ts > contradictory claims have no consistent outcome assignment: {"kind":"accepted","position":2,"final":false,"id":""} 0ms
+ ✓ test/accountDelivery.test.ts > contradictory claims have no consistent outcome assignment: {"kind":"accepted","position":1,"final":true,"id":""} 0ms
+ ✓ test/accountDelivery.test.ts > contradictory claims have no consistent outcome assignment: {"kind":"accepted","position":2,"final":false,"id":""} 0ms
+ ✓ test/accountDelivery.test.ts > contradictory claims have no consistent outcome assignment: {"kind":"accepted","position":1,"final":true,"id":""} 0ms
+ ✓ test/accountDelivery.test.ts > contradictory claims have no consistent outcome assignment: {"kind":"refused","position":2,"final":false,"id":"r1"} 0ms
+ ✓ test/accountDelivery.test.ts > first refusal ID and first final cutoff are retained even when another arrival order chooses differently 1ms
+ ✓ test/accountDelivery.test.ts > noncontradictory closure above a final prefix takes precedence; observations and duplicates remain exact 2ms
+ ✓ test/accountDelivery.test.ts > conflict is irreversible while low-level folding may continue collecting observations 0ms
+ ✓ test/accountDelivery.test.ts > constraint checks depend on observed positions, including large safe integers 0ms
+ ✓ test/positionDecision.test.ts > reads the selected refusal and link/head messages without changing their signed bytes 4ms
+ ✓ test/positionDecision.test.ts > binds all five refusal subject fields, parent and the current externally held acceptance key 3ms
+ ✓ test/positionDecision.test.ts > authenticates a reconstructed link, distinguishes a proved conflicting leaf, and holds unanchored heads 4ms
+ ✓ test/positionDecision.test.ts > keeps refusal IDs stable across acceptance-key rotation while requiring the current signature 1ms
+ ✓ test/positionDecision.test.ts > rejects unknown, noncanonical, oversized, unsigned and malformed response bytes 2ms
+ ✓ test/positionDecision.test.ts > 200 generated signed chain histories distinguish exact evidence, conflicting leaves and foreign prefixes 963ms
+ ✓ test/positionDecision.test.ts > signs a separate submission wrapper over exact v2 bytes and parent refusal ID 4ms
+ ✓ test/positionDecision.test.ts > rejects swapping a valid parent proof, changing exact wire, skipping positions and stale proof keys 8ms
+ ✓ test/positionDecision.test.ts > 100 generated successor proofs bind parent bytes, original position and independent signing inputs 324ms
+ ✓ test/positionDecision.test.ts > captures response, expected subject and authority before asynchronous verification 1ms
+ ✓ test/positionDecision.test.ts > captures submission inputs and rejects malformed/trailing/oversized framing 1ms
+ ✓ test/positionDecision.test.ts > re-signing the same permanent parent under the current key preserves wrapper verification 2ms
+
+ Test Files  2 passed (2)
+      Tests  24 passed (24)
+   Start at  01:08:14
+   Duration  1.54s (transform 144ms, setup 77ms, import 232ms, tests 1.83s, environment 0ms)
+
+JUNIT report written to /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-delivery-oracle/2026-09-11T23-02-38.969Z/unit.xml

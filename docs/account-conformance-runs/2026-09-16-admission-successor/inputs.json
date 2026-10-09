@@ -1,0 +1,12 @@
+{
+  "baseline": "be541c3e9b2a31177fb1d97166356972e43e8f54",
+  "files": {
+    "account-protocol/successor.ts": "605b83f07f1796b194fa53bc2dc7f61a0f6b9199fd9afcc622c753f16221ecc5",
+    "account-protocol/admission.ts": "c7301adbe5f2f19d7031daba22bfb9b3add10cb7f1617be60850bbc10c52ae00",
+    "test/vectors/account-successor.json": "6bbbba20939218bf05e1d59350fc29c4ede716b27ccf405b5da3a84d375186a9",
+    "test/vectors/first-authority.json": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
+    "test/account-successor/oracle.mjs": "0841d43063fc615b46ffd1736eea154a668f4c4da87b6988cfdc4931d57644f6",
+    "test/account-successor/protocol.test.mjs": "bdcb5d22e18b45f67e2d29efdb235e14d4f24e37aff12f6df4cefd2f227a1d3f",
+    "test/account-successor/controls.test.mjs": "5cdea61ab9f557fb0d9ec5f50a7d042011783159cbc601397670314ce87193e9"
+  }
+}

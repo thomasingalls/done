@@ -19,6 +19,9 @@ member `S_pub`s (`P-1`, ratified): the SAS vouches for the signing key as well a
 file republishes with **every transcript input in the published inputs** — `FU-05` found `recovery_state_digest`
 inserted by generator internals and absent from the formula and inputs, so the artifact could not be
 independently reconstructed; `pnpm recipient:check` now reconstructs it from the published inputs alone.
+**Amended 2026-09-16:** the operator selected restart on a competing epoch change rather than
+automatic sibling rebasing. See §7 and [the content-approval plan](../account-content-approval-prep.md).
+The selected primitive bytes and published vectors are unchanged.
 
 ---
 
@@ -257,9 +260,18 @@ about the overwhelmingly likely case. That is a product question with a security
 front of the reviewer as a question.
 
 **Two smaller obligations.** The credential must be spent on mismatch, which means the refusal path has to reach
-the authorization service and not merely close a dialog — otherwise §4's per-credential argument is false and
-the number is per-attempt after all. And the transcript binds `epoch`, so a ceremony that spans an epoch
-successor must be restarted rather than completed; that is correct, and it needs to not look like a bug.
+the authorization service and not merely close a dialog. The existing device must also retain the terminal
+decision under its own authenticated custody: the service alone cannot keep the budget against a hostile
+service. And the transcript binds `epoch` and its head, so a **competing** successor requires fresh
+credential/admission, transcript and code entry. Exact resumption preserves the old transcript and decision;
+the ceremony's own exact, verified certification successor completes it. Never rebase a prior typed approval.
+
+**Restart cannot undo release.** If a wrapped key has already left the existing device, keep its immutable
+pending-certificate/delivery record and do not certify it at another parent. The candidate may possess the
+key but remains uncertified; removing future access is rotation, not restarting a dialog. The first private
+admission runtime supports one child only, so automatic replacement admission is a separate dependency.
+Until implemented, report restart-required rather than recycle a credential. These rulings supersede TRD
+§13.6's former automatic sibling-rebuild paragraph and leave the historical vectors unchanged.
 
 **Not in this row.** Admitting the new credential and signing the successor epoch is §13.6's **first** gate, and
 rows 9 and 12. The HPKE seal is row 1's primitive and row 4's framing. What a brand-new device does to find the

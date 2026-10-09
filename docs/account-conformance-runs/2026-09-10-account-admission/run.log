@@ -1,0 +1,55 @@
+(node:82414) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:82414) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ removing origin verification actually admits an unapproved genesis (79.562541ms)
+✔ removing certification verification actually admits an unapproved genesis (72.809334ms)
+(node:82415) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:82415) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ certified first epoch and receipt bind exact recovery, recipients and separate semantic bytes (89.650541ms)
+✔ validly signed changes of recovery, recipient and candidate cannot replace the offer (62.725542ms)
+✔ proposal cannot be replayed as an epoch or completion; malformed and wrong-purpose signatures refuse (46.467ms)
+✔ abandonment during asynchronous verification wins before activation (36.580208ms)
+✔ unreadable acceptance custody refuses cold reopen without replacing its key (65.765333ms)
+✔ before-commit offer-promotion commit failure has one recoverable result (38.468042ms)
+✔ after-commit offer-promotion commit failure has one recoverable result (80.274875ms)
+✔ before-commit admit-promotion commit failure has one recoverable result (64.390208ms)
+✔ after-commit admit-promotion commit failure has one recoverable result (88.723959ms)
+✔ schema 2 upgrade is explicit and preserves all prior rows (24.499667ms)
+✔ 80 generated service histories match an independent pending/offered/active/cancelled ledger (3080.74475ms)
+✔ a cancelled proposal permits a fresh registration for the same retained workspace (54.967125ms)
+(node:82416) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:82416) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ admission commits one verified first head and retains Local carriers through cold restart (1542.390792ms)
+✔ renderer interruption before admission-requested commit (1599.087708ms)
+✔ renderer interruption after admission-requested commit (1792.408459ms)
+✔ renderer interruption before admission-offered commit (1683.192541ms)
+✔ renderer interruption after admission-offered commit (2800.5425ms)
+✔ renderer interruption before admission-receipted commit (2461.400792ms)
+✔ renderer interruption after admission-receipted commit (2450.572083ms)
+✔ lost begin response resumes exact service outcome (1683.013792ms)
+✔ lost finish response resumes exact service outcome (1680.635125ms)
+✔ abandonment after an offer removes only preparation, while a lost committed reply cannot roll back Local (1802.541625ms)
+✔ changed receipt signature is refused; disabling final verification actually retains it (1643.508083ms)
+✔ queued owner and cancellation retain the commit until native acknowledgement drains (1665.02775ms)
+(node:82416) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ caller mutation after queuing cannot change the owned slot or request (1216.885875ms)
+✔ 30 generated delivery, admission interruption and retry histories preserve independent writing and coverage (43655.078958ms)
+✔ the committed version-2 reader and ordinary Local editor refuse a retained admission (1392.21225ms)
+(node:82417) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:82417) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit offer-promotion recovers one durable result (617.294833ms)
+✔ SIGKILL after-commit offer-promotion recovers one durable result (633.912417ms)
+✔ SIGKILL before-commit admit-promotion recovers one durable result (587.153709ms)
+✔ SIGKILL after-commit admit-promotion recovers one durable result (571.820167ms)
+✔ two service processes converge on the exact offer and final receipt (560.177125ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 70071.966041

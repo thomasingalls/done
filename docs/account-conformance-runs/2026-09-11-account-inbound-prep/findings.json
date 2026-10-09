@@ -1,0 +1,54 @@
+{
+  "scope": "Preparation. No production receiver, membership issuance, v2 transport route, native storage or browser campaign is implemented by these tests.",
+  "testedModelRepair": {
+    "finding": "The candidate verified parsed input but retained caller-owned request/page buffers after asynchronous crypto. Mutation during verification replaced the saved bytes.",
+    "repair": "Bound and capture all input byte strings before awaiting crypto. Recheck lifetime before duplicate results and before staging.",
+    "evidence": "buffer-counterexample.log and buffer-repair.log; final exact-byte/close test",
+    "classification": "Test-only candidate composition defect, not a reported defect in the shipped sender or existing envelope primitive."
+  },
+  "designDispositions": [
+    "Use independently authenticated semantic genesis and zero publisher links; state vectors omit deletion coverage.",
+    "Separate reader authorization from publisher identity; proposed v2 framing remains fixture-only.",
+    "Persist content, inbound evidence, derived receive progress and witness in one transaction before editor promotion.",
+    "Pending structs/deletions can be durably received; retain original frames through restart and incomplete compaction.",
+    "Retain exact original envelopes/proofs; never convert remote input to a reader-owned source capsule.",
+    "First receiver uses one page entry, at most 512 KiB envelope wire, 255 updates and 512 KiB decoded updates, checked against 4 MiB/256 local records.",
+    "A stale duplicate contributes no new durable high-water knowledge; re-fetch from the current cursor."
+  ],
+  "controls": [
+    "Unheld predecessor makes a signed head self-authorizing.",
+    "A state vector alone misses deletion coverage.",
+    "Cursor-first split loses content after a crash.",
+    "Dropping pending deletion from snapshot changes eventual text.",
+    "Early remote promotion admits an offline-unrecoverable dependent local edit.",
+    "A global cursor skips another publisher.",
+    "Raw capture relabels received bytes under the reader."
+  ],
+  "generated": {
+    "seed": 9142026,
+    "runs": 300,
+    "commands": "4..24 delivery actions over two synthetic publisher streams, each with selected before/after/no commit cut, close and compaction; restart and external checks after every action, then complete drain.",
+    "oracle": "External committed source/receipt ledger derives expected publisher positions, exact wires/proofs and original Yjs replay. It does not derive its expected content from model storage.",
+    "result": "No additional counterexample in the final generated campaign."
+  },
+  "validation": {
+    "preparationTests": 25,
+    "primitiveRegressionTests": 43,
+    "fullUnitTests": 906,
+    "fullUnitFiles": 80
+  },
+  "launch": {
+    "attempt": "pnpm account:inbound-prep",
+    "outcome": "The pnpm wrapper emitted no output and had not launched a child runner when inspected; only that task process was stopped. Cause not diagnosed.",
+    "executed": "node scripts/account-inbound-prep/run.mjs",
+    "note": "The registered package alias points at that exact Node script. No successful execution of the pnpm wrapper or full pnpm check is claimed."
+  },
+  "limits": [
+    "Synthetic independently held membership/baseline, not two-gate enrollment evidence.",
+    "The model uses atomic JS assignment and a synthetic hash witness, not AEAD/IndexedDB commit or native exclusion.",
+    "Model restart uses previously verified event objects. Runtime cold replay must reverify original authenticated wire and current authority.",
+    "The proposed v2 fixture consumer is not a complete malformed-frame codec conformance suite.",
+    "No browser is used; existing async Playwright waits are not credited or broadly audited.",
+    "Whole-state rollback/clone resistance, pruning, epochs/generations and deployment remain open."
+  ]
+}

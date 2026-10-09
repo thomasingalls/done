@@ -50,6 +50,7 @@
 import { writeFileSync, readFileSync } from 'node:fs';
 import { webcrypto as crypto } from 'node:crypto';
 
+import { createHash } from 'node:crypto';
 import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
 import { claims, falsifies } from './lib/traceability.mjs';
 
@@ -57,7 +58,8 @@ const OUT = new URL('../test/vectors/checkpoint.json', import.meta.url);
 
 const HKDF_LABEL = 'done/checkpoint/v1';
 const CP_AAD_LABEL = 'done/cp/v1';
-const MANIFEST_LABEL = 'done/cp-manifest/v1';
+const MANIFEST_LABEL = 'done/cp-manifest/v2';
+const coverageHash = (hexBytes) => createHash('sha256').update(unhex(hexBytes)).digest('hex');
 const HEADVEC_LABEL = 'done/headvec/v1';
 
 /** The PKCS#8 prefix for a raw Ed25519 seed, as row 1's generator uses. */
@@ -189,8 +191,8 @@ const manifestMessage = ({
       epoch_head: epochHead,
       gen: String(gen),
       checkpoint_digest: checkpointDigest,
-      sv,
-      ds,
+      sv: coverageHash(sv),
+      ds: coverageHash(ds),
       head_vector_digest: headVecDigest,
       producing_credential: credential,
     }).map(lp),
@@ -214,11 +216,11 @@ const manifestMessage = ({
  * restorer's confidence in the baseline is exactly its confidence in that
  * credential.
  */
-const ADMIT_LABEL = 'done/cp-admit/v1';
+const ADMIT_LABEL = 'done/cp-admit/v2';
 const DERIVATION_VERSION = 'yjs-v13-sv-ds';
 
 const admissionMessage = ({
-  v = 1,
+  v = 2,
   workspace,
   checkpointDigest,
   manifestDigest,
@@ -238,8 +240,8 @@ const admissionMessage = ({
       workspace_id: workspace,
       checkpoint_digest: checkpointDigest,
       manifest_digest: manifestDigest,
-      derived_sv: derivedSv,
-      derived_ds: derivedDs,
+      derived_sv: coverageHash(derivedSv),
+      derived_ds: coverageHash(derivedDs),
       head_baseline_digest: headBaselineDigest,
       derivation_version: derivationVersion,
       admitting_credential: admittingCredential,
@@ -601,6 +603,7 @@ const verify = async (doc) => {
   const ct = unhex(v.expected.ciphertext);
   const manifest = {
     ...BASE,
+    v: 2,
     checkpointDigest: v.expected.checkpoint_digest,
     sv: SV,
     ds: DS,
@@ -664,8 +667,8 @@ const verify = async (doc) => {
       'stale-epoch-head',
       { epochHead: 'c4e1a6b3d0f295847e3b1c0d9a8f7e6d5c4b3a29180f7e6d5c4b3a2918f0e7d6' },
     ],
-    ['wrong-version', { v: 2 }],
-    ['aad-only-renumbered-manifest-label', { label: 'done/cp-manifest/v2' }],
+    ['wrong-version', { v: 3 }],
+    ['aad-only-renumbered-manifest-label', { label: 'done/cp-manifest/v3' }],
     // The producing credential is named *in the message*, so changing that name
     // alone — verifier and signature untouched — is what isolates the field.
     // The forged-signature half of the same negative is above.
@@ -925,7 +928,7 @@ const verify = async (doc) => {
   };
 
   await refuses('aad-only-admission-label', () =>
-    signatureOnly({ ...ADMISSION, label: 'done/cp-admit/v2' }),
+    signatureOnly({ ...ADMISSION, label: 'done/cp-admit/v3' }),
   );
   await refuses('aad-only-admission-version', () => signatureOnly({ ...ADMISSION, v: 0 }));
   await refuses('aad-only-admission-workspace-id', () =>
@@ -1046,7 +1049,7 @@ const verify = async (doc) => {
   // checked against, so the refusals above reconstruct from this file alone.
   const publishFields = (f) => ({
     label: ADMIT_LABEL,
-    v: 1,
+    v: 2,
     workspace_id: f.workspace,
     checkpoint_digest: f.checkpointDigest,
     manifest_digest: f.manifestDigest,
@@ -1096,7 +1099,7 @@ const main = async () => {
   );
   const checkpointDigest = hex(await sha256(ct));
   const headVecDigest = await headVectorDigest(HEADS);
-  const manifest = { ...BASE, checkpointDigest, sv: SV, ds: DS, headVecDigest };
+  const manifest = { ...BASE, v: 2, checkpointDigest, sv: SV, ds: DS, headVecDigest };
   const message = manifestMessage(manifest);
 
   const vectors = [
@@ -1106,6 +1109,7 @@ const main = async () => {
       inputs: {
         k_g: hex(KG),
         v: BASE.v,
+        manifest_v: 2,
         workspace_id: WORKSPACE,
         epoch: BASE.epoch,
         epoch_head: EPOCH_HEAD,
@@ -1136,7 +1140,7 @@ const main = async () => {
   ];
 
   const doc = {
-    $schema: 'https://done.invalid/vectors/checkpoint/1',
+    $schema: 'https://done.invalid/vectors/checkpoint/2',
     generated_by: 'scripts/generate-checkpoint-vectors.mjs',
     // Filled after `verify`, which is where this file's guards run. Declared
     // here so its position in the published document does not depend on that.
@@ -1152,7 +1156,7 @@ const main = async () => {
       checkpoint_aad:
         'LP("done/cp/v1") || LP(dec v) || LP(workspace_id) || LP(dec gen) || LP(dec epoch)',
       manifest:
-        'Ed25519( producing credential ; LP("done/cp-manifest/v1") || LP(dec v) || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex sv) || LP(hex ds) || LP(hex head_vector_digest) || LP(producing_credential) )',
+        'Ed25519( producing credential ; LP("done/cp-manifest/v2") || LP("2") || LP(workspace_id) || LP(dec epoch) || LP(hex epoch_head) || LP(dec gen) || LP(hex checkpoint_digest) || LP(hex SHA-256(sv)) || LP(hex SHA-256(ds)) || LP(hex head_vector_digest) || LP(producing_credential) )',
       head_vector:
         'For each credential ascending by id: LP(credential_id) || LP(dec seq) || LP(hex link). Digest = SHA-256( LP("done/headvec/v1") || head_vector ). The sort is the canonicalization',
       coverage:

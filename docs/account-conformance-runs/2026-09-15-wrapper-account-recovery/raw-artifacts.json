@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/private/tmp/done-wrapper-account-recovery/owned/browser-inputs.json.gz",
+    "bytes": 9460,
+    "sha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993"
+  },
+  {
+    "path": "/private/tmp/done-wrapper-account-recovery/owned/inputs.json.gz",
+    "bytes": 1220557,
+    "sha256": "8fbc27769e72711daa8c986dd0f51fd2bce4b80c491619189ebf4e68aeccd136"
+  }
+]

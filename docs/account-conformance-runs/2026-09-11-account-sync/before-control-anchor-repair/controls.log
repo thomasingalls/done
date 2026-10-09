@@ -1,0 +1,13 @@
+✔ effective composed fairness mutation (35.959917ms)
+✔ effective composed overlap mutation (4.497583ms)
+✔ effective composed halt mutation (5.002709ms)
+✔ effective composed resume mutation (3.956459ms)
+✔ effective composed wake mutation (4.546917ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120.512917

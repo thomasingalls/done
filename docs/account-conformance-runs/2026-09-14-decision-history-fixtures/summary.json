@@ -1,0 +1,152 @@
+{
+  "base": "d0735a6ce2c9b149e3dfccd16ee440a9ca6b0163",
+  "claim": "Account decision restart and history fixtures at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T11-57-31.264Z",
+  "summary": {
+    "schema": 1,
+    "selection": "decision-history-fixtures",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-decision-composition/generated.test.mjs",
+        "key": "361846c5e5cf7757ca0e89f1c02814dcc58d96a9ca40c023e29636bb451c0178",
+        "status": "passed",
+        "elapsedMs": 147108,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-decision-composition/order.test.mjs",
+        "key": "41c1a4406afc6e83eed272ea55ad62e05de8d43ed68ad4437289484ec2a3f0d2",
+        "status": "passed",
+        "elapsedMs": 109992,
+        "cases": 3,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/account-decision-composition/restart.test.mjs",
+        "key": "926cece1bf413cf415918d9c0435ae4bac90f1f5f725601bedb6c4b226013d34",
+        "status": "passed",
+        "elapsedMs": 106351,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T11:57:31.267Z",
+    "input": "b69859d0f2a5ce8da4da40608a6a729da83847d4241f6095774279fdcbf9a527",
+    "completedAt": "2026-09-14T12:04:03.646Z"
+  },
+  "elapsedMs": 392379,
+  "rawInputArchiveSha256": "73446c4070d96820eb2cb88afff4ae41138f22f634b8f1df3068d72a4b36902a",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "d0735a6ce2c9b149e3dfccd16ee440a9ca6b0163",
+    "sourceDigest": "e207b2696461d3b50006508e13324a382fcdf025ae9914710a51cbb542a9bdb4",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 3,
+    "selectedCases": 12,
+    "browserFiles": 3,
+    "fixtureInstances": 12,
+    "generatedHistories": 28,
+    "executedOmissionControls": 0,
+    "rendererCrashes": 4,
+    "serviceKills": 4,
+    "fixedArrivalHistories": 2,
+    "priorGeneralFiles": 210,
+    "priorGeneralCases": 1722,
+    "currentGeneralFiles": 213,
+    "currentGeneralCases": 1734,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 117,
+    "accountFiles": 107,
+    "accountCases": 640,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 204,
+    "unresolvedTestFiles": 45,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 698111
+  },
+  "finalGatesSha256": "2aace41c27bb24de3308f37c28d9e89226c117138e67058de45c327446222715",
+  "preservationSha256": "a1cdf9ed872da51bb7b3c266e05291cecfba68e42f0cfa99eb8a7dc7a47496f2",
+  "limits": [
+    "Twelve unchanged cases across three complete files retain five-minute wrapper/file limits: eight restart cases at 45 seconds each, two fixed order cases at 45 seconds and one generated order case at 210 seconds, and one generated decision case at 240 seconds. Only six runner/registration-test files and generated snapshots change. Product, test bodies, inherited fixtures, oracles, owners, census, reporters and wrapper remain unchanged.",
+    "Four forked synthetic service workers actually SIGKILL themselves before/after decide-submission commit, for closed and conflict outcomes. Four actual Page.crash cuts bracket browser response persistence. Exact service replies/rows and original browser source rows are checked after reopen/retry; durable proof alone determines the cold state. Browser/context and bootstrap service stay alive during renderer cuts. These are process cuts, not browser/OS or physical power loss; retained synthetic secrets support test reopen.",
+    "Two directed arrival histories and twelve generated histories (seed 112108) compare the complete permitted proof set when a genuinely issued refusal and accepted successor arrive in either order. Generation chooses 3\u20138 operations from refusal/winner/restart/retry-service/compact, then appends refusal/winner/restart. The oracle requires at least one retained-only-winner and one retained-refusal-plus-winner history. Conflict remains terminal, original source/spool/envelopes remain exact, and reopening/compaction cannot reseal.",
+    "Sixteen generated decision histories (seed 112107) choose closed/conflict and 5\u201312 operations from deliver/lose/duplicate/invalid/edit/compact/restart, then append deliver/restart/duplicate. A genuine reply is deliberately withheld before the command sequence. Assertions check all seven operations were exercised, exact retained proof/source/service rows, durable later writing, and unchanged seal counts. These are 28 fixed-seed property histories plus two directed histories, not exhaustive order coverage.",
+    "Twelve disposable fixture instances execute: one shared by each generated property, two for fixed orders and eight for restart cases. Generated histories use fresh synthetic slots within a shared fixture. Service/authority secrets, software authenticators, factor options and competing signed requests are synthetic. No personal data/profile/origin/build, human passkey/PRF ceremony, real Account admission receipt, second device or whole-profile erasure is exercised. Excluded retired-v8 files and unselected historical source branches remain excluded.",
+    "ACCOUNT_REPORT_DIR remains unset, so optional per-history/metrics JSON files are not emitted by this selection. Reporter outcomes establish that the fixed-seed in-test assertions passed; they do not provide separately archived command-by-command traces. Exact owned receipts, case identities and source/browser pins are retained. Full wrapper preparation/output and immutable aggregate qualification remain separate.",
+    "The first pure runner check detected a newly introduced selection-order mismatch. Registration now follows the existing lexical manifest order; its failing log is retained alongside the passing rerun. No native test was run against that mistaken registration, and no product or fixture repair was needed. Prior owner/headroom/oracle observations and existing deadline evidence remain open."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-decision-composition/generated.test.mjs",
+        "nodeSummaryMs": 142573.900375,
+        "stageElapsedMs": 147108,
+        "fileDeadlineMs": 300000
+      },
+      {
+        "id": "test:test/account-decision-composition/order.test.mjs",
+        "nodeSummaryMs": 105771.738708,
+        "stageElapsedMs": 109992,
+        "fileDeadlineMs": 300000
+      },
+      {
+        "id": "test:test/account-decision-composition/restart.test.mjs",
+        "nodeSummaryMs": 102038.537416,
+        "stageElapsedMs": 106351,
+        "fileDeadlineMs": 300000
+      }
+    ],
+    "selectionElapsedMs": 392379,
+    "note": "Existing file bounds apply to Node execution; stage/selection include setup, fingerprinting and drain. One pass does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 300000,
+    "restartCaseMs": [
+      45000,
+      45000,
+      45000,
+      45000,
+      45000,
+      45000,
+      45000,
+      45000
+    ],
+    "orderCaseMs": [
+      45000,
+      45000,
+      210000
+    ],
+    "generatedCaseMs": [
+      240000
+    ],
+    "note": "Existing wrapper and case limits retained."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "df686ca4c2c88697673f153a58b4231343e1bf25e399969928e4be2c4576cf73",
+    "compressedSha256": "3ffedab1038d3a8c00fe49732c24b6c60dfbd73b433692c74a4ea1294657aa66"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "phase": "q02-before",
+  "head": "2dcd89787fbd35f4454a0b1684f8226d36687c87",
+  "status": "passed",
+  "started": "2026-09-12T21:36:45.099751+00:00",
+  "node": "v26.8.2",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "stages": [
+    {
+      "name": "workload",
+      "command": [
+        "node",
+        "--test",
+        "test/account-liveness/workload.test.mjs"
+      ],
+      "timeoutSeconds": 750,
+      "exitCode": 0,
+      "timedOut": false,
+      "elapsedSeconds": 325.619,
+      "tests": 1
+    }
+  ],
+  "sourceCount": 935,
+  "pinsUnchanged": true,
+  "finished": "2026-09-12T21:42:10.956702+00:00"
+}

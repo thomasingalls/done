@@ -1,0 +1,16 @@
+(node:58234) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:58234) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ client rejects changed signature before prompting; omitted check actually prompts (1412.797583ms)
+✔ client rejects changed target before prompting; omitted check actually prompts (1497.717875ms)
+✔ cancelled assertion forwards abort and drains before a queued tab acquires the slot (1479.559375ms)
+✔ renderer death at prompt cold-recovers; committed result needs no new assertion (1752.269916ms)
+✔ renderer death at lost-finish cold-recovers; committed result needs no new assertion (1673.9975ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8612.340209

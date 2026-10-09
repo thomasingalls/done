@@ -1,0 +1,137 @@
+{
+  "status": "passed",
+  "startedAt": "2026-09-12T20:54:45.169Z",
+  "stages": [
+    {
+      "name": "construction-inventory",
+      "args": [
+        "scripts/check-authority-map.mjs"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 587
+    },
+    {
+      "name": "receive-coverage-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^cold replay refuses missing or changed content$",
+        "test/account-receive/native.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 9902
+    },
+    {
+      "name": "http-bound-control",
+      "args": [
+        "--test",
+        "--test-name-pattern=^effective HTTP bound omission exposes the forbidden result$",
+        "test/account-receive-transport/controls.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 1758
+    },
+    {
+      "name": "content-unreadable-control",
+      "args": [
+        "scripts/content/run.mjs",
+        "--case",
+        "C09.unreadable-load",
+        "--output",
+        "test-results/account-residue/2026-09-12T20-54-45.121Z/content-control"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 5602
+    },
+    {
+      "name": "types",
+      "args": [
+        "node_modules/typescript/bin/tsc",
+        "-b",
+        "--noEmit"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 103
+    },
+    {
+      "name": "instrument",
+      "args": [
+        "--test",
+        "test/account-residue/matcher.test.mjs"
+      ],
+      "code": 0,
+      "tests": 10,
+      "timedOut": false,
+      "elapsedMs": 119
+    },
+    {
+      "name": "calibration",
+      "args": [
+        "--test",
+        "test/account-residue/calibration.test.mjs"
+      ],
+      "code": 0,
+      "tests": 2,
+      "timedOut": false,
+      "elapsedMs": 6637
+    },
+    {
+      "name": "lifecycle",
+      "args": [
+        "--test",
+        "test/account-residue/lifecycle.test.mjs"
+      ],
+      "code": 0,
+      "tests": 3,
+      "timedOut": false,
+      "elapsedMs": 14706
+    },
+    {
+      "name": "generated",
+      "args": [
+        "--test",
+        "test/account-residue/generated.test.mjs"
+      ],
+      "code": 0,
+      "tests": 1,
+      "timedOut": false,
+      "elapsedMs": 145336
+    },
+    {
+      "name": "lint",
+      "args": [
+        "node_modules/oxlint/bin/oxlint",
+        "--react-plugin",
+        "test/account-residue",
+        "scripts/account-residue"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 86
+    },
+    {
+      "name": "format",
+      "args": [
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "test/account-residue",
+        "scripts/account-residue",
+        "package.json"
+      ],
+      "code": 0,
+      "timedOut": false,
+      "elapsedMs": 108
+    }
+  ],
+  "sourcePins": 934,
+  "directedCheckpoints": 26,
+  "calibrationCells": 144,
+  "generatedHistories": 24,
+  "finishedAt": "2026-09-12T20:57:51.530Z"
+}

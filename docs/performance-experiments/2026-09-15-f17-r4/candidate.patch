@@ -1,0 +1,1793 @@
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index ea605627..3917c926 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -69,11 +69,33 @@ const forkString = (value: string): string => {
+   if (last >= 0xd800 && last <= 0xdbff) value = value.slice(0, -1) + '\ufffd';
+   return value;
+ };
++const reusableForkString = (value: unknown): value is string =>
++  typeof value === 'string' && value.length >= 32 && !/[\uD800-\uDFFF]/.test(value);
+ /** Private paired codecs: V2 struct compression with the existing V1 legacy-JSON semantics. */
+ class ForkEncoder extends Y.UpdateEncoderV2 {
++  constructor(readonly strings?: (string | null)[]) {
++    super();
++  }
+   override writeString(value: string): void {
++    if (this.strings) {
++      // Private paired runtime transport: strings are immutable. Keep surrogate-containing
++      // fields on the old UTF-8 path so its exact replacement behavior stays authoritative.
++      if (reusableForkString(value)) {
++        this.strings.push(value);
++        return;
++      }
++      this.strings.push(null);
++    }
+     super.writeString(forkString(value));
+   }
++  override writeAny(value: unknown): void {
++    if (this.strings && reusableForkString(value)) {
++      // Pinned lib0 any tags are 116–127. This reserved tag exists only in the paired
++      // runtime fork and consumes the same ordered string tape as ordinary string fields.
++      encoding.writeUint8(this.restEncoder, 0);
++      this.strings.push(value);
++    } else super.writeAny(value);
++  }
+   override writeKey(value: string): void {
+     super.writeKey(forkString(value));
+   }
+@@ -92,6 +114,23 @@ const detachForkBuffers = (value: unknown): unknown => {
+   return value;
+ };
+ class ForkDecoder extends Y.UpdateDecoderV2 {
++  private stringAt = 0;
++  constructor(
++    decoder: decoding.Decoder,
++    private readonly strings?: readonly (string | null)[],
++  ) {
++    super(decoder);
++  }
++  override readString(): string {
++    if (!this.strings) return super.readString();
++    if (this.stringAt >= this.strings.length) throw Error('Missing private fork string');
++    const value = this.strings[this.stringAt++]!;
++    return value === null ? super.readString() : value;
++  }
++  complete(): void {
++    if (this.strings && this.stringAt !== this.strings.length)
++      throw Error('Unconsumed private fork string');
++  }
+   override readJSON(): unknown {
+     return JSON.parse(decoding.readVarString(this.restDecoder));
+   }
+@@ -99,23 +138,33 @@ class ForkDecoder extends Y.UpdateDecoderV2 {
+     return super.readBuf().slice();
+   }
+   override readAny(): unknown {
++    if (this.strings && decoding.peekUint8(this.restDecoder) === 0) {
++      decoding.readUint8(this.restDecoder);
++      return this.readString();
++    }
+     return detachForkBuffers(super.readAny());
+   }
+ }
+ 
+ /** Detached runtime fork. Its paired private codecs never escape as a wire/archive format. */
+-export const forkDoc = (source: YDoc, gc = true): YDoc => {
+-  const bytes = Y.encodeStateAsUpdateV2(
+-    {
+-      ...source,
+-      store: { ...source.store, pendingStructs: null, pendingDs: null },
+-    } as YDoc,
+-    undefined,
+-    new ForkEncoder(),
+-  );
+-  const doc = new Y.Doc({ gc });
++export const forkDoc = (source: YDoc, gc = true): YDoc => forkRuntimeDoc(source, gc, false);
++const forkRuntimeDoc = (source: YDoc, gc: boolean, reuseStrings: boolean): YDoc => {
++  const strings: (string | null)[] | undefined = reuseStrings ? [] : undefined;
++  let bytes: Uint8Array | undefined, doc: YDoc | undefined;
+   try {
+-    Y.applyUpdateV2(doc, bytes, undefined, ForkDecoder);
++    bytes = Y.encodeStateAsUpdateV2(
++      {
++        ...source,
++        store: { ...source.store, pendingStructs: null, pendingDs: null },
++      } as YDoc,
++      undefined,
++      new ForkEncoder(strings),
++    );
++    doc = new Y.Doc({ gc });
++    const decoder = decoding.createDecoder(bytes),
++      paired = new ForkDecoder(decoder, strings);
++    Y.readUpdateV2(decoder, doc, undefined, paired);
++    paired.complete();
+     const pending = source.store.pendingStructs;
+     doc.store.pendingStructs = pending
+       ? { missing: new Map(pending.missing), update: pending.update.slice() }
+@@ -123,10 +172,11 @@ export const forkDoc = (source: YDoc, gc = true): YDoc => {
+     doc.store.pendingDs = source.store.pendingDs?.slice() ?? null;
+     return doc;
+   } catch (error) {
+-    doc.destroy();
++    doc?.destroy();
+     throw error;
+   } finally {
+-    bytes.fill(0);
++    bytes?.fill(0);
++    if (strings) strings.length = 0;
+   }
+ };
+ const equalBytes = (a: Uint8Array | null, b: Uint8Array | null): boolean =>
+@@ -148,13 +198,56 @@ const normalizedIntegratedState = (bytes: Uint8Array): Uint8Array => {
+  * equality; it is not a state-vector shortcut, hash, cache, or sampled content check.
+  */
+ class ComparisonEncoder extends Y.UpdateEncoderV1 {
++  override writeAny(value: unknown): void {
++    if (typeof value === 'string') {
++      // Exactly the pinned native lib0 string tag followed by writeVarString. The
++      // latter can use the same lossless byte-position/string-field representation.
++      encoding.writeUint8(this.restEncoder, 119);
++      this.writeString(value);
++    } else super.writeAny(value);
++  }
+   readonly strings: { at: number; value: string }[] = [];
++  stringCount = 0;
++  override toUint8Array(): Uint8Array {
++    // A warm scratch buffer is contiguous. Its borrowed view stays private to this comparison,
++    // and the encoder is not returned until comparison/fallback has consumed every byte.
++    const rest = this.restEncoder;
++    return rest.bufs.length === 0 ? rest.cbuf.subarray(0, rest.cpos) : super.toUint8Array();
++  }
+   override writeString(value: string): void {
+     // Small fragmented items keep the ordinary encoder path and avoid a field allocation.
+     if (value.length < 32) super.writeString(value);
+-    else this.strings.push({ at: encoding.length(this.restEncoder), value });
++    else {
++      const index = this.stringCount++,
++        at = encoding.length(this.restEncoder),
++        field = this.strings[index];
++      if (field) {
++        field.at = at;
++        field.value = value;
++      } else this.strings.push({ at, value });
++    }
+   }
+ }
++// This private pool retains only cleared synchronous scratch. A borrowed encoder is removed
++// before encoding, so getters that reenter sameDocState cannot borrow an active encoder.
++// No document, escaped output, pending update or history capability enters the pool.
++const comparisonScratch: ComparisonEncoder[] = [];
++const returnComparisonScratch = (encoder: ComparisonEncoder): void => {
++  const rest = encoder.restEncoder;
++  for (const bytes of rest.bufs) bytes.fill(0);
++  rest.cbuf.fill(0);
++  rest.bufs.length = 0;
++  rest.cpos = 0;
++  if (rest.cbuf.length > 256 * 1024) rest.cbuf = new Uint8Array(100);
++  for (let i = 0; i < encoder.stringCount; i++) {
++    const field = encoder.strings[i]!;
++    field.value = '';
++    field.at = 0;
++  }
++  encoder.stringCount = 0;
++  if (encoder.strings.length > 1024) encoder.strings.length = 1024;
++  if (comparisonScratch.length < 2) comparisonScratch.push(encoder);
++};
+ const hasEarlyLongString = (doc: YDoc): boolean => {
+   // A bounded eligibility probe avoids adding per-string dispatch cost to dense short-fragment
+   // histories. Missing a later long string only forgoes an optimization; both paths encode all data.
+@@ -175,19 +268,34 @@ const hasEarlyLongString = (doc: YDoc): boolean => {
+   return longStrings;
+ };
+ const comparisonEncoding = (doc: YDoc) => {
+-  const encoder = new ComparisonEncoder();
+-  const bytes = Y.encodeStateAsUpdateV2(
+-    { ...doc, store: { ...doc.store, pendingStructs: null, pendingDs: null } } as YDoc,
+-    undefined,
+-    encoder,
+-  );
+-  return { bytes, strings: encoder.strings };
++  const encoder = comparisonScratch.pop() ?? new ComparisonEncoder();
++  try {
++    const bytes = Y.encodeStateAsUpdateV2(
++      { ...doc, store: { ...doc.store, pendingStructs: null, pendingDs: null } } as YDoc,
++      undefined,
++      encoder,
++    );
++    return { bytes, encoder };
++  } catch (error) {
++    returnComparisonScratch(encoder);
++    throw error;
++  }
++};
++const sameComparisonStrings = (a: ComparisonEncoder, b: ComparisonEncoder): boolean => {
++  if (a.stringCount !== b.stringCount) return false;
++  for (let i = 0; i < a.stringCount; i++) {
++    const aa = a.strings[i]!,
++      bb = b.strings[i]!;
++    if (aa.at !== bb.at || aa.value !== bb.value) return false;
++  }
++  return true;
+ };
+ const completeEncoding = (parts: ReturnType<typeof comparisonEncoding>): Uint8Array => {
+-  if (!parts.strings.length) return parts.bytes;
++  if (!parts.encoder.stringCount) return parts.bytes;
+   const encoder = encoding.createEncoder();
+   let at = 0;
+-  for (const field of parts.strings) {
++  for (let i = 0; i < parts.encoder.stringCount; i++) {
++    const field = parts.encoder.strings[i]!;
+     encoding.writeUint8Array(encoder, parts.bytes.subarray(at, field.at));
+     encoding.writeVarString(encoder, field.value);
+     at = field.at;
+@@ -247,11 +355,7 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
+   try {
+     partsB = comparisonEncoding(b);
+     if (
+-      partsA.strings.length === partsB.strings.length &&
+-      partsA.strings.every(
+-        (field, i) =>
+-          field.at === partsB!.strings[i]!.at && field.value === partsB!.strings[i]!.value,
+-      ) &&
++      sameComparisonStrings(partsA.encoder, partsB.encoder) &&
+       equalBytes(partsA.bytes, partsB.bytes)
+     )
+       return true;
+@@ -262,9 +366,9 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
+     return sameEncoding(rawA, rawB);
+   } finally {
+     partsA.bytes.fill(0);
+-    partsA.strings.length = 0;
++    returnComparisonScratch(partsA.encoder);
+     partsB?.bytes.fill(0);
+-    if (partsB) partsB.strings.length = 0;
++    if (partsB) returnComparisonScratch(partsB.encoder);
+     rawA?.fill(0);
+     rawB?.fill(0);
+   }
+@@ -500,8 +604,9 @@ const forkHistory = (
+   source: YUndoManager,
+   origin: unknown,
+   copyMetadata: (meta: HistoryMetadata) => HistoryMetadata,
++  reuseStrings = false,
+ ): YUndoManager => {
+-  const doc = forkDoc(source.doc, false);
++  const doc = forkRuntimeDoc(source.doc, false, reuseStrings);
+   try {
+     doc.transact((tr) => {
+       for (const structs of source.doc.store.clients.values())
+@@ -569,7 +674,7 @@ export const createSelectionHistory = () => {
+     },
+     fork(history: YUndoManager, origin: unknown): YUndoManager {
+       check(history);
+-      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta)));
++      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
+     },
+     capture(history: YUndoManager, positions: SelectionPositions): SelectionSnapshot {
+       check(history);
+diff --git a/src/editor/admittedEditor.ts b/src/editor/admittedEditor.ts
+index 02b2fa1e..fab69ce9 100644
+--- a/src/editor/admittedEditor.ts
++++ b/src/editor/admittedEditor.ts
+@@ -122,7 +122,8 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
+         compositionSelection = undefined;
+         queueMicrotask(() => {
+           suppressComposition = false;
+-          if (!destroyed) project();
++          // Reconcile any transient preedit DOM even when admission refused it.
++          if (!destroyed) project(true);
+         });
+         return false;
+       },
+@@ -191,7 +192,7 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
+       }
+     },
+   });
+-  function project() {
++  function project(force = false) {
+     if (destroyed) return;
+     try {
+       const snapshot = document.read();
+@@ -199,25 +200,50 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
+       isEditable = snapshot.editable !== false;
+       const before = view.state.doc.toString(),
+         after = snapshot.text;
+-      let from = 0,
+-        end = before.length,
+-        last = after.length;
+-      while (from < end && from < last && before[from] === after[from]) from++;
+-      while (end > from && last > from && before[end - 1] === after[last - 1]) {
+-        end--;
+-        last--;
+-      }
+       // Copying or moving a card can publish without changing this text. Keep the
+       // user's local selection then; it has not been submitted as a text intent.
+       const nextSelection = before === after && selection ? selection : snapshot.selection;
+       if (before !== after) selection = undefined;
++      const projectedSelection = EditorSelection.fromJSON(nextSelection);
++      // Other workspace surfaces publish together. An unchanged projection does
++      // not need a selection transaction (which also rebuilds live preview).
++      // eq includes positions and goal columns; check the remaining cursor state
++      // so this preserves the normalization performed by an actual dispatch.
++      if (
++        !force &&
++        !composing &&
++        !suppressComposition &&
++        !view.composing &&
++        before === after &&
++        !changedEditable &&
++        view.state.selection.eq(projectedSelection, true) &&
++        view.state.selection.ranges.every((range, index) => {
++          const projected = projectedSelection.ranges[index]!;
++          return (
++            range.assoc === projected.assoc &&
++            range.bidiLevel === projected.bidiLevel &&
++            range.undirectional === projected.undirectional
++          );
++        })
++      )
++        return;
++      let changes: { from: number; to: number; insert: string } | undefined;
++      if (before !== after) {
++        let from = 0,
++          end = before.length,
++          last = after.length;
++        while (from < end && from < last && before[from] === after[from]) from++;
++        while (end > from && last > from && before[end - 1] === after[last - 1]) {
++          end--;
++          last--;
++        }
++        changes = { from, to: end, insert: after.slice(from, last) };
++      }
+       projecting = true;
+       try {
+         view.dispatch({
+-          ...(before === after
+-            ? {}
+-            : { changes: { from, to: end, insert: after.slice(from, last) } }),
+-          selection: EditorSelection.fromJSON(nextSelection),
++          ...(changes ? { changes } : {}),
++          selection: projectedSelection,
+           ...(changedEditable
+             ? { effects: editable.reconfigure(EditorView.editable.of(isEditable)) }
+             : {}),
+diff --git a/src/ui/Collection.tsx b/src/ui/Collection.tsx
+index 0497b5c6..79035e46 100644
+--- a/src/ui/Collection.tsx
++++ b/src/ui/Collection.tsx
+@@ -64,11 +64,13 @@ export const Collection = ({
+   frozen,
+   active,
+ }: CollectionProps): React.ReactElement | null => {
+-  const { snapshot, execute } = useWorkspaceUi();
++  const { snapshot, cardById, execute } = useWorkspaceUi();
+   const day = snapshot.days.find((value) => value.date === date);
+   const ids = day?.[section] ?? [];
+-  const byId = new Map(snapshot.cards.map((card) => [card.id, card]));
+-  const cards = ids.flatMap((id) => (byId.get(id) ? [byId.get(id)!] : []));
++  const cards = ids.flatMap((id) => {
++    const card = cardById(id);
++    return card ? [card] : [];
++  });
+   const archived = day?.archived?.[section] ?? [];
+   const nextIsFull = (day?.next.length ?? 0) >= NEXT_CAP;
+ 
+diff --git a/src/ui/workspaceUi.tsx b/src/ui/workspaceUi.tsx
+index 619b4395..fc4b2b84 100644
+--- a/src/ui/workspaceUi.tsx
++++ b/src/ui/workspaceUi.tsx
+@@ -21,6 +21,7 @@ import type {
+ export interface WorkspaceUi {
+   workspace: AdmittedWorkspace;
+   snapshot: WorkspaceSnapshot;
++  cardById(id: string): WorkspaceSnapshot['cards'][number] | undefined;
+   actorId: string;
+   status: AdmittedWorkspace['status'];
+   error: string;
+@@ -56,6 +57,12 @@ export const WorkspaceUiProvider = ({
+   children: React.ReactNode;
+ }) => {
+   const [snapshot, setSnapshot] = useState(() => workspace.read());
++  const cardById = useMemo(() => {
++    // Share an index for this detached UI card array across Collections.
++    const cards = new Map<string, WorkspaceSnapshot['cards'][number]>();
++    for (const card of snapshot.cards) cards.set(card.id, card);
++    return (id: string) => cards.get(id);
++  }, [snapshot.cards]);
+   const [status, setStatus] = useState(() => workspace.status);
+   const [error, setError] = useState('');
+   const [storage, setStorage] = useState('Unknown');
+@@ -176,7 +183,17 @@ export const WorkspaceUiProvider = ({
+   };
+   return (
+     <Context
+-      value={{ workspace, snapshot, actorId, status, error, storage, ...actions, lock: onLock }}
++      value={{
++        workspace,
++        snapshot,
++        cardById,
++        actorId,
++        status,
++        error,
++        storage,
++        ...actions,
++        lock: onLock,
++      }}
+     >
+       {children}
+       {(blocked || error || status.pendingItems > 0) && (
+diff --git a/test/projectionEquality.test.ts b/test/projectionEquality.test.ts
+index e1bfb2ca..938e5e2e 100644
+--- a/test/projectionEquality.test.ts
++++ b/test/projectionEquality.test.ts
+@@ -184,3 +184,83 @@ it('compares all content even when long strings occur after the bounded eligibil
+     b.destroy();
+   }
+ });
++
++it('keeps simultaneously borrowed comparison scratch separate under encoding reentry', () => {
++  const docs = Array.from({ length: 4 }, () => new Y.Doc({ gc: false }));
++  try {
++    for (const doc of docs) {
++      doc.clientID = 91;
++      doc.getText('master').insert(0, 'same long text'.repeat(8));
++    }
++    let reentries = 0;
++    const value = {
++      get nested() {
++        reentries++;
++        expect(sameDocState(docs[2]!, docs[3]!)).toBe(full(docs[2]!, docs[3]!));
++        return 'same';
++      },
++    };
++    docs[0]!.getMap('meta').set('value', value);
++    docs[1]!.getMap('meta').set('value', { nested: 'same' });
++    expect(sameDocState(docs[0]!, docs[1]!)).toBe(true);
++    expect(reentries).toBeGreaterThan(0);
++    docs[3]!.getText('master').insert(0, 'different');
++    docs[0]!.getMap('meta').set('value', { nested: 'same' });
++    Y.applyUpdate(docs[1]!, Y.encodeStateAsUpdate(docs[0]!));
++    expect(sameDocState(docs[0]!, docs[1]!)).toBe(full(docs[0]!, docs[1]!));
++  } finally {
++    for (const doc of docs) doc.destroy();
++  }
++});
++
++it('releases partial comparison scratch when an encoded value throws', () => {
++  const a = new Y.Doc({ gc: false }),
++    b = new Y.Doc({ gc: false });
++  let fail = false;
++  try {
++    for (const doc of [a, b]) {
++      doc.clientID = 92;
++      doc.getText('master').insert(0, 'long text that must not survive a scratch lease'.repeat(4));
++    }
++    a.getMap('meta').set('value', {
++      get nested() {
++        if (fail) throw Error('encoding failed');
++        return 'same';
++      },
++    });
++    b.getMap('meta').set('value', { nested: 'same' });
++    fail = true;
++    expect(() => sameDocState(a, b)).toThrow('encoding failed');
++    fail = false;
++    expect(sameDocState(a, b)).toBe(full(a, b));
++    expect(sameDocState(b, a)).toBe(true);
++  } finally {
++    a.destroy();
++    b.destroy();
++  }
++});
++
++it('compares large then small documents without retaining active scratch fields', () => {
++  const a = new Y.Doc({ gc: false }),
++    b = new Y.Doc({ gc: false }),
++    c = new Y.Doc({ gc: false }),
++    d = new Y.Doc({ gc: false });
++  try {
++    for (const doc of [a, b, c, d]) {
++      doc.clientID = 93;
++      doc.getText('master').insert(0, 'same text'.repeat(8));
++    }
++    for (const doc of [a, b]) {
++      for (let i = 0; i < 1100; i++) doc.getText('text' + i).insert(0, 'long text'.repeat(5));
++      doc.getMap('meta').set('binary', new Uint8Array(400_000));
++    }
++    expect(sameDocState(a, b)).toBe(true);
++    expect(sameDocState(c, d)).toBe(true);
++    const content = d.store.clients.get(93)![0]! as Y.Item;
++    (content.content as Y.ContentString).str = 'othertex'.repeat(9);
++    expect(sameDocState(c, d)).toBe(full(c, d));
++    expect(sameDocState(c, d)).toBe(false);
++  } finally {
++    for (const doc of [a, b, c, d]) doc.destroy();
++  }
++});
+diff --git a/test/workspaceAdmission.test.ts b/test/workspaceAdmission.test.ts
+index 17a6d47b..27d663d7 100644
+--- a/test/workspaceAdmission.test.ts
++++ b/test/workspaceAdmission.test.ts
+@@ -286,6 +286,83 @@ describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
+           await f.doc.close();
+         }
+       });
++      it('keeps incremental text projections detached and falls back for structural and remote changes', async () => {
++        const f = await fixture();
++        try {
++          const first = await create(f.doc, 'first');
++          await create(f.doc, 'second');
++          const pristine = f.doc.read();
++          const poisoned = f.doc.read();
++          (poisoned as { master: string }).master = 'caller mutation';
++          poisoned.cards[0]!.text = 'caller mutation';
++          poisoned.cards[0]!.location!.date = '2030-01-01';
++          (poisoned.days[0]!.next as string[]).length = 0;
++          poisoned.actors[0]!.name = 'caller mutation';
++          poisoned.settings.rolloverHour = 13;
++          expect(f.doc.read()).toEqual(pristine);
++          const compareCold = async () => {
++            const cold = await makeFixture(f.doc.snapshot(), 'reference');
++            try {
++              const { undo: _undo, redo: _redo, ...actual } = f.doc.read();
++              const { undo: _coldUndo, redo: _coldRedo, ...expected } = cold.doc.read();
++              expect(actual).toEqual(expected);
++            } finally {
++              await cold.doc.close();
++            }
++          };
++          await f.doc.text({ kind: 'card', id: first }).input(insert('!'), selection(5)).accepted;
++          await compareCold();
++          expect(pristine.cards.find((card) => card.id === first)!.text).toBe('first');
++          await master(f.doc).input(insert('master')).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'move', id: first, to: done }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'undo' }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'settings', rolloverHour: 4 }).accepted;
++          await compareCold();
++          await f.doc.command({ kind: 'actor', patch: { name: 'Renamed' } }).accepted;
++          await compareCold();
++          await f.doc.receive(
++            remote(f.doc, (doc) => {
++              doc.getText('master').insert(0, 'remote ');
++              doc.getMap('meta').set('device-label:device-one', 'Remote label');
++              doc.getText('unknown-extension').insert(0, 'not a projected field');
++            }),
++          ).accepted;
++          await compareCold();
++          expect(f.doc.read().deviceName).toBe('Remote label');
++          await f.doc.text({ kind: 'card', id: first }).input(insert('?'), selection(6)).accepted;
++          await compareCold();
++        } finally {
++          await f.doc.close();
++        }
++      });
++      it('refreshes cached projections when a later history fork normalizes UTF-16 fields', async () => {
++        const f = await fixture();
++        try {
++          const id = await create(f.doc);
++          for (const text of ['\uD800', '\uDC00', '😀']) {
++            await master(f.doc).input(insert(text)).accepted;
++            f.doc.read();
++            await f.doc.text({ kind: 'card', id }).input(insert('!')).accepted;
++            expect(f.doc.read().master).toBe(master(f.doc).read().text);
++            await f.doc.command({ kind: 'actor', patch: { name: text } }).accepted;
++            await f.doc.command({ kind: 'device-label', name: text }).accepted;
++            f.doc.read();
++            await f.doc.text({ kind: 'card', id }).input(insert('?')).accepted;
++            const cold = await makeFixture(f.doc.snapshot(), 'reference');
++            try {
++              expect(f.doc.read().actors).toEqual(cold.doc.read().actors);
++              expect(f.doc.read().deviceName).toEqual(cold.doc.read().deviceName);
++            } finally {
++              await cold.doc.close();
++            }
++          }
++        } finally {
++          await f.doc.close();
++        }
++      });
+       it('follows local redone links when undoing an edit inside a restored parent', async () => {
+         const f = await fixture();
+         try {
+diff --git a/test/admittedEditorProjection.test.ts b/test/admittedEditorProjection.test.ts
+new file mode 100644
+index 00000000..08f9a140
+--- /dev/null
++++ b/test/admittedEditorProjection.test.ts
+@@ -0,0 +1,245 @@
++import { EditorSelection } from '@codemirror/state';
++import { EditorView } from '@codemirror/view';
++import { afterEach, describe, expect, it, vi } from 'vitest';
++import { createAdmittedEditor } from '../src/editor/admittedEditor';
++import type { AdmittedTextSurface, TextSnapshot } from '../src/editor/admittedText';
++import type { AdmissionStatus } from '../src/crdt/admission';
++
++const cleanups: (() => void)[] = [];
++afterEach(() => {
++  while (cleanups.length) cleanups.pop()?.();
++});
++
++const mount = (text = 'accepted text') => {
++  let snapshot: TextSnapshot = {
++      text,
++      selection: EditorSelection.single(0).toJSON(),
++      undo: 0,
++      redo: 0,
++    },
++    status: AdmissionStatus = {
++      state: 'active',
++      revision: 0,
++      pendingItems: 0,
++      pendingBytes: 0,
++      reservedBytes: 0,
++      durable: true,
++      pressure: null,
++    },
++    unreadable = false,
++    updates = 0;
++  const publications = new Set<() => void>(),
++    statuses = new Set<(status: AdmissionStatus) => void>();
++  const read = vi.fn(() => {
++    if (unreadable) throw Error('unreadable');
++    return snapshot;
++  });
++  const input = vi.fn<AdmittedTextSurface['input']>(() => ({
++    id: 1,
++    accepted: Promise.resolve({ id: 1, source: 'local', revision: 1, slices: 1 }),
++  }));
++  const surface: AdmittedTextSurface = {
++    get status() {
++      return status;
++    },
++    read,
++    input,
++    subscribe(listener) {
++      publications.add(listener);
++      return () => publications.delete(listener);
++    },
++    onStatus(listener) {
++      statuses.add(listener);
++      return () => statuses.delete(listener);
++    },
++    retry() {},
++    discardPending() {},
++  };
++  const parent = document.createElement('div');
++  document.body.append(parent);
++  const editor = createAdmittedEditor({
++    parent,
++    document: surface,
++    extra: [EditorView.updateListener.of(() => updates++)],
++  });
++  cleanups.push(() => {
++    editor.destroy();
++    parent.remove();
++  });
++  const publish = () => {
++    for (const listener of publications) listener();
++  };
++  return {
++    ...editor,
++    parent,
++    read,
++    input,
++    publish,
++    get updates() {
++      return updates;
++    },
++    resetUpdates: () => (updates = 0),
++    setSnapshot(value: Partial<TextSnapshot>) {
++      snapshot = { ...snapshot, ...value };
++      publish();
++    },
++    setUnreadable(value: boolean) {
++      unreadable = value;
++    },
++    setStatus(value: Partial<AdmissionStatus>) {
++      status = { ...status, ...value };
++      for (const listener of statuses) listener(status);
++    },
++  };
++};
++
++describe('admitted editor projection', () => {
++  it('reads every publication while leaving an unchanged editor state alone', () => {
++    const editor = mount('unchanged master '.repeat(6000));
++    const before = editor.view.state;
++    editor.resetUpdates();
++    editor.read.mockClear();
++    for (let index = 0; index < 5; index++) editor.publish();
++    expect(editor.read).toHaveBeenCalledTimes(5);
++    expect(editor.view.state).toBe(before);
++    expect(editor.updates).toBe(0);
++  });
++
++  it('preserves a local selection when another surface publishes', () => {
++    const editor = mount();
++    editor.view.dispatch({ selection: EditorSelection.single(2, 7) });
++    const before = editor.view.state;
++    editor.resetUpdates();
++    editor.setSnapshot({ selection: EditorSelection.single(0).toJSON() });
++    expect(editor.view.state).toBe(before);
++    expect(editor.view.state.selection.main.anchor).toBe(2);
++    expect(editor.view.state.selection.main.head).toBe(7);
++    expect(editor.updates).toBe(0);
++  });
++
++  it('projects selection-only changes including secondary ranges and main range', () => {
++    const editor = mount();
++    const selection = EditorSelection.create(
++      [EditorSelection.range(0, 2), EditorSelection.range(6, 8)],
++      1,
++    );
++    editor.resetUpdates();
++    editor.setSnapshot({ selection: selection.toJSON() });
++    expect(editor.view.state.selection.toJSON()).toEqual(selection.toJSON());
++    expect(editor.updates).toBe(1);
++    editor.setSnapshot({ selection: { ...selection.toJSON(), main: 0 } });
++    expect(editor.view.state.selection.mainIndex).toBe(0);
++    expect(editor.updates).toBe(2);
++  });
++
++  it('still normalizes cursor association, bidi level and goal column', () => {
++    const editor = mount();
++    editor.view.dispatch({
++      selection: EditorSelection.create([EditorSelection.cursor(2, 1, 1, 9)]),
++    });
++    editor.resetUpdates();
++    editor.publish();
++    const cursor = editor.view.state.selection.main;
++    expect(cursor.head).toBe(2);
++    expect(cursor.assoc).toBe(0);
++    expect(cursor.bidiLevel).toBe(null);
++    expect(cursor.goalColumn).toBeUndefined();
++    expect(editor.updates).toBe(1);
++  });
++
++  it('normalizes an undirectional range on an otherwise unchanged publication', () => {
++    const editor = mount();
++    editor.view.dispatch({
++      selection: EditorSelection.create([EditorSelection.undirectionalRange(2, 7)]),
++    });
++    expect(editor.view.state.selection.main.undirectional).toBe(true);
++    editor.resetUpdates();
++    editor.publish();
++    expect(editor.view.state.selection.main.undirectional).toBe(false);
++    expect(editor.updates).toBe(1);
++  });
++
++  it('applies text changes with the accepted selection and drops the old local selection', () => {
++    const editor = mount();
++    editor.view.dispatch({ selection: EditorSelection.single(3) });
++    editor.resetUpdates();
++    editor.setSnapshot({
++      text: 'accepted new text',
++      selection: EditorSelection.single(12).toJSON(),
++    });
++    expect(editor.view.state.doc.toString()).toBe('accepted new text');
++    expect(editor.view.state.selection.main.head).toBe(12);
++    expect(editor.updates).toBe(1);
++    editor.setSnapshot({ selection: EditorSelection.single(4).toJSON() });
++    expect(editor.view.state.selection.main.head).toBe(4);
++  });
++
++  it('projects editability-only changes and restores editing', () => {
++    const editor = mount();
++    editor.resetUpdates();
++    editor.setSnapshot({ editable: false });
++    expect(editor.view.state.facet(EditorView.editable)).toBe(false);
++    expect(editor.view.contentDOM.getAttribute('contenteditable')).toBe('false');
++    editor.setSnapshot({ editable: true });
++    expect(editor.view.state.facet(EditorView.editable)).toBe(true);
++    expect(editor.updates).toBe(2);
++  });
++
++  it('clears stale writing when a publication becomes unreadable and projects a later valid read', () => {
++    const editor = mount();
++    editor.setUnreadable(true);
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('');
++    expect(editor.view.state.facet(EditorView.editable)).toBe(false);
++    editor.setUnreadable(false);
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++    expect(editor.view.state.facet(EditorView.editable)).toBe(true);
++  });
++
++  it('keeps blocked pending input out of the editor and reacts to unavailable status', () => {
++    const editor = mount();
++    editor.setStatus({ state: 'blocked', pendingItems: 1 });
++    editor.publish();
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain(
++      'Input is waiting for storage.',
++    );
++    editor.setUnreadable(true);
++    editor.setStatus({ state: 'failed' });
++    expect(editor.view.state.doc.toString()).toBe('');
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain(
++      'Editing is unavailable.',
++    );
++  });
++
++  it('keeps a local input error visible through an unchanged publication', () => {
++    const editor = mount();
++    editor.input.mockImplementationOnce(() => {
++      throw Error('input refused');
++    });
++    editor.view.contentDOM.dispatchEvent(
++      new KeyboardEvent('keydown', { key: 'Backspace', bubbles: true, cancelable: true }),
++    );
++    editor.publish();
++    expect(editor.parent.querySelector('[role=status]')?.textContent).toContain('input refused');
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++  });
++
++  it('keeps projection transactions during composition and reconciles after a cancelled preedit', async () => {
++    const editor = mount();
++    editor.view.contentDOM.dispatchEvent(
++      new CompositionEvent('compositionstart', { bubbles: true, data: '' }),
++    );
++    editor.resetUpdates();
++    editor.publish();
++    expect(editor.updates).toBeGreaterThan(0);
++    editor.view.contentDOM.dispatchEvent(
++      new CompositionEvent('compositionend', { bubbles: true, data: '' }),
++    );
++    editor.resetUpdates();
++    await Promise.resolve();
++    expect(editor.updates).toBeGreaterThan(0);
++    expect(editor.view.state.doc.toString()).toBe('accepted text');
++  });
++});
+diff --git a/test/exploratoryAnyStrings.test.ts b/test/exploratoryAnyStrings.test.ts
+new file mode 100644
+index 00000000..6f2764d3
+--- /dev/null
++++ b/test/exploratoryAnyStrings.test.ts
+@@ -0,0 +1,328 @@
++// @vitest-environment node
++import { expect, it } from 'vitest';
++import fc from 'fast-check';
++import {
++  Y,
++  createHistoryDoc,
++  createSelectionHistory,
++  forkDoc,
++  sameDocState,
++} from '../src/crdt/yjs';
++
++const integrated = (doc: Y.Doc) =>
++  Y.encodeStateAsUpdate({
++    ...doc,
++    store: { ...doc.store, pendingStructs: null, pendingDs: null },
++  } as Y.Doc);
++// Native V1 full normalization is independent of both private codecs and their scratch pool.
++const full = (a: Y.Doc, b: Y.Doc) => {
++  if (!Y.equalSnapshots(Y.snapshot(a), Y.snapshot(b))) return false;
++  const pending = (doc: Y.Doc) => ({
++    missing: doc.store.pendingStructs
++      ? [...doc.store.pendingStructs.missing].sort(([a], [b]) => a - b)
++      : null,
++    update: doc.store.pendingStructs?.update ?? null,
++    ds: doc.store.pendingDs,
++  });
++  const normalize = (doc: Y.Doc) => {
++    const copy = new Y.Doc();
++    try {
++      Y.applyUpdate(copy, integrated(doc));
++      return Y.encodeStateAsUpdate(copy);
++    } finally {
++      copy.destroy();
++    }
++  };
++  return (
++    JSON.stringify(pending(a)) === JSON.stringify(pending(b)) &&
++    Buffer.from(normalize(a)).equals(Buffer.from(normalize(b)))
++  );
++};
++const withFork = (source: Y.Doc, check: (actual: Y.Doc, native: Y.Doc) => void) => {
++  const owner = createSelectionHistory(),
++    history = owner.create(source, 'human'),
++    native = forkDoc(source, false);
++  let fork: Y.UndoManager | undefined;
++  try {
++    fork = owner.fork(history, 'human');
++    expect(integrated(fork.doc)).toEqual(integrated(native));
++    expect(sameDocState(fork.doc, native)).toBe(full(fork.doc, native));
++    check(fork.doc, native);
++  } finally {
++    fork?.destroy();
++    fork?.doc.destroy();
++    native.destroy();
++    history.destroy();
++    owner.close();
++  }
++};
++const anyContent = (doc: Y.Doc) => doc.getArray('values')._start!.content as Y.ContentAny;
++const make = (values: unknown[]) => {
++  const doc = createHistoryDoc();
++  doc.clientID = 193;
++  // Ensure the existing bounded equality eligibility probe selects the private comparison.
++  doc.getText('master').insert(0, 'ordinary master text '.repeat(4));
++  doc.getArray('values').push(values);
++  return doc;
++};
++
++it('forks interleaved primitive any strings and text fields with native canonical bytes', () => {
++  const source = make(['A'.repeat(90), 'tiny', 119, 0, 'B'.repeat(80)]);
++  try {
++    source.getText('next').insert(0, 'middle'.repeat(20));
++    source.getMap('cards').set('long-key-'.repeat(7), 'map value '.repeat(15));
++    source.getArray('values').push(['tail'.repeat(100), null, false, true]);
++    // Undefined is a native ContentAny value, although Y.Array insertion rejects it.
++    anyContent(source).arr[1] = undefined;
++    source.getText('last').insert(0, 'last'.repeat(80));
++    withFork(source, (actual, native) => {
++      expect(actual.getArray('values').toArray()).toEqual(native.getArray('values').toArray());
++      expect(actual.getMap('cards').toJSON()).toEqual(native.getMap('cards').toJSON());
++      expect(actual.getText('next').toString()).toBe(source.getText('next').toString());
++      const external = new Y.Doc();
++      try {
++        Y.applyUpdate(external, Y.encodeStateAsUpdate(actual));
++        expect(integrated(external)).toEqual(integrated(native));
++      } finally {
++        external.destroy();
++      }
++    });
++  } finally {
++    source.destroy();
++  }
++});
++
++it('generated primitive any forks and same-clock mutations agree with native normalization', () => {
++  fc.assert(
++    fc.property(
++      fc.array(
++        fc.oneof(
++          fc.string({ minLength: 0, maxLength: 100 }),
++          fc
++            .array(fc.integer({ min: 0, max: 0xffff }), { maxLength: 100 })
++            .map((units) => String.fromCharCode(...units)),
++          fc.integer(),
++          fc.boolean(),
++          fc.constant(null),
++        ),
++        { minLength: 1, maxLength: 16 },
++      ),
++      (values) => {
++        const source = make(['long-BMP-'.repeat(16), ...values, 'end'.repeat(32)]);
++        try {
++          source.getText('interleaved').insert(0, 'more text'.repeat(8));
++          source.getMap('cards').set('body', values[0]);
++          withFork(source, (actual, native) => {
++            expect(sameDocState(source, actual)).toBe(full(source, actual));
++            const arr = anyContent(actual).arr;
++            for (const replacement of ['changed'.repeat(40), 119, ['nested'.repeat(15)]]) {
++              arr[0] = replacement;
++              expect(sameDocState(native, actual)).toBe(full(native, actual));
++              expect(full(native, actual)).toBe(false);
++            }
++          });
++        } finally {
++          source.destroy();
++        }
++      },
++    ),
++    { seed: 193917, numRuns: 150 },
++  );
++});
++
++it('retains Unicode fallback and UTF-8 equivalence for any string fields', () => {
++  const values = [
++    'x'.repeat(31),
++    'x'.repeat(32),
++    '\uFEFF' + 'x'.repeat(100),
++    'café 漢字 '.repeat(10),
++    '🚀'.repeat(40),
++    '\uDC00' + 'x'.repeat(80),
++    'x'.repeat(80) + '\uD800',
++    'x'.repeat(50) + '\uD800middle\uDC00',
++  ];
++  const source = make(values);
++  try {
++    withFork(source, (actual, native) => {
++      expect(actual.getArray('values').toArray()).toEqual(native.getArray('values').toArray());
++      expect(sameDocState(source, actual)).toBe(true);
++    });
++    const a = make(['x'.repeat(64) + '\uD800']),
++      b = make(['x'.repeat(64) + '\uD801']);
++    try {
++      expect(full(a, b)).toBe(true);
++      expect(sameDocState(a, b)).toBe(true);
++      anyContent(b).arr[0] = 'x'.repeat(64) + 'y';
++      expect(full(a, b)).toBe(false);
++      expect(sameDocState(a, b)).toBe(false);
++    } finally {
++      a.destroy();
++      b.destroy();
++    }
++  } finally {
++    source.destroy();
++  }
++});
++
++it('distinguishes any string type, byte position, length boundaries and field order', () => {
++  const variants: unknown[][] = [
++    ['A'.repeat(64), 119, 'B'.repeat(80)],
++    ['B'.repeat(80), 119, 'A'.repeat(64)],
++    ['A'.repeat(64), '119', 'B'.repeat(80)],
++    ['A'.repeat(64), ['119'], 'B'.repeat(80)],
++    ['A'.repeat(63), 119, 'B'.repeat(81)],
++    ['A'.repeat(64), null, 'B'.repeat(80)],
++    ['A'.repeat(64), false, 'B'.repeat(80)],
++  ];
++  const docs = variants.map(make);
++  try {
++    for (let i = 0; i < docs.length; i++)
++      for (let j = 0; j < docs.length; j++) {
++        expect(Y.encodeStateVector(docs[i]!)).toEqual(Y.encodeStateVector(docs[j]!));
++        expect(full(docs[i]!, docs[j]!)).toBe(i === j);
++        expect(sameDocState(docs[i]!, docs[j]!)).toBe(i === j);
++      }
++  } finally {
++    docs.forEach((doc) => doc.destroy());
++  }
++});
++
++it('keeps boxed, nonplain and nested any objects native and detaches mutable binary leaves', () => {
++  class Example {
++    field = 'nonplain'.repeat(12);
++  }
++  const binary = new Uint8Array([1, 2, 3]),
++    boxed = Object('boxed'.repeat(15)),
++    nested = { items: ['long'.repeat(40), { binary }], ordinary: new Example() },
++    source = make(['kept'.repeat(32), null, null, null]);
++  // Yjs insertion validates constructors; its pinned codec can still encounter these runtime
++  // ContentAny values. Compare exactly what that codec does, without claiming app acceptance.
++  anyContent(source).arr.splice(1, 3, boxed, new Example(), nested);
++  try {
++    withFork(source, (actual, native) => {
++      const values = actual.getArray('values').toArray();
++      expect(values).toEqual(native.getArray('values').toArray());
++      expect(typeof values[1]).toBe('object');
++      expect(values[1]).not.toBe(boxed);
++      const copied = values[3] as typeof nested;
++      const child = copied.items[1] as { binary: Uint8Array };
++      child.binary.fill(9);
++      expect(binary).toEqual(new Uint8Array([1, 2, 3]));
++      nested.items.push('source only');
++      expect(copied.items).toHaveLength(2);
++      (values[2] as Example).field = 'child only';
++      expect((anyContent(source).arr[2] as Example).field).toBe('nonplain'.repeat(12));
++    });
++  } finally {
++    source.destroy();
++  }
++});
++
++it('preserves and detaches pending updates, missing dependencies and pending delete bytes', () => {
++  const source = make(['long pending case '.repeat(9)]),
++    remote = new Y.Doc(),
++    updates: Uint8Array[] = [];
++  remote.on('update', (update: Uint8Array) => updates.push(update));
++  remote.getText('remote').insert(0, 'first');
++  remote.getText('remote').insert(5, 'second');
++  remote.getText('remote').delete(0, 1);
++  Y.applyUpdate(source, updates[1]!);
++  Y.applyUpdate(source, updates[2]!);
++  try {
++    expect(source.store.pendingStructs).not.toBeNull();
++    expect(source.store.pendingDs).not.toBeNull();
++    withFork(source, (actual) => {
++      expect(sameDocState(source, actual)).toBe(true);
++      const pending = actual.store.pendingStructs!;
++      expect(pending.update).not.toBe(source.store.pendingStructs!.update);
++      expect(pending.missing).not.toBe(source.store.pendingStructs!.missing);
++      expect(actual.store.pendingDs).not.toBe(source.store.pendingDs);
++      const key = [...pending.missing.keys()][0]!,
++        clock = pending.missing.get(key)!;
++      pending.missing.set(key, clock + 1);
++      expect(sameDocState(source, actual)).toBe(false);
++      pending.missing.set(key, clock);
++      pending.update[0] = pending.update[0]! ^ 1;
++      expect(sameDocState(source, actual)).toBe(false);
++      pending.update[0] = pending.update[0]! ^ 1;
++      actual.store.pendingDs![0] = actual.store.pendingDs![0]! ^ 1;
++      expect(sameDocState(source, actual)).toBe(false);
++      actual.store.pendingDs![0] = actual.store.pendingDs![0]! ^ 1;
++      Y.applyUpdate(actual, updates[0]!);
++      Y.applyUpdate(source, updates[0]!);
++      expect(sameDocState(source, actual)).toBe(true);
++      expect(actual.getText('remote').toString()).toBe('irstsecond');
++    });
++  } finally {
++    source.destroy();
++    remote.destroy();
++  }
++});
++
++it('keeps any-string scratch private under reentry and recovers after a native getter throws', () => {
++  const a = make(['outer'.repeat(30), null]),
++    b = make(['outer'.repeat(30), { key: 'value' }]),
++    c = make(['inner'.repeat(30)]),
++    d = make(['inner'.repeat(30)]),
++    owner = createSelectionHistory(),
++    history = owner.create(c, 'human');
++  let fail = false,
++    reads = 0;
++  anyContent(a).arr[1] = {
++    get key() {
++      reads++;
++      if (fail) throw Error('deliberate native any getter failure');
++      expect(sameDocState(c, d)).toBe(true);
++      const nested = owner.fork(history, 'human');
++      try {
++        expect(integrated(nested.doc)).toEqual(integrated(c));
++      } finally {
++        nested.destroy();
++        nested.doc.destroy();
++      }
++      return 'value';
++    },
++  };
++  try {
++    expect(sameDocState(a, b)).toBe(true);
++    withFork(a, () => {});
++    fail = true;
++    expect(() => sameDocState(a, b)).toThrow('deliberate native any getter failure');
++    const outer = owner.create(a, 'human');
++    try {
++      expect(() => owner.fork(outer, 'human')).toThrow('deliberate native any getter failure');
++    } finally {
++      outer.destroy();
++    }
++    fail = false;
++    for (let i = 0; i < 12; i++) {
++      expect(sameDocState(a, b)).toBe(full(a, b));
++      withFork(a, () => {});
++      expect(sameDocState(c, d)).toBe(true);
++    }
++    expect(reads).toBeGreaterThan(20);
++  } finally {
++    history.destroy();
++    owner.close();
++    [a, b, c, d].forEach((doc) => doc.destroy());
++  }
++});
++
++it('keeps full-byte normalization when adjacent any items are split differently', () => {
++  const source = make(['one'.repeat(40), 'two'.repeat(40), 'three'.repeat(40)]);
++  try {
++    withFork(source, (actual) => {
++      const first = actual.getArray('values')._start!;
++      actual.transact((tr) =>
++        Y.getItemCleanStart(tr, Y.createID(first.id.client, first.id.clock + 1)),
++      );
++      expect(full(source, actual)).toBe(true);
++      expect(sameDocState(source, actual)).toBe(true);
++      source.getArray('values').delete(1, 1);
++      Y.applyUpdate(actual, Y.encodeStateAsUpdate(source));
++      expect(sameDocState(source, actual)).toBe(full(source, actual));
++    });
++  } finally {
++    source.destroy();
++  }
++});
+diff --git a/test/exploratoryPreparation.test.ts b/test/exploratoryPreparation.test.ts
+new file mode 100644
+index 00000000..75782080
+--- /dev/null
++++ b/test/exploratoryPreparation.test.ts
+@@ -0,0 +1,189 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import fc from 'fast-check';
++import { Y, createHistoryDoc, createSelectionHistory, forkDoc } from '../src/crdt/yjs';
++
++it('private string-tape forks retain mixed field ordering and detached mutable content', () => {
++  const source = createHistoryDoc(),
++    owner = createSelectionHistory();
++  source.getText('long-root-' + 'r'.repeat(70)).insert(0, '\uFEFF' + 'body'.repeat(300));
++  source.getText('short').insert(0, 'small');
++  const text = source.getText('master');
++  text.insert(0, 'ordinary'.repeat(100));
++  text.format(0, 8, { ['format-' + 'k'.repeat(60)]: { nested: ['value'] } });
++  text.insertEmbed(3, { embed: 'E'.repeat(100) });
++  source.getText('surrogate\uD800').insert(0, '\uDC00' + '😀\uD800x\uDC00'.repeat(40));
++  source.getMap('meta').set('nested', { binary: new Uint8Array([1, 2, 3]), values: ['v'] });
++  const history = owner.create(source, 'human'),
++    expected = forkDoc(source, false),
++    actual = owner.fork(history, 'human');
++  try {
++    expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++    expect(actual.doc.getText('master').toDelta()).toEqual(expected.getText('master').toDelta());
++    const original = source.getMap('meta').get('nested') as {
++      binary: Uint8Array;
++      values: string[];
++    };
++    const copied = actual.doc.getMap('meta').get('nested') as typeof original;
++    copied.binary.fill(9);
++    copied.values.push('child');
++    expect([...original.binary]).toEqual([1, 2, 3]);
++    expect(original.values).toEqual(['v']);
++    original.values.push('parent');
++    expect(copied.values).toEqual(['v', 'child']);
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    expected.destroy();
++    history.destroy();
++    source.destroy();
++    owner.close();
++  }
++});
++
++it('generated private string-tape forks match the existing codec for BMP, surrogate and mixed fields', () => {
++  fc.assert(
++    fc.property(
++      fc.array(fc.integer({ min: 0, max: 0xffff }), { minLength: 0, maxLength: 180 }),
++      fc.integer({ min: 32, max: 500 }),
++      (units, count) => {
++        const source = createHistoryDoc(),
++          owner = createSelectionHistory();
++        const text = String.fromCharCode(...units);
++        source.getText('master').insert(0, 'a'.repeat(count));
++        source.getText('unicode').insert(0, text);
++        source.getText('root-' + 'x'.repeat(count)).insert(0, 'middle');
++        source.getText('tail').insert(0, text + 'z'.repeat(count));
++        const history = owner.create(source, 'human'),
++          expected = forkDoc(source, false),
++          actual = owner.fork(history, 'human');
++        try {
++          expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++          for (const key of expected.share.keys())
++            if (key !== 'days' && key !== 'cards' && key !== 'cardLocations')
++              expect(actual.doc.getText(key).toString()).toBe(expected.getText(key).toString());
++        } finally {
++          actual.destroy();
++          actual.doc.destroy();
++          expected.destroy();
++          history.destroy();
++          source.destroy();
++          owner.close();
++        }
++      },
++    ),
++    { seed: 150917, numRuns: 150 },
++  );
++});
++
++it('private string tapes remain scoped when encoding triggers a nested owned fork', () => {
++  const owner = createSelectionHistory(),
++    source = createHistoryDoc(),
++    nested = createHistoryDoc();
++  source.getText('master').insert(0, 'outer'.repeat(200));
++  nested.getText('master').insert(0, 'inner'.repeat(100));
++  const history = owner.create(source, 'human'),
++    other = owner.create(nested, 'human');
++  let armed = false,
++    forks = 0;
++  source.getMap('meta').set('accessor', {
++    get nested() {
++      if (armed) {
++        const copy = owner.fork(other, 'human');
++        try {
++          expect(copy.doc.getText('master').toString()).toBe('inner'.repeat(100));
++          forks++;
++        } finally {
++          copy.destroy();
++          copy.doc.destroy();
++        }
++      }
++      return 'value';
++    },
++  });
++  armed = true;
++  const actual = owner.fork(history, 'human');
++  try {
++    expect(forks).toBeGreaterThan(0);
++    expect(actual.doc.getText('master').toString()).toBe('outer'.repeat(200));
++    expect(actual.doc.getMap('meta').get('accessor')).toEqual({ nested: 'value' });
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    history.destroy();
++    other.destroy();
++    source.destroy();
++    nested.destroy();
++    owner.close();
++  }
++});
++
++it('private string tapes keep boxed runtime strings on the coercing baseline codec path', () => {
++  const source = createHistoryDoc(),
++    owner = createSelectionHistory();
++  const boxed = Object('boxed'.repeat(40)) as string;
++  source.getText('master').insert(0, boxed);
++  const history = owner.create(source, 'human'),
++    expected = forkDoc(source, false),
++    actual = owner.fork(history, 'human');
++  try {
++    const original = source.getText('master')._start!.content as Y.ContentString;
++    const copied = actual.doc.getText('master')._start!.content as Y.ContentString;
++    expect(original.str).toBe(boxed);
++    expect(typeof copied.str).toBe('string');
++    expect(copied.str).not.toBe(boxed);
++    expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    expected.destroy();
++    history.destroy();
++    source.destroy();
++    owner.close();
++  }
++});
++
++it('private string tapes preserve legacy JSON, subdoc GUIDs and parent keys interleaved with XML keys', () => {
++  const source = createHistoryDoc(),
++    owner = createSelectionHistory();
++  const text = source.getText('master');
++  text.insert(0, 'text'.repeat(60));
++  text.format(0, 50, { ['format-' + 'f'.repeat(40) + '\uD800']: 'v' });
++  const key = '\uFEFF' + 'parent-key'.repeat(8);
++  source.getMap('meta').set(key, 'value');
++  const legacy = source.getArray('legacy');
++  legacy.push([null, null, null]);
++  legacy._start!.content = new Y.ContentJSON([
++    undefined,
++    { long: 'j'.repeat(90) },
++    'legacy'.repeat(30),
++  ]);
++  const guid = '\uFEFF' + 'guid-'.repeat(20);
++  source.getMap('subdocs').set('one', new Y.Doc({ guid }));
++  source
++    .getXmlFragment('xml')
++    .insert(0, [
++      new Y.XmlElement('\uFEFF' + 'element'.repeat(10)),
++      // Pinned runtime accepts hooks here; the public insertion type omits them.
++      // @ts-expect-error Deliberate codec fixture for the pinned Y.XmlHook carrier.
++      new Y.XmlHook('hook'.repeat(20)),
++      new Y.XmlElement('tail\uD800'),
++    ]);
++  const history = owner.create(source, 'human'),
++    expected = forkDoc(source, false),
++    actual = owner.fork(history, 'human');
++  try {
++    expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(expected));
++    expect(actual.doc.getArray('legacy').toArray()).toEqual(expected.getArray('legacy').toArray());
++    expect((actual.doc.getMap('subdocs').get('one') as Y.Doc).guid).toBe(guid);
++    expect(actual.doc.getMap('meta').get(key)).toBe('value');
++    expect(actual.doc.getXmlFragment('xml').toJSON()).toBe(expected.getXmlFragment('xml').toJSON());
++  } finally {
++    actual.destroy();
++    actual.doc.destroy();
++    expected.destroy();
++    history.destroy();
++    source.destroy();
++    owner.close();
++  }
++});
+diff --git a/test/workspaceUiIndex.test.tsx b/test/workspaceUiIndex.test.tsx
+new file mode 100644
+index 00000000..8098962f
+--- /dev/null
++++ b/test/workspaceUiIndex.test.tsx
+@@ -0,0 +1,412 @@
++import { act, type ReactNode } from 'react';
++import { createRoot, type Root } from 'react-dom/client';
++import { afterEach, describe, expect, it, vi } from 'vitest';
++import fc from 'fast-check';
++import type {
++  AdmittedWorkspace,
++  WorkspaceCommand,
++  WorkspaceSnapshot,
++} from '../src/crdt/admittedWorkspace';
++import type { AdmissionStatus } from '../src/crdt/admissionQueue';
++import type { CardProps } from '../src/ui/Card';
++import type { ComposeProps } from '../src/ui/Compose';
++import { Collection } from '../src/ui/Collection';
++import { WorkspaceUiProvider, useWorkspaceUi, type WorkspaceUi } from '../src/ui/workspaceUi';
++
++// Keep the provider, collections, membership callbacks, reorder hook and archived
++// renderer real. Only the leaf editor/compose ports are replaced with inspectable
++// controls; no fake index or provider participates in the oracle.
++const cardPorts = new Map<string, CardProps>();
++const composePorts: ComposeProps[] = [];
++vi.mock('../src/ui/Card', () => ({
++  Card: (props: CardProps) => {
++    cardPorts.set(`${props.section}:${props.card.id}`, props);
++    return (
++      <article className="card" data-card={props.card.id} data-section={props.section}>
++        {props.card.text}
++      </article>
++    );
++  },
++}));
++vi.mock('../src/ui/Compose', () => ({
++  Compose: (props: ComposeProps) => {
++    composePorts.push(props);
++    return <button data-compose="true">{props.placeholder}</button>;
++  },
++}));
++
++Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
++let root: Root | undefined;
++let host: HTMLDivElement | undefined;
++const date = '2026-09-15';
++const nextDate = '2026-09-16';
++type Card = WorkspaceSnapshot['cards'][number];
++type Day = WorkspaceSnapshot['days'][number];
++const card = (id: string, text = id): Card => ({
++  id,
++  text,
++  author: 'actor',
++  origin: null,
++  location: null,
++});
++const day = (overrides: Partial<Day> = {}): Day => ({
++  date,
++  next: [],
++  scheduled: [],
++  done: [],
++  ...overrides,
++});
++const snapshot = (cards: readonly Card[], days: readonly Day[] = [day()]): WorkspaceSnapshot => ({
++  master: 'Goals 🚀',
++  cards,
++  days,
++  actors: [],
++  settings: { rolloverHour: 0 },
++  deviceName: 'Device',
++  undo: 0,
++  redo: 0,
++});
++const initialStatus: AdmissionStatus = {
++  state: 'active',
++  revision: 0,
++  pendingItems: 0,
++  pendingBytes: 0,
++  reservedBytes: 0,
++  durable: true,
++  pressure: null,
++};
++
++const controlledWorkspace = (initial: WorkspaceSnapshot) => {
++  let current = initial;
++  let status = initialStatus;
++  let unreadable = false;
++  let commandValue: unknown = true;
++  const publications = new Set<() => void>();
++  const statuses = new Set<(value: AdmissionStatus) => void>();
++  const read = vi.fn(() => {
++    if (unreadable) throw Error('Unavailable');
++    return current;
++  });
++  const command = vi.fn((_command: WorkspaceCommand) => ({
++    id: 1,
++    accepted: Promise.resolve({ value: commandValue }),
++  }));
++  const retry = vi.fn();
++  const discardPending = vi.fn();
++  // Unused carrier/editor operations are intentionally absent: an accidental
++  // call outside this read/command/status boundary fails rather than succeeding.
++  const workspace = {
++    get status() {
++      return status;
++    },
++    read,
++    command,
++    retry,
++    discardPending,
++    subscribe(listener: () => void) {
++      publications.add(listener);
++      return () => publications.delete(listener);
++    },
++    onStatus(listener: (value: AdmissionStatus) => void) {
++      statuses.add(listener);
++      return () => statuses.delete(listener);
++    },
++  } as unknown as AdmittedWorkspace;
++  return {
++    workspace,
++    read,
++    command,
++    retry,
++    discardPending,
++    publications,
++    statuses,
++    result(value: unknown) {
++      commandValue = value;
++    },
++    publish(value: WorkspaceSnapshot = current) {
++      current = value;
++      cardPorts.clear();
++      act(() => publications.forEach((listener) => listener()));
++    },
++    unavailable(value: boolean) {
++      unreadable = value;
++    },
++    status(value: Partial<AdmissionStatus>) {
++      status = { ...status, ...value };
++      act(() => statuses.forEach((listener) => listener(status)));
++    },
++  };
++};
++const values: WorkspaceUi[] = [];
++const Probe = ({ slot }: { slot: number }) => {
++  values[slot] = useWorkspaceUi();
++  return null;
++};
++const currentUi = (slot = 0): WorkspaceUi => {
++  const value = values[slot];
++  if (!value) throw Error('Probe has not rendered');
++  return value;
++};
++const render = (workspace: AdmittedWorkspace, children?: ReactNode) => {
++  if (!host) {
++    host = document.createElement('div');
++    document.body.append(host);
++    root = createRoot(host);
++  }
++  act(() =>
++    root?.render(
++      <WorkspaceUiProvider
++        workspace={workspace}
++        actorId="actor"
++        registerEditor={() => () => {}}
++        onLock={() => {}}
++      >
++        <Probe slot={0} />
++        <Probe slot={1} />
++        {children}
++      </WorkspaceUiProvider>,
++    ),
++  );
++};
++const collections = (at = date) => (
++  <>
++    <Collection date={at} section="next" frozen={false} active />
++    <Collection date={at} section="scheduled" frozen={false} active />
++    <Collection date={at} section="done" frozen={false} active />
++  </>
++);
++const rendered = (section: string) =>
++  Array.from(
++    host?.querySelectorAll(`.collection[data-section="${section}"] [data-card]`) ?? [],
++  ).map((element) => [element.getAttribute('data-card'), element.textContent]);
++const port = (section: string, id: string): CardProps => {
++  const value = cardPorts.get(`${section}:${id}`);
++  if (!value) throw Error(`Missing ${section}:${id}`);
++  return value;
++};
++const action = (section: string, id: string, label: string) => {
++  const value = port(section, id).actions.find((entry) => entry.label === label);
++  if (!value) throw Error(`Missing ${label}`);
++  return value;
++};
++const settle = async (callback: () => unknown) => {
++  await act(async () => {
++    callback();
++    await Promise.resolve();
++  });
++};
++afterEach(() => {
++  act(() => root?.unmount());
++  host?.remove();
++  root = undefined;
++  host = undefined;
++  cardPorts.clear();
++  composePorts.length = 0;
++  values.length = 0;
++});
++
++describe('shared detached UI card lookup', () => {
++  it('reads each publication and exposes current last-wins cards to separate consumers', () => {
++    const first = card('a', 'old');
++    const model = controlledWorkspace(snapshot([first]));
++    render(model.workspace);
++    const reads = model.read.mock.calls.length;
++    const previousLookup = currentUi().cardById;
++    expect(previousLookup('a')).toBe(first);
++    expect(currentUi(1).cardById).toBe(previousLookup);
++    model.publish();
++    expect(model.read).toHaveBeenCalledTimes(reads + 1);
++    expect(currentUi().cardById('a')).toBe(first);
++
++    const replacement = card('a', 'new 🚀 e\u0301 中');
++    const winner = card('__proto__', 'last');
++    const next = snapshot([card('__proto__', 'first'), replacement, winner]);
++    model.publish(next);
++    expect(model.read).toHaveBeenCalledTimes(reads + 2);
++    expect(currentUi().snapshot).toBe(next);
++    expect(currentUi().cardById('a')).toBe(replacement);
++    expect(currentUi().cardById('__proto__')).toBe(winner);
++    expect(currentUi().cardById('missing')).toBeUndefined();
++    expect(currentUi(1).cardById).toBe(currentUi().cardById);
++    // Older detached publications retain their own objects; the latest lookup
++    // must not be a mutable singleton repointed behind old consumers' backs.
++    expect(previousLookup('a')).toBe(first);
++  });
++
++  it('renders replacement, addition, removal, order and movement from current memberships', () => {
++    const model = controlledWorkspace(
++      snapshot(
++        [card('a'), card('b'), card('c')],
++        [day({ next: ['a'], scheduled: ['b'], done: ['c'] })],
++      ),
++    );
++    render(model.workspace, collections());
++    expect(rendered('next')).toEqual([['a', 'a']]);
++    expect(rendered('scheduled')).toEqual([['b', 'b']]);
++    expect(rendered('done')).toEqual([['c', 'c']]);
++    model.publish(
++      snapshot(
++        [card('b', 'old duplicate'), card('d', 'new'), card('b', 'replacement 🚀')],
++        [day({ next: ['missing'], scheduled: ['d', 'b', 'a'], done: [] })],
++      ),
++    );
++    expect(rendered('next')).toEqual([]);
++    expect(rendered('scheduled')).toEqual([
++      ['d', 'new'],
++      ['b', 'replacement 🚀'],
++    ]);
++    expect(rendered('done')).toEqual([]);
++    expect(currentUi().cardById('a')).toBeUndefined();
++    model.publish(
++      snapshot([card('d'), card('b')], [day({ next: ['b'], done: ['d'], scheduled: [] })]),
++    );
++    expect(rendered('next')).toEqual([['b', 'b']]);
++    expect(rendered('done')).toEqual([['d', 'd']]);
++    expect(host?.querySelector('.collection[data-section="scheduled"]')).toBeNull();
++  });
++
++  it('keeps current lookups through status-only/error updates and leaves retry/discard operative', async () => {
++    const model = controlledWorkspace(snapshot([card('a')], [day({ scheduled: ['a'] })]));
++    render(model.workspace, collections());
++    const lookup = currentUi().cardById;
++    const reads = model.read.mock.calls.length;
++    model.status({ state: 'blocked', pendingItems: 1, durable: false });
++    expect(currentUi().cardById).toBe(lookup);
++    expect(currentUi(1).cardById).toBe(lookup);
++    expect(model.read).toHaveBeenCalledTimes(reads);
++    for (const label of ['Retry storage', 'Discard pending input']) {
++      await settle(() => {
++        const button = Array.from(host?.querySelectorAll('button') ?? []).find(
++          (element) => element.textContent === label,
++        );
++        expect(button).toBeDefined();
++        button?.click();
++      });
++    }
++    expect(model.retry).toHaveBeenCalledTimes(1);
++    expect(model.discardPending).toHaveBeenCalledTimes(1);
++    model.status({ state: 'active', pendingItems: 0, durable: true });
++    model.result(false);
++    await settle(() => action('scheduled', 'a', 'Done').run());
++    expect(currentUi().error).toContain('could not be applied');
++    expect(currentUi().cardById).toBe(lookup);
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'move',
++      id: 'a',
++      to: { date, section: 'done' },
++    });
++  });
++
++  it('uses fresh Next capacity, command destinations, merge membership and reorder positions', async () => {
++    const cards = [card('a'), card('b'), card('c'), card('d')];
++    const model = controlledWorkspace(
++      snapshot(cards, [day({ next: ['a', 'b', 'c'], scheduled: ['d'], done: ['a', 'b', 'c'] })]),
++    );
++    render(model.workspace, collections());
++    expect(action('scheduled', 'd', 'Next').disabled).toBe(true);
++    expect(port('done', 'a').hooks.mergeBackwards()).toBeNull();
++    model.publish(snapshot(cards, [day({ next: ['a'], scheduled: ['d'], done: ['c', 'a', 'b'] })]));
++    expect(action('scheduled', 'd', 'Next').disabled).toBe(false);
++    await settle(() => action('scheduled', 'd', 'Next').run());
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'move',
++      id: 'd',
++      to: { date, section: 'next' },
++    });
++    model.result(7);
++    await settle(() => expect(port('done', 'a').hooks.mergeBackwards()).toBe(0));
++    expect(model.command).toHaveBeenLastCalledWith({ kind: 'merge', id: 'a' });
++    expect(port('done', 'c').autoFocusAt).toBe(7);
++    await settle(() => port('done', 'c').reorder?.moveBy(1));
++    expect(model.command).toHaveBeenLastCalledWith({ kind: 'reorder', id: 'c', index: 1 });
++
++    model.publish(snapshot(cards, [day({ date: nextDate, scheduled: ['d'] })]));
++    render(model.workspace, collections(nextDate));
++    await settle(() => action('scheduled', 'd', 'Done').run());
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'move',
++      id: 'd',
++      to: { date: nextDate, section: 'done' },
++    });
++    await settle(() => composePorts.at(-1)?.onSubmit('a new card 🚀'));
++    expect(model.command).toHaveBeenLastCalledWith({
++      kind: 'compose',
++      to: { date: nextDate, section: 'done' },
++      text: 'a new card 🚀',
++    });
++  });
++
++  it('preserves archived content outside the live card lookup', () => {
++    const model = controlledWorkspace(
++      snapshot(
++        [card('a', 'live')],
++        [day({ done: ['a'], archived: { next: [], scheduled: [], done: ['Archive **one** 🚀'] } })],
++      ),
++    );
++    render(model.workspace, collections());
++    expect(rendered('done')).toEqual([['a', 'live']]);
++    expect(host?.querySelector('[data-frozen="true"]')?.textContent).toContain('Archive one 🚀');
++    model.publish(
++      snapshot([], [day({ archived: { next: [], scheduled: [], done: ['Archive **two** 中'] } })]),
++    );
++    expect(rendered('done')).toEqual([]);
++    expect(host?.querySelector('[data-frozen="true"]')?.textContent).toContain('Archive two 中');
++    expect(currentUi().cardById('a')).toBeUndefined();
++  });
++
++  it('recovers from unreadable publications and cleans both subscriptions on replacement/unmount', () => {
++    const model = controlledWorkspace(snapshot([card('a')]));
++    render(model.workspace);
++    const reads = model.read.mock.calls.length;
++    model.unavailable(true);
++    model.publish();
++    expect(model.read).toHaveBeenCalledTimes(reads + 1);
++    expect(currentUi().cardById('a')?.text).toBe('a');
++    model.unavailable(false);
++    model.publish(snapshot([card('b', 'recovered')]));
++    expect(currentUi().cardById('a')).toBeUndefined();
++    expect(currentUi().cardById('b')?.text).toBe('recovered');
++    const replacement = controlledWorkspace(snapshot([card('b', 'different owner')]));
++    render(replacement.workspace);
++    expect(model.publications.size).toBe(0);
++    expect(model.statuses.size).toBe(0);
++    expect(currentUi().cardById('b')?.text).toBe('different owner');
++    expect(replacement.publications.size).toBe(1);
++    expect(replacement.statuses.size).toBe(1);
++    act(() => root?.unmount());
++    root = undefined;
++    expect(replacement.publications.size).toBe(0);
++    expect(replacement.statuses.size).toBe(0);
++  });
++
++  it('matches an independent native Map across generated publication histories', () => {
++    const ids = fc.constantFrom('a', 'b', 'c', '__proto__', '中', '🚀');
++    const step = fc.record({
++      cards: fc.array(fc.record({ id: ids, text: fc.string({ maxLength: 12 }) }), {
++        maxLength: 12,
++      }),
++      members: fc.uniqueArray(ids, { maxLength: 6 }),
++    });
++    const model = controlledWorkspace(snapshot([]));
++    render(model.workspace, collections());
++    fc.assert(
++      fc.property(fc.array(step, { minLength: 1, maxLength: 12 }), (history) => {
++        for (const entry of history) {
++          const cards = entry.cards.map(({ id, text }) => card(id, `${text} 🚀`));
++          const expected = new Map(cards.map((value) => [value.id, value]));
++          model.publish(snapshot(cards, [day({ scheduled: entry.members })]));
++          expect(currentUi(1).cardById).toBe(currentUi().cardById);
++          for (const id of [...entry.members, ...cards.map((value) => value.id), 'absent'])
++            expect(currentUi().cardById(id)).toBe(expected.get(id));
++          expect(rendered('scheduled')).toEqual(
++            entry.members.flatMap((id) => {
++              const value = expected.get(id);
++              return value ? [[value.id, value.text]] : [];
++            }),
++          );
++        }
++      }),
++      { seed: 170409, numRuns: 50 },
++    );
++  });
++});

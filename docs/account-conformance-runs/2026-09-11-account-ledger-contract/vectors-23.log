@@ -1,0 +1,19 @@
+  ok  scripts/generate-account-credential-vectors.mjs — slot binding (8), unlock challenge (5)
+  ok  scripts/generate-antireplay-vectors.mjs — heads record (7), position refusal (9)
+  ok  scripts/generate-attribution-vectors.mjs — attribution record (9)
+  ok  scripts/generate-baseline-vectors.mjs — no AAD
+  ok  scripts/generate-checkpoint-vectors.mjs — checkpoint aad (5), checkpoint manifest (11), checkpoint admission (12)
+  ok  scripts/generate-device-lock-vectors.mjs — lock seal (6)
+  ok  scripts/generate-enrollment-vectors.mjs — nonce commitment (3), enrollment transcript (11)
+  ok  scripts/generate-envelope-vectors.mjs — envelope aad (7), envelope signature (9)
+  ok  scripts/generate-finalization-vectors.mjs — accepted link (7), accepted head (7)
+  ok  scripts/generate-head-discovery-vectors.mjs — recovery bootstrap (14), head assertion (6)
+  ok  scripts/generate-journal-vectors.mjs — journal record (4)
+  ok  scripts/generate-package-vectors.mjs — generation wrap info (5), archive envelope (4), package manifest (10)
+  ok  scripts/generate-private-envelope-vectors.mjs — private envelope hkdf_info (4), private envelope aad (7), private envelope signature_message (9)
+  ok  scripts/generate-record-vectors.mjs — content record (8), key envelope (6)
+  ok  scripts/generate-recovery-vectors.mjs — recovery envelope (4), step-up challenge (4)
+  ok  scripts/generate-suite-vectors.mjs — no AAD
+  ok  scripts/generate-transition-vectors.mjs — certified set (8), transition intent (8), transition outcome (8)
+
+225 AAD fields, each isolated by a published negative.

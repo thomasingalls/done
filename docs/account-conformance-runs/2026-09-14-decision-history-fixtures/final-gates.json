@@ -1,0 +1,106 @@
+[
+  {
+    "name": "inventory",
+    "argv": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 699,
+    "log": "<tmp>/done-decision-history-fixtures-gate-inventory.log"
+  },
+  {
+    "name": "manifest",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 1721,
+    "log": "<tmp>/done-decision-history-fixtures-gate-manifest.log"
+  },
+  {
+    "name": "authority",
+    "argv": [
+      "node",
+      "scripts/check-authority-map.mjs"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 671,
+    "log": "<tmp>/done-decision-history-fixtures-gate-authority.log"
+  },
+  {
+    "name": "signature",
+    "argv": [
+      "git",
+      "verify-commit",
+      "HEAD"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 30,
+    "log": "<tmp>/done-decision-history-fixtures-gate-signature.log"
+  },
+  {
+    "name": "release-blocked",
+    "argv": [
+      "node",
+      "scripts/release-validation/plan.mjs",
+      "--require-complete"
+    ],
+    "exitCode": 1,
+    "expectedExitCode": 1,
+    "elapsedMs": 1618,
+    "log": "<tmp>/done-decision-history-fixtures-gate-release-blocked.log"
+  },
+  {
+    "name": "format",
+    "argv": [
+      "node_modules/.bin/oxfmt",
+      "--check",
+      "scripts/release-validation/account-fixture-tests.mjs",
+      "scripts/release-validation/execute.mjs",
+      "scripts/release-validation/manifest.mjs",
+      "test/release-validation/account-fixtures.test.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/account-decision-composition/restart.test.mjs",
+      "test/account-decision-composition/order.test.mjs",
+      "test/account-decision-composition/generated.test.mjs",
+      "scripts/account-decision-composition/run.mjs",
+      "docs/release-validation-graph.json"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 109,
+    "log": "<tmp>/done-decision-history-fixtures-gate-format.log"
+  },
+  {
+    "name": "manifest-format",
+    "argv": [
+      "node",
+      "--input-type=module",
+      "-e",
+      "import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import {manifestSnapshot} from './scripts/release-validation/manifest-snapshot.mjs';const bytes=readFileSync('docs/release-validation-manifest.json','utf8');assert.equal(bytes,manifestSnapshot(JSON.parse(bytes)));console.log('Exact generated manifest layout matches its writer');"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 49,
+    "log": "<tmp>/done-decision-history-fixtures-gate-manifest-format.log"
+  },
+  {
+    "name": "whitespace",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exitCode": 0,
+    "expectedExitCode": 0,
+    "elapsedMs": 55,
+    "log": "<tmp>/done-decision-history-fixtures-gate-whitespace.log"
+  }
+]

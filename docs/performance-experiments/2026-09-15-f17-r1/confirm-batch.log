@@ -1,0 +1,44 @@
+Starting baseline confirm-0 2026-09-15T07:18:27.967Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+baseline confirm-0 shallow p50 61.5 p95 90.19999980926514
+baseline confirm-0 deeper p50 60.19999980926514 p95 70
+Finished baseline confirm-0 passed
+Starting combined confirm-0 2026-09-15T07:19:13.564Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+combined confirm-0 shallow p50 55.69999980926514 p95 80.40000057220459
+combined confirm-0 deeper p50 55.19999980926514 p95 68.39999961853027
+Finished combined confirm-0 passed
+Starting combined confirm-1 2026-09-15T07:19:55.369Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+combined confirm-1 shallow p50 55.19999980926514 p95 82.60000038146973
+combined confirm-1 deeper p50 54.90000057220459 p95 72
+Finished combined confirm-1 passed
+Starting baseline confirm-1 2026-09-15T07:20:37.818Z
+Seeding the Local latency corpus through the editor
+Seeded 5/20 days
+Seeded 10/20 days
+Seeded 15/20 days
+Seeded 20/20 days
+Cold-reopening and verifying every seeded day
+Verified the complete locked corpus; starting measurements
+baseline confirm-1 shallow p50 60.89999961853027 p95 88.09999942779541
+baseline confirm-1 deeper p50 61.40000057220459 p95 79.09999942779541
+Finished baseline confirm-1 passed

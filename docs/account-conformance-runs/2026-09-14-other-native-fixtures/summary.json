@@ -1,0 +1,77 @@
+{
+  "base": "ef5112aac1edad605e4aa384c3a52f5aa8331079",
+  "selection": "other-native-regression",
+  "integrationGroup": "other-native-fixtures",
+  "rawOutput": "test-results/release-validation/2026-09-14T13-49-35.870Z",
+  "result": {
+    "schema": 1,
+    "selection": "other-native-regression",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-residue/packaged.test.mjs",
+        "key": "61be399f0743059f69b31470f7bf80aa1a2e5e77cf40b2c3bad629976f2a0b6c",
+        "status": "passed",
+        "elapsedMs": 25228,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/local-recovery/native.test.mjs",
+        "key": "d65eab8a323cc066887fc3b29a723d55f324329fd0861afe805dcdbca8fab054",
+        "status": "passed",
+        "elapsedMs": 8197,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storage-capacity/maintenance.test.mjs",
+        "key": "a09ec27469a89bb784273112ee71343edc3f428ecd7138c55bbf1101892c0bcc",
+        "status": "passed",
+        "elapsedMs": 8969,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/storage-capacity/marker-native.test.mjs",
+        "key": "5bea5ba917a95089bee26b8186bfcbfda87beb259b976964e2531f41cb9876ab",
+        "status": "passed",
+        "elapsedMs": 28049,
+        "cases": 1,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T13:49:35.873Z",
+    "input": "6921e5a5d6f50f14fe846efd8ec642fe3d23d66f9b4f0c3bfb6253af6d00fb05",
+    "completedAt": "2026-09-14T13:51:19.554Z"
+  },
+  "counts": {
+    "generalFiles": 236,
+    "generalCases": 1793,
+    "accountFiles": 123,
+    "unresolved": 181,
+    "unresolvedTestFiles": 22
+  },
+  "priorContractsPreserved": 233,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "972c74fc60dd8efed0c9d56e76f8e06245a073604099fbfae23ac0829e6e4dfb",
+  "sourceDigest": "4f02a574174b26cafca91bdea74da156a1793edb7deea1533c0c7d1552b2176f",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1042,
+  "scope": "Three newly integrated cases cover stored marker references through v9 sync/cold retry and tamper refusal without writes, automatic compaction after 140 edits with exact replay, and cancelled/completed partial ZIP recovery with all original carriers preserved. Their existing 120-second file limits are retained. The preceding phase introduced a fixture-name allowlist that rejected existing maintenance/recovery callers even outside the owned runner; both names are now admitted. The qualification selection also reruns both unchanged Account packaged cases, for five passing cases in four files. The marker uses an owned CDP browser; packaged cases use owned persistent profiles inside the guarded worker group. Independent ZIP interpretation still uses host Python without general external-tool identity binding; complete wrapper-output and forensic-erasure claims remain outside this result.",
+  "artifactIndexSha256": "e862e239955d0313a1c734ffb7729da77fdf17fdb9beaf21b97b9bdc394b8555",
+  "gatesSha256": "cee7cc39c40c67dc3518e1e10d331544b941ebca01c6f037529729a56eaa25ec",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

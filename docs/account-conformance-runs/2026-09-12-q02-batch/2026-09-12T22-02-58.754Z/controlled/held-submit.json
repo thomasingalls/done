@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "acceptedMs": 1.9763339999999516,
+  "flushMs": 12.396125000000211,
+  "settledWhileHeld": true,
+  "genuineResponseBytes": 389
+}

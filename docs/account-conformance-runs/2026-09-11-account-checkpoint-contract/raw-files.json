@@ -1,0 +1,1032 @@
+{
+  "source": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-checkpoint-contract/2026-09-11T19-19-00.561Z",
+  "files": [
+    {
+      "path": "authority.log",
+      "bytes": 649,
+      "sha256": "4a8e9058fb44090fc6bf566abb60f47026a7f15e121343d72a5ca5f33d3263f7",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract/bindings.json",
+      "bytes": 38,
+      "sha256": "316b5f79dfb39f6757ea3190423253fc3966b680bb06a9843c48ba79536461f6",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract/cipher-properties.json",
+      "bytes": 629,
+      "sha256": "ec860ef88b7977c6573da54566985fe2764abb827c3cc20bc78740d98a922b95",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract/fixed.json",
+      "bytes": 1397,
+      "sha256": "a621c1ae88267690815abccbe79f16e52b812489ff9d4c5a7a92e64572879fc5",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract/parser.json",
+      "bytes": 124,
+      "sha256": "143acc3bbff321bab25775bf7c98293a8250fd73ce753df4f87a5bcf7e39701f",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract/replay-properties.json",
+      "bytes": 629,
+      "sha256": "dd700191ccb6765d18da8df72228cb804074dab798fc0c350cbc59b81179b33b",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract/source-controls.json",
+      "bytes": 513,
+      "sha256": "cb4ddd0f233cbb2294a7ebecf8dfecc2bce1c380e9d9805919c482b7ddd953a2",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract.log",
+      "bytes": 962,
+      "sha256": "20562ce0c2c44470373f6eae11fce01d35928009dacf4e4f3f4edfdc6aff3bd3",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-contract.xml",
+      "bytes": 1733,
+      "sha256": "40dfd4b930467df30290c64cc75685acef5da9702e807bc6306921c14348bb8d",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-native/native-authority.json",
+      "bytes": 569,
+      "sha256": "3c8a338ee8249a171c7305737a203160af44245f62b9ac754ddbeac269571159",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-native/native-bytes.json",
+      "bytes": 12124,
+      "sha256": "238cfed19070cb5bfef62e298f4e02f35e8bc079d98f4094aaa8328747820deb",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-native/native-coverage.json",
+      "bytes": 2896,
+      "sha256": "0e14dbc69842ce0eb4f1d8bd75544dc0cfd59ffa9043fcf2647339a31fda3a15",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-native/native-properties.json",
+      "bytes": 14638,
+      "sha256": "922607fc47a703c1f3b356955c62437843a802297fd3922a815ebf6783a379e3",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-native.log",
+      "bytes": 1043,
+      "sha256": "3d3b7113f755276e6ccc0d9c7505db2bad03f4b837abac71c16b440d91598b3b",
+      "preserved": true
+    },
+    {
+      "path": "checkpoint-native.xml",
+      "bytes": 1269,
+      "sha256": "822d498b59cc399f622d32e63f57779e112dd63689673551b6ae96c98c79fab2",
+      "preserved": true
+    },
+    {
+      "path": "counter-contract/bindings.json",
+      "bytes": 69,
+      "sha256": "83a6e6a580765763e24e8db38489d0bd90bbe3677d2c046e498246393bedc843",
+      "preserved": true
+    },
+    {
+      "path": "counter-contract/controls.json",
+      "bytes": 549,
+      "sha256": "8f721ff7a2999e994abe0e489e51941f5e3c800ebd93a951b04bb016cfa2461e",
+      "preserved": true
+    },
+    {
+      "path": "counter-contract/fixed.json",
+      "bytes": 372,
+      "sha256": "b1644eb422bf73d194cf260270176c1c157a61ccf64713bb0c386ef30aec9c54",
+      "preserved": true
+    },
+    {
+      "path": "counter-contract/parsers.json",
+      "bytes": 121,
+      "sha256": "1578dffd5bfbb6cdd0d4275ef55d41f2c368ec81bbfc52f517b5843f944e20ea",
+      "preserved": true
+    },
+    {
+      "path": "counter-contract/properties.json",
+      "bytes": 23196,
+      "sha256": "48c6b285fe3b80aee46b9281bfd0e43421a927bea2b5990ecf6d9d8c5d60625b",
+      "preserved": true
+    },
+    {
+      "path": "counter-contract.log",
+      "bytes": 728,
+      "sha256": "312262dc96020f4a5d3d11c3760fc58581b282a6382b9b4bb5e89bb2f852a8ed",
+      "preserved": true
+    },
+    {
+      "path": "counter-contract.xml",
+      "bytes": 1528,
+      "sha256": "ebc81cbfe7b5adf071000de7245f7b5b3659cbdf410216c71dd5d97f3458c367",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/acceptance-refusals.json",
+      "bytes": 160,
+      "sha256": "86fa14fd096221bdabdbc827ea69d72414cd44df4400115323076e9b2758d71f",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/bindings.json",
+      "bytes": 183,
+      "sha256": "ed8f92fc9a02c40d6d0d7601b7f218b191f2aed8bfd553b0c85c891b722c1533",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-acceptance-pair.json",
+      "bytes": 117,
+      "sha256": "d6b2a75c782dbe6b8ece1a13dd48fbdd10e4cced15827b9375f90ae02983bbe7",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-cleanup.json",
+      "bytes": 123,
+      "sha256": "10a4065fd4d46db4b2a3265ee684766d570f5abcaab138cfdbb21c8236d46215",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-closed.json",
+      "bytes": 114,
+      "sha256": "75285edb5805cabb3d3156f214a9693dcea917da66661cd3765ad33919f7170c",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-expected-pin.json",
+      "bytes": 149,
+      "sha256": "dad2b55358b4d41ab6c04f371878d721ebdf15a771225fcf8bcd26c20f713814",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-export-private.json",
+      "bytes": 126,
+      "sha256": "6f6606464bcfbff1f76fd859db5dc66589a8b352e5f30cb769a3e2db863a4cee",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-export-public.json",
+      "bytes": 126,
+      "sha256": "6f6606464bcfbff1f76fd859db5dc66589a8b352e5f30cb769a3e2db863a4cee",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-proposal.json",
+      "bytes": 109,
+      "sha256": "3d552d545882c4d8bd1ff76ee50036a1af248563290323ae67e521b363934164",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/control-root-pair.json",
+      "bytes": 137,
+      "sha256": "1318d8eaa04d351d637f384b73f007439a5ff53495460eefdadd156cc15cb345",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/fixed.json",
+      "bytes": 148,
+      "sha256": "96934c4d0e24028c1e57a85ffde25d5361eff184ed337d770be9b12c30dec9c0",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/properties.json",
+      "bytes": 132,
+      "sha256": "84023615d7569847c7ee50cc1048295970aaf471e702ce5845393dcd8cb9aec5",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract/root-refusals.json",
+      "bytes": 178,
+      "sha256": "9895886462df90235246dd918ee2bfe2d5a842daeddce213b3d5d4e01f7ef8e5",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract.log",
+      "bytes": 2514,
+      "sha256": "caa488e1cf0e7c37644ce099b1c651f3adf890b245f3c6990e754e10f74d6c52",
+      "preserved": true
+    },
+    {
+      "path": "custody-contract.xml",
+      "bytes": 4726,
+      "sha256": "111ef056ed4d84656cab2ecf7a1093ac9d7e49023d2ff7bf2ba0d77341f18653",
+      "preserved": true
+    },
+    {
+      "path": "first-authority/parser-boundaries.json",
+      "bytes": 63,
+      "sha256": "cab3762204a6547ce8d85869f1ab9d208ddec94617135e1911274012fdf34612",
+      "preserved": true
+    },
+    {
+      "path": "first-authority/production-omissions.json",
+      "bytes": 1079,
+      "sha256": "afab5642e7823fc60d252f53926411cca6551e9c5601351050f453ddd704f007",
+      "preserved": true
+    },
+    {
+      "path": "first-authority/properties.json",
+      "bytes": 145,
+      "sha256": "ed56787b4a2fef332493c5d9e1a295a14308949c35749441eb63f384d34742d3",
+      "preserved": true
+    },
+    {
+      "path": "first-authority/semantic-boundary.json",
+      "bytes": 198,
+      "sha256": "d209b2c63ea0fef290ef087427ce8a1ed73ad8369aa23380f39aa299d4ddc881",
+      "preserved": true
+    },
+    {
+      "path": "first-authority/vectors.json",
+      "bytes": 192,
+      "sha256": "4ee26b14349674c99570baddc64533553c6d6dc5f174a2800c0d74602afe9727",
+      "preserved": true
+    },
+    {
+      "path": "first-authority/verifier-boundaries.json",
+      "bytes": 401,
+      "sha256": "e54e73f7d04849293ab79ac14bcf149a90ddd1dcac0f46ddb2aab999853f97fd",
+      "preserved": true
+    },
+    {
+      "path": "first-authority.log",
+      "bytes": 1118,
+      "sha256": "aef72056de72fe6de63970596b71ffed1183e2e9807e292fabca6e21c6d7adc6",
+      "preserved": true
+    },
+    {
+      "path": "first-authority.xml",
+      "bytes": 1724,
+      "sha256": "10f6202f0ca7cc9ce30320d62463f7e30153e7edbd7fa3bf5b1dae2ed0a04a08",
+      "preserved": true
+    },
+    {
+      "path": "format.log",
+      "bytes": 113,
+      "sha256": "74254ebd2d01820cc2fc6ba102669233f76c73a0947c5413640e2b8f33dcad5c",
+      "preserved": true
+    },
+    {
+      "path": "genesis-regressions/control-snapshot.json",
+      "bytes": 4029,
+      "sha256": "95579247cb269b5b96e559ba29ad67ec9e2a645f81988ca2b97b598a0662d4b8",
+      "preserved": true
+    },
+    {
+      "path": "genesis-regressions/control-wrap.json",
+      "bytes": 4233,
+      "sha256": "d3433111b70f52e9f2b2d8a26d81af24000d0c24d6141264a31a5c25cc22e6ed",
+      "preserved": true
+    },
+    {
+      "path": "genesis-regressions/generated.json",
+      "bytes": 36452,
+      "sha256": "7f8a67281bb5b90c8d840387f211cbd33c59580e81e6068facaaa6c91dbfc5cc",
+      "preserved": true
+    },
+    {
+      "path": "genesis-regressions.log",
+      "bytes": 1832,
+      "sha256": "f5950af05aad738d6a497bcdd6bf39183b3c43909b526acd87fcc856d344603e",
+      "preserved": true
+    },
+    {
+      "path": "genesis-regressions.xml",
+      "bytes": 3771,
+      "sha256": "a499b3e0eb912c9d70d84c7db720fc03a9393744d369dad21a4e2d5cd298282b",
+      "preserved": true
+    },
+    {
+      "path": "handoff-regressions/control-passkey.json",
+      "bytes": 820,
+      "sha256": "0187423b267a6ac72eb742f359407ec9f79eaa69da294ab47637e6aad3a237ed",
+      "preserved": true
+    },
+    {
+      "path": "handoff-regressions/generated-native.json",
+      "bytes": 15157,
+      "sha256": "41246294576824dbd1fb90f520e76c1aaa16468bb2e1b5343fe4ed564037af4f",
+      "preserved": true
+    },
+    {
+      "path": "handoff-regressions.log",
+      "bytes": 1919,
+      "sha256": "9319c4e5d31bf984fe27554754f2ee24f9562941a75c9376b3452107acd61a87",
+      "preserved": true
+    },
+    {
+      "path": "handoff-regressions.xml",
+      "bytes": 3588,
+      "sha256": "94a307fa5f451a5119fc16e690273d275bb24eea61464138ef946940ab54d197",
+      "preserved": true
+    },
+    {
+      "path": "inventory.log",
+      "bytes": 196,
+      "sha256": "1bec570ab03b036092747f83ec40a467d6b969a1f0e483d11c0c54c25d074223",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/baseline-bindings.json",
+      "bytes": 62,
+      "sha256": "ee0c4f99377d184fd5addc99aeca0b3fe3b2c919bd21acd10f928c43ac529e05",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/bindings.json",
+      "bytes": 17945,
+      "sha256": "e9875f7573cf9f292f5054b410330dd8697702cf067ef6c9976f026a2f1eb256",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/capture.json",
+      "bytes": 140,
+      "sha256": "4c19be69fcd32bbc79f8d91c7bf75fe844c1bf0a0566960a1171d80ebb0a51fe",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/chain.json",
+      "bytes": 826,
+      "sha256": "237590df4260ce341db1d23af2a2859309aca80fa1e8462cd9fcfdc197c531b2",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/control-chain.json",
+      "bytes": 281,
+      "sha256": "425b35fe1e7d824242a953b70140def5b9ad000ef06cfa8f84c91c9dacf4bd87",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/control-semantic-order.json",
+      "bytes": 308,
+      "sha256": "61d3655afec41f58263ed169bb3cb5ac53d24c5c779180e801549f60c3ac5629",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/control-source-authentication.json",
+      "bytes": 217,
+      "sha256": "a0cc8b4188ec92e8b669479b5524226f69075eff842ea366e78abd83db00f929",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/control-source.json",
+      "bytes": 81,
+      "sha256": "72071e8cf6bcb7ad28afcd445686b53c7629844e5022b02bbd696df575aed786",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/control-witness.json",
+      "bytes": 168,
+      "sha256": "596351b723ea392101970ebd7b93f94403db7d7e0182d6700a90796ac99bd095",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/fixed.json",
+      "bytes": 206,
+      "sha256": "1142b61e0b83809eea371a41e29fe6c3ffcd13cc32d48752741ac377ecf8355f",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/framing.json",
+      "bytes": 42,
+      "sha256": "d9c0c0985357a31d3400e2f828795b97ba960241be2c62a308a5f47b9460c68d",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/properties.json",
+      "bytes": 55139,
+      "sha256": "06ef92474b4ebe684f9933bb4a6627a80a4147a7074e8216a9186013148f92cf",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract/union.json",
+      "bytes": 296,
+      "sha256": "96ef2f61efcb06017d2f89b3834865886acb12dbe62077ac7860d6f7d6d252dc",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract.log",
+      "bytes": 1985,
+      "sha256": "53d2197db88bd0934d15e378d609ad362ae7c66d5ef8e766881e5304e81d197e",
+      "preserved": true
+    },
+    {
+      "path": "ledger-contract.xml",
+      "bytes": 3371,
+      "sha256": "90355d3e9e58b0066e25fc88a9bc9b26e9a715e69af2a8dc1d293c7f605e8a0e",
+      "preserved": true
+    },
+    {
+      "path": "lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/bindings.json",
+      "bytes": 39,
+      "sha256": "92d94278b90550b97b77c0e44a6679123e7cfcdaa833fe9aaee42c7e3a55a5d2",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/export-cleanup.json",
+      "bytes": 226,
+      "sha256": "0761d4a73ee303ac001e0c18cf2ec1a62c6a6a505df516d79d8c3b2fd5e3790c",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/fixed.json",
+      "bytes": 104,
+      "sha256": "5f3013f718ba93bb3f8e1d61bbfe1cc12cc87ce98ccba027b546d472d7018489",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/inherited.json",
+      "bytes": 450,
+      "sha256": "30ad1546a2bee78db9be3ed1d69f918d38a288f63c68cc4ff5c09ed2bfe0e25b",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/metadata-properties.json",
+      "bytes": 17551,
+      "sha256": "38ce5510fcbb958ce729df4adac01fa2fa8e16043ed29bfaaa346595572bc383",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/parsers.json",
+      "bytes": 163,
+      "sha256": "5863b4cdd37646212e2ab43290f7ac81f839253a7f862247769c36df7f7c6c4b",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/source-controls.json",
+      "bytes": 385,
+      "sha256": "ff4267623a4258405d16c3ce6505b02910007c1ffe0c93fb7e4ec6feb693375c",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract/state-properties.json",
+      "bytes": 629,
+      "sha256": "54a6e2539cf93df9c2ecb548a7425038ba7691d89ed7b8557ea032b91dbf8cb4",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract.log",
+      "bytes": 1112,
+      "sha256": "a3a81156e846f906e1a5ebeb2e5a360becee4967ce0d116739e82a59cfbf1e02",
+      "preserved": true
+    },
+    {
+      "path": "local-custody-contract.xml",
+      "bytes": 2299,
+      "sha256": "200caf4c9baac054d8b2a0127bf1562fe5c2ccf7b30644aea7e795f501b0df38",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/encoded-omissions.json",
+      "bytes": 84,
+      "sha256": "99dae529bfab711819322d9663258f97fcf8141246bb84e0a55530ab1580d011",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/fixed.json",
+      "bytes": 2059,
+      "sha256": "9e02bd9213f964023ff6214bf858f0f463d6f11014f8e5c5dd17e89b6906dc6a",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/identities.json",
+      "bytes": 645,
+      "sha256": "2e8a35568485466458d94af1fd638a5c6f20d451485601a4c22e181afd07c466",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/input-bindings.json",
+      "bytes": 56,
+      "sha256": "690c8d473a9128bed8c4bba574a10a95c87b5ccc8c37d80755bcce576125aeca",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-account-active.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-account-capturing.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-account-delivering.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-account-receiving.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-account-spooling.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-admission-offered.json",
+      "bytes": 24961,
+      "sha256": "91f0797bd34ffe783cd89020a4d98de4dde86e8a1eb0ebe15a2a92ee5af8d481",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-admission-receipted.json",
+      "bytes": 35885,
+      "sha256": "437e8566d1978fc7e2004b2821ace290d51bd3d25db19b0f83ffcd56538e1d68",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-admission-requested.json",
+      "bytes": 17632,
+      "sha256": "63252172a8ba892512eb7a5457143be3579fd5868648a2af4120393bee042f58",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-genesis-prepared.json",
+      "bytes": 9385,
+      "sha256": "0326714ea27ce3641571396091b82fd5a003529e3a9aa92790e433b25f6a9978",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-handoff-prepared.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-handoff-selected.json",
+      "bytes": 39892,
+      "sha256": "a868354ed9791628e8d98fa553da12b12d2918367a0444b84d71403767d8c499",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-prepared.json",
+      "bytes": 5547,
+      "sha256": "375e7a7eeafd42c3f1888223537dd3d348d1fa9e39fb5be8f9ae57b5b012cfaa",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/leaves-reserved.json",
+      "bytes": 4258,
+      "sha256": "1322b3ba9125d81decfca5bfd8f0e61e9023cc520bf70dcf675e54a83e722fd4",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/ordering.json",
+      "bytes": 1606,
+      "sha256": "24ed9282c314c930acc6d9f65547333277f68e071c426aa4d5c220101016f8b0",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/parser.json",
+      "bytes": 21,
+      "sha256": "910d3a51304c90bb22c8459e8885ae33a9cb55cb507fed3bd0acc00745bc60f0",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract/properties.json",
+      "bytes": 138962,
+      "sha256": "8c3888c62deda4f465b5446547966abd93ae2e94119211da6767b63119873d91",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract.log",
+      "bytes": 865,
+      "sha256": "3dd060f45a3d321ba91243286477a9a311121ff0505148decc5eac06ae6f7bd6",
+      "preserved": true
+    },
+    {
+      "path": "promotion-contract.xml",
+      "bytes": 1949,
+      "sha256": "2e961edbc5e13b597006d428c1514cf82850e4a53c6c317f2169d9fbd2c70c42",
+      "preserved": true
+    },
+    {
+      "path": "recovery-contract/challenge-bindings.json",
+      "bytes": 120,
+      "sha256": "f18ef22e1a0b98b2ecb2b5184b0bd89c460084b1b38a9d399db0cf5cc01ace99",
+      "preserved": true
+    },
+    {
+      "path": "recovery-contract/encoded-bindings.json",
+      "bytes": 215,
+      "sha256": "04a5acda32609444f69a64081fd7c4df9f3530df337068fc6fab667b69f4faba",
+      "preserved": true
+    },
+    {
+      "path": "recovery-contract/payload-refusals.json",
+      "bytes": 509,
+      "sha256": "55022c18266224ac5ad244404d5a14fed4f8a4cb0caf5897ab9cb40027442e39",
+      "preserved": true
+    },
+    {
+      "path": "recovery-contract/production-guard-controls.json",
+      "bytes": 403,
+      "sha256": "942c9132d0b434f3a61190d76b6218b105336d702c193a0321a7f310d965a9f4",
+      "preserved": true
+    },
+    {
+      "path": "recovery-contract/properties.json",
+      "bytes": 218,
+      "sha256": "ae1fe2be9a4e01a8c4dcb16952f800ac5da07e2d41e5f9c6dbde0c8fdafdf0c9",
+      "preserved": true
+    },
+    {
+      "path": "recovery-contract.log",
+      "bytes": 1569,
+      "sha256": "b6c09a30ab656311fda81a4340cb8d54aa4e2b96594e444b9f589e18bb92566a",
+      "preserved": true
+    },
+    {
+      "path": "recovery-contract.xml",
+      "bytes": 2896,
+      "sha256": "609b076429562c169371be60ece3f5808c30192a97cd60d1dabce6bef75cd4f6",
+      "preserved": true
+    },
+    {
+      "path": "registry/checkpoint-registry-controls.json",
+      "bytes": 473,
+      "sha256": "4164f59f00d1e944b81a10f2cf9aebc004e9ada9bfea6fe62c6f9e30067cb233",
+      "preserved": true
+    },
+    {
+      "path": "registry/counter-registry-controls.json",
+      "bytes": 1065,
+      "sha256": "4f60110df964a92848b32358b8f251d7931811b69af9a54d07b68c8161fb378b",
+      "preserved": true
+    },
+    {
+      "path": "registry/ledger-registry-controls.json",
+      "bytes": 1071,
+      "sha256": "51114a706a3e8a4d447ebe5ee8b0e6689e41f50f024415979c50c6fa26d3930d",
+      "preserved": true
+    },
+    {
+      "path": "registry/local-custody-registry-controls.json",
+      "bytes": 722,
+      "sha256": "0bed7143ec4ca73ab8ecb489071afe851ffc6be572fe9e8feeda1a18ed70317d",
+      "preserved": true
+    },
+    {
+      "path": "registry/promotion-registry-controls.json",
+      "bytes": 1054,
+      "sha256": "264d5408cb5f4e5442dae9bc5a985161f77bca4ad2209e37e028fad7ec823b74",
+      "preserved": true
+    },
+    {
+      "path": "registry/registry-controls.json",
+      "bytes": 2341,
+      "sha256": "f6fb95fd7c52fc485e7df8dd13b9d04d587efeab1de492f4849a416d13e5efae",
+      "preserved": true
+    },
+    {
+      "path": "registry/service-custody-registry-controls.json",
+      "bytes": 839,
+      "sha256": "ec691b8534d14d462d3daac2242cbe82018d92f056054be06b0c47ebf3e259b0",
+      "preserved": true
+    },
+    {
+      "path": "registry/store-registry-controls.json",
+      "bytes": 920,
+      "sha256": "794bee63ba510e9db4aef3787354fbf7d36356bffb71ab10b082cc2f36498432",
+      "preserved": true
+    },
+    {
+      "path": "registry/transport-registry-controls.json",
+      "bytes": 1318,
+      "sha256": "6d21b11c56e76318fc07fa9a0b3cbcd98ceb90e1d309078e2f4a68f5b5deb172",
+      "preserved": true
+    },
+    {
+      "path": "registry.log",
+      "bytes": 1413,
+      "sha256": "0dcec646988c424ecd3c70bd398805090798d08195304cc98d6a0f64e7adbd9e",
+      "preserved": true
+    },
+    {
+      "path": "registry.xml",
+      "bytes": 3029,
+      "sha256": "102622b8e3fde125685e6db5a9ea63fc4fad011543235200471d397eb9ed4c9f",
+      "preserved": true
+    },
+    {
+      "path": "sources.json",
+      "bytes": 117596,
+      "sha256": "1772e726ad30c067e8102685c22b699b4bb87217be36d7033b1dc5c22e778641",
+      "preserved": true
+    },
+    {
+      "path": "store-contract/bindings.json",
+      "bytes": 37,
+      "sha256": "0036b9ea7309fe9b074da61737ae66e2eacfb9ba7e0a685dcf829b09a2699f9c",
+      "preserved": true
+    },
+    {
+      "path": "store-contract/fixed.json",
+      "bytes": 76,
+      "sha256": "53d8bb92bf47e4bfb0c6115f3798603e92aaac85a11e5d1ba48e032aea05cfff",
+      "preserved": true
+    },
+    {
+      "path": "store-contract/inherited.json",
+      "bytes": 423,
+      "sha256": "7ccf37a7d443a43e57ead907560a6ad680d8d6f3642b42c957b55fcf7127f2d0",
+      "preserved": true
+    },
+    {
+      "path": "store-contract/parsers.json",
+      "bytes": 217,
+      "sha256": "cf3188c8b0b2f26c9a56636bb39f466af0739cfdf687da75e2a66a1d18ce8b55",
+      "preserved": true
+    },
+    {
+      "path": "store-contract/properties.json",
+      "bytes": 14055,
+      "sha256": "9c5d4e36ad1dc899f1faf8e630443d086aa5a2ae9030ea83a56b046eaa39d1fe",
+      "preserved": true
+    },
+    {
+      "path": "store-contract/source-controls.json",
+      "bytes": 210,
+      "sha256": "e35923d256bfcd9057309785050170422c03f6357d3695dc956bce80e545130e",
+      "preserved": true
+    },
+    {
+      "path": "store-contract.log",
+      "bytes": 848,
+      "sha256": "9f939ab31be15e21d6049bd45030b235ce593639a19a81e4bd16413fdd43d19d",
+      "preserved": true
+    },
+    {
+      "path": "store-contract.xml",
+      "bytes": 1771,
+      "sha256": "eb347de6f7abf13df20fa25e5fcdadbfc2d0b71514210813903a36802589115f",
+      "preserved": true
+    },
+    {
+      "path": "summary.json",
+      "bytes": 17288,
+      "sha256": "8c0c8e7ea62891048c5021604ebf9303a398289c579ee44a7839b4264ea4d43d",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract/encoded-bindings.json",
+      "bytes": 204,
+      "sha256": "746209a0b3473149baea636b552b05f2c8d59bea3cce57b07c94e503c7ba05fe",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract/fixed.json",
+      "bytes": 130,
+      "sha256": "efa2e52c8e0a0b72250132f522cbd6f04600630dfdd0ea48d3b1746c5e84531c",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract/framing.json",
+      "bytes": 112,
+      "sha256": "5e00a3903585c76d6466c731837067eca66e68450524990e4fae541e55b157fc",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract/properties.json",
+      "bytes": 271,
+      "sha256": "cb1d8623c4b985955c8a8c63969657e60bc7da8d1405763c520fa33eeaddea63",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract/verification-controls.json",
+      "bytes": 483,
+      "sha256": "591ec11d6ca02054f141aa27daffcb23ec9a3497c6f6da80a529521adee5dc6e",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract/witness.json",
+      "bytes": 315,
+      "sha256": "b7a65111f60d72c216bb9ce6d7b6af612772c847e0c390d5bfe4108862f5bcf4",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract.log",
+      "bytes": 2088,
+      "sha256": "279179976b71055eee9c55dd38066a1687f9a5dbd3c226f5b6e6c187e0530440",
+      "preserved": true
+    },
+    {
+      "path": "transport-contract.xml",
+      "bytes": 3660,
+      "sha256": "1b0196111373c4f7d6d1ff0580d05ef47b79906a501d84476439524142c2a92e",
+      "preserved": true
+    },
+    {
+      "path": "typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "preserved": true
+    },
+    {
+      "path": "unit.log",
+      "bytes": 245,
+      "sha256": "8a6d4b6fa5457d5ac72281562257703f3a9de6a0b87bd30f6ebbf8914232b575",
+      "preserved": true
+    },
+    {
+      "path": "vectors-01.log",
+      "bytes": 86,
+      "sha256": "b666eb23c702ac6481e3e97203a6e2ff70d391ba3fa8629c4885412ff9578fc6",
+      "preserved": true
+    },
+    {
+      "path": "vectors-02.log",
+      "bytes": 79,
+      "sha256": "0c70170d97efba7b4555681672beaf1b735bcdeba65898ae3773a1209b782a23",
+      "preserved": true
+    },
+    {
+      "path": "vectors-03.log",
+      "bytes": 60,
+      "sha256": "af84288f8f3dfc2aa390b1ea0a8d91c49475575a371f26dfd40c890e95bcf956",
+      "preserved": true
+    },
+    {
+      "path": "vectors-04.log",
+      "bytes": 69,
+      "sha256": "ed1e5ea3122d43ee5fd15c80619d80edfefc5f1921b66044f700719b8b045c2f",
+      "preserved": true
+    },
+    {
+      "path": "vectors-05.log",
+      "bytes": 79,
+      "sha256": "25315be349006361789801db6feedb8ad26bf178d1e69212fcd3640e82b0fe36",
+      "preserved": true
+    },
+    {
+      "path": "vectors-06.log",
+      "bytes": 62,
+      "sha256": "8c61b7ed58851527b64f41ab6e80fac4b07d4c710982902113193e6344c2c3ea",
+      "preserved": true
+    },
+    {
+      "path": "vectors-07.log",
+      "bytes": 69,
+      "sha256": "bb138afdb06690ff276bcb2d2f70f82a561a2de54a6dc0808b59e6d4d770086a",
+      "preserved": true
+    },
+    {
+      "path": "vectors-08.log",
+      "bytes": 58,
+      "sha256": "775f09c3a00d80c978501b3bc6a925f8b26fdc934e3cfe38849f15c916173f36",
+      "preserved": true
+    },
+    {
+      "path": "vectors-09.log",
+      "bytes": 98,
+      "sha256": "ffb69e527b5f67fc1cb495c49a3daf568822f49289308817326e242eddc5d11f",
+      "preserved": true
+    },
+    {
+      "path": "vectors-10.log",
+      "bytes": 64,
+      "sha256": "d416285c890daad38b110ca7bc0480b8849ebd4fe0d3cf5f7155f175a4697578",
+      "preserved": true
+    },
+    {
+      "path": "vectors-11.log",
+      "bytes": 61,
+      "sha256": "e2333bd362f737d48ff7a8618cd86e251c1bc791cc249db5466dc3a9e5107426",
+      "preserved": true
+    },
+    {
+      "path": "vectors-12.log",
+      "bytes": 60,
+      "sha256": "2ddb6b1e2f9ac98312a044cee6f0ecabc3d34ab85e5d6dfc69e18c80b5a4bc70",
+      "preserved": true
+    },
+    {
+      "path": "vectors-13.log",
+      "bytes": 60,
+      "sha256": "4b686ccd5de879387bd05c79b9a07734d30d3a27f652973b40eadf8b5154e078",
+      "preserved": true
+    },
+    {
+      "path": "vectors-14.log",
+      "bytes": 57,
+      "sha256": "9f0285c868332ff7f355112ab5881b4079dc38697e355527e374006ec88160ca",
+      "preserved": true
+    },
+    {
+      "path": "vectors-15.log",
+      "bytes": 77,
+      "sha256": "83a37d9f2a4e6d48d74d702270bff92cffc2ee5483439c27a73c213caaa14181",
+      "preserved": true
+    },
+    {
+      "path": "vectors-16.log",
+      "bytes": 69,
+      "sha256": "5f6f32c2558c82542b189e8ebcc04d7f7d50c9337b95f1671e0b305982318b4a",
+      "preserved": true
+    },
+    {
+      "path": "vectors-17.log",
+      "bytes": 77,
+      "sha256": "83a1148603212dcb8fe244d3d2736893fcbd651828e432554aa5d725b6215bc1",
+      "preserved": true
+    },
+    {
+      "path": "vectors-18.log",
+      "bytes": 96,
+      "sha256": "c16db5dbfb3b667228f277469b8c3e22ddb9faa82b949c9eef6fe7bf7bd303c7",
+      "preserved": true
+    },
+    {
+      "path": "vectors-19.log",
+      "bytes": 115,
+      "sha256": "3eb2b09364f127c485fc95c892727474a32aedfe1abefc84c5b2e9e260f51bee",
+      "preserved": true
+    },
+    {
+      "path": "vectors-20.log",
+      "bytes": 49,
+      "sha256": "27456df496e3d23cdd6463620b349aa8955591759eff7fca90895c128f4196ba",
+      "preserved": true
+    },
+    {
+      "path": "vectors-21.log",
+      "bytes": 59,
+      "sha256": "0ba2ff45ab5f438e0a15fcfdddbb338c67ce3d6a960782585e93626bce951a1e",
+      "preserved": true
+    },
+    {
+      "path": "vectors-22.log",
+      "bytes": 47,
+      "sha256": "f20a38e0d389525e259aea792c520924543cad62aa0dd91dc22cb5e7f61bd17b",
+      "preserved": true
+    },
+    {
+      "path": "vectors-23.log",
+      "bytes": 1612,
+      "sha256": "61b078db785f0342cebfd7823644025a7a4fbe0bc0b5b4c4e12d886ee07306f4",
+      "preserved": true
+    },
+    {
+      "path": "vectors-24.log",
+      "bytes": 48,
+      "sha256": "5343fa0460f08399e8dccd765c3cd875bbaff2cf7866f4e116b23aa1087da454",
+      "preserved": true
+    },
+    {
+      "path": "vectors-25.log",
+      "bytes": 47,
+      "sha256": "436d8f7c32f6a58ecb52aaf240cb7890c10bb166d403b1f74cb23ef1fc713afc",
+      "preserved": true
+    },
+    {
+      "path": "vectors-26.log",
+      "bytes": 47,
+      "sha256": "8b6a50af3930cfa2e202bde4da7ba7d62c095ac8fb702bfe43c9fc86c00c7ffe",
+      "preserved": true
+    },
+    {
+      "path": "vectors-27.log",
+      "bytes": 53,
+      "sha256": "e70228d7ee38b252e3c4350653060000821a48b820883e8d9fe23cc6eaf0b45e",
+      "preserved": true
+    },
+    {
+      "path": "vectors-28.log",
+      "bytes": 54,
+      "sha256": "7ea91064299cf3e8430fc3c7477a213ea29bb06cebacd69062fb1a24246e7e12",
+      "preserved": true
+    },
+    {
+      "path": "vectors-29.log",
+      "bytes": 49,
+      "sha256": "6d472bc074b094d60a26b89e571ee77adedc578746736be991b61695bc367eef",
+      "preserved": true
+    }
+  ],
+  "scope": "All raw campaign files copied exactly; disposable profiles and operator keys are not stored in the campaign directory."
+}

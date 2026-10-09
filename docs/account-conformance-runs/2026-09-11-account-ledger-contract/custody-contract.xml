@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="omitting expected-root pin equality lets the same stored root sign for a different service identity" time="0.032164" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="omitting root private/public correspondence releases an authentically encrypted wrong signing seed" time="0.018728" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="omitting acceptance correspondence allows a valid tag with a wrong seed to pass custody" time="0.015506" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="omitting the proposal ID from actual acceptance AAD permits cross-proposal reuse" time="0.015107" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="omitting private export-format assertion recreates suffix-only extraction" time="0.018683" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="omitting public export-format assertion recreates suffix-only extraction" time="0.017973" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="omitting exported-seed cleanup recreates retention after a failed random draw" time="0.014039" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="omitting the early close guard recreates key generation after close" time="0.013957" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/controls.test.mjs"/>
+	<testcase name="root creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports" time="0.016841" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs"/>
+	<testcase name="acceptance creation refuses malformed PKCS#8/SPKI exports before sealing and clears private exports" time="0.002829" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs"/>
+	<testcase name="acceptance create refuses after close before generating or exporting a new seed" time="0.000175" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs"/>
+	<testcase name="acceptance create clears an exported seed if randomness fails before derivation" time="0.000441" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/exports.test.mjs"/>
+	<testcase name="eight fixed cases reproduce runtime root/acceptance creation, intermediate key derivation, cold opening and seed formats" time="0.023235" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="all primitive inputs and encoded fields have independent isolating negatives and AAD omission controls" time="0.001305" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="root opening refuses altered expected pin and each stored field; genuine wrong-seed ciphertext reaches correspondence check" time="0.004000" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="acceptance opening binds operator, full pin, proposal and public key; valid tags do not excuse wrong seeds or invalid carriers" time="0.001694" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="each fixed-purpose acceptance method signs its reviewed bytes and every use refuses after close" time="0.008358" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<testcase name="200 shrinking-enabled synthetic key/scope histories cold-open independently sealed roots and reject authentic wrong-key payloads" time="0.418288" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-service-custody/formats.test.mjs"/>
+	<!-- tests 18 -->
+	<!-- suites 0 -->
+	<!-- pass 18 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 917.214042 -->
+</testsuites>

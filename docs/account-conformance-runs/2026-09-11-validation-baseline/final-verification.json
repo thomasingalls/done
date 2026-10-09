@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "codeFilesMatchTestedSource": 648,
+  "reviewUnchanged": true,
+  "assessmentBlocks": 45,
+  "otherSeatUnchanged": true,
+  "productionCodeUnchanged": true,
+  "diffCheckExitCode": 0,
+  "newDocumentLinksVerified": 19,
+  "documentationFormatting": "Manual wrapping and diff check; repository formatter excludes Markdown. A pnpm exec formatter launch was interrupted with exit 130; direct local formatter reported all Markdown targets ignored (exit 2). These are not test-gate passes."
+}

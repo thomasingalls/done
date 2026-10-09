@@ -1,0 +1,125 @@
+{
+  "base": "1135e75762d09d7dab6c2e6dacc3bab44391b266",
+  "claim": "residue-packaged-fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T13-25-42.705Z",
+  "summary": {
+    "schema": 1,
+    "selection": "residue-packaged-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-residue/packaged.test.mjs",
+        "key": "e2f8165d2690b09f5369959216985457d720cd7a34f3ab912167904f9bbc8303",
+        "status": "passed",
+        "elapsedMs": 25637,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T13:25:42.708Z",
+    "input": "dd80249204dad2549509de0d2f501234cc65bc0b500e9b461898a782c93e5572",
+    "completedAt": "2026-09-14T13:26:36.188Z"
+  },
+  "elapsedMs": 53480,
+  "rawInputArchiveSha256": "2da0a98030b484989151dd2f4e7912a4227b9b056e2a3354cb1c36e97056533a",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "1135e75762d09d7dab6c2e6dacc3bab44391b266",
+    "sourceDigest": "9202106631a32b913ab3e9dd998d00809f6f7ca94af850b9a98c69fcd1837837",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "priorGeneralFiles": 228,
+    "priorGeneralCases": 1770,
+    "currentGeneralFiles": 229,
+    "currentGeneralCases": 1772,
+    "currentNodeFiles": 133,
+    "accountFiles": 123,
+    "accountCases": 678,
+    "selectedFiles": 1,
+    "selectedCases": 2,
+    "browserFiles": 1,
+    "fixtureInstances": 2,
+    "generatedHistories": 0,
+    "executedOmissionControls": 1,
+    "rendererCrashes": 0,
+    "currentVitestFiles": 96,
+    "pureRunnerTests": 93,
+    "priorNodeOwnerTests": 24,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 188,
+    "unresolvedTestFiles": 29,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 710121
+  },
+  "finalGatesSha256": "94085bae6d80d158faf5b773712ff2788116ac8d06da14a294d447a4d592dfe2",
+  "preservationSha256": "845fe8efafcead89f9cc49ade28b388215f07f5a36b8b731d1a25b1b7f4fe71a",
+  "limits": [
+    "The final two unchanged Account cases now run under an explicit inherited-profile fixture contract. The 240-second file bound and 180/240-second case bounds remain unchanged. The runner binds installed Chromium bytes, supplies the owned output root and executable, and leaves profile lifetimes inside its guarded Node process group. No unused CDP browser is started for this fixture kind. Missing or mismatched kind/variant/startup metadata refuses during planning. Ordinary CDP and Vitest contracts remain unchanged.",
+    "The packaged fixture reuses the existing custody profile owner, which requires a clean actual browser exit and released singleton locks before reading or reopening a profile. Two isolated synthetic profiles create three browser lifetimes, including one true whole-profile reopen. The existing viewport and context interface are retained; nested teardown closes profiles and the loopback server even after an earlier close fails. Both extension-disabling flags now also apply to this shared profile launcher. Standalone campaigns retain their original Playwright launch path.",
+    "Fresh Local UI creation, an actual edit, explicit ZIP export, lock, packaged service-worker readiness, closed-profile acquisition and offline reopen all pass. The export must include the intended writing and exclude the factor. A planted marker in an actual service-worker console must be detected. The unchanged fresh physical assertion requires zero prohibited matches; it does not require an empty issue list. In this particular observed run the acquired-file result was complete-no-prohibited-match with no issues. That observation is retained separately from the narrower executable assertion.",
+    "The migration case exercises synthetic source and journal data, recovery files, restart and verification, import and selection, later writing, authenticated source cleanup, and Local clear interrupted after custody removal then resumed. Logical scans must pass at the specified points. The final acquired-file scan also reported complete-no-prohibited-match with no issues in this run; its result is observational and the case does not promise physical deletion of legacy plaintext. Neither case establishes forensic erasure or coverage of every possible filesystem carrier.",
+    "All 24 Node-owner, five Vitest-process and fourteen native-owner controls pass. Six persistent-profile controls now execute the explicit new fixture kind, covering clean close/copy, timeout, cancellation, worker death, bounded reopen and death after reopen. Eight existing CDP controls also pass. Direct post-run checks find all three recorded packaged browser PIDs absent, no process referencing either synthetic profile, and all three CDP listeners refusing connections. The original failed ownership evidence remains preserved in its earlier packet.",
+    "Final outcome, export, worker-control, profile-lifetime and asset reports were copied read-only during the selection with matching repeated reads and per-file hashes. Their checkout and capture interval are checked against the owned receipt. These bounded auxiliary observations preserve the actual profile results; complete wrapper-output contracts and immutable aggregate qualification remain separate. All product sources and both test bodies remain unchanged. Temporary packaged builds precede secret generation; no personal app, profile, root dist or packaged dogfood release was changed.",
+    "This completes the Account suite integration group: 123 files / 678 cases. The general runner has 229 integrated files / 1772 cases, with all eleven catalogues still resolved. Remaining integration is 29 non-Account test files (nine other Node suites, four nested-owner files, sixteen Playwright files), 96 command rows and 63 campaign rows. These are integration obligations, not defect counts. Host-Python input binding, full output retention, existing headroom/oracle observations, R-04 style, P-06 prose and the immutable aggregate remain before private Account app/service preparation and human passkey/recovery/adoption validation."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "stages": [
+      {
+        "id": "test:test/account-residue/packaged.test.mjs",
+        "nodeSummaryMs": 22172.248083,
+        "stageElapsedMs": 25637,
+        "fileDeadlineMs": 240000
+      }
+    ],
+    "selectionElapsedMs": 53480,
+    "note": "File bounds apply to Node execution; stage and selection include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 240000,
+    "caseMs": [
+      180000,
+      240000
+    ],
+    "note": "Existing file and case bounds retained; wrapper qualification remains separate."
+  },
+  "ownerRequalification": {
+    "nodeCases": 24,
+    "vitestProcessCases": 5,
+    "nativeCases": 14,
+    "inheritedProfileControls": 6,
+    "cdpControls": 8
+  },
+  "auxiliaryPackaged": {
+    "retained": true,
+    "sourceMatchedOwnedCheckout": true,
+    "capturedDuringSelection": true,
+    "syntheticProfiles": 2,
+    "browserLifetimes": 3,
+    "physicalReopen": true,
+    "freshPhysicalVerdict": "complete-no-prohibited-match",
+    "freshPhysicalIssues": [],
+    "migrationPhysicalVerdict": "complete-no-prohibited-match",
+    "note": "Stable-byte auxiliary report observation; exact owned case result remains authoritative. No forensic erasure or complete wrapper-output qualification."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "a322dc65416c028c3e865a60463b727ef32876f1514d5efe722c3b31d9219d6b",
+    "compressedSha256": "7b7bd54f1cf2e23864f712b3c7a47b95bbdc003d12702c4d8cf236c7811e9fe8"
+  }
+}

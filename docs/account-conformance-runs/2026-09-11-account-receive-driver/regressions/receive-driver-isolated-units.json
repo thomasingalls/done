@@ -1,0 +1,12 @@
+{
+  "command": [
+    "node",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--maxWorkers=2"
+  ],
+  "startedAt": "2026-09-11T11:01:22.958930+00:00",
+  "timeoutSeconds": 180,
+  "code": 0,
+  "finishedAt": "2026-09-11T11:02:33.401682+00:00"
+}

@@ -1,3 +1,5 @@
+import { test } from '../release-validation/browser-fixture';
+import { openApp } from './openApp';
 /**
  * "Line heights must not shift when syntax reveals or hides. Text must never
  * jump under the cursor." (PRD §10, TRD §5.2.)
@@ -15,7 +17,7 @@
  * opens it first.
  */
 
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
 /**
  * Every line is short enough to fit the narrowest project viewport with its
@@ -48,7 +50,7 @@ const lines = (page: Page) => page.locator(`${MASTER} .cm-line`);
 
 /** Goals is a panel from medium up and a drag away at narrow (PRD §7.1). */
 export const openMaster = async (page: Page): Promise<void> => {
-  await page.goto('/');
+  await openApp(page);
   const shell = page.locator('.shell');
   if ((await shell.getAttribute('data-breakpoint')) === 'narrow') {
     await page.keyboard.press('Alt+ArrowRight');

@@ -1,0 +1,979 @@
+diff --git a/docs/progress.md b/docs/progress.md
+index db90aaa..8a9e2bb 100644
+--- a/docs/progress.md
++++ b/docs/progress.md
+@@ -48,7 +48,7 @@ that is no longer active.
+ gate: L-1
+ seat: /Users/thomasingalls/.codex/worktrees/c030/done
+ branch: codex/encrypted-store-contract-corrections
+-status: not started
++status: in flight
+ blocks_on: AAD vector audit and four stale storage harness source snapshots
+ debts: consult docs/review/remediation/debts.json
+ updated: 2026-09-11
+diff --git a/package.json b/package.json
+index e2b0f9c..5df80b0 100644
+--- a/package.json
++++ b/package.json
+@@ -14,11 +14,12 @@
+     "lint:fix": "oxlint --react-plugin --fix",
+     "format": "oxfmt --check .",
+     "format:fix": "oxfmt --write .",
+-    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor",
++    "check": "pnpm typecheck && pnpm yjs:check && pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify && pnpm test && pnpm storage:harness && pnpm storage:session && pnpm storage:custody && pnpm storage:content && pnpm storage:journal && pnpm storage:contention && pnpm storage:admission && pnpm storage:editor && pnpm storage:workspace && pnpm storage:projection && pnpm storage:delivery && pnpm storage:startup && pnpm storage:genesis && pnpm storage:clear && pnpm storage:trim && pnpm storage:properties && pnpm storage:legacy-source && pnpm storage:legacy-export && pnpm storage:legacy-import && pnpm storage:legacy-selection && pnpm storage:legacy-cleanup:harness && pnpm storage:legacy-cleanup && pnpm storage:legacy-coordinator && pnpm storage:legacy-host:harness && pnpm storage:legacy-host && pnpm storage:private-migration && pnpm storage:app-startup && pnpm test:geometry && pnpm storage:app-startup:packaged && pnpm storage:app-upgrades && pnpm storage:compatibility && pnpm trace:check && pnpm account:core && pnpm account:recovery && pnpm account:authority && pnpm account:promotion && pnpm account:genesis && pnpm account:admission && pnpm account:handoff && pnpm account:editing && pnpm account:outbound && pnpm account:capture && pnpm account:spool && pnpm account:decisions && pnpm account:delivery && pnpm account:service-delivery && pnpm account:transport && pnpm account:driver && pnpm account:inbound-prep && pnpm account:inbound-codecs && pnpm account:receive && pnpm account:receive-editor",
+     "test": "vitest run",
+     "test:https": "pnpm build && pnpm --dir relay build && node scripts/test-https.mjs",
+     "test:watch": "vitest",
+     "storage:conformance": "node scripts/storage-conformance/run.mjs",
++    "storage:harness": "node --test test/storage-harness/lifecycle.node.mjs",
+     "storage:session": "node scripts/write-session/run.mjs",
+     "test:geometry": "playwright test",
+     "test:latency": "playwright test --config playwright.latency.config.ts",
+@@ -26,8 +27,8 @@
+     "review:status": "node scripts/review-status.mjs",
+     "review:check": "node scripts/review-status.mjs --check",
+     "budget": "node scripts/check-budget.mjs",
+-    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs && node scripts/generate-device-lock-vectors.mjs && node scripts/generate-finalization-vectors.mjs && node scripts/generate-enrollment-vectors.mjs && node scripts/generate-envelope-vectors.mjs && node scripts/generate-head-discovery-vectors.mjs && node scripts/generate-attribution-vectors.mjs && node scripts/generate-checkpoint-vectors.mjs && node scripts/generate-antireplay-vectors.mjs && node scripts/generate-package-vectors.mjs && node scripts/generate-account-credential-vectors.mjs && node scripts/generate-transition-vectors.mjs && node scripts/generate-baseline-vectors.mjs",
+-    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && pnpm vectors:coverage",
++    "vectors": "node scripts/generate-suite-vectors.mjs && node scripts/generate-record-vectors.mjs && node scripts/generate-journal-vectors.mjs && node scripts/generate-recovery-vectors.mjs && node scripts/generate-device-lock-vectors.mjs && node scripts/generate-finalization-vectors.mjs && node scripts/generate-enrollment-vectors.mjs && node scripts/generate-envelope-vectors.mjs && node scripts/generate-private-envelope-vectors.mjs && node scripts/generate-head-discovery-vectors.mjs && node scripts/generate-attribution-vectors.mjs && node scripts/generate-checkpoint-vectors.mjs && node scripts/generate-antireplay-vectors.mjs && node scripts/generate-package-vectors.mjs && node scripts/generate-account-credential-vectors.mjs && node scripts/generate-transition-vectors.mjs && node scripts/generate-baseline-vectors.mjs",
++    "vectors:check": "node scripts/generate-suite-vectors.mjs --check && node scripts/generate-record-vectors.mjs --check && node scripts/generate-journal-vectors.mjs --check && node scripts/generate-recovery-vectors.mjs --check && node scripts/generate-device-lock-vectors.mjs --check && node scripts/generate-finalization-vectors.mjs --check && node scripts/generate-enrollment-vectors.mjs --check && node scripts/generate-envelope-vectors.mjs --check && node scripts/generate-private-envelope-vectors.mjs --check && node scripts/generate-head-discovery-vectors.mjs --check && node scripts/generate-attribution-vectors.mjs --check && node scripts/generate-checkpoint-vectors.mjs --check && node scripts/generate-antireplay-vectors.mjs --check && node scripts/generate-package-vectors.mjs --check && node scripts/generate-account-credential-vectors.mjs --check && node scripts/generate-transition-vectors.mjs --check && node scripts/generate-baseline-vectors.mjs --check && pnpm vectors:coverage",
+     "vectors:coverage": "node scripts/check-aad-coverage.mjs",
+     "retention:check": "node scripts/check-retention.mjs",
+     "status:check": "node scripts/check-selection-status.mjs",
+diff --git a/scripts/account-delivery/run.mjs b/scripts/account-delivery/run.mjs
+index 6fe72ca..41f35d4 100644
+--- a/scripts/account-delivery/run.mjs
++++ b/scripts/account-delivery/run.mjs
+@@ -121,7 +121,7 @@ try {
+         `--test-reporter-destination=${join(output, 'results.xml')}`,
+         'test/account-delivery/native.test.mjs',
+       ],
+-      240000,
++      480000,
+     ],
+   ];
+   for (const [name, args, timeout] of stages)
+diff --git a/scripts/content/run.mjs b/scripts/content/run.mjs
+index 72d8dc0..08a47c2 100644
+--- a/scripts/content/run.mjs
++++ b/scripts/content/run.mjs
+@@ -2,7 +2,7 @@
+ import { execFileSync } from 'node:child_process';
+ import { createHash } from 'node:crypto';
+ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+-import { join, resolve } from 'node:path';
++import { dirname, join, resolve } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+ import { createServer } from 'vite';
+ import { chromium } from '@playwright/test';
+@@ -39,29 +39,15 @@ const output = resolve(
+ );
+ if (existsSync(output)) throw Error('Refusing existing output: ' + output);
+ mkdirSync(output, { recursive: true });
+-const sourcePaths = [
+-  'custody.ts',
+-  'localClearState.ts',
+-  'legacyImportState.ts',
+-  'startupStorage.ts',
+-  'startupState.ts',
+-  'custodyCrypto.ts',
+-  'custodyRecord.ts',
+-  'writeSession.ts',
+-  'storageCompatibility.ts',
+-  'contentRecord.ts',
+-  'contentDatabase.ts',
+-  'contentStore.ts',
+-  'contentCompaction.ts',
+-  'yjs.ts',
+-  'storeName.ts',
+-  'journalCodec.ts',
+-  'journalStore.ts',
+-];
++const tree = (dir) =>
++  readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? tree(`${dir}/${e.name}`) : [`${dir}/${e.name}`],
++  );
++const sourcePaths = [...tree('src'), ...tree('account-protocol')];
+ const sources = Object.fromEntries(
+-  sourcePaths.map((name) => [name, readFileSync(join(root, 'src/crdt', name), 'utf8')]),
++  sourcePaths.map((name) => [name, readFileSync(join(root, name), 'utf8')]),
+ );
+-sources['seal.generated.ts'] = readFileSync(
++sources['wasm/journal-seal/seal.generated.ts'] = readFileSync(
+   join(root, 'wasm/journal-seal/seal.generated.ts'),
+   'utf8',
+ );
+@@ -71,7 +57,7 @@ const recordedFiles = [
+   'wasm/journal-seal/Cargo.toml',
+   'wasm/journal-seal/Cargo.lock',
+   'scripts/build-wasm-seal.mjs',
+-  ...sourcePaths.map((name) => 'src/crdt/' + name),
++  ...sourcePaths,
+   'docs/storage-contract.md',
+   'pnpm-lock.yaml',
+   'package.json',
+@@ -120,11 +106,15 @@ async function run(mutation = null) {
+   mkdirSync(folder);
+   const tested = { ...sources };
+   if (mutation) {
+-    if (tested[mutation.file].split(mutation.from).length !== 2)
++    const file = 'src/crdt/' + mutation.file;
++    if (tested[file].split(mutation.from).length !== 2)
+       throw Error('Mutation anchor is not unique: ' + label);
+-    tested[mutation.file] = tested[mutation.file].replace(mutation.from, mutation.to);
++    tested[file] = tested[file].replace(mutation.from, mutation.to);
++  }
++  for (const [name, source] of Object.entries(tested)) {
++    mkdirSync(dirname(join(folder, name)), { recursive: true });
++    writeFileSync(join(folder, name), source);
+   }
+-  for (const [name, source] of Object.entries(tested)) writeFileSync(join(folder, name), source);
+   const server = await createServer({
+     configFile: false,
+     root,
+@@ -132,19 +122,21 @@ async function run(mutation = null) {
+     cacheDir: join(folder, 'vite-cache'),
+     resolve: {
+       alias: {
+-        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
+-        '@custody': join(folder, 'custody.ts'),
+-        '@custody-record': join(folder, 'custodyRecord.ts'),
+-        '@custody-crypto': join(folder, 'custodyCrypto.ts'),
+-        '@write-session': join(folder, 'writeSession.ts'),
+-        '@content-record': join(folder, 'contentRecord.ts'),
++        '../../wasm/journal-seal/seal.generated': join(
++          folder,
++          'wasm/journal-seal/seal.generated.ts',
++        ),
++        '@custody': join(folder, 'src/crdt/custody.ts'),
++        '@custody-record': join(folder, 'src/crdt/custodyRecord.ts'),
++        '@custody-crypto': join(folder, 'src/crdt/custodyCrypto.ts'),
++        '@write-session': join(folder, 'src/crdt/writeSession.ts'),
++        '@content-record': join(folder, 'src/crdt/contentRecord.ts'),
+       },
+     },
+     optimizeDeps: { noDiscovery: true },
+     server: { host: '127.0.0.1', port: 5177, strictPort: true, fs: { allow: [root] } },
+   });
+-  await server.listen();
+-  const origin = `http://127.0.0.1:${server.httpServer.address().port}`;
++  let origin;
+   const report = {
+     id: label,
+     source: {
+@@ -154,6 +146,8 @@ async function run(mutation = null) {
+     cases: [],
+   };
+   try {
++    await server.listen();
++    origin = `http://127.0.0.1:${server.httpServer.address().port}`;
+     const inventory = mutation ? cases.filter((c) => c.id === mutation.case) : selected;
+     for (const definition of inventory) {
+       const row = await runCase(definition, {
+diff --git a/scripts/custody/run.mjs b/scripts/custody/run.mjs
+index 3278f82..1b3dff7 100644
+--- a/scripts/custody/run.mjs
++++ b/scripts/custody/run.mjs
+@@ -2,7 +2,7 @@
+ import { execFileSync } from 'node:child_process';
+ import { createHash } from 'node:crypto';
+ import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+-import { join, resolve } from 'node:path';
++import { dirname, join, resolve } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+ import { createServer } from 'vite';
+ import { chromium } from '@playwright/test';
+@@ -39,29 +39,15 @@ const output = resolve(
+ );
+ if (existsSync(output)) throw Error('Refusing existing output: ' + output);
+ mkdirSync(output, { recursive: true });
+-const sourcePaths = [
+-  'custody.ts',
+-  'localClearState.ts',
+-  'legacyImportState.ts',
+-  'startupStorage.ts',
+-  'startupState.ts',
+-  'custodyCrypto.ts',
+-  'custodyRecord.ts',
+-  'writeSession.ts',
+-  'storageCompatibility.ts',
+-  'contentRecord.ts',
+-  'contentDatabase.ts',
+-  'contentStore.ts',
+-  'contentCompaction.ts',
+-  'yjs.ts',
+-  'storeName.ts',
+-  'journalCodec.ts',
+-  'journalStore.ts',
+-];
++const tree = (dir) =>
++  readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? tree(`${dir}/${e.name}`) : [`${dir}/${e.name}`],
++  );
++const sourcePaths = [...tree('src'), ...tree('account-protocol')];
+ const sources = Object.fromEntries(
+-  sourcePaths.map((name) => [name, readFileSync(join(root, 'src/crdt', name), 'utf8')]),
++  sourcePaths.map((name) => [name, readFileSync(join(root, name), 'utf8')]),
+ );
+-sources['seal.generated.ts'] = readFileSync(
++sources['wasm/journal-seal/seal.generated.ts'] = readFileSync(
+   join(root, 'wasm/journal-seal/seal.generated.ts'),
+   'utf8',
+ );
+@@ -71,7 +57,7 @@ const recordedFiles = [
+   'wasm/journal-seal/Cargo.toml',
+   'wasm/journal-seal/Cargo.lock',
+   'scripts/build-wasm-seal.mjs',
+-  ...sourcePaths.map((name) => 'src/crdt/' + name),
++  ...sourcePaths,
+   'docs/storage-contract.md',
+   'pnpm-lock.yaml',
+   'package.json',
+@@ -121,11 +107,15 @@ async function run(mutation = null) {
+   mkdirSync(folder);
+   const tested = { ...sources };
+   if (mutation) {
+-    if (tested[mutation.file].split(mutation.from).length !== 2)
++    const file = 'src/crdt/' + mutation.file;
++    if (tested[file].split(mutation.from).length !== 2)
+       throw Error('Mutation anchor is not unique: ' + label);
+-    tested[mutation.file] = tested[mutation.file].replace(mutation.from, mutation.to);
++    tested[file] = tested[file].replace(mutation.from, mutation.to);
++  }
++  for (const [name, source] of Object.entries(tested)) {
++    mkdirSync(dirname(join(folder, name)), { recursive: true });
++    writeFileSync(join(folder, name), source);
+   }
+-  for (const [name, source] of Object.entries(tested)) writeFileSync(join(folder, name), source);
+   const server = await createServer({
+     configFile: false,
+     root,
+@@ -133,18 +123,20 @@ async function run(mutation = null) {
+     cacheDir: join(folder, 'vite-cache'),
+     resolve: {
+       alias: {
+-        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
+-        '@custody': join(folder, 'custody.ts'),
+-        '@custody-record': join(folder, 'custodyRecord.ts'),
+-        '@custody-crypto': join(folder, 'custodyCrypto.ts'),
+-        '@write-session': join(folder, 'writeSession.ts'),
++        '../../wasm/journal-seal/seal.generated': join(
++          folder,
++          'wasm/journal-seal/seal.generated.ts',
++        ),
++        '@custody': join(folder, 'src/crdt/custody.ts'),
++        '@custody-record': join(folder, 'src/crdt/custodyRecord.ts'),
++        '@custody-crypto': join(folder, 'src/crdt/custodyCrypto.ts'),
++        '@write-session': join(folder, 'src/crdt/writeSession.ts'),
+       },
+     },
+     optimizeDeps: { noDiscovery: true },
+     server: { host: '127.0.0.1', port: 5176, strictPort: true, fs: { allow: [root] } },
+   });
+-  await server.listen();
+-  const origin = `http://127.0.0.1:${server.httpServer.address().port}`;
++  let origin;
+   const profile = async (name) => {
+     const context = await chromium.launchPersistentContext(join(folder, 'profiles', name), {
+       headless: true,
+@@ -167,6 +159,8 @@ async function run(mutation = null) {
+     cases: [],
+   };
+   try {
++    await server.listen();
++    origin = `http://127.0.0.1:${server.httpServer.address().port}`;
+     const inventory = mutation ? cases.filter((c) => c.id === mutation.case) : selected;
+     for (const definition of inventory) {
+       const row = await runCase(definition, {
+diff --git a/scripts/generate-private-envelope-vectors.mjs b/scripts/generate-private-envelope-vectors.mjs
+index 6d1672d..d09fd6c 100644
+--- a/scripts/generate-private-envelope-vectors.mjs
++++ b/scripts/generate-private-envelope-vectors.mjs
+@@ -1,6 +1,16 @@
+ /** Independent Node/OpenSSL oracle for the private v2 key-domain correction. */
+-import { createCipheriv, createHash, createPrivateKey, hkdfSync, sign } from 'node:crypto';
++import {
++  createCipheriv,
++  createDecipheriv,
++  createHash,
++  createPrivateKey,
++  hkdfSync,
++  sign,
++  verify,
++} from 'node:crypto';
++import { deepStrictEqual } from 'node:assert';
+ import { readFileSync, writeFileSync } from 'node:fs';
++import { aadFields, assertedNames, refuses, reportAudit } from './lib/aad-coverage.mjs';
+ const old = JSON.parse(readFileSync(new URL('../test/vectors/envelope.json', import.meta.url)));
+ const lp = (...fields) =>
+   Buffer.concat(
+@@ -21,6 +31,27 @@ const privateKey = createPrivateKey({
+   type: 'pkcs8',
+   key: Buffer.from('302e020100300506032b657004220420' + old.keys.device.seed, 'hex'),
+ });
++const header = (i) => ({
++  v: String(i.v),
++  workspace_id: i.workspace_id,
++  credential_id: i.credential_id,
++  epoch: String(i.epoch),
++  gen: String(i.gen),
++  seq: String(i.seq),
++});
++const bindings = (i, digest) => ({
++  aad: { label: 'done/env/v2', ...header(i) },
++  hkdf_info: {
++    label: 'done/envelope/v2',
++    workspace_id: i.workspace_id,
++    credential_id: i.credential_id,
++    gen: String(i.gen),
++  },
++  signature_message: { label: 'done/env-sig/v2', ...header(i), nonce: i.nonce, digest },
++});
++const encode = (construction, named) => lp(...aadFields('private envelope ' + construction, named));
++const derive = (i, info) =>
++  Buffer.from(hkdfSync('sha256', Buffer.from(i.k_g, 'hex'), Buffer.alloc(0), info, 32));
+ const vectors = [
+   ...old.vectors,
+   {
+@@ -30,16 +61,16 @@ const vectors = [
+   },
+ ].map((v) => {
+   const i = { ...v.inputs, v: 2 },
+-    fields = ['2', i.workspace_id, i.credential_id, String(i.epoch), String(i.gen), String(i.seq)],
+-    info = lp('done/envelope/v2', i.workspace_id, i.credential_id, String(i.gen));
+-  const key = Buffer.from(hkdfSync('sha256', Buffer.from(i.k_g, 'hex'), Buffer.alloc(0), info, 32));
+-  const aad = lp('done/env/v2', ...fields),
++    fields = Object.values(header(i)),
++    info = encode('hkdf_info', bindings(i).hkdf_info);
++  const key = derive(i, info);
++  const aad = encode('aad', bindings(i).aad),
+     body = Buffer.from(v.derived.body, 'hex'),
+     cipher = createCipheriv('aes-256-gcm', key, Buffer.from(i.nonce, 'hex'));
+   cipher.setAAD(aad);
+   const ct = Buffer.concat([cipher.update(body), cipher.final(), cipher.getAuthTag()]),
+     digest = createHash('sha256').update(ct).digest(),
+-    message = lp('done/env-sig/v2', ...fields, i.nonce, digest.toString('hex')),
++    message = encode('signature_message', bindings(i, digest.toString('hex')).signature_message),
+     sig = sign(null, message, privateKey),
+     wire = Buffer.concat([
+       lp('done/envelope-wire/v2', ...fields),
+@@ -66,6 +97,53 @@ const vectors = [
+     },
+   };
+ });
++// Change only one construction at a time. In particular, AAD changes retain
++// the baseline key even when that header field also occurs in HKDF info.
++// Re-sealing above under each audit elision makes a missing binding observable.
++const base = vectors[0],
++  named = bindings(base.inputs, base.expected.digest);
++const must_fail = [];
++for (const [construction, values] of Object.entries(named)) {
++  for (const [field, value] of Object.entries(values)) {
++    const changed =
++      field === 'nonce' || field === 'digest'
++        ? (value[0] === '0' ? '1' : '0') + value.slice(1)
++        : value + '-changed';
++    const encoded = encode(construction, { ...values, [field]: changed });
++    const negative = {
++      name: `${construction}-${field}`,
++      base: base.name,
++      isolates: `private envelope ${construction}.${field}`,
++      construction,
++      field,
++      value: changed,
++      encoded: encoded.toString('hex'),
++    };
++    must_fail.push(negative);
++    await refuses(negative.name, () => {
++      if (construction === 'signature_message') {
++        if (!verify(null, encoded, privateKey, Buffer.from(base.expected.signature, 'hex')))
++          throw Error('Signature mismatch');
++        return;
++      }
++      const info =
++        construction === 'hkdf_info' ? encoded : Buffer.from(base.derived.hkdf_info, 'hex');
++      const aad = construction === 'aad' ? encoded : Buffer.from(base.derived.aad, 'hex');
++      const cipher = createDecipheriv(
++        'aes-256-gcm',
++        derive(base.inputs, info),
++        Buffer.from(base.inputs.nonce, 'hex'),
++      );
++      const ct = Buffer.from(base.expected.ciphertext, 'hex');
++      cipher.setAAD(aad);
++      cipher.setAuthTag(ct.subarray(-16));
++      cipher.update(ct.subarray(0, -16));
++      cipher.final();
++    });
++  }
++}
++deepStrictEqual(assertedNames().sort(), must_fail.map((v) => v.name).sort());
++reportAudit(must_fail);
+ const output =
+   JSON.stringify(
+     {
+@@ -74,6 +152,7 @@ const output =
+       contract: 'docs/account-outbound.md',
+       keys: old.keys,
+       vectors,
++      must_fail,
+     },
+     null,
+     2,
+@@ -82,4 +161,6 @@ const path = new URL('../test/vectors/private-envelope.json', import.meta.url);
+ if (process.argv.includes('--check')) {
+   if (readFileSync(path, 'utf8') !== output) throw Error('Private envelope vectors are stale');
+ } else writeFileSync(path, output);
+-console.log('Private envelope vectors checked: five independent Node/OpenSSL cases.');
++console.log(
++  `Private envelope vectors checked: five independent Node/OpenSSL cases and ${must_fail.length} isolating negatives.`,
++);
+diff --git a/scripts/journal/catalog.mjs b/scripts/journal/catalog.mjs
+index bba98ce..fd895e5 100644
+--- a/scripts/journal/catalog.mjs
++++ b/scripts/journal/catalog.mjs
+@@ -85,8 +85,8 @@ export const mutants = [
+     file: 'custody.ts',
+     case: 'C01.handoff-race',
+     assertion: 'handoff-cannot-fall-between-reads',
+-    from: 'records = await owner.carrier.load(task);',
+-    to: 'records = await owner.carrier.load(task); eraseJournalSnapshot(snapshot); snapshot = owner.journal.snapshot();',
++    from: 'records = await owner.carrier.load(task);\n          return task.step(() => ({',
++    to: 'records = await owner.carrier.load(task); eraseJournalSnapshot(snapshot); snapshot = owner.journal.snapshot();\n          return task.step(() => ({',
+   },
+   {
+     id: 'skip-wasm-disposal',
+diff --git a/scripts/journal/run.mjs b/scripts/journal/run.mjs
+index 11ff6b4..f948b9a 100644
+--- a/scripts/journal/run.mjs
++++ b/scripts/journal/run.mjs
+@@ -2,7 +2,7 @@
+ import { execFileSync } from 'node:child_process';
+ import { createHash } from 'node:crypto';
+ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+-import { join, resolve } from 'node:path';
++import { dirname, join, resolve } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+ import { createServer } from 'vite';
+ import { chromium } from '@playwright/test';
+@@ -39,29 +39,15 @@ const output = resolve(
+ );
+ if (existsSync(output)) throw Error('Refusing existing output: ' + output);
+ mkdirSync(output, { recursive: true });
+-const sourcePaths = [
+-  'custody.ts',
+-  'localClearState.ts',
+-  'legacyImportState.ts',
+-  'startupStorage.ts',
+-  'startupState.ts',
+-  'custodyCrypto.ts',
+-  'custodyRecord.ts',
+-  'writeSession.ts',
+-  'storageCompatibility.ts',
+-  'contentRecord.ts',
+-  'contentDatabase.ts',
+-  'contentStore.ts',
+-  'contentCompaction.ts',
+-  'yjs.ts',
+-  'storeName.ts',
+-  'journalCodec.ts',
+-  'journalStore.ts',
+-];
++const tree = (dir) =>
++  readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
++    e.isDirectory() ? tree(`${dir}/${e.name}`) : [`${dir}/${e.name}`],
++  );
++const sourcePaths = [...tree('src'), ...tree('account-protocol')];
+ const sources = Object.fromEntries(
+-  sourcePaths.map((name) => [name, readFileSync(join(root, 'src/crdt', name), 'utf8')]),
++  sourcePaths.map((name) => [name, readFileSync(join(root, name), 'utf8')]),
+ );
+-sources['seal.generated.ts'] = readFileSync(
++sources['wasm/journal-seal/seal.generated.ts'] = readFileSync(
+   join(root, 'wasm/journal-seal/seal.generated.ts'),
+   'utf8',
+ );
+@@ -71,7 +57,7 @@ const recordedFiles = [
+   'wasm/journal-seal/Cargo.toml',
+   'wasm/journal-seal/Cargo.lock',
+   'scripts/build-wasm-seal.mjs',
+-  ...sourcePaths.map((name) => 'src/crdt/' + name),
++  ...sourcePaths,
+   'docs/storage-contract.md',
+   'pnpm-lock.yaml',
+   'package.json',
+@@ -122,11 +108,15 @@ async function run(mutation = null) {
+   mkdirSync(folder);
+   const tested = { ...sources };
+   if (mutation) {
+-    if (tested[mutation.file].split(mutation.from).length !== 2)
++    const file = 'src/crdt/' + mutation.file;
++    if (tested[file].split(mutation.from).length !== 2)
+       throw Error('Mutation anchor is not unique: ' + label);
+-    tested[mutation.file] = tested[mutation.file].replace(mutation.from, mutation.to);
++    tested[file] = tested[file].replace(mutation.from, mutation.to);
++  }
++  for (const [name, source] of Object.entries(tested)) {
++    mkdirSync(dirname(join(folder, name)), { recursive: true });
++    writeFileSync(join(folder, name), source);
+   }
+-  for (const [name, source] of Object.entries(tested)) writeFileSync(join(folder, name), source);
+   const server = await createServer({
+     configFile: false,
+     root,
+@@ -134,21 +124,23 @@ async function run(mutation = null) {
+     cacheDir: join(folder, 'vite-cache'),
+     resolve: {
+       alias: {
+-        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
+-        '@custody': join(folder, 'custody.ts'),
+-        '@custody-record': join(folder, 'custodyRecord.ts'),
+-        '@custody-crypto': join(folder, 'custodyCrypto.ts'),
+-        '@write-session': join(folder, 'writeSession.ts'),
+-        '@content-record': join(folder, 'contentRecord.ts'),
+-        '@journal-codec': join(folder, 'journalCodec.ts'),
+-        '@store-name': join(folder, 'storeName.ts'),
++        '../../wasm/journal-seal/seal.generated': join(
++          folder,
++          'wasm/journal-seal/seal.generated.ts',
++        ),
++        '@custody': join(folder, 'src/crdt/custody.ts'),
++        '@custody-record': join(folder, 'src/crdt/custodyRecord.ts'),
++        '@custody-crypto': join(folder, 'src/crdt/custodyCrypto.ts'),
++        '@write-session': join(folder, 'src/crdt/writeSession.ts'),
++        '@content-record': join(folder, 'src/crdt/contentRecord.ts'),
++        '@journal-codec': join(folder, 'src/crdt/journalCodec.ts'),
++        '@store-name': join(folder, 'src/crdt/storeName.ts'),
+       },
+     },
+     optimizeDeps: { noDiscovery: true },
+     server: { host: '127.0.0.1', port: 5178, strictPort: true, fs: { allow: [root] } },
+   });
+-  await server.listen();
+-  const origin = `http://127.0.0.1:${server.httpServer.address().port}`;
++  let origin;
+   const report = {
+     id: label,
+     source: {
+@@ -158,6 +150,8 @@ async function run(mutation = null) {
+     cases: [],
+   };
+   try {
++    await server.listen();
++    origin = `http://127.0.0.1:${server.httpServer.address().port}`;
+     const inventory = mutation ? cases.filter((c) => c.id === mutation.case) : selected;
+     for (const definition of inventory) {
+       const row = await runCase(definition, {
+diff --git a/scripts/storage-properties/run.mjs b/scripts/storage-properties/run.mjs
+index 52dd715..a85d35b 100644
+--- a/scripts/storage-properties/run.mjs
++++ b/scripts/storage-properties/run.mjs
+@@ -2,7 +2,7 @@
+ import { execFileSync } from 'node:child_process';
+ import { createHash } from 'node:crypto';
+ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+-import { join, resolve } from 'node:path';
++import { dirname, join, resolve } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+ import { createServer } from 'vite';
+ import { chromium } from '@playwright/test';
+@@ -35,37 +35,20 @@ if (existsSync(output)) throw Error('Refusing existing output: ' + output);
+ mkdirSync(output, { recursive: true });
+ const hash = (value) => createHash('sha256').update(value).digest('hex');
+ const git = (...args) => execFileSync('git', ['-C', root, ...args], { encoding: 'utf8' }).trim();
+-const sourceNames = [
+-  'custody.ts',
+-  'localClearState.ts',
+-  'startupStorage.ts',
+-  'startupState.ts',
+-  'custodyCrypto.ts',
+-  'custodyRecord.ts',
+-  'writeSession.ts',
+-  'storageCompatibility.ts',
+-  'contentRecord.ts',
+-  'contentDatabase.ts',
+-  'contentStore.ts',
+-  'contentCompaction.ts',
+-  'yjs.ts',
+-  'storeName.ts',
+-  'journalCodec.ts',
+-  'journalStore.ts',
+-];
+-const sources = Object.fromEntries(
+-  sourceNames.map((n) => [n, readFileSync(join(root, 'src/crdt', n), 'utf8')]),
+-);
+-sources['seal.generated.ts'] = readFileSync(
+-  join(root, 'wasm/journal-seal/seal.generated.ts'),
+-  'utf8',
+-);
+ const tree = (dir) =>
+   readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
+     e.isDirectory() ? tree(`${dir}/${e.name}`) : [`${dir}/${e.name}`],
+   );
++const sourceNames = [...tree('src'), ...tree('account-protocol')];
++const sources = Object.fromEntries(
++  sourceNames.map((n) => [n, readFileSync(join(root, n), 'utf8')]),
++);
++sources['wasm/journal-seal/seal.generated.ts'] = readFileSync(
++  join(root, 'wasm/journal-seal/seal.generated.ts'),
++  'utf8',
++);
+ const recorded = [
+-  ...sourceNames.map((n) => 'src/crdt/' + n),
++  ...sourceNames,
+   'wasm/journal-seal/seal.generated.ts',
+   'package.json',
+   'pnpm-lock.yaml',
+@@ -110,16 +93,21 @@ async function historyRun(origin, history) {
+   const load = async () => {
+     page = await context.newPage();
+     await page.goto(origin + '/test/storage-properties/index.html');
+-    await page.waitForFunction(() => Boolean(window.properties), { timeout: 15000 });
++    await page.waitForFunction(() => Boolean(window.properties), undefined, { timeout: 15000 });
++  };
++  const call = async (method, value) => {
++    let timer;
++    try {
++      return await Promise.race([
++        page.evaluate(({ method, value }) => window.properties[method](value), { method, value }),
++        new Promise((_, reject) => {
++          timer = setTimeout(() => reject(Error(`Harness timeout: ${method}`)), 20000);
++        }),
++      ]);
++    } finally {
++      clearTimeout(timer);
++    }
+   };
+-  const call = (method, value) =>
+-    Promise.race([
+-      page.evaluate(({ method, value }) => window.properties[method](value), { method, value }),
+-      new Promise((_, reject) => {
+-        const timer = setTimeout(() => reject(Error(`Harness timeout: ${method}`)), 20000);
+-        timer.unref();
+-      }),
+-    ]);
+   let index = -1;
+   try {
+     await load();
+@@ -249,11 +237,15 @@ async function withServer(mutation, action) {
+   mkdirSync(folder, { recursive: true });
+   const tested = { ...sources };
+   if (mutation) {
+-    if (tested[mutation.file].split(mutation.from).length !== 2)
++    const file = 'src/crdt/' + mutation.file;
++    if (tested[file].split(mutation.from).length !== 2)
+       throw Error('Nonunique mutant anchor: ' + label);
+-    tested[mutation.file] = tested[mutation.file].replace(mutation.from, mutation.to);
++    tested[file] = tested[file].replace(mutation.from, mutation.to);
++  }
++  for (const [n, s] of Object.entries(tested)) {
++    mkdirSync(dirname(join(folder, n)), { recursive: true });
++    writeFileSync(join(folder, n), s);
+   }
+-  for (const [n, s] of Object.entries(tested)) writeFileSync(join(folder, n), s);
+   const server = await createServer({
+     configFile: false,
+     root,
+@@ -261,18 +253,21 @@ async function withServer(mutation, action) {
+     cacheDir: join(folder, 'vite-cache'),
+     resolve: {
+       alias: {
+-        '../../wasm/journal-seal/seal.generated': join(folder, 'seal.generated.ts'),
+-        '@custody': join(folder, 'custody.ts'),
+-        '@store-name': join(folder, 'storeName.ts'),
++        '../../wasm/journal-seal/seal.generated': join(
++          folder,
++          'wasm/journal-seal/seal.generated.ts',
++        ),
++        '@custody': join(folder, 'src/crdt/custody.ts'),
++        '@store-name': join(folder, 'src/crdt/storeName.ts'),
+       },
+     },
+     optimizeDeps: { noDiscovery: true },
+     server: { host: '127.0.0.1', port: 5186, strictPort: true, fs: { allow: [root] } },
+   });
+-  await server.listen();
+   try {
++    await server.listen();
+     const result = await action(
+-      'http://127.0.0.1:5186',
++      `http://127.0.0.1:${server.httpServer.address().port}`,
+       Object.fromEntries(Object.entries(tested).map(([n, s]) => [n, hash(s)])),
+     );
+     for (const [n, s] of Object.entries(tested))
+diff --git a/test/networkEnvelope.test.ts b/test/networkEnvelope.test.ts
+index 9fa8ff7..c55c3e2 100644
+--- a/test/networkEnvelope.test.ts
++++ b/test/networkEnvelope.test.ts
+@@ -110,6 +110,58 @@ function encrypted(plaintext: Uint8Array, aad = fields('done/env/v2', ...aadFiel
+ }
+ 
+ describe('row-4 envelope codec', () => {
++  it('rejects all 20 published private v2 binding substitutions with independent WebCrypto', async () => {
++    const root = await crypto.subtle.importKey('raw', key, 'HKDF', false, ['deriveKey']);
++    const derive = (info: Uint8Array<ArrayBuffer>) =>
++      crypto.subtle.deriveKey(
++        { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(), info },
++        root,
++        { name: 'AES-GCM', length: 256 },
++        false,
++        ['decrypt'],
++      );
++    const originalInfo = envelopeKeyInfo(h),
++      originalAAD = envelopeAAD(h);
++    const originalKey = await derive(originalInfo);
++    // Prove the fixture authenticates before interpreting any refusal as coverage.
++    await expect(
++      crypto.subtle.decrypt(
++        { name: 'AES-GCM', iv: baseline.nonce, additionalData: originalAAD },
++        originalKey,
++        baseline.ct,
++      ),
++    ).resolves.toEqual(bytes(first.derived.body).buffer);
++    expect(
++      await crypto.subtle.verify(
++        'Ed25519',
++        verifier,
++        baseline.sig,
++        envelopeSignatureMessage(baseline, baseline.nonce, baseline.digest),
++      ),
++    ).toBe(true);
++    expect(vectors.must_fail).toHaveLength(20);
++    for (const negative of vectors.must_fail) {
++      const encoded = bytes(negative.encoded);
++      if (negative.construction === 'signature_message') {
++        expect(
++          await crypto.subtle.verify('Ed25519', verifier, baseline.sig, encoded),
++          negative.name,
++        ).toBe(false);
++      } else {
++        const changedKey =
++          negative.construction === 'hkdf_info' ? await derive(encoded) : originalKey;
++        const changedAAD = negative.construction === 'aad' ? encoded : originalAAD;
++        await expect(
++          crypto.subtle.decrypt(
++            { name: 'AES-GCM', iv: baseline.nonce, additionalData: changedAAD },
++            changedKey,
++            baseline.ct,
++          ),
++          negative.name,
++        ).rejects.toThrow();
++      }
++    }
++  });
+   it('separates v2 keys by credential and generation and refuses v1 mint/downgrade', async () => {
+     const base = envelopeKeyInfo(h);
+     for (const other of [
+diff --git a/test/spoolRecord.test.ts b/test/spoolRecord.test.ts
+index d61b99b..2ae7e69 100644
+--- a/test/spoolRecord.test.ts
++++ b/test/spoolRecord.test.ts
+@@ -164,7 +164,7 @@ describe('Account spool ledger conformance', () => {
+       ),
+       { seed: 9512026, numRuns: 150 },
+     );
+-  });
++  }, 30000);
+   it('150 generated authority substitutions reject a well-framed entry in the wrong domain', () => {
+     fc.assert(
+       fc.property(
+@@ -182,7 +182,7 @@ describe('Account spool ledger conformance', () => {
+       ),
+       { seed: 9512027, numRuns: 150 },
+     );
+-  });
++  }, 15000);
+   it('rejects gaps, duplicate coverage, missing source indexes and envelope-before-attempt transitions', async () => {
+     const { rows } = await fixture([{ text: 'first', system: false, burns: 0 }]);
+     const grant = rows.find((r) => r.kind === 'heads')!,
+diff --git a/test/vectors/private-envelope.json b/test/vectors/private-envelope.json
+index 3017a46..8ca3308 100644
+--- a/test/vectors/private-envelope.json
++++ b/test/vectors/private-envelope.json
+@@ -169,5 +169,187 @@
+         "wire": "0015646f6e652f656e76656c6f70652d776972652f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744000a637265645f6f74686572000137000131000132404142434445464748494a4b029273f2d5e97ad2154ed6144fd9a4c4ebe8477400b945d5b1023261a998cff600000063fee27c23a0a1de2a81d868244153fb0aaf1d9c61ac7a451a31601b6e15777261dc54b5f2f4da2b1acff8223bbd788b2d2ad05db6df2125a63e62506fa91ef07471c35e6a7c93fb11d0bbc0bcddf61a7476175c744e03d52aa7fe2b3a5298ca30488e2325ecb3a5be79ca8ff6e2f4c4e13fc59b25f77c43ff2d86d748cefbd68cd12ef1bbf2dffb26e3af664f667e47b0eefdd135080189386c7518e346fb05a1a99503"
+       }
+     }
++  ],
++  "must_fail": [
++    {
++      "name": "aad-label",
++      "base": "single-update",
++      "isolates": "private envelope aad.label",
++      "construction": "aad",
++      "field": "label",
++      "value": "done/env/v2-changed",
++      "encoded": "0013646f6e652f656e762f76322d6368616e676564000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000137000131000132"
++    },
++    {
++      "name": "aad-v",
++      "base": "single-update",
++      "isolates": "private envelope aad.v",
++      "construction": "aad",
++      "field": "v",
++      "value": "2-changed",
++      "encoded": "000b646f6e652f656e762f76320009322d6368616e676564001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000137000131000132"
++    },
++    {
++      "name": "aad-workspace_id",
++      "base": "single-update",
++      "isolates": "private envelope aad.workspace_id",
++      "construction": "aad",
++      "field": "workspace_id",
++      "value": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D-changed",
++      "encoded": "000b646f6e652f656e762f7632000132002577735f3031485a5851374d344b395032523654385630593342354e37442d6368616e676564001f637265645f3031485a5852303030303030303030303030303030304c415054000137000131000132"
++    },
++    {
++      "name": "aad-credential_id",
++      "base": "single-update",
++      "isolates": "private envelope aad.credential_id",
++      "construction": "aad",
++      "field": "credential_id",
++      "value": "cred_01HZXR0000000000000000LAPT-changed",
++      "encoded": "000b646f6e652f656e762f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e37440027637265645f3031485a5852303030303030303030303030303030304c4150542d6368616e676564000137000131000132"
++    },
++    {
++      "name": "aad-epoch",
++      "base": "single-update",
++      "isolates": "private envelope aad.epoch",
++      "construction": "aad",
++      "field": "epoch",
++      "value": "7-changed",
++      "encoded": "000b646f6e652f656e762f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540009372d6368616e676564000131000132"
++    },
++    {
++      "name": "aad-gen",
++      "base": "single-update",
++      "isolates": "private envelope aad.gen",
++      "construction": "aad",
++      "field": "gen",
++      "value": "1-changed",
++      "encoded": "000b646f6e652f656e762f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370009312d6368616e676564000132"
++    },
++    {
++      "name": "aad-seq",
++      "base": "single-update",
++      "isolates": "private envelope aad.seq",
++      "construction": "aad",
++      "field": "seq",
++      "value": "2-changed",
++      "encoded": "000b646f6e652f656e762f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310009322d6368616e676564"
++    },
++    {
++      "name": "hkdf_info-label",
++      "base": "single-update",
++      "isolates": "private envelope hkdf_info.label",
++      "construction": "hkdf_info",
++      "field": "label",
++      "value": "done/envelope/v2-changed",
++      "encoded": "0018646f6e652f656e76656c6f70652f76322d6368616e676564001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c415054000131"
++    },
++    {
++      "name": "hkdf_info-workspace_id",
++      "base": "single-update",
++      "isolates": "private envelope hkdf_info.workspace_id",
++      "construction": "hkdf_info",
++      "field": "workspace_id",
++      "value": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D-changed",
++      "encoded": "0010646f6e652f656e76656c6f70652f7632002577735f3031485a5851374d344b395032523654385630593342354e37442d6368616e676564001f637265645f3031485a5852303030303030303030303030303030304c415054000131"
++    },
++    {
++      "name": "hkdf_info-credential_id",
++      "base": "single-update",
++      "isolates": "private envelope hkdf_info.credential_id",
++      "construction": "hkdf_info",
++      "field": "credential_id",
++      "value": "cred_01HZXR0000000000000000LAPT-changed",
++      "encoded": "0010646f6e652f656e76656c6f70652f7632001d77735f3031485a5851374d344b395032523654385630593342354e37440027637265645f3031485a5852303030303030303030303030303030304c4150542d6368616e676564000131"
++    },
++    {
++      "name": "hkdf_info-gen",
++      "base": "single-update",
++      "isolates": "private envelope hkdf_info.gen",
++      "construction": "hkdf_info",
++      "field": "gen",
++      "value": "1-changed",
++      "encoded": "0010646f6e652f656e76656c6f70652f7632001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540009312d6368616e676564"
++    },
++    {
++      "name": "signature_message-label",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.label",
++      "construction": "signature_message",
++      "field": "label",
++      "value": "done/env-sig/v2-changed",
++      "encoded": "0017646f6e652f656e762d7369672f76322d6368616e676564000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001320018343034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-v",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.v",
++      "construction": "signature_message",
++      "field": "v",
++      "value": "2-changed",
++      "encoded": "000f646f6e652f656e762d7369672f76320009322d6368616e676564001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001320018343034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-workspace_id",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.workspace_id",
++      "construction": "signature_message",
++      "field": "workspace_id",
++      "value": "ws_01HZXQ7M4K9P2R6T8V0Y3B5N7D-changed",
++      "encoded": "000f646f6e652f656e762d7369672f7632000132002577735f3031485a5851374d344b395032523654385630593342354e37442d6368616e676564001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001320018343034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-credential_id",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.credential_id",
++      "construction": "signature_message",
++      "field": "credential_id",
++      "value": "cred_01HZXR0000000000000000LAPT-changed",
++      "encoded": "000f646f6e652f656e762d7369672f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e37440027637265645f3031485a5852303030303030303030303030303030304c4150542d6368616e6765640001370001310001320018343034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-epoch",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.epoch",
++      "construction": "signature_message",
++      "field": "epoch",
++      "value": "7-changed",
++      "encoded": "000f646f6e652f656e762d7369672f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540009372d6368616e6765640001310001320018343034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-gen",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.gen",
++      "construction": "signature_message",
++      "field": "gen",
++      "value": "1-changed",
++      "encoded": "000f646f6e652f656e762d7369672f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370009312d6368616e6765640001320018343034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-seq",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.seq",
++      "construction": "signature_message",
++      "field": "seq",
++      "value": "2-changed",
++      "encoded": "000f646f6e652f656e762d7369672f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310009322d6368616e6765640018343034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-nonce",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.nonce",
++      "construction": "signature_message",
++      "field": "nonce",
++      "value": "004142434445464748494a4b",
++      "encoded": "000f646f6e652f656e762d7369672f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001320018303034313432343334343435343634373438343934613462004035313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    },
++    {
++      "name": "signature_message-digest",
++      "base": "single-update",
++      "isolates": "private envelope signature_message.digest",
++      "construction": "signature_message",
++      "field": "digest",
++      "value": "012fc9d9371aa96abf49a3183a085c355b5992d963c445bb31edc5c929402bf4",
++      "encoded": "000f646f6e652f656e762d7369672f7632000132001d77735f3031485a5851374d344b395032523654385630593342354e3744001f637265645f3031485a5852303030303030303030303030303030304c4150540001370001310001320018343034313432343334343435343634373438343934613462004030313266633964393337316161393661626634396133313833613038356333353562353939326439363363343435626233316564633563393239343032626634"
++    }
+   ]
+ }

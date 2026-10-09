@@ -62,8 +62,9 @@ The client's four rules
 Two carriers gain the same field
 
   Epoch payload       the head vector — (credential, n, link) for every
-                      credential, as of that epoch. §13.5 already binds which
-                      credentials exist; this binds where each had got to.
+                      credential, as of that epoch (first-genesis exception
+                      in §9). §13.5 already binds which credentials exist;
+                      this binds where each had got to.
   Checkpoint manifest the same vector, so a device starting from a checkpoint
                       verifies the suffix forward from authenticated heads
                       rather than replaying from genesis (§7.6).
@@ -265,3 +266,13 @@ The negative is renamed rather than the audit weakened, and the observation is w
 head.link` is the pin.** Remove it and the chain still computes, every published vector still round-trips, and
 nothing in the system is checking history any more. There is no better single sentence for what a reviewer
 should look at first.
+
+
+## 9. First-genesis accepted-head exception (2026-09-11)
+
+Before any Account envelope has been accepted, the initial epoch and checkpoint use an empty accepted-head
+vector, digest `SHA256(LP("done/headvec/v1"))`. The creating member is still present in certification. Local
+history enters via the checkpoint and gains no invented network positions. An explicit member/position-zero/
+zero-link entry is a different digest and is not an alternate genesis encoding. Position one starts from
+this row's zero link. This exception does not permit dropping existing streams in later epochs or pruning.
+The [exact private contract](../account-crypto/first-authority.md) and its fixed vectors pin the distinction.

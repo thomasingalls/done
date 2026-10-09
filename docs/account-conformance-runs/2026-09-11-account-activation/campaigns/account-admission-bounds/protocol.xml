@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+	<testcase name="v2 binds both decoded descriptors at old boundaries and generated sizes through independent OpenSSL bytes" time="5.848297" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/protocol.test.mjs"/>
+	<testcase name="inclusive combined 16 MiB bound fits service limit; malformed/oversize refuse before digesting" time="31.908282" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/protocol.test.mjs"/>
+	<testcase name="correctly signed independent SV and DS lies pass content-blind service but fail client-derived coverage; omissions are effective" time="0.081083" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/protocol.test.mjs"/>
+	<testcase name="v1, mixed, unknown versions and old readers refuse without rewriting completed service rows" time="0.057376" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/protocol.test.mjs"/>
+	<testcase name="real generated writer and deletion histories exceed the old limit and retain exact descriptors" time="0.665750" classname="test" file="/Users/thomasingalls/.codex/worktrees/c030/done/test/account-admission-bounds/protocol.test.mjs"/>
+	<!-- tests 5 -->
+	<!-- suites 0 -->
+	<!-- pass 5 -->
+	<!-- fail 0 -->
+	<!-- cancelled 0 -->
+	<!-- skipped 0 -->
+	<!-- todo 0 -->
+	<!-- duration_ms 38844.530625 -->
+</testsuites>

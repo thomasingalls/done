@@ -1,0 +1,19 @@
+# F-17 exploration round 3 evidence
+
+[Assessment and disposition](../../f17-exploration-r3.md). Exploratory profiling and application timing, not a release receipt. Base: signed `602e4ceead5698c0d70f70a3b4b7770779459351`. Main runtime/tests and defaults remain unchanged.
+
+- `protocol.md`: prospective two diagnostic profiles, one candidate and paired browser screen; exact units, limits and decision rule.
+- `target-decision.md`: observed UTF-8 encoding target and candidate boundary, recorded before candidate timing.
+- `profile-summary.json` and `encoding-call-stacks.json`: diagnostic summaries and source-mapped ancestor chains for the major native encoder samples. Inclusive samples overlap; sampled allocation includes collected objects and is not retained memory. The full 20-day diagnostic corpus differs from round one's profiling scope.
+- `render-notes.md`: independent read-only review of UI publication/rendering, checked against the emitted React Compiler build. Repeated Collection indexing remains a later candidate, not this round's intervention.
+- `candidate.patch`: complete experimental combination above the signed base, including previous preparation + pool + editor changes and the new any-string candidate/tests. The [round-two selected patch](../2026-09-15-f17-r2/selected.patch) supplies the comparator.
+- `any-result/`: agent's candidate-only patch, exact prior Yjs source, hashes, notes and focused/TypeScript logs. Its test file was subsequently formatted by the parent; the complete candidate patch includes that final form. The initial unsupported-undefined fixture failure is retained.
+- `candidate-verification.json`, `affected-tests.log`, `any-final-restored-tests.log`: source boundary and focused checks. The latter confirms the restored candidate after the two deliberate faults and test formatting. No broad release suite ran.
+- `fault-controls.py`, `fault-controls.json`, `*-fault.log`: incompatible private marker and omitted comparison string controls. Nonzero outcomes are deliberate test detections. Source restoration is hash-checked. The reduced failing generated input remains in the output.
+- `build.mjs`, compressed `*-source.json.gz` and `*-bundle.json.gz`: exact source identities and compiled artifact hashes. Both builds use the identical build-only Local snapshot activation. Compiled apps/maps remain under `/private/tmp/done-f17-exploration-r3/builds/`.
+- `screen.mjs`, `measure.mjs`, `recorder.mjs`: the unchanged round-two screen with explicit marker/emoji setup checks and bounded undo/redo settlement. `batch.mjs` records the declared selected/candidate/candidate/selected order and separate Unicode pair.
+- `results/`: all profile and timing results, raw measured samples, intermediate observations and close/drain flags. CPU, allocation and mapped diagnostic JSON are gzip-compressed without changing their decoded bytes. `*-batch.json` and logs preserve actual order/timestamps.
+- `analyze-profile.mjs`, `analyze.mjs`, `analysis.json`: source mapping and descriptive paired summaries. Instrumented sessions never enter timing comparisons; Unicode remains a separate guard pair.
+- `start.json`, `preserve.py`, `preservation.json` and `sha256.json`: earlier packet, personal/package/vector, L-2 and append-only preservation plus packet byte identities. This is integrity bookkeeping, not owned-runner certification.
+
+Helpers reference original absolute scratch/main paths and installed dependencies. To reproduce elsewhere, create disposable checkouts at the signed base, apply the comparator or complete candidate patch, adapt paths and rebuild with the same configuration. Declare a new run; do not substitute it for the preserved observations. Keep build/test work serialized against timing, avoid the personal server, and retain full qualification before any RC/default activation.

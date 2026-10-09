@@ -1,0 +1,31 @@
+trim T01.union: pass
+trim T02.late: pass
+trim T03.concurrent: pass
+trim T04.dependencies: pass
+trim T05.unreadable: pass
+trim T06.changed: pass
+trim T07.recheck: pass
+trim T08.new-damage: pass
+trim T09.journal: pass
+trim T10.publish-abort: pass
+trim T11.delete-abort: pass
+trim T12.kill-reservation: pass
+trim T13.kill-publication: pass
+trim T14.kill-deletion: pass
+trim T15.close: pass
+trim T16.generation: pass
+trim T17.single-state: pass
+trim T18.replacement: pass
+trim T19.missing: pass
+trim T20.journal-tag: pass
+trim T21.journal-recheck: pass
+range-delete T02.late: fail
+partial-disk-union T01.union: fail
+ignore-record-bytes T06.changed: fail
+skip-delete-census T07.recheck: fail
+skip-journal-check T09.journal: fail
+merge-incomplete-content T04.dependencies: fail
+early-delete-receipt T11.delete-abort: fail
+skip-final-journal-census T21.journal-recheck: fail
+Report: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-spool/regressions/content-trim-witness/report.md
+Exit 0 (bounded exact-coverage content compaction)

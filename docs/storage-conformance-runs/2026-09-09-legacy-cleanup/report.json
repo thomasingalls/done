@@ -1,0 +1,525 @@
+{
+  "schema": 2,
+  "status": "finished",
+  "passed": true,
+  "deadlines": {
+    "call-ms": 30000,
+    "case-ms": 120000,
+    "campaign-ms": 600000,
+    "shrink-ms": 120000,
+    "teardown-ms": 10000,
+    "run-ms": 1800000
+  },
+  "scope": "authenticated-journal-inclusive-source-cleanup",
+  "started": "2026-09-09T19:38:40.141Z",
+  "commit": "4c3c3ab0cbb00e179133e59882466d68c1d340f3",
+  "files": {
+    "src/account/slotUnlock.ts": "fde8123c81f1b7d5500b6ed0ce3c42dadfb312d7e2b8fc3477fb7d197151e8a2",
+    "src/crdt/actors.ts": "add581bd955872ac19ff8deec41ae9cf2aed68943c52163d744e61c91b71923e",
+    "src/crdt/admission.ts": "23558c7f6e3e5ceb539f8822535373ce3871c4b7c98896628fabf1c03cf9424f",
+    "src/crdt/admissionDocument.ts": "da2a7fc73291834497b8aad67d8d60a20ba1c406e9375f3544f99ff0f174e549",
+    "src/crdt/admissionQueue.ts": "9800b448ebd130c53d25d7ce1901df5710437a99ed2e9e40513c41750142f3b4",
+    "src/crdt/admittedWorkspace.ts": "84d4fca26e469ea40548f8d2bc651416a6a3e793f27cfce3e38ebd364489ca11",
+    "src/crdt/compaction.ts": "967996b7c0a57ac52bba8c2f8a11b2fabac2775b19bd93fb760b3930a200b0d9",
+    "src/crdt/contentCompaction.ts": "021bcdccac714b70a3ff9701264a7297884447deddb16645eca1397689e2e55f",
+    "src/crdt/contentDatabase.ts": "118d35d8408b9fa61ef5b2338d479bf9a43466e5f54b26964058eef055d345fd",
+    "src/crdt/contentRecord.ts": "28c6ccba803b12956e777a7320f5d7fa74fd067aef3a30601b9f061b93c76e4c",
+    "src/crdt/contentStore.ts": "90cd7a40d00fcba76fbada9e7e4810a111698b65cc4338b42fed9d1694552bba",
+    "src/crdt/custody.ts": "b97f7cf43c2626f05044234fc30cf22726e3b7ca5a43b22a64028e11f5e8ffd1",
+    "src/crdt/custodyCrypto.ts": "28c13afbb61ba0e0dab25b882ba7cc06163a3bcd07ef22ea962bd65a93ccb1f6",
+    "src/crdt/custodyRecord.ts": "4e9b009db46426d18f11808f15a28ec6b5c26196877637b611b3746d25e1f730",
+    "src/crdt/days.ts": "ded881f09959473e114b1031e3617527de6ca56a626a8e1ff47e5567dbdd314c",
+    "src/crdt/doc.ts": "3150ca51f0489b182b7f581e2ff0f4cdfbe46f44257a6453247e557b598f9ad4",
+    "src/crdt/export.ts": "47bfe2a46ccc319413f27379fc97c984450dd9b96e0052f2188d9675db469dcf",
+    "src/crdt/freeze.ts": "3f6503f10d6c08f882c2e8357d1f7a820d37c9fc352bcf9e3c20e259a91a2e2f",
+    "src/crdt/index.ts": "02cec4ca13ed2c92d544938d471faabb4ce24d1e6c3590a975f7056cc00e78e3",
+    "src/crdt/journalCodec.ts": "f584cad2fdb7e598cc39d81336d4b04319c54c6dd1f5a4a4593153c10b4e512a",
+    "src/crdt/journalStore.ts": "ddba6a5d577fb0aa3afc8e18f17a49bdc1e0df3cac2d6c9b451a99905793fc22",
+    "src/crdt/legacyCleanup.ts": "407935d4e2f656050136cd3280fc02c1d2c0bad287dd393c2abf8e3389b00d37",
+    "src/crdt/legacyCleanupEncoding.ts": "26155ef5b7e8fe0fb58d40f6283a5b8830dd8257230edf94a9727942538bc8e2",
+    "src/crdt/legacyCleanupRecord.ts": "6d2a2d2d7b14b1f3f88040b8431c9ef989b465e1c745e0efea06e5fd673448d4",
+    "src/crdt/legacyCleanupStorage.ts": "69ae2661f95dfded6a9761af4dd1792301c172957065f3c35ac206c7fe87ca5f",
+    "src/crdt/legacyExport.ts": "bfee92dbc2e0146f888d8ca7d443bb4a00082a6bf6f1b78caa311a3bbbd83a55",
+    "src/crdt/legacyImport.ts": "72d109fc403b4415fbc23007df49b7552918eda9bec21a1b05ab37c0f12cd174",
+    "src/crdt/legacyImportPlan.ts": "543533f93c7feba90c62dc780c321c5430c84f8f0f77513e8592a387c67de730",
+    "src/crdt/legacyImportRecord.ts": "4e4c3cd01ad445be2564fc901d1652abc8354baa00a9a1287f4c74ebe277b6a9",
+    "src/crdt/legacyImportState.ts": "553ac32699cda932901dcd99d2124b20c7819a2eabf6e41bf974ff8e1f1029cd",
+    "src/crdt/legacySelection.ts": "1d7aa0983765435b03ad567b1bfcdaf615aef18b4688be92c583a6e2b22f277a",
+    "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61",
+    "src/crdt/localClear.ts": "7621b4ff6313495ede37d8e44089c21537e38bd93d699fccb885347e87dc545c",
+    "src/crdt/localClearCrypto.ts": "b02bb91d96f6a88914a9f75d9c90641429e5046cc16157bd2c6bdabd7e374827",
+    "src/crdt/localClearState.ts": "4cd7a0de0f4d664372c1b17a38be0dacf92754a4f2775c51820d127936877edb",
+    "src/crdt/localClearStorage.ts": "6f9f5082088aa0be7a3ab88525c8c2eadfe894c64f57909b8bc831c110fc17b2",
+    "src/crdt/localGenesis.ts": "e538867e03ec48f602f4e373be81b4583e1343856296d3c85e55c0cb0aa29492",
+    "src/crdt/localGenesisRecord.ts": "e319d34bc8e2d70d3a54f2ca1e8db57ba31ff456bdfe9f4afb59f40b600d39d6",
+    "src/crdt/localGenesisStorage.ts": "b3eef39f10c97af3f8848c1402e0c28523ec0b1eab3b3e6f08481bb61be80b36",
+    "src/crdt/moves.ts": "067726617784435da2ed823f8e32ef0143ddc883c7d0ba11a0390308df2eb63d",
+    "src/crdt/ownedStartup.ts": "505bfd0a98947740dfe2dd6799b9c9b0c45b3e1912a7a332c4bb35211b70d876",
+    "src/crdt/persistence.ts": "da52ec12decf3527f5ae674e3b7db234271382da30c96f55cb18bf7182080adc",
+    "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+    "src/crdt/slotIndex.ts": "19800e3755425abdfdabfd5f385f3796feb65497beb45aee480a7bf9bc11534f",
+    "src/crdt/startupClassification.ts": "e69bebccbf1ebc4b2fd3a0c4c6513e6611422b4fd2b392e20c794f61a37fa483",
+    "src/crdt/startupState.ts": "22636b75221522ab1646000991a88db5ac43e339ef98413405546d708d4b444c",
+    "src/crdt/startupStorage.ts": "d429eadceef023bb61e4d44aaf6ce6b74e7eba0a65a8e28c04bda4108e031bd4",
+    "src/crdt/storeName.ts": "771534dd85ac638c424338ae65a9a524955392ecb7ec58d561456c90cac5416e",
+    "src/crdt/sync.ts": "562a9d1871409751f46674a6d9255c3fb5f1352b065862af43ea965d608a0807",
+    "src/crdt/workspaceChannel.ts": "381e221ac806abf0675214dd95dd4a48ed6fbdad0fa94a82c2e8d782087b26c2",
+    "src/crdt/workspaceCommands.ts": "c42d4995bb4a43d46fda806b504921a8d58861fcc090a72eb72841b929178542",
+    "src/crdt/writeSession.ts": "c9712ca1a9854aa70ddbff2cec74a92f6d46c7fdd931af244f2854d0e9d983c9",
+    "src/crdt/yjs.ts": "907bf2b7cce9ce60a8d5f1f50e59e4b43f55b8747eb405931f3534dd586b9612",
+    "src/editor/admittedCommands.ts": "718d62f4e2fd77a7d7ba1c5d4d573c1af8771e6208ec9c18b6be777048ecc477",
+    "src/editor/admittedEditor.ts": "332ecaf3af1bd28e948fd293ab4dfbacb63a4bcd70f93af8c161144ff2483b01",
+    "src/editor/admittedText.ts": "6322ee8f0a9de75cd25c463c9752849a454ceea246c3b2712fbb90e83a3f8afc",
+    "src/editor/breadcrumbs.ts": "2842e2579ffb68238d2f980b2b45b241a78ab036f0ed8c9d2b9bb5ce9034bc65",
+    "src/editor/cardCommands.ts": "f5fb9e8f2f36efc9f312d6294cee20f50f8f062952efbd3421178a8e06702904",
+    "src/editor/commands.ts": "a2d8db596675d8a7b203b2093561b6480945908f11fca06802d3d6be8290c37c",
+    "src/editor/createEditor.ts": "704e338975617e4ff8e786a2ecec8687abd7064464450ee2b31ef5d296f597ff",
+    "src/editor/keymap.ts": "55166f4ec6ef746daeb84fb0f637351680a9035d3f2ce1beb8b180330d079a0e",
+    "src/editor/livePreview.ts": "83348a612fc2eb1df0d84242f40c95958d1769ddda5351d5651a4712f318ed0a",
+    "src/editor/staticRender.ts": "742f0a122796720b1a2e33b93a5f5e3f69a5028e3781f11ec41e7077b5c5fdc5",
+    "src/editor/textChannel.ts": "421536ae4bbec26b2921c18de60687fab45bbd2634de88367b3a4084263bd1a1",
+    "src/editor/theme.ts": "4345afaf96f514fee5106bd5ef10b64215ab71a2dd1af06efa8e199712041ae0",
+    "src/gestures/recognizer.ts": "56eb342f153c45cca3f8c11f386f35be84a7870f225d39392a4c5be10f471205",
+    "src/gestures/useGestures.ts": "8a91dedb6f86953303502152748ed93450762320b6e016119c98ec2faea82d45",
+    "src/lib/date.ts": "a6443b7536dfbf3974e746a73d0aff74d710a0ed52ca240a5ac85327ed022f35",
+    "src/lib/id.ts": "8e500a47c6f0cee931b47f811d4d950067d7a7a8d0d9c3700a783686bf75c88f",
+    "src/lib/localStore.ts": "0a76e259b3c22c8046cec721ebadb2a245da4bf29d36ca9db42bb9cf0165f353",
+    "src/lib/marks.ts": "4642a7c4af75af8f2cab289579d3ceb628ac52bdb58f0718281423b88af0724a",
+    "src/lib/temporal.ts": "2028e20d07e9992a554c2a9e1aa7774f6c2acfa9f74576edbaab70f4971af05d",
+    "src/lib/zip.ts": "82a7c210e82205cc12a1c235a237546d6432200a4970a461f6f625aca2cf3065",
+    "src/main.tsx": "a1344b3e4b38570e3466e2da9ddf99e37b3daca0a6f9c13463153321cfa56752",
+    "src/pwa.ts": "5a3ec5b5e78c89701a086928507163284832ef1d08eaecc0f43b7bd128a416c0",
+    "src/styles/cards.css": "f4c132ca7d190e326d11d065665e9cffa29c9756891b04d76c318964716e02c5",
+    "src/styles/index.css": "8be706bac490ea97c12ec4195912e716b71ab614737137b48e89920975481d3c",
+    "src/styles/markdown.css": "5c4ae2e24bec05a4d113fb6acc8c11abab5f95f7e3e779eb2fbc77fbf3f8d348",
+    "src/styles/reset.css": "be6761aeadb419bc8802fcc4834c4b45c9a9ed907cdb026947394423f10b87e3",
+    "src/styles/shell.css": "aeabdc3760e0b252bd0200aeedb4a15242fd4ace73ff21a7bd80a1e28efda378",
+    "src/styles/theme.css": "02a54ffd41f42607de6ff1f64246c62645627cdf5527a079b37f51ccf6d6f552",
+    "src/styles/tokens.css": "778081cd56d07c6fad9f2dcb973f3f14a81d357919b3341d03409123cb93c092",
+    "src/ui/App.tsx": "cb9702a598ad8e0cbe9e6d57d1af768d32bc94caad5fb0d77d45691b9f455048",
+    "src/ui/Card.tsx": "3676f9f7c64c2e2a31522439b4f1c717011e2d5bb5be41ff906e2090a70168fa",
+    "src/ui/Collection.tsx": "57d67b6ebf8cb823fc92623b8cc5b83eca56a370e44ef4c7bad16d185ac28d03",
+    "src/ui/Compose.tsx": "f2cd494903264281228ae232ef099c79b1dda9e43ba07019290e3eb13970ac91",
+    "src/ui/DayPanel.tsx": "e65b5962ebccbce8b26cf73cd11f3cd96e0e4868bc79362a04d701b1dfe1d30f",
+    "src/ui/DayPlane.tsx": "8801d3e104e0a491f6a0cf8b9f6015fa46c4d01f47deb5ebc78c4baf7616c1bd",
+    "src/ui/Goals.tsx": "bba54c8811d53d4ec0e198acd87d96a011ed26136af397d57158fa02a5ea4f9a",
+    "src/ui/GoalsOutline.tsx": "ca545b6eb96a34ee225621c282142b216915a2a2d886346a086060b9530e6856",
+    "src/ui/Menu.tsx": "797358ab31224dc58a112ba47c85655a96e4b1b7a792d22366cec86c2578109e",
+    "src/ui/StaleBanner.tsx": "36dccd9234c4a34d3a0687ca5fed542e9469cb3230562d7a31814f788e628723",
+    "src/ui/UnfiledPanel.tsx": "c198ef6c905f70ecba366ee822b8560822d5839ee0907246e90ebc95296476bf",
+    "src/ui/useBreakpoint.ts": "44a85105b3041bd180b875895d45580bf7283e5ff51daa97956072dbaf173b99",
+    "src/ui/useCardReorder.ts": "32e81029bb55184db39199bc8959a243a900c9a49ffad9286332eeacb64f67fe",
+    "src/ui/useStore.ts": "264c9119ca250d47a9d94700af4f34574681aea947adf25788368f438d14df2d",
+    "src/ui/useSync.ts": "3bdf0afac818103d5acb2e40ffdd9f0aec735df52a52a1a80ae3cfd647ecc280",
+    "src/ui/useToday.ts": "2d680dde8a39bb7747eb4da4f180612d1203918d3258ee9d0dfa33c68972e0b6",
+    "src/ui/useYjs.ts": "62deb8abc3cf897c469127cd517507615e8c55621d24bdf23cf0aa16811c3f69",
+    "scripts/legacy-cleanup/campaign.mjs": "12dfe89d76cfc8ab9f338069d2e43a4c252b7ae87a58af62103c101b6d46f971",
+    "scripts/legacy-cleanup/config.mjs": "f40b71cd405ac191f7041ae99806488832c25ab89b20c4a0d4dd0cd831e76cea",
+    "scripts/legacy-cleanup/diagnostics.mjs": "0a62fff8ac55662d50f1e44a4ef15890d52bbe115b832d964d5d34ea68dadcaa",
+    "scripts/legacy-cleanup/properties.mjs": "353c97da7a9381a329e73ad21702ae6dd3b6914d31a2a99bfb35ed4c13becdbe",
+    "scripts/legacy-cleanup/run.mjs": "98cd95b1ed6082f92131e09370eccbe5efaf1ad6edaae5dbed2d6819380cc23c",
+    "scripts/legacy-cleanup/supervisor.mjs": "6f2b18fc320a203732b48240c868d6a9f2f2cb9990885ea2cef0271822cb42c6",
+    "test/legacy-cleanup/browser.mjs": "434ef06f62bbbe31625c5b0b97faf39ab73703b21221eb1dee248308690efa0c",
+    "test/legacy-cleanup/harness.node.mjs": "ee143dfeec608ec407307c97f97318c908da51c142e8a378291749f31023fc08",
+    "test/legacy-cleanup/index.html": "3fd5dd775770cbcaef09b654efbe628270c7641e483c7bc14f355d39190ab796",
+    "test/legacy-cleanup/regressions/captured-4c3c3ab/README.md": "e273956a6bb45ebe666450e5f31f66537a4b97cf9b42539d10813cd271fdd2a5",
+    "test/legacy-cleanup/regressions/captured-4c3c3ab/diagnostic.json": "a453218e68b051e80c54409c744e6644df90e0a3d3d151236efdb20e0f65b2fa",
+    "test/legacy-cleanup/regressions/captured-4c3c3ab/input.json": "f360f31d2a4a98d2cb020f9d84c74b65c2e2ad760333eeb7c0bb2109e7c2c52a",
+    "test/legacy-cleanup/regressions/captured-4c3c3ab/provenance.json": "b811e9fcb1a212d778c41d29735d57817d1682b38940eb7622ad64e19d0e9937",
+    "test/legacy-cleanup/regressions/field-too-long-2026-09-09/README.md": "152d0cc51abf12ccdb4519b8c9bc53bf7f5f9ae3bfa17fe3b98f42578b547615",
+    "test/legacy-cleanup/regressions/field-too-long-2026-09-09/diagnostic.json": "2d73589e2a9689d6ad092b7d455d203ab035c34736a77490ca2dea674fa7ef00",
+    "test/legacy-cleanup/regressions/field-too-long-2026-09-09/input.json": "36877ec7c9975b5259a24d0edf31faabd4be968419d2f89442c88c208aa35e3d",
+    "test/legacy-cleanup/regressions/field-too-long-2026-09-09/provenance.json": "b153940c578c877cf3a7821c66c3a15f0d085c44688643877e68dc2ddd26d114",
+    "test/legacy-cleanup/regressions/field-too-long-2026-09-09/report.json": "db8733f9901a7a41106dba9cba98e27d373a8eabef79741f93ccb9caead9fce8",
+    "test/legacy-cleanup/supervisor-fixture.mjs": "d6fd9fbf816baf62048b19d5363b17a3121ac43e7da50c02236cf8f738b7ce14",
+    "test/legacy-selection/browser.mjs": "d350400e7fd76878142de7fe7d0fa8c21e19a277cc1c5f4261e241eff6d6baa8",
+    "test/legacy-selection/index.html": "c1a2c9de6ab2445cd81ced25ff6293a9b8e922c16c0f62488a34adee49fa7609",
+    "test/legacy-import/browser.mjs": "d0471b91e43ec47b7601cc11a1203df585a12518d10a5e908995735b35e2df9e",
+    "test/legacy-import/error.mjs": "20b23e47a596a1d1dde4d545035f829d32ed9c3e317e93484e9813f3f09d2375",
+    "test/legacy-import/index.html": "cccbf874c8f3b1bc2511b7bbb0c5674ceb0bfb41da6b39eddee37b71932887c5",
+    "scripts/legacy-export/arbitrary.mjs": "1f4eddbb751bf9e5ae129fb7704fe5a1814af1c5aa5d04f9fe66944f65f2c8d2",
+    "scripts/legacy-export/exclusion.mjs": "ed5f861b4d900f648e2affcdbb02fbfd2a23dd502a9dd0765d7c566cba2ac1d0",
+    "scripts/legacy-export/oracle.mjs": "a00314dd73c5c974c6b9d416cada44084b3e5dac85638c89fe425acd8dbfd4e4",
+    "scripts/legacy-export/run.mjs": "362c1cdba43ae9930508c8624b2232f61871b960619fa4b0373cfc6e150e225b",
+    "scripts/legacy-export/unzip.py": "1ebf4dd98b0642d196664935852beb8442da82a939a9132bcc2e7cd32f81da9e",
+    "test/legacy-export/browser.mjs": "bde953fb3bf30f920541b500f37689b7c154d4f6ad5c1f3cb80daf417710d35f",
+    "test/legacy-export/index.html": "bb5b610b0fbacdd0d19d13ea16d776d3c2e97209d7e7f35c8fec732f30367989",
+    "test/legacy-export/old.html": "473826fe22cb32182a78810f0e54e3982092814e96ae12ef035fd25876c01972",
+    "test/legacy-export/source.ts": "d4be6bc0a96b890b6ebb567ec9c225c7af29ddcd3e50f11ce4da237c6a07c95e",
+    "test/legacy-export/worker.mjs": "0d0e8eb775d9086462cbbe388a88d01b0bdb877f76e4a0d77a9d54e165ad8055",
+    "test/legacy-source/browser.mjs": "b9b242001c385b8a08720b8612268a65ee23556c3b1656c3e66da02b3ceef5cc",
+    "test/legacy-source/fixture.ts": "b832a38836238527eac12cda2d89605ecc63fd3dbca8bdc300965ccb2c8fb0ae",
+    "test/legacy-source/index.html": "c249933bc76326fbb6d047b5be409d316155c3b1cc4984a3b8aa1fdb36024ad4",
+    "test/storage-properties/oracle.ts": "08aaad91335c21a078ce1b9461d25ad46038b2e7c213d705c0677c472d292140",
+    "test/legacyCleanup.test.ts": "f96a60d420fda7f142b368d50ed26f22232d0ccf122b2d24a96c89a679f91e03",
+    "test/legacyCleanupBounds.test.ts": "548b8d9380ed68126523ba3b04132b2826aa1374a138f40bb095be1e0ee437d3",
+    "test/legacyCleanupFixture.ts": "959f961ed4453ceb7849eec6aa64fd0bc46fa85a5734e5cf3236e15319e63009",
+    "wasm/journal-seal/seal.generated.ts": "d85314b5564274cd7d45fa8cca3f250eebd0b608bc1bcfd51da6da5c78b13265",
+    "docs/legacy-cleanup-preparation.md": "c20f922568b23ce071cdd90bec8d439ebd27c4ac1a5b0097740d8d08edb5a44d",
+    "docs/storage-contract.md": "439b820e3258feafc5fdef8b42448cc2bbdb045615db3ae9e4494e00933a8e4f",
+    "package.json": "d2b2373be1322234322442cfcb91b0228602b35871a3eb393b4379ec95547d35",
+    "pnpm-lock.yaml": "0ff2c4bd03d8988de1e9f383f3f96504e9f1d1af6823a53610dffb758e6dc38e",
+    "pnpm-workspace.yaml": "c47ec22acbc22d2c84ecf0e3eb3d55d4b4b39e6e8e20eff4b62d16d3bd22720a",
+    "vendor-patches/yjs@13.6.31.patch": "d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1",
+    "vendor-patches/yjs-13.6.31.json": "c69caba120ae24679ae0e097f7303d0bb1e0bcd723c3388a807f42a18a8e6210"
+  },
+  "checks": [
+    {
+      "id": "complete-exact-cleanup-and-retry",
+      "passed": true
+    },
+    {
+      "id": "overlong-manifest-key-refuses-before-any-write",
+      "passed": true
+    },
+    {
+      "id": "cleanup-after-journal-flush-and-compaction",
+      "passed": true
+    },
+    {
+      "id": "journal-only-source-with-absent-database",
+      "passed": true
+    },
+    {
+      "id": "competing-cleaners-converge",
+      "passed": true
+    },
+    {
+      "id": "unselected-and-wrong-factor-refuse",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-0",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-1",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-2",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-3",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-4",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-5",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-6",
+      "passed": true
+    },
+    {
+      "id": "request-success-abort-7",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-database",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-0",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-1",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-2",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-3",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-4",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-5",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-6",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-progress-7",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-remove-0",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-remove-1",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-remove-2",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-remove-3",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-remove-4",
+      "passed": true
+    },
+    {
+      "id": "renderer-death-remove-5",
+      "passed": true
+    },
+    {
+      "id": "cold-destination-missing",
+      "passed": true
+    },
+    {
+      "id": "cold-destination-ciphertext",
+      "passed": true
+    },
+    {
+      "id": "cold-destination-pending-journal",
+      "passed": true
+    },
+    {
+      "id": "terminal-observer-change-refuses",
+      "passed": true
+    },
+    {
+      "id": "changed-source-before-intent",
+      "passed": true
+    },
+    {
+      "id": "changed-source-after-intent",
+      "passed": true
+    },
+    {
+      "id": "changed-value-on-resume",
+      "passed": true
+    },
+    {
+      "id": "unknown-key-on-resume",
+      "passed": true
+    },
+    {
+      "id": "missing-future-key-on-resume",
+      "passed": true
+    },
+    {
+      "id": "tampered-progress-refuses",
+      "passed": true
+    },
+    {
+      "id": "remove-refused",
+      "passed": true
+    },
+    {
+      "id": "remove-throws",
+      "passed": true
+    },
+    {
+      "id": "blocked-delete-cancellation-retains-permit",
+      "passed": true
+    },
+    {
+      "id": "imported-clear-before-and-after-cleanup",
+      "passed": true
+    },
+    {
+      "id": "imported-clear-after-custody-removal-death",
+      "passed": true
+    },
+    {
+      "id": "terminal-clear-source-reappearance",
+      "passed": true
+    }
+  ],
+  "mutations": [
+    {
+      "id": "skip-manifest-validation",
+      "detected": true,
+      "assertion": "invalid-manifest-preserves-all-carriers",
+      "actual": {
+        "names": [
+          "done.4c9dae03869be07dae61d1889b403f4c",
+          "done.custody",
+          "done.slots"
+        ],
+        "databases": "{\"done.4c9dae03869be07dae61d1889b403f4c\":[[\"content\",1,{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":{\"bytes\":[190,195,231,36,119,73,39,37,56,207,126,250]},\"ct\":{\"bytes\":[173,93,254,25,203,25,142,254,243,205,217,65,111,103,129,68,136,199,106,211,243,208,154,202,75,252,61,48,54,31,123,9,177,13,191,132,95,166,175,16,111,64,162,90,255,224,154,121,7,123,140,254,118,4,122,61,245,199,116,89,100,241,249,98,73,94,132,76,128,88,242,225,118,87,192,16,172,247,207,47,73,226,245,145,4,231,169,93,235,121,152,141,113,176,221,121,15,49,130,140,2,146,215,176,73,155,42,22,38,17,23,237,192,48,35,64,14,81,234,60,160,146,53,118,130,250,72,139,97,120,155,200,65,118,221,65,60,210,159,237,13,220,137,226,179,204,203,189,0,75,32,55,248,170,184,64,96,54,106,33,41,197,160,3,164,56,144,92,85,206,151,127,102,78,21,158,196,226,49,124,236,251,208,232,110,229,117,101,222,213,98,199,58,240,188,177,235,153,66,62,33,215,56,62,69,45,110,203,82,61,56,240,204,122,158,115,129,209,148,223,192,166,146,246,31,144,76,212,82,57,100,161,96,197,38,220,58,186,43,191,154,51,19,118,127,55,215,161,27,216,28,137,115,159,32,205,211,255,87,226,7,178,231,3,229,204,101,75,140,230,128,82,75,178,137,210,102,54,38,178,129,193,8,172,96,138,238,28,202,15]}}],[\"meta\",\"counter\",{\"v\":1,\"store_id\":\"5712c5960972f899e3b2670016f6ab71\",\"intent\":\"42243538f084c271af631756548e9bbc\",\"active_gen\":1,\"next_seq\":5,\"reserved\":{\"1\":4},\"mac\":{\"bytes\":[71,97,12,239,37,133,13,111,79,67,29,198,116,69,19,242,213,253,199,139,201,232,41,6,117,145,170,0,203,186,95,231]}}],[\"content\",2,{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":{\"bytes\":[226,190,190,237,94,63,252,224,206,252,113,78]},\"ct\":{\"bytes\":[124,87,197,61,28,126,12,22,235,232,142,196,199,85,25,241,130,143,5,82,173,208,4,148,105,103,109,241,253,242,223,125,107,231,77,103,55,186,169,220,94,155,38,26,4,143,8,235,169,239,164,112,75,150,168,66,114,227,185,60,7,124,139,229,234,59,203,236,188,60,71,221,130,231,225,240,121,244,93,190,206,73,8,165,127,152,75,28,62,82,78,83,209,72,1,98,183,32,108,45,102,148,84,123,147,183,59,56,239,131,143,171,148,81,30,95,177,251,235,8,223,254,194,103,176,70,0,9,131,16,28,211,205,68,31,93,186,109,152,23,25,14,168,143,143,1,229,11,119,220,6,175,156,145,215,230,198,4,30,68,162,157,6,6,67,204,26,99,194,95,99,156,216,125,169,165,45,116,37,120,66,122,63,123,220,210,27]}}],[\"content\",3,{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":{\"bytes\":[245,229,63,98,75,251,226,19,147,91,64,234]},\"ct\":{\"bytes\":[64,87,93,236,13,158,49,133,189,184,185,56,96,90,183,78,182,8,215,175,90,233,42,164,87,63,247,253,165,158,71,241,33,24,13,71,99,181,172,65,77,153,159,82,28,7,237,180,23,222,78,156,53,2,76,183,28,115,4,12,192,251,159,125,234,210,26,237,216,149,107,110,186,38,182,254,194,235,1,146,93,164,119,32,162,168,188,164,43,156,134,252,179,119,135,169,15,154,254,225,99,64,33,220,61,255,225,85,175,14,182,107,129,36,82,236,202,152,30,68,18,29,63,78,157,24,182,129,139,219,17,219,51,56,8,26,188,209,142,180,32,224,133,49,98,180,241,82,219,175,204,228,29,124,248,74,78,230,213,95,19,87,88,80,148,115,27,74,63,140,18,167,212,211,207,129,126,144,231,51,163,106,1,187,164,191,13,184,209,8,82,66,189,46,224,242,150,121,209,61,73,33,230,181,73,126,162,189,64,113,168,5,52,226,192,247,195,18,245,27,138,6,122,144,232,203,41,139,107,112,176,227,177,138,6,186,3,145,183,223,24,23,201,158,193,12,170,167,135,122,161,41,115,234,111,84,159,40,125,169,161,221,247,51,141,66,77,185,145,44,176,193,46,219,107,236,24,49,32,21,179,37,28,180,15,132,102,78,162,24,216,17,6,9,13,131,187,127,143,52,137,187,38,195,24,216,157,227,133,74,17,217,197,69,251,229,201,127,47,25,9,44,24,176,190,34,255,56,138,91,56,137,151,75,196,190,52,109,195,31,214,74,206,63,34,103,194,172,138,194,7,72,22,68,79,3,199,238,173,90,251,127]}}],[\"content\",4,{\"v\":1,\"gen\":1,\"seq\":4,\"kind\":\"update\",\"nonce\":{\"bytes\":[204,206,71,231,120,175,234,46,227,187,167,49]},\"ct\":{\"bytes\":[155,72,150,252,44,90,179,66,148,71,153,51,57,54,192,44,234,107,242,56,61,101,93,89,130,31,132,151,38,190,187,209,105,82,96,186,221,214,157,132,14,162,79,166,40,214,218,3,65,84,186,16,45,10,172,223,185,81,130,21,13,166,30,133,70,115,216,65,44,132,118,4,243,117,227,99,148,184,176,130,156,17,190,96,132,96,239,156,222,91,204,70,80,52,63,71,229,131,122,215,62,82,50,210,82,113,52,132,216,180,49,87,240,173,96,41,197,165,178,72,22,211,224,230,40,38,154,69,246,110,147,89,99,118,32,236,11,236,13,205,218,142,72,69,151,162,14,139,64,230,113,20,158,94,248,71,76,16,184,149,119,15,5,5,53,1,142,179,134,168,178,145,234,138,18,47,67,131,127,59,255,29,136,54,110,109,128,62,225,39,185,121,48,69,253,27,5]}}]],\"done.custody\":[[\"entries\",[\"seeded-import\",\"fd8159f832e29efae25452c62c63098d\",\"7414b9afdc246d55b7fc3854d661e8fb\"],{\"v\":2,\"state\":\"protected\",\"slot_id\":\"seeded-import\",\"principal_id\":\"fd8159f832e29efae25452c62c63098d\",\"workspace_id\":\"7414b9afdc246d55b7fc3854d661e8fb\",\"store_id\":\"5712c5960972f899e3b2670016f6ab71\",\"root_id\":\"6ca32359e6e99edd9d5c642252bb7545\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[161,51,107,76,245,68,239,240,59,8,208,25,78,101,28,127]},\"nonce\":{\"bytes\":[171,54,229,86,199,74,28,166,243,33,221,192]},\"ct\":{\"bytes\":[217,199,248,40,184,198,42,219,86,6,153,207,147,186,104,197,28,99,219,41,248,184,112,40,83,149,34,179,192,197,98,251,108,26,241,239,145,78,100,198,30,111,38,241,125,26,230,8]}}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":{\"bytes\":[204,22,151,2,250,51,122,125,213,24,172,149]},\"ct\":{\"bytes\":[67,137,30,122,191,109,22,140,45,191,14,159,58,125,9,89,41,193,181,213,149,221,251,45,147,148,4,207,11,207,237,156,30,145,48,251,166,75,176,89,136,225,229,197,19,181,30,84]}},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"9334ff7084d3aca7b3e6125103457d8b\",\"publicKey\":{\"bytes\":[177,34,117,37,21,129,56,83,155,212,221,214,186,202,13,236,7,1,122,195,170,156,86,169,25,113,117,57,18,102,70,72]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[229,58,27,82,200,49,236,245,200,158,37,176]},\"ct\":{\"bytes\":[113,192,42,213,36,16,164,32,239,117,180,91,101,165,102,104,166,220,21,16,98,148,96,108,240,132,230,226,172,12,248,15,35,236,201,248,240,183,253,205,216,61,252,250,168,6,118,127]}}},{\"role\":\"signing\",\"id\":\"8fad6c2a8782f595342863f5358a03e0\",\"publicKey\":{\"bytes\":[84,37,76,165,8,107,23,192,117,67,148,187,134,122,65,136,50,210,57,249,57,193,177,230,175,205,222,206,198,181,186,190]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[183,201,2,233,62,208,97,139,142,221,100,43]},\"ct\":{\"bytes\":[223,180,222,184,161,93,199,140,221,110,125,236,213,20,0,226,155,175,68,128,112,208,6,18,233,88,196,141,220,142,206,95,12,59,60,219,220,236,253,213,137,38,229,229,115,243,134,234]}}}],\"mac\":{\"bytes\":[59,1,236,104,41,143,163,142,125,8,90,75,7,96,68,12,66,208,115,44,9,112,29,171,190,138,193,132,36,24,54,128]}}],[\"entries\",[\"seeded-import\",\"fd8159f832e29efae25452c62c63098d\",\"7414b9afdc246d55b7fc3854d661e8fb\",\"content-v1\"],{\"v\":1,\"state\":\"ready\",\"intent\":\"42243538f084c271af631756548e9bbc\",\"mac\":{\"bytes\":[149,16,90,205,101,17,208,142,136,179,24,97,55,108,29,139,115,18,178,175,106,194,93,122,31,70,104,40,160,15,168,41]}}],[\"entries\",[\"seeded-import\",\"local-genesis-v1\"],{\"v\":1,\"initial\":{\"v\":2,\"state\":\"creating\",\"slot_id\":\"seeded-import\",\"principal_id\":\"fd8159f832e29efae25452c62c63098d\",\"workspace_id\":\"7414b9afdc246d55b7fc3854d661e8fb\",\"store_id\":\"5712c5960972f899e3b2670016f6ab71\",\"root_id\":\"6ca32359e6e99edd9d5c642252bb7545\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[161,51,107,76,245,68,239,240,59,8,208,25,78,101,28,127]},\"nonce\":{\"bytes\":[171,54,229,86,199,74,28,166,243,33,221,192]},\"ct\":{\"bytes\":[217,199,248,40,184,198,42,219,86,6,153,207,147,186,104,197,28,99,219,41,248,184,112,40,83,149,34,179,192,197,98,251,108,26,241,239,145,78,100,198,30,111,38,241,125,26,230,8]}}],\"seal_reserved\":0,\"rotation_owed\":false,\"creation_intent\":{\"id\":\"42243538f084c271af631756548e9bbc\",\"storeId\":\"5712c5960972f899e3b2670016f6ab71\",\"rootId\":\"6ca32359e6e99edd9d5c642252bb7545\",\"wrappingId\":\"9334ff7084d3aca7b3e6125103457d8b\",\"signingId\":\"8fad6c2a8782f595342863f5358a03e0\"},\"envelope\":null,\"credentials\":null,\"mac\":{\"bytes\":[106,111,92,178,232,79,219,205,198,252,130,24,230,227,149,157,15,182,24,31,11,4,106,183,20,104,75,224,89,205,127,101]}},\"stage\":\"ready\",\"mac\":{\"bytes\":[12,24,239,111,21,44,109,108,138,199,26,245,39,154,114,43,119,99,155,104,223,73,162,31,159,32,68,68,75,170,242,224]},\"imported\":{\"policy\":\"markdown-system-v1\",\"recoveryDigest\":\"a355349ef6dc391cdb2db4e950a4c46bb2909d4c10359acadad2d392dae9a5f7\",\"sourceOrigin\":\"http://127.0.0.1:5198\",\"sourceDigest\":\"c4a72ce9ccdb200b62db40596f23f1df54bd52151c3bf94a69824b8e05536fe0\",\"planDigest\":\"fa1539be40ba8a38e2a4e1df89fadff9db947455df394c722421d558e69433b1\",\"createdAt\":\"2026-09-09T19:43:22.787Z\",\"selectionMac\":\"5bd733a57ae9a1073bcc1c136f8d076146d4de0eb273224867d64a7773b5fd2a\"},\"sourceCleanup\":{\"v\":2,\"intentId\":\"a0148efa5d09a9de1dafe47e6812368f\",\"databaseDigest\":\"8870a7404eb4ad281635b371f46ec652a8b68416f0163beb78d24688a793c942\",\"entries\":[{\"key\":\"done.pending-update.done.fixture.1\",\"digest\":\"85eca92c8a9c943a9dc6b0e64c8d008c52e2cf55116d82a9b4b5ec2f13bf08f5\"},{\"key\":\"done.pending-update.done.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.0\",\"digest\":\"b732e9802e5e53997398389135d5cd1fcc46f62e43cb9bf38dcbf7cb3677371c\"},{\"key\":\"done.actor\",\"digest\":\"7247c4dce27a1547543c2961c513511166bc9dbed4fa87b5c94f29a6939f120b\"},{\"key\":\"done.device\",\"digest\":\"5a5381e70fa99debfb19595853f6bd3dcf8aa79dbec4c6792a57046774761040\"},{\"key\":\"done.sync\",\"digest\":\"d8710a91be710d59e2900eac6abed3221f0e84b354c551a016c3021311b13d9e\"},{\"key\":\"done.sync.last\",\"digest\":\"28975d7a796c8d9b35c88076c70162ce5d75e7b74e5d93b2ef8f7095cff06eec\"}],\"next\":0}}]],\"done.slots\":[[\"slots\",\"seeded-import\",{\"id\":\"seeded-import\",\"status\":\"active\",\"unlockBinding\":null,\"local\":{\"principalId\":\"fd8159f832e29efae25452c62c63098d\",\"workspaceId\":\"7414b9afdc246d55b7fc3854d661e8fb\",\"intentId\":\"42243538f084c271af631756548e9bbc\"},\"stores\":[{\"principal\":\"fd8159f832e29efae25452c62c63098d\",\"workspace\":\"7414b9afdc246d55b7fc3854d661e8fb\",\"dbName\":\"done.4c9dae03869be07dae61d1889b403f4c\"}]}]]}",
+        "local": [
+          [
+            "done.actor",
+            "legacy-human"
+          ],
+          [
+            "done.device",
+            "{\"id\":\"old-device\",\"name\":\"private-name\"}"
+          ],
+          [
+            "done.pending-update.done.11111111111111111111111111111111.22222222222222222222222222222222.33333333333333333333333333333333.0000000000000000",
+            "2:unrelated-encrypted-carrier"
+          ],
+          [
+            "done.pending-update.done.fixture.1",
+            "1:AAHKAQEAAQ=="
+          ],
+          [
+            "done.pending-update.done.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.0",
+            "1:AQHKAQAEAQZtYXN0ZXISIWpvdXJuYWwtb25seSDinJQKAA=="
+          ],
+          [
+            "done.sync",
+            "{\"token\":\"private-token\",\"room\":\"legacy-room\"}"
+          ],
+          [
+            "done.sync.last",
+            "private-last-sync"
+          ],
+          [
+            "other-app",
+            "unrelated"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "skip-destination",
+      "detected": true,
+      "assertion": "cold-coverage-refuses",
+      "actual": "ok"
+    },
+    {
+      "id": "ignore-value",
+      "detected": true,
+      "assertion": "changed-value-refuses",
+      "actual": null
+    },
+    {
+      "id": "prefix-sweep",
+      "detected": true,
+      "assertion": "modern-journal-preserved",
+      "actual": null
+    },
+    {
+      "id": "unsigned-manifest",
+      "detected": true,
+      "assertion": "tampered-progress-refuses",
+      "actual": null
+    },
+    {
+      "id": "omit-destination-journal",
+      "detected": true,
+      "assertion": "pending-journal-refuses",
+      "actual": null
+    },
+    {
+      "id": "clear-forgets-source",
+      "detected": true,
+      "assertion": "clear-reappearance-refuses",
+      "actual": null
+    }
+  ],
+  "rendererCrashes": 16,
+  "limits": [
+    "Controller-owned disposable Chromium exclusion; no production old-writer exclusion or default app cutover.",
+    "Known legacy DB/journal/ancillary absence only; not whole-profile or forensic residue acceptance.",
+    "Renderer gates pause at the next crypto operation or fixture return after observed commit/removal; not exact instruction cuts."
+  ],
+  "active": [],
+  "trial": null,
+  "yjsGuard": "Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.",
+  "operation": "close:browser-server",
+  "browser": {
+    "version": "151.0.7922.34",
+    "platform": "darwin"
+  },
+  "phase": "clear-forgets-source",
+  "lastBrowserOperation": {
+    "method": "resumeClear",
+    "started": "2026-09-09T19:43:35.388Z",
+    "finished": "2026-09-09T19:43:35.395Z",
+    "refusals": []
+  },
+  "properties": {
+    "seed": 8941,
+    "runs": 60,
+    "failed": false,
+    "shrinks": 0,
+    "path": null,
+    "error": null
+  },
+  "firstFailures": {
+    "skip-manifest-validation": {
+      "campaign": "skip-manifest-validation",
+      "trial": {
+        "campaign": "skip-manifest-validation",
+        "attempt": 1,
+        "stage": "generation",
+        "seed": 8941,
+        "inputHash": "96a4d56d89652f0a3fca2f220619de3723289340c4e47dae42888121bfe4f919"
+      },
+      "inputHash": "96a4d56d89652f0a3fca2f220619de3723289340c4e47dae42888121bfe4f919",
+      "error": {
+        "name": "AssertionError",
+        "message": "invalid-manifest-preserves-all-carriers\n\u001b[32m+ actual\u001b[39m \u001b[31m- expected\u001b[39m\n... Skipped lines\n\n\u001b[39m  {\n\u001b[32m+\u001b[39m   databases: '{\"done.5525acf0fe3bc1b6c944a5a731e191ef\":[[\"content\",1,{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":{\"bytes\":[246,221,195,48,29,148,31,139,201,156,169,5]},\"ct\":{\"bytes\":[210,137,213,184,253,235,97,227,196,241,204,119,234,224,80,235,129,14,194,58,58,63,188,14,218,243,36,226,95,70,198,178,2,120,239,81,113,204,41,110,206,126,52,203,147,210,26,136,51,139,230,147,183,175,12,208,122,208,77,209,3,146,29,235,126,8,12,122,19,170,244,99,217,245,145,113,201,66,12,147,42,103,255,248,179,145,152,79,23,224,102,12,182,175,72,94,48,184,220,206,124,168,243,55,116,157,35,131,231,5,63,200,149,165,73,89,42,114,235,132,177,1,44,134,187,187,132,54,178,116,233,150,103,177,78,219,71,70,147,174,214,130,183,181,77,167,96,190,133,210,224,231,53,149,248,213,254,141,144,31,116,59,230,139,127,244,35,139,86,54,223,73,66,156,157,118,33,77,161,67,208,117,148,231,150,56,16,240,86,70,221,91,235,35,118,151,174,205,214,221,205,250,56,134,103,142,21,52,104,61,148,234,64,226,58,59,64,237,128,190,81,127,59,181,101,46,208,251,122,3,200,246,129,62,218,193,235,46,142,170,72,56,179,9,7,190,180,180,1,6,144,118,34,164,175,40,171,128,37,189,220,235,74,8,155,150,59,219,170,246,204,62,251,74,1,114,225,57,153,142,129,232,158,236,208,193,224,213,95,109]}}],[\"meta\",\"counter\",{\"v\":1,\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"active_gen\":1,\"next_seq\":5,\"reserved\":{\"1\":4},\"mac\":{\"bytes\":[107,144,152,18,132,212,68,6,31,177,50,32,210,26,224,222,68,147,189,194,61,191,53,38,58,191,91,74,115,122,195,160]}}],[\"content\",2,{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":{\"bytes\":[119,206,149,91,179,57,41,151,162,77,58,190]},\"ct\":{\"bytes\":[194,136,224,93,131,104,130,61,210,84,71,109,61,59,206,124,103,179,88,47,254,139,148,141,154,120,75,39,75,112,177,133,153,198,134,83,16,184,255,103,27,94,254,45,100,122,91,151,228,68,245,153,54,35,32,100,40,85,199,194,14,146,45,156,194,170,214,103,12,222,20,252,19,68,209,181,211,56,113,170,186,138,75,56,56,168,237,172,15,109,217,15,160,53,15,47,204,236,142,182,180,236,73,8,11,57,29,44,57,231,147,15,54,89,116,159,197,0,80,187,69,221,45,28,201,89,142,244,245,79,84,123,153,213,75,16,216,170,38,128,198,10,126,228,116,231,74,99,69,198,60,129,146,170,104,152,224,105,165,203,29,244,170,55,154,64,14,162,162,14,248,98,44,79,44,8,74,197,56,240,37,85,242,145,118,189,126]}}],[\"content\",3,{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":{\"bytes\":[47,134,162,156,111,130,7,76,103,155,248,218]},\"ct\":{\"bytes\":[162,248,237,105,209,133,139,84,194,1,207,139,89,236,253,43,109,201,88,139,20,50,29,225,5,251,109,161,185,220,134,86,156,229,107,111,197,96,233,84,232,23,110,97,47,77,18,253,213,90,212,225,231,95,120,201,42,1,113,123,3,223,228,254,253,198,233,25,168,42,226,27,178,240,243,202,41,49,106,211,3,111,197,5,159,73,49,146,11,213,146,107,89,41,219,148,71,144,90,255,127,250,32,255,113,86,56,66,111,123,236,167,98,45,95,201,160,126,204,87,187,24,145,47,243,69,154,57,126,223,52,54,3,33,38,241,125,231,207,205,98,242,113,179,225,98,26,87,215,195,102,253,35,228,23,161,99,147,242,213,106,81,59,44,249,54,221,17,126,211,101,143,27,135,60,57,20,69,201,49,63,26,126,126,142,147,89,117,229,198,167,133,180,176,190,16,241,155,236,202,178,178,205,43,75,159,26,79,25,9,32,82,246,45,150,21,25,100,233,64,113,18,171,197,37,122,135,87,162,78,32,242,188,221,237,74,248,58,77,218,153,132,135,231,89,114,15,196,150,20,53,155,159,58,14,224,117,182,124,83,154,104,60,8,229,212,104,242,92,206,75,61,218,23,19,59,140,155,180,96,54,39,91,7,202,145,254,64,112,234,94,86,155,232,124,221,163,212,66,116,2,61,50,73,175,43,217,210,153,147,120,204,23,143,208,6,5,76,196,159,104,91,14,220,173,120,102,72,30,0,151,103,22,135,59,16,1,93,105,49,86,89,37,208,132,130,237,205,156,239,131,207,210,152,99,139,27,6,94,124,226,238]}}],[\"content\",4,{\"v\":1,\"gen\":1,\"seq\":4,\"kind\":\"update\",\"nonce\":{\"bytes\":[178,227,169,110,224,8,131,28,225,103,44,70]},\"ct\":{\"bytes\":[242,143,145,28,162,154,234,161,72,56,3,217,82,61,170,165,25,37,155,104,85,127,171,23,25,81,174,125,255,131,251,167,196,46,173,44,203,206,74,102,217,118,92,199,94,151,56,31,56,176,160,232,82,156,182,144,107,93,122,0,96,11,249,3,87,94,133,112,134,75,16,116,185,236,44,209,186,143,40,190,236,148,64,226,214,77,17,25,88,109,144,99,93,207,107,221,225,30,74,15,71,120,91,7,181,141,235,42,158,196,97,99,172,130,238,192,159,184,220,245,6,93,241,7,48,200,123,122,103,239,144,13,16,249,24,65,21,211,10,184,109,56,160,226,86,239,202,228,80,29,46,45,57,230,108,228,12,58,5,142,178,190,203,31,125,221,168,117,249,116,206,191,164,243,27,244,252,221,235,115,73,71,115,164,19,208,162,183,157,63,189,172,227,100,136,73,182]}}]],\"done.custody\":[[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\"],{\"v\":2,\"state\":\"protected\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":{\"bytes\":[56,67,114,133,34,194,227,31,122,179,232,159]},\"ct\":{\"bytes\":[195,0,254,139,153,68,17,172,14,123,121,109,126,226,212,169,253,85,228,217,35,100,114,73,133,68,135,18,133,13,161,64,146,79,136,24,93,74,214,49,85,73,235,137,61,51,75,208]}},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"publicKey\":{\"bytes\":[147,11,128,194,240,77,72,5,180,117,186,9,200,147,75,224,190,83,255,74,122,20,29,168,124,185,234,206,58,190,90,35]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[157,222,85,32,178,167,166,130,155,86,169,108]},\"ct\":{\"bytes\":[173,6,154,220,28,200,174,136,211,101,209,221,131,164,30,156,67,39,66,56,136,181,139,44,98,47,116,95,130,109,165,98,41,93,204,252,232,78,71,16,24,119,29,50,72,94,113,188]}}},{\"role\":\"signing\",\"id\":\"55568483efa9004cc85fb852f4362f58\",\"publicKey\":{\"bytes\":[238,184,131,8,95,251,65,5,37,218,105,229,40,174,80,156,25,60,168,57,111,192,104,85,83,220,86,237,154,221,241,208]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[88,187,30,208,149,110,68,110,36,194,25,24]},\"ct\":{\"bytes\":[146,152,12,150,70,183,148,28,110,215,202,223,115,79,225,102,16,79,113,140,137,142,155,101,224,163,0,180,92,10,136,112,132,208,220,213,207,155,12,188,117,58,98,10,155,203,89,73]}}}],\"mac\":{\"bytes\":[148,196,88,168,108,102,227,31,243,234,30,138,212,192,162,68,94,47,143,194,225,237,162,66,12,177,98,207,219,7,9,67]}}],[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"content-v1\"],{\"v\":1,\"state\":\"ready\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"mac\":{\"bytes\":[222,189,8,146,127,45,25,201,49,91,255,82,116,21,13,13,102,87,89,138,139,45,39,71,136,162,224,14,164,197,25,49]}}],[\"entries\",[\"seeded-import\",\"local-genesis-v1\"],{\"v\":1,\"initial\":{\"v\":2,\"state\":\"creating\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":0,\"rotation_owed\":false,\"creation_intent\":{\"id\":\"3f46572f4d98409b39057b7774c12ac2\",\"storeId\":\"a7ac12492751827286b36ac28ace5635\",\"rootId\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"wrappingId\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"signingId\":\"55568483efa9004cc85fb852f4362f58\"},\"envelope\":null,\"credentials\":null,\"mac\":{\"bytes\":[172,6,14,51,237,148,212,16,181,225,219,226,172,168,167,101,195,255,219,76,148,66,89,15,121,95,118,210,214,254,73,45]}},\"stage\":\"ready\",\"mac\":{\"bytes\":[27,205,201,74,74,66,121,221,11,229,157,77,95,136,215,194,241,135,59,66,199,146,48,7,108,58,239,117,255,176,6,54]},\"imported\":{\"policy\":\"markdown-system-v1\",\"recoveryDigest\":\"70c604b7612fc2b20e69971d86ecb819dc7d322487e3d278d12bc08e944dff52\",\"sourceOrigin\":\"http://127.0.0.1:5198\",\"sourceDigest\":\"a25b62777b768ea10db2933cd5358be8093b300320c33eeca9c6fdebc9f9425c\",\"planDigest\":\"fa1539be40ba8a38e2a4e1df89fadff9db947455df394c722421d558e69433b1\",\"createdAt\":\"2026-09-09T19:43:20.283Z\",\"selectionMac\":\"bbc3a7dded13da514d0e9cf3c514fb5846f6132e3df4480e2d27003bccd47ec1\"},\"sourceCleanup\":{\"v\":2,\"intentId\":\"7717e01328ff3f875b3392edac8d7018\",\"databaseDigest\":\"f44b4adc02f2dfd669724e308298cf884d745ce4f76113399ab770504e75e46a\",\"entries\":[{\"key\":\"done.pending-update.done.fixture.1\",\"digest\":\"915b54009ad620cc3124842ef68de28363e7d8c28f67feb889342bfd5a026640\"},{\"key\":\"done.pending-update.done.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'... 4101 more characters,\n\u001b[31m-\u001b[39m   databases: '{\"done\":[[\"updates\",1,{\"bytes\":[1,10,101,0,40,1,4,109,101,116,97,13,115,99,104,101,109,97,86,101,114,115,105,111,110,1,125,4,40,1,4,109,101,116,97,9,99,114,101,97,116,101,100,65,116,1,119,20,50,48,50,54,45,48,56,45,48,49,84,48,48,58,48,48,58,48,48,90,40,1,4,109,101,116,97,11,97,99,116,111,114,58,104,117,109,97,110,1,118,3,4,107,105,110,100,119,5,104,117,109,97,110,4,110,97,109,101,119,5,72,117,109,97,110,5,99,111,108,111,114,119,7,35,97,97,48,48,48,48,39,1,5,99,97,114,100,115,6,111,114,112,104,97,110,1,40,0,101,3,2,105,100,1,119,6,111,114,112,104,97,110,39,0,101,3,4,116,101,120,116,2,4,0,101,5,28,114,101,116,97,105,110,101,100,32,111,114,112,104,97,110,10,10,119,105,116,104,32,100,101,116,97,105,108,40,0,101,3,6,111,114,105,103,105,110,1,119,6,109,97,115,116,101,114,40,0,101,3,6,97,117,116,104,111,114,1,119,5,104,117,109,97,110,40,0,101,3,9,99,114,101,97,116,101,100,65,116,1,119,20,50,48,50,54,45,48,56,45,48,49,84,48,48,58,48,48,58,48,48,90,0]}]],\"done.5525acf0fe3bc1b6c944a5a731e191ef\":[[\"content\",1,{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":{\"bytes\":[246,221,195,48,29,148,31,139,201,156,169,5]},\"ct\":{\"bytes\":[210,137,213,184,253,235,97,227,196,241,204,119,234,224,80,235,129,14,194,58,58,63,188,14,218,243,36,226,95,70,198,178,2,120,239,81,113,204,41,110,206,126,52,203,147,210,26,136,51,139,230,147,183,175,12,208,122,208,77,209,3,146,29,235,126,8,12,122,19,170,244,99,217,245,145,113,201,66,12,147,42,103,255,248,179,145,152,79,23,224,102,12,182,175,72,94,48,184,220,206,124,168,243,55,116,157,35,131,231,5,63,200,149,165,73,89,42,114,235,132,177,1,44,134,187,187,132,54,178,116,233,150,103,177,78,219,71,70,147,174,214,130,183,181,77,167,96,190,133,210,224,231,53,149,248,213,254,141,144,31,116,59,230,139,127,244,35,139,86,54,223,73,66,156,157,118,33,77,161,67,208,117,148,231,150,56,16,240,86,70,221,91,235,35,118,151,174,205,214,221,205,250,56,134,103,142,21,52,104,61,148,234,64,226,58,59,64,237,128,190,81,127,59,181,101,46,208,251,122,3,200,246,129,62,218,193,235,46,142,170,72,56,179,9,7,190,180,180,1,6,144,118,34,164,175,40,171,128,37,189,220,235,74,8,155,150,59,219,170,246,204,62,251,74,1,114,225,57,153,142,129,232,158,236,208,193,224,213,95,109]}}],[\"meta\",\"counter\",{\"v\":1,\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"active_gen\":1,\"next_seq\":5,\"reserved\":{\"1\":4},\"mac\":{\"bytes\":[107,144,152,18,132,212,68,6,31,177,50,32,210,26,224,222,68,147,189,194,61,191,53,38,58,191,91,74,115,122,195,160]}}],[\"content\",2,{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":{\"bytes\":[119,206,149,91,179,57,41,151,162,77,58,190]},\"ct\":{\"bytes\":[194,136,224,93,131,104,130,61,210,84,71,109,61,59,206,124,103,179,88,47,254,139,148,141,154,120,75,39,75,112,177,133,153,198,134,83,16,184,255,103,27,94,254,45,100,122,91,151,228,68,245,153,54,35,32,100,40,85,199,194,14,146,45,156,194,170,214,103,12,222,20,252,19,68,209,181,211,56,113,170,186,138,75,56,56,168,237,172,15,109,217,15,160,53,15,47,204,236,142,182,180,236,73,8,11,57,29,44,57,231,147,15,54,89,116,159,197,0,80,187,69,221,45,28,201,89,142,244,245,79,84,123,153,213,75,16,216,170,38,128,198,10,126,228,116,231,74,99,69,198,60,129,146,170,104,152,224,105,165,203,29,244,170,55,154,64,14,162,162,14,248,98,44,79,44,8,74,197,56,240,37,85,242,145,118,189,126]}}],[\"content\",3,{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":{\"bytes\":[47,134,162,156,111,130,7,76,103,155,248,218]},\"ct\":{\"bytes\":[162,248,237,105,209,133,139,84,194,1,207,139,89,236,253,43,109,201,88,139,20,50,29,225,5,251,109,161,185,220,134,86,156,229,107,111,197,96,233,84,232,23,110,97,47,77,18,253,213,90,212,225,231,95,120,201,42,1,113,123,3,223,228,254,253,198,233,25,168,42,226,27,178,240,243,202,41,49,106,211,3,111,197,5,159,73,49,146,11,213,146,107,89,41,219,148,71,144,90,255,127,250,32,255,113,86,56,66,111,123,236,167,98,45,95,201,160,126,204,87,187,24,145,47,243,69,154,57,126,223,52,54,3,33,38,241,125,231,207,205,98,242,113,179,225,98,26,87,215,195,102,253,35,228,23,161,99,147,242,213,106,81,59,44,249,54,221,17,126,211,101,143,27,135,60,57,20,69,201,49,63,26,126,126,142,147,89,117,229,198,167,133,180,176,190,16,241,155,236,202,178,178,205,43,75,159,26,79,25,9,32,82,246,45,150,21,25,100,233,64,113,18,171,197,37,122,135,87,162,78,32,242,188,221,237,74,248,58,77,218,153,132,135,231,89,114,15,196,150,20,53,155,159,58,14,224,117,182,124,83,154,104,60,8,229,212,104,242,92,206,75,61,218,23,19,59,140,155,180,96,54,39,91,7,202,145,254,64,112,234,94,86,155,232,124,221,163,212,66,116,2,61,50,73,175,43,217,210,153,147,120,204,23,143,208,6,5,76,196,159,104,91,14,220,173,120,102,72,30,0,151,103,22,135,59,16,1,93,105,49,86,89,37,208,132,130,237,205,156,239,131,207,210,152,99,139,27,6,94,124,226,238]}}],[\"content\",4,{\"v\":1,\"gen\":1,\"seq\":4,\"kind\":\"update\",\"nonce\":{\"bytes\":[178,227,169,110,224,8,131,28,225,103,44,70]},\"ct\":{\"bytes\":[242,143,145,28,162,154,234,161,72,56,3,217,82,61,170,165,25,37,155,104,85,127,171,23,25,81,174,125,255,131,251,167,196,46,173,44,203,206,74,102,217,118,92,199,94,151,56,31,56,176,160,232,82,156,182,144,107,93,122,0,96,11,249,3,87,94,133,112,134,75,16,116,185,236,44,209,186,143,40,190,236,148,64,226,214,77,17,25,88,109,144,99,93,207,107,221,225,30,74,15,71,120,91,7,181,141,235,42,158,196,97,99,172,130,238,192,159,184,220,245,6,93,241,7,48,200,123,122,103,239,144,13,16,249,24,65,21,211,10,184,109,56,160,226,86,239,202,228,80,29,46,45,57,230,108,228,12,58,5,142,178,190,203,31,125,221,168,117,249,116,206,191,164,243,27,244,252,221,235,115,73,71,115,164,19,208,162,183,157,63,189,172,227,100,136,73,182]}}]],\"done.custody\":[[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\"],{\"v\":2,\"state\":\"protected\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":{\"bytes\":[56,67,114,133,34,194,227,31,122,179,232,159]},\"ct\":{\"bytes\":[195,0,254,139,153,68,17,172,14,123,121,109,126,226,212,169,253,85,228,217,35,100,114,73,133,68,135,18,133,13,161,64,146,79,136,24,93,74,214,49,85,73,235,137,61,51,75,208]}},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"publicKey\":{\"bytes\":[147,11,128,194,240,77,72,5,180,117,186,9,200,147,75,224,190,83,255,74,122,20,29,168,124,185,234,206,58,190,90,35]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[157,222,85,32,178,167,166,130,155,86,169,108]},\"ct\":{\"bytes\":[173,6,154,220,28,200,174,136,211,101,209,221,131,164,30,156,67,39,66,56,136,181,139,44,98,47,116,95,130,109,165,98,41,93,204,252,232,78,71,16,24,119,29,50,72,94,113,188]}}},{\"role\":\"signing\",\"id\":\"55568483efa9004cc85fb852f4362f58\",\"publicKey\":{\"bytes\":[238,184,131,8,95,251,65,5,37,218,105,229,40,174,80,156,25,60,168,57,111,192,104,85,83,220,86,237,154,221,241,208]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[88,187,30,208,149,110,68,110,36,194,25,24]},\"ct\":{\"bytes\":[146,152,12,150,70,183,148,28,110,215,202,223,115,79,225,102,16,79,113,140,137,142,155,101,224,163,0,180,92,10,136,112,132,208,220,213,207,155,12,188,117,58,98,10,155,203,89,73]}}}],\"mac\":{\"bytes\":[148,196,88,168,108,102,227,31,243,234,30,138,212,192,162,68,94,47,143,194,225,237,162,66,12,177,98,207,219,7,9,67]}}],[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"content-v1\"],{\"v\":1,\"state\":\"ready\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"mac\":{\"bytes\":[222,189,8,146,127,45,25,201,49,91,255,82,116,21,13,13,102,87,89,138,139,45,39,71,136,162,224,14,164,197,25,49]}}],[\"entries\",[\"seeded-import\",\"local-genesis-v1\"],{\"v\":1,\"initial\":{\"v\":2,\"state\":\"creating\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":0,\"rotation_owed\":false,\"creation_intent\":{\"id\":\"3f46572f4d98409b39057b7774c12ac2\",\"storeId\":\"a7ac12492751827286b36ac28ace5635\",\"rootId\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"wrappingId\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"signingId\":\"55568483efa9004cc85fb852f4362f58\"},\"envelope\":null,\"credentials\":null,\"mac\":{\"bytes\":[172,6,14,51,237,148,212,16,181,225,219,226,172,168,167,101,195,255,219,76,148,66,89,15,121,95,118,210,214,254,73,45]}},\"stage\":\"ready\",\"mac\":{\"bytes\":[215,142,138,89,125,93,23,182,165,97,29,172,159,174,232,30,198,33,84,234,86,157,184,176,171,42,184,41,192,186,215,249]},\"imported\":{\"policy\":\"markdown-system-v1\",\"recoveryDigest\":\"70c604b7612fc2b20e69971d86ecb819dc7d322487e3d278d12bc08e944dff52\",\"sourceOrigin\":\"http://127.0.0.1:5198\",\"sourceDigest\":\"a25b62777b768ea10db2933cd5358be8093b300320c33eeca9c6fdebc9f9425c\",\"planDigest\":\"fa1539be40ba8a38e2a4e1df89fadff9db947455df394c722421d558e69433b1\",\"createdAt\":\"2026-09-09T19:43:20.283Z\",\"selectionMac\":\"bbc3a7dded13da514d0e9cf3c514fb5846f6132e3df4480e2d27003bccd47ec1\"}}]],\"done.slots\":[[\"slots\",\"seeded-import\",{\"id\":\"seeded-import\",\"status\":\"active\",\"unlockBinding\":null,\"local\":{\"principalId\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspaceId\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"intentId\":\"3f46572f4d98409b39057b7774c1'... 166 more characters,\n\u001b[39m    local: [\n\u001b[39m      [\n\u001b[39m        'done.actor',\n\u001b[39m        'legacy-human'\n\u001b[39m      ],\n\u001b[34m...\u001b[39m\n\u001b[39m    names: [\n\u001b[31m-\u001b[39m     'done',\n\u001b[39m      'done.5525acf0fe3bc1b6c944a5a731e191ef',\n\u001b[39m      'done.custody',\n\u001b[39m      'done.slots'\n\u001b[39m    ]\n\u001b[39m  }\n",
+        "stack": "AssertionError [ERR_ASSERTION]: invalid-manifest-preserves-all-carriers\n\u001b[32m+ actual\u001b[39m \u001b[31m- expected\u001b[39m\n... Skipped lines\n\n\u001b[39m  {\n\u001b[32m+\u001b[39m   databases: '{\"done.5525acf0fe3bc1b6c944a5a731e191ef\":[[\"content\",1,{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":{\"bytes\":[246,221,195,48,29,148,31,139,201,156,169,5]},\"ct\":{\"bytes\":[210,137,213,184,253,235,97,227,196,241,204,119,234,224,80,235,129,14,194,58,58,63,188,14,218,243,36,226,95,70,198,178,2,120,239,81,113,204,41,110,206,126,52,203,147,210,26,136,51,139,230,147,183,175,12,208,122,208,77,209,3,146,29,235,126,8,12,122,19,170,244,99,217,245,145,113,201,66,12,147,42,103,255,248,179,145,152,79,23,224,102,12,182,175,72,94,48,184,220,206,124,168,243,55,116,157,35,131,231,5,63,200,149,165,73,89,42,114,235,132,177,1,44,134,187,187,132,54,178,116,233,150,103,177,78,219,71,70,147,174,214,130,183,181,77,167,96,190,133,210,224,231,53,149,248,213,254,141,144,31,116,59,230,139,127,244,35,139,86,54,223,73,66,156,157,118,33,77,161,67,208,117,148,231,150,56,16,240,86,70,221,91,235,35,118,151,174,205,214,221,205,250,56,134,103,142,21,52,104,61,148,234,64,226,58,59,64,237,128,190,81,127,59,181,101,46,208,251,122,3,200,246,129,62,218,193,235,46,142,170,72,56,179,9,7,190,180,180,1,6,144,118,34,164,175,40,171,128,37,189,220,235,74,8,155,150,59,219,170,246,204,62,251,74,1,114,225,57,153,142,129,232,158,236,208,193,224,213,95,109]}}],[\"meta\",\"counter\",{\"v\":1,\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"active_gen\":1,\"next_seq\":5,\"reserved\":{\"1\":4},\"mac\":{\"bytes\":[107,144,152,18,132,212,68,6,31,177,50,32,210,26,224,222,68,147,189,194,61,191,53,38,58,191,91,74,115,122,195,160]}}],[\"content\",2,{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":{\"bytes\":[119,206,149,91,179,57,41,151,162,77,58,190]},\"ct\":{\"bytes\":[194,136,224,93,131,104,130,61,210,84,71,109,61,59,206,124,103,179,88,47,254,139,148,141,154,120,75,39,75,112,177,133,153,198,134,83,16,184,255,103,27,94,254,45,100,122,91,151,228,68,245,153,54,35,32,100,40,85,199,194,14,146,45,156,194,170,214,103,12,222,20,252,19,68,209,181,211,56,113,170,186,138,75,56,56,168,237,172,15,109,217,15,160,53,15,47,204,236,142,182,180,236,73,8,11,57,29,44,57,231,147,15,54,89,116,159,197,0,80,187,69,221,45,28,201,89,142,244,245,79,84,123,153,213,75,16,216,170,38,128,198,10,126,228,116,231,74,99,69,198,60,129,146,170,104,152,224,105,165,203,29,244,170,55,154,64,14,162,162,14,248,98,44,79,44,8,74,197,56,240,37,85,242,145,118,189,126]}}],[\"content\",3,{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":{\"bytes\":[47,134,162,156,111,130,7,76,103,155,248,218]},\"ct\":{\"bytes\":[162,248,237,105,209,133,139,84,194,1,207,139,89,236,253,43,109,201,88,139,20,50,29,225,5,251,109,161,185,220,134,86,156,229,107,111,197,96,233,84,232,23,110,97,47,77,18,253,213,90,212,225,231,95,120,201,42,1,113,123,3,223,228,254,253,198,233,25,168,42,226,27,178,240,243,202,41,49,106,211,3,111,197,5,159,73,49,146,11,213,146,107,89,41,219,148,71,144,90,255,127,250,32,255,113,86,56,66,111,123,236,167,98,45,95,201,160,126,204,87,187,24,145,47,243,69,154,57,126,223,52,54,3,33,38,241,125,231,207,205,98,242,113,179,225,98,26,87,215,195,102,253,35,228,23,161,99,147,242,213,106,81,59,44,249,54,221,17,126,211,101,143,27,135,60,57,20,69,201,49,63,26,126,126,142,147,89,117,229,198,167,133,180,176,190,16,241,155,236,202,178,178,205,43,75,159,26,79,25,9,32,82,246,45,150,21,25,100,233,64,113,18,171,197,37,122,135,87,162,78,32,242,188,221,237,74,248,58,77,218,153,132,135,231,89,114,15,196,150,20,53,155,159,58,14,224,117,182,124,83,154,104,60,8,229,212,104,242,92,206,75,61,218,23,19,59,140,155,180,96,54,39,91,7,202,145,254,64,112,234,94,86,155,232,124,221,163,212,66,116,2,61,50,73,175,43,217,210,153,147,120,204,23,143,208,6,5,76,196,159,104,91,14,220,173,120,102,72,30,0,151,103,22,135,59,16,1,93,105,49,86,89,37,208,132,130,237,205,156,239,131,207,210,152,99,139,27,6,94,124,226,238]}}],[\"content\",4,{\"v\":1,\"gen\":1,\"seq\":4,\"kind\":\"update\",\"nonce\":{\"bytes\":[178,227,169,110,224,8,131,28,225,103,44,70]},\"ct\":{\"bytes\":[242,143,145,28,162,154,234,161,72,56,3,217,82,61,170,165,25,37,155,104,85,127,171,23,25,81,174,125,255,131,251,167,196,46,173,44,203,206,74,102,217,118,92,199,94,151,56,31,56,176,160,232,82,156,182,144,107,93,122,0,96,11,249,3,87,94,133,112,134,75,16,116,185,236,44,209,186,143,40,190,236,148,64,226,214,77,17,25,88,109,144,99,93,207,107,221,225,30,74,15,71,120,91,7,181,141,235,42,158,196,97,99,172,130,238,192,159,184,220,245,6,93,241,7,48,200,123,122,103,239,144,13,16,249,24,65,21,211,10,184,109,56,160,226,86,239,202,228,80,29,46,45,57,230,108,228,12,58,5,142,178,190,203,31,125,221,168,117,249,116,206,191,164,243,27,244,252,221,235,115,73,71,115,164,19,208,162,183,157,63,189,172,227,100,136,73,182]}}]],\"done.custody\":[[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\"],{\"v\":2,\"state\":\"protected\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":{\"bytes\":[56,67,114,133,34,194,227,31,122,179,232,159]},\"ct\":{\"bytes\":[195,0,254,139,153,68,17,172,14,123,121,109,126,226,212,169,253,85,228,217,35,100,114,73,133,68,135,18,133,13,161,64,146,79,136,24,93,74,214,49,85,73,235,137,61,51,75,208]}},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"publicKey\":{\"bytes\":[147,11,128,194,240,77,72,5,180,117,186,9,200,147,75,224,190,83,255,74,122,20,29,168,124,185,234,206,58,190,90,35]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[157,222,85,32,178,167,166,130,155,86,169,108]},\"ct\":{\"bytes\":[173,6,154,220,28,200,174,136,211,101,209,221,131,164,30,156,67,39,66,56,136,181,139,44,98,47,116,95,130,109,165,98,41,93,204,252,232,78,71,16,24,119,29,50,72,94,113,188]}}},{\"role\":\"signing\",\"id\":\"55568483efa9004cc85fb852f4362f58\",\"publicKey\":{\"bytes\":[238,184,131,8,95,251,65,5,37,218,105,229,40,174,80,156,25,60,168,57,111,192,104,85,83,220,86,237,154,221,241,208]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[88,187,30,208,149,110,68,110,36,194,25,24]},\"ct\":{\"bytes\":[146,152,12,150,70,183,148,28,110,215,202,223,115,79,225,102,16,79,113,140,137,142,155,101,224,163,0,180,92,10,136,112,132,208,220,213,207,155,12,188,117,58,98,10,155,203,89,73]}}}],\"mac\":{\"bytes\":[148,196,88,168,108,102,227,31,243,234,30,138,212,192,162,68,94,47,143,194,225,237,162,66,12,177,98,207,219,7,9,67]}}],[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"content-v1\"],{\"v\":1,\"state\":\"ready\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"mac\":{\"bytes\":[222,189,8,146,127,45,25,201,49,91,255,82,116,21,13,13,102,87,89,138,139,45,39,71,136,162,224,14,164,197,25,49]}}],[\"entries\",[\"seeded-import\",\"local-genesis-v1\"],{\"v\":1,\"initial\":{\"v\":2,\"state\":\"creating\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":0,\"rotation_owed\":false,\"creation_intent\":{\"id\":\"3f46572f4d98409b39057b7774c12ac2\",\"storeId\":\"a7ac12492751827286b36ac28ace5635\",\"rootId\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"wrappingId\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"signingId\":\"55568483efa9004cc85fb852f4362f58\"},\"envelope\":null,\"credentials\":null,\"mac\":{\"bytes\":[172,6,14,51,237,148,212,16,181,225,219,226,172,168,167,101,195,255,219,76,148,66,89,15,121,95,118,210,214,254,73,45]}},\"stage\":\"ready\",\"mac\":{\"bytes\":[27,205,201,74,74,66,121,221,11,229,157,77,95,136,215,194,241,135,59,66,199,146,48,7,108,58,239,117,255,176,6,54]},\"imported\":{\"policy\":\"markdown-system-v1\",\"recoveryDigest\":\"70c604b7612fc2b20e69971d86ecb819dc7d322487e3d278d12bc08e944dff52\",\"sourceOrigin\":\"http://127.0.0.1:5198\",\"sourceDigest\":\"a25b62777b768ea10db2933cd5358be8093b300320c33eeca9c6fdebc9f9425c\",\"planDigest\":\"fa1539be40ba8a38e2a4e1df89fadff9db947455df394c722421d558e69433b1\",\"createdAt\":\"2026-09-09T19:43:20.283Z\",\"selectionMac\":\"bbc3a7dded13da514d0e9cf3c514fb5846f6132e3df4480e2d27003bccd47ec1\"},\"sourceCleanup\":{\"v\":2,\"intentId\":\"7717e01328ff3f875b3392edac8d7018\",\"databaseDigest\":\"f44b4adc02f2dfd669724e308298cf884d745ce4f76113399ab770504e75e46a\",\"entries\":[{\"key\":\"done.pending-update.done.fixture.1\",\"digest\":\"915b54009ad620cc3124842ef68de28363e7d8c28f67feb889342bfd5a026640\"},{\"key\":\"done.pending-update.done.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'... 4101 more characters,\n\u001b[31m-\u001b[39m   databases: '{\"done\":[[\"updates\",1,{\"bytes\":[1,10,101,0,40,1,4,109,101,116,97,13,115,99,104,101,109,97,86,101,114,115,105,111,110,1,125,4,40,1,4,109,101,116,97,9,99,114,101,97,116,101,100,65,116,1,119,20,50,48,50,54,45,48,56,45,48,49,84,48,48,58,48,48,58,48,48,90,40,1,4,109,101,116,97,11,97,99,116,111,114,58,104,117,109,97,110,1,118,3,4,107,105,110,100,119,5,104,117,109,97,110,4,110,97,109,101,119,5,72,117,109,97,110,5,99,111,108,111,114,119,7,35,97,97,48,48,48,48,39,1,5,99,97,114,100,115,6,111,114,112,104,97,110,1,40,0,101,3,2,105,100,1,119,6,111,114,112,104,97,110,39,0,101,3,4,116,101,120,116,2,4,0,101,5,28,114,101,116,97,105,110,101,100,32,111,114,112,104,97,110,10,10,119,105,116,104,32,100,101,116,97,105,108,40,0,101,3,6,111,114,105,103,105,110,1,119,6,109,97,115,116,101,114,40,0,101,3,6,97,117,116,104,111,114,1,119,5,104,117,109,97,110,40,0,101,3,9,99,114,101,97,116,101,100,65,116,1,119,20,50,48,50,54,45,48,56,45,48,49,84,48,48,58,48,48,58,48,48,90,0]}]],\"done.5525acf0fe3bc1b6c944a5a731e191ef\":[[\"content\",1,{\"v\":1,\"gen\":1,\"seq\":1,\"kind\":\"update\",\"nonce\":{\"bytes\":[246,221,195,48,29,148,31,139,201,156,169,5]},\"ct\":{\"bytes\":[210,137,213,184,253,235,97,227,196,241,204,119,234,224,80,235,129,14,194,58,58,63,188,14,218,243,36,226,95,70,198,178,2,120,239,81,113,204,41,110,206,126,52,203,147,210,26,136,51,139,230,147,183,175,12,208,122,208,77,209,3,146,29,235,126,8,12,122,19,170,244,99,217,245,145,113,201,66,12,147,42,103,255,248,179,145,152,79,23,224,102,12,182,175,72,94,48,184,220,206,124,168,243,55,116,157,35,131,231,5,63,200,149,165,73,89,42,114,235,132,177,1,44,134,187,187,132,54,178,116,233,150,103,177,78,219,71,70,147,174,214,130,183,181,77,167,96,190,133,210,224,231,53,149,248,213,254,141,144,31,116,59,230,139,127,244,35,139,86,54,223,73,66,156,157,118,33,77,161,67,208,117,148,231,150,56,16,240,86,70,221,91,235,35,118,151,174,205,214,221,205,250,56,134,103,142,21,52,104,61,148,234,64,226,58,59,64,237,128,190,81,127,59,181,101,46,208,251,122,3,200,246,129,62,218,193,235,46,142,170,72,56,179,9,7,190,180,180,1,6,144,118,34,164,175,40,171,128,37,189,220,235,74,8,155,150,59,219,170,246,204,62,251,74,1,114,225,57,153,142,129,232,158,236,208,193,224,213,95,109]}}],[\"meta\",\"counter\",{\"v\":1,\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"active_gen\":1,\"next_seq\":5,\"reserved\":{\"1\":4},\"mac\":{\"bytes\":[107,144,152,18,132,212,68,6,31,177,50,32,210,26,224,222,68,147,189,194,61,191,53,38,58,191,91,74,115,122,195,160]}}],[\"content\",2,{\"v\":1,\"gen\":1,\"seq\":2,\"kind\":\"update\",\"nonce\":{\"bytes\":[119,206,149,91,179,57,41,151,162,77,58,190]},\"ct\":{\"bytes\":[194,136,224,93,131,104,130,61,210,84,71,109,61,59,206,124,103,179,88,47,254,139,148,141,154,120,75,39,75,112,177,133,153,198,134,83,16,184,255,103,27,94,254,45,100,122,91,151,228,68,245,153,54,35,32,100,40,85,199,194,14,146,45,156,194,170,214,103,12,222,20,252,19,68,209,181,211,56,113,170,186,138,75,56,56,168,237,172,15,109,217,15,160,53,15,47,204,236,142,182,180,236,73,8,11,57,29,44,57,231,147,15,54,89,116,159,197,0,80,187,69,221,45,28,201,89,142,244,245,79,84,123,153,213,75,16,216,170,38,128,198,10,126,228,116,231,74,99,69,198,60,129,146,170,104,152,224,105,165,203,29,244,170,55,154,64,14,162,162,14,248,98,44,79,44,8,74,197,56,240,37,85,242,145,118,189,126]}}],[\"content\",3,{\"v\":1,\"gen\":1,\"seq\":3,\"kind\":\"update\",\"nonce\":{\"bytes\":[47,134,162,156,111,130,7,76,103,155,248,218]},\"ct\":{\"bytes\":[162,248,237,105,209,133,139,84,194,1,207,139,89,236,253,43,109,201,88,139,20,50,29,225,5,251,109,161,185,220,134,86,156,229,107,111,197,96,233,84,232,23,110,97,47,77,18,253,213,90,212,225,231,95,120,201,42,1,113,123,3,223,228,254,253,198,233,25,168,42,226,27,178,240,243,202,41,49,106,211,3,111,197,5,159,73,49,146,11,213,146,107,89,41,219,148,71,144,90,255,127,250,32,255,113,86,56,66,111,123,236,167,98,45,95,201,160,126,204,87,187,24,145,47,243,69,154,57,126,223,52,54,3,33,38,241,125,231,207,205,98,242,113,179,225,98,26,87,215,195,102,253,35,228,23,161,99,147,242,213,106,81,59,44,249,54,221,17,126,211,101,143,27,135,60,57,20,69,201,49,63,26,126,126,142,147,89,117,229,198,167,133,180,176,190,16,241,155,236,202,178,178,205,43,75,159,26,79,25,9,32,82,246,45,150,21,25,100,233,64,113,18,171,197,37,122,135,87,162,78,32,242,188,221,237,74,248,58,77,218,153,132,135,231,89,114,15,196,150,20,53,155,159,58,14,224,117,182,124,83,154,104,60,8,229,212,104,242,92,206,75,61,218,23,19,59,140,155,180,96,54,39,91,7,202,145,254,64,112,234,94,86,155,232,124,221,163,212,66,116,2,61,50,73,175,43,217,210,153,147,120,204,23,143,208,6,5,76,196,159,104,91,14,220,173,120,102,72,30,0,151,103,22,135,59,16,1,93,105,49,86,89,37,208,132,130,237,205,156,239,131,207,210,152,99,139,27,6,94,124,226,238]}}],[\"content\",4,{\"v\":1,\"gen\":1,\"seq\":4,\"kind\":\"update\",\"nonce\":{\"bytes\":[178,227,169,110,224,8,131,28,225,103,44,70]},\"ct\":{\"bytes\":[242,143,145,28,162,154,234,161,72,56,3,217,82,61,170,165,25,37,155,104,85,127,171,23,25,81,174,125,255,131,251,167,196,46,173,44,203,206,74,102,217,118,92,199,94,151,56,31,56,176,160,232,82,156,182,144,107,93,122,0,96,11,249,3,87,94,133,112,134,75,16,116,185,236,44,209,186,143,40,190,236,148,64,226,214,77,17,25,88,109,144,99,93,207,107,221,225,30,74,15,71,120,91,7,181,141,235,42,158,196,97,99,172,130,238,192,159,184,220,245,6,93,241,7,48,200,123,122,103,239,144,13,16,249,24,65,21,211,10,184,109,56,160,226,86,239,202,228,80,29,46,45,57,230,108,228,12,58,5,142,178,190,203,31,125,221,168,117,249,116,206,191,164,243,27,244,252,221,235,115,73,71,115,164,19,208,162,183,157,63,189,172,227,100,136,73,182]}}]],\"done.custody\":[[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\"],{\"v\":2,\"state\":\"protected\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":3,\"rotation_owed\":false,\"creation_intent\":null,\"envelope\":{\"v\":1,\"gen\":1,\"nonce\":{\"bytes\":[56,67,114,133,34,194,227,31,122,179,232,159]},\"ct\":{\"bytes\":[195,0,254,139,153,68,17,172,14,123,121,109,126,226,212,169,253,85,228,217,35,100,114,73,133,68,135,18,133,13,161,64,146,79,136,24,93,74,214,49,85,73,235,137,61,51,75,208]}},\"credentials\":[{\"role\":\"wrapping\",\"id\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"publicKey\":{\"bytes\":[147,11,128,194,240,77,72,5,180,117,186,9,200,147,75,224,190,83,255,74,122,20,29,168,124,185,234,206,58,190,90,35]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[157,222,85,32,178,167,166,130,155,86,169,108]},\"ct\":{\"bytes\":[173,6,154,220,28,200,174,136,211,101,209,221,131,164,30,156,67,39,66,56,136,181,139,44,98,47,116,95,130,109,165,98,41,93,204,252,232,78,71,16,24,119,29,50,72,94,113,188]}}},{\"role\":\"signing\",\"id\":\"55568483efa9004cc85fb852f4362f58\",\"publicKey\":{\"bytes\":[238,184,131,8,95,251,65,5,37,218,105,229,40,174,80,156,25,60,168,57,111,192,104,85,83,220,86,237,154,221,241,208]},\"sealed\":{\"v\":2,\"nonce\":{\"bytes\":[88,187,30,208,149,110,68,110,36,194,25,24]},\"ct\":{\"bytes\":[146,152,12,150,70,183,148,28,110,215,202,223,115,79,225,102,16,79,113,140,137,142,155,101,224,163,0,180,92,10,136,112,132,208,220,213,207,155,12,188,117,58,98,10,155,203,89,73]}}}],\"mac\":{\"bytes\":[148,196,88,168,108,102,227,31,243,234,30,138,212,192,162,68,94,47,143,194,225,237,162,66,12,177,98,207,219,7,9,67]}}],[\"entries\",[\"seeded-import\",\"0891e64abf1ad5b93b3ee40462102d17\",\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"content-v1\"],{\"v\":1,\"state\":\"ready\",\"intent\":\"3f46572f4d98409b39057b7774c12ac2\",\"mac\":{\"bytes\":[222,189,8,146,127,45,25,201,49,91,255,82,116,21,13,13,102,87,89,138,139,45,39,71,136,162,224,14,164,197,25,49]}}],[\"entries\",[\"seeded-import\",\"local-genesis-v1\"],{\"v\":1,\"initial\":{\"v\":2,\"state\":\"creating\",\"slot_id\":\"seeded-import\",\"principal_id\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspace_id\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"store_id\":\"a7ac12492751827286b36ac28ace5635\",\"root_id\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"seals\":[{\"v\":1,\"factor\":\"code\",\"id\":\"code\",\"salt\":{\"bytes\":[67,99,133,94,220,242,75,122,188,170,107,139,17,168,144,62]},\"nonce\":{\"bytes\":[210,78,206,135,3,19,35,166,222,218,192,127]},\"ct\":{\"bytes\":[51,105,7,105,55,47,120,246,80,214,9,181,211,9,123,241,230,252,157,54,240,129,26,246,99,193,180,252,173,66,32,133,177,222,76,191,183,167,156,28,232,179,110,67,184,23,88,138]}}],\"seal_reserved\":0,\"rotation_owed\":false,\"creation_intent\":{\"id\":\"3f46572f4d98409b39057b7774c12ac2\",\"storeId\":\"a7ac12492751827286b36ac28ace5635\",\"rootId\":\"4a82b31f816ad70c69d2c82dd90d4e3f\",\"wrappingId\":\"5d25ca884e49d6abe0b1d7def54ec068\",\"signingId\":\"55568483efa9004cc85fb852f4362f58\"},\"envelope\":null,\"credentials\":null,\"mac\":{\"bytes\":[172,6,14,51,237,148,212,16,181,225,219,226,172,168,167,101,195,255,219,76,148,66,89,15,121,95,118,210,214,254,73,45]}},\"stage\":\"ready\",\"mac\":{\"bytes\":[215,142,138,89,125,93,23,182,165,97,29,172,159,174,232,30,198,33,84,234,86,157,184,176,171,42,184,41,192,186,215,249]},\"imported\":{\"policy\":\"markdown-system-v1\",\"recoveryDigest\":\"70c604b7612fc2b20e69971d86ecb819dc7d322487e3d278d12bc08e944dff52\",\"sourceOrigin\":\"http://127.0.0.1:5198\",\"sourceDigest\":\"a25b62777b768ea10db2933cd5358be8093b300320c33eeca9c6fdebc9f9425c\",\"planDigest\":\"fa1539be40ba8a38e2a4e1df89fadff9db947455df394c722421d558e69433b1\",\"createdAt\":\"2026-09-09T19:43:20.283Z\",\"selectionMac\":\"bbc3a7dded13da514d0e9cf3c514fb5846f6132e3df4480e2d27003bccd47ec1\"}}]],\"done.slots\":[[\"slots\",\"seeded-import\",{\"id\":\"seeded-import\",\"status\":\"active\",\"unlockBinding\":null,\"local\":{\"principalId\":\"0891e64abf1ad5b93b3ee40462102d17\",\"workspaceId\":\"84e7fcec1cdb3ca9e0d1251bc956ee48\",\"intentId\":\"3f46572f4d98409b39057b7774c1'... 166 more characters,\n\u001b[39m    local: [\n\u001b[39m      [\n\u001b[39m        'done.actor',\n\u001b[39m        'legacy-human'\n\u001b[39m      ],\n\u001b[34m...\u001b[39m\n\u001b[39m    names: [\n\u001b[31m-\u001b[39m     'done',\n\u001b[39m      'done.5525acf0fe3bc1b6c944a5a731e191ef',\n\u001b[39m      'done.custody',\n\u001b[39m      'done.slots'\n\u001b[39m    ]\n\u001b[39m  }\n\n    at longKey (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:394:12)\n    at async checkHistories.seed.seed (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:488:13)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:46:7\n    at async AsyncProperty.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)\n    at async asyncRunIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async checkHistories (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:54:19)",
+        "code": "ERR_ASSERTION"
+      },
+      "lastBrowserOperation": {
+        "method": "dump",
+        "started": "2026-09-09T19:43:20.772Z",
+        "finished": "2026-09-09T19:43:20.777Z",
+        "refusals": []
+      }
+    },
+    "skip-destination": {
+      "campaign": "skip-destination",
+      "trial": {
+        "campaign": "skip-destination",
+        "attempt": 1,
+        "stage": "generation",
+        "seed": 8941,
+        "inputHash": "c5425c448b7d3f108f1b1a1fb9cda3120990537a0de16d3a7764899907795039"
+      },
+      "inputHash": "c5425c448b7d3f108f1b1a1fb9cda3120990537a0de16d3a7764899907795039",
+      "error": {
+        "name": "AssertionError",
+        "message": "cold-coverage-refuses\n\n'ok' !== 'refused'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: cold-coverage-refuses\n\n'ok' !== 'refused'\n\n    at damage (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:384:12)\n    at async checkHistories.seed.seed (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/campaign.mjs:517:13)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:46:7\n    at async AsyncProperty.run (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19)\n    at async asyncRunIt (file:///Users/thomasingalls/Code/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15)\n    at async within (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:23:12)\n    at async Diagnostics.watch (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/diagnostics.mjs:72:14)\n    at async checkHistories (file:///Users/thomasingalls/.codex/worktrees/c030/done/scripts/legacy-cleanup/properties.mjs:54:19)",
+        "code": "ERR_ASSERTION"
+      },
+      "lastBrowserOperation": {
+        "method": "clean",
+        "started": "2026-09-09T19:43:24.556Z",
+        "finished": "2026-09-09T19:43:24.586Z",
+        "refusals": []
+      }
+    }
+  },
+  "manifestProperty": {
+    "seed": 8941,
+    "runs": 1,
+    "shrinks": 2,
+    "path": "0:0:0"
+  },
+  "controlProperty": {
+    "seed": 8941,
+    "runs": 1,
+    "shrinks": 0,
+    "path": "0"
+  },
+  "testsPassed": true,
+  "finished": "2026-09-09T19:43:35.445Z",
+  "inputsUnchanged": true
+}

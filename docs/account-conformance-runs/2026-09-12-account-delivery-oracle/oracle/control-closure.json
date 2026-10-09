@@ -1,0 +1,17 @@
+{
+  "history": [
+    {
+      "kind": "refused",
+      "position": 2,
+      "final": false,
+      "id": "r1"
+    }
+  ],
+  "detectedPrefixes": 1,
+  "oldOracleComparison": "not assessed for this control",
+  "oldOracleCommit": "77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3",
+  "sourceChange": [
+    "s.refusals.set(n, old ?? e.refusalId);",
+    "void old;"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "note": "Source-mapped static compiled sites, not counts of runtime executions or measured allocations. React may rerender or discard a memo; correctness must not depend on caching.",
+  "observations": [
+    {
+      "variant": "selected",
+      "bundle": "main-MRQjw4B1.js",
+      "offset": 991233,
+      "generatedLine": 66,
+      "generatedColumn": 10211,
+      "token": "new Map",
+      "source": "../../../selected/src/ui/Collection.tsx",
+      "line": 70,
+      "snippet": "children:s}),t[4]=r,t[5]=c),c},WG=({date:e,section:t,frozen:n,active:r})=>{let{snapshot:i,execute:a}=sG(),o=i.days.find(t=>t.date===e),s=o?.[t]??[],c=new Map(i.cards.map(e=>[e.id,e])),l=s.flatMap(e=>c.get(e)?[c.get(e)]:[]),u=o?.archived?.[t]??[],f=(o?.next.length??0)>=3,[p,m]=(0,d.useState)(null),h=BG({cards:l,enabled:t===`done`&&r&&!n&&l.length>1}),g=(0,d.useCallback)(e=>({split:(t,n)=>"
+    },
+    {
+      "variant": "candidate",
+      "bundle": "main-Cy3PphRA.js",
+      "offset": 972201,
+      "generatedLine": 65,
+      "generatedColumn": 1004,
+      "token": "new Map",
+      "source": "../../../candidate/src/ui/workspaceUi.tsx",
+      "line": 62,
+      "snippet": "ace.`);return e},cG=({workspace:e,actorId:t,registerEditor:n,onLock:r,children:i})=>{let[a,o]=(0,d.useState)(()=>e.read()),s=(0,d.useMemo)(()=>{let e=new Map;for(let t of a.cards)e.set(t.id,t);return t=>e.get(t)},[a.cards]),[c,l]=(0,d.useState)(()=>e.status),[u,f]=(0,d.useState)(``),[p,m]=(0,d.useState)(`Unknown`),h=(0,d.useRef)(e.status.revision),g=(0,d.useRef)(!1);(0,d.useEffect)(()=>{"
+    },
+    {
+      "variant": "candidate",
+      "bundle": "main-Cy3PphRA.js",
+      "offset": 973995,
+      "generatedLine": 65,
+      "generatedColumn": 2798,
+      "token": "cardById",
+      "source": "../../../candidate/src/ui/workspaceUi.tsx",
+      "line": 189,
+      "snippet": "ry{e.discardPending(),f(``)}catch{f(`Wait for the current storage operation before discarding.`)}};return(0,$.jsxs)(oG,{value:{workspace:e,snapshot:a,cardById:s,actorId:t,status:c,error:u,storage:p,..._,lock:r},children:[i,(v||u||c.pendingItems>0)&&(0,$.jsxs)(`aside`,{className:`workspace-status`,role:`status`,children:[(0,$.jsx)(`span`,{children:v?`Input is waiting for storage.`:u||`Inp"
+    },
+    {
+      "variant": "candidate",
+      "bundle": "main-Cy3PphRA.js",
+      "offset": 991285,
+      "generatedLine": 66,
+      "generatedColumn": 10151,
+      "token": "cardById",
+      "source": "../../../candidate/src/ui/Collection.tsx",
+      "line": 67,
+      "snippet": "le`,{className:`card`,\"data-section\":r,\"data-frozen\":`true`,children:s}),t[4]=r,t[5]=c),c},WG=({date:e,section:t,frozen:n,active:r})=>{let{snapshot:i,cardById:a,execute:o}=sG(),s=i.days.find(t=>t.date===e),c=(s?.[t]??[]).flatMap(e=>{let t=a(e);return t?[t]:[]}),l=s?.archived?.[t]??[],u=(s?.next.length??0)>=3,[f,p]=(0,d.useState)(null),m=BG({cards:c,enabled:t===`done`&&r&&!n&&c.length>1})"
+    }
+  ]
+}

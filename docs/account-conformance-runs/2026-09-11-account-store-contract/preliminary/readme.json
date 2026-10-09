@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "reasonForRepeat": "Final inspection strengthened the native journal assertion from payload length to complete plaintext, and checked exact plaintexts after flush. No production source changed. The complete final campaign was rerun with final pins.",
+  "earlierFocusedHarnessCorrection": "Before these campaigns, an enrollment derivation legitimately returned decrypt-only usage. The native assertion now checks read-only and content-owner usages separately instead of requiring encrypt on both. Two of the three initial native tests passed; the third failed only on this assertion. This initial focused output was not saved by a runner.",
+  "rawRun": "/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-store-contract/2026-09-11T18-20-25.899Z"
+}

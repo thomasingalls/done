@@ -1,0 +1,14 @@
+{
+  "command": [
+    "node",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--config",
+    "playwright.storage-compatibility.config.ts",
+    "--grep",
+    "fixture calls"
+  ],
+  "exitCode": 1,
+  "detected": true,
+  "expected": "The delayed fixture passes with readiness waiting and fails with the wait omitted."
+}

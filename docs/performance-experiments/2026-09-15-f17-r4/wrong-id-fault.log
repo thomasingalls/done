@@ -1,0 +1,187 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-exploration-r4/candidate
+
+ ❯ test/workspaceUiIndex.test.tsx (7 tests | 7 failed) 54ms
+     × reads each publication and exposes current last-wins cards to separate consumers 13ms
+     × renders replacement, addition, removal, order and movement from current memberships 12ms
+     × keeps current lookups through status-only/error updates and leaves retry/discard operative 7ms
+     × uses fresh Next capacity, command destinations, merge membership and reorder positions 2ms
+     × preserves archived content outside the live card lookup 8ms
+     × recovers from unreadable publications and cleans both subscriptions on replacement/unmount 1ms
+     × matches an independent native Map across generated publication histories 11ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspaceUiIndex.test.tsx > shared detached UI card lookup > reads each publication and exposes current last-wins cards to separate consumers
+AssertionError: expected undefined to be { id: 'a', text: 'old', …(3) } // Object.is equality
+
+- Expected:
+{
+  "author": "actor",
+  "id": "a",
+  "location": null,
+  "origin": null,
+  "text": "old",
+}
+
++ Received:
+undefined
+
+ ❯ test/workspaceUiIndex.test.tsx:215:33
+    213|     const reads = model.read.mock.calls.length;
+    214|     const previousLookup = currentUi().cardById;
+    215|     expect(previousLookup('a')).toBe(first);
+       |                                 ^
+    216|     expect(currentUi(1).cardById).toBe(previousLookup);
+    217|     model.publish();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/workspaceUiIndex.test.tsx > shared detached UI card lookup > renders replacement, addition, removal, order and movement from current memberships
+AssertionError: expected [] to deeply equal [ [ 'a', 'a' ] ]
+
+- Expected
++ Received
+
+- [
+-   [
+-     "a",
+-     "a",
+-   ],
+- ]
++ []
+
+ ❯ test/workspaceUiIndex.test.tsx:244:30
+    242|     );
+    243|     render(model.workspace, collections());
+    244|     expect(rendered('next')).toEqual([['a', 'a']]);
+       |                              ^
+    245|     expect(rendered('scheduled')).toEqual([['b', 'b']]);
+    246|     expect(rendered('done')).toEqual([['c', 'c']]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/workspaceUiIndex.test.tsx > shared detached UI card lookup > keeps current lookups through status-only/error updates and leaves retry/discard operative
+Error: Missing scheduled:a
+ ❯ port test/workspaceUiIndex.test.tsx:184:21
+    182| const port = (section: string, id: string): CardProps => {
+    183|   const value = cardPorts.get(`${section}:${id}`);
+    184|   if (!value) throw Error(`Missing ${section}:${id}`);
+       |                     ^
+    185|   return value;
+    186| };
+ ❯ action test/workspaceUiIndex.test.tsx:188:17
+ ❯ test/workspaceUiIndex.test.tsx:290:24
+ ❯ test/workspaceUiIndex.test.tsx:194:5
+ ❯ Proxy.process.env.NODE_ENV.exports.act ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/react@19.2.8/node_modules/react/cjs/react.development.js:814:22
+ ❯ settle test/workspaceUiIndex.test.tsx:193:9
+ ❯ test/workspaceUiIndex.test.tsx:290:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/workspaceUiIndex.test.tsx > shared detached UI card lookup > uses fresh Next capacity, command destinations, merge membership and reorder positions
+Error: Missing scheduled:d
+ ❯ port test/workspaceUiIndex.test.tsx:184:21
+    182| const port = (section: string, id: string): CardProps => {
+    183|   const value = cardPorts.get(`${section}:${id}`);
+    184|   if (!value) throw Error(`Missing ${section}:${id}`);
+       |                     ^
+    185|   return value;
+    186| };
+ ❯ action test/workspaceUiIndex.test.tsx:188:17
+ ❯ test/workspaceUiIndex.test.tsx:306:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/workspaceUiIndex.test.tsx > shared detached UI card lookup > preserves archived content outside the live card lookup
+AssertionError: expected [] to deeply equal [ [ 'a', 'live' ] ]
+
+- Expected
++ Received
+
+- [
+-   [
+-     "a",
+-     "live",
+-   ],
+- ]
++ []
+
+ ❯ test/workspaceUiIndex.test.tsx:347:30
+    345|     );
+    346|     render(model.workspace, collections());
+    347|     expect(rendered('done')).toEqual([['a', 'live']]);
+       |                              ^
+    348|     expect(host?.querySelector('[data-frozen="true"]')?.textContent).t…
+    349|     model.publish(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/workspaceUiIndex.test.tsx > shared detached UI card lookup > recovers from unreadable publications and cleans both subscriptions on replacement/unmount
+AssertionError: expected undefined to be 'a' // Object.is equality
+
+- Expected:
+"a"
+
++ Received:
+undefined
+
+ ❯ test/workspaceUiIndex.test.tsx:364:45
+    362|     model.publish();
+    363|     expect(model.read).toHaveBeenCalledTimes(reads + 1);
+    364|     expect(currentUi().cardById('a')?.text).toBe('a');
+       |                                             ^
+    365|     model.unavailable(false);
+    366|     model.publish(snapshot([card('b', 'recovered')]));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  test/workspaceUiIndex.test.tsx > shared detached UI card lookup > matches an independent native Map across generated publication histories
+Error: Property failed after 1 tests
+{ seed: 170409, path: "0:0:1:0:1:1:1", endOnFailure: true }
+Counterexample: [[{"cards":[{"id":"a","text":""}],"members":[]}]]
+Shrunk 6 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+ ❯ buildError ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2462:16
+ ❯ throwIfFailed ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2469:8
+ ❯ reportRunDetails ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2485:14
+ ❯ Module.assert ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2542:7
+ ❯ test/workspaceUiIndex.test.tsx:392:8
+    390|     const model = controlledWorkspace(snapshot([]));
+    391|     render(model.workspace, collections());
+    392|     fc.assert(
+       |        ^
+    393|       fc.property(fc.array(step, { minLength: 1, maxLength: 12 }), (hi…
+    394|         for (const entry of history) {
+
+Caused by: AssertionError: expected undefined to be { id: 'a', text: ' 🚀', …(3) } // Object.is equality
+
+- Expected:
+{
+  "author": "actor",
+  "id": "a",
+  "location": null,
+  "origin": null,
+  "text": " 🚀",
+}
+
++ Received:
+undefined
+
+ ❯ test/workspaceUiIndex.test.tsx:400:46
+ ❯ Property.predicate ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1353:99
+ ❯ Property.run ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1322:24
+ ❯ runIt ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2505:24
+ ❯ check ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2537:204
+ ❯ Module.assert ../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2540:14
+ ❯ test/workspaceUiIndex.test.tsx:392:8
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed (7)
+   Start at  10:42:17
+   Duration  1.20s (transform 533ms, setup 149ms, import 533ms, tests 54ms, environment 346ms)
+

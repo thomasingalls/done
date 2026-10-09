@@ -1,0 +1,12 @@
+[
+  {
+    "reverse": false,
+    "mutant": "closed",
+    "actual": "conflict"
+  },
+  {
+    "reverse": true,
+    "mutant": "closed",
+    "actual": "conflict"
+  }
+]

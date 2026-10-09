@@ -1,0 +1,92 @@
+{
+  "diagnostics": [
+    {
+      "type": "log",
+      "text": "%c[yjs] %cChanged the client-id because another client seems to be using it. color:orange;font-weight:bold; color:red;font-weight:normal;",
+      "values": [
+        [
+          {
+            "location": [],
+            "raw": "JWNbeWpzXSAlY0NoYW5nZWQgdGhlIGNsaWVudC1pZCBiZWNhdXNlIGFub3RoZXIgY2xpZW50IHNlZW1zIHRvIGJlIHVzaW5nIGl0Lg=="
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6b3JhbmdlO2ZvbnQtd2VpZ2h0OmJvbGQ7"
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6cmVkO2ZvbnQtd2VpZ2h0Om5vcm1hbDs="
+          }
+        ]
+      ]
+    },
+    {
+      "type": "log",
+      "text": "%c[yjs] %cChanged the client-id because another client seems to be using it. color:orange;font-weight:bold; color:red;font-weight:normal;",
+      "values": [
+        [
+          {
+            "location": [],
+            "raw": "JWNbeWpzXSAlY0NoYW5nZWQgdGhlIGNsaWVudC1pZCBiZWNhdXNlIGFub3RoZXIgY2xpZW50IHNlZW1zIHRvIGJlIHVzaW5nIGl0Lg=="
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6b3JhbmdlO2ZvbnQtd2VpZ2h0OmJvbGQ7"
+          }
+        ],
+        [
+          {
+            "location": [],
+            "raw": "Y29sb3I6cmVkO2ZvbnQtd2VpZ2h0Om5vcm1hbDs="
+          }
+        ]
+      ]
+    },
+    {
+      "type": "error",
+      "text": "Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438",
+      "values": [
+        [
+          {
+            "location": [],
+            "raw": "WWpzIHdhcyBhbHJlYWR5IGltcG9ydGVkLiBUaGlzIGJyZWFrcyBjb25zdHJ1Y3RvciBjaGVja3MgYW5kIHdpbGwgbGVhZCB0byBpc3N1ZXMhIC0gaHR0cHM6Ly9naXRodWIuY29tL3lqcy95anMvaXNzdWVzLzQzOA=="
+          }
+        ]
+      ]
+    },
+    {
+      "type": "error",
+      "text": "Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438",
+      "values": [
+        [
+          {
+            "location": [],
+            "raw": "WWpzIHdhcyBhbHJlYWR5IGltcG9ydGVkLiBUaGlzIGJyZWFrcyBjb25zdHJ1Y3RvciBjaGVja3MgYW5kIHdpbGwgbGVhZCB0byBpc3N1ZXMhIC0gaHR0cHM6Ly9naXRodWIuY29tL3lqcy95anMvaXNzdWVzLzQzOA=="
+          }
+        ]
+      ]
+    },
+    {
+      "type": "error",
+      "text": "Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438",
+      "values": [
+        [
+          {
+            "location": [],
+            "raw": "WWpzIHdhcyBhbHJlYWR5IGltcG9ydGVkLiBUaGlzIGJyZWFrcyBjb25zdHJ1Y3RvciBjaGVja3MgYW5kIHdpbGwgbGVhZCB0byBpc3N1ZXMhIC0gaHR0cHM6Ly9naXRodWIuY29tL3lqcy95anMvaXNzdWVzLzQzOA=="
+          }
+        ]
+      ]
+    }
+  ],
+  "errors": [],
+  "workers": [
+    "http://127.0.0.1:62685/sw.js"
+  ]
+}

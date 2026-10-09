@@ -1,0 +1,26 @@
+
+ RUN  v4.1.10 /private/tmp/done-f17-publication-r1/candidate
+
+ ❯ test/workspacePublication.test.ts (8 tests | 1 failed) 665ms
+   × refreshes unedited lone and split-pair text, card metadata and archived text after a fork 10ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/workspacePublication.test.ts > refreshes unedited lone and split-pair text, card metadata and archived text after a fork
+AssertionError: expected '\ufffd\ufffd' not to be '\ufffd\ufffd' // Object.is equality
+ ❯ test/workspacePublication.test.ts:156:33
+    154|       const actual = f.read();
+    155|       expect(actual).toEqual(f.full());
+    156|       expect(actual.master).not.toBe(old.master);
+       |                                 ^
+    157|       const value = actual.days.find((d) => d.date === archiveDate)!.a…
+    158|       (value.next as string[]).push('caller poison');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 2 passed (3)
+      Tests  1 failed | 123 passed (124)
+   Start at  12:39:50
+   Duration  5.53s (transform 532ms, setup 118ms, import 927ms, tests 6.37s, environment 0ms)
+

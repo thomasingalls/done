@@ -1,0 +1,163 @@
+{
+  "signedBase": "55ab217e4552acfece4bea41e56a2feba5506aef",
+  "sessions": [
+    {
+      "path": "results/comparison-0-selected/result.json",
+      "sha256": "eac93aa897b2341ae4b4939e0b7a11685249cb3098653dafb6db0cbb388cd46d",
+      "status": "passed",
+      "closed": true,
+      "measuredKeys": 80
+    },
+    {
+      "path": "results/comparison-0-candidate/result.json",
+      "sha256": "7424d18a448d14e11b34bba4878f7c82caa9174bbde460a3b131a764449e71d8",
+      "status": "passed",
+      "closed": true,
+      "measuredKeys": 80
+    },
+    {
+      "path": "results/comparison-1-candidate/result.json",
+      "sha256": "7c733d98c1713bb9ee516ab882579494265039b7bc89dd5bda5fec588b46ed03",
+      "status": "passed",
+      "closed": true,
+      "measuredKeys": 80
+    },
+    {
+      "path": "results/comparison-1-selected/result.json",
+      "sha256": "f6264e6ff7a7492fa40c16b0601fbaff8ca6edfe3d0dbf7d2a3badc5b7d0277d",
+      "status": "passed",
+      "closed": true,
+      "measuredKeys": 80
+    },
+    {
+      "path": "results/unicode-0-selected/result.json",
+      "sha256": "ba9a577d68ae0fc108ca79437cf272e5f4e134e1df232b0b5c588cb1d99a73ac",
+      "status": "passed",
+      "closed": true,
+      "measuredKeys": 80
+    },
+    {
+      "path": "results/unicode-0-candidate/result.json",
+      "sha256": "9eea5e9a05cf1b0b84b2aba0f1c41374565ad5257a1cf7220a93f0b8943f0f4b",
+      "status": "passed",
+      "closed": true,
+      "measuredKeys": 80
+    }
+  ],
+  "measuredKeys": 480,
+  "warmupKeysFromCompletedHelper": 624,
+  "commonHelpersMatchR3": true,
+  "buildInputsAndOutputsUnchanged": true,
+  "sourceBoundary": [
+    "src/ui/Collection.tsx",
+    "src/ui/workspaceUi.tsx"
+  ],
+  "testsAndRuntimeMatchVerification": true,
+  "patchForwardAndReverseChecks": true,
+  "mainRuntimeTestsUnchanged": true,
+  "commands": [
+    {
+      "args": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/c030/done",
+      "exitCode": 0,
+      "stdout": "55ab217e4552acfece4bea41e56a2feba5506aef\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "git",
+        "verify-commit",
+        "55ab217e4552acfece4bea41e56a2feba5506aef"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/c030/done",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "Good \"git\" signature for thomasingalls@gmail.com with ECDSA key SHA256:g56fg2Va9IWd2cJ4pAnab2mqBLp9bR12PRQROoTRfhs\n"
+    },
+    {
+      "args": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/c030/done",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "git",
+        "apply",
+        "--check",
+        "/private/tmp/done-f17-exploration-r4/candidate.patch"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/c030/done",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "git",
+        "apply",
+        "--reverse",
+        "--check",
+        "/private/tmp/done-f17-exploration-r4/candidate.patch"
+      ],
+      "cwd": "/private/tmp/done-f17-exploration-r4/candidate",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "git",
+        "apply",
+        "--check",
+        "/private/tmp/done-f17-exploration-r4/ui-index.patch"
+      ],
+      "cwd": "/private/tmp/done-f17-exploration-r4/selected",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "git",
+        "apply",
+        "--reverse",
+        "--check",
+        "/Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-09-15-f17-r3/candidate.patch"
+      ],
+      "cwd": "/private/tmp/done-f17-exploration-r4/selected",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "git",
+        "diff",
+        "--name-only",
+        "55ab217e4552acfece4bea41e56a2feba5506aef",
+        "--",
+        "src",
+        "test",
+        "scripts",
+        "wasm",
+        "vite",
+        "package.json",
+        "pnpm-lock.yaml"
+      ],
+      "cwd": "/Users/thomasingalls/.codex/worktrees/c030/done",
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+test/admissionQueue.test.ts(530,32): error TS2352: Conversion of type 'Mock<() => Promise<{ status: string; removed: never[]; }>>' to type '() => Promise<ContentCompactionReceipt>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Promise<{ status: string; removed: never[]; }>' is not comparable to type 'Promise<ContentCompactionReceipt>'.
+    Type '{ status: string; removed: never[]; }' is missing the following properties from type 'ContentCompactionReceipt': storeId, generation, stateSequence
+test/admissionQueue.test.ts(564,34): error TS2352: Conversion of type 'Mock<() => Promise<{ status: string; removed: never[]; }>>' to type '() => Promise<ContentCompactionReceipt>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Promise<{ status: string; removed: never[]; }>' is not comparable to type 'Promise<ContentCompactionReceipt>'.
+    Type '{ status: string; removed: never[]; }' is missing the following properties from type 'ContentCompactionReceipt': storeId, generation, stateSequence
+test/admissionQueue.test.ts(599,38): error TS2352: Conversion of type 'Mock<() => Promise<{ status: string; removed: never[]; }>>' to type '() => Promise<ContentCompactionReceipt>' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Promise<{ status: string; removed: never[]; }>' is not comparable to type 'Promise<ContentCompactionReceipt>'.
+    Type '{ status: string; removed: never[]; }' is missing the following properties from type 'ContentCompactionReceipt': storeId, generation, stateSequence

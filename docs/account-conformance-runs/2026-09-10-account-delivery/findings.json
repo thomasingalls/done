@@ -1,0 +1,32 @@
+{
+  "production": "No implementation/design counterexample was demonstrated by the generated campaign. Controls establish the sensitivity of the tested boundaries, not correctness of the whole protocol.",
+  "unitRerun": "An initial full unit suite overlapped three browser campaigns and the 150-history spool property hit its existing five-second limit without a counterexample. The unchanged suite was rerun after browser completion, with its original timeout retained. Both logs are preserved.",
+  "fixtureRepair": {
+    "failure": "The first source-retention assertion required the entire capsule list to stay identical after cold open. Reopening produced an additional empty Yjs update capsule (bytes 0,0).",
+    "repair": "Check that every original capsule survives byte-for-byte, by its authenticated identity, while allowing new captures.",
+    "evidence": "initial-retention-fixture-failure.log and final native.log"
+  },
+  "controls": [
+    "Return-before-persistence exposes signed bytes without a saved submission.",
+    "Omitting witness verification allows a missing final closure to reopen ready and expose the prior submission again.",
+    "Omitting prefix contradiction checks classifies contradictory proofs as closed in both orders; the real reader derives conflict from those same retained proofs.",
+    "Omitting authority rechecks commits a submission after the test restores a prior authenticated v7 marker while device signing is paused."
+  ],
+  "generated": {
+    "propositions": {
+      "seed": 9812026,
+      "runs": 500,
+      "length": "1..40",
+      "oracle": "Independent set-based prefix, closure and final-cutoff propositions, checked at each step and in reverse order."
+    },
+    "native": {
+      "seed": 9812027,
+      "runs": 8,
+      "length": "3..6 answers after a submission commit fault",
+      "inputs": "generated.json",
+      "oracle": "Independent Node/OpenSSL signed responses, durable record-count and proof propositions; exact retry, pending eligibility, retained source identities and wire across cold restart and optional compaction."
+    }
+  },
+  "boundary": "V8 first-epoch private lifecycle only. All source and ledger rows retained. Closure/conflict/finalization halt outbound work while Local editing stays available. Full scans and coordinated metadata+ledger rollback remain limits. No transport, service permanence, successor minting, lineage advancement or personal Account provisioning.",
+  "wiring": "account:delivery added to pnpm check before all final campaigns. Direct Node entrypoints were run; no whole pnpm check execution is claimed."
+}

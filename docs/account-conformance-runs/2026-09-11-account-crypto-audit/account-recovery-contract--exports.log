@@ -1,0 +1,9 @@
+✔ PKCS#8 extraction refuses wrong algorithm, prefix, truncation and extra bytes for each private key; clears exports before returning (13.017458ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 102.023208

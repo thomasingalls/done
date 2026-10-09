@@ -1,0 +1,108 @@
+Account core evidence: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core/2026-09-10T22-01-52.473Z
+(node:28144) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28144) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ replay control actually mints a second logical result when retirement guards are removed (12.077958ms)
+✖ wrong-operation proof control is accepted only with expected-challenge verification removed (8.934167ms)
+✖ substituted-key control grants proof only when a caller key replaces the retained verifier (9.339334ms)
+(node:28145) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28145) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ registration, confirmation, pending refusal and discoverable sign-in (-8) (31.888708ms)
+✔ registration policy negatives and attested-key identity (-8) (21.12225ms)
+✔ assertion policy, operation separation, substituted key and exact bytes (-8) (24.94825ms)
+✔ registration, confirmation, pending refusal and discoverable sign-in (-7) (13.379417ms)
+✔ registration policy negatives and attested-key identity (-7) (18.010083ms)
+✔ assertion policy, operation separation, substituted key and exact bytes (-7) (23.465792ms)
+✔ retry secret, operation binding, concurrent proof and conflicting replay (11.577417ms)
+✔ global credential uniqueness, key possession and account identity (12.617416ms)
+✔ expiry, cancellation and account change during verification recheck at commit (15.307833ms)
+✔ abort and lost response around every mutating ceremony commit (13.6595ms)
+✔ hostile wire input is refused and durable policy cannot be changed on restart (6.029667ms)
+✔ caller mutation cannot change the verified/committed request, and retained-key races refuse (22.704375ms)
+✔ a competing process completing confirmation between inspection and crypto returns the same receipt (345.188083ms)
+(node:28146) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28146) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ native discoverable passkey registration/confirmation, restart/login and browser cancellation (896.410791ms)
+✔ private adapter refuses missing token, hostile origin/host and oversized input (36.125125ms)
+(node:28147) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28147) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 160 generated durable ceremony histories against an independent acceptance ledger (2773.810042ms)
+✔ 80 generated sign-in histories preserve one receipt through abort, lost response, replay and restart (1844.021125ms)
+(node:28148) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:28148) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit begin: cold process recovers one outcome (633.370375ms)
+✔ SIGKILL after-commit begin: cold process recovers one outcome (553.290084ms)
+✔ SIGKILL before-commit register: cold process recovers one outcome (454.131125ms)
+✔ SIGKILL after-commit register: cold process recovers one outcome (440.022125ms)
+✔ SIGKILL before-commit confirm-registration: cold process recovers one outcome (473.466792ms)
+✔ SIGKILL after-commit confirm-registration: cold process recovers one outcome (481.491667ms)
+✔ SIGKILL before-commit authenticate: cold process recovers one outcome (470.546542ms)
+✔ SIGKILL after-commit authenticate: cold process recovers one outcome (521.80575ms)
+✔ SIGKILL before-commit cancel: cold process recovers one outcome (437.671ms)
+✔ SIGKILL after-commit cancel: cold process recovers one outcome (438.536916ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 27
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5322.982542
+
+✖ failing tests:
+
+test at test/account-core/controls.test.mjs:34:1
+✖ replay control actually mints a second logical result when retirement guards are removed (12.077958ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-mPMWfG/account-service/delivery.ts' imported from /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-mPMWfG/account-service/core.ts
+      at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+      at moduleResolve (node:internal/modules/esm/resolve:879:10)
+      at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+      at #resolve (node:internal/modules/esm/loader:690:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+      at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+      at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-mPMWfG/account-service/delivery.ts'
+  }
+
+test at test/account-core/controls.test.mjs:68:1
+✖ wrong-operation proof control is accepted only with expected-challenge verification removed (8.934167ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-Wd74pE/account-service/delivery.ts' imported from /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-Wd74pE/account-service/core.ts
+      at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+      at moduleResolve (node:internal/modules/esm/resolve:879:10)
+      at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+      at #resolve (node:internal/modules/esm/loader:690:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+      at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+      at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-Wd74pE/account-service/delivery.ts'
+  }
+
+test at test/account-core/controls.test.mjs:93:1
+✖ substituted-key control grants proof only when a caller key replaces the retained verifier (9.339334ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-CbCakg/account-service/delivery.ts' imported from /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-CbCakg/account-service/core.ts
+      at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+      at moduleResolve (node:internal/modules/esm/resolve:879:10)
+      at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+      at #resolve (node:internal/modules/esm/loader:690:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+      at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+      at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core-controls/mutant-CbCakg/account-service/delivery.ts'
+  }
+Account core campaign failed: /Users/thomasingalls/.codex/worktrees/c030/done/test-results/account-core/2026-09-10T22-01-52.473Z

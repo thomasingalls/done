@@ -1,0 +1,387 @@
+{
+  "schema": 1,
+  "base": "83b5f157",
+  "claim": "Bounded wrapper integration, not immutable aggregate qualification.",
+  "payloads": 181,
+  "artifactsBytes": 589554,
+  "artifactsSha256": "1223ba76fa5b84f08428ad53afa80b05799e42cc6f03c053b3f842b5ea946653",
+  "rawIndexSha256": "136e9f7222e0b5b0a0d3281141e863bb2c69688ca42b3ac25151d93de2577e05",
+  "qualification": {
+    "schema": 1,
+    "selection": "wrapper-preparation-with-controls-and-reuse",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/manifest.test.mjs",
+        "key": "d7714b544e7b903afdb2a92c2e0fdda0731b0368bf9df104529b1515afec221a",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 7788,
+        "cases": 9,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/general-tests.test.mjs",
+        "key": "22aed2c579513b969d093c5a01881bf8ea6f0db8bacc73c54381eb047e7092d6",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 7839,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/generated-tests.test.mjs",
+        "key": "e4f8930fca378715c04351e4fe5ae40c85b166ddaf153dcc3a7b64d58fd2a574",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 6895,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/release-validation/stage.test.mjs",
+        "key": "27acde5b78565ee5ecf28c2a3b859f46c6f1700cd82a61d1dbaa25743831cfd3",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 107911,
+        "cases": 33,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/algorithm-suite.json",
+        "key": "bb2f06b66308b564b6480fa91212f32d475001e8218a5c95390897f927dc74ac",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1673,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/record-format.json",
+        "key": "2a19c9cbff7066d19f6dc094aa451d7a92f3d0e48630c5cb2fdf09f2d6b57b25",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1699,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/journal-aead.json",
+        "key": "ba62c786fe365010462a2c0ab461f52a5afdf9b103091fc9a605b26970d7ff07",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1717,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/recovery-code.json",
+        "key": "6c23b6f5ec7221d2be277b123c62578e1c362c6b5c3bc58393534b66515a1a47",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1722,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/device-lock.json",
+        "key": "2d8aa93adb5d0187687ff213d69b7ded13fd6d090425071f315e148e3fcadf10",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1677,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/finalization.json",
+        "key": "c2076cae44e56042c595a9601fd8053cca932e553eb0b3dc4c685cfe154e95f4",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1658,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/enrollment-ceremony.json",
+        "key": "89a8211e8cfebf7a52620fbf04ce6e7a30fcc34029e41fbbadb776d41075ccc4",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1682,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/envelope.json",
+        "key": "7df84d473b612ec7f83725f47c8dd06bbc0234db0cc7452d911362ee170fb6e2",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1705,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/private-envelope.json",
+        "key": "6cfefc1dced2477393022f49d202511a8a7fe53041f6e615887bb321a65f8e14",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1658,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/head-discovery.json",
+        "key": "68744e1928b09d6f65d094c0b4c66babaa983b825a2e0b02fa7c9e74bc4ddecf",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1656,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/attribution.json",
+        "key": "a3f94866152e7fc45a8ea5a93635db2b8be6fdaa5d95be83392bfad8bb47708d",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1658,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/checkpoint.json",
+        "key": "5a45ce927488f3cf11aa106be2846bfb4b51a82f43b572bfeab8dded14b49a7c",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1674,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/antireplay.json",
+        "key": "7d1064e3e5fa3b55f2e36628f8d0d8e1e81b3fcda21f2be5031bbe14c2ddeb72",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1662,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/package.json",
+        "key": "ca1259aa505fc3679e206dc3e9001efad884c538a5aa7ec96ca29cd20247419c",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1674,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-credential.json",
+        "key": "42700ff0deed0ab1d891568ba76fc69467ff399280c07a42fd7363ca417287e1",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1652,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/transition.json",
+        "key": "db030a504fc27b432479e753056300cd69a8c6060e497a3d5313a0c36a520a57",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1659,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/web-security-baseline.json",
+        "key": "777aa42b98bdb057e0502b29f4d56d492065f46dffa62fcc2c2578eaa148138d",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1641,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/admission-coverage.json",
+        "key": "5209e515b919eee63709ac858bfbc36cf2df8889e3604e73a172bae37785b50a",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1717,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/first-authority.json",
+        "key": "9742c81cc18f77c2be508579baca1ea5e1d9aa37e7c8c0ada9fba626d0e890fb",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1941,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-recovery.json",
+        "key": "46a75b3e99e9a3d771f315f0c1d774454637496421651153b697cd31f987e54a",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1660,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-transport.json",
+        "key": "f1130976ac9f798be78a4364ed68bfea66c6d7644d7bf9d95623293b1e01b707",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1695,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-service-custody.json",
+        "key": "588317eedf5a18d5571238ff35eda3f2bf8bc7fe1bceeedffa4e9230fd514f31",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1638,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-promotion.json",
+        "key": "c74f9b6d688d217e756c33d970ed3bf8811ead7cb8126cdcc2a4863ce8c87536",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1927,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-ledger.json",
+        "key": "e1c326738e11c764f4d282f842e898ddbca6f0f5bb062a19117275d1d644d1da",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1680,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-counter.json",
+        "key": "68c0c71e2379d5e89ec7074dd329ef570b5dff099a04cd62ce404af15fd028a8",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1654,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-store.json",
+        "key": "7b977d0653013d579d765c31615fe847cbdec58cadfb638ac6c65586c62e61e6",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1680,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-local-custody.json",
+        "key": "972bc6103d29907e48a9b24a93cc06fe1d140c7d9b45b2aebd358712d4c3ae01",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1678,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-checkpoint.json",
+        "key": "45c2ebbcbbef02862b9c04654352a4126971b798ba7f579c21b779978b768945",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1671,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "vector:test/vectors/account-local-provenance.json",
+        "key": "9f0b37d92f8771577e7382a42a21cbb976e128eb292ec05c33c676eccc718202",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 1676,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "campaign:scripts/account-crypto-prep/run.mjs",
+        "key": "89591279b8bbc5ef156946c89a1c895f6c7d734d704715725fb9c68dd169632e",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 2019,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "command:check:102",
+        "key": "ee8dea52aa290a49db22af2710f9d83fe317e990fef91cec63e96ee720dd2fa1",
+        "reused": false,
+        "status": "passed",
+        "elapsedMs": 2121,
+        "cases": 6,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "qualification:identical-vector-consumer",
+        "key": "bb2f06b66308b564b6480fa91212f32d475001e8218a5c95390897f927dc74ac",
+        "reused": true,
+        "status": "passed",
+        "elapsedMs": 1673,
+        "cases": null,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-15T14:55:29.852Z",
+    "input": "d68e8e2d8badb87e56463e684fd240404e482a8d58bd7415961df0adcf409e52",
+    "completedAt": "2026-09-15T15:00:00.392Z"
+  },
+  "remaining": {
+    "test": 0,
+    "command": 94,
+    "campaign": 62
+  },
+  "generalFiles": 271,
+  "generalDispositions": 2191
+}

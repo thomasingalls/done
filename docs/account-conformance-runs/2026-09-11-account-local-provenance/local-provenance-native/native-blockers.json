@@ -1,0 +1,17 @@
+[
+  {
+    "key": "legacy-import-v1",
+    "refused": true,
+    "readOnly": true
+  },
+  {
+    "key": "local-clear-v1",
+    "refused": true,
+    "readOnly": true
+  },
+  {
+    "key": "local-clear-v1",
+    "refused": true,
+    "readOnly": true
+  }
+]

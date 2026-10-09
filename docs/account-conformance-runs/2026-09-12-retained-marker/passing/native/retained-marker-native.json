@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "storageVersion": 1,
+  "logicalVersion": 9,
+  "coldReplay": true,
+  "tamperRefusedWithoutWrites": true
+}

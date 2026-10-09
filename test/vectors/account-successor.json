@@ -1,0 +1,728 @@
+{
+  "v": 1,
+  "note": "Public test seeds only. Pure admission continuity, not live consumption or delivery evidence.",
+  "authoritySeed": "0101010101010101010101010101010101010101010101010101010101010101",
+  "creatingSeed": "0202020202020202020202020202020202020202020202020202020202020202",
+  "candidateSeed": "1818181818181818181818181818181818181818181818181818181818181818",
+  "base": {
+    "pin": {
+      "v": 1,
+      "serviceId": "10101010101010101010101010101010",
+      "origin": "https://app.done.invalid",
+      "rpId": "app.done.invalid",
+      "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+    },
+    "request": {
+      "v": 1,
+      "candidate": {
+        "v": 1,
+        "kind": "promotion-genesis-candidate",
+        "preparation": "4848484848484848484848484848484848484848484848484848484848484848",
+        "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+        "principalId": "11111111111111111111111111111111",
+        "workspaceId": "22222222222222222222222222222222",
+        "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+        "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+        "generation": 1,
+        "proposedEpoch": 1,
+        "signer": "55555555555555555555555555555555",
+        "actors": [
+          {
+            "id": "11111111111111111111111111111111",
+            "kind": "human",
+            "credential": "55555555555555555555555555555555"
+          },
+          {
+            "id": "system",
+            "kind": "system",
+            "credential": "55555555555555555555555555555555"
+          }
+        ],
+        "coverage": {
+          "derivation": "yjs-13.6.31-snapshot-v1",
+          "snapshot": "0000",
+          "heads": []
+        },
+        "checkpoint": {
+          "v": 1,
+          "salt": "66666666666666666666666666666666",
+          "nonce": "676767676767676767676767",
+          "ct": "686868686868686868686868686868686868"
+        },
+        "wraps": [
+          {
+            "recipient": "device",
+            "id": "69696969696969696969696969696969",
+            "publicKey": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+            "enc": "6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b6b",
+            "ct": "6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c"
+          },
+          {
+            "recipient": "recovery",
+            "id": "MjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjI",
+            "publicKey": "4444444444444444444444444444444444444444444444444444444444444444",
+            "enc": "6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d6d",
+            "ct": "6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e6e"
+          }
+        ],
+        "signature": "fa275c21f6fa453a3af6344c312053ee1157758b78b69acb52e4a4826118d325d525e56ddb8ca5773c6ca22e64702c11639d50bf9dba56d4fbef5da66c61bd0b"
+      },
+      "certification": {
+        "members": [
+          {
+            "id": "55555555555555555555555555555555",
+            "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+            "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+          }
+        ],
+        "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+        "approver": "55555555555555555555555555555555",
+        "signature": "0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e"
+      },
+      "recovery": {
+        "principalId": "11111111111111111111111111111111",
+        "workspaceId": "22222222222222222222222222222222",
+        "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+        "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c",
+        "v": 1,
+        "rootCommitment": "254620ea9e6ba198393fbba25541bd5008d3fd7baa23e1258c39daf49e2ab377",
+        "rPub": "4444444444444444444444444444444444444444444444444444444444444444",
+        "bootstrapSigner": "ed4928c628d1c2c6eae90338905995612959273a5c63f93636c14614ac8737d1",
+        "envelope": {
+          "v": 1,
+          "salt": "45454545454545454545454545454545",
+          "nonce": "464646464646464646464646",
+          "ct": "47474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747474747"
+        }
+      },
+      "originSignature": "295cd78414c9ea11dc7b6b8e977e861ce5c2592b4e9d09ffc6b5bc93f2f17e6b4b06a64845d0a11adf6059b75508b43bbeae3f551818810efafffd0635c12601"
+    },
+    "receipt": {
+      "v": 2,
+      "kind": "promotion-receipt",
+      "offer": {
+        "v": 1,
+        "kind": "promotion-offer",
+        "epoch": {
+          "v": 1,
+          "kind": "first-authorization-epoch",
+          "pin": {
+            "v": 1,
+            "serviceId": "10101010101010101010101010101010",
+            "origin": "https://app.done.invalid",
+            "rpId": "app.done.invalid",
+            "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+          },
+          "requestDigest": "d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135",
+          "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+          "principalId": "11111111111111111111111111111111",
+          "workspaceId": "22222222222222222222222222222222",
+          "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+          "epoch": 1,
+          "parent": "0000000000000000000000000000000000000000000000000000000000000000",
+          "generation": 1,
+          "certification": {
+            "members": [
+              {
+                "id": "55555555555555555555555555555555",
+                "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+                "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+              }
+            ],
+            "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+            "approver": "55555555555555555555555555555555",
+            "signature": "0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e"
+          },
+          "owner": "55555555555555555555555555555555",
+          "capabilities": [
+            "read",
+            "write",
+            "admit",
+            "manage"
+          ],
+          "acceptancePublicKey": "ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c",
+          "heads": []
+        },
+        "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+        "signature": "e6a250d06a3d8fb867ce8ce4fa4dd1353ce56a8489fbdf3eb1027d25468cf20fe856c68acbc8665c9f95c1007aa97b0ac549b40b32d70a4734acb8fc9ff3130e"
+      },
+      "completion": {
+        "manifest": {
+          "v": 2,
+          "workspaceId": "22222222222222222222222222222222",
+          "epoch": 1,
+          "epochHead": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+          "generation": 1,
+          "checkpointDigest": "1d086542de5d4000ea9bda8882c2b04c7de360729c836f2024ca1e6548270c2d",
+          "sv": "00",
+          "ds": "0000",
+          "headVectorDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+          "producer": "55555555555555555555555555555555",
+          "signature": "799dd902523505f2cb5b9277107135f33b337cfac966bcce7e418289d984e88d809b83fb1a4e77570e571766eba682db856e8e935cab5d8efc59839c52f2b20d"
+        },
+        "admission": {
+          "v": 2,
+          "workspaceId": "22222222222222222222222222222222",
+          "checkpointDigest": "1d086542de5d4000ea9bda8882c2b04c7de360729c836f2024ca1e6548270c2d",
+          "manifestDigest": "ea988f8d7bca7b426fd3656d595f022920a0d07653e4ff0d1ee31f8c1afb02f7",
+          "derivedSv": "00",
+          "derivedDs": "0000",
+          "headBaselineDigest": "f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475",
+          "derivation": "yjs-13.6.31-sv-ds-v1",
+          "admittingCredential": "55555555555555555555555555555555",
+          "selfAdmitted": 1,
+          "decisionParent": "0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "bede47855d134cc58fda0b2db0977c98d3e47843d414d41aef1580a1fed8233b94ab031e90f6879f41d21ee31a00bb115e1a1817fb72585490baf8cb3bab8b0a"
+        }
+      },
+      "epochSignature": "059132e268dbbed34e17ac5e02e5045a81fc1f336e46621a090ec7a8c8c3736bf121f5145d46a50c1c95e45ce455b201e3f141a3d4249846ded848556140d602",
+      "activation": {
+        "context": {
+          "v": 1,
+          "pin": {
+            "v": 1,
+            "serviceId": "10101010101010101010101010101010",
+            "origin": "https://app.done.invalid",
+            "rpId": "app.done.invalid",
+            "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+          },
+          "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+          "requestDigest": "d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135",
+          "offerHead": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+          "completionDigest": "9822e10bf879c27aaeca015544cd4e777cdf8bd6bf7a70477ff5dbe21ad621e4",
+          "credentialId": "MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM",
+          "nonce": "7070707070707070707070707070707070707070707070707070707070707070",
+          "expiresAt": 2000000000000
+        },
+        "proofHash": "ad5c07cdcf4f832720c400d3cdf29b1a43acbc46744cf5e5321d15318fc1e1c1"
+      },
+      "signature": "4fd2f213ac33ddad2c338c25a00ca359d7b8247c0e12b550d2ac45b948abc2552351d998f8b08e0da8d125ca8bbb5f28418d1bcec1ad567b76d9c656e82dbd00"
+    }
+  },
+  "held": {
+    "epoch": 1,
+    "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4"
+  },
+  "successor": {
+    "v": 1,
+    "kind": "device-admission-successor",
+    "epoch": {
+      "v": 1,
+      "kind": "device-admission-epoch",
+      "pin": {
+        "v": 1,
+        "serviceId": "10101010101010101010101010101010",
+        "origin": "https://app.done.invalid",
+        "rpId": "app.done.invalid",
+        "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+      },
+      "requestDigest": "d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135",
+      "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+      "principalId": "11111111111111111111111111111111",
+      "workspaceId": "22222222222222222222222222222222",
+      "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+      "epoch": 2,
+      "parent": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+      "generation": 1,
+      "acceptancePublicKey": "ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c",
+      "preparation": {
+        "v": 1,
+        "kind": "enrollment-preparation-receipt",
+        "context": {
+          "v": 1,
+          "pin": {
+            "v": 1,
+            "serviceId": "10101010101010101010101010101010",
+            "origin": "https://app.done.invalid",
+            "rpId": "app.done.invalid",
+            "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+          },
+          "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+          "attemptId": "W1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1s",
+          "candidate": {
+            "v": 1,
+            "workspaceId": "22222222222222222222222222222222",
+            "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+            "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+            "credentialId": "77777777777777777777777777777777",
+            "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+            "wPub": "7878787878787878787878787878787878787878787878787878787878787878"
+          },
+          "epoch": 1,
+          "certifiedSetDigest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+          "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+          "passkeyId": "MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM",
+          "nonce": "7979797979797979797979797979797979797979797979797979797979797979",
+          "expiresAt": 601000
+        },
+        "receiptId": "XFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFw",
+        "preparedAt": 2000,
+        "expiresAt": 602000,
+        "assertionHash": "8181818181818181818181818181818181818181818181818181818181818181",
+        "possessionHash": "8282828282828282828282828282828282828282828282828282828282828282",
+        "signature": "da99ec6c1336210e10737dcd23d065e2618af20e93134b45aa92ac808cac4fa0bc35dec92964942e1a68d33a0bca0afeef0ebe14655c079df384c01c736b8602"
+      },
+      "certified": {
+        "parentEpoch": 0,
+        "nextEpoch": 1,
+        "digest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+        "value": {
+          "members": [
+            {
+              "id": "55555555555555555555555555555555",
+              "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+              "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+            }
+          ],
+          "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+          "approver": "55555555555555555555555555555555",
+          "signature": "0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e"
+        }
+      },
+      "roster": [
+        {
+          "id": "55555555555555555555555555555555",
+          "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+          "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+          "principalId": "11111111111111111111111111111111",
+          "state": "certified",
+          "capabilities": [
+            "read",
+            "write",
+            "admit",
+            "manage"
+          ]
+        },
+        {
+          "id": "77777777777777777777777777777777",
+          "wPub": "7878787878787878787878787878787878787878787878787878787878787878",
+          "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+          "principalId": "11111111111111111111111111111111",
+          "state": "pending",
+          "capabilities": []
+        }
+      ],
+      "heads": [
+        {
+          "credentialId": "55555555555555555555555555555555",
+          "position": 0,
+          "link": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "credentialId": "77777777777777777777777777777777",
+          "position": 0,
+          "link": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    "head": "6020f141ef40866de5418dccce9f954aed33e5ae556cae7d49769e98a9dc05f0",
+    "signature": "ead0f5ef53b1dc28be9812c96f152d14bb64388c92cf0dd2c9e5e8f4ccec1fcb523cd23beb60ac149f2a9b7719bdebdbd7dfa4eb178f161229aa48f552ce7903"
+  },
+  "request": {
+    "v": 1,
+    "kind": "authority-discovery-request",
+    "pin": {
+      "v": 1,
+      "serviceId": "10101010101010101010101010101010",
+      "origin": "https://app.done.invalid",
+      "rpId": "app.done.invalid",
+      "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+    },
+    "workspaceId": "22222222222222222222222222222222",
+    "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+    "credentialId": "55555555555555555555555555555555",
+    "epoch": 1,
+    "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+    "nonce": "8383838383838383838383838383838383838383838383838383838383838383",
+    "expiresAt": 61000,
+    "signature": "8a1d3788d6f2bbef995b25aa06ce7e314be4458199bae5ec7075bb4eed5ea0d80f9334ddb7d7a0eb6427e9734f2bfc17ab8bfef9a9dc1623805a80644a533b01"
+  },
+  "response": {
+    "v": 1,
+    "kind": "authority-discovery-response",
+    "requestHash": "e409f69036443bcb465fa85715ad199ec8fb550fb98b9269be20c858e75ceca7",
+    "successor": {
+      "v": 1,
+      "kind": "device-admission-successor",
+      "epoch": {
+        "v": 1,
+        "kind": "device-admission-epoch",
+        "pin": {
+          "v": 1,
+          "serviceId": "10101010101010101010101010101010",
+          "origin": "https://app.done.invalid",
+          "rpId": "app.done.invalid",
+          "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+        },
+        "requestDigest": "d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135",
+        "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+        "principalId": "11111111111111111111111111111111",
+        "workspaceId": "22222222222222222222222222222222",
+        "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+        "epoch": 2,
+        "parent": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+        "generation": 1,
+        "acceptancePublicKey": "ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c",
+        "preparation": {
+          "v": 1,
+          "kind": "enrollment-preparation-receipt",
+          "context": {
+            "v": 1,
+            "pin": {
+              "v": 1,
+              "serviceId": "10101010101010101010101010101010",
+              "origin": "https://app.done.invalid",
+              "rpId": "app.done.invalid",
+              "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "attemptId": "W1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1s",
+            "candidate": {
+              "v": 1,
+              "workspaceId": "22222222222222222222222222222222",
+              "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+              "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+              "credentialId": "77777777777777777777777777777777",
+              "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+              "wPub": "7878787878787878787878787878787878787878787878787878787878787878"
+            },
+            "epoch": 1,
+            "certifiedSetDigest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+            "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+            "passkeyId": "MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM",
+            "nonce": "7979797979797979797979797979797979797979797979797979797979797979",
+            "expiresAt": 601000
+          },
+          "receiptId": "XFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFw",
+          "preparedAt": 2000,
+          "expiresAt": 602000,
+          "assertionHash": "8181818181818181818181818181818181818181818181818181818181818181",
+          "possessionHash": "8282828282828282828282828282828282828282828282828282828282828282",
+          "signature": "da99ec6c1336210e10737dcd23d065e2618af20e93134b45aa92ac808cac4fa0bc35dec92964942e1a68d33a0bca0afeef0ebe14655c079df384c01c736b8602"
+        },
+        "certified": {
+          "parentEpoch": 0,
+          "nextEpoch": 1,
+          "digest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+          "value": {
+            "members": [
+              {
+                "id": "55555555555555555555555555555555",
+                "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+                "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+              }
+            ],
+            "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+            "approver": "55555555555555555555555555555555",
+            "signature": "0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e"
+          }
+        },
+        "roster": [
+          {
+            "id": "55555555555555555555555555555555",
+            "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+            "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+            "principalId": "11111111111111111111111111111111",
+            "state": "certified",
+            "capabilities": [
+              "read",
+              "write",
+              "admit",
+              "manage"
+            ]
+          },
+          {
+            "id": "77777777777777777777777777777777",
+            "wPub": "7878787878787878787878787878787878787878787878787878787878787878",
+            "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+            "principalId": "11111111111111111111111111111111",
+            "state": "pending",
+            "capabilities": []
+          }
+        ],
+        "heads": [
+          {
+            "credentialId": "55555555555555555555555555555555",
+            "position": 0,
+            "link": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          {
+            "credentialId": "77777777777777777777777777777777",
+            "position": 0,
+            "link": "0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ]
+      },
+      "head": "6020f141ef40866de5418dccce9f954aed33e5ae556cae7d49769e98a9dc05f0",
+      "signature": "ead0f5ef53b1dc28be9812c96f152d14bb64388c92cf0dd2c9e5e8f4ccec1fcb523cd23beb60ac149f2a9b7719bdebdbd7dfa4eb178f161229aa48f552ce7903"
+    },
+    "signature": "b692443dd319e966e6f1a08af07b5ed6caa3a8d4b59c0f5071ca0dabce4b3d2face41d79a581c2343d8c70e761d6badd0743cf7303ca71e8104ad13ea73cc905"
+  },
+  "traces": [
+    {
+      "purpose": "done/admission-successor/v1",
+      "body": {
+        "v": 1,
+        "kind": "device-admission-epoch",
+        "pin": {
+          "v": 1,
+          "serviceId": "10101010101010101010101010101010",
+          "origin": "https://app.done.invalid",
+          "rpId": "app.done.invalid",
+          "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+        },
+        "requestDigest": "d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135",
+        "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+        "principalId": "11111111111111111111111111111111",
+        "workspaceId": "22222222222222222222222222222222",
+        "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+        "epoch": 2,
+        "parent": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+        "generation": 1,
+        "acceptancePublicKey": "ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c",
+        "preparation": {
+          "v": 1,
+          "kind": "enrollment-preparation-receipt",
+          "context": {
+            "v": 1,
+            "pin": {
+              "v": 1,
+              "serviceId": "10101010101010101010101010101010",
+              "origin": "https://app.done.invalid",
+              "rpId": "app.done.invalid",
+              "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "attemptId": "W1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1s",
+            "candidate": {
+              "v": 1,
+              "workspaceId": "22222222222222222222222222222222",
+              "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+              "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+              "credentialId": "77777777777777777777777777777777",
+              "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+              "wPub": "7878787878787878787878787878787878787878787878787878787878787878"
+            },
+            "epoch": 1,
+            "certifiedSetDigest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+            "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+            "passkeyId": "MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM",
+            "nonce": "7979797979797979797979797979797979797979797979797979797979797979",
+            "expiresAt": 601000
+          },
+          "receiptId": "XFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFw",
+          "preparedAt": 2000,
+          "expiresAt": 602000,
+          "assertionHash": "8181818181818181818181818181818181818181818181818181818181818181",
+          "possessionHash": "8282828282828282828282828282828282828282828282828282828282828282",
+          "signature": "da99ec6c1336210e10737dcd23d065e2618af20e93134b45aa92ac808cac4fa0bc35dec92964942e1a68d33a0bca0afeef0ebe14655c079df384c01c736b8602"
+        },
+        "certified": {
+          "parentEpoch": 0,
+          "nextEpoch": 1,
+          "digest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+          "value": {
+            "members": [
+              {
+                "id": "55555555555555555555555555555555",
+                "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+                "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+              }
+            ],
+            "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+            "approver": "55555555555555555555555555555555",
+            "signature": "0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e"
+          }
+        },
+        "roster": [
+          {
+            "id": "55555555555555555555555555555555",
+            "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+            "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+            "principalId": "11111111111111111111111111111111",
+            "state": "certified",
+            "capabilities": [
+              "read",
+              "write",
+              "admit",
+              "manage"
+            ]
+          },
+          {
+            "id": "77777777777777777777777777777777",
+            "wPub": "7878787878787878787878787878787878787878787878787878787878787878",
+            "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+            "principalId": "11111111111111111111111111111111",
+            "state": "pending",
+            "capabilities": []
+          }
+        ],
+        "heads": [
+          {
+            "credentialId": "55555555555555555555555555555555",
+            "position": 0,
+            "link": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          {
+            "credentialId": "77777777777777777777777777777777",
+            "position": 0,
+            "link": "0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        ]
+      },
+      "json": "{\"v\":1,\"kind\":\"device-admission-epoch\",\"pin\":{\"v\":1,\"serviceId\":\"10101010101010101010101010101010\",\"origin\":\"https://app.done.invalid\",\"rpId\":\"app.done.invalid\",\"authRoot\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},\"requestDigest\":\"d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135\",\"accountId\":\"MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE\",\"principalId\":\"11111111111111111111111111111111\",\"workspaceId\":\"22222222222222222222222222222222\",\"lineageId\":\"3333333333333333333333333333333333333333333333333333333333333333\",\"epoch\":2,\"parent\":\"bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4\",\"generation\":1,\"acceptancePublicKey\":\"ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c\",\"preparation\":{\"v\":1,\"kind\":\"enrollment-preparation-receipt\",\"context\":{\"v\":1,\"pin\":{\"v\":1,\"serviceId\":\"10101010101010101010101010101010\",\"origin\":\"https://app.done.invalid\",\"rpId\":\"app.done.invalid\",\"authRoot\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},\"accountId\":\"MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE\",\"attemptId\":\"W1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1s\",\"candidate\":{\"v\":1,\"workspaceId\":\"22222222222222222222222222222222\",\"lineageId\":\"3333333333333333333333333333333333333333333333333333333333333333\",\"head\":\"bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4\",\"credentialId\":\"77777777777777777777777777777777\",\"sPub\":\"53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3\",\"wPub\":\"7878787878787878787878787878787878787878787878787878787878787878\"},\"epoch\":1,\"certifiedSetDigest\":\"4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec\",\"recoveryStateDigest\":\"998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d\",\"passkeyId\":\"MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM\",\"nonce\":\"7979797979797979797979797979797979797979797979797979797979797979\",\"expiresAt\":601000},\"receiptId\":\"XFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFw\",\"preparedAt\":2000,\"expiresAt\":602000,\"assertionHash\":\"8181818181818181818181818181818181818181818181818181818181818181\",\"possessionHash\":\"8282828282828282828282828282828282828282828282828282828282828282\",\"signature\":\"da99ec6c1336210e10737dcd23d065e2618af20e93134b45aa92ac808cac4fa0bc35dec92964942e1a68d33a0bca0afeef0ebe14655c079df384c01c736b8602\"},\"certified\":{\"parentEpoch\":0,\"nextEpoch\":1,\"digest\":\"4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec\",\"value\":{\"members\":[{\"id\":\"55555555555555555555555555555555\",\"wPub\":\"6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a\",\"sPub\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\"}],\"recoveryStateDigest\":\"998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d\",\"approver\":\"55555555555555555555555555555555\",\"signature\":\"0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e\"}},\"roster\":[{\"id\":\"55555555555555555555555555555555\",\"wPub\":\"6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a\",\"sPub\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\",\"principalId\":\"11111111111111111111111111111111\",\"state\":\"certified\",\"capabilities\":[\"read\",\"write\",\"admit\",\"manage\"]},{\"id\":\"77777777777777777777777777777777\",\"wPub\":\"7878787878787878787878787878787878787878787878787878787878787878\",\"sPub\":\"53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3\",\"principalId\":\"11111111111111111111111111111111\",\"state\":\"pending\",\"capabilities\":[]}],\"heads\":[{\"credentialId\":\"55555555555555555555555555555555\",\"position\":0,\"link\":\"0000000000000000000000000000000000000000000000000000000000000000\"},{\"credentialId\":\"77777777777777777777777777777777\",\"position\":0,\"link\":\"0000000000000000000000000000000000000000000000000000000000000000\"}]}",
+      "bodyHash": "96a04e569a2cff65cce4c516582e8673becf55d5246aa707515f4f1ed337ea72",
+      "messageHex": "001b646f6e652f61646d697373696f6e2d737563636573736f722f7631004039366130346535363961326366663635636365346335313635383265383637336265636635356435323436616137303735313566346631656433333765613732"
+    },
+    {
+      "purpose": "done/authority-discovery-request/v1",
+      "body": {
+        "v": 1,
+        "kind": "authority-discovery-request",
+        "pin": {
+          "v": 1,
+          "serviceId": "10101010101010101010101010101010",
+          "origin": "https://app.done.invalid",
+          "rpId": "app.done.invalid",
+          "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+        },
+        "workspaceId": "22222222222222222222222222222222",
+        "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+        "credentialId": "55555555555555555555555555555555",
+        "epoch": 1,
+        "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+        "nonce": "8383838383838383838383838383838383838383838383838383838383838383",
+        "expiresAt": 61000
+      },
+      "json": "{\"v\":1,\"kind\":\"authority-discovery-request\",\"pin\":{\"v\":1,\"serviceId\":\"10101010101010101010101010101010\",\"origin\":\"https://app.done.invalid\",\"rpId\":\"app.done.invalid\",\"authRoot\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},\"workspaceId\":\"22222222222222222222222222222222\",\"lineageId\":\"3333333333333333333333333333333333333333333333333333333333333333\",\"credentialId\":\"55555555555555555555555555555555\",\"epoch\":1,\"head\":\"bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4\",\"nonce\":\"8383838383838383838383838383838383838383838383838383838383838383\",\"expiresAt\":61000}",
+      "bodyHash": "b8bd3eabeab1471355a2fc2ef6760c502df32bcd64040dbe5c1de2abfb38c7ec",
+      "messageHex": "0023646f6e652f617574686f726974792d646973636f766572792d726571756573742f7631004062386264336561626561623134373133353561326663326566363736306335303264663332626364363430343064626535633164653261626662333863376563"
+    },
+    {
+      "purpose": "done/authority-discovery-response/v1",
+      "body": {
+        "v": 1,
+        "kind": "authority-discovery-response",
+        "requestHash": "e409f69036443bcb465fa85715ad199ec8fb550fb98b9269be20c858e75ceca7",
+        "successor": {
+          "v": 1,
+          "kind": "device-admission-successor",
+          "epoch": {
+            "v": 1,
+            "kind": "device-admission-epoch",
+            "pin": {
+              "v": 1,
+              "serviceId": "10101010101010101010101010101010",
+              "origin": "https://app.done.invalid",
+              "rpId": "app.done.invalid",
+              "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+            },
+            "requestDigest": "d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135",
+            "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+            "principalId": "11111111111111111111111111111111",
+            "workspaceId": "22222222222222222222222222222222",
+            "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+            "epoch": 2,
+            "parent": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+            "generation": 1,
+            "acceptancePublicKey": "ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c",
+            "preparation": {
+              "v": 1,
+              "kind": "enrollment-preparation-receipt",
+              "context": {
+                "v": 1,
+                "pin": {
+                  "v": 1,
+                  "serviceId": "10101010101010101010101010101010",
+                  "origin": "https://app.done.invalid",
+                  "rpId": "app.done.invalid",
+                  "authRoot": "8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c"
+                },
+                "accountId": "MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE",
+                "attemptId": "W1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1s",
+                "candidate": {
+                  "v": 1,
+                  "workspaceId": "22222222222222222222222222222222",
+                  "lineageId": "3333333333333333333333333333333333333333333333333333333333333333",
+                  "head": "bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4",
+                  "credentialId": "77777777777777777777777777777777",
+                  "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+                  "wPub": "7878787878787878787878787878787878787878787878787878787878787878"
+                },
+                "epoch": 1,
+                "certifiedSetDigest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+                "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+                "passkeyId": "MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM",
+                "nonce": "7979797979797979797979797979797979797979797979797979797979797979",
+                "expiresAt": 601000
+              },
+              "receiptId": "XFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFw",
+              "preparedAt": 2000,
+              "expiresAt": 602000,
+              "assertionHash": "8181818181818181818181818181818181818181818181818181818181818181",
+              "possessionHash": "8282828282828282828282828282828282828282828282828282828282828282",
+              "signature": "da99ec6c1336210e10737dcd23d065e2618af20e93134b45aa92ac808cac4fa0bc35dec92964942e1a68d33a0bca0afeef0ebe14655c079df384c01c736b8602"
+            },
+            "certified": {
+              "parentEpoch": 0,
+              "nextEpoch": 1,
+              "digest": "4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec",
+              "value": {
+                "members": [
+                  {
+                    "id": "55555555555555555555555555555555",
+                    "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+                    "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394"
+                  }
+                ],
+                "recoveryStateDigest": "998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d",
+                "approver": "55555555555555555555555555555555",
+                "signature": "0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e"
+              }
+            },
+            "roster": [
+              {
+                "id": "55555555555555555555555555555555",
+                "wPub": "6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a",
+                "sPub": "8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394",
+                "principalId": "11111111111111111111111111111111",
+                "state": "certified",
+                "capabilities": [
+                  "read",
+                  "write",
+                  "admit",
+                  "manage"
+                ]
+              },
+              {
+                "id": "77777777777777777777777777777777",
+                "wPub": "7878787878787878787878787878787878787878787878787878787878787878",
+                "sPub": "53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3",
+                "principalId": "11111111111111111111111111111111",
+                "state": "pending",
+                "capabilities": []
+              }
+            ],
+            "heads": [
+              {
+                "credentialId": "55555555555555555555555555555555",
+                "position": 0,
+                "link": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              {
+                "credentialId": "77777777777777777777777777777777",
+                "position": 0,
+                "link": "0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            ]
+          },
+          "head": "6020f141ef40866de5418dccce9f954aed33e5ae556cae7d49769e98a9dc05f0",
+          "signature": "ead0f5ef53b1dc28be9812c96f152d14bb64388c92cf0dd2c9e5e8f4ccec1fcb523cd23beb60ac149f2a9b7719bdebdbd7dfa4eb178f161229aa48f552ce7903"
+        }
+      },
+      "json": "{\"v\":1,\"kind\":\"authority-discovery-response\",\"requestHash\":\"e409f69036443bcb465fa85715ad199ec8fb550fb98b9269be20c858e75ceca7\",\"successor\":{\"v\":1,\"kind\":\"device-admission-successor\",\"epoch\":{\"v\":1,\"kind\":\"device-admission-epoch\",\"pin\":{\"v\":1,\"serviceId\":\"10101010101010101010101010101010\",\"origin\":\"https://app.done.invalid\",\"rpId\":\"app.done.invalid\",\"authRoot\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},\"requestDigest\":\"d51b279b4cabef9aa3f77555abacb4577b90d2ab9f4667f066b5402a23a04135\",\"accountId\":\"MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE\",\"principalId\":\"11111111111111111111111111111111\",\"workspaceId\":\"22222222222222222222222222222222\",\"lineageId\":\"3333333333333333333333333333333333333333333333333333333333333333\",\"epoch\":2,\"parent\":\"bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4\",\"generation\":1,\"acceptancePublicKey\":\"ca93ac1705187071d67b83c7ff0efe8108e8ec4530575d7726879333dbdabe7c\",\"preparation\":{\"v\":1,\"kind\":\"enrollment-preparation-receipt\",\"context\":{\"v\":1,\"pin\":{\"v\":1,\"serviceId\":\"10101010101010101010101010101010\",\"origin\":\"https://app.done.invalid\",\"rpId\":\"app.done.invalid\",\"authRoot\":\"8a88e3dd7409f195fd52db2d3cba5d72ca6709bf1d94121bf3748801b40f6f5c\"},\"accountId\":\"MTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTE\",\"attemptId\":\"W1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1tbW1s\",\"candidate\":{\"v\":1,\"workspaceId\":\"22222222222222222222222222222222\",\"lineageId\":\"3333333333333333333333333333333333333333333333333333333333333333\",\"head\":\"bcbb3b61e509e6d0e6cb9bdc6e4de1b0f2b4162029b9a8b941eca40516909cd4\",\"credentialId\":\"77777777777777777777777777777777\",\"sPub\":\"53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3\",\"wPub\":\"7878787878787878787878787878787878787878787878787878787878787878\"},\"epoch\":1,\"certifiedSetDigest\":\"4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec\",\"recoveryStateDigest\":\"998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d\",\"passkeyId\":\"MzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM\",\"nonce\":\"7979797979797979797979797979797979797979797979797979797979797979\",\"expiresAt\":601000},\"receiptId\":\"XFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXFw\",\"preparedAt\":2000,\"expiresAt\":602000,\"assertionHash\":\"8181818181818181818181818181818181818181818181818181818181818181\",\"possessionHash\":\"8282828282828282828282828282828282828282828282828282828282828282\",\"signature\":\"da99ec6c1336210e10737dcd23d065e2618af20e93134b45aa92ac808cac4fa0bc35dec92964942e1a68d33a0bca0afeef0ebe14655c079df384c01c736b8602\"},\"certified\":{\"parentEpoch\":0,\"nextEpoch\":1,\"digest\":\"4b76f166eba94c15aca511aa647f9c3cfde6461d7efb5b1f11e1d0d3250b6aec\",\"value\":{\"members\":[{\"id\":\"55555555555555555555555555555555\",\"wPub\":\"6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a\",\"sPub\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\"}],\"recoveryStateDigest\":\"998eab90d8d56c4b55a66ced36e79c68812c86ae736a8efe431a33010c724f0d\",\"approver\":\"55555555555555555555555555555555\",\"signature\":\"0c8c106e369e046c81b834e1eccb645d2bc843487a05414290e046d0963a1bd2c79dacfda5c7087e7c1f59c15c877901691e8f1b2d499f4d4a0008b89949190e\"}},\"roster\":[{\"id\":\"55555555555555555555555555555555\",\"wPub\":\"6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a6a\",\"sPub\":\"8139770ea87d175f56a35466c34c7ecccb8d8a91b4ee37a25df60f5b8fc9b394\",\"principalId\":\"11111111111111111111111111111111\",\"state\":\"certified\",\"capabilities\":[\"read\",\"write\",\"admit\",\"manage\"]},{\"id\":\"77777777777777777777777777777777\",\"wPub\":\"7878787878787878787878787878787878787878787878787878787878787878\",\"sPub\":\"53470962558a6e0839022ae65c6b2723b32772e5c0c5f4776cb8e6a3e10ba2f3\",\"principalId\":\"11111111111111111111111111111111\",\"state\":\"pending\",\"capabilities\":[]}],\"heads\":[{\"credentialId\":\"55555555555555555555555555555555\",\"position\":0,\"link\":\"0000000000000000000000000000000000000000000000000000000000000000\"},{\"credentialId\":\"77777777777777777777777777777777\",\"position\":0,\"link\":\"0000000000000000000000000000000000000000000000000000000000000000\"}]},\"head\":\"6020f141ef40866de5418dccce9f954aed33e5ae556cae7d49769e98a9dc05f0\",\"signature\":\"ead0f5ef53b1dc28be9812c96f152d14bb64388c92cf0dd2c9e5e8f4ccec1fcb523cd23beb60ac149f2a9b7719bdebdbd7dfa4eb178f161229aa48f552ce7903\"}}",
+      "bodyHash": "a0be2f6e1e6afc33668b7c824fcfbf0c57f734766ddbe5a2e7639dd005f30d6b",
+      "messageHex": "0024646f6e652f617574686f726974792d646973636f766572792d726573706f6e73652f7631004061306265326636653165366166633333363638623763383234666366626630633537663733343736366464626535613265373633396464303035663330643662"
+    }
+  ]
+}

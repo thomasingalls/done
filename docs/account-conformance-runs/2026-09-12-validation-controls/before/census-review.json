@@ -1,0 +1,394 @@
+{
+  "added": [
+    {
+      "path": "account-protocol/diagnostics.ts",
+      "sha256": "bf36934c2e733002a9392984a844a6d8cb18f314e516f6666800d5e9faa9762f"
+    },
+    {
+      "path": "account-service/deliveryVerification.ts",
+      "sha256": "3b86fad6a157858d950b0fc867c68ff70c2858b4519bc0caa4dce86558fac02d"
+    },
+    {
+      "path": "src/crdt/archiveProjection.ts",
+      "sha256": "7bf20a357eac8ae4b8b9479ef130da04d452478e508694411c67059cac435040"
+    },
+    {
+      "path": "src/crdt/localRecovery.ts",
+      "sha256": "deb6761755736f5913f1243c52356b6f309d2a46f34e1c0c47a48309d9b57f3a"
+    },
+    {
+      "path": "src/crdt/verificationMemo.ts",
+      "sha256": "915c0dfac0b0b4fbcb7093a4be5292ba893d0675f7ba7ebada7a0f07eae02dc1"
+    },
+    {
+      "path": "src/crdt/verifiedRecords.ts",
+      "sha256": "63828eb8b54d31f3d4b99fdf84f03e0c464c21e3a14d4e0005c0d7957de8fd1c"
+    },
+    {
+      "path": "src/ui/LocalRecovery.tsx",
+      "sha256": "0ed35551e620593efc71499463702059581105f9f7b77509893e48bb05fe0da3"
+    }
+  ],
+  "changed": [
+    {
+      "path": "account-service/core.ts",
+      "sha256": "94e0258186e0653f35ec3052fb598c57045428d495d04e0fce2432ac09c17c87"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "48b1ec4e695dba321486bc7b50ad8b310acbd375ca941fccc9f1ab39da378a6a"
+    },
+    {
+      "path": "account-service/private-server.ts",
+      "sha256": "b62c10ef0103a94653873395355cf132a71674945a46d6a2ff58de987e420cce"
+    },
+    {
+      "path": "src/account/privateDeliveryHttp.ts",
+      "sha256": "1128ab978b3c8c2efd0a05812321ccddbdeb3e2cc8270458379da4e0274cefb2"
+    },
+    {
+      "path": "src/crdt/accountCapture.ts",
+      "sha256": "b83ed135376ce357232afca397de85ad97f4a042b1d601ad5af562eac6963a31"
+    },
+    {
+      "path": "src/crdt/accountDelivery.ts",
+      "sha256": "0bfada4f07b28350351aea5361981101603b9c76b1b886f9ca8c6a84a3b1c4af"
+    },
+    {
+      "path": "src/crdt/accountInbound.ts",
+      "sha256": "7d9e082ce9bcac257eeb88c3c55ce8223088ca48f48e09330039d27a8ee73920"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "237c16de775a30fa1d82ef4a18d2ea28e4e237611a09c89f7c87cdd38434a636"
+    },
+    {
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "55e4951fbe8f882280ee73fcdd09c2d71c38d172a5492d753ca756aeca25a55e"
+    },
+    {
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "fe88f1e2d02d28970f436983a226de9473d3d94fd5668a85a7a196571f7ace26"
+    },
+    {
+      "path": "src/crdt/admittedWorkspace.ts",
+      "sha256": "6e918fabe4a43389756ffde2c1cc4ea01d3c0e8583705b1f66c6784c20cb6290"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "75f7dd6927bdea2af9ab34ada95f877aa61516de3c29eaa55d81369b73e7f50a"
+    },
+    {
+      "path": "src/crdt/custody.ts",
+      "sha256": "1b935a90600837989808839095a8422e2e9d162b24eb54aeb5aed1b0dfb2c28d"
+    },
+    {
+      "path": "src/crdt/deliveryRecord.ts",
+      "sha256": "ba8e83c7604d287328009a40333dfd87c32722576f0d0da12a0180b38bca2449"
+    },
+    {
+      "path": "src/crdt/inboundLedger.ts",
+      "sha256": "c5a14c7c9db94f078f60c005b34f76af297fa28c8722b2500e74618ff1a31144"
+    },
+    {
+      "path": "src/crdt/promotionAdmission.ts",
+      "sha256": "b63a9279b3761e41379ed1c2107c14e8cf5b5fbbdc48e050ab8e6c6314fb4f3f"
+    },
+    {
+      "path": "src/crdt/promotionRecord.ts",
+      "sha256": "2645e99185eedfafcdbe4297ab88f8f43f5879ad22a7034ef3d992825e0caa03"
+    },
+    {
+      "path": "src/crdt/spoolRecord.ts",
+      "sha256": "8932f2863f33b409cceffa184241826146220a9e66117dd17d80672a9ea88321"
+    },
+    {
+      "path": "src/crdt/yjs.ts",
+      "sha256": "08ffe1af47a28a951560685fa5cd2cdf05c225fcd8a36020063ebd17d35f4dc4"
+    },
+    {
+      "path": "src/ui/LocalApp.tsx",
+      "sha256": "47e6c55bfc37eb22f587624444b6b7d2ca689ad4eb8e379195985bd732f2c6c5"
+    }
+  ],
+  "removed": [],
+  "sourceSites": [
+    {
+      "id": "transport-service-chain",
+      "before": [
+        {
+          "path": "account-service/delivery.ts",
+          "line": 296,
+          "label": "done/service-delivery-chain/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "account-service/delivery.ts",
+          "line": 303,
+          "label": "done/service-delivery-chain/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-source-capsule",
+      "before": [
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 71,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 96,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 181,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 71,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 96,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 182,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-spool-capsule",
+      "before": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 165,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 106,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 131,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 166,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 107,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 132,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-delivery-capsule",
+      "before": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 94,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 121,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 157,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 95,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 122,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/deliveryRecord.ts",
+          "line": 158,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-inbound-capsule",
+      "before": [
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 75,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 69,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 91,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/inboundLedger.ts",
+          "line": 77,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 69,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/inboundRecord.ts",
+          "line": 91,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "account-ledger-chain",
+      "before": [
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 272,
+          "label": "done/account-spool-chain/v1\u0000",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/spoolRecord.ts",
+          "line": 285,
+          "label": "done/account-spool-chain/v1\u0000",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "content-metadata-key",
+      "before": [
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 238,
+          "label": "done/content-metadata/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 243,
+          "label": "done/content-metadata/v1",
+          "kind": "literal"
+        }
+      ]
+    },
+    {
+      "id": "store-record-aead",
+      "before": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 121,
+          "label": "done/store/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 226,
+          "label": "done/store/v1",
+          "kind": "literal"
+        }
+      ],
+      "after": [
+        {
+          "path": "src/crdt/contentRecord.ts",
+          "line": 121,
+          "label": "done/store/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 231,
+          "label": "done/store/v1",
+          "kind": "literal"
+        }
+      ]
+    }
+  ],
+  "check": {
+    "failures": [
+      "Runtime census changed. Review source changes and classification, then explicitly run --record.",
+      "Account constructions: source-site census changed transport-service-chain",
+      "Account constructions: source-site census changed account-source-capsule",
+      "Account constructions: source-site census changed account-spool-capsule",
+      "Account constructions: source-site census changed account-delivery-capsule",
+      "Account constructions: source-site census changed account-inbound-capsule",
+      "Account constructions: source-site census changed account-ledger-chain",
+      "Account constructions: source-site census changed content-metadata-key",
+      "Account constructions: source-site census changed store-record-aead"
+    ],
+    "specified": 78,
+    "open": 0,
+    "excluded": 1,
+    "inherited": 4
+  }
+}

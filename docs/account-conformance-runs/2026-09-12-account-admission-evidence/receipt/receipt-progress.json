@@ -1,0 +1,496 @@
+{
+  "histories": [
+    {
+      "field": "ds",
+      "reverse": false,
+      "ops": [
+        {
+          "at": 5,
+          "remove": 2,
+          "insert": "`[zt hxHd#",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "01e7e2edd70b60",
+        "ds": "0000"
+      },
+      "actual": {
+        "sv": "01e7e2edd70b60",
+        "ds": "01e7e2edd70b032c014e03530100"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "ds",
+      "reverse": true,
+      "ops": [
+        {
+          "at": 16,
+          "remove": 3,
+          "insert": "G\"5D5@QV\\",
+          "disk": true
+        },
+        {
+          "at": 5,
+          "remove": 3,
+          "insert": "L*mE\\&VfyY%d",
+          "disk": true
+        },
+        {
+          "at": 12,
+          "remove": 3,
+          "insert": "hPsap{j",
+          "disk": true
+        },
+        {
+          "at": 19,
+          "remove": 1,
+          "insert": "M!>.0vwBrN",
+          "disk": false
+        },
+        {
+          "at": 18,
+          "remove": 2,
+          "insert": "fal6Z6sPb",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "01aac2eacc0b8d01",
+        "ds": "0000"
+      },
+      "actual": {
+        "sv": "01aac2eacc0b8d01",
+        "ds": "01aac2eacc0b082c014e0554025a035f0268046d02750400"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "ds",
+      "reverse": true,
+      "ops": [
+        {
+          "at": 8,
+          "remove": 3,
+          "insert": "%/quUgnE}X@!",
+          "disk": true
+        },
+        {
+          "at": 19,
+          "remove": 2,
+          "insert": "|",
+          "disk": true
+        },
+        {
+          "at": 0,
+          "remove": 3,
+          "insert": "q(Q%b87#\"&6S",
+          "disk": true
+        }
+      ],
+      "wrong": {
+        "sv": "01bfd397e10473",
+        "ds": "0000"
+      },
+      "actual": {
+        "sv": "01bfd397e10473",
+        "ds": "01bfd397e104032c014e0a620200"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "ds",
+      "reverse": false,
+      "ops": [
+        {
+          "at": 20,
+          "remove": 2,
+          "insert": "_",
+          "disk": true
+        },
+        {
+          "at": 1,
+          "remove": 2,
+          "insert": "[70&!z",
+          "disk": true
+        }
+      ],
+      "wrong": {
+        "sv": "01edf9cdd50a5d",
+        "ds": "0000"
+      },
+      "actual": {
+        "sv": "01edf9cdd50a5d",
+        "ds": "01edf9cdd50a022c014e0600"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "ds",
+      "reverse": false,
+      "ops": [
+        {
+          "at": 12,
+          "remove": 2,
+          "insert": "MUs8Z`H=[7",
+          "disk": false
+        },
+        {
+          "at": 4,
+          "remove": 1,
+          "insert": "Hj2B@,(mq{",
+          "disk": false
+        },
+        {
+          "at": 3,
+          "remove": 2,
+          "insert": "C",
+          "disk": true
+        },
+        {
+          "at": 14,
+          "remove": 3,
+          "insert": "YR,",
+          "disk": true
+        },
+        {
+          "at": 7,
+          "remove": 2,
+          "insert": "uj!MkDwh>0#B",
+          "disk": true
+        }
+      ],
+      "wrong": {
+        "sv": "01d188e5e7047e",
+        "ds": "0000"
+      },
+      "actual": {
+        "sv": "01d188e5e7047e",
+        "ds": "01d188e5e704092c014e025102540257025a03600164026a0200"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "sv",
+      "reverse": false,
+      "ops": [
+        {
+          "at": 7,
+          "remove": 1,
+          "insert": ".el",
+          "disk": false
+        },
+        {
+          "at": 16,
+          "remove": 2,
+          "insert": "1",
+          "disk": true
+        },
+        {
+          "at": 8,
+          "remove": 3,
+          "insert": "vJQ",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "00",
+        "ds": "01cea6b6f506042c014e025102540800"
+      },
+      "actual": {
+        "sv": "01cea6b6f50661",
+        "ds": "01cea6b6f506042c014e025102540800"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "sv",
+      "reverse": false,
+      "ops": [
+        {
+          "at": 14,
+          "remove": 3,
+          "insert": "x/",
+          "disk": true
+        },
+        {
+          "at": 2,
+          "remove": 1,
+          "insert": "huGf-ZH/5",
+          "disk": false
+        },
+        {
+          "at": 16,
+          "remove": 1,
+          "insert": "X!}xA",
+          "disk": true
+        },
+        {
+          "at": 7,
+          "remove": 3,
+          "insert": "'k7#",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "00",
+        "ds": "01e8f4eced07072c014e04540258025b0363026a0200"
+      },
+      "actual": {
+        "sv": "01e8f4eced0772",
+        "ds": "01e8f4eced07072c014e04540258025b0363026a0200"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "sv",
+      "reverse": false,
+      "ops": [
+        {
+          "at": 0,
+          "remove": 1,
+          "insert": "$p",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "00",
+        "ds": "0188c4a69804032c014e02530300"
+      },
+      "actual": {
+        "sv": "0188c4a698045a",
+        "ds": "0188c4a69804032c014e02530300"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "sv",
+      "reverse": true,
+      "ops": [
+        {
+          "at": 19,
+          "remove": 1,
+          "insert": "d/]\\B!\\",
+          "disk": false
+        },
+        {
+          "at": 1,
+          "remove": 1,
+          "insert": "Fy(",
+          "disk": false
+        },
+        {
+          "at": 13,
+          "remove": 1,
+          "insert": "7v2J<XF2",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "00",
+        "ds": "01fda2e5ca0e052c014e0354025d02620200"
+      },
+      "actual": {
+        "sv": "01fda2e5ca0e6e",
+        "ds": "01fda2e5ca0e052c014e0354025d02620200"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "sv",
+      "reverse": true,
+      "ops": [
+        {
+          "at": 20,
+          "remove": 3,
+          "insert": "+zt4m7W4",
+          "disk": false
+        },
+        {
+          "at": 4,
+          "remove": 1,
+          "insert": "$x|",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "00",
+        "ds": "019794859c05052c014e0453035a015e0200"
+      },
+      "actual": {
+        "sv": "019794859c0565",
+        "ds": "019794859c05052c014e0453035a015e0200"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "ds",
+      "reverse": true,
+      "ops": [
+        {
+          "at": 6,
+          "remove": 2,
+          "insert": "p(V'",
+          "disk": false
+        },
+        {
+          "at": 12,
+          "remove": 2,
+          "insert": "QNix`^+K?'",
+          "disk": false
+        },
+        {
+          "at": 18,
+          "remove": 2,
+          "insert": "d,RxFhlm",
+          "disk": false
+        },
+        {
+          "at": 17,
+          "remove": 1,
+          "insert": "\")on:9\\,%0_",
+          "disk": false
+        },
+        {
+          "at": 4,
+          "remove": 3,
+          "insert": "1[.BJX",
+          "disk": false
+        }
+      ],
+      "wrong": {
+        "sv": "01e8839db0048101",
+        "ds": "0000"
+      },
+      "actual": {
+        "sv": "01e8839db0048101",
+        "ds": "01e8839db004072c014e055402570260016603770200"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    },
+    {
+      "field": "sv",
+      "reverse": false,
+      "ops": [
+        {
+          "at": 11,
+          "remove": 1,
+          "insert": "\"8gfjka(Qv",
+          "disk": true
+        },
+        {
+          "at": 11,
+          "remove": 2,
+          "insert": "610zaIBa6",
+          "disk": true
+        },
+        {
+          "at": 4,
+          "remove": 3,
+          "insert": "]\"v)Tt",
+          "disk": true
+        },
+        {
+          "at": 17,
+          "remove": 2,
+          "insert": "~k\"7t&%E",
+          "disk": true
+        }
+      ],
+      "wrong": {
+        "sv": "00",
+        "ds": "0191e6b6c204062c014e05540259036002650200"
+      },
+      "actual": {
+        "sv": "0191e6b6c2047b",
+        "ds": "0191e6b6c204062c014e05540259036002650200"
+      },
+      "serviceIssued": true,
+      "validSignatures": true,
+      "sourceUnchanged": true,
+      "refused": [
+        "lost-begin",
+        "cold-retained"
+      ],
+      "omissionReturnedReceipt": true
+    }
+  ]
+}

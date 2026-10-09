@@ -1,0 +1,25 @@
+{
+  "evidence": [
+    {
+      "name": "signing correspondence",
+      "baseline": "refused",
+      "control": "opened"
+    },
+    {
+      "name": "wrapping correspondence",
+      "baseline": "refused",
+      "control": "opened"
+    },
+    {
+      "name": "metadata authentication",
+      "baseline": "refused",
+      "control": "opened"
+    }
+  ],
+  "wrongFactor": "unlock-failed, preserved",
+  "scope": {
+    "slotId": "native-custody-slot",
+    "principalId": "native-custody-pr-é",
+    "workspaceId": "native-custody-ws-🙂"
+  }
+}

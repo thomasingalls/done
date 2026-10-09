@@ -1,0 +1,15 @@
+{
+  "node_modules/yjs/package.json": "ebe6efd8e33ebc6bc9fea6cce26bf3156733b7156a2889d203bffc1a200b8914",
+  "node_modules/yjs/src/structs/Item.js": "2356b04a83ce088c85357d94751299a0178fa99706a6fb407b69a65353c05e32",
+  "node_modules/yjs/src/structs/ContentString.js": "07ad2962b6d0cba38aa6c4b57fe59a1e585b023b8d744a2aeb9257b77ad1cc94",
+  "node_modules/yjs/src/structs/ContentAny.js": "7b297804742c758edfb8e3f1fc838ae35237cbeda96fe9b70f9d4b1ff7e3432a",
+  "node_modules/yjs/src/utils/UndoManager.js": "e6b33defeb3fe33ef91c916a367daf62bd30d820d2f62987140e2094552bf51a",
+  "node_modules/yjs/src/utils/UpdateEncoder.js": "7a3317371a40113677e5323fc7f38c4162e8b8a611cf5c1f82387743450a8af3",
+  "node_modules/yjs/src/utils/UpdateDecoder.js": "5815691e7dabd41dbe64458e4169f89f64e8886f5a89da52c02df0564c6b3d82",
+  "node_modules/lib0/encoding.js": "e5c782283528460e02a517628d7fdf48f793b2c792d2a780242dac9df6522fa2",
+  "node_modules/lib0/decoding.js": "fe717aa2d2572b396fd3332a7287915d7972e859a4df9fc81e3d18c11a463ab8",
+  "package.json": "809e7e837f5c6910dff15dae05b794e5e112021ab324541842ebd7c946f38a61",
+  "pnpm-lock.yaml": "d1a235a6fa7e533e526d2eb6a79b2c60c26b7193235330578c6b9c12ecee334d",
+  "tsconfig.app.json": "46d4bbdb12998f72f2cf19882ab762b147092ae32a795f3b084526644e03b154",
+  "tsconfig.node.json": "d92571762127713dcb64972414abb14a85f14815a918cacaa05d4391a36e91c7"
+}

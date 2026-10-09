@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import * as Y from 'yjs';
+import {createGrowthProbe} from './probe.mjs';
+const fixture=()=>{
+ const doc=new Y.Doc({gc:false}),canonical=new Y.Doc({gc:false}),origin={};
+ const h=new Y.UndoManager(doc.getText('master'),{trackedOrigins:new Set([origin]),captureTimeout:Infinity});
+ let revision=0,closed=false,emits=0;
+ doc.on('update',u=>{Y.applyUpdate(canonical,u);revision++;});
+ const edit=()=>{h.stopCapturing();doc.transact(()=>doc.getText('master').insert(doc.getText('master').length,'x'),origin);};
+ for(let i=0;i<20;i++)edit();
+ const selection=new Map([['master',{position:20}]]);
+ const api=createGrowthProbe({live(){if(closed)throw Error('closed');},getHistory:()=>h,getSelections:()=>selection,getGroup:()=>20,getStatus:()=>({state:'active',pendingItems:0,revision}),read:()=>({undo:h.undoStack.length,redo:h.redoStack.length,cards:[],days:[],text:doc.getText('master').toString()}),snapshot:()=>Y.encodeStateAsUpdate(canonical),encode:d=>Y.encodeStateAsUpdate(d),matches:d=>Buffer.from(Y.encodeStateAsUpdate(d)).equals(Buffer.from(Y.encodeStateAsUpdate(canonical))),whenDurable:async()=>{},emit:()=>emits++});
+ return {api,h,doc,canonical,edit,emits:()=>emits,close:()=>{closed=true;h.destroy();doc.destroy();canonical.destroy();}};
+};
+test('inspection retains real Yjs history and returns detached facts',async()=>{const f=fixture();try{const a=await f.api.inspect();assert.equal(a.undo,20);a.undo=0;assert.equal((await f.api.inspect()).undo,20);assert.equal(f.emits(),0);}finally{f.close();}});
+test('clear preserves content/selection/state, including redo, and later undo works',async()=>{const f=fixture();try{f.h.undo();const {before,after}=await f.api.clearHistory();assert.equal(before.redo,1);assert.equal(after.undo,0);assert.equal(after.redo,0);assert.equal(after.canonicalDigest,before.canonicalDigest);assert.equal(after.historyDigest,before.historyDigest);assert.equal(after.contentDigest,before.contentDigest);assert.equal(f.emits(),1);const text=f.doc.getText('master').toString();f.edit();assert.equal((await f.api.inspect()).undo,1);f.h.undo();assert.equal(f.doc.getText('master').toString(),text);}finally{f.close();}});
+test('closed probe rejects inspection and clearing',async()=>{const f=fixture();f.close();await assert.rejects(f.api.inspect(),/closed/);await assert.rejects(f.api.clearHistory(),/closed/);});
+test('no-op clear fault is caught',async()=>{const f=fixture();const original=f.h.clear;try{f.h.clear=()=>{};await assert.rejects(f.api.clearHistory(),/did not empty/);}finally{f.h.clear=original;f.close();}});
+test('content mutation during clear fault is caught',async()=>{const f=fixture();const original=f.h.clear;try{f.h.clear=function(){original.call(this);f.doc.getText('master').insert(0,'fault');};await assert.rejects(f.api.clearHistory(),/History clear changed/);}finally{f.h.clear=original;f.close();}});
+test('existing canonical mismatch refuses inspection',async()=>{const f=fixture();try{f.canonical.getText('master').insert(0,'foreign');await assert.rejects(f.api.inspect(),/idle matched/);}finally{f.close();}});

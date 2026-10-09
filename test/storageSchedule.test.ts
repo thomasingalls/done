@@ -1,4 +1,13 @@
 /**
+ * Evidence-scope amendment (2026-09-08): this is a partial Stage 0 model.
+ * It does not certify SC-01..09 as a whole. In particular the older storage
+ * composition omits generation-tagged journal capabilities and relies on
+ * explicit remote redelivery. Current counterexamples live in
+ * test/storageContract.test.ts; production obligations are in
+ * docs/storage-conformance.md. Retain the valid represented cases, not the
+ * former full-retirement/offline-recovery inference.
+ */
+/**
  * The storage models, composed and scheduled (queue item 3b, the `S0-2`/`S0-3`
  * interface; TRD §§6.1/7.4/13.7, `P-3`, `P-1` criterion 11).
  *
@@ -423,7 +432,7 @@ const transition = (): Writer<Durable, Volatile> => ({
     {
       id: 'advance-marker',
       // The commit point — and, since the S0-2 return, the moment step 3's
-      // classification is complete: the marker and the records share one
+      // record classification in this partial model is complete: the marker and records share one
       // serialization domain (the fence reads the marker in the committing
       // record transaction), so no g record can commit after this step, and
       // the same atomic transaction finalizes g's ledger over everything that
@@ -464,7 +473,7 @@ const transition = (): Writer<Durable, Volatile> => ({
     },
     {
       id: 'retire-openers',
-      // Step 7 consumes the classification step 5 finalized — complete by the
+      // Step 7 consumes the classification step 5 finalized — complete over represented records by the
       // fence's construction. The predicate here is the shipped model's —
       // retained checkpoints — and the invariant the inversion asserts is
       // that no record's generation loses its opener while outside the ledger.

@@ -1,0 +1,231 @@
+# Remaining private release work after sync liveness
+
+Starting at original `f42b4a7`, the author authorized successive unsigned commits through F-21.4,
+F-09/F-10/N-08/P-07, then F-16/F-17/F-19. Each verified boundary gets a chat report.
+Existing signed vectors, archived assessments, the personal packaged app and L-2 are preserved.
+The [signed-history crosswalk](./account-conformance-runs/2026-09-13-signed-review-history.json) now
+records their verified replacements; `1bb711b` is the signed starting counterpart.
+Original IDs below identify historical phase evidence.
+
+## Privacy trial, specified before execution
+
+Decision: whether to close the additional **bounded private Chromium evidence** gap, and what remains
+for release qualification. The estimand is the presence of declared writing/factor sentinels in acquired
+surfaces at specified lifecycle boundaries. This is measurement calibration and a directed lifecycle
+trial, not a random sample of users or a statistical estimate of leak probability.
+
+One disposable browser profile/history is the independent unit; repeated checkpoints are correlated.
+Build assets before generating sentinels. Use actual UI input, actual recovery files and actual owner
+transitions. Retain input strings outside the browser as the cold replay/export oracle. Collectors must
+not import product parsers, storage-name inventories, openers or reported success flags.
+
+1. Extend the existing neutral detector with opt-in bounded whole-container gzip and ZIP (stored or
+   deflated, single disk, no encryption/ZIP64/data descriptors). Independent Python ZIP and zlib controls
+   must detect writing, fail on malformed/unsupported containers and refuse expansion over budget.
+2. Exercise packaged Local creation, editing, lock, offline restart and explicit Markdown ZIP export.
+   Scan all logical browser carriers before and after export. Scan actual page/worker diagnostics.
+   An intentional exported artifact permits **writing only in that exact artifact**, never factors or
+   copied cache/log values. Inventory the service-worker cache independently.
+3. Exercise synthetic predecessor capture, saved-file verification, interrupted import/restart,
+   selection, authenticated source cleanup and Local clear. Predecessor plaintext is permitted only in
+   the declared source DB/journal before cleanup. After successful cleanup it is prohibited in every
+   acquired logical carrier. New destination writing must cold-replay after cleanup.
+4. Acquire raw files from closed disposable profiles, and current service SQLite/WAL files. Calibrate
+   with deleted SQL writing that is invisible to logical row queries but remains in allocated file bytes.
+   Record physical findings separately: logical deletion does not promise forensic erasure of a legacy
+   plaintext installation. No filesystem scan of personal profiles or saved recovery files.
+
+Primary outcome: zero forbidden matches, complete mandatory acquisitions, all positive controls
+detected, and independently checked writing after reopen. Any acquisition failure/timeout/unknown
+container is **incomplete**, never a passing negative. All planned histories and failed attempts must be
+recorded; no deletion or replacement of inconvenient results. Freeze source hashes during a campaign.
+The initial directed budget is one fresh packaged history and one migration history with restart,
+plus independent container/file controls; existing R1's 24 generated histories remain separate evidence.
+Increase histories only to investigate a concrete gap, not to manufacture statistical confidence.
+
+Known limits: whole sentinels do not cover arbitrary fragmentation; raw file matching does not decode
+all Chromium/OS formats or prove key absence. Same-host Chromium/mock-keychain C13 is a separate opener
+test and cannot qualify other OS/keychain/browser configurations. No heap, swap, remote telemetry,
+filesystem-unallocated-sector or general forensic-erasure claim. These limits constrain closure of
+F-21.4 even when the bounded trial passes.
+
+## Subsequent repair boundaries
+
+Failures: preserve bounded redacted diagnostic causes and typed unsigned hints; never grant receipt or
+decision authority to HTTP errors. Offer a read-only retained-data recovery path without silent reset,
+automatic historical-schema conversion, or labelling partial writing a verified complete workspace.
+
+Storage: measure editor admission separately from sync, preserve projection equivalence guards, schedule
+owned exact-coverage content maintenance, and bound retained admission representations. Account proof
+history pruning is a separate protocol feature. Record remaining limits rather than quietly enlarging
+the release promise.
+
+Release validation follows these repairs: aggregate the required campaigns against one source revision,
+resolve contradictory prose and supported-platform evidence, then perform the private Account cutover
+and second-device adoption rehearsal. Public deployment and broader Account lifecycle features retain
+their sequencing/action-tree gates.
+
+## Privacy result — 2026-09-12
+
+The [nine-stage extension](./account-conformance-runs/2026-09-12-privacy-extended/README.md) passes its
+bounded contract, including 23 Node cases, 60 generated container histories, 24 generated R1 histories
+and 899 source pins. The detector's generated ZIP-prefix counterexample and repaired replay are retained.
+Logical migration cleanup passes; physical legacy plaintext remains in a Chromium LevelDB file after
+cleanup and Local clear. Fresh packaged storage and observed service DB/WAL files have no writing/factor
+sentinel matches. This finding supports the distinction between logical deletion and forensic erasure.
+F-21.4 stays partial for the platform/opener/opaque-format and fragmentation limits above. No production
+code changed in this phase. Next is the bounded failure/diagnostic contract, then read-only recovery.
+
+## Diagnostic result — 2026-09-12
+
+Following privacy commit `67304f3`, the [ten-stage diagnostic campaign](./account-conformance-runs/2026-09-12-failure-diagnostics/README.md)
+passes the full 1,003-test suite and 72 Node cases. F-10/N-08/P-07 are closed for the private composition:
+bounded unsigned hints preserve useful reasons without success authority; each admission stage retains
+progress and can retry to a verified receipt. Service/client memory-only buffers retain fixed classes
+and phases, never raw exceptions or sensitive values. The 150 generated malformed-hint checks and
+existing generated/native commit, activation, delivery, receive and privacy controls pass.
+
+F-09 follows as a separate read-only recovery boundary. It must require authenticated Local custody,
+exclude Account/unfinished-clear/unsupported-format state, preserve original carriers, label every
+salvage result partial, and preserve readable journal work as well as database records. Damaged or
+missing custody can still require external recovery files; diagnostics cannot reconstruct missing keys.
+
+## Read-only recovery trial, specified before execution
+
+Offer explicit partial Local ZIP salvage only after a refused open, with a valid factor and authenticated
+ready Local claim/custody. Never reserve counters, seal records, clear, repair or promote. Independently
+open retained content and journal records; skip unreadable records and report pending dependencies.
+Every result is incomplete by definition. Account, unsupported formats and absent custody refuse.
+Resource limits are 4,096 records and 16 MiB per census/decoded union, with a 60-second cooperative
+cancellation deadline; native operations still drain before releasing exclusion. These are salvage
+budgets, not new normal-store protocol maxima.
+
+The paired oracle is an independent input ledger plus exact logical storage before/after. Thirty
+seeded damage/journal histories vary missing bases and dependent edits. A packaged Chromium test
+must demonstrate ordinary open refusal, cancellation while waiting on another owner, actual UI ZIP
+download, independent Python ZIP decoding, unchanged original carriers and no persistent plaintext
+sentinel after export. Retain any failed campaign and freeze source pins. Existing custody/trim and
+packaged migration/privacy regressions cover shared code. This does not establish Account recovery,
+key-loss recovery, arbitrary historic schema interpretation or whole-profile forensic cleanliness.
+
+## Recovery result — 2026-09-12
+
+The [eight-stage recovery campaign](./account-conformance-runs/2026-09-12-local-recovery/README.md)
+passes 1,007 units, 30 generated damage/journal histories, actual packaged refusal/cancellation/export,
+custody/trim fault controls and packaged migration/privacy regressions, with 909 source pins unchanged.
+F-09's missing Local salvage path is repaired within the authenticated current-format scope above.
+Account, missing custody and unsupported-schema recovery remain explicit later work. Every export
+stays partial; retaining originals is mandatory. Next is owned compaction and measured projection and
+promotion-marker resource work, without weakening correctness guards.
+
+## Maintenance trial, specified before execution
+
+F-16 uses advisory thresholds of 128 committed content changes or 1 MiB since the last attempt,
+including the authenticated startup content census (excluding a single state). After admission and its
+journal drain, wait 750 ms without new queued work. Run the existing exact-coverage compactor in the
+admission flight; later input waits and close invalidates/drains it. Pending originals stay retained.
+Unavailable/quota/oversize maintenance is deferred until new durable growth or a fresh open; corruption
+still refuses ordinary use. The existing receipt and journal/coverage deletion guards stay authoritative.
+
+The directed packaged trial makes 140 real UI edits, requires one state record and exact cold replay.
+Controlled and 24 seeded flush/idle schedules check preservation, ordering, closure, thresholds and no
+retry loop. Existing native trim fault controls and Account capture/ordered receive/sync regressions
+must pass. Record actual campaign durations. Thresholds are conservative work triggers, not measured
+optimal values or a hard disk bound: sustained activity may postpone maintenance, a large state is not
+reduced, unresolved dependencies retain originals, and Account evidence is never pruned here.
+
+## Maintenance result — 2026-09-12
+
+The [nine-stage campaign](./account-conformance-runs/2026-09-12-content-maintenance/README.md) passes
+1,011 units, 24 generated flush/idle schedules, 35 native Node cases and exact-coverage trim controls.
+The packaged 140-edit trial compacts to one state and cold-replays the input. F-16's absent ordinary
+scheduler is repaired; advisory thresholds, pending retention and proof-history limits remain as above.
+The incomplete shared-deadline attempt is retained; separate Account stages pass. This local runner
+repair does not close F-20's aggregate validation debt. F-17/F-19 profiling and equivalent reductions follow.
+
+## Projection trial, specified before the final campaign
+
+F-17's exploratory fixed-character profile confirmed item-count growth. Retained exploratory samples
+are descriptive and overlapped unrelated native validation; the final sequential before/after profile
+runs alone within its campaign. Baseline `70e6d5b` supplies only the prior Yjs/workspace source; every
+other dependency is shared. Measure 100,000 visible characters with 1k/10k/100k actual items, one warmup
+and five samples of fork, complete comparison and synchronous command acceptance with a controlled
+in-memory durable carrier. Measure six reads of 300 archived days/1,500 cards. Preserve individual
+samples, machine/runtime and bundle hashes. No browser input-paint, network, p99 or population claim.
+
+The optimized comparison first performs the existing SV/DS/pending checks, then compares full integrated
+bytes. Exact equality suffices; any byte difference still uses full GC-normalized comparison. No periodic
+guard or authoritative state cache is introduced. A separately bounded derived archive memo (512 days,
+2 Mi characters counting source and parsed strings) keys on exact current text, detaches arrays, masks
+live sections only after copying, drops absent dates and clears on close. Budget accounting is not a
+JavaScript heap ceiling.
+
+Decision rule: generated comparison against the always-normalizing reference, equal-clock unequal-text,
+pending/GC/split/undo/reordering controls and existing native publication guard mutations must pass.
+Archive replacement, caller mutation and changing membership must preserve uncached results. The native
+pending and delivery suites each keep their 100 generated histories. The fast path is useful only if
+its paired profile reduces comparison work without correctness regressions; large-history fork and
+fallback costs remain an explicit release-capacity qualification even if it improves this sample.
+
+## Projection result — 2026-09-12
+
+The [eleven-stage campaign](./account-conformance-runs/2026-09-12-editor-projection/README.md) passes
+1,015 units, new generated equivalence/archive cases, 100 native pending and 100 native delivery histories,
+plus deliberate guard-removal controls and packaged privacy regressions. All 914 source pins agree.
+At 100,000 items, sequential single-host median complete comparison is 97.4 → 23.8 ms; inclusive
+controlled command acceptance is 190.2 → 121.2 ms. Archive read cost is secondary. F-17 remains partial
+for large/deletion-heavy histories, full fallback, forks and supported-device input-to-paint capacity.
+F-19's retained marker representation and avoidable hexadecimal allocation follow.
+
+## Retained marker trial, specified before the final campaign
+
+F-19 adds a storage-only `retainedEncoding: 1` to logical promotion v3–v9. It retains one complete
+genesis candidate; `admission.request.candidate` is exactly `{v:1,kind:"genesis-reference",signature}`.
+The signature field is a locator checked against the retained candidate, **not an authentication grant**.
+Only exact canonical equality of the two old candidates permits packing. Decode before the unchanged
+logical parser/MAC/receipt/semantic checks and native comparison. The full reconstructed payload remains
+MACed, so substitution with an unchanged locator still fails authentication. Original signed request,
+receipt and MAC bytes are unchanged; no existing vectors are regenerated. Old logical parsers refuse
+the extra storage field. Current readers retain old canonical-format support; ordinary owned writes
+use the new encoding, with no eager rewrite. This is a positional authenticated reference, not a new
+hash-based protocol identity or trust in the locator alone.
+
+Direct byte comparison replaces `hex(payloadA) === hex(payloadB)` and erases its temporary byte buffers.
+It preserves exact equality but avoids per-byte string arrays and expanded hex strings. Do not introduce
+a marker-authentication cache: every existing owner/commit reread still authenticates current state.
+Stored-field budgets stay those of the unchanged logical parsers. The 72 MiB promotion wire bound and
+repeated full MAC/parse work remain separate capacity obligations; private operator gating is unchanged.
+
+Decision rule: all thirteen logical stages retain independent exact MAC/message/request bytes after
+packing; unknown/extended/accessor references refuse; 150 generated mutations distinguish locators from
+authentication. Native admission→v9 sync→cold restart must preserve writing and malformed-reference
+refusal must preserve carriers. Existing promotion/parser/long-admission/refusal/sync/privacy cases
+must pass. Profile structurally valid synthetic 4 KiB/64 KiB/1 MiB checkpoints with one warmup and three
+equality samples. Preserve raw times, serialized sizes and source hashes. V8-encoded sizes are a proxy,
+not physical IndexedDB file size, and this is not a complete service/maximum-body capacity experiment.
+
+An exploratory generator erroneously included 16-byte ciphertext below the existing 18-byte minimum;
+its shrunk counterexample and original test are retained. The valid generator now starts at 18, with
+16/17-byte directed refusal controls. Product bounds were not relaxed. Earlier profile probes remain
+separate from the final sequential measurements.
+
+## Retained marker result and sequence checkpoint — 2026-09-12
+
+The [fourteen-stage campaign](./account-conformance-runs/2026-09-12-retained-marker/README.md) passes
+1,015 units, 64 native/protocol Node cases, 150 generated retained-marker histories and existing
+independent authentication/parser/admission/sync/privacy controls. All 917 source pins agree. Exact
+signed and MACed bytes are unchanged. At a synthetic 1 MiB checkpoint, sequential single-host equality
+median is 684.6 → 46.4 ms and retained JSON is 4,212,050 → 2,113,394 bytes. F-19 remains partial for
+full repeated MAC/parsing, completion duplication and end-to-end maximum-body/concurrency capacity.
+
+The authorized bounded sequence is complete: privacy `67304f3`, diagnostics `8ebccfd`, Local recovery
+`01b3036`, maintenance `70e6d5b`, projection `063cd72`, then the commit containing this marker result.
+The [next bounded phase is release validation](./private-release-validation-prep.md): aggregate coverage,
+F-20/N-06/P-05 scheduling/deadlines, P-06 prose, and explicit platform/workload/claim qualification.
+There is no fresh whole-repository aggregate receipt yet. Personal packages, all 31 prior vectors,
+archived reviews and L-2 are unchanged; no personal services/browser/Account deployment was changed.
+The formerly unsigned phase chain is now signed, with identical trees recorded in the crosswalk above.
+
+After acceptable private validation, rehearse author Account cutover and recovery, then enrollment and
+second-device adoption of the first workspace with fresh custody/store/counters/credentials. Broader
+Account lifecycle and public shipping keep their Stage 4/5 and independent review gates.

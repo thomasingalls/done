@@ -1,0 +1,22 @@
+[
+  {
+    "control": "signature",
+    "badEvidence": "refused"
+  },
+  {
+    "control": "epoch",
+    "badEvidence": "refused"
+  },
+  {
+    "control": "link",
+    "badEvidence": "accepted"
+  },
+  {
+    "control": "parent",
+    "badSubmissionAccepted": true
+  },
+  {
+    "control": "position",
+    "badSubmissionAccepted": true
+  }
+]

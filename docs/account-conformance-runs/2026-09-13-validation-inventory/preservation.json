@@ -1,0 +1,8 @@
+{
+  "personalFilesUnchanged": 21,
+  "priorVectorsUnchanged": 31,
+  "L2Sha256": "447a086b85b1168047add2d02833e31b10d9cfaee961bab270e5f712f5b612bc",
+  "baseline": "docs/account-conformance-runs/2026-09-12-account-residue/preservation.json",
+  "runtimeChanges": false,
+  "personalServersStarted": false
+}

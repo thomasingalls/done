@@ -1,0 +1,43 @@
+export const cases = [
+  ['O01.absence', 'Absent carriers do not create databases or enroll a factor'],
+  ['O02.orphan', 'Surviving material without its index refuses fresh classification'],
+  ['O03.missing-content', 'Missing initialized content never becomes an empty workspace'],
+  ['O04.missing-custody', 'Ciphertext without custody is retained and refused'],
+  ['O05.routing', 'The recorded route cannot be bypassed by re-deriving a name'],
+  ['O06.legacy', 'Legacy routing stays selected and ordinary encrypted open refuses'],
+  ['O07.creation', 'Renderer death during content creation leaves a pending disposition'],
+  ['O08.clear', 'Retained clear markers prevent normal open without authorizing cleanup'],
+  ['O09.corrupt', 'Unreadable persisted ciphertext fails before application initialization'],
+  ['O10.factor', 'Wrong factor exposes no editor or transport and changes no carrier'],
+  ['O11.recheck', 'Open rereads routing and controls after acquiring its lifetime'],
+  ['O12.replay', 'Cancellation during authenticated replay drains before permit release'],
+  ['O13.init-death', 'Interrupted admitted initialization recovers before exposure'],
+  ['O14.future', 'Unsupported application schema is app-update-required before initialization'],
+  ['O15.scope', 'Damage in one workspace does not prevent an independently valid workspace'],
+].map(([id, title]) => ({ id, title }));
+export const mutants = [
+  {
+    id: 'probe-creates-database',
+    file: 'src/crdt/startupStorage.ts',
+    case: 'O01.absence',
+    assertion: 'preflight-no-database-side-effects',
+    from: 'request.transaction!.abort();',
+    to: ';',
+  },
+  {
+    id: 'orphan-is-fresh',
+    file: 'src/crdt/startupClassification.ts',
+    case: 'O02.orphan',
+    assertion: 'orphan-not-fresh',
+    from: 'if (rows.length || disk || journal)',
+    to: 'if (false)',
+  },
+  {
+    id: 'skip-open-classification',
+    file: 'src/crdt/ownedStartup.ts',
+    case: 'O11.recheck',
+    assertion: 'open-rechecks-after-grant',
+    from: 'classified = await classifyUnderPermit(task, authority);',
+    to: "const verified = await authority.resolveIdentity(task, null); classified = {scope: {slotId: authority.slotId, workspaceId: authority.workspaceId, principalId: verified.principalId}, storeId: 'unverified', dbName: 'unverified'};",
+  },
+];

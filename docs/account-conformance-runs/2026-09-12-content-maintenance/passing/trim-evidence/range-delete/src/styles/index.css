@@ -1,0 +1,46 @@
+/*
+ * Cascade layers (TRD §8.3), ordered once, here.
+ *
+ * `vendor` is declared but currently empty: CodeMirror injects its base theme
+ * as an unlayered <style> at runtime, and unlayered declarations outrank every
+ * layered one, so it cannot be placed in a layer from this side. Overrides of
+ * CodeMirror's own surface therefore go through `EditorView.theme` — see the
+ * note at the top of src/editor/theme.ts. The layer stays declared because
+ * anything the app ships as a stylesheet belongs in it.
+ *
+ * Each imported file wraps its own contents in its layer, so the order above
+ * holds regardless of how @import is resolved.
+ */
+@layer reset, vendor, app, theme;
+
+@import './reset.css';
+@import './tokens.css';
+@import './shell.css';
+@import './cards.css';
+@import './markdown.css';
+@import './theme.css';
+@import './local-startup.css';
+
+/*
+ * Registered so a lateral panel can be dragged continuously and released to a
+ * snap: one animatable number driving both the panel's translation and the
+ * scrim's opacity. Custom properties do not transition unless they are typed.
+ */
+@property --menu-progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --goals-progress {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+/* Not animated — registered so the day panels' arithmetic is typed. */
+@property --day-index {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}

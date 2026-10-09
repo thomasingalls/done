@@ -1,0 +1,95 @@
+{
+  "base": "2e05910f2c608b35b1134e5bcc0fea5e87ee2942",
+  "claim": "Account spool native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T07-08-13.602Z",
+  "summary": {
+    "schema": 1,
+    "selection": "spool-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-spool/native.test.mjs",
+        "key": "4674ce2011d16bceb45fa2f094bffe7803c4c07d89f1460a0708482a74442df7",
+        "status": "passed",
+        "elapsedMs": 219332,
+        "cases": 24,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T07:08:13.605Z",
+    "input": "99b7afdf9b50c881027267cf51dde741268feb4ea01eafed77a468159efee8f8",
+    "completedAt": "2026-09-14T07:12:18.079Z"
+  },
+  "elapsedMs": 244474,
+  "rawInputArchiveSha256": "66cbd79fc260cc56e1a7e396f8b024bf0edf2cb74ce876586d368de60f7aa4f0",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "2e05910f2c608b35b1134e5bcc0fea5e87ee2942",
+    "sourceDigest": "e016c5cf5dab75c38e81fdc5db0a161fac1a8a4f52e8819461af8ccec1cf8151",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 24,
+    "browserFiles": 1,
+    "generatedHistories": 8,
+    "seed": 9502026,
+    "priorGeneralFiles": 181,
+    "priorGeneralCases": 1502,
+    "currentGeneralFiles": 182,
+    "currentGeneralCases": 1526,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 86,
+    "accountFiles": 76,
+    "accountCases": 432,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 12,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 235,
+    "unresolvedTestFiles": 76,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 650727
+  },
+  "finalGatesSha256": "b6e41422cfc82e03840c309e88cb1842b4d7bdbe9abd33c3b07f7da7b7f8174b",
+  "preservationSha256": "8a9cd06355ce3da4977807ae449624b9f0dde6c81a4ac1f4b266001664cd8c0c",
+  "limits": [
+    "One complete existing native file retains all 24 cases: 23 directed cases and one eight-history generated campaign. The original 240-second wrapper deadline, 30-second directed case limits, 180-second generated limit, 15-second browser startup and five-second drain grace are unchanged. Product code, test bodies, wrapper, mutation bodies, census and shared browser owner are unchanged. Only the active historical-reader git show gains 5000-ms/2-MiB bounds.",
+    "The historical old-reader control executes promotionRecord.ts at 7210b7d; its exact reference/revision/path/hash is pinned in the receipt and checked before launch/reuse and after execution. The existing historical input allowlist and owner drift controls cover this path. Other historical branches in imported helpers remain dormant under the sanitized fixture environment. Synthetic v6-to-v7 activation and old-reader fencing do not add support for shipping intermediate apps or revive the retired-v8 paths.",
+    "The promotion fixture registers cleanup before setup, borrows a validated owned loopback CDP endpoint, and creates a synthetic context, credentials/recovery data and temporary loopback Account service/SQLite files. Setup performs real private registration/preparation/admission/handoff. Builds are in memory. These spool tests do not send prepared content or exercise receive delivery. Generated histories share a context/service but create distinct workspaces; the genesis page is retained separately from the editing pages killed/replaced by the tests. Cleanup closes contexts, borrowed connections and services before temporary files are removed; the stage owner drains Chromium.",
+    "Directed cases require exact persisted v2 envelope bytes across compaction and reopen, contiguous positions, one position per original source, and retention of captured sources. Six before/after allocation, attempt and envelope commit cuts crash the renderer; two marker-activation and two metadata-activation cuts withhold the editor and resume after restart. The before hook aborts an actual IDB transaction after request success; the after hook holds its completion callback after the transaction commits. The envelope-after case requires recovered wire without a new observed invocation.",
+    "Mixed actor work verifies prepared-signer signatures using the current protocol verifier and refuses the former Local public key. A mixed capsule includes two separate source frames, one large source and one pending child with no parent. The suite compares retained source bytes and indices and requires compaction to retain this pending state. It does not independently decrypt every output frame or establish a separate cryptographic wire oracle.",
+    "Synthetic authenticated-at-rest faults remove or reencrypt source/envelope/attempt/ledger material. Reopen must refuse without changes to the recorded IDB inventory or additional observed envelope encryption. These are startup rejection observations and do not claim every individual validation layer was reached; a witness mismatch can reject before deeper wire validation. Missing final-envelope refusal is paired with a no-witness mutation that remints the same position with different bytes.",
+    "Close during held envelope encryption retains the slot until crypto drains, withholds returned wire, allows a later editor edit to survive cold reopen and uses a fresh durable attempt on retry. The lowered budget control admits two observed encryptions and refuses a third. Its bound is about encryption, not a promise that a refused request allocated no position. Other source mutations expose returned-but-unpersisted wire and two observed invocations backed by one durable attempt after a crash. The invocation observer lives in Node and is called immediately before browser envelope encryption; it compares counts, not nonce uniqueness or full cryptographic implementation correctness.",
+    "Eight generated histories retain seed 9502026, numRuns:8, endOnFailure:true and the 180-second test deadline. Two to four steps draw Unicode text and normal, compact, or before/after position/attempt/envelope cuts. After each step, checks compare visible text, all previously observed wire bytes, contiguous positions and unique source references, with durable attempts bounding the external invocation count. Final draining checks one position per source and the invocation bound, then closes. There is no unconditional final cold reopen or explicit all-boundary-coverage assertion; only steps selecting crash boundaries reopen. No shrinking campaign is claimed.",
+    "New-page reopen is in the same browser context; CDP Page.crash kills a renderer, not the browser process, machine or another device. There are twelve explicit directed renderer crashes, plus the generated cuts actually selected. Optional ACCOUNT_REPORT_DIR exports remain disabled, so exact saved-output postconditions, original wrapper ordering and prerequisites remain unresolved independent obligations.",
+    "All 92 pure runner checks pass. Unchanged 23 Node owner, five Vitest-process and twelve native-owner checks retain pinned earlier evidence rather than new execution. The ledger phase's first expected-positive historical service-path orphan classification remains unresolved despite subsequent passes; this phase establishes no fix. Core receive previously used 297.025 seconds of its 300-second Node deadline; narrow headroom remains at the loaded-host reliability gate.",
+    "All 181 prior general contracts / 1502 case identities and six retired-v8 exclusions remain unchanged. Full frozen source/dependency/browser archives are retained locally with hashes here; subsequent documentation changes do not establish an immutable aggregate. The preceding receive/editor phase is signed and verified. Personal profiles/services/builds/recovery/factors, earlier vectors/evidence/debts/signing backups, unrelated root done-space and L-2 remain untouched."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "ef456a3a0df91f5c03a025ef4eea76466de81c0a8ac1bef68d88c398465a2947",
+    "compressedSha256": "0431a401ff251250d73fab7b6f4d266371c5d9d6edd92f8f13fb79d115f7b5b4"
+  },
+  "timing": {
+    "nodeSummaryMs": 214892.467042,
+    "stageElapsedMs": 219332,
+    "selectionElapsedMs": 244474,
+    "nodeDeadlineMs": 240000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  }
+}

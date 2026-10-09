@@ -1,0 +1,10 @@
+{
+  "baseline": "7bf78813f5d3247635c9194d629a075a81195320",
+  "files": {
+    "account-protocol/admissionHistory.ts": "47ed9901048d69fc0e369f00f28d20a4f6f590099c73ece1de7a54067c65c8fe",
+    "account-protocol/successor.ts": "605b83f07f1796b194fa53bc2dc7f61a0f6b9199fd9afcc622c753f16221ecc5",
+    "test/account-successor/history-oracle.mjs": "13282b65507707bc533ccf22005388b9d34647ec7250b0bc51116eba65a0e081",
+    "test/account-successor/history.test.mjs": "9783c3e59d4e4f0160ccaf0c090a43141c4359c0dea9c894afaaa3321de0bdfc",
+    "test/account-successor/history-controls.test.mjs": "d9b8e0eabb27256c8572715d4139260a254b3aa306f45fb4c6419d99dcdfbe80"
+  }
+}

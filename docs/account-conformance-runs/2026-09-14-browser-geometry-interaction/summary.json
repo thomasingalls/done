@@ -1,0 +1,87 @@
+{
+  "base": "d30b64682df92a097e25a6f0f1f41d7ef7936435",
+  "selection": "browser-geometry-interaction-qualification",
+  "integrationGroup": "browser-geometry-interaction",
+  "rawOutput": "test-results/release-validation/2026-09-14T15-40-20.734Z",
+  "result": {
+    "schema": 1,
+    "selection": "browser-geometry-interaction-qualification",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/release-validation/playwright-native.test.mjs",
+        "key": "f3597c577297957ad0d72fe9dca5e5515904d05a2d543c1501e1bd19e1a8f193",
+        "status": "passed",
+        "elapsedMs": 33895,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/geometry/reorder.spec.ts",
+        "key": "73b25f094401332532560be8c9bdea6b5f294e94b88eb39f86c777686b509c1e",
+        "status": "passed",
+        "elapsedMs": 22489,
+        "cases": 8,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/geometry/sync.spec.ts",
+        "key": "75a5db4bc6b04874c2538236281e158edf5d8bb4959f94691abf38b1f9c9c823",
+        "status": "passed",
+        "elapsedMs": 10173,
+        "cases": 2,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/geometry/wheel.spec.ts",
+        "key": "9cc18fa72fb3dc9a9aa63e76eafbd36456d17ab7ca6e8d599764545d64786600",
+        "status": "passed",
+        "elapsedMs": 19663,
+        "cases": 12,
+        "reason": null,
+        "groupDrained": true
+      },
+      {
+        "id": "test:test/geometry/workflow.spec.ts",
+        "key": "6f1d347e9f5511f4fce79765b3a0d0967539f11ec4b14b08f8e148ce517173d9",
+        "status": "passed",
+        "elapsedMs": 54025,
+        "cases": 22,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T15:40:20.741Z",
+    "input": "3081e5d4c75f3cffa41e649c1754adee4e8b6f08d19b6248fe12798ee2f5e20f",
+    "completedAt": "2026-09-14T15:43:25.470Z"
+  },
+  "counts": {
+    "generalFiles": 257,
+    "generalCases": 1987,
+    "generalNotApplicable": 11,
+    "accountFiles": 123,
+    "unresolved": 161,
+    "unresolvedTestFiles": 2
+  },
+  "priorContractsPreserved": 253,
+  "changedPriorContracts": [],
+  "rawInputArchiveSha256": "a2559972f8f8b8c505e5f9c60e38ee0843aa016ef29dd4a4afb60333e51bef8a",
+  "sourceDigest": "22e5dec75883e26a359011070e1a9896b7b4de6e558344272999595b1dbba309",
+  "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+  "runtime": {
+    "arch": "arm64",
+    "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+    "node": "v26.8.2",
+    "platform": "darwin"
+  },
+  "sourcePins": 1052,
+  "scope": "Four files declare 44 project/case dispositions: 34 exercised cases and 10 exact device-specific non-applicable cases. Mouse grip and wheel interactions remain desktop-only; touch hold/arbitration cases run only in the Android project. Every non-applicable identity and original reason is independently enumerated, must still exist in the source census, and must match the actual skip annotation exactly. Pure corruption controls cover all 11 named non-applicable dispositions including the previously retained predecessor case; unlisted skips still refuse. The qualification also reruns both native browser-adapter failure/deadline/drain controls. Application assertions and per-case bounds are unchanged. The owned package covers card reorder, touch/navigation arbitration, Local reopen without relay/plaintext identity caches, bounded native wheel behavior, menus, preference persistence, editor focus and deferred/frozen writing. File bounds are 180 seconds except workflow at 360 seconds, with desktop and Android emulation run serially. Emulation supplies no real-device latency evidence. Only the two latency test files remain unintegrated; command/campaign expansion, wrapper outputs and immutable qualification remain separate.",
+  "artifactIndexSha256": "a0665dffe1fdcba3b20d24d3cd78b058a72670674e2cd74959a39466683b6cb1",
+  "gatesSha256": "abc4064ccf927ece361076540c7f635aeebf9ad93ffb808528bf2ef857c8f9dc",
+  "preservationSha256": "7f8ecf3c6ac80bcc39857075127ba8ef98d175eac49544f64084b6fb8c205f03",
+  "prospectivePacketCeilingBytes": 250000
+}

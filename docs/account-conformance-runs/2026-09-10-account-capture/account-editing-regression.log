@@ -1,0 +1,27 @@
+(node:6069) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6069) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ Account editor activates, preserves journal-only edits and cold reopens offline (3955.0665ms)
+✔ activation interruption before commit never admits initialization early (2934.89675ms)
+✔ activation interruption after commit never admits initialization early (3270.07ms)
+✔ wrong pin, factor, passkey and actor refuse activation; receive cannot reach persistence (2486.407167ms)
+✔ exclusive lifetime queues another editor; cancellation, pagehide and stale surfaces revoke access (2902.236708ms)
+✔ cancelled native flush holds permit until drain and destroys projections before release (2866.926875ms)
+✔ detected authenticated generation change closes the Account lifetime (2807.369208ms)
+✔ missing genesis refuses without restoring it; ancestry control actually opens an empty replacement (2778.844375ms)
+✔ passkey fault control actually opens and edits without a valid assertion (2640.124709ms)
+✔ previous reader, handoff and ordinary Local owners refuse editable Account progress (2567.380125ms)
+✔ durable pending dependencies coexist with editable Account ancestry and recover after delivery (3692.02075ms)
+✔ 200 generated ancestry comparisons retain later deletion and pending state without repairing source (1954.561833ms)
+✔ 24 generated editing histories preserve independent writing, provenance and cold recovery (76625.348709ms)
+✔ refused storage keeps the pending edit outside the document and outgoing observations (2759.530917ms)
+✔ a queued caller cannot substitute slot, actor or pin; damaged selected routing refuses without repair (3026.91925ms)
+✔ abort during a pending passkey drains the ceremony before releasing and does not activate (2096.026ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120624.711708

@@ -1,0 +1,26 @@
+(node:39569) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39569) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ actual service signature mutation discloses a signed page to an unauthorized reader (99.07125ms)
+✔ actual service current mutation discloses a signed page to an unauthorized reader (77.518292ms)
+(node:39570) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39570) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ 60 generated append/read/restart/replay histories retain exact bounded prefixes (8935.429459ms)
+(node:39571) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39571) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ authenticated empty, count-bounded pages, exact ciphertext/proof, and cursor end across restart (171.100875ms)
+✔ byte-bounded page makes progress with maximum-size envelopes (25209.175542ms)
+✔ foreign signer, all foreign scope fields, expired/future requests, malformed framing and past-end cursors refuse without mutations (97.045417ms)
+✔ signed read authorization is rechecked after verification and a retained witness refuses missing rows (79.147584ms)
+✔ current membership is required on every replay, with no new durable nonce state (43.843125ms)
+✔ binary endpoint parsers reject oversize, noncanonical JSON, trailing bytes and unbounded hex (1.510291ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25885.679584

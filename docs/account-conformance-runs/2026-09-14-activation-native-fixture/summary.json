@@ -1,0 +1,100 @@
+{
+  "base": "76ac10345fd7dbd04c78b0cc882e73f83f3cbeeb",
+  "claim": "Account activation native fixture at frozen inputs; no wrapper or immutable aggregate qualification",
+  "rawOutput": "test-results/release-validation/2026-09-14T09-21-20.423Z",
+  "summary": {
+    "schema": 1,
+    "selection": "activation-native-fixture",
+    "claim": "Only this bounded selection; no native aggregate or release qualification.",
+    "status": "passed",
+    "stages": [
+      {
+        "id": "test:test/account-activation/native.test.mjs",
+        "key": "94e35658c464ca138f1c21d23d4d511ecded70e53e82e5c79b140e972d4fef07",
+        "status": "passed",
+        "elapsedMs": 22997,
+        "cases": 5,
+        "reason": null,
+        "groupDrained": true
+      }
+    ],
+    "startedAt": "2026-09-14T09:21:20.426Z",
+    "input": "5c7f22029ea651b5217a614e87e0c3c5c70e84229d33c0ec711e3973799a8416",
+    "completedAt": "2026-09-14T09:22:09.810Z"
+  },
+  "elapsedMs": 49384,
+  "rawInputArchiveSha256": "e682eba4d50564fc64401f19c5642571ed9121d1f9bcab768a2b34bbe58a9101",
+  "rawBrowserArchiveSha256": "75c36366e050ce08cff088cd7d2b709a286bc80e4832cdf56eff4dabd9e8c993",
+  "input": {
+    "revision": "76ac10345fd7dbd04c78b0cc882e73f83f3cbeeb",
+    "sourceDigest": "16fef907b81c335172ad0b4ceceab864b9c77b33af213fe30555b247f137e5e8",
+    "dependencyDigest": "caaabbc277c900e7d32e930547bed06989da76e18308166d661ecca7f55c52ff",
+    "runtime": {
+      "arch": "arm64",
+      "binary": "902b6a6984d5d825829ea9064ab73b734548df37bc0683990dca31c8dc2a9253",
+      "node": "v26.8.2",
+      "platform": "darwin"
+    },
+    "tools": {
+      "chromium": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b"
+    }
+  },
+  "counts": {
+    "selectedFiles": 1,
+    "selectedCases": 5,
+    "browserFiles": 1,
+    "generatedHistories": 0,
+    "executedOmissionControls": 2,
+    "rendererCrashes": 2,
+    "priorGeneralFiles": 193,
+    "priorGeneralCases": 1645,
+    "currentGeneralFiles": 194,
+    "currentGeneralCases": 1650,
+    "currentVitestFiles": 96,
+    "currentNodeFiles": 98,
+    "accountFiles": 88,
+    "accountCases": 556,
+    "pureRunnerTests": 92,
+    "priorNodeOwnerTests": 23,
+    "priorNativeOwnerTests": 14,
+    "priorVitestProcessTests": 5,
+    "manifestObligations": 612,
+    "unresolved": 223,
+    "unresolvedTestFiles": 64,
+    "unresolvedCommands": 96,
+    "unresolvedCampaigns": 63,
+    "manifestBytes": 675149
+  },
+  "finalGatesSha256": "2cc9a1447c2bef2388fe4f6f962ee7cdce72561c777e0a95dc46ac339e6d6df0",
+  "preservationSha256": "2a511297a9e72839543a49d2f51c25c8275a477dbe975c96d759a1bf7852f652",
+  "limits": [
+    "One complete five-case Account activation native file retains all bodies, static identities, two concrete omission controls, seed operations and 30-second case limits. The 180-second file allowance follows the existing native wrapper stage. Only runner registration/selection, expected populations and documentation change. Product code, native fixture/test/helper bytes, shared browser owner and wrapper remain unchanged.",
+    "The fixture chain builds promotion, genesis and admission browser bundles in memory and uses the existing owned-CDP helper, fresh contexts, temporary SQLite account/root stores, synthetic device/recovery codes and early nested cleanup. It runs actual Local genesis, journal seeding, promotion preparation/genesis and the private activation/admission HTTP routes. Registration, recovery confirmation and activation assertions use the Node synthetic authenticator. testActivationAssertion is an exposed binding, not navigator.credentials or a hardware/browser WebAuthn ceremony.",
+    "The two omission cases first capture an authentic activation challenge at the assertion callback. The signature case replaces the signature with zeroes; the target case reuses the first target\u2019s authentic challenge for a separately prepared target. Current code must refuse with the specific signature/target error while the prompt counter stays zero. A Vite transform removes the specific check and the callback must actually be reached exactly once, throwing prompt-reached. The marker remains admission-offered. This detects premature assertion prompting; it does not admit a forged receipt or bypass the service\u2019s own verification.",
+    "The target omission anchor occurs exactly once in the reviewed source. The signature omission\u2019s unique start and following assertedContext boundary enclose only the awaited verifySignature block. Existing helpers assert anchor presence/position; this review also checks uniqueness. Both controls are executed as complete top-level passing cases that assert baseline refusal and mutant behavior; they are not mutation-detected receipt rows inferred from nonzero exit.",
+    "Cancellation holds the assertion callback promise, verifies AbortSignal forwarding, starts a second tab for the same target and waits until navigator.locks.query reports a pending lock. Both operations remain unsettled before release. After the original assertion settles, the cancelled owner must have made zero finish calls and the competitor returns a promotion-receipt. The first result is not separately asserted to have a particular cancellation value. This is callback settlement with a synthetic signature, not physical passkey cancellation or every possible asynchronous boundary.",
+    "Two cases send Page.crash at an indefinitely held assertion callback or after the HTTP finish reply has returned but before it is delivered to the caller. A new page in the same browser context must recover a promotion-receipt. Prompt-crash recovery needs one assertion; committed lost-finish recovery needs none. The code also compares the result to the captured reply when that value is truthy; it does not separately assert capture presence. Both actual renderer crashes run; the browser and service processes remain live.",
+    "The ready helper seeds fixed text at offset four in the encrypted journal before preparation/genesis. These native cases do not independently cold-reconstruct or compare the writing after activation, check every retained carrier byte, or perform the later Account index handoff. Broader genesis/admission/delivery and service-oracle evidence remains separate.",
+    "The file runs no generated histories or shrinking. The wrapper\u2019s 120-history claim belongs to its separate core stage. Shared genesis/admission helpers contain optional historical readers, but the native activation calls only their baseline bundle paths; no old-reader or historical reproduction executes in this selection. Optional ACCOUNT_REPORT_DIR exports are disabled, and the wrapper\u2019s saved JSON/XML, reproduction, stage ordering and ownership remain separate obligations.",
+    "Unchanged 23 Node-owner, five Vitest-process and fourteen native-owner controls retain earlier evidence, including recovery\u2019s profile-reopen/death controls. The complete activation caller runs under frozen source/dependency/browser identity and the exact owned case reporter. Existing ledger orphan classification, core receive loaded-host headroom, capture map-refresh/byte-length follow-ups and historical editing/handoff deadline evidence remain open.",
+    "All previous general contracts and retired-v8 exclusions remain unchanged. This file does not establish human confirmation wording, operating-system passkeys, general membership/revocation, Account index/editor/transport, personal/second-device adoption or deployed service operation. The bounded selection is not immutable aggregate or release qualification."
+  ],
+  "prospectivePacketCeilingBytes": 150000,
+  "timing": {
+    "nodeSummaryMs": 20043.0985,
+    "stageElapsedMs": 22997,
+    "selectionElapsedMs": 49384,
+    "nodeDeadlineMs": 180000,
+    "note": "The file bound applies to Node execution. Stage and selection totals additionally include preparation, fingerprinting and drain. One passing run does not qualify loaded-host reliability."
+  },
+  "deadlines": {
+    "fileMs": 180000,
+    "caseMs": 30000,
+    "note": "Existing wrapper and case limits retained; no allowances changed."
+  },
+  "artifactIndex": {
+    "path": "artifacts.json.gz",
+    "sha256": "3a5be2f90aed99af3ed9bdd55c6b753c99e28405eb90c62a8ba428cb4daa71ca",
+    "compressedSha256": "b6c93eec6b86030bf226e02fcb7614f28b4ddd8da647c88a80d6b93065730571"
+  }
+}

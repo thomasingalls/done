@@ -1,0 +1,18 @@
+(node:6813) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ omitting expected-root pin equality lets the same stored root sign for a different service identity (37.876167ms)
+✔ omitting root private/public correspondence releases an authentically encrypted wrong signing seed (22.008792ms)
+✔ omitting acceptance correspondence allows a valid tag with a wrong seed to pass custody (17.15475ms)
+✔ omitting the proposal ID from actual acceptance AAD permits cross-proposal reuse (17.945375ms)
+✔ omitting private export-format assertion recreates suffix-only extraction (26.2775ms)
+✔ omitting public export-format assertion recreates suffix-only extraction (23.357417ms)
+✔ omitting exported-seed cleanup recreates retention after a failed random draw (17.078834ms)
+✔ omitting the early close guard recreates key generation after close (17.855583ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 298.567458

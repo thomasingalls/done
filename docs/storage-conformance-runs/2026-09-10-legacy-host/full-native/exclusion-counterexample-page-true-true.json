@@ -1,0 +1,32 @@
+{
+  "kind": "page",
+  "recurse": true,
+  "pause": true,
+  "windowMs": 200,
+  "waiting": [
+    {
+      "type": "page",
+      "waiting": true
+    }
+  ],
+  "wroteBeforeRelease": true,
+  "outcome": "unsupported-first-write",
+  "beforeHash": "c4a293676422409f6bd414f077ddbbe28f35250867788f0b5ff751d687f1c659",
+  "duringHash": "f098d00aab98d54f52478286e74961358a701cd17663d1ea5eb66c2186cab4b3",
+  "browser": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/151.0.7922.34",
+    "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+    "jsVersion": "15.1.206.8",
+    "launcherSha256": "a596b1cfc6353e987fcec8d71a23a28cd6a9e7a6b4e20b908e4c4fcffe51158e",
+    "protocolSha256": "c61c953ca9e11d498943ded43fd3d5b1870e0107413dec4e84a4e7cdebc61458"
+  },
+  "predecessor": "7d238eecec4fe760f026ce1b68f3ca5603a9086a",
+  "steps": [
+    "install browser Target.setAutoAttach",
+    "create target or child",
+    "do not call Runtime.runIfWaitingForDebugger on new target",
+    "read source-origin carrier from separate observer"
+  ]
+}

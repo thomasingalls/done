@@ -1,0 +1,64 @@
+(node:4646) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4646) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh discoverable passkey + new-key possession yields a code-verifiable first-device recovery preparation, never membership or login (93.747417ms)
+✔ restart retains exact challenge, nonce and prepared bytes; a different assertion cannot reuse the attempt (84.9435ms)
+✔ old login, enrollment/creation proofs and substituted candidate possession do not authorize recovery (40.666ms)
+✔ discoverable assertion chooses its own account, never an attacker-supplied workspace; inactive account refuses (38.235375ms)
+✔ before-commit interruption retries without fresh challenge or second preparation (66.871416ms)
+✔ after-commit interruption retries without fresh challenge or second preparation (60.1065ms)
+✔ credential change across verification invalidates finish; counter observations do not (72.401541ms)
+✔ cancel and expiry during verification cannot leak a preparation (53.888333ms)
+✔ the offline schema upgrade is explicit and preserves existing rows (42.494166ms)
+✔ a competing admission invalidates prepared recovery; a fresh attempt includes the pending second-device history (132.289042ms)
+(node:4647) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4647) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ two-factor recovery reads accepted ciphertext in bounded, authenticated pages, including after restart (159.976ms)
+✔ passkey alone, forged bootstrap, another candidate signature and unsigned read edits cannot read (116.248083ms)
+▶ cancellation, expiry and account changes between verification and the actual read withhold ciphertext
+  ✔ cancel (78.178417ms)
+  ✔ expire (77.945917ms)
+  ✔ account (79.142875ms)
+✔ cancellation, expiry and account changes between verification and the actual read withhold ciphertext (236.045ms)
+✔ a competing valid membership head invalidates recovery read; corrupt accepted history cannot be hidden (127.269167ms)
+✔ byte-bounded pages make forward progress without truncating or skipping accepted writing (8329.460333ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9410.543458
+
+
+(node:4676) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4676) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ lost-device recovery verifies rotated history and reads finalized publisher writing without a surviving-device grant (765.32ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1163.557917
+
+
+(node:4673) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4673) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ session host preserves capability-protected bootstrap through restart without exposing shared access (88.43975ms)
+✔ public bootstrap rejects wrong origin, oversized bodies, aliases and invalid attempt capabilities (19.711833ms)
+✔ retained schema 11 requires offline opt-in; upgrade preserves pending account, pin and backup (66.538583ms)
+✔ continuation host requires offline opt-in and preserves the account and identity across schema 14 to 22 (77.330375ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 564.823208

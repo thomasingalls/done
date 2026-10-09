@@ -1,0 +1,98 @@
+[
+  {
+    "session": "campaign-v2-0-300-retain",
+    "days": 20,
+    "condition": "retain",
+    "block": 0,
+    "started": "2026-09-15T09:27:23.599Z",
+    "finished": "2026-09-15T09:28:13.597Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "campaign-v2-0-300-clear",
+    "days": 20,
+    "condition": "clear",
+    "block": 0,
+    "started": "2026-09-15T09:28:13.598Z",
+    "finished": "2026-09-15T09:29:03.048Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "campaign-v2-0-600-clear",
+    "days": 40,
+    "condition": "clear",
+    "block": 0,
+    "started": "2026-09-15T09:29:03.049Z",
+    "finished": "2026-09-15T09:30:21.849Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "campaign-v2-0-600-retain",
+    "days": 40,
+    "condition": "retain",
+    "block": 0,
+    "started": "2026-09-15T09:30:21.850Z",
+    "finished": "2026-09-15T09:31:40.762Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "campaign-v2-1-600-retain",
+    "days": 40,
+    "condition": "retain",
+    "block": 1,
+    "started": "2026-09-15T09:31:40.763Z",
+    "finished": "2026-09-15T09:33:00.171Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "campaign-v2-1-600-clear",
+    "days": 40,
+    "condition": "clear",
+    "block": 1,
+    "started": "2026-09-15T09:33:00.172Z",
+    "finished": "2026-09-15T09:34:18.924Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "campaign-v2-1-300-clear",
+    "days": 20,
+    "condition": "clear",
+    "block": 1,
+    "started": "2026-09-15T09:34:18.925Z",
+    "finished": "2026-09-15T09:35:09.084Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  },
+  {
+    "session": "campaign-v2-1-300-retain",
+    "days": 20,
+    "condition": "retain",
+    "block": 1,
+    "started": "2026-09-15T09:35:09.085Z",
+    "finished": "2026-09-15T09:35:59.397Z",
+    "code": 0,
+    "signal": null,
+    "timedOut": false,
+    "drained": true
+  }
+]
