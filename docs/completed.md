@@ -12148,3 +12148,13 @@ header framing. TypeScript, scoped static checks, packaged build, budget and ori
 The retained service remains at `049b9a29`, schema 24, pending a fresh operator quiet point. This work
 requires no server schema migration. General checkpoint replacement/pruning, public operations and
 release qualification remain separate; release qualification is still paused.
+
+### 2026-10-09 — Single-device upload build prepared for retained serving
+
+Built committed implementation `34035330` and copied its 58 files into the immutable
+`.dev/account-enrollment-tailnet/builds/34035330` directory, with a local SHA-256 file manifest at
+`.dev/account-enrollment-tailnet/single-device-upload-build.json`. The committed build passes the
+Yjs patch check, TypeScript, budget (137.5 kB / 350 kB) and built-origin isolation checks.
+The API and gateway have not been restarted; the live build is still `049b9a29`, schema 24.
+The remaining handoff is a fresh operator locked/closed confirmation, offline backup, restart of
+both processes at the unchanged :8443 address, and actual-origin health checks. No migration is needed.

@@ -66,8 +66,9 @@ accepted history followed by recovery/rotation; session notifications and servic
 
 **Live state:** the retained service remains build `049b9a29`, account schema 24, authority schema 1,
 at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. No personal account was changed by the tests.
-No server schema change is needed. Prepare the immutable committed build, then obtain a fresh locked/
-closed confirmation before backing up retained state and restarting the two serving processes.
+No server schema change is needed. Immutable build `34035330` is prepared at
+`.dev/account-enrollment-tailnet/builds/34035330`; its committed-build checks pass. Obtain a fresh
+locked/closed confirmation before backing up retained state and restarting the two serving processes.
 
 Unsigned intermediate commits are authorized. Checkpoint replacement/pruning and public operations
 remain next product work. Release qualification stays paused.

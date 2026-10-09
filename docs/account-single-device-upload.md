@@ -72,3 +72,10 @@ at the new binding boundary repaired it; the same check then passed in 21.3 seco
 
 Checkpoint replacement, general pruning, public deployment and release validation remain separate.
 The live service is still build `049b9a29` until the operator supplies a fresh quiet point.
+
+## Retained-service handoff
+
+Implementation `34035330` is built at `.dev/account-enrollment-tailnet/builds/34035330`, with a local
+58-file SHA-256 manifest. Committed-build checks pass. The server remains at `049b9a29`; a fresh
+locked/closed confirmation precedes backup and restart. Account schema stays 24 and the service pin
+and `https://mbp.tail0e0d4.ts.net:8443/` origin are retained.
