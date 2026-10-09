@@ -1,0 +1,37 @@
+# Allowlisted source only. In particular, never send .git, .dev, exports, keys,
+# personal root notes, evidence archives or browser profiles to the builder.
+**
+!.dockerignore
+!Dockerfile
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!tsconfig*.json
+!vite.config.ts
+!playwright*.config.ts
+!index.html
+!local.html
+!account-service/
+!account-service/**
+!account-protocol/
+!account-protocol/**
+!src/
+!src/**
+!public/
+!public/**
+!private/
+!private/**
+!vite/
+!vite/**
+!scripts/
+!scripts/**
+!test/
+!test/**
+!vendor-patches/
+!vendor-patches/**
+!relay/
+!relay/src/
+!relay/src/auth.ts
+!wasm/
+!wasm/journal-seal/
+!wasm/journal-seal/seal.generated.ts

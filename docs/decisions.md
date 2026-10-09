@@ -4399,3 +4399,52 @@ phase objects remain reachable. Reconcile ancestry-dependent validation before i
 resumption on squashed main; do not alter historical receipts. Future PR/deployment commits are signed.
 See [the signing record](./commit-history/README.md). This changes repository workflow, not the
 agreed deployment or paused-validation scope.
+
+
+### 2026-10-09 — Preserve validation ancestry through ordinary PR merges (`L-1`)
+
+The operator chose to change GitHub's merge policy instead of adapting validation to squash history.
+Linear history is disabled and ordinary merge commits are the only allowed method at repository and
+main-ruleset levels. Required PRs, verified signatures and force-push/deletion protections remain.
+This supersedes the squash route recorded immediately above. PR #41 merged as `8c6005f3`, preserving
+all 398 signed PR commits and their ancestry. The original-to-signed crosswalk remains relevant;
+the hypothetical post-squash ancestry repair is obsolete. Continue signed deployment work from the
+merged main history. No validation requirement is relaxed and release validation remains paused.
+
+
+### 2026-10-10 — Automatic restore reconciliation is a publication requirement (`L-1`)
+
+The operator chose automatic reconciliation before publication over a verified restore that remains
+quarantined pending operator reconciliation of newer client-held history. This expands deployment
+step 4; archive authentication and session-custody reset alone do not close it. The subsequent proposal
+to make externally visible durable decisions wait for an encrypted off-host commit log is **not
+approved**: the operator requested discussion of recovery versus availability first. Preserve the
+agreed 30-second snapshot plan while that choice remains open. Do not silently require B2 for sync,
+weaken client rollback checks, resume release validation or publish a quarantined-only restore as
+complete recovery. No maintenance or restore implementation was applied in this discussion.
+
+
+### 2026-10-10 — Operator-led recovery replaces the automatic-reconciliation publication gate (`L-1`)
+
+After discussing snapshot coverage, independent storage, VM-local logs and multi-node replication,
+the operator chose to record those tradeoffs without choosing an architecture today. Build the
+operator-required recovery version now, accepting possible loss of client writing. Automatic
+reconciliation is no longer a publication prerequisite; the earlier same-day decision above is
+superseded. Keep the current asynchronous snapshot policy, preserve rollback/access protections,
+and require explicit operator disposition of uncertain restored history. No synchronous B2 log,
+second volume/node, production reset or client deletion is authorized by this choice. The options
+and limits are recorded in [recovery choices](./recovery-options.md).
+
+
+### 2026-10-10 — First public schema maintenance is explicit and operator-owned (`L-1`)
+
+The first deployed public schema is 26; no private intermediate schema is being supported as a
+public upgrade path. Maintenance preparation uses the source image and stable ownership lock,
+keeps a crash-persistent serving fence, and verifies a protected encrypted off-host recovery set.
+The saved age identity is supplied only to offline preparation for decryption/cold-open verification,
+never to the API or routine backup worker. Resumption in this image is allowed only for unchanged
+source files including nonempty WAL. A future actual transition must add explicit target-image
+migration, interruption/retry and preserved-authority checks before deployment. Resolved backup
+expiry is an operator command after seven days, requiring a newer verified routine recovery set;
+unresolved or unverifiable copies remain held. Application-image updates and quarantined disaster
+restore retain their separate rules. [Procedure and scope](./public-maintenance.md).

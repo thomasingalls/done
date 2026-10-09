@@ -49,10 +49,10 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: signed PR integration prepared; public runtime and container implementation next
+scope: offline maintenance and image evidence complete; infrastructure integration next
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
-updated: 2026-10-09
+updated: 2026-10-10
 ```
 
 The retained installation serves build `95433108`, account schema 26, at
@@ -70,9 +70,11 @@ Current launch commands are in [packaged development](./packaged-account-develop
 - History: manual checkpoint creation/admission, authenticated receive cuts, handoff/recovery readers
   and pruning that retains two admitted snapshots with their required suffixes are implemented and
   deployed. No maintenance was run against personal writing during this upgrade.
-- Operations: still the retained worktree's loopback/Tailscale host. Public-origin configuration,
-  durable hosting/supervision, service-secret custody, off-host backups/restore and the publishing
-  and schema-update runbook need definition and implementation.
+- Operations: public configuration, explicit initialization, exclusive ownership and ARM64 packaging
+  are implemented. The encrypted backup pipeline is checked against a controlled B2 protocol fixture.
+  Operator restore and offline maintenance are implemented. Actual provider activation, infrastructure
+  manifests and publication remain.
+  The running installation is still the retained worktree's loopback/Tailscale host.
 
 The operator selected a fresh public installation at `done.oxidationlabs.com` through `~/Code/ol-infra`;
 no Tailscale account migration is required. Kubernetes/Flux, cert-manager and SOPS follow that repo.
@@ -81,15 +83,49 @@ Agreed backups: consistent SQLite snapshots without Litestream, encrypted before
 for seven days. Brief sync outages are accepted. Updates, schema migrations and restores have distinct
 procedures. See [the recorded plan](./public-deployment.md) for sequence and remaining environment inputs.
 
-The earlier direct local-main route is superseded by the repository's signed, squash-only PR rules.
-The [completed signing sweep and crosswalk](./commit-history/README.md) map 102 unsigned commits plus
-one affected signed merge to 103 verified replacements. All 397 phase commits verify, with the exact
-same final tree. Local main is restored to remote `c61ad005`; the work is prepared for existing PR #41
-without a force push. Preserve the signed PR branch after squash integration and reconcile
-ancestry-based tooling before validation resumes on that new main history. The automatic build/full-check
-CI split accompanies the PR. Next is the public runtime/initialization and container boundary on
+PR #41 is merged as `8c6005f3`, preserving all 398 signed PR commits as ancestors of main and exactly
+the PR head's tree. The operator selected merge-only integration, disabling linear history while
+retaining required PRs and signatures. The [signing record and crosswalk](./commit-history/README.md)
+preserve the 103 rewritten identities and original evidence. Local main and the deployment branch
+were fast-forwarded to the verified merge. The proposed squash-related validation adaptation is
+obsolete; the existing ancestry model is retained. Automatic application-build CI passed on the PR;
+the full check stayed skipped. Public runtime/initialization and container work is committed on
 `codex/first-public-deployment`. Registry/B2 credentials can wait for publication; public activation
 remains a separate step.
+
+The [public runtime](./public-runtime.md) now separates explicit initialization, session-enabled API
+and packaged app serving. Ordinary startup refuses absent/incompatible state; a stable SQLite ownership
+transaction excludes competing processes and releases after death. Fourteen focused public/gateway
+checks pass on local Node 26 and in the Node 24.18.0 ARM64 build. The two-container smoke verifies
+non-root/read-only execution, explicit initialization, missing-state refusal, competing-owner refusal,
+exact-origin API behavior, 34 packaged precache assets and restart durability. Signed commits
+`44784d11`, `c0d36c7a` and `0485c12a` record repository reconciliation, runtime and packaging. The local
+image built from exact signed source `0485c12a` passed the checks; its
+[source/image evidence and build log](./development-evidence/2026-10-09-public-runtime-container.json)
+are retained. [Backups](./public-backups.md) now add an API-owned worker with coherent WAL snapshots,
+tar/gzip/age encryption, scoped B2 upload and exact-version readback, 30-second nonoverlapping change
+checks, bounded retention and private health reporting. Failed/unverified copies cannot authorize
+discarding good alternatives. Nineteen focused runtime/gateway/backup checks pass, including the
+real worker through SIGKILL/restart; the ARM64 build also exercises those checks as UID 65532.
+Signed commits `773c3d14`, `7c23af0d` and `8923599e` record the backup stages. Image
+`done-public:8923599e` passes the build and packaged smoke; its
+[source/image evidence and raw build log](./development-evidence/2026-10-09-public-backups.json)
+are retained. Operator-led isolated restore is now implemented: archive verification, preserved source,
+atomic session-custody reset, crash/retry and startup quarantine. The [runbook](./public-restore.md)
+separates a successful restore from an operator history disposition; it supplies no generic promotion
+bypass. Signed implementation `ce953670` passes the application build and all 25 focused checks in the
+ARM64 image as UID 65532. Packaged app/API smoke and the network-disabled production-runtime
+backup/restore rehearsal also pass; [evidence](./development-evidence/2026-10-10-public-restore.json)
+is retained. Offline [schema maintenance](./public-maintenance.md) now adds a persistent writer fence,
+verified protected B2 backup, unchanged-state resumption and explicit expiry. Six maintenance checks
+and all 25 runtime/backup/restore regressions pass on the host and in the ARM64 image as UID 65532.
+Signed implementation `ff3d4295` also passes the production-only maintenance CLI rehearsal and packaged
+app/API smoke; [exact source/image evidence](./development-evidence/2026-10-10-public-maintenance.json)
+is retained. Next is infrastructure integration. No older public schema is deployed today; its first actual transition
+must ship explicit target-image migration code. The operator's final 2026-10-10 choice defers automatic
+reconciliation, accepts possible writing loss and leaves replication architecture undecided; see
+[recovery choices](./recovery-options.md). No retained installation or infrastructure resource has
+changed; no image has been published and no real B2 bucket has been used.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;

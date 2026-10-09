@@ -76,6 +76,9 @@ have an identifiable outcome and safe retry. Verify schema, retained rows/identi
 serving. Flux reconciliation must respect the maintenance sequence instead of racing a migration Job
 with a newly started writer. Prefer forward repair after new writes have been accepted; restoring a
 pre-migration database is a data-recovery operation, not an ordinary image rollback.
+The [maintenance runbook](./public-maintenance.md) specifies the implemented fence, verified protected
+backup, unchanged-state resumption and expiry. No older public schema exists today; the first real
+transition must ship an explicit target-image migration before that update can be deployed.
 
 ### Disaster restore
 
@@ -90,21 +93,33 @@ Preserve the long-lived service identity and account/content credentials. This r
 but insufficient by itself: restored membership and acceptance ledgers may lag evidence already held
 by clients. Determine an explicit recovery disposition for that case before claiming a restore can
 resume ordinary writes. Do not erase client rollback protection or treat an older signed state as fresh.
-A focused restore rehearsal is implementation evidence, not a reopened release-validation campaign.
+The selected first-publication scope is operator-led recovery, including possible data loss; automatic
+reconciliation is deferred. [Recovery choices](./recovery-options.md) records the alternatives without
+selecting an off-host log. A focused restore rehearsal is implementation evidence, not a reopened
+release-validation campaign.
 
 ## Implementation sequence
 
-1. Record this plan and prepare the signed history for existing PR #41. Repository protections require
-   squash integration into main; retain the signed phase branch and original-to-signed crosswalk.
-   Continue implementation on `codex/first-public-deployment`.
-2. Include the routine-build/paused-full-check CI split when updating the PR. Add the
-   public service entry, explicit initialization and container packaging with immutable configuration,
-   single-writer ownership, graceful stop and readiness. Keep development entry points working.
-3. Implement isolated consistent snapshot creation, encryption, B2 upload, bounded scheduling,
-   retention and health reporting. Use disposable state and a controlled object destination first.
-4. Implement the versioned maintenance/migration and restore procedures, including the session and
-   client-history restore boundaries above. Exercise focused interruption/identity cases and one
-   complete backup/restore rehearsal.
+1. Complete: record this plan and integrate the signed history through PR #41's merge commit
+   `8c6005f3`, preserving phase ancestry and the original-to-signed crosswalk. Continue implementation
+   on `codex/first-public-deployment` from that merge.
+2. Complete: the routine-build/paused-full-check CI split, public service entry, explicit
+   initialization and container packaging with immutable configuration, single-writer ownership,
+   graceful stop and readiness. Development entry points remain available. The bounded ARM64
+   container checks and operating contract are recorded in [public runtime](./public-runtime.md).
+3. Implemented and checked with disposable state and a controlled B2 protocol destination:
+   consistent snapshots, age encryption, exact-version upload/readback, bounded scheduling,
+   retention and backup health. See [public backups](./public-backups.md). Real-provider credentials,
+   upload/readback and off-cluster recovery-key verification remain publication/activation inputs.
+4. Isolated operator restore is implemented and checked: [runbook and evidence](./public-restore.md).
+   It verifies the archive, resets session custody and preserves quarantine pending recovery disposition.
+   Offline maintenance preparation and pre-migration backup are now implemented: durable fence,
+   saved-key decrypt/cold-open verification, protected B2 version, unchanged-state resumption and
+   explicit expiry. See [schema maintenance](./public-maintenance.md). No older public schema has
+   been deployed; a concrete version transition belongs to its future target image. The operator's final 2026-10-10 decision
+   accepts possible writing loss and defers automatic reconciliation/replication architecture; see
+   [recovery choices](./recovery-options.md). Do not force an older signed ledger back into service.
+   Exercise focused interruption/identity cases and one complete backup/restore rehearsal.
 5. Prepare a dedicated done application directory in ol-infra, separate from existing applications:
    retained PVC, service/app processes, backup owner, secrets references, probes, HTTPS listener/route,
    DNS opt-in and image pins. Match ARM64 and the existing cluster's security/resource conventions.
@@ -116,19 +131,19 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
 
 ## Git and remaining environment inputs
 
-The operator's initial explicit local merge was superseded after checking repository protections:
-main requires a PR, verified signatures and linear history, with squash as its only allowed merge
-method. The [signing record and crosswalk](./commit-history/README.md) preserve traceability for
-102 unsigned replacements plus one re-signed descendant. Original test evidence remains unchanged.
-All 397 phase commits verify locally; the source tree is unchanged. Local main is back at remote
-`c61ad005`. Existing PR #41 can receive the signed work by a normal fast-forward update from its remote
-head `d178d349`; no force push or protection change is needed. Preserve that remote branch after squash
-integration, and reconcile ancestry-based validation before resuming it on the squashed main history.
-Three existing root notes remain untracked and excluded. New PR/deployment commits must be signed.
+The operator selected ordinary PR merge commits to preserve the validation tools' ancestry model,
+disabled linear history and made merge the only allowed method in both settings layers. Main still
+requires PRs and verified signatures and blocks force pushes/deletions. PR #41 merged as `8c6005f3`;
+its parents are the previous main `c61ad005` and signed PR head `f1b91985`. Its tree equals the PR head,
+all 398 PR commits remain ancestors, and GitHub verifies the merge signature. The
+[signing record and crosswalk](./commit-history/README.md) preserve traceability for 102 unsigned
+replacements plus one re-signed descendant. Historical evidence is unchanged. Local main and the
+deployment branch were fast-forwarded; no history rewrite or squash-specific validation adaptation
+is needed. Three existing root notes remain untracked and excluded. New PR/deployment commits are signed.
 
-This branch separates automatic `pnpm build` from the manually opted-in full `pnpm check`. The latter
-includes broad validation campaigns and remains paused. Publish the CI separation with the PR update
-so publication does not inadvertently resume the campaign.
+The merged CI configuration separates automatic `pnpm build` from the manually opted-in full
+`pnpm check`. The application build passed on the PR. The full check includes broad validation
+campaigns and remains paused; it was skipped by the PR run.
 
 Implementation need not wait for these final environment inputs: image registry/repository and push
 access (the infra precedent uses Codeberg), B2 bucket/region/prefix and restricted application key,

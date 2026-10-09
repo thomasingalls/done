@@ -83,8 +83,9 @@ may retain expired rows until it runs maintenance again.
 
 This nonce allocation assumes the service database is not rolled back under the same derived key.
 An operations restore must invalidate restored sessions and use new session-custody salt/key context
-before serving or issuing again. That restore flow remains future work; the ordinary development
-backup procedure is not a session restore procedure.
+before serving or issuing again. The [operator recovery tool](./public-restore.md) now performs this
+reset on an isolated, quarantined candidate; publication still needs a history recovery disposition.
+The ordinary development backup procedure is not a session restore procedure.
 
 `withAccess` is a trusted, synchronous service-composition boundary. It checks the live session,
 current account and credential, expected account, and access expiry inside the transaction that runs

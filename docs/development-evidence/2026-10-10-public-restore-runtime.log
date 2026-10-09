@@ -1,0 +1,4 @@
+(node:1) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+{"ok":true,"sourceRevision":"ce953670227c0523dd7eb85d2a5c4b48f0d974fc","node":"v24.18.0","uid":65532,"network":"none","checks":["initialize and durable attempt","capture/encrypt/decrypt/verify","quarantined completion and stable retry","preserved service pin","public startup refusal"]}

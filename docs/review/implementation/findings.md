@@ -238,8 +238,9 @@ missing test or documentation omission.
 ## P-04: historical commit crosswalk
 
 The later [2026-10-09 product-history signing sweep](../../commit-history/README.md) adds a full
-103-entry crosswalk for the signed PR integration. It preserves original evidence and also records
-the separate ancestry consequence of the repository's squash-only main policy.
+103-entry crosswalk for the signed PR integration. It preserves original evidence. PR #41 ultimately
+used a merge commit after the operator changed the merge policy, preserving phase ancestry and
+removing the proposed squash-related validation adaptation.
 
 The [existing signed-history record](../../account-conformance-runs/2026-09-11-signed-contract-history.json)
 preserves the full IDs, trees, signatures and backup ref. This intake rechecked all seven tree pairs

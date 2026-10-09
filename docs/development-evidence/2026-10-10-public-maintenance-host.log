@@ -1,0 +1,63 @@
+(node:86631) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86631) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ split ports keep the exact public origin and refuse a proxy loop (1.16325ms)
+✔ gateway streams exact bytes and client authority inputs only to its fixed API upstream (39.305875ms)
+✔ API-only owner retains identity through independent restarts; gateway works while API is absent (213.914583ms)
+✔ gateway never retries a request whose reply is lost or truncated (43.919166ms)
+✔ gateway drains an active reply and closes connections that become idle during shutdown (27.256125ms)
+(node:86632) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86632) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ real encrypted pipeline uses version readback; failures never authorize pruning or lose pending changes (772.666917ms)
+✔ overlapping ticks coalesce; a late write stays dirty; close aborts transfer and waits before cleanup (10.48925ms)
+(node:86633) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86633) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ a pinned WAL snapshot includes committed data and excludes a concurrent later transaction (503.805083ms)
+✔ retention keeps five minutes, six UTC hour buckets, seven UTC date buckets and its last verified anchor (0.43575ms)
+(node:86634) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86634) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ API-owned worker backs up through process restart, reaps its temporary state and releases ownership after shutdown (1794.291667ms)
+(node:86635) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86635) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ offline preparation verifies encrypted off-host backup, fences startup, and resumes without resetting real sessions (1813.428917ms)
+✔ wrong recovery key, lost upload reply, corrupt readback, and changed bindings stay fenced and retry safely (429.812417ms)
+✔ interruptions retain intent through resolution; SIGKILL after upload retains the fence and remote receipt is recovered (1962.851292ms)
+✔ changed live WAL, unclassified files, and unsupported schemas cannot be mistaken for unchanged maintenance (334.724667ms)
+✔ maintenance copies are excluded from routine retention, held through resolution, and expire only with a newer verified backup (266.281833ms)
+✔ cancelled preparation resumes unchanged without B2, but never recreates a lost store from maintenance history (124.430667ms)
+(node:86636) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86636) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ genuine snapshot restores in quarantine, preserves writing/identity, resets custody and refuses old logins (646.514708ms)
+✔ lost completion replies preserve the same reset; interrupted unpublished work can be replayed safely (1173.051167ms)
+✔ completed recovery refuses newer WAL content and survives a wrong-key inspection retry (284.225667ms)
+✔ restore refuses a live destination, wrong pin/key/digest, tampered ciphertext and malformed snapshots (580.349875ms)
+✔ archive allowlist rejects traversal, links, duplicate/missing files, oversized metadata and non-files (533.93975ms)
+✔ process death after custody commit releases ownership; CLI retry completes quarantine without a listener (1474.394375ms)
+(node:86637) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86637) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ public app/API preserve exact origin, scoped authority and durable attempts across independent restarts (356.752334ms)
+(node:86638) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:86638) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ public config requires explicit HTTPS identity and separate ports without preview defaults (5.287292ms)
+✔ ordinary startup does not create missing state; explicit initialization retains a stable identity (337.91325ms)
+✔ pin, origin and wrapping-key mismatches refuse without replacing the identity (128.678833ms)
+✔ missing, empty and older account databases never become fresh stores at startup or init retry (120.146834ms)
+✔ incomplete initialization refuses retry and never replaces its already-created authority (57.169209ms)
+✔ complete staging and lost initialization replies recover the same identity (149.896292ms)
+✔ a separate API process excludes another owner and SIGKILL releases ownership without deleting a lock file (518.074709ms)
+✔ shutdown keeps ownership through accepted work, including notification-close failure (93.801416ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5628.144417

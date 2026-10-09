@@ -12404,3 +12404,163 @@ squash-only PR route and signed future work; application code and protection rul
 Signature/metadata/tree checks and documentation checks were performed, not a new build or validation
 campaign. Keep the signed phase branch after squash and reconcile ancestry-dependent tools before
 resuming validation from the new main history.
+
+
+### 2026-10-09 — PR #41 merged with signed history intact
+
+The operator merged PR #41 as `8c6005f3` after selecting merge-only integration and disabling linear
+history. GitHub verifies its signature. Local inspection confirms parents `c61ad005`/`f1b91985`, an
+identical tree to the PR head and preservation of all 398 PR commits as ancestors of main. The PR
+application build passed; its full check was skipped. Local main and `codex/first-public-deployment`
+were fast-forwarded to the merge. Current records now retire the hypothetical squash-ancestry repair;
+original crosswalk/evidence bytes remain unchanged. No runtime edits, deployment or release campaign
+were performed. Next remains public runtime/initialization and container implementation.
+
+
+### 2026-10-09 — Public runtime and explicit initialization
+
+Added the public initialize/API/app entry with required external origin, operator key and expected pin,
+session-only network authority, independent asset serving and minimal readiness. A stable SQLite
+exclusive ownership transaction fences the entire directory, including shutdown drain. Explicit
+initialization publishes a verified complete staging directory and tolerates complete-stage/lost-reply
+retry; incomplete staging and missing/empty/older/mismatched cold state refuse without rekeying.
+Fourteen focused public-runtime/gateway checks and TypeScript pass on local Node 26.11.0, including
+separate-process exclusion and reopening after SIGKILL. No release campaign, production resource or
+retained-service update occurred. See [public runtime](./public-runtime.md). Container packaging follows.
+
+
+### 2026-10-09 — ARM64 public container packaging
+
+Added a digest-pinned Node 24.18.0 multi-stage image with explicit source metadata, an allowlisted
+build context, production-only runtime dependencies, non-root execution and app/API exec probes.
+The same image serves separate app/API processes or runs explicit initialization; secrets and
+retained state are externally mounted only where required. The candidate build passes the existing
+application build and all 14 focused runtime/gateway checks. A disposable two-container smoke passes
+initialization, missing-state refusal, competing-owner refusal, origin/session boundaries, integrity
+of all 34 precache URLs, retained identity/registration after SIGKILL, graceful termination and
+idempotent initialization. All fixture volumes/containers were removed. Operating instructions are
+in [public runtime](./public-runtime.md). The candidate was labelled with its dirty source; a clean
+image will be rebuilt from the signed packaging commit. No deployment, registry push, retained
+installation change, backup/restore implementation or release campaign occurred.
+
+
+### 2026-10-09 — Signed public-container checkpoint
+
+Signing succeeded for repository reconciliation `44784d11`, public runtime `c0d36c7a` and packaging
+`0485c12a`. Rebuilt local image `done-public:0485c12a` from that exact signed source and reran the
+disposable container smoke successfully. Node 24.18.0 ARM64 build: existing application checks and
+14/14 runtime/gateway tests pass; smoke: all eight reported checks, including all 34 precache assets,
+pass with no resource cleanup failures. [Exact image/source evidence and build log](./development-evidence/2026-10-09-public-runtime-container.json)
+are retained. The application/runtime/container phase is complete; next is consistent snapshots,
+encryption, B2 transfer, bounded scheduling/retention and health reporting. No registry push, public
+deployment or release qualification occurred. The three personal root notes remain untracked.
+
+
+### 2026-10-09 — Coherent encrypted backup payload and retention selection
+
+Implemented a pinned SQLite WAL read snapshot and immutable authority/metadata recovery set,
+streamed tar/gzip/age encryption using only a public recipient, file hashes/source provenance and
+bounded capture. The focused test preserves a later concurrent write for the next snapshot,
+decrypts the real age artifact, verifies archive membership/hashes and rejects tampering or a
+changed pin. Retention checks cover the agreed UTC buckets, five-minute recent window, clock
+rollback and unconditional preservation of the last verified anchor. TypeScript and focused lint
+pass. B2 transfer and API-owned scheduling follow; no retained service or remote bucket was used.
+See [public backups](./public-backups.md). Release validation remains paused.
+
+
+### 2026-10-09 — Scoped B2 transfer and serial backup/retention cycle
+
+Added restricted-bucket/prefix B2 Native API transport with streamed ciphertext upload, required
+length/checksum and exact-version SHA-256 readback before coverage/pruning. The bounded cycle
+coalesces work, retains writes arriving after capture, retries failures and permanently deletes only
+classified versions after a complete listing. Unfamiliar hourly/daily keepers must themselves pass
+readback before displacing older copies. The loopback B2 fixture passes lost-reply, corrupt-readback,
+corrupt-keeper, deletion-retry, namespace, scoped-key and pagination controls. Real age encryption
+and snapshot tests also pass; no external bucket was used. API-owned worker/container integration
+follows. See [public backups](./public-backups.md).
+
+
+### 2026-10-09 — Public backup worker and container integration
+
+Composed the backup cycle as one worker owned by the verified API process. Shutdown now awaits
+that worker before releasing state ownership. Added external configuration, source-revision metadata,
+loopback backup health and a separate monitoring probe, plus the container age/CA dependencies.
+The real API/worker fixture passes backup readiness, orphan cleanup, accepted registration through
+SIGKILL/restart, a fresh decrypted archive containing that registration, and clean ownership release.
+All 19 bounded public-runtime/gateway/backup checks pass on Node 24.18.0 ARM64, including execution
+as UID 65532 in the build stage. A final image from the signed integration commit and its evidence
+follow. No provider credentials, retained installation, infrastructure resources or release campaign
+were used. Next remains maintenance/restore, then real-provider activation and publication.
+
+
+### 2026-10-09 — Signed public backup checkpoint
+
+The backup work is signed in `773c3d14` (coherent payload/retention), `7c23af0d` (B2 transfer/cycle)
+and `8923599e` (worker/runtime/container integration). The clean-source ARM64 image
+`done-public:8923599e` passes the application build, 19 focused checks as UID 65532, and the
+packaged two-container smoke with all 34 precache URLs and age binary present. Its exact artifact,
+commands, raw build log and limitations are retained in [backup evidence](./development-evidence/2026-10-09-public-backups.json).
+The B2 protocol check used a disposable loopback destination; actual bucket/key/recipient custody
+and real upload/decrypt verification remain activation inputs. No deployment or registry push was
+performed. Next is explicit maintenance/migration and rollback-safe restore, before ol-infra
+publication. Release qualification remains paused.
+
+
+### 2026-10-10 — Operator-led isolated restore implementation
+
+Recorded the final operator recovery scope and deferred replication options in signed `a3a52ec7`.
+Implemented explicit `restore` into a private independently owned destination, bounded age/tar
+verification and file/pin/schema/integrity checks, preserved original snapshot, separate candidate
+with atomic session invalidation and fresh custody, and public-startup refusal. Completed retries
+preserve the same reset; interrupted preparation can rebuild only its classified output. Focused
+checks cover real credentials, old-token/seal refusal, five interruption boundaries and SIGKILL/CLI
+retry. Restore testing exposed macOS tar metadata entries; archive creation now emits the fixed five
+files through a streaming parser/generator. Runtime/backup regressions pass on the host; target-image
+checks and final evidence follow. [Operator runbook](./public-restore.md) makes clear that uncertain
+history needs an incident-specific disposition or fresh setup/import, potentially losing writing.
+No off-host log, schema migration, production restore or release campaign was performed.
+
+
+### 2026-10-10 — Signed operator restore and runtime evidence
+
+Signed scope commit `a3a52ec7` and implementation `ce953670` complete the bounded isolated-restore
+phase. The exact-source ARM64 image passes the application build and 25 focused checks as UID
+65532; its packaged two-process smoke and separate network-disabled runtime backup/restore rehearsal
+pass too. Evidence, final logs, runtime script and limits are retained in
+[the restore record](./development-evidence/2026-10-10-public-restore.json). Restore success remains
+quarantined with no serving permit; uncertain continuity needs an operator disposition and may
+require fresh setup/import with writing loss. No replication choice, production restore, deployment,
+image push or release campaign occurred. Explicit schema-maintenance sequencing/pre-migration backup
+and infrastructure integration remain; there is no older public schema deployed to migrate today.
+
+
+### 2026-10-10 — Offline maintenance fence and protected pre-migration backup
+
+Implemented source-image `maintenance-prepare/status/resume/prune` around lifetime ownership and a
+persistent startup fence. Preparation records live main/WAL fingerprints, authenticates and cold-opens
+a decrypted backup copy, then uploads ciphertext and verifies its immutable B2 version. Lost replies
+recover the same backup; process death leaves the writer fenced. Unchanged-state resolution preserves
+sessions/counters and archives its receipt; changed WAL or missing source cannot be silently resumed
+or reinitialized. Routine retention ignores protected copies. Explicit expiry requires resolution,
+seven days and a verified routine snapshot captured after resolution. Killed-job scratch cleanup uses
+the same scoped workspace convention as the backup worker. Six focused maintenance checks and all
+25 affected runtime/gateway/backup/restore regressions pass on the host, as do TypeScript and changed
+code lint checks. Target-image evidence follows. There is no older public schema to upgrade; future
+transitions must ship version-bounded target-image code as specified in the
+[maintenance runbook](./public-maintenance.md). No live state, real B2 bucket, deployment or release
+campaign was used.
+
+
+### 2026-10-10 — Signed maintenance implementation and exact-image checkpoint
+
+Signed `ff3d4295` completes the maintenance preparation/procedure implementation. Its ARM64 image
+`done-public:ff3d4295` passes the application build and all 31 focused runtime/gateway/backup/restore/
+maintenance checks as UID 65532. The production-dependencies-only image passes actual offline CLI
+preparation, decrypt/cold-open, exact-version transfer/readback, fence refusal and stable resume using
+only generated keys, tmpfs and a loopback fixture with external networking disabled. The packaged
+app/API container smoke passes all eight checks and 34 precache assets. Exact source/image identities,
+raw logs, reproducible runtime script and limitations are in
+[maintenance evidence](./development-evidence/2026-10-10-public-maintenance.json). One image invocation
+rejected an incorrectly formatted build-date argument before compilation; the corrected command used
+the same signed source. No actual schema transition is needed yet; no provider, retained service,
+publication or release campaign was touched. Next is ol-infra integration and deployment inputs.

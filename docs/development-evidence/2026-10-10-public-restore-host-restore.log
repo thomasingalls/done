@@ -1,0 +1,17 @@
+(node:84023) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:84023) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ genuine snapshot restores in quarantine, preserves writing/identity, resets custody and refuses old logins (247.483833ms)
+✔ lost completion replies preserve the same reset; interrupted unpublished work can be replayed safely (663.622083ms)
+✔ completed recovery refuses newer WAL content and survives a wrong-key inspection retry (198.648916ms)
+✔ restore refuses a live destination, wrong pin/key/digest, tampered ciphertext and malformed snapshots (384.711666ms)
+✔ archive allowlist rejects traversal, links, duplicate/missing files, oversized metadata and non-files (385.426833ms)
+✔ process death after custody commit releases ownership; CLI retry completes quarantine without a listener (1448.426958ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3702.058541
