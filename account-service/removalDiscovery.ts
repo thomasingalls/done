@@ -9,7 +9,6 @@ import {
   removalDiscoveryResponseMessage,
 } from '../account-protocol/removalDiscovery.ts';
 import { MEMBERSHIP_DISCOVERY_LIFETIME_MS } from '../account-protocol/membershipLocator.ts';
-import { parseMembershipRotation } from '../account-protocol/membership.ts';
 import {
   read,
   snapshot,
@@ -47,12 +46,15 @@ export async function discoverRemoval(
       const before = read(db, request.workspaceId, request.credentialId);
       if (!before) return no('unavailable');
       const auth = await verifyCurrentWorkspaceAuthority(before, issuer);
-      const removed = before.rotations
-        ?.map((r) => parseMembershipRotation(JSON.parse(r.artifact)))
-        .find((p) => p.epoch.finalization.credential === request.credentialId);
+      const all = membershipProofChain(before);
+      const removed = all.continuations.find((p) =>
+        p.kind === 'membership-rotation'
+          ? p.epoch.finalization.credential === request.credentialId
+          : p.kind === 'recovery-successor' &&
+            p.epoch.finalizations.some((f) => f.credential === request.credentialId),
+      );
       if (!removed) return no('unavailable');
-      const all = membershipProofChain(before),
-        base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt };
+      const base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt };
       // Do not disclose membership or distributions committed after this device's removal.
       const proofs = {
         ...all,

@@ -270,3 +270,13 @@ Authenticated snapshot reads are preparation-scoped; the service preparation fin
 state and refuses if publication changes it before commit. Missing optional unpublished baselines
 are reported as signed absence; a committed recovery checkpoint must exist. No history is pruned.
 Previous-device recovery-specific detachment and the live schema upgrade remain to complete.
+
+
+## Previous-device detachment checkpoint
+
+A recovery finalization now authorizes a removed credential's narrow terminal discovery proof. Native
+custody retains a distinct recovery detachment, preserving any old rotation openers. Normal unlock
+verifies its accepted prefix and opens an editable detached copy with delivery/subscriptions off.
+The packaged walkthrough covers both original and joined old devices; the service check also covers
+recovery directly after first admission. Onward enrollment/rotation and a second product recovery are
+the remaining focused product checks before the quiet live upgrade.

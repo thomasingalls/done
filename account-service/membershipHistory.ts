@@ -110,7 +110,7 @@ export async function resolveMembershipDeliveryAuthority(
       )
         throw Error('Retained rotation scope changed');
       const prior = history;
-      if (!recovery) rotationParents.set(row.parent, historyMembership(prior));
+      rotationParents.set(row.parent, historyMembership(prior));
       history = await extendMembershipHistory(proof, prior);
       append(row.boundaries, proof, prior);
       for (const m of history.readers) if (!cuts.has(m.id)) cuts.set(m.id, []);

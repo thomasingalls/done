@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: packaged recovery flow verified; previous-device detachment and live upgrade remain
+scope: recovery and old-device detachment verified; onward lifecycle check and live upgrade remain
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -131,6 +131,13 @@ writing; replay now includes authenticated handoff/replacement/recovery snapshot
 concurrent publication. The packaged flow and 23 focused source/read/commit cases pass.
 [Evidence](./development-evidence/2026-10-09-recovery-product.log). Previous-device recovery detachment
 is next. The live installation has not been upgraded and release validation stays paused.
+
+
+**Previous-device checkpoint:** original and joined devices discover their recovery finalization,
+retire sync and cold-open as editable detached copies. Old keys stay local; the new recovery key
+is never installed there. The packaged check and focused service/native/upgrade regressions pass.
+[Evidence](./development-evidence/2026-10-09-recovery-detachment.log). Onward enrollment, rotation
+and recovery again are next, followed by a quiet upgrade of the existing development service.
 
 ---
 

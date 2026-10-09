@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { credentials, restoreAuthenticator, add, pairedEditors } from './devices';
+import { credentials, restoreAuthenticator, add, pairedEditors, openSaved } from './devices';
 import { startService, stopService } from './server';
 
 test('packaged recovery resumes from the chooser and opens accepted writing with the existing passkey', async ({
@@ -80,6 +80,33 @@ test('packaged recovery resumes from the chooser and opens accepted writing with
     await next.getByRole('button', { name: 'Back to writing', exact: true }).click();
     await next.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await next.screenshot({ path: info.outputPath('recovery-chooser.png') });
+    for (const [old, oldCode, joined] of [
+      [page, pair.first.code, false],
+      [pair.second, pair.next.code, true],
+    ] as const) {
+      await old.goto('/');
+      await openSaved(old, oldCode, joined);
+      await expect(old.locator('.shell')).toHaveCount(0, { timeout: 25000 });
+      await expect(
+        old.getByText('This device was removed from the account.', { exact: false }),
+      ).toBeVisible();
+      await old.goto('/');
+      await openSaved(old, oldCode, joined);
+      await expect(old.getByText('Removed from account.', { exact: false })).toBeVisible();
+      await expect(old.locator('.shell')).toContainText('Keep the first device writing');
+      await expect(old.locator('.shell')).not.toContainText('Writing from the recovered device');
+      const requests: string[] = [];
+      old.on('request', (r) => {
+        if (/\/account\/(delivery|notifications)\//.test(r.url())) requests.push(r.url());
+      });
+      await add(old, 'Writing in this detached copy');
+      await old.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+      await old.goto('/');
+      await openSaved(old, oldCode, joined);
+      await expect(old.locator('.shell')).toContainText('Writing in this detached copy');
+      expect(requests).toEqual([]);
+      await old.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    }
   } finally {
     await prior?.other.close();
     await replacement.close();

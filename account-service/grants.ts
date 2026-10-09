@@ -1,4 +1,5 @@
 import type { DatabaseSync } from 'node:sqlite';
+import { membershipProofChain } from './membershipLocator.ts';
 import { parseAuthorityPin, type AuthorityPin } from '../account-protocol/authority.ts';
 import { closed, accountIdentifier } from '../account-protocol/preparation.ts';
 import { unhex } from '../account-protocol/recovery.ts';
@@ -19,11 +20,7 @@ import {
   type DeliveryIssuer,
 } from './delivery.ts';
 import { parseEnrollmentReceipt } from '../account-protocol/enrollment.ts';
-import {
-  parseMembershipAdmission,
-  parseMembershipRotation,
-  membershipState,
-} from '../account-protocol/membership.ts';
+import { parseMembershipAdmission, membershipState } from '../account-protocol/membership.ts';
 import { enrollmentSnapshot, verifyEnrollmentRow, type EnrollmentRow } from './enrollment.ts';
 import type { AccountSessions } from './sessions.ts';
 import { canonical, fresh, hash, retryHash } from './protocol.ts';
@@ -160,9 +157,12 @@ export class ScopedGrants {
       if (scope.kind === 'removal') {
         key = undefined;
         // Resolve only from the already verified committed chain, including an exposed pending target.
-        const proof = captured.authority.rotations
-          ?.map((r) => parseMembershipRotation(JSON.parse(r.artifact)))
-          .find((p) => p.epoch.finalization.credential === scope.credentialId);
+        const proof = membershipProofChain(captured.authority).continuations.find((p) =>
+          p.kind === 'membership-rotation'
+            ? p.epoch.finalization.credential === scope.credentialId
+            : p.kind === 'recovery-successor' &&
+              p.epoch.finalizations.some((f) => f.credential === scope.credentialId),
+        );
         const parent = proof && auth.rotationParents?.get(proof.epoch.parent);
         const removed =
           parent && membershipState(parent).roster.find((m) => m.id === scope.credentialId);

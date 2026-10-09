@@ -5,7 +5,11 @@ import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
 import { digest, unhex } from './recovery.ts';
 import { type SuccessorBase } from './successor.ts';
 import { membershipState } from './membership.ts';
-import { historyMembership, extendMembershipHistory } from './admissionHistory.ts';
+import {
+  historyMembership,
+  extendMembershipHistory,
+  verifyEarlyHistory,
+} from './admissionHistory.ts';
 import {
   parseMembershipChain,
   verifyMembershipChain,
@@ -63,14 +67,19 @@ export async function verifyRemovalDiscoveryRequest(
   const final = proofs.continuations.at(-1);
   if (
     !final ||
-    final.kind !== 'membership-rotation' ||
-    final.epoch.finalization.credential !== r.credentialId
+    !(final.kind === 'membership-rotation'
+      ? final.epoch.finalization.credential === r.credentialId
+      : final.kind === 'recovery-successor' &&
+        final.epoch.finalizations.some((f) => f.credential === r.credentialId))
   )
     throw Error('Not this device removal');
-  const before = await verifyMembershipChain(
-    { ...proofs, continuations: proofs.continuations.slice(0, -1) },
-    base,
-  );
+  const before =
+    !proofs.certification && proofs.continuations.length === 1
+      ? { history: await verifyEarlyHistory(base, proofs.successor) }
+      : await verifyMembershipChain(
+          { ...proofs, continuations: proofs.continuations.slice(0, -1) },
+          base,
+        );
   const parent = membershipState(historyMembership(before.history)),
     member = parent.roster.find((m) => m.id === r.credentialId);
   const history = await extendMembershipHistory(final, before.history);

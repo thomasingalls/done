@@ -12017,3 +12017,25 @@ build pass. [Evidence](./development-evidence/2026-10-09-recovery-product.log).
 
 Previous-device recovery detachment remains in flight; live service/personal browsers are unchanged.
 This is focused implementation evidence, not resumed release validation.
+
+
+### 2026-10-09 — Previous-device recovery proof and detached reopening
+
+The terminal discovery grant now recognizes recovery finalizations, including a first-device-only
+parent, while granting only the removed credential's own terminal proof. It cannot read current
+content, write or subscribe. Proofs stop at that device's removal; later membership is not disclosed.
+Native observation saves a dedicated factor-sealed recovery detachment alongside prior rotation
+openers. Opening verifies its ancestry and the local accepted prefix before exposing a detached copy;
+it never installs the replacement's key or starts delivery. Existing removal handling stays distinct.
+
+The packaged recovery walkthrough now reconnects both original and joined previous devices, observes
+their sync owners retire, cold-opens their retained writing, edits each detached copy and reopens it
+again. No delivery/subscription requests occur from those detached copies. A focused service check
+proves first-device terminal access cannot be used for upload; 23 grant/rotation-history regressions,
+three serial native installation/coordinator checks and five offline-upgrade checks pass. TypeScript,
+scoped lint/format/diff checks and packaged build pass.
+[Evidence](./development-evidence/2026-10-09-recovery-detachment.log).
+
+The remaining product check is enrollment and rotation after recovery, then recovery again from that
+rotated state. Live service/personal browsers remain unchanged pending a quiet upgrade point.
+Release validation remains paused.

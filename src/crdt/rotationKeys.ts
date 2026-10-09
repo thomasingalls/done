@@ -2,6 +2,7 @@
 import { createApprovalVault } from '../account/approvalVault';
 import type { parseMembershipChain } from '../../account-protocol/membershipLocator';
 import { parseNativeRemoval } from '../account/deviceRemovalVault';
+import { isRecoveryDetachment, priorRecoveryRotation } from '../account/recoveryDetachment';
 import type { CustodyRecord, CustodyScope } from './custodyRecord';
 import type { Bytes } from './custodyCrypto';
 export async function openInitialAccount(
@@ -51,7 +52,11 @@ export async function openActiveRotation(
       throw Error('Read-only rotation opener');
     },
   });
-  const state = parseNativeRemoval(await vault.load());
+  const saved = await vault.load();
+  const detached = isRecoveryDetachment(saved);
+  if (detached && !record.active_rotation) return null;
+  const state = detached ? priorRecoveryRotation(saved) : parseNativeRemoval(saved);
+  if (!state) throw Error('Detached account lost its selected old generation');
   if (
     !record.active_rotation &&
     state.successor &&

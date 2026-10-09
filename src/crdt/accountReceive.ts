@@ -722,8 +722,6 @@ async function openAccountReceiveOwner(
       return Promise.reject(Error('Membership installation requires the composed owner'));
     return runCaptureTask(async (task, owner, route) => {
       await assertCurrent(task);
-      if (!route.history || (route.epoch < 3 && base.generation < 2))
-        throw Error('Membership needs a certified installation');
       task.step(() => checkCommit?.());
       const current = joined
         ? await readJoinedAccount(task, options.slotId, options.code)
@@ -739,7 +737,7 @@ async function openAccountReceiveOwner(
           };
       const verifiedHistory = await task.wait(() => verifyMembershipChain(proofs, anchor)),
         history = historyPublisher(verifiedHistory.history, route.credential);
-      historyAuthority(history, route.history.current);
+      historyAuthority(history, route.history?.current ?? base.authority);
       task.step(() => checkCommit?.());
       if (history.current.tip === route.epoch)
         return { epoch: route.epoch, head: history.current.head };
@@ -767,6 +765,8 @@ async function openAccountReceiveOwner(
           void carrier.close().catch(() => {});
         }
       }
+      if (!route.history || (route.epoch < 3 && base.generation < 2))
+        throw Error('Membership needs a certified installation');
       if (history.current.tip < route.epoch) throw Error('Membership cannot regress');
       const records = await owner.carrier.load(task);
       let committed = false;
@@ -872,6 +872,48 @@ async function openAccountReceiveOwner(
   let discoveryFlight:
     | Promise<{ kind: 'adopted' | 'unchanged' | 'unknown' | 'paused' }>
     | undefined;
+  const discoverTerminal = async (
+    network: SessionTask,
+    anchor: Parameters<typeof verifyMembershipChain>[1],
+  ) => {
+    if (!terminalAccess) return { kind: 'unknown' as const };
+    const request = await runCaptureTask(async (task) => {
+      await assertCurrent(task);
+      const r = parseRemovalDiscoveryRequest({
+        v: 1,
+        kind: 'removal-discovery-request',
+        pin: options.pin,
+        workspaceId: base.authority.workspace,
+        lineageId: base.authority.lineage,
+        credentialId: base.reader.id,
+        nonce: hex(random(32)),
+        expiresAt: Date.now() + 30000,
+        signature: '00'.repeat(64),
+      });
+      r.signature = hex(
+        new Uint8Array(
+          await task.wait(async () =>
+            subtleFor(task).sign('Ed25519', signer!, await removalDiscoveryRequestMessage(r)),
+          ),
+        ),
+      );
+      return r;
+    });
+    const terminal = await network.wait(() =>
+      privateDiscoveryPost(options.pin, terminalAccess, request, network.signal),
+    );
+    if (terminal) {
+      const verified = await network.wait(() =>
+        verifyRemovalDiscoveryResponse(terminal, request, anchor, Date.now()),
+      );
+      await adoptMembership(verified.proofs, () => {
+        network.step(() => {});
+        if (request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
+      });
+      return { kind: 'adopted' as const };
+    }
+    return { kind: 'unknown' as const };
+  };
   const refreshAuthority = (token: AccountAccess, force = false) => {
     if (discoveryFlight) return discoveryFlight;
     const work = runNetworkTask(async (network) => {
@@ -931,48 +973,7 @@ async function openAccountReceiveOwner(
           privateDiscoveryPost(options.pin, access ?? token, prepared.request, network.signal),
         );
         if (!response) {
-          if (terminalAccess) {
-            const request = await runCaptureTask(async (task) => {
-              await assertCurrent(task);
-              const r = parseRemovalDiscoveryRequest({
-                v: 1,
-                kind: 'removal-discovery-request',
-                pin: options.pin,
-                workspaceId: base.authority.workspace,
-                lineageId: base.authority.lineage,
-                credentialId: base.reader.id,
-                nonce: hex(random(32)),
-                expiresAt: Date.now() + 30000,
-                signature: '00'.repeat(64),
-              });
-              r.signature = hex(
-                new Uint8Array(
-                  await task.wait(async () =>
-                    subtleFor(task).sign(
-                      'Ed25519',
-                      signer!,
-                      await removalDiscoveryRequestMessage(r),
-                    ),
-                  ),
-                ),
-              );
-              return r;
-            });
-            const terminal = await network.wait(() =>
-              privateDiscoveryPost(options.pin, terminalAccess, request, network.signal),
-            );
-            if (terminal) {
-              const verified = await network.wait(() =>
-                verifyRemovalDiscoveryResponse(terminal, request, prepared.anchor, Date.now()),
-              );
-              await adoptMembership(verified.proofs, () => {
-                network.step(() => {});
-                if (request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
-              });
-              return { kind: 'adopted' as const };
-            }
-          }
-          return { kind: 'unknown' as const };
+          return discoverTerminal(network, prepared.anchor);
         }
         try {
           const answer = await network.wait(() =>
@@ -1039,7 +1040,7 @@ async function openAccountReceiveOwner(
       const response = await network.wait(() =>
         privateDiscoveryPost(options.pin, access ?? token, prepared.request, network.signal),
       );
-      if (!response) return { kind: 'unknown' as const };
+      if (!response) return discoverTerminal(network, prepared.first);
       try {
         const answer = await network.wait(() =>
           verifyDiscoveryResponse(response, prepared.request, prepared.first, Date.now()),

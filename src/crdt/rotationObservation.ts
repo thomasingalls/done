@@ -1,4 +1,9 @@
 import type { MembershipVault } from '../account/membershipVault';
+import {
+  isRecoveryDetachment,
+  parseRecoveryDetachment,
+  verifyRecoveryDetachment,
+} from '../account/recoveryDetachment';
 import type { NetworkLogin } from '../account/networkLogin';
 import { ScopedTransport } from '../account/scopedTransport';
 import { RemovalPending } from '../account/accountTransitionNotice';
@@ -24,6 +29,7 @@ import {
   historyGeneration,
   historyMembership,
   historyPublisher,
+  verifyEarlyHistory,
 } from '../../account-protocol/admissionHistory';
 import { membershipState } from '../../account-protocol/membership';
 import { generationInfo } from '../../account-protocol/genesis';
@@ -46,7 +52,7 @@ export async function withRotationCustody<T>(
     source: Exclude<MembershipVault['source'], { kind: 'pending' }>;
     credential: string;
     withLogin<T>(login: NetworkLogin, work: () => Promise<T>): Promise<T>;
-    proofs: ReturnType<typeof parseMembershipChain>;
+    proofs: ReturnType<typeof parseMembershipChain> | null;
   }) => Promise<T>,
 ) {
   const original = kind === 'promotion' ? await readPromotion(task, slotId, code) : null;
@@ -64,11 +70,14 @@ export async function withRotationCustody<T>(
       }
     : joined!.marker!.authority.base;
   const proofs = original
-    ? (marker!.membership?.proofs ?? {
-        successor: marker!.successor!.artifact,
-        certification: marker!.successor!.certification!,
-        continuations: [],
-      })
+    ? (marker!.membership?.proofs ??
+      (marker!.successor?.certification
+        ? {
+            successor: marker!.successor.artifact,
+            certification: marker!.successor.certification,
+            continuations: [],
+          }
+        : null))
     : (joined!.marker!.membership?.proofs ?? {
         successor: joined!.marker!.authority.successor,
         certification: joined!.marker!.authority.certification,
@@ -109,7 +118,7 @@ export async function withRotationCustody<T>(
         ? {
             kind: 'joined',
             authority: joined.marker!.authority,
-            proofs,
+            proofs: proofs!,
             initialGeneration: joinedInitialGeneration(joined.marker!),
           }
         : { kind: 'original', base, proofs },
@@ -143,10 +152,58 @@ export async function retainObservedRotation(
     kind,
     slotId,
     code,
-    async ({ vault, base, credential, proofs: installed }) => {
+    async ({ vault, base, credential, proofs: installed, state }) => {
       const verified = await verifyMembershipChain(proofs, base),
-        held = await verifyMembershipChain(installed, base);
+        held = installed
+          ? await verifyMembershipChain(installed, base)
+          : {
+              history: await verifyEarlyHistory(
+                base,
+                'admission' in (state.marker ?? {})
+                  ? (
+                      state.marker as NonNullable<
+                        Awaited<ReturnType<typeof readPromotion>>['marker']
+                      >
+                    ).successor?.artifact
+                  : null,
+              ),
+            };
       historyAuthority(verified.history, held.history.current);
+      const terminal = proofs.continuations.findIndex(
+        (p) =>
+          p.kind === 'recovery-successor' &&
+          p.epoch.finalizations.some((f) => f.credential === credential),
+      );
+      if (terminal !== -1) {
+        const terminalProofs = {
+          ...proofs,
+          continuations: proofs.continuations.slice(0, terminal + 1),
+        };
+        const saved = await vault.load();
+        const prior = isRecoveryDetachment(saved)
+          ? parseRecoveryDetachment(saved).prior
+          : saved === null
+            ? null
+            : parseNativeRemoval(saved);
+        const next = parseRecoveryDetachment({
+          v: 1,
+          kind: 'native-recovery-detachment',
+          credential,
+          proofs: terminalProofs,
+          prior,
+        });
+        const checked = await verifyRecoveryDetachment(next, base, credential);
+        historyAuthority(checked.history, held.history.current);
+        if (isRecoveryDetachment(saved)) {
+          const old = await verifyRecoveryDetachment(saved, base, credential);
+          if (!same(old.value, next)) throw Error('Recovery detachment changed');
+        } else {
+          if (!same(saved, await vault.load())) throw Error('Rotation custody changed');
+          await vault.save(next);
+          if (!same(next, await vault.load())) throw Error('Recovery detachment did not persist');
+        }
+        return 'removed' as const;
+      }
       const generation = historyGeneration(held.history) + 1;
       const index = proofs.continuations.findIndex(
         (proof) => proof.kind === 'membership-rotation' && proof.epoch.generation === generation,
@@ -259,15 +316,35 @@ export async function resumeAccountRotation(
         ? await readPromotion(task, slotId, code)
         : await readJoinedAccount(task, slotId, code);
     if (!state.record.rotation) return null;
-    const pending = await withRotationCustody(task, kind, slotId, code, async ({ vault }) =>
-      parseNativeRemoval(await vault.load()),
+    const loaded = await withRotationCustody(
+      task,
+      kind,
+      slotId,
+      code,
+      async ({ vault, base, credential, proofs }) => {
+        const value = await vault.load();
+        if (!isRecoveryDetachment(value)) return { pending: parseNativeRemoval(value) };
+        const checked = await verifyRecoveryDetachment(value, base, credential);
+        const held = proofs
+          ? (await verifyMembershipChain(proofs, base)).history
+          : await verifyEarlyHistory(
+              base,
+              kind === 'promotion'
+                ? (state as Awaited<ReturnType<typeof readPromotion>>).marker!.successor?.artifact
+                : null,
+            );
+        historyAuthority(checked.history, held.current);
+        return { detached: checked.publisher };
+      },
     );
+    if (loaded.detached) return loaded.detached;
+    const pending = loaded.pending!;
     if (pending.successor && pending.successor.head === state.record.active_rotation) {
       if (
         !pending.observed ||
         !pending.observed.continuations.some(
           (proof) =>
-            proof.kind === 'membership-rotation' &&
+            (proof.kind === 'membership-rotation' || proof.kind === 'recovery-successor') &&
             proof.epoch.generation > pending.successor!.epoch.generation,
         )
       )
