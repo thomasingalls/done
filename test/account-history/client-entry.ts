@@ -12,3 +12,7 @@ export { Y, sameDocState, hasPendingUpdates, genesisCoverageParts } from '../../
 export * from '../../src/account/historyMaintenance';
 export { historySourcesDigest } from '../../account-protocol/historySources';
 export { createHistoryTransport } from '../../src/account/historyHttp';
+export { readHistorySource } from '../../src/crdt/historySource';
+export { createContentCheckpoint } from '../../src/crdt/contentCheckpoint';
+
+export { genesisCoverage } from '../../src/crdt/yjs';

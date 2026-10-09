@@ -12236,3 +12236,14 @@ rotation case pass. The transport cancellation fixture initially cancelled befor
 its stream; disabling eager prefetch made it exercise an actual in-flight read. Static checks pass.
 This updates only undeployed history carriers; native replay/menu, baseline installation and pruning
 remain open. [History plan](./account-history-management.md). Unsigned; retained service unchanged.
+
+### 2026-10-09 — Cold account-history source replay
+
+Added independent cold reconstruction from admitted genesis/history baselines, retained handoff
+snapshots and exact accepted publisher prefixes. It preserves removed-device edits and deletions,
+refuses missing/false/incomplete sources, and resumes from an admitted baseline plus suffix. Four
+focused source tests, sixty-seven affected inbound tests and existing replacement-source regressions
+pass; TypeScript and scoped static checks pass. A fixture now shares one bundled Yjs implementation.
+Native ownership/menu integration still needs installed baselines for devices without old openers;
+this content primitive does not change startup or prune data. [History plan](./account-history-management.md).
+Retained `34035330` service unchanged. Unsigned intermediate commit; qualification remains paused.

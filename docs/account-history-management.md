@@ -144,3 +144,27 @@ and cancellation; scoped access now recognizes the history route.
 Seven primitive, seven retained-client, two browser-transport, ten service and one real handoff-race/
 rotation checks pass. Native cold replay of these sources and Account-menu wiring are still next;
 source inventory alone is not evidence of plaintext coverage, installation or safe pruning.
+
+## Cold replay primitive checkpoint
+
+The cold history source now verifies its actual membership timeline, admitted baseline (or genesis),
+every newly covered handoff ciphertext and every accepted stream prefix through the requested cuts.
+It returns plaintext only after complete Yjs integration and actor validation. Removed publishers and
+deletions remain part of the replay. A subsequent admitted history checkpoint permits replaying only
+its suffix and newly covered handoffs; it does not permit ignoring unaccepted local originals.
+Owners will add those originals only after this independent accepted-source pass succeeds.
+
+The reader retains explicit event/byte bounds and erases temporary key/plain buffers on failure.
+Four focused source checks pass, including handoff-only writing, finalized publisher updates,
+baseline reuse, an epoch-one single-device suffix, unavailable/false/incomplete sources, missing
+openers, substitution and cancellation. The fixture now injects the same bundled Yjs implementation
+instead of loading two copies. Sixty-seven affected inbound checks and the existing replacement-source
+checks pass. TypeScript and scoped static checks pass.
+
+This is a cold content primitive, not the native Account-menu owner. With no admitted history
+baseline, it currently requires the genesis opener; recovered/replacement devices that lack it need
+their verified installed-baseline adapter. Likewise, a history checkpoint from a generation this
+device never held needs the later membership/checkpoint handoff integration. These cases refuse and
+retain all source material. Native owner composition must settle those routes before exposing the
+maintenance action. Installation, recovery reader cutover and actual pruning remain unimplemented;
+none of the new checkpoints yet authorizes deleting accepted ciphertext or generation keys.

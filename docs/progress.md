@@ -70,7 +70,9 @@ The retained client coordinator now handles exact retries, catalog rollback and 
 tombstones prevent delayed publication from reviving a cancelled attempt. Native encrypted progress
 custody now passes for original/joined devices, including interrupted reservation and later editing.
 The source exchange now fences late handoff publication with a signed inventory bound into each
-proposal. Native cold replay and the operator-selected Account-menu action are next; automatic cadence remains off. Schema 25 remains
+proposal. Cold source replay now verifies handoffs and exact prefixes, including epoch-one suffixes
+and removed publishers. Next is native installed-baseline/owner composition and the operator-selected
+Account-menu action; automatic cadence remains off. Schema 25 remains
 development-only until an explicit offline upgrade.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 

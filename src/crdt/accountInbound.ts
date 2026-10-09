@@ -48,7 +48,7 @@ import { guardedSubtle } from './custodyCrypto';
 import { Y } from './yjs';
 
 export interface InboundContext {
-  baseline: { kind: 'promotion-genesis' | 'content-checkpoint'; id: string };
+  baseline: { kind: 'promotion-genesis' | 'content-checkpoint' | 'history-checkpoint'; id: string };
   /** Exact cuts of a semantically admitted replacement snapshot, supplied only by its native owner. */
   baselineHeads?: readonly { credentialId: string; position: number; link: string }[];
   service: { id: string; origin: string };
@@ -131,7 +131,8 @@ function captureContext(input: InboundContext): InboundContext {
   inboundHex(publisher.principal, 16);
   inboundHex(input.creatingCredential, 16);
   if (
-    !['promotion-genesis', 'content-checkpoint'].includes(baseline.kind) ||
+    !['promotion-genesis', 'content-checkpoint', 'history-checkpoint'].includes(baseline.kind) ||
+    (baseline.kind === 'history-checkpoint' && !input.history) ||
     (baseline.kind === 'content-checkpoint' && (!input.history || a.tip < 3)) ||
     (!input.history && a.tip !== 1) ||
     (!input.history && input.generation !== 1) ||

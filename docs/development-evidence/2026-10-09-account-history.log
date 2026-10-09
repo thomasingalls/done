@@ -63,3 +63,19 @@ Handoff inventory and scoped source transport:
   admission refuses, explicit rebuild succeeds, then actual rotation preserves ancestry.
   TypeScript, scoped lint/format and git diff --check pass.
   No baseline install, history deletion, live upgrade or release campaign.
+
+Cold accepted-source replay:
+  node --test --test-timeout=20000 test/account-history/source.test.mjs
+  4 passed, 0 failed; duration 2925 ms. Real signed service sources, removed-publisher insert/delete,
+  handoff-only writing, admitted baseline suffix replay, substituted source/missing cut refusal,
+  unresolved dependencies, cancellation and epoch-1 single-device suffix replay.
+  Initial fixture expected one refusal message too narrowly and shared a mutable source ref;
+  copying the ref and accepting the two valid first refusal boundaries corrected the fixture.
+  Injecting the fixture client also removed duplicate Yjs bundle loading.
+  node_modules/.bin/vitest run test/accountInboundCodec.test.ts test/accountInboundPrep.test.ts test/accountInboundControls.test.ts
+  67 passed, 0 failed; 3 files; 9.88 s.
+  node --test --test-timeout=20000 test/account-membership/replacement-source.test.mjs
+  6 passed, 0 failed; duration 2073 ms.
+  TypeScript, scoped lint/format and git diff --check passed.
+  This primitive still requires an available genesis/admitted-history opener. Native installed
+  replacement/recovery baselines, menu ownership, installation and pruning remain open.

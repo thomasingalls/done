@@ -4,7 +4,6 @@ import { signed, hash } from './fixtures.mjs';
 import { lp, bindingFields } from '../account-first-authority/oracle.mjs';
 import { head, response } from '../account-decisions/oracle.mjs';
 import { verifyMembershipRotation, membershipState } from '../../account-protocol/membership.ts';
-import { client } from './replacement-checkpoint-client.mjs';
 const hex = (v) => Buffer.from(v).toString('hex'),
   zero = '00'.repeat(32);
 const u32 = (n) => {
@@ -22,7 +21,9 @@ export async function sourceFixture({
   wrongCut = false,
   pending = false,
   pendingTarget = false,
+  client: suppliedClient,
 } = {}) {
+  const client = suppliedClient ?? (await import('./replacement-checkpoint-client.mjs')).client;
   const root = new client.Y.Doc({ gc: false });
   root.clientID = 1000;
   root.getMap('meta').set('schemaVersion', 4);
