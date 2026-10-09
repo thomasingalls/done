@@ -307,3 +307,13 @@ consistency and final transaction checks remain required. Both full packaged jou
 authority-boundary regressions pass.
 [Evidence](./development-evidence/2026-10-09-recovery-early-account.log). Only the quiet retained-service
 upgrade and operator use remain in this bounded phase.
+
+
+## Retained-service handoff prepared
+
+Implementation `049b9a29` has a separate packaged build at
+`.dev/account-enrollment-tailnet/builds/049b9a29`. The still-running development service is schema 21,
+with read-only integrity/foreign-key checks passing. The next operation is the existing offline
+backup/upgrade utility followed by the same two-process app/API composition at the unchanged :8443
+origin. This waits for the operator's confirmation that pages on both devices are locked and closed.
+No personal account recovery will be performed automatically.

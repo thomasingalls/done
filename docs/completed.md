@@ -12076,3 +12076,13 @@ pass. [Before/after evidence](./development-evidence/2026-10-09-recovery-early-a
 The bounded recovery product implementation is ready for the retained development service. Its quiet
 backup and schema-21-to-24 upgrade remain; personal browsers and the live service are unchanged.
 This does not resume release qualification.
+
+
+### 2026-10-09 — Recovery build prepared for the retained development service
+
+Built committed implementation `049b9a2912f1ff26d2fd504bec36afa2a9f37f56` into the separate
+`.dev/account-enrollment-tailnet/builds/049b9a29` directory. The retained account database remains
+schema 21 and authority schema 1; read-only quick checks pass with no foreign-key violations.
+Recorded local pre-upgrade row counts and the service-pin hash for post-upgrade comparison.
+No server was stopped and no database migration ran. The operator has been asked to lock and close
+the :8443 pages before backup, upgrade and restart. Release qualification remains paused.

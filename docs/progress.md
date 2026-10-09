@@ -48,9 +48,9 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-scope: immutable packaged build and retained development upgrade
-blocks_on: none; live upgrade will require an operator quiet point
+status: blocked
+scope: retained development upgrade and operator use
+blocks_on: operator confirmation that the :8443 pages are locked and closed
 release_validation: paused by operator
 updated: 2026-10-09
 ```
@@ -74,7 +74,10 @@ those changes and keeps detached-only edits separate.
 found and repaired original-pair assumptions in the relay, comparison parser and public binding lookup.
 [Before/after evidence](./development-evidence/2026-10-09-recovery-early-account.log).
 
-**Remaining in this phase:** prepare an immutable build, then obtain a quiet point before backing up and upgrading the retained development service from
+**Build ready:** `049b9a29` is retained at `.dev/account-enrollment-tailnet/builds/049b9a29`.
+Read-only checks of both retained databases pass; their counts and pin hash are recorded locally.
+
+**Remaining in this phase:** the operator quiet-point confirmation, then backup and upgrade of the retained development service from
 schema 21 to 24 at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. Personal browsers and that live
 service remain untouched. The operator authorized unsigned intermediate commits and continued work.
 
