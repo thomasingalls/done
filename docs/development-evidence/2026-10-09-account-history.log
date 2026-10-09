@@ -1,0 +1,13 @@
+Long-term account history implementation — focused development checks, not release qualification.
+
+Checkpoint/admission primitives:
+  node --test --test-timeout=15000 test/account-history/checkpoint.test.mjs
+  6 passed, 0 failed; duration 636 ms.
+  node_modules/.bin/tsc -b --noEmit
+  node_modules/.bin/oxlint account-protocol/historyCheckpoint.ts src/crdt/historyCheckpoint.ts test/account-history
+  node_modules/.bin/oxfmt account-protocol/historyCheckpoint.ts src/crdt/historyCheckpoint.ts test/account-history
+  git diff --check
+  All passed.
+
+The primitive test uses real Yjs replay and cryptography with disposable signed membership fixtures.
+It does not establish native owner installation, service durability, pruning or personal browser behavior.

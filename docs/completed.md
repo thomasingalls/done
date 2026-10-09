@@ -12174,3 +12174,17 @@ and membership continuation. The address remains `https://mbp.tail0e0d4.ts.net:8
 No personal account was opened. Browser adoption and a personal writing check remain operator
 observations. Checkpoint replacement/pruning and public operations remain next product work;
 release validation stays paused. This handoff is committed unsigned as authorized.
+
+### 2026-10-09 — Repeatable history checkpoint and semantic-admission primitives
+
+Added a separate signed checkpoint carrier with exact previous-checkpoint ancestry, current
+membership/generation and complete accepted publisher cuts. Its semantic admission derives both
+insertion/deletion coverage from decrypted Yjs replay and requires independent accepted content
+containment. The sole eligible device may self-admit; a different eligible device must admit when
+one exists. Pending dependencies and omitted/falsified finalized cuts refuse.
+
+Six focused tests pass, including repeated snapshots, both self-admission flag directions, signed
+false coverage, omitted insertions/deletions and asynchronous input capture. TypeScript and scoped
+static checks pass. [Implementation sequence](./account-history-management.md). These are content
+and protocol primitives, not yet a durable service/client owner; installation and pruning remain
+unimplemented. Retained build `34035330` is unchanged and release validation remains paused.

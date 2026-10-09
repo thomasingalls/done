@@ -42,37 +42,28 @@ that is no longer active.
 
 ---
 
-## Product handoff: single-device account upload (`L-1`)
+## Product work: long-term account history (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: done
-scope: single-device upload implemented, checked and serving
+status: in flight
+scope: repeatable checkpoints, installation and safe retained-history pruning
 blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-09
 ```
 
-**Implemented:** first-device upload without pairing; resumable conversion of old local-only Account
-writing; a remembered login from the existing first-opening assertion; and first handoff covering
-already accepted writing. [Plan and limits](./account-single-device-upload.md).
+Single-device upload is complete and serving at `https://mbp.tail0e0d4.ts.net:8443/`, build
+`34035330`, account schema 24. Its backed-up switch and focused evidence are recorded in
+[completed.md](./completed.md) and [the upload checkpoint](./account-single-device-upload.md).
 
-**Checked:** native conversion interruptions and authority refusal; accepted-prefix and ledger-boundary
-checks; packaged first-device-only offline/cold-reopen/reconnect/recovery; first pairing with nonzero
-accepted history followed by recovery/rotation; session notifications and service restart.
-[Recorded evidence](./development-evidence/2026-10-09-single-device-upload.log).
-
-**Live state:** both processes serve build `34035330`, account schema 24, authority schema 1,
-at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. After the operator confirmed locked/closed,
-the offline backup was verified and the processes restarted without a schema migration. All retained
-rows and identity bytes match the backup. Public-origin pages, worker, 34 precache resources and API
-configuration pass. No personal account was opened; browser uptake and a personal writing check
-remain operator observations. [Switch evidence](./development-evidence/2026-10-09-single-device-upload-live-upgrade.log).
-
-Unsigned intermediate commits are authorized. Checkpoint replacement/pruning and public operations
-remain next product work. Release qualification stays paused.
+Now implementing [long-term history management](./account-history-management.md): independent
+checkpoint proposal/admission first, then durable exchange, reader installation and exact retention.
+The existing full-history readers and witnessed decision ledgers must remain readable until their
+baseline/suffix replacements are exercised. No pruning is enabled by the first increment alone.
+Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 
 ---
 
