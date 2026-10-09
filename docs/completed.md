@@ -11990,3 +11990,30 @@ TypeScript and scoped static checks pass. [Output](./development-evidence/2026-1
 
 Approved screens, recovery-specific previous-device detachment and the packaged walkthrough remain
 in flight. Live service and personal browsers are unchanged; release validation remains paused.
+
+
+### 2026-10-09 — Packaged recovery screens and checkpoint-inclusive replay
+
+Mounted the approved journey under Use another account: existing passkey, saved recovery code,
+new device-lock display/confirmation, explicit recovery/disconnection confirmation and the normal
+editable account workspace. Slot URLs cold-classify native state; chooser hints resume saved recovery.
+Backgrounding does not close the ceremony. Back can redisplay the same generated lock code before
+confirmation. Later opening requires the normal account passkey. Packaged deep links serve the shell.
+
+The real UI walkthrough uncovered a source-replay omission: previously local writing can exist only
+in a stored handoff checkpoint, with no corresponding accepted stream update. Replaying genesis plus
+all streams silently omitted it. Recovery now fetches and independently verifies/decrypts original
+content, replacement and prior recovery snapshots, merging them before full accepted-stream replay.
+Checkpoint reads require the same fresh recovery/candidate proof, exact signed request and final
+eligibility check. A bounded checkpoint fingerprint is included in the preparation fence: concurrent
+checkpoint publication requires fresh preparation rather than allowing a stale recovery commit.
+Snapshot responses are bounded at 16 MiB, replayed snapshot bytes at 64 MiB, and output at 4 MiB.
+
+The packaged disposable test passes checkpoint-only writing, password-manager-style background event,
+Back redisplay, reload into authenticated resume, explicit recovery, new-generation upload, cold
+reopen and Devices navigation. The 23 focused source/read/commit tests also pass, including repeated
+recovery and checkpoint publication after preparation. TypeScript, scoped static checks and packaged
+build pass. [Evidence](./development-evidence/2026-10-09-recovery-product.log).
+
+Previous-device recovery detachment remains in flight; live service/personal browsers are unchanged.
+This is focused implementation evidence, not resumed release validation.

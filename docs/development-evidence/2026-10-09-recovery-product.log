@@ -1,0 +1,57 @@
+Focused recovery product checks; disposable services and browser profiles.
+
+
+Running 1 test using 1 worker
+
+(node:17843) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:5:1 › packaged recovery resumes from the chooser and opens accepted writing with the existing passkey (19.2s)
+
+  1 passed (19.8s)
+
+(node:17825) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17825) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:17825) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ first-device recovery commits one real replayed checkpoint, finalizes old writing and survives a lost reply (377.777208ms)
+✔ checkpoint publication after preparation refuses recovery before authority changes (107.634709ms)
+✔ an accepted append between replay and commit refuses without excluding the writer (221.7215ms)
+✔ commit rollback, cancellation and corrupted checkpoint never leave a partial authority (117.996625ms)
+✔ committed exact retry remains resolvable after preparation expiry; changed bytes cannot remint it (125.5715ms)
+✔ a recovered first device can begin and admit the next connection without an epoch-three anchor (199.84225ms)
+▶ expiry or account changes at the final boundary refuse and leave original authority intact
+  ✔ expired (110.846708ms)
+  ✔ account (106.09525ms)
+  ✔ credential (123.4425ms)
+✔ expiry or account changes at the final boundary refuse and leave original authority intact (341.072625ms)
+✔ schema 22 requires an explicit upgrade and preserves every retained account row (134.072416ms)
+(node:17826) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17826) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ two-factor recovery reads accepted ciphertext in bounded, authenticated pages, including after restart (196.338417ms)
+✔ passkey alone, forged bootstrap, another candidate signature and unsigned read edits cannot read (137.089625ms)
+▶ cancellation, expiry and account changes between verification and the actual read withhold ciphertext
+  ✔ cancel (83.828583ms)
+  ✔ expire (76.320292ms)
+  ✔ account (75.413ms)
+✔ cancellation, expiry and account changes between verification and the actual read withhold ciphertext (236.109833ms)
+✔ a competing valid membership head invalidates recovery read; corrupt accepted history cannot be hidden (122.913542ms)
+✔ byte-bounded pages make forward progress without truncating or skipping accepted writing (8073.52075ms)
+(node:17827) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17827) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:17827) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ the saved code cold-opens the original admitted snapshot plus accepted edits and returns an exact replay cut (156.39775ms)
+✔ cold replay rejects a wrong saved code and unresolved Yjs dependencies before returning writing (107.10525ms)
+✔ cancellation during a read cannot return decrypted writing; corrupted pages are never applied (104.533667ms)
+✔ empty first-device history works without a certification checkpoint or another device (81.615583ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9133.54175
+
+Additional checks: tsc -b --noEmit; scoped oxlint/oxfmt; packaged vite build: passed.

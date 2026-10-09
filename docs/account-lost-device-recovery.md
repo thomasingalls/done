@@ -258,3 +258,15 @@ verified recovery checkpoint. A fresh module-owned one-use grant reuses the init
 check only for its exact new installation. Stored bytes never recreate that permission; browser
 restart requires normal unlock. Native tests cover the live path and a lost reply across browser
 and service restart. UI, previous-device recovery detachment and a packaged walkthrough remain.
+
+
+## Packaged product checkpoint
+
+The approved screens and chooser resume now compose the native owner. A packaged disposable
+walkthrough reaches an editable recovered account, publishes fresh writing and reopens it.
+Recovery source now includes retained content/replacement/recovery snapshots as well as genesis
+and accepted streams: handoff snapshots can hold writing that never appeared in those streams.
+Authenticated snapshot reads are preparation-scoped; the service preparation fingerprints checkpoint
+state and refuses if publication changes it before commit. Missing optional unpublished baselines
+are reported as signed absence; a committed recovery checkpoint must exist. No history is pruned.
+Previous-device recovery-specific detachment and the live schema upgrade remain to complete.

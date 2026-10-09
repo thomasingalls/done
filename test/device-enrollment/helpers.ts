@@ -46,7 +46,12 @@ export async function account(page: Page, beforeInvite?: () => Promise<'invite' 
   }
   await unlock(page, code);
   await expect(page.getByLabel('Device invitation link')).toBeVisible();
-  return { code, auth, link: await page.getByLabel('Device invitation link').inputValue() };
+  return {
+    code,
+    auth,
+    recovery,
+    link: await page.getByLabel('Device invitation link').inputValue(),
+  };
 }
 export async function unlock(page: Page, code: string) {
   await page.getByLabel('Device-lock code', { exact: true }).fill(code);

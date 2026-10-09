@@ -120,6 +120,7 @@ export async function beginLostDeviceRecovery(
   config: SetupConfig,
   options: {
     signal: AbortSignal;
+    slotId?: string;
     transport?: RecoveryTransport;
     assert?: (
       options: PublicKeyCredentialRequestOptionsJSON,
@@ -133,7 +134,7 @@ export async function beginLostDeviceRecovery(
     post = options.transport ?? recoveryTransport(config),
     assert = options.assert ?? recoveryPasskey;
   if (location.origin !== pin.origin) throw Error('Recovery service differs from this page');
-  const slotId = 'enrollment-' + hex(random(16)),
+  const slotId = options.slotId ?? 'enrollment-' + hex(random(16)),
     opening = createRecoveryOpening(slotId, pin, signal),
     credentials: CreationSeed['credentials'][number][] = [];
   let enrollment: ReturnType<typeof beginLocalGenesis> | undefined,
@@ -152,6 +153,8 @@ export async function beginLostDeviceRecovery(
   };
   signal.addEventListener('abort', close, { once: true });
   try {
+    if (!isRecoverySlot(slotId) || (await inspectLocalStartup(slotId, { signal })).kind !== 'fresh')
+      throw Error('Start recovery in a new slot, or resume the saved recovery');
     for (const role of ['wrapping', 'signing'] as const) {
       guard();
       const pair = (await crypto.subtle.generateKey(
@@ -430,7 +433,7 @@ export async function openRecoveredWorkspace(
       legacyAccess(config),
       true,
     );
-    return { editor, login, actorId: installed.principalId };
+    return { editor, login, actorId: installed.principalId, accountId: editor.accountId };
   } catch (error) {
     login.close();
     throw error;

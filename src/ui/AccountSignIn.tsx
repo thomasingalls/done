@@ -1,4 +1,5 @@
 import { SessionSignOutNotice } from './NetworkLoginNotice';
+import { rememberedRecoveryRoutes, type RecoveryRoute } from '../account/lostRecoveryRoutes';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
   getAccountTransitionNotice,
@@ -22,6 +23,7 @@ export function AccountSignIn({
   onCreate,
   onRestore,
   onConnect,
+  onRecover,
 }: {
   config: SetupConfig;
   onSelect: (slotId: string) => void;
@@ -29,6 +31,7 @@ export function AccountSignIn({
   onCreate: () => Promise<void>;
   onRestore: () => void;
   onConnect?: (workspace?: string) => void;
+  onRecover?: (slotId: string) => void;
 }) {
   const transition = useSyncExternalStore(
     subscribeAccountTransitionNotice,
@@ -36,6 +39,7 @@ export function AccountSignIn({
   );
   const [remembered, setRemembered] = useState<RememberedAccount[]>([]);
   const [connections, setConnections] = useState<RememberedDeviceConnection[]>([]);
+  const [recoveries, setRecoveries] = useState<RecoveryRoute[]>([]);
   const [readError, setReadError] = useState('');
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
@@ -48,6 +52,7 @@ export function AccountSignIn({
         if (live) {
           setRemembered(value);
           setConnections(rememberedDeviceConnections());
+          setRecoveries(rememberedRecoveryRoutes(config.pin));
           setLoading(false);
         }
       })
@@ -74,7 +79,7 @@ export function AccountSignIn({
   const savedAccounts = (
     <section className="account-choice-section" aria-labelledby="saved-accounts-title">
       <h2 id="saved-accounts-title">Saved on this device</h2>
-      {remembered.length > 0 || connections.length > 0 ? (
+      {remembered.length > 0 || connections.length > 0 || recoveries.length > 0 ? (
         <ul className="account-picker" aria-label="Saved accounts">
           {remembered.map((account) => (
             <li key={account.slotId}>
@@ -119,6 +124,28 @@ export function AccountSignIn({
                 </span>
                 <span className="account-picker-action" aria-hidden="true">
                   Continue →
+                </span>
+              </button>
+            </li>
+          ))}
+          {recoveries.map((recovery) => (
+            <li key={recovery.slotId}>
+              <button
+                className="account-picker-row"
+                disabled={creating}
+                aria-label={`Open saved recovery, account ${recovery.accountId}`}
+                onClick={() =>
+                  onRecover
+                    ? onRecover(recovery.slotId)
+                    : location.assign(`/recover/${recovery.slotId}/unlock`)
+                }
+              >
+                <span className="account-picker-details">
+                  <span className="account-picker-name">Recovered account</span>
+                  <AccountIdentity id={recovery.accountId} />
+                </span>
+                <span className="account-picker-action" aria-hidden="true">
+                  Open or resume →
                 </span>
               </button>
             </li>
@@ -175,7 +202,7 @@ export function AccountSignIn({
             Use another account
           </button>
           <p className="setup-note">
-            Connect using an invitation from another device, or invite a device to a saved account.
+            Connect devices, or recover using your saved recovery code and account passkey.
           </p>
         </div>
         <div className="account-choice-section">

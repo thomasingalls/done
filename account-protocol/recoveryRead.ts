@@ -9,9 +9,13 @@ import {
 } from './recoveryBootstrap.ts';
 import { ADMITTED_ENVELOPE_WIRE_LIMIT } from './envelope.ts';
 import type { AuthorityPin } from './authority.ts';
+import { parseContentCheckpoint } from './contentCheckpoint.ts';
+import { parseReplacementCheckpoint } from './replacementCheckpoint.ts';
+import { parseRecoveryCheckpoint } from './recoveryCommit.ts';
 
 export const RECOVERY_READ_REQUEST_LIMIT = 8192;
 export const RECOVERY_READ_PAGE_LIMIT = 4 * 1024 * 1024;
+export const RECOVERY_CHECKPOINT_PAGE_LIMIT = 16 * 1024 * 1024;
 export const RECOVERY_READ_ENTRIES = 16;
 const fixed = (v: unknown, n = 32): string => {
   unhex(v, n);
@@ -30,6 +34,7 @@ const boundedHex = (v: unknown, max: number): string => {
 export function parseRecoveryRead(input: unknown) {
   if (json(input).length > RECOVERY_READ_REQUEST_LIMIT) throw Error('Oversized recovery read');
   const r = closed(input, [
+    ...(Object.hasOwn(input as object, 'checkpoint') ? ['checkpoint'] : []),
     'retryKey',
     'attemptId',
     'bootstrap',
@@ -50,6 +55,7 @@ export function parseRecoveryRead(input: unknown) {
     limit,
     nonce: fixed(r['nonce']),
     signature: fixed(r['signature'], 64),
+    ...(Object.hasOwn(r, 'checkpoint') ? { checkpoint: fixed(r['checkpoint']) } : {}),
   };
 }
 export type RecoveryRead = ReturnType<typeof parseRecoveryRead>;
@@ -73,8 +79,11 @@ export async function verifyRecoveryRead(
   return request;
 }
 export function parseRecoveryReadPage(input: unknown) {
-  if (json(input).length > RECOVERY_READ_PAGE_LIMIT) throw Error('Oversized recovery page');
+  const snapshot = Object.hasOwn(input as object, 'checkpoint');
+  if (json(input).length > (snapshot ? RECOVERY_CHECKPOINT_PAGE_LIMIT : RECOVERY_READ_PAGE_LIMIT))
+    throw Error('Oversized recovery page');
   const p = closed(input, [
+    ...(snapshot ? ['checkpoint'] : []),
     'v',
     'kind',
     'requestHash',
@@ -106,6 +115,18 @@ export function parseRecoveryReadPage(input: unknown) {
       };
     }),
     signature: fixed(p['signature'], 64),
+    ...(snapshot
+      ? {
+          checkpoint:
+            p['checkpoint'] === null
+              ? null
+              : (p['checkpoint'] as { kind?: unknown }).kind === 'content-checkpoint'
+                ? parseContentCheckpoint(p['checkpoint'])
+                : (p['checkpoint'] as { kind?: unknown }).kind === 'replacement-checkpoint'
+                  ? parseReplacementCheckpoint(p['checkpoint'])
+                  : parseRecoveryCheckpoint(p['checkpoint']),
+        }
+      : {}),
   };
 }
 export type RecoveryReadPage = ReturnType<typeof parseRecoveryReadPage>;
@@ -128,7 +149,13 @@ export async function verifyRecoveryReadPage(
     page.next !== request.after + page.entries.length ||
     page.next > page.through ||
     page.entries.length > request.limit ||
-    (page.next < page.through && page.entries.length === 0)
+    (page.next < page.through && page.entries.length === 0) ||
+    (request.checkpoint !== undefined) !== Object.hasOwn(page, 'checkpoint') ||
+    (request.checkpoint &&
+      (request.after !== 0 ||
+        page.through !== 0 ||
+        page.entries.length !== 0 ||
+        page.link !== '00'.repeat(32)))
   )
     throw Error('Recovery page extent changed');
   await verifySignature(pin.authRoot, page.signature, await recoveryReadPageMessage(page));

@@ -1,4 +1,5 @@
 import { newConnectionHref } from '../account/connectionNavigation';
+import { isRecoverySlot } from '../account/lostRecoveryRoutes';
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import {
   createBrowserHistory,
@@ -20,6 +21,9 @@ const Setup = lazy(() => import('./AccountSetupApp').then((module) => ({ default
 // Device connection is loaded on that route; its assets are still precached for offline navigation.
 const AccountEnrollmentApp = lazy(() =>
   import('./AccountEnrollmentApp').then((module) => ({ default: module.AccountEnrollmentApp })),
+);
+const AccountRecoveryApp = lazy(() =>
+  import('./AccountRecoveryApp').then((module) => ({ default: module.AccountRecoveryApp })),
 );
 import { AccountSignIn } from './AccountSignIn';
 const LocalApp = lazy(() => import('./LocalApp').then((module) => ({ default: module.LocalApp })));
@@ -81,7 +85,10 @@ export async function createAccountPreview(config: SetupConfig) {
       history.push('/accounts', navigationState);
       history.flush();
     }
-    if (entry.startsWith('/connect/') && entry !== '/connect/choose') {
+    if (
+      (entry.startsWith('/connect/') && entry !== '/connect/choose') ||
+      entry.startsWith('/recover/')
+    ) {
       history.push('/connect/choose', navigationState);
       history.flush();
     }
@@ -107,6 +114,11 @@ export async function createAccountPreview(config: SetupConfig) {
     component: Account,
   });
   const connect = createRoute({ getParentRoute: () => root, path: '/connect', component: Connect });
+  const recover = createRoute({
+    getParentRoute: () => root,
+    path: '/recover/$slotId',
+    component: Recover,
+  });
   const router = createRouter({
     history,
     routeTree: root.addChildren([
@@ -120,6 +132,9 @@ export async function createAccountPreview(config: SetupConfig) {
       ]),
       connect.addChildren([
         createRoute({ getParentRoute: () => connect, path: '$step', component: () => null }),
+      ]),
+      recover.addChildren([
+        createRoute({ getParentRoute: () => recover, path: '$step', component: () => null }),
       ]),
     ]),
     defaultPreload: false,
@@ -218,6 +233,9 @@ export async function createAccountPreview(config: SetupConfig) {
         onOpenLocal={openLocal}
         onCreate={async () => select(await beginNewAccount(config))}
         onRestore={restore}
+        onRecover={(slot) => {
+          void go(`/recover/${slot}/unlock`);
+        }}
         onConnect={(workspace) => {
           void go('/connect/' + (workspace ? 'unlock?workspace=' + workspace : 'choose'));
         }}
@@ -274,6 +292,21 @@ export async function createAccountPreview(config: SetupConfig) {
         selectedSlot={query.get('slot')}
         invitation={query.get('invitation')}
         begin={query.get('begin')}
+        onNavigate={(href) => {
+          void go(href);
+        }}
+      />
+    );
+  }
+  function Recover() {
+    const { slotId } = recover.useParams();
+    if (!isRecoverySlot(slotId))
+      return <p role="alert">Choose saved recovery or start from Use another account.</p>;
+    return (
+      <AccountRecoveryApp
+        key={slotId}
+        config={config}
+        slotId={slotId}
         onNavigate={(href) => {
           void go(href);
         }}

@@ -1,4 +1,5 @@
 import type { AccountSessions } from './sessions.ts';
+import { recoveryCheckpoints, recoveryCheckpoint } from './recoveryCheckpoints.ts';
 import type { SlotBinding } from '../account-protocol/slot.ts';
 import { retainedRecoveryCheckpoint } from './recoveryStore.ts';
 import {
@@ -160,7 +161,19 @@ export class LostDeviceRecovery {
       )
       .all(account);
     if (rows.length !== 1) return null;
-    return enrollmentSnapshot(this.db, rows[0]!.workspace_id as string);
+    const workspace = rows[0]!.workspace_id as string;
+    const value = enrollmentSnapshot(this.db, workspace);
+    return value
+      ? {
+          ...value,
+          token: hash(
+            canonical({
+              authority: value.token,
+              checkpoints: recoveryCheckpoints(this.db, workspace),
+            }),
+          ),
+        }
+      : null;
   }
   private terminal(row: Row): LostRecoveryResult | null {
     if (row.state === 'cancelled') return no('cancelled');
@@ -379,6 +392,7 @@ export class LostDeviceRecovery {
         return no('state-changed');
       }
       this.issuer.check(auth.seal, root.promotion.request_digest, p.acceptancePublicKey);
+      const checkpointFence = recoveryCheckpoints(this.db, workspace);
       this.db.prepare('INSERT INTO recovery_successors VALUES (?,?,?,?,?,?,?,?,?,?)').run(
         workspace,
         epoch.epoch,
@@ -415,6 +429,7 @@ export class LostDeviceRecovery {
       // Recheck the account/passkey at the commit boundary, after the instrumentation hook.
       const live = this.snapshot(row.account_id!);
       if (
+        !same(checkpointFence, recoveryCheckpoints(this.db, workspace, successor.head)) ||
         !live ||
         credentialHash(live.credential) !== row.credential_hash ||
         this.now() >= row.expires ||
@@ -461,6 +476,70 @@ export class LostDeviceRecovery {
         await verifyRecoveryRead(request, checked.context, row.id);
       } catch {
         return no('invalid-proof');
+      }
+      if (request.checkpoint) {
+        if (
+          request.after !== 0 ||
+          request.limit !== 1 ||
+          request.publisher !== checked.prepared.base.request.candidate.signer
+        )
+          return no('invalid-proof');
+        const proofs = checked.prepared.proofs;
+        const continuation = proofs?.continuations.find((p) => p.head === request.checkpoint);
+        const target =
+          proofs?.certification?.head === request.checkpoint
+            ? { kind: 'original' as const, id: row.workspace_id! }
+            : continuation?.kind === 'recovery-successor'
+              ? { kind: 'recovery' as const, id: continuation.head }
+              : continuation?.kind === 'membership-admission'
+                ? {
+                    kind: 'replacement' as const,
+                    id: continuation.epoch.preparation.context.attemptId,
+                  }
+                : null;
+        if (!target) return no('state-changed');
+        let raw: string | null;
+        this.db.exec('BEGIN');
+        try {
+          if (!this.eligible(row)) return no('state-changed');
+          raw = recoveryCheckpoint(this.db, row.workspace_id!, target.kind, target.id);
+        } finally {
+          this.db.exec('ROLLBACK');
+        }
+        const before = read(this.db, row.workspace_id!);
+        if (!before) return no('state-changed');
+        const auth = await verifyCurrentWorkspaceAuthority(before, this.issuer);
+        if (auth.a.head !== checked.prepared.head.head || auth.removal) return no('state-changed');
+        const body: Omit<RecoveryReadPage, 'signature'> = {
+          v: 1,
+          kind: 'lost-device-recovery-page',
+          requestHash: await digest(json(request)),
+          through: 0,
+          link: '00'.repeat(32),
+          next: 0,
+          entries: [],
+          checkpoint: raw === null ? null : JSON.parse(raw),
+        };
+        const page = parseRecoveryReadPage(await this.issuer.page(body));
+        const { signature: _, ...actual } = page;
+        if (!same(actual, body)) throw Error('Recovery checkpoint issuer changed bytes');
+        this.hook('after-verify', 'lost-recovery-checkpoint');
+        this.db.exec('BEGIN');
+        try {
+          const current = this.row(request.retryKey);
+          if (
+            !current ||
+            current.result !== row.result ||
+            current.state !== 'prepared' ||
+            !this.eligible(current) ||
+            this.terminal(current)
+          )
+            return no('state-changed');
+          this.issuer.check(auth.seal, before.promotion.request_digest, auth.a.acceptanceKey);
+          return page;
+        } finally {
+          this.db.exec('ROLLBACK');
+        }
       }
       for (let retry = 0; retry < 4; retry++) {
         const before = read(this.db, row.workspace_id!, request.publisher);

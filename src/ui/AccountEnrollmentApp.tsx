@@ -19,6 +19,7 @@ import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
 import { AccountDevices } from './AccountDevices';
 import { useCeremonyNavigation } from './ceremonyNavigation';
+import { newRecoveryHref } from '../account/lostRecoveryRoutes';
 export function AccountEnrollmentApp({
   config,
   workspace,
@@ -363,6 +364,17 @@ export function AccountEnrollmentApp({
             </button>
           ) : (
             <>
+              {config.networkSessions && (
+                <section className="account-choice-section">
+                  <button className="setup-primary" onClick={() => onNavigate(newRecoveryHref())}>
+                    Recover with a saved recovery code
+                  </button>
+                  <p className="setup-note">
+                    Use your existing account passkey and recovery code if you no longer have a
+                    connected device.
+                  </p>
+                </section>
+              )}
               <h2>Use an invitation</h2>
               <p>
                 On the device with the account you want to use, open Use another account and invite

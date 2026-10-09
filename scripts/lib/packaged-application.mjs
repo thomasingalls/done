@@ -28,7 +28,9 @@ export function packagedApplication(directory) {
       path === '/' ||
       path === '/private/account-setup.html' ||
       path === '/private/account-enrollment.html' ||
-      /^\/(accounts|local(?:\/[a-z-]+)?|setup\/[^/]+\/[a-z-]+|connect\/[a-z-]+)$/.test(path);
+      /^\/(accounts|local(?:\/[a-z-]+)?|(?:setup|recover)\/[^/]+\/[a-z-]+|connect\/[a-z-]+)$/.test(
+        path,
+      );
     const file = files.get(entry ? '/index.html' : path);
     response.setHeader('Cache-Control', 'no-store');
     response.setHeader('X-Content-Type-Options', 'nosniff');

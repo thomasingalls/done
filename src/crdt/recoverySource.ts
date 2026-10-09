@@ -27,6 +27,11 @@ import { openGeneration } from '../account/generationWrap';
 import { fields, hkdf, random, type Bytes } from './custodyCrypto';
 import { Y, genesisCoverage, genesisCoverageParts, hasPendingUpdates } from './yjs';
 import { actors } from './promotionGenesis';
+import { openContentCheckpoint } from './contentCheckpoint';
+import { openReplacementCheckpoint } from './replacementCheckpoint';
+import { openRecoveryReading } from './recoveryReading';
+import { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+import { historyMembership } from '../../account-protocol/admissionHistory';
 
 export const RECOVERY_SOURCE_EVENTS = 4096;
 export const RECOVERY_SOURCE_UPDATE_BYTES = 64 * 1024 * 1024;
@@ -117,6 +122,93 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
       throw Error('Recovery genesis coverage changed');
     const parts = genesisCoverageParts(doc);
     await verifyReceipt(base.receipt, base.request, pin, { sv: hex(parts.sv), ds: hex(parts.ds) });
+    // A handoff snapshot can contain durable originals never published as ledger updates.
+    // Merge every retained snapshot as well as every accepted stream; Yjs replay is idempotent.
+    const proofs = prepared.proofs;
+    const targets = [
+      ...(proofs?.certification ? [proofs.certification.head] : []),
+      ...(proofs?.continuations ?? [])
+        .filter((p) => p.kind === 'recovery-successor' || p.kind === 'membership-admission')
+        .map((p) => p.head),
+    ];
+    let checkpointBytes = 0;
+    for (const head of targets) {
+      guard();
+      const request = parseRecoveryRead({
+        retryKey: (beginInput as { retryKey: string }).retryKey,
+        attemptId: prepared.challenge.context.attemptId,
+        bootstrap: proof,
+        publisher: original.signer,
+        after: 0,
+        limit: 1,
+        checkpoint: head,
+        nonce: hex(random(32)),
+        signature: '00'.repeat(64),
+      });
+      request.signature = await sign(await recoveryReadMessage(request));
+      const page = await verifyRecoveryReadPage(await read(request), request, pin);
+      guard();
+      const c = page.checkpoint;
+      const index = proofs!.continuations.findIndex((p) => p.head === head);
+      const successor = proofs!.continuations[index];
+      if (!c) {
+        if (successor?.kind === 'recovery-successor')
+          throw Error('Committed recovery checkpoint is missing');
+        // Original/replacement publication can still be unfinished. Signed absence is fenced by
+        // the service preparation: a later publication requires fresh recovery preparation.
+        continue;
+      }
+      let recovered;
+      if (proofs!.certification?.head === head) {
+        recovered = await openContentCheckpoint(c, keys.get(1)!, {
+          base,
+          successor: proofs!.successor!,
+          certification: proofs!.certification,
+        });
+      } else if (successor?.kind === 'membership-admission') {
+        const parent = await verifyMembershipChain(
+          { ...proofs!, continuations: proofs!.continuations.slice(0, index + 1) },
+          base,
+        );
+        recovered = await openReplacementCheckpoint(
+          c,
+          keys.get(historyGeneration(parent.history))!,
+          historyMembership(parent.history),
+        );
+      } else if (successor?.kind === 'recovery-successor') {
+        if (!prepared.binding || !checked.history)
+          throw Error('Recovery checkpoint binding is missing');
+        recovered = await openRecoveryReading(
+          {
+            v: 1,
+            kind: 'recovery-reading',
+            epoch: successor.epoch.epoch,
+            head,
+            checkpoint: c,
+            successor,
+            binding: prepared.binding,
+          },
+          keys.get(successor.epoch.generation)!,
+          { base, successor: proofs!.successor, certification: proofs!.certification },
+          checked.history,
+          successor.epoch.intent.bootstrap.newCredentialId,
+        );
+      } else throw Error('Unexpected recovery checkpoint');
+      try {
+        const update = new Uint8Array(Y.encodeStateAsUpdate(recovered));
+        try {
+          checkpointBytes += update.length;
+          if (checkpointBytes > RECOVERY_SOURCE_UPDATE_BYTES)
+            throw Error('Recovery checkpoints exceed supported bounds');
+          guard();
+          Y.applyUpdate(doc, update);
+        } finally {
+          update.fill(0);
+        }
+      } finally {
+        recovered.destroy();
+      }
+    }
     const publishers = new Set([original.signer]);
     for (const m of prepared.proofs?.certification?.epoch.delivery.certificate.members ?? [])
       publishers.add(m.id);

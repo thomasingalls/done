@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: recovery coordinator and native restart verified; approved screens and previous-device detachment in flight
+scope: packaged recovery flow verified; previous-device detachment and live upgrade remain
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -123,6 +123,14 @@ installation compose. Only the live fresh ceremony can skip a duplicate first-op
 cold reopen uses normal unlock. Two disposable Chromium paths pass, including whole browser/service
 restart and byte-identical retry. [Output](./development-evidence/2026-10-09-recovery-coordinator.log).
 The next work is the approved UI, recovery-specific old-device status and the packaged walkthrough.
+
+
+**Packaged product checkpoint:** approved recovery screens, chooser resume, Back redisplay, normal
+editor and Devices are mounted. The real walkthrough exposed and repaired omitted checkpoint-only
+writing; replay now includes authenticated handoff/replacement/recovery snapshots, fenced against
+concurrent publication. The packaged flow and 23 focused source/read/commit cases pass.
+[Evidence](./development-evidence/2026-10-09-recovery-product.log). Previous-device recovery detachment
+is next. The live installation has not been upgraded and release validation stays paused.
 
 ---
 

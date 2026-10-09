@@ -1,7 +1,9 @@
 /** Untrusted chooser hints only; neither keys nor recovery authority live here. */
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import { hex } from '../../account-protocol/recovery';
+import { random } from '../crdt/custodyCrypto';
 const prefix = 'done.lost-recovery.';
+export const newRecoveryHref = () => '/recover/enrollment-' + hex(random(16)) + '/start';
 export const isRecoverySlot = (slot: unknown): slot is string =>
   typeof slot === 'string' && /^enrollment-[a-f0-9]{32}$/.test(slot);
 export interface RecoveryRoute {

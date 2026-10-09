@@ -71,8 +71,16 @@ test('first-device recovery commits one real replayed checkpoint, finalizes old 
     bootstrap: later.bootstrap,
     sign: async (bytes) =>
       Buffer.from(await crypto.subtle.sign('Ed25519', later.signer, bytes)).toString('hex'),
-    read: later.read,
+    read: async (request) => {
+      const result = await later.read(request);
+      assert.equal(result.kind, 'lost-device-recovery-page', JSON.stringify(result));
+      return result;
+    },
   });
+  const replay = new Y.Doc();
+  Y.applyUpdate(replay, source.snapshot);
+  assert.equal(replay.getText('master').toString(), 'recovered writing\nbefore loss\n');
+  replay.destroy();
   source.snapshot.fill(0);
   assert.equal(source.generation, 2);
   assert.equal(source.heads.length, 2);
@@ -80,6 +88,17 @@ test('first-device recovery commits one real replayed checkpoint, finalizes old 
     source.heads.find((h) => h.credentialId === x.reader.input.candidate.credentialId).position,
     1,
   );
+});
+test('checkpoint publication after preparation refuses recovery before authority changes', async (t) => {
+  const x = await ready(t),
+    prepared = await client.prepareRecoveryCommit(x.input);
+  t.after(() => prepared.key.fill(0));
+  mutate(x, (db) =>
+    db.prepare('INSERT INTO content_checkpoints VALUES (?,?,NULL)').run(x.workspace, '{}'),
+  );
+  const result = await commit(x, prepared.request);
+  assert.equal(result.refusal, 'state-changed');
+  assert.equal(x.f.rows('recovery_successors').length, 0);
 });
 test('an accepted append between replay and commit refuses without excluding the writer', async (t) => {
   const x = await ready(t),
