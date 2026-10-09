@@ -12427,3 +12427,18 @@ retry; incomplete staging and missing/empty/older/mismatched cold state refuse w
 Fourteen focused public-runtime/gateway checks and TypeScript pass on local Node 26.11.0, including
 separate-process exclusion and reopening after SIGKILL. No release campaign, production resource or
 retained-service update occurred. See [public runtime](./public-runtime.md). Container packaging follows.
+
+
+### 2026-10-09 — ARM64 public container packaging
+
+Added a digest-pinned Node 24.18.0 multi-stage image with explicit source metadata, an allowlisted
+build context, production-only runtime dependencies, non-root execution and app/API exec probes.
+The same image serves separate app/API processes or runs explicit initialization; secrets and
+retained state are externally mounted only where required. The candidate build passes the existing
+application build and all 14 focused runtime/gateway checks. A disposable two-container smoke passes
+initialization, missing-state refusal, competing-owner refusal, origin/session boundaries, integrity
+of all 34 precache URLs, retained identity/registration after SIGKILL, graceful termination and
+idempotent initialization. All fixture volumes/containers were removed. Operating instructions are
+in [public runtime](./public-runtime.md). The candidate was labelled with its dirty source; a clean
+image will be rebuilt from the signed packaging commit. No deployment, registry push, retained
+installation change, backup/restore implementation or release campaign occurred.

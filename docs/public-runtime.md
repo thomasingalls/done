@@ -74,6 +74,57 @@ migration flags. Missing, empty, mismatched or older state refuses. Schema migra
 restore remain separate future maintenance work; do not point the development upgrader at this layout.
 Operator keys belong in the agreed SOPS/Kubernetes custody path, never in the PVC or application image.
 
+## Container boundary
+
+The root `Dockerfile` builds the application and the focused runtime checks under Node 24.18.0.
+Its base image is pinned by multi-platform digest; the initial exercised target is `linux/arm64`.
+The final image contains the packaged assets, account implementation and production dependencies,
+without Vite, tests, a Git checkout or development state. `.dockerignore` allowlists source inputs,
+excluding retained data, exports, keys and personal root notes from the build context.
+
+Build from a clean checkout of the intended commit:
+
+```sh
+docker build --platform linux/arm64 \
+  --build-arg APP_BUILD_REVISION="$(git rev-parse HEAD)" \
+  --build-arg APP_BUILD_DATE="$(git show -s --format=%cs HEAD)" \
+  -t "done-public:$(git rev-parse --short=12 HEAD)" .
+node scripts/smoke-public-container.mjs "done-public:$(git rev-parse --short=12 HEAD)"
+```
+
+Both build arguments are required for container builds; the revision is the full source commit and
+the date is that commit's `YYYY-MM-DD` date. An exploratory build may append `-dirty` to the revision;
+it is not an immutable publication artifact. Publish and select by registry digest later. Building
+or running this smoke command does not push an image or modify an existing installation. The smoke
+command creates named disposable Docker volumes/containers and records its result below
+`test-results/public-runtime/`; it never mounts host service state.
+
+The same image has three commands, using exec-form entrypoint `node scripts/public-account.mjs`:
+
+1. Run `initialize` explicitly once with a writable data volume and the externally provisioned
+   operator key. Save its public JSON output as the independently mounted expected pin. An incomplete
+   initialization requires inspection; do not delete its artifacts or generate another key on retry.
+2. Run `api` with that data volume, read-only operator-key and expected-pin mounts, and exact origin.
+3. Run `app` with only the exact origin and port configuration, sharing the API's network namespace
+   (two containers in one Kubernetes pod). Expose only app port 8080 through the HTTPS gateway.
+
+Initialization is an explicit administrative Job/command, **not** an ordinary-startup init container.
+The planned fresh public service must use newly provisioned custody; the smoke's disposable secrets
+are generated solely for its fixtures and deleted afterward.
+
+Use UID/GID 65532, no added capabilities, `allowPrivilegeEscalation: false`, a read-only root filesystem
+and a small writable `/tmp`. Provision the data mount's parent directory writable to this UID; the
+application creates its own private `service` child. State directories/files require owner-only
+permissions; projected operator secrets may be root-owned and group-readable (0440, group 65532).
+Mount secrets only into API/initialization containers. The image's `/data` ownership is suitable for
+a fresh Docker named volume; Kubernetes PVC provisioning must establish equivalent access explicitly.
+
+Exec readiness probes are `node scripts/public-healthcheck.mjs api` and
+`node scripts/public-healthcheck.mjs app`; the API listener is intentionally loopback-only. Use
+SIGTERM and enough termination grace for admitted requests to drain before SIGKILL. The service
+refuses new requests during shutdown. Future offline migration/restore commands must participate
+in the same ownership lock; no such maintenance command is implemented by this container phase.
+
 ## Focused evidence — 2026-10-09
 
 TypeScript passes. Nine public state/HTTP/lifetime checks plus five existing gateway regressions pass
@@ -81,4 +132,17 @@ on local Node 26.11.0: explicit initialization, lost reply/complete-stage retry,
 missing/empty/older database refusal, wrong pin/origin/key refusal, separate-process exclusion and
 SIGKILL reopening, shutdown admission/drain, exact public-origin request boundaries and independent
 app/API restarts with a retained registration attempt. These are bounded implementation checks,
-not a generalized campaign. Container/Node 24 execution is the next implementation checkpoint.
+not a generalized campaign.
+
+The candidate ARM64 image passed the existing application build (including TypeScript, Yjs patch,
+asset-size and built-origin checks) and the same 14 runtime/gateway checks on Node 24.18.0. Its
+disposable two-container smoke also passed: explicit initialization, startup refusal on empty state,
+cross-container exclusion, exact-origin session API, all 34 precache assets matching their integrity
+hashes, SIGKILL/restart preserving an accepted registration attempt and identity, clean SIGTERM exit,
+and same-identity initialization retry. Both processes used a read-only root filesystem and UID 65532;
+the app had no key/state mounts. All disposable resources were removed. Candidate source was
+`c0d36c7a` plus the packaging changes, labelled `-dirty`; a final clean-commit image follows the signed
+packaging commit.
+
+This checks process interruption and packaged HTTP assets, not power-loss behavior or a fresh browser
+credential ceremony. No existing service, public deployment, backup/restore or release campaign ran.

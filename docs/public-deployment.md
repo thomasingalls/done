@@ -97,9 +97,10 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
 1. Complete: record this plan and integrate the signed history through PR #41's merge commit
    `8c6005f3`, preserving phase ancestry and the original-to-signed crosswalk. Continue implementation
    on `codex/first-public-deployment` from that merge.
-2. The routine-build/paused-full-check CI split is merged. Add the
-   public service entry, explicit initialization and container packaging with immutable configuration,
-   single-writer ownership, graceful stop and readiness. Keep development entry points working.
+2. Complete: the routine-build/paused-full-check CI split, public service entry, explicit
+   initialization and container packaging with immutable configuration, single-writer ownership,
+   graceful stop and readiness. Development entry points remain available. The bounded ARM64
+   container checks and operating contract are recorded in [public runtime](./public-runtime.md).
 3. Implement isolated consistent snapshot creation, encryption, B2 upload, bounded scheduling,
    retention and health reporting. Use disposable state and a controlled object destination first.
 4. Implement the versioned maintenance/migration and restore procedures, including the session and

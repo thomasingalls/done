@@ -6,6 +6,20 @@ import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
 
 const commitMetadata = (): { version: string; date: string } => {
+  // Container contexts exclude .git and all retained/private runtime data. Require
+  // explicit provenance there; a local candidate may identify its uncommitted tree.
+  const revision = process.env['APP_BUILD_REVISION'];
+  const date = process.env['APP_BUILD_DATE'];
+  if (revision !== undefined || date !== undefined) {
+    if (
+      !revision ||
+      !/^[0-9a-f]{40}(?:-dirty)?$/.test(revision) ||
+      !date ||
+      !/^\d{4}-\d{2}-\d{2}$/.test(date)
+    )
+      throw new Error('APP_BUILD_REVISION and APP_BUILD_DATE must identify the container source');
+    return { version: revision.slice(0, 8) + (revision.endsWith('-dirty') ? '-dirty' : ''), date };
+  }
   try {
     const [version = 'unknown', date = 'unknown'] = execFileSync(
       'git',
