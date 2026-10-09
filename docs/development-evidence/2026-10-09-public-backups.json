@@ -1,0 +1,67 @@
+{
+  "scope": "Public backup implementation: API-owned snapshots, age encryption, scoped B2 transport, serial scheduling, retention and health",
+  "sourceCommit": "8923599e84a73b49dff5d4c8c7cdce5eed5d8a59",
+  "implementationCommits": [
+    "773c3d14",
+    "7c23af0d",
+    "8923599e"
+  ],
+  "releaseValidation": "paused; bounded implementation checks only",
+  "build": {
+    "command": "docker build --platform linux/arm64 --build-arg APP_BUILD_REVISION=8923599e84a73b49dff5d4c8c7cdce5eed5d8a59 --build-arg APP_BUILD_DATE=2026-10-09 -t done-public:8923599e .",
+    "exitCode": 0,
+    "node": "24.18.0",
+    "checkUid": 65532,
+    "agePackage": "1.1.1-1+b3",
+    "applicationBuild": "passed: Yjs patch/runtime, TypeScript, Vite, 136.7 kB initial JS / 350 kB budget, built-origin scan",
+    "focusedTests": {
+      "runtimeAndGateway": 14,
+      "backup": 5,
+      "failed": 0
+    },
+    "log": "2026-10-09-public-backup-container-build.log",
+    "logSha256": "2f363afd36c01a0d1e40a4e96e7e728a755881ea34b5725ade249ee1188b860c"
+  },
+  "backupChecks": [
+    "Fixed WAL read point while another connection commits; later writing remains pending for another snapshot.",
+    "Real tar/gzip/age encryption/decryption, exact membership/hashes, and tamper refusal.",
+    "UTC retention boundaries, last verified anchor preservation and clock rollback.",
+    "Scoped B2 authorization and endpoint validation; actual streamed upload to loopback protocol fixture.",
+    "Exact-version readback; lost replies and corrupt copies do not authorize pruning.",
+    "Unverified hourly/daily keepers must pass readback before displacing good alternatives.",
+    "Paginated version listing, repeated-cursor refusal, unrelated/maintenance-file preservation, permanent version deletion/retry.",
+    "No concurrent/queued cycles; unchanged source skips upload; cancellation waits for cleanup.",
+    "Real API and worker process crash/restart; fresh decrypted backup contains an accepted registration; graceful ownership release."
+  ],
+  "containerSmoke": {
+    "image": "done-public:8923599e",
+    "started": "2026-10-09T21:57:33.683Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:542f028bd89d103b0b98e1068f061580fd5b57f2a8940857977625007a46e865",
+    "platform": "linux/arm64",
+    "sourceRevision": "8923599e84a73b49dff5d4c8c7cdce5eed5d8a59",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-09T21:57:40.326Z"
+  },
+  "limits": [
+    "B2 protocol fixture only: no real bucket/key, external upload or provider TLS interoperability check.",
+    "Backup tests run inside the ARM64 build as UID 65532; packaged two-container smoke has backups disabled and checks runtime packaging/restart plus the age binary.",
+    "Saved real recovery identity, provider upload/readback and backup decrypt rehearsal are required before activation.",
+    "Maintenance/migration and rollback-safe restore are not implemented by this phase.",
+    "No public deployment, retained Tailscale state change, infrastructure modification or registry push.",
+    "No host power-loss durability claim or resumed generalized release campaign."
+  ]
+}

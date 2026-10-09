@@ -149,7 +149,13 @@ crash-artifact cleanup, single-owner refusal, acceptance of a registration, SIGK
 backup containing that accepted registration, archive decryption, and graceful stop followed by cold
 ownership acquisition. The candidate Node 24.18.0 ARM64 image passes the application build and all
 19 focused public-runtime/gateway/backup checks. Host checks used age 1.3.2; the image uses Debian's
-age 1.1.1-1+b3. Final non-root image evidence is recorded after signing integration.
+age 1.1.1-1+b3. The final clean-source image `done-public:8923599e` passes those 19 checks as UID 65532
+and the separate packaged two-container smoke. Its index digest is
+`sha256:542f028bd89d103b0b98e1068f061580fd5b57f2a8940857977625007a46e865`.
+[Exact source/image evidence, raw build log and limits](./development-evidence/2026-10-09-public-backups.json)
+are retained. No image has been published. The packaged smoke checks runtime packaging/restart with
+backups disabled; the backup worker's actual upload/readback is exercised in the non-root build tests
+against the controlled B2 fixture. Next is maintenance and rollback-safe restore.
 
 ## Primary contracts
 

@@ -128,7 +128,7 @@ SIGTERM and enough termination grace for admitted requests to drain before SIGKI
 refuses new requests during shutdown. Future offline migration/restore commands must participate
 in the same ownership lock; no such maintenance command is implemented by this container phase.
 
-## Focused evidence — 2026-10-09
+## Initial runtime evidence — 2026-10-09
 
 TypeScript passes. Nine public state/HTTP/lifetime checks plus five existing gateway regressions pass
 on local Node 26.11.0: explicit initialization, lost reply/complete-stage retry, partial-stage refusal,
@@ -153,3 +153,8 @@ no registry publication has occurred.
 
 This checks process interruption and packaged HTTP assets, not power-loss behavior or a fresh browser
 credential ceremony. No existing service, public deployment, backup/restore or release campaign ran.
+
+The subsequent [backup integration checkpoint](./public-backups.md#focused-evidence) is signed as
+`8923599e`. Its clean-source ARM64 image passes the application build and 19 focused checks as the
+runtime UID, plus the packaged smoke. It includes age and an opt-in API-owned backup worker. The
+older image above is the original runtime checkpoint, not the latest deployment candidate.

@@ -12491,3 +12491,16 @@ All 19 bounded public-runtime/gateway/backup checks pass on Node 24.18.0 ARM64, 
 as UID 65532 in the build stage. A final image from the signed integration commit and its evidence
 follow. No provider credentials, retained installation, infrastructure resources or release campaign
 were used. Next remains maintenance/restore, then real-provider activation and publication.
+
+
+### 2026-10-09 — Signed public backup checkpoint
+
+The backup work is signed in `773c3d14` (coherent payload/retention), `7c23af0d` (B2 transfer/cycle)
+and `8923599e` (worker/runtime/container integration). The clean-source ARM64 image
+`done-public:8923599e` passes the application build, 19 focused checks as UID 65532, and the
+packaged two-container smoke with all 34 precache URLs and age binary present. Its exact artifact,
+commands, raw build log and limitations are retained in [backup evidence](./development-evidence/2026-10-09-public-backups.json).
+The B2 protocol check used a disposable loopback destination; actual bucket/key/recipient custody
+and real upload/decrypt verification remain activation inputs. No deployment or registry push was
+performed. Next is explicit maintenance/migration and rollback-safe restore, before ol-infra
+publication. Release qualification remains paused.

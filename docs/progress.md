@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: public backup pipeline implemented; final signed container/evidence checkpoint
+scope: public backup pipeline complete; maintenance and rollback-safe restore next
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
@@ -106,7 +106,10 @@ tar/gzip/age encryption, scoped B2 upload and exact-version readback, 30-second 
 checks, bounded retention and private health reporting. Failed/unverified copies cannot authorize
 discarding good alternatives. Nineteen focused runtime/gateway/backup checks pass, including the
 real worker through SIGKILL/restart; the ARM64 build also exercises those checks as UID 65532.
-Final signed image/evidence checkpoint is in progress. Next: explicit maintenance/migration and
+Signed commits `773c3d14`, `7c23af0d` and `8923599e` record the backup stages. Image
+`done-public:8923599e` passes the build and packaged smoke; its
+[source/image evidence and raw build log](./development-evidence/2026-10-09-public-backups.json)
+are retained. Next: explicit maintenance/migration and
 restore, including session invalidation and client-history rollback handling, then infrastructure
 and real-provider activation. No retained installation or infrastructure resource has changed;
 no image has been published and no real B2 bucket has been used.
