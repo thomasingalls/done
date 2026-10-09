@@ -12334,3 +12334,12 @@ and its evidence log. No live switch, history deletion or resumed release valida
 
 Next is receive-cut/suffix installation and the remaining generation-one handoff reader, followed by
 retention/pruning with two admitted checkpoints. The combined native admission bound remains 4 MiB.
+
+
+### 2026-10-09 — Authenticated receive starting points
+
+Committed versioned snapshot/cut installation, historical local upload-chain checks, overlap refusal,
+legacy additive-install upgrade and snapshot-first repair. Seven focused cases and both packaged
+history checks pass, including native abort/retry and offline reopening; static checks/build pass.
+No outbound decision is manufactured and no local original or service history is deleted. Unsigned
+stage; remaining handoff reading and safe pruning continue. See [history checkpoint](./account-history-management.md).

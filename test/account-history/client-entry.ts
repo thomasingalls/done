@@ -29,3 +29,5 @@ export {
   verifyInboundLedger,
   inspectInbound,
 } from '../../src/crdt/inboundLedger';
+
+export { applyHistoryReceiveCuts } from '../../src/crdt/inboundLedger';

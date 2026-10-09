@@ -206,3 +206,57 @@ test('combined proof and plaintext refuse the native admission bound before publ
     c.HistoryInstallSizeError,
   );
 });
+
+test('v2 cuts advance a certified peer, preserve later receipts and refuse overlapping forks', async (t) => {
+  const f = await setup(t),
+    history = await c.verifyCertificationHistory(
+      f.f.certification,
+      f.f.f.successor,
+      f.f.f.base,
+      f.f.anchor,
+    ),
+    base = { ...f.base, history, authority: history.current },
+    peer = f.f.context.candidate.id,
+    own = {
+      prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+      retained: new Map(),
+      conflict: false,
+      peers: new Map(),
+    },
+    census = { delivery: { ledger: [], spool: { sourceRecords: [] } } };
+  const cut = { credentialId: peer, position: 4, link: 'ac'.repeat(32) };
+  await c.applyHistoryReceiveCuts(own, base, census, [cut]);
+  assert.equal(own.peers.get(peer).prefix.position, 4);
+  assert.equal(own.prefix.position, 0, 'peer checkpoint is no self-stream acknowledgement');
+  own.peers.get(peer).prefix = { position: 6, link: 'bc'.repeat(32), observedThrough: 7 };
+  await c.applyHistoryReceiveCuts(own, base, census, [cut]);
+  assert.equal(own.peers.get(peer).prefix.position, 6, 'newer received suffix is not reset');
+  await assert.rejects(
+    c.applyHistoryReceiveCuts(own, base, census, [{ ...cut, link: 'dd'.repeat(32) }]),
+    /conflicts/,
+  );
+  await assert.rejects(
+    c.applyHistoryReceiveCuts(own, base, census, [{ ...cut, credentialId: base.publisher.id }]),
+    /self stream/,
+  );
+  const bytes = c.encodeHistoryInstall({ ...f.event, version: 2 });
+  const result = await c.verifyHistoryInstall(f.base, bytes, undefined, lifetime);
+  try {
+    assert.deepEqual(result.heads, f.cp.heads);
+  } finally {
+    result.update.fill(0);
+  }
+  const old = await c.verifyHistoryInstall(f.base, f.bytes, undefined, lifetime);
+  try {
+    assert.equal(old.heads, null, 'v1 cold replay does not gain new cursor semantics');
+    const upgraded = await c.verifyHistoryInstall(f.base, bytes, old.installed, lifetime);
+    upgraded.update.fill(0);
+    assert.equal(upgraded.installed.receiveCuts, true);
+    await assert.rejects(
+      c.verifyHistoryInstall(f.base, bytes, upgraded.installed, lifetime),
+      /regressed/,
+    );
+  } finally {
+    old.update.fill(0);
+  }
+});

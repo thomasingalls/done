@@ -360,3 +360,24 @@ Next: authenticated receive-cut/suffix installation and the remaining handoff re
 retention/pruning while preserving two admitted checkpoints and needed suffixes. Live build `34035330`
 and schema 24 remain untouched; schema 25/history UI are still undeployed. Release validation remains
 paused. Unsigned intermediate commit.
+
+
+### 2026-10-09 — Authenticated receive starting points
+
+New `history-install/v2` events commit snapshot content and its receive starting cuts together under
+one native witness. Cold replay preserves existing receipts and later suffixes, rejects overlapping
+link conflicts, and verifies this device's skipped prefix against the exact locally retained upload
+attempts that existed at installation. Upload acknowledgements/refusals remain independently verified;
+checkpoint installation never creates an outbound acceptance or removes an unsent original.
+
+Version-one additive events keep their original semantics. An existing v1 installation can append a
+v2 installation for the same authenticated checkpoint exactly once; it is not silently reinterpreted.
+New reads cannot request positions below their installed starting point. The receive loop checks for
+new snapshots before trying older suffixes, with throttled catalog repair and immediate checks after
+service hints/authority refresh. This order is necessary for a returning device after future pruning.
+
+Seven focused installation cases pass, including peer cursor advancement, preservation of later
+receipts, overlapping fork/missing-self-stream refusal and v1-to-v2 upgrade. Both packaged history
+checks pass (1.2 min), retaining the actual IndexedDB abort/retry, offline reopening, original edits
+and repeated peer admission. TypeScript and production build pass. No deletion or live switch.
+The remaining handoff reader and retention/pruning follow in this authorized sequence.

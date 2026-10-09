@@ -28,7 +28,12 @@ export class HistoryInstallSizeError extends Error {
 }
 
 export const HISTORY_INSTALL_TAG = 'done/history-install/v1';
+export const HISTORY_CUT_INSTALL_TAG = 'done/history-install/v2';
+export const isHistoryInstallTag = (tag: unknown) =>
+  tag === HISTORY_INSTALL_TAG || tag === HISTORY_CUT_INSTALL_TAG;
 export interface HistoryInstall {
+  /** Version one is additive; version two also installs authenticated receive cuts. */
+  version?: 1 | 2;
   baseline: string;
   workspace: string;
   lineage: string;
@@ -41,12 +46,15 @@ export interface HistoryInstall {
 export interface InstalledHistory {
   sequence: number;
   hash: string;
+  receiveCuts?: true;
 }
 export function encodeHistoryInstall(e: HistoryInstall): Bytes {
+  if (e.version !== undefined && e.version !== 1 && e.version !== 2)
+    throw Error('Unknown history installation version');
   const bytes = new TextEncoder().encode(
     JSON.stringify([
-      HISTORY_INSTALL_TAG,
-      1,
+      e.version === 2 ? HISTORY_CUT_INSTALL_TAG : HISTORY_INSTALL_TAG,
+      e.version ?? 1,
       inboundHex(e.baseline, 32),
       inboundHex(e.workspace, 16),
       inboundHex(e.lineage, 32),
@@ -63,9 +71,16 @@ export function encodeHistoryInstall(e: HistoryInstall): Bytes {
 }
 export function decodeHistoryInstall(bytes: Bytes): HistoryInstall {
   const v = parseInboundArray(bytes, MAX_BATCH_BYTES);
-  if (v.length !== 10 || v[0] !== HISTORY_INSTALL_TAG || v[1] !== 1)
+  if (
+    v.length !== 10 ||
+    !(
+      (v[0] === HISTORY_INSTALL_TAG && v[1] === 1) ||
+      (v[0] === HISTORY_CUT_INSTALL_TAG && v[1] === 2)
+    )
+  )
     throw Error('Invalid history installation');
   return {
+    version: v[1] as 1 | 2,
     baseline: inboundHex(v[2], 32),
     workspace: inboundHex(v[3], 16),
     lineage: inboundHex(v[4], 32),
@@ -120,7 +135,9 @@ export async function verifyHistoryInstall(
       sequence = cp.manifest.sequence;
     if (
       previous &&
-      (sequence <= previous.sequence ||
+      (sequence < previous.sequence ||
+        (sequence === previous.sequence &&
+          !(event.version === 2 && !previous.receiveCuts && hash === previous.hash)) ||
         (sequence === previous.sequence + 1 && cp.manifest.parent !== previous.hash))
     )
       throw Error('History installation regressed or forked');
@@ -129,7 +146,11 @@ export async function verifyHistoryInstall(
     // Keep the existing native admission bound. A larger snapshot is refused before any write.
     if (update.length + input.length > MAX_BATCH_BYTES) throw new HistoryInstallSizeError();
     lifetime.assertCurrent();
-    return { update, installed: { hash, sequence } };
+    return {
+      update,
+      installed: { hash, sequence, ...(event.version === 2 ? { receiveCuts: true as const } : {}) },
+      heads: event.version === 2 ? cp.heads : null,
+    };
   } catch (cause) {
     update?.fill(0);
     throw cause;

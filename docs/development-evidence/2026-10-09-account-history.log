@@ -488,3 +488,33 @@ Running 1 test using 1 worker
 TypeScript --noEmit, scoped oxfmt/oxlint, git diff --check: pass. Packaged walkthrough used the normal happy-path transport before the final network-abort classification change; that change has separate focused HTTP evidence. No personal state or retained service was changed. No release-validation campaign.
 
 Final production bundling: pass, 2.80 s.
+
+=== Authenticated receive cuts ===
+(node:44161) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ installed proof cold-replays with local originals and compaction, without advancing receive cuts (46.527834ms)
+✔ cold replay authenticates historical eligibility after certification, without accepting cloned brands (79.751041ms)
+✔ wrong slot, reader, membership head, admission and ciphertext all refuse before installation (17.037167ms)
+✔ duplicate, regression and immediate parent fork refuse; cancellation erases the prepared update (24.963125ms)
+✔ installation captures the opener and proof before async verification (13.598625ms)
+✔ combined proof and plaintext refuse the native admission bound before publication (5716.992666ms)
+✔ v2 cuts advance a certified peer, preserve later receipts and refuse overlapping forks (69.667542ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6372.723792
+
+Running 2 tests using 1 worker
+
+(node:44262) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/history.spec.ts:13:1 › sole device creates repeated native snapshots, retries lost publication and keeps editing (9.0s)
+  ✓  2 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (1.0m)
+
+  2 passed (1.2m)
+
+TypeScript --noEmit and production bundle pass. No service pruning/live changes.

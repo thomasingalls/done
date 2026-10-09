@@ -1,5 +1,5 @@
 import {
-  HISTORY_INSTALL_TAG,
+  isHistoryInstallTag,
   decodeHistoryInstall,
   verifyHistoryInstall,
   type InstalledHistory,
@@ -19,7 +19,9 @@ import { hex, utf8, type Bytes } from './custodyCrypto';
 import type { PromotionRecord } from './promotionRecord';
 import type { OpenedRecord } from './contentRecord';
 import { captureError, type CaptureRoute } from './sourceCapture';
-import { inspectDelivery } from './deliveryRecord';
+import { inspectDelivery, expectedPosition } from './deliveryRecord';
+import { acceptanceLink, decodePositionResponse } from '../../account-protocol/positionDecision';
+import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
 import { decodeInboundRecord } from './inboundRecord';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
 import { Y, forkDoc, sameDocState } from './yjs';
@@ -98,7 +100,7 @@ export function inspectInbound(
         captureError('Unreadable inbound carrier');
       }
     }
-    if (tag === HISTORY_INSTALL_TAG) {
+    if (isHistoryInstallTag(tag)) {
       if (record.kind !== 'heads') captureError('History installation misplaced');
       installations.push({ record, event: decodeHistoryInstall(record.bytes) });
     } else if (tag === 'done/account-inbound/v1') {
@@ -130,6 +132,7 @@ export function inspectInbound(
 }
 export interface InboundState {
   prefix: InboundContext['prefix'];
+  startingPoint?: { position: number; link: string };
   installedHistory?: InstalledHistory;
   conflict: boolean;
   retained: Map<number, NonNullable<InboundContext['retained']>>;
@@ -182,6 +185,66 @@ export function contextAt(
 ): InboundContext {
   const retained = state.retained.get(after + 1);
   return { ...base, prefix: { ...state.prefix }, ...(retained ? { retained } : {}) };
+}
+/** Retain existing receipt evidence; a checkpoint changes only where future reads begin. */
+export async function applyHistoryReceiveCuts(
+  own: InboundState,
+  base: InboundContext,
+  census: ReturnType<typeof inspectInbound>,
+  heads: readonly HistoryHead[],
+  beforeSequence = Infinity,
+) {
+  const route: CaptureRoute = {
+    workspace: base.authority.workspace,
+    credential: base.publisher.id,
+    principal: base.publisher.principal,
+    epoch: base.authority.tip,
+    generation: base.generation,
+    ...(base.history ? { history: base.history } : {}),
+  };
+  for (const cut of heads) {
+    const state = publisherState(own, base, cut.credentialId);
+    if (state.conflict) captureError('History cut crosses a stream conflict');
+    if (cut.credentialId === base.publisher.id && cut.position > 0) {
+      // Reconstruct the actual attempt at installation, never a later retired-generation retry.
+      const prior = inspectDelivery(
+        [
+          ...census.delivery.spool.sourceRecords,
+          ...census.delivery.ledger.filter((r) => r.seq < beforeSequence),
+        ],
+        route,
+        base.authority,
+      );
+      const expected = await expectedPosition(prior.spool, cut.position, crypto.subtle);
+      if (
+        !expected ||
+        (await acceptanceLink(expected, expected.previous, crypto.subtle)) !== cut.link
+      )
+        captureError('History cut differs from retained self stream');
+    }
+    const known =
+      cut.position === state.prefix.position
+        ? state.prefix.link
+        : cut.position === state.startingPoint?.position
+          ? state.startingPoint.link
+          : state.retained.has(cut.position)
+            ? (() => {
+                const proof = decodePositionResponse(state.retained.get(cut.position)!.proof);
+                return proof.kind === 'accepted' ? proof.head.link : undefined;
+              })()
+            : undefined;
+    if (known !== undefined && known !== cut.link)
+      captureError('History cut conflicts with received history');
+    if (cut.position > (state.startingPoint?.position ?? 0))
+      state.startingPoint = { position: cut.position, link: cut.link };
+    if (cut.position > state.prefix.position)
+      state.prefix = {
+        position: cut.position,
+        link: cut.link,
+        observedThrough: Math.max(cut.position, state.prefix.observedThrough),
+      };
+    if (cut.credentialId !== base.publisher.id) own.peers!.set(cut.credentialId, state);
+  }
 }
 /** A fork must be unchanged by each evidenced original; no vector-only or pending merge shortcut. */
 function contentCoverage(content: readonly OpenedRecord[]) {
@@ -297,6 +360,8 @@ export async function verifyInboundLedger(
       try {
         if (reuse) reuse.coverage.check(records, [result.update]);
         else verifyInboundCoverage(records, [result.update]);
+        if (result.heads)
+          await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
         own.installedHistory = result.installed;
       } finally {
         result.update.fill(0);
