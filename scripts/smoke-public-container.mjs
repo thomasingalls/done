@@ -144,6 +144,15 @@ try {
   assert.equal(inspection.node, 'v24.18.0');
   assert(inspection.absent);
   evidence.nodeVersion = inspection.node;
+  evidence.ageVersion = output([
+    'run',
+    '--rm',
+    ...security,
+    '--entrypoint',
+    'age',
+    image,
+    '--version',
+  ]);
   check('Non-root Node 24 runtime excludes repository, tests, development state and build tools');
   for (const name of [data, secrets, missing]) {
     output(['volume', 'create', '--label', 'done.test=public-runtime', name]);

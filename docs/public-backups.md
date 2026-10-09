@@ -2,10 +2,10 @@
 
 Implementation of step 3 in [the deployment plan](./public-deployment.md). Public activation and
 release qualification remain separate. Coherent SQLite snapshots, a standard encrypted archive,
-scoped B2 transfer and the serial backup/retention cycle are implemented. API worker composition and
-container verification are the final integration checkpoint of this bounded phase.
+scoped B2 transfer, the serial backup/retention cycle and API-owned worker are implemented. Container
+verification and evidence close this bounded phase; real-provider activation remains later work.
 
-The API's verified state owner will own one backup worker. The worker uses a separate read-only
+The API's verified state owner owns one backup worker. The worker uses a separate read-only
 SQLite connection and an explicit read transaction before calling the online backup API, fixing a
 WAL read point while the API can continue writing. The authority database and public metadata are
 immutable during that owner's lifetime. Schema, policy, pin and copied SQLite integrity are checked.
@@ -70,6 +70,63 @@ new work. A restarted owner reaps only owned `run-<32 hex>` directories in that 
 refusing unclassified entries. Provision a dedicated ephemeral, size-bounded directory per service
 pod; never share it between independent state owners. Process-crash cleanup is not forensic erasure.
 
+## Runtime configuration and health
+
+Set `DONE_BACKUP_CONFIG_FILE` to an absolute, externally mounted JSON file on the **API** process.
+The runtime image supplies `DONE_SOURCE_REVISION` from its build revision. A direct Node invocation
+must supply the full commit hash (optionally `-dirty` for a development fixture) explicitly.
+
+```json
+{
+  "v": 1,
+  "bucketId": "REPLACE_WITH_B2_BUCKET_ID",
+  "prefix": "done-backups/REPLACE_WITH_32_LOWERCASE_HEX/",
+  "recipient": "REPLACE_WITH_ONE_AGE_X25519_PUBLIC_RECIPIENT",
+  "credentialsFile": "/etc/done/backup-credentials.json",
+  "workDirectory": "/backup-work/service"
+}
+```
+
+The separately mounted credentials JSON has exactly `keyId` and `applicationKey`. It must be a
+regular file without other-user permissions (projected root-owned/group-readable secrets are allowed).
+Configuration, credentials and workspace must resolve outside retained state; the workspace must
+not contain either configuration or credentials. Provision the existing workspace directory owned by
+UID 65532 with mode 0700 before starting the API. Use a dedicated ephemeral volume with enough room
+for both the bounded snapshot and ciphertext, rather than the image's small `/tmp`. Initialization
+of this empty workspace is routine pod preparation; it does not initialize or restore the service.
+
+Use a private B2 bucket with an application-specific restricted key/prefix. Supply only the age
+**public recipient** here. Keep the corresponding recovery identity off-cluster, recoverable and
+tested separately from SOPS/operator wrapping-key custody and B2 access credentials. Before enabling
+the real deployment, verify an actual uploaded recovery set using that saved identity; this phase's
+test identities were disposable and are not deployment custody.
+
+No backup config means backups are explicitly reported **disabled**, preserving existing development
+entry points; the public deployment must configure this feature and check it before activation.
+Malformed configuration fails startup. Runtime backup failures do not take down sync or masquerade
+as a successful backup. Unexpected worker exit stays unhealthy until the process is restarted.
+
+GET `/backupz` on the loopback API returns JSON and status 200 when backup health is good, 503 for
+disabled/not-yet-successful/failed/stale/stopping states. It is not exposed through the app gateway.
+`node scripts/public-healthcheck.mjs backup` is an exec check for monitoring/activation, **not** API
+liveness: restarting healthy sync repeatedly during a B2 outage would not repair that outage.
+The existing app/API readiness probes are independent.
+
+Health reports stage, last failure stage/count, last observation/upload/prune times, snapshot capture
+age, snapshot size, latest/total verified-upload bytes and attempted-upload bytes. Attempted bytes are
+an upper estimate of wire bytes during uncertain failures; verified bytes do not include failed
+attempts. These counters reset on restart. `dirtySince` is the first observed outstanding change,
+not a per-edit timestamp; detection waits for a tick, or for an already-running cycle to finish.
+More than 90 seconds of
+observed pending changes is unhealthy. A five-second worker heartbeat becomes stale after 15 seconds.
+An old snapshot can be healthy while unchanged, but its capture age remains visible. No row contents,
+credentials, object IDs or provider error payloads appear in this endpoint.
+
+Shutdown withdraws admission, drains admitted API operations, cancels/awaits the backup worker,
+then closes databases and releases ownership. An interrupted remote upload may leave an extra
+ciphertext version. The next owner takes a fresh verified snapshot before pruning. The service
+does not restore a backup automatically or bypass the session/history rollback questions.
+
 ## Focused evidence
 
 The snapshot check commits one WAL record, anchors a backup read transaction, then commits another
@@ -86,6 +143,13 @@ refusal, lost accepted upload replies, corrupt readback, an unverified hourly ke
 and retry, unrelated/maintenance-file preservation, repeated cursors and coalesced/cancelled work.
 No real bucket, credentials or remote deletion were used. A provider-backed upload/readback and
 recovery-key rehearsal remain activation checks once deployment inputs are available.
+
+A real API child process and its worker also pass against that fixture: backup readiness, temporary
+crash-artifact cleanup, single-owner refusal, acceptance of a registration, SIGKILL/restart, a fresh
+backup containing that accepted registration, archive decryption, and graceful stop followed by cold
+ownership acquisition. The candidate Node 24.18.0 ARM64 image passes the application build and all
+19 focused public-runtime/gateway/backup checks. Host checks used age 1.3.2; the image uses Debian's
+age 1.1.1-1+b3. Final non-root image evidence is recorded after signing integration.
 
 ## Primary contracts
 

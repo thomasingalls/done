@@ -2,8 +2,9 @@
 
 This implements the runtime boundary from [the public deployment plan](./public-deployment.md).
 It reuses the current account protocol, remembered sessions, scoped grants and membership flows.
-It does not deploy an origin, migrate the Tailscale installation, implement backups/restores or
-resume release qualification. The development entry points remain separate and available.
+It does not deploy an origin, migrate the Tailscale installation, implement restore or resume release
+qualification. [Encrypted backups](./public-backups.md) are an optional configured worker owned by
+this API. The development entry points remain separate and available.
 
 ## Process and configuration boundary
 
@@ -24,6 +25,8 @@ resume release qualification. The development entry points remain separate and a
 | `DONE_APP_PORT` / `DONE_API_PORT` | app, api | Distinct unprivileged ports; defaults 8080/8081. API always binds `127.0.0.1`. |
 | `DONE_APP_ADDRESS` | app | IP bind address; default `0.0.0.0` for pod routing. |
 | `DONE_APP_DIST` | app | Packaged build directory; default `dist` relative to the process working directory. |
+| `DONE_BACKUP_CONFIG_FILE` | api, when backups enabled | External backup configuration; see [backup custody and workspace requirements](./public-backups.md#runtime-configuration-and-health). |
+| `DONE_SOURCE_REVISION` | api, when backups enabled | Full source revision for backup manifests, supplied by the container build. |
 
 The key and expected pin must resolve outside retained state. Kubernetes projected-file symlinks
 are permitted there; internal state directories/files must be private, owned and nonsymlinked.
@@ -34,7 +37,7 @@ requests without inventing credentials or retrying possibly accepted work.
 Both processes expose minimal GET/HEAD `/healthz` and `/readyz` endpoints. App readiness means the
 immutable assets are loaded; API readiness requires a successfully opened retained service. API probes
 must execute against loopback from inside the pod. Withdraw readiness during shutdown, stop streams
-and drain dispatched operations before closing databases and releasing ownership. Lost replies still
+and drain dispatched operations and the backup worker before closing databases and releasing ownership. Lost replies still
 use the protocol's existing retained retry mechanism.
 
 ## Persistent layout and ownership

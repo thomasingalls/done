@@ -3,7 +3,7 @@ import type { DevelopmentAccountHandler } from './development-http.ts';
 
 export function ownAccountRequests(
   dispatch: DevelopmentAccountHandler,
-  dispose: () => void,
+  dispose: () => void | Promise<void>,
   stopNotifications: () => void,
 ) {
   const pending = new Set<Promise<void>>();
@@ -40,7 +40,7 @@ export function ownAccountRequests(
             stopNotifications();
           } finally {
             await Promise.allSettled([...pending]);
-            dispose();
+            await dispose();
           }
         })();
       }

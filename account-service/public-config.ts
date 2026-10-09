@@ -2,6 +2,7 @@
 import { isAbsolute, resolve } from 'node:path';
 import { isIP } from 'node:net';
 import { validatePolicy, type Policy } from './webauthn.ts';
+import { backupConfig } from './backup/config.ts';
 
 type Environment = Record<string, string | undefined>;
 export function publicPolicy(origin: string): Policy {
@@ -29,9 +30,11 @@ export function publicStorageConfig(env: Environment = process.env) {
   });
 }
 export function publicServiceConfig(env: Environment = process.env) {
+  const storage = publicStorageConfig(env);
   return Object.freeze({
-    ...publicStorageConfig(env),
+    ...storage,
     pinFile: path(env, 'DONE_SERVICE_PIN_FILE'),
+    backup: backupConfig(storage.directory, env),
   });
 }
 export function publicListenConfig(env: Environment = process.env) {

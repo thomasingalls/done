@@ -12478,3 +12478,16 @@ readback before displacing older copies. The loopback B2 fixture passes lost-rep
 corrupt-keeper, deletion-retry, namespace, scoped-key and pagination controls. Real age encryption
 and snapshot tests also pass; no external bucket was used. API-owned worker/container integration
 follows. See [public backups](./public-backups.md).
+
+
+### 2026-10-09 — Public backup worker and container integration
+
+Composed the backup cycle as one worker owned by the verified API process. Shutdown now awaits
+that worker before releasing state ownership. Added external configuration, source-revision metadata,
+loopback backup health and a separate monitoring probe, plus the container age/CA dependencies.
+The real API/worker fixture passes backup readiness, orphan cleanup, accepted registration through
+SIGKILL/restart, a fresh decrypted archive containing that registration, and clean ownership release.
+All 19 bounded public-runtime/gateway/backup checks pass on Node 24.18.0 ARM64, including execution
+as UID 65532 in the build stage. A final image from the signed integration commit and its evidence
+follow. No provider credentials, retained installation, infrastructure resources or release campaign
+were used. Next remains maintenance/restore, then real-provider activation and publication.

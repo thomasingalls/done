@@ -1,12 +1,9 @@
 /** The API stays loopback-only behind the same-pod application gateway. */
 import { createServer } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { openPublicAccountService } from './public-runtime.ts';
-import type { PublicStateOptions } from './public-state.ts';
+import { openPublicAccountService, type PublicServiceOptions } from './public-runtime.ts';
 
-export async function startPublicAccountServer(
-  options: PublicStateOptions & { pinFile: string; port: number },
-) {
+export async function startPublicAccountServer(options: PublicServiceOptions & { port: number }) {
   const service = openPublicAccountService(options);
   let closing: Promise<void> | undefined;
   const server = createServer(
@@ -15,6 +12,16 @@ export async function startPublicAccountServer(
       response.once('close', () => {
         if (closing) server.closeIdleConnections();
       });
+      if (request.url === '/backupz' && request.method === 'GET') {
+        const health = service.backupHealth();
+        response
+          .writeHead(health.healthy && !service.closing ? 200 : 503, {
+            'Cache-Control': 'no-store',
+            'Content-Type': 'application/json',
+          })
+          .end(JSON.stringify(health));
+        return;
+      }
       if (
         ['/healthz', '/readyz'].includes(request.url ?? '') &&
         ['GET', 'HEAD'].includes(request.method ?? '')
@@ -43,10 +50,13 @@ export async function startPublicAccountServer(
         const drained = service.close();
         const stopped = new Promise<void>((accept) => server.close(() => accept()));
         server.closeIdleConnections();
-        await drained;
-        // Incomplete HTTP headers must not keep an already-drained owner alive indefinitely.
-        server.closeAllConnections();
-        await stopped;
+        try {
+          await drained;
+        } finally {
+          // Incomplete HTTP headers must not keep an already-drained owner alive indefinitely.
+          server.closeAllConnections();
+          await stopped;
+        }
       })()),
   });
 }

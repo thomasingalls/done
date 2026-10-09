@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: public backups implemented through scoped B2 transfer and retention; worker/container verification in flight
+scope: public backup pipeline implemented; final signed container/evidence checkpoint
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
@@ -70,10 +70,10 @@ Current launch commands are in [packaged development](./packaged-account-develop
 - History: manual checkpoint creation/admission, authenticated receive cuts, handoff/recovery readers
   and pruning that retains two admitted snapshots with their required suffixes are implemented and
   deployed. No maintenance was run against personal writing during this upgrade.
-- Operations: the public origin/configuration, explicit initialization, exclusive state ownership
-  and ARM64 container are implemented. The actual running installation remains the retained
-  worktree's loopback/Tailscale host. Off-host backups/restore, maintenance commands, infrastructure
-  manifests and publication remain ahead under the agreed plan.
+- Operations: public configuration, explicit initialization, exclusive ownership and ARM64 packaging
+  are implemented. The encrypted backup pipeline is checked against a controlled B2 protocol fixture.
+  Actual provider activation, restore/maintenance, infrastructure manifests and publication remain.
+  The running installation is still the retained worktree's loopback/Tailscale host.
 
 The operator selected a fresh public installation at `done.oxidationlabs.com` through `~/Code/ol-infra`;
 no Tailscale account migration is required. Kubernetes/Flux, cert-manager and SOPS follow that repo.
@@ -101,9 +101,15 @@ exact-origin API behavior, 34 packaged precache assets and restart durability. S
 `44784d11`, `c0d36c7a` and `0485c12a` record repository reconciliation, runtime and packaging. The local
 image built from exact signed source `0485c12a` passed the checks; its
 [source/image evidence and build log](./development-evidence/2026-10-09-public-runtime-container.json)
-are retained. Next phase: isolated consistent snapshots, encryption, B2 upload, scheduling/retention
-and health reporting. No retained installation or infrastructure resource has changed; no image has
-been published.
+are retained. [Backups](./public-backups.md) now add an API-owned worker with coherent WAL snapshots,
+tar/gzip/age encryption, scoped B2 upload and exact-version readback, 30-second nonoverlapping change
+checks, bounded retention and private health reporting. Failed/unverified copies cannot authorize
+discarding good alternatives. Nineteen focused runtime/gateway/backup checks pass, including the
+real worker through SIGKILL/restart; the ARM64 build also exercises those checks as UID 65532.
+Final signed image/evidence checkpoint is in progress. Next: explicit maintenance/migration and
+restore, including session invalidation and client-history rollback handling, then infrastructure
+and real-provider activation. No retained installation or infrastructure resource has changed;
+no image has been published and no real B2 bucket has been used.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;

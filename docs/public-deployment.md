@@ -101,8 +101,10 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
    initialization and container packaging with immutable configuration, single-writer ownership,
    graceful stop and readiness. Development entry points remain available. The bounded ARM64
    container checks and operating contract are recorded in [public runtime](./public-runtime.md).
-3. Implement isolated consistent snapshot creation, encryption, B2 upload, bounded scheduling,
-   retention and health reporting. Use disposable state and a controlled object destination first.
+3. Implemented and checked with disposable state and a controlled B2 protocol destination:
+   consistent snapshots, age encryption, exact-version upload/readback, bounded scheduling,
+   retention and backup health. See [public backups](./public-backups.md). Real-provider credentials,
+   upload/readback and off-cluster recovery-key verification remain publication/activation inputs.
 4. Implement the versioned maintenance/migration and restore procedures, including the session and
    client-history restore boundaries above. Exercise focused interruption/identity cases and one
    complete backup/restore rehearsal.
