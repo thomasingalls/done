@@ -42,40 +42,27 @@ that is no longer active.
 
 ---
 
-## Product handoff: lost-device recovery (`L-1`)
+## Product work: single-device account upload (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: operator use of the completed recovery journey
-blocks_on: none; implementation and retained-service upgrade complete
+scope: upload from the first Account device without pairing
+blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-09
 ```
 
-**Ready to use:** build `049b9a29` is running at `https://mbp.tail0e0d4.ts.net:8443/`, from
-`.dev/account-enrollment-tailnet/builds/049b9a29`. Account schema is 24; the service identity is
-unchanged. The quiet upgrade preserved all retained rows, backed up both databases and keys at
-`.dev/account-enrollment-tailnet/backups/schema-21-OpHaJG`, and passed actual-origin health checks.
-[Upgrade evidence](./development-evidence/2026-10-09-recovery-live-upgrade.log).
+The operator confirmed the recovery build looks good and selected single-device upload next.
+[Bounded plan](./account-single-device-upload.md): native activation/conversion, product opening and
+first handoff compatibility, then focused offline/restart/recovery and pairing checks.
 
-**Implemented and checked:** passkey-plus-recovery-code entry, new device-lock setup, exact durable
-retry after lost replies, authenticated snapshot/stream replay, sole-device replacement and key
-rotation, native installation, chooser resume, editing and cold reopening. Previous devices retain
-editable detached copies. Disposable packaged walkthroughs cover first-device-only recovery and
-recovery followed by enrollment, delivery, removal/rotation and recovery again.
-[Recovery plan and evidence](./account-lost-device-recovery.md); [completion record](./completed.md).
-
-**Next human step:** reopen the existing workspace and confirm its writing, then try the recovery
-journey under **Use another account → Recover with a saved recovery code**. No personal recovery
-was performed during the upgrade. Implementation work stops here for operator use.
-
-**Limits retained:** recovery needs the existing account passkey and recovery code, cannot restore
-unuploaded lost-device edits or erase old copies, and uses the bounded history/4 MiB output
-checkpoint. Passkey-loss recovery, recovery-code replacement, general pruning and public deployment
-remain separate work. Release qualification stays paused.
+The retained service remains at build `049b9a29`, schema 24, on the unchanged
+`https://mbp.tail0e0d4.ts.net:8443/`. No personal account or live service is changed while developing.
+Unsigned intermediate commits are authorized. A fresh quiet point is required before replacing the
+live build. Release qualification stays paused.
 
 ---
 

@@ -39,6 +39,7 @@ import { validateContentUpdates } from './contentCompaction';
 import { createAdmissionOwner } from './admissionQueue';
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
+import { activateAccountUpload } from './accountUploadActivation';
 
 /** Internal composition hook; never supplied by application or transport callers. */
 export interface CaptureExtension {
@@ -109,11 +110,16 @@ export async function openAccountCaptureOwner(
           await extension.activate(task, owner);
           return;
         }
-        const v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
+        let v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
+        if (extension?.version !== 9 && v.marker.captureBootstrap)
+          throw Error('Account upload conversion must finish before editing');
+        if (principalId !== undefined && v.account.principalId !== principalId)
+          throw Error('Account actor identity changed');
+        if (extension?.version === 9) v = await activateAccountUpload(task, v, options.code);
         if (!extension && v.marker.v >= 7) throw Error('Account requires the spool owner');
         if (
           extension &&
-          !(extension.version === 9 && v.marker.catchup && v.marker.v >= 6) &&
+          !(extension.version === 9 && v.marker.v >= 6) &&
           v.marker.v !== extension.version - 1 &&
           v.marker.v !== extension.version
         )

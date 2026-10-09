@@ -84,6 +84,8 @@ export interface PromotionRecord {
   successor?: InstalledSuccessor;
   membership?: InstalledMembership;
   catchup?: ContentCheckpoint;
+  /** Frozen raw content census while upgrading a local-only Account to source capture. */
+  captureBootstrap?: string;
   handoff?: HandoffState;
   admission?: RetainedAdmission;
   genesis?: GenesisCandidate;
@@ -110,6 +112,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
+    ...((input as { v?: number })?.v === 6 && Object.hasOwn(input as object, 'captureBootstrap')
+      ? ['captureBootstrap']
+      : []),
     ...((input as { v?: number })?.v === 9 && Object.hasOwn(input as object, 'membership')
       ? ['membership']
       : []),
@@ -207,6 +212,11 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   } else if (r['credentials'] !== null) throw Error('Unexpected prepared keys');
   if (!(r['mac'] instanceof Uint8Array) || r['mac'].length !== 32)
     throw Error('Missing promotion authentication');
+  if (Object.hasOwn(r, 'captureBootstrap')) {
+    unhex(r['captureBootstrap'], 32);
+    if (Object.hasOwn(r, 'successor') || Object.hasOwn(r, 'catchup'))
+      throw Error('Capture bootstrap requires the original account epoch');
+  }
   return {
     v: r['v'] as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9,
     ...([2, 3, 4, 5, 6, 7, 8, 9].includes(r['v'] as number)
@@ -226,6 +236,9 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
         }
       : {}),
     ...(Object.hasOwn(r, 'catchup') ? { catchup: parseContentCheckpoint(r['catchup']) } : {}),
+    ...(Object.hasOwn(r, 'captureBootstrap')
+      ? { captureBootstrap: r['captureBootstrap'] as string }
+      : {}),
     ...(Object.hasOwn(r, 'membership')
       ? { membership: parseInstalledMembership(r['membership']) }
       : {}),
@@ -287,6 +300,7 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
       ...(r.successor ? [parseInstalledSuccessor(r.successor)] : []),
       ...(r.catchup ? [parseContentCheckpoint(r.catchup)] : []),
       ...(r.membership ? [parseInstalledMembership(r.membership)] : []),
+      ...(r.captureBootstrap ? [['capture-bootstrap', r.captureBootstrap]] : []),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>

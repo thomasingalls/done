@@ -12107,3 +12107,18 @@ a malformed request without creating an attempt. No personal account was signed 
 This completes the bounded recovery implementation and retained-service upgrade. The operator can
 now open the existing workspace and try the recovery journey. Product use is still separate from
 release qualification, which remains paused.
+
+### 2026-10-09 — Native first-device upload activation
+
+The existing v9 sync owner can now start directly from a verified first-device account without a
+second-device catch-up checkpoint. Older local-only v5 accounts flush their journal and retain a
+MAC-authenticated frozen census before copying exact content frames into deterministic system
+upload capsules. Restart resumes missing capsules, refuses changed inputs, and installs the sync
+owner before editing. Existing content and embedded authors are retained; oversized old records
+refuse before the conversion fence under the existing network bounds.
+
+Four focused native checks pass: fresh first-device delivery and cold reopening; renderer death
+after the conversion fence; interruption after one capsule commits; and substituted actor refusal
+without storage changes. The conversion cases preserve compacted and journal-only writing. TypeScript
+and scoped static checks pass. Product wiring and first handoff with accepted history are next;
+this checkpoint does not change the retained service or resume release validation.
