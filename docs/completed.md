@@ -12387,3 +12387,20 @@ matches the merged branch and all old hashes remain unchanged. Continued on
 full check. The existing build checks and workflow parsing pass locally; no validation campaign or
 remote CI was run. Nothing was pushed, deployed or changed in ol-infra. Main must receive the CI split
 before its first push. Next: public runtime/initialization and container implementation.
+
+
+### 2026-10-09 — Signed product history and protected-branch PR reconciliation
+
+Prepared 103 signed replacements: 102 previously unsigned commits and one previously signed merge
+with a changed parent. Every replacement preserves its exact tree, message and author/committer
+metadata; the whole 397-commit PR range verifies with good SSH signatures. Signed tip `826bb006` has
+original `73a1d881`'s tree. The original history remains under local
+`codex/pre-sign-public-deployment-2026-10-09`. Main is restored to remote base `c61ad005`; existing
+PR #41's remote head `d178d349` is an ancestor of the signed chain, so no force push is needed.
+The [per-commit crosswalk and workflow record](./commit-history/README.md) provide old/new/tree
+navigation. No executable lookup references a rewritten ID. Historical evidence, the three untracked
+root notes and the running installation are preserved. This checkpoint reconciles the accepted
+squash-only PR route and signed future work; application code and protection rules are unchanged.
+Signature/metadata/tree checks and documentation checks were performed, not a new build or validation
+campaign. Keep the signed phase branch after squash and reconcile ancestry-dependent tools before
+resuming validation from the new main history.

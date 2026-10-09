@@ -4385,3 +4385,17 @@ walkthrough remains deferred. Final destination credentials and public activatio
 For Git, the operator chose a signed explicit merge commit on local main to incorporate the long-running
 branch while retaining its existing commit hashes, then a new deployment branch. No squash, rebase,
 remote push or retroactive signing of the old history is implied.
+
+
+### 2026-10-09 — Signed PR history replaces the direct-main integration route (`L-1`)
+
+The operator identified main protections and authorized signing the outstanding commits to use the
+PR route. GitHub rules require signatures, linear history and a pull request with squash as its only
+merge method. Preserve those protections. Replace the 102 unsigned commits and re-sign the one merge
+whose parent changes, preserving all trees, messages and author/committer metadata; keep original
+objects under a local backup and commit a permanent hash crosswalk. Restore local main to the remote
+base and update existing PR #41 without force-pushing. Retain the signed PR branch after squash so
+phase objects remain reachable. Reconcile ancestry-dependent validation before its explicit
+resumption on squashed main; do not alter historical receipts. Future PR/deployment commits are signed.
+See [the signing record](./commit-history/README.md). This changes repository workflow, not the
+agreed deployment or paused-validation scope.

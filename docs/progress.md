@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/first-public-deployment
 status: in flight
-scope: public runtime and container implementation; plan and signed main integration complete
+scope: signed PR integration prepared; public runtime and container implementation next
 blocks_on: none
 release_validation: paused by operator until after publication and explicit resumption
 updated: 2026-10-09
@@ -81,11 +81,15 @@ Agreed backups: consistent SQLite snapshots without Litestream, encrypted before
 for seven days. Brief sync outages are accepted. Updates, schema migrations and restores have distinct
 procedures. See [the recorded plan](./public-deployment.md) for sequence and remaining environment inputs.
 
-Plan `37795ea6` and explicit signed merge `a4473d5e` are complete; the signature verifies and original
-hashes are preserved. Work continues on `codex/first-public-deployment`. The automatic build/full-check
-CI split is prepared on this branch and must reach main before its first push. The existing build
-checks pass locally. Next is the public runtime/initialization and container boundary. Registry/B2
-credentials can wait for publication. Remote pushes and public activation remain separate steps.
+The earlier direct local-main route is superseded by the repository's signed, squash-only PR rules.
+The [completed signing sweep and crosswalk](./commit-history/README.md) map 102 unsigned commits plus
+one affected signed merge to 103 verified replacements. All 397 phase commits verify, with the exact
+same final tree. Local main is restored to remote `c61ad005`; the work is prepared for existing PR #41
+without a force push. Preserve the signed PR branch after squash integration and reconcile
+ancestry-based tooling before validation resumes on that new main history. The automatic build/full-check
+CI split accompanies the PR. Next is the public runtime/initialization and container boundary on
+`codex/first-public-deployment`. Registry/B2 credentials can wait for publication; public activation
+remains a separate step.
 
 **Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
 key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;
@@ -94,7 +98,8 @@ explicit scope decisions rather than being implied complete by the history work.
 protects this upgrade but is not an off-host backup/restore service.
 
 The operator directed that release validation stay paused until after a version is published; do not
-resume it without further direction. Unsigned intermediate commits remain authorized.
+resume it without further direction. Future PR/deployment commits must be signed; if signing is
+unavailable, leave completed work staged and pause.
 
 ---
 

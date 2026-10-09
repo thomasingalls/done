@@ -94,9 +94,10 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
 
 ## Implementation sequence
 
-1. Record this plan, integrate the existing branch into local main with an explicit signed merge,
-   preserving all current commit hashes, and continue on `codex/first-public-deployment`.
-2. Separate routine build/implementation CI from the paused full check before pushing main. Add the
+1. Record this plan and prepare the signed history for existing PR #41. Repository protections require
+   squash integration into main; retain the signed phase branch and original-to-signed crosswalk.
+   Continue implementation on `codex/first-public-deployment`.
+2. Include the routine-build/paused-full-check CI split when updating the PR. Add the
    public service entry, explicit initialization and container packaging with immutable configuration,
    single-writer ownership, graceful stop and readiness. Keep development entry points working.
 3. Implement isolated consistent snapshot creation, encryption, B2 upload, bounded scheduling,
@@ -115,22 +116,26 @@ A focused restore rehearsal is implementation evidence, not a reopened release-v
 
 ## Git and remaining environment inputs
 
-The operator chose an explicit merge commit they sign on local main, not a squash, rebase or
-fast-forward integration. Preserve original unsigned/signed commit identities and all review/evidence
-references. Remote main was checked at `c61ad005`; it is an ancestor of this seat's `776c9f52`, with
-394 commits on the working side and no main-only commits. There are 153 commits not yet on the remote
-working branch. Recheck remote state before any push. No force push or bulk retrospective signing is
-part of this integration. Three existing root notes are untracked and excluded.
+The operator's initial explicit local merge was superseded after checking repository protections:
+main requires a PR, verified signatures and linear history, with squash as its only allowed merge
+method. The [signing record and crosswalk](./commit-history/README.md) preserve traceability for
+102 unsigned replacements plus one re-signed descendant. Original test evidence remains unchanged.
+All 397 phase commits verify locally; the source tree is unchanged. Local main is back at remote
+`c61ad005`. Existing PR #41 can receive the signed work by a normal fast-forward update from its remote
+head `d178d349`; no force push or protection change is needed. Preserve that remote branch after squash
+integration, and reconcile ancestry-based validation before resuming it on the squashed main history.
+Three existing root notes remain untracked and excluded. New PR/deployment commits must be signed.
 
-The current GitHub workflow runs `pnpm check` on main pushes/PRs. That command includes broad validation
-campaigns. Do not inadvertently restart those by publishing the integration; make the paused campaign
-explicitly opt-in and keep routine CI named for the checks it actually runs.
+This branch separates automatic `pnpm build` from the manually opted-in full `pnpm check`. The latter
+includes broad validation campaigns and remains paused. Publish the CI separation with the PR update
+so publication does not inadvertently resume the campaign.
 
 Implementation need not wait for these final environment inputs: image registry/repository and push
 access (the infra precedent uses Codeberg), B2 bucket/region/prefix and restricted application key,
 backup recipient/recovery-key custody, and the new operator wrapping key. Prepare references and verify
 existing operator tooling without decrypting unrelated credentials. Generate or apply service identity
-only in an explicit initialization step. No live deployment or remote push has been authorized yet.
+only in an explicit initialization step. The operator authorized publishing the signed work through
+the PR route. Public application deployment and infrastructure publication remain separate steps.
 
 ## References
 
@@ -142,6 +147,9 @@ only in an explicit initialization step. No live deployment or remote push has b
 
 
 ## Repository preparation checkpoint — 2026-10-09
+
+Historical checkpoint before the operator identified the main protections. The later
+[PR/signing reconciliation](./commit-history/README.md) supersedes its local-main integration route.
 
 The agreed plan was recorded in `37795ea6`. Local main now includes the prior branch through signed
 merge `a4473d5e` (parents `c61ad005` and `37795ea6`). Its SSH signature was verified against the

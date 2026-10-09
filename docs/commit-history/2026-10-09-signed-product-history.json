@@ -1,0 +1,1577 @@
+{
+  "version": 1,
+  "date": "2026-10-09",
+  "purpose": "Signed history for existing PR #41 under required signatures and squash-only main protection",
+  "remote_base": "c61ad005e1039d42c05edbc658bd52724434b02b",
+  "original_tip": "73a1d8817b285f5625ca3d31992c314d27797250",
+  "signed_tip": "826bb0068e76da32087ff6950e5465eda5dbe19c",
+  "identical_tip_tree": "f836e3aef7002708730281bf749fa3d3ae6b14e0",
+  "original_refs": {
+    "refs/heads/main": "a4473d5ec7a058cd08a9a9acd92b232dfe0a79b1",
+    "refs/heads/codex/encrypted-store-contract-corrections": "37795ea6e1eff4d5e9073a08cb45b2b2c27b2453",
+    "refs/heads/codex/first-public-deployment": "73a1d8817b285f5625ca3d31992c314d27797250"
+  },
+  "local_backup_ref": "refs/heads/codex/pre-sign-public-deployment-2026-10-09",
+  "original_unsigned_count": 102,
+  "resigned_descendant_count": 1,
+  "unchanged_commit_count": 294,
+  "verified_pr_range_commit_count": 397,
+  "verification": {
+    "all_replacement_trees_equal": true,
+    "all_replacement_messages_equal": true,
+    "author_and_committer_metadata_preserved": true,
+    "parent_graph_preserved_through_mapping": true,
+    "all_pr_range_signatures_good": true,
+    "executable_references_to_rewritten_hashes": 0,
+    "historical_evidence_rewritten": false,
+    "release_validation_run": false
+  },
+  "commits": [
+    {
+      "old": "b17c77000bc363e6664af3b9f2aff6758ea551b4",
+      "tree": "0a61fe16d6fdd52b728dfdd6b731b43f4c36e0ea",
+      "parents": [
+        "3ba2d33ceb972984b762b534b46eb4fe1555b317"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "14a7a5dc0f9ab812c327ffc9724c9efc29802c1a11109e1ea54c265776940e54",
+      "message_sha256": "3226b96e3e0c645bf930881f3fed9fe0b4f86b3f2a5b2097028549aacd67719d",
+      "subject": "Compose the session-enabled account host and packaged client",
+      "new": "a675b37e524ea4e6845f404157c4f8a0dbf2d5e7",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791412888 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791412888 +0200"
+    },
+    {
+      "old": "7c859dff82a70f4833dbf017a0cad73a4ff4b646",
+      "tree": "934ce8550bdb1b7d7703c77c30893fbd14ab806e",
+      "parents": [
+        "b17c77000bc363e6664af3b9f2aff6758ea551b4"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "9431c69cb6a708b35de0de4b310a3f49859678538d98cc64e9980571de60bc7d",
+      "message_sha256": "a1024fa6347452b440b675bbd36c0f09794c8a76fa19875e1c03c32bf40194f0",
+      "subject": "Record retained session-host upgrade and serving checkpoint",
+      "new": "40de3b6669662ec385fa1a66bcd77cff28ff6da6",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791413047 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791413047 +0200"
+    },
+    {
+      "old": "fbf9c856fad7deca6c0c714fe4c247e2f6c18a22",
+      "tree": "55a2af8b2330d95acaf0a4906c38f4b519d42e31",
+      "parents": [
+        "7c859dff82a70f4833dbf017a0cad73a4ff4b646"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "2f5c2c0e1f870aa1437825555a0703aee47fcf44cac59419f898547d7555de99",
+      "message_sha256": "3155e7cf18071e8ea293d1e2d33f40b1981019d2cc464d68b7cf1c8780f95130",
+      "subject": "Add scoped account notifications and streaming gateway lifecycle",
+      "new": "72db7417cdc8091208c6f30496a23df510e41fb3",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791413644 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791413644 +0200"
+    },
+    {
+      "old": "a07de7929473e86b4b93eb125984ff5d1956d405",
+      "tree": "76b5849f7de4dfd1ba37255a4e4573da42fef283",
+      "parents": [
+        "fbf9c856fad7deca6c0c714fe4c247e2f6c18a22"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "68f78a3b9794ead81c4daaefd3c6f5077a9ae4a7412db10e2d0f4db7fbdd8f17",
+      "message_sha256": "ca3a2c7e0770c9c145faa4da07320fd4cd9b56709e3a523fb5f61853cdf8939e",
+      "subject": "Connect scoped live hints to owned editor and device approval catch-up",
+      "new": "92f159b07acbc616770ff150f5d1d8bd5e9f96ad",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791414037 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791414037 +0200"
+    },
+    {
+      "old": "f69ec0eb46d5e2eac8fef898dfb0f67402948b99",
+      "tree": "edf45f0ad013a609f78732a041f4315472c1df13",
+      "parents": [
+        "a07de7929473e86b4b93eb125984ff5d1956d405"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "1f13e73f2b1058004a6f2b6db7fa1e7c57b1a494f0cdd7511f04258032f6e9dc",
+      "message_sha256": "5c01e59b26dacff10958c19ea0d96e365be4d975c385167bd5de9dbc58d755ee",
+      "subject": "Record live notification cutover and define device lifecycle increments",
+      "new": "fcab86c818741d2d04a3996dd2ead0822b7e1b05",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791414527 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791414527 +0200"
+    },
+    {
+      "old": "eb8c02c07228e53f52060872670cbf70934e05f1",
+      "tree": "6983faeab6ec452a8e0e7a71b201385a73d5c70b",
+      "parents": [
+        "f69ec0eb46d5e2eac8fef898dfb0f67402948b99"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "3b84365dd68fbccabcb8c0829457edfe434f82c6143c93bc52257bde6c4cb35d",
+      "message_sha256": "16a850d171eeb8584bf09f857f64e5a1ec0f5398796977162a3d9a1b5ec31877",
+      "subject": "Add verified Devices screen and retry raced ceremony reads",
+      "new": "47d322ca2cded6c2359671926674738172b425b7",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791415056 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791415056 +0200"
+    },
+    {
+      "old": "9f02a88fa57d57bd89b513d5f6ab72a99328e73b",
+      "tree": "2e683ed63dcfd6f5a07f26e766ab5d4bd2d6f528",
+      "parents": [
+        "eb8c02c07228e53f52060872670cbf70934e05f1"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "7f4d5aa0d5bb5763965d587b9f339685fab22d991c091d019e477c8bc6671961",
+      "message_sha256": "443720f059646bc75b976e40b23bb1fcc04b2587e77cff727e011dd1d2b7323c",
+      "subject": "Prepare additional devices against the verified certified head",
+      "new": "445495072f194c44b0208ae5ef1ba3349cc7c77c",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791415315 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791415315 +0200"
+    },
+    {
+      "old": "f6b049771841959e700c51ab54e8564425bfda75",
+      "tree": "8f6df3e20091cb80567e78845849f73228f32d15",
+      "parents": [
+        "9f02a88fa57d57bd89b513d5f6ab72a99328e73b"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "0d5243e1ddcc9452ecfe41391261ca60d95d2c182313539135d20bdbcb390a0b",
+      "message_sha256": "0a8402496cc151d986bd783c23af68db85058e917fa37ceeef74b8d4acd87896",
+      "subject": "Retain the first continuation admission and publisher boundaries",
+      "new": "5f58040aaf132507f61215b6bea5c24c3d911063",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791416123 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791416123 +0200"
+    },
+    {
+      "old": "7b6235d7e7d8a311023c98dd3d9fd4b242ae0765",
+      "tree": "c23e2bb8b45129ebe40bf1906b05454b9c28db7f",
+      "parents": [
+        "f6b049771841959e700c51ab54e8564425bfda75"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "44a5ec17b537dd16e18aab4ae165a6decf175cf6f08496ede6a71a954319ab18",
+      "message_sha256": "9ae3165ca56f926311466aea9e491ed16dd1f59aebc8cc68f97b56dde9762139",
+      "subject": "Bind continuation comparison to certified devices and serialize preparation",
+      "new": "e26b09553d5de3e7572f7485e43a4f113a0b1755",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791416701 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791416701 +0200"
+    },
+    {
+      "old": "0acb8940a10e6d496c16c66700851adb6a56bd68",
+      "tree": "bcdbf62ba7feea741b8a38ef7eeb48930507257b",
+      "parents": [
+        "7b6235d7e7d8a311023c98dd3d9fd4b242ae0765"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "f36b788df5f26c6ad2d5dcee75ab73848ae2899a842ac722768833142fc88426",
+      "message_sha256": "6b4666180ccf552f2d7638349fafdaadac252ef3dd7de6a53d5b185d6da1f98b",
+      "subject": "Retain continuation ceremony ordering and restart outcomes",
+      "new": "09d2adc6a7c21be688e54b0b0483f329fd37a830",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791417105 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791417105 +0200"
+    },
+    {
+      "old": "abe123374d8915f1ffff768de832a98ede52f086",
+      "tree": "51dd516eabc9f4a1595a29049521ef0c3110b985",
+      "parents": [
+        "0acb8940a10e6d496c16c66700851adb6a56bd68"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "6c9eafebd67fdadf245931545cfec68f74c6edcc6bd05480ac83bf6c8764ad48",
+      "message_sha256": "45d85208fea28103317c05b24a7ba850db8c3a77f56b5c68a4faa4dbc2535608",
+      "subject": "Verify continuation key delivery and installed recipient certification",
+      "new": "b6575c1490f17c1b400dcc7cb798c21c5d68c365",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791417368 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791417368 +0200"
+    },
+    {
+      "old": "78a07a6f5b003cc66d447322478292e151ef02c2",
+      "tree": "ad8dd075db9139d0962d4af04fe97917d5ae59a8",
+      "parents": [
+        "abe123374d8915f1ffff768de832a98ede52f086"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "1daf56e3e6d0ea617960535177f83338347bc06fdda8de83d59ccad6502d8a71",
+      "message_sha256": "641d75539421f7b804fbc0ac4252fd1e8f09a8e8795754c45e1954e6d0b86739",
+      "subject": "Commit continuation key installation and publisher boundaries atomically",
+      "new": "debb817482b75448c22b216f1636cbcc7257f243",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791417717 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791417717 +0200"
+    },
+    {
+      "old": "2fce72f14a03089fc66589c23c9d49a5b97369a3",
+      "tree": "c880f7083e724c223432a3a7fc916e99466a8277",
+      "parents": [
+        "78a07a6f5b003cc66d447322478292e151ef02c2"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "a10a0db68dbf7ccd356a0048b2b8ea9c50855fec7dce353108c5fcdd5efcc3b7",
+      "message_sha256": "fb805d78316d210c70865d6407a42b516e5274f9de78225cbc92c085e30f5863",
+      "subject": "Retain per-publisher epochs and reader eligibility through continuation history",
+      "new": "bc718226c79a1e1d24456940aeb39a79ed979858",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791418107 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791418107 +0200"
+    },
+    {
+      "old": "b48b25d12c71fcb6c1045946272d482ae34257e8",
+      "tree": "de03ba3ea57769742532d34127d2440dfc268077",
+      "parents": [
+        "2fce72f14a03089fc66589c23c9d49a5b97369a3"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "86f0f775fac3640d864803c0644fdd97f7b99dfc47d3c3ce061de44191f85242",
+      "message_sha256": "5208acbdba0f30a13e3c667d63d299c56d9dd6c8f4ad1f7ff300fa6dd9f14f63",
+      "subject": "Compose continuation delivery with live per-publisher ledger boundaries",
+      "new": "42e8a8b7f76f63c78eba55ce03772e6e8828e700",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791418734 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791418734 +0200"
+    },
+    {
+      "old": "24706589ec30dd4ba3a8f9e717e57f8711427af0",
+      "tree": "496bc99cd20d09e66fd87f60f7805995834a7695",
+      "parents": [
+        "b48b25d12c71fcb6c1045946272d482ae34257e8"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "1d6ced5507d9cdd0b13017ee468555ecaf63579cbe640aaad21ce2e095b5cc50",
+      "message_sha256": "49e087369341b9bc56b237bedf0ff3296f08c4a152eec73d826fbb9347067291",
+      "subject": "Authorize continuation grants against current certified membership",
+      "new": "36b0ca9e4d9295bd97b96cffa012f21cae04ffb2",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791418985 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791418985 +0200"
+    },
+    {
+      "old": "b34440d14c6b570bb5299a7dc0f636d1c1c1d67a",
+      "tree": "aa576a8dc9bf9f9514ba531bfbe95b25d750d5ce",
+      "parents": [
+        "24706589ec30dd4ba3a8f9e717e57f8711427af0"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "2fa775ecadcebf9034501c7a6f731267c5c20e89f68d099767f2942b9d770d7d",
+      "message_sha256": "5cdfdd9e37435c4cedf13b70b38424fcb596bd74f1898d5bcd8e52a7deaa9ec0",
+      "subject": "Authenticate bounded continuation bootstrap and current-head discovery",
+      "new": "d9abe0a247065e54f2726aba9b595748d91cce83",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791419337 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791419337 +0200"
+    },
+    {
+      "old": "b9a149e237998efc45a0e315d1f2bb0a648f08c4",
+      "tree": "1856e0ce6bc4a2ff12d456afe8668872e9a1ddcd",
+      "parents": [
+        "b34440d14c6b570bb5299a7dc0f636d1c1c1d67a"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "9d9df839bda7842d9376bc1f5ae7577c6b8832c0a96c466bbcfd3a87d65ff433",
+      "message_sha256": "14ba7e7837e47eb725713a6da7d7b96263707671f78b138d4a83a798f763d656",
+      "subject": "Compose opt-in continuation routes with scoped transport and quiet retries",
+      "new": "80fc73d48b4dafc04278ca559eca08ab0ad37680",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791419573 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791419573 +0200"
+    },
+    {
+      "old": "7a3f96085e41b3cb97f096338724125ee8d64c31",
+      "tree": "8c3036c309c120c4e1fb94b9a3d6229058999a9f",
+      "parents": [
+        "b9a149e237998efc45a0e315d1f2bb0a648f08c4"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "fe8c6a37922ad49ba3a5c64a650770087697aa78b0c6289e4cf503796dbcb05b",
+      "message_sha256": "420aec763f920c34de409ba855b609797fd53e52e505b3e5a683e5e5d15131c2",
+      "subject": "Retain exact continuation key handoff and verify committed installation before sending",
+      "new": "48a9e7aa793d74c2cfd66e34e19ea6079c407fd9",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791419859 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791419859 +0200"
+    },
+    {
+      "old": "fe4c2893841c576fb4b685c5d5f631c44a03dbd0",
+      "tree": "2f56602316826d7e061f6a1f672cc5bd67449daa",
+      "parents": [
+        "7a3f96085e41b3cb97f096338724125ee8d64c31"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "f6658dc8eeba46452347e5bdd83f68a22bf82ab1ab492193dbfc475793cbd27d",
+      "message_sha256": "eeac0c205be707bfafc1d867e6620ccb9ec68e93e66dc6fc9b0aef4d5b6a6150",
+      "subject": "Attach continuation approval and key custody to native slot owners",
+      "new": "634d633c77d17e5e7ab226728debb4fa1d6611ab",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791420727 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791420727 +0200"
+    },
+    {
+      "old": "fc3be561c8ebbf4f5b03f989c6dd3868cd0824f9",
+      "tree": "2b79a4bf2174c9e06ca461ef643f81dc22631301",
+      "parents": [
+        "fe4c2893841c576fb4b685c5d5f631c44a03dbd0"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "3a53616e7fae4896415b02af547931e7eb4607ca1e8ebb0d6bf2e003257bda2b",
+      "message_sha256": "a1e2b2a46a0b81fec56f702469ec396c6619ab3130dcbf9fc225d7c52c18739b",
+      "subject": "Preserve and authorize historical checkpoint access for later devices",
+      "new": "c305aef3bee96b84d0a4d2911b12317be8c2c230",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791421107 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791421107 +0200"
+    },
+    {
+      "old": "12e0269c55e0975e3124e668966507893947791b",
+      "tree": "23ade8c3b6599e81425ed7e9a9d7fd4d8fa7884b",
+      "parents": [
+        "fc3be561c8ebbf4f5b03f989c6dd3868cd0824f9"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "8af7d26c0541ec96ef8eb3d2ba4759c6a9c994277ad8485157d40e4df9c9e3d5",
+      "message_sha256": "401f54f2753ff6d83c337215f38cf45aec43efe3324543bda4c0ee2ebc0077ba",
+      "subject": "Retain and replay later-device writing across verified publisher streams",
+      "new": "50ddd68fcdbe7eda7d36cf1a8ad29a0e2bf24f51",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791421674 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791421674 +0200"
+    },
+    {
+      "old": "1f615fdfe77afd4f9d2974c2c5968269c83830ed",
+      "tree": "7ac171d58d1b3ec3f74fe072d026ef2211532e7b",
+      "parents": [
+        "12e0269c55e0975e3124e668966507893947791b"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "47599a0f3e634c53940e23d442c6431637868a83cb6dbb705a51bd6751738b7c",
+      "message_sha256": "da3db342ad031ce80d5f9a84274efa9cd0742199a39b3c553da9761870c11ea5",
+      "subject": "Activate later-device writing through versioned native joined custody",
+      "new": "bfee024028b883b2e730076b90339dc9d6a6b30f",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791422264 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791422264 +0200"
+    },
+    {
+      "old": "43759e0e2c3428b16da36b1ed73254bc46466211",
+      "tree": "c9bd79412250a643efe07bbf528276f3bf303434",
+      "parents": [
+        "1f615fdfe77afd4f9d2974c2c5968269c83830ed"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "5730b2d0b33615203cf93337dd7af550c303244c24091e60e63b5a9a7ddbf4d9",
+      "message_sha256": "7f2ffa51c60013b65a8b6dd5f20a2b5950c3185ee673de9288203ad6a7ad0331",
+      "subject": "Adopt later membership under the active account owner",
+      "new": "6cb0ac3624c8f9eba346ca1e69fe6a19b43e21db",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791423220 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791423220 +0200"
+    },
+    {
+      "old": "16d502285d4ce995821c942e37fef5d50a30a560",
+      "tree": "bad295d26766be1fad159a8ba9771141b18743a1",
+      "parents": [
+        "43759e0e2c3428b16da36b1ed73254bc46466211"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "bb0f93824eafc7ebee2ad04fd40a0d8a7ee4f9170cc3a702f164764c2eea0412",
+      "message_sha256": "589a336535b31e19f20cd918359693b9cc3f58618b3ab392e55f386f2111d425",
+      "subject": "Retain continuation comparison before relay effects",
+      "new": "3eeefbc69094da7ea552a0459fbfe10e71e01e8e",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791423754 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791423754 +0200"
+    },
+    {
+      "old": "b53497a7afc3719200f046f293d7533bb3ba34bc",
+      "tree": "7cd6d446b96ce9cb1443d8a162fa26eb06d47902",
+      "parents": [
+        "16d502285d4ce995821c942e37fef5d50a30a560"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "cf48a79bdd0217eb08bd4c45af0817bd5d743ebac208cbca75f32bf45186fabf",
+      "message_sha256": "431fe4146fbc68ed53864b274a56604b536a2f85b2bcc5341133789d05bc8c41",
+      "subject": "Compose retained continuation invitations and enrollment retries",
+      "new": "f175c12f61872b4d0644e408de038b6c06fb963d",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791424634 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791424634 +0200"
+    },
+    {
+      "old": "b43279e14de8581c49f3fcfdbc895caacddbc5a4",
+      "tree": "034165f7722b5aa71a80938ecf22c05d9ef5820a",
+      "parents": [
+        "b53497a7afc3719200f046f293d7533bb3ba34bc"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "8fb668131cbac8418b764e1a4fe5910eff0408a3706af465d1e4e7686e925b34",
+      "message_sha256": "992225de5ac0350d6dd8d3117b5e406317e7870687c1a591601ffb717d54c169",
+      "subject": "Compose the retained additional-device connection journey",
+      "new": "a2b3360ace1596a604014ea4f50cdea23ffbe493",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791425184 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791425184 +0200"
+    },
+    {
+      "old": "31b19f78fa3dbfbc32f140783407268c6d38b025",
+      "tree": "85a3695160bdaac5f00c8fe40a3b72b0b32c73ed",
+      "parents": [
+        "b43279e14de8581c49f3fcfdbc895caacddbc5a4"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "29328e75295ef1a32399b8db72c87e9dcfc05391beb6c3ad0bbb9a33953cce64",
+      "message_sha256": "0bd31acaec33f718b10fb16ea888f8055367198896e06d0018515d923cebfed4",
+      "subject": "Compose the native third-device account journey",
+      "new": "5893dbb450e11083e6b39bd6ac8c26640f0ed503",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791426791 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791426791 +0200"
+    },
+    {
+      "old": "7d4df6ee099e53aa9f114c3b014643484a05caf7",
+      "tree": "3884d7b692d3ad57d443cdd81a8a16423c977cf6",
+      "parents": [
+        "31b19f78fa3dbfbc32f140783407268c6d38b025"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "d626558bf3062b18dc0bb8e608f508f8ce267c532c3c9fca2a13043556833ae1",
+      "message_sha256": "001f3fc536c828a840ab030d82a777720b1b1797456c2ab93d1bb8d6a687f48d",
+      "subject": "Verify pending membership cancellation and publisher history",
+      "new": "229a56ed00feab842c5ca322ed34a76767da6ea4",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791427043 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791427043 +0200"
+    },
+    {
+      "old": "ceab632668bec1953e5c41727033727c4636a0b4",
+      "tree": "fb3367e91dcf08d3d71e89baa322298e0546a95f",
+      "parents": [
+        "7d4df6ee099e53aa9f114c3b014643484a05caf7"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "8dcba39d0414ecafb47494dcbf0ebb6ea0c7c87152898e34e84d5e55ef7df428",
+      "message_sha256": "3e121b02e9534262ae08694f8ce9dac883654804463f5d4acea75687bf44ac32",
+      "subject": "Commit pending membership cancellation with exact publisher boundaries",
+      "new": "26a3de02b946f602976f89890ea77af43c3a6cd2",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791427488 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791427488 +0200"
+    },
+    {
+      "old": "0c893bc3e9cd85a7701b4802219929c45801b773",
+      "tree": "7710c7467541ba7b2afc8d2883762f4a24a2845f",
+      "parents": [
+        "ceab632668bec1953e5c41727033727c4636a0b4"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "7530a44ed376fd6655d1c6927f2f99f1dae7f7a0955ca2ac1dc29c0e15897d50",
+      "message_sha256": "d54584a3483d9222d97970a0f148d5b49dafd50b761b9cabb7c7c9cc1f40e939",
+      "subject": "Recover pending device cancellation through protected native flow",
+      "new": "b58f704593b6e16c705c6673d9fe6fb3ad4907ea",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791428250 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791428250 +0200"
+    },
+    {
+      "old": "3005f3870df47b90c72615cdd4d944082b3b5bbe",
+      "tree": "7509c6dccae012b724478bf9433fb602fe0db6b5",
+      "parents": [
+        "0c893bc3e9cd85a7701b4802219929c45801b773"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "d4d252cc2cc7cb1b09fe8f98f144bd992527dffaa056b2fb53127fb5549fc46f",
+      "message_sha256": "c3b6fd52eb4999cf108d46d05a44a4294608df4a0e9ee55d3abc28771a23a035",
+      "subject": "Verify other-device removal intent and finalization evidence",
+      "new": "b22263915efc6e88b13a20ccd7af1ab4516cecda",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791444608 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791444608 +0200"
+    },
+    {
+      "old": "c313fc276c4a67bcbd05268cff7b4a748231f13e",
+      "tree": "4c850fcbe54492e732222e3fe9f7c1623f82aa1e",
+      "parents": [
+        "3005f3870df47b90c72615cdd4d944082b3b5bbe"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "5b8325b653703a6217215c5fa246d003682767cad4a89d4a98913c8af4a31ba5",
+      "message_sha256": "98a74b84828916fc97284e9afc858cc351314097c97808b66c74ab6075f90103",
+      "subject": "Retain device removal intents and produce exact generation wraps",
+      "new": "23618aeb15956bd6268df439caee08a15666a4ea",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791445048 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791445048 +0200"
+    },
+    {
+      "old": "c2936353651cd94febded2ae89d1caa4762581d9",
+      "tree": "d58df4aef3e67a8ab90b149c5d7209dfb4bdc00e",
+      "parents": [
+        "c313fc276c4a67bcbd05268cff7b4a748231f13e"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "9f3ffb755e56bb14f530a42de4353c1d1f3934f5511a60c06a3ce46b3d58df71",
+      "message_sha256": "1380dec31305980cd13ba42f554d819fcad7b1d71bb52e26a1d326ae201adc83",
+      "subject": "Preserve accepted history across verified device rotation",
+      "new": "f61d7f521ced02e1bd1ff4966eabc8649e199cdc",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791445680 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791445680 +0200"
+    },
+    {
+      "old": "009965c287ea834203ca114d2fbcc40ddc7b110e",
+      "tree": "2b67ec4b454237a7576b9802dc1b3e41630a595b",
+      "parents": [
+        "c2936353651cd94febded2ae89d1caa4762581d9"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "fb2213683ad337b3b2350570ae90275c458a82b4840a4ac2a6d003a1ac739c1b",
+      "message_sha256": "617c82bc16f4113326396730b48908bb43000b841931838b93d8e56fc58175b7",
+      "subject": "Persist removal cutoffs and fence target publication atomically",
+      "new": "f5b4b67c78489c9cb1a8413d99343db4d854bfeb",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791446687 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791446687 +0200"
+    },
+    {
+      "old": "df0fd4678df79a1d6bd585fdd53d853ae73cb609",
+      "tree": "fbb0ab844b325669563b77340954a73d0bd18da6",
+      "parents": [
+        "009965c287ea834203ca114d2fbcc40ddc7b110e"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "8839fe490f0c8b8e79c8cff7b030fa716a9e08accac61a5aa1f803f130efd79d",
+      "message_sha256": "308307ffa1a3fb8380ceea5c5a5aad102574e2274e3755806946f857dbc2f8a5",
+      "subject": "Commit device rotation atomically while preserving historical delivery",
+      "new": "d2b847938c72320f635043fe76fc3ac2c9da5af8",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791449644 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791449644 +0200"
+    },
+    {
+      "old": "9242fec0703ad147404f8bd3dfe12a3af1773ad8",
+      "tree": "85a32253025deeb41ffb5cf5b81367335740bb36",
+      "parents": [
+        "df0fd4678df79a1d6bd585fdd53d853ae73cb609"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "cfe8d3af2e8d92d2eabaeb36daa014283205d9d0c350efd0868f53d65557f936",
+      "message_sha256": "1b3ec22a81b0c40c27bef0fbea7b9798191f63e67187eed29493d5e16cb7b898",
+      "subject": "Compose retained removal intents with protected service transport",
+      "new": "85dc9acff0e807ac05fa069df517010a34ca9d55",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791450208 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791450208 +0200"
+    },
+    {
+      "old": "9946c05262f8ebac7d38ae3219ef0e0cae8e65b8",
+      "tree": "be17abc0b0ab836ad5a3e2d0b0b4e18a5a4a253f",
+      "parents": [
+        "9242fec0703ad147404f8bd3dfe12a3af1773ad8"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "b4f4c3c2ba224a45348e4923264791e5a0908b2948302567826d1dca9307c9b0",
+      "message_sha256": "660cb1ecd4e5e4c51cd72d57eb06cde4be60704e4165219ce494f46dc21a683b",
+      "subject": "Let removed devices discover their terminal proof without content access",
+      "new": "5cbf1343f18e37cd98a83dcacbd7103b4dde1069",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791450734 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791450734 +0200"
+    },
+    {
+      "old": "a197bb02e9370cabd5cb795632fd9dd6bd09c7b0",
+      "tree": "1282f0212832b45853dc214ecacfa634d546694a",
+      "parents": [
+        "9946c05262f8ebac7d38ae3219ef0e0cae8e65b8"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "cf385aba2668d87c32d41c45e6fcd22031b1f9abdf125a7c947ead05f0525fd2",
+      "message_sha256": "7a6c0ba3ac9bea1b4da4cf62f98aab584b4cbcde6adca09dfdad6f78d50a690d",
+      "subject": "Allow another remaining device to finish a prepared removal",
+      "new": "b514577f70a10038772ee543e2b51f828ffbefe4",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791451269 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791451269 +0200"
+    },
+    {
+      "old": "11092006ffe8cb0353b877b8826aa2327b39feaf",
+      "tree": "4088cc0a8163867cebf36a450ca101870b67a952",
+      "parents": [
+        "a197bb02e9370cabd5cb795632fd9dd6bd09c7b0"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "0f182ba9e80b7f07c805c31ab48de6dcf9fd1d4eb5b8dda81206fbca3570601f",
+      "message_sha256": "cbcaa8a29ce656610cfee2df748073f7a54128dfb5d53bca05c08b93482d0d9a",
+      "subject": "Retain native device removal and seal the verified successor opener",
+      "new": "20026b829f191fca1170c3ed0eedd4a65d2b8e94",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791452419 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791452419 +0200"
+    },
+    {
+      "old": "06ba3317aad02f6a3185ee042bbd786d266af157",
+      "tree": "59000591b293ee61e6380342595d480d8844dea7",
+      "parents": [
+        "11092006ffe8cb0353b877b8826aa2327b39feaf"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "cb9963767b10d0254f2d449e964798e5931523db3b80d4fedee19f39ef187f77",
+      "message_sha256": "338854e8e36bfa96872c9456dd3de1fad578e8fbcf5233dc73fef4baaa862991",
+      "subject": "Replay retained account work with authenticated generation-specific openers",
+      "new": "a5a70c50161de70977d09e1d2d32f1d89dcaa05d",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791452961 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791452961 +0200"
+    },
+    {
+      "old": "edaf7c5dbb60f2e25c95a7e82b3496d1e55123a8",
+      "tree": "4dc4b88276379f9bfbcbcab02eb308e1c3f32812",
+      "parents": [
+        "06ba3317aad02f6a3185ee042bbd786d266af157"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "c8c46dc0ee52f597d91b29c1f50255dac12e5c36c3ac2736da279522f9263463",
+      "message_sha256": "ac9f9ee4540324b4bd56a78838478796ee2e60702148162ca5f81c03d3234250",
+      "subject": "Switch local content generations with exact journal-inclusive coverage checks",
+      "new": "f349036ccbbffc4e4585affd75adf5b81a729b8a",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791453466 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791453466 +0200"
+    },
+    {
+      "old": "70f1301112c4ad62a97e745a86814cf8968e3d03",
+      "tree": "c5edcbdc7eb93e3f395416052e6fdae774de2783",
+      "parents": [
+        "edaf7c5dbb60f2e25c95a7e82b3496d1e55123a8"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "4bf69ce697650c6065f8c7c2b6345fffa4a6546ec171802b5bac971b04c74e4e",
+      "message_sha256": "5efe5dec5070f0cc639ab42fa7796a7387faceb9fb0ced7ba93e0210d40b5c47",
+      "subject": "Activate native account rotation across journal and custody restart boundaries",
+      "new": "10f7f58a54e73fd92cdb5987e16cee3c1c887fdd",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791454916 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791454916 +0200"
+    },
+    {
+      "old": "7232be40226094f6e3e0899d89473c96a13d65b9",
+      "tree": "749faf6fb4293007de7c110f52166795fec2c6a9",
+      "parents": [
+        "70f1301112c4ad62a97e745a86814cf8968e3d03"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "7ae062ea65771b5e3521edad730e2214699a7678d0020dcda25fe2f22d63bbbc",
+      "message_sha256": "3bef83458eeca97da681e6c1c45113240d67e5e1b54369bece0fe025293eee8f",
+      "subject": "Apply observed account rotations and retain removed devices as detached copies",
+      "new": "367dcabaaf9fb5d8974b9aa22c0daee119d3bbe4",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791456056 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791456056 +0200"
+    },
+    {
+      "old": "2bea34376aec8ccb578a4d8b54092fb0fa39ee11",
+      "tree": "1a76ea29f53bd656bf80869fb277a352537419f9",
+      "parents": [
+        "7232be40226094f6e3e0899d89473c96a13d65b9"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "f9b92f8d855b736aeed2b791a91cfc892021c4e832fc2407f413069cfa5c09f3",
+      "message_sha256": "cb3e8e1f4ec07af44bc433dc97f9c1967a4e10a5783eaabea3cd29d5797dd54d",
+      "subject": "Expose confirmed device removal with exact retained restart and detached reopening",
+      "new": "c4cab0b11893ba295a2ab7524cb880a52e3e79a6",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791456820 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791456820 +0200"
+    },
+    {
+      "old": "f46978a037dfde60cabafa106393f94ff95d99f7",
+      "tree": "7463a8b3633e2ef461f2f2f5ca35a55f1a456156",
+      "parents": [
+        "2bea34376aec8ccb578a4d8b54092fb0fa39ee11"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "79a4883a2552f3ff8e47a880dc8a392b5d85d711bd5c5e9b4b650b29b03cee57",
+      "message_sha256": "aebb1cab7149306644a0c443f19cc103244869c3530dc48100bd800a438ca947",
+      "subject": "Record bounded device removal walkthrough with offline survivor delivery",
+      "new": "781a6ad8524df561c1aca6563ea4d723514d1fb0",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791457217 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791457217 +0200"
+    },
+    {
+      "old": "a6031b38c4cd1669efd34fd1fd6424fee17d6a7c",
+      "tree": "ec7e42d6e93515a909edd713f6e886babad61af7",
+      "parents": [
+        "f46978a037dfde60cabafa106393f94ff95d99f7"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "5df008bbfedcb54d55338a3bf448cf1ac972b6264d6a3cd4c65826b4fcb0cb27",
+      "message_sha256": "1253e09f666d91abfb17e26da8fb1b93db1d953fcd796439e6bd37957f3327ce",
+      "subject": "Record immutable lifecycle candidate and pending retained-service switch",
+      "new": "5705892e69f8a758b75c3afca84427537294a0e1",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791457300 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791457300 +0200"
+    },
+    {
+      "old": "a0eaf9af74fb22654e60f81feeb1eb40242303d0",
+      "tree": "d18caac5e19e30002c1c58a1e13f992ddc2f4ce2",
+      "parents": [
+        "a6031b38c4cd1669efd34fd1fd6424fee17d6a7c"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "facbd32b9e1f3ae88b6a57c7e7a09753022fb76bd2b129a43cd8c50f4ac5ca59",
+      "message_sha256": "a6b726643630640a2442e282066f4181bf84534a0c76a752ef023026c0a7940f",
+      "subject": "Record backed-up retained lifecycle cutover and live verification",
+      "new": "0de2f6272bef96d018460a7725faaad6b87cc2e2",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791458385 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791458385 +0200"
+    },
+    {
+      "old": "7edaa32644542576a37132b5d8a9196940b60b04",
+      "tree": "6eb2e8097bba46b749ac1d77e09d06adb1ca6a14",
+      "parents": [
+        "a0eaf9af74fb22654e60f81feeb1eb40242303d0"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "0ffdb3468e9d8b669c22c57d8669f6fb5ee91a95921d79f171699edb932347d2",
+      "message_sha256": "3be7296351caa1d64b51e09b088927387bb326d669b9f3736a4591036792289d",
+      "subject": "Admit replacement devices against current membership history",
+      "new": "16377b11db5252dbf2d694f0fbc1ec9842ed6a70",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791460179 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791460179 +0200"
+    },
+    {
+      "old": "b42f37faaa905976762578e94582df4934e712f8",
+      "tree": "fb03c3ac0f5ac0673865c3a404ecf5051148ddbd",
+      "parents": [
+        "7edaa32644542576a37132b5d8a9196940b60b04"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "87276895b4060205761e862c4fee7b7d2cb0a1de5aea101ebb01fcefbe345c8a",
+      "message_sha256": "a50ff8ea7aef393ed14b95097094f9e610e075d478c4aa50a0994ccc7ca3a5d3",
+      "subject": "Retain generation openers across repeated native device removal",
+      "new": "728995131378f4ee2a6ed1d3f5253c77576a8cf9",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791461733 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791461733 +0200"
+    },
+    {
+      "old": "ad9e08d4bc25c730f0c6fda32a2efaa77a66cfe9",
+      "tree": "a3634812fd3ce0bf7ab4c9a6008321cd1a44a7f4",
+      "parents": [
+        "b42f37faaa905976762578e94582df4934e712f8"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "2e7b81144e23169270c568173d7737392db4ee59b95bec3ca6850e9b75163372",
+      "message_sha256": "c5dae07bed3937e3d8c7da5ddf23a01df4f471908b72f896f05d301cac127d48",
+      "subject": "Repeat device connections and resume missed rotations",
+      "new": "6b7df3b9ad69d88952cfd540226841c8aa84f97e",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791463348 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791463348 +0200"
+    },
+    {
+      "old": "fe7ef326bf5a1248842159ff8d8f242bcbefa752",
+      "tree": "c3858372cdffa7f3f110c0f12989589da7a214cd",
+      "parents": [
+        "ad9e08d4bc25c730f0c6fda32a2efaa77a66cfe9"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "125ee57c984e8a35dd062440827becbe55a23112c9c5b560a2c0690f20353416",
+      "message_sha256": "ebc1ed5ab9a989a19f7b85e0a9fc8c1a2394d957d3bd8d9842400a657e13bb23",
+      "subject": "Fence historical-key uploads at replacement admission",
+      "new": "2e10100373af074946c34d596b48760258e384c0",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791463900 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791463900 +0200"
+    },
+    {
+      "old": "fcc47f902fc6ecd0a3dd879d2ed3adcd92ca09e0",
+      "tree": "09af0d94136272dea95b9f8d07224289e4c9a428",
+      "parents": [
+        "fe7ef326bf5a1248842159ff8d8f242bcbefa752"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "1ce3e772c21a4c8e69733d5076a69a52e58d96f26c0f75d47a0a7e017c7ee888",
+      "message_sha256": "6bd1bb09569bacfa560f746c570dca433d01831916c5e7cb002a859addc685bd",
+      "subject": "Retry refused survivor uploads under the current key",
+      "new": "0b45d6b15b63d2e3b5fe9b67d360bdc3686897fa",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791465895 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791465895 +0200"
+    },
+    {
+      "old": "c92972fedb5ac91901c679fa2f500c0914004747",
+      "tree": "f506e5bec6a324e057338038991aaf1ca91e5354",
+      "parents": [
+        "fcc47f902fc6ecd0a3dd879d2ed3adcd92ca09e0"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "e1a2015cbe8db98eeefecc7b5045f4b2a616320d2ff6d9436fd5dd81c71ff3f7",
+      "message_sha256": "f43e1bb163dab1be37bee4f2b4f290189cabdbe8ab4e2010821f20f7768bc57d",
+      "subject": "Authenticate current-generation replacement checkpoints",
+      "new": "12043e3102c215f27800a12211f13d0b20846a46",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791466699 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791466699 +0200"
+    },
+    {
+      "old": "514c543e7875fc311eefc7d7f036da62aaea3542",
+      "tree": "b8cef278eb9c2609ac0600a5bda060079fea2be6",
+      "parents": [
+        "c92972fedb5ac91901c679fa2f500c0914004747"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "517e63c1516352fb0f190c5825fb37b49ff11d389afb3c6ca8f8b23850894687",
+      "message_sha256": "8eaba64b83ac9ec0eda9f089ecf755215391428120ff1c2c231d7b5cdcdcf92f",
+      "subject": "Replay authenticated accepted cuts before replacement snapshots",
+      "new": "2a457916ac6fdc93d9fab902ffd0f6b36f993d6f",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791467583 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791467583 +0200"
+    },
+    {
+      "old": "e98bbf47809e94e2a44bc00931dfc5958dc2627f",
+      "tree": "f8da036878792d37498fbd6d39b9228f9deb5e25",
+      "parents": [
+        "514c543e7875fc311eefc7d7f036da62aaea3542"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "557cbc3edd8c5d828a12bfd5108329df3bb637b1a879ca4b5375a243c8b7e22d",
+      "message_sha256": "8d584e8fb1750b9934bb25e2040309f72200ea28276578b9d89368a16568e440",
+      "subject": "Retain replacement snapshots and bind membership certification",
+      "new": "32212b365f891f0015681b97012045ca56d00f65",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791469983 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791469983 +0200"
+    },
+    {
+      "old": "de3fba789e758a94a8b36e02a823494cc11269e2",
+      "tree": "e3b82e83965e02ff45e9e5fe68fdba0f4ac515bc",
+      "parents": [
+        "e98bbf47809e94e2a44bc00931dfc5958dc2627f"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "3cd0751947215fe0e8da1b6e51df6bf6bbc16639be3e8143e6fcfed7dc7440d7",
+      "message_sha256": "774a375111094f8b53dde22fbf62af24a90c598a41ae8064a3f09dc30d3151d2",
+      "subject": "Persist replacement handoff before key release and acknowledgement",
+      "new": "1db2a9182218410abcd86692b5eb5c2a7ccf0dd5",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791470342 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791470342 +0200"
+    },
+    {
+      "old": "ad33eeb41386040e5cc2f10ee0869e8e54905e67",
+      "tree": "bd6b0019a345a2e68b17a59f9354a90d6c01e30f",
+      "parents": [
+        "de3fba789e758a94a8b36e02a823494cc11269e2"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "c3df80b7071514b8f12f435db4fc74006d6c20c5c49f00e2a9e0b6c02195b5d4",
+      "message_sha256": "11adbd2617807383052067d9d54a88194c1ec836ccc70adb93a697549e8639bc",
+      "subject": "Capture native replacement writing and deliver the installed generation",
+      "new": "cf520fba22143aa9d6ac1eab68a13a50163e8334",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791471400 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791471400 +0200"
+    },
+    {
+      "old": "5216c02e4be21ce16859d8afa1f1f5d67f055055",
+      "tree": "2cf81a93ce3490141f779185f9a810e5cc7e99c2",
+      "parents": [
+        "ad33eeb41386040e5cc2f10ee0869e8e54905e67"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "c2786eb011e757a68fceca565b63e75dc8b355b3a842cb9e2e7098bde84f5bb5",
+      "message_sha256": "4501ae1b824b08fdc7c472ae237f1a810592bcc43d212d77e34f00d96832d846",
+      "subject": "Retain replacement account binding and authenticated receive cuts",
+      "new": "3bf2833c31eb8495c84acdff8c09a3c724de1f21",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791472290 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791472290 +0200"
+    },
+    {
+      "old": "deea714e33bc108f5b274248ce941d8754a4686d",
+      "tree": "8d3ca61f0c6ba51741bef0075c3fcfd635236715",
+      "parents": [
+        "5216c02e4be21ce16859d8afa1f1f5d67f055055"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "3e8c51cddb2b2728755672c8b0075828507de4d95b26c7552c05878be0fa5b63",
+      "message_sha256": "defcc023ac513f4d4add23df6a0bd6f328ee6ca4d5fc0cc0b598e66f84e8821a",
+      "subject": "Initialize replacement custody at its admitted generation and resume editing",
+      "new": "b29d1a93113f1dc11d44475be1150610b8f0d898",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791473376 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791473376 +0200"
+    },
+    {
+      "old": "6387d955884fb5c377d817f0d4ca7cfab5ad6b09",
+      "tree": "41c7bbd65d98d79761be3022a979cacb9f8339e8",
+      "parents": [
+        "deea714e33bc108f5b274248ce941d8754a4686d"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "5d17f2b69a3b9ee22db8c5fb41108ed6b263563fa4ab68de7b6c8e7ab7832d59",
+      "message_sha256": "c48f354afe8cf620590b58f0dd3aee1d8689f92498762a250040e42da183148c",
+      "subject": "Reclaim obsolete network grants after membership changes",
+      "new": "320e7b291aba12294b2f8c5f1383d98034ccd747",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791475573 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791475573 +0200"
+    },
+    {
+      "old": "ea120109511ede39bc809b2d89baf57595afa95d",
+      "tree": "dd9a4e43132cc3fef969e372a815697fb35cc031",
+      "parents": [
+        "6387d955884fb5c377d817f0d4ca7cfab5ad6b09"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "22462930ed81c216d3588f722e07743c78c9d614f9534f4f42058d795bf95067",
+      "message_sha256": "dbedb93f64f952b3eb933dbe5fa1b1cd5a24f259ec6ad3dce5c4a2f6dde6dc51",
+      "subject": "Complete the repeated replacement-device product flow",
+      "new": "c115db48910fd70956c076d6149e277d93372990",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791475963 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791475963 +0200"
+    },
+    {
+      "old": "c8bc6d1b03b90d0046104860fd1cf2312a6b5858",
+      "tree": "55ba74d0f8ac1d01eb3a8b5fe127e8e7772c02ba",
+      "parents": [
+        "ea120109511ede39bc809b2d89baf57595afa95d"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "c8d4a8a27ef9e6da957184c2484a08e4c4e2f94cc46898f34d6882ec1fd42b18",
+      "message_sha256": "e0c55f199a58dd38d83ba5803cf8768e1a094730892a0efe4f80a24194fa3d8e",
+      "subject": "Prepare the retained repeatable-lifecycle update",
+      "new": "9a465eea60163a069918a4ac94a31a2b606869c9",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791476056 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791476056 +0200"
+    },
+    {
+      "old": "f6ee95aa2780cfa2877629bbbfd448d654518906",
+      "tree": "3af0283bbacfef8162db20e69872fb1efa4492b8",
+      "parents": [
+        "c8bc6d1b03b90d0046104860fd1cf2312a6b5858"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "c08c6cbd28e94e9d33eee1e5ccb0724ae1503d68e70ebbda8ca4539bd4f7a44d",
+      "message_sha256": "97c731cd6fdad2bdf945eccb510bae29769ab8d2d449907ba5965c4de06f471d",
+      "subject": "Record retained repeatable-lifecycle cutover and preservation checks",
+      "new": "75425d58b2cfd925f74428352187320e5d154105",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791478465 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791478465 +0200"
+    },
+    {
+      "old": "3f3b7266d5c9bc686b6ea560bf96fa12d4614996",
+      "tree": "d208a25eba0ee3306caf910402a092276f3593d2",
+      "parents": [
+        "f6ee95aa2780cfa2877629bbbfd448d654518906"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "c7ce47f0fc2371a99be36bd6a26aa29ce8622d858385a0414fce8d0c7f8bb78a",
+      "message_sha256": "52a0588131078828e9f8f0802bee26e814f9299e3ba224566734b159d7f72134",
+      "subject": "Record retained desktop enrollment, sync and reopen walkthrough",
+      "new": "a073fb956a7213eeb23e7a8b3a5a63810df32ea2",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791485017 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791485017 +0200"
+    },
+    {
+      "old": "ed7e510adbe542133d88cf673f088533c45aa065",
+      "tree": "b286f7fa1e4eda4f1cb00219da6a97648a036168",
+      "parents": [
+        "3f3b7266d5c9bc686b6ea560bf96fa12d4614996"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "ef3fcb100690462e456e7b32cf323356f06a61b582c27cc4b0d10ddc25dab430",
+      "message_sha256": "446f3ff6765c0e1e23b1ab8f91bbf8241f8ae19f17688aded238e37699c57b11",
+      "subject": "Establish the lost-device recovery proof boundary",
+      "new": "79263f19ce252432c960fb8d46cd7ca987210b3e",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791532839 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791532839 +0200"
+    },
+    {
+      "old": "b3d143174919b8c714c506ae051a7d2b03f83820",
+      "tree": "614d6828ea6593c1fb43a6a063dbb771581ffd7a",
+      "parents": [
+        "ed7e510adbe542133d88cf673f088533c45aa065"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "83adc837f346afab5c5aef677dd8bd7eb822eb887da4a91571d166ef1328d764",
+      "message_sha256": "0b15d1f312ca841ba899ad29c021946cf6e82b4d904a931e251bf213ec658f9e",
+      "subject": "Retain fresh account-bound lost-device recovery preparations",
+      "new": "786fc952b144fb03de98929ffdaae013d8bb8f6b",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791533816 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791533816 +0200"
+    },
+    {
+      "old": "0da0c07e46689d1c5663ebb6693d75da1610e0b0",
+      "tree": "8a5408d9fdc8d21ff508942c667cd9c137b87e44",
+      "parents": [
+        "b3d143174919b8c714c506ae051a7d2b03f83820"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "f3b3ce927f1629c9de2539e580be1852cdbfd078514857c1c47fa4a0a5c64809",
+      "message_sha256": "7d5ed99ac891da37089c029fac88ee3722d27fe866a48234812fe045909f2e75",
+      "subject": "Authorize bounded recovery reads with both factors and candidate possession",
+      "new": "6e8c73b68e3039c63d4bcd7a0170829d121cb0d1",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791534283 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791534283 +0200"
+    },
+    {
+      "old": "6b009ec24b7235c72cacbea3a2e89b689d48801f",
+      "tree": "a34459648a9e9f62b6fe4e3edd7bf00a4e554d7a",
+      "parents": [
+        "0da0c07e46689d1c5663ebb6693d75da1610e0b0"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "db50a4751f667e6af04a27bd41974dd88b1477aacbb4fb4b266314c5e40fcdfa",
+      "message_sha256": "7d1504eb6eb92db67b1410537fc7f14972cd6e054cbd5eb54dba13bac94ec1ef",
+      "subject": "Cold replay hosted writing through the saved recovery code",
+      "new": "72eee3e936211bac325502590c5d001151899ea4",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791535118 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791535118 +0200"
+    },
+    {
+      "old": "6102cd787a735ac12e66afb26420516a00e8452c",
+      "tree": "1138b8c01d539345a6d7378d6ac309515fb22f55",
+      "parents": [
+        "6b009ec24b7235c72cacbea3a2e89b689d48801f"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "d97dbf8f7a1e0d5427dbede0d23b81e2d1ec93711feba2b55cbef2a570fe5622",
+      "message_sha256": "2211641541b3da0b01036a28e89271164a2330e7b5cdfa509e1524be6a0c8846",
+      "subject": "Verify recovery successors from early and rotated membership history",
+      "new": "a52ef52bf4ca963975aa18306a85e45f9711b277",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791539847 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791539847 +0200"
+    },
+    {
+      "old": "d81468bfe7cfa84e0094453b0f631cbb7620cb59",
+      "tree": "2712c92c287253233d771fb8ba81441b7a91501e",
+      "parents": [
+        "6102cd787a735ac12e66afb26420516a00e8452c"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "07004ae3e066db55d691136da1b0756c5478f0484ed5eca56e72fc6f9a388660",
+      "message_sha256": "1b071ce495bd2055884751b94c8458387c46368a534b8598b56ebdbe979bbbc2",
+      "subject": "Commit lost-device recovery with exact ledger cuts and durable retry outcomes",
+      "new": "c9e29a84055569f97b78103bde1081f492aeae11",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791540585 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791540585 +0200"
+    },
+    {
+      "old": "f10c0c45c16afca2bfdeba4eea8337ac5370f461",
+      "tree": "f5d52d7a37ced155eb3ba7f02e68175a4deddd47",
+      "parents": [
+        "d81468bfe7cfa84e0094453b0f631cbb7620cb59"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "908b48e3fc7a17db456cc81f9aa3e9bc4e06821772cd1e306232cfdc293343ef",
+      "message_sha256": "e214be52cb50188602d8c49b733ac7ad2a85e0650022cd00db4ff92814286a23",
+      "subject": "Retain recovery candidate custody through interrupted lock setup",
+      "new": "4458ea184a43fe6eb5cb78f0d85a3726615f7507",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791541369 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791541369 +0200"
+    },
+    {
+      "old": "a6a542579814d815e150248c50fc872adb22a514",
+      "tree": "b784872d34d4b793eb6ebdee08a5c57c023b4d64",
+      "parents": [
+        "f10c0c45c16afca2bfdeba4eea8337ac5370f461"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "642541c5ae11c18cee0d5b49ebaad36cb70ef7aa0521112b10034c8e61cb78fd",
+      "message_sha256": "9909c6fca5de6d8299ad0af2bfbb9550683641f8f5d133f59a6bc61b378f1ed7",
+      "subject": "Compose fresh lost-device recovery with remembered login and offline binding",
+      "new": "18244fa8d0ba5bc13270472751c780fe7632c09e",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791541869 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791541869 +0200"
+    },
+    {
+      "old": "f917c881be2739b15af2711f4ea5e6ecce0419ea",
+      "tree": "35cefd6d45d872426ede5689e1a596839e5d9066",
+      "parents": [
+        "a6a542579814d815e150248c50fc872adb22a514"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "e077f747c21d4bbce148f899b004f4db7db2829672f0b867479762d7b9427803",
+      "message_sha256": "3ab25895ca57f7eb5d296791d63c5f870cac10bc16a45d5c5007b094acaf0fbb",
+      "subject": "Install recovered writing into the native account lifecycle",
+      "new": "b7994d5e8592b2a52ebc00101c6dbcce089a2f0a",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791542377 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791542377 +0200"
+    },
+    {
+      "old": "e3877ad991706c395a761706689eec2e4a197a53",
+      "tree": "b63cd5f0eb72d058944296fec9566d64b121da07",
+      "parents": [
+        "f917c881be2739b15af2711f4ea5e6ecce0419ea"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "93167564ae6d6beb38819c82f4f9599fa23dd0f6c3e46b81ca6b1a322e7ad125",
+      "message_sha256": "df8249f1b748446ac195302d89b62b9e4b60409a8fc28891d424b7cfda4ee064",
+      "subject": "Compose retained recovery and one-use first editor opening",
+      "new": "42ad6b7e062244263af4726d04faee84ad9ffe03",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791542984 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791542984 +0200"
+    },
+    {
+      "old": "aab3c5b4b1db8d0620d93bde28bb649fb3640978",
+      "tree": "cdc5f8b8a01942a8d050d4142cea924210dd5611",
+      "parents": [
+        "e3877ad991706c395a761706689eec2e4a197a53"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "4ae5a879e0ab08f97652264f369d0a3112c075c9485db9817cdc0dbe288d8695",
+      "message_sha256": "c33f19bbf5b35816e021b2071a414676e1f318fe6f04f8ce4c69364c32e66d6c",
+      "subject": "Mount packaged recovery and replay retained handoff checkpoints",
+      "new": "ee94657a93a37ca7db168ac0a9087f1a73e4b589",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791543856 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791543856 +0200"
+    },
+    {
+      "old": "3d4801500322b1f6dd8ff20b1e4e804c689377be",
+      "tree": "691646d5f4661969d9bbaadd896daea0b65a157d",
+      "parents": [
+        "aab3c5b4b1db8d0620d93bde28bb649fb3640978"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "1a5592a4b3cfe20a80f0982d880b403f632ec912e3335677742967c107244a6b",
+      "message_sha256": "823d2542212a841df367cda1769dd3b7263e2c2b47fd1335d2cb8ad8c45cb84e",
+      "subject": "Retain recovery finalization and reopen previous devices as detached copies",
+      "new": "320a5e5f44554590612ce022d40f9a248a63112b",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791544110 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791544110 +0200"
+    },
+    {
+      "old": "5f7c8cf2712f1f82b674cca48fcf57c0181b9b37",
+      "tree": "2aa35e3e23f9019a36f3509460794a53d31f6f00",
+      "parents": [
+        "3d4801500322b1f6dd8ff20b1e4e804c689377be"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "f5f560719870735cdabaa9143cc1c01b6283f0e4a0ee78265786d6c1d2fddc69",
+      "message_sha256": "24a1026715c65a2316efcacf10c7187ac15aed946f10a483cf5549217e39e3c2",
+      "subject": "Verify enrollment, rotation and repeated recovery through the packaged editor",
+      "new": "e71ab23c24b0b8fd228962a845256066960e3103",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791544421 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791544421 +0200"
+    },
+    {
+      "old": "049b9a2912f1ff26d2fd504bec36afa2a9f37f56",
+      "tree": "087bc4517e94a61b7dde88a826341a92249e3014",
+      "parents": [
+        "5f7c8cf2712f1f82b674cca48fcf57c0181b9b37"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "85aaf31f8fb8cbbd75e42e665beed9ff41ee320232867f5d0c43a5f31e17cb11",
+      "message_sha256": "4d470123721b23c79c3e7014e7e8f273a703688d961628cd1bc4a135cad321f6",
+      "subject": "Support device enrollment after recovery before the original pairing",
+      "new": "433f4c3e54d3c9ba37a4b97469cbb3582e3ae1db",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791544928 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791544928 +0200"
+    },
+    {
+      "old": "8c9a818fd4f2f19a70232e6ca2891646aa3f2acd",
+      "tree": "37811513d9d0b4f98c82ecf41792cde13824b156",
+      "parents": [
+        "049b9a2912f1ff26d2fd504bec36afa2a9f37f56"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "e488dad89ba432d17c090f3835b0f25f18463cc0e1614d16f5dc05b726ab1bdd",
+      "message_sha256": "2b3f5fa91d6393a123416483333a9a2ddd864974d54cd2cfb4793b2b1a0e2229",
+      "subject": "Record recovery build and retained-service upgrade handoff",
+      "new": "1ae20cdbba698ad8089a93251e0768efcb88b30f",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791545004 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791545004 +0200"
+    },
+    {
+      "old": "a5e554e1d04ba1109addfc454f7f94723ad0ee76",
+      "tree": "a423fec0178b8a3bd143a45fb3a336d561e006d0",
+      "parents": [
+        "8c9a818fd4f2f19a70232e6ca2891646aa3f2acd"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "b6334e03aad3e1a61e9e9f4071d39dabe74a1b3f592b65a9eaab9e534fca1213",
+      "message_sha256": "208c2525d77ce174f8d84366d2b5003468ee731fda5a3889bda8cf7c5d710b1a",
+      "subject": "Record retained service recovery upgrade and operator handoff",
+      "new": "8996129398f0a684378045785750c0c93c8d2d70",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791548405 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791548405 +0200"
+    },
+    {
+      "old": "f4694b4da874e87b81b8bf68e17b4cd1cc2a5fc8",
+      "tree": "71ea9f95661b960b4e18bf3f1f857452c172c12b",
+      "parents": [
+        "a5e554e1d04ba1109addfc454f7f94723ad0ee76"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "489e104641d20bdd1c49a415ea9bd7ce5633647465c6899d2d5613fc82a95859",
+      "message_sha256": "a5e7c2548c792675082a4e152e08941baae6bb45a9087450eead86836a796cf8",
+      "subject": "Activate durable upload for first-device accounts",
+      "new": "48e9bb814125d4f8e9997095e3f265c01cceca5b",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791550039 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791550039 +0200"
+    },
+    {
+      "old": "3403533039abf1092ded9085d09be15298202215",
+      "tree": "1a3ba584acd43a83a16495fd03c977935834f2c2",
+      "parents": [
+        "f4694b4da874e87b81b8bf68e17b4cd1cc2a5fc8"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "19611455168cd3329559541fbfdd1ca54543c0dee4b40eb9fa8f1bf5d8cfa9e0",
+      "message_sha256": "8e4f3e941d2eea2a0bb6d4fbf7a38fa35d6a7bd54cc24d89f617ff2ab22b00cc",
+      "subject": "Upload first-device writing and preserve accepted history through pairing",
+      "new": "aff8ce89238009b2bf3d8767d1d64eb5394cd43f",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791550993 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791550993 +0200"
+    },
+    {
+      "old": "6eaf98f31380c9362c223e148fc19670affcabef",
+      "tree": "0edfe8c7d9776a4b632551f348725afa19d5827c",
+      "parents": [
+        "3403533039abf1092ded9085d09be15298202215"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "a95bc4e6cbcbabc613be8316c7bd079d5896b64c4146288eab35fb872b76b8be",
+      "message_sha256": "2fb19f3084eba0a6a79a6fe86928e40c071a7ea4a3abecbc900d19fa250206dc",
+      "subject": "Record single-device upload build and serving handoff",
+      "new": "959aa80a5ba53d5f2d0ff0ea693bfd31c2f43a01",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791551056 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791551056 +0200"
+    },
+    {
+      "old": "330b01f807c441a11e0ef33acdc1885164ff613d",
+      "tree": "5e8d9121f1668c498f3a1877bff6e46195bc9101",
+      "parents": [
+        "6eaf98f31380c9362c223e148fc19670affcabef"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "796d75d09399672da6678f0e9bce9d0245d05b82f33934fa276a2debb84d64cd",
+      "message_sha256": "4519232e19859cd0dc9f4ec26c030124882f1719ec43ac0a55a6999fecbba307",
+      "subject": "Record retained single-device upload deployment",
+      "new": "f72fb5ad113f228daba3f0da1db376a3682876ef",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791551403 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791551403 +0200"
+    },
+    {
+      "old": "84c46e0ec13b84fb3882b7361db0dadd66ba8724",
+      "tree": "9fb2628b5a0e18127a1dc51fede0df5f6a534a8b",
+      "parents": [
+        "330b01f807c441a11e0ef33acdc1885164ff613d"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "d461c4d8d26852e1643810353fab1cd5fb87e81d04692777aadace0c6fd8d505",
+      "message_sha256": "89cf7268a805bdc5cb75eadcb3303c5bbedb2b3bbcdaf5ac8faea6243e95647e",
+      "subject": "Add repeatable account history checkpoint primitives",
+      "new": "ec0863c74baaa91b7d597ab7de4c288e11546cc4",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791551989 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791551989 +0200"
+    },
+    {
+      "old": "5afd359820f86c4d06e24b8f8ff456567ddc7dd9",
+      "tree": "f97d25c86a002593457e5a956eb900ad2655b119",
+      "parents": [
+        "84c46e0ec13b84fb3882b7361db0dadd66ba8724"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "d5b3288427ac37eb50cf32b4103ec6c723119794a0b30d17228e8583548af06f",
+      "message_sha256": "d88b12eafdc1d9af44f5abe147063d2535806a660071d29418a662a9786a3956",
+      "subject": "Add durable admitted history checkpoint exchange",
+      "new": "8bc0265b2e3b726184870eb965f10ca74418c7b3",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791552829 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791552829 +0200"
+    },
+    {
+      "old": "fc51a761afdc5659346c07e0186c6b0b1a89f7a1",
+      "tree": "e011da0b99f3ca6743f682158e810631cce7e0d5",
+      "parents": [
+        "5afd359820f86c4d06e24b8f8ff456567ddc7dd9"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "9fdaec55883768fd2d23d6c5c73bd3440bc1701a134ad43af05d4a8602a33248",
+      "message_sha256": "ddeb7ca6204be89940eb78f9bc87e8427a6eab88e42b8f3998383b893073e51f",
+      "subject": "Retain history maintenance attempts and fence cancellation retries",
+      "new": "8bb2d13e46b739dc8523f52e8eb864d5960b30f4",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791553543 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791553543 +0200"
+    },
+    {
+      "old": "573772ba31c9443192a9d59d2dc40777c4f628b6",
+      "tree": "92a81d5aec26e3fb920e3aedb880b7e9ade36bde",
+      "parents": [
+        "fc51a761afdc5659346c07e0186c6b0b1a89f7a1"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "03f58b82b2f8235f9f75c20214692fa4219e5ed45b5b935f8defdc5644fb6052",
+      "message_sha256": "9a22fdebeb0770eab1cdbbd742f91f3acec4a57f23b90dab91ce7560bb83bd7f",
+      "subject": "Add encrypted slot-owned history progress custody",
+      "new": "35228f8b2c9604eee38a204f95be7135141cb831",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791554232 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791554232 +0200"
+    },
+    {
+      "old": "25e9f2e730ce27e956284a965e5687d1b5baf2e9",
+      "tree": "24b0a994aa64e6a0da2a2b2cfdb846a52ee54040",
+      "parents": [
+        "573772ba31c9443192a9d59d2dc40777c4f628b6"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "12fd6f70ddfab86cf0e8a82af6213c510f68ddd7dab99b1312a70b1b834903f0",
+      "message_sha256": "3c2d1ba66e5aa8220f62e04bbff6e27fec77ed1556bdec19e591c960adcea4b8",
+      "subject": "Bind history checkpoints to retained handoff sources",
+      "new": "3b31f5eae3e3495e00f898f12987e0c397d94c41",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791554710 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791554710 +0200"
+    },
+    {
+      "old": "951c5c7f218ce1c8b47ef24e36cf5887ac85d205",
+      "tree": "db97adce2fe267247ddceec218538b109d884e2f",
+      "parents": [
+        "25e9f2e730ce27e956284a965e5687d1b5baf2e9"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "fd9b97fdeda9c6bcae941549209212b512deec7c7d186fdd2e5aea59e08c7556",
+      "message_sha256": "ded239d7460aa4a31ed8161a3f6cf0f9eed378a58ff3c82d50561913b48b8c6a",
+      "subject": "Replay authenticated history cuts and retained handoff sources",
+      "new": "4d3d70c2bfb215eb19396c25fdc115492ff5bbfb",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791555407 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791555407 +0200"
+    },
+    {
+      "old": "19ad0603518daf50db74453d7ffa57884eb1f84e",
+      "tree": "235d81d9b08b40fb5fb1d9952fc390ff3e386668",
+      "parents": [
+        "951c5c7f218ce1c8b47ef24e36cf5887ac85d205"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "f420fcb83a8fd1e4c6a40e53cd6c066a072255fde700c323e415921dad59f61d",
+      "message_sha256": "e553c777792111c62a76e3bfb0f96fd66b1a8d6a1d0ab9b3a1bcd1c528d8c0fd",
+      "subject": "Connect native history maintenance to the explicit Account menu",
+      "new": "0dd914edd85585fb7ea68b19857af324628bea0e",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791556281 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791556281 +0200"
+    },
+    {
+      "old": "a938e344fee078e28311d67abaf6925366c011e1",
+      "tree": "7a2a4ccda85fb8503bafde260318f3d4d50fc186",
+      "parents": [
+        "19ad0603518daf50db74453d7ffa57884eb1f84e"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "46b600d515b23a4af9b28bdc259f206edb42bba55c6dc46c8e99592547974f0c",
+      "message_sha256": "ff819a0542bc4f6d682f965b81c4a3c1afd9d27912b4fcfef511c3331ed8bd43",
+      "subject": "Recover snapshot-only writing from admitted account history",
+      "new": "fcc4e96395933203bd8e05c51e59f3b9ae8d5d76",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791557015 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791557050 +0200"
+    },
+    {
+      "old": "5cfed25cc18a6b1e03a8c5d0f1b1b640d07020bd",
+      "tree": "c9b5e4d10ba56090d41f82b5e192d5988ada791a",
+      "parents": [
+        "a938e344fee078e28311d67abaf6925366c011e1"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "136db075be0e79ae71f91139310ce5192b82df57db23381f8e6aeb12f5810fd1",
+      "message_sha256": "3f940bf6efc013b7c02823d5f7f3ced2b8fd6b5a3ed759c2b447d38b5ed67289",
+      "subject": "Reuse authenticated recovery baselines for current-key history snapshots",
+      "new": "730ecc0f7aed479151ad8ce0cc8573d081e737bc",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791557630 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791557630 +0200"
+    },
+    {
+      "old": "7c7ee8d2d27f5862fb9a1f5c1943670fdecc4af1",
+      "tree": "1bf5470fcd55e6b93d81a7d6cd49c401b5f8e857",
+      "parents": [
+        "5cfed25cc18a6b1e03a8c5d0f1b1b640d07020bd"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "da78a0d9f406867880da3bd528f33b72deb11b2bebb36514a9b90f6fe5390352",
+      "message_sha256": "e982165b269b8a6a30d380f6a99b661a07dc579c8d561901c97134b7f5a433e6",
+      "subject": "Carry admitted history through current-key replacement handoffs",
+      "new": "09661ae0d3c0e38830914716ef6171eefab46835",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791558340 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791558340 +0200"
+    },
+    {
+      "old": "a2190e6416ff9d3edc7fe267c21fe6c8afaaf49b",
+      "tree": "318ba225c6069ec8642970424bcab383b2e483c2",
+      "parents": [
+        "7c7ee8d2d27f5862fb9a1f5c1943670fdecc4af1"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "ced485207c37dfaa0df017808f7b6e06accf519c8ddff888405df6b67728da0a",
+      "message_sha256": "93791bdd7a3ed014cf645f715801ec70b599d9016c9570a2c364678418c9b11a",
+      "subject": "Retain authenticated additive history installation in the account ledger",
+      "new": "b47f3a27d5522b7fc9493db383d3ea3ea0832448",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791559049 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791559049 +0200"
+    },
+    {
+      "old": "aaa929f51c8a3c68b53be7302ab7c8322f033e90",
+      "tree": "efaf82b71c07625a8b9ee0ff4d6de96134d66860",
+      "parents": [
+        "a2190e6416ff9d3edc7fe267c21fe6c8afaaf49b"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "5eecd87ddd5ec97fe9201d9dcbb3f840c90084798fd35c861fe50ab79a212a63",
+      "message_sha256": "367a0909b88edb86778e2b6003662ac772567c5773f38e699c2fbf417cbbd2c3",
+      "subject": "Install admitted history through the ordered account editor",
+      "new": "7d9d952293248921993218c2ea18ffaa1d05e0fa",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791559795 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791559795 +0200"
+    },
+    {
+      "old": "4181ed6e792728027efb8aace1d191784b8dfc84",
+      "tree": "782b1ac1dab98fbe05294ee7350d0858ba000fa0",
+      "parents": [
+        "aaa929f51c8a3c68b53be7302ab7c8322f033e90"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "647c755ef48876810f1a91bb5141454c6458ade05f53147608e52a32e1a46716",
+      "message_sha256": "29fc93b75ec14bddc0af479efb041bdd071bdc780ef6cccdee9eb924e3d19069",
+      "subject": "Install authenticated history receive cuts without losing local originals",
+      "new": "d2617ad5e7afe0883c7680a3a3b3916940084ec9",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791563683 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791563683 +0200"
+    },
+    {
+      "old": "40ed3c49d6042efa3c6f99158c94db919737d71a",
+      "tree": "8d1ec31a042fc5f5df1fd82f25ce1ba2dcac3c7b",
+      "parents": [
+        "4181ed6e792728027efb8aace1d191784b8dfc84"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "4cf4637bd45c5d7c2554bc91031da5b4a9e7f08b3416e6a75c1cd75e0ad9ed48",
+      "message_sha256": "f24a7c89da4808478104abc090cc2ae8f126f9c5ed2b7443ae5f070cb9c9fbdb",
+      "subject": "Carry admitted history through generation-one handoff readers",
+      "new": "673c9fa8accb7dfeee84deb085fc4c751069e635",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791564886 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791564886 +0200"
+    },
+    {
+      "old": "95433108cf6238f29e1c66ef3ac1f7c678f06526",
+      "tree": "1ba54491120e841312296efc953fe4845043b5b3",
+      "parents": [
+        "40ed3c49d6042efa3c6f99158c94db919737d71a"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "f060472f191afa886b62aaa6867fce3a078d0349a1544bd02928782b7a1596af",
+      "message_sha256": "d164d5c77e1a0763b7de280352a237b80ac753b9a046ebc85a84efc2c8348fdb",
+      "subject": "Prune covered service ciphertext while preserving witnessed decisions",
+      "new": "5e47a043aa2343bb133934a9a54705d25528b522",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791565983 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791565983 +0200"
+    },
+    {
+      "old": "776c9f5237311cdc9b44985ba4a96cf41688883e",
+      "tree": "a75af761b38c84bdcf0a9908c0637703c6fd94c5",
+      "parents": [
+        "95433108cf6238f29e1c66ef3ac1f7c678f06526"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "2a59f26dbfae3051f811095e214595b17f1a3d7a1ebd63196d03cf9095829c79",
+      "message_sha256": "be2465e8c8bd232abfb0cd80dea9800f1bfe16ef26497250c99407d4ff11db48",
+      "subject": "Record retained history upgrade and publication handoff",
+      "new": "3ee854ba2917caf9ed0a5935825f2ec2b8c69925",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791566394 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791566394 +0200"
+    },
+    {
+      "old": "37795ea6e1eff4d5e9073a08cb45b2b2c27b2453",
+      "tree": "0acb2afeeb42b910525448a722fbc857ca2ea620",
+      "parents": [
+        "776c9f5237311cdc9b44985ba4a96cf41688883e"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "d394e33442e7ea23fff839c6ace97a5f21ecda6fc1f2dfb5bd84848b209182db",
+      "message_sha256": "d96dc2a71ac7f854d99d30488d01d942cde2bf332f9f27908ef597a4b0ac16e3",
+      "subject": "Record first public deployment and backup policy",
+      "new": "be2b49bcde6753b200b64f349ba55814cea2bcad",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791578470 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791578470 +0200"
+    },
+    {
+      "old": "a4473d5ec7a058cd08a9a9acd92b232dfe0a79b1",
+      "tree": "0acb2afeeb42b910525448a722fbc857ca2ea620",
+      "parents": [
+        "c61ad005e1039d42c05edbc658bd52724434b02b",
+        "37795ea6e1eff4d5e9073a08cb45b2b2c27b2453"
+      ],
+      "originally_signed": true,
+      "raw_sha256": "0d387df08c20201a0b9f138de9f492fb89abba2262420055fda8104256540c2a",
+      "message_sha256": "4a9c8823c49521206ba8b71a1f588f903a59afb466de566718e1ca1f5172d423",
+      "subject": "Merge encrypted account application and deployment plan",
+      "new": "15438b61e60e93ea0cbdab5b7455b1e75fd5df23",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791578506 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791578506 +0200"
+    },
+    {
+      "old": "73a1d8817b285f5625ca3d31992c314d27797250",
+      "tree": "f836e3aef7002708730281bf749fa3d3ae6b14e0",
+      "parents": [
+        "a4473d5ec7a058cd08a9a9acd92b232dfe0a79b1"
+      ],
+      "originally_signed": false,
+      "raw_sha256": "d09ed96b798ff4aa421774ffc63a5d94f56204c3b8e3b994fe5c78782e09db68",
+      "message_sha256": "6a3aae86d538c025722a161522575c96e7b9e5a937f3d64ece03d2bd9323dffe",
+      "subject": "Separate automatic application builds from paused validation",
+      "new": "826bb0068e76da32087ff6950e5465eda5dbe19c",
+      "verified": true,
+      "author": "Thomas Ingalls <thomasingalls@gmail.com> 1791578780 +0200",
+      "committer": "Thomas Ingalls <thomasingalls@gmail.com> 1791578780 +0200"
+    }
+  ]
+}
