@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { credentials, restoreAuthenticator, add, pairedEditors, openSaved } from './devices';
 import { startService, stopService } from './server';
-import { pending, compared, unlock } from '../device-enrollment/helpers';
+import { pending, compared, unlock, createdAccount } from '../device-enrollment/helpers';
 
 test('packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again', async ({
   page,
@@ -190,6 +190,67 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
   } finally {
     await subsequent.close();
     await prior?.other.close();
+    await replacement.close();
+    await stopService(service);
+  }
+});
+
+test('a never-paired account recovers and admits its next device without an original handoff checkpoint', async ({
+  page,
+  browser,
+}, info) => {
+  test.setTimeout(120000);
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  const replacement = await browser.newContext();
+  const later = await browser.newContext();
+  const next = await replacement.newPage();
+  const joining = await later.newPage();
+  try {
+    const first = await createdAccount(page);
+    const saved = await credentials(first.auth);
+    await add(page, 'Never uploaded original writing');
+    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await next.goto('/accounts');
+    const auth = await restoreAuthenticator(next, saved);
+    await next.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await next
+      .getByRole('button', { name: 'Recover with a saved recovery code', exact: true })
+      .click();
+    await next.getByRole('button', { name: 'Use account passkey', exact: true }).click();
+    await next.getByLabel('Recovery code', { exact: true }).fill(first.recovery);
+    await next.getByRole('button', { name: 'Continue with recovery code', exact: true }).click();
+    const code = (await next.getByLabel('Generated device-lock code').textContent())!;
+    await next.getByRole('button', { name: 'I saved my device-lock code' }).click();
+    await next.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await next.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+    await next
+      .getByRole('button', {
+        name: 'Recover on this device and disconnect the previous devices',
+        exact: true,
+      })
+      .click();
+    await expect(next.locator('.shell')).toBeVisible({ timeout: 30000 });
+    await expect(next.locator('.shell')).not.toContainText('Never uploaded original writing');
+    const sent = next.waitForResponse(
+      (r) => r.url().endsWith('/account/delivery/submit') && r.ok(),
+    );
+    await add(next, 'Writing after first-device-only recovery');
+    await sent;
+    await next.getByRole('button', { name: 'Devices', exact: true }).click();
+    await next.getByRole('button', { name: 'Connect another device', exact: true }).click();
+    await unlock(next, code);
+    await pending(joining, await next.getByLabel('Device invitation link').inputValue(), auth);
+    const comparison = await compared(next, joining);
+    await next.getByLabel('Code on the new device').fill(comparison);
+    await next.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+    await joining
+      .getByRole('button', { name: 'Open your writing', exact: true })
+      .click({ timeout: 20000 });
+    await expect(joining.locator('.shell')).toContainText(
+      'Writing after first-device-only recovery',
+    );
+  } finally {
+    await later.close();
     await replacement.close();
     await stopService(service);
   }

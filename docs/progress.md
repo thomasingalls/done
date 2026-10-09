@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: focused first-device-only product check and retained development upgrade
+scope: immutable packaged build and retained development upgrade
 blocks_on: none; live upgrade will require an operator quiet point
 release_validation: paused by operator
 updated: 2026-10-09
@@ -70,8 +70,11 @@ those changes and keeps detached-only edits separate.
 [earlier implementation evidence and checkpoints](./account-lost-device-recovery.md);
 [completion record](./completed.md).
 
-**Remaining in this phase:** finish the first-device-only product check, prepare an immutable build,
-then obtain a quiet point before backing up and upgrading the retained development service from
+**First-device-only check:** recovery, new writing and onward device connection also pass. The check
+found and repaired original-pair assumptions in the relay, comparison parser and public binding lookup.
+[Before/after evidence](./development-evidence/2026-10-09-recovery-early-account.log).
+
+**Remaining in this phase:** prepare an immutable build, then obtain a quiet point before backing up and upgrading the retained development service from
 schema 21 to 24 at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. Personal browsers and that live
 service remain untouched. The operator authorized unsigned intermediate commits and continued work.
 

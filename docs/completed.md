@@ -12053,3 +12053,26 @@ its separate detached slot alongside the newly recovered slot. The focused walkt
 
 This chain began with an originally paired account. A focused first-device-only product check and
 the quiet live development upgrade remain. Release validation stays paused.
+
+
+### 2026-10-09 — First-device-only recovery and onward connection repair
+
+The packaged early-account check reproduced three original-pair assumptions: the comparison relay
+required an original second-device admission, the context parser rejected a legitimate epoch-three
+continuation, and replacement snapshot transport fetched its public passkey binding from an original
+handoff checkpoint that need never exist. Verified recovery history now permits the continuation;
+the parser accepts epoch three while semantic verification still requires the exact parent. When
+there is no original checkpoint, transport signs and independently verifies the original confirmed
+account credential's public binding, checking credential identity/key consistency and recapturing it
+at the final transaction boundary. It does not depend on an expired recovery preparation.
+
+Both packaged walkthroughs pass: the never-paired account recovers, uploads and connects another
+device; the originally paired account recovers, detaches its old devices, enrolls another device,
+exchanges writing, rotates and recovers again. Thirteen affected ceremony/transport regressions and
+one focused early-account service check pass, including forged requests, credential retirement during
+verification, mismatched key data and restart. TypeScript, scoped static checks and packaged build
+pass. [Before/after evidence](./development-evidence/2026-10-09-recovery-early-account.log).
+
+The bounded recovery product implementation is ready for the retained development service. Its quiet
+backup and schema-21-to-24 upgrade remain; personal browsers and the live service are unchanged.
+This does not resume release qualification.

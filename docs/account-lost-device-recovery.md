@@ -27,7 +27,7 @@ code → review “Recover on this device and disconnect the previous devices”
 editor**. Retained recovery progress appears in the chooser. A missing passkey or recovery code must
 show the actual requirement, not redirect to account creation.
 
-## What exists and what does not
+## Starting point
 
 `src/account/recovery.ts` already opens the code-sealed X25519 recovery key, root commitment and
 Ed25519 bootstrap signer. It verifies those private/public key relationships and the sealed root.
@@ -62,17 +62,24 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
    together. A competing parent requires an explicit restart; a lost reply retries the same bytes.
    Extend membership/history verification so the recovered device can manage later devices, not just
    read. Cold-install the recovered writing and resume ordinary send/receive before declaring success.
-4. **Product screens and a real disposable walkthrough — implemented; final early-account check and live upgrade pending.** Review the exact steps with the operator,
+4. **Product screens and disposable walkthroughs — implemented; live upgrade pending.** Review the exact steps with the operator,
    then mount sign-in, saved-code entry, new local device-lock setup, consequences confirmation,
    truthful progress/resume and the editor. Demonstrate recovery with the original contexts closed,
    both at first-device-only state and after rotation. Check wrong factors, interrupted commit/install,
    old-device detachment, and subsequent enrollment/editing. Stop for operator use when the flow works.
 
-Phase 3 must specify how preparation fences are resumed or released, where account/current-head
-eligibility is rechecked around asynchronous verification, and how retained checkpoint/suffix coverage
-is established. A successful signature test settles none of those transaction or content questions.
-The existing history/checkpoint bounds remain; no general history pruning or retention redesign is
-part of this work.
+**Current status:** all four implementation steps and the focused disposable product checks pass.
+First-device-only recovery, interrupted installation/commit retry, previous-device detachment and
+onward enrollment/rotation/recovery are covered by the evidence below. The retained development
+service still needs its quiet backup and schema-21-to-24 upgrade before operator use.
+
+Preparation keeps no persistent writer fence. Commit compares the exact accepted cuts and checkpoint
+publication fingerprint at its final transaction boundary. A stale cut or competing head requires
+fresh preparation; committed exact outcomes remain resolvable after expiry. The existing history
+bounds and 4 MiB recovery output limit remain. General pruning and retention redesign are separate.
+
+The following sections record the successive checkpoints; their “remaining” statements describe
+that point in the implementation, not the current status above.
 
 ## First increment: proof profile and limits
 
@@ -289,3 +296,14 @@ removes it, publishes after rotation and recovers again with the unchanged origi
 second recovery preserves accepted writing while the browser retains its separate detached slot.
 This walkthrough began with an originally paired account. The remaining focused product check covers
 recovery before any second device has been admitted; the quiet live schema-21-to-24 upgrade follows.
+
+
+## Early-account product checkpoint
+
+A real packaged never-paired account now recovers, uploads and admits another device through code
+comparison into the editor. Removed original-pair assumptions from relay eligibility, the comparison
+epoch parser and public binding lookup. Exact verified history, candidate signatures, credential key
+consistency and final transaction checks remain required. Both full packaged journeys and focused
+authority-boundary regressions pass.
+[Evidence](./development-evidence/2026-10-09-recovery-early-account.log). Only the quiet retained-service
+upgrade and operator use remain in this bounded phase.

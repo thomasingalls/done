@@ -14,7 +14,7 @@ export async function authenticator(page: Page) {
   });
   return { cdp, authenticatorId };
 }
-export async function account(page: Page, beforeInvite?: () => Promise<'invite' | void>) {
+export async function createdAccount(page: Page) {
   await page.goto('/private/account-setup.html');
   await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
   await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
@@ -32,6 +32,10 @@ export async function account(page: Page, beforeInvite?: () => Promise<'invite' 
   await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
   await page.getByRole('button', { name: 'Finish account setup' }).click();
   await expect(page.locator('.shell')).toBeVisible();
+  return { code, auth, recovery };
+}
+export async function account(page: Page, beforeInvite?: () => Promise<'invite' | void>) {
+  const { code, auth, recovery } = await createdAccount(page);
   const compose = page.locator('.day-panel[data-active="true"] .compose-field');
   await compose.fill('Keep the first device writing');
   await compose.press('Enter');

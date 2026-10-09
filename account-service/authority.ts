@@ -663,7 +663,10 @@ export class PrivateAuthority {
     input: unknown,
     authorize?: OperationAuthorization,
   ) {
-    return core.exchangeReplacementCheckpoint(input, this.#deliveryIssuer(authorize));
+    return core.exchangeReplacementCheckpoint(input, {
+      ...this.#deliveryIssuer(authorize),
+      bind: this.#issuer().bind,
+    });
   }
   readInbound(core: AccountCore, input: unknown, authorize?: OperationAuthorization) {
     return core.readInbound(input, this.#deliveryIssuer(authorize));

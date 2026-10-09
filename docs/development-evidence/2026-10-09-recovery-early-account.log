@@ -1,0 +1,111 @@
+Focused early-account recovery/onward-enrollment repair, 2026-10-09.
+
+Before: the packaged never-paired path recovered and uploaded, but onward comparison failed.
+
+Running 1 test using 1 worker
+
+(node:19031) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/packaged-account/recovery.spec.ts:198:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (23.8s)
+
+
+  1) test/packaged-account/recovery.spec.ts:198:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByLabel('Code on the new device')
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 15000ms
+      - waiting for getByLabel('Code on the new device')
+
+
+       at ../device-enrollment/helpers.ts:100
+
+       98 | }
+       99 | export async function compared(first: Page, second: Page) {
+    > 100 |   await expect(first.getByLabel('Code on the new device')).toBeVisible({ timeout: 15000 });
+          |                                                            ^
+      101 |   await expect(second.getByLabel('Comparison code')).toBeVisible({ timeout: 30000 });
+      102 |   return (await second.getByLabel('Comparison code').textContent())!;
+      103 | }
+        at compared (/Users/thomasingalls/.codex/worktrees/c030/done/test/device-enrollment/helpers.ts:100:60)
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/recovery.spec.ts:243:30
+
+    Error Context: test-results/packaged-account/artifacts/recovery-a-never-paired-ac-a5310-original-handoff-checkpoint/error-context.md
+
+  1 failed
+    test/packaged-account/recovery.spec.ts:198:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint
+
+The comparison relay required an original second-device successor; the context parser required
+epoch >=4 despite valid recovered admission at 3. Replacement transport also required the original
+content checkpoint solely for its signed passkey binding. All three assumptions are repaired.
+
+After: both packaged walkthroughs with the rebuilt app:
+
+Running 2 tests using 1 worker
+
+(node:19593) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:6:1 › packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again (1.1m)
+  ✓  2 test/packaged-account/recovery.spec.ts:198:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (17.8s)
+
+  2 passed (1.4m)
+
+Focused service check: forged request, credential retirement during verification, mismatched
+SPKI/WebAuthn key, deleted expired preparation, and stable binding after service restart:
+(node:19434) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19434) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:19434) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ a recovered first device can admit and bind the next connection without an original checkpoint (394.04875ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 916.937042
+
+Affected relay and snapshot-transfer regressions:
+(node:19506) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19506) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ continuation relay preserves the original ceremony and binds restart/retry to the existing approver (2065.511208ms)
+✔ continuation relay preserves the original ceremony and binds restart/retry to the new approver (2048.249292ms)
+✔ replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification (4357.966125ms)
+✔ replacement snapshot HTTP route requires the exact enrollment grant and only hints on its first publication (2140.504958ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11044.750417
+
+Affected context/exchange regressions:
+✔ exchange bytes, both device signatures and final SAS agree independently after preparation expiry (46.852542ms)
+✔ every context leaf is authority-bound or changes the signed attempt, with local custody and held head required (199.621042ms)
+✔ every commitment and reveal leaf is verified; a root signature cannot replace a device signature (19.664459ms)
+✔ exact retries survive JSON key order; another attempt, signed pair, role or nonce does not (14.535042ms)
+✔ closed messages, byte limits and exact fixed deadlines fail before verification (14.4835ms)
+✔ context, local custody, commitments and reveals are captured before async verification (8.737709ms)
+✔ 60 generated attempt IDs/nonces independently bind exact signed messages and reproduce the selected SAS (360.73375ms)
+✔ either certified parent device can compare a continuation code: existing (62.407292ms)
+✔ either certified parent device can compare a continuation code: new (124.898292ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 979.116333
+
+TypeScript project build, scoped lint/format, git diff check and packaged build pass.
+No personal account, retained live service or release-validation campaign was exercised.

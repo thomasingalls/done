@@ -9,6 +9,9 @@ import { recoveryReader } from './read-fixtures.mjs';
 import { verifyMembershipChain } from '../../account-protocol/membershipLocator.ts';
 import { historyMembership } from '../../account-protocol/admissionHistory.ts';
 import { membershipState } from '../../account-protocol/membership.ts';
+import { replacementTransferMessage } from '../../account-protocol/replacementTransfer.ts';
+import { verifyBindingProof } from '../../account-protocol/slot.ts';
+import { ceremonyRequestMessage } from '../../account-protocol/ceremonyRelay.ts';
 const { Y } = client;
 const commit = (x, request) => x.authority.owner.commitRecovery(x.f.core, request);
 test('first-device recovery commits one real replayed checkpoint, finalizes old writing and survives a lost reply', async (t) => {
@@ -154,8 +157,13 @@ test('committed exact retry remains resolvable after preparation expiry; changed
   assert.equal((await commit(x, different)).refusal, 'request-conflict');
 });
 
-test('a recovered first device can begin and admit the next connection without an epoch-three anchor', async (t) => {
-  const x = await ready(t),
+test('a recovered first device can admit and bind the next connection without an original checkpoint', async (t) => {
+  let change;
+  const x = await ready(t, {
+      hook(point, op) {
+        if (point === 'after-verify' && op === 'replacement-checkpoint') change?.();
+      },
+    }),
     prepared = await client.prepareRecoveryCommit(x.input);
   t.after(() => prepared.key.fill(0));
   const result = await commit(x, prepared.request);
@@ -190,8 +198,87 @@ test('a recovered first device can begin and admit the next connection without a
   });
   assert.equal(admission.kind, 'membership-admission', JSON.stringify(admission));
   assert.equal(admission.epoch.epoch, 3);
+  const ceremony = {
+    v: 2,
+    kind: 'ceremony-relay',
+    workspaceId: x.workspace,
+    head: admission.head,
+    preparationId: finished.receipt.context.attemptId,
+    credentialId: entry.input.candidate.credentialId,
+    action: 'read',
+    payload: null,
+    signature: '00'.repeat(64),
+  };
+  ceremony.signature = sign(null, await ceremonyRequestMessage(ceremony), entry.key).toString(
+    'hex',
+  );
+  const poll = (r) => x.authority.owner.relayMembershipCeremony(x.f.core, r);
+  assert.equal(
+    (await poll(ceremony)).ok,
+    true,
+    'a verified continuation needs no original second-device admission',
+  );
+  assert.equal((await poll({ ...ceremony, signature: '00'.repeat(64) })).ok, false);
+  const read = {
+    v: 1,
+    workspaceId: x.workspace,
+    parent: admission.head,
+    preparationId: finished.receipt.context.attemptId,
+    credentialId: x.reader.input.candidate.credentialId,
+    action: 'read',
+    payload: null,
+    signature: '00'.repeat(64),
+  };
+  read.signature = sign(null, await replacementTransferMessage(read), x.reader.nodeSigner).toString(
+    'hex',
+  );
+  const exchange = (input = read) =>
+    x.authority.owner.exchangeReplacementCheckpoint(x.f.core, input);
+  assert.equal(x.f.rows('content_checkpoints').length, 0);
+  // Expired preparation rows are not a durable source of the public account binding.
+  mutate(x, (db) => db.exec('DELETE FROM lost_device_recovery'));
+  const viewed = await exchange();
+  assert.equal(viewed.ok, true, JSON.stringify(viewed));
+  assert.equal(viewed.checkpoint, null);
+  assert.deepEqual(
+    await verifyBindingProof(
+      viewed.binding,
+      x.reader.verified.prepared.base.request,
+      x.reader.verified.prepared.base.receipt,
+      x.authority.pin,
+    ),
+    x.reader.verified.prepared.binding,
+  );
+  assert.equal((await exchange({ ...read, signature: '00'.repeat(64) })).ok, false);
+  const passkey = x.f
+    .rows('credentials')
+    .find((c) => c.id === viewed.binding.stored.binding.credId);
+  change = () => {
+    change = undefined;
+    mutate(x, (db) =>
+      db.prepare("UPDATE credentials SET state='staged' WHERE id=?").run(passkey.id),
+    );
+  };
+  assert.equal(
+    (await exchange()).ok,
+    false,
+    'credential retirement during verification withholds the binding',
+  );
+  mutate(x, (db) =>
+    db.prepare("UPDATE credentials SET state='confirmed' WHERE id=?").run(passkey.id),
+  );
+  mutate(x, (db) =>
+    db
+      .prepare('UPDATE credentials SET spki=? WHERE id=?')
+      .run('302a300506032b6570032100' + 'ff'.repeat(32), passkey.id),
+  );
+  assert.equal((await exchange()).ok, false, 'SPKI must match the actual confirmed WebAuthn key');
+  mutate(x, (db) =>
+    db.prepare('UPDATE credentials SET spki=? WHERE id=?').run(passkey.spki, passkey.id),
+  );
   x.f.restart();
   x.authority.restart();
+  assert.deepEqual(await exchange(), viewed, 'binding is stable across service restart');
   const later = await recoveryReader(x);
   assert.equal(later.verified.prepared.head.epoch, 3);
 });

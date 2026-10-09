@@ -31,6 +31,7 @@ import { readMembershipCheckpoint } from './membershipCheckpoint.ts';
 import {
   exchangeReplacementCheckpoint,
   REPLACEMENT_CHECKPOINT_SCHEMA,
+  type ReplacementCheckpointIssuer,
 } from './replacementCheckpoint.ts';
 import {
   CEREMONY_SCHEMA,
@@ -651,7 +652,7 @@ export class AccountCore {
   readMembershipCheckpoint(input: unknown, issuer: DeliveryIssuer) {
     return readMembershipCheckpoint(this.#db, input, issuer, this.#now, this.#hook);
   }
-  exchangeReplacementCheckpoint(input: unknown, issuer: DeliveryIssuer) {
+  exchangeReplacementCheckpoint(input: unknown, issuer: ReplacementCheckpointIssuer) {
     return exchangeReplacementCheckpoint(this.#db, input, issuer, this.#hook);
   }
   readInbound(input: unknown, issuer: InboundReadIssuer) {

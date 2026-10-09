@@ -167,8 +167,9 @@ export async function relayCeremony(
       const pending = continuation ? await verifyPendingMembership(before.authority, issuer) : null;
       if (pending?.cancellation) return refuse('cancelled');
       const auth = pending?.anchor ?? (await verifyWorkspaceAuthority(before.authority, issuer));
-      if (!auth.successor) return refuse('not-admitted');
-      const preparation = pending?.proof.epoch.preparation ?? auth.successor.epoch.preparation;
+      // A recovered account can admit a continuation without the original two-device successor.
+      if (!pending && !auth.successor) return refuse('not-admitted');
+      const preparation = pending?.proof.epoch.preparation ?? auth.successor!.epoch.preparation;
       if (
         request.v === 2 &&
         (request.head !== pending!.proof.head ||
@@ -183,7 +184,7 @@ export async function relayCeremony(
         ? current.certificate.members.find(
             (m) => m.id === (first?.context.existing.id ?? request.credentialId),
           )
-        : auth.successor.epoch.certified.value.members[0];
+        : auth.successor!.epoch.certified.value.members[0];
       const c = preparation.context.candidate;
       const candidate = { id: c.credentialId, wPub: c.wPub, sPub: c.sPub };
       // Before the approver starts, the authenticated candidate can only read waiting state.
@@ -242,8 +243,8 @@ export async function relayCeremony(
         : await verifyCeremonyContext(
             context,
             { pin: issuer.pin, request: auth.request, receipt: auth.receipt },
-            auth.successor,
-            { epoch: 2, head: auth.successor.head },
+            auth.successor!,
+            { epoch: 2, head: auth.successor!.head },
             { role, ...(role === 'existing' ? existing : candidate) },
             context.createdAt,
           );

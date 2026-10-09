@@ -18,7 +18,12 @@ import { membershipEnabled } from './membershipStore.ts';
 import { requireNoRemoval } from './removalStore.ts';
 import { rethrowAuthorization } from './authorization.ts';
 import { membershipCheckpointRow, retainedCheckpoint } from './membershipCheckpoint.ts';
-import { verifyBindingProof } from '../account-protocol/slot.ts';
+import { verifyBindingProof, type SlotBinding } from '../account-protocol/slot.ts';
+import { validateCredentialKey, type StoredCredential } from './webauthn.ts';
+
+export type ReplacementCheckpointIssuer = DeliveryIssuer & {
+  bind(binding: SlotBinding): Promise<string>;
+};
 
 export const REPLACEMENT_CHECKPOINT_SCHEMA = `CREATE TABLE replacement_checkpoints (
  workspace_id TEXT NOT NULL, preparation_id TEXT NOT NULL, parent TEXT NOT NULL,
@@ -57,7 +62,7 @@ export async function retainedReplacementCheckpoint(
 export async function exchangeReplacementCheckpoint(
   db: DatabaseSync,
   input: unknown,
-  issuer: DeliveryIssuer,
+  issuer: ReplacementCheckpointIssuer,
   hook: DeliveryHook,
 ) {
   const no = (refusal: string) => ({ ok: false as const, refusal });
@@ -68,11 +73,21 @@ export async function exchangeReplacementCheckpoint(
   } catch {
     return no('malformed');
   }
-  const capture = () => ({
-    authority: snapshot(db, request.workspaceId),
-    checkpoint: replacementCheckpointRow(db, request.workspaceId, request.preparationId),
-    original: membershipCheckpointRow(db, request.workspaceId),
-  });
+  const capture = () => {
+    const authority = snapshot(db, request.workspaceId),
+      original = membershipCheckpointRow(db, request.workspaceId);
+    return {
+      authority,
+      checkpoint: replacementCheckpointRow(db, request.workspaceId, request.preparationId),
+      original,
+      credential:
+        !original && authority
+          ? (db
+              .prepare("SELECT * FROM credentials WHERE account_id=? AND state='confirmed'")
+              .get(authority.promotion.account_id) as unknown as StoredCredential | undefined)
+          : undefined,
+    };
+  };
   for (let retry = 0; retry < 4; retry++) {
     try {
       db.exec('BEGIN');
@@ -99,9 +114,41 @@ export async function exchangeReplacementCheckpoint(
         request.signature,
         await replacementTransferMessage(request),
       );
-      // Public, independently signed account/passkey binding. No historical content key is shared.
+      // Recovery can precede any original handoff. Mint the same public binding from the
+      // original confirmed account credential, not from a missing content checkpoint.
+      let rawBinding;
+      if (before.original) rawBinding = retainedCheckpoint(before.original).binding;
+      else {
+        const credential = before.credential;
+        if (
+          !s.recoveries?.length ||
+          !credential ||
+          credential.account_id !== auth.anchor.request.candidate.accountId ||
+          credential.id !== auth.anchor.receipt.activation.context.credentialId ||
+          credential.state !== 'confirmed'
+        )
+          return no('unavailable');
+        validateCredentialKey(credential);
+        const value: SlotBinding = {
+          v: 1,
+          accountId: credential.account_id,
+          principalId: auth.anchor.request.candidate.principalId,
+          rpId: issuer.pin.rpId,
+          epoch: 1,
+          credId: credential.id,
+          publicKey: credential.spki,
+        };
+        rawBinding = {
+          v: 1,
+          kind: 'promotion-slot-binding',
+          requestDigest: auth.anchor.receipt.offer.epoch.requestDigest,
+          epochHead: auth.anchor.receipt.offer.head,
+          stored: { binding: value, bindingSignature: await issuer.bind(value) },
+        };
+      }
+      // Independently verify the issued binding. No historical content key is shared.
       const binding = await verifyBindingProof(
-        retainedCheckpoint(before.original).binding,
+        rawBinding,
         auth.anchor.request,
         auth.anchor.receipt,
         issuer.pin,
@@ -129,7 +176,8 @@ export async function exchangeReplacementCheckpoint(
       if (
         snapshotBytes(current.authority) !== snapshotBytes(s) ||
         !same(current.checkpoint, before.checkpoint) ||
-        !same(current.original, before.original)
+        !same(current.original, before.original) ||
+        !same(current.credential ?? null, before.credential ?? null)
       ) {
         db.exec('ROLLBACK');
         continue;

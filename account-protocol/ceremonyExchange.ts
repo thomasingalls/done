@@ -126,7 +126,7 @@ export function parseCeremonyContext(input: unknown): CeremonyContext {
   ]);
   if (
     !(c['v'] === 1 && c['epoch'] === 2) &&
-    !(c['v'] === 2 && Number.isSafeInteger(c['epoch']) && (c['epoch'] as number) >= 4)
+    !(c['v'] === 2 && Number.isSafeInteger(c['epoch']) && (c['epoch'] as number) >= 3)
   )
     throw Error('Unsupported ceremony authority');
   const existing = participant(c['existing']),
