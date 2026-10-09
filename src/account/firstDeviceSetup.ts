@@ -18,7 +18,6 @@ import { prepareLocalPromotion } from '../crdt/promotionOwner';
 import { preparePromotionGenesis } from '../crdt/promotionGenesis';
 import { admitLocalPromotion } from '../crdt/promotionAdmission';
 import { finishPromotionHandoff } from '../crdt/promotionHandoff';
-import { openOwnedAccountWorkspace } from '../crdt/accountWorkspace';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
 import { withPromotionSlot } from '../crdt/writeSession';
 import { readPromotion } from '../crdt/promotionRecord';
@@ -355,29 +354,27 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
     }
     publish({ kind: 'working', message: 'Opening your workspace…' });
-    const retained = await marker();
-    const open = retained?.catchup
-      ? (options: Parameters<typeof openOwnedAccountWorkspace>[0]) =>
-          openOwnedSyncingAccountWorkspace(options, token)
-      : openOwnedAccountWorkspace;
-    const opened = await open({
-      membershipContinuation: () => input.membershipContinuation === true,
-      slotId: slotId,
-      code,
-      pin,
-      assertPasskey: (request) => {
-        if (state.kind !== 'ready')
-          publish({ kind: 'working', message: 'Use your passkey to unlock' });
-        return assertPasskey(request);
+    const opened = await openOwnedSyncingAccountWorkspace(
+      {
+        membershipContinuation: () => input.membershipContinuation === true,
+        slotId: slotId,
+        code,
+        pin,
+        assertPasskey: (request) => {
+          if (state.kind !== 'ready')
+            publish({ kind: 'working', message: 'Use your passkey to unlock' });
+          return assertPasskey(request);
+        },
+        signal: lifetime.signal,
+        ...(networkLogin ? { networkLogin } : {}),
+        identity: {
+          id: principalId,
+          actor: { kind: 'human', name: 'You', color: '#e0662f' },
+          device: { id: `local:${principalId}`, name: 'This device' },
+        },
       },
-      signal: lifetime.signal,
-      ...(networkLogin ? { networkLogin } : {}),
-      identity: {
-        id: principalId,
-        actor: { kind: 'human', name: 'You', color: '#e0662f' },
-        device: { id: `local:${principalId}`, name: 'This device' },
-      },
-    });
+      token,
+    );
     workspace = opened.workspace;
     devices = opened.devices;
     openedPrincipal = principalId;
@@ -420,9 +417,8 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   };
   const afterRegistration = async () => {
     const retained = await marker();
-    if (retained && (retained.stage === 'handoff-selected' || retained.v === 5 || retained.catchup))
+    if (retained && (retained.stage === 'handoff-selected' || retained.v >= 5))
       return openAccount(retained.source.principalId);
-    if (retained && retained.v > 5) throw Error('This workspace needs its sync startup owner');
     context = retained
       ? {
           principalId: retained.source.principalId,
@@ -815,6 +811,9 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
             assertPasskey,
             bindingTransport: (body) => request('promotion/binding', body),
           });
+          // The slot binding did not exist when setup began. Prepare its combined challenge
+          // now so the first editor-opening assertion also establishes the network login.
+          if (networkLogin) await prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
           await openAccount(selected.principalId);
         } finally {
           recoveryCode = '';

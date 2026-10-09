@@ -1268,6 +1268,115 @@ test('checkpoint publication and second-client admission resume exact bytes acro
   assert.deepEqual((await x.exchange('existing', 'read')).admission, x.admission);
 });
 
+test('first checkpoint binds the nonzero accepted prefix from single-device uploads', async (t) => {
+  const x = await checkpointFixture(t, {
+    async beforeAdmit(x) {
+      assert.equal((await x.call(x.make(1, 'first-device writing'))).kind, 'decision');
+    },
+  });
+  assert.equal(
+    x.checkpoint.heads.find((h) => h.credentialId === x.context.existing.id).position,
+    1,
+  );
+  const altered = structuredClone(x.checkpoint);
+  altered.heads.find((h) => h.position === 1).link = '99'.repeat(32);
+  altered.manifest.headVectorDigest = await checkpointHeadDigest(altered.heads);
+  altered.manifest.signature = signed(x.keys.existing, await manifestMessage(altered.manifest));
+  assert.equal((await x.exchange('existing', 'publish', altered)).ok, false);
+  assert.equal(x.f.rows('content_checkpoints').length, 0);
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  assert.equal((await x.exchange('new', 'admit', x.admission)).ok, true);
+  x.f.restart();
+  x.authority.restart();
+  assert.deepEqual((await x.exchange('new', 'read')).checkpoint, x.checkpoint);
+});
+
+test('certification retains both local ledger cuts when the first device already adopted epoch two', async (t) => {
+  let first;
+  const x = await approved(t, {
+    async beforeAdmit(x) {
+      first = x.make(1, 'before enrollment');
+      assert.equal((await x.call(first)).kind, 'decision');
+    },
+  });
+  const middle = x.make(2, 'before approval', { epoch: 2 });
+  assert.equal((await x.deliveryCall(middle)).kind, 'decision');
+  await x.call(x.approval);
+  await x.transfer('existing', 'deliver', x.delivery);
+  const { certification } = await x.transfer('new', 'install', x.installation);
+  const built = await build({
+    configFile: false,
+    logLevel: 'error',
+    build: {
+      write: false,
+      minify: false,
+      lib: { entry: resolve('test/account-ceremony/content-read-entry.ts'), formats: ['es'] },
+    },
+  });
+  const code = (Array.isArray(built) ? built[0] : built).output.find(
+    (v) => v.type === 'chunk',
+  ).code;
+  const client = await import(
+    'data:text/javascript;base64,' + Buffer.from(code).toString('base64')
+  );
+  const history = await client.verifyCertificationHistory(certification, x.successor, x.base, {
+    epoch: 3,
+    head: certification.head,
+  });
+  const route = {
+    workspace: x.workspace,
+    principal: history.principal,
+    credential: history.credential,
+    epoch: 3,
+    generation: 1,
+    history,
+  };
+  const wires = [first, middle].map((w) => new Uint8Array(envelope(w)));
+  const events = wires.map((wire, i) =>
+    client.encodeSpoolEntry(
+      { type: 'envelope', position: i + 1, attempt: i + 1, wire },
+      { ...route, epoch: i + 1 },
+    ),
+  );
+  const before = await client.extendSpoolWitness(
+    client.emptySpoolWitness(),
+    events[0],
+    crypto.subtle,
+  );
+  const certifiedBefore = await client.extendSpoolWitness(before, events[1], crypto.subtle);
+  const installed = client.parseInstalledSuccessor({
+    artifact: x.successor,
+    certification,
+    before,
+    certifiedBefore,
+  });
+  // This function consumes the already verified spool's envelope and event projections.
+  const spool = { events, positions: wires.map((wire, i) => ({ position: i + 1, wire })) };
+  await client.verifyInstalledSuccessor(spool, route, installed, crypto.subtle);
+  const { certifiedBefore: _cut, ...omitted } = installed;
+  await assert.rejects(
+    client.verifyInstalledSuccessor(spool, route, omitted, crypto.subtle),
+    /boundary/,
+  );
+  await assert.rejects(
+    client.verifyInstalledSuccessor(
+      spool,
+      route,
+      { ...installed, certifiedBefore: { ...certifiedBefore, hash: '99'.repeat(32) } },
+      crypto.subtle,
+    ),
+    /commitment/,
+  );
+  await assert.rejects(
+    client.verifyInstalledSuccessor(
+      { ...spool, positions: spool.positions.slice(1) },
+      route,
+      installed,
+      crypto.subtle,
+    ),
+  );
+});
+
 test('checkpoint exchange checks participant role, signing key and current authority without losing an accepted suffix', async (t) => {
   const x = await checkpointFixture(t);
   assert.equal((await x.exchange('new', 'publish', x.checkpoint)).ok, false);

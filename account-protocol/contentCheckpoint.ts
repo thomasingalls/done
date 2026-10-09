@@ -80,10 +80,17 @@ export function parseContentCheckpoint(input: unknown): ContentCheckpoint {
   const ct = h(r['ct'], r['ct'].length / 2);
   const heads = r['heads'].map((value) => {
     const head = closed(value, ['credentialId', 'position', 'link']);
-    // This catch-up converts a local-only v5 writer. It cannot skip any accepted Account history.
-    if (head['position'] !== 0 || head['link'] !== '00'.repeat(32))
-      throw Error('Catch-up requires an empty accepted history');
-    return { credentialId: h(head['credentialId'], 16), position: 0, link: head['link'] as string };
+    if (
+      !Number.isSafeInteger(head['position']) ||
+      (head['position'] as number) < 0 ||
+      (head['position'] === 0 && head['link'] !== '00'.repeat(32))
+    )
+      throw Error('Invalid checkpoint accepted head');
+    return {
+      credentialId: h(head['credentialId'], 16),
+      position: head['position'] as number,
+      link: h(head['link']),
+    };
   }) as ContentCheckpoint['heads'];
   if (heads[0].credentialId >= heads[1].credentialId) throw Error('Unordered checkpoint heads');
   return {

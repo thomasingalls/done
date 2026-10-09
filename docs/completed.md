@@ -12122,3 +12122,29 @@ after the conversion fence; interruption after one capsule commits; and substitu
 without storage changes. The conversion cases preserve compacted and journal-only writing. TypeScript
 and scoped static checks pass. Product wiring and first handoff with accepted history are next;
 this checkpoint does not change the retained service or resume release validation.
+
+### 2026-10-09 — Packaged single-device upload and first handoff with accepted writing
+
+Account creation/unlock now opens the captured sync owner immediately. Fresh setup prepares its
+combined login/unlock challenge after the slot binding exists, so the existing opening assertion
+also establishes a remembered network login. The first two-device checkpoint now supports a nonzero
+accepted prefix, verified against the source's retained envelopes before committing the checkpoint
+and authority. Journal-only writing is included; an already-installed epoch-two ledger retains both
+exact transition boundaries. An installed admission cannot be replaced by a competing one.
+
+The packaged first-device-only check uploads writing, cold-reopens offline with another edit,
+reconnects, and restores both texts through recovery elsewhere before any pairing. A separate
+packaged journey verifies a nonzero accepted head before initial handoff, second-device reading,
+recovery, detached old copies, subsequent enrollment, rotation and recovery again. The session
+regression also passes notification-driven delivery, API restart/renewal and offline reopening.
+
+Four native activation cases, two affected native successor cases and five focused checkpoint/ledger
+cases pass, including interrupted conversion and false/missing accepted coverage. Final activation
+rerun passes all four after moving actor certification ahead of conversion and reserving worst-case
+header framing. TypeScript, scoped static checks, packaged build, budget and origin isolation pass.
+[Plan and limits](./account-single-device-upload.md);
+[commands and findings](./development-evidence/2026-10-09-single-device-upload.log).
+
+The retained service remains at `049b9a29`, schema 24, pending a fresh operator quiet point. This work
+requires no server schema migration. General checkpoint replacement/pruning, public operations and
+release qualification remain separate; release qualification is still paused.

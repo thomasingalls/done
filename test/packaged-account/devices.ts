@@ -20,9 +20,8 @@ export async function pairedEditors(
         /^(waiting|display)$/,
         { timeout: 15000 },
       );
-      await page
-        .getByRole('button', { name: 'Reconnect sync', exact: true })
-        .click({ timeout: 15000 });
+      // A fresh first-device opening now establishes its remembered login. The
+      // enrollment ceremony resumes it without another passkey prompt.
     }
     const comparison = await compared(page, second);
     await hooks.beforeCompare?.(second);

@@ -42,27 +42,35 @@ that is no longer active.
 
 ---
 
-## Product work: single-device account upload (`L-1`)
+## Product handoff: single-device account upload (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: upload from the first Account device without pairing
-blocks_on: none
+scope: prepare and switch the retained development build
+blocks_on: operator quiet point before server restart
 release_validation: paused by operator
 updated: 2026-10-09
 ```
 
-The operator confirmed the recovery build looks good and selected single-device upload next.
-[Bounded plan](./account-single-device-upload.md): native activation/conversion, product opening and
-first handoff compatibility, then focused offline/restart/recovery and pairing checks.
+**Implemented:** first-device upload without pairing; resumable conversion of old local-only Account
+writing; a remembered login from the existing first-opening assertion; and first handoff covering
+already accepted writing. [Plan and limits](./account-single-device-upload.md).
 
-The retained service remains at build `049b9a29`, schema 24, on the unchanged
-`https://mbp.tail0e0d4.ts.net:8443/`. No personal account or live service is changed while developing.
-Unsigned intermediate commits are authorized. A fresh quiet point is required before replacing the
-live build. Release qualification stays paused.
+**Checked:** native conversion interruptions and authority refusal; accepted-prefix and ledger-boundary
+checks; packaged first-device-only offline/cold-reopen/reconnect/recovery; first pairing with nonzero
+accepted history followed by recovery/rotation; session notifications and service restart.
+[Recorded evidence](./development-evidence/2026-10-09-single-device-upload.log).
+
+**Live state:** the retained service remains build `049b9a29`, account schema 24, authority schema 1,
+at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. No personal account was changed by the tests.
+No server schema change is needed. Prepare the immutable committed build, then obtain a fresh locked/
+closed confirmation before backing up retained state and restarting the two serving processes.
+
+Unsigned intermediate commits are authorized. Checkpoint replacement/pruning and public operations
+remain next product work. Release qualification stays paused.
 
 ---
 

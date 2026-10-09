@@ -61,9 +61,10 @@ export async function activateAccountUpload(task: SessionTask, v: Verified, code
             v: 2,
             workspace_id: v.route.workspace,
             credential_id: v.route.credential,
-            epoch: 1,
-            gen: 1,
-            seq: 1,
+            // Later assignment/epoch adoption must not overflow a near-limit frame.
+            epoch: Number.MAX_SAFE_INTEGER,
+            gen: 0xffffffff,
+            seq: Number.MAX_SAFE_INTEGER,
           },
           { actor_id: source.actor, actor_kind: source.kind, updates: [r.bytes] },
         );

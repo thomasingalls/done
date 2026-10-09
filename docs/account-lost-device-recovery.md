@@ -72,7 +72,8 @@ ever enrolled was the first device. A surviving-device invitation cannot be a hi
 First-device-only recovery, interrupted installation/commit retry, previous-device detachment and
 onward enrollment/rotation/recovery are covered by the evidence below. Build `049b9a29` is now running
 at the unchanged `https://mbp.tail0e0d4.ts.net:8443/` origin after a backed-up schema-21-to-24 upgrade.
-The existing service identity and all retained rows were preserved. The next step is operator use.
+The existing service identity and all retained rows were preserved. The operator confirmed the build
+looks good; the next product work is [single-device account upload](./account-single-device-upload.md).
 
 Preparation keeps no persistent writer fence. Commit compares the exact accepted cuts and checkpoint
 publication fingerprint at its final transaction boundary. A stale cut or competing head requires

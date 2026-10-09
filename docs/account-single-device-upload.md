@@ -32,9 +32,43 @@ unchanged. An old single record exceeding existing network bounds refuses conver
 fence; splitting large historical records is separate work. New edits retain ordinary bounded
 source capture and attribution.
 
-## Remaining scope
+## Product composition and handoff
 
-Connecting another device must still work after upload. The initial checkpoint's accepted heads
-will need to permit nonzero positions, with the source proving their exact retained envelope prefix.
-The receiving device continues to verify/replay the accepted stream; this phase does not prune it.
+Account setup and unlock now open the sync owner directly. After the first slot binding is created,
+setup prepares the combined login/unlock challenge before its existing editor-opening assertion.
+That assertion establishes the remembered network login without adding a credential prompt. Ordinary
+cold unlock retains the existing offline-first behavior and explicit Connect/Reconnect fallback.
+
+The first two-device checkpoint accepts nonzero heads only when they match the authenticated
+certification. Its native producer verifies the complete accepted envelope prefix against its retained
+spool, includes durable journal edits in the snapshot, and commits the checkpoint and new authority
+together. If epoch two was already installed, it retains both exact ledger boundaries. The receiving
+device still verifies and replays the accepted stream from zero; no history is pruned or skipped.
+
+## Focused evidence
+
+- Four native activation cases: direct first-device upload/cold reopen, compacted plus journal-only
+  old writing through renderer death at the fence, interruption after one capsule commit, and actor
+  substitution refused before storage changes.
+- Two existing native successor cases: ledger/counter/source preservation through compaction and
+  restart, plus queued old sources accepted after an epoch transition.
+- Five checkpoint/authority cases: exact publication/admission retry across commit failures, role
+  and current-authority checks, retained schema compatibility, nonzero accepted heads with a false
+  signed-prefix refusal, and both ledger boundaries with omission/tampering refusals.
+- Packaged never-paired account: automatic first-device upload, offline edit, actual tab close,
+  cached offline reopening, reconnection upload, recovery elsewhere containing both texts, then
+  enrolling another device.
+- Packaged session regression: enrollment reuses the remembered login, authenticated notifications,
+  two-way writing, service restart/renewal and offline reopening pass.
+- Packaged original pair: an explicitly nonzero accepted prefix before the first invitation,
+  second-device content, then recovery, detached old copies, further enrollment, rotation and recovery
+  again. These are disposable browser/service checks, not physical-device or release qualification.
+
+The first packaged attempt exposed missing login prewarming during fresh setup: the account opened
+locally but never submitted writing. It timed out waiting for upload. Preparing the combined challenge
+at the new binding boundary repaired it; the same check then passed in 21.3 seconds.
+
+[Recorded commands and evidence](./development-evidence/2026-10-09-single-device-upload.log).
+
 Checkpoint replacement, general pruning, public deployment and release validation remain separate.
+The live service is still build `049b9a29` until the operator supplies a fresh quiet point.

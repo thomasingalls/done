@@ -29,12 +29,15 @@ export interface InstalledSuccessor {
   artifact: AdmissionSuccessor;
   before: SpoolWitness;
   certification?: CertificationSuccessor;
+  /** Present when epoch 2 was installed before the certification ceremony completed. */
+  certifiedBefore?: SpoolWitness;
 }
 export function parseInstalledSuccessor(input: unknown): InstalledSuccessor {
   const r = closed(input, [
       'artifact',
       'before',
       ...(Object.hasOwn(input as object, 'certification') ? ['certification'] : []),
+      ...(Object.hasOwn(input as object, 'certifiedBefore') ? ['certifiedBefore'] : []),
     ]),
     w = closed(r['before'], ['events', 'hash']);
   if (!Number.isSafeInteger(w['events']) || (w['events'] as number) < 0)
@@ -46,15 +49,25 @@ export function parseInstalledSuccessor(input: unknown): InstalledSuccessor {
   const certification = Object.hasOwn(r, 'certification')
     ? parseCertificationSuccessor(r['certification'])
     : undefined;
-  if (
-    certification &&
-    (before.events !== 0 || certification.epoch.heads.some((h) => h.position !== 0))
-  )
-    throw Error('Initial certification installation requires an empty ledger');
+  let certifiedBefore: SpoolWitness | undefined;
+  if (Object.hasOwn(r, 'certifiedBefore')) {
+    const c = closed(r['certifiedBefore'], ['events', 'hash']);
+    unhex(c['hash'], 32);
+    if (
+      !certification ||
+      !Number.isSafeInteger(c['events']) ||
+      (c['events'] as number) < before.events
+    )
+      throw Error('Invalid certification ledger boundary');
+    certifiedBefore = { events: c['events'] as number, hash: c['hash'] as string };
+    if (!certifiedBefore.events && !sameSpoolWitness(certifiedBefore, emptySpoolWitness()))
+      throw Error('Invalid empty certification boundary');
+  }
   return {
     artifact: parseSuccessor(r['artifact']),
     before,
     ...(certification ? { certification } : {}),
+    ...(certifiedBefore ? { certifiedBefore } : {}),
   };
 }
 export async function heldCaptureRoute(
@@ -128,20 +141,35 @@ export async function verifyInstalledSuccessor(
   )
     captureError('Installed authority differs from retained history');
   const cut = installed.before;
-  if (cut.events > spool.events.length) captureError('Pre-adoption ledger is incomplete');
+  const certifiedCut = installed.certifiedBefore;
+  if (
+    cut.events > spool.events.length ||
+    (certifiedCut && certifiedCut.events > spool.events.length)
+  )
+    captureError('Pre-adoption ledger is incomplete');
   let witness = emptySpoolWitness();
+  let certifiedWitness = witness;
   for (const [index, bytes] of spool.events.entries()) {
     const v = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
     const epoch =
       v[0] === 'done/account-inbound/v1'
         ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
         : v[5];
-    if (epoch !== (index < cut.events ? 1 : installed.certification ? 3 : 2))
+    if (
+      epoch !==
+      (index < cut.events
+        ? 1
+        : certifiedCut && index < certifiedCut.events
+          ? 2
+          : installed.certification
+            ? 3
+            : 2)
+    )
       captureError('Ledger crosses installed authority boundary');
-    if (index >= cut.events) continue;
-    const before = witness,
+    if (index >= (certifiedCut?.events ?? cut.events)) continue;
+    const before = certifiedWitness,
       check = () => extendSpoolWitness(before, bytes, subtle);
-    witness = reuse
+    certifiedWitness = reuse
       ? await reuse.memo.check(
           'witness:' + index,
           JSON.stringify(before),
@@ -150,8 +178,11 @@ export async function verifyInstalledSuccessor(
           reuse.current,
         )
       : await check();
+    if (index < cut.events) witness = certifiedWitness;
   }
   if (!sameSpoolWitness(witness, cut)) captureError('Pre-adoption ledger commitment changed');
+  if (certifiedCut && !sameSpoolWitness(certifiedWitness, certifiedCut))
+    captureError('Pre-certification ledger commitment changed');
   const wires = spool.positions.slice(0, history!.boundary.position).map((p) => {
     if (!p.wire) return captureError('Admission prefix requires retained envelopes');
     return p.wire;

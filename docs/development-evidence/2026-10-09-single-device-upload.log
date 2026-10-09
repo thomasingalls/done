@@ -1,0 +1,44 @@
+Single-device account upload — focused development evidence, 2026-10-09
+This is a record of local checks, not release qualification. All service/browser test data disposable.
+
+Native activation checkpoint f4694b4d:
+node --test --test-timeout=90000 test/account-sync/activation.test.mjs
+  Initial run: conversion cases passed; fresh case's old-owner refusal assertion expected the wrong
+  error wording. Adjusted to the actual refusal, Account handoff needs resumption.
+  Fresh upload/cold reopen and two interrupted conversions then passed (3/3, 21.3 s).
+  Actor substitution without storage changes separately passed (1/1, 6.3 s).
+
+Checkpoint / ledger changes:
+node --test --test-timeout=20000 --test-name-pattern='checkpoint publication|checkpoint exchange|schema ten' test/account-ceremony/content-transfer.test.mjs
+  3 passed (2.9 s).
+node --test --test-timeout=20000 --test-name-pattern='first checkpoint binds' test/account-ceremony/content-transfer.test.mjs
+  1 passed (1.0 s): actual nonzero accepted prefix; correctly signed false head refused; restart.
+node --test --test-timeout=20000 --test-name-pattern='certification retains both' test/account-ceremony/content-transfer.test.mjs
+  1 passed (1.1 s): actual epoch-one/two accepted envelopes; changed/omitted cuts and missing coverage refused.
+node --test --test-timeout=90000 --test-name-pattern='installed successor preserves|zero accepted prefix' test/account-successor/owner.test.mjs
+  2 passed (15.9 s).
+
+Packaged application (compiled dist; sessions and membership continuation enabled):
+node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts
+  Initial run: original pairing/recovery passed, but never-paired case timed out waiting for upload.
+  The page remained in the editor with local writing. Fresh setup had no prepared combined login
+  challenge because its slot binding did not exist at initial prewarming. No remembered login meant
+  no submission. Fixed prewarming after slot selection, before the existing opening assertion.
+  Also bounded this test's upload wait and made service cleanup survive browser cleanup errors.
+node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts -g 'never-paired'
+  1 passed (21.3 s). Upload, offline edit, tab close, cached reopen, reconnect, recovery of both texts,
+  then enrollment of another device. No original pairing/catch-up checkpoint exists.
+node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts -g 'packaged recovery resumes'
+  1 passed (1.2 min). Explicit first-device upload before invitation; persisted checkpoint has a
+  nonzero accepted head; second device reads it; recovery, detached copies, later enrollment,
+  rotation and repeated recovery work.
+node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/sessions.spec.ts
+  1 passed (37.1 s). Enrollment reuses first-device login; authenticated SSE, two-way writing,
+  independent service restart/renewal and offline reopening pass.
+
+TypeScript, scoped oxlint/oxfmt, git diff check, Yjs patch check, packaged build, initial-JS budget
+(137.5 kB of 350 kB) and built-origin isolation checks pass.
+The retained :8443 service was not changed by these checks.
+
+Final native activation rerun after pre-conversion actor checks and conservative header bounds:
+  4 passed (24.5 s); TypeScript, scoped static checks and diff check pass.

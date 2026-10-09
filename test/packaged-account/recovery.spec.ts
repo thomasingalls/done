@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { credentials, restoreAuthenticator, add, pairedEditors, openSaved } from './devices';
 import { startService, stopService } from './server';
 import { pending, compared, unlock, createdAccount } from '../device-enrollment/helpers';
+import { DatabaseSync } from 'node:sqlite';
 
 test('packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again', async ({
   page,
@@ -17,8 +18,33 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
   next.setDefaultTimeout(15000);
   let prior: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   try {
-    const pair = await pairedEditors(page, browser, true);
+    const pair = await pairedEditors(page, browser, true, {
+      beforeInvite: async () => {
+        const accepted = page.waitForResponse(
+          (r) => r.url().endsWith('/account/delivery/submit') && r.ok(),
+          { timeout: 15000 },
+        );
+        await add(page, 'Uploaded before the first invitation');
+        await accepted;
+      },
+    });
     prior = pair;
+    const database = new DatabaseSync(info.outputPath('service/account.sqlite'), {
+      readOnly: true,
+    });
+    try {
+      const row = database.prepare('SELECT checkpoint FROM content_checkpoints').get() as {
+        checkpoint: string;
+      };
+      expect(
+        JSON.parse(row.checkpoint).heads.some((h: { position: number }) => h.position > 0),
+      ).toBe(true);
+    } finally {
+      database.close();
+    }
+    await expect(pair.second.locator('.shell')).toContainText(
+      'Uploaded before the first invitation',
+    );
     const recovery = pair.first.recovery;
     const passkeys = await credentials(pair.first.auth);
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
@@ -207,9 +233,31 @@ test('a never-paired account recovers and admits its next device without an orig
   const joining = await later.newPage();
   try {
     const first = await createdAccount(page);
+    await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
+    const uploaded = page.waitForResponse(
+      (r) => r.url().endsWith('/account/delivery/submit') && r.ok(),
+      { timeout: 15000 },
+    );
+    await add(page, 'Uploaded without pairing');
+    await uploaded;
+    await page.context().setOffline(true);
+    await add(page, 'Offline writing before pairing');
     const saved = await credentials(first.auth);
-    await add(page, 'Never uploaded original writing');
+    const firstContext = page.context();
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await page.close();
+    const reopened = await firstContext.newPage();
+    await restoreAuthenticator(reopened, saved);
+    await reopened.goto('/');
+    await openSaved(reopened, first.code);
+    await expect(reopened.locator('.shell')).toContainText('Offline writing before pairing');
+    const resumed = reopened.waitForResponse(
+      (r) => r.url().endsWith('/account/delivery/submit') && r.ok(),
+      { timeout: 15000 },
+    );
+    await firstContext.setOffline(false);
+    await resumed;
+    await reopened.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await next.goto('/accounts');
     const auth = await restoreAuthenticator(next, saved);
     await next.getByRole('button', { name: 'Use another account', exact: true }).click();
@@ -230,7 +278,8 @@ test('a never-paired account recovers and admits its next device without an orig
       })
       .click();
     await expect(next.locator('.shell')).toBeVisible({ timeout: 30000 });
-    await expect(next.locator('.shell')).not.toContainText('Never uploaded original writing');
+    await expect(next.locator('.shell')).toContainText('Uploaded without pairing');
+    await expect(next.locator('.shell')).toContainText('Offline writing before pairing');
     const sent = next.waitForResponse(
       (r) => r.url().endsWith('/account/delivery/submit') && r.ok(),
     );
@@ -250,8 +299,10 @@ test('a never-paired account recovers and admits its next device without an orig
       'Writing after first-device-only recovery',
     );
   } finally {
-    await later.close();
-    await replacement.close();
-    await stopService(service);
+    try {
+      await Promise.allSettled([later.close(), replacement.close()]);
+    } finally {
+      await stopService(service);
+    }
   }
 });

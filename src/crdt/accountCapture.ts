@@ -115,6 +115,19 @@ export async function openAccountCaptureOwner(
           throw Error('Account upload conversion must finish before editing');
         if (principalId !== undefined && v.account.principalId !== principalId)
           throw Error('Account actor identity changed');
+        const certified = v.marker.genesis!.actors;
+        if (
+          !certified.some(
+            (a) =>
+              a.id === v.route.principal &&
+              a.kind === 'human' &&
+              a.credential === v.route.credential,
+          ) ||
+          !certified.some(
+            (a) => a.id === 'system' && a.kind === 'system' && a.credential === v.route.credential,
+          )
+        )
+          throw Error('Capture needs certified human and system actors');
         if (extension?.version === 9) v = await activateAccountUpload(task, v, options.code);
         if (!extension && v.marker.v >= 7) throw Error('Account requires the spool owner');
         if (
@@ -133,17 +146,6 @@ export async function openAccountCaptureOwner(
           throw Error('Account actor identity changed');
         route = v.route;
         account = v.account;
-        const certified = v.marker.genesis!.actors;
-        if (
-          !certified.some(
-            (a) =>
-              a.id === route.principal && a.kind === 'human' && a.credential === route.credential,
-          ) ||
-          !certified.some(
-            (a) => a.id === 'system' && a.kind === 'system' && a.credential === route.credential,
-          )
-        )
-          throw Error('Capture needs certified human and system actors');
         owner = prepareAccountCustody(
           {
             slotId: options.slotId,

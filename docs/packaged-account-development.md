@@ -3,10 +3,11 @@
 2026-10-07. The operator approved compiled account serving, cold offline reopening and update
 continuity, with signed intermediate commits. Release validation remains paused.
 
-**Current retained installation:** lifecycle build `ea120109`, schema 21, same `:8443` origin and pin.
-Both network sessions and membership continuation are enabled. Use the lifecycle-cutover commands at
-the end; earlier serving checkpoints are historical. A fresh disposable desktop-pair walkthrough now
-passes on the retained service; existing personal-browser update uptake remains unclaimed.
+**Current retained installation:** recovery build `049b9a29`, account schema 24, authority schema 1,
+same `:8443` origin and pin. Both network sessions and membership continuation are enabled. The
+operator confirmed the recovered product build opens correctly. [Recovery upgrade record](./account-lost-device-recovery.md)
+and [single-device upload work](./account-single-device-upload.md) are the current checkpoints;
+earlier serving/lifecycle commands below record historical deployments.
 
 ## Serving and access
 
