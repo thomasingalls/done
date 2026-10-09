@@ -1,3 +1,4 @@
+import { RECOVERY_SUCCESSOR_SCHEMA } from './recoveryStore.ts';
 import {
   LostDeviceRecovery,
   LOST_RECOVERY_SCHEMA,
@@ -219,6 +220,7 @@ export class AccountCore {
       upgradeFromV19?: boolean;
       upgradeFromV20?: boolean;
       upgradeFromV21?: boolean;
+      upgradeFromV22?: boolean;
       /** Private integration gate; default hosts must not expose continuation routes. */
       membershipContinuation?: boolean;
       sessions?: SessionConfiguration;
@@ -260,7 +262,13 @@ export class AccountCore {
         this.#db.prepare('INSERT INTO policy VALUES (1,?)').run(canonical(this.#policy));
       } else if (
         version !== 11 &&
-        !(version === 22 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(version === 23 && instrumentation.sessions && instrumentation.membershipContinuation) &&
+        !(
+          version === 22 &&
+          instrumentation.sessions &&
+          instrumentation.membershipContinuation &&
+          instrumentation.upgradeFromV22
+        ) &&
         !(
           version === 21 &&
           instrumentation.sessions &&
@@ -429,6 +437,44 @@ export class AccountCore {
             this.#db.exec(LOST_RECOVERY_SCHEMA);
             this.#db.exec('PRAGMA user_version=22;');
           }
+          if (version < 23) {
+            // Rebuild together with the referencing tables; preserve every historical row and FK.
+            for (const table of [
+              'membership_ceremonies',
+              'membership_transfers',
+              'membership_cancellations',
+              'replacement_checkpoints',
+            ]) {
+              this.#db.exec(
+                `CREATE TEMP TABLE upgrade_${table} AS SELECT * FROM ${table}; DROP TABLE ${table};`,
+              );
+            }
+            this.#db.exec(
+              `CREATE TEMP TABLE upgrade_membership AS SELECT * FROM membership_admissions; DROP TABLE membership_admissions;`,
+            );
+            this.#db.exec(MEMBERSHIP_SCHEMA.replace('CHECK(epoch>=4)', 'CHECK(epoch>=3)'));
+            this.#db.exec(
+              'INSERT INTO membership_admissions SELECT * FROM upgrade_membership; DROP TABLE upgrade_membership;',
+            );
+            this.#db.exec(
+              MEMBERSHIP_CEREMONY_SCHEMA +
+                MEMBERSHIP_TRANSFER_SCHEMA +
+                MEMBERSHIP_CANCELLATION_SCHEMA +
+                REPLACEMENT_CHECKPOINT_SCHEMA,
+            );
+            for (const table of [
+              'membership_ceremonies',
+              'membership_transfers',
+              'membership_cancellations',
+              'replacement_checkpoints',
+            ]) {
+              this.#db.exec(
+                `INSERT INTO ${table} SELECT * FROM upgrade_${table}; DROP TABLE upgrade_${table};`,
+              );
+            }
+            this.#db.exec(RECOVERY_SUCCESSOR_SCHEMA);
+            this.#db.exec('PRAGMA user_version=23;');
+          }
           enableMembershipStore(this.#db);
         }
         this.#sessions = new AccountSessions(
@@ -532,6 +578,11 @@ export class AccountCore {
     );
   }
 
+  commitRecovery(input: unknown, issuer: LostRecoveryIssuer) {
+    return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).commit(
+      input,
+    );
+  }
   readRecovery(input: unknown, issuer: LostRecoveryIssuer) {
     return new LostDeviceRecovery(this.#db, this.#policy, issuer, this.#now, this.#hook).read(
       input,

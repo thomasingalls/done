@@ -309,7 +309,7 @@ export class EnrollmentPreparation {
           !auth ||
           auth.a.head !== candidate.head ||
           auth.a.lineage !== candidate.lineageId ||
-          (auth.a.tip !== 1 && auth.a.tip < 3)
+          (auth.a.tip !== 1 && auth.a.tip < 3 && !auth.history)
         )
           return refuse('unavailable');
         if (auth.members.some((m) => m.id === candidate.credentialId))
@@ -323,7 +323,7 @@ export class EnrollmentPreparation {
               ? this.view(winner, current)
               : refuse('request-conflict');
           if (current?.token !== snapshot!.token) return refuse('unavailable');
-          if (auth.a.tip >= 3 && this.pendingConnection(candidate.workspaceId, current.token))
+          if (auth.a.tip !== 1 && this.pendingConnection(candidate.workspaceId, current.token))
             return refuse('connection-in-progress');
           if (
             this.db

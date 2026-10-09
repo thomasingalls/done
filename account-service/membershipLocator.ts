@@ -1,3 +1,4 @@
+import { parseRecoverySuccessor } from '../account-protocol/recoveryTransition.ts';
 /** Private continuation locators. Returned proof chains do not grant keys or install client state. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same, json, verifySignature } from '../account-protocol/admission.ts';
@@ -64,6 +65,7 @@ export function membershipProofChain(s: WorkspaceAuthoritySnapshot) {
     certification: s.transfer?.artifact ? JSON.parse(s.transfer.artifact) : null,
     continuations: [
       ...continuations,
+      ...(s.recoveries ?? []).map((r) => parseRecoverySuccessor(JSON.parse(r.artifact))),
       ...(s.rotations ?? []).map((r) => parseMembershipRotation(JSON.parse(r.artifact))),
     ].sort((a, b) => a.epoch.epoch - b.epoch.epoch),
   });

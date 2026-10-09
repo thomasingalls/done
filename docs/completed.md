@@ -11877,3 +11877,28 @@ Node signing/framing, and reject substituted factors, omitted/mutated cuts and c
 [Output](./development-evidence/2026-10-09-recovery-transition.log). No live service changes or release
 qualification. Atomic service commit, durable local installation and approved product screens remain
 the active recovery work.
+
+
+### 2026-10-09 — Atomic recovery service commit and retained exact outcome
+
+Recovery now prepares a genuinely cold-replayed encrypted checkpoint, fresh generation key and
+new-device/recovery wraps, then signs one exact intent. The service verifies both factors and the
+fresh account attempt, authenticates every historical/current publisher ledger, and compares the
+exact replay cut and authority snapshot again in the final write transaction. Accepted appends after
+replay refuse; a changed membership requires fresh preparation. No persistent writer fence is added.
+The transaction retains the checkpoint, successor, old-writer finalizations and predecessor witnesses
+together with the current pointer. Exact committed retries survive restart and preparation expiry;
+changed bytes cannot replace the outcome. Old-device submission refuses, while a recovered device
+can submit under the new key and admit another connection even after first-device-only recovery.
+
+Schema 23 adds immutable recovery outcomes/checkpoints and rebuilds the referencing membership
+tables together to permit the genuine epoch-three admission following epoch-two recovery. The explicit
+offline upgrade preserves rows and foreign keys; the live schema-21 service remains unchanged. The
+session host exposes the separately authorized commit route and reconciles existing subscriptions
+after it settles. Preparation/read support later recovery generations and historical finalized writers.
+
+38 focused recovery cases, 12 rotated-history/historical-upgrade cases and four HTTP-host checks pass.
+TypeScript, scoped lint/format and diff checks pass.
+[Output](./development-evidence/2026-10-09-recovery-commit.log). This is not browser installation or a
+completed product flow: candidate custody, retained local installation and approved screens remain.
+Release qualification remains paused.

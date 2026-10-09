@@ -1,3 +1,4 @@
+import { recoveryRows, type RecoveryRow } from './recoveryStore.ts';
 import type {
   VerifiedMembership,
   RotatedRecipientCertificate,
@@ -177,6 +178,7 @@ export interface WorkspaceAuthoritySnapshot {
   membershipCancellations?: MembershipCancellationRow[];
   removalPreparation?: RemovalRow;
   rotations?: RotationRow[];
+  recoveries?: RecoveryRow[];
 }
 export const PUBLISHER_SCHEMA = `
   CREATE TABLE publisher_decisions (
@@ -250,7 +252,8 @@ export function snapshotWorkspaceAuthority(
     (db
       .prepare('SELECT * FROM workspace_successors WHERE workspace_id=?')
       .get(workspace) as unknown as SuccessorRow | undefined) ?? null;
-  if ((promotion.successor_head === null) !== (successor === null))
+  const recoveries = recoveryRows(db, workspace);
+  if ((promotion.successor_head === null) !== (successor === null && !recoveries.length))
     throw Error('Incomplete current authority');
   const transfer =
     (db
@@ -277,6 +280,7 @@ export function snapshotWorkspaceAuthority(
     transfer,
     ...(removalPreparation ? { removalPreparation } : {}),
     ...(rotations.length ? { rotations } : {}),
+    ...(recoveries.length ? { recoveries } : {}),
     ...(continuations.length ? { continuations } : {}),
     ...(membershipTransfers.length ? { membershipTransfers } : {}),
     ...(membershipCancellations.length ? { membershipCancellations } : {}),
@@ -335,6 +339,7 @@ export async function verifyWorkspaceAuthority(
   // Continuation mutation is a private development entry point until general history/transport
   // composition lands. The old 1–3 reader must never silently treat the old anchor as current.
   if (
+    s.recoveries?.length ||
     s.rotations?.length ||
     s.continuations?.length ||
     s.membershipTransfers?.length ||
@@ -513,6 +518,7 @@ export const verifyCurrentWorkspaceAuthority = async (
   issuer: Pick<DeliveryIssuer, 'pin' | 'check'>,
 ): Promise<Authority> => {
   const auth: Authority =
+    s.recoveries?.length ||
     s.rotations?.length ||
     s.continuations?.length ||
     s.membershipTransfers?.length ||

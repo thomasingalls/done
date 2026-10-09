@@ -1,3 +1,4 @@
+import { RECOVERY_COMMIT_LIMIT } from '../account-protocol/recoveryCommit.ts';
 import { RECOVERY_READ_REQUEST_LIMIT } from '../account-protocol/recoveryRead.ts';
 import { LOST_RECOVERY_REQUEST_LIMIT } from '../account-protocol/lostDeviceRecovery.ts';
 /** Session-enabled development composition. Bootstrap proofs never bypass scoped content routes. */
@@ -82,6 +83,17 @@ export function createSessionAccountHandler(
     routes.set('lost-recovery/read', {
       limit: RECOVERY_READ_REQUEST_LIMIT,
       run: (v) => authority.readRecovery(core, v),
+    });
+  if (core.membershipContinuationEnabled)
+    routes.set('lost-recovery/commit', {
+      limit: RECOVERY_COMMIT_LIMIT,
+      run: async (v) => {
+        try {
+          return await authority.commitRecovery(core, v);
+        } finally {
+          notifications?.reconcile();
+        }
+      },
     });
   let active = 0,
     budget = 120,

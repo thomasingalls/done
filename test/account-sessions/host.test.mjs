@@ -71,6 +71,7 @@ test('session host preserves capability-protected bootstrap through restart with
     '/__account-setup/lost-recovery/resume',
     '/__account-setup/lost-recovery/cancel',
     '/__account-setup/lost-recovery/read',
+    '/__account-setup/lost-recovery/commit',
     '/account/membership/v2/admit',
     '/account/membership/v2/ceremony',
     '/account/membership/v2/transfer',
@@ -155,7 +156,7 @@ test('retained schema 11 requires offline opt-in; upgrade preserves pending acco
   );
 });
 
-test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 22', async (t) => {
+test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 23', async (t) => {
   const f = await fixture(t),
     retryKey = fresh();
   const pending = await (
@@ -175,7 +176,7 @@ test('continuation host requires offline opt-in and preserves the account and id
   });
   const upgraded = await upgradePreviewState({ ...f.config, membershipContinuation: true });
   assert.equal(upgraded.from, 14);
-  assert.equal(upgraded.to, 22);
+  assert.equal(upgraded.to, 23);
   assert.equal(accountSchema(join(upgraded.backup, 'account.sqlite')), 14);
   assert.deepEqual(readFileSync(join(f.directory, 'operator.key')), key);
   assert.deepEqual(JSON.parse(readFileSync(join(f.directory, 'pin.json'))), pin);

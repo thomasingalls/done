@@ -248,7 +248,11 @@ test('cancel and expiry during verification cannot leak a preparation', async (t
 test('the offline schema upgrade is explicit and preserves existing rows', async (t) => {
   const x = await ready(t),
     before = unchanged(x);
-  mutate(x, (db) => db.exec('DROP TABLE lost_device_recovery; PRAGMA user_version=21'));
+  mutate(x, (db) =>
+    db.exec(
+      'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; PRAGMA user_version=21',
+    ),
+  );
   assert.throws(
     () =>
       new AccountCore(
@@ -271,7 +275,7 @@ test('the offline schema upgrade is explicit and preserves existing rows', async
   assert.deepEqual(unchanged(x), before);
   assert.equal(
     mutate(x, (db) => db.prepare('PRAGMA user_version').get().user_version),
-    22,
+    23,
   );
 });
 

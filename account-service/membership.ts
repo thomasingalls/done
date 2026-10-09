@@ -1,3 +1,10 @@
+import { retainedRecoveryCheckpoint } from './recoveryStore.ts';
+import { parseRecoverySuccessor } from '../account-protocol/recoveryTransition.ts';
+import {
+  parseRecoveryCheckpoint,
+  recoveryCheckpointDigest,
+  RECOVERY_COMMIT_LIMIT,
+} from '../account-protocol/recoveryCommit.ts';
 import { requireNoRemoval } from './removalStore.ts';
 /** Serial continuation admission against the full verified current membership and publisher history. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -75,10 +82,16 @@ export async function admitMembership(
       ? parseCertificationSuccessor(JSON.parse(root.transfer.artifact))
       : null;
     const snapshots =
-      cert && row
+      root && row
         ? [
             ...new Set([
-              ...cert.epoch.roster.map((m) => m.id),
+              JSON.parse(root.promotion.request).candidate.signer,
+              ...(cert?.epoch.roster.map((m) => m.id) ?? []),
+              ...(root.recoveries ?? []).map(
+                (r) =>
+                  parseRecoverySuccessor(JSON.parse(r.artifact)).epoch.intent.bootstrap
+                    .newCredentialId,
+              ),
               ...(root?.continuations ?? []).map(
                 (r) =>
                   parseMembershipAdmission(JSON.parse(r.artifact)).epoch.preparation.context
@@ -90,6 +103,9 @@ export async function admitMembership(
             .map((id) => snapshot(db, row.workspace_id, id))
         : [];
     return {
+      recoveryCheckpoint: root?.recoveries?.length
+        ? retainedRecoveryCheckpoint(db, row!.workspace_id, root.recoveries.at(-1)!.head)
+        : undefined,
       row,
       root,
       cert,
@@ -106,6 +122,7 @@ export async function admitMembership(
       s.snapshots.map(snapshotBytes),
       s.authorityToken,
       s.checkpoint,
+      s.recoveryCheckpoint,
     ]);
   for (let retry = 0; retry < 4; retry++) {
     let phase: 'storage' | 'verify' | 'commit' = 'storage';
@@ -121,21 +138,39 @@ export async function admitMembership(
       if (!row.receipt || row.stage !== 'prepared') return no('not-prepared');
       const preparation = parseEnrollmentReceipt(JSON.parse(row.receipt));
       if (preparation.receiptId !== request.receiptId) return no('request-conflict');
-      if (preparation.v !== 2 || !root || !cert) return no('unavailable');
+      if (preparation.v !== 2 || !root) return no('unavailable');
       const records = root.continuations ?? [];
       const auth = await verifyCurrentWorkspaceAuthority(root, issuer);
       const base = { pin: issuer.pin, request: auth.request, receipt: auth.receipt };
-      // Keep the original baseline available; replacement-generation snapshots are a separate owner.
-      if (!before.checkpoint) return no('checkpoint-required');
-      if (!auth.successor) return no('unavailable');
-      await verifyContentCheckpoint(retainedCheckpoint(before.checkpoint), {
-        base,
-        successor: auth.successor,
-        certification: cert,
-      });
+      // Recovery carries its own authenticated baseline; it cannot borrow the old epoch-three checkpoint.
+      if (root.recoveries?.length) {
+        const recovery = parseRecoverySuccessor(JSON.parse(root.recoveries.at(-1)!.artifact));
+        if (
+          !before.recoveryCheckpoint ||
+          Buffer.byteLength(before.recoveryCheckpoint) > RECOVERY_COMMIT_LIMIT
+        )
+          return no('checkpoint-required');
+        if (
+          (await recoveryCheckpointDigest(
+            parseRecoveryCheckpoint(JSON.parse(before.recoveryCheckpoint)),
+          )) !== recovery.epoch.intent.checkpointDigest
+        )
+          throw Error('Recovery baseline changed');
+      } else {
+        if (!before.checkpoint) return no('checkpoint-required');
+        if (!auth.successor || !cert) return no('unavailable');
+        await verifyContentCheckpoint(retainedCheckpoint(before.checkpoint), {
+          base,
+          successor: auth.successor,
+          certification: cert,
+        });
+      }
       const parent = auth.history
         ? historyMembership(auth.history)
-        : await verifyMembershipAnchor(base, auth.successor, cert, { epoch: 3, head: cert.head });
+        : cert
+          ? await verifyMembershipAnchor(base, auth.successor, cert, { epoch: 3, head: cert.head })
+          : null;
+      if (!parent) return no('unavailable');
       const current = membershipState(parent);
       const retained = records.find((r) => r.preparation_id === row.id);
       let result = retained ? parseMembershipAdmission(JSON.parse(retained.artifact)) : undefined;

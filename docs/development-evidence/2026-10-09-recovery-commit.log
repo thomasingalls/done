@@ -1,0 +1,110 @@
+Focused recovery commit checks (no release campaign).
+
+Command: node --test --test-timeout=30000 test/account-recovery/commit.test.mjs test/account-recovery/transition.test.mjs test/account-recovery/preparation.test.mjs test/account-recovery/read.test.mjs test/account-recovery/source.test.mjs
+(node:12063) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12063) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:12063) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ first-device recovery commits one real replayed checkpoint, finalizes old writing and survives a lost reply (393.362125ms)
+✔ an accepted append between replay and commit refuses without excluding the writer (196.101834ms)
+✔ commit rollback, cancellation and corrupted checkpoint never leave a partial authority (112.793542ms)
+✔ committed exact retry remains resolvable after preparation expiry; changed bytes cannot remint it (123.099333ms)
+✔ a recovered first device can begin and admit the next connection without an epoch-three anchor (200.492833ms)
+▶ expiry or account changes at the final boundary refuse and leave original authority intact
+  ✔ expired (107.166083ms)
+  ✔ account (110.970084ms)
+  ✔ credential (183.655709ms)
+✔ expiry or account changes at the final boundary refuse and leave original authority intact (402.549ms)
+✔ schema 22 requires an explicit upgrade and preserves every retained account row (105.651917ms)
+(node:12064) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12064) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ fresh discoverable passkey + new-key possession yields a code-verifiable first-device recovery preparation, never membership or login (135.998333ms)
+✔ restart retains exact challenge, nonce and prepared bytes; a different assertion cannot reuse the attempt (109.403667ms)
+✔ old login, enrollment/creation proofs and substituted candidate possession do not authorize recovery (58.7285ms)
+✔ discoverable assertion chooses its own account, never an attacker-supplied workspace; inactive account refuses (47.84125ms)
+✔ before-commit interruption retries without fresh challenge or second preparation (73.264459ms)
+✔ after-commit interruption retries without fresh challenge or second preparation (68.570291ms)
+✔ credential change across verification invalidates finish; counter observations do not (79.78875ms)
+✔ cancel and expiry during verification cannot leak a preparation (54.5695ms)
+✔ the offline schema upgrade is explicit and preserves existing rows (44.581542ms)
+✔ a competing admission invalidates prepared recovery; a fresh attempt includes the pending second-device history (132.568417ms)
+(node:12065) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12065) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ two-factor recovery reads accepted ciphertext in bounded, authenticated pages, including after restart (227.60575ms)
+✔ passkey alone, forged bootstrap, another candidate signature and unsigned read edits cannot read (159.841125ms)
+▶ cancellation, expiry and account changes between verification and the actual read withhold ciphertext
+  ✔ cancel (91.524833ms)
+  ✔ expire (82.622542ms)
+  ✔ account (84.391917ms)
+✔ cancellation, expiry and account changes between verification and the actual read withhold ciphertext (259.26575ms)
+✔ a competing valid membership head invalidates recovery read; corrupt accepted history cannot be hidden (137.031834ms)
+✔ byte-bounded pages make forward progress without truncating or skipping accepted writing (8097.188584ms)
+(node:12066) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12066) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:12066) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ the saved code cold-opens the original admitted snapshot plus accepted edits and returns an exact replay cut (178.826416ms)
+✔ cold replay rejects a wrong saved code and unresolved Yjs dependencies before returning writing (112.499708ms)
+✔ cancellation during a read cannot return decrypted writing; corrupted pages are never applied (116.49475ms)
+✔ empty first-device history works without a certification checkpoint or another device (90.126041ms)
+✔ recovery at epoch 1 excludes every old device and can admit another device (59.36275ms)
+✔ recovery at epoch 2 excludes every old device and can admit another device (45.684166ms)
+✔ recovery at epoch 3 excludes every old device and can admit another device (113.388ms)
+✔ recovery after rotation retains historical final cuts and establishes another key floor (90.223083ms)
+✔ valid service signatures cannot substitute the recovery signer or omit a finalized writer (49.947958ms)
+✔ intent verification captures caller data before crypto and preserves exact retry identity (16.113ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9284.963417
+
+Command: node --test --test-timeout=30000 --test-name-pattern='lost-device recovery|schema' test/account-ceremony/content-transfer.test.mjs
+(node:11982) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11982) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ continuation schema requires explicit offline opt-in and preserves retained session/account rows (224.283083ms)
+✔ private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes (426.090583ms)
+✔ schema ten upgrade preserves the checkpoint, admission and original publisher history (425.897042ms)
+✔ schema nine requires explicit upgrade and retains certified content access (277.131ms)
+✔ schema eight opens only through the explicit offline upgrade, preserving retained attempts (126.800292ms)
+✔ schema-16 pending comparison upgrades explicitly without replacing its messages (529.673208ms)
+✔ schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt (440.290542ms)
+✔ removal schema upgrades only offline from 18 and refuses an older host (203.827583ms)
+✔ rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host (285.358208ms)
+✔ replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows (218.366917ms)
+✔ lost-device recovery verifies rotated history and reads finalized publisher writing without a surviving-device grant (694.4095ms)
+(node:11982) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ lost-device recovery cold-replays removed writing and a later generation using the saved code (1679.361083ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6006.163625
+
+Command: node --test --test-timeout=30000 test/account-sessions/host.test.mjs (loopback permission)
+(node:12087) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12087) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ session host preserves capability-protected bootstrap through restart without exposing shared access (91.194167ms)
+✔ public bootstrap rejects wrong origin, oversized bodies, aliases and invalid attempt capabilities (18.953125ms)
+✔ retained schema 11 requires offline opt-in; upgrade preserves pending account, pin and backup (73.380417ms)
+✔ continuation host requires offline opt-in and preserves the account and identity across schema 14 to 23 (77.731458ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 564.181541
+
+TypeScript, scoped oxlint/oxfmt, git diff --check: passed.

@@ -562,7 +562,7 @@ test('continuation schema requires explicit offline opt-in and preserves retaine
       name,
     );
   assert.deepEqual(db.prepare('SELECT * FROM membership_admissions').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 22);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
   assert.deepEqual(db.prepare('SELECT * FROM membership_ceremonies').all(), []);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
@@ -1137,7 +1137,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
+    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; DROP TABLE membership_ceremonies; PRAGMA user_version=15;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key };
@@ -1161,7 +1161,7 @@ test('private schema-15 admission needs an explicit offline relay upgrade and ke
     db.prepare('SELECT * FROM content_ceremonies').all(),
     x.f.rows('content_ceremonies'),
   );
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 22);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -2084,7 +2084,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
+    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; DROP TABLE membership_transfers; PRAGMA user_version=16;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -2105,7 +2105,7 @@ test('schema-16 pending comparison upgrades explicitly without replacing its mes
     x.f.rows('membership_ceremonies'),
   );
   assert.deepEqual(db.prepare('SELECT * FROM membership_transfers').all(), []);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 22);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
   db.close();
   assert.throws(() => new AccountCore(path, policy, { sessions }), /Unsupported account schema/);
 });
@@ -4285,7 +4285,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   source.close();
   let db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
+    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; DROP TABLE membership_cancellations; PRAGMA user_version=17;',
   );
   db.close();
   const sessions = { pin: x.authority.pin, operatorKey: x.authority.key },
@@ -4301,7 +4301,7 @@ test('schema-17 continuation requires explicit cancellation upgrade and preserve
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 22);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
   assert.deepEqual(
     db.prepare('SELECT * FROM membership_admissions').all(),
     x.f.rows('membership_admissions'),
@@ -4595,7 +4595,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
+    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; ALTER TABLE promotions DROP COLUMN removal_parent; DROP TABLE removal_preparations; PRAGMA user_version=18;',
   );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
@@ -4611,7 +4611,7 @@ test('removal schema upgrades only offline from 18 and refuses an older host', a
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 22);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
   assert.deepEqual(db.prepare('SELECT * FROM removal_preparations').all(), []);
   assert.deepEqual(db.prepare('SELECT * FROM promotions').all(), x.f.rows('promotions'));
   db.close();
@@ -4945,7 +4945,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; PRAGMA user_version=19;',
+    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; DROP TABLE membership_rotations; PRAGMA user_version=19;',
   );
   db.close();
   const policy = { origin: x.authority.pin.origin, rpId: x.authority.pin.rpId },
@@ -4961,7 +4961,7 @@ test('rotation schema explicitly upgrades a retained preparation from 19 without
   });
   upgraded.close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 22);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
   assert.deepEqual(
     db.prepare('SELECT * FROM removal_preparations').all(),
     x.f.rows('removal_preparations'),
@@ -5732,7 +5732,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
   db.close();
   db = new DatabaseSync(path);
   db.exec(
-    'DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; PRAGMA user_version=20;',
+    'DROP TABLE recovery_successors; DROP TABLE lost_device_recovery; DROP TABLE replacement_checkpoints; PRAGMA user_version=20;',
   );
   const tables = db
     .prepare("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name")
@@ -5752,7 +5752,7 @@ test('replacement snapshot schema requires explicit upgrade from 20 and preserve
     upgradeFromV20: true,
   }).close();
   db = new DatabaseSync(path);
-  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 22);
+  assert.equal(db.prepare('PRAGMA user_version').get().user_version, 23);
   for (const [table, original] of rows)
     assert.deepEqual(db.prepare('SELECT * FROM ' + table).all(), original, table);
   assert.deepEqual(db.prepare('SELECT * FROM replacement_checkpoints').all(), []);
@@ -5871,6 +5871,26 @@ test('lost-device recovery cold-replays removed writing and a later generation u
     assert.equal(result.head, committed.rotation.head);
     assert.equal(result.heads.length, 2);
     assert(result.heads.every((h) => h.position === 1));
+    const intent = await client.prepareRecoveryCommit({
+      ...x.input,
+      prepared: reader.verified.prepared,
+      begin: reader.input,
+      bootstrap: reader.bootstrap,
+      sign: async (bytes) =>
+        Buffer.from(await crypto.subtle.sign('Ed25519', reader.signer, bytes)).toString('hex'),
+      read: reader.read,
+    });
+    try {
+      const recovered = await x.authority.owner.commitRecovery(x.f.core, intent.request);
+      assert.equal(recovered.stage, 'committed', JSON.stringify(recovered));
+      assert.equal(recovered.successor.epoch.generation, 3);
+      assert.equal(recovered.successor.epoch.finalizations.length, 1);
+      x.f.restart();
+      x.authority.restart();
+      assert.deepEqual(await x.authority.owner.commitRecovery(x.f.core, intent.request), recovered);
+    } finally {
+      intent.key.fill(0);
+    }
   } finally {
     result.snapshot.fill(0);
     key2.fill(0);

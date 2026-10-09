@@ -188,3 +188,20 @@ the original two-device certification. An absent original certification requires
 as the first continuation. Original content checkpoints still require their actual epoch-three proof;
 a recovery-derived later generation cannot borrow that old baseline. Focused tests establish ordinary
 later admission and repeated recovery through the same verified membership/history machinery.
+
+
+## Atomic service commit checkpoint
+
+`/__account-setup/lost-recovery/commit` now accepts the exact signed intent plus its encrypted
+checkpoint. It checks the fresh account-bound attempt and code/candidate proofs, authenticates every
+ledger named by the replay, and atomically compares all those snapshots before replacing authority.
+Concurrent accepted writing causes refusal and requires a newly replayed/sealed intent. There is no
+persistent fence to strand. A membership change still requires fresh preparation. Committed exact
+outcomes survive the ten-minute preparation expiry; request bytes cannot be substituted on retry.
+
+The immutable successor/checkpoint and final ledger witnesses are schema 23 state. Old devices lose
+current authority; the replacement can publish under the new key and authorize subsequent enrollment.
+The service has no plaintext or recovery code and cannot perform semantic Yjs verification itself;
+`prepareRecoveryCommit` cold-replays before constructing the checkpoint. The native owner must seal
+that result and candidate keys before calling commit. Browser custody/installation, combined remembered
+login, approved screens and the disposable walkthrough remain. The live service is still untouched.

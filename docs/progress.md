@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: recovery successor/history verified; atomic service commit and retained local installation in flight
+scope: atomic recovery service commit verified; browser custody, retained installation and screens in flight
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -95,6 +95,13 @@ real first-admission, pending enrollment or later certification/rotation anchor.
 can authorize a subsequent admission; repeated recovery retains old cuts and advances the key floor.
 37 focused tests/regressions pass. [Output](./development-evidence/2026-10-09-recovery-transition.log).
 Atomic service mutation and lost-reply outcomes are next, followed by native installation and screens.
+
+**Atomic service checkpoint:** schema 23 retains the checkpoint, exact outcome, all-device exclusion
+and generation advance atomically. Stale replay cuts refuse, lost replies resolve after restart/expiry,
+and the recovered writer can submit and authorize later admission. 38 recovery cases, 12 focused
+history/upgrade cases and four HTTP host checks pass.
+[Output](./development-evidence/2026-10-09-recovery-commit.log). Browser custody/installation and screens
+remain; this is not yet a usable recovery journey. Live schema 21 remains unchanged.
 
 ---
 

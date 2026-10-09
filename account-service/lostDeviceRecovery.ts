@@ -1,3 +1,24 @@
+import { retainedRecoveryCheckpoint } from './recoveryStore.ts';
+import {
+  parseRecoveryCommit,
+  recoveryCheckpointDigest,
+  type RecoveryCommitResult,
+} from '../account-protocol/recoveryCommit.ts';
+import {
+  parseRecoverySuccessor,
+  verifyRecoveryIntent,
+  type RecoverySuccessor,
+} from '../account-protocol/recoveryTransition.ts';
+import {
+  historyMembership,
+  verifyEarlyHistory,
+  extendMembershipHistory,
+} from '../account-protocol/admissionHistory.ts';
+import { membershipState } from '../account-protocol/membership.ts';
+import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
+import { parseWitness } from './deliveryWitness.ts';
+import type { AcceptedHead } from '../account-protocol/positionDecision.ts';
+import type { DeliveryIssuer, Snapshot } from './delivery.ts';
 import {
   parseRecoveryRead,
   parseRecoveryReadPage,
@@ -9,7 +30,7 @@ import { digest, hex } from '../account-protocol/recovery.ts';
 import { json } from '../account-protocol/admission.ts';
 import { decodeSubmission } from '../account-protocol/submission.ts';
 import { read, snapshot, snapshotBytes, selectPublisher, census } from './delivery.ts';
-/** Durable, separately purposed account proof for recovery. No membership or content writes. */
+/** Fresh account recovery preparation, reads and an exact atomic membership replacement. */
 import type { DatabaseSync } from 'node:sqlite';
 import { randomBytes } from 'node:crypto';
 import {
@@ -33,7 +54,6 @@ import {
 } from '../account-protocol/lostDeviceRecovery.ts';
 import { verifySignature, same } from '../account-protocol/admission.ts';
 import type { RecoveryHeadAssertion } from '../account-protocol/recoveryBootstrap.ts';
-import type { AuthorityPin } from '../account-protocol/authority.ts';
 import { assertion, type Policy, type StoredCredential } from './webauthn.ts';
 import { canonical, fresh, hash, retryHash, object } from './protocol.ts';
 import { enrollmentSnapshot } from './enrollment.ts';
@@ -50,9 +70,9 @@ export const LOST_RECOVERY_SCHEMA = `CREATE TABLE lost_device_recovery (
  CHECK((proof_hash IS NULL) = (result IS NULL)),
  CHECK((account_id IS NULL) = (result IS NULL)));
  CREATE INDEX lost_recovery_expiry ON lost_device_recovery(expires);`;
-export interface LostRecoveryIssuer {
-  pin: AuthorityPin;
-  check(seal: unknown, id: string, pub: string): void;
+export interface LostRecoveryIssuer extends Pick<DeliveryIssuer, 'pin' | 'check' | 'witness'> {
+  finalize(seal: unknown, id: string, pub: string, value: AcceptedHead): AcceptedHead;
+  successor(value: RecoverySuccessor['epoch']): Promise<RecoverySuccessor>;
   challenge(context: LostRecoveryContext): LostRecoveryChallenge;
   head(body: Omit<RecoveryHeadAssertion, 'signature'>): RecoveryHeadAssertion;
   page(body: Omit<RecoveryReadPage, 'signature'>): Promise<RecoveryReadPage>;
@@ -159,6 +179,247 @@ export class LostDeviceRecovery {
       stage: 'prepared',
       prepared: parseLostRecoveryPrepared(JSON.parse(row.result!)),
     };
+  }
+  async commit(input: unknown): Promise<RecoveryCommitResult> {
+    if (!membershipEnabled(this.db)) return { ok: false, refusal: 'unavailable' };
+    let request;
+    try {
+      request = parseRecoveryCommit(input);
+    } catch {
+      return { ok: false, refusal: 'malformed' };
+    }
+    const no = (
+      refusal: import('../account-protocol/lostDeviceRecovery.ts').LostRecoveryRefusal,
+    ): RecoveryCommitResult => ({ ok: false, refusal });
+    try {
+      const { intent, checkpoint } = request,
+        workspace = intent.head.workspaceId;
+      if ((await recoveryCheckpointDigest(checkpoint)) !== intent.checkpointDigest)
+        return no('invalid-proof');
+      const requestHash = hash(JSON.stringify(request));
+      const saved = this.db
+        .prepare(
+          'SELECT workspace_id,head,artifact,attempt_id,request_hash FROM recovery_successors WHERE retry_hash=?',
+        )
+        .get(retryHash(request.retryKey));
+      if (saved) {
+        if (saved.request_hash !== requestHash || saved.attempt_id !== intent.attemptId)
+          return no('request-conflict');
+        const root = read(this.db, workspace);
+        if (!root) return no('state-changed');
+        await verifyCurrentWorkspaceAuthority(root, this.issuer);
+        const successor = parseRecoverySuccessor(JSON.parse(saved.artifact as string));
+        if (
+          !same(successor.epoch.intent, intent) ||
+          retainedRecoveryCheckpoint(this.db, workspace, saved.head as string) !==
+            JSON.stringify(checkpoint) ||
+          !root.recoveries?.some((r) => r.head === successor.head && r.request_hash === requestHash)
+        )
+          return no('unavailable');
+        this.db.exec('BEGIN');
+        try {
+          if (snapshotBytes(root) !== snapshotBytes(snapshot(this.db, workspace)))
+            return no('state-changed');
+          return { ok: true, stage: 'committed', successor };
+        } finally {
+          this.db.exec('ROLLBACK');
+        }
+      }
+      const row = this.row(request.retryKey);
+      if (!row || row.id !== intent.attemptId) return no('unknown-attempt');
+      if (row.state === 'cancelled') return no('cancelled');
+      if (this.now() >= row.expires) return no('expired');
+      if (row.state !== 'prepared' || !row.result) return no('invalid-proof');
+      const checked = await verifyLostRecoveryPrepared(
+        JSON.parse(row.result),
+        { ...JSON.parse(row.request), retryKey: request.retryKey },
+        this.issuer.pin,
+      );
+      if (
+        row.account_id !== checked.prepared.accountId ||
+        row.workspace_id !== workspace ||
+        !same(checked.prepared.head, intent.head) ||
+        !same(checked.context.candidate, {
+          credentialId: intent.bootstrap.newCredentialId,
+          wPub: intent.bootstrap.newWPub,
+          sPub: intent.bootstrap.newSPub,
+        })
+      )
+        return no('invalid-proof');
+      const history =
+        checked.history &&
+        (checked.prepared.proofs?.certification || checked.prepared.proofs?.continuations.length)
+          ? checked.history!
+          : await verifyEarlyHistory(
+              checked.prepared.base,
+              checked.prepared.proofs?.successor ?? null,
+            );
+      const parent = historyMembership(history),
+        p = membershipState(parent);
+      await verifyRecoveryIntent(intent, parent, checked.context.recovery);
+      // All existing publishers, including finalized historical writers, participate in the CAS.
+      this.db.exec('BEGIN');
+      let root, before;
+      try {
+        root = snapshot(this.db, workspace);
+        before = intent.heads.map((h) => snapshot(this.db, workspace, h.credentialId));
+        if (!this.eligible(row)) return no('state-changed');
+      } finally {
+        this.db.exec('ROLLBACK');
+      }
+      if (!root || before.some((s) => !s)) return no('unavailable');
+      const auth = await verifyCurrentWorkspaceAuthority(root, this.issuer);
+      if (auth.a.head !== p.head || auth.a.tip !== p.epoch || auth.removal)
+        return no('state-changed');
+      const ledgers = [];
+      for (const [i, source] of (before as Snapshot[]).entries()) {
+        const publisher = selectPublisher(auth, intent.heads[i]!.credentialId),
+          ledger = await census(source, publisher);
+        if (
+          !same(intent.heads[i], {
+            credentialId: publisher.credential,
+            position: ledger.through,
+            link: ledger.previous,
+          })
+        )
+          return no('state-changed');
+        const raw = source.publisher ? source.publisherWitness : source.promotion.delivery_witness;
+        ledgers.push({ publisher, ledger, witness: raw ? parseWitness(JSON.parse(raw)) : null });
+      }
+      const finalizations = p.certificate.members.map((m) => {
+        const cut = intent.heads.find((h) => h.credentialId === m.id)!;
+        return this.issuer.finalize(
+          auth.seal,
+          root.promotion.request_digest,
+          p.acceptancePublicKey,
+          {
+            workspace,
+            credential: m.id,
+            position: cut.position,
+            link: cut.link,
+            epoch: p.epoch + 1,
+            final: true,
+            signature: '00'.repeat(64),
+          },
+        );
+      });
+      const epoch: RecoverySuccessor['epoch'] = {
+        v: 1,
+        kind: 'recovery-epoch',
+        workspaceId: workspace,
+        lineageId: p.lineageId,
+        epoch: p.epoch + 1,
+        parent: p.head,
+        generation: p.generation + 1,
+        acceptancePublicKey: p.acceptancePublicKey,
+        intent,
+        recovery: checked.context.recovery,
+        heads: [
+          ...intent.heads,
+          ...p.roster
+            .filter((m) => m.state === 'pending')
+            .map((m) => ({ credentialId: m.id, position: 0, link: '00'.repeat(32) })),
+          { credentialId: intent.bootstrap.newCredentialId, position: 0, link: '00'.repeat(32) },
+        ].sort((a, b) => a.credentialId.localeCompare(b.credentialId)),
+        finalizations,
+      };
+      const successor = parseRecoverySuccessor(await this.issuer.successor(epoch));
+      if (!same(successor.epoch, epoch)) throw Error('Recovery issuer changed intent');
+      await extendMembershipHistory(successor, history);
+      const proofs = checked.prepared.proofs ?? {
+        successor: null,
+        certification: null,
+        continuations: [],
+      };
+      parseMembershipChain({ ...proofs, continuations: [...proofs.continuations, successor] });
+      const closing = ledgers.filter((l) =>
+        p.certificate.members.some((m) => m.id === l.publisher.credential),
+      );
+      const replacements = closing.map(({ publisher, ledger }) => ({
+        credentialId: publisher.credential,
+        witness: ledger.count
+          ? this.issuer.witness(
+              auth.seal,
+              root.promotion.request_digest,
+              p.acceptancePublicKey,
+              { ...publisher.scope, head: successor.head },
+              { events: ledger.count, hash: ledger.commitment },
+            )
+          : null,
+      }));
+      this.hook('after-verify', 'commit-recovery');
+      this.db.exec('BEGIN IMMEDIATE');
+      const current = this.row(request.retryKey);
+      if (
+        !current ||
+        current.state !== 'prepared' ||
+        current.result !== row.result ||
+        this.now() >= row.expires ||
+        !this.eligible(current) ||
+        snapshotBytes(snapshot(this.db, workspace)) !== snapshotBytes(root) ||
+        before.some(
+          (s, i) =>
+            snapshotBytes(s) !==
+            snapshotBytes(snapshot(this.db, workspace, intent.heads[i]!.credentialId)),
+        )
+      ) {
+        this.db.exec('ROLLBACK');
+        return no('state-changed');
+      }
+      this.issuer.check(auth.seal, root.promotion.request_digest, p.acceptancePublicKey);
+      this.db
+        .prepare('INSERT INTO recovery_successors VALUES (?,?,?,?,?,?,?,?,?,?)')
+        .run(
+          workspace,
+          epoch.epoch,
+          p.head,
+          successor.head,
+          JSON.stringify(successor),
+          JSON.stringify(
+            closing.map(({ publisher, witness }) => ({
+              credentialId: publisher.credential,
+              witness,
+            })),
+          ),
+          row.id,
+          retryHash(request.retryKey),
+          requestHash,
+          JSON.stringify(checkpoint),
+        );
+      this.db
+        .prepare('UPDATE promotions SET successor_head=? WHERE account_id=?')
+        .run(successor.head, row.account_id!);
+      for (const r of replacements) {
+        if (r.credentialId === auth.request.candidate.signer)
+          this.db
+            .prepare('UPDATE promotions SET delivery_witness=? WHERE account_id=?')
+            .run(r.witness ? JSON.stringify(r.witness) : null, row.account_id!);
+        else if (r.witness)
+          this.db
+            .prepare(
+              'INSERT INTO publisher_witnesses VALUES (?,?,?) ON CONFLICT(account_id,credential_id) DO UPDATE SET witness=excluded.witness',
+            )
+            .run(row.account_id!, r.credentialId, JSON.stringify(r.witness));
+      }
+      this.hook('before-commit', 'commit-recovery');
+      // Recheck the account/passkey at the commit boundary, after the instrumentation hook.
+      const live = this.snapshot(row.account_id!);
+      if (
+        !live ||
+        credentialHash(live.credential) !== row.credential_hash ||
+        this.now() >= row.expires ||
+        this.row(request.retryKey)?.state !== 'prepared' ||
+        live.base.promotion.successor_head !== successor.head
+      )
+        throw Error('Recovery eligibility changed');
+      this.issuer.check(auth.seal, root.promotion.request_digest, p.acceptancePublicKey);
+      this.db.exec('COMMIT');
+      this.hook('after-commit', 'commit-recovery');
+      return { ok: true, stage: 'committed', successor };
+    } catch {
+      if (this.db.isTransaction) this.db.exec('ROLLBACK');
+      return no('unavailable');
+    }
   }
   async read(input: unknown): Promise<RecoveryReadPage | LostRecoveryResult> {
     if (!membershipEnabled(this.db)) return no('unavailable');
@@ -281,6 +542,12 @@ export class LostDeviceRecovery {
     }
     const op = `lost-recovery-${operation}`;
     try {
+      if (
+        this.db
+          .prepare('SELECT 1 FROM recovery_successors WHERE retry_hash=?')
+          .get(retryHash(request.retryKey))
+      )
+        return no('state-changed');
       const prior = this.row(request.retryKey);
       if (prior) {
         const begin = { ...JSON.parse(prior.request), retryKey: request.retryKey };
@@ -412,15 +679,16 @@ export class LostDeviceRecovery {
           accountId: credential.account_id,
           passkeyId: credential.id,
           base: { pin: this.issuer.pin, request: auth.request, receipt: auth.receipt },
-          proofs: before.base.transfer?.artifact
-            ? membershipProofChain(before.base)
-            : before.base.successor
-              ? {
-                  successor: JSON.parse(before.base.successor.artifact),
-                  certification: null,
-                  continuations: [],
-                }
-              : null,
+          proofs:
+            before.base.transfer?.artifact || before.base.recoveries?.length
+              ? membershipProofChain(before.base)
+              : before.base.successor
+                ? {
+                    successor: JSON.parse(before.base.successor.artifact),
+                    certification: null,
+                    continuations: [],
+                  }
+                : null,
           head: this.issuer.head({
             v: 1,
             workspaceId: auth.a.workspace,

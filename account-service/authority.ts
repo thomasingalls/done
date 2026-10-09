@@ -1,3 +1,4 @@
+import { recoverySuccessorMessage } from '../account-protocol/recoveryTransition.ts';
 import { recoveryReadPageMessage } from '../account-protocol/recoveryRead.ts';
 import {
   lostRecoveryChallengeMessage,
@@ -369,6 +370,9 @@ export class PrivateAuthority {
   promotionBinding(core: AccountCore, input: unknown) {
     return core.promotionBinding(input, this.#issuer());
   }
+  commitRecovery(core: AccountCore, input: unknown) {
+    return core.commitRecovery(input, this.#lostRecoveryIssuer());
+  }
   #lostRecoveryIssuer(): LostRecoveryIssuer {
     const signature = (message: Uint8Array) => {
       if (!this.#key) throw Error('Authority closed');
@@ -377,6 +381,20 @@ export class PrivateAuthority {
     return {
       pin: { ...this.#pin },
       check: (seal, id, pub) => this.#acceptance.check(seal, id, pub),
+      witness: (seal, id, pub, scope, value) =>
+        this.#acceptance.witness(seal, id, pub, scope, value),
+      finalize: (seal, id, pub, value) => this.#acceptance.finalize(seal, id, pub, value),
+      successor: async (epoch) => {
+        const body = {
+          v: 1 as const,
+          kind: 'recovery-successor' as const,
+          epoch,
+          head: '00'.repeat(32),
+          signature: '00'.repeat(64),
+        };
+        const message = await recoverySuccessorMessage(body);
+        return { ...body, head: await digest(message), signature: signature(message) };
+      },
       challenge: (context) => ({
         context,
         signature: signature(lostRecoveryChallengeMessage(context)),

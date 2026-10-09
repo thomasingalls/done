@@ -66,9 +66,11 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
       const wraps = [
         { generation: 1, wrap: original.wraps.find((w) => w.recipient === 'recovery')! },
         ...(prepared.proofs?.continuations ?? []).flatMap((p) =>
-          p.kind === 'membership-rotation'
-            ? [{ generation: p.epoch.generation, wrap: p.epoch.rotation.payload.recoveryWrap }]
-            : [],
+          p.kind === 'recovery-successor'
+            ? [{ generation: p.epoch.generation, wrap: p.epoch.intent.recoveryWrap }]
+            : p.kind === 'membership-rotation'
+              ? [{ generation: p.epoch.generation, wrap: p.epoch.rotation.payload.recoveryWrap }]
+              : [],
         ),
       ];
       if (wraps.length > 128) throw Error('Too many recovery generations');
@@ -119,7 +121,8 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
     for (const m of prepared.proofs?.certification?.epoch.delivery.certificate.members ?? [])
       publishers.add(m.id);
     for (const p of prepared.proofs?.continuations ?? [])
-      if (p.kind === 'membership-certification')
+      if (p.kind === 'recovery-successor') publishers.add(p.epoch.intent.bootstrap.newCredentialId);
+      else if (p.kind === 'membership-certification')
         for (const m of p.epoch.delivery.certificate.members) publishers.add(m.id);
     const heads: { credentialId: string; position: number; link: string }[] = [];
     let events = 0,
