@@ -92,7 +92,7 @@ describe('custody v2 metadata', () => {
       });
     }
   });
-  it('authenticates the replacement initial opener and rejects substitution or invalid framing', async () => {
+  it('authenticates the replacement opener and history progress, refusing substitution or invalid framing', async () => {
     const { root, record } = await make();
     const credential = (role: 'wrapping' | 'signing', id: string) => ({
       role,
@@ -107,6 +107,7 @@ describe('custody v2 metadata', () => {
       envelope: { v: 1, gen: 1, nonce: new Uint8Array(12), ct: new Uint8Array(48) },
       credentials: [credential('wrapping', '44'), credential('signing', '55')],
       seal_reserved: 5,
+      history: { v: 1, sequence: 4, ct: new Uint8Array(24).fill(71) },
       initial_account: {
         generation: 3,
         deliveryHash: 'aa'.repeat(32),
@@ -117,6 +118,15 @@ describe('custody v2 metadata', () => {
     await authenticateRecord(root, parseRecord(signed, scope));
     expect(recordEqual(signed, parseRecord(signed, scope))).toBe(true);
     for (const change of [
+      (r: CustodyRecord) => {
+        delete r.history;
+      },
+      (r: CustodyRecord) => {
+        r.history!.ct[0] = r.history!.ct[0]! ^ 1;
+      },
+      (r: CustodyRecord) => {
+        r.history!.sequence = 3;
+      },
       (r: CustodyRecord) => {
         delete r.initial_account;
       },
@@ -137,6 +147,12 @@ describe('custody v2 metadata', () => {
       change(r);
       await expect(authenticateRecord(root, parseRecord(r, scope))).rejects.toThrow();
     }
+    for (const history of [
+      { ...signed.history!, v: 2 },
+      { ...signed.history!, sequence: 6 },
+      { ...signed.history!, ct: new Uint8Array(15) },
+    ])
+      expect(() => parseRecord({ ...signed, history }, scope)).toThrow();
     for (const initial of [
       { ...signed.initial_account!, generation: 1 },
       { ...signed.initial_account!, generation: 2 ** 32 },

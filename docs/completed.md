@@ -12214,3 +12214,14 @@ Seven focused client checks, ten service checks and thirteen predecessor-upgrade
 TypeScript and scoped lint/format/diff checks pass. Native persistence and replay are the next adapter,
 not claimed by these injected-persistence tests. The live `34035330` installation is unchanged and
 no history is pruned. [History plan](./account-history-management.md). Committed unsigned as authorized.
+
+### 2026-10-09 — Native encrypted history-progress custody
+
+Added a separately encrypted, MAC-covered custody field and a slot-owned history-progress adapter
+for original and joined accounts. Nonce reservations survive interrupted saves; the adapter cannot
+install generation keys or overwrite enrollment/rotation progress. Existing scoped clear owns the
+entire custody record, including this field. Seven custody metadata tests and the focused packaged
+two-device custody/editing check pass. One probe comparison needed normalized field order; a later
+setup timeout passed on unchanged rerun. TypeScript, packaged build and scoped static checks pass.
+[History plan](./account-history-management.md). Native source replay/menu integration and all pruning
+remain ahead. No live switch; unsigned intermediate commit as authorized.

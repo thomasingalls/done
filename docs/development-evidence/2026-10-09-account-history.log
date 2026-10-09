@@ -36,3 +36,16 @@ Client attempts and cancellation fencing:
   TypeScript, scoped oxlint/oxfmt and git diff --check passed.
   Client tests use real service/cryptography, injected persistence, and fresh owner calls after failure.
   Native custody/replay and UI are not yet integrated; no release inventory or broad campaign ran.
+
+Native history progress custody:
+  node_modules/.bin/vitest run test/custodyRecord.test.ts
+  7 passed, 0 failed; 570 ms (metadata cases extended with history field tampering/framing).
+  node_modules/.bin/vite build
+  Passed; 421 modules, 2.52 s. Local dist only; retained serving directory unchanged.
+  node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/membership-custody.spec.ts
+  Final: 1 passed, 21.8 s. Disposable original/joined accounts, injected native custody probe,
+  subsequent live editing/delivery. No personal accounts accessed.
+  Two initial probe failures came from comparing non-normalized JSON field order. Normalizing the
+  saved fixture fixed that check. One later run timed out at 120 s in pairedEditors before the new
+  assertions; its unchanged rerun passed at 21.8 s. No timeout or assertion was relaxed.
+  TypeScript, scoped lint/format and git diff checks passed.

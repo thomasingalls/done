@@ -103,3 +103,24 @@ failed storage, wrong-owner progress, untrusted replies, signed catalog rollback
 stale cancellation and delayed publication. The ten service and thirteen predecessor-upgrade checks
 pass again. The coordinator's test persistence is deliberately an owner seam; native custody, source
 replay and the Account-menu integration remain next, followed by installation/readers and retention.
+
+## Native progress custody checkpoint
+
+A separate encrypted `history` field now holds checkpoint progress in the authenticated custody
+record. It shares the durable seal reservation counter but has a distinct encryption domain; it
+cannot install/release generation keys or change enrollment/rotation progress. Original and joined
+accounts use the same slot-owned compare-and-replace adapter. Existing custody MAC/marker updates
+remain atomic. Older parsers fail closed on the new field. Scoped Local clear already deletes this
+record, so history progress does not add an unclassified database to clear.
+
+The focused packaged two-browser test passes for both owner kinds: save/reopen, interrupted save
+after reservation, no nonce reuse, wrong-owner/stale compare-and-replace refusal, preservation of
+prior enrollment, and subsequent two-way editing. The first probe compared its pre-parser object
+against normalized JSON with different key order; it now compares the saved normalized value. One
+later rerun timed out during the existing device-pairing setup, before the history assertions; the
+unchanged rerun passed in 21.8 seconds. The custody metadata tests also cover field removal, ciphertext
+mutation and malformed reservation/framing. TypeScript, build and scoped static checks pass.
+
+The next source adapter must authenticate every retained enrollment/recovery snapshot as well as
+accepted streams. It must also fence a handoff snapshot published between preparation and admission.
+No menu action, baseline installation or pruning is enabled by the custody adapter itself.

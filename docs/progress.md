@@ -67,8 +67,9 @@ baseline/suffix replacements are exercised. No pruning is enabled by the first i
 Checkpoint primitives and the durable service exchange are committed: exact retry, signed catalog,
 accepted-prefix checks and current membership/grant enforcement have focused passing evidence.
 The retained client coordinator now handles exact retries, catalog rollback and cancellation; service
-tombstones prevent delayed publication from reviving a cancelled attempt. Native custody/replay and
-the operator-selected Account-menu action are next; automatic cadence remains off. Schema 25 remains
+tombstones prevent delayed publication from reviving a cancelled attempt. Native encrypted progress
+custody now passes for original/joined devices, including interrupted reservation and later editing.
+Authenticated source replay and the operator-selected Account-menu action are next; automatic cadence remains off. Schema 25 remains
 development-only until an explicit offline upgrade.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 

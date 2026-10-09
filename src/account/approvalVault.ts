@@ -8,7 +8,12 @@ import {
   type Bytes,
   type SealedCredential,
 } from '../crdt/custodyCrypto';
-import { SEAL_LIMIT, type CustodyRecord, type CustodyScope } from '../crdt/custodyRecord';
+import {
+  SEAL_LIMIT,
+  CUSTODY_PROGRESS_LIMITS,
+  type CustodyRecord,
+  type CustodyScope,
+} from '../crdt/custodyRecord';
 import { openGeneration, type GenerationWrap } from './generationWrap';
 import { unhex } from '../../account-protocol/recovery';
 export interface InstalledContentKey {
@@ -16,7 +21,7 @@ export interface InstalledContentKey {
   ct: string;
 }
 export async function createApprovalVault(options: {
-  channel?: 'approval' | 'rotation';
+  channel?: 'approval' | 'rotation' | 'history';
   slotId: string;
   scope: CustodyScope;
   root: Bytes;
@@ -29,7 +34,11 @@ export async function createApprovalVault(options: {
   const rootId = record().root_id;
   const channel = options.channel ?? 'approval';
   const purpose =
-    channel === 'approval' ? 'done/content-approval-state/v1' : 'done/content-rotation-state/v1';
+    channel === 'approval'
+      ? 'done/content-approval-state/v1'
+      : channel === 'rotation'
+        ? 'done/content-rotation-state/v1'
+        : 'done/history-maintenance-state/v1';
   const installedPurpose =
     channel === 'approval' ? 'done/installed-content-key/v1' : 'done/installed-rotation-key/v1';
   const key = await hkdf(
@@ -46,8 +55,13 @@ export async function createApprovalVault(options: {
     new DataView(b.buffer).setBigUint64(4, BigInt(sequence));
     return b;
   };
-  const incomingKey = () =>
-    hkdf(
+  const requireContentChannel = () => {
+    if (channel === 'history')
+      throw Error('History progress cannot install or release content keys');
+  };
+  const incomingKey = () => {
+    requireContentChannel();
+    return hkdf(
       root,
       new Uint8Array(),
       fields(installedPurpose, slotId, rootId),
@@ -55,6 +69,7 @@ export async function createApprovalVault(options: {
       ['encrypt', 'decrypt'],
       subtle,
     );
+  };
   const incomingAad = (deliveryHash: string) => {
     unhex(deliveryHash, 32);
     return fields(installedPurpose, slotId, rootId, deliveryHash);
@@ -94,10 +109,12 @@ export async function createApprovalVault(options: {
       sPub: hex(credentials[1].publicKey),
     },
     openWrap: async (wrap: GenerationWrap, info: Bytes): Promise<Bytes> => {
+      requireContentChannel();
       const wrapping = await openCredential(scope, root, credentials[0], subtle);
       return openGeneration(wrap, wrapping, credentials[0].publicKey, info, subtle);
     },
     reserveSeals: async (count: number) => {
+      requireContentChannel();
       if (!Number.isSafeInteger(count) || count < 0 || record().seal_reserved + count >= SEAL_LIMIT)
         throw Error('Content key storage limit');
       if (count) await commit({ ...record(), seal_reserved: record().seal_reserved + count });
@@ -111,6 +128,7 @@ export async function createApprovalVault(options: {
       info: Bytes,
       deliveryHash: string,
     ): Promise<InstalledContentKey> => {
+      requireContentChannel();
       const wrapping = await openCredential(scope, root, credentials[0], subtle);
       const content = await openGeneration(wrap, wrapping, credentials[0].publicKey, info, subtle);
       try {
@@ -153,7 +171,7 @@ export async function createApprovalVault(options: {
       const plain = utf8(JSON.stringify(value));
       try {
         if (
-          plain.length > (channel === 'rotation' ? 16 : 80) * 1024 * 1024 - 16 ||
+          plain.length > CUSTODY_PROGRESS_LIMITS[channel] - 16 ||
           record().seal_reserved + 1 >= SEAL_LIMIT
         )
           throw Error('Approval storage limit');

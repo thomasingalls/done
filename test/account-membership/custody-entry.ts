@@ -409,3 +409,105 @@ export async function pendingSlot() {
     db.close();
   }
 }
+
+/** History uses an independent authenticated field and the same durable nonce reservation. */
+export async function historyProgress(kind: Kind, slot: string, code: string) {
+  const { same } = await import('../../account-protocol/admission');
+  const { withHistoryCustody } = await import('../../src/crdt/historyCustody');
+  const { withAccountProgressCustody } = await import('../../src/crdt/accountProgressCustody');
+  const { membershipState } = await import('../../account-protocol/membership');
+  const own = kind === 'promotion' ? withPromotionSlot : withJoinedSlot;
+  const before = await snapshot(kind, slot, code);
+  const saved = await own(
+    slot,
+    code,
+    (task) =>
+      withHistoryCustody(task, kind, slot, code, async (owner) => {
+        check((await owner.load()) === null, 'Unexpected retained history attempt');
+        const p = membershipState(owner.authority);
+        const progress = {
+          v: 1 as const,
+          kind: 'history-maintenance-progress' as const,
+          workspaceId: p.workspaceId,
+          lineageId: p.lineageId,
+          credentialId: owner.credentialId,
+          catalog: null,
+          attempt: null,
+          discard: null,
+        };
+        await owner.replace(null, progress);
+        let refused = false;
+        try {
+          await owner.replace(null, progress);
+        } catch {
+          refused = true;
+        }
+        check(refused, 'Stale history compare-and-replace succeeded');
+        refused = false;
+        try {
+          await owner.replace(progress, { ...progress, credentialId: 'ff'.repeat(16) });
+        } catch {
+          refused = true;
+        }
+        check(refused, 'History progress accepted another owner');
+        return (await owner.load())!;
+      }),
+    signal(),
+  );
+  const after = await snapshot(kind, slot, code);
+  check(
+    before.previous === after.previous &&
+      JSON.stringify(before.current) === JSON.stringify(after.current),
+    'Enrollment progress changed',
+  );
+  check(after.counter === before.counter + 1, 'History reservation changed');
+  await own(
+    slot,
+    code,
+    (task) =>
+      withAccountProgressCustody(task, kind, slot, code, 'history', async (owner) => {
+        let keyAccess = false;
+        try {
+          await owner.vault.reserveSeals(1);
+        } catch {
+          keyAccess = true;
+        }
+        check(keyAccess, 'History progress acquired content-key storage authority');
+        const ct = owner.state.record.history!.ct;
+        check(
+          !new TextDecoder().decode(ct).includes('history-maintenance-progress'),
+          'Progress leaked plaintext',
+        );
+        let visits = 0,
+          refused = false;
+        try {
+          await owner.vault.save({ ...saved, discard: 'aa'.repeat(32) }, () => {
+            if (++visits === 2) throw Error('Interrupted after history nonce reservation');
+          });
+        } catch {
+          refused = true;
+        }
+        check(refused && visits === 2, 'Missing interrupted history save');
+        check(same(await owner.vault.load(), saved), 'Interrupted history write replaced progress');
+      }),
+    signal(),
+  );
+  await own(
+    slot,
+    code,
+    (task) =>
+      withHistoryCustody(task, kind, slot, code, async (owner) => {
+        check(same(await owner.load(), saved), 'History did not reopen');
+        await owner.replace(saved, { ...saved, discard: 'bb'.repeat(32) });
+      }),
+    signal(),
+  );
+  const final = await snapshot(kind, slot, code);
+  check(final.counter === before.counter + 3, 'Interrupted history reservation was reused');
+  check(
+    final.previous === before.previous &&
+      JSON.stringify(final.current) === JSON.stringify(before.current),
+    'History overwrote enrollment',
+  );
+  return { isolated: true, reopened: true, interrupted: true, staleRefused: true };
+}

@@ -1,3 +1,4 @@
+import { HISTORY_PAGE_LIMIT } from '../../account-protocol/historyExchange';
 import { parseSealedCreationSeed, type SealedCreationSeed } from './creationSeed';
 import {
   fields,
@@ -63,6 +64,8 @@ export interface CustodyRecord {
   approval?: { v: 1; sequence: number; ct: Bytes };
   /** Separate encrypted rotation/applying state; older readers fail closed on this field. */
   rotation?: { v: 1; sequence: number; ct: Bytes };
+  /** Encrypted checkpoint attempts; separate from enrollment and generation custody. */
+  history?: { v: 1; sequence: number; ct: Bytes };
   /** Local commit pointer; installed atomically with the matching account membership. */
   active_rotation?: string;
   /** Replacement's first network generation; selected before its empty carrier is initialized. */
@@ -78,6 +81,11 @@ export interface CustodyRecord {
 export const CUSTODY_DB = 'done.custody';
 export const CUSTODY_STORE = 'entries';
 export const SEAL_LIMIT = 2 ** 32;
+export const CUSTODY_PROGRESS_LIMITS = {
+  approval: 80 * 1024 * 1024,
+  rotation: 16 * 1024 * 1024,
+  history: HISTORY_PAGE_LIMIT + 16,
+} as const;
 export const recordKey = (scope: CustodyScope): string[] => [
   scope.slotId,
   scope.principalId,
@@ -165,9 +173,14 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     'envelope',
     'credentials',
     'mac',
-    ...['approval', 'rotation', 'active_rotation', 'initial_account', 'creation_seed'].filter(
-      (key) => value && typeof value === 'object' && Object.hasOwn(value, key),
-    ),
+    ...[
+      'approval',
+      'rotation',
+      'history',
+      'active_rotation',
+      'initial_account',
+      'creation_seed',
+    ].filter((key) => value && typeof value === 'object' && Object.hasOwn(value, key)),
   ]);
   if (
     r['v'] !== 2 ||
@@ -221,8 +234,8 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     ];
     if (credentials[0].id === credentials[1].id) return fail();
   }
-  const progress: Pick<CustodyRecord, 'approval' | 'rotation'> = {};
-  for (const channel of ['approval', 'rotation'] as const) {
+  const progress: Pick<CustodyRecord, 'approval' | 'rotation' | 'history'> = {};
+  for (const channel of ['approval', 'rotation', 'history'] as const) {
     if (!(channel in r)) continue;
     const a = object(r[channel], ['v', 'sequence', 'ct']);
     if (
@@ -233,7 +246,7 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
       (a['sequence'] as number) > (r['seal_reserved'] as number) ||
       !(a['ct'] instanceof Uint8Array) ||
       a['ct'].length < 16 ||
-      a['ct'].length > (channel === 'rotation' ? 16 : 80) * 1024 * 1024
+      a['ct'].length > CUSTODY_PROGRESS_LIMITS[channel]
     )
       return fail();
     progress[channel] = { v: 1, sequence: a['sequence'] as number, ct: a['ct'].slice() };
@@ -346,6 +359,9 @@ export const recordPayload = (r: CustodyRecord): Bytes =>
       ...(r.active_rotation ? [['active-rotation', r.active_rotation]] : []),
       ...(r.rotation
         ? [['content-rotation', r.rotation.v, r.rotation.sequence, hex(r.rotation.ct)]]
+        : []),
+      ...(r.history
+        ? [['history-maintenance', r.history.v, r.history.sequence, hex(r.history.ct)]]
         : []),
       ...(r.initial_account
         ? [

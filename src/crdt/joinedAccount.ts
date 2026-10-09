@@ -357,7 +357,7 @@ export async function writeJoinedApproval(
   code: string,
   input: CustodyRecord,
   check?: () => void,
-  channel: 'approval' | 'rotation' = 'approval',
+  channel: 'approval' | 'rotation' | 'history' = 'approval',
 ) {
   input = parseRecord(input, claimScope(state.claim));
   if (

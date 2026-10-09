@@ -54,6 +54,17 @@ test('original and joined native custody preserve prior setup, interrupted progr
         { slot: secondSlot, code: pair.next.code },
       ),
     ).toEqual({ originalPreserved: true, reopened: true });
+    for (const [p, kind, slot, code] of [
+      [page, 'promotion', firstSlot, pair.first.code],
+      [pair.second, 'joined', secondSlot, pair.next.code],
+    ] as const) {
+      expect(
+        await p.evaluate(
+          ({ kind, slot, code }) => window.MembershipCustody.historyProgress(kind, slot, code),
+          { kind, slot, code },
+        ),
+      ).toEqual({ isolated: true, reopened: true, interrupted: true, staleRefused: true });
+    }
     const pending = await pair.second.evaluate(() => window.MembershipCustody.pending());
     const firstWrap = await page.evaluate(
       ({ slot, code, recipient }) =>
