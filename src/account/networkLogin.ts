@@ -1,3 +1,5 @@
+import { consumeRecoveryOpening, type RecoveryOpening } from './recoveryOpening';
+import type { RecoverySuccessor } from '../../account-protocol/recoveryTransition';
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import {
   SESSION_ACCESS_MS,
@@ -361,7 +363,25 @@ export class NetworkLogin {
       this.#vault = undefined;
     }
   }
-  async unlock(task: SessionTask, proof: BindingProof, assert: LocalPasskey) {
+  async unlock(
+    task: SessionTask,
+    proof: BindingProof,
+    assert: LocalPasskey,
+    recovery?: { opening: RecoveryOpening; successor: RecoverySuccessor },
+  ) {
+    if (recovery) {
+      task.step(() =>
+        consumeRecoveryOpening(
+          recovery.opening,
+          this.#slotId,
+          this.#pin,
+          proof,
+          recovery.successor,
+        ),
+      );
+      this.#assert = assert;
+      return;
+    }
     if (this.retired) return requireAccountAccess(task, proof, this.#pin, assert);
     this.#assert = assert;
     const held = this.#held;

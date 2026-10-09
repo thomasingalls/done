@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: recovery native installation verified; coordinator, fresh opening and screens in flight
+scope: recovery coordinator and native restart verified; approved screens and previous-device detachment in flight
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -116,6 +116,13 @@ activation, offline edit and cold reopen pass in Chromium. The recovered device 
 admission and prepares its replacement snapshot without historical keys, preserving an unuploaded edit.
 Existing native activation and 18 focused membership/replacement regressions pass.
 [Output](./development-evidence/2026-10-09-recovery-installation.log). Coordinator and screens remain.
+
+
+**Coordinator complete:** exact sealed intent, fresh combined login, lost-reply resumption and native
+installation compose. Only the live fresh ceremony can skip a duplicate first-opening passkey check;
+cold reopen uses normal unlock. Two disposable Chromium paths pass, including whole browser/service
+restart and byte-identical retry. [Output](./development-evidence/2026-10-09-recovery-coordinator.log).
+The next work is the approved UI, recovery-specific old-device status and the packaged walkthrough.
 
 ---
 

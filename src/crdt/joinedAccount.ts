@@ -1,3 +1,4 @@
+import { consumeRecoveryOpening } from '../account/recoveryOpening';
 import {
   captureRecoveryReading,
   verifyRecoveryReading,
@@ -848,12 +849,33 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
             : {}),
         };
       }
+      const recoveryOpening =
+        options.recoveryOpening && marker.v === 3 && marker.phase === 'installing'
+          ? { opening: options.recoveryOpening, successor: marker.reading.successor }
+          : undefined;
+      if (options.recoveryOpening && !recoveryOpening)
+        throw Error('Recovery opening requires its new installation');
       if (options.networkLogin && !detached) {
         await withPromotionRoot(task, state.claim, state.record, options.code, (root) =>
           options.networkLogin!.initialize(task, root, state.record.root_id, joinedBinding(marker)),
         );
-        await options.networkLogin.unlock(task, joinedBinding(marker), options.assertPasskey);
-      } else
+        await options.networkLogin.unlock(
+          task,
+          joinedBinding(marker),
+          options.assertPasskey,
+          recoveryOpening,
+        );
+      } else if (recoveryOpening)
+        task.step(() =>
+          consumeRecoveryOpening(
+            recoveryOpening.opening,
+            options.slotId,
+            options.pin,
+            joinedBinding(marker),
+            recoveryOpening.successor,
+          ),
+        );
+      else
         await requireAccountAccess(task, joinedBinding(marker), options.pin, options.assertPasskey);
       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
         throw Error('Certified device changed during unlock');

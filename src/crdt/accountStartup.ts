@@ -25,6 +25,8 @@ import { requireAccountAccess, type LocalPasskey } from './accountAccess';
 import { handoffResult } from './promotionHandoff';
 import type { Slot } from './slotIndex';
 export interface AccountStartupOptions {
+  /** A single fresh recovery ceremony may authorize its initial native opening only. */
+  recoveryOpening?: import('../account/recoveryOpening').RecoveryOpening;
   slotId: string;
   code: string;
   pin: AuthorityPin;

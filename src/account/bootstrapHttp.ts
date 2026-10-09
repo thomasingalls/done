@@ -10,6 +10,12 @@ export const legacyAccess = (config: SetupConfig): PrivateAccess =>
     : config.token;
 
 const routes = new Set([
+  'lost-recovery/begin',
+  'lost-recovery/finish',
+  'lost-recovery/resume',
+  'lost-recovery/cancel',
+  'lost-recovery/read',
+  'lost-recovery/commit',
   'begin',
   'resume',
   'finish',

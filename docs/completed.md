@@ -11971,3 +11971,22 @@ The recovery coordinator, fresh first-open ownership, approved screens and walkt
 flight. This checkpoint does not claim the recovery product is usable yet or that removed old devices
 have the final recovery-specific status UI. Live service/personal browsers and paused release
 validation remain unchanged.
+
+
+### 2026-10-09 — Retained recovery coordinator and fresh first opening
+
+The product coordinator composes fresh discoverable passkey/login preparation, recovery-code cold
+replay, factor-sealed candidate custody and exact commit intent, remembered login, native installation
+and ordinary editor opening. The recovery code is never retained. Saving the new device-lock code
+does not commit recovery; the later explicit confirmation does. After browser death, the sealed
+request resolves the original outcome, including when the service committed but its reply was lost.
+
+Only a module-owned, one-use in-memory opening verified against a freshly minted nonce can reuse
+the live recovery passkey check for the new installation. It is bound to the slot, service, binding,
+candidate and recovery head, and expires with its owner. Cold reopen requires normal account unlock.
+Chooser hints carry no authority. Two focused native tests pass the live one-prompt opening and
+browser/service restart with byte-identical commit retry; both cold-open the installed writing.
+TypeScript and scoped static checks pass. [Output](./development-evidence/2026-10-09-recovery-coordinator.log).
+
+Approved screens, recovery-specific previous-device detachment and the packaged walkthrough remain
+in flight. Live service and personal browsers are unchanged; release validation remains paused.

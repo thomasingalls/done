@@ -1,3 +1,5 @@
+import { openCreationSeed, eraseCreationSeed } from '../crdt/creationSeed';
+import { utf8, normalizeDeviceCode } from '../crdt/custodyCrypto';
 import type { RecoveryReading } from '../crdt/recoveryReading';
 import { approvalProgress } from './approvalProgress';
 import { createApprovalVault, type InstalledContentKey } from './approvalVault';
@@ -38,6 +40,7 @@ import type {
   ContentCheckpoint,
 } from '../../account-protocol/contentCheckpoint';
 export interface CeremonyVault {
+  creationProgress(): Promise<unknown>;
   installRecoveryWriting(
     authority: JoinedAuthority,
     reading: RecoveryReading,
@@ -151,6 +154,26 @@ export async function withCeremonyVault<T>(
           channel: 'rotation',
         });
         return work({
+          creationProgress: async () => {
+            if (!claim.initial.creation_seed) throw Error('Recovery creation progress is missing');
+            const factor = utf8(normalizeDeviceCode(code));
+            try {
+              const seed = await openCreationSeed(
+                claim.initial.creation_seed,
+                scope,
+                claim.initial.creation_intent!.id,
+                factor,
+                subtle,
+              );
+              try {
+                return seed.progress;
+              } finally {
+                eraseCreationSeed(seed);
+              }
+            } finally {
+              factor.fill(0);
+            }
+          },
           prepareReplacement: (authority, candidate, read) =>
             import('../crdt/membershipSource').then(({ prepareNativeReplacement }) =>
               prepareNativeReplacement(

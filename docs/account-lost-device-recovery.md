@@ -248,3 +248,13 @@ snapshot, including its unuploaded durable edits, with only its current key. A d
 restart/edit/enrollment-source check and existing activation regressions pass. The coordinator must
 still seal intent before submission, resolve an uncertain reply, and consume only a freshly verified
 in-memory passkey opening when avoiding a duplicate initial prompt. Approved UI remains to mount.
+
+
+## Product coordinator checkpoint
+
+The retained owner now seals candidate custody and exact replayed intent before submission, stores
+login credentials before acknowledgement, resolves unknown commit outcomes, and installs/opens the
+verified recovery checkpoint. A fresh module-owned one-use grant reuses the initial combined passkey
+check only for its exact new installation. Stored bytes never recreate that permission; browser
+restart requires normal unlock. Native tests cover the live path and a lost reply across browser
+and service restart. UI, previous-device recovery detachment and a packaged walkthrough remain.
