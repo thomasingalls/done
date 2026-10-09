@@ -73,8 +73,10 @@ After actual use begins, initialization is not a recovery/restore command.
 Ordinary startup requires the ownership file, store, manifest, pin, authority and account database.
 It checks schema/policy through a read-only database handle before invoking the existing core, checks
 SQLite integrity, authenticates the sealed authority against the external pin/key, and enables no
-migration flags. Missing, empty, mismatched or older state refuses. Schema migrations and rollback-safe
-restore remain separate future maintenance work; do not point the development upgrader at this layout.
+migration flags. Missing, empty, mismatched or older state refuses. The explicit offline `restore`
+command now prepares an isolated quarantined candidate; [operator recovery](./public-restore.md)
+describes its checks and required disposition. It does not publish rewound history. Schema migrations
+remain separate maintenance work; do not point the development upgrader at this layout.
 Operator keys belong in the agreed SOPS/Kubernetes custody path, never in the PVC or application image.
 
 ## Container boundary
@@ -158,3 +160,12 @@ The subsequent [backup integration checkpoint](./public-backups.md#focused-evide
 `8923599e`. Its clean-source ARM64 image passes the application build and 19 focused checks as the
 runtime UID, plus the packaged smoke. It includes age and an opt-in API-owned backup worker. The
 older image above is the original runtime checkpoint, not the latest deployment candidate.
+
+
+## Operator recovery addition — 2026-10-10
+
+`node scripts/public-account.mjs restore` is an offline command in the same image, with no listener
+or backup worker. It accepts a selected encrypted archive and external recovery credentials, verifies
+and prepares a separate candidate, and explicitly blocks public opening of the recovered root.
+See [the runbook](./public-restore.md). Normal `initialize`, `api` and `app` behavior and the
+asynchronous backup availability policy are retained.

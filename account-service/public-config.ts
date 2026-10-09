@@ -37,6 +37,17 @@ export function publicServiceConfig(env: Environment = process.env) {
     backup: backupConfig(storage.directory, env),
   });
 }
+/** Offline restore has no listener or backup-worker configuration. */
+export function publicRestoreConfig(env: Environment = process.env) {
+  return Object.freeze({
+    ...publicStorageConfig(env),
+    pinFile: path(env, 'DONE_SERVICE_PIN_FILE'),
+    archive: path(env, 'DONE_RESTORE_ARCHIVE'),
+    archiveSha256: required(env, 'DONE_RESTORE_SHA256'),
+    identityFile: path(env, 'DONE_RESTORE_IDENTITY_FILE'),
+    sourceRevision: required(env, 'DONE_SOURCE_REVISION'),
+  });
+}
 export function publicListenConfig(env: Environment = process.env) {
   const port = Number(env.DONE_APP_PORT ?? 8080);
   const servicePort = Number(env.DONE_API_PORT ?? 8081);

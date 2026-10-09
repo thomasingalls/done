@@ -164,3 +164,13 @@ against the controlled B2 fixture. Next is maintenance and rollback-safe restore
 - [B2 authorization and scoped keys](https://www.backblaze.com/apidocs/b2-authorize-account).
 - [B2 file-version listing](https://www.backblaze.com/apidocs/b2-list-file-versions) and
   [permanent version deletion](https://www.backblaze.com/apidocs/b2-delete-file-version).
+
+
+## Operator restore addition — 2026-10-10
+
+The [operator recovery command](./public-restore.md) now decrypts selected archives into isolated
+storage, verifies identity/schema/integrity, resets session custody and leaves the result quarantined.
+It never restores automatically or publishes an older ledger. Archive production now uses `tar-stream`
+to emit exactly the five fixed files, avoiding macOS system tar's extra AppleDouble/xattr entries.
+The selected backup/retention cadence and B2 availability behavior are unchanged. Future replication
+choices are recorded in [recovery options](./recovery-options.md), without selecting a commit log.

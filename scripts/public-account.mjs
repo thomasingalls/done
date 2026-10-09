@@ -4,17 +4,21 @@ import {
   publicListenConfig,
   publicServiceConfig,
   publicStorageConfig,
+  publicRestoreConfig,
 } from '../account-service/public-config.ts';
 
 process.umask(0o077);
 const mode = process.argv[2];
 try {
-  if (process.argv.length !== 3 || !['initialize', 'api', 'app'].includes(mode))
-    throw Error('Usage: node scripts/public-account.mjs initialize|api|app');
+  if (process.argv.length !== 3 || !['initialize', 'restore', 'api', 'app'].includes(mode))
+    throw Error('Usage: node scripts/public-account.mjs initialize|restore|api|app');
   if (mode === 'initialize') {
     const { initializePublicState } = await import('../account-service/public-state.ts');
     // Public pin only. Mount this independently as DONE_SERVICE_PIN_FILE before serving.
     console.log(JSON.stringify(initializePublicState(publicStorageConfig())));
+  } else if (mode === 'restore') {
+    const { restorePublicBackup } = await import('../account-service/public-restore.ts');
+    console.log(JSON.stringify(await restorePublicBackup(publicRestoreConfig())));
   } else {
     const listen = publicListenConfig();
     let service;

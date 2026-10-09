@@ -12504,3 +12504,18 @@ The B2 protocol check used a disposable loopback destination; actual bucket/key/
 and real upload/decrypt verification remain activation inputs. No deployment or registry push was
 performed. Next is explicit maintenance/migration and rollback-safe restore, before ol-infra
 publication. Release qualification remains paused.
+
+
+### 2026-10-10 — Operator-led isolated restore implementation
+
+Recorded the final operator recovery scope and deferred replication options in signed `a3a52ec7`.
+Implemented explicit `restore` into a private independently owned destination, bounded age/tar
+verification and file/pin/schema/integrity checks, preserved original snapshot, separate candidate
+with atomic session invalidation and fresh custody, and public-startup refusal. Completed retries
+preserve the same reset; interrupted preparation can rebuild only its classified output. Focused
+checks cover real credentials, old-token/seal refusal, five interruption boundaries and SIGKILL/CLI
+retry. Restore testing exposed macOS tar metadata entries; archive creation now emits the fixed five
+files through a streaming parser/generator. Runtime/backup regressions pass on the host; target-image
+checks and final evidence follow. [Operator runbook](./public-restore.md) makes clear that uncertain
+history needs an incident-specific disposition or fresh setup/import, potentially losing writing.
+No off-host log, schema migration, production restore or release campaign was performed.

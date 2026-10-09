@@ -121,7 +121,13 @@ export function lockPublicState(directory: string, initialize = false): () => vo
   };
 }
 
-function verifyStore(store: string, policy: Policy, key: Uint8Array, expected?: AuthorityPin) {
+/** Caller must own the containing state. Offline restore uses this only on its isolated candidate. */
+export function verifyPublicStore(
+  store: string,
+  policy: Policy,
+  key: Uint8Array,
+  expected?: AuthorityPin,
+) {
   owned(store, true);
   const manifest = readJson(join(store, 'manifest.json'));
   const pin = Object.freeze(parseAuthorityPin(readJson(join(store, 'pin.json'))));
@@ -177,9 +183,16 @@ export function openPublicState(options: PublicStateOptions & { pinFile: string 
   const release = lockPublicState(options.directory);
   let key: Buffer | undefined;
   try {
+    if (existsSync(join(options.directory, 'restore.json')))
+      throw Error('Restored state is quarantined; operator recovery disposition required');
     key = readOperatorKey(options.operatorKeyFile, options.directory);
     const expected = readExpectedPin(options.pinFile, options.directory);
-    const state = verifyStore(join(options.directory, 'store'), options.policy, key, expected);
+    const state = verifyPublicStore(
+      join(options.directory, 'store'),
+      options.policy,
+      key,
+      expected,
+    );
     let closed = false;
     return {
       ...state,
@@ -262,7 +275,7 @@ export function initializePublicState(
       sync(staged);
     }
     const candidate = existsSync(store) ? store : staged;
-    const verified = verifyStore(candidate, options.policy, key);
+    const verified = verifyPublicStore(candidate, options.policy, key);
     try {
       verified.authority.close();
     } finally {

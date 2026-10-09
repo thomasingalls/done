@@ -1,9 +1,11 @@
 /** Standard tar -> gzip -> age. No plaintext archive and no decryption identity are needed. */
-import { spawn, type ChildProcess } from 'node:child_process';
-import { createWriteStream } from 'node:fs';
+import { spawn } from 'node:child_process';
+import { createReadStream, createWriteStream, lstatSync } from 'node:fs';
+import { join } from 'node:path';
 import { createGzip } from 'node:zlib';
 import { pipeline } from 'node:stream/promises';
 import { BACKUP_FILES, fileDigest } from './snapshot.ts';
+import { pack } from 'tar-stream';
 
 export async function encryptSnapshot(
   directory: string,
@@ -12,29 +14,40 @@ export async function encryptSnapshot(
   signal: AbortSignal,
 ) {
   if (!/^age1[0-9a-z]{58}$/.test(recipient)) throw Error('Backup needs one X25519 age recipient');
-  const options = { stdio: ['ignore', 'pipe', 'ignore'] as ['ignore', 'pipe', 'ignore'], signal };
-  const tar = spawn('tar', ['-cf', '-', '-C', directory, ...BACKUP_FILES], options);
+  // Build only the fixed recovery files. System tar on macOS can add AppleDouble/xattr entries.
+  const tar = pack();
   const age = spawn('age', ['--encrypt', '--recipient', recipient], {
-    ...options,
+    signal,
     stdio: ['pipe', 'pipe', 'ignore'],
   });
-  const ended = (child: ChildProcess) =>
-    new Promise<void>((accept, reject) => {
-      child.once('error', () => reject(Error('Backup archive/encryption process failed')));
-      child.once('exit', (code) =>
-        code === 0 ? accept() : reject(Error('Backup archive/encryption process failed')),
-      );
-    });
+  const ended = new Promise<void>((accept, reject) => {
+    age.once('error', () => reject(Error('Backup archive/encryption process failed')));
+    age.once('exit', (code) =>
+      code === 0 ? accept() : reject(Error('Backup archive/encryption process failed')),
+    );
+  });
   const operations = [
-    ended(tar),
-    ended(age),
-    pipeline(tar.stdout!, createGzip(), age.stdin!, { signal }),
+    ended,
+    pipeline(tar, createGzip(), age.stdin!, { signal }),
     pipeline(age.stdout!, createWriteStream(output, { flags: 'wx', mode: 0o600 }), { signal }),
+    (async () => {
+      for (const name of BACKUP_FILES) {
+        const path = join(directory, name);
+        const s = lstatSync(path);
+        if (!s.isFile()) throw Error('Invalid backup archive input');
+        await pipeline(
+          createReadStream(path),
+          tar.entry({ name, size: s.size, mode: 0o600, type: 'file' }),
+          { signal },
+        );
+      }
+      tar.finalize();
+    })(),
   ];
   try {
     await Promise.all(operations);
   } catch (cause) {
-    tar.kill('SIGKILL');
+    tar.destroy();
     age.kill('SIGKILL');
     await Promise.allSettled(operations);
     throw cause;
