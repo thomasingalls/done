@@ -73,8 +73,11 @@ The source exchange now fences late handoff publication with a signed inventory 
 proposal. Cold source replay now verifies handoffs and exact prefixes, including epoch-one suffixes
 and removed publishers. Native owner composition and the explicit Account-menu snapshot action now
 work in disposable sole-device/two-device checks, with durable retry and subsequent editing/delivery.
-The development screen states that reclamation is not enabled. Next: recovery consumption of admitted
-history, current-key installed baselines, atomic reader installation, then safe retention/pruning.
+The development screen states that reclamation is not enabled. Recovery now consumes admitted history
+and its suffix, with a preparation fence and exact history reference in signed recovery intents. A
+packaged check proves snapshot-only writing survives recovery and subsequent enrollment. Next:
+current-key installed baselines, normal reader installation and later handoffs, then safe retention/
+pruning. Existing recovery/activation output limits remain unchanged.
 Automatic cadence remains off. Schema 25 and the menu action remain undeployed.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 

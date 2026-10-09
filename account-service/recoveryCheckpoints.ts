@@ -1,3 +1,4 @@
+import { captureRecoveryHistory } from './recoveryHistory.ts';
 /** Bounded immutable snapshot reads and a preparation fence for later checkpoint publications. */
 import type { DatabaseSync } from 'node:sqlite';
 import { RECOVERY_CHECKPOINT_PAGE_LIMIT } from '../account-protocol/recoveryRead.ts';
@@ -27,7 +28,13 @@ export function recoveryCheckpoints(db: DatabaseSync, workspace: string, exclude
     refs.filter((r) => r.kind === 'recovery').length > 64
   )
     throw Error('Too many recovery checkpoints');
-  return refs.map((r) => ({ ...r, hash: hash(recoveryCheckpoint(db, workspace, r.kind, r.id)!) }));
+  const history = captureRecoveryHistory(db, workspace);
+  return [
+    ...refs.map((r) => ({ ...r, hash: hash(recoveryCheckpoint(db, workspace, r.kind, r.id)!) })),
+    ...(history
+      ? [{ kind: 'history' as const, id: 'admitted', hash: hash(JSON.stringify(history)) }]
+      : []),
+  ];
 }
 export function recoveryCheckpoint(
   db: DatabaseSync,

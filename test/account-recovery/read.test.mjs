@@ -103,6 +103,7 @@ test('passkey alone, forged bootstrap, another candidate signature and unsigned 
     { ...valid, signature: '00'.repeat(64) },
     { ...valid, after: 1 },
     { ...valid, publisher: 'ab'.repeat(16) },
+    { ...valid, history: 'latest' },
     reader.request({ bootstrap: { ...reader.bootstrap, signature: '00'.repeat(64) } }),
     reader.request({ bootstrap: { ...reader.bootstrap, newSPub: 'ab'.repeat(32) } }),
   ])

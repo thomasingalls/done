@@ -1,3 +1,7 @@
+import {
+  RECOVERY_HISTORY_PAGE_LIMIT,
+  parseRecoveryRead,
+} from '../../account-protocol/recoveryRead';
 /** Product recovery coordinator: fresh factors before lock setup, exact sealed intent afterward. */
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import type { SetupConfig } from './setupProgress';
@@ -37,6 +41,10 @@ export type RecoveryTransport = (
 export const recoveryTransport =
   (config: SetupConfig): RecoveryTransport =>
   async (operation, body, signal) => {
+    const limit =
+      operation === 'read' && parseRecoveryRead(body).history
+        ? RECOVERY_HISTORY_PAGE_LIMIT
+        : 16 * 1024 * 1024;
     const response = await bootstrapFetch(config, 'lost-recovery/' + operation, {
       method: 'POST',
       body: JSON.stringify(body),
@@ -56,7 +64,7 @@ export const recoveryTransport =
         const { value, done } = await reader.read();
         if (done) break;
         size += value.length;
-        if (size > 16 * 1024 * 1024) throw Error('Recovery response too large');
+        if (size > limit) throw Error('Recovery response too large');
         text += decoder.decode(value, { stream: true });
       }
       return JSON.parse(text + decoder.decode());

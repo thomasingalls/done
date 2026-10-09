@@ -257,6 +257,28 @@ test('a never-paired account recovers and admits its next device without an orig
     );
     await firstContext.setOffline(false);
     await resumed;
+    // This edit must reach the server only inside the admitted history snapshot.
+    const db = new DatabaseSync(info.outputPath('service/account.sqlite'), { readOnly: true });
+    const count = () =>
+      Number(db.prepare('SELECT count(*) AS n FROM delivery_decisions').get()!['n']);
+    const acceptedBefore = count();
+    let blocked = 0;
+    await reopened.route('**/account/delivery/submit', async (route) => {
+      blocked++;
+      await route.abort();
+    });
+    try {
+      await add(reopened, 'Saved only in the history snapshot');
+      await expect.poll(() => blocked).toBeGreaterThan(0);
+      await reopened.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      const history = reopened.getByRole('region', { name: 'History maintenance', exact: true });
+      await history.getByRole('button', { name: 'Check history', exact: true }).click();
+      await history.getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+      await expect(history).toContainText('Verified snapshot 1 is saved.', { timeout: 15000 });
+      expect(count()).toBe(acceptedBefore);
+    } finally {
+      db.close();
+    }
     await reopened.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await next.goto('/accounts');
     const auth = await restoreAuthenticator(next, saved);
@@ -280,6 +302,7 @@ test('a never-paired account recovers and admits its next device without an orig
     await expect(next.locator('.shell')).toBeVisible({ timeout: 30000 });
     await expect(next.locator('.shell')).toContainText('Uploaded without pairing');
     await expect(next.locator('.shell')).toContainText('Offline writing before pairing');
+    await expect(next.locator('.shell')).toContainText('Saved only in the history snapshot');
     const sent = next.waitForResponse(
       (r) => r.url().endsWith('/account/delivery/submit') && r.ok(),
     );
@@ -298,6 +321,7 @@ test('a never-paired account recovers and admits its next device without an orig
     await expect(joining.locator('.shell')).toContainText(
       'Writing after first-device-only recovery',
     );
+    await expect(joining.locator('.shell')).toContainText('Saved only in the history snapshot');
   } finally {
     try {
       await Promise.allSettled([later.close(), replacement.close()]);

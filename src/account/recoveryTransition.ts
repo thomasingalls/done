@@ -69,6 +69,7 @@ export async function prepareRecoveryCommit(options: RecoverySourceOptions) {
       bootstrap: input.bootstrap,
       generation,
       heads: source.heads,
+      ...(source.historyCheckpoint ? { historyCheckpoint: source.historyCheckpoint } : {}),
       checkpointDigest: await recoveryCheckpointDigest(checkpoint),
       deviceWrap: await sealGeneration(unhex(input.bootstrap.newWPub, 32), info, key),
       recoveryWrap: await sealGeneration(unhex(checked.context.recovery.rPub, 32), info, key),

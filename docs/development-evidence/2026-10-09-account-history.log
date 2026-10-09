@@ -97,3 +97,20 @@ Native owner and explicit Account-menu integration:
   6 passed, 0 failed; duration 2007 ms.
   Scoped lint/format, TypeScript and git diff --check passed.
   Recovery consumption, installed baseline cutover and pruning remain open. No live upgrade.
+
+Recovery consumes admitted history:
+  node --test --test-timeout=20000 test/account-recovery/history.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/source.test.mjs test/account-recovery/read.test.mjs
+  27 passed, 0 failed; duration 9910 ms.
+  node --test --test-timeout=20000 test/account-recovery/history.test.mjs test/account-recovery/transition.test.mjs
+  10 passed, 0 failed; duration 1991 ms (four new history cases repeated plus six transitions).
+  History controls cover snapshot-only originals/deletions, three successive snapshots plus suffix,
+  pending exclusion, changed preparation, damaged admission, lost committed recovery reply/restart,
+  second recovery and a genuinely re-signed intent omitting its required history reference.
+  node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts -g 'never-paired'
+  Final: 1 passed, 23.1 s; 23.8 s runner total. Blocks ordinary upload, confirms accepted-row count,
+  recovers snapshot-only writing and connects another device that receives it.
+  First run recovered the writing but failed to reach the next device's editor. The native source
+  refactor had mistakenly applied an original-device epoch guard to a recovered sole device at epoch
+  two. Restricting that guard to original devices repaired it; the unchanged assertion then passed.
+  TypeScript, scoped lint/format and git diff --check passed. Vite: 430 modules, 2.66 s.
+  Local dist only. Live service/schema, output limits and all retained history remain unchanged.

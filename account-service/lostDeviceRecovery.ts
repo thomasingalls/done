@@ -1,3 +1,4 @@
+import { captureRecoveryHistory, verifyRecoveryHistory } from './recoveryHistory.ts';
 import type { AccountSessions } from './sessions.ts';
 import { recoveryCheckpoints, recoveryCheckpoint } from './recoveryCheckpoints.ts';
 import type { SlotBinding } from '../account-protocol/slot.ts';
@@ -284,15 +285,22 @@ export class LostDeviceRecovery {
       await verifyRecoveryIntent(intent, parent, checked.context.recovery);
       // All existing publishers, including finalized historical writers, participate in the CAS.
       this.db.exec('BEGIN');
-      let root, before;
+      let root, before, historyBaseline;
       try {
         root = snapshot(this.db, workspace);
         before = intent.heads.map((h) => snapshot(this.db, workspace, h.credentialId));
         if (!this.eligible(row)) return no('state-changed');
+        historyBaseline = captureRecoveryHistory(this.db, workspace);
+        if (
+          (intent.historyCheckpoint ?? '00'.repeat(32)) !==
+          (historyBaseline?.catalog.latest ?? '00'.repeat(32))
+        )
+          return no('state-changed');
       } finally {
         this.db.exec('ROLLBACK');
       }
       if (!root || before.some((s) => !s)) return no('unavailable');
+      await verifyRecoveryHistory(historyBaseline, checked.prepared.base, checked.prepared.proofs);
       const auth = await verifyCurrentWorkspaceAuthority(root, this.issuer);
       if (auth.a.head !== p.head || auth.a.tip !== p.epoch || auth.removal)
         return no('state-changed');
@@ -477,7 +485,7 @@ export class LostDeviceRecovery {
       } catch {
         return no('invalid-proof');
       }
-      if (request.checkpoint) {
+      if (request.checkpoint || request.history) {
         if (
           request.after !== 0 ||
           request.limit !== 1 ||
@@ -497,12 +505,14 @@ export class LostDeviceRecovery {
                     id: continuation.epoch.preparation.context.attemptId,
                   }
                 : null;
-        if (!target) return no('state-changed');
-        let raw: string | null;
+        if (!target && !request.history) return no('state-changed');
+        let raw: string | null = null;
+        let history: ReturnType<typeof captureRecoveryHistory> = null;
         this.db.exec('BEGIN');
         try {
           if (!this.eligible(row)) return no('state-changed');
-          raw = recoveryCheckpoint(this.db, row.workspace_id!, target.kind, target.id);
+          if (request.history) history = captureRecoveryHistory(this.db, row.workspace_id!);
+          else raw = recoveryCheckpoint(this.db, row.workspace_id!, target!.kind, target!.id);
         } finally {
           this.db.exec('ROLLBACK');
         }
@@ -518,7 +528,15 @@ export class LostDeviceRecovery {
           link: '00'.repeat(32),
           next: 0,
           entries: [],
-          checkpoint: raw === null ? null : JSON.parse(raw),
+          ...(request.history
+            ? {
+                history: await verifyRecoveryHistory(
+                  history,
+                  checked.prepared.base,
+                  checked.prepared.proofs,
+                ),
+              }
+            : { checkpoint: raw === null ? null : JSON.parse(raw) }),
         };
         const page = parseRecoveryReadPage(await this.issuer.page(body));
         const { signature: _, ...actual } = page;

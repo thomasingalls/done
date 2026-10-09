@@ -96,6 +96,7 @@ export async function sourceFixture(t, options = {}, make = admitted) {
   return {
     ...x,
     reader,
+    key,
     root,
     append,
     input: {

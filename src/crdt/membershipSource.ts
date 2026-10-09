@@ -277,7 +277,7 @@ export async function prepareNativeReplacement(
 ) {
   const captured = structuredClone(authority);
   return withNativeHistorySource(input, async (source) => {
-    if (!source.snapshot || source.history.current.tip < 3)
+    if (!source.snapshot || (input.kind === 'promotion' && source.history.current.tip < 3))
       throw Error('Replacement source needs an installed certified baseline');
     if (!same(source.base, captured.base)) throw Error('Replacement source account changed');
     const verified = await verifyMembershipChain(captured.proofs, source.base),
@@ -352,7 +352,7 @@ export async function wrapMembershipGeneration(
 ) {
   const p = membershipState(membership);
   return withNativeHistorySource(input, async (source) => {
-    if (!source.snapshot || source.history.current.tip < 3)
+    if (!source.snapshot || (input.kind === 'promotion' && source.history.current.tip < 3))
       throw Error('Replacement source needs an installed certified baseline');
     const held = membershipState(historyMembership(source.history));
     if (

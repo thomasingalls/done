@@ -197,3 +197,34 @@ openers still refuse source preparation; current-generation replacement/recovery
 next adapter. Recovery must consume admitted history snapshots, including originals not separately
 uploaded as updates, before deployment. Atomic reader installation and witnessed-evidence retention/
 pruning follow that reader work. The personal installation remains build `34035330` / schema 24.
+
+## Recovery reader checkpoint
+
+Lost-device recovery now requests the latest admitted history checkpoint through its existing fresh
+passkey/recovery-code bootstrap. The bounded response contains the exact proposal and admission;
+service and client verify historical membership, identity and admission. The client cold-opens that
+snapshot, skips its authenticated accepted prefixes and covered handoffs, then merges the suffix and
+new handoffs. Pending proposals are not recovery baselines. Snapshot-only originals and deletions
+therefore survive loss of all devices without needing separate update uploads.
+
+The recovery preparation fence now includes the retained history catalog and admitted records. A
+changed snapshot requires fresh preparation. Recovery intents additionally sign the exact history
+checkpoint used, and commit checks it against the frozen archive. This closes an old-client gap:
+a correctly signed recovery that omits existing admitted history must refuse rather than silently
+revert to a genesis-only replay. Existing intents without a history field remain readable, and a
+new commit without it remains possible when no admitted history exists. The resulting recovery
+successor carries that reference for subsequent baseline work.
+
+Twenty-seven focused history/recovery/read/commit/source checks pass. A final ten-case run repeats
+the four new history cases alongside six recovery-transition checks. The packaged never-paired
+recovery walkthrough now blocks ordinary update uploads, records a snapshot-only edit, verifies the
+accepted-row count did not increase, recovers that writing, and admits a subsequent device that also
+receives it. It passed after repairing a refactor regression: the original-device minimum epoch guard
+must not reject a recovered sole device at epoch two. Build, TypeScript and scoped lint/diff checks pass.
+
+Still open: maintenance using only a replacement/recovered device's current-generation baseline;
+atomic adoption of admitted history into normal local receive/startup; later membership handoffs;
+retention/pruning of ciphertext while preserving witnessed decision evidence and two checkpoint
+suffixes. Recovery and activation output limits remain unchanged; this reader increment does not
+claim to remove the existing 4 MiB recovery/activation output limit. No generation keys or history
+have been deleted. The retained service is still unchanged and release qualification remains paused.

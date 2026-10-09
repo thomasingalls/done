@@ -12264,3 +12264,18 @@ The screen says reclamation is not enabled. Recovery consumption of history, dev
 openers, atomic baseline installation and safe pruning remain open. The retained service is unchanged.
 [History checkpoint](./account-history-management.md), [focused evidence](./development-evidence/2026-10-09-account-history.log).
 Unsigned intermediate commit; release validation remains paused.
+
+### 2026-10-09 — Recovery from admitted account history and suffix
+
+Connected lost-device recovery to the latest authenticated history snapshot and its suffix, including
+writing preserved only in a snapshot. Preparation now fences the history archive, and signed recovery
+intents bind the exact admitted checkpoint so older clients cannot silently omit it. Twenty-seven
+focused recovery checks pass; a final ten-case run adds affected transition checks. The packaged
+never-paired walkthrough proves a blocked-upload edit survives snapshot-only storage, recovery and
+later device enrollment. That walkthrough caught and now guards a source-refactor error which had
+wrongly rejected an epoch-two recovered device. Build and static checks pass.
+
+[History checkpoint](./account-history-management.md), [focused evidence](./development-evidence/2026-10-09-account-history.log).
+Native current-generation baseline reuse, ordinary reader installation, later handoffs and pruning
+remain open; existing recovery/activation output limits are unchanged. Unsigned intermediate commit.
+The retained `34035330` service remains untouched; release qualification remains paused.

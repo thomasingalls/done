@@ -31,6 +31,12 @@ import { openContentCheckpoint } from './contentCheckpoint';
 import { openReplacementCheckpoint } from './replacementCheckpoint';
 import { openRecoveryReading } from './recoveryReading';
 import { verifyMembershipChain } from '../../account-protocol/membershipLocator';
+import { openHistoryCheckpoint } from './historyCheckpoint';
+import { verifyCheckpointTimeline } from '../../account-protocol/checkpointTimeline';
+import {
+  verifyHistoryCheckpointAdmission,
+  historyCheckpointHash,
+} from '../../account-protocol/historyCheckpoint';
 import { historyMembership } from '../../account-protocol/admissionHistory';
 
 export const RECOVERY_SOURCE_EVENTS = 4096;
@@ -92,36 +98,84 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
         guard();
       }
     });
-    const key = keys.get(1)!;
-    const plain = new Uint8Array(
-      await crypto.subtle.decrypt(
-        {
-          name: 'AES-GCM',
-          iv: unhex(original.checkpoint.nonce, 12),
-          additionalData: checkpointAAD(original),
-        },
-        await hkdf(
-          key,
-          unhex(original.checkpoint.salt, 16),
-          fields('done/checkpoint/v1', original.workspaceId),
-          { name: 'AES-GCM', length: 256 },
-          ['decrypt'],
-          crypto.subtle,
-        ),
-        unhex(original.checkpoint.ct, original.checkpoint.ct.length / 2),
-      ),
+    const historyRequest = parseRecoveryRead({
+      retryKey: (beginInput as { retryKey: string }).retryKey,
+      attemptId: prepared.challenge.context.attemptId,
+      bootstrap: proof,
+      publisher: original.signer,
+      after: 0,
+      limit: 1,
+      history: 'latest',
+      nonce: hex(random(32)),
+      signature: '00'.repeat(64),
+    });
+    historyRequest.signature = await sign(await recoveryReadMessage(historyRequest));
+    guard();
+    const historyPage = await verifyRecoveryReadPage(
+      await read(historyRequest),
+      historyRequest,
+      pin,
     );
-    try {
-      guard();
-      if (plain.length > GENESIS_LIMIT) throw Error('Recovery genesis is too large');
-      Y.applyUpdate(doc, plain);
-    } finally {
-      plain.fill(0);
+    guard();
+    const baseline = historyPage.history;
+    let checkpointBytes = 0;
+    if (baseline) {
+      const cp = baseline.checkpoint;
+      const timeline = await verifyCheckpointTimeline(base, prepared.proofs);
+      const at = timeline.states.get(cp.manifest.epoch);
+      if (!at) throw Error('Recovery history baseline has unknown membership');
+      const authority = historyMembership(at);
+      await verifyHistoryCheckpointAdmission(baseline.admission, cp, authority);
+      const key = keys.get(cp.manifest.generation);
+      if (!key) throw Error('Recovery history opener is unavailable');
+      const recovered = await openHistoryCheckpoint(cp, key, authority);
+      try {
+        const bytes = new Uint8Array(Y.encodeStateAsUpdate(recovered));
+        try {
+          guard();
+          checkpointBytes += bytes.length;
+          Y.applyUpdate(doc, bytes);
+        } finally {
+          bytes.fill(0);
+        }
+      } finally {
+        recovered.destroy();
+      }
+    } else {
+      const key = keys.get(1)!;
+      const plain = new Uint8Array(
+        await crypto.subtle.decrypt(
+          {
+            name: 'AES-GCM',
+            iv: unhex(original.checkpoint.nonce, 12),
+            additionalData: checkpointAAD(original),
+          },
+          await hkdf(
+            key,
+            unhex(original.checkpoint.salt, 16),
+            fields('done/checkpoint/v1', original.workspaceId),
+            { name: 'AES-GCM', length: 256 },
+            ['decrypt'],
+            crypto.subtle,
+          ),
+          unhex(original.checkpoint.ct, original.checkpoint.ct.length / 2),
+        ),
+      );
+      try {
+        guard();
+        if (plain.length > GENESIS_LIMIT) throw Error('Recovery genesis is too large');
+        Y.applyUpdate(doc, plain);
+      } finally {
+        plain.fill(0);
+      }
+      if (hasPendingUpdates(doc) || hex(genesisCoverage(doc)) !== original.coverage.snapshot)
+        throw Error('Recovery genesis coverage changed');
+      const parts = genesisCoverageParts(doc);
+      await verifyReceipt(base.receipt, base.request, pin, {
+        sv: hex(parts.sv),
+        ds: hex(parts.ds),
+      });
     }
-    if (hasPendingUpdates(doc) || hex(genesisCoverage(doc)) !== original.coverage.snapshot)
-      throw Error('Recovery genesis coverage changed');
-    const parts = genesisCoverageParts(doc);
-    await verifyReceipt(base.receipt, base.request, pin, { sv: hex(parts.sv), ds: hex(parts.ds) });
     // A handoff snapshot can contain durable originals never published as ledger updates.
     // Merge every retained snapshot as well as every accepted stream; Yjs replay is idempotent.
     const proofs = prepared.proofs;
@@ -131,8 +185,8 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
         .filter((p) => p.kind === 'recovery-successor' || p.kind === 'membership-admission')
         .map((p) => p.head),
     ];
-    let checkpointBytes = 0;
     for (const head of targets) {
+      if (baseline?.checkpoint.sources.some((source) => source.head === head)) continue;
       guard();
       const request = parseRecoveryRead({
         retryKey: (beginInput as { retryKey: string }).retryKey,
@@ -235,9 +289,10 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
         false,
         ['verify'],
       );
-      let position = 0,
-        link = ZERO_REFUSAL,
-        observed = 0;
+      const cut = baseline?.checkpoint.heads.find((h) => h.credentialId === publisher);
+      let position = cut?.position ?? 0,
+        link = cut?.link ?? ZERO_REFUSAL,
+        observed = position;
       do {
         guard();
         const request = parseRecoveryRead({
@@ -345,6 +400,7 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
       throw Error('Recovered writing exceeds supported checkpoint size');
     const result = {
       snapshot,
+      historyCheckpoint: baseline ? await historyCheckpointHash(baseline.checkpoint) : null,
       heads,
       epoch: prepared.head.epoch,
       head: prepared.head.head,

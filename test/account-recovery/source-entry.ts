@@ -6,3 +6,5 @@ export { verifyRecoverySlotUnlock } from '../../src/account/slotUnlock';
 export { openReplacementCheckpoint } from '../../src/crdt/replacementCheckpoint';
 export { verifyMembershipChain } from '../../account-protocol/membershipLocator';
 export { historyMembership } from '../../account-protocol/admissionHistory';
+export { createHistoryCheckpoint, admitHistoryCheckpoint } from '../../src/crdt/historyCheckpoint';
+export { verifyEarlyMembership, membershipState } from '../../account-protocol/membership';

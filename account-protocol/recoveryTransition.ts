@@ -57,6 +57,7 @@ const wrap = (v: unknown) => {
 export function parseRecoveryIntent(input: unknown) {
   bound(input);
   const r = closed(input, [
+    ...(Object.hasOwn(input as object, 'historyCheckpoint') ? ['historyCheckpoint'] : []),
     'v',
     'kind',
     'attemptId',
@@ -83,6 +84,9 @@ export function parseRecoveryIntent(input: unknown) {
     deviceWrap: wrap(r['deviceWrap']),
     recoveryWrap: wrap(r['recoveryWrap']),
     signature: fixed(r['signature'], 64),
+    ...(Object.hasOwn(r, 'historyCheckpoint')
+      ? { historyCheckpoint: fixed(r['historyCheckpoint']) }
+      : {}),
   };
 }
 export type RecoveryIntent = ReturnType<typeof parseRecoveryIntent>;

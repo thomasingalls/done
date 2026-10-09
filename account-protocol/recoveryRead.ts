@@ -1,4 +1,10 @@
 /** Recovery-only read evidence. Neither a device read grant nor authority to replace membership. */
+import {
+  HISTORY_CHECKPOINT_LIMIT,
+  HISTORY_ADMISSION_LIMIT,
+  parseHistoryCheckpoint,
+  parseHistoryCheckpointAdmission,
+} from './historyCheckpoint.ts';
 import { closed, accountIdentifier } from './preparation.ts';
 import { unhex, digest } from './recovery.ts';
 import { json, domainMessage, verifySignature } from './admission.ts';
@@ -16,6 +22,8 @@ import { parseRecoveryCheckpoint } from './recoveryCommit.ts';
 export const RECOVERY_READ_REQUEST_LIMIT = 8192;
 export const RECOVERY_READ_PAGE_LIMIT = 4 * 1024 * 1024;
 export const RECOVERY_CHECKPOINT_PAGE_LIMIT = 16 * 1024 * 1024;
+export const RECOVERY_HISTORY_PAGE_LIMIT =
+  HISTORY_CHECKPOINT_LIMIT + HISTORY_ADMISSION_LIMIT + 4096;
 export const RECOVERY_READ_ENTRIES = 16;
 const fixed = (v: unknown, n = 32): string => {
   unhex(v, n);
@@ -35,6 +43,7 @@ export function parseRecoveryRead(input: unknown) {
   if (json(input).length > RECOVERY_READ_REQUEST_LIMIT) throw Error('Oversized recovery read');
   const r = closed(input, [
     ...(Object.hasOwn(input as object, 'checkpoint') ? ['checkpoint'] : []),
+    ...(Object.hasOwn(input as object, 'history') ? ['history'] : []),
     'retryKey',
     'attemptId',
     'bootstrap',
@@ -44,6 +53,8 @@ export function parseRecoveryRead(input: unknown) {
     'nonce',
     'signature',
   ]);
+  if (Object.hasOwn(r, 'history') && (r['history'] !== 'latest' || Object.hasOwn(r, 'checkpoint')))
+    throw Error('Invalid recovery history selection');
   const limit = integer(r['limit']);
   if (limit < 1 || limit > RECOVERY_READ_ENTRIES) throw Error('Recovery read extent');
   return {
@@ -56,6 +67,7 @@ export function parseRecoveryRead(input: unknown) {
     nonce: fixed(r['nonce']),
     signature: fixed(r['signature'], 64),
     ...(Object.hasOwn(r, 'checkpoint') ? { checkpoint: fixed(r['checkpoint']) } : {}),
+    ...(Object.hasOwn(r, 'history') ? { history: 'latest' as const } : {}),
   };
 }
 export type RecoveryRead = ReturnType<typeof parseRecoveryRead>;
@@ -78,12 +90,30 @@ export async function verifyRecoveryRead(
   );
   return request;
 }
+export function parseHistoryRecovery(input: unknown) {
+  if (input === null) return null;
+  const r = closed(input, ['checkpoint', 'admission']);
+  return {
+    checkpoint: parseHistoryCheckpoint(r['checkpoint']),
+    admission: parseHistoryCheckpointAdmission(r['admission']),
+  };
+}
 export function parseRecoveryReadPage(input: unknown) {
-  const snapshot = Object.hasOwn(input as object, 'checkpoint');
-  if (json(input).length > (snapshot ? RECOVERY_CHECKPOINT_PAGE_LIMIT : RECOVERY_READ_PAGE_LIMIT))
+  const snapshot = Object.hasOwn(input as object, 'checkpoint'),
+    history = Object.hasOwn(input as object, 'history');
+  if (snapshot && history) throw Error('Mixed recovery snapshot response');
+  if (
+    json(input).length >
+    (history
+      ? RECOVERY_HISTORY_PAGE_LIMIT
+      : snapshot
+        ? RECOVERY_CHECKPOINT_PAGE_LIMIT
+        : RECOVERY_READ_PAGE_LIMIT)
+  )
     throw Error('Oversized recovery page');
   const p = closed(input, [
     ...(snapshot ? ['checkpoint'] : []),
+    ...(history ? ['history'] : []),
     'v',
     'kind',
     'requestHash',
@@ -115,6 +145,7 @@ export function parseRecoveryReadPage(input: unknown) {
       };
     }),
     signature: fixed(p['signature'], 64),
+    ...(history ? { history: parseHistoryRecovery(p['history']) } : {}),
     ...(snapshot
       ? {
           checkpoint:
@@ -151,7 +182,8 @@ export async function verifyRecoveryReadPage(
     page.entries.length > request.limit ||
     (page.next < page.through && page.entries.length === 0) ||
     (request.checkpoint !== undefined) !== Object.hasOwn(page, 'checkpoint') ||
-    (request.checkpoint &&
+    (request.history !== undefined) !== Object.hasOwn(page, 'history') ||
+    ((request.checkpoint || request.history) &&
       (request.after !== 0 ||
         page.through !== 0 ||
         page.entries.length !== 0 ||
