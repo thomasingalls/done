@@ -48,9 +48,9 @@ that is no longer active.
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
-status: in flight
-scope: prepare and switch the retained development build
-blocks_on: operator quiet point before server restart
+status: done
+scope: single-device upload implemented, checked and serving
+blocks_on: none
 release_validation: paused by operator
 updated: 2026-10-09
 ```
@@ -64,11 +64,12 @@ checks; packaged first-device-only offline/cold-reopen/reconnect/recovery; first
 accepted history followed by recovery/rotation; session notifications and service restart.
 [Recorded evidence](./development-evidence/2026-10-09-single-device-upload.log).
 
-**Live state:** the retained service remains build `049b9a29`, account schema 24, authority schema 1,
-at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. No personal account was changed by the tests.
-No server schema change is needed. Immutable build `34035330` is prepared at
-`.dev/account-enrollment-tailnet/builds/34035330`; its committed-build checks pass. Obtain a fresh
-locked/closed confirmation before backing up retained state and restarting the two serving processes.
+**Live state:** both processes serve build `34035330`, account schema 24, authority schema 1,
+at the unchanged `https://mbp.tail0e0d4.ts.net:8443/`. After the operator confirmed locked/closed,
+the offline backup was verified and the processes restarted without a schema migration. All retained
+rows and identity bytes match the backup. Public-origin pages, worker, 34 precache resources and API
+configuration pass. No personal account was opened; browser uptake and a personal writing check
+remain operator observations. [Switch evidence](./development-evidence/2026-10-09-single-device-upload-live-upgrade.log).
 
 Unsigned intermediate commits are authorized. Checkpoint replacement/pruning and public operations
 remain next product work. Release qualification stays paused.

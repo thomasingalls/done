@@ -71,11 +71,20 @@ at the new binding boundary repaired it; the same check then passed in 21.3 seco
 [Recorded commands and evidence](./development-evidence/2026-10-09-single-device-upload.log).
 
 Checkpoint replacement, general pruning, public deployment and release validation remain separate.
-The live service is still build `049b9a29` until the operator supplies a fresh quiet point.
+The retained service now serves build `34035330` at the unchanged :8443 origin.
 
 ## Retained-service handoff
 
 Implementation `34035330` is built at `.dev/account-enrollment-tailnet/builds/34035330`, with a local
-58-file SHA-256 manifest. Committed-build checks pass. The server remains at `049b9a29`; a fresh
-locked/closed confirmation precedes backup and restart. Account schema stays 24 and the service pin
-and `https://mbp.tail0e0d4.ts.net:8443/` origin are retained.
+58-file SHA-256 manifest. Committed-build checks pass. After the operator confirmed both devices
+locked and closed, both prior processes stopped gracefully. An offline backup was verified at
+`.dev/account-enrollment-tailnet/backups/single-upload-34035330-RnP0WV` before restarting the API
+and packaged gateway. No database migration was needed: account schema stays 24 and authority schema
+stays 1. All 70 account rows and the authority row, service pin and operator key match the backup.
+
+Actual-origin checks pass for the splash, chooser, recovery deep link, worker and all 34 precache
+resources. Runtime configuration reports the original pin, network sessions and membership
+continuation; a malformed recovery request refuses without changing retained state. The address
+remains `https://mbp.tail0e0d4.ts.net:8443/`. No personal account was opened during these checks.
+Browser adoption of the new worker and a personal writing check remain operator observations.
+[Retained switch evidence](./development-evidence/2026-10-09-single-device-upload-live-upgrade.log).

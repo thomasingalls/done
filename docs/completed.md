@@ -12158,3 +12158,19 @@ Yjs patch check, TypeScript, budget (137.5 kB / 350 kB) and built-origin isolati
 The API and gateway have not been restarted; the live build is still `049b9a29`, schema 24.
 The remaining handoff is a fresh operator locked/closed confirmation, offline backup, restart of
 both processes at the unchanged :8443 address, and actual-origin health checks. No migration is needed.
+
+### 2026-10-09 — Single-device upload serving at the retained :8443 origin
+
+After the operator confirmed both devices locked and closed, stopped the two old processes,
+verified an offline backup at `.dev/account-enrollment-tailnet/backups/single-upload-34035330-RnP0WV`,
+and restarted the API and packaged gateway with immutable build `34035330`. No schema migration
+was needed. All 70 account rows across 28 tables, the authority row, pin and operator key match the
+backup after restart and the bounded API check; both databases pass integrity and foreign-key checks.
+
+Actual-origin splash, chooser, recovery deep link and worker checks pass, as do byte comparisons of
+all 34 precache resources. Runtime configuration retains the same service identity, network sessions
+and membership continuation. The address remains `https://mbp.tail0e0d4.ts.net:8443/`.
+[Recorded switch evidence](./development-evidence/2026-10-09-single-device-upload-live-upgrade.log).
+No personal account was opened. Browser adoption and a personal writing check remain operator
+observations. Checkpoint replacement/pruning and public operations remain next product work;
+release validation stays paused. This handoff is committed unsigned as authorized.

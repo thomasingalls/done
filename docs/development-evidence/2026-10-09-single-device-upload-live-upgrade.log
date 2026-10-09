@@ -1,0 +1,96 @@
+Retained single-device upload build switch after operator confirmed both devices locked and closed.
+
+{
+  "build": "34035330",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "backup": ".dev/account-enrollment-tailnet/backups/single-upload-34035330-RnP0WV",
+  "createdAt": "2026-10-09T13:05:42.779Z",
+  "results": {
+    "account.sqlite": {
+      "schema": 24,
+      "tables": 28,
+      "rows": 70,
+      "backupRowsIdentical": true,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    "authority.sqlite": {
+      "schema": 1,
+      "tables": 1,
+      "rows": 1,
+      "backupRowsIdentical": true,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  },
+  "identityUnchanged": true,
+  "status": "running; public-origin health and retained-state checks passed",
+  "checkedAt": "2026-10-09T13:09:07.215Z",
+  "health": [
+    {
+      "path": "/",
+      "status": 200,
+      "sha256": "3b450b13c966486f5c74bbac6a5c5fe3d4d35df006c631583c4f15bf2cb30340"
+    },
+    {
+      "path": "/accounts",
+      "status": 200,
+      "sha256": "3b450b13c966486f5c74bbac6a5c5fe3d4d35df006c631583c4f15bf2cb30340"
+    },
+    {
+      "path": "/recover/enrollment-00000000000000000000000000000000/start",
+      "status": 200,
+      "sha256": "3b450b13c966486f5c74bbac6a5c5fe3d4d35df006c631583c4f15bf2cb30340"
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "sha256": "5c4b8022d463f0e91bbdcf3cea615584a2ef49caec830b3894134f57b416b6e9"
+    },
+    {
+      "path": "/__account-setup/config",
+      "status": 200,
+      "identityUnchanged": true,
+      "networkSessions": true,
+      "membershipContinuation": true
+    },
+    {
+      "path": "/__account-setup/lost-recovery/begin",
+      "status": 409,
+      "malformedRequestRefused": true
+    }
+  ],
+  "precacheFilesVerified": 34,
+  "retained": {
+    "account.sqlite": {
+      "schema": 24,
+      "unchangedTables": 28,
+      "unchangedRows": 70,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    },
+    "authority.sqlite": {
+      "schema": 1,
+      "unchangedTables": 1,
+      "unchangedRows": 1,
+      "integrity": "ok",
+      "foreignKeyViolations": 0
+    }
+  },
+  "runtime": {
+    "build": "34035330",
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "servicePort": 53220,
+    "appPort": 53219,
+    "servicePid": 28173,
+    "serviceLog": "/tmp/done-account-service-34035330.log",
+    "appPid": 28174,
+    "appLog": "/tmp/done-account-app-34035330.log"
+  }
+}
+
+Both prior processes stopped gracefully; the offline backups include all SQLite rows and identity files.
+No database migration was required. All retained rows and identity bytes match the backup after restart
+and the bounded API refusal check. No account sign-in or personal writing was opened.
+Browser adoption of the new worker and a personal writing check remain operator observations.
+Release validation remains paused.
