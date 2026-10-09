@@ -29,7 +29,7 @@ import {
 } from '../../account-protocol/inboundTransport';
 import { openContentCheckpoint } from './contentCheckpoint';
 import { openReplacementCheckpoint } from './replacementCheckpoint';
-import { openRecoveryReading } from './recoveryReading';
+import { openRecoveryReading, type RecoveryReading } from './recoveryReading';
 import { openHistoryCheckpoint } from './historyCheckpoint';
 import { verifyInboundPage, type InboundContext, type InboundLifetime } from './accountInbound';
 import { fields, hkdf, hex, random, type Bytes } from './custodyCrypto';
@@ -48,20 +48,21 @@ export interface HistorySourceInput {
   heads: HistoryCheckpoint['heads'];
   sources: HistoryCheckpoint['sources'];
   previous: { checkpoint: HistoryCheckpoint; admission: HistoryCheckpointAdmission } | null;
+  recovery?: RecoveryReading;
   lifetime: InboundLifetime;
   sign(message: Bytes): Promise<string>;
   read(request: Bytes): Promise<Bytes>;
   exchange(request: HistoryExchange): Promise<unknown>;
 }
 /** Returns a caller-owned doc only after every source and cut verifies. All failures erase key/plain buffers.
- * Without an admitted history baseline this bounded adapter requires the genesis opener. Replacement/
- * recovered-device native baselines must be integrated before those owners use the first-checkpoint path. */
+ * A recovery baseline substitutes for unavailable old openers only with signed exact coverage. */
 export async function readHistorySource(input: HistorySourceInput): Promise<YDoc> {
   const base = structuredClone(input.base),
     proofs = structuredClone(input.proofs),
     early = structuredClone(input.earlySuccessor ?? null),
     binding = structuredClone(input.binding),
     previous = structuredClone(input.previous),
+    recovery = structuredClone(input.recovery),
     sources = parseHistorySources(input.sources),
     requestedHeads = structuredClone(input.heads),
     producer = input.producer,
@@ -109,12 +110,23 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       return historyMembership(h);
     };
     let baselineHeads: HistoryCheckpoint['heads'] = [],
+      coveredSources: HistoryCheckpoint['sources'] = [],
+      baselineKind: InboundContext['baseline']['kind'] = 'promotion-genesis',
       id = base.receipt.offer.epoch.requestDigest;
+    const originalAuthority = {
+      base,
+      successor: timeline.proofs?.successor ?? null,
+      certification: timeline.proofs?.certification ?? null,
+    };
     if (previous) {
       const cp = previous.checkpoint;
       const prior = at(cp.manifest.epoch, cp.manifest.epochHead);
       await verifyHistoryCheckpointAdmission(previous.admission, cp, prior);
       requireHistorySourcesExtend(sources, cp.sources);
+    }
+    if (previous && keys.has(previous.checkpoint.manifest.generation)) {
+      const cp = previous.checkpoint,
+        prior = at(cp.manifest.epoch, cp.manifest.epochHead);
       const key = keys.get(cp.manifest.generation);
       if (!key) throw Error('This device needs a history snapshot in an available generation');
       doc = await openHistoryCheckpoint(cp, key, prior);
@@ -125,8 +137,47 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
         snapshot.fill(0);
       }
       baselineHeads = cp.heads;
+      coveredSources = cp.sources;
+      baselineKind = 'history-checkpoint';
       id = await historyCheckpointHash(cp);
+    } else if (recovery) {
+      const intent = recovery.successor.epoch.intent,
+        key = keys.get(recovery.successor.epoch.generation),
+        expected = previous ? await historyCheckpointHash(previous.checkpoint) : '00'.repeat(32);
+      if (!key || !intent.sources || (intent.historyCheckpoint ?? '00'.repeat(32)) !== expected)
+        throw Error('Recovery baseline does not establish this history checkpoint');
+      requireHistorySourcesExtend(intent.sources, previous?.checkpoint.sources ?? []);
+      coveredSources = parseHistorySources([
+        ...intent.sources,
+        {
+          epoch: recovery.epoch,
+          head: recovery.head,
+          kind: 'recovery',
+          hash: await historySourceHash('recovery', recovery.checkpoint),
+        },
+      ]);
+      requireHistorySourcesExtend(sources, coveredSources);
+      for (const before of previous?.checkpoint.heads ?? []) {
+        const cut = intent.heads.find((c) => c.credentialId === before.credentialId);
+        if (
+          !cut ||
+          cut.position < before.position ||
+          (cut.position === before.position && cut.link !== before.link)
+        )
+          throw Error('Recovery baseline omits previous history cuts');
+      }
+      doc = await openRecoveryReading(recovery, key, originalAuthority, history, producer);
+      const bytes = new Uint8Array(Y.encodeStateAsUpdate(doc));
+      try {
+        addBytes(bytes.length);
+      } finally {
+        bytes.fill(0);
+      }
+      baselineHeads = recovery.successor.epoch.heads;
+      baselineKind = 'recovery-checkpoint';
+      id = recovery.head;
     } else {
+      if (previous) throw Error('This device needs a history snapshot in an available generation');
       const key = keys.get(1);
       if (!key) throw Error('The first history snapshot needs an installed native baseline');
       const g = base.request.candidate;
@@ -166,11 +217,6 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       });
     }
     guard();
-    const originalAuthority = {
-      base,
-      successor: timeline.proofs?.successor ?? null,
-      certification: timeline.proofs?.certification ?? null,
-    };
     for (const ref of sources) {
       at(ref.epoch, ref.head);
       const proof = timeline.proofs?.continuations.find((p) => p.head === ref.head);
@@ -182,7 +228,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
             : proof?.kind !== 'recovery-successor'
       )
         throw Error('History source kind differs from its membership');
-      if (previous?.checkpoint.sources.some((s) => same(s, ref))) continue;
+      if (coveredSources.some((s) => same(s, ref))) continue;
       const request = parseHistoryExchange({
         v: 1,
         kind: 'history-checkpoint-request',
@@ -272,7 +318,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       if (before.position === cut.position) continue;
       const publisher = historyPublisher(history, cut.credentialId);
       const context: InboundContext = {
-        baseline: { kind: previous ? 'history-checkpoint' : 'promotion-genesis', id },
+        baseline: { kind: baselineKind, id },
         service: { id: p.pin.serviceId, origin: p.pin.origin },
         authority: publisher.current,
         history: publisher,

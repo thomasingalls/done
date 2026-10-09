@@ -34,9 +34,12 @@ remove the application's activation limit.
 
 ## Current increment
 
-Implementing the checkpoint carrier, cryptographic replay/admission and service exchange first.
-No new snapshot authorizes pruning or replaces a local content root until the installation work is
-complete. Automatic cadence remains off. The development Account-menu control now creates and verifies snapshots; it does not install a new reader baseline or reclaim space, and is not deployed to the retained service.
+The explicit Account-menu snapshot action and recovery reader are implemented. Recovered owners can
+now use their installed current-key recovery baseline to prepare another history snapshot: their signed
+intent names the exact prior history checkpoint and handoff inventory. Replacement owners and later
+handoffs, ordinary reader installation, and pruning remain next. Automatic cadence remains off. No
+new snapshot authorizes pruning or replaces a local content root until installation is implemented.
+The development action remains undeployed to the retained service.
 
 ## Checkpoint primitive checkpoint
 
@@ -228,3 +231,29 @@ retention/pruning of ciphertext while preserving witnessed decision evidence and
 suffixes. Recovery and activation output limits remain unchanged; this reader increment does not
 claim to remove the existing 4 MiB recovery/activation output limit. No generation keys or history
 have been deleted. The retained service is still unchanged and release qualification remains paused.
+
+## Current-key recovered-owner checkpoint
+
+Recovery intents now sign the exact handoff source inventory reconstructed during recovery. The service
+compares it with the actual retained inventory under the existing preparation/commit fence; omitting or
+substituting a source refuses before membership changes. Legacy intents remain verifiable, but a baseline
+without explicit coverage cannot authorize the new replay shortcut. Reference parsing is separate from
+payload parsing to avoid a membership/checkpoint module-initialization cycle found by the focused checks.
+
+Native history preparation can cold-open an installed recovery baseline using only its available key,
+prove that it covers the exact previous admitted history checkpoint, retain every signed source and
+accepted cut, and replay only the later suffix. It also covers the recovery snapshot itself, which is a
+retained source. This is a cold preparation adapter, not local baseline replacement or deletion permission.
+
+Twenty-six focused history-source/recovery/transition checks pass. The added case covers with/without
+prior history, snapshot-only originals, new-generation accepted edits/deletions, refusal of missing or
+substituted coverage, and a further recovery. The packaged never-paired recovery walkthrough now creates
+snapshot 2 from the recovered device before admitting another device; it passes in 24.1 s. The first new
+source fixture used a synthetic clock for the real inbound service, which intentionally uses wall time;
+correcting that fixture made the existing request freshness check pass. Typecheck, scoped lint/format,
+affected inbound checks and build pass. Evidence is retained in the development log.
+
+Next: carry admitted history into subsequent membership handoffs and support current-key replacement
+baselines, then ordinary reader installation and safe retained-history pruning. The live `34035330`
+installation, schema 24, all existing ciphertext and generation keys remain unchanged. No release
+qualification or generalized fault campaign was resumed.

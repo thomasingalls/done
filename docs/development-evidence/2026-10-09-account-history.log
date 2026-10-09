@@ -114,3 +114,79 @@ Recovery consumes admitted history:
   two. Restricting that guard to original devices repaired it; the unchanged assertion then passed.
   TypeScript, scoped lint/format and git diff --check passed. Vite: 430 modules, 2.66 s.
   Local dist only. Live service/schema, output limits and all retained history remain unchanged.
+
+
+2026-10-09 — Current-key recovered-owner history preparation (parent a938e344)
+Scope: signed handoff inventory, service CAS check, native recovery baseline fallback. No live changes/pruning.
+Initial checks exposed a module initialization cycle; reference parsing extracted from checkpoint payload parsing.
+The new real inbound fixture initially used synthetic time 1000; fixed fixture to use wall time. Application freshness checks unchanged.
+
+$ node --test --test-timeout=20000 test/account-recovery/history.test.mjs test/account-recovery/commit.test.mjs test/account-recovery/transition.test.mjs test/account-history/source.test.mjs
+(node:39725) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cold source preserves accepted removed-device edits, deletions and writing present only in a handoff (676.81575ms)
+✔ missing prefixes, false cuts, unresolved dependencies and missing keys never produce a source (2089.294917ms)
+✔ handoff substitution and owner cancellation refuse before returning plaintext (495.060667ms)
+✔ a single-device account replays only the suffix after its admitted epoch-one checkpoint (183.025417ms)
+(node:39726) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39726) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:39726) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ first-device recovery commits one real replayed checkpoint, finalizes old writing and survives a lost reply (687.880875ms)
+✔ checkpoint publication after preparation refuses recovery before authority changes (180.438834ms)
+✔ an accepted append between replay and commit refuses without excluding the writer (324.213167ms)
+✔ commit rollback, cancellation and corrupted checkpoint never leave a partial authority (250.030375ms)
+✔ committed exact retry remains resolvable after preparation expiry; changed bytes cannot remint it (223.80225ms)
+✔ a recovered first device can admit and bind the next connection without an original checkpoint (793.169417ms)
+▶ expiry or account changes at the final boundary refuse and leave original authority intact
+  ✔ expired (156.850791ms)
+  ✔ account (163.469333ms)
+  ✔ credential (192.790542ms)
+✔ expiry or account changes at the final boundary refuse and leave original authority intact (513.743333ms)
+✔ schema 22 requires an explicit upgrade and preserves every retained account row (104.442541ms)
+(node:39727) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:39727) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:39727) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ recovery reads the newest admitted snapshot plus suffix, including snapshot-only originals and deletions (612.348666ms)
+✔ a pending unadmitted history snapshot is not a recovery baseline (213.0965ms)
+✔ history changes during replay force recovery to restart; damaged admission cannot become a baseline (327.857084ms)
+✔ snapshot-only writing survives recovery commit, lost reply and a second recovery; a late snapshot fences commit (951.636584ms)
+✔ a recovered owner creates current-key history from signed recovery coverage and its accepted suffix (1698.336292ms)
+✔ recovery at epoch 1 excludes every old device and can admit another device (93.372208ms)
+✔ recovery at epoch 2 excludes every old device and can admit another device (72.844042ms)
+✔ recovery at epoch 3 excludes every old device and can admit another device (143.506417ms)
+✔ recovery after rotation retains historical final cuts and establishes another key floor (85.224041ms)
+✔ valid service signatures cannot substitute the recovery signer or omit a finalized writer (15.662291ms)
+✔ intent verification captures caller data before crypto and preserves exact retry identity (36.894ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4744.822042
+
+$ vitest run test/accountInboundCodec.test.ts
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+
+ Test Files  1 passed (1)
+      Tests  34 passed (34)
+   Start at  16:52:55
+   Duration  9.55s (transform 188ms, setup 44ms, import 294ms, tests 9.07s, environment 0ms)
+
+
+$ playwright test --config playwright.packaged-account.config.ts test/packaged-account/recovery.spec.ts -g never-paired
+
+Running 1 test using 1 worker
+
+(node:39855) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/recovery.spec.ts:224:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (24.1s)
+
+  1 passed (24.8s)
+
+TypeScript --noEmit, scoped oxfmt/oxlint, git diff --check: pass. Vite build: pass, 3.02 s.

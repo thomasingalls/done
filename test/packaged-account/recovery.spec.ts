@@ -308,6 +308,13 @@ test('a never-paired account recovers and admits its next device without an orig
     );
     await add(next, 'Writing after first-device-only recovery');
     await sent;
+    // This owner holds only generation two. Its recovery intent must establish the older
+    // snapshot and handoff coverage before it can produce a new current-key snapshot.
+    await next.getByRole('button', { name: 'History maintenance', exact: true }).click();
+    const history = next.getByRole('region', { name: 'History maintenance', exact: true });
+    await history.getByRole('button', { name: 'Check history', exact: true }).click();
+    await history.getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+    await expect(history).toContainText('Verified snapshot 2 is saved.', { timeout: 15000 });
     await next.getByRole('button', { name: 'Devices', exact: true }).click();
     await next.getByRole('button', { name: 'Connect another device', exact: true }).click();
     await unlock(next, code);

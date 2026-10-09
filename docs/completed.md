@@ -12279,3 +12279,17 @@ wrongly rejected an epoch-two recovered device. Build and static checks pass.
 Native current-generation baseline reuse, ordinary reader installation, later handoffs and pruning
 remain open; existing recovery/activation output limits are unchanged. Unsigned intermediate commit.
 The retained `34035330` service remains untouched; release qualification remains paused.
+
+
+### 2026-10-09 — Current-key history preparation after recovery
+
+Recovery now signs and service-checks its exact handoff inventory. A recovered native owner can prove
+coverage of the prior history checkpoint and sources, cold-open its installed recovery snapshot with
+only its current key, and replay the accepted suffix before making another history snapshot. Legacy
+baselines without coverage evidence cannot use this shortcut. Twenty-six focused protocol/source/
+service checks pass; the packaged recovery → current-key snapshot → subsequent-device walkthrough
+passes (24.1 s). Static/build and affected inbound checks pass. [History checkpoint](./account-history-management.md)
+and [evidence](./development-evidence/2026-10-09-account-history.log).
+
+Replacement/handoff integration, ordinary reader installation and pruning remain open. No live restart,
+key retirement or deletion; release validation remains paused. Unsigned intermediate commit.

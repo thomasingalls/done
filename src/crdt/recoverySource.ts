@@ -38,6 +38,7 @@ import {
   historyCheckpointHash,
 } from '../../account-protocol/historyCheckpoint';
 import { historyMembership } from '../../account-protocol/admissionHistory';
+import { historySourceHash, parseHistorySources } from '../../account-protocol/historySources';
 
 export const RECOVERY_SOURCE_EVENTS = 4096;
 export const RECOVERY_SOURCE_UPDATE_BYTES = 64 * 1024 * 1024;
@@ -118,6 +119,7 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
     );
     guard();
     const baseline = historyPage.history;
+    const sources = structuredClone(baseline?.checkpoint.sources ?? []);
     let checkpointBytes = 0;
     if (baseline) {
       const cp = baseline.checkpoint;
@@ -249,6 +251,18 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
         );
       } else throw Error('Unexpected recovery checkpoint');
       try {
+        const kind =
+          proofs!.certification?.head === head
+            ? ('original' as const)
+            : successor!.kind === 'membership-admission'
+              ? ('replacement' as const)
+              : ('recovery' as const);
+        sources.push({
+          epoch: kind === 'original' ? 3 : successor!.epoch.epoch,
+          head,
+          kind,
+          hash: await historySourceHash(kind, c),
+        });
         const update = new Uint8Array(Y.encodeStateAsUpdate(recovered));
         try {
           checkpointBytes += update.length;
@@ -401,6 +415,7 @@ export async function readRecoverySource(input: RecoverySourceOptions) {
     const result = {
       snapshot,
       historyCheckpoint: baseline ? await historyCheckpointHash(baseline.checkpoint) : null,
+      sources: parseHistorySources(sources.sort((a, b) => a.epoch - b.epoch)),
       heads,
       epoch: prepared.head.epoch,
       head: prepared.head.head,

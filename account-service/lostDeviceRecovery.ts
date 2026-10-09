@@ -1,4 +1,5 @@
 import { captureRecoveryHistory, verifyRecoveryHistory } from './recoveryHistory.ts';
+import { historySources } from './historySources.ts';
 import type { AccountSessions } from './sessions.ts';
 import { recoveryCheckpoints, recoveryCheckpoint } from './recoveryCheckpoints.ts';
 import type { SlotBinding } from '../account-protocol/slot.ts';
@@ -291,6 +292,8 @@ export class LostDeviceRecovery {
         before = intent.heads.map((h) => snapshot(this.db, workspace, h.credentialId));
         if (!this.eligible(row)) return no('state-changed');
         historyBaseline = captureRecoveryHistory(this.db, workspace);
+        if (!root || !same(intent.sources ?? [], historySources(this.db, workspace, root).sources))
+          return no('state-changed');
         if (
           (intent.historyCheckpoint ?? '00'.repeat(32)) !==
           (historyBaseline?.catalog.latest ?? '00'.repeat(32))

@@ -75,9 +75,9 @@ and removed publishers. Native owner composition and the explicit Account-menu s
 work in disposable sole-device/two-device checks, with durable retry and subsequent editing/delivery.
 The development screen states that reclamation is not enabled. Recovery now consumes admitted history
 and its suffix, with a preparation fence and exact history reference in signed recovery intents. A
-packaged check proves snapshot-only writing survives recovery and subsequent enrollment. Next:
-current-key installed baselines, normal reader installation and later handoffs, then safe retention/
-pruning. Existing recovery/activation output limits remain unchanged.
+packaged check proves snapshot-only writing survives recovery and subsequent enrollment. Recovered
+owners now use signed source coverage to create current-key history snapshots without older openers.
+Next: replacement baselines and later handoffs, normal reader installation, then safe retention/pruning. Existing recovery/activation output limits remain unchanged.
 Automatic cadence remains off. Schema 25 and the menu action remain undeployed.
 Unsigned intermediate commits are authorized. The live installation remains unchanged during this work.
 

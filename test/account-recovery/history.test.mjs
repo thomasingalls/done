@@ -71,6 +71,7 @@ async function input(x) {
     read: r.read,
     sign: async (bytes) =>
       Buffer.from(await crypto.subtle.sign('Ed25519', r.signer, bytes)).toString('hex'),
+    nodeSigner: r.nodeSigner,
   };
 }
 function clone(doc) {
@@ -227,5 +228,158 @@ test('snapshot-only writing survives recovery commit, lost reply and a second re
   } finally {
     actual.destroy();
     reopened.snapshot.fill(0);
+  }
+});
+
+test('a recovered owner creates current-key history from signed recovery coverage and its accepted suffix', async (t) => {
+  for (const withHistory of [false, true]) {
+    const x = await sourceFixture(t),
+      doc = clone(x.root),
+      o = await owner(x);
+    t.after(() => doc.destroy());
+    doc.getText('master').insert(0, 'accepted before recovery\n');
+    await x.append(1, [c.Y.encodeStateAsUpdate(doc)]);
+    if (withHistory) {
+      doc.getText('history-only').insert(0, 'snapshot original');
+      const saved = await o.create(doc);
+      await saved.admit();
+    }
+    const r = await input(x),
+      prepared = await c.prepareRecoveryCommit(r);
+    t.after(() => prepared.key.fill(0));
+    const result = await x.authority.owner.commitRecovery(x.f.core, prepared.request);
+    assert.equal(result.stage, 'committed', JSON.stringify(result));
+    const base = r.prepared.base,
+      proofs = { successor: null, certification: null, continuations: [result.successor] },
+      authority = c.historyMembership((await c.verifyMembershipChain(proofs, base)).history),
+      p = c.membershipState(authority),
+      producer = r.bootstrap.newCredentialId;
+    const exchange = async (action, payload) => {
+      const request = {
+        v: 1,
+        kind: 'history-checkpoint-request',
+        workspaceId: p.workspaceId,
+        lineageId: p.lineageId,
+        epoch: p.epoch,
+        head: p.head,
+        credentialId: producer,
+        nonce: randomBytes(32).toString('hex'),
+        expiresAt: 61000,
+        action,
+        payload,
+        signature: zero.repeat(2),
+      };
+      request.signature = await r.sign(await historyExchangeMessage(request));
+      const response = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request);
+      assert.equal(response.ok, true, JSON.stringify(response));
+      return response.page;
+    };
+    const sv = c.Y.encodeStateVector(doc);
+    doc.getText('master').delete(0, 8);
+    doc.getText('master').insert(0, 'new-key suffix\n');
+    const delivered = await x.authority.owner.decideSubmission(x.f.core, {
+      workspaceId: x.workspace,
+      bytes: x.make(1, 'new-key suffix', {
+        credential: producer,
+        signer: r.nodeSigner,
+        epoch: 2,
+        gen: 2,
+        generationKey: prepared.key,
+        updates: [c.Y.encodeStateAsUpdate(doc, sv)],
+      }).bytes,
+    });
+    assert.equal(delivered.kind, 'decision', JSON.stringify(delivered));
+    const page = await exchange('read', 'latest');
+    let reads = 0;
+    const source = {
+      base,
+      proofs,
+      binding: r.prepared.binding,
+      producer,
+      keys: new Map([[2, prepared.key]]),
+      heads: page.heads,
+      sources: page.sources,
+      previous: page.checkpoint ? { checkpoint: page.checkpoint, admission: page.admission } : null,
+      recovery: {
+        v: 1,
+        kind: 'recovery-reading',
+        epoch: 2,
+        head: result.successor.head,
+        checkpoint: prepared.request.checkpoint,
+        successor: result.successor,
+        binding: r.prepared.binding,
+      },
+      sign: r.sign,
+      lifetime: { assertCurrent() {} },
+      read: async (bytes) => {
+        const q = JSON.parse(Buffer.from(bytes).toString());
+        assert.equal(q[6], producer, 'no old-generation publisher replay');
+        reads++;
+        const response = await x.authority.owner.readInbound(x.f.core, bytes);
+        assert.equal(response.kind, 'decision', JSON.stringify(response));
+        return response.bytes;
+      },
+      exchange: async () => {
+        throw Error('Covered handoffs must not be reopened');
+      },
+    };
+    const actual = await c.readHistorySource(source);
+    try {
+      assert(c.sameDocState(actual, doc));
+      assert.equal(reads, 1);
+      const cp = await c.createHistoryCheckpoint(
+        actual,
+        actual,
+        prepared.key,
+        authority,
+        producer,
+        page.heads,
+        page.checkpoint,
+        r.sign,
+        page.sources,
+      );
+      await exchange('publish', cp);
+      await exchange(
+        'admit',
+        await c.admitHistoryCheckpoint(cp, prepared.key, authority, producer, actual, r.sign),
+      );
+    } finally {
+      actual.destroy();
+    }
+    const withoutEvidence = structuredClone(source.recovery);
+    delete withoutEvidence.successor.epoch.intent.sources;
+    await assert.rejects(
+      c.readHistorySource({ ...source, recovery: withoutEvidence }),
+      /does not establish/,
+    );
+    await assert.rejects(c.readHistorySource({ ...source, sources: [] }), /covered handoff/);
+    const substituted = structuredClone(source.recovery);
+    substituted.checkpoint.ct = '00' + substituted.checkpoint.ct.slice(2);
+    await assert.rejects(c.readHistorySource({ ...source, recovery: substituted }));
+    if (withHistory) {
+      const noPrevious = { ...source, previous: null };
+      await assert.rejects(c.readHistorySource(noPrevious), /does not establish/);
+    }
+    // Another recovery must sign the exact preceding recovery source, even if latest history
+    // already covers it. Omitting or substituting it is refused before membership changes.
+    const again = await input(x),
+      next = await c.prepareRecoveryCommit(again);
+    t.after(() => next.key.fill(0));
+    assert.equal(next.request.intent.sources.length, 1);
+    for (const mode of ['omit', 'substitute']) {
+      const changed = structuredClone(next.request);
+      if (mode === 'omit') delete changed.intent.sources;
+      else changed.intent.sources[0].hash = 'ff'.repeat(32);
+      changed.intent.signature = await again.sign(await recoveryIntentMessage(changed.intent));
+      assert.equal(
+        (await x.authority.owner.commitRecovery(x.f.core, changed)).refusal,
+        'state-changed',
+      );
+      assert.equal(x.f.rows('recovery_successors').length, 1);
+    }
+    assert.equal(
+      (await x.authority.owner.commitRecovery(x.f.core, next.request)).stage,
+      'committed',
+    );
   }
 });

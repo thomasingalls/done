@@ -17,6 +17,7 @@ import {
   type MembershipState,
 } from './membership.ts';
 import { EMPTY_LINK, type StreamHead } from './successor.ts';
+import { parseHistorySources } from './historySourceRefs.ts';
 
 const fixed = (v: unknown, n = 32): string => {
   unhex(v, n);
@@ -58,6 +59,7 @@ export function parseRecoveryIntent(input: unknown) {
   bound(input);
   const r = closed(input, [
     ...(Object.hasOwn(input as object, 'historyCheckpoint') ? ['historyCheckpoint'] : []),
+    ...(Object.hasOwn(input as object, 'sources') ? ['sources'] : []),
     'v',
     'kind',
     'attemptId',
@@ -87,6 +89,7 @@ export function parseRecoveryIntent(input: unknown) {
     ...(Object.hasOwn(r, 'historyCheckpoint')
       ? { historyCheckpoint: fixed(r['historyCheckpoint']) }
       : {}),
+    ...(Object.hasOwn(r, 'sources') ? { sources: parseHistorySources(r['sources']) } : {}),
   };
 }
 export type RecoveryIntent = ReturnType<typeof parseRecoveryIntent>;
@@ -127,6 +130,8 @@ export async function verifyRecoveryIntent(
     ...p.certificate.members.map((m) => m.id),
     ...p.finalized.map((m) => m.credential),
   ].sort();
+  if (intent.sources?.some((s) => s.epoch > p.epoch))
+    throw Error('Recovery source exceeds its parent membership');
   if (
     !same(
       intent.heads.map((h) => h.credentialId),

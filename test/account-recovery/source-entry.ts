@@ -8,3 +8,5 @@ export { verifyMembershipChain } from '../../account-protocol/membershipLocator'
 export { historyMembership } from '../../account-protocol/admissionHistory';
 export { createHistoryCheckpoint, admitHistoryCheckpoint } from '../../src/crdt/historyCheckpoint';
 export { verifyEarlyMembership, membershipState } from '../../account-protocol/membership';
+export { readHistorySource } from '../../src/crdt/historySource';
+export { historyCheckpointHash } from '../../account-protocol/historyCheckpoint';
