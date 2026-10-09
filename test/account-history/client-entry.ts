@@ -10,3 +10,5 @@ export { historyMembership } from '../../account-protocol/admissionHistory';
 export { Y, sameDocState, hasPendingUpdates, genesisCoverageParts } from '../../src/crdt/yjs';
 
 export * from '../../src/account/historyMaintenance';
+export { historySourcesDigest } from '../../account-protocol/historySources';
+export { createHistoryTransport } from '../../src/account/historyHttp';

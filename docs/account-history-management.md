@@ -124,3 +124,23 @@ mutation and malformed reservation/framing. TypeScript, build and scoped static 
 The next source adapter must authenticate every retained enrollment/recovery snapshot as well as
 accepted streams. It must also fence a handoff snapshot published between preparation and admission.
 No menu action, baseline installation or pruning is enabled by the custody adapter itself.
+
+## Handoff source inventory checkpoint
+
+Checkpoint signatures and AEAD now bind the exact ordered inventory of retained handoff snapshots.
+A subsequent checkpoint must preserve every previously covered source reference. The session-scoped
+exchange can return one requested source, bound to the signed request/catalog and its inventory hash.
+Both initial publication and admission compare the proposal's inventory to a fresh service census;
+a late handoff publication forces explicit cancellation/rebuild instead of silently omitting writing.
+Exact retries of already admitted records remain readable after later source changes.
+
+This extends the still-undeployed history carrier; existing genesis/enrollment/recovery carriers are
+unchanged. A real service test publishes an original handoff between history proposal and admission,
+observes refusal, then rebuilds successfully and continues through rotation. Additional primitive
+checks bind inventory to ciphertext and forbid dropping a covered handoff. The bounded browser
+transport checks the pinned service, signed actor/request scope, stream bounds, truncation, forgery
+and cancellation; scoped access now recognizes the history route.
+
+Seven primitive, seven retained-client, two browser-transport, ten service and one real handoff-race/
+rotation checks pass. Native cold replay of these sources and Account-menu wiring are still next;
+source inventory alone is not evidence of plaintext coverage, installation or safe pruning.

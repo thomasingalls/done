@@ -1,3 +1,8 @@
+import {
+  parseHistorySources,
+  historySourcesDigest,
+  type HistorySourceRef,
+} from '../../account-protocol/historySources';
 /** Content-only checkpoint primitives. Owners supply independently verified accepted replay and cuts. */
 import {
   EMPTY_HISTORY_CHECKPOINT,
@@ -62,9 +67,11 @@ export async function createHistoryCheckpoint(
   heads: readonly HistoryHead[],
   previous: HistoryCheckpoint | null,
   sign: (bytes: Bytes) => Promise<string>,
+  sources: readonly HistorySourceRef[] = [],
 ): Promise<HistoryCheckpoint> {
   const p = membershipState(authority),
     cuts = verifyHistoryHeads(heads, authority),
+    inventory = parseHistorySources(sources),
     prior = structuredClone(previous);
   if (!p.certificate.members.some((m) => m.id === producer))
     throw Error('Uncertified checkpoint producer');
@@ -101,8 +108,10 @@ export async function createHistoryCheckpoint(
         sv: hex(parts.sv),
         ds: hex(parts.ds),
         headVectorDigest: await checkpointHeadDigest(cuts),
+        sourcesDigest: await historySourcesDigest(inventory),
       },
       heads: cuts,
+      sources: inventory,
       signature: '00'.repeat(64),
     };
     await verifyHistoryCheckpointParent(c, prior);

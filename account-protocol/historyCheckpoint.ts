@@ -1,3 +1,9 @@
+import {
+  parseHistorySources,
+  historySourcesDigest,
+  requireHistorySourcesExtend,
+  type HistorySourceRef,
+} from './historySources.ts';
 /** Repeatable content baseline, independent of enrollment. Admission is required before installation. */
 import { closed } from './preparation.ts';
 import {
@@ -46,8 +52,10 @@ export interface HistoryCheckpoint {
     sv: string;
     ds: string;
     headVectorDigest: string;
+    sourcesDigest: string;
   };
   heads: HistoryHead[];
+  sources: HistorySourceRef[];
   signature: string;
 }
 const h = (v: unknown, n = 32): string => {
@@ -82,7 +90,17 @@ export function parseHistoryHeads(input: unknown): HistoryHead[] {
 }
 export function parseHistoryCheckpoint(input: unknown): HistoryCheckpoint {
   if (json(input).length > HISTORY_CHECKPOINT_LIMIT) throw Error('History checkpoint too large');
-  const c = closed(input, ['v', 'kind', 'salt', 'nonce', 'ct', 'manifest', 'heads', 'signature']);
+  const c = closed(input, [
+    'v',
+    'kind',
+    'salt',
+    'nonce',
+    'ct',
+    'manifest',
+    'heads',
+    'sources',
+    'signature',
+  ]);
   const m = closed(c['manifest'], [
     'workspaceId',
     'lineageId',
@@ -96,6 +114,7 @@ export function parseHistoryCheckpoint(input: unknown): HistoryCheckpoint {
     'sv',
     'ds',
     'headVectorDigest',
+    'sourcesDigest',
   ]);
   if (
     c['v'] !== 1 ||
@@ -129,8 +148,10 @@ export function parseHistoryCheckpoint(input: unknown): HistoryCheckpoint {
       checkpointDigest: h(m['checkpointDigest']),
       ...coverageParts({ sv: m['sv'] as string, ds: m['ds'] as string }),
       headVectorDigest: h(m['headVectorDigest']),
+      sourcesDigest: h(m['sourcesDigest']),
     },
     heads: parseHistoryHeads(c['heads']),
+    sources: parseHistorySources(c['sources']),
     signature: h(c['signature'], 64),
   };
 }
@@ -152,6 +173,7 @@ export const historyCheckpointAAD = (c: HistoryCheckpoint) =>
     c.manifest.parent,
     c.manifest.producer,
     c.manifest.headVectorDigest,
+    c.manifest.sourcesDigest,
   );
 /** Roster cutoffs are lower bounds for live publishers, exact bounds for finalized/pending ones. */
 export function verifyHistoryHeads(input: unknown, authority: VerifiedMembership) {
@@ -195,6 +217,11 @@ export async function verifyHistoryCheckpoint(input: unknown, authority: Verifie
   )
     throw Error('History checkpoint authority changed');
   verifyHistoryHeads(c.heads, authority);
+  if (
+    c.manifest.sourcesDigest !== (await historySourcesDigest(c.sources)) ||
+    c.sources.some((s) => s.epoch > c.manifest.epoch)
+  )
+    throw Error('History source inventory changed');
   await verifySignature(producer.sPub, c.signature, await historyCheckpointMessage(c));
   return c;
 }
@@ -217,6 +244,7 @@ export async function verifyHistoryCheckpointParent(
     c.manifest.generation < previous.manifest.generation
   )
     throw Error('History checkpoint parent changed');
+  requireHistorySourcesExtend(c.sources, previous.sources);
   for (const old of previous.heads) {
     const head = c.heads.find((v) => v.credentialId === old.credentialId);
     if (

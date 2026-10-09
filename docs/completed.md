@@ -12225,3 +12225,14 @@ two-device custody/editing check pass. One probe comparison needed normalized fi
 setup timeout passed on unchanged rerun. TypeScript, packaged build and scoped static checks pass.
 [History plan](./account-history-management.md). Native source replay/menu integration and all pruning
 remain ahead. No live switch; unsigned intermediate commit as authorized.
+
+### 2026-10-09 — Authenticated handoff inventory for history preparation
+
+Bound retained enrollment/recovery sources into history checkpoint signatures, AEAD and ancestry.
+Added request-bound source reads and service checks at publication/admission so late handoff writing
+cannot be omitted by an otherwise valid accepted-stream cut. Focused evidence: seven primitives,
+seven client retries, two bounded transport checks, ten service checks and one genuine handoff-race/
+rotation case pass. The transport cancellation fixture initially cancelled before the request owned
+its stream; disabling eager prefetch made it exercise an actual in-flight read. Static checks pass.
+This updates only undeployed history carriers; native replay/menu, baseline installation and pruning
+remain open. [History plan](./account-history-management.md). Unsigned; retained service unchanged.

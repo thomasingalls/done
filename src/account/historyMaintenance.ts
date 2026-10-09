@@ -91,6 +91,7 @@ export interface HistoryMaintenanceOwner {
   prepare(
     previous: HistoryCheckpoint | null,
     heads: HistoryCheckpoint['heads'],
+    sources: HistoryCheckpoint['sources'],
   ): Promise<HistoryCheckpoint>;
   /** Independent cold replay; never sign merely because the producer or service signed. */
   admit(checkpoint: HistoryCheckpoint): Promise<HistoryCheckpointAdmission>;
@@ -238,7 +239,7 @@ export async function runHistoryMaintenance(
         ? retained?.attempt || retained?.discard
           ? 'resume'
           : 'none'
-        : cp.manifest.epochHead !== p.head
+        : cp.manifest.epochHead !== p.head || !same(cp.sources, page.sources)
           ? 'stale'
           : retained?.attempt
             ? 'resume'
@@ -255,7 +256,8 @@ export async function runHistoryMaintenance(
       return { sequence: page.catalog.sequence, pending: 'none', canDiscard: false } as const;
     }
     const cp = page.checkpoint!;
-    if (cp.manifest.epochHead !== p.head) return { ...describe(page), pending: 'stale' as const };
+    if (cp.manifest.epochHead !== p.head || !same(cp.sources, page.sources))
+      return { ...describe(page), pending: 'stale' as const };
     if (cp.manifest.producer === credentialId && p.certificate.members.length > 1)
       return { sequence: page.catalog.sequence, pending: 'waiting', canDiscard: true } as const;
     let admission = retained?.attempt?.admission;
@@ -316,10 +318,15 @@ export async function runHistoryMaintenance(
   const checkpoint = await owner.prepare(
     structuredClone(latest.checkpoint),
     structuredClone(pending.heads),
+    structuredClone(pending.sources),
   );
   await verifyHistoryCheckpoint(checkpoint, authority);
   await verifyHistoryCheckpointParent(checkpoint, latest.checkpoint);
-  if (checkpoint.manifest.producer !== credentialId || !same(checkpoint.heads, pending.heads))
+  if (
+    checkpoint.manifest.producer !== credentialId ||
+    !same(checkpoint.heads, pending.heads) ||
+    !same(checkpoint.sources, pending.sources)
+  )
     throw Error('Prepared history source changed');
   await save({ ...current(), attempt: { checkpoint, admission: null } });
   return finish(await exchange('publish', checkpoint));

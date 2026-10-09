@@ -6049,7 +6049,16 @@ test('history maintenance preserves admitted ancestry across rotation and rechec
     if (result.ok) await verifyHistoryCheckpointPage(result.page, r, x.authority.pin);
     return result;
   };
-  const first = await c.createHistoryCheckpoint(
+  const inventory = await exchange('existing', 'read', 'latest');
+  assert.equal(inventory.ok, true, JSON.stringify(inventory));
+  let sources = inventory.page.sources;
+  assert.deepEqual(sources, [], 'handoff publication is still unfinished');
+  for (const ref of sources) {
+    const source = await exchange('new', 'source', ref.head);
+    assert.equal(source.ok, true, JSON.stringify(source));
+    assert.deepEqual(source.page.source.ref, ref);
+  }
+  let first = await c.createHistoryCheckpoint(
     doc,
     doc,
     key,
@@ -6058,6 +6067,7 @@ test('history maintenance preserves admitted ancestry across rotation and rechec
     c.membershipState(authority).heads,
     null,
     sign('existing'),
+    sources,
   );
   assert.equal((await exchange('existing', 'publish', first)).ok, true);
   const self = await c.historyCheckpointAdmissionBody(first, x.context.existing.id);
@@ -6067,7 +6077,42 @@ test('history maintenance preserves admitted ancestry across rotation and rechec
     false,
     'another certified device must admit',
   );
-  const peer = await c.admitHistoryCheckpoint(
+  let peer = await c.admitHistoryCheckpoint(
+    first,
+    key,
+    authority,
+    x.context.candidate.id,
+    doc,
+    sign('new'),
+  );
+  // A genuine handoff publication can arrive without a membership change or new ledger write.
+  assert.equal((await x.exchange('existing', 'publish', x.checkpoint)).ok, true);
+  assert.equal((await exchange('new', 'admit', peer)).refusal, 'sources-changed');
+  assert.equal(
+    (await exchange('existing', 'discard', await c.historyCheckpointHash(first))).ok,
+    true,
+  );
+  const nextInventory = await exchange('existing', 'read', 'latest');
+  sources = nextInventory.page.sources;
+  assert.equal(sources.length, 1);
+  const fetched = await exchange('new', 'source', sources[0].head);
+  assert.equal(fetched.ok, true, JSON.stringify(fetched));
+  assert.deepEqual(fetched.page.source.checkpoint, x.checkpoint);
+  assert.equal((await exchange('new', 'source', 'ff'.repeat(32))).refusal, 'source-unavailable');
+  assert.equal((await exchange('existing', 'publish', first)).refusal, 'checkpoint-cancelled');
+  first = await c.createHistoryCheckpoint(
+    doc,
+    doc,
+    key,
+    authority,
+    x.context.existing.id,
+    c.membershipState(authority).heads,
+    null,
+    sign('existing'),
+    sources,
+  );
+  assert.equal((await exchange('existing', 'publish', first)).ok, true);
+  peer = await c.admitHistoryCheckpoint(
     first,
     key,
     authority,
@@ -6105,6 +6150,7 @@ test('history maintenance preserves admitted ancestry across rotation and rechec
     cuts,
     first,
     sign('existing'),
+    sources,
   );
   assert.equal((await exchange('existing', 'publish', second)).ok, true);
   const admission = await c.admitHistoryCheckpoint(

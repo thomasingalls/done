@@ -194,3 +194,45 @@ test('finalized publishers cannot be omitted or advanced, and ancestry cannot re
   changed.find((h) => h.credentialId === f.x.target).position++;
   await assert.rejects(async () => c.verifyHistoryHeads(changed, authority), /cut/);
 });
+
+test('history ancestry and AEAD bind the complete handoff inventory', async (t) => {
+  const f = await setup(t, true);
+  const sources = [{ epoch: 3, head: f.p.head, kind: 'original', hash: 'ab'.repeat(32) }];
+  const first = await c.createHistoryCheckpoint(
+    f.doc,
+    f.local,
+    f.key,
+    f.authority,
+    f.producer,
+    f.p.heads,
+    null,
+    f.sign,
+    sources,
+  );
+  assert.deepEqual(first.sources, sources);
+  await assert.rejects(
+    c.createHistoryCheckpoint(
+      f.doc,
+      f.local,
+      f.key,
+      f.authority,
+      f.producer,
+      f.p.heads,
+      first,
+      f.sign,
+    ),
+    /omitted.*handoff/,
+  );
+  const changed = structuredClone(first);
+  changed.sources[0].hash = 'cd'.repeat(32);
+  changed.signature = await f.sign(await c.historyCheckpointMessage(changed));
+  await assert.rejects(c.verifyHistoryCheckpoint(changed, f.authority), /source inventory/);
+  changed.manifest.sourcesDigest = await c.historySourcesDigest(changed.sources);
+  changed.signature = await f.sign(await c.historyCheckpointMessage(changed));
+  await c.verifyHistoryCheckpoint(changed, f.authority);
+  await assert.rejects(
+    c.openHistoryCheckpoint(changed, f.key, f.authority),
+    undefined,
+    'even a newly signed inventory cannot substitute the original AEAD binding',
+  );
+});

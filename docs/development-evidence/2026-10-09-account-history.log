@@ -49,3 +49,17 @@ Native history progress custody:
   saved fixture fixed that check. One later run timed out at 120 s in pairedEditors before the new
   assertions; its unchanged rerun passed at 21.8 s. No timeout or assertion was relaxed.
   TypeScript, scoped lint/format and git diff checks passed.
+
+Handoff inventory and scoped source transport:
+  node --test --test-timeout=20000 test/account-history/checkpoint.test.mjs test/account-history/client.test.mjs
+  14 passed, 0 failed; duration 1968 ms.
+  node --test --test-timeout=20000 test/account-history/http-client.test.mjs
+  2 passed, 0 failed; duration 814 ms. First cancellation fixture aborted before its stream was
+  owned by the transport; highWaterMark=0 now waits for an actual in-flight reader before aborting.
+  node --test --test-timeout=20000 test/account-history/service.test.mjs
+  10 passed, 0 failed; duration 1634 ms.
+  node --test --test-timeout=20000 --test-name-pattern='history maintenance' test/account-ceremony/content-transfer.test.mjs
+  1 passed, 0 failed; duration 4007 ms. Genuine original handoff publication after proposal;
+  admission refuses, explicit rebuild succeeds, then actual rotation preserves ancestry.
+  TypeScript, scoped lint/format and git diff --check pass.
+  No baseline install, history deletion, live upgrade or release campaign.

@@ -42,6 +42,7 @@ export interface ScopedAccess {
 const notificationPath = '/account/notifications/v1/subscribe';
 const routes: Record<string, GrantScope['kind']> = {
   '/account/delivery/submit': 'workspace',
+  '/account/history/v1/checkpoint': 'workspace',
   '/account/delivery/read': 'workspace',
   '/account/delivery/read-v2': 'workspace',
   '/account/authority/discover': 'workspace',

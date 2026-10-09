@@ -1,3 +1,9 @@
+import {
+  parseHistorySources,
+  parseHistorySourceValue,
+  historySourceHash,
+  type HistorySourceRef,
+} from './historySources.ts';
 /** Request-bound history maintenance exchange. A catalog is service evidence, not local activation. */
 import { closed } from './preparation.ts';
 import { domainMessage, json, same, verifySignature } from './admission.ts';
@@ -51,14 +57,14 @@ export function parseHistoryExchange(input: unknown) {
   if (
     r['v'] !== 1 ||
     r['kind'] !== 'history-checkpoint-request' ||
-    !['read', 'publish', 'admit', 'discard'].includes(r['action'] as string)
+    !['read', 'publish', 'admit', 'discard', 'source'].includes(r['action'] as string)
   )
     throw Error('Invalid history exchange');
-  const action = r['action'] as 'read' | 'publish' | 'admit' | 'discard';
+  const action = r['action'] as 'read' | 'publish' | 'admit' | 'discard' | 'source';
   let payload: unknown;
   if (action === 'publish') payload = parseHistoryCheckpoint(r['payload']);
   else if (action === 'admit') payload = parseHistoryCheckpointAdmission(r['payload']);
-  else if (action === 'discard') payload = h(r['payload']);
+  else if (action === 'discard' || action === 'source') payload = h(r['payload']);
   else {
     if (!['latest', 'previous', 'pending'].includes(r['payload'] as string))
       throw Error('Invalid checkpoint selector');
@@ -183,6 +189,8 @@ export interface HistoryCheckpointPage {
   checkpoint: HistoryCheckpoint | null;
   admission: HistoryCheckpointAdmission | null;
   heads: ReturnType<typeof parseHistoryHeads>;
+  sources: HistorySourceRef[];
+  source: { ref: HistorySourceRef; checkpoint: ReturnType<typeof parseHistorySourceValue> } | null;
   signature: string;
 }
 export function parseHistoryCheckpointPage(input: unknown): HistoryCheckpointPage {
@@ -195,6 +203,8 @@ export function parseHistoryCheckpointPage(input: unknown): HistoryCheckpointPag
     'checkpoint',
     'admission',
     'heads',
+    'sources',
+    'source',
     'signature',
   ]);
   if (
@@ -203,6 +213,13 @@ export function parseHistoryCheckpointPage(input: unknown): HistoryCheckpointPag
     (r['checkpoint'] === null && r['admission'] !== null)
   )
     throw Error('Invalid history page');
+  let source: HistoryCheckpointPage['source'] = null;
+  if (r['source'] !== null) {
+    const s = closed(r['source'], ['ref', 'checkpoint']);
+    const ref = parseHistorySources([s['ref']])[0]!;
+    source = { ref, checkpoint: parseHistorySourceValue(ref.kind, s['checkpoint']) };
+    if (r['checkpoint'] !== null || r['admission'] !== null) throw Error('Ambiguous history page');
+  }
   return {
     v: 1,
     kind: 'history-checkpoint-page',
@@ -211,6 +228,8 @@ export function parseHistoryCheckpointPage(input: unknown): HistoryCheckpointPag
     checkpoint: r['checkpoint'] === null ? null : parseHistoryCheckpoint(r['checkpoint']),
     admission: r['admission'] === null ? null : parseHistoryCheckpointAdmission(r['admission']),
     heads: parseHistoryHeads(r['heads']),
+    sources: parseHistorySources(r['sources']),
+    source,
     signature: h(r['signature'], 64),
   };
 }
@@ -230,6 +249,17 @@ export async function verifyHistoryCheckpointPage(
   await verifyHistoryCatalog(p.catalog, pin, r.workspaceId, r.lineageId);
   await verifySignature(pin.authRoot, p.signature, await historyCheckpointPageMessage(p));
   const hash = p.checkpoint ? await historyCheckpointHash(p.checkpoint) : EMPTY_HISTORY_CHECKPOINT;
+  if (r.action === 'source') {
+    if (
+      !p.source ||
+      p.source.ref.head !== r.payload ||
+      !p.sources.some((ref) => same(ref, p.source!.ref)) ||
+      (await historySourceHash(p.source.ref.kind, p.source.checkpoint)) !== p.source.ref.hash
+    )
+      throw Error('History source selection changed');
+    return p;
+  }
+  if (p.source !== null) throw Error('Unexpected history source');
   if (r.action === 'read') {
     const selector = r.payload as 'latest' | 'previous' | 'pending';
     if (

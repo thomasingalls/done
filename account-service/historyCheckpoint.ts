@@ -1,3 +1,4 @@
+import { historySources } from './historySources.ts';
 /** Durable proposal/admission exchange. This archive grants no permission to prune acceptance ledgers. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same } from '../account-protocol/admission.ts';
@@ -163,6 +164,12 @@ export async function exchangeHistoryCheckpoint(
     return {
       original,
       streams,
+      handoffs: historySources(
+        db,
+        r.workspaceId,
+        original,
+        r.action === 'source' ? (r.payload as string) : undefined,
+      ),
       catalog,
       discard: requestedHash
         ? (db
@@ -323,6 +330,7 @@ export async function exchangeHistoryCheckpoint(
       };
       // Existing admitted snapshots do not conceal ledger damage before the retention adapter exists.
       for (const item of verified.values()) verifyCuts(item.checkpoint);
+      if (r.action === 'source' && !before.handoffs.source) return no('source-unavailable');
       let selected =
         r.action === 'read'
           ? await get(catalog[r.payload as 'latest' | 'previous' | 'pending'])
@@ -345,6 +353,7 @@ export async function exchangeHistoryCheckpoint(
           if (checkpoint.manifest.producer !== r.credentialId) return no('invalid-proof');
           await verifyHistoryCheckpointParent(checkpoint, latest?.checkpoint ?? null);
           verifyCuts(checkpoint);
+          if (!same(checkpoint.sources, before.handoffs.sources)) return no('sources-changed');
           write = { checkpoint, admission: null, hash: requestedHash! };
           selected = write;
           next.pending = requestedHash!;
@@ -365,6 +374,7 @@ export async function exchangeHistoryCheckpoint(
           );
           if (admission.admittingCredential !== r.credentialId) return no('invalid-proof');
           verifyCuts(old.checkpoint);
+          if (!same(old.checkpoint.sources, before.handoffs.sources)) return no('sources-changed');
           await verifyHistoryCheckpointParent(old.checkpoint, latest?.checkpoint ?? null);
           write = { checkpoint: old.checkpoint, admission, hash: requestedHash! };
           selected = write;
@@ -397,6 +407,8 @@ export async function exchangeHistoryCheckpoint(
         checkpoint: selected?.checkpoint ?? null,
         admission: selected?.admission ?? null,
         heads: currentHeads,
+        sources: before.handoffs.sources,
+        source: before.handoffs.source,
         signature: '00'.repeat(64),
       });
       hook('after-verify', 'history-checkpoint');
