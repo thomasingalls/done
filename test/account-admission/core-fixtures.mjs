@@ -122,6 +122,7 @@ export async function prepared(t, options = {}) {
         publicKey: recovery.draft.rPub,
         enc: 'cc'.repeat(32),
         ct: 'dd'.repeat(48),
+        ...(options.recoveryWrap ? await options.recoveryWrap(recovery.draft) : {}),
       },
     ],
     signature: '00'.repeat(64),

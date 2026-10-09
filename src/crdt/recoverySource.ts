@@ -1,0 +1,265 @@
+/** Cold recovery replay from the admitted genesis and every accepted publisher stream. */
+import { verifyLostRecoveryPrepared } from '../../account-protocol/lostDeviceRecovery';
+import {
+  verifyRecoveryBootstrap,
+  type RecoveryBootstrap,
+} from '../../account-protocol/recoveryBootstrap';
+import {
+  parseRecoveryRead,
+  recoveryReadMessage,
+  verifyRecoveryReadPage,
+  type RecoveryRead,
+} from '../../account-protocol/recoveryRead';
+import {
+  historyPublisher,
+  historyGeneration,
+  historyEnvelopeRoute,
+  verifyHistoryDecision,
+} from '../../account-protocol/admissionHistory';
+import { verifyReceipt } from '../../account-protocol/admission';
+import { decodeNetworkEnvelope, openNetworkEnvelope } from '../../account-protocol/envelope';
+import { verifyPositionResponse, ZERO_REFUSAL } from '../../account-protocol/positionDecision';
+import { checkpointAAD, generationInfo, GENESIS_LIMIT } from '../../account-protocol/genesis';
+import { hex, unhex } from '../../account-protocol/recovery';
+import type { AuthorityPin } from '../../account-protocol/authority';
+import { withRecoveryKeys } from '../account/recovery';
+import { openGeneration } from '../account/generationWrap';
+import { fields, hkdf, random, type Bytes } from './custodyCrypto';
+import { Y, genesisCoverage, genesisCoverageParts, hasPendingUpdates } from './yjs';
+import { actors } from './promotionGenesis';
+
+export const RECOVERY_SOURCE_EVENTS = 4096;
+export const RECOVERY_SOURCE_UPDATE_BYTES = 64 * 1024 * 1024;
+export interface RecoverySourceOptions {
+  prepared: unknown;
+  begin: unknown;
+  pin: AuthorityPin;
+  code: string;
+  bootstrap: RecoveryBootstrap;
+  sign(bytes: Bytes): Promise<string>;
+  read(request: RecoveryRead): Promise<unknown>;
+  assertCurrent(): void;
+}
+/** No local keys, content or membership are installed. Caller must erase the returned snapshot. */
+export async function readRecoverySource(input: RecoverySourceOptions) {
+  const preparedInput = structuredClone(input.prepared),
+    beginInput = structuredClone(input.begin),
+    pin = structuredClone(input.pin),
+    bootstrap = structuredClone(input.bootstrap),
+    code = input.code,
+    sign = input.sign.bind(input),
+    read = input.read.bind(input),
+    guard = input.assertCurrent.bind(input);
+  guard();
+  const checked = await verifyLostRecoveryPrepared(preparedInput, beginInput, pin),
+    proof = await verifyRecoveryBootstrap(bootstrap, checked.context),
+    prepared = checked.prepared,
+    base = prepared.base,
+    original = base.request.candidate;
+  guard();
+  const keys = new Map<number, Bytes>(),
+    doc = new Y.Doc({ gc: false });
+  let snapshot: Bytes | undefined;
+  try {
+    await withRecoveryKeys(checked.context.recovery, code, crypto.subtle, async (wrapping) => {
+      guard();
+      const wraps = [
+        { generation: 1, wrap: original.wraps.find((w) => w.recipient === 'recovery')! },
+        ...(prepared.proofs?.continuations ?? []).flatMap((p) =>
+          p.kind === 'membership-rotation'
+            ? [{ generation: p.epoch.generation, wrap: p.epoch.rotation.payload.recoveryWrap }]
+            : [],
+        ),
+      ];
+      if (wraps.length > 128) throw Error('Too many recovery generations');
+      for (const item of wraps) {
+        if (keys.has(item.generation)) throw Error('Repeated recovery generation');
+        guard();
+        const key = await openGeneration(
+          item.wrap,
+          wrapping,
+          unhex(base.request.recovery.rPub, 32),
+          generationInfo({ ...original, generation: item.generation }),
+        );
+        keys.set(item.generation, key);
+        guard();
+      }
+    });
+    const key = keys.get(1)!;
+    const plain = new Uint8Array(
+      await crypto.subtle.decrypt(
+        {
+          name: 'AES-GCM',
+          iv: unhex(original.checkpoint.nonce, 12),
+          additionalData: checkpointAAD(original),
+        },
+        await hkdf(
+          key,
+          unhex(original.checkpoint.salt, 16),
+          fields('done/checkpoint/v1', original.workspaceId),
+          { name: 'AES-GCM', length: 256 },
+          ['decrypt'],
+          crypto.subtle,
+        ),
+        unhex(original.checkpoint.ct, original.checkpoint.ct.length / 2),
+      ),
+    );
+    try {
+      guard();
+      if (plain.length > GENESIS_LIMIT) throw Error('Recovery genesis is too large');
+      Y.applyUpdate(doc, plain);
+    } finally {
+      plain.fill(0);
+    }
+    if (hasPendingUpdates(doc) || hex(genesisCoverage(doc)) !== original.coverage.snapshot)
+      throw Error('Recovery genesis coverage changed');
+    const parts = genesisCoverageParts(doc);
+    await verifyReceipt(base.receipt, base.request, pin, { sv: hex(parts.sv), ds: hex(parts.ds) });
+    const publishers = new Set([original.signer]);
+    for (const m of prepared.proofs?.certification?.epoch.delivery.certificate.members ?? [])
+      publishers.add(m.id);
+    for (const p of prepared.proofs?.continuations ?? [])
+      if (p.kind === 'membership-certification')
+        for (const m of p.epoch.delivery.certificate.members) publishers.add(m.id);
+    const heads: { credentialId: string; position: number; link: string }[] = [];
+    let events = 0,
+      updateBytes = 0;
+    for (const publisher of [...publishers].sort()) {
+      const history = checked.history ? historyPublisher(checked.history, publisher) : null;
+      const current = history?.current ?? {
+        workspace: original.workspaceId,
+        lineage: original.lineageId,
+        head: base.receipt.offer.head,
+        tip: 1,
+        acceptanceKey: base.receipt.offer.epoch.acceptancePublicKey,
+      };
+      const signing = await crypto.subtle.importKey(
+        'raw',
+        unhex(history?.signingKey ?? base.request.certification.members[0].sPub, 32),
+        'Ed25519',
+        false,
+        ['verify'],
+      );
+      let position = 0,
+        link = ZERO_REFUSAL,
+        observed = 0;
+      do {
+        guard();
+        const request = parseRecoveryRead({
+          retryKey: (beginInput as { retryKey: string }).retryKey,
+          attemptId: prepared.challenge.context.attemptId,
+          bootstrap: proof,
+          publisher,
+          after: position,
+          limit: 16,
+          nonce: hex(random(32)),
+          signature: '00'.repeat(64),
+        });
+        request.signature = await sign(await recoveryReadMessage(request));
+        guard();
+        const page = await verifyRecoveryReadPage(
+          await read(structuredClone(request)),
+          request,
+          pin,
+        );
+        guard();
+        if (page.through < observed) throw Error('Recovery accepted prefix regressed');
+        observed = page.through;
+        for (const entry of page.entries) {
+          if (++events > RECOVERY_SOURCE_EVENTS)
+            throw Error('Recovery history exceeds supported bounds');
+          const envelope = unhex(entry.envelope, entry.envelope.length / 2),
+            e = decodeNetworkEnvelope(envelope);
+          if (
+            e.v !== 2 ||
+            e.workspace_id !== original.workspaceId ||
+            e.credential_id !== publisher ||
+            e.seq !== position + 1
+          )
+            throw Error('Recovery publisher sequence changed');
+          const expected = {
+            workspace: original.workspaceId,
+            credential: publisher,
+            position: e.seq,
+            epoch: e.epoch,
+            digest: hex(e.digest),
+            parent: ZERO_REFUSAL,
+            previous: link,
+          };
+          const decisionBytes = unhex(entry.proof, entry.proof.length / 2);
+          const decision = history
+            ? await verifyHistoryDecision(decisionBytes, expected, current, history)
+            : await verifyPositionResponse(decisionBytes, expected, current);
+          guard();
+          if (decision.kind !== 'accepted' || decision.head.final)
+            throw Error('Recovery acceptance is unverified');
+          const currentRoute = {
+            v: 2 as const,
+            workspace_id: original.workspaceId,
+            credential_id: publisher,
+            epoch: current.tip,
+            gen: history ? historyGeneration(history) : 1,
+          };
+          const route = history
+            ? historyEnvelopeRoute(history, currentRoute, e.epoch)
+            : currentRoute;
+          const opener = keys.get(route.gen);
+          if (!opener) throw Error('Recovery generation is missing');
+          const body = await openNetworkEnvelope(envelope, route, signing, opener);
+          try {
+            guard();
+            if (
+              !(
+                (body.actor_kind === 'human' && body.actor_id === original.principalId) ||
+                (body.actor_kind === 'system' &&
+                  body.actor_id === 'system' &&
+                  original.actors.some((a) => a.kind === 'system'))
+              )
+            )
+              throw Error('Recovery actor is not certified');
+            for (const update of body.updates) {
+              updateBytes += update.length;
+              if (updateBytes > RECOVERY_SOURCE_UPDATE_BYTES)
+                throw Error('Recovery updates exceed supported bounds');
+              Y.applyUpdate(doc, update);
+            }
+          } finally {
+            for (const update of body.updates) update.fill(0);
+          }
+          position++;
+          link = decision.head.link;
+        }
+        if (position === page.through && link !== page.link)
+          throw Error('Recovery terminal link changed');
+      } while (position < observed);
+      const required = history?.finalization ?? history?.boundaries.at(-1);
+      if (
+        required &&
+        (position < required.position || (position === required.position && link !== required.link))
+      )
+        throw Error('Recovery history omits an authenticated cut');
+      if (history?.finalization && position !== history.finalization.position)
+        throw Error('Finalized recovery prefix changed');
+      heads.push({ credentialId: publisher, position, link });
+    }
+    guard();
+    if (hasPendingUpdates(doc)) throw Error('Recovered writing has unresolved dependencies');
+    actors(doc, original.principalId, original.signer);
+    snapshot = new Uint8Array(Y.encodeStateAsUpdate(doc));
+    if (snapshot.length > GENESIS_LIMIT)
+      throw Error('Recovered writing exceeds supported checkpoint size');
+    const result = {
+      snapshot,
+      heads,
+      epoch: prepared.head.epoch,
+      head: prepared.head.head,
+      generation: checked.history ? historyGeneration(checked.history) : 1,
+    };
+    snapshot = undefined;
+    return result;
+  } finally {
+    snapshot?.fill(0);
+    for (const key of keys.values()) key.fill(0);
+    doc.destroy();
+  }
+}

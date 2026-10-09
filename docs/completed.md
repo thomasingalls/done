@@ -11825,3 +11825,33 @@ verifies an acceptance proof and decrypts its envelope; the rotation case recove
 from a subsequently removed device without granting it current reader authority. TypeScript, scoped
 lint/format and diff checks pass. [Output](./development-evidence/2026-10-09-recovery-reads.log).
 Live service and personal browser state remain unchanged; release validation remains paused.
+
+
+### 2026-10-09 — Lost-device recovery: cold hosted-writing replay
+
+Added `readRecoverySource`: verifies the retained account preparation and bootstrap, opens the
+code-sealed recovery key, opens every retained generation wrap, authenticates and decrypts the
+original admitted checkpoint, and verifies its coverage/receipt. It then reads each certified
+publisher from position zero, including finalized publishers, checking sequence, signing key,
+acceptance proof, generation route, actor, signed terminal link and historical cuts before returning
+one complete Yjs snapshot with exact per-publisher accepted heads. Pending Yjs dependencies, omitted
+history, invalid ciphertext, wrong factors and cancellation refuse. Keys and intermediate plaintext
+are erased on exit; the caller owns and must erase the returned snapshot. This helper does not install
+keys or writing, replace membership, or claim its point-in-time cuts are still current at commit.
+
+Bounds retain the existing 4 MiB output checkpoint limit, with 4096 accepted events, 64 MiB of decoded
+updates and 128 generation openers. Future history/pruning work remains separate. Fixture extensions
+supply genuine recovery wraps and a distinct key for later-generation envelopes; existing synthetic
+fixtures retain their defaults. A real service test verifies complete replay of removed-device writing
+plus writing accepted under generation two, using the saved code and no surviving-device grant.
+
+Focused checks pass: 22 preparation/read/source cases plus two rotated-history service cases, with
+TypeScript, scoped lint/format and diff checks. [Preserved output](./development-evidence/2026-10-09-recovery-source.log).
+No full release suite or qualification campaign ran; the live service and personal browsers are unchanged.
+
+The next bounded implementation is the atomic recovery successor and retained local installation.
+It must consume the fresh attempt, compare the verified replay cuts at commit, make the bootstrap's
+single replacement member usable for subsequent rotation/enrollment, and durably resolve lost replies.
+The existing continuation verifier's mandatory epoch-3 two-device anchor is not a valid prerequisite
+for this successor: first-device-only recovery must remain supported. Product screens are approved
+but not mounted; this is not yet end-to-end recovery.

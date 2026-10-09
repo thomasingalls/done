@@ -34,7 +34,13 @@ export async function ready(t, options = {}) {
         ...updates.flatMap((u) => [u32(u.length), u]),
       ]),
       k = Buffer.from(
-        hkdfSync('sha256', kg, Buffer.alloc(0), lp('done/envelope/v2', ws, id, String(gen)), 32),
+        hkdfSync(
+          'sha256',
+          options.generationKey ?? kg,
+          Buffer.alloc(0),
+          lp('done/envelope/v2', ws, id, String(gen)),
+          32,
+        ),
       ),
       cipher = createCipheriv('aes-256-gcm', k, nonce);
     cipher.setAAD(aad);

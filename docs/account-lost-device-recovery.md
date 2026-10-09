@@ -128,8 +128,8 @@ No devices are fenced or disconnected here. The service does not issue network l
 
 The private session host exposes `/__account-setup/lost-recovery/{begin,finish,resume,cancel}`.
 Schema 22 is additive and requires the existing offline upgrade procedure for retained schema 21.
-The live installation remains at 21 until a separately coordinated upgrade. Hosted reads and recovery
-commit/installation remain unfinished; these endpoints do not make recovery a usable product yet.
+The live installation remains at 21 until a separately coordinated upgrade. Recovery commit and
+local installation remain unfinished; these endpoints do not make recovery a usable product yet.
 
 
 ## Hosted read checkpoint
@@ -142,3 +142,32 @@ read historical finalized publishers through verified rotation history. Bounds a
 16 entries and 4 MiB responses; invalid extents, changed authority and incomplete history refuse.
 The current transport does not fence writers: later pages may observe a larger accepted prefix. The
 recovery transition still needs an exact-cut contract before it can replace membership.
+
+
+## Cold replay and remaining transition boundary
+
+`src/crdt/recoverySource.ts` now opens the recovery wrap for each generation, cold-replays the admitted
+genesis plus every accepted publisher prefix, and returns a complete snapshot and exact accepted-head
+vector. The caller must erase the snapshot after sealing/using it. Replay includes finalized publishers;
+missing dependencies, old-generation key failures and invalid cuts refuse. It creates no local slot,
+changes no current authority and does not disconnect devices. Its cuts are a point-in-time observation.
+
+The next transaction must compare that exact head vector with freshly authenticated service ledgers
+inside the final write transaction. If accepted writing advanced after replay, the existing snapshot
+cannot authorize deletion/exclusion of the newer work: recover a new complete cut and persist its new
+intent before retrying. A competing membership head requires the already-agreed fresh preparation.
+Preparation/read currently place no persistent writer fence; introducing one would require explicit
+resumption/release semantics before mounting it. Membership replacement, generation rotation and
+retained exact outcome must be atomic before the app can report recovery success.
+
+The recovered bootstrap is the single-member certificate (TRD §13.8). The current general continuation
+paths assume the original two-device certification at epoch 3. They must accept a verified recovery
+successor anchored directly in the first admission as well; manufacturing a second-device invitation
+or treating a service signature as the recovery signer would violate the approved journey. Both the
+service and client history, ordinary grants, delivery and subsequent membership paths need that
+extension before installation or UI activation.
+
+The operator approved restarting early factor steps after an actual close/kill before new device-lock
+setup. Backgrounding/password-manager use must preserve the in-memory ceremony. Once the lock is
+confirmed, sealed candidate keys, verified progress, new generation material and exact transition
+intent must support durable restart. The approved screens and chooser resume entry remain to build.

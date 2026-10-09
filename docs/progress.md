@@ -49,7 +49,7 @@ gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
 branch: codex/encrypted-store-contract-corrections
 status: in flight
-scope: durable preparation and two-factor hosted reads complete; retained client and replay next
+scope: durable preparation, authorized reads and cold replay complete; atomic successor and local installation next
 blocks_on: none; operator approved recovery screen sequence
 release_validation: paused by operator
 updated: 2026-10-09
@@ -77,8 +77,17 @@ full ledger verification and final account/head/cancellation checks. Historical 
 is readable through verified rotation history. Bounded pages carry signed accepted extents.
 [Read evidence](./development-evidence/2026-10-09-recovery-reads.log).
 
-**Next:** retained client preparation and complete cold replay, then exact accepted cutoffs,
-atomic all-device replacement/rotation, durable local installation and the operator-approved screens.
+**Cold replay complete:** saved-code opening of every generation, original checkpoint verification,
+complete accepted-prefix replay including removed publishers, actor/acceptance/terminal-cut checks,
+and refusal for unresolved Yjs dependencies. Returns a snapshot and point-in-time accepted heads;
+installs nothing. 22 focused preparation/read/source cases plus two rotation service cases pass.
+[Source evidence](./development-evidence/2026-10-09-recovery-source.log).
+
+**Next:** atomic all-device replacement/rotation with exact accepted-cut comparison, durable local
+installation, and the approved screens. A verified recovery successor must work directly from the
+first admission as well as later history; the current epoch-3 continuation anchor cannot be a hidden
+second-device prerequisite. Before new lock setup, actual tab/browser death restarts early steps;
+afterward, sealed intent and keys must resume durably. No usable recovery UI is mounted yet.
 The user authorized unsigned intermediate commits and continued implementation through this phase.
 
 ---

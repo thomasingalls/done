@@ -4346,3 +4346,12 @@ existing account passkey → enter recovery code → save and confirm a new devi
 “Recover on this device and disconnect the previous devices” → recover and open the editor.
 Keep the account passkey and recovery code unchanged; retained recovery progress belongs in the chooser.
 Implementation must still establish complete replay and atomic replacement before presenting success.
+
+
+### 2026-10-09 — Recovery restart boundary before device-lock setup
+
+The operator approved restarting the passkey/recovery-code steps if the tab or browser is closed or
+killed before the new device-lock code is saved. Candidate private keys remain in memory in that
+interval; switching to a password manager or backgrounding the page must preserve the ceremony.
+After lock setup, recovery progress and exact pending intent must be protected durably by that lock,
+including retries after a lost commit reply. No recovery code is retained for redisplay.

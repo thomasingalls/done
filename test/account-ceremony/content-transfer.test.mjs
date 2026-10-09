@@ -5800,3 +5800,80 @@ test('lost-device recovery verifies rotated history and reads finalized publishe
     before,
   );
 });
+
+test('lost-device recovery cold-replays removed writing and a later generation using the saved code', async (t) => {
+  const { sourceFixture, client } = await import('../account-recovery/source-fixtures.mjs');
+  const { recoveryReader } = await import('../account-recovery/read-fixtures.mjs');
+  const x = await sourceFixture(t, {}, removalFixture),
+    key2 = new Uint8Array(32).fill(74);
+  const a = new client.Y.Doc({ gc: false }),
+    b = new client.Y.Doc({ gc: false }),
+    expected = new client.Y.Doc({ gc: false });
+  a.clientID = 908;
+  b.clientID = 909;
+  for (const doc of [a, b, expected])
+    client.Y.applyUpdate(doc, client.Y.encodeStateAsUpdate(x.root));
+  const baseline = client.Y.encodeStateVector(x.root);
+  b.getText('master').insert(b.getText('master').length, 'accepted on removed device\n');
+  const oldUpdate = client.Y.encodeStateAsUpdate(b, baseline);
+  const old = x.make(1, 'unused', {
+    updates: [oldUpdate],
+    epoch: 3,
+    credential: x.context.candidate.id,
+    signer: x.keys.new,
+  });
+  decision(x, await x.deliveryCall(old), old, undefined, 3);
+  const { request, sign } = await rotationRequest(x);
+  const wrap = await client.sealGeneration(
+    new Uint8Array(Buffer.from(x.recovery.draft.rPub, 'hex')),
+    new Uint8Array(
+      lp(
+        'done/gen-wrap/v1',
+        x.workspace,
+        x.recovery.draft.lineageId,
+        x.authority.pin.authRoot,
+        '2',
+      ),
+    ),
+    key2,
+  );
+  const committed = await x.authority.owner.commitRotation(
+    x.f.core,
+    await sign({ ...request, payload: { ...request.payload, recoveryWrap: wrap } }),
+  );
+  assert.equal(committed.ok, true, JSON.stringify(committed));
+  a.getText('master').insert(a.getText('master').length, 'accepted under new key\n');
+  const newUpdate = client.Y.encodeStateAsUpdate(a, baseline);
+  const current = x.make(1, 'unused', {
+    updates: [newUpdate],
+    epoch: 4,
+    gen: 2,
+    generationKey: key2,
+  });
+  decision(x, await x.deliveryCall(current), current, undefined, 4);
+  client.Y.applyUpdate(expected, oldUpdate);
+  client.Y.applyUpdate(expected, newUpdate);
+  const reader = await recoveryReader(x);
+  const result = await client.readRecoverySource({
+    ...x.input,
+    prepared: reader.verified.prepared,
+    begin: reader.input,
+    bootstrap: reader.bootstrap,
+    sign: async (bytes) =>
+      Buffer.from(await crypto.subtle.sign('Ed25519', reader.signer, bytes)).toString('hex'),
+    read: reader.read,
+  });
+  const reopened = new client.Y.Doc({ gc: false });
+  try {
+    client.Y.applyUpdate(reopened, result.snapshot);
+    assert(client.sameDocState(reopened, expected));
+    assert.equal(result.generation, 2);
+    assert.equal(result.head, committed.rotation.head);
+    assert.equal(result.heads.length, 2);
+    assert(result.heads.every((h) => h.position === 1));
+  } finally {
+    result.snapshot.fill(0);
+    key2.fill(0);
+    for (const doc of [a, b, expected, reopened]) doc.destroy();
+  }
+});
