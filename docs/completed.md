@@ -12602,3 +12602,40 @@ versions match the declared tooling, and the same build steps ran directly witho
 See [focused evidence](./development-evidence/2026-10-10-public-onboarding.json).
 This source fix still needs PR merge, immutable-image publication and an ol-infra image-pin rollout
 before the phone receives it. General release validation remains paused.
+
+### 2026-10-10 — Public onboarding fix deployed; both progress documents closed
+
+Application PR #45 merged as `23fd688d`; its tree matches signed source `5501f7b9`. The image
+`ghcr.io/thomasingalls/done:5501f7b9` (index digest `sha256:906630d8…23da04`) was pinned by
+[ol-infra PR #6](https://codeberg.org/oxidationlabs/ol-infra/pulls/6), merged as `35b1edf7` and
+reconciled the same day as an ordinary Recreate update: schema 26, service identity, custody and the
+retained volume are unchanged, and no initialization, migration or restore Job ran. The infrastructure
+record reports one Pod at that digest with zero restarts, healthy backup upload, 34 verified precache
+hashes and a desktop browser check in which **Create a workspace** opened account setup without a
+preview banner. That record is ol-infra commit `378f5f3` on local branch
+`codex/done-onboarding-checkpoint`; it has not been pushed or merged. A separate read at about 18:20
+CEST found the public `index.html` and `sw.js` hashes equal to that record's values.
+
+The operator reports having created their own account at the public origin. That is the operator's
+statement, not a retained check. Offline reopening, two-device delivery and the authenticated
+notification stream through ingress have no recorded result at the public origin.
+
+**Remaining at close, and not carried by the next slice:** backup-health monitoring; an explicit
+recovery disposition for a restored ledger that lags client evidence, and the first schema migration;
+the deferred product scope (personal history walkthrough, automatic maintenance, local ledger/root
+trimming, key retirement, account access without a passkey, recovery-code replacement and
+self/last-device removal); the 4 MiB activation/recovery/native-admission bounds; the registry pull
+token's 2027-01-08 expiry, with no reminder set; and the B2 key's bucket-settings authority. The
+operator reviewed these on 2026-10-10 and ranked none above editing latency. Account creation is open
+to anyone who finds the unannounced origin; the operator accepts that while it stays unannounced.
+Release validation stays paused deliberately. The Tailscale installation and its writing are unchanged.
+
+**The `L-2` progress document is retired without a closing slice of its own.** It was last edited on
+2026-08-29 and still named the account service as next. Its branch `claude/l2-onboarding-863db1` is
+an ancestor of `main`, the service it anticipated is the one now deployed, and the work is recorded
+in the entries above under the seats that actually did it. No outcome is lost by deleting it. The
+rule that kept it byte-for-byte unchanged assumed its seat would return to close it;
+[progress.md](./progress.md) now says what happens when a seat does not.
+
+The next slice is editing latency (`F-17`), at the operator's direction, with architecture changes in
+scope. An opt-in reduction of repeated credential prompts after setup is named as the phase after it.

@@ -34,6 +34,15 @@ do not block each other, checkable at `action-tree.md`'s prerequisites — not a
 really next-up. When a seat's slice closes, its outcome goes to [completed.md](./completed.md) and **its
 document is deleted**, separator and all.
 
+**A document whose seat is gone is closed at the operator's direction, from any seat.** The separator
+rule assumed every seat lives long enough to close its own document. `L-2`'s did not: its work carried
+on under other seats and merged, and its document stood untouched from 2026-08-29 to 2026-10-10,
+naming as next a service that had already been deployed. Leaving it alone was the rule working as
+written and the file failing at the one question it exists to answer. So when a seat no longer exists,
+the operator may direct any seat to write that document's outcome into
+[completed.md](./completed.md) and delete it. The bar is both halves — the seat is gone, and the
+operator said so. A live seat's document is still nobody else's to edit.
+
 **Status vocabulary**, deliberately small: **not started** · **in flight** · **done** · **blocked** (which
 must name what it is blocked on).
 
@@ -42,108 +51,104 @@ that is no longer active.
 
 ---
 
-## Product work: public onboarding repair (`L-1`)
+## Active slice: editing latency (`F-17`)
 
 ```yaml
-gate: L-1
-seat: /Users/thomasingalls/.codex/worktrees/c030/done
-branch: codex/public-onboarding-fix
-status: in flight
-scope: enable welcome account creation and remove obsolete preview wording
-blocks_on: signed application PR merge, image publication and infrastructure image-pin rollout
+gate: L-1 # F-17; the open debt names "L-1 Local editor responsiveness work" as owner
+seat: /Users/thomasingalls/Code/done
+branch: claude/f17-editing-latency
+status: in flight # deployed behaviour measured; order of repair not yet chosen
+scope: meet the typing and navigation budgets on the Local and Account paths with every admission guarantee intact
+blocks_on: the operator's choice of repair order
 release_validation: paused until explicit operator resumption
 updated: 2026-10-10
 ```
 
-The fresh public installation at `https://done.oxidationlabs.com` is running the image built from
-signed runtime `ff3d4295` (account schema 26). Application PR #44 merged as `d623f4c0`; infrastructure
-PRs #1–4 culminated in `8d53986f`. Explicit initialization, public TLS/DNS/routing, service identity,
-34 precache asset hashes, actual B2 backup recovery and private-volume reopening checks passed.
-The operator confirmed a phone page load. [ol-infra PR #5](https://codeberg.org/oxidationlabs/ol-infra/pulls/5)
-records the bounded deployment evidence. The older Tailscale installation remains independent.
+**Why this is the slice.** On 2026-10-10 the operator called editing latency catastrophic for the
+product and the work to do now, and put architecture changes in scope up to a wholesale
+rearchitecture, provided the product guarantees survive. The public installation at
+`https://done.oxidationlabs.com` serves `5501f7b9`; its rollout is closed in
+[completed.md](./completed.md).
 
-The phone visit found an explicitly disabled **Create a workspace** placeholder and obsolete preview
-copy. The source fix connects the action to the chooser's existing durable account-setup entry,
-including attempt reuse, busy/error handling and the empty Local entry. Normal account screens no
-longer describe the product as a preview; offline and actual capability/size-limit notices remain.
+**What is measured.** The last application gate (2026-09-15, Local factory, `local-snapshots`) fails
+two budgets on CPU-4x Android emulation: card typing **38.7 ms** p95 against <16 ms, and settled
+`goTo` navigation **113.6 ms** against <100 ms. Desktop card typing is 9.0 ms. The debt and its
+closure criterion are [f17-rc-latency-debt.json](./review/implementation/f17-rc-latency-debt.json);
+the experiment history is in [performance.md](./performance.md).
 
-Three focused packaged-browser checks pass, including a phone-sized viewport, approved Back/chooser
-behavior, setup resume/reload, an occupied setup-owner retry, local-only creation and offline status.
-The application build steps and changed-code lint/formatting pass. The original pnpm invocation
-stopped in dependency preflight; the installed matching tools ran the same build steps directly.
-[Evidence](./development-evidence/2026-10-10-public-onboarding.json) records the scope and limitation.
-Next: signed source PR, immutable image, then the ol-infra image-pin PR and ordinary Recreate rollout.
-The fixes are not yet deployed. After the update, close existing app tabs once to allow the waiting
-service worker to activate; do not clear browser storage.
+**What the operator observes is worse than that, on desktop, and it is now measured.** Reported
+2026-10-10 from the public installation: input latency obvious at an ordinary typing speed, the saving
+indicator flickering, more pronounced with sync. A diagnostic the same day reproduces it against a
+local service ([packet](./performance-experiments/2026-10-10-account-desktop-typing/README.md)). Local
+typing is fine at 4.0/6.4 ms p50/p95. On the Account path key-to-paint is 16.9/82 ms on a fresh
+account and 711/1,400 ms after 2,020 edits, because each edit triggers a re-validation of every stored
+account record on the main thread, and keystrokes queue behind it. The cost is about 0.35 ms per key
+for every prior edit, the stored rows never shrink, and stopping the service does not remove it.
 
-Then continue the actual-origin account/passkey, offline reopening, two-device delivery and
-notification-stream walkthrough. Backup-health monitoring integration also remains an operations
-follow-up. Do not resume a generalized release campaign. Deferred product scope still includes the
-personal history walkthrough, automatic maintenance, local ledger/root trimming, key retirement,
-account-access recovery without a passkey, recovery-code replacement and self/last-device removal.
-The 4 MiB activation/recovery/native-admission bounds remain. Updates, schema changes and operator-led
-restores retain their distinct [procedures](./public-deployment.md); automatic disaster reconciliation
-is deferred and possible writing loss is accepted. Signed commits and PR merges remain required.
+**The Account path also runs the slower preparation.** Every Account constructor
+(`accountWorkspace.ts`, `accountCapture.ts`, `accountSpool.ts`, `accountReceive.ts`) calls
+`createAdmittedWorkspace` without a preparation mode and so gets `reference`: whole-document forks, an
+undo-stack copy and complete canonical comparisons per command. Only the Local factory selects
+`local-snapshots`. On the measured small workspace that synchronous work is about 3 ms p50, but its
+p95 grows with undo depth to 56 ms after about 2,200 edits. No application latency gate has been run
+on the Account path, and none has measured it on the September gate's seeded corpus.
 
----
+**Where a keystroke goes today.** The editor intercepts input and submits a command
+(`src/editor/admittedEditor.ts`). Preparation forks or replays a second workspace-history document
+and runs the command there (`src/crdt/admittedWorkspace.ts`). The update is sealed and journalled
+synchronously, canonical state is promoted, and the two documents are compared in full. Publication
+then rebuilds a whole-workspace snapshot for React (`src/ui/workspaceUi.tsx`) and dispatches the
+accepted text back into CodeMirror. The synchronous encrypted write, the one step the contract
+requires inside the handler, measured 35–240 µs on a Pixel 9a (TRD §12). On the Account path the
+keystroke then causes the asynchronous work the measurement found: journal flushes, envelope
+preparation, delivery and the read-back of the device's own position, each re-validating the stored
+ledger. [client-trace.md](./performance-experiments/2026-10-10-account-desktop-typing/client-trace.md)
+has every step.
 
-## Active slice: Stage 4's first pieces — authorization, acceptance and transition integration (`L-2`)
+**What any design must keep** (TRD §6's journal and admission rules, SC-01/02):
 
-```yaml
-gate: L-2
-seat: .claude/worktrees/l2-onboarding-863db1
-branch: claude/l2-onboarding-863db1 # forked from claude/l1-contract-pass at 1375ee6
-status: in flight # R3-4 paid; the slot verifier landed; the account service is next
-plan: [sequencing.md §3.5, action-tree.md L-2]
-prerequisites: S0-10 (closed 2026-08-29), especially S0-2/S0-4 — not L-1
-debts: none # node scripts/check-debts.mjs --gate L-2 lifts
-updated: 2026-08-29
-```
+- A locally originated update is sealed and journalled synchronously, before its handler returns.
+- Nothing becomes authoritative without a durable carrier. A handler that meets a refusal returns
+  with the document equal to recoverable state, and the input is held as pending.
+- Later input cannot bypass an uncommitted predecessor.
+- Pending content is absent from ordinary editor text, export, accepted undo and transport.
+- Received updates are persisted before canonical promotion and never enter human undo.
+- What the user is shown equals accepted canonical state.
+- No update exceeds `MAX_UPDATE`; large commands slice.
+- Undo is actor-scoped across text and structure, and Account source capture keeps each
+  transaction's actor and bytes.
 
-**Why this runs beside `L-1` rather than after it.** `L-2`'s prerequisites are `S0-10`, especially `S0-2` and
-`S0-4` — [action-tree.md](./review/remediation/action-tree.md)'s node names them and does not name `L-1`. The
-two rejoin at `L-3`, which lists both. The critical-path diagram in
-[sequencing.md](./sequencing.md) §4 draws Stage 4 after Stage 2 because that is the order the *product* ships
-in; §5.1 already settled that the service's construction does not wait, since *ships* means someone else's
-data and the author synchronizing his own devices is development. So milestones 5 and 6 are reached while
-review 3b is out, and what waits for 3b's answer is exposing another person to it.
+**What the three read-only studies found.** They ran beside the measurement, are retained in the same
+[packet](./performance-experiments/2026-10-10-account-desktop-typing/README.md), and agree with it on
+where the cost is.
 
-**What this slice is.** Stage 4's internal order, taken in order (§3.5): the account service, the
-authenticator and the device-local slot verifier; the recovery keypair and the code ceremony; the
-authorization lineage, first signed head, genesis checkpoint and promotion; device signing and wrapping
-credentials; the envelope layer, relay rewrite and content-blind durable store; enrollment's two gates; the
-device list; rotation, revocation, acceptance evidence and the finalization boundary. **Mostly indivisible:**
-a device list that cannot revoke is worse than no device list, so nothing ships until item 8.
+- *Client trace* ([client-trace.md](./performance-experiments/2026-10-10-account-desktop-typing/client-trace.md)).
+  Every storage task reloads and re-validates the whole local ledger, by its count about 30 times per
+  delivered position, and nothing trims capsule, spool, delivery or inbound rows. Flushes, send-path
+  flushes, received pages and compaction all occupy the head of the queue that admits keystrokes. The
+  device reads its own positions back one at a time and replays them through the editor path.
+- *Protocol audit* ([protocol-audit.md](./performance-experiments/2026-10-10-account-desktop-typing/protocol-audit.md)).
+  The wire protocol is not the problem; the implementation departs from the TRD in four places. §7.1
+  says nothing on the write path may await sync state, yet sync runs in the admission queue. The TRD
+  asks for flush-interval batching, heads amortised over a run, one `(seq, link)` per credential and
+  no verification on local replay; the code sends a position every 50 ms pass, keeps a head per
+  position in an append-only log, and re-verifies its own envelopes. The service reads a publisher's
+  whole decision ledger on every request and has one rate limit shared by all clients.
+- *CRDT study* ([crdt-study.md](./performance-experiments/2026-10-10-account-desktop-typing/crdt-study.md)).
+  What Yjs lacks here is a transaction model, not a merge algorithm or a format. Computing a text
+  edit's update bytes before applying them removes the fork and comparison with no format change, and
+  is the first piece of any engine the project might later own. A new format would have to admit
+  signed Yjs-format envelopes from devices offline across the cutover.
 
-**What has landed.**
+**Next: choose the order of repair with the operator.** The measurements rank the causes: ledger
+re-validation per transaction, keystrokes queued behind asynchronous work, undo-stack copying under
+`reference` preparation, then constant factors (hex, a `Y.Doc` per record, byte compares). None of the
+first three needs a wire-format change. Record the chosen order in [sessions.md](./sessions.md). The
+editing-core changes and the recorder's floor remain open behind them: the bare-CodeMirror control has
+itself recorded 15–19 ms p95 on later blocks under the current recorder.
 
-- **`R3-4`, first, because it was owed first** (`fbdbfb4`). `S0-9` round 3 returned member-entry uniqueness to
-  `S0-2`'s homes *before `L-2` implements a verifier*, and this is that moment. A certified set carrying two
-  entries under one `credential_id` is now malformed at both homes, the four map entries pinning them are
-  re-pinned with every entry held, and `pnpm recipient:check` carries the sentence as a byte rule — added
-  beyond the named repair because the generator's object-keyed `members` cannot express a duplicate, so no
-  published negative can ever cover it. Recorded at
-  [`S0-2/README.md`](./review/remediation/S0-2/README.md) and as a dated addendum on the disposition.
-  **This makes one line of the `L-1` document above stale** — its *not in this slice* paragraph still says
-  `R3-4` is owed. Correct then, wrong now, and the `L-1` seat's line to drop rather than this one's to edit:
-  the separator only means anything if it holds when crossing it would be convenient.
-- **The device-local slot verifier** (`b8c267a`), `src/account/slotUnlock.ts` — TRD §13.9, §15 row 12, item 1's
-  half that needs nothing from `L-1`. The service-signed binding is verified before the key it names is used;
-  refusals are values rather than messages. Held to `test/vectors/account-credential.json`, with the negatives
-  rebuilt against `src/` rather than replayed, and a fifteen-mutation battery run against it — eleven caught,
-  four survivors all in the compiled-in encoding set, all closed by two tests that pin the check's *position*
-  rather than its presence.
+**Next-up, not this slice.** Acceptable post-setup usability: an opt-in way to use the app without
+entering credentials repeatedly. The operator named it on 2026-10-10 as the phase after performance.
 
-**What is next, in the plan's order.** The account service and the authenticator ceremony that mints these
-credentials — the two halves of item 1 the verifier does not cover — then the recovery keypair and the code
-ceremony, which §3.5 puts at account creation rather than later because there is no account without it.
-
-**Two things `L-2` needs that it does not own.** §6.5's slot index is where a verified binding is *stored*,
-and it is `L-1`'s item 2; the verifier is a pure function over published bytes and did not wait for it, but
-the enrollment path will. And §11.2's hostile-relay tests need `relayNetwork()` in `test/replicas.ts` able to
-withhold, reorder and deliver late — §3.5 names extending it as far cheaper than a second harness, and it is
-worth building before item 5 rather than during it.
-
-**Not in this slice.** `L-1`'s document above, which this seat does not edit. `L-3` and `L-4`, and the four
-registered debts at `L-4`. The live Stage 2 cutover. Review 3b's answer gates exposure, not construction
-(§5.1) — and reviewer answers that constrain implementation are `L-4` gates.
+**Not in this slice.** The open operations and product items listed at the previous slice's close in
+[completed.md](./completed.md). Release validation, which stays paused on purpose.
