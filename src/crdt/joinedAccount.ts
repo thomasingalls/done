@@ -623,7 +623,7 @@ async function baseline(task: SessionTask, state: JoinedState, key: Bytes) {
       if (replay.pending) throw Error('Retained later reader is incomplete');
       if (replay.initial.length > MAX_BATCH_BYTES)
         throw Error(
-          'This preview cannot yet activate a checkpoint larger than 4 MiB. Your saved approval and writing are retained.',
+          'This workspace cannot be opened here because its checkpoint exceeds the 4 MiB limit. Your saved approval and writing are retained.',
         );
       return { doc: replay.doc, initial: replay.initial, events: replay.records, base, route };
     } catch (cause) {
@@ -648,7 +648,7 @@ async function baseline(task: SessionTask, state: JoinedState, key: Bytes) {
     // The ordinary content carrier bounds a single native batch. Refuse before installing a fence.
     if (initial.length > MAX_BATCH_BYTES)
       throw Error(
-        'This preview cannot yet activate a checkpoint larger than 4 MiB. Your saved approval and writing are retained.',
+        'This workspace cannot be opened here because its checkpoint exceeds the 4 MiB limit. Your saved approval and writing are retained.',
       );
     const replay = await task.wait(() =>
       replayHandoffStream(doc, peer, marker.reading.events, marker.reading.history, {

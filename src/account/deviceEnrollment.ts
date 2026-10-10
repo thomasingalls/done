@@ -188,7 +188,7 @@ export function createDeviceEnrollment(
   let notificationBinding:
     | { scope: GrantScope; identity: { accountId: string; credentialId: string } }
     | undefined;
-  if (pin.origin !== location.origin) throw Error('Development service differs from this page');
+  if (pin.origin !== location.origin) throw Error('Account service differs from this page');
   let opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
   const editors = new Set<() => void>();
   let running = false,

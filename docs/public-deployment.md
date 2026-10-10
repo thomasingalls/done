@@ -4,6 +4,16 @@
 Implementation and focused checks are authorized. Release validation remains paused until after
 publication and explicit operator resumption. The personal history-management walkthrough is deferred.
 
+**2026-10-10 deployment checkpoint:** the fresh installation is publicly serving the image built
+from `ff3d4295`, after application PR #44 and ol-infra PRs #1–4 merged. Public DNS, TLS, routing,
+packaged-asset hashes and service identity passed; an actual B2 snapshot recovered with independently
+saved keys and the running volume reopened correctly after a Pod restart. The operator loaded the
+site on a phone. [ol-infra PR #5](https://codeberg.org/oxidationlabs/ol-infra/pulls/5) records the
+checks and limits. The environment inputs listed below are resolved; they remain part of the original
+plan. Actual-origin account/passkey, offline reopening, two-device delivery and authenticated-stream
+checks remain. The disabled welcome action and stale preview copy found on the first phone visit
+are being fixed before that walkthrough continues. Release validation stays paused.
+
 ## Agreed scope
 
 Deploy through `/Users/thomasingalls/Code/ol-infra`, following its Flux/Kubernetes, Gateway API,

@@ -1,18 +1,18 @@
-.account-development {
+.account-application {
   height: 100dvh;
   display: flex;
   flex-direction: column;
 }
-.account-development > .shell {
+.account-application > .shell {
   flex: 1;
   min-height: 0;
   height: auto;
 }
-.account-development > .local-startup {
+.account-application > .local-startup {
   flex: 1;
   min-height: 0;
 }
-.setup-dev-note {
+.account-offline-note {
   position: relative;
   z-index: 2;
   flex: none;

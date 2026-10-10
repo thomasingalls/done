@@ -55,7 +55,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   const progress = (value?: Retained | null) => setupProgress(value, slotId);
   const pin = parseAuthorityPin(input.pin);
   if (pin.origin !== location.origin || (!input.networkSessions && !isPrivateAccess(input.token)))
-    throw Error('Development service configuration does not match this page');
+    throw Error('Account service configuration does not match this page');
   const token = legacyAccess(input);
   const lifetime = new AbortController();
   let networkLogin = input.networkSessions ? new NetworkLogin(pin, slotId) : undefined;

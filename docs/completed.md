@@ -12564,3 +12564,41 @@ raw logs, reproducible runtime script and limitations are in
 rejected an incorrectly formatted build-date argument before compilation; the corrected command used
 the same signed source. No actual schema transition is needed yet; no provider, retained service,
 publication or release campaign was touched. Next is ol-infra integration and deployment inputs.
+
+### 2026-10-10 — First public installation and actual-provider recovery
+
+Application PR #44 merged as `d623f4c0`. The ARM64 image from signed runtime `ff3d4295` is deployed
+at `https://done.oxidationlabs.com` through ol-infra PRs #1–4, ending at infrastructure merge
+`8d53986f`. Explicit initialization established the retained service identity on the 10 GiB CSI
+volume. The private API and packaged app passed readiness, a graceful Recreate restart preserved
+identity and private state permissions, and an actual encrypted B2 snapshot recovered into an
+isolated quarantined copy with independently retrieved Bitwarden keys. This was a fresh installation
+before user writing. Public TLS, DNS ownership, routing, service configuration, 34 precache asset
+hashes and backup health passed. The operator confirmed loading the site on a phone. Evidence and
+the operating checkpoint are in [ol-infra PR #5](https://codeberg.org/oxidationlabs/ol-infra/pulls/5),
+signed `54c8e35`; public exposure itself was merged in
+[PR #4](https://codeberg.org/oxidationlabs/ol-infra/pulls/4).
+The Tailscale installation was neither migrated nor modified. Browser account/passkey, offline
+reopening, two-device and authenticated-stream checks at the public origin remain. The first phone
+visit exposed an explicitly disabled welcome action and obsolete preview wording, handled in the
+next bounded product fix. Release validation remains paused.
+
+### 2026-10-10 — Public welcome action and product wording
+
+The welcome screen's `Create a workspace` was an explicitly disabled placeholder. It now calls the
+same durable new-account entry as the chooser, resumes an unfinished attempt, prevents duplicate
+clicks while pending, and presents retryable errors. The empty Local entry uses the same action;
+standalone Local mode omits it when no account service is available. Removed the permanent account
+preview banner and development labels from normal product screens, preserving offline status and
+specific capability/size-limit messages. No credential, storage or protocol contract changed.
+
+Three focused packaged-browser regressions pass with session and membership continuation enabled,
+including a 390×844 viewport, Back to the existing chooser, draft/attempt reuse, reload, setup-owner
+contention/retry, local-only creation, connection-screen wording and offline-notice transitions.
+The application build steps, changed-code lint and formatting pass. The initial Back assertion expected
+the splash; it was corrected to the already-approved chooser behavior without changing navigation.
+The pnpm dependency preflight refused a module-directory replacement without a TTY; existing installed
+versions match the declared tooling, and the same build steps ran directly without reinstalling.
+See [focused evidence](./development-evidence/2026-10-10-public-onboarding.json).
+This source fix still needs PR merge, immutable-image publication and an ol-infra image-pin rollout
+before the phone receives it. General release validation remains paused.
