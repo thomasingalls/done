@@ -58,9 +58,9 @@ Each scratch checkout carries an instrumentation patch, and only that:
 
 | Patch | SHA-256 | Used by |
 | --- | --- | --- |
-| `patches/instrumentation.patch` | `cc137cc577276ce02ed5521593d8a6ec5c869b6b39ee17e4cebb2182abbb1de4` | runs 01–06 |
-| `patches/instrumentation-v2.patch` | `3dc2b31469119e89a487512bf1137c54b042fe94d0762d1045ab11682ecc4508` | runs 07–32 |
-| `patches/instrumentation-95923cd8.patch` | `39a25a147f893d779c22f8f3a23903e678a1cb634319c8fe093b3667cb748a56` | runs 33–38 |
+| `instrumentation.patch` | `cc137cc577276ce02ed5521593d8a6ec5c869b6b39ee17e4cebb2182abbb1de4` | runs 01–06 |
+| `instrumentation-v2.patch` | `3dc2b31469119e89a487512bf1137c54b042fe94d0762d1045ab11682ecc4508` | runs 07–32 |
+| `instrumentation-95923cd8.patch` | `39a25a147f893d779c22f8f3a23903e678a1cb634319c8fe093b3667cb748a56` | runs 33–38 |
 
 The probe adds an environment-guarded numeric request log on the service (`DONE_FLAKE_LOG`), step
 timings and phase marks on the test's standard output, private ports (`DONE_FLAKE_PORT`,
@@ -203,7 +203,7 @@ Unexplained:
 | `tables/delivery-decomp.json` | Retry schedule and delivery decomposition per instrumented run |
 | `tables/stats.json` | Rates and exact intervals per group |
 | `tables/followup.json` | Pairings, recovery times, delivery and budget figures for `95923cd8` |
-| `patches/` | The three instrumentation patches |
+| `instrumentation*.patch` | The three instrumentation patches |
 | `scripts/` | `run-one.sh`, the three phase scripts and the analysis scripts that produce `tables/` |
 | `phase1.log`, `phase2.log`, `phase3.log` | Campaign driver output |
 | [logs-manifest.json](./logs-manifest.json) | Path, size and SHA-256 of all 189 per-run log files, and of one archive of them |
