@@ -1,0 +1,164 @@
+profile <scratch>/results/account-acct-p2-P-profiled.cpuprofile
+keys 100; sampled 59514 ms; idle 584 ms; active 58930 ms = 589.3 ms/key
+
+TOP-DOWN (ms per key inclusive, self in brackets; nodes >= 1.5% of active)
+ 267.0 [   0.0]   (anonymous) src/crdt/writeSession.ts:156
+ 237.9 [   0.0]     (anonymous) src/crdt/contentStore.ts:280
+ 237.9 [   0.0]       (anonymous) src/crdt/accountCapture.ts:155
+ 237.9 [   0.0]         validate src/crdt/accountReceive.ts:273
+ 237.9 [   0.0]           verify src/crdt/verifiedRecords.ts:45
+ 232.7 [   0.3]             (anonymous) src/crdt/accountReceive.ts:278
+ 232.3 [   0.7]               ri src/crdt/inboundLedger.ts:86
+ 201.9 [   0.8]                 Qr src/crdt/deliveryRecord.ts:145
+ 173.5 [   2.3]                   Ut src/crdt/spoolRecord.ts:225
+ 102.1 [   2.5]                     U src/crdt/sourceCapture.ts:117
+  65.7 [   0.8]                       Mt src/crdt/sourceCapture.ts:66
+  60.4 [   0.8]                         Jc src/crdt/contentCompaction.ts:57
+  41.8 [   0.1]                           e npm:yjs/dist/yjs.mjs:422
+  40.0 [   2.5]                             en npm:lib0/random.js:35
+  37.5 [   1.1]                               (anonymous) npm:lib0/random.js:35
+  36.4 [   1.0]                                 Qt npm:lib0/random.js:15
+  35.4 [  35.4]                                   getRandomValues
+  14.8 [   0.1]                           (anonymous) npm:lib0/observable.js:82
+  14.6 [   0.2]                             (anonymous) npm:yjs/dist/yjs.mjs:1652
+  13.2 [   1.2]                               Hi npm:yjs/dist/yjs.mjs:1496
+  32.2 [  24.1]                       t src/crdt/custodyCrypto.ts:22
+  51.3 [   0.5]                     Pt src/crdt/sourceCapture.ts:175
+  50.7 [   1.2]                       U src/crdt/sourceCapture.ts:117
+  32.7 [   0.4]                         Mt src/crdt/sourceCapture.ts:66
+  30.1 [   0.4]                           Jc src/crdt/contentCompaction.ts:57
+  20.9 [   0.0]                             e npm:yjs/dist/yjs.mjs:422
+  20.1 [   1.2]                               en npm:lib0/random.js:35
+  18.9 [   0.5]                                 (anonymous) npm:lib0/random.js:35
+  18.3 [   0.4]                                   Qt npm:lib0/random.js:15
+  17.9 [  17.9]                                     getRandomValues
+  16.1 [  12.2]                         t src/crdt/custodyCrypto.ts:22
+  17.1 [   0.1]                     Ht src/crdt/spoolRecord.ts:168
+  13.1 [   9.9]                       t src/crdt/custodyCrypto.ts:22
+  26.6 [   0.0]                   Zr src/crdt/deliveryRecord.ts:114
+  11.1 [   8.6]                     t src/crdt/custodyCrypto.ts:22
+  10.7 [   0.1]                     Xr src/crdt/deliveryRecord.ts:83
+  29.0 [   0.0]                 Qt src/crdt/inboundRecord.ts:94
+  18.6 [   0.1]                   Zt src/crdt/inboundRecord.ts:89
+  18.2 [   0.1]                     Xt src/crdt/inboundRecord.ts:41
+  10.2 [   0.2]                   L account-protocol/inboundTransport.ts:38
+  10.1 [   7.8]                     d account-protocol/recovery.ts:17
+  22.5 [   0.0]     (anonymous) src/crdt/accountDelivery.ts:167
+  22.5 [   0.0]       t src/crdt/accountReceive.ts:1280
+  22.5 [   0.0]         u src/crdt/accountReceive.ts:158
+  22.5 [   0.0]           ri src/crdt/inboundLedger.ts:86
+  19.6 [   0.1]             Qr src/crdt/deliveryRecord.ts:145
+  16.9 [   0.2]               Ut src/crdt/spoolRecord.ts:225
+  10.0 [   0.3]                 U src/crdt/sourceCapture.ts:117
+  87.7 [   0.7]   pi src/crdt/inboundLedger.ts:327
+  74.9 [   6.0]     check src/crdt/inboundLedger.ts:306
+  41.2 [   0.4]       xc src/crdt/yjs.ts:151
+  16.1 [   0.0]         Ji npm:yjs/dist/yjs.mjs:1794
+  11.2 [   0.0]         (anonymous) npm:lib0/observable.js:82
+  11.2 [   0.1]           (anonymous) npm:yjs/dist/yjs.mjs:1652
+  10.6 [   0.0]         e npm:yjs/dist/yjs.mjs:422
+  10.2 [   0.6]           en npm:lib0/random.js:35
+   9.6 [   0.3]             (anonymous) npm:lib0/random.js:35
+   9.3 [   0.2]               Qt npm:lib0/random.js:15
+   9.1 [   9.1]                 getRandomValues
+  22.9 [   0.5]       Nc src/crdt/yjs.ts:336
+  18.0 [   0.0]         Ji npm:yjs/dist/yjs.mjs:1794
+  17.8 [   0.0]           qi npm:yjs/dist/yjs.mjs:1776
+  17.2 [   0.0]             (anonymous) npm:yjs/dist/yjs.mjs:1368
+  17.1 [   0.5]               zi npm:yjs/dist/yjs.mjs:1326
+  16.4 [   0.8]                 write npm:yjs/dist/yjs.mjs:10146
+  59.2 [  59.2]   (garbage collector)
+  32.1 [   0.1]   g src/crdt/accountCapture.ts:259
+  24.7 [   0.3]     Pt src/crdt/sourceCapture.ts:175
+  24.4 [   0.6]       U src/crdt/sourceCapture.ts:117
+  15.8 [   0.2]         Mt src/crdt/sourceCapture.ts:66
+  14.5 [   0.1]           Jc src/crdt/contentCompaction.ts:57
+  10.1 [   0.0]             e npm:yjs/dist/yjs.mjs:422
+   9.7 [   0.7]               en npm:lib0/random.js:35
+   9.0 [   0.2]                 (anonymous) npm:lib0/random.js:35
+  28.7 [  28.7]   (program)
+  25.0 [   2.9]   ei src/crdt/deliveryRecord.ts:205
+  19.0 [   0.2]     Ht src/crdt/spoolRecord.ts:168
+  14.4 [  11.0]       t src/crdt/custodyCrypto.ts:22
+  17.8 [   7.6]   C src/crdt/contentStore.ts:227
+  16.8 [   0.0]   (anonymous) src/crdt/admissionQueue.ts:705
+  16.8 [   0.0]     ge src/crdt/admissionQueue.ts:698
+  16.8 [   0.0]       fe src/crdt/admissionQueue.ts:465
+  15.8 [   0.0]         eu src/crdt/admissionDocument.ts:28
+  15.3 [   0.0]           (anonymous) npm:lib0/observable.js:82
+  15.3 [   0.0]             (anonymous) src/crdt/admissionDocument.ts:45
+  15.3 [   0.0]               prepare src/crdt/admittedWorkspace.ts:442
+  15.3 [   0.0]                 M src/crdt/admittedWorkspace.ts:215
+  15.0 [   0.0]                   Bc src/crdt/yjs.ts:599
+  15.0 [   0.0]                     Vc src/crdt/yjs.ts:603
+  14.9 [   0.2]                       Hc src/crdt/yjs.ts:636
+  14.8 [   0.1]                         (anonymous) src/crdt/yjs.ts:651
+  14.6 [  13.6]                           (anonymous) src/crdt/yjs.ts:601
+  12.7 [   0.0]   (anonymous) src/crdt/accountReceive.ts:687
+  11.7 [   0.0]     ri src/crdt/inboundLedger.ts:86
+  10.3 [   0.0]       Qr src/crdt/deliveryRecord.ts:145
+   8.9 [   0.1]         Ut src/crdt/spoolRecord.ts:225
+
+BOTTOM-UP (self ms per key, then the application call chains that reach it)
+  87.1 t src/crdt/custodyCrypto.ts:22
+          24.1  <- U src/crdt/sourceCapture.ts:117  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278  <-  verify src/crdt/verifiedRecords.ts:45
+          12.2  <- U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278
+          11.0  <- Ht src/crdt/spoolRecord.ts:168  <-  ei src/crdt/deliveryRecord.ts:205
+           9.9  <- Ht src/crdt/spoolRecord.ts:168  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278  <-  verify src/crdt/verifiedRecords.ts:45
+  83.1 getRandomValues
+          42.4  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86
+          21.4  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145
+           9.4  <- xc src/crdt/yjs.ts:151  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           8.8  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  g src/crdt/accountCapture.ts:259
+  59.2 (garbage collector)
+          59.2  <- (no application frame)
+  33.9 (anonymous) src/crdt/custodyCrypto.ts:23
+           8.1  <- t src/crdt/custodyCrypto.ts:22  <-  U src/crdt/sourceCapture.ts:117  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278
+           4.5  <- t src/crdt/custodyCrypto.ts:22  <-  U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86
+           3.3  <- t src/crdt/custodyCrypto.ts:22  <-  Ht src/crdt/spoolRecord.ts:168  <-  ei src/crdt/deliveryRecord.ts:205
+           3.2  <- t src/crdt/custodyCrypto.ts:22  <-  Ht src/crdt/spoolRecord.ts:168  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278
+  28.7 (program)
+          28.7  <- (no application frame)
+  19.0 (anonymous) src/crdt/yjs.ts:601
+          19.0  <- (anonymous) src/crdt/yjs.ts:651  <-  Hc src/crdt/yjs.ts:636  <-  Vc src/crdt/yjs.ts:603  <-  Bc src/crdt/yjs.ts:599  <-  M src/crdt/admittedWorkspace.ts:215  <-  prepare src/crdt/admittedWorkspace.ts:442
+           0.0  <- Hc src/crdt/yjs.ts:636  <-  Vc src/crdt/yjs.ts:603  <-  Bc src/crdt/yjs.ts:599  <-  M src/crdt/admittedWorkspace.ts:215  <-  prepare src/crdt/admittedWorkspace.ts:442  <-  (anonymous) src/crdt/admissionDocument.ts:45
+  18.1 d account-protocol/recovery.ts:17
+           7.8  <- L account-protocol/inboundTransport.ts:38  <-  Qt src/crdt/inboundRecord.ts:94  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278  <-  verify src/crdt/verifiedRecords.ts:45  <-  validate src/crdt/accountReceive.ts:273
+           3.4  <- L account-protocol/inboundTransport.ts:38  <-  (anonymous) account-protocol/inboundTransport.ts:138  <-  Xt src/crdt/inboundRecord.ts:41  <-  Zt src/crdt/inboundRecord.ts:89  <-  Qt src/crdt/inboundRecord.ts:94  <-  ri src/crdt/inboundLedger.ts:86
+           3.0  <- L account-protocol/inboundTransport.ts:38  <-  (anonymous) account-protocol/inboundTransport.ts:138  <-  pi src/crdt/inboundLedger.ts:327
+           0.8  <- L account-protocol/inboundTransport.ts:38  <-  Qt src/crdt/inboundRecord.ts:94  <-  ri src/crdt/inboundLedger.ts:86  <-  u src/crdt/accountReceive.ts:158  <-  t src/crdt/accountReceive.ts:1280  <-  (anonymous) src/crdt/accountDelivery.ts:167
+  15.6 (anonymous) src/crdt/verifiedRecords.ts:4
+           2.5  <- check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.8  <- (no application frame)
+           1.7  <- Gt src/crdt/spoolRecord.ts:475
+           1.6  <- ml src/crdt/verifiedRecords.ts:3  <-  (anonymous) src/crdt/verifiedRecords.ts:9  <-  gl src/crdt/verifiedRecords.ts:7  <-  verify src/crdt/verifiedRecords.ts:45  <-  validate src/crdt/accountReceive.ts:273  <-  (anonymous) src/crdt/accountCapture.ts:155
+  13.1 u account-protocol/recovery.ts:15
+           4.2  <- Xt src/crdt/inboundRecord.ts:41  <-  Zt src/crdt/inboundRecord.ts:89  <-  Qt src/crdt/inboundRecord.ts:94  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278  <-  verify src/crdt/verifiedRecords.ts:45
+           2.3  <- it account-protocol/submission.ts:64  <-  Xr src/crdt/deliveryRecord.ts:83  <-  Zr src/crdt/deliveryRecord.ts:114  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86  <-  (anonymous) src/crdt/accountReceive.ts:278
+           1.7  <- (anonymous) account-protocol/inboundTransport.ts:110  <-  Dt account-protocol/inboundTransport.ts:125  <-  Ot account-protocol/inboundTransport.ts:130  <-  Xt src/crdt/inboundRecord.ts:41  <-  Zt src/crdt/inboundRecord.ts:89  <-  Qt src/crdt/inboundRecord.ts:94
+           1.4  <- (anonymous) account-protocol/inboundTransport.ts:110  <-  Dt account-protocol/inboundTransport.ts:125  <-  Ot account-protocol/inboundTransport.ts:130  <-  pi src/crdt/inboundLedger.ts:327
+  13.0 encodeInto
+           5.3  <- writeString src/crdt/yjs.ts:217  <-  Nc src/crdt/yjs.ts:336  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           2.4  <- writeAny src/crdt/yjs.ts:91  <-  xc src/crdt/yjs.ts:151  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.5  <- writeAny src/crdt/yjs.ts:201  <-  Nc src/crdt/yjs.ts:336  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.5  <- xc src/crdt/yjs.ts:151  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+  11.8 ml src/crdt/verifiedRecords.ts:3
+           2.5  <- (anonymous) src/crdt/verifiedRecords.ts:9  <-  gl src/crdt/verifiedRecords.ts:7  <-  verify src/crdt/verifiedRecords.ts:45  <-  validate src/crdt/accountReceive.ts:273  <-  (anonymous) src/crdt/accountCapture.ts:155  <-  (anonymous) src/crdt/contentStore.ts:280
+           2.0  <- (anonymous) src/crdt/verifiedRecords.ts:9  <-  u src/crdt/accountReceive.ts:158  <-  sourceRecords src/crdt/accountReceive.ts:196  <-  d src/crdt/accountCapture.ts:79  <-  g src/crdt/accountCapture.ts:259
+           1.9  <- (anonymous) src/crdt/verifiedRecords.ts:9  <-  read src/crdt/verifiedRecords.ts:37  <-  u src/crdt/accountReceive.ts:158  <-  sourceRecords src/crdt/accountReceive.ts:196  <-  d src/crdt/accountCapture.ts:79  <-  g src/crdt/accountCapture.ts:259
+           0.6  <- (anonymous) src/crdt/verifiedRecords.ts:9  <-  read src/crdt/verifiedRecords.ts:37  <-  verified src/crdt/accountReceive.ts:1310  <-  a src/crdt/accountDelivery.ts:105  <-  (anonymous) src/crdt/accountDelivery.ts:127  <-  (anonymous) src/crdt/writeSession.ts:156
+  10.8 M npm:lib0/encoding.js:130
+           4.1  <- xc src/crdt/yjs.ts:151  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.6  <- writeAny src/crdt/yjs.ts:91  <-  xc src/crdt/yjs.ts:151  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.5  <- Nc src/crdt/yjs.ts:336  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.2  <- writeString src/crdt/yjs.ts:217  <-  Nc src/crdt/yjs.ts:336  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+   9.7 Ri npm:yjs/dist/yjs.mjs:1142
+           4.7  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86
+           2.4  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145
+           1.3  <- xc src/crdt/yjs.ts:151  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.1  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  g src/crdt/accountCapture.ts:259
+   9.5 bt npm:lib0/encoding.js:408
+           4.8  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145  <-  ri src/crdt/inboundLedger.ts:86
+           2.2  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  Ut src/crdt/spoolRecord.ts:225  <-  Qr src/crdt/deliveryRecord.ts:145
+           1.4  <- xc src/crdt/yjs.ts:151  <-  check src/crdt/inboundLedger.ts:306  <-  pi src/crdt/inboundLedger.ts:327
+           1.0  <- Jc src/crdt/contentCompaction.ts:57  <-  Mt src/crdt/sourceCapture.ts:66  <-  U src/crdt/sourceCapture.ts:117  <-  Pt src/crdt/sourceCapture.ts:175  <-  g src/crdt/accountCapture.ts:259
