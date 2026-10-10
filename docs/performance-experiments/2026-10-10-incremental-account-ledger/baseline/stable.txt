@@ -1,0 +1,5 @@
+block                              keys  p50    p95    max   mean  >50  >100 >250  flick  gapP50 settle
+slope-history-0-T-traced            100   11.6   64.1  137.1   19.4    9     2    0     10   171.6   1503
+slope-history-1220-T-traced         100    693 2529.4 3295.9  780.8   93    69   64     33   609.6   1840
+slope-history-2220-T-traced         100 1464.4 5071.9 5544.3 1485.3   92    92   65     29   988.4   1850
+slope-history-520-T-traced          100  299.9 1237.9 1542.1  426.4   88    86   69     22   341.6   1797

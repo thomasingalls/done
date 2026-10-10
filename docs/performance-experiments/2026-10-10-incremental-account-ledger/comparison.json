@@ -1,0 +1,457 @@
+{
+  "baseline": {
+    "rows": [
+      {
+        "prior": 0,
+        "mainP50": 140,
+        "paintP95": 55.6,
+        "stable": {
+          "samples": 100,
+          "p50": 11.600000381469727,
+          "p95": 64.0999984741211,
+          "max": 137.0999984741211
+        },
+        "keyGapP50": 171.60000038146973,
+        "maintenance": {
+          "name": "history-0-maintenance",
+          "typed": 100,
+          "warmHeapBytes": 13758264,
+          "reopenedHeapBytes": 9279408,
+          "coldOpenMs": 1120,
+          "diagnostic": {
+            "full": 0,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "compaction": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              }
+            }
+          }
+        }
+      },
+      {
+        "prior": 520,
+        "mainP50": 345.5,
+        "paintP95": 363.7,
+        "stable": {
+          "samples": 100,
+          "p50": 299.8999996185303,
+          "p95": 1237.8999996185303,
+          "max": 1542.1000003814697
+        },
+        "keyGapP50": 341.6000003814697,
+        "maintenance": {
+          "name": "history-520-maintenance",
+          "typed": 620,
+          "warmHeapBytes": 16175600,
+          "reopenedHeapBytes": 10748900,
+          "coldOpenMs": 3291,
+          "diagnostic": {
+            "full": 0,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "compaction": {
+                "calls": 2,
+                "totalMs": 689.2999992370605,
+                "maxMs": 392.5
+              }
+            }
+          }
+        }
+      },
+      {
+        "prior": 1220,
+        "mainP50": 604.6,
+        "paintP95": 859.2,
+        "stable": {
+          "samples": 100,
+          "p50": 693,
+          "p95": 2529.3999996185303,
+          "max": 3295.8999996185303
+        },
+        "keyGapP50": 609.5999984741211,
+        "maintenance": {
+          "name": "history-1220-maintenance",
+          "typed": 1320,
+          "warmHeapBytes": 19351224,
+          "reopenedHeapBytes": 12272244,
+          "coldOpenMs": 6903,
+          "diagnostic": {
+            "full": 0,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "compaction": {
+                "calls": 3,
+                "totalMs": 2484.7999992370605,
+                "maxMs": 1017.8999996185303
+              }
+            }
+          }
+        }
+      },
+      {
+        "prior": 2220,
+        "mainP50": 986.3,
+        "paintP95": 1621.3,
+        "stable": {
+          "samples": 100,
+          "p50": 1464.3999996185303,
+          "p95": 5071.89999961853,
+          "max": 5544.299999237061
+        },
+        "keyGapP50": 988.4000015258789,
+        "maintenance": {
+          "name": "history-2220-maintenance",
+          "typed": 2320,
+          "warmHeapBytes": 21122392,
+          "reopenedHeapBytes": 14217392,
+          "coldOpenMs": 9663,
+          "diagnostic": {
+            "full": 0,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "compaction": {
+                "calls": 4,
+                "totalMs": 5874.300001144409,
+                "maxMs": 1720.8000011444092
+              }
+            }
+          }
+        }
+      }
+    ],
+    "fittedSlopeMsPerEdit": 0.37994144860488643,
+    "endpointSlopeMsPerEdit": 0.3812162162162162,
+    "notes": [
+      "preload of 420 edits took 82979 ms at 60 ms cadence including drain",
+      "preload of 600 edits took 251378 ms at 60 ms cadence including drain",
+      "preload of 900 edits took 596644 ms at 60 ms cadence including drain"
+    ]
+  },
+  "candidate": {
+    "rows": [
+      {
+        "prior": 0,
+        "mainP50": 99.7,
+        "paintP95": 10.8,
+        "stable": {
+          "samples": 100,
+          "p50": 0.9000015258789062,
+          "p95": 11.400001525878906,
+          "max": 55.39999961853027
+        },
+        "keyGapP50": 155.89999961853027,
+        "maintenance": {
+          "name": "history-0-maintenance",
+          "typed": 100,
+          "warmHeapBytes": 13794692,
+          "reopenedHeapBytes": 9581636,
+          "coldOpenMs": 1259,
+          "diagnostic": {
+            "full": 2,
+            "incremental": 523,
+            "sourceDecodes": 104,
+            "events": 294,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 2,
+                "totalMs": 1.3000011444091797,
+                "maxMs": 1.1000003814697266
+              },
+              "incremental": {
+                "calls": 440,
+                "totalMs": 487.39999198913574,
+                "maxMs": 2.8999996185302734
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 1,
+                "totalMs": 0.20000076293945312,
+                "maxMs": 0.20000076293945312
+              },
+              "compaction": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              }
+            }
+          }
+        }
+      },
+      {
+        "prior": 520,
+        "mainP50": 125.3,
+        "paintP95": 49.7,
+        "stable": {
+          "samples": 100,
+          "p50": 12.5,
+          "p95": 115.60000038146973,
+          "max": 172.4000015258789
+        },
+        "keyGapP50": 171.60000038146973,
+        "maintenance": {
+          "name": "history-520-maintenance",
+          "typed": 620,
+          "warmHeapBytes": 16444916,
+          "reopenedHeapBytes": 11389344,
+          "coldOpenMs": 3554,
+          "diagnostic": {
+            "full": 1,
+            "incremental": 578,
+            "sourceDecodes": 633,
+            "events": 266,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 1,
+                "totalMs": 125.5,
+                "maxMs": 125.5
+              },
+              "incremental": {
+                "calls": 502,
+                "totalMs": 1961.099988937378,
+                "maxMs": 7.200000762939453
+              },
+              "coverageCheck": {
+                "calls": 18,
+                "totalMs": 2.4000015258789062,
+                "maxMs": 0.20000076293945312
+              },
+              "coverageRebuild": {
+                "calls": 3,
+                "totalMs": 1.7000007629394531,
+                "maxMs": 1
+              },
+              "compaction": {
+                "calls": 2,
+                "totalMs": 187.29999923706055,
+                "maxMs": 98.19999885559082
+              }
+            }
+          }
+        }
+      },
+      {
+        "prior": 1220,
+        "mainP50": 165.1,
+        "paintP95": 120.7,
+        "stable": {
+          "samples": 100,
+          "p50": 49.10000038146973,
+          "p95": 329.6000003814697,
+          "max": 529
+        },
+        "keyGapP50": 188.19999885559082,
+        "maintenance": {
+          "name": "history-1220-maintenance",
+          "typed": 1320,
+          "warmHeapBytes": 19072292,
+          "reopenedHeapBytes": 13411016,
+          "coldOpenMs": 7126,
+          "diagnostic": {
+            "full": 2,
+            "incremental": 707,
+            "sourceDecodes": 1345,
+            "events": 329,
+            "audits": 1,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 2,
+                "totalMs": 1212.1999988555908,
+                "maxMs": 668.2999992370605
+              },
+              "incremental": {
+                "calls": 613,
+                "totalMs": 5214.099994659424,
+                "maxMs": 698.6999988555908
+              },
+              "coverageCheck": {
+                "calls": 1453,
+                "totalMs": 283.399995803833,
+                "maxMs": 6.700000762939453
+              },
+              "coverageRebuild": {
+                "calls": 5,
+                "totalMs": 6.1999969482421875,
+                "maxMs": 2.299999237060547
+              },
+              "compaction": {
+                "calls": 3,
+                "totalMs": 1238.8999996185303,
+                "maxMs": 895.3999996185303
+              }
+            }
+          }
+        }
+      },
+      {
+        "prior": 2220,
+        "mainP50": 197.4,
+        "paintP95": 231.7,
+        "stable": {
+          "samples": 100,
+          "p50": 159.89999961853027,
+          "p95": 613.2999992370605,
+          "max": 780.5999984741211
+        },
+        "keyGapP50": 212.5,
+        "maintenance": {
+          "name": "history-2220-maintenance",
+          "typed": 2320,
+          "warmHeapBytes": 22682668,
+          "reopenedHeapBytes": 15825164,
+          "coldOpenMs": 11813,
+          "diagnostic": {
+            "full": 2,
+            "incremental": 762,
+            "sourceDecodes": 2360,
+            "events": 329,
+            "audits": 1,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 2,
+                "totalMs": 2576.3999996185303,
+                "maxMs": 1311
+              },
+              "incremental": {
+                "calls": 668,
+                "totalMs": 9531.599998474121,
+                "maxMs": 1311.3000011444092
+              },
+              "coverageCheck": {
+                "calls": 3055,
+                "totalMs": 794.4000015258789,
+                "maxMs": 8.5
+              },
+              "coverageRebuild": {
+                "calls": 6,
+                "totalMs": 21.500001907348633,
+                "maxMs": 12.900001525878906
+              },
+              "compaction": {
+                "calls": 4,
+                "totalMs": 2320.599998474121,
+                "maxMs": 1591.7999992370605
+              }
+            }
+          }
+        }
+      }
+    ],
+    "fittedSlopeMsPerEdit": 0.044521107416510046,
+    "endpointSlopeMsPerEdit": 0.04400900900900901,
+    "notes": [
+      "preload of 420 edits took 42382 ms at 60 ms cadence including drain",
+      "preload of 600 edits took 72149 ms at 60 ms cadence including drain",
+      "preload of 900 edits took 136946 ms at 60 ms cadence including drain"
+    ]
+  },
+  "slopeReduction": 0.8828211357829269
+}

@@ -15,9 +15,10 @@ export function verifySyncState(
   census: DeliveryCensus,
   delivery: DeliveryState,
   inbound: InboundState,
+  after = 0,
 ) {
   for (const [position, retained] of inbound.retained)
-    requireSelfEnvelope(census, position, retained.envelope);
+    if (position > after) requireSelfEnvelope(census, position, retained.envelope);
   const accepted = inbound.prefix.observedThrough;
   if (
     [...delivery.refusals.keys()].some((n) => n <= accepted) ||
@@ -38,17 +39,26 @@ export function advanceSelfReceive(
   inbound: InboundState,
   route: CaptureRoute,
   checkCoverage: (updates: readonly Bytes[]) => void,
+  after = 0,
 ): void {
-  verifySyncState(census, delivery, inbound);
+  verifySyncState(census, delivery, inbound, after);
+  if (after > delivery.acceptedThrough) captureError('Accepted self prefix regressed');
   // A later conflict blocks use of the stream, but must not erase its already retained
   // accepted prefix (or make the scheduler observe progress going backwards).
   const conflict = delivery.conflict || inbound.conflict;
   const capsules = new Map<string, ReturnType<typeof decodeSourceCapsule>>();
   const updates: Bytes[] = [];
-  let previous = ZERO_REFUSAL,
-    position = 0;
+  const prior = after
+    ? delivery.responses
+        .get(after)
+        ?.map(decodePositionResponse)
+        .find((r) => r.kind === 'accepted')
+    : undefined;
+  if (after && prior?.kind !== 'accepted') captureError('Missing previous self acceptance');
+  let previous = prior?.kind === 'accepted' ? prior.head.link : ZERO_REFUSAL,
+    position = after;
   try {
-    for (const entry of census.spool.positions) {
+    for (const entry of census.spool.positions.slice(after)) {
       if (entry.position > delivery.acceptedThrough) break;
       if (entry.position !== position + 1 || !entry.wire)
         return captureError('Accepted self stream has a gap');

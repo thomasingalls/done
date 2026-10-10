@@ -31,6 +31,14 @@ export async function syncBundle(control) {
   const result = await build({
     configFile: false,
     logLevel: 'error',
+    define: {
+      'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify(
+        process.env.ACCOUNT_LEDGER_MODE ?? 'reference',
+      ),
+      'import.meta.env.VITE_ACCOUNT_LEDGER_AUDIT': JSON.stringify(
+        process.env.ACCOUNT_LEDGER_AUDIT ?? '',
+      ),
+    },
     plugins: control
       ? [
           {

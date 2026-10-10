@@ -74,7 +74,11 @@ records remain required.
 Timing evidence and exact completed commands are recorded separately in the
 [repair measurement](./performance-experiments/2026-10-10-self-stream-progress/README.md).
 
-## Next bounded repair
+## Following bounded repair
+
+The [incremental ledger implementation and measurement](./performance-experiments/2026-10-10-incremental-account-ledger/README.md)
+now implement semantic continuation behind an opt-in build switch. Full physical reads and copies
+remain; the packet records those limits and the slower measured cold opening. The original scope was:
 
 Incremental client validation: keep an authenticated view under the live owner and verify committed
 transitions without repeatedly reading, parsing, copying and replaying the entire ledger. The first

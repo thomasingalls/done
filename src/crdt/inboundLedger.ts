@@ -1,3 +1,4 @@
+import { measureLedger } from './accountLedgerMetrics';
 import {
   isHistoryInstallTag,
   decodeHistoryInstall,
@@ -24,8 +25,8 @@ import { acceptanceLink, decodePositionResponse } from '../../account-protocol/p
 import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
 import { decodeInboundRecord } from './inboundRecord';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
-import { Y, forkDoc, sameDocState } from './yjs';
-import { copyRecords, sameRecords, eraseVerified } from './verifiedRecords';
+import { Y, forkDoc, sameDocState, hasPendingUpdates } from './yjs';
+import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
 import type { VerificationMemo } from './verificationMemo';
 
 export async function heldInboundContext(
@@ -246,34 +247,94 @@ export async function applyHistoryReceiveCuts(
     if (cut.credentialId !== base.publisher.id) own.peers!.set(cut.credentialId, state);
   }
 }
-/** A fork must be unchanged by each evidenced original; no vector-only or pending merge shortcut. */
+/** Exact collision-checked byte index; positive cache has a fixed byte/entry budget. */
+function updateIndex(bounded: boolean) {
+  const buckets = new Map<number, Uint8Array[]>();
+  let size = 0,
+    count = 0;
+  const hash = (b: Uint8Array) => {
+    let h = 2166136261;
+    for (const x of b) h = Math.imul(h ^ x, 16777619);
+    return h >>> 0;
+  };
+  const clear = () => {
+    if (bounded) for (const values of buckets.values()) for (const b of values) b.fill(0);
+    buckets.clear();
+    size = count = 0;
+  };
+  return {
+    clear,
+    has(bytes: Uint8Array) {
+      return buckets.get(hash(bytes))?.some((b) => sameBytes(b, bytes)) ?? false;
+    },
+    add(bytes: Uint8Array) {
+      if (bounded && bytes.length > 4 * 1024 * 1024) return;
+      if (bounded && (size + bytes.length > 4 * 1024 * 1024 || count >= 4096)) clear();
+      const h = hash(bytes),
+        values = buckets.get(h) ?? [];
+      if (values.some((b) => sameBytes(b, bytes))) return;
+      values.push(bounded ? bytes.slice() : bytes);
+      buckets.set(h, values);
+      size += bytes.length;
+      count++;
+    },
+    values: () => [...buckets.values()].flat(),
+    bytes: () => size,
+  };
+}
+/** A fork must be unchanged by each evidenced original; no vector-only shortcut. */
 function contentCoverage(content: readonly OpenedRecord[]) {
   const doc = new Y.Doc({ gc: false }),
-    originals = new Set(content.map((r) => hex(r.bytes)));
-  try {
-    for (const r of [...content].sort((a, b) => a.seq - b.seq)) {
+    originals = updateIndex(false),
+    positives = updateIndex(true);
+  const append = (rows: readonly OpenedRecord[]) => {
+    const pending = hasPendingUpdates(doc);
+    for (const r of rows) {
       Y.decodeUpdate(r.bytes);
       Y.applyUpdate(doc, r.bytes);
+      originals.add(r.bytes);
     }
+    // Exact pending framing can change as dependencies integrate. Do not assume monotonicity there.
+    if (pending || hasPendingUpdates(doc)) positives.clear();
+  };
+  const began = performance.now();
+  try {
+    append([...content].sort((a, b) => a.seq - b.seq));
   } catch (e) {
     doc.destroy();
+    originals.clear();
+    positives.clear();
     throw e;
+  } finally {
+    measureLedger('coverageRebuild', began);
   }
   return {
+    doc,
+    append,
     clear() {
       doc.destroy();
       originals.clear();
+      positives.clear();
     },
+    preserve(previous: { doc: ReturnType<typeof forkDoc>; positives(): Uint8Array[] }): boolean {
+      if (!sameDocState(previous.doc, doc)) return false;
+      for (const b of previous.positives()) positives.add(b);
+      return true;
+    },
+    positives: positives.values,
+    positiveBytes: positives.bytes,
     check(updates: readonly Bytes[]) {
       for (const update of updates) {
-        if (originals.has(hex(update))) continue;
+        if (originals.has(update) || positives.has(update)) continue;
+        const began = performance.now();
         const copy = forkDoc(doc, false);
         try {
           Y.applyUpdate(copy, update);
           if (!sameDocState(doc, copy)) captureError('Inbound content coverage is missing');
-          originals.add(hex(update));
+          positives.add(update);
         } finally {
           copy.destroy();
+          measureLedger('coverageCheck', began);
         }
       }
     },
@@ -292,8 +353,8 @@ export function verifyInboundCoverage(
     coverage.clear();
   }
 }
-/** One reconstruction for the exact current content set, including invisible Yjs dependencies. */
-export function createInboundCoverage() {
+/** Owner-local content view. Only successful coverage is memoised; failure always invalidates. */
+export function createInboundCoverage(options: { incremental?: boolean } = {}) {
   let rows: OpenedRecord[] | undefined, coverage: ReturnType<typeof contentCoverage> | undefined;
   const clear = () => {
     eraseVerified(rows);
@@ -301,26 +362,71 @@ export function createInboundCoverage() {
     coverage?.clear();
     coverage = undefined;
   };
-  return {
-    clear,
-    check(records: readonly OpenedRecord[], updates: readonly Bytes[]) {
-      const content = records.filter((r) => r.kind === 'update' || r.kind === 'state');
-      if (!rows || !sameRecords(rows, content)) {
-        clear();
-        rows = copyRecords(content);
-        try {
-          coverage = contentCoverage(rows);
-        } catch (e) {
-          clear();
-          throw e;
-        }
+  const prepare = (
+    records: readonly OpenedRecord[],
+  ): 'same' | 'append' | 'equivalent' | 'rebuild' => {
+    const content = records.filter((r) => r.kind === 'update' || r.kind === 'state');
+    if (rows && sameRecords(rows, content)) return 'same';
+    try {
+      if (
+        options.incremental &&
+        rows &&
+        content.length >= rows.length &&
+        sameRecords(rows, content.slice(0, rows.length))
+      ) {
+        const added = copyRecords(content.slice(rows.length));
+        rows.push(...added);
+        coverage!.append(added);
+        return 'append';
       }
+      const copied = copyRecords(content);
+      let next: ReturnType<typeof contentCoverage> | undefined;
       try {
-        coverage!.check(updates);
-      } catch (e) {
+        next = contentCoverage(copied);
+        const equivalent = !!(options.incremental && coverage && next.preserve(coverage));
         clear();
+        rows = copied;
+        coverage = next;
+        return equivalent ? 'equivalent' : 'rebuild';
+      } catch (e) {
+        next?.clear();
+        eraseVerified(copied);
         throw e;
       }
+    } catch (e) {
+      clear();
+      throw e;
+    }
+  };
+  const check = (records: readonly OpenedRecord[], updates: readonly Bytes[]) => {
+    try {
+      prepare(records);
+      coverage!.check(updates);
+    } catch (e) {
+      clear();
+      throw e;
+    }
+  };
+  return {
+    clear,
+    check,
+    prepare,
+    positiveBytes: () => coverage?.positiveBytes() ?? 0,
+    /** Caller owns this immutable candidate under the serialized carrier task. */
+    bind(records: readonly OpenedRecord[]) {
+      prepare(records);
+      const at = coverage;
+      return {
+        check(input: readonly OpenedRecord[], updates: readonly Bytes[]) {
+          if (input !== records || coverage !== at) captureError('Coverage view was invalidated');
+          try {
+            at!.check(updates);
+          } catch (e) {
+            clear();
+            throw e;
+          }
+        },
+      };
     },
   };
 }
@@ -329,14 +435,27 @@ export async function verifyInboundLedger(
   records: readonly OpenedRecord[],
   base: InboundContext,
   lifetime: InboundLifetime,
-  reuse?: { memo: VerificationMemo; coverage: ReturnType<typeof createInboundCoverage> },
+  reuse?: {
+    memo: VerificationMemo;
+    coverage: Pick<ReturnType<typeof createInboundCoverage>, 'check'>;
+  },
+  continuation?: { state: InboundState; after: number },
 ): Promise<InboundState> {
-  const own = emptyInbound(baselinePrefix(base, base.publisher.id));
-  own.peers = new Map();
+  const clone = (s: InboundState): InboundState => ({
+    ...s,
+    prefix: { ...s.prefix },
+    retained: new Map(s.retained),
+  });
+  const own = continuation
+    ? clone(continuation.state)
+    : emptyInbound(baselinePrefix(base, base.publisher.id));
+  own.peers = new Map([...(continuation?.state.peers ?? [])].map(([id, s]) => [id, clone(s)]));
   const events = [
     ...census.entries.map((e) => ({ ...e, kind: 'page' as const })),
     ...census.installations.map((e) => ({ ...e, kind: 'history' as const })),
-  ].sort((a, b) => a.record.seq - b.record.seq);
+  ]
+    .filter((e) => !continuation || e.record.seq > continuation.after)
+    .sort((a, b) => a.record.seq - b.record.seq);
   for (const entry of events) {
     if (entry.kind === 'history') {
       if (own.conflict || [...own.peers.values()].some((s) => s.conflict))

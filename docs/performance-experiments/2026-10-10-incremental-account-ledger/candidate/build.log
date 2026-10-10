@@ -1,0 +1,34 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 434 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+dist/index.html                                   2.01 kB │ gzip:   0.79 kB
+dist/assets/main-apPaEBJm.css                    32.72 kB │ gzip:   6.92 kB
+dist/assets/checkpointTimeline-DdvidAM9.js        0.58 kB │ gzip:   0.39 kB │ map:     2.14 kB
+dist/assets/accountProgressCustody-p_Jj5Sp2.js    1.70 kB │ gzip:   0.89 kB │ map:     6.02 kB
+dist/assets/custodyCrypto-Bq68ZIp-.js             4.65 kB │ gzip:   1.83 kB │ map:    17.02 kB
+dist/assets/membershipLocator-CFok42yu.js         5.21 kB │ gzip:   1.67 kB │ map:    16.73 kB
+dist/assets/rotationObservation-Cgqi7_Jy.js       6.69 kB │ gzip:   2.59 kB │ map:    19.45 kB
+dist/assets/accountRotation-B8AH7dL6.js           7.83 kB │ gzip:   3.44 kB │ map:    29.50 kB
+dist/assets/preload-helper-OM30r4jV.js            8.34 kB │ gzip:   3.59 kB │ map:    24.22 kB
+dist/assets/historyOwner-DDuE-GD2.js             10.60 kB │ gzip:   3.64 kB │ map:    35.78 kB
+dist/assets/ceremonyVault-Uiqfbr5Z.js            10.61 kB │ gzip:   3.96 kB │ map:    36.47 kB
+dist/assets/accountAccess-j33dH8F2.js            13.00 kB │ gzip:   4.69 kB │ map:    53.69 kB
+dist/assets/membershipSource-wzINT221.js         14.43 kB │ gzip:   5.17 kB │ map:    50.50 kB
+dist/assets/LocalApp-DRk8doqC.js                 16.31 kB │ gzip:   6.01 kB │ map:    49.01 kB
+dist/assets/deviceRemovalVault-OtiUKNFM.js       21.63 kB │ gzip:   7.21 kB │ map:    73.86 kB
+dist/assets/AccountRecoveryApp-DnNlZ2sO.js       29.18 kB │ gzip:   9.89 kB │ map:    95.74 kB
+dist/assets/ceremonyNavigation-DtPmBAoq.js       34.75 kB │ gzip:  12.22 kB │ map:   116.66 kB
+dist/assets/promotionRecord-f2AVAWew.js          37.44 kB │ gzip:  12.29 kB │ map:   133.58 kB
+dist/assets/AccountSetupApp-BFR8upbi.js          39.29 kB │ gzip:  13.24 kB │ map:   113.01 kB
+dist/assets/localGenesisStorage-CQ6N22Q9.js      64.63 kB │ gzip:  21.44 kB │ map:   194.11 kB
+dist/assets/joinedAccount-DIPo24TY.js            73.46 kB │ gzip:  22.75 kB │ map:   266.94 kB
+dist/assets/AccountEnrollmentApp-Dv5K8zeZ.js     79.24 kB │ gzip:  23.37 kB │ map:   261.69 kB
+dist/assets/AccountDevices-COMn-_qu.js           87.36 kB │ gzip:  27.20 kB │ map:   329.49 kB
+dist/assets/admissionHistory-BJqiB6yy.js        102.47 kB │ gzip:  25.38 kB │ map:   345.36 kB
+dist/assets/admissionDocument-DPTNGFKp.js       136.78 kB │ gzip:  42.65 kB │ map:   810.27 kB
+dist/assets/main-BYKpb5QJ.js                    283.71 kB │ gzip:  92.02 kB │ map: 1,245.94 kB
+dist/assets/localGenesis-BV1viBvJ.js            678.40 kB │ gzip: 235.01 kB │ map: 2,795.06 kB
+
+✓ built in 2.61s

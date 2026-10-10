@@ -47,6 +47,11 @@ export function createVerifiedRecords<T>() {
       token: unknown,
       check: (copy: OpenedRecord[]) => Promise<T>,
       current: () => void,
+      extend?: (
+        previous: Readonly<T>,
+        before: readonly OpenedRecord[],
+        candidate: OpenedRecord[],
+      ) => Promise<T | undefined>,
     ): Promise<void> {
       try {
         current();
@@ -55,17 +60,28 @@ export function createVerifiedRecords<T>() {
         throw e;
       }
       if (retained && identity === token && sameRecords(retained, records)) return;
-      clear();
-      const at = revision,
+      const previous = value,
+        before = retained;
+      // A candidate may borrow the previous result only until it has been detached below.
+      // Neither a speculative append nor a late verification may publish into this view.
+      const at = ++revision,
         candidate = copyRecords(records);
       let result: T | undefined;
       try {
-        result = await check(candidate);
+        result =
+          previous !== undefined && before && extend
+            ? await extend(previous, before, candidate)
+            : undefined;
+        result ??= await check(candidate);
         current();
         if (at !== revision) throw Error('Verification view was invalidated');
         // Results may reference candidate input buffers. Own both before exposing any readback.
-        value = structuredClone(result);
-        retained = copyRecords(candidate);
+        const nextValue = structuredClone(result),
+          nextRecords = copyRecords(candidate);
+        eraseVerified(value);
+        eraseVerified(retained);
+        value = nextValue;
+        retained = nextRecords;
         identity = token;
       } catch (e) {
         eraseVerified(candidate);

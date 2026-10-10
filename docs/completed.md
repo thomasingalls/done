@@ -12639,3 +12639,39 @@ rule that kept it byte-for-byte unchanged assumed its seat would return to close
 
 The next slice is editing latency (`F-17`), at the operator's direction, with architecture changes in
 scope. An opt-in reduction of repeated credential prompts after setup is named as the phase after it.
+
+### Own-stream receipt progression and incremental Account ledger experiment
+
+**Date:** 2026-10-10 · **Commit:** signed `d5763346441ff98809442bb48b38ddd621516cd6` for own-stream
+progress; incremental candidate is the working tree identified by the source/build hashes in its
+packet · **Stage:** F-17 development repair; not release qualification
+
+**Exit.** The first repair derives own receive progress from verified signed delivery receipts without
+normal own-envelope download or duplicate self-inbound writes. It retains lost-reply, crash, legacy
+receipt and cold-replay behavior. The operator then authorized incremental ledger validation: a
+full physical census still gates an owner-local verified prefix, while eligible appends extend source,
+spool, delivery and inbound state. Exact content replacement requires an independent full Yjs-state
+equivalence check; positive coverage can survive it. Negative coverage is not cached. Proposed
+precommit work never installs success. Context change, failed verification and late completion are
+covered by invalidation and focused executed fault controls. Cold opening stays a full verification;
+a periodic reference audit invalidates/reports any mismatch.
+
+The [own-stream packet](./performance-experiments/2026-10-10-self-stream-progress/README.md) records
+mixed later latency results, which motivated the next repair. The
+[incremental packet](./performance-experiments/2026-10-10-incremental-account-ledger/README.md)
+records predictions first, an early source/spool/delivery-only measurement, and a complete matched
+0/520/1,220/2,220-edit pair. Both arms completed 2,320 edits. The fitted main-thread p50 slope fell
+from 0.3799 to 0.0445 ms per prior edit (88.3%); deepest stable-text p95 fell from 5,071.9 to 613.3 ms.
+Focused units, generated native edit/delete/compaction/reopen histories, commit-abort/lost-reply cases,
+cross-generation differential replay, two packaged peer/history journeys, and three invalidation
+fault controls pass. No full-reference disagreement was observed in those checks or the two normal
+maintenance audits in the measured candidate.
+
+**Notes.** The incremental product path remains **opt-in**, `VITE_ACCOUNT_LEDGER=incremental`.
+Reference remains the default. Neither repair is deployed by this work; release validation stays
+paused and F-17 stays open. Cold opening at 2,320 edits was 9.66 → 11.81 seconds, reopened post-GC
+page heap 13.56 → 15.09 MiB, and candidate maintenance still reached 1.59 seconds with a full audit.
+A synthetic 1 MiB coverage miss cost 13 ms p50. Added metadata/positive-cache budgets do not bound the
+existing retained historical byte view. The next performance slice is the remaining physical census,
+copying and admission-queue occupancy, with accepted-prefix byte retention and audit/cold costs
+explicitly outstanding. No other seat's live progress document was rewritten.

@@ -1,3 +1,4 @@
+import fc from 'fast-check';
 import { prepare, open, request, receive, envelope, answer } from './fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -56,6 +57,12 @@ test(
     await syncing(f.page, item);
     const initial = await view(f.page);
     await settled(f.page);
+    if (process.env.ACCOUNT_LEDGER_MODE === 'incremental') {
+      const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+      assert.ok(metrics.incremental > 0, 'candidate path actually executed');
+      assert.equal(metrics.mismatches, 0);
+      if (process.env.ACCOUNT_LEDGER_AUDIT === 'every') assert.ok(metrics.audits > 0);
+    }
     const baseline = await captures(f.page);
     await edit(f.page, initial.length, 0, ' COMPOSED');
     await settled(f.page);
@@ -630,3 +637,51 @@ for (const mode of ['fitting', 'oversized', 'no-preflight', 'sealed', 'submitted
       await close(f.page);
     },
   );
+
+// Small differential histories, not a release campaign. AUDIT=every compares every delta to cold replay.
+test(
+  'generated incremental ledger histories preserve inserts, deletes, compaction and cold continuation',
+  {
+    timeout: 90000,
+    skip:
+      process.env.ACCOUNT_LEDGER_MODE !== 'incremental' ||
+      process.env.ACCOUNT_LEDGER_AUDIT !== 'every',
+  },
+  async (t) => {
+    const histories = fc.sample(fc.array(fc.nat(4), { minLength: 8, maxLength: 8 }), {
+      seed: 101026,
+      numRuns: 3,
+    });
+    for (const [index, actions] of histories.entries()) {
+      const f = await native(t),
+        item = await selected(f, 'incremental-generated-' + index);
+      await syncing(f.page, item);
+      await settled(f.page);
+      let expected = await view(f.page);
+      for (const [step, action] of actions.entries()) {
+        if (action === 0 && expected.length) {
+          await edit(f.page, 0, 1, '');
+          expected = expected.slice(1);
+        } else {
+          const added = String.fromCharCode(97 + step);
+          await edit(f.page, expected.length, 0, added);
+          expected += added;
+        }
+        await settled(f.page);
+        if (action === 2 || step === 3) await f.page.evaluate(() => opened.compactContent());
+        const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+        assert.ok(metrics.incremental > 0);
+        assert.ok(metrics.audits > 0);
+        assert.equal(metrics.mismatches, 0);
+        assert.equal(await view(f.page), expected);
+        if (action === 3 || step === 7) {
+          await cold(f);
+          await syncing(f.page, item);
+          await settled(f.page);
+          assert.equal(await view(f.page), expected);
+        }
+      }
+      await close(f.page);
+    }
+  },
+);

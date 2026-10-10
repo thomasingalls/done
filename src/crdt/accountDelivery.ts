@@ -54,6 +54,14 @@ export interface DeliveryContext {
   inspect?: typeof inspectDelivery;
   /** Detached result from the just-validated complete v9 view; never used for proposed transitions. */
   verified?(records: readonly OpenedRecord[]): DeliveryState;
+  /** Private speculative check. A successful proposal never installs a durable cached view. */
+  verifyProposed?(
+    records: readonly OpenedRecord[],
+    proposed: OpenedRecord[],
+    route: CaptureRoute,
+    task: SessionTask,
+    after: import('./contentRecord').SpoolWitness,
+  ): Promise<boolean>;
   reuse?(task: SessionTask): { memo: VerificationMemo; current(): void };
   pin(): AuthorityPin;
   canSubmit?(): boolean;
@@ -164,16 +172,17 @@ export function createDeliveryOperations(context: DeliveryContext) {
                   gen: sealed[0]!.gen,
                 },
               ];
-              await task.wait(() =>
-                verifyDelivery(
-                  inspect(proposed, route, context.authority()),
-                  route,
-                  context.authority(),
-                  context.publicKey(),
-                  subtleFor(task),
-                  context.reuse?.(task),
-                ),
-              );
+              if (!(await context.verifyProposed?.(rows, proposed, route, task, after)))
+                await task.wait(() =>
+                  verifyDelivery(
+                    inspect(proposed, route, context.authority()),
+                    route,
+                    context.authority(),
+                    context.publicKey(),
+                    subtleFor(task),
+                    context.reuse?.(task),
+                  ),
+                );
             } finally {
               for (const r of rows) r.bytes.fill(0);
             }

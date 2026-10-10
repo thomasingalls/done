@@ -1,0 +1,16 @@
+[slope] block history-0-T-traced: 100 keys ...
+   text p50/p95/max 11/48.2/77.9 ms (>100ms: 0); paint p50/p95/max 15.2/55.6/82.2 ms; queue p95 47.8; indicator 10x on 10/100 keys; requests/key 0.9; input task p50/p95 3.5/4.5; all main p50/p95 140/196.9
+MAINTENANCE {"name":"history-0-maintenance","typed":100,"warmHeapBytes":13758264,"reopenedHeapBytes":9279408,"coldOpenMs":1120,"diagnostic":{"full":0,"incremental":0,"sourceDecodes":0,"events":0,"audits":0,"mismatches":0,"timings":{"full":{"calls":0,"totalMs":0,"maxMs":0},"incremental":{"calls":0,"totalMs":0,"maxMs":0},"coverageCheck":{"calls":0,"totalMs":0,"maxMs":0},"coverageRebuild":{"calls":0,"totalMs":0,"maxMs":0},"compaction":{"calls":0,"totalMs":0,"maxMs":0}}}}
+[slope] preloaded 420 edits in 82979 ms (now 520)
+[slope] block history-520-T-traced: 100 keys ...
+   text p50/p95/max 285.9/948.8/1214.1 ms (>100ms: 85); paint p50/p95/max 185.1/363.7/386 ms; queue p95 359.2; indicator 22x on 53/100 keys; requests/key 0.2; input task p50/p95 2.4/9.3; all main p50/p95 345.5/497.2
+MAINTENANCE {"name":"history-520-maintenance","typed":620,"warmHeapBytes":16175600,"reopenedHeapBytes":10748900,"coldOpenMs":3291,"diagnostic":{"full":0,"incremental":0,"sourceDecodes":0,"events":0,"audits":0,"mismatches":0,"timings":{"full":{"calls":0,"totalMs":0,"maxMs":0},"incremental":{"calls":0,"totalMs":0,"maxMs":0},"coverageCheck":{"calls":0,"totalMs":0,"maxMs":0},"coverageRebuild":{"calls":0,"totalMs":0,"maxMs":0},"compaction":{"calls":2,"totalMs":689.2999992370605,"maxMs":392.5}}}}
+[slope] preloaded 600 edits in 251377 ms (now 1220)
+[slope] block history-1220-T-traced: 100 keys ...
+   text p50/p95/max 686.8/1958.8/3135.3 ms (>100ms: 65); paint p50/p95/max 451.8/859.2/943 ms; queue p95 855.7; indicator 33x on 63/100 keys; requests/key 0.2; input task p50/p95 2.1/12.9; all main p50/p95 604.6/1002.4
+MAINTENANCE {"name":"history-1220-maintenance","typed":1320,"warmHeapBytes":19351224,"reopenedHeapBytes":12272244,"coldOpenMs":6903,"diagnostic":{"full":0,"incremental":0,"sourceDecodes":0,"events":0,"audits":0,"mismatches":0,"timings":{"full":{"calls":0,"totalMs":0,"maxMs":0},"incremental":{"calls":0,"totalMs":0,"maxMs":0},"coverageCheck":{"calls":0,"totalMs":0,"maxMs":0},"coverageRebuild":{"calls":0,"totalMs":0,"maxMs":0},"compaction":{"calls":3,"totalMs":2484.7999992370605,"maxMs":1017.8999996185303}}}}
+[slope] preloaded 900 edits in 596643 ms (now 2220)
+[slope] block history-2220-T-traced: 100 keys ...
+   text p50/p95/max 1295.5/4192.8/5296 ms (>100ms: 84); paint p50/p95/max 848.7/1621.3/1669.3 ms; queue p95 1607.4; indicator 29x on 66/100 keys; requests/key 0.2; input task p50/p95 2.1/19.8; all main p50/p95 986.3/1775.6
+MAINTENANCE {"name":"history-2220-maintenance","typed":2320,"warmHeapBytes":21122392,"reopenedHeapBytes":14217392,"coldOpenMs":9663,"diagnostic":{"full":0,"incremental":0,"sourceDecodes":0,"events":0,"audits":0,"mismatches":0,"timings":{"full":{"calls":0,"totalMs":0,"maxMs":0},"incremental":{"calls":0,"totalMs":0,"maxMs":0},"coverageCheck":{"calls":0,"totalMs":0,"maxMs":0},"coverageRebuild":{"calls":0,"totalMs":0,"maxMs":0},"compaction":{"calls":4,"totalMs":5874.300001144409,"maxMs":1720.8000011444092}}}}
+[slope] done; typed 2320; summary /tmp/done-incremental-ledger/results-baseline/slope.summary.json

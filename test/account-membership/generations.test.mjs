@@ -377,3 +377,117 @@ test('cold replay uses the stored page epoch cut, never a later membership cutof
     /prefix/,
   );
 });
+
+test('incremental replay matches the full ledger across retained and current generation decisions', async () => {
+  const f = await fixture();
+  const base = {
+    authority: f.history.current,
+    generation: 2,
+    generationKey: f.keys.get(2),
+    retainedGenerationKeys: new Map([[1, f.keys.get(1)]]),
+    publisher: { id: f.route.credential },
+  };
+  const counter = { v: 2, spool: client.emptySpoolWitness() };
+  const memo = client.createVerificationMemo(),
+    reuse = { memo, current: () => {} };
+  let records = [],
+    value = {
+      census: client.inspectInbound([], f.route, base),
+      delivery: client.emptyDelivery(),
+      inbound: client.emptyInbound(),
+    };
+  value.indexes = await client.indexVerifiedLedger(value, records, f.route, counter, crypto.subtle);
+  for (const [i, route] of [f.oldRoute, f.route].entries()) {
+    const wire = [f.one, f.two][i],
+      update = [f.old, f.next][i];
+    const source = client.makeSourceCapsule(route, [
+      { actor: route.principal, kind: 'human', bytes: update },
+    ]);
+    const capsule = client.decodeSourceCapsule(source, f.route);
+    const proof = response({
+      kind: 'accepted',
+      head: head(wire.subject, i ? f.cut : zero, route.epoch, f.x.f.f.keys.acceptance),
+      leaf: { epoch: route.epoch, digest: wire.subject.digest },
+    });
+    const authority = f.history.authorities.find((a) => a.tip === route.epoch);
+    const rows = [
+      ['outbound', source],
+      ['update', update],
+      [
+        'heads',
+        client.encodeSpoolEntry(
+          {
+            type: 'position',
+            position: i + 1,
+            source: { id: capsule.id, index: 0, hash: hash(source) },
+          },
+          route,
+        ),
+      ],
+      [
+        'heads',
+        client.encodeSpoolEntry({ type: 'attempt', position: i + 1, attempt: i + 1 }, route),
+      ],
+      [
+        'outbound',
+        client.encodeSpoolEntry(
+          { type: 'envelope', position: i + 1, attempt: i + 1, wire: wire.wire },
+          route,
+        ),
+      ],
+      [
+        'heads',
+        client.encodeDeliveryEntry(
+          { type: 'response', position: i + 1, wire: proof },
+          route,
+          authority,
+        ),
+      ],
+    ];
+    for (const [offset, [kind, bytes]] of rows.entries()) {
+      const next = [...records, { kind, bytes, seq: records.length + 1, gen: 2 }];
+      if (offset >= 2)
+        counter.spool = await client.extendSpoolWitness(counter.spool, bytes, crypto.subtle);
+      const delta = await client.extendAccountLedger(
+        value,
+        records,
+        next,
+        f.route,
+        counter,
+        base,
+        f.pub,
+        crypto.subtle,
+        reuse,
+      );
+      assert.ok(delta, 'generation delta stays eligible');
+      const inbound = structuredClone(value.inbound);
+      client.advanceSelfReceive(
+        delta.census.delivery,
+        delta.delivery,
+        inbound,
+        f.route,
+        (u) => client.verifyInboundCoverage(next, u),
+        value.delivery.acceptedThrough,
+      );
+      const census = client.inspectInbound(next, f.route, base);
+      await client.verifySpool(census.delivery.spool, f.route, f.keys, f.pub, crypto.subtle);
+      const delivery = await client.verifyDelivery(
+        census.delivery,
+        f.route,
+        base.authority,
+        f.pub,
+        crypto.subtle,
+      );
+      const full = client.emptyInbound();
+      client.advanceSelfReceive(census.delivery, delivery, full, f.route, (u) =>
+        client.verifyInboundCoverage(next, u),
+      );
+      value = { ...delta, inbound };
+      records = next;
+      assert.equal(client.sameAccountLedger(value, { census, delivery, inbound: full }), true);
+    }
+  }
+  assert.equal(value.delivery.acceptedThrough, 2);
+  assert.equal(value.inbound.prefix.position, 2);
+  memo.clear();
+});

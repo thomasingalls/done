@@ -1,3 +1,4 @@
+import { measureLedger } from './accountLedgerMetrics';
 import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
 import { copyRecords, eraseVerified } from './verifiedRecords';
 import {
@@ -563,16 +564,22 @@ export const createContentOwner = (
         sequences: Object.freeze(records.map((r) => r.seq)),
       });
     },
-    compact: (task: SessionTask, checkJournal: () => void) =>
-      compactContent(task, {
-        scope,
-        generation,
-        intent: witness.intent,
-        db: db!,
-        read: () => read(task, true),
-        authenticate: (snapshot) => openSnapshot(task, snapshot),
-        publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
-        checkJournal,
-      }),
+    compact: async (task: SessionTask, checkJournal: () => void) => {
+      const began = performance.now();
+      try {
+        return await compactContent(task, {
+          scope,
+          generation,
+          intent: witness.intent,
+          db: db!,
+          read: () => read(task, true),
+          authenticate: (snapshot) => openSnapshot(task, snapshot),
+          publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
+          checkJournal,
+        });
+      } finally {
+        measureLedger('compaction', began);
+      }
+    },
   };
 };
