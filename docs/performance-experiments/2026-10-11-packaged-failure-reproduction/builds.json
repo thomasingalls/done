@@ -1,0 +1,187 @@
+{
+ "A": {
+  "commit": "0332a9ea67aeaf9dce4248128e4833fb116a1b78",
+  "ledgerPath": "reference (ordinary build)",
+  "buildEnv": null,
+  "distFiles": 59,
+  "distBytes": 8969872,
+  "distDigest": "d80c477dc5066d9cca6aa1e48aabdc5b352422f9e3d602cc8a69b60822a535ae",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main--uxxcwzo.js",
+    "sha256": "84c210fa64617739b9aa316dbbc64c19416266b0b05f914bdb8eb195a78874b3",
+    "bytes": 283711
+   },
+   {
+    "path": "assets/main--uxxcwzo.js.map",
+    "sha256": "eb0cd7debea8cba167b6d9bac7317dbef831021d6ab43f1d781cb95cbc3cf11c",
+    "bytes": 1250098
+   },
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "index.html",
+    "sha256": "2c1a010b99748b1c7ab86bb5c61605073c6e5000c764016f82ecd4f88cf8db2c",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "27abf0679c024cc2f305baf04eb3241e620f6286eb7a195641ab4f41d0f711a4",
+    "bytes": 7331
+   }
+  ],
+  "buildLogSha256": "9748fb4a3eaeca9ebb8381cb06ca4beb868fd29693fd82a866c0c7bef8ad6ebd"
+ },
+ "B": {
+  "commit": "0332a9ea67aeaf9dce4248128e4833fb116a1b78",
+  "ledgerPath": "incremental",
+  "buildEnv": "VITE_ACCOUNT_LEDGER=incremental",
+  "distFiles": 59,
+  "distBytes": 8970076,
+  "distDigest": "d31d395eca2d08453060dad7d315880146f7c33703f1b8f06fb472fbc6bb873f",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main-DAGZ7klw.js",
+    "sha256": "b3696403324cda8b97cd92733149ee675a3a879496bc5e4a10654211a7e58ac2",
+    "bytes": 283711
+   },
+   {
+    "path": "assets/main-DAGZ7klw.js.map",
+    "sha256": "a627ccbbb2ade8a1c9cf84ae742b86779048b9860a7d4a5015498a783feec383",
+    "bytes": 1250098
+   },
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "index.html",
+    "sha256": "74165bb4f1925999a326f32408e94f78b89c3ddeee2e6ec8157adbd421d7c220",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "211a2392be8f27d7fd7a11c52b491683ca6fcd76d410671361e0cd5b5bd0da73",
+    "bytes": 7331
+   }
+  ],
+  "buildLogSha256": "7fc8a90e861fa4b059728cd37a0c93ce6182a65f8eb691c055cd058d9fefba4f"
+ },
+ "C": {
+  "commit": "4500d9b61b7c67b0d2abcabfc7f377ab449e23d6",
+  "ledgerPath": "incremental",
+  "buildEnv": "VITE_ACCOUNT_LEDGER=incremental",
+  "distFiles": 59,
+  "distBytes": 8954890,
+  "distDigest": "a215d30ce2545fde256062573e227aca861fe83404b04aef23952f324029ae86",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "assets/main-glcnpnwM.js",
+    "sha256": "d2df5db4b34d724dd696aada95ac806643d60a1f322add64f3c55e375a3276dc",
+    "bytes": 283711
+   },
+   {
+    "path": "assets/main-glcnpnwM.js.map",
+    "sha256": "072d5d70fc453317b16d895e67034282b94127d52dce9378896d83235363cd5e",
+    "bytes": 1250098
+   },
+   {
+    "path": "index.html",
+    "sha256": "8ee62067b0d20c1dcade76529917f96688e9dd958018cf130bddac5cf6fac111",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "a75204fb09c3bc63714fd3b754f00a7cebb878eb1c3eb179cc08ada262329891",
+    "bytes": 7331
+   }
+  ],
+  "buildLogSha256": "b4312a3c61ee09ba99ed12ea1e514004f13b0b61e8a6566eed8b7e7d9d6c3cc5"
+ },
+ "E": {
+  "commit": "95923cd871617ab70cfe4ae2fa8a51b488fed5f9",
+  "ledgerPath": "reference (ordinary build)",
+  "buildEnv": null,
+  "distFiles": 59,
+  "distBytes": 8970921,
+  "distDigest": "772d95ea749d8fd3fd324700c4f1e21a0bc7421885e558f73674560e97d26a8f",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main-B3v9_XfX.js",
+    "sha256": "fa464ea32bd6017d54d307ed5000524012fc80901659e01f9b99fe52dd44ad8b",
+    "bytes": 283711
+   },
+   {
+    "path": "assets/main-B3v9_XfX.js.map",
+    "sha256": "235f0c03444fa524c6bcfae383efed32b36c79b95119b0dd98f0b7df8af7bfef",
+    "bytes": 1250098
+   },
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "index.html",
+    "sha256": "b1bb8341c76f72ab8e0a1025bd1acd4722a102a6beba006ea69444f69d37a031",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "13e934dbf3b63873644b7f73c84d7f1c5b9ef3fb553f54ab2cf244a19401aedd",
+    "bytes": 7331
+   }
+  ],
+  "buildLogSha256": "ea15dfd62f4ec2e1173ec2b24f848e5c6c3b1febc0c47d3a6754b5313a65fe81"
+ },
+ "F": {
+  "commit": "95923cd871617ab70cfe4ae2fa8a51b488fed5f9",
+  "ledgerPath": "incremental",
+  "buildEnv": "VITE_ACCOUNT_LEDGER=incremental",
+  "distFiles": 59,
+  "distBytes": 8971125,
+  "distDigest": "3b804d4185d4c9a36cc494a99390c806e75d8e256cd1013b8b0a6865dd83d6f8",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "assets/main-ttTPWODk.js",
+    "sha256": "0624a98dbc0188c3f409dad4c99c89d9fc692da9dc8eeded7b06f22dca5bbe01",
+    "bytes": 283711
+   },
+   {
+    "path": "assets/main-ttTPWODk.js.map",
+    "sha256": "fcdd0accd6c387cead48367512f46719d825a9c9c096272c9da04293f0e58177",
+    "bytes": 1250098
+   },
+   {
+    "path": "index.html",
+    "sha256": "d85b21aa15020d95cab2fe77a52160117d59c47c49863695db188b9020537e18",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "3a1e82f5c884eb45d309852a87b93511c59f3cb26d928de95bb37a18d30bd66b",
+    "bytes": 7331
+   }
+  ],
+  "buildLogSha256": "8c6bb2cc8f5adb6ad785e04cb9f2d6053a3c543fb43019f53ff6b60ef771a547"
+ }
+}

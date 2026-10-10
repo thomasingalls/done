@@ -1,0 +1,1061 @@
+{
+ "runs": [
+  {
+   "run": "R-E-ordinary-1",
+   "arm": "E",
+   "exit": 0,
+   "seconds": 103,
+   "two": true,
+   "returning": true,
+   "load": "5.80->5.17",
+   "foreign_frac": 0.0,
+   "errors": [],
+   "returning_429": 14,
+   "returning_429_by_path": {
+    "history/v1/checkpoint": 8,
+    "delivery/submit": 1,
+    "delivery/read-v2": 3,
+    "membership/v2/discover": 2
+   }
+  },
+  {
+   "run": "R-F-incremental-2",
+   "arm": "F",
+   "exit": 0,
+   "seconds": 94,
+   "two": true,
+   "returning": true,
+   "load": "5.17->5.59",
+   "foreign_frac": 0.0,
+   "errors": [],
+   "returning_429": 12,
+   "returning_429_by_path": {
+    "history/v1/checkpoint": 5,
+    "delivery/read-v2": 4,
+    "membership/v2/discover": 3
+   }
+  },
+  {
+   "run": "R-E-ordinary-3",
+   "arm": "E",
+   "exit": 0,
+   "seconds": 97,
+   "two": true,
+   "returning": true,
+   "load": "5.59->3.45",
+   "foreign_frac": 0.0,
+   "errors": [],
+   "returning_429": 19,
+   "returning_429_by_path": {
+    "history/v1/checkpoint": 10,
+    "delivery/read-v2": 6,
+    "delivery/submit": 2,
+    "membership/v2/discover": 1
+   }
+  },
+  {
+   "run": "R-F-incremental-4",
+   "arm": "F",
+   "exit": 0,
+   "seconds": 95,
+   "two": true,
+   "returning": true,
+   "load": "3.45->5.02",
+   "foreign_frac": 0.0,
+   "errors": [],
+   "returning_429": 21,
+   "returning_429_by_path": {
+    "history/v1/checkpoint": 9,
+    "membership/v2/discover": 4,
+    "grant/v1/finish": 1,
+    "delivery/read-v2": 7
+   }
+  },
+  {
+   "run": "R-E-ordinary-5",
+   "arm": "E",
+   "exit": 0,
+   "seconds": 95,
+   "two": true,
+   "returning": true,
+   "load": "4.94->5.11",
+   "foreign_frac": 0.0,
+   "errors": [],
+   "returning_429": 18,
+   "returning_429_by_path": {
+    "membership/v2/discover": 4,
+    "history/v1/checkpoint": 7,
+    "delivery/read-v2": 4,
+    "grant/v1/finish": 1,
+    "delivery/submit": 2
+   }
+  },
+  {
+   "run": "R-F-incremental-6",
+   "arm": "F",
+   "exit": 0,
+   "seconds": 92,
+   "two": true,
+   "returning": true,
+   "load": "5.11->5.21",
+   "foreign_frac": 0.0,
+   "errors": [],
+   "returning_429": 14,
+   "returning_429_by_path": {
+    "membership/v2/discover": 4,
+    "history/v1/checkpoint": 6,
+    "delivery/read-v2": 4
+   }
+  }
+ ],
+ "pairings": [
+  {
+   "run": "R-E-ordinary-1",
+   "arm": "E",
+   "test": "two",
+   "pairing_ok": true,
+   "pairing_ms": 13912,
+   "deliver_statuses": [
+    200,
+    200,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": 5,
+   "refused_deliver": 0,
+   "transfer_409_bodies": [],
+   "exchange_409s": 4,
+   "deliver_attempts_after_refusal": [],
+   "approval_to_certified_first_ms": 1291,
+   "refusal_to_certified_first_ms": null,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     316
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     372
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     701
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2771
+    ]
+   ]
+  },
+  {
+   "run": "R-E-ordinary-1",
+   "arm": "E",
+   "test": "returning",
+   "pairing_ok": true,
+   "pairing_ms": 13721,
+   "deliver_statuses": [
+    200,
+    200,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": 5,
+   "refused_deliver": 0,
+   "transfer_409_bodies": [],
+   "exchange_409s": 4,
+   "deliver_attempts_after_refusal": [],
+   "approval_to_certified_first_ms": 1293,
+   "refusal_to_certified_first_ms": null,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     230
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     286
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     608
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2768
+    ]
+   ]
+  },
+  {
+   "run": "R-F-incremental-2",
+   "arm": "F",
+   "test": "two",
+   "pairing_ok": true,
+   "pairing_ms": 13473,
+   "deliver_statuses": [
+    200,
+    200,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": 4,
+   "refused_deliver": 0,
+   "transfer_409_bodies": [],
+   "exchange_409s": 4,
+   "deliver_attempts_after_refusal": [],
+   "approval_to_certified_first_ms": 1298,
+   "refusal_to_certified_first_ms": null,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     348
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     408
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     720
+    ],
+    [
+     "first",
+     "~content/checkpoint",
+     401,
+     1783
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2762
+    ]
+   ]
+  },
+  {
+   "run": "R-F-incremental-2",
+   "arm": "F",
+   "test": "returning",
+   "pairing_ok": true,
+   "pairing_ms": 13379,
+   "deliver_statuses": [
+    200,
+    409,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": -73,
+   "refused_deliver": 1,
+   "transfer_409_bodies": [
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}"
+   ],
+   "exchange_409s": 2,
+   "deliver_attempts_after_refusal": [
+    [
+     202,
+     200
+    ],
+    [
+     847,
+     200
+    ]
+   ],
+   "approval_to_certified_first_ms": 1300,
+   "refusal_to_certified_first_ms": 660,
+   "device_4xx": [
+    [
+     "second",
+     "notifications/v1/subscribe",
+     401,
+     312
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     413
+    ],
+    [
+     "first",
+     "~ceremony/transfer",
+     409,
+     641
+    ],
+    [
+     "first",
+     "~content/checkpoint",
+     401,
+     1779
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2732
+    ]
+   ]
+  },
+  {
+   "run": "R-E-ordinary-3",
+   "arm": "E",
+   "test": "two",
+   "pairing_ok": true,
+   "pairing_ms": 13461,
+   "deliver_statuses": [
+    200,
+    409,
+    200,
+    200
+   ],
+   "installs": 3,
+   "install1_minus_deliver2_ms": -77,
+   "refused_deliver": 1,
+   "transfer_409_bodies": [
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}",
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}"
+   ],
+   "exchange_409s": 2,
+   "deliver_attempts_after_refusal": [
+    [
+     267,
+     200
+    ],
+    [
+     862,
+     200
+    ]
+   ],
+   "approval_to_certified_first_ms": 1294,
+   "refusal_to_certified_first_ms": 670,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/transfer",
+     409,
+     289
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     368
+    ],
+    [
+     "first",
+     "~ceremony/transfer",
+     409,
+     625
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     710
+    ]
+   ]
+  },
+  {
+   "run": "R-E-ordinary-3",
+   "arm": "E",
+   "test": "returning",
+   "pairing_ok": true,
+   "pairing_ms": 13766,
+   "deliver_statuses": [
+    200,
+    200,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": 5,
+   "refused_deliver": 0,
+   "transfer_409_bodies": [],
+   "exchange_409s": 4,
+   "deliver_attempts_after_refusal": [],
+   "approval_to_certified_first_ms": 1292,
+   "refusal_to_certified_first_ms": null,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     358
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     413
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     726
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2796
+    ]
+   ]
+  },
+  {
+   "run": "R-F-incremental-4",
+   "arm": "F",
+   "test": "two",
+   "pairing_ok": true,
+   "pairing_ms": 13542,
+   "deliver_statuses": [
+    200,
+    409,
+    200,
+    200
+   ],
+   "installs": 3,
+   "install1_minus_deliver2_ms": -76,
+   "refused_deliver": 1,
+   "transfer_409_bodies": [
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}",
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}"
+   ],
+   "exchange_409s": 2,
+   "deliver_attempts_after_refusal": [
+    [
+     270,
+     200
+    ],
+    [
+     857,
+     200
+    ]
+   ],
+   "approval_to_certified_first_ms": 1291,
+   "refusal_to_certified_first_ms": 664,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/transfer",
+     409,
+     288
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     362
+    ],
+    [
+     "first",
+     "~ceremony/transfer",
+     409,
+     628
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     716
+    ]
+   ]
+  },
+  {
+   "run": "R-F-incremental-4",
+   "arm": "F",
+   "test": "returning",
+   "pairing_ok": true,
+   "pairing_ms": 13726,
+   "deliver_statuses": [
+    200,
+    200,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": 6,
+   "refused_deliver": 0,
+   "transfer_409_bodies": [],
+   "exchange_409s": 4,
+   "deliver_attempts_after_refusal": [],
+   "approval_to_certified_first_ms": 1293,
+   "refusal_to_certified_first_ms": null,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     299
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     350
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     676
+    ],
+    [
+     "first",
+     "~content/checkpoint",
+     401,
+     1760
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2706
+    ]
+   ]
+  },
+  {
+   "run": "R-E-ordinary-5",
+   "arm": "E",
+   "test": "two",
+   "pairing_ok": true,
+   "pairing_ms": 13321,
+   "deliver_statuses": [
+    200,
+    409,
+    200,
+    200
+   ],
+   "installs": 3,
+   "install1_minus_deliver2_ms": -56,
+   "refused_deliver": 1,
+   "transfer_409_bodies": [
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}"
+   ],
+   "exchange_409s": 3,
+   "deliver_attempts_after_refusal": [
+    [
+     271,
+     200
+    ],
+    [
+     853,
+     200
+    ]
+   ],
+   "approval_to_certified_first_ms": 1294,
+   "refusal_to_certified_first_ms": 670,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     301
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     364
+    ],
+    [
+     "first",
+     "~ceremony/transfer",
+     409,
+     626
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     736
+    ]
+   ]
+  },
+  {
+   "run": "R-E-ordinary-5",
+   "arm": "E",
+   "test": "returning",
+   "pairing_ok": true,
+   "pairing_ms": 13833,
+   "deliver_statuses": [
+    200,
+    200,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": 4,
+   "refused_deliver": 0,
+   "transfer_409_bodies": [],
+   "exchange_409s": 4,
+   "deliver_attempts_after_refusal": [],
+   "approval_to_certified_first_ms": 1287,
+   "refusal_to_certified_first_ms": null,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     240
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     294
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     639
+    ],
+    [
+     "first",
+     "~content/checkpoint",
+     401,
+     1768
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2774
+    ]
+   ]
+  },
+  {
+   "run": "R-F-incremental-6",
+   "arm": "F",
+   "test": "two",
+   "pairing_ok": true,
+   "pairing_ms": 13893,
+   "deliver_statuses": [
+    200,
+    409,
+    200,
+    200
+   ],
+   "installs": 2,
+   "install1_minus_deliver2_ms": -47,
+   "refused_deliver": 1,
+   "transfer_409_bodies": [
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}"
+   ],
+   "exchange_409s": 3,
+   "deliver_attempts_after_refusal": [
+    [
+     192,
+     200
+    ],
+    [
+     436,
+     200
+    ]
+   ],
+   "approval_to_certified_first_ms": 787,
+   "refusal_to_certified_first_ms": 254,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     232
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     290
+    ],
+    [
+     "first",
+     "~ceremony/transfer",
+     409,
+     534
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     2282
+    ]
+   ]
+  },
+  {
+   "run": "R-F-incremental-6",
+   "arm": "F",
+   "test": "returning",
+   "pairing_ok": true,
+   "pairing_ms": 13361,
+   "deliver_statuses": [
+    200,
+    409,
+    200,
+    200
+   ],
+   "installs": 3,
+   "install1_minus_deliver2_ms": -85,
+   "refused_deliver": 1,
+   "transfer_409_bodies": [
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}",
+    "{\"v\":1,\"kind\":\"authorization-refused\",\"refusal\":\"authority-changed\"}"
+   ],
+   "exchange_409s": 2,
+   "deliver_attempts_after_refusal": [
+    [
+     265,
+     200
+    ],
+    [
+     888,
+     200
+    ]
+   ],
+   "approval_to_certified_first_ms": 1300,
+   "refusal_to_certified_first_ms": 700,
+   "device_4xx": [
+    [
+     "second",
+     "~ceremony/transfer",
+     409,
+     264
+    ],
+    [
+     "first",
+     "~ceremony/exchange",
+     409,
+     338
+    ],
+    [
+     "first",
+     "~ceremony/transfer",
+     409,
+     601
+    ],
+    [
+     "second",
+     "~ceremony/exchange",
+     409,
+     685
+    ]
+   ]
+  }
+ ],
+ "two_device": [
+  {
+   "run": "R-E-ordinary-1",
+   "arm": "E",
+   "pass": true,
+   "cap429": 42,
+   "cap_by_path": {
+    "delivery/read-v2": 22,
+    "history/v1/checkpoint": 15,
+    "membership/v2/discover": 4,
+    "delivery/submit": 1
+   },
+   "first_cap_s": 24.5,
+   "pm1": {
+    "test": "two",
+    "name": "post-maintenance-first-to-second",
+    "t": 1791672482033,
+    "ms": 12470,
+    "ok": true
+   },
+   "pm2": {
+    "test": "two",
+    "name": "post-maintenance-second-to-first",
+    "t": 1791672494518,
+    "ms": 6375,
+    "ok": true
+   },
+   "final": {
+    "test": "two",
+    "name": "final-verify-snapshot-2",
+    "t": 1791672512447,
+    "ms": 5400,
+    "ok": true
+   },
+   "aborts_first": 4,
+   "aborts_second": 4,
+   "first_abort_to_unroute_ms": 8035,
+   "abort_offsets_ms": [
+    0,
+    1186,
+    3215,
+    7254
+   ],
+   "unroute_to_first_device_submit_ms": 4743,
+   "unroute_to_step_start_ms": 881,
+   "submit_to_arrival_ms": 8608,
+   "first_device_429_after_unroute": 24,
+   "budget_at_unroute": 2.9
+  },
+  {
+   "run": "R-F-incremental-2",
+   "arm": "F",
+   "pass": true,
+   "cap429": 40,
+   "cap_by_path": {
+    "history/v1/checkpoint": 10,
+    "delivery/read-v2": 19,
+    "delivery/submit": 3,
+    "membership/v2/discover": 8
+   },
+   "first_cap_s": 23.4,
+   "pm1": {
+    "test": "two",
+    "name": "post-maintenance-first-to-second",
+    "t": 1791672586382,
+    "ms": 8911,
+    "ok": true
+   },
+   "pm2": {
+    "test": "two",
+    "name": "post-maintenance-second-to-first",
+    "t": 1791672595308,
+    "ms": 8394,
+    "ok": true
+   },
+   "final": {
+    "test": "two",
+    "name": "final-verify-snapshot-2",
+    "t": 1791672611222,
+    "ms": 8423,
+    "ok": true
+   },
+   "aborts_first": 4,
+   "aborts_second": 4,
+   "first_abort_to_unroute_ms": 7753,
+   "abort_offsets_ms": [
+    0,
+    1313,
+    3341,
+    7369
+   ],
+   "unroute_to_first_device_submit_ms": 6681,
+   "unroute_to_step_start_ms": 1887,
+   "submit_to_arrival_ms": 4117,
+   "first_device_429_after_unroute": 21,
+   "budget_at_unroute": 1.98
+  },
+  {
+   "run": "R-E-ordinary-3",
+   "arm": "E",
+   "pass": true,
+   "cap429": 36,
+   "cap_by_path": {
+    "delivery/submit": 2,
+    "delivery/read-v2": 15,
+    "membership/v2/discover": 6,
+    "history/v1/checkpoint": 13
+   },
+   "first_cap_s": 24.5,
+   "pm1": {
+    "test": "two",
+    "name": "post-maintenance-first-to-second",
+    "t": 1791672680706,
+    "ms": 8924,
+    "ok": true
+   },
+   "pm2": {
+    "test": "two",
+    "name": "post-maintenance-second-to-first",
+    "t": 1791672689650,
+    "ms": 3341,
+    "ok": true
+   },
+   "final": {
+    "test": "two",
+    "name": "final-verify-snapshot-2",
+    "t": 1791672702064,
+    "ms": 5397,
+    "ok": true
+   },
+   "aborts_first": 4,
+   "aborts_second": 4,
+   "first_abort_to_unroute_ms": 8120,
+   "abort_offsets_ms": [
+    0,
+    1283,
+    3311,
+    7346
+   ],
+   "unroute_to_first_device_submit_ms": 682,
+   "unroute_to_step_start_ms": 896,
+   "submit_to_arrival_ms": 9138,
+   "first_device_429_after_unroute": 17,
+   "budget_at_unroute": 6.95
+  },
+  {
+   "run": "R-F-incremental-4",
+   "arm": "F",
+   "pass": true,
+   "cap429": 41,
+   "cap_by_path": {
+    "delivery/submit": 2,
+    "delivery/read-v2": 21,
+    "membership/v2/discover": 4,
+    "history/v1/checkpoint": 14
+   },
+   "first_cap_s": 24.7,
+   "pm1": {
+    "test": "two",
+    "name": "post-maintenance-first-to-second",
+    "t": 1791672778510,
+    "ms": 6887,
+    "ok": true
+   },
+   "pm2": {
+    "test": "two",
+    "name": "post-maintenance-second-to-first",
+    "t": 1791672785412,
+    "ms": 3341,
+    "ok": true
+   },
+   "final": {
+    "test": "two",
+    "name": "final-verify-snapshot-2",
+    "t": 1791672800305,
+    "ms": 6413,
+    "ok": true
+   },
+   "aborts_first": 4,
+   "aborts_second": 4,
+   "first_abort_to_unroute_ms": 8184,
+   "abort_offsets_ms": [
+    0,
+    1397,
+    3425,
+    7473
+   ],
+   "unroute_to_first_device_submit_ms": 666,
+   "unroute_to_step_start_ms": 875,
+   "submit_to_arrival_ms": 7096,
+   "first_device_429_after_unroute": 21,
+   "budget_at_unroute": 6.19
+  },
+  {
+   "run": "R-E-ordinary-5",
+   "arm": "E",
+   "pass": true,
+   "cap429": 40,
+   "cap_by_path": {
+    "membership/v2/discover": 6,
+    "delivery/read-v2": 22,
+    "history/v1/checkpoint": 11,
+    "delivery/submit": 1
+   },
+   "first_cap_s": 24.5,
+   "pm1": {
+    "test": "two",
+    "name": "post-maintenance-first-to-second",
+    "t": 1791672874113,
+    "ms": 7921,
+    "ok": true
+   },
+   "pm2": {
+    "test": "two",
+    "name": "post-maintenance-second-to-first",
+    "t": 1791672882047,
+    "ms": 5085,
+    "ok": true
+   },
+   "final": {
+    "test": "two",
+    "name": "final-verify-snapshot-2",
+    "t": 1791672898647,
+    "ms": 5391,
+    "ok": true
+   },
+   "aborts_first": 4,
+   "aborts_second": 4,
+   "first_abort_to_unroute_ms": 7961,
+   "abort_offsets_ms": [
+    0,
+    1189,
+    3221,
+    7258
+   ],
+   "unroute_to_first_device_submit_ms": 653,
+   "unroute_to_step_start_ms": 867,
+   "submit_to_arrival_ms": 8135,
+   "first_device_429_after_unroute": 23,
+   "budget_at_unroute": 7.63
+  },
+  {
+   "run": "R-F-incremental-6",
+   "arm": "F",
+   "pass": true,
+   "cap429": 41,
+   "cap_by_path": {
+    "delivery/read-v2": 19,
+    "membership/v2/discover": 12,
+    "history/v1/checkpoint": 6,
+    "delivery/submit": 1,
+    "grant/v1/begin": 3
+   },
+   "first_cap_s": 24.4,
+   "pm1": {
+    "test": "two",
+    "name": "post-maintenance-first-to-second",
+    "t": 1791672970971,
+    "ms": 8945,
+    "ok": true
+   },
+   "pm2": {
+    "test": "two",
+    "name": "post-maintenance-second-to-first",
+    "t": 1791672979930,
+    "ms": 8887,
+    "ok": true
+   },
+   "final": {
+    "test": "two",
+    "name": "final-verify-snapshot-2",
+    "t": 1791672996276,
+    "ms": 4385,
+    "ok": true
+   },
+   "aborts_first": 4,
+   "aborts_second": 4,
+   "first_abort_to_unroute_ms": 8163,
+   "abort_offsets_ms": [
+    0,
+    1431,
+    3461,
+    7499
+   ],
+   "unroute_to_first_device_submit_ms": 4730,
+   "unroute_to_step_start_ms": 887,
+   "submit_to_arrival_ms": 5102,
+   "first_device_429_after_unroute": 21,
+   "budget_at_unroute": 2.76
+  }
+ ]
+}

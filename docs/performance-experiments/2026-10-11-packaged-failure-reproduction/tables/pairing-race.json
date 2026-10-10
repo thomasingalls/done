@@ -1,0 +1,946 @@
+[
+ {
+  "run": "S0-smoke-A",
+  "arm": "A",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14846,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 7
+ },
+ {
+  "run": "S0-smoke-A",
+  "arm": "A",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13889,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 8
+ },
+ {
+  "run": "P1-A-1",
+  "arm": "A",
+  "env": "",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39090,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -65
+ },
+ {
+  "run": "P1-A-1",
+  "arm": "A",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14347,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 7
+ },
+ {
+  "run": "P1-B-2",
+  "arm": "B",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13536,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 3,
+  "install1_minus_deliver2_ms": 4
+ },
+ {
+  "run": "P1-B-2",
+  "arm": "B",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38897,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -81
+ },
+ {
+  "run": "P1-B-3",
+  "arm": "B",
+  "env": "",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 38921,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -57
+ },
+ {
+  "run": "P1-B-3",
+  "arm": "B",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38959,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -79
+ },
+ {
+  "run": "P1-A-4",
+  "arm": "A",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13344,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 6
+ },
+ {
+  "run": "P1-A-4",
+  "arm": "A",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38871,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -72
+ },
+ {
+  "run": "P1-A-5",
+  "arm": "A",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13966,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 3
+ },
+ {
+  "run": "P1-A-5",
+  "arm": "A",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13300,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 5
+ },
+ {
+  "run": "P1-B-6",
+  "arm": "B",
+  "env": "",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39492,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -47
+ },
+ {
+  "run": "P1-B-6",
+  "arm": "B",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13825,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 15
+ },
+ {
+  "run": "P1-B-7",
+  "arm": "B",
+  "env": "",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39116,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -67
+ },
+ {
+  "run": "P1-B-7",
+  "arm": "B",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13837,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 8
+ },
+ {
+  "run": "P1-A-8",
+  "arm": "A",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13938,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 7
+ },
+ {
+  "run": "P1-A-8",
+  "arm": "A",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14496,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 4
+ },
+ {
+  "run": "P1-A-9",
+  "arm": "A",
+  "env": "",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39707,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -59
+ },
+ {
+  "run": "P1-A-9",
+  "arm": "A",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14612,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 5
+ },
+ {
+  "run": "P1-B-10",
+  "arm": "B",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14302,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 6
+ },
+ {
+  "run": "P1-B-10",
+  "arm": "B",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14631,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 6
+ },
+ {
+  "run": "P1-B-11",
+  "arm": "B",
+  "env": "",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39706,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -58
+ },
+ {
+  "run": "P1-B-11",
+  "arm": "B",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14684,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 6
+ },
+ {
+  "run": "P1-A-12",
+  "arm": "A",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14334,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 5
+ },
+ {
+  "run": "P1-A-12",
+  "arm": "A",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 39664,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -62
+ },
+ {
+  "run": "D1-B-unlimited-1",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13599,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 12
+ },
+ {
+  "run": "D1-B-unlimited-1",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38879,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -67
+ },
+ {
+  "run": "D1-B-unlimited-2",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13412,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 5
+ },
+ {
+  "run": "D1-B-unlimited-2",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38853,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -56
+ },
+ {
+  "run": "D1-B-unlimited-3",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 38931,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -81
+ },
+ {
+  "run": "D1-B-unlimited-3",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38985,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -81
+ },
+ {
+  "run": "D1-B-unlimited-4",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14262,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 6
+ },
+ {
+  "run": "D1-B-unlimited-4",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13609,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 6
+ },
+ {
+  "run": "D1-B-unlimited-5",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39414,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -53
+ },
+ {
+  "run": "D1-B-unlimited-5",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38862,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -73
+ },
+ {
+  "run": "D1-B-unlimited-6",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39172,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -50
+ },
+ {
+  "run": "D1-B-unlimited-6",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 39647,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -62
+ },
+ {
+  "run": "D2-B-deadline120-1",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39091,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -50
+ },
+ {
+  "run": "D2-B-deadline120-1",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13785,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 12
+ },
+ {
+  "run": "D2-B-deadline120-2",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14313,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 5
+ },
+ {
+  "run": "D2-B-deadline120-2",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38901,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -47
+ },
+ {
+  "run": "D2-B-deadline120-3",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 38860,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -79
+ },
+ {
+  "run": "D2-B-deadline120-3",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14259,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 7
+ },
+ {
+  "run": "D2-B-deadline120-4",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 38857,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -70
+ },
+ {
+  "run": "D2-B-deadline120-4",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "returning",
+  "pairing_ok": false,
+  "pairing_ms": 38884,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": -74
+ },
+ {
+  "run": "D2-B-deadline120-5",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14286,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 7
+ },
+ {
+  "run": "D2-B-deadline120-5",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13799,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 3
+ },
+ {
+  "run": "D2-B-deadline120-6",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "two",
+  "pairing_ok": false,
+  "pairing_ms": 39467,
+  "deliver_statuses": [
+   200,
+   409
+  ],
+  "installs": 1,
+  "install1_minus_deliver2_ms": -47
+ },
+ {
+  "run": "D2-B-deadline120-6",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13885,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 5
+ },
+ {
+  "run": "C-prev-incremental-1",
+  "arm": "C",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13939,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 73
+ },
+ {
+  "run": "C-prev-incremental-1",
+  "arm": "C",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14292,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 66
+ },
+ {
+  "run": "C-prev-incremental-2",
+  "arm": "C",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14378,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 69
+ },
+ {
+  "run": "C-prev-incremental-2",
+  "arm": "C",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13752,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 52
+ },
+ {
+  "run": "C-prev-incremental-3",
+  "arm": "C",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14453,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 92
+ },
+ {
+  "run": "C-prev-incremental-3",
+  "arm": "C",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13376,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 3,
+  "install1_minus_deliver2_ms": 32
+ },
+ {
+  "run": "C-prev-incremental-4",
+  "arm": "C",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13830,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 78
+ },
+ {
+  "run": "C-prev-incremental-4",
+  "arm": "C",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14263,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 62
+ },
+ {
+  "run": "C-prev-incremental-5",
+  "arm": "C",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 14312,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 77
+ },
+ {
+  "run": "C-prev-incremental-5",
+  "arm": "C",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 14311,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 64
+ },
+ {
+  "run": "C-prev-incremental-6",
+  "arm": "C",
+  "env": "",
+  "test": "two",
+  "pairing_ok": true,
+  "pairing_ms": 13395,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 3,
+  "install1_minus_deliver2_ms": 55
+ },
+ {
+  "run": "C-prev-incremental-6",
+  "arm": "C",
+  "env": "",
+  "test": "returning",
+  "pairing_ok": true,
+  "pairing_ms": 13914,
+  "deliver_statuses": [
+   200,
+   200,
+   200,
+   200
+  ],
+  "installs": 2,
+  "install1_minus_deliver2_ms": 68
+ }
+]
