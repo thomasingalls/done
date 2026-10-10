@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import fc from 'fast-check';
 import { fixture, flush } from './account-sync/scheduler-fixture';
 import {
@@ -72,6 +72,45 @@ it('retains local wakes during send, but cannot accelerate unknown backoff or cl
   f.calls[5]!.finish('idle');
   await flush();
   await f.scheduler.dispose();
+});
+it('a restored route can retain 30-second send backoff until online explicitly wakes it', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  const controller = new AbortController();
+  const attempts: number[] = [];
+  let blocked = true;
+  const scheduler = createSyncScheduler({
+    signal: controller.signal,
+    gate: () => 'ready',
+    detach: () => {},
+    send: async () => {
+      attempts.push(Date.now());
+      return blocked
+        ? { kind: 'unknown', acceptedThrough: 0 }
+        : { kind: 'progress', acceptedThrough: 1 };
+    },
+    receive: async () => ({ kind: 'idle', receivedThrough: 0 }),
+  });
+  try {
+    scheduler.wake('start');
+    await vi.advanceTimersByTimeAsync(31000);
+    expect(attempts).toEqual([0, 1000, 3000, 7000, 15000, 31000]);
+    expect(scheduler.runtime.status.send.nextAttemptAt).toBe(61000);
+    // Removing a network interception is not an online event. New writing correctly
+    // preserves backoff rather than hammering an unavailable service on every key.
+    blocked = false;
+    scheduler.wake('local');
+    await vi.advanceTimersByTimeAsync(15000);
+    expect(attempts).toHaveLength(6);
+    expect(scheduler.runtime.status.send.acceptedThrough).toBe(0);
+    scheduler.wake('online');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(attempts.at(-1)).toBe(46000);
+    expect(scheduler.runtime.status.send.acceptedThrough).toBe(1);
+  } finally {
+    await scheduler.dispose();
+    vi.useRealTimers();
+  }
 });
 it('observer pause before dispatch retains the startup deadline; observer close drains without dispatch', async () => {
   for (const action of ['pause', 'close']) {

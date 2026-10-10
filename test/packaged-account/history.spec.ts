@@ -145,9 +145,13 @@ test('two native device owners independently admit snapshots and keep two-way de
     await openSaved(second, pair.next.code, true);
     await expect(second.locator('.shell')).toContainText('First device snapshot-only writing');
     await expect(second.locator('.shell')).toContainText('Second device retained offline original');
-    await pair.other.setOffline(false);
     await page.unroute('**/account/delivery/submit');
     await second.unroute('**/account/delivery/submit');
+    await pair.other.setOffline(false);
+    // The first device stayed browser-online while its submit route was unavailable.
+    // Removing that fault must announce recovery: local typing deliberately preserves
+    // unknown-outcome backoff, which can exceed this journey's 15-second delivery check.
+    await page.evaluate(() => dispatchEvent(new Event('online')));
     await inspect(second);
     await add(page, 'First device after maintenance');
     await expect(second.locator('.shell')).toContainText('First device after maintenance', {

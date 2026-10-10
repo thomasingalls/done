@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:91154) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/enrollment-retry.spec.ts:6:1 › initial approval resumes after authority-changed without repeating the saved decision or key wrap (20.2s)
+  ✓  2 test/packaged-account/enrollment-retry.spec.ts:6:1 › initial approval resumes after capacity without repeating the saved decision or key wrap (20.1s)
+
+  2 passed (41.1s)

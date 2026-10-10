@@ -139,6 +139,11 @@ F-17 closure or a restart of release qualification.
 
 ## Evidence and reproduction
 
+The subsequent [browser-failure investigation](../2026-10-10-account-browser-failures/README.md)
+reproduces and repairs a transient enrollment failure and a test recovery/backoff mismatch. Its
+ordinary candidate browser checks pass. The results below retain this slice's original failures;
+the follow-up does not change the default optimization switch or publish a deployment.
+
 - [comparisons.json](./comparisons.json): four-point results and physical row counts.
 - [source.json](./source.json) + [candidate.patch](./candidate.patch): exact timed candidate against
   the signed baseline. Baseline adds only [instrumentation.patch](./instrumentation.patch).

@@ -1,0 +1,7 @@
+{
+  "base": "0332a9ea67aeaf9dce4248128e4833fb116a1b78",
+  "files": {
+    "src/account/deviceEnrollment.ts": "407050cbcd0d5fc5257f60c8aec44aa1cfa22ea26c20d58446855741e5294507",
+    "src/ui/AccountEnrollmentApp.tsx": "cf6fbc4cc187fbc2b962970637d9cea4f78ecaea778a23f6201b5712fca6f029"
+  }
+}

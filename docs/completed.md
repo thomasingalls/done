@@ -12717,3 +12717,32 @@ was made in this slice, and release validation remains paused. Next resolve the 
 enrollment/delivery result, then reconsider activation. Accepted-prefix retention, repeated cold
 verification, rows per typing burst and maintenance stalls remain open performance work. No other
 seat's live progress document was rewritten.
+
+### Packaged Account enrollment and history failure investigation
+
+**Date:** 2026-10-10 · **Commit:** this entry's commit, based on signed `0332a9ea`; runtime
+patch and source hashes in the packet · **Stage:** focused product repair; not release qualification
+
+**Exit.** The [investigation packet](./performance-experiments/2026-10-10-account-browser-failures/README.md)
+separates two failure mechanisms. Enrollment immediately retried a stale-authority refusal once,
+but a second refusal escaped into the UI's stopped-error state. Repeated authority changes or
+exhausted capacity retries now return to the existing short retry interval, reopening authenticated
+authority and saved progress each time. The saved approval and delivery bytes are reused; permanent
+scope refusal still stops. No semantic authority check or service limit was relaxed.
+
+The history test removed an intercepted submit fault without waking its still-online sender.
+Its 15-second delivery assertion could expire within the intentional 30-second retry backoff.
+A forced six-failure control captured 29 seconds remaining at restoration and delivery 15.52 seconds
+after the failed assertion. The repaired test explicitly announces recovery after removing the
+faults, keeping the assertion unchanged. Production scheduler behavior is unchanged. Older failing
+runs lacked deadline snapshots, so this reproduction is not a claim about every historical failure.
+
+**Verification.** Both deterministic before controls reproduce their failures. The forced-backoff
+history journey passes after repair. Five ordinary packaged browser checks pass without diagnostic
+hooks, including two transient enrollment cases, permanent-scope refusal, history maintenance and
+returning-editor delivery after pruning. Fourteen scheduler tests, three scoped transport controls,
+TypeScript, targeted lint, formatting and packaged build checks pass.
+
+**Next.** Reconsider incremental default activation with this evidence; it remains opt-in in this
+change. No deployment or release-validation campaign was started. F-17's remaining performance
+work and the other seat's live progress document are unchanged.

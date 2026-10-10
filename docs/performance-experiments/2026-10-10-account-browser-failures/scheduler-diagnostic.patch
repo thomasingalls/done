@@ -1,0 +1,36 @@
+--- a/src/crdt/accountSyncDriver.ts
++++ b/src/crdt/accountSyncDriver.ts
+@@ -90,8 +90,17 @@
+       receive: Object.freeze({ ...laneStatus('receive'), receivedThrough: lanes.receive.position }),
+     });
+   let value = snapshot();
++  const debug = globalThis as any;
++  const debugId = (debug.__syncId = (debug.__syncId ?? 0) + 1);
++  const diag = (reason: string, extra?: unknown) => {
++    const list = debug.__syncTrace ??= [];
++    list.push({at: Date.now(), id: debugId, reason, stopped, active, status: snapshot(), extra});
++    if (list.length > 100) list.shift();
++  };
++  diag('created');
+   const publish = () => {
+     const next = snapshot();
++    diag('publish');
+     if (JSON.stringify(next) === JSON.stringify(value)) return;
+     value = next;
+     for (const listener of [...listeners]) {
+@@ -214,6 +223,7 @@
+         ready();
+       })
+       .catch((cause) => {
++        diag('error', {message: String(cause), stack: cause?.stack, cause: String(cause?.cause)});
+         if (!stopped) {
+           lane.halt = cause instanceof EnvelopeSizeError ? 'envelope-size' : 'operation-failed';
+           lane.due = undefined;
+@@ -232,6 +242,7 @@
+     target?: SyncLane,
+   ) => {
+     if (stopped) return;
++    diag('wake', cause);
+     for (const name of names) {
+       if (cause === 'retry' && name !== target) continue;
+       const lane = lanes[name];

@@ -231,6 +231,7 @@ export function AccountEnrollmentApp({
     [publish, run],
   );
   const stateKind = state?.kind;
+  const retryPending = state?.retryPending === true;
   useEffect(() => {
     if (
       error ||
@@ -250,7 +251,7 @@ export function AccountEnrollmentApp({
           wake();
           poll();
         },
-        healthy ? 60000 + Math.random() * 5000 : 2500,
+        healthy && !retryPending ? 60000 + Math.random() * 5000 : 2500,
       );
     };
     backgroundRefresh.current = wake;
@@ -273,7 +274,7 @@ export function AccountEnrollmentApp({
       backgroundRefresh.current = undefined;
       pendingRefresh.current = false;
     };
-  }, [config.networkSessions, error, stateKind, refresh]);
+  }, [config.networkSessions, error, stateKind, retryPending, refresh]);
   useEffect(() => {
     if (!state?.editor) return;
     return state.editor.workspace.onStatus((status) => {

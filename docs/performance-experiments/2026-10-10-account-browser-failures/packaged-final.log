@@ -1,0 +1,12 @@
+
+Running 5 tests using 1 worker
+
+(node:92399) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/enrollment-retry.spec.ts:7:3 › initial approval resumes after authority-changed without repeating the saved decision or key wrap (17.4s)
+  ✓  2 test/packaged-account/enrollment-retry.spec.ts:7:3 › initial approval resumes after capacity without repeating the saved decision or key wrap (22.3s)
+  ✓  3 test/packaged-account/enrollment-retry.spec.ts:56:1 › an insufficient enrollment scope remains stopped instead of entering transient retries (13.1s)
+  ✓  4 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (58.0s)
+  ✓  5 test/packaged-account/history.spec.ts:195:1 › a returning editor installs admitted cuts after service pruning and keeps its local writing (37.4s)
+
+  5 passed (2.5m)

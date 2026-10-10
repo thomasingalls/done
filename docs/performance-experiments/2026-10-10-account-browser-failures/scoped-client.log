@@ -1,0 +1,14 @@
+(node:91997) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:91997) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ scope/authority refusal, ordinary HTTP denial and lost write response never cause an automatic semantic retry (232.672958ms)
+✔ pending device admission uses its exact enrollment grant; an authority change returns control to the operation owner (126.302833ms)
+✔ capacity retries keep the exact grant finish and valid request grant, with a bounded stop (4078.599166ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4987.004

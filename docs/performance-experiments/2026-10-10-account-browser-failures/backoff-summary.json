@@ -1,0 +1,199 @@
+[
+  {
+    "at": 1791668873874,
+    "label": "forced-backoff-before-unblock",
+    "devices": [
+      {
+        "now": 1791668873817,
+        "active": null,
+        "status": {
+          "send": {
+            "phase": "retrying",
+            "failures": 6,
+            "nextAttemptAt": 1791668903805,
+            "reason": null,
+            "acceptedThrough": 3
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791668909867.265,
+            "reason": null,
+            "receivedThrough": 4
+          }
+        },
+        "sendDueInMs": 29988
+      },
+      {
+        "now": 1791668873818,
+        "active": null,
+        "status": {
+          "send": {
+            "phase": "retrying",
+            "failures": 5,
+            "nextAttemptAt": 1791668881547,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791668914479.677,
+            "reason": null,
+            "receivedThrough": 4
+          }
+        },
+        "sendDueInMs": 7729
+      }
+    ]
+  },
+  {
+    "at": 1791668874777,
+    "label": "unblocked",
+    "devices": [
+      {
+        "now": 1791668874760,
+        "active": null,
+        "status": {
+          "send": {
+            "phase": "retrying",
+            "failures": 6,
+            "nextAttemptAt": 1791668903805,
+            "reason": null,
+            "acceptedThrough": 3
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791668909867.265,
+            "reason": null,
+            "receivedThrough": 4
+          }
+        },
+        "sendDueInMs": 29045
+      },
+      {
+        "now": 1791668874760,
+        "active": null,
+        "status": {
+          "send": {
+            "phase": "retrying",
+            "failures": 5,
+            "nextAttemptAt": 1791668881547,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791668914479.677,
+            "reason": null,
+            "receivedThrough": 4
+          }
+        },
+        "sendDueInMs": 6787
+      }
+    ]
+  },
+  {
+    "at": 1791668889813,
+    "label": "original-deadline-failed",
+    "devices": [
+      {
+        "now": 1791668889792,
+        "active": null,
+        "status": {
+          "send": {
+            "phase": "retrying",
+            "failures": 6,
+            "nextAttemptAt": 1791668903805,
+            "reason": null,
+            "acceptedThrough": 3
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791668944697.188,
+            "reason": null,
+            "receivedThrough": 5
+          }
+        },
+        "sendDueInMs": 14013
+      },
+      {
+        "now": 1791668889792,
+        "active": null,
+        "status": {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "reason": null,
+            "acceptedThrough": 2
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791668946850.031,
+            "reason": null,
+            "receivedThrough": 5
+          }
+        },
+        "sendDueInMs": 0
+      }
+    ]
+  },
+  {
+    "label": "later-arrival",
+    "afterDeadlineMs": 15520,
+    "devices": []
+  },
+  {
+    "at": 1791668905361,
+    "label": "finally",
+    "devices": [
+      {
+        "now": 1791668905334,
+        "active": "receive",
+        "status": {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791668904933,
+            "reason": null,
+            "acceptedThrough": 5
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "reason": null,
+            "receivedThrough": 6
+          }
+        },
+        "sendDueInMs": -401
+      },
+      {
+        "now": 1791668905334,
+        "active": "receive",
+        "status": {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "reason": null,
+            "acceptedThrough": 2
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "reason": null,
+            "receivedThrough": 7
+          }
+        },
+        "sendDueInMs": 0
+      }
+    ]
+  }
+]

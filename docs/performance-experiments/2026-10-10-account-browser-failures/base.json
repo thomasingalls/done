@@ -1,0 +1,5 @@
+{
+  "base": "0332a9ea67aeaf9dce4248128e4833fb116a1b78",
+  "diagnosticBuild": "base + scheduler-diagnostic.patch; VITE_ACCOUNT_LEDGER=incremental; VITE_ACCOUNT_LEDGER_PROFILE=1",
+  "referenceBuildForEnrollmentBefore": "base reference default, no counters"
+}
