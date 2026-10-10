@@ -12675,3 +12675,45 @@ A synthetic 1 MiB coverage miss cost 13 ms p50. Added metadata/positive-cache bu
 existing retained historical byte view. The next performance slice is the remaining physical census,
 copying and admission-queue occupancy, with accepted-prefix byte retention and audit/cold costs
 explicitly outstanding. No other seat's live progress document was rewritten.
+
+### Account consumer costs and immutable selection metadata
+
+**Date:** 2026-10-10 · **Commit:** this entry's commit, based on signed `4500d9b6`; exact
+measured/final source patches and hashes in the packet · **Stage:** F-17 development repair;
+not release qualification
+
+**Exit.** The next bounded performance slice implements lookup-table hex encoding, indexed byte
+comparison, isolated Yjs validation without a random unused GUID, selected verified readbacks,
+verified source-presence lookup, and Account reuse of owner-bound immutable selection metadata.
+The uninterrupted profile identified selection-history copies as the largest avoidable consumer;
+envelope selection was measured and was smaller. Account keeps its document fork, original source
+capture, full post-admission verification, physical census, cold verifier and periodic reference
+audit. No Local document handoff, global randomness override, historical-byte eviction or new
+typing-burst batching policy was introduced.
+
+The [consumer packet](./performance-experiments/2026-10-10-account-consumers/README.md) records
+predictions first, fixed loads/transactions/authority/crypto counts per key and per position, an
+uninterrupted 2,320-edit undo history, deep cold profiles, and two four-point comparisons in reverse
+order. Against the signed baseline with its incremental path enabled, deep stable-text p95 improves
+574 → 87 ms and 601 → 172 ms (85%/71%). Main-thread p50 at depth improves 184 → 124 and 186 → 129 ms;
+its fitted history slope falls about 26%/17%. Cold opening improves 11.2–11.6 → 7.2–7.5 seconds,
+reopened heap stays within about 1%, and each matched run executes two normal audits without a
+mismatch. These are desktop observations on a small corpus, not phone estimates or an F-17 pass.
+The faster path emits more positions at depth; total observed record-copy bytes rise, despite fewer
+source decodes. Remaining cold reconstruction and maintenance costs are substantial.
+
+**Verification and activation.** 73 focused unit tests, five audit-every native sync checks, four
+current-key retry checks, the explicit reference override, TypeScript, targeted lint and the ordinary
+packaged build pass. Packaged peer/history checks have both passes and failures: repeated ordinary
+runs time out on post-maintenance delivery; other attempts stop during enrollment. Both candidate
+journeys and baseline controls also pass with diagnostics. HTTP 429s and existing retry backoff are
+plausible timing contributors, not an established explanation. Failures and diagnostic patches are
+retained. The separate probe's profiler-detach/virtual-passkey defect was reproduced in isolation
+and fixed; its failed final cold attempts are excluded from successful cold-open results.
+
+**Default activation is held.** The major optimizations remain behind
+`VITE_ACCOUNT_LEDGER=incremental`; the temporary proposed default was reverted. No public deployment
+was made in this slice, and release validation remains paused. Next resolve the packaged
+enrollment/delivery result, then reconsider activation. Accepted-prefix retention, repeated cold
+verification, rows per typing burst and maintenance stalls remain open performance work. No other
+seat's live progress document was rewritten.

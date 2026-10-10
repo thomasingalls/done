@@ -19,8 +19,18 @@ export interface KeyEnvelope {
   ct: Bytes;
 }
 export const utf8 = (s: string): Bytes => new TextEncoder().encode(s);
-export const hex = (b: Uint8Array): string =>
-  Array.from(b, (n) => n.toString(16).padStart(2, '0')).join('');
+const hexByte = Array.from({ length: 256 }, (_, n) => n.toString(16).padStart(2, '0'));
+export const hex = (b: Uint8Array): string => {
+  // Preserve the original iterator's refusal of detached buffers, including zero-length views.
+  if (!b.length) {
+    b.subarray(0, 0);
+    return '';
+  }
+  // oxlint-disable-next-line unicorn/no-new-array -- Preallocate the byte count; every slot is filled below.
+  const parts = new Array<string>(b.length);
+  for (let i = 0; i < b.length; i++) parts[i] = hexByte[b[i]!]!;
+  return parts.join('');
+};
 export const random = (n: number): Bytes => crypto.getRandomValues(new Uint8Array(n));
 export const concat = (...parts: Uint8Array[]): Bytes => {
   const out = new Uint8Array(parts.reduce((n, b) => n + b.length, 0));

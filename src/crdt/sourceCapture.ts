@@ -1,3 +1,4 @@
+import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 import {
   historyEnvelopeRoute,
   type AdmissionHistory,
@@ -7,6 +8,7 @@ import { hex, random, utf8, type Bytes } from './custodyCrypto';
 import { ContentError, MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
 import type { JournalRecovery } from './custody';
 import { validateContentUpdates } from './contentCompaction';
+import { sameBytes } from './verifiedRecords';
 import type { PromotionRecord } from './promotionRecord';
 
 export interface SourceUpdate {
@@ -115,9 +117,12 @@ export function encodeSourceCapsule(c: SourceCapsule): Bytes {
   return result;
 }
 export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCapsule {
+  const began = ledgerWorkStart();
+  countLedgerWork('sourceParses');
   const sources: SourceUpdate[] = [];
   try {
     if (!(bytes instanceof Uint8Array) || bytes.length > MAX_CAPTURE_BYTES) throw Error('length');
+    countLedgerWork('sourceParseBytes', bytes.length);
     const v: unknown = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
     if (
       !Array.isArray(v) ||
@@ -163,6 +168,8 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
   } catch (cause) {
     for (const s of sources) s.bytes.fill(0);
     throw new ContentError('repair-required', 'Source capsule is unreadable or unbound', { cause });
+  } finally {
+    measureLedgerWork('sourceParse', began);
   }
 }
 export const makeSourceCapsule = (route: CaptureRoute, sources: readonly SourceUpdate[]): Bytes =>
@@ -170,6 +177,25 @@ export const makeSourceCapsule = (route: CaptureRoute, sources: readonly SourceU
 export const eraseCapsule = (c: SourceCapsule) => {
   for (const s of c.sources) s.bytes.fill(0);
 };
+
+export interface CapturedSourceIdentity {
+  readonly id: string;
+  readonly bytes: Bytes;
+}
+/** Read only already-verified originals; also detect identity conflicts within this incoming batch. */
+export function capturedSourcePresence(
+  catalog: ReadonlyMap<string, Bytes>,
+  incoming: readonly CapturedSourceIdentity[],
+): boolean[] {
+  const seen = new Map<string, Bytes>();
+  return incoming.map(({ id, bytes }) => {
+    const prior = seen.get(id) ?? catalog.get(id);
+    if (prior && !sameBytes(prior, bytes))
+      captureError('Conflicting source identity before commit');
+    seen.set(id, bytes);
+    return prior !== undefined;
+  });
+}
 
 /** Exact identity deduplication, never Yjs vector or snapshot coverage. Caller owns record buffers. */
 export function captureCatalog(

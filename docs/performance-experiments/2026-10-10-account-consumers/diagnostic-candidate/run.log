@@ -1,0 +1,10 @@
+[diagnostic] block history-0-P-profiled: 100 keys ...
+   text p50/p95/max 0.8/2/3.8 ms (>100ms: 0); paint p50/p95/max 4.5/6.8/9.7 ms; queue p95 1.6; indicator 1x on 1/100 keys; requests/key 1.5; profiled active 61.3 ms/key
+SETTLE 0
+[diagnostic] preloaded 2120 edits in 197456 ms (now 2220)
+[diagnostic] block history-2220-P-profiled: 100 keys ...
+   text p50/p95/max 7.4/49.1/76.2 ms (>100ms: 0); paint p50/p95/max 10.8/53.4/81.9 ms; queue p95 47.3; indicator 20x on 24/100 keys; requests/key 0.4; profiled active 140.2 ms/key
+SETTLE 2220
+NOTE CAMPAIGN FAILED: cdpSession.send: Protocol error (WebAuthn.getCredentials): The Virtual Authenticator Environment has not been enabled for this session
+    at /private/tmp/done-account-consumers/probe/campaign.mjs:502:46
+[diagnostic] done; typed 2320; summary /tmp/done-account-consumers/results-diagnostic-candidate/diagnostic.summary.json

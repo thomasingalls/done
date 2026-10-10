@@ -1,0 +1,112 @@
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -260,6 +260,8 @@
+       }
+   };
+   const block = (error: unknown) => {
++    const diagnostics = globalThis as unknown as { __blocked?: unknown[] };
++    (diagnostics.__blocked ??= []).push({ message: String(error), stack: error instanceof Error ? error.stack : undefined, cause: error instanceof Error ? String(error.cause) : undefined });
+     if (state !== 'active') return;
+     state = 'blocked';
+     clearTimer();
+--- a/src/crdt/accountSyncDriver.ts
++++ b/src/crdt/accountSyncDriver.ts
+@@ -92,6 +92,7 @@
+   let value = snapshot();
+   const publish = () => {
+     const next = snapshot();
++    (globalThis as any).__syncSnapshot = { at: Date.now(), active, status: next };
+     if (JSON.stringify(next) === JSON.stringify(value)) return;
+     value = next;
+     for (const listener of [...listeners]) {
+@@ -214,6 +215,8 @@
+         ready();
+       })
+       .catch((cause) => {
++        const g = globalThis as any;
++        (g.__syncFailures ??= []).push({at: Date.now(), lane: name, message: String(cause), stack: cause?.stack, cause: String(cause?.cause)});
+         if (!stopped) {
+           lane.halt = cause instanceof EnvelopeSizeError ? 'envelope-size' : 'operation-failed';
+           lane.due = undefined;
+--- a/src/account/scopedTransport.ts
++++ b/src/account/scopedTransport.ts
+@@ -172,6 +172,9 @@
+         cache: 'no-store',
+         redirect: 'error',
+       });
++      const g = globalThis as any;
++      (g.__networkReplies ??= []).push({at: Date.now(), path, status: response.status});
++      if (g.__networkReplies.length > 30) g.__networkReplies.shift();
+       if (signal.aborted) {
+         await response.body?.cancel();
+         signal.throwIfAborted();
+--- a/test/packaged-account/history.spec.ts
++++ b/test/packaged-account/history.spec.ts
+@@ -13,7 +13,7 @@
+ test('sole device creates repeated native snapshots, retries lost publication and keeps editing', async ({
+   page,
+ }, info) => {
+-  const service = await startService(info.outputPath('service'), undefined, true, true);
++  const service = await startService(info.outputPath('service'), '/tmp/done-account-consumers/debug/dist', true, true);
+   try {
+     const first = await createdAccount(page);
+     await add(page, 'History single device writing');
+@@ -53,7 +53,7 @@
+   page,
+   browser,
+ }, info) => {
+-  const service = await startService(info.outputPath('service'), undefined, true, true);
++  const service = await startService(info.outputPath('service'), '/tmp/done-account-consumers/debug/dist', true, true);
+   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+   try {
+     pair = await pairedEditors(page, browser, true);
+@@ -150,9 +150,21 @@
+     await second.unroute('**/account/delivery/submit');
+     await inspect(second);
+     await add(page, 'First device after maintenance');
+-    await expect(second.locator('.shell')).toContainText('First device after maintenance', {
+-      timeout: 15000,
+-    });
++    const state = async () => Promise.all([page, second].map(p => p.evaluate(() => ({ now: Date.now(), scheduler: (globalThis as any).__syncSnapshot, failures: (globalThis as any).__syncFailures, replies: (globalThis as any).__networkReplies }))));
++    console.log('After unblocking submissions:', JSON.stringify(await state()));
++    try {
++      await expect(second.locator('.shell')).toContainText('First device after maintenance', {
++        timeout: 15000,
++      });
++    } catch (cause) {
++      console.log('At original deadline:', JSON.stringify(await state()));
++      const after = Date.now();
++      try {
++        await expect(second.locator('.shell')).toContainText('First device after maintenance', { timeout: 35000 });
++        console.log('Later arrival after failed deadline:', Date.now() - after);
++      } catch { console.log('No later arrival within 35 seconds'); }
++      throw cause;
++    }
+     await add(second, 'Second device after maintenance');
+     await expect(page.locator('.shell')).toContainText('Second device after maintenance', {
+       timeout: 15000,
+@@ -183,6 +195,7 @@
+       }),
+     });
+   } finally {
++    for (const [label,p] of [['first',page],['second',pair?.second]] as const) if(p) console.log('Diagnostic',label,await p.evaluate(()=>({errors:(globalThis as any).__blocked, scheduler:(globalThis as any).__syncSnapshot, failures:(globalThis as any).__syncFailures, replies:(globalThis as any).__networkReplies, controls:[...document.querySelectorAll('button')].filter(b=>b.textContent==='Retry storage').map(b=>({visible:!!b.offsetParent,html:b.outerHTML}))})).catch(()=>null));
+     await pair?.other.close();
+     await stopService(service);
+   }
+@@ -193,7 +206,7 @@
+   browser,
+ }, info) => {
+   const { DatabaseSync } = await import('node:sqlite');
+-  const service = await startService(info.outputPath('service'), undefined, true, true);
++  const service = await startService(info.outputPath('service'), '/tmp/done-account-consumers/debug/dist', true, true);
+   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+   try {
+     pair = await pairedEditors(page, browser, true);
+@@ -298,6 +311,7 @@
+       db.close();
+     }
+   } finally {
++    for (const [label,p] of [['first',page],['second',pair?.second]] as const) if(p) console.log('Diagnostic',label,await p.evaluate(()=>({errors:(globalThis as any).__blocked, scheduler:(globalThis as any).__syncSnapshot, failures:(globalThis as any).__syncFailures, replies:(globalThis as any).__networkReplies, controls:[...document.querySelectorAll('button')].filter(b=>b.textContent==='Retry storage').map(b=>({visible:!!b.offsetParent,html:b.outerHTML}))})).catch(()=>null));
+     await pair?.other.close();
+     await stopService(service);
+   }

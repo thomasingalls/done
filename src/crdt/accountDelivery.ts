@@ -54,6 +54,11 @@ export interface DeliveryContext {
   inspect?: typeof inspectDelivery;
   /** Detached result from the just-validated complete v9 view; never used for proposed transitions. */
   verified?(records: readonly OpenedRecord[]): DeliveryState;
+  /** Select synchronously from the current verified state, then detach only the selected result. */
+  selectVerified?<T>(
+    records: readonly OpenedRecord[],
+    select: (state: Readonly<DeliveryState>) => T,
+  ): T;
   /** Private speculative check. A successful proposal never installs a durable cached view. */
   verifyProposed?(
     records: readonly OpenedRecord[],
@@ -119,6 +124,29 @@ export function createDeliveryOperations(context: DeliveryContext) {
     context.verified
       ? Promise.resolve(context.verified(records))
       : verifyDelivery(c, route, context.authority(), context.publicKey(), subtleFor(task));
+  const selectDelivery = async <T>(
+    records: readonly OpenedRecord[],
+    route: CaptureRoute,
+    task: SessionTask,
+    select: (state: Readonly<DeliveryState>) => T,
+  ): Promise<T> =>
+    context.selectVerified
+      ? context.selectVerified(records, select)
+      : select(await validated(records, inspect(records, route, context.authority()), route, task));
+  const withSelection = <T, R>(
+    select: (state: Readonly<DeliveryState>) => T,
+    operation: (task: SessionTask, selected: T) => Promise<R>,
+  ) =>
+    context.run(async (task, owner, route) => {
+      const records = await owner.carrier.load(task);
+      try {
+        const selected = await task.wait(() => selectDelivery(records, route, task, select));
+        await context.assertCurrent(task);
+        return await operation(task, selected);
+      } finally {
+        for (const row of records) row.bytes.fill(0);
+      }
+    });
   const withState = <T>(
     operation: (
       task: SessionTask,
@@ -218,13 +246,11 @@ export function createDeliveryOperations(context: DeliveryContext) {
     await persist(task, owner, route, { type: 'response', position, wire: bytes });
     const rows = await owner.carrier.load(task);
     try {
-      const checked = await task.wait(() =>
-        validated(rows, inspect(rows, route, context.authority()), route, task),
-      );
+      const status = await task.wait(() => selectDelivery(rows, route, task, describeDelivery));
       return task.step(() => ({
         kind: evidence.kind,
         recorded: true,
-        status: describeDelivery(checked),
+        status,
       }));
     } finally {
       for (const r of rows) r.bytes.fill(0);
@@ -232,15 +258,20 @@ export function createDeliveryOperations(context: DeliveryContext) {
   };
   const submitOwned = (operatorToken: AccountAccess) =>
     context.network!(async (network) => {
-      const prepared = await withState(async (task, _owner, _route, _c, s) => {
-        if (publicationState(s) !== 'ready')
-          return { kind: 'blocked' as const, state: publicationState(s) };
-        const position = s.acceptedThrough + 1,
-          bytes = s.submissions.get(position);
-        if (!bytes) return { kind: 'idle' as const };
-        await context.assertCurrent(task);
-        return { kind: 'ready' as const, position, bytes: bytes.slice() };
-      });
+      const prepared = await withSelection(
+        (s) => {
+          if (publicationState(s) !== 'ready')
+            return { kind: 'blocked' as const, state: publicationState(s) };
+          const position = s.acceptedThrough + 1,
+            bytes = s.submissions.get(position);
+          if (!bytes) return { kind: 'idle' as const };
+          return { kind: 'ready' as const, position, bytes: bytes.slice() };
+        },
+        async (task, result) => {
+          if (result.kind === 'ready') await context.assertCurrent(task);
+          return result;
+        },
+      );
       if (prepared.kind !== 'ready') return prepared;
       const payload = encodeSubmit(context.authority().workspace, prepared.bytes);
       let answer: Bytes | null = null;
@@ -305,14 +336,17 @@ export function createDeliveryOperations(context: DeliveryContext) {
         }
         return false;
       }),
-    deliveryStatus: () => withState(async (_task, _owner, _route, _c, s) => describeDelivery(s)),
+    deliveryStatus: () => withSelection(describeDelivery, async (_task, status) => status),
     pendingSubmissions: () =>
-      withState(async (_task, _owner, _route, _c, s) => {
-        if (publicationState(s) !== 'ready') return [];
-        const position = s.acceptedThrough + 1,
-          bytes = s.submissions.get(position);
-        return bytes ? [{ position, bytes: bytes.slice() }] : [];
-      }),
+      withSelection(
+        (s) => {
+          if (publicationState(s) !== 'ready') return [];
+          const position = s.acceptedThrough + 1,
+            bytes = s.submissions.get(position);
+          return bytes ? [{ position, bytes: bytes.slice() }] : [];
+        },
+        async (_task, pending) => pending,
+      ),
     prepareSubmission: (position: number) =>
       withState(async (task, owner, route, c, s) => {
         if (!Number.isSafeInteger(position) || position < 1)
@@ -348,10 +382,11 @@ export function createDeliveryOperations(context: DeliveryContext) {
           await persist(task, owner, route, { type: 'submission', position, wire });
           const rows = await owner.carrier.load(task);
           try {
-            const checked = await task.wait(() =>
-                validated(rows, inspect(rows, route, context.authority()), route, task),
+            const saved = await task.wait(() =>
+              selectDelivery(rows, route, task, (state) =>
+                state.submissions.get(position)?.slice(),
               ),
-              saved = checked.submissions.get(position);
+            );
             if (!saved) captureError('Persisted submission missing');
             return task.step(() => ({ kind: 'ready' as const, position, bytes: saved!.slice() }));
           } finally {

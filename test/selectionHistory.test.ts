@@ -193,84 +193,87 @@ it('terminal history owners reject retained histories and tokens without revivin
   }
 });
 
-it('generated retained history forks preserve token identity and an independent position ledger', () => {
-  fc.assert(
-    fc.property(
-      fc.array(
-        fc.record({
-          op: fc.constantFrom('fork', 'replace', 'drop', 'clear'),
-          at: fc.nat(30),
-          cursor: fc.nat(6),
-        }),
-        { maxLength: 30 },
+it.each([true, false])(
+  'generated retained history forks preserve token identity and an independent position ledger (string reuse: %s)',
+  (reuseStrings) => {
+    fc.assert(
+      fc.property(
+        fc.array(
+          fc.record({
+            op: fc.constantFrom('fork', 'replace', 'drop', 'clear'),
+            at: fc.nat(30),
+            cursor: fc.nat(6),
+          }),
+          { maxLength: 30 },
+        ),
+        (steps) => {
+          const owner = createSelectionHistory(reuseStrings);
+          const first = owner.create(createHistoryDoc(), origin);
+          add(first, 'abcdef');
+          type Branch = {
+            history: YUndoManager;
+            expected: Map<string, { token: SelectionSnapshot; cursor: number }>;
+          };
+          const branches: Branch[] = [{ history: first, expected: new Map() }];
+          const set = (b: Branch, key: string, cursor: number) => {
+            const token = owner.capture(b.history, positions(b.history, cursor));
+            b.history.undoStack[0]!.meta.set(key, token);
+            b.expected.set(key, { token, cursor });
+          };
+          const check = () => {
+            for (const b of branches) {
+              const meta = b.history.undoStack[0]!.meta;
+              expect([...meta.keys()]).toEqual([...b.expected.keys()]);
+              for (const [key, value] of b.expected) {
+                expect(meta.get(key), 'retained fork must keep recognized token identity').toBe(
+                  value.token,
+                );
+                const restored = owner.restore(b.history, meta.get(key));
+                expect(
+                  resolveSelection(
+                    b.history.doc,
+                    b.history.doc.getText('master'),
+                    restored.get('master'),
+                  ).main.head,
+                  'retained fork must restore its independent cursor',
+                ).toBe(value.cursor);
+                restored.clear();
+              }
+            }
+          };
+          try {
+            set(branches[0]!, 'before', 1);
+            set(branches[0]!, 'after', 3);
+            const prefix: typeof steps = [
+              { op: 'fork', at: 0, cursor: 0 },
+              { op: 'replace', at: 1, cursor: 4 },
+              { op: 'drop', at: 0, cursor: 0 },
+            ];
+            for (const step of [...prefix, ...steps]) {
+              const i = step.at % branches.length,
+                b = branches[i]!;
+              if (step.op === 'fork')
+                branches.push({
+                  history: owner.fork(b.history, origin),
+                  expected: new Map(b.expected),
+                });
+              else if (step.op === 'replace') set(b, 'after', step.cursor);
+              else if (step.op === 'clear') {
+                b.history.undoStack[0]!.meta.clear();
+                b.expected.clear();
+              } else if (branches.length > 1) {
+                dispose(b.history);
+                branches.splice(i, 1);
+              }
+              check();
+            }
+          } finally {
+            branches.forEach((b) => dispose(b.history));
+            owner.close();
+          }
+        },
       ),
-      (steps) => {
-        const owner = createSelectionHistory();
-        const first = owner.create(createHistoryDoc(), origin);
-        add(first, 'abcdef');
-        type Branch = {
-          history: YUndoManager;
-          expected: Map<string, { token: SelectionSnapshot; cursor: number }>;
-        };
-        const branches: Branch[] = [{ history: first, expected: new Map() }];
-        const set = (b: Branch, key: string, cursor: number) => {
-          const token = owner.capture(b.history, positions(b.history, cursor));
-          b.history.undoStack[0]!.meta.set(key, token);
-          b.expected.set(key, { token, cursor });
-        };
-        const check = () => {
-          for (const b of branches) {
-            const meta = b.history.undoStack[0]!.meta;
-            expect([...meta.keys()]).toEqual([...b.expected.keys()]);
-            for (const [key, value] of b.expected) {
-              expect(meta.get(key), 'retained fork must keep recognized token identity').toBe(
-                value.token,
-              );
-              const restored = owner.restore(b.history, meta.get(key));
-              expect(
-                resolveSelection(
-                  b.history.doc,
-                  b.history.doc.getText('master'),
-                  restored.get('master'),
-                ).main.head,
-                'retained fork must restore its independent cursor',
-              ).toBe(value.cursor);
-              restored.clear();
-            }
-          }
-        };
-        try {
-          set(branches[0]!, 'before', 1);
-          set(branches[0]!, 'after', 3);
-          const prefix: typeof steps = [
-            { op: 'fork', at: 0, cursor: 0 },
-            { op: 'replace', at: 1, cursor: 4 },
-            { op: 'drop', at: 0, cursor: 0 },
-          ];
-          for (const step of [...prefix, ...steps]) {
-            const i = step.at % branches.length,
-              b = branches[i]!;
-            if (step.op === 'fork')
-              branches.push({
-                history: owner.fork(b.history, origin),
-                expected: new Map(b.expected),
-              });
-            else if (step.op === 'replace') set(b, 'after', step.cursor);
-            else if (step.op === 'clear') {
-              b.history.undoStack[0]!.meta.clear();
-              b.expected.clear();
-            } else if (branches.length > 1) {
-              dispose(b.history);
-              branches.splice(i, 1);
-            }
-            check();
-          }
-        } finally {
-          branches.forEach((b) => dispose(b.history));
-          owner.close();
-        }
-      },
-    ),
-    { seed: 150906, numRuns: 120 },
-  );
-});
+      { seed: 150906, numRuns: 120 },
+    );
+  },
+);

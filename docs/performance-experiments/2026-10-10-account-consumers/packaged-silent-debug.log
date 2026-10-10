@@ -1,0 +1,26 @@
+
+Running 1 test using 1 worker
+
+(node:88026) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Diagnostic first {
+  errors: undefined,
+  controls: [
+    {
+      visible: false,
+      html: '<button type="button" hidden="">Retry storage</button>'
+    }
+  ]
+}
+Diagnostic second {
+  errors: undefined,
+  controls: [
+    {
+      visible: false,
+      html: '<button type="button" hidden="">Retry storage</button>'
+    }
+  ]
+}
+  ✓  1 test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (1.0m)
+
+  1 passed (1.0m)

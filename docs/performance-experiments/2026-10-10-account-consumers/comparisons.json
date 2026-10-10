@@ -1,0 +1,2218 @@
+[
+  {
+    "directory": "/tmp/done-account-consumers/results-baseline-1",
+    "mode": "slope",
+    "started": "2026-10-10T20:43:57.449Z",
+    "finished": "2026-10-10T20:50:53.065Z",
+    "typed": 2320,
+    "notes": [
+      "preload of 420 edits took 41966 ms at 60 ms cadence including drain",
+      "preload of 600 edits took 71995 ms at 60 ms cadence including drain",
+      "preload of 900 edits took 133120 ms at 60 ms cadence including drain"
+    ],
+    "blocks": [
+      {
+        "name": "history-0-T-traced",
+        "prior": 0,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 0.8999996185302734,
+          "p95": 11,
+          "max": 27.100000381469727
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 156.70000076293945,
+          "p95": 184.9000015258789,
+          "max": 288.0999984741211
+        },
+        "main": {
+          "p50": 99.3,
+          "p95": 129.3,
+          "max": 150.5,
+          "mean": 98.3
+        },
+        "paint": {
+          "n": 100,
+          "p50": 5.1,
+          "p95": 11.8,
+          "max": 14.6,
+          "mean": 6
+        },
+        "work": {
+          "loads": 861,
+          "loadedRows": 187563,
+          "loadedBytes": 90305521,
+          "authorityChecks": 761,
+          "positions": 38,
+          "sourceParses": 5884,
+          "sourceParseBytes": 1621881,
+          "recordCopies": 363277,
+          "recordCopyBytes": 174595980
+        },
+        "native": {
+          "idb-readonly": 8019,
+          "random": 208330,
+          "idb-readwrite": 500,
+          "digest": 3169,
+          "importKey": 5516,
+          "deriveKey": 4870,
+          "encrypt": 428,
+          "sign": 630,
+          "decrypt": 2026,
+          "verify": 5583,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        },
+        "perPosition": {
+          "loads": 22.657894736842106,
+          "loadedRows": 4935.868421052632,
+          "loadedBytes": 2376461.0789473685,
+          "authorityChecks": 20.026315789473685,
+          "positions": 1,
+          "sourceParses": 154.8421052631579,
+          "sourceParseBytes": 42681.07894736842,
+          "recordCopies": 9559.921052631578,
+          "recordCopyBytes": 4594631.052631579,
+          "idb-readonly": 211.02631578947367,
+          "random": 5482.368421052632,
+          "idb-readwrite": 13.157894736842104,
+          "digest": 83.39473684210526,
+          "importKey": 145.1578947368421,
+          "deriveKey": 128.1578947368421,
+          "encrypt": 11.263157894736842,
+          "sign": 16.57894736842105,
+          "decrypt": 53.31578947368421,
+          "verify": 146.92105263157896,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        }
+      },
+      {
+        "name": "history-520-T-traced",
+        "prior": 520,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 8.299999237060547,
+          "p95": 136.80000114440918,
+          "max": 213.5
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 169.4000015258789,
+          "p95": 208.69999885559082,
+          "max": 243.69999885559082
+        },
+        "main": {
+          "p50": 122.9,
+          "p95": 178.3,
+          "max": 205.5,
+          "mean": 117.7
+        },
+        "paint": {
+          "n": 100,
+          "p50": 12.6,
+          "p95": 51.9,
+          "max": 68.1,
+          "mean": 18.4
+        },
+        "work": {
+          "loads": 281,
+          "loadedRows": 282268,
+          "loadedBytes": 149532320,
+          "authorityChecks": 221,
+          "positions": 11,
+          "sourceParses": 35065,
+          "sourceParseBytes": 9336949,
+          "recordCopies": 575098,
+          "recordCopyBytes": 304669600
+        },
+        "native": {
+          "idb-readonly": 2418,
+          "random": 1135479,
+          "importKey": 1601,
+          "deriveKey": 1414,
+          "decrypt": 730,
+          "verify": 1710,
+          "digest": 1686,
+          "idb-readwrite": 204,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 212,
+          "encrypt": 266
+        },
+        "perPosition": {
+          "loads": 25.545454545454547,
+          "loadedRows": 25660.727272727272,
+          "loadedBytes": 13593847.272727273,
+          "authorityChecks": 20.09090909090909,
+          "positions": 1,
+          "sourceParses": 3187.7272727272725,
+          "sourceParseBytes": 848813.5454545454,
+          "recordCopies": 52281.63636363636,
+          "recordCopyBytes": 27697236.363636363,
+          "idb-readonly": 219.8181818181818,
+          "random": 103225.36363636363,
+          "importKey": 145.54545454545453,
+          "deriveKey": 128.54545454545453,
+          "decrypt": 66.36363636363636,
+          "verify": 155.45454545454547,
+          "digest": 153.27272727272728,
+          "idb-readwrite": 18.545454545454547,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19.272727272727273,
+          "encrypt": 24.181818181818183
+        }
+      },
+      {
+        "name": "history-1220-T-traced",
+        "prior": 1220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 66.79999923706055,
+          "p95": 321.8999996185303,
+          "max": 449.20000076293945
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 190.70000076293945,
+          "p95": 267.20000076293945,
+          "max": 325.3000011444092
+        },
+        "main": {
+          "p50": 169.5,
+          "p95": 271.7,
+          "max": 399,
+          "mean": 174.4
+        },
+        "paint": {
+          "n": 100,
+          "p50": 27.8,
+          "p95": 122.1,
+          "max": 154.2,
+          "mean": 42.3
+        },
+        "work": {
+          "loads": 224,
+          "loadedRows": 459517,
+          "loadedBytes": 231472162,
+          "authorityChecks": 171,
+          "positions": 9,
+          "sourceParses": 66783,
+          "sourceParseBytes": 17620215,
+          "recordCopies": 968978,
+          "recordCopyBytes": 487861798
+        },
+        "native": {
+          "idb-readonly": 1894,
+          "random": 2150531,
+          "importKey": 1230,
+          "deriveKey": 1092,
+          "decrypt": 612,
+          "verify": 1342,
+          "digest": 1832,
+          "idb-readwrite": 174,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 173,
+          "encrypt": 255
+        },
+        "perPosition": {
+          "loads": 24.88888888888889,
+          "loadedRows": 51057.444444444445,
+          "loadedBytes": 25719129.111111112,
+          "authorityChecks": 19,
+          "positions": 1,
+          "sourceParses": 7420.333333333333,
+          "sourceParseBytes": 1957801.6666666667,
+          "recordCopies": 107664.22222222222,
+          "recordCopyBytes": 54206866.44444445,
+          "idb-readonly": 210.44444444444446,
+          "random": 238947.88888888888,
+          "importKey": 136.66666666666666,
+          "deriveKey": 121.33333333333333,
+          "decrypt": 68,
+          "verify": 149.11111111111111,
+          "digest": 203.55555555555554,
+          "idb-readwrite": 19.333333333333332,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19.22222222222222,
+          "encrypt": 28.333333333333332
+        }
+      },
+      {
+        "name": "history-2220-T-traced",
+        "prior": 2220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 170.29999923706055,
+          "p95": 574,
+          "max": 738.8999996185303
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 198.89999961853027,
+          "p95": 351,
+          "max": 398
+        },
+        "main": {
+          "p50": 184.1,
+          "p95": 348.7,
+          "max": 401.3,
+          "mean": 209.8
+        },
+        "paint": {
+          "n": 100,
+          "p50": 51.7,
+          "p95": 208.8,
+          "max": 240.2,
+          "mean": 74.4
+        },
+        "work": {
+          "loads": 164,
+          "loadedRows": 529450,
+          "loadedBytes": 277549138,
+          "authorityChecks": 123,
+          "positions": 7,
+          "sourceParses": 90761,
+          "sourceParseBytes": 24000161,
+          "recordCopies": 1103546,
+          "recordCopyBytes": 578585510
+        },
+        "native": {
+          "idb-readonly": 1368,
+          "random": 2917708,
+          "importKey": 888,
+          "deriveKey": 786,
+          "decrypt": 495,
+          "verify": 971,
+          "digest": 1641,
+          "idb-readwrite": 127,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 125,
+          "encrypt": 238
+        },
+        "perPosition": {
+          "loads": 23.428571428571427,
+          "loadedRows": 75635.71428571429,
+          "loadedBytes": 39649876.85714286,
+          "authorityChecks": 17.571428571428573,
+          "positions": 1,
+          "sourceParses": 12965.857142857143,
+          "sourceParseBytes": 3428594.4285714286,
+          "recordCopies": 157649.42857142858,
+          "recordCopyBytes": 82655072.85714285,
+          "idb-readonly": 195.42857142857142,
+          "random": 416815.4285714286,
+          "importKey": 126.85714285714286,
+          "deriveKey": 112.28571428571429,
+          "decrypt": 70.71428571428571,
+          "verify": 138.71428571428572,
+          "digest": 234.42857142857142,
+          "idb-readwrite": 18.142857142857142,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 17.857142857142858,
+          "encrypt": 34
+        }
+      }
+    ],
+    "slope": 0.03952508312852392,
+    "maintenance": [
+      {
+        "typed": 100,
+        "coldOpenMs": 1256,
+        "warmHeapBytes": 13847932,
+        "reopenedHeapBytes": 9709492,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 0,
+          "totalMs": 0,
+          "maxMs": 0
+        }
+      },
+      {
+        "typed": 620,
+        "coldOpenMs": 3539,
+        "warmHeapBytes": 16555808,
+        "reopenedHeapBytes": 11548616,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 2,
+          "totalMs": 243.69999885559082,
+          "maxMs": 128.19999885559082
+        }
+      },
+      {
+        "typed": 1320,
+        "coldOpenMs": 6630,
+        "warmHeapBytes": 19141380,
+        "reopenedHeapBytes": 13362028,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 3,
+          "totalMs": 1281.2999992370605,
+          "maxMs": 934.2000007629395
+        }
+      },
+      {
+        "typed": 2320,
+        "coldOpenMs": 11196,
+        "warmHeapBytes": 22651196,
+        "reopenedHeapBytes": 15982656,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 4,
+          "totalMs": 2083.5,
+          "maxMs": 1450.5
+        }
+      }
+    ],
+    "census": [
+      {
+        "name": "history-0-census",
+        "typed": 0,
+        "census": {
+          "indexedDB": {
+            "done.50913abeb9c3d7c342a17c9be76abb18": {
+              "content": 6,
+              "heads": 12,
+              "meta": 1,
+              "outbound": 12
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "history-520-census",
+        "typed": 520,
+        "census": {
+          "indexedDB": {
+            "done.50913abeb9c3d7c342a17c9be76abb18": {
+              "content": 4,
+              "heads": 204,
+              "meta": 1,
+              "outbound": 669
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "history-1220-census",
+        "typed": 1220,
+        "census": {
+          "indexedDB": {
+            "done.50913abeb9c3d7c342a17c9be76abb18": {
+              "content": 107,
+              "heads": 351,
+              "meta": 1,
+              "outbound": 1479
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "history-2220-census",
+        "typed": 2220,
+        "census": {
+          "indexedDB": {
+            "done.50913abeb9c3d7c342a17c9be76abb18": {
+              "content": 4,
+              "heads": 504,
+              "meta": 1,
+              "outbound": 2596
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "final-census",
+        "typed": 2320,
+        "census": {
+          "indexedDB": {
+            "done.50913abeb9c3d7c342a17c9be76abb18": {
+              "content": 104,
+              "heads": 525,
+              "meta": 1,
+              "outbound": 2710
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      }
+    ]
+  },
+  {
+    "directory": "/tmp/done-account-consumers/results-candidate-1",
+    "mode": "slope",
+    "started": "2026-10-10T21:06:39.456Z",
+    "finished": "2026-10-10T21:12:11.373Z",
+    "typed": 2320,
+    "notes": [
+      "preload of 420 edits took 39447 ms at 60 ms cadence including drain",
+      "preload of 600 edits took 57900 ms at 60 ms cadence including drain",
+      "preload of 900 edits took 87503 ms at 60 ms cadence including drain"
+    ],
+    "blocks": [
+      {
+        "name": "history-0-T-traced",
+        "prior": 0,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 0.8000011444091797,
+          "p95": 3.6999988555908203,
+          "max": 20
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 154.79999923706055,
+          "p95": 185.39999961853027,
+          "max": 190.5
+        },
+        "main": {
+          "p50": 72.1,
+          "p95": 108.2,
+          "max": 119.2,
+          "mean": 66.9
+        },
+        "paint": {
+          "n": 100,
+          "p50": 4.5,
+          "p95": 8.7,
+          "max": 12.6,
+          "mean": 5.2
+        },
+        "work": {
+          "loads": 858,
+          "loadedRows": 176226,
+          "loadedBytes": 87730150,
+          "authorityChecks": 761,
+          "positions": 38,
+          "sourceParses": 2401,
+          "sourceParseBytes": 660737,
+          "recordCopies": 342054,
+          "recordCopyBytes": 169869459
+        },
+        "native": {
+          "idb-readonly": 8010,
+          "random": 19343,
+          "idb-readwrite": 494,
+          "digest": 3169,
+          "importKey": 5516,
+          "deriveKey": 4870,
+          "encrypt": 428,
+          "sign": 627,
+          "decrypt": 2026,
+          "verify": 5574,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        },
+        "perPosition": {
+          "loads": 22.57894736842105,
+          "loadedRows": 4637.526315789473,
+          "loadedBytes": 2308688.1578947366,
+          "authorityChecks": 20.026315789473685,
+          "positions": 1,
+          "sourceParses": 63.18421052631579,
+          "sourceParseBytes": 17387.815789473683,
+          "recordCopies": 9001.421052631578,
+          "recordCopyBytes": 4470248.921052632,
+          "idb-readonly": 210.78947368421052,
+          "random": 509.0263157894737,
+          "idb-readwrite": 13,
+          "digest": 83.39473684210526,
+          "importKey": 145.1578947368421,
+          "deriveKey": 128.1578947368421,
+          "encrypt": 11.263157894736842,
+          "sign": 16.5,
+          "decrypt": 53.31578947368421,
+          "verify": 146.68421052631578,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        }
+      },
+      {
+        "name": "history-520-T-traced",
+        "prior": 520,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 1,
+          "p95": 19.599998474121094,
+          "max": 69.20000076293945
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 157.0999984741211,
+          "p95": 186.5,
+          "max": 197.80000114440918
+        },
+        "main": {
+          "p50": 34.9,
+          "p95": 130.8,
+          "max": 144.5,
+          "mean": 48.9
+        },
+        "paint": {
+          "n": 100,
+          "p50": 5.7,
+          "p95": 14.5,
+          "max": 24,
+          "mean": 6.7
+        },
+        "work": {
+          "loads": 267,
+          "loadedRows": 265711,
+          "loadedBytes": 140630607,
+          "authorityChecks": 201,
+          "positions": 10,
+          "sourceParses": 7125,
+          "sourceParseBytes": 1894745,
+          "recordCopies": 551961,
+          "recordCopyBytes": 292130607
+        },
+        "native": {
+          "idb-readonly": 2233,
+          "random": 17415,
+          "importKey": 1456,
+          "deriveKey": 1286,
+          "decrypt": 682,
+          "verify": 1589,
+          "digest": 1545,
+          "idb-readwrite": 208,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 204,
+          "encrypt": 260
+        },
+        "perPosition": {
+          "loads": 26.7,
+          "loadedRows": 26571.1,
+          "loadedBytes": 14063060.7,
+          "authorityChecks": 20.1,
+          "positions": 1,
+          "sourceParses": 712.5,
+          "sourceParseBytes": 189474.5,
+          "recordCopies": 55196.1,
+          "recordCopyBytes": 29213060.7,
+          "idb-readonly": 223.3,
+          "random": 1741.5,
+          "importKey": 145.6,
+          "deriveKey": 128.6,
+          "decrypt": 68.2,
+          "verify": 158.9,
+          "digest": 154.5,
+          "idb-readwrite": 20.8,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 20.4,
+          "encrypt": 26
+        }
+      },
+      {
+        "name": "history-1220-T-traced",
+        "prior": 1220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 1.3000011444091797,
+          "p95": 46.70000076293945,
+          "max": 63
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 159,
+          "p95": 194.80000114440918,
+          "max": 203
+        },
+        "main": {
+          "p50": 69.4,
+          "p95": 155.3,
+          "max": 349.2,
+          "mean": 79.6
+        },
+        "paint": {
+          "n": 100,
+          "p50": 6.1,
+          "p95": 24.1,
+          "max": 31.4,
+          "mean": 8.5
+        },
+        "work": {
+          "loads": 267,
+          "loadedRows": 540029,
+          "loadedBytes": 272861749,
+          "authorityChecks": 201,
+          "positions": 10,
+          "sourceParses": 16279,
+          "sourceParseBytes": 4327078,
+          "recordCopies": 1132202,
+          "recordCopyBytes": 571439824
+        },
+        "native": {
+          "idb-readonly": 2235,
+          "random": 26604,
+          "importKey": 1456,
+          "deriveKey": 1286,
+          "decrypt": 683,
+          "verify": 1591,
+          "digest": 1985,
+          "idb-readwrite": 209,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 204,
+          "encrypt": 261
+        },
+        "perPosition": {
+          "loads": 26.7,
+          "loadedRows": 54002.9,
+          "loadedBytes": 27286174.9,
+          "authorityChecks": 20.1,
+          "positions": 1,
+          "sourceParses": 1627.9,
+          "sourceParseBytes": 432707.8,
+          "recordCopies": 113220.2,
+          "recordCopyBytes": 57143982.4,
+          "idb-readonly": 223.5,
+          "random": 2660.4,
+          "importKey": 145.6,
+          "deriveKey": 128.6,
+          "decrypt": 68.3,
+          "verify": 159.1,
+          "digest": 198.5,
+          "idb-readwrite": 20.9,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 20.4,
+          "encrypt": 26.1
+        }
+      },
+      {
+        "name": "history-2220-T-traced",
+        "prior": 2220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 4.19999885559082,
+          "p95": 87.30000114440918,
+          "max": 292.1999988555908
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 160.89999961853027,
+          "p95": 202,
+          "max": 251.60000038146973
+        },
+        "main": {
+          "p50": 123.9,
+          "p95": 182.1,
+          "max": 355,
+          "mean": 118.8
+        },
+        "paint": {
+          "n": 100,
+          "p50": 6.5,
+          "p95": 41.6,
+          "max": 72.8,
+          "mean": 13.2
+        },
+        "work": {
+          "loads": 272,
+          "loadedRows": 882189,
+          "loadedBytes": 466758563,
+          "authorityChecks": 209,
+          "positions": 11,
+          "sourceParses": 26134,
+          "sourceParseBytes": 6941257,
+          "recordCopies": 1832709,
+          "recordCopyBytes": 969599909
+        },
+        "native": {
+          "idb-readonly": 2305,
+          "random": 36429,
+          "importKey": 1506,
+          "deriveKey": 1336,
+          "decrypt": 703,
+          "verify": 1631,
+          "digest": 2610,
+          "idb-readwrite": 206,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 209,
+          "encrypt": 265
+        },
+        "perPosition": {
+          "loads": 24.727272727272727,
+          "loadedRows": 80199,
+          "loadedBytes": 42432596.63636363,
+          "authorityChecks": 19,
+          "positions": 1,
+          "sourceParses": 2375.818181818182,
+          "sourceParseBytes": 631023.3636363636,
+          "recordCopies": 166609.9090909091,
+          "recordCopyBytes": 88145446.27272727,
+          "idb-readonly": 209.54545454545453,
+          "random": 3311.7272727272725,
+          "importKey": 136.9090909090909,
+          "deriveKey": 121.45454545454545,
+          "decrypt": 63.90909090909091,
+          "verify": 148.27272727272728,
+          "digest": 237.27272727272728,
+          "idb-readwrite": 18.727272727272727,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19,
+          "encrypt": 24.09090909090909
+        }
+      }
+    ],
+    "slope": 0.029122813358392372,
+    "maintenance": [
+      {
+        "typed": 100,
+        "coldOpenMs": 1066,
+        "warmHeapBytes": 13949340,
+        "reopenedHeapBytes": 9675472,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 0,
+          "totalMs": 0,
+          "maxMs": 0
+        }
+      },
+      {
+        "typed": 620,
+        "coldOpenMs": 1872,
+        "warmHeapBytes": 16736948,
+        "reopenedHeapBytes": 11377404,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 2,
+          "totalMs": 158.20000076293945,
+          "maxMs": 89.60000038146973
+        }
+      },
+      {
+        "typed": 1320,
+        "coldOpenMs": 4140,
+        "warmHeapBytes": 19235620,
+        "reopenedHeapBytes": 13254264,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 3,
+          "totalMs": 775.8000030517578,
+          "maxMs": 499.20000076293945
+        }
+      },
+      {
+        "typed": 2320,
+        "coldOpenMs": 7523,
+        "warmHeapBytes": 22970556,
+        "reopenedHeapBytes": 15992236,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 4,
+          "totalMs": 1407.3000030517578,
+          "maxMs": 912.3000011444092
+        }
+      }
+    ],
+    "census": [
+      {
+        "name": "history-0-census",
+        "typed": 0,
+        "census": {
+          "indexedDB": {
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.def89c82e2b65d5868734b79567bf5b6": {
+              "content": 6,
+              "heads": 12,
+              "meta": 1,
+              "outbound": 12
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 31.2
+        }
+      },
+      {
+        "name": "history-520-census",
+        "typed": 520,
+        "census": {
+          "indexedDB": {
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.def89c82e2b65d5868734b79567bf5b6": {
+              "content": 4,
+              "heads": 201,
+              "meta": 1,
+              "outbound": 667
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 31.2
+        }
+      },
+      {
+        "name": "history-1220-census",
+        "typed": 1220,
+        "census": {
+          "indexedDB": {
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.def89c82e2b65d5868734b79567bf5b6": {
+              "content": 107,
+              "heads": 333,
+              "meta": 1,
+              "outbound": 1467
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 31.2
+        }
+      },
+      {
+        "name": "history-2220-census",
+        "typed": 2220,
+        "census": {
+          "indexedDB": {
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.def89c82e2b65d5868734b79567bf5b6": {
+              "content": 4,
+              "heads": 515,
+              "meta": 1,
+              "outbound": 2604
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 31.2
+        }
+      },
+      {
+        "name": "final-census",
+        "typed": 2320,
+        "census": {
+          "indexedDB": {
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.def89c82e2b65d5868734b79567bf5b6": {
+              "content": 104,
+              "heads": 549,
+              "meta": 1,
+              "outbound": 2726
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 31.2
+        }
+      }
+    ]
+  },
+  {
+    "directory": "/tmp/done-account-consumers/results-candidate-2",
+    "mode": "slope",
+    "started": "2026-10-10T21:12:11.746Z",
+    "finished": "2026-10-10T21:17:45.040Z",
+    "typed": 2320,
+    "notes": [
+      "preload of 420 edits took 39366 ms at 60 ms cadence including drain",
+      "preload of 600 edits took 57897 ms at 60 ms cadence including drain",
+      "preload of 900 edits took 87140 ms at 60 ms cadence including drain"
+    ],
+    "blocks": [
+      {
+        "name": "history-0-T-traced",
+        "prior": 0,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 0.8000011444091797,
+          "p95": 2.5,
+          "max": 4.100000381469727
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 153,
+          "p95": 184.5,
+          "max": 190.29999923706055
+        },
+        "main": {
+          "p50": 72.3,
+          "p95": 111.5,
+          "max": 119.4,
+          "mean": 63.1
+        },
+        "paint": {
+          "n": 100,
+          "p50": 4.5,
+          "p95": 8.4,
+          "max": 13.1,
+          "mean": 5.2
+        },
+        "work": {
+          "loads": 856,
+          "loadedRows": 172815,
+          "loadedBytes": 86777037,
+          "authorityChecks": 761,
+          "positions": 38,
+          "sourceParses": 2341,
+          "sourceParseBytes": 645187,
+          "recordCopies": 334925,
+          "recordCopyBytes": 167735154
+        },
+        "native": {
+          "idb-readonly": 8004,
+          "random": 19283,
+          "idb-readwrite": 490,
+          "digest": 3169,
+          "importKey": 5516,
+          "deriveKey": 4870,
+          "encrypt": 428,
+          "sign": 625,
+          "decrypt": 2026,
+          "verify": 5568,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        },
+        "perPosition": {
+          "loads": 22.526315789473685,
+          "loadedRows": 4547.763157894737,
+          "loadedBytes": 2283606.236842105,
+          "authorityChecks": 20.026315789473685,
+          "positions": 1,
+          "sourceParses": 61.60526315789474,
+          "sourceParseBytes": 16978.605263157893,
+          "recordCopies": 8813.815789473685,
+          "recordCopyBytes": 4414083,
+          "idb-readonly": 210.6315789473684,
+          "random": 507.44736842105266,
+          "idb-readwrite": 12.894736842105264,
+          "digest": 83.39473684210526,
+          "importKey": 145.1578947368421,
+          "deriveKey": 128.1578947368421,
+          "encrypt": 11.263157894736842,
+          "sign": 16.44736842105263,
+          "decrypt": 53.31578947368421,
+          "verify": 146.52631578947367,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        }
+      },
+      {
+        "name": "history-520-T-traced",
+        "prior": 520,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 1.2000007629394531,
+          "p95": 15.899999618530273,
+          "max": 29.399999618530273
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 156.5,
+          "p95": 188.20000076293945,
+          "max": 193.20000076293945
+        },
+        "main": {
+          "p50": 38.9,
+          "p95": 132.3,
+          "max": 145.5,
+          "mean": 50.7
+        },
+        "paint": {
+          "n": 100,
+          "p50": 5.6,
+          "p95": 12.5,
+          "max": 19.1,
+          "mean": 6.8
+        },
+        "work": {
+          "loads": 281,
+          "loadedRows": 280926,
+          "loadedBytes": 148482048,
+          "authorityChecks": 215,
+          "positions": 11,
+          "sourceParses": 7105,
+          "sourceParseBytes": 1889483,
+          "recordCopies": 587036,
+          "recordCopyBytes": 310169936
+        },
+        "native": {
+          "idb-readonly": 2384,
+          "random": 17403,
+          "importKey": 1561,
+          "deriveKey": 1378,
+          "decrypt": 718,
+          "verify": 1696,
+          "digest": 1671,
+          "idb-readwrite": 218,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 218,
+          "encrypt": 266
+        },
+        "perPosition": {
+          "loads": 25.545454545454547,
+          "loadedRows": 25538.727272727272,
+          "loadedBytes": 13498368,
+          "authorityChecks": 19.545454545454547,
+          "positions": 1,
+          "sourceParses": 645.9090909090909,
+          "sourceParseBytes": 171771.18181818182,
+          "recordCopies": 53366.90909090909,
+          "recordCopyBytes": 28197266.90909091,
+          "idb-readonly": 216.72727272727272,
+          "random": 1582.090909090909,
+          "importKey": 141.9090909090909,
+          "deriveKey": 125.27272727272727,
+          "decrypt": 65.27272727272727,
+          "verify": 154.1818181818182,
+          "digest": 151.9090909090909,
+          "idb-readwrite": 19.818181818181817,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19.818181818181817,
+          "encrypt": 24.181818181818183
+        }
+      },
+      {
+        "name": "history-1220-T-traced",
+        "prior": 1220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 1,
+          "p95": 59.89999961853027,
+          "max": 116
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 158.60000038146973,
+          "p95": 189.89999961853027,
+          "max": 199.89999961853027
+        },
+        "main": {
+          "p50": 94.9,
+          "p95": 148.7,
+          "max": 285.2,
+          "mean": 82.6
+        },
+        "paint": {
+          "n": 100,
+          "p50": 5.7,
+          "p95": 21.1,
+          "max": 26.7,
+          "mean": 7.8
+        },
+        "work": {
+          "loads": 278,
+          "loadedRows": 562711,
+          "loadedBytes": 285631366,
+          "authorityChecks": 215,
+          "positions": 11,
+          "sourceParses": 16279,
+          "sourceParseBytes": 4327078,
+          "recordCopies": 1179368,
+          "recordCopyBytes": 598236911
+        },
+        "native": {
+          "idb-readonly": 2377,
+          "random": 26708,
+          "importKey": 1561,
+          "deriveKey": 1378,
+          "decrypt": 719,
+          "verify": 1689,
+          "digest": 2166,
+          "idb-readwrite": 213,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 215,
+          "encrypt": 267
+        },
+        "perPosition": {
+          "loads": 25.272727272727273,
+          "loadedRows": 51155.545454545456,
+          "loadedBytes": 25966487.818181816,
+          "authorityChecks": 19.545454545454547,
+          "positions": 1,
+          "sourceParses": 1479.909090909091,
+          "sourceParseBytes": 393370.7272727273,
+          "recordCopies": 107215.27272727272,
+          "recordCopyBytes": 54385173.72727273,
+          "idb-readonly": 216.0909090909091,
+          "random": 2428,
+          "importKey": 141.9090909090909,
+          "deriveKey": 125.27272727272727,
+          "decrypt": 65.36363636363636,
+          "verify": 153.54545454545453,
+          "digest": 196.9090909090909,
+          "idb-readwrite": 19.363636363636363,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19.545454545454547,
+          "encrypt": 24.272727272727273
+        }
+      },
+      {
+        "name": "history-2220-T-traced",
+        "prior": 2220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 15.5,
+          "p95": 171.5,
+          "max": 247.5
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 168.5,
+          "p95": 215.79999923706055,
+          "max": 234.5
+        },
+        "main": {
+          "p50": 129.2,
+          "p95": 173.8,
+          "max": 318.2,
+          "mean": 125.5
+        },
+        "paint": {
+          "n": 100,
+          "p50": 7.8,
+          "p95": 48.4,
+          "max": 69.9,
+          "mean": 15.7
+        },
+        "work": {
+          "loads": 282,
+          "loadedRows": 919779,
+          "loadedBytes": 486273488,
+          "authorityChecks": 221,
+          "positions": 11,
+          "sourceParses": 28502,
+          "sourceParseBytes": 7570232,
+          "recordCopies": 1877425,
+          "recordCopyBytes": 992727586
+        },
+        "native": {
+          "idb-readonly": 2421,
+          "random": 38801,
+          "importKey": 1601,
+          "deriveKey": 1414,
+          "decrypt": 730,
+          "verify": 1713,
+          "digest": 2830,
+          "idb-readwrite": 206,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 213,
+          "encrypt": 266
+        },
+        "perPosition": {
+          "loads": 25.636363636363637,
+          "loadedRows": 83616.27272727272,
+          "loadedBytes": 44206680.72727273,
+          "authorityChecks": 20.09090909090909,
+          "positions": 1,
+          "sourceParses": 2591.090909090909,
+          "sourceParseBytes": 688202.9090909091,
+          "recordCopies": 170675,
+          "recordCopyBytes": 90247962.36363636,
+          "idb-readonly": 220.0909090909091,
+          "random": 3527.3636363636365,
+          "importKey": 145.54545454545453,
+          "deriveKey": 128.54545454545453,
+          "decrypt": 66.36363636363636,
+          "verify": 155.72727272727272,
+          "digest": 257.27272727272725,
+          "idb-readwrite": 18.727272727272727,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19.363636363636363,
+          "encrypt": 24.181818181818183
+        }
+      }
+    ],
+    "slope": 0.03284769408703195,
+    "maintenance": [
+      {
+        "typed": 100,
+        "coldOpenMs": 1054,
+        "warmHeapBytes": 13901728,
+        "reopenedHeapBytes": 9742192,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 0,
+          "totalMs": 0,
+          "maxMs": 0
+        }
+      },
+      {
+        "typed": 620,
+        "coldOpenMs": 1939,
+        "warmHeapBytes": 16778000,
+        "reopenedHeapBytes": 11389212,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 2,
+          "totalMs": 148.70000076293945,
+          "maxMs": 85.79999923706055
+        }
+      },
+      {
+        "typed": 1320,
+        "coldOpenMs": 4262,
+        "warmHeapBytes": 19216424,
+        "reopenedHeapBytes": 13369560,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 3,
+          "totalMs": 806.8999996185303,
+          "maxMs": 535.5
+        }
+      },
+      {
+        "typed": 2320,
+        "coldOpenMs": 7208,
+        "warmHeapBytes": 23075440,
+        "reopenedHeapBytes": 16081304,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 4,
+          "totalMs": 1492.400001525879,
+          "maxMs": 964.9000015258789
+        }
+      }
+    ],
+    "census": [
+      {
+        "name": "history-0-census",
+        "typed": 0,
+        "census": {
+          "indexedDB": {
+            "done.a5bd648079f2e694ec2dea089f14b9e8": {
+              "content": 6,
+              "heads": 12,
+              "meta": 1,
+              "outbound": 12
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 17.1
+        }
+      },
+      {
+        "name": "history-520-census",
+        "typed": 520,
+        "census": {
+          "indexedDB": {
+            "done.a5bd648079f2e694ec2dea089f14b9e8": {
+              "content": 4,
+              "heads": 201,
+              "meta": 1,
+              "outbound": 667
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 17.1
+        }
+      },
+      {
+        "name": "history-1220-census",
+        "typed": 1220,
+        "census": {
+          "indexedDB": {
+            "done.a5bd648079f2e694ec2dea089f14b9e8": {
+              "content": 107,
+              "heads": 336,
+              "meta": 1,
+              "outbound": 1469
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 17.1
+        }
+      },
+      {
+        "name": "history-2220-census",
+        "typed": 2220,
+        "census": {
+          "indexedDB": {
+            "done.a5bd648079f2e694ec2dea089f14b9e8": {
+              "content": 4,
+              "heads": 516,
+              "meta": 1,
+              "outbound": 2604
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 17.1
+        }
+      },
+      {
+        "name": "final-census",
+        "typed": 2320,
+        "census": {
+          "indexedDB": {
+            "done.a5bd648079f2e694ec2dea089f14b9e8": {
+              "content": 104,
+              "heads": 549,
+              "meta": 1,
+              "outbound": 2726
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 17.1
+        }
+      }
+    ]
+  },
+  {
+    "directory": "/tmp/done-account-consumers/results-baseline-2",
+    "mode": "slope",
+    "started": "2026-10-10T21:17:45.435Z",
+    "finished": "2026-10-10T21:24:45.419Z",
+    "typed": 2320,
+    "notes": [
+      "preload of 420 edits took 42704 ms at 60 ms cadence including drain",
+      "preload of 600 edits took 72828 ms at 60 ms cadence including drain",
+      "preload of 900 edits took 134404 ms at 60 ms cadence including drain"
+    ],
+    "blocks": [
+      {
+        "name": "history-0-T-traced",
+        "prior": 0,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 1.1000003814697266,
+          "p95": 9.100000381469727,
+          "max": 41.5
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 158.39999961853027,
+          "p95": 185.5,
+          "max": 189.80000114440918
+        },
+        "main": {
+          "p50": 100.3,
+          "p95": 129.1,
+          "max": 149.2,
+          "mean": 96
+        },
+        "paint": {
+          "n": 100,
+          "p50": 5.5,
+          "p95": 12.6,
+          "max": 22.6,
+          "mean": 6.7
+        },
+        "work": {
+          "loads": 861,
+          "loadedRows": 185488,
+          "loadedBytes": 89913574,
+          "authorityChecks": 761,
+          "positions": 38,
+          "sourceParses": 5841,
+          "sourceParseBytes": 1611129,
+          "recordCopies": 359664,
+          "recordCopyBytes": 174024951
+        },
+        "native": {
+          "idb-readonly": 8019,
+          "random": 206954,
+          "idb-readwrite": 500,
+          "digest": 3169,
+          "importKey": 5516,
+          "deriveKey": 4870,
+          "encrypt": 428,
+          "sign": 630,
+          "decrypt": 2026,
+          "verify": 5583,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        },
+        "perPosition": {
+          "loads": 22.657894736842106,
+          "loadedRows": 4881.263157894737,
+          "loadedBytes": 2366146.6842105263,
+          "authorityChecks": 20.026315789473685,
+          "positions": 1,
+          "sourceParses": 153.71052631578948,
+          "sourceParseBytes": 42398.13157894737,
+          "recordCopies": 9464.842105263158,
+          "recordCopyBytes": 4579603.97368421,
+          "idb-readonly": 211.02631578947367,
+          "random": 5446.1578947368425,
+          "idb-readwrite": 13.157894736842104,
+          "digest": 83.39473684210526,
+          "importKey": 145.1578947368421,
+          "deriveKey": 128.1578947368421,
+          "encrypt": 11.263157894736842,
+          "sign": 16.57894736842105,
+          "decrypt": 53.31578947368421,
+          "verify": 146.92105263157896,
+          "generateKey": 0,
+          "exportKey": 0,
+          "deriveBits": 0
+        }
+      },
+      {
+        "name": "history-520-T-traced",
+        "prior": 520,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 12.5,
+          "p95": 111.9000015258789,
+          "max": 205.10000038146973
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 173.70000076293945,
+          "p95": 221.89999961853027,
+          "max": 240.9000015258789
+        },
+        "main": {
+          "p50": 125.6,
+          "p95": 179.3,
+          "max": 386.2,
+          "mean": 117.5
+        },
+        "paint": {
+          "n": 100,
+          "p50": 13.4,
+          "p95": 64,
+          "max": 74.4,
+          "mean": 21.1
+        },
+        "work": {
+          "loads": 283,
+          "loadedRows": 287531,
+          "loadedBytes": 151951413,
+          "authorityChecks": 221,
+          "positions": 11,
+          "sourceParses": 36319,
+          "sourceParseBytes": 9670823,
+          "recordCopies": 587457,
+          "recordCopyBytes": 310507069
+        },
+        "native": {
+          "idb-readonly": 2424,
+          "random": 1175607,
+          "importKey": 1601,
+          "deriveKey": 1414,
+          "decrypt": 730,
+          "verify": 1716,
+          "digest": 1697,
+          "idb-readwrite": 208,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 214,
+          "encrypt": 266
+        },
+        "perPosition": {
+          "loads": 25.727272727272727,
+          "loadedRows": 26139.18181818182,
+          "loadedBytes": 13813764.818181818,
+          "authorityChecks": 20.09090909090909,
+          "positions": 1,
+          "sourceParses": 3301.7272727272725,
+          "sourceParseBytes": 879165.7272727273,
+          "recordCopies": 53405.181818181816,
+          "recordCopyBytes": 28227915.363636363,
+          "idb-readonly": 220.36363636363637,
+          "random": 106873.36363636363,
+          "importKey": 145.54545454545453,
+          "deriveKey": 128.54545454545453,
+          "decrypt": 66.36363636363636,
+          "verify": 156,
+          "digest": 154.27272727272728,
+          "idb-readwrite": 18.90909090909091,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19.454545454545453,
+          "encrypt": 24.181818181818183
+        }
+      },
+      {
+        "name": "history-1220-T-traced",
+        "prior": 1220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 57.900001525878906,
+          "p95": 338.20000076293945,
+          "max": 394.3000011444092
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 182.5,
+          "p95": 270.70000076293945,
+          "max": 286.29999923706055
+        },
+        "main": {
+          "p50": 164.6,
+          "p95": 262.9,
+          "max": 416.4,
+          "mean": 167.9
+        },
+        "paint": {
+          "n": 100,
+          "p50": 22.2,
+          "p95": 108.8,
+          "max": 148.4,
+          "mean": 36.8
+        },
+        "work": {
+          "loads": 210,
+          "loadedRows": 432409,
+          "loadedBytes": 219356457,
+          "authorityChecks": 161,
+          "positions": 8,
+          "sourceParses": 62948,
+          "sourceParseBytes": 16740296,
+          "recordCopies": 898936,
+          "recordCopyBytes": 455376914
+        },
+        "native": {
+          "idb-readonly": 1778,
+          "random": 2028221,
+          "importKey": 1166,
+          "deriveKey": 1030,
+          "decrypt": 587,
+          "verify": 1262,
+          "digest": 1696,
+          "idb-readwrite": 159,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 159,
+          "encrypt": 249
+        },
+        "perPosition": {
+          "loads": 26.25,
+          "loadedRows": 54051.125,
+          "loadedBytes": 27419557.125,
+          "authorityChecks": 20.125,
+          "positions": 1,
+          "sourceParses": 7868.5,
+          "sourceParseBytes": 2092537,
+          "recordCopies": 112367,
+          "recordCopyBytes": 56922114.25,
+          "idb-readonly": 222.25,
+          "random": 253527.625,
+          "importKey": 145.75,
+          "deriveKey": 128.75,
+          "decrypt": 73.375,
+          "verify": 157.75,
+          "digest": 212,
+          "idb-readwrite": 19.875,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 19.875,
+          "encrypt": 31.125
+        }
+      },
+      {
+        "name": "history-2220-T-traced",
+        "prior": 2220,
+        "keys": 100,
+        "textComplete": true,
+        "stable": {
+          "n": 100,
+          "p50": 161.89999961853027,
+          "p95": 601.4000015258789,
+          "max": 724.2000007629395
+        },
+        "gaps": {
+          "n": 99,
+          "p50": 203.39999961853027,
+          "p95": 370,
+          "max": 421.1999988555908
+        },
+        "main": {
+          "p50": 186.3,
+          "p95": 371.9,
+          "max": 397.5,
+          "mean": 213.1
+        },
+        "paint": {
+          "n": 100,
+          "p50": 55.5,
+          "p95": 230.4,
+          "max": 260.4,
+          "mean": 78.6
+        },
+        "work": {
+          "loads": 161,
+          "loadedRows": 518879,
+          "loadedBytes": 273398455,
+          "authorityChecks": 121,
+          "positions": 6,
+          "sourceParses": 88430,
+          "sourceParseBytes": 23493826,
+          "recordCopies": 1072367,
+          "recordCopyBytes": 565176959
+        },
+        "native": {
+          "idb-readonly": 1335,
+          "random": 2843114,
+          "importKey": 870,
+          "deriveKey": 768,
+          "decrypt": 488,
+          "verify": 951,
+          "digest": 1629,
+          "idb-readwrite": 124,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 122,
+          "encrypt": 236
+        },
+        "perPosition": {
+          "loads": 26.833333333333332,
+          "loadedRows": 86479.83333333333,
+          "loadedBytes": 45566409.166666664,
+          "authorityChecks": 20.166666666666668,
+          "positions": 1,
+          "sourceParses": 14738.333333333334,
+          "sourceParseBytes": 3915637.6666666665,
+          "recordCopies": 178727.83333333334,
+          "recordCopyBytes": 94196159.83333333,
+          "idb-readonly": 222.5,
+          "random": 473852.3333333333,
+          "importKey": 145,
+          "deriveKey": 128,
+          "decrypt": 81.33333333333333,
+          "verify": 158.5,
+          "digest": 271.5,
+          "idb-readwrite": 20.666666666666668,
+          "generateKey": 0,
+          "deriveBits": 0,
+          "sign": 20.333333333333332,
+          "encrypt": 39.333333333333336
+        }
+      }
+    ],
+    "slope": 0.039279311840393245,
+    "maintenance": [
+      {
+        "typed": 100,
+        "coldOpenMs": 1264,
+        "warmHeapBytes": 13812744,
+        "reopenedHeapBytes": 9707280,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 0,
+          "totalMs": 0,
+          "maxMs": 0
+        }
+      },
+      {
+        "typed": 620,
+        "coldOpenMs": 3640,
+        "warmHeapBytes": 16633900,
+        "reopenedHeapBytes": 11560712,
+        "audits": 0,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 2,
+          "totalMs": 197.80000114440918,
+          "maxMs": 103.4000015258789
+        }
+      },
+      {
+        "typed": 1320,
+        "coldOpenMs": 6756,
+        "warmHeapBytes": 19194364,
+        "reopenedHeapBytes": 13368324,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 3,
+          "totalMs": 1273.1999988555908,
+          "maxMs": 899.5999984741211
+        }
+      },
+      {
+        "typed": 2320,
+        "coldOpenMs": 11629,
+        "warmHeapBytes": 22636820,
+        "reopenedHeapBytes": 15980248,
+        "audits": 1,
+        "mismatches": 0,
+        "compaction": {
+          "calls": 4,
+          "totalMs": 2252.3999996185303,
+          "maxMs": 1585.5
+        }
+      }
+    ],
+    "census": [
+      {
+        "name": "history-0-census",
+        "typed": 0,
+        "census": {
+          "indexedDB": {
+            "done.a68b1acae36579d48117b8cfa30c30ff": {
+              "content": 6,
+              "heads": 12,
+              "meta": 1,
+              "outbound": 12
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "history-520-census",
+        "typed": 520,
+        "census": {
+          "indexedDB": {
+            "done.a68b1acae36579d48117b8cfa30c30ff": {
+              "content": 4,
+              "heads": 207,
+              "meta": 1,
+              "outbound": 671
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "history-1220-census",
+        "typed": 1220,
+        "census": {
+          "indexedDB": {
+            "done.a68b1acae36579d48117b8cfa30c30ff": {
+              "content": 107,
+              "heads": 354,
+              "meta": 1,
+              "outbound": 1481
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "history-2220-census",
+        "typed": 2220,
+        "census": {
+          "indexedDB": {
+            "done.a68b1acae36579d48117b8cfa30c30ff": {
+              "content": 4,
+              "heads": 501,
+              "meta": 1,
+              "outbound": 2594
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      },
+      {
+        "name": "final-census",
+        "typed": 2320,
+        "census": {
+          "indexedDB": {
+            "done.a68b1acae36579d48117b8cfa30c30ff": {
+              "content": 104,
+              "heads": 522,
+              "meta": 1,
+              "outbound": 2708
+            },
+            "done.account-login.v1": {
+              "outbox": 0,
+              "slots": 1
+            },
+            "done.account-recovery-preparation.v1": {
+              "progress": 1
+            },
+            "done.custody": {
+              "entries": 4
+            },
+            "done.first-device-setup.v1": {
+              "attempt": 1
+            },
+            "done.slots": {
+              "slots": 1
+            }
+          },
+          "localStorageKeys": 3,
+          "localStorageChars": 288,
+          "heapMB": 27.6
+        }
+      }
+    ]
+  }
+]

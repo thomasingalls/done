@@ -1,0 +1,80 @@
+
+Running 1 test using 1 worker
+
+(node:85649) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+second Failed to load resource: net::ERR_FAILED []
+first Failed to load resource: net::ERR_FAILED []
+second Failed to load resource: net::ERR_FAILED []
+first Failed to load resource: net::ERR_FAILED []
+first Failed to load resource: net::ERR_FAILED []
+second Failed to load resource: net::ERR_FAILED []
+second-early DEBUG admission blocked AbortError: Interrupted history installation [
+  undefined,
+  {
+    message: 'Interrupted history installation',
+    stack: undefined,
+    cause: 'undefined'
+  }
+]
+second DEBUG admission blocked AbortError: Interrupted history installation [
+  undefined,
+  {
+    message: 'Interrupted history installation',
+    stack: undefined,
+    cause: 'undefined'
+  }
+]
+second Failed to load resource: net::ERR_FAILED []
+second Failed to load resource: net::ERR_INTERNET_DISCONNECTED []
+second Failed to load resource: net::ERR_INTERNET_DISCONNECTED []
+first Failed to load resource: net::ERR_FAILED []
+second Failed to load resource: net::ERR_INTERNET_DISCONNECTED []
+second Failed to load resource: net::ERR_INTERNET_DISCONNECTED []
+second Failed to load resource: net::ERR_INTERNET_DISCONNECTED []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+second Failed to load resource: the server responded with a status of 429 (Too Many Requests) []
+first Failed to load resource: net::ERR_INCOMPLETE_CHUNKED_ENCODING []
+  ✓  1 test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (59.6s)
+
+  1 passed (1.0m)

@@ -1,3 +1,4 @@
+import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 /** Internal original-source envelope preparation. The caller owns the sole carrier and authority. */
 import { guardedSubtle, hex, random, type Bytes } from './custodyCrypto';
 import {
@@ -50,42 +51,47 @@ export async function selectEnvelopeSources(
   batch: boolean,
   subtle: SubtleCrypto,
 ): Promise<SourceRef[]> {
-  const used = new Set(
-    state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
-  );
-  const selected: SourceRef[] = [];
-  let actor = '',
-    kind = '',
-    epoch = 0,
-    total = 0;
-  for (const [id, bytes] of state.sources) {
-    const c = decodeSourceCapsule(bytes, route);
-    let hash: string | undefined;
-    try {
-      for (const [index, source] of c.sources.entries()) {
-        if (used.has(id + ':' + index)) continue;
-        if (
-          selected.length &&
-          (!batch ||
-            selected.length >= MAX_POSITION_SOURCES ||
-            source.actor !== actor ||
-            source.kind !== kind ||
-            c.epoch !== epoch ||
-            total + source.bytes.length > MAX_POSITION_BYTES)
-        )
-          return selected;
-        hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
-        selected.push({ id, index, hash });
-        epoch = c.epoch;
-        actor = source.actor;
-        kind = source.kind;
-        total += source.bytes.length;
+  const began = ledgerWorkStart();
+  try {
+    const used = new Set(
+      state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
+    );
+    const selected: SourceRef[] = [];
+    let actor = '',
+      kind = '',
+      epoch = 0,
+      total = 0;
+    for (const [id, bytes] of state.sources) {
+      const c = decodeSourceCapsule(bytes, route);
+      let hash: string | undefined;
+      try {
+        for (const [index, source] of c.sources.entries()) {
+          if (used.has(id + ':' + index)) continue;
+          if (
+            selected.length &&
+            (!batch ||
+              selected.length >= MAX_POSITION_SOURCES ||
+              source.actor !== actor ||
+              source.kind !== kind ||
+              c.epoch !== epoch ||
+              total + source.bytes.length > MAX_POSITION_BYTES)
+          )
+            return selected;
+          hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+          selected.push({ id, index, hash });
+          epoch = c.epoch;
+          actor = source.actor;
+          kind = source.kind;
+          total += source.bytes.length;
+        }
+      } finally {
+        eraseCapsule(c);
       }
-    } finally {
-      eraseCapsule(c);
     }
+    return selected;
+  } finally {
+    measureLedgerWork('envelopeSelection', began);
   }
-  return selected;
 }
 export function createEnvelopePreparation(context: EnvelopePreparationContext) {
   const runCaptureTask = context.run;
@@ -175,6 +181,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
                     sources: selected,
                   },
             );
+            countLedgerWork('positions');
             for (const r of records) r.bytes.fill(0);
             ({ records, state } = await verified(task, owner, route));
             position = state.positions.at(-1)!;

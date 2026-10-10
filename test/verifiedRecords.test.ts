@@ -27,7 +27,11 @@ it('projects detached readback without copying unrelated retained history', asyn
     result.through = 99;
     expect(cache.read(input, (v) => v.status)).toEqual({ through: 7 });
     expect(seen).toEqual([{ through: 7 }, { through: 7 }]);
+    const hit = cache.readIfMatches(input, (v) => v.status)!;
+    hit.value.through = 101;
+    expect(cache.readIfMatches(input, (v) => v.status)).toEqual({ value: { through: 7 } });
     input[0]!.bytes[0]!++;
+    expect(cache.readIfMatches(input, (v) => v.status)).toBeUndefined();
     expect(() => cache.read(input, (v) => v.status)).toThrow(/No verified/);
     cache.clear();
     expect(() => cache.read(rows(), (v) => v.status)).toThrow(/No verified/);

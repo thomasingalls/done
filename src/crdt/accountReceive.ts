@@ -1,3 +1,5 @@
+import type { OpenedRecord } from './contentRecord';
+import { countLedgerWork } from './accountLedgerMetrics';
 import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
 import {
@@ -122,7 +124,12 @@ import {
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery } from './deliveryRecord';
-import { captureError, type CaptureRoute } from './sourceCapture';
+import {
+  captureError,
+  capturedSourcePresence,
+  type CaptureRoute,
+  type CapturedSourceIdentity,
+} from './sourceCapture';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
 import {
@@ -159,10 +166,20 @@ async function openAccountReceiveOwner(
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
     coverage = createInboundCoverage({ incremental });
-  const inspectCensus = (records: Parameters<typeof inspectInbound>[0], route: CaptureRoute) =>
-    verified.matches(records)
-      ? verified.read(records, (v) => v.census)
-      : inspectInbound(records, route, base);
+  const inspectCensus = <R>(
+    records: Parameters<typeof inspectInbound>[0],
+    route: CaptureRoute,
+    select: (census: AccountLedgerView['census']) => R,
+  ): R => {
+    if (!incremental)
+      return select(
+        verified.matches(records)
+          ? verified.read(records, (v) => v.census)
+          : inspectInbound(records, route, base),
+      );
+    const projected = verified.readIfMatches(records, (v) => select(v.census));
+    return projected ? projected.value : select(inspectInbound(records, route, base));
+  };
   let installed: InstalledSuccessor | undefined;
   let membership: InstalledMembership | undefined,
     initialEpoch = 3;
@@ -176,6 +193,7 @@ async function openAccountReceiveOwner(
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const assertCurrent = async (task: SessionTask) => {
+    countLedgerWork('authorityChecks');
     if (handoff) throw new ReceiveAuthorityChanged();
     if (joined) {
       const current = await readJoinedAccount(task, options.slotId, options.code);
@@ -197,7 +215,20 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
-    sourceRecords: (records, route) => inspectCensus(records, route).delivery.spool.sourceRecords,
+    sourceRecords: (records, route) =>
+      inspectCensus(records, route, (c) => c.delivery.spool.sourceRecords),
+    ...(incremental
+      ? {
+          sourcePresence: (
+            records: readonly OpenedRecord[],
+            route: CaptureRoute,
+            incoming: readonly CapturedSourceIdentity[],
+          ) =>
+            inspectCensus(records, route, (c) =>
+              capturedSourcePresence(c.delivery.spool.sources, incoming),
+            ),
+        }
+      : {}),
     async initialize(task, v) {
       expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
       expectedRecord = v.record;
@@ -716,7 +747,11 @@ async function openAccountReceiveOwner(
             try {
               const census = inspectInbound(rows, route, base);
               await applyHistoryReceiveCuts(current, base, census, result!.heads);
-              verifySyncState(census.delivery, verified.read(rows).delivery, current);
+              verifySyncState(
+                census.delivery,
+                verified.read(rows, (v) => v.delivery),
+                current,
+              );
             } finally {
               for (const row of rows) row.bytes.fill(0);
             }
@@ -826,7 +861,7 @@ async function openAccountReceiveOwner(
             const rows = await owner.carrier.load(task);
             try {
               const census = inspectInbound(rows, route, base).delivery;
-              const delivery = verified.read(rows).delivery;
+              const delivery = verified.read(rows, (v) => v.delivery);
               try {
                 requireSelfEnvelope(
                   census,
@@ -1396,7 +1431,7 @@ async function openAccountReceiveOwner(
     const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
       records,
       route,
-    ) => inspectCensus(records, route).delivery;
+    ) => inspectCensus(records, route, (c) => c.delivery);
     const checkPublication = async (
       task: SessionTask,
       owner: ReturnType<typeof prepareAccountCustody>,
@@ -1430,6 +1465,11 @@ async function openAccountReceiveOwner(
         }),
       ...(incremental
         ? {
+            selectVerified: (records, select) =>
+              verified.read(records, ({ inbound, delivery }) => {
+                if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+                return select(delivery);
+              }),
             verifyProposed: async (
               rows: readonly import('./contentRecord').OpenedRecord[],
               proposed: import('./contentRecord').OpenedRecord[],
@@ -1494,24 +1534,23 @@ async function openAccountReceiveOwner(
         signer: () => signer!,
         whenDurable,
         checkPublication,
-        inspect: (records, route) => inspect(records, route, base.authority).spool,
+        inspect: (records, route) => inspectCensus(records, route, (c) => c.delivery.spool),
         run: runCaptureTask,
       }),
       spoolStatus: () =>
         runCaptureTask(async (task, owner, route) => {
           const records = await owner.carrier.load(task);
           try {
-            const spool = inspect(records, route, base.authority).spool;
-            return {
+            return inspectCensus(records, route, ({ delivery: { spool } }) => ({
               attempts: spool.attempts,
               positions: spool.positions.map((p) => ({
                 position: p.position,
-                source: { ...p.source },
-                ...(p.additional ? { additional: p.additional.map((s) => ({ ...s })) } : {}),
-                attempts: [...p.attempts],
+                source: p.source,
+                ...(p.additional ? { additional: p.additional } : {}),
+                attempts: p.attempts,
                 persisted: !!p.wire,
               })),
-            };
+            }));
           } finally {
             for (const r of records) r.bytes.fill(0);
           }
@@ -1745,6 +1784,7 @@ async function openReceivingWorkspace(
         ...(options.today ? { today: options.today } : {}),
         ...(options.signal ? { signal: options.signal } : {}),
       },
+      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental' ? 'account-snapshots' : 'reference',
     );
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();

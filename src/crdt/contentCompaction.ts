@@ -1,5 +1,7 @@
+import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 /** Internal exact-coverage owner. No caller document, coverage token, or arbitrary deletion API. */
 import { Y, hasPendingUpdates } from './yjs';
+import { sameBytes } from './verifiedRecords';
 import type { Bytes } from './custodyCrypto';
 import {
   CONTENT_STORES,
@@ -44,18 +46,21 @@ interface Owner {
   publish(bytes: Bytes): Promise<StoredRecord>;
   checkJournal(): void;
 }
-const equalBytes = (a: Bytes, b: Bytes) => a.length === b.length && a.every((v, i) => v === b[i]);
 export const equalStoredRecord = (a: StoredRecord, b: StoredRecord): boolean =>
   a.v === b.v &&
   a.gen === b.gen &&
   a.seq === b.seq &&
   a.kind === b.kind &&
-  equalBytes(a.nonce, b.nonce) &&
-  equalBytes(a.ct, b.ct);
+  sameBytes(a.nonce, b.nonce) &&
+  sameBytes(a.ct, b.ct);
 
 /** Validate even a singleton; return whether every struct/deletion dependency integrated. */
 export const validateContentUpdates = (updates: readonly Bytes[]): boolean => {
-  const doc = new Y.Doc({ gc: false });
+  const began = ledgerWorkStart();
+  // This isolated receiver never joins a provider or escapes this function. Its GUID has no
+  // identity role; omit Yjs's 31 random GUID draws but keep its fresh random client ID.
+  // Always allocate a clean document: pending structs/deletions cannot survive between calls.
+  const doc = new Y.Doc({ gc: false, guid: 'done-content-validation' });
   try {
     for (const bytes of updates) {
       Y.decodeUpdate(bytes);
@@ -66,6 +71,7 @@ export const validateContentUpdates = (updates: readonly Bytes[]): boolean => {
     throw new ContentError('repair-required', 'Persisted CRDT bytes are unreadable.', { cause });
   } finally {
     doc.destroy();
+    measureLedgerWork('validateUpdates', began);
   }
 };
 const content = (records: OpenedRecord[]) =>

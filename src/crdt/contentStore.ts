@@ -1,4 +1,10 @@
-import { measureLedger } from './accountLedgerMetrics';
+import {
+  countLedgerWork,
+  ledgerProfiling,
+  ledgerWorkStart,
+  measureLedgerWork,
+  measureLedger,
+} from './accountLedgerMetrics';
 import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
 import { copyRecords, eraseVerified } from './verifiedRecords';
 import {
@@ -297,11 +303,25 @@ export const createContentOwner = (
     }
   };
   const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
+    countLedgerWork('loads');
+    const began = ledgerWorkStart();
     try {
-      return await openSnapshot(task, await read(task, true));
+      const at = ledgerWorkStart();
+      const snapshot = await read(task, true);
+      measureLedgerWork('physicalRead', at);
+      countLedgerWork('loadedRows', snapshot.rows.length);
+      const result = await openSnapshot(task, snapshot);
+      if (ledgerProfiling)
+        countLedgerWork(
+          'loadedBytes',
+          result.reduce((n, r) => n + r.bytes.length, 0),
+        );
+      return result;
     } catch (cause) {
       clearView();
       throw cause;
+    } finally {
+      measureLedgerWork('loadElapsed', began);
     }
   };
   const appendRecords = async (

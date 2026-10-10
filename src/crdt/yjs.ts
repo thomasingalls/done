@@ -708,8 +708,8 @@ export const isTextBufferBasis = (doc: YDoc): boolean => {
   return true;
 };
 
-/** Explicit private Local history mode. Never infer it from a metadata shape or token lookalike. */
-export const createSelectionHistory = () => {
+/** Explicit private selection history mode. Never infer it from a metadata shape or token lookalike. */
+export const createSelectionHistory = (reuseStrings = true) => {
   const snapshots = createSelectionSnapshots();
   let histories: WeakSet<YUndoManager> | undefined = new WeakSet();
   const live = () => {
@@ -733,7 +733,7 @@ export const createSelectionHistory = () => {
     },
     fork(history: YUndoManager, origin: unknown): YUndoManager {
       check(history);
-      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
+      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), reuseStrings));
     },
     /** A retired predecessor catches up only across an owner-proven text transition.
      * The workspace must supply its untouched exact predecessor and retained accepted delta.
