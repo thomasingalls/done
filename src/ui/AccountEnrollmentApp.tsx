@@ -328,7 +328,7 @@ export function AccountEnrollmentApp({
     >
       <WorkspaceBackdrop />
       <section className="local-startup-panel workspace-gate-panel setup-panel enrollment-panel">
-        <p className="setup-eyebrow">done · development</p>
+        <p className="setup-eyebrow">done</p>
         <button className="local-secondary" onClick={navigation.back}>
           Back
         </button>
@@ -407,7 +407,7 @@ export function AccountEnrollmentApp({
                     });
                     onNavigate('/connect/prepare?' + query);
                   } catch {
-                    setError('Paste a complete device invitation link from this preview.');
+                    setError('Paste the complete device invitation link from your other device.');
                   }
                 }}
               >

@@ -188,7 +188,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
         {!networkLogin && !devices?.detached && (
           <p className="menu-note">
             {accountWorkspace
-              ? 'Account connected. Approved devices can sync writing in this preview.'
+              ? 'Account connected. Approved devices can sync writing.'
               : 'Off. This Local workspace is not connected to a relay.'}
           </p>
         )}

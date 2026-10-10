@@ -1,0 +1,64 @@
+{
+  "recordedAt": "2026-10-10T13:27:30.815352+02:00",
+  "scope": "Public welcome action and removal of obsolete preview wording",
+  "baseCommit": "d623f4c0e936852ee1ad0d694d049be1fcabf999",
+  "sourceState": "Uncommitted source identified by the file hashes below; publication requires a new immutable image",
+  "build": {
+    "passed": true,
+    "steps": [
+      "node scripts/check-yjs-patch.mjs",
+      "node_modules/.bin/tsc -b",
+      "node_modules/.bin/vite build",
+      "node scripts/check-budget.mjs",
+      "node scripts/check-origin-isolation.mjs"
+    ],
+    "initialJsGzipKiB": 136.5,
+    "jsBudgetKiB": 350
+  },
+  "toolingNote": "pnpm build/exec dependency preflight requested a module-directory replacement and refused without a TTY. No reinstall was performed. Installed React, router, Vite, TypeScript, Playwright and oxfmt versions match package.json; direct installed tools ran the same build steps.",
+  "browser": {
+    "command": "node_modules/.bin/playwright test --config playwright.packaged-account.config.ts test/packaged-account/welcome.spec.ts",
+    "stats": {
+      "startTime": "2026-10-10T11:26:06.669Z",
+      "duration": 8751.868999999999,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "networkSessions": true,
+    "membershipContinuation": true,
+    "state": "Disposable localhost service and browser profiles",
+    "coverage": [
+      "390x844 direct welcome entry and existing chooser Back behavior",
+      "one durable attempt reused across root visits and reload",
+      "name draft retained within live router lifetime",
+      "setup-owner refusal surfaced and retry works after release",
+      "empty Local entry account creation and local-only code setup",
+      "welcome and connection copy omit preview/development labels",
+      "offline status remains and clears on reconnect"
+    ]
+  },
+  "initialTestCorrection": "The first Back assertion expected the splash; corrected to the existing approved chooser behavior. Navigation behavior was not changed.",
+  "sourceSha256": {
+    "src/account/deviceEnrollment.ts": "1387d130717bc2b5240ac1f9e57b7cd88688fd02e37ca183791b63dc6e2eb6eb",
+    "src/account/firstDeviceSetup.ts": "18bc4fe0134022a55ca87859a10b193e36610e5b88348bb1de5de71130f57a48",
+    "src/crdt/joinedAccount.ts": "04c68274f35a9c4dd02307fe6e37aeece0be4425341633987864b618cc6ee617",
+    "src/styles/account-setup.css": "3f3e1f8e020f47705256cacfa9421f2e1b78a393c4098458730cf2f7915ae8f4",
+    "src/ui/AccountDevices.tsx": "6db28bb0f9c47eec5d4b015c90d5e637869eabe37b4ecff74d683830c10a2a05",
+    "src/ui/AccountEnrollmentApp.tsx": "1f62f63f401551b227c845b8ba7aaf13920f34abe8faf29ef045fdddc49cceeb",
+    "src/ui/AccountPreview.tsx": "05b49f7662149fbf443de0f75347b5c09e01cdb58602b9f305097222ad22fafa",
+    "src/ui/LocalApp.tsx": "77f104ecdc86c57a0f86e664753b09e7d5d5b29f7a9009dc5b3f8883d30b27b9",
+    "src/ui/Menu.tsx": "5f082406987222990911afecfbf27b0cc1f3ab6e415d397c1910f1e33b55caaf",
+    "src/ui/Welcome.tsx": "ada9d2a1e39108360ac7272449592ea98b739324cd237aaa286e905921a924db",
+    "test/first-device-setup/setup.spec.ts": "bfb331fae66f0702cf6bcd6e12499919ce445687e20739a3f363609e6358305d",
+    "test/packaged-account/welcome.spec.ts": "7f16aa1680a882059a39372f16037f15c1d524a305a05b662fe49177ba542dc5"
+  },
+  "deployed": false,
+  "releaseValidation": "paused",
+  "limits": [
+    "No public credential ceremony or two-device walkthrough performed by these tests",
+    "Existing encryption, custody, protocol and schema are unchanged",
+    "Removing preview wording does not claim completion of release qualification"
+  ]
+}

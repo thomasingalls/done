@@ -42,100 +42,48 @@ that is no longer active.
 
 ---
 
-## Product work: first-publication preparation (`L-1`)
+## Product work: public onboarding repair (`L-1`)
 
 ```yaml
 gate: L-1
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
-branch: codex/first-public-deployment
+branch: codex/public-onboarding-fix
 status: in flight
-scope: offline maintenance and image evidence complete; infrastructure integration next
-blocks_on: none
-release_validation: paused by operator until after publication and explicit resumption
+scope: enable welcome account creation and remove obsolete preview wording
+blocks_on: signed application PR merge, image publication and infrastructure image-pin rollout
+release_validation: paused until explicit operator resumption
 updated: 2026-10-10
 ```
 
-The retained installation serves build `95433108`, account schema 26, at
-`https://mbp.tail0e0d4.ts.net:8443/`. The graceful offline upgrade preserved the existing database
-rows and service identity; backup, build and actual-origin health evidence are recorded in
-[the history checkpoint](./account-history-management.md) and [completed.md](./completed.md).
-Current launch commands are in [packaged development](./packaged-account-development.md).
+The fresh public installation at `https://done.oxidationlabs.com` is running the image built from
+signed runtime `ff3d4295` (account schema 26). Application PR #44 merged as `d623f4c0`; infrastructure
+PRs #1–4 culminated in `8d53986f`. Explicit initialization, public TLS/DNS/routing, service identity,
+34 precache asset hashes, actual B2 backup recovery and private-volume reopening checks passed.
+The operator confirmed a phone page load. [ol-infra PR #5](https://codeberg.org/oxidationlabs/ol-infra/pulls/5)
+records the bounded deployment evidence. The older Tailscale installation remains independent.
 
-**Product position:**
+The phone visit found an explicitly disabled **Create a workspace** placeholder and obsolete preview
+copy. The source fix connects the action to the chooser's existing durable account-setup entry,
+including attempt reuse, busy/error handling and the empty Local entry. Normal account screens no
+longer describe the product as a preview; offline and actual capability/size-limit notices remain.
 
-- Everyday application: packaged offline use, cached upgrades, account creation/chooser, two-way
-  delivery, remembered sessions and streaming notifications are implemented.
-- Device/account lifecycle: repeatable connections, other-device removal with rotation, replacement
-  devices and lost-device recovery with a retained passkey plus recovery code are implemented.
-- History: manual checkpoint creation/admission, authenticated receive cuts, handoff/recovery readers
-  and pruning that retains two admitted snapshots with their required suffixes are implemented and
-  deployed. No maintenance was run against personal writing during this upgrade.
-- Operations: public configuration, explicit initialization, exclusive ownership and ARM64 packaging
-  are implemented. The encrypted backup pipeline is checked against a controlled B2 protocol fixture.
-  Operator restore and offline maintenance are implemented. Actual provider activation, infrastructure
-  manifests and publication remain.
-  The running installation is still the retained worktree's loopback/Tailscale host.
+Three focused packaged-browser checks pass, including a phone-sized viewport, approved Back/chooser
+behavior, setup resume/reload, an occupied setup-owner retry, local-only creation and offline status.
+The application build steps and changed-code lint/formatting pass. The original pnpm invocation
+stopped in dependency preflight; the installed matching tools ran the same build steps directly.
+[Evidence](./development-evidence/2026-10-10-public-onboarding.json) records the scope and limitation.
+Next: signed source PR, immutable image, then the ol-infra image-pin PR and ordinary Recreate rollout.
+The fixes are not yet deployed. After the update, close existing app tabs once to allow the waiting
+service worker to activate; do not clear browser storage.
 
-The operator selected a fresh public installation at `done.oxidationlabs.com` through `~/Code/ol-infra`;
-no Tailscale account migration is required. Kubernetes/Flux, cert-manager and SOPS follow that repo.
-Agreed backups: consistent SQLite snapshots without Litestream, encrypted before B2 upload, targeting
-30 seconds while changed with no overlap; recent copies for five minutes, hourly for six hours, daily
-for seven days. Brief sync outages are accepted. Updates, schema migrations and restores have distinct
-procedures. See [the recorded plan](./public-deployment.md) for sequence and remaining environment inputs.
-
-PR #41 is merged as `8c6005f3`, preserving all 398 signed PR commits as ancestors of main and exactly
-the PR head's tree. The operator selected merge-only integration, disabling linear history while
-retaining required PRs and signatures. The [signing record and crosswalk](./commit-history/README.md)
-preserve the 103 rewritten identities and original evidence. Local main and the deployment branch
-were fast-forwarded to the verified merge. The proposed squash-related validation adaptation is
-obsolete; the existing ancestry model is retained. Automatic application-build CI passed on the PR;
-the full check stayed skipped. Public runtime/initialization and container work is committed on
-`codex/first-public-deployment`. Registry/B2 credentials can wait for publication; public activation
-remains a separate step.
-
-The [public runtime](./public-runtime.md) now separates explicit initialization, session-enabled API
-and packaged app serving. Ordinary startup refuses absent/incompatible state; a stable SQLite ownership
-transaction excludes competing processes and releases after death. Fourteen focused public/gateway
-checks pass on local Node 26 and in the Node 24.18.0 ARM64 build. The two-container smoke verifies
-non-root/read-only execution, explicit initialization, missing-state refusal, competing-owner refusal,
-exact-origin API behavior, 34 packaged precache assets and restart durability. Signed commits
-`44784d11`, `c0d36c7a` and `0485c12a` record repository reconciliation, runtime and packaging. The local
-image built from exact signed source `0485c12a` passed the checks; its
-[source/image evidence and build log](./development-evidence/2026-10-09-public-runtime-container.json)
-are retained. [Backups](./public-backups.md) now add an API-owned worker with coherent WAL snapshots,
-tar/gzip/age encryption, scoped B2 upload and exact-version readback, 30-second nonoverlapping change
-checks, bounded retention and private health reporting. Failed/unverified copies cannot authorize
-discarding good alternatives. Nineteen focused runtime/gateway/backup checks pass, including the
-real worker through SIGKILL/restart; the ARM64 build also exercises those checks as UID 65532.
-Signed commits `773c3d14`, `7c23af0d` and `8923599e` record the backup stages. Image
-`done-public:8923599e` passes the build and packaged smoke; its
-[source/image evidence and raw build log](./development-evidence/2026-10-09-public-backups.json)
-are retained. Operator-led isolated restore is now implemented: archive verification, preserved source,
-atomic session-custody reset, crash/retry and startup quarantine. The [runbook](./public-restore.md)
-separates a successful restore from an operator history disposition; it supplies no generic promotion
-bypass. Signed implementation `ce953670` passes the application build and all 25 focused checks in the
-ARM64 image as UID 65532. Packaged app/API smoke and the network-disabled production-runtime
-backup/restore rehearsal also pass; [evidence](./development-evidence/2026-10-10-public-restore.json)
-is retained. Offline [schema maintenance](./public-maintenance.md) now adds a persistent writer fence,
-verified protected B2 backup, unchanged-state resumption and explicit expiry. Six maintenance checks
-and all 25 runtime/backup/restore regressions pass on the host and in the ARM64 image as UID 65532.
-Signed implementation `ff3d4295` also passes the production-only maintenance CLI rehearsal and packaged
-app/API smoke; [exact source/image evidence](./development-evidence/2026-10-10-public-maintenance.json)
-is retained. Next is infrastructure integration. No older public schema is deployed today; its first actual transition
-must ship explicit target-image migration code. The operator's final 2026-10-10 choice defers automatic
-reconciliation, accepts possible writing loss and leaves replication architecture undecided; see
-[recovery choices](./recovery-options.md). No retained installation or infrastructure resource has
-changed; no image has been published and no real B2 bucket has been used.
-
-**Deferred/limited:** personal history walkthrough; automatic maintenance; local ledger/root trimming;
-key retirement; account-access recovery when the passkey is also lost; recovery-code replacement;
-self/last-device removal. The 4 MiB activation/recovery/native-admission bounds remain. These require
-explicit scope decisions rather than being implied complete by the history work. The local backup
-protects this upgrade but is not an off-host backup/restore service.
-
-The operator directed that release validation stay paused until after a version is published; do not
-resume it without further direction. Future PR/deployment commits must be signed; if signing is
-unavailable, leave completed work staged and pause.
+Then continue the actual-origin account/passkey, offline reopening, two-device delivery and
+notification-stream walkthrough. Backup-health monitoring integration also remains an operations
+follow-up. Do not resume a generalized release campaign. Deferred product scope still includes the
+personal history walkthrough, automatic maintenance, local ledger/root trimming, key retirement,
+account-access recovery without a passkey, recovery-code replacement and self/last-device removal.
+The 4 MiB activation/recovery/native-admission bounds remain. Updates, schema changes and operator-led
+restores retain their distinct [procedures](./public-deployment.md); automatic disaster reconciliation
+is deferred and possible writing loss is accepted. Signed commits and PR merges remain required.
 
 ---
 

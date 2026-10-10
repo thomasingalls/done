@@ -108,10 +108,12 @@ const CodeForm = ({
 export const LocalApp = ({
   onConnectAccount,
   onChooseAccount,
+  onCreateWorkspace,
   beginOnFresh = false,
 }: {
   onConnectAccount?: (name: string) => void;
   onChooseAccount?: () => void;
+  onCreateWorkspace?: () => Promise<void>;
   beginOnFresh?: boolean;
 } = {}): React.ReactElement => {
   const [epoch, setEpoch] = useState(0);
@@ -252,6 +254,7 @@ export const LocalApp = ({
     return (
       <Welcome
         onCreateLocal={() => owner?.begin()}
+        {...(onCreateWorkspace ? { onCreateWorkspace } : {})}
         {...(onChooseAccount ? { onChooseAccount: chooseAccount } : {})}
       />
     );

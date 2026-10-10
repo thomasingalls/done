@@ -165,7 +165,10 @@ export async function createAccountPreview(config: SetupConfig) {
     } catch {
       /* Optional hint. */
     }
-    void go(`/setup/${slot}/inspect`);
+    return go(`/setup/${slot}/inspect`);
+  };
+  const createAccount = async () => {
+    await select(await beginNewAccount(config));
   };
   const openLocal = () => {
     try {
@@ -191,16 +194,12 @@ export async function createAccountPreview(config: SetupConfig) {
     const context = useMemo(() => ({ history, href: active.href, go }), [active.href]);
     return (
       <PreviewNavigationContext value={context}>
-        <div className="account-development">
-          <aside className="setup-dev-note">
-            Account preview · encrypted account sync
-            {offline && (
-              <span role="status">
-                {' '}
-                · Offline. Saved workspaces remain available; sync resumes when connected.
-              </span>
-            )}
-          </aside>
+        <div className="account-application">
+          {offline && (
+            <aside className="account-offline-note" role="status">
+              Offline. Saved workspaces remain available; sync resumes when connected.
+            </aside>
+          )}
           {active.pathname !== '/' &&
             !active.pathname.startsWith('/local') &&
             !/\/(ready|editing)$/.test(active.pathname) && <AppUpdateNotice setup />}
@@ -214,6 +213,7 @@ export async function createAccountPreview(config: SetupConfig) {
   function Splash() {
     return (
       <Welcome
+        onCreateWorkspace={createAccount}
         onChooseAccount={choose}
         onCreateLocal={() => {
           beginLocal = true;
@@ -231,7 +231,7 @@ export async function createAccountPreview(config: SetupConfig) {
         config={config}
         onSelect={select}
         onOpenLocal={openLocal}
-        onCreate={async () => select(await beginNewAccount(config))}
+        onCreate={createAccount}
         onRestore={restore}
         onRecover={(slot) => {
           void go(`/recover/${slot}/unlock`);
@@ -249,6 +249,7 @@ export async function createAccountPreview(config: SetupConfig) {
     }, []);
     return (
       <LocalApp
+        onCreateWorkspace={createAccount}
         beginOnFresh={requested}
         onChooseAccount={choose}
         onConnectAccount={(name) => {

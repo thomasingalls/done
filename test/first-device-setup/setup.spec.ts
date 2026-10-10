@@ -494,7 +494,7 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   await expect(page.locator('.shell')).toBeVisible({ timeout: 20000 });
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(2);
   await expect(
-    page.getByText('Account connected. Device sync is not enabled in this preview.'),
+    page.getByText('Account connected. Approved devices can sync writing.'),
   ).toBeVisible();
 });
 

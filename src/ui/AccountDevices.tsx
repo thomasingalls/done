@@ -140,11 +140,13 @@ export function AccountDevices({
             </button>
             {(roster.detached || (roster.epoch > 1 && !continuationAvailable)) && (
               <p className="setup-note">
-                Additional device connections are not available yet in this preview.
+                {roster.detached
+                  ? 'This device is disconnected from the account and cannot invite another device.'
+                  : 'This account service does not support additional device connections.'}
               </p>
             )}
             {!devices?.remove && !roster.detached && (
-              <p className="setup-note">Further device removal is not available in this preview.</p>
+              <p className="setup-note">Device removal is unavailable for this connection.</p>
             )}
           </>
         )}
