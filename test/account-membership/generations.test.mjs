@@ -14,6 +14,7 @@ const result = await build({
   build: {
     write: false,
     minify: false,
+    rollupOptions: { output: { codeSplitting: false } },
     lib: { entry: resolve('test/account-membership/generations-entry.ts'), formats: ['es'] },
   },
 });
@@ -174,6 +175,46 @@ test('retained source, spool and delivery records resolve their own authenticate
     oldAuthority,
   );
   assert.deepEqual(client.decodeDeliveryEntry(delivery, f.route, f.history.current).wire, accepted);
+  // Self progress uses each decision/source at its authenticated historical epoch,
+  // including the pre-rotation acceptance retained by the surviving publisher.
+  const receipts = client.emptyDelivery();
+  const wires = [
+    accepted,
+    response({
+      kind: 'accepted',
+      head: head(f.two.subject, f.cut, 4, f.x.f.f.keys.acceptance),
+      leaf: { epoch: 4, digest: f.two.subject.digest },
+    }),
+  ];
+  for (const [i, wire] of wires.entries()) {
+    const subject = [f.one, f.two][i].subject;
+    const decision = await client.verifyDeliveryDecision(
+      wire,
+      { ...subject, previous: i ? f.cut : zero, parent: zero },
+      f.history.current,
+      f.route,
+      crypto.subtle,
+    );
+    assert.equal(decision.kind, 'accepted');
+    client.applyDecision(receipts, decision);
+    receipts.responses.set(i + 1, [wire]);
+  }
+  const own = client.emptyInbound();
+  const records = [f.old, f.next].map((bytes, i) => ({
+    seq: i + 1,
+    gen: i + 1,
+    kind: 'update',
+    bytes,
+  }));
+  client.advanceSelfReceive(
+    { spool: state, entries: [], ledger: [] },
+    receipts,
+    own,
+    f.route,
+    (updates) => client.verifyInboundCoverage(records, updates),
+  );
+  assert.equal(own.prefix.position, 2);
+  assert.equal(own.prefix.link, link(f.two.subject, f.cut));
 });
 function packet(f, wire, previous, a = f.history.current, through = wire.subject.position) {
   const requestFields = [

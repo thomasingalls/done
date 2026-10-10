@@ -1,5 +1,9 @@
 # Private outbound composition under the v9 owner
 
+The initial self-readback flow below is superseded in the composed owner by
+[acceptance-driven self progress](./account-self-stream-progress.md) (2026-10-10).
+The original evidence remains a record of that integration; peer receive ordering is unchanged.
+
 Status: bounded implementation and validation complete 2026-09-11; uncommitted.
 [Evidence](./account-conformance-runs/2026-09-11-account-sync.md).
 

@@ -68,7 +68,7 @@ import type { InboundState } from './inboundLedger';
 import { createEnvelopePreparation } from './accountEnvelopePreparation';
 import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
-import { requireSelfEnvelope, verifySyncState } from './accountSyncState';
+import { advanceSelfReceive, requireSelfEnvelope, verifySyncState } from './accountSyncState';
 import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
@@ -321,7 +321,10 @@ async function openAccountReceiveOwner(
               memo,
               coverage,
             });
-            if (composed) verifySyncState(census.delivery, delivery, inbound);
+            if (composed)
+              advanceSelfReceive(census.delivery, delivery, inbound, route, (updates) =>
+                coverage.check(records, updates),
+              );
             memo.retain(
               new Set([
                 'admission-prefix',
@@ -679,6 +682,7 @@ async function openAccountReceiveOwner(
       input: Bytes,
       promote: (updates: readonly Bytes[]) => void = () => {},
       expectedRequest?: Bytes,
+      selfOnly = false,
     ) => {
       if (account.detached) return Promise.reject(Error('This local copy is detached from sync'));
       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
@@ -698,6 +702,11 @@ async function openAccountReceiveOwner(
         let committed = false;
         try {
           const r = decodeInboundRequest(request);
+          if (selfOnly && (!composed || r.publisher !== base.publisher.id))
+            throw new AdmissionError(
+              'receive-refused',
+              'Self receipt requires the owned publisher',
+            );
           if (publisherState(s, base, r.publisher).conflict)
             throw new AdmissionError('receive-refused', 'Inbound publisher is conflicted');
           // Own successful plaintext before wait's final lifetime check can reject it.
@@ -749,6 +758,20 @@ async function openAccountReceiveOwner(
             } finally {
               for (const row of rows) row.bytes.fill(0);
             }
+          }
+          if (selfOnly) {
+            // This body is only a reconciliation read after an unknown submit outcome. Its
+            // exact originals are already local; persist the signed decision through delivery,
+            // outside this storage task, rather than writing/promoting a second content copy.
+            return {
+              kind: result.kind,
+              recorded: false,
+              status: describe(s),
+              selfDecision: {
+                position: result.position,
+                proof: decodeInboundPage(page).entries[0]!.proof.slice(),
+              },
+            };
           }
           const evidence = result.record;
           const before = await owner.carrier.spoolWitness(task),
@@ -1507,6 +1530,8 @@ async function openAccountReceiveOwner(
         }),
     }) satisfies DeviceRoster,
     publisherCount: () => base.history?.readers.length ?? 1,
+    isSelfRequest: (request: Bytes) =>
+      composed && decodeInboundRequest(request).publisher === base.publisher.id,
     api,
     account,
     carrier,
@@ -1550,6 +1575,7 @@ async function openReceivingWorkspace(
     access,
     devices,
     publisherCount,
+    isSelfRequest,
     api,
     account,
     carrier,
@@ -1621,6 +1647,8 @@ async function openReceivingWorkspace(
         return Promise.reject(cause);
       }
     };
+    const outbound =
+      composed && !account.detached ? createOutbound(() => workspace.whenDurable()) : undefined;
     let flight: Promise<unknown> | undefined;
     carrier.beforeRelease?.(async () => {
       await flight?.catch(() => {});
@@ -1643,6 +1671,20 @@ async function openReceivingWorkspace(
           if (!page) return { kind: 'unknown' as const, recorded: false };
           // Only the ordered owner may verify, persist and publish this exact request's page.
           try {
+            if (outbound && isSelfRequest(request)) {
+              // No remote dependency is introduced by our own stream. Even an empty self
+              // check must not occupy the editor admission FIFO while verifying its reply.
+              const received = await api.receivePage(page, undefined, request, true);
+              if ('selfDecision' in received && received.selfDecision) {
+                const { position, proof } = received.selfDecision;
+                try {
+                  await outbound.recordResponse(position, proof);
+                } finally {
+                  proof.fill(0);
+                }
+              }
+              return { kind: received.kind, recorded: false };
+            }
             return await receivePage(page, request);
           } catch (cause) {
             if (cause instanceof ReceiveAuthorityChanged)
@@ -1705,8 +1747,7 @@ async function openReceivingWorkspace(
       },
       listCaptures,
     });
-    if (composed && !account.detached) {
-      const outbound = createOutbound(() => workspace.whenDurable());
+    if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;

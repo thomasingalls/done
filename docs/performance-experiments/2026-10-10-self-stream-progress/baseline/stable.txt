@@ -1,0 +1,6 @@
+block                              keys  p50    p95    max   mean  >50  >100 >250  flick  gapP50 settle
+account-acct-p0-A-realistic         200     30  243.9  493.9   60.7   83    37   10     49   179.3   1508
+account-acct-p0-B-50ms              120  135.2  588.4  889.7  192.4   84    78   31     29   146.5   1704
+account-acct-p1-A-realistic         200  221.8  793.6 1321.4  318.4  189   182   84     47   284.3   1502
+account-acct-p1-T-traced            100  316.5 1142.8 1552.8  446.6   89    88   72     25   341.1   1727
+account-acct-service-down-T-traced  100   24.3  472.8  504.8  185.7   48    46   43     43   188.8   1504

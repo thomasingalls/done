@@ -18,22 +18,23 @@ import {
   args,
   census,
   deliveryBoundary,
-  receiveBoundary,
 } from './fixtures.mjs';
 import { decodeSubmission } from '../../account-protocol/submission.ts';
 import { decodeEnvelopeBody, decodeNetworkEnvelope } from '../../account-protocol/envelope.ts';
+import { crash } from '../account-capture/fixtures.mjs';
 const sendPath = (f) => f.server.origin + '/account/delivery/submit';
 const parsed = (wire) =>
   decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
 
 test(
-  'one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay',
+  'one owner advances from submit receipts without self content readback, through compaction and cold replay',
   { timeout: 60000 },
   async (t) => {
     const f = await native(t),
       item = await selected(f, 'sync-roundtrip');
     const sent = [],
-      reads = [];
+      reads = [],
+      pages = [];
     let active = 0,
       maximum = 0;
     for (const [endpoint, list] of [
@@ -45,7 +46,9 @@ test(
         maximum = Math.max(maximum, active);
         list.push(route.request().postData());
         try {
-          await route.fulfill({ response: await route.fetch() });
+          const response = await route.fetch();
+          if (endpoint === path(f)) pages.push(await response.json());
+          await route.fulfill({ response });
         } finally {
           active--;
         }
@@ -104,7 +107,13 @@ test(
         .filter((r) => r.kind === 'heads')
         .map((r) => JSON.parse(Buffer.from(r.bytes)))
         .filter((r) => r[0] === 'done/account-inbound/v1');
-    assert.equal(entries.length, expected);
+    assert.equal(entries.length, 0);
+    // Existing v2 read remains an empty repair check beyond the signed accepted prefix.
+    assert.ok(reads.length > 0);
+    assert.ok(
+      pages.every((p) => p[5].length === 0),
+      'normal self checks returned content',
+    );
     await cold(f);
     await syncing(f.page, item);
     await settled(f.page);
@@ -130,7 +139,7 @@ test(
 );
 
 test(
-  'lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing',
+  'lost submit answer reconciles through the delivery ledger without self content writes or cold resubmission',
   { timeout: 60000 },
   async (t) => {
     const f = await native(t),
@@ -155,25 +164,33 @@ test(
     lose = false;
     await syncing(f.page, item);
     await settled(f.page);
-    assert.equal(sent[0], sent[1]);
+    assert.equal(sent.filter((wire) => parsed(wire).seq === 1).length, 1);
     assert.equal(
       f.invocations.length,
       count + (await f.page.evaluate(() => opened.spoolStatus())).positions.length - 1,
     );
     assert.deepEqual(await captures(f.page), c);
     await close(f.page);
+    const rows = await census(f.page, item);
+    assert.equal(
+      rows.filter(
+        (r) =>
+          r.kind === 'heads' &&
+          Buffer.from(r.bytes).toString().startsWith('["done/account-inbound/v1"'),
+      ).length,
+      0,
+    );
   },
 );
 
-for (const fault of ['submission', 'receive'])
+for (const fault of ['submission', 'response'])
   test(
     'native ' + fault + ' abort retains work for cold restart',
     { timeout: 60000 },
     async (t) => {
       const f = await native(t),
         item = await selected(f, 'sync-abort-' + fault);
-      if (fault === 'submission') await deliveryBoundary(f.page, 'submission', 'before');
-      else await receiveBoundary(f.page, 'before');
+      await deliveryBoundary(f.page, fault, 'before');
       await syncing(f.page, item);
       const initial = await view(f.page);
       await waitPredicate(
@@ -192,6 +209,117 @@ for (const fault of ['submission', 'receive'])
       await close(f.page);
     },
   );
+
+test(
+  'acceptance committed before renderer death advances self progress on cold open without resubmitting',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'self-receipt-crash'),
+      sent = [];
+    await f.context.route(sendPath(f), async (route) => {
+      sent.push(requestWire(route));
+      await route.fulfill({ response: await route.fetch() });
+    });
+    await deliveryBoundary(f.page, 'response', 'after');
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => window.hit === true);
+    const first = sent[0];
+    await crash(f);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(sent.filter((wire) => wire === first).length, 1);
+    const status = await f.page.evaluate(() => opened.receiveStatus());
+    assert.equal(status.receivedThrough, (await syncStatus(f.page)).send.acceptedThrough);
+    await close(f.page);
+  },
+);
+
+test(
+  'lost reply and unavailable reconciliation retry the exact retained submission after cold open',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'self-receipt-unknown'),
+      sent = [];
+    let lose = true;
+    await f.context.route(sendPath(f), async (route) => {
+      sent.push(requestWire(route));
+      const response = await route.fetch();
+      if (lose) await route.abort();
+      else await route.fulfill({ response });
+    });
+    await f.context.route(path(f), async (route) => {
+      if (lose) await route.fulfill({ status: 503, body: '' });
+      else await route.fulfill({ response: await route.fetch() });
+    });
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => opened.sync.status.send.phase === 'retrying');
+    assert.equal((await f.page.evaluate(() => opened.receiveStatus())).receivedThrough, 0);
+    const first = sent[0],
+      seals = f.invocations.length;
+    await close(f.page);
+    await cold(f);
+    lose = false;
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(sent[1], first);
+    assert.equal(
+      f.invocations.length,
+      seals + (await f.page.evaluate(() => opened.spoolStatus())).positions.length - 1,
+    );
+    await close(f.page);
+  },
+);
+
+test(
+  'verifying an empty self check does not occupy the editor admission queue',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'self-check-queue');
+    await f.page.evaluate(() => {
+      const verify = crypto.subtle.verify.bind(crypto.subtle);
+      let held = false;
+      crypto.subtle.verify = async function (...args) {
+        if (!held && new TextDecoder().decode(args[3]).startsWith('["done/private-read-page/v2"')) {
+          held = true;
+          window.selfCheckWaiting = true;
+          await new Promise((resolve) => {
+            window.releaseSelfCheck = resolve;
+          });
+        }
+        return verify(...args);
+      };
+    });
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => window.selfCheckWaiting === true);
+    const initial = await view(f.page);
+    await f.page.evaluate(() => {
+      const n = editor.read().master.length;
+      surface
+        .input(
+          { name: 'insert', text: ' DURING SELF CHECK' },
+          {
+            ranges: [{ anchor: n, head: n }],
+            main: 0,
+          },
+        )
+        .accepted.then(() => {
+          window.editDuringSelfCheck = true;
+        });
+    });
+    try {
+      await waitPredicate(f.page, () => window.editDuringSelfCheck === true, 3000);
+      assert.equal(await view(f.page), initial + ' DURING SELF CHECK');
+    } finally {
+      await f.page.evaluate(() => window.releaseSelfCheck());
+    }
+    await settled(f.page);
+    await close(f.page);
+  },
+);
 
 test(
   'close drains a delayed send and prevents queued receive dispatch before releasing the shared permit',
@@ -306,6 +434,48 @@ test(
     );
     assert.equal(await f.page.evaluate(() => editor.status.state), 'active');
     assert.equal(await view(f.page), text);
+    await close(f.page);
+  },
+);
+
+test(
+  'legacy self-inbound evidence remains readable while later submissions need no new self-inbound rows',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'sync-legacy-self');
+    await f.page.evaluate(async (item) => {
+      window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+      window.editor = opened.workspace;
+      window.surface = editor.text({ kind: 'master' });
+    }, args(item));
+    const wire = await prepare(f.page);
+    await close(f.page);
+    await open(f.page, item);
+    const query = await request(f.page, 0);
+    await receive(f.page, answer(f, item, query, wire.bytes).bytes);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    const initial = await view(f.page);
+    await edit(f.page, initial.length, 0, ' AFTER OLD RECEIPT');
+    await settled(f.page);
+    await f.page.evaluate(() => opened.compactContent());
+    await close(f.page);
+    const rows = await census(f.page, item);
+    assert.equal(
+      rows.filter(
+        (r) =>
+          r.kind === 'heads' &&
+          Buffer.from(r.bytes).toString().startsWith('["done/account-inbound/v1"'),
+      ).length,
+      1,
+    );
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(await view(f.page), initial + ' AFTER OLD RECEIPT');
     await close(f.page);
   },
 );
