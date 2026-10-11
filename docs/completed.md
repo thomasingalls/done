@@ -12835,3 +12835,18 @@ the invalid-override build intentionally fails. No generalized campaign was star
 checks add no typing-latency claim. Peer discovery traffic, retained bytes, cold reconstruction,
 maintenance and burst batching remain opportunities after activation. Release validation remains
 paused, and the other seat's `docs/progress.md` is unchanged.
+
+### Signed Account performance publication candidate
+
+**Date:** 2026-10-11 · **Source:** signed `5ccee4d0` · **Stage:** publication preparation
+
+**Exit.** The activation phase is signed. All nine branch commits ahead of the fetched application
+main, before this documentation checkpoint, have valid signatures. A clean-source ARM64 image passes the application build, 31 existing
+runtime/gateway/backup/restore/maintenance checks and the disposable two-container smoke, including
+all 34 precache URLs and retained-state restart. Image identities and source are retained in the
+[publication evidence](./development-evidence/2026-10-11-account-latency-publication.json).
+
+**Next.** The [handoff](./account-latency-publication.md) specifies application PR merge, private GHCR
+publication/remote digest verification, then the ol-infra image-pin PR and ordinary rollout checks.
+There is no schema or wire-format change. Registry publication and deployment have not occurred;
+the retained public service is untouched. Release validation remains paused.
