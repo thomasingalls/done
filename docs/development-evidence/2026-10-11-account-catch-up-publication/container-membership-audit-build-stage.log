@@ -1,0 +1,38 @@
+node:fs:561
+  return binding.open(
+                 ^
+
+Error: ENOENT: no such file or directory, open '/app/docs/account-crypto/first-authority.json'
+    at Object.openSync (node:fs:561:18)
+    at readFileSync (node:fs:445:35)
+    at file:///app/test/account-crypto-prep/oracle.mjs:12:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/app/docs/account-crypto/first-authority.json'
+}
+
+Node.js v24.18.0
+✖ test/account-ceremony/content-transfer.test.mjs (395.771416ms)
+(node:20) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:20) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:20) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ publisher quarantine also fences checkpoint mutation until operator restart and full verification (148.747875ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1205.980876
+
+✖ failing tests:
+
+test at test/account-ceremony/content-transfer.test.mjs:1:1
+✖ test/account-ceremony/content-transfer.test.mjs (395.771416ms)
+  'test failed'
