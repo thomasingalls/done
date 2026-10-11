@@ -1,0 +1,22 @@
+{
+  "baseline": "86275345dbb4519da29483875618b15310432e12",
+  "deployedRuntime": "c609d8c7",
+  "platform": "macOS arm64 / Apple M1 Pro",
+  "node": "26.11.1",
+  "browser": "Playwright bundled Chromium headless shell 151.0.7922.34 revision 1234",
+  "viewport": [
+    1440,
+    1000
+  ],
+  "network": "loopback, default request budgets; offline flag for reopen/typing",
+  "fixture": {
+    "cards": 120,
+    "goalsApproximateBytes": 12000,
+    "queuedPositions": 600,
+    "servicePrefix": 607,
+    "readerPrefix": 7,
+    "exportBytes": 54211
+  },
+  "candidate": "working tree; measured and final runtime/dist hashes separately retained",
+  "timedFinalDelta": "Final exception classification, acceptance-time reporting, explicit send retry batching, and failed stream-cancel classification were tested/rebuilt after timing. No new throughput measurement is attributed to the final bundle."
+}

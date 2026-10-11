@@ -66,8 +66,22 @@ test('history transport cancels oversized, incomplete, and aborted reply streams
       },
     },
   );
-  await assert.rejects(exchange(request), /unavailable/);
+  await assert.rejects(exchange(request), { reason: 'size' });
   assert(cancelled);
+  response = new Response(
+    new ReadableStream({
+      cancel() {
+        throw Error('cancel failed');
+      },
+    }),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': String(HISTORY_PAGE_LIMIT + 65),
+      },
+    },
+  );
+  await assert.rejects(exchange(request), { reason: 'size' });
   response = new Response(JSON.stringify(reply), {
     headers: { 'Content-Type': 'application/json', 'Content-Length': '2' },
   });

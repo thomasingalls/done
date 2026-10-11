@@ -65,8 +65,8 @@ async function host(t, options = {}) {
     for await (const chunk of res) chunks.push(chunk);
     return { status: res.statusCode, bytes: Buffer.concat(chunks) };
   };
-  const stream = async (grant, scope = x.scope) => {
-    const { req, res } = await open(NOTIFICATION_PATH, scope, grant.grantToken);
+  const stream = async (grant, scope = x.scope, headers = {}) => {
+    const { req, res } = await open(NOTIFICATION_PATH, scope, grant.grantToken, headers);
     assert.equal(res.statusCode, 200);
     assert.equal(res.headers['content-type'], 'text/event-stream');
     assert.equal(res.headers['cache-control'], 'no-store');
@@ -253,4 +253,22 @@ test('a backpressured stream is dropped without retaining a queued output or tim
   broker.committed(x.scope);
   await tick();
   assert.equal(writes, 1);
+});
+
+test('gateway negotiates content hints; coalesced control wins and legacy clients retain v1', async (t) => {
+  const x = await host(t, { gateway: true }),
+    g = await x.grant();
+  const old = await x.stream(g),
+    modern = await x.stream(g, x.scope, { 'X-Done-Notification-Events': '2' });
+  await old.next();
+  await modern.next();
+  const peer = { ...x.scope, credentialId: '11'.repeat(16) };
+  x.broker.committed(peer, false, true);
+  assert.equal(await old.next(), 'event: hint\ndata: {}');
+  assert.equal(await modern.next(), 'event: content\ndata: {}');
+  x.broker.committed(peer, false, true);
+  x.broker.committed(peer);
+  x.broker.committed(peer, false, true);
+  assert.equal(await old.next(), 'event: hint\ndata: {}');
+  assert.equal(await modern.next(), 'event: hint\ndata: {}');
 });

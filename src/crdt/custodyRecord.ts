@@ -11,6 +11,7 @@ import {
   type SealedCredential,
 } from './custodyCrypto';
 import type { SessionTask } from './writeSession';
+import { sameBytes } from './verifiedRecords';
 
 export type CustodyRefusal =
   | 'invalid-input'
@@ -310,72 +311,81 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord 
     mac: bytes(r['mac'], 32),
   };
 };
-const sealTuple = (s: LockSeal) => [s.v, s.factor, s.id, hex(s.salt), hex(s.nonce), hex(s.ct)];
+const sealTuple = (s: LockSeal, encode: (bytes: Bytes) => string | Bytes) => [
+  s.v,
+  s.factor,
+  s.id,
+  encode(s.salt),
+  encode(s.nonce),
+  encode(s.ct),
+];
 /** Closed, ordered encoding; JSON object enumeration order never enters the MAC. */
+const recordValues = (r: CustodyRecord, encode: (bytes: Bytes) => string | Bytes) => [
+  'done/custody-metadata/v2',
+  r.v,
+  r.state,
+  r.slot_id,
+  r.principal_id,
+  r.workspace_id,
+  r.store_id,
+  r.root_id,
+  r.seals.map((seal) => sealTuple(seal, encode)),
+  r.seal_reserved,
+  r.rotation_owed,
+  r.creation_intent
+    ? [
+        r.creation_intent.id,
+        r.creation_intent.storeId,
+        r.creation_intent.rootId,
+        r.creation_intent.wrappingId,
+        r.creation_intent.signingId,
+      ]
+    : null,
+  r.envelope
+    ? [r.envelope.v, r.envelope.gen, encode(r.envelope.nonce), encode(r.envelope.ct)]
+    : null,
+  r.credentials?.map((c) => [
+    c.role,
+    c.id,
+    encode(c.publicKey),
+    [c.sealed.v, encode(c.sealed.nonce), encode(c.sealed.ct)],
+  ]) ?? null,
+  ...(r.creation_seed
+    ? [
+        [
+          'creation-seed',
+          r.creation_seed.v,
+          encode(r.creation_seed.salt),
+          encode(r.creation_seed.nonce),
+          encode(r.creation_seed.ct),
+        ],
+      ]
+    : []),
+  ...(r.approval
+    ? [['content-approval', r.approval.v, r.approval.sequence, encode(r.approval.ct)]]
+    : []),
+  ...(r.active_rotation ? [['active-rotation', r.active_rotation]] : []),
+  ...(r.rotation
+    ? [['content-rotation', r.rotation.v, r.rotation.sequence, encode(r.rotation.ct)]]
+    : []),
+  ...(r.history
+    ? [['history-maintenance', r.history.v, r.history.sequence, encode(r.history.ct)]]
+    : []),
+  ...(r.initial_account
+    ? [
+        [
+          'initial-account',
+          r.initial_account.generation,
+          r.initial_account.deliveryHash,
+          r.initial_account.key.sequence,
+          r.initial_account.key.ct,
+        ],
+      ]
+    : []),
+];
 export const recordPayload = (r: CustodyRecord): Bytes =>
-  utf8(
-    JSON.stringify([
-      'done/custody-metadata/v2',
-      r.v,
-      r.state,
-      r.slot_id,
-      r.principal_id,
-      r.workspace_id,
-      r.store_id,
-      r.root_id,
-      r.seals.map(sealTuple),
-      r.seal_reserved,
-      r.rotation_owed,
-      r.creation_intent
-        ? [
-            r.creation_intent.id,
-            r.creation_intent.storeId,
-            r.creation_intent.rootId,
-            r.creation_intent.wrappingId,
-            r.creation_intent.signingId,
-          ]
-        : null,
-      r.envelope ? [r.envelope.v, r.envelope.gen, hex(r.envelope.nonce), hex(r.envelope.ct)] : null,
-      r.credentials?.map((c) => [
-        c.role,
-        c.id,
-        hex(c.publicKey),
-        [c.sealed.v, hex(c.sealed.nonce), hex(c.sealed.ct)],
-      ]) ?? null,
-      ...(r.creation_seed
-        ? [
-            [
-              'creation-seed',
-              r.creation_seed.v,
-              hex(r.creation_seed.salt),
-              hex(r.creation_seed.nonce),
-              hex(r.creation_seed.ct),
-            ],
-          ]
-        : []),
-      ...(r.approval
-        ? [['content-approval', r.approval.v, r.approval.sequence, hex(r.approval.ct)]]
-        : []),
-      ...(r.active_rotation ? [['active-rotation', r.active_rotation]] : []),
-      ...(r.rotation
-        ? [['content-rotation', r.rotation.v, r.rotation.sequence, hex(r.rotation.ct)]]
-        : []),
-      ...(r.history
-        ? [['history-maintenance', r.history.v, r.history.sequence, hex(r.history.ct)]]
-        : []),
-      ...(r.initial_account
-        ? [
-            [
-              'initial-account',
-              r.initial_account.generation,
-              r.initial_account.deliveryHash,
-              r.initial_account.key.sequence,
-              r.initial_account.key.ct,
-            ],
-          ]
-        : []),
-    ]),
-  );
+  utf8(JSON.stringify(recordValues(r, hex)));
+
 const macKey = (root: Bytes, r: CustodyRecord, subtle: SubtleCrypto) =>
   hkdf(
     root,
@@ -401,8 +411,18 @@ export const signRecord = async (
   ...r,
   mac: new Uint8Array(await subtle.sign('HMAC', await macKey(root, r, subtle), recordPayload(r))),
 });
+// Compare the same closed values used by the MAC without encoding large sealed progress
+// carriers to hex/JSON/UTF-8/hex on every authority fence. No cached equality or MAC-only shortcut.
+const equalValues = (a: unknown, b: unknown): boolean => {
+  if (a instanceof Uint8Array) return b instanceof Uint8Array && sameBytes(a, b);
+  if (!Array.isArray(a)) return a === b;
+  if (!Array.isArray(b) || a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) if (!equalValues(a[i], b[i])) return false;
+  return true;
+};
+const rawBytes = (bytes: Bytes) => bytes;
 export const recordEqual = (a: CustodyRecord, b: CustodyRecord): boolean =>
-  hex(recordPayload(a)) === hex(recordPayload(b)) && hex(a.mac) === hex(b.mac);
+  sameBytes(a.mac, b.mac) && equalValues(recordValues(a, rawBytes), recordValues(b, rawBytes));
 
 export const openCustodyDb = (): Promise<IDBDatabase> =>
   new Promise((resolve, reject) => {

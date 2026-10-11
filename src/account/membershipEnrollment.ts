@@ -310,6 +310,7 @@ export function createMembershipEnrollment(
     return view('editing', {
       editor: {
         workspace: opened.workspace,
+        sync: opened.sync,
         devices: opened.devices,
         actorId: joined.principalId,
         accountId: opened.accountId,

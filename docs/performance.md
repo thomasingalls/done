@@ -1576,3 +1576,52 @@ All four cold-open slices are recorded together in the cold-open integration com
 `4bcac419`. The experiment packets retain their original working-tree descriptions and tested source
 hashes. Nothing has been deployed; release validation remains paused, and the other seat's live
 progress file remains untouched.
+
+## 2026-10-11 — Client receive scheduling, custody equality and substantial-workspace evidence
+
+The [client receive packet](./performance-experiments/2026-10-11-client-receive/README.md) compares
+local deployed-source `86275345` (runtime identical to `c609d8c7`) with the preserved candidate
+patch/build hashes. A real disposable pair uses 120 cards, 12 KB Goals and 600 queued accepted
+positions. Both baselines miss the original 600-second catch-up deadline; candidates complete in
+307.083/318.043 seconds. The second baseline's explicitly separate continuation completes in
+938.398 seconds, a 66.1% paired reduction. The second pair reduces own/peer reads from 599/600 to
+150/600 and catch-up long tasks from 8,446 (p95 79 ms) to one (53 ms). Verification/admission and
+one-position pages remain intact; periodic authenticated discovery and legacy notifications remain.
+
+Observed post-catch-up burst-to-peer medians are 3,642 ms baseline and 2,362/2,358 ms candidate,
+including batching and assertion polling. Distinct newly accepted writer reply intervals at depth
+are essentially unchanged (2,264/2,285 ms medians). Complete exported writing agrees, and four
+matched offline opens reproduce the same 54,211-byte digest. No HTTP capacity refusals occurred.
+
+Identical completed-receiver cold opens remain about 6.9 seconds, over the unchanged 2.5-second
+budget, with identical native verification counts. Offline input medians stay around 14–15 ms;
+p95 is mixed (18.4/23.6 ms baseline, 24.3/24.0 candidate). No offline input improvement is claimed.
+A separate profile identifies received coverage reconstruction and byte/text conversion as remaining
+cold-open costs. Post-catch-up tasks exceeding one second remain; compaction attribution needs a
+captured profile. Phone, WAN, indefinite history and release qualification remain unmeasured here.
+
+The final source adds delayed fixed failure notices, Account details and lane-specific retries.
+Known integrity/size/closed/conflict stops remain terminal; unexpected failures back off automatically.
+Measured and final source/bundle identities differ only by recorded follow-up observation/refusal/retry
+corrections. Focused tests and final build pass. One final packaged attempt failed during initial
+enrollment before the recovery test; its isolated rerun passed and the unexplained refusal remains
+recorded for follow-up before publication. Nothing is deployed; release qualification remains paused.
+
+## 2026-10-11 — Enrollment refusal investigation before publication
+
+Client receive work and its measurements are signed as `34f9b0b9`. The
+[bounded follow-up](./performance-experiments/2026-10-11-enrollment-history-race/README.md) reproduces
+the second-device opening failure: three of six pairings receive `409 unavailable` from the history
+checkpoint route. A temporary service diagnostic identifies `Empty publisher authority changed`.
+An ordinary first-device upload changes the stored witness between two captures, and the history
+reader reports an error instead of restarting its snapshot verification. The check came from
+deployed service optimization `c609d8c7`. The original run lacked a refusal body, so its precise cause
+cannot be recovered retrospectively; the new runs establish this concrete defect with the same symptom.
+
+The local repair retries only the two explicit snapshot-race checks within the existing four-attempt
+bound. All five directed controls pass, including authority/row-damage refusals; 35 affected service
+regressions and six repaired packaged pairings pass. The second matched check concerns a concurrent
+append during retained checkpoint-cut verification. No client behavior, authentication, schema or
+format changes. These are correctness observations, not new performance measurements or qualification.
+The original stopped-receive notice/manual retry journey also passes, including reverse-direction
+editing. The repair is local; no publication has been prepared or deployed.

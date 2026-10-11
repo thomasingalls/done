@@ -42,10 +42,14 @@ are still useful for the manual receiver, but do not establish safe credential c
 
 Use one composed scheduler with two independent lane states and at most one pass/timer. A send pass
 resolves at most one position; a receive pass handles at most one page. If both are due, alternate lanes.
-Progress yields 50 ms. Receive idle polls every five seconds. Send idle waits for an editor revision;
+Send progress yields 50 ms; receive progress yields through a zero-delay timer, permitting a due sender
+to run before the next page. Receive idle polls every five seconds (about a minute with a healthy
+notification stream). Send idle waits for an editor revision;
 revision wakes during an active pass are retained, and ordinary wakes cannot bypass unknown backoff.
-Each lane keeps its own 1/2/4/8/16/30-second capped backoff and persistent error/conflict halt. Online may
-expedite eligible work but cannot clear a halt; only explicit lane retry requests a durable recheck.
+Each lane keeps its own 1/2/4/8/16/30-second capped backoff, including unexpected exceptions. Explicit
+conflict, closed, size and integrity refusals halt. Online or a fresh subscription handshake may
+expedite eligible work but cannot clear a halt; explicit lane retry requests a durable recheck of only
+that lane. Neither retry nor a notification changes authenticated positions.
 
 All operation results are runtime observations. Each pass reconstructs position from authenticated disk;
 transport success cannot mark acceptance or receipt. Offline/Local pressure pause both lanes. Recheck
@@ -97,3 +101,22 @@ are unchanged. The exact executed source versions and this timeout-only delta re
 
 Next is the row-7 manifest and semantic-admission descriptor capacity/versioning correction. This result
 pays no remaining real-Account, enrollment, performance, recovery or release gate by implication.
+
+
+### 2026-10-11 — Client receive and failure visibility
+
+The receive selector keeps a publisher for at most four verified progressing pages, then gives other
+publishers a turn. Empty checks advance immediately; no unverified reply creates sticky preference.
+Every page returns to the shared scheduler. Page size remains one position, retaining existing byte
+and admission bounds. Custody equality compares the same closed values as the MAC encoding without
+re-encoding sealed progress carriers; the authenticated format is unchanged.
+
+A persistent online lane problem becomes visible after 30 seconds in a fixed editor notice. The
+Account menu also shows each lane's state, accepted/received counters, fixed reason code and last
+successful upload/receive check since this opening. Those times are runtime observations, not durable
+or global "all devices synced" claims. Offline and local-storage pressure use their existing paths.
+Retry targets one lane and reruns all normal checks. Invalid received/history evidence remains halted;
+unexpected exceptions retry automatically. No content, account IDs or exception text enters the notice.
+
+The [bounded measurement protocol](./performance-experiments/2026-10-11-client-receive/protocol.md)
+uses substantial synthetic writing and deep received history. Release qualification remains paused.

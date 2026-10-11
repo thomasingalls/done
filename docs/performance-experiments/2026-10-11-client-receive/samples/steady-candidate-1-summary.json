@@ -1,0 +1,40 @@
+[
+  {
+    "run": "steady-candidate-1",
+    "source": "/Users/thomasingalls/.codex/worktrees/c030/done",
+    "status": "passed",
+    "profiled": false,
+    "cold": {
+      "ms": 6872.700000762939,
+      "native": {
+        "decrypt": 3180,
+        "verify": 5428,
+        "digest": 6179
+      }
+    },
+    "heap": 18791628,
+    "exportHash": "f7f09a510e85f09d3dfd6baa627edbe90fd93e5b1884161897abd83560db2bd5",
+    "exportBytes": 54211,
+    "typing": {
+      "frame": {
+        "n": 120,
+        "p50": 18.600000381469727,
+        "p95": 23.900001525878906,
+        "max": 31.5
+      },
+      "visible": {
+        "n": 120,
+        "p50": 14.5,
+        "p95": 24.299999237060547,
+        "max": 79.70000076293945
+      },
+      "longTasks": null
+    },
+    "idleLongTasks": {
+      "n": 1,
+      "p50": 50,
+      "p95": 50,
+      "max": 50
+    }
+  }
+]

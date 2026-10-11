@@ -32,6 +32,10 @@ import { fresh, lp } from '../account-enrollment/fixtures.mjs';
 import { AccountCore } from '../../account-service/core.ts';
 import { DatabaseSync, backup } from 'node:sqlite';
 import {
+  historyExchangeMessage,
+  verifyHistoryCheckpointPage,
+} from '../../account-protocol/historyExchange.ts';
+import {
   verifyMembershipAnchor,
   verifyMembershipAdmission,
   membershipState,
@@ -219,6 +223,119 @@ async function checkpointFixture(t, options = {}) {
   };
   return { ...x, certification, checkpoint, admission, exchange };
 }
+
+async function openingHistoryFixture(t) {
+  const authority = authorityFixture(t);
+  const x = await checkpointFixture(t, {
+    authority,
+    sessions: { pin: authority.pin, operatorKey: authority.key },
+    membershipContinuation: true,
+  });
+  const r = {
+    v: 1,
+    kind: 'history-checkpoint-request',
+    workspaceId: x.workspace,
+    lineageId: x.context.lineageId,
+    epoch: 3,
+    head: x.certification.head,
+    credentialId: x.context.candidate.id,
+    nonce: 'be'.repeat(32),
+    expiresAt: 61000,
+    action: 'read',
+    payload: 'latest',
+    signature: '00'.repeat(64),
+  };
+  r.signature = signed(x.keys.new, await historyExchangeMessage(r));
+  return { x, r };
+}
+
+test('history read retries a concurrent upload before capturing the new device empty stream', async (t) => {
+  const { x, r } = await openingHistoryFixture(t);
+  const wire = x.make(1, 'concurrent writer', { epoch: 3 });
+  let appended = false;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  // The initial SQLite snapshot is already captured when cryptographic verification starts.
+  // Complete a genuine signed upload during that await, before any later publisher capture.
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (!appended) {
+      appended = true;
+      decision(x, await x.deliveryCall(wire), wire, undefined, 3);
+    }
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, r);
+  assert(appended);
+  assert.equal(response.ok, true, JSON.stringify(response));
+  const page = await verifyHistoryCheckpointPage(response.page, r, x.authority.pin);
+  assert.equal(page.checkpoint, null);
+  assert.equal(page.heads.find((h) => h.credentialId === x.context.existing.id).position, 1);
+  assert.equal(page.heads.find((h) => h.credentialId === x.context.candidate.id).position, 0);
+});
+
+test('history read stops after four changing snapshots without returning a mixed page', async (t) => {
+  const { x, r } = await openingHistoryFixture(t);
+  let armed = false,
+    appends = 0,
+    previous = '00'.repeat(32);
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (armed) {
+      armed = false;
+      const wire = x.make(++appends, 'concurrent writer', { epoch: 3 });
+      previous = decision(x, await x.deliveryCall(wire), wire, previous, 3).head.link;
+    }
+    return verify(...args);
+  });
+  const response = await x.authority.owner.exchangeHistoryCheckpoint(
+    {
+      exchangeHistoryCheckpoint(input, issuer) {
+        return x.f.core.exchangeHistoryCheckpoint(input, {
+          ...issuer,
+          check(...args) {
+            issuer.check(...args);
+            // Each initial authority verification has captured a new SQLite snapshot.
+            armed = true;
+          },
+        });
+      },
+    },
+    r,
+  );
+  assert.deepEqual(response, { ok: false, refusal: 'state-changed' });
+  assert.equal(appends, 4);
+  assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+});
+
+for (const fault of ['authority', 'old-row'])
+  test(`history read still refuses ${fault} damage during verification`, async (t) => {
+    const { x, r } = await openingHistoryFixture(t);
+    if (fault === 'old-row') {
+      const wire = x.make(1, 'before damage', { epoch: 3 });
+      decision(x, await x.deliveryCall(wire), wire, undefined, 3);
+    }
+    let changed = false;
+    const verify = crypto.subtle.verify.bind(crypto.subtle);
+    t.mock.method(crypto.subtle, 'verify', async (...args) => {
+      if (!changed) {
+        changed = true;
+        mutate(x, (db) =>
+          db.exec(
+            fault === 'authority'
+              ? "UPDATE accounts SET state='pending'"
+              : "UPDATE delivery_decisions SET submission=X'00' WHERE position=1",
+          ),
+        );
+      }
+      return verify(...args);
+    });
+    const response = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, r);
+    assert(changed);
+    assert.deepEqual(response, {
+      ok: false,
+      refusal: fault === 'authority' ? 'unavailable' : 'ledger-integrity',
+    });
+    assert.equal(x.f.rows('history_checkpoint_catalog').length, 0);
+  });
 
 test('bootstrap retries a certification committed while signing without returning the old authority', async (t) => {
   const x = await approved(t);

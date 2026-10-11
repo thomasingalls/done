@@ -1,0 +1,143 @@
+[
+  {
+    "run": "baseline-2",
+    "source": "/tmp/done-client-receive/baseline",
+    "status": "passed",
+    "primaryDeadlineMissed": true,
+    "primaryMs": 600000,
+    "completionMs": 938398,
+    "liveMs": {
+      "n": 12,
+      "p50": 3642,
+      "p95": 3967,
+      "max": 3967
+    },
+    "coldMs": 7057.60000038147,
+    "heap": 20949436,
+    "exportBytes": 54211,
+    "records": [
+      [
+        {
+          "store": "content",
+          "rows": 1
+        },
+        {
+          "store": "heads",
+          "rows": 664
+        },
+        {
+          "store": "meta",
+          "rows": 1
+        },
+        {
+          "store": "outbound",
+          "rows": 145
+        }
+      ],
+      [
+        {
+          "store": "outbox",
+          "rows": 0
+        },
+        {
+          "store": "slots",
+          "rows": 1
+        }
+      ],
+      [
+        {
+          "store": "entries",
+          "rows": 4
+        }
+      ],
+      [
+        {
+          "store": "attempt",
+          "rows": 0
+        }
+      ],
+      [
+        {
+          "store": "slots",
+          "rows": 1
+        }
+      ]
+    ],
+    "requests": {
+      "A /account/session/v1/begin pending": 1,
+      "A /account/session/v1/acknowledge pending": 3,
+      "B /account/session/v1/begin pending": 2,
+      "B /account/session/v1/acknowledge pending": 4,
+      "A /account/session/v1/acknowledge 200": 4,
+      "B /account/session/v1/acknowledge 200": 4,
+      "A /account/session/v1/renew 200": 4,
+      "B /account/session/v1/renew 200": 4,
+      "A /account/grant/v1/begin 200": 4,
+      "B /account/grant/v1/begin 200": 4,
+      "B /account/grant/v1/finish 200": 4,
+      "B /account/notifications/v1/subscribe 200": 4,
+      "A /account/grant/v1/finish 200": 4,
+      "A /account/notifications/v1/subscribe 200": 4,
+      "A /account/delivery/submit 200": 22,
+      "B /account/membership/v2/discover 200": 173,
+      "B /account/history/v1/checkpoint 200": 172,
+      "B /account/delivery/read-v2 200": 1267,
+      "A /account/membership/v2/discover 200": 32,
+      "A /account/history/v1/checkpoint 200": 32,
+      "A /account/delivery/read-v2 200": 88,
+      "B /account/delivery/submit 200": 12
+    },
+    "requestFailures": {
+      "A": 46,
+      "B": 556
+    },
+    "primary": {
+      "receiverOwnReads": 393,
+      "receiverPeerReads": 394,
+      "lastPeerAfter": 400,
+      "writerSubmitReplies": 10,
+      "writerReplyIntervalMs": {
+        "n": 9,
+        "p50": 2289,
+        "p95": 2912,
+        "max": 2912
+      },
+      "receiverSubmitMs": [
+        2552
+      ]
+    },
+    "completedCatchup": {
+      "receiverOwnReads": 599,
+      "receiverPeerReads": 600,
+      "lastPeerAfter": 606,
+      "writerSubmitReplies": 10,
+      "writerReplyIntervalMs": {
+        "n": 9,
+        "p50": 2289,
+        "p95": 2912,
+        "max": 2912
+      },
+      "receiverSubmitMs": [
+        2552
+      ]
+    },
+    "catchupLongTasksMs": {
+      "n": 8446,
+      "p50": 76,
+      "p95": 79,
+      "max": 1235
+    },
+    "typingFrameMs": {
+      "n": 120,
+      "p50": 23.700000762939453,
+      "p95": 77.89999961853027,
+      "max": 88.29999923706055
+    },
+    "typingLongTasksMs": {
+      "n": 110,
+      "p50": 78,
+      "p95": 84,
+      "max": 88
+    }
+  }
+]

@@ -1,3 +1,4 @@
+import { createReceiveSelection } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
 import { countLedgerWork } from './accountLedgerMetrics';
@@ -536,7 +537,7 @@ async function openAccountReceiveOwner(
       for (const r of records) r.bytes.fill(0);
     }
   };
-  let nextPublisher = 0;
+  const receiveSelection = createReceiveSelection();
   const describe = (s: Awaited<ReturnType<typeof state>>) =>
     Object.freeze({
       state:
@@ -560,8 +561,7 @@ async function openAccountReceiveOwner(
     if (account.detached) throw Error('This local copy is detached from sync');
     const all = await state(task, owner, route);
     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
-    const publisher =
-      after === undefined ? publishers[nextPublisher++ % publishers.length]! : base.publisher.id;
+    const publisher = after === undefined ? receiveSelection.next(publishers) : base.publisher.id;
     const s = publisherState(all, base, publisher),
       cursor = after ?? s.prefix.position;
     if (s.conflict) throw Error('Inbound stream is conflicted');
@@ -682,7 +682,7 @@ async function openAccountReceiveOwner(
           (catalog.sequence === prepared.installed.sequence &&
             catalog.latest !== prepared.installed.hash)
         )
-          throw Error('History catalog regressed or forked');
+          return captureError('History catalog regressed or forked');
         if (catalog.latest === prepared.installed.hash && prepared.installed.receiveCuts)
           return null;
       }
@@ -713,7 +713,7 @@ async function openAccountReceiveOwner(
         page.catalog.sequence < catalog.sequence ||
         (page.catalog.sequence === catalog.sequence && page.catalog.latest !== catalog.latest)
       )
-        throw Error('Admitted history changed during reading');
+        return captureError('Admitted history changed during reading');
       return encodeHistoryInstall({
         version: 2,
         baseline: prepared.baseline,
@@ -1714,6 +1714,14 @@ async function openAccountReceiveOwner(
     carrier,
     listCaptures,
     fetchPage,
+    completedRead: (request: Bytes, kind: string) => {
+      const publisher = decodeInboundRequest(request).publisher;
+      receiveSelection.completed(
+        base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
+        publisher,
+        kind === 'received',
+      );
+    },
     fetchHistory,
     installHistory,
     createOutbound,
@@ -1752,6 +1760,7 @@ async function openReceivingWorkspace(
     access,
     devices,
     publisherCount,
+    completedRead,
     isSelfRequest,
     api,
     account,
@@ -1881,9 +1890,12 @@ async function openReceivingWorkspace(
                   proof.fill(0);
                 }
               }
+              completedRead(request, received.kind);
               return { kind: received.kind, recorded: false };
             }
-            return await receivePage(page, request);
+            const received = await receivePage(page, request);
+            completedRead(request, received.kind);
+            return received;
           } catch (cause) {
             if (cause instanceof ReceiveAuthorityChanged)
               return { kind: 'unknown' as const, recorded: false };
@@ -2056,9 +2068,11 @@ async function openReceivingWorkspace(
           notifications = startNotifications({
             signal: carrier.signal,
             open: (signal) => access.openNotifications(signal),
-            wake: () => {
-              resetDiscovery();
-              scheduler.wake('remote');
+            wake: (event) => {
+              if (event !== 'content') resetDiscovery();
+              // A fresh subscription handshake proves renewed reachability. Content
+              // hints alone never override a failed operation's retry clock.
+              scheduler.wake(event === 'ready' ? 'online' : 'remote');
             },
             health: (healthy) => {
               notificationHealthy = healthy;

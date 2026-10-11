@@ -1087,3 +1087,28 @@
     }
   }
 }
+
+/* A persistent sync failure never displaces the writing or the storage-admission notice. */
+.sync-notice {
+  position: fixed;
+  z-index: 100;
+  inset-inline-end: max(1rem, env(safe-area-inset-right));
+  inset-block-end: max(1rem, env(safe-area-inset-bottom));
+  width: min(28rem, calc(100vw - 2rem));
+  max-height: 40vh;
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 0.25rem 1rem #0004;
+}
+.sync-notice p,
+.sync-details p {
+  margin: 0.35rem 0;
+}
+.sync-notice code,
+.sync-details code {
+  user-select: text;
+}

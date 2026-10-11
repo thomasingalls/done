@@ -189,5 +189,24 @@ it('rechecks a quiet deadline after asynchronous reads, but an already sealed en
         throw Error('must not postpone persisted bytes');
       },
     ),
-  ).toEqual({ kind: 'progress', acceptedThrough: 1 });
+  ).toEqual({ kind: 'progress', acceptedThrough: 1, acceptedNow: true });
+});
+
+it('manual send retry closes its batch immediately; receive retry leaves that batch alone', async () => {
+  const f = batchedFixture(2000);
+  await idleStart(f);
+  f.scheduler.wake('local');
+  await f.tick(50);
+  f.scheduler.runtime.retry('receive');
+  await f.tick(0);
+  expect(f.calls[2]!.lane).toBe('receive');
+  expect(f.scheduler.runtime.status.send.nextAttemptAt).toBe(300);
+  f.calls[2]!.finish('idle');
+  await flush();
+  f.scheduler.runtime.retry('send');
+  await f.tick(0);
+  expect(f.calls[3]!).toMatchObject({ lane: 'send', at: 50 });
+  f.calls[3]!.finish('idle');
+  await flush();
+  await f.scheduler.dispose();
 });

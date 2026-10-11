@@ -372,3 +372,18 @@ service identity. [The runbook](./packaged-account-development.md#live-notificat
 records the backup and live checks. Personal-device update uptake remains pending. The operator has
 authorized continuing to lifecycle work; the earlier instruction in step 4 to stop for use is therefore
 not a barrier to preparation. Additional devices and removal/revocation come before lost-device recovery.
+
+
+### 2026-10-11 — Negotiated content notifications
+
+New clients advertise `X-Done-Notification-Events: 2` when opening the existing subscription route.
+Only those connections may receive `event: content` with the same empty data object. Clients without
+that header retain exactly the previous `ready`/`hint`/heartbeat alphabet; new clients still accept
+legacy `hint` events from older servers. The packaged gateway forwards the capability header. It
+confers no authority and contains no identity or durable cursor.
+
+Content events wake ordinary authenticated receive without resetting membership/history discovery.
+Control hints, initial readiness and reconnect still reset discovery. Coalesced control events dominate
+content events. Periodic authenticated discovery remains in place to repair missed notifications;
+a hint is never a proof. A fresh stream readiness handshake can expedite failed network work but
+cannot clear an integrity/conflict/size/closed halt. Content events do not defeat failure backoff.

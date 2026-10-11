@@ -1,0 +1,18 @@
+[
+  {
+    "path": "account-service/historyCheckpoint.ts",
+    "sha256": "503946fb7655065a2366a1e400b0877c32efab7d2653b7588edb5aada8be70ba"
+  },
+  {
+    "path": "account-service/notifications.ts",
+    "sha256": "589b3891d3eda5b8d9c7b8e780ea2c8b9ce42fc52038247434acc914d1bbe8d9"
+  },
+  {
+    "path": "scripts/lib/account-gateway.mjs",
+    "sha256": "32945ff4c8e613b1c8c484fc8717ff3d9f715bea64770341e857ea270b58365f"
+  },
+  {
+    "path": "package.json",
+    "sha256": "0573b2e8f030c7ef649c095355d65b435ca4950adbb824624dbc216c1c6c4fd7"
+  }
+]

@@ -1,0 +1,10 @@
+--- a/account-service/historyCheckpoint.ts
++++ b/account-service/historyCheckpoint.ts
+@@ -660,6 +660,7 @@
+       return { ok: true as const, page };
+     } catch (cause) {
+       if (db.isTransaction) db.exec('ROLLBACK');
++      console.error('HISTORY_DIAGNOSTIC', cause);
+       if (cause instanceof LedgerIntegrityError) return no('ledger-integrity');
+       rethrowAuthorization(cause);
+       return no('unavailable');

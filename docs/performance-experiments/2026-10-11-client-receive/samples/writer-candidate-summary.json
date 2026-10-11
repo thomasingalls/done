@@ -1,0 +1,53 @@
+[
+  {
+    "run": "writer-candidate",
+    "mode": "writer-only",
+    "status": "passed",
+    "source": "/Users/thomasingalls/.codex/worktrees/c030/done",
+    "acceptedPositions": [
+      608,
+      609,
+      610,
+      611,
+      612,
+      613,
+      614,
+      615,
+      616
+    ],
+    "acceptedReplyIntervalMs": {
+      "n": 8,
+      "p50": 2285,
+      "p95": 2721,
+      "max": 2721
+    },
+    "requests": {
+      "A /account/session/v1/begin pending": 1,
+      "A /account/session/v1/acknowledge pending": 2,
+      "B /account/session/v1/begin pending": 1,
+      "B /account/session/v1/acknowledge pending": 2,
+      "A /account/session/v1/acknowledge 200": 1,
+      "B /account/session/v1/acknowledge 200": 1,
+      "A /account/session/v1/renew 200": 1,
+      "B /account/session/v1/renew 200": 1,
+      "A /account/grant/v1/begin 200": 1,
+      "B /account/grant/v1/begin 200": 1,
+      "B /account/grant/v1/finish 200": 1,
+      "B /account/notifications/v1/subscribe 200": 1,
+      "A /account/grant/v1/finish 200": 1,
+      "A /account/notifications/v1/subscribe 200": 1,
+      "A /account/delivery/submit 200": 10,
+      "B /account/membership/v2/discover 200": 5,
+      "B /account/history/v1/checkpoint 200": 5,
+      "B /account/delivery/read-v2 200": 56,
+      "A /account/membership/v2/discover 200": 1,
+      "A /account/history/v1/checkpoint 200": 1,
+      "A /account/delivery/read-v2 200": 4,
+      "B /account/delivery/submit 200": 1
+    },
+    "requestFailures": {
+      "A": 5,
+      "B": 19
+    }
+  }
+]

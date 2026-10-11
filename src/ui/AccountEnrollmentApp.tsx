@@ -295,6 +295,7 @@ export function AccountEnrollmentApp({
     return (
       <WorkspaceUiProvider
         workspace={state.editor.workspace}
+        sync={state.editor.sync}
         actorId={state.editor.actorId}
         devices={state.editor.devices}
         onShowDevices={() => setScreen('devices')}

@@ -71,6 +71,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   let openedPrincipal: string | undefined;
   let context: RecoveryContext | undefined;
   let workspace: AdmittedWorkspace | undefined;
+  let sync: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
   let devices: import('./deviceRoster').DeviceRoster | undefined;
   let operation: Promise<void> | undefined;
   let closing: Promise<void> | undefined;
@@ -346,7 +347,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     delete saved.requestedName;
     await progress(saved);
     guard();
-    publish({ kind: 'ready', workspace, actorId: openedPrincipal, devices });
+    publish({ kind: 'ready', workspace, actorId: openedPrincipal, devices, sync });
   };
   const openAccount = async (principalId: string) => {
     if (networkLogin?.retired) {
@@ -376,6 +377,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       token,
     );
     workspace = opened.workspace;
+    sync = opened.sync;
     devices = opened.devices;
     openedPrincipal = principalId;
     try {

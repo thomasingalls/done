@@ -6,7 +6,14 @@ function proxyAccountRequest(request, response, servicePort, streams) {
   // Forward only framing and the client's authority inputs. Never invent an Origin,
   // Authorization or forwarded-host claim, follow redirects, or retry a lost reply.
   const headers = {};
-  for (const key of ['host', 'origin', 'authorization', 'content-type', 'content-length'])
+  for (const key of [
+    'host',
+    'origin',
+    'authorization',
+    'content-type',
+    'content-length',
+    'x-done-notification-events',
+  ])
     if (request.headers[key] !== undefined) headers[key] = request.headers[key];
   response.setHeader('Cache-Control', 'no-store');
   response.setHeader('X-Content-Type-Options', 'nosniff');
