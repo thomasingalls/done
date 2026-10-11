@@ -1,3 +1,4 @@
+import { maintenanceTask } from './contentMaintenance';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
@@ -404,8 +405,9 @@ export async function openAccountCaptureOwner(
           owner!.journal.flush(task, entries, (t, values) => persist(t, values)),
         ),
       ),
-    compactContent: () =>
-      run(async (task) => {
+    compactContent: (interrupt?: AbortSignal) =>
+      run(async (ownedTask) => {
+        const task = maintenanceTask(ownedTask, interrupt);
         // The generic compactor already retains every outbound row. Validate capsule syntax/identity
         // before it may delete any content, including exact journal/disk overlap.
         await withSnapshot(task, async (journal) => {

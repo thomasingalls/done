@@ -14,6 +14,7 @@ import {
 import { deriveStoreName } from '../src/crdt/storeName';
 import { makeSource, checkRecovery } from './storage-properties/oracle';
 import { validateContentUpdates } from '../src/crdt/contentCompaction';
+import { MaintenanceInterrupted } from '../src/crdt/contentMaintenance';
 const scope = { slotId: 'trim-unit', principalId: 'principal', workspaceId: 'workspace' };
 const authority = { ...scope, resolvePrincipal: () => scope.principalId };
 const sessions: JournalSession[] = [];
@@ -142,6 +143,71 @@ const pair = async (s: JournalSession) =>
   ]);
 
 describe('exact-coverage content compaction (unit wiring locks only)', () => {
+  it('an already interrupted maintenance attempt has no disk effects and keeps the owner usable', async () => {
+    const { s } = await seed();
+    await pair(s);
+    const before = await inventory(),
+      stop = new AbortController();
+    stop.abort();
+    await expect(s.compactContent(stop.signal)).rejects.toBeInstanceOf(MaintenanceInterrupted);
+    expect(await inventory()).toEqual(before);
+    expect(s.state).toBe('active');
+    expect((await s.compactContent()).status).toBe('compacted');
+  });
+  it.each(['seal', 'published', 'delete-census'] as const)(
+    'interruption at %s preserves coverage and consumed reservations; a fresh retry recovers',
+    async (phase) => {
+      const { s, name } = await seed();
+      await pair(s);
+      const before = await disk(name),
+        expected = await replay(s),
+        stop = new AbortController();
+      if (phase === 'seal') {
+        const encrypt = crypto.subtle.encrypt.bind(crypto.subtle);
+        vi.spyOn(crypto.subtle, 'encrypt').mockImplementation(async (...args) => {
+          const result = await encrypt(...args);
+          stop.abort();
+          return result;
+        });
+      } else if (phase === 'published') {
+        const add = FakeStore.prototype.add;
+        vi.spyOn(FakeStore.prototype, 'add').mockImplementation(
+          function (this: IDBObjectStore, value, key) {
+            if (this.name === 'content' && value.kind === 'state')
+              this.transaction.addEventListener('complete', () => stop.abort());
+            return add.call(this, value, key);
+          },
+        );
+      } else {
+        const keys = FakeStore.prototype.getAllKeys;
+        vi.spyOn(FakeStore.prototype, 'getAllKeys').mockImplementation(function (
+          this: IDBObjectStore,
+          ...args
+        ) {
+          const request = keys.apply(this, args);
+          if (this.name === 'content' && this.transaction.mode === 'readwrite')
+            request.addEventListener('success', () => stop.abort());
+          return request;
+        });
+      }
+      await expect(s.compactContent(stop.signal)).rejects.toBeInstanceOf(MaintenanceInterrupted);
+      vi.restoreAllMocks();
+      const after = await disk(name);
+      expect(after.content.slice(0, 2)).toEqual(before.content);
+      expect(after.content).toHaveLength(phase === 'seal' ? 2 : 3);
+      expect(after.meta[0]!.value.next_seq).toBeGreaterThan(before.meta[0]!.value.next_seq);
+      expect(s.state).toBe('active');
+      s.appendLocal(update('J'));
+      expect(await replay(s)).toContain('J');
+      const beforeRetry = await replay(s);
+      expect((await s.compactContent()).status).toBe('compacted');
+      expect(await replay(s)).toBe(beforeRetry);
+      expect(beforeRetry.replace('J', '')).toBe(expected);
+      const final = await disk(name);
+      expect(final.content).toHaveLength(1);
+      expect(final.meta[0]!.value.next_seq).toBeGreaterThan(after.meta[0]!.value.next_seq);
+    },
+  );
   it('merges the disk union and preserves heads, outbound, journal and reservation history', async () => {
     const { s, name } = await seed();
     await pair(s);

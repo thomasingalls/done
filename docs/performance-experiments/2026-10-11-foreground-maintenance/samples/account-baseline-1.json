@@ -1,0 +1,212 @@
+{
+  "source": "/tmp/done-receive-publish-203a0655/source",
+  "profiled": false,
+  "collision": true,
+  "cold": {
+    "ms": 7220,
+    "native": {
+      "decrypt": 3180,
+      "verify": 5428,
+      "digest": 6179
+    }
+  },
+  "heap": 18792456,
+  "exportHash": "f7f09a510e85f09d3dfd6baa627edbe90fd93e5b1884161897abd83560db2bd5",
+  "exportBytes": 54211,
+  "maintenance": {
+    "starts": [
+      10493.29999923706
+    ],
+    "keys": [
+      {
+        "at": 8277.599998474121,
+        "visible": 27.900001525878906
+      },
+      {
+        "at": 8813.599998474121,
+        "visible": 26.200000762939453
+      },
+      {
+        "at": 9347.099998474121,
+        "visible": 21.400001525878906
+      },
+      {
+        "at": 10522.79999923706,
+        "visible": 188.5
+      }
+    ],
+    "tasks": [],
+    "transactions": [
+      {
+        "at": 8604.099998474121,
+        "mode": "readonly",
+        "ms": 14.80000114440918,
+        "aborted": false
+      },
+      {
+        "at": 8642,
+        "mode": "readonly",
+        "ms": 0.8999996185302734,
+        "aborted": false
+      },
+      {
+        "at": 8643.099998474121,
+        "mode": "readwrite",
+        "ms": 0.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 8643.79999923706,
+        "mode": "readonly",
+        "ms": 0.39999961853027344,
+        "aborted": false
+      },
+      {
+        "at": 8644.19999885559,
+        "mode": "readwrite",
+        "ms": 0.5,
+        "aborted": false
+      },
+      {
+        "at": 9138.5,
+        "mode": "readonly",
+        "ms": 23.19999885559082,
+        "aborted": false
+      },
+      {
+        "at": 9204.29999923706,
+        "mode": "readonly",
+        "ms": 1.3999996185302734,
+        "aborted": false
+      },
+      {
+        "at": 9205.79999923706,
+        "mode": "readwrite",
+        "ms": 0.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 9206.39999961853,
+        "mode": "readonly",
+        "ms": 0.5,
+        "aborted": false
+      },
+      {
+        "at": 9206.89999961853,
+        "mode": "readwrite",
+        "ms": 0.39999961853027344,
+        "aborted": false
+      },
+      {
+        "at": 9669,
+        "mode": "readonly",
+        "ms": 22.099998474121094,
+        "aborted": false
+      },
+      {
+        "at": 9735.39999961853,
+        "mode": "readonly",
+        "ms": 2.6999988555908203,
+        "aborted": false
+      },
+      {
+        "at": 9738.19999885559,
+        "mode": "readwrite",
+        "ms": 2.200000762939453,
+        "aborted": false
+      },
+      {
+        "at": 9740.5,
+        "mode": "readonly",
+        "ms": 0.5999984741210938,
+        "aborted": false
+      },
+      {
+        "at": 9741.099998474121,
+        "mode": "readwrite",
+        "ms": 0.40000152587890625,
+        "aborted": false
+      },
+      {
+        "at": 10494.39999961853,
+        "mode": "readonly",
+        "ms": 22.100000381469727,
+        "aborted": false
+      },
+      {
+        "at": 10560.69999885559,
+        "mode": "readonly",
+        "ms": 12.100000381469727,
+        "aborted": false
+      },
+      {
+        "at": 10592.89999961853,
+        "mode": "readonly",
+        "ms": 1.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 10594.5,
+        "mode": "readwrite",
+        "ms": 0.6999988555908203,
+        "aborted": false
+      },
+      {
+        "at": 10595.29999923706,
+        "mode": "readonly",
+        "ms": 0.2999992370605469,
+        "aborted": false
+      },
+      {
+        "at": 10595.69999885559,
+        "mode": "readwrite",
+        "ms": 0.8999996185302734,
+        "aborted": false
+      },
+      {
+        "at": 10596.89999961853,
+        "mode": "readonly",
+        "ms": 10.899999618530273,
+        "aborted": false
+      },
+      {
+        "at": 10652.599998474121,
+        "mode": "readwrite",
+        "ms": 46.10000038146973,
+        "aborted": false
+      },
+      {
+        "at": 11007,
+        "mode": "readonly",
+        "ms": 16.399999618530273,
+        "aborted": false
+      },
+      {
+        "at": 11064.19999885559,
+        "mode": "readonly",
+        "ms": 3.700000762939453,
+        "aborted": false
+      },
+      {
+        "at": 11068,
+        "mode": "readwrite",
+        "ms": 0.8999996185302734,
+        "aborted": false
+      },
+      {
+        "at": 11069,
+        "mode": "readonly",
+        "ms": 3.1999988555908203,
+        "aborted": false
+      },
+      {
+        "at": 11072.5,
+        "mode": "readwrite",
+        "ms": 1.5999984741210938,
+        "aborted": false
+      }
+    ]
+  },
+  "reopenedMatches": true,
+  "status": "passed"
+}

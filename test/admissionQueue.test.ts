@@ -11,6 +11,7 @@ import type { JournalSession, JournalRecovery } from '../src/crdt/custody';
 import type { Bytes } from '../src/crdt/custodyCrypto';
 import { Y, createDoc, applyUpdate } from '../src/crdt/yjs';
 import type { PrepareIntent } from '../src/crdt/admissionDocument';
+import { MaintenanceInterrupted } from '../src/crdt/contentMaintenance';
 const bytes = (s: string) => new TextEncoder().encode(s),
   text = (b: Uint8Array) => new TextDecoder().decode(b);
 const intent = (s: string) => bytes(s);
@@ -528,6 +529,99 @@ describe('admission callback and writer boundaries', () => {
 });
 
 describe('automatic owned content maintenance', () => {
+  it('does not replace a known integrity failure with foreground interruption', async () => {
+    const f = await fixture();
+    vi.useFakeTimers();
+    const held = wait();
+    let signal: AbortSignal | undefined;
+    f.carrier.compactContent = async (interrupt) => {
+      signal = interrupt;
+      await held.promise;
+      throw Object.assign(new Error('Known damaged carrier'), { code: 'repair-required' });
+    };
+    try {
+      for (let i = 0; i < 128; i++) await f.owner.submit(intent('x')).accepted;
+      await f.owner.whenDurable();
+      await vi.advanceTimersByTimeAsync(750);
+      const later = f.owner.submit(intent('later'));
+      expect(signal?.aborted).toBe(true);
+      held.resolve();
+      await vi.advanceTimersByTimeAsync(0);
+      expect(f.owner.status.state).toBe('blocked');
+      expect(f.owner.status.pressure?.code).toBe('repair-required');
+      expect(() => f.owner.snapshot()).toThrow('Ordinary snapshots are disabled');
+      await f.owner.close();
+      await expect(later.accepted).rejects.toMatchObject({ code: 'inactive-session' });
+    } finally {
+      held.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  });
+  it.each(['local', 'remote', 'barrier'] as const)(
+    '%s interrupts maintenance without overtaking its owned flight; later idle retries',
+    async (kind) => {
+      const f = await fixture();
+      vi.useFakeTimers();
+      const held = wait();
+      let signal: AbortSignal | undefined;
+      let attempts = 0;
+      f.carrier.compactContent = async (interrupt) => {
+        if (++attempts === 1) {
+          signal = interrupt;
+          await held.promise;
+          if (interrupt?.aborted) throw new MaintenanceInterrupted();
+        }
+        return {
+          status: 'compacted',
+          removed: [],
+          storeId: 'store',
+          generation: 1,
+          stateSequence: 129,
+        };
+      };
+      try {
+        for (let i = 0; i < 128; i++) await f.owner.submit(intent('x')).accepted;
+        await f.owner.whenDurable();
+        await vi.advanceTimersByTimeAsync(750);
+        expect(attempts).toBe(1);
+        const later =
+          kind === 'barrier'
+            ? f.owner.whenDurable()
+            : kind === 'local'
+              ? f.owner.submit(intent('later')).accepted
+              : f.owner.receive(remote(f.owner.snapshot())).accepted;
+        expect(signal?.aborted).toBe(true);
+        let settled = false;
+        void later.then(() => {
+          settled = true;
+        });
+        await Promise.resolve();
+        expect(settled).toBe(false);
+        expect(view(f.owner.snapshot())).toBe('x'.repeat(128));
+        held.resolve();
+        await later;
+        expect(f.owner.status.state).toBe('active');
+        expect(f.owner.status.pressure).toBeNull();
+        expect(view(f.owner.snapshot())).toBe(
+          kind === 'local'
+            ? 'x'.repeat(128) + 'later'
+            : kind === 'remote'
+              ? 'R' + 'x'.repeat(128)
+              : 'x'.repeat(128),
+        );
+        await f.owner.whenDurable();
+        await vi.advanceTimersByTimeAsync(750);
+        expect(attempts).toBe(2);
+        await vi.advanceTimersByTimeAsync(10000);
+        expect(attempts).toBe(2);
+      } finally {
+        held.resolve();
+        await f.owner.close();
+        vi.useRealTimers();
+      }
+    },
+  );
   it('waits for durable idle, orders later input, and closes a running flight without further admission', async () => {
     const f = await fixture();
     vi.useFakeTimers();

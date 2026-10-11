@@ -1,3 +1,4 @@
+import { MaintenanceInterrupted } from './contentMaintenance';
 import {
   ledgerProfiling,
   ledgerWorkStart,
@@ -197,6 +198,7 @@ export const createAdmissionOwner = async (
   let timer: ReturnType<typeof setTimeout> | undefined, inFlight: Promise<void> | undefined;
   let closing: Promise<void> | undefined;
   let maintenanceTimer: ReturnType<typeof setTimeout> | undefined;
+  let maintenanceStop: AbortController | undefined;
   let maintenance: AdmissionStatus['maintenance'];
   let contentChanges = 0,
     contentBytes = 0,
@@ -296,6 +298,7 @@ export const createAdmissionOwner = async (
     clearTimer();
     clearMaintenanceTimer();
     carrier.signal.removeEventListener('abort', cancelled);
+    maintenanceStop?.abort();
     const error = new AdmissionError(
       'inactive-session',
       'Admission closed before this input completed.',
@@ -688,8 +691,12 @@ export const createAdmissionOwner = async (
     maintenanceTimer = setTimeout(() => {
       maintenanceTimer = undefined;
       if (state !== 'active' || busy || queue.length || journalDirty) return;
-      // This shares admission's owned flight. Later inputs wait behind native maintenance;
-      // close invalidates the carrier immediately and drains this flight before releasing it.
+      // Preserve FIFO and native settlement. Foreground work interrupts this discretionary
+      // flight at its next safe boundary; it never overtakes an active storage transaction.
+      const stop = new AbortController();
+      maintenanceStop = stop;
+      const attemptedChanges = contentChanges,
+        attemptedBytes = contentBytes;
       contentChanges = 0;
       contentBytes = 0;
       busy = true;
@@ -698,7 +705,7 @@ export const createAdmissionOwner = async (
       inFlight = Promise.resolve()
         .then(() => {
           live();
-          return carrier.compactContent();
+          return carrier.compactContent(stop.signal);
         })
         .then((receipt) => {
           if (state !== 'active') return;
@@ -707,11 +714,19 @@ export const createAdmissionOwner = async (
         .catch((error) => {
           if (state !== 'active') return;
           maintenance = 'deferred';
+          if (error instanceof MaintenanceInterrupted) {
+            // Unlike a quota/incomplete-union failure, interruption should retry at the
+            // next durable idle opportunity, even if the new input only requested a barrier.
+            contentChanges += attemptedChanges;
+            contentBytes += attemptedBytes;
+            return;
+          }
           if (['repair-required', 'generation-changed'].includes(codeOf(error))) block(error);
           // Quota/budget/unavailable maintenance does not refuse already durable writing.
           // New durable growth (or a fresh open) is required before another attempt.
         })
         .finally(() => {
+          maintenanceStop = undefined;
           busy = false;
           inFlight = undefined;
           notify();
@@ -824,6 +839,7 @@ export const createAdmissionOwner = async (
       ...(commit ? { commit } : {}),
     };
     clearMaintenanceTimer();
+    maintenanceStop?.abort();
     queue.push(job);
     recordQueue(job);
     pump();
@@ -855,6 +871,7 @@ export const createAdmissionOwner = async (
         );
       const completion = deferred<void>();
       clearMaintenanceTimer();
+      maintenanceStop?.abort();
       const job: FlushJob = { kind: 'flush', completion };
       queue.push(job);
       recordQueue(job);
