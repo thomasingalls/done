@@ -1,0 +1,20 @@
+15 D1-B-unlimited-1 exit=1 1791670533-1791670453=80s load=4.06 5.29 5.78->4.34 5.28 5.74 waited=0 foreignAtStart=0
+16 D1-B-unlimited-2 exit=1 1791670614-1791670534=80s load=4.34 5.28 5.74->3.47 4.76 5.50 waited=0 foreignAtStart=0
+17 D1-B-unlimited-3 exit=1 1791670695-1791670615=80s load=3.47 4.76 5.50->4.58 4.91 5.49 waited=0 foreignAtStart=0
+18 D1-B-unlimited-4 exit=0 1791670769-1791670696=73s load=4.85 4.96 5.50->5.10 5.02 5.48 waited=0 foreignAtStart=0
+19 D1-B-unlimited-5 exit=1 1791670851-1791670770=81s load=5.10 5.02 5.48->3.85 4.59 5.27 waited=0 foreignAtStart=0
+20 D1-B-unlimited-6 exit=1 1791670934-1791670852=82s load=3.85 4.59 5.27->5.62 4.90 5.32 waited=0 foreignAtStart=0
+21 D2-B-deadline120-1 exit=1 1791671018-1791670935=83s load=5.62 4.90 5.32->3.62 4.41 5.09 waited=0 foreignAtStart=0
+22 D2-B-deadline120-2 exit=1 1791671119-1791671019=100s load=3.62 4.41 5.09->3.58 4.22 4.94 waited=0 foreignAtStart=0
+23 D2-B-deadline120-3 exit=1 1791671202-1791671121=81s load=3.58 4.22 4.94->4.28 4.38 4.94 waited=0 foreignAtStart=0
+24 D2-B-deadline120-4 exit=1 1791671283-1791671203=80s load=4.28 4.38 4.94->2.95 4.00 4.75 waited=0 foreignAtStart=0
+25 D2-B-deadline120-5 exit=0 1791671386-1791671284=102s load=2.95 4.00 4.75->4.14 4.04 4.67 waited=0 foreignAtStart=0
+26 D2-B-deadline120-6 exit=1 1791671465-1791671387=78s load=4.13 4.04 4.66->5.28 4.33 4.71 waited=0 foreignAtStart=0
+PHASE2-D-DONE
+27 C-prev-incremental-1 exit=0 1791671563-1791671466=97s load=5.28 4.33 4.71->6.86 4.87 4.86 waited=0 foreignAtStart=0
+28 C-prev-incremental-2 exit=1 1791671674-1791671564=110s load=6.86 4.87 4.86->4.38 4.66 4.78 waited=0 foreignAtStart=0
+29 C-prev-incremental-3 exit=0 1791671774-1791671676=98s load=4.38 4.66 4.78->4.70 4.71 4.79 waited=0 foreignAtStart=0
+30 C-prev-incremental-4 exit=0 1791671876-1791671775=101s load=4.70 4.71 4.79->4.25 4.56 4.72 waited=0 foreignAtStart=0
+31 C-prev-incremental-5 exit=0 1791671975-1791671878=97s load=4.31 4.57 4.72->4.22 4.45 4.66 waited=0 foreignAtStart=0
+32 C-prev-incremental-6 exit=0 1791672074-1791671976=98s load=4.22 4.45 4.66->4.23 4.50 4.66 waited=0 foreignAtStart=0
+PHASE2-DONE

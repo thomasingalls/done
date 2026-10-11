@@ -1,0 +1,20 @@
+--- phase 0: built 121 positions from 307 keys (2.54 keys/pos), ledger 125, backlog 307 chars
+    catch-up 50989 ms converged=True: 121 positions, 2.37/s, 6.02 chars/s; by quarter [2.54, 2.43, 2.35, 2.23]
+    cycle/pos {'n': 120, 'p50': 394, 'p95': 844, 'max': 878, 'mean': 418.1}; gap before entry read {'n': 121, 'p50': 88, 'p95': 99, 'max': 125, 'mean': 86.2}; gap after {'n': 121, 'p50': 208, 'p95': 229, 'max': 280, 'mean': 204.8}
+    client request ms/pos 117.0 (share 0.278); service handling ms/pos 115.1; 429s 0
+      svc delivery/read-v2 (empty) 200: n=122 perPos=1.01 handling={'n': 122, 'p50': 36.5, 'p95': 44.5, 'max': 59.4, 'mean': 37.2} out=236
+      svc delivery/read-v2 (entry) 200: n=121 perPos=1.0 handling={'n': 121, 'p50': 52.0, 'p95': 59.1, 'max': 87.1, 'mean': 53.1} out=1748
+      svc history/v1/checkpoint 200: n=10 perPos=0.08 handling={'n': 10, 'p50': 208.1, 'p95': 225.0, 'max': 225.0, 'mean': 207.0} out=1381
+      svc membership/v2/discover 200: n=10 perPos=0.08 handling={'n': 10, 'p50': 89.4, 'p95': 98.0, 'max': 98.0, 'mean': 89.8} out=12930
+      cli delivery/read-v2 200: {'n': 243, 'p50': 48, 'p95': 58, 'max': 89, 'mean': 46.0}
+      cli history/v1/checkpoint 200: {'n': 10, 'p50': 209, 'p95': 227, 'max': 227, 'mean': 208.0}
+      cli membership/v2/discover 200: {'n': 10, 'p50': 90, 'p95': 99, 'max': 99, 'mean': 90.6}
+    visible {'updates': 121, 'charsPerUpdate': {'n': 120, 'p50': 3, 'p95': 4, 'max': 4, 'mean': 2.5}, 'msBetweenUpdates': {'n': 120, 'p50': 393.0, 'p95': 848.3, 'max': 894.8, 'mean': 418.3}}; long tasks {'n': 0, 'totalMs': 0, 'maxMs': 0, 'msPerPosition': 0.0}; counters/pos {'idbReadTx': 121.2, 'idbWriteTx': 2.0, 'webCrypto': {'decrypt': 32.6, 'deriveBits': 0.3, 'deriveKey': 83.0, 'digest': 60.8, 'encrypt': 3.6, 'exportKey': 0.0, 'generateKey': 0.0, 'importKey': 112.6, 'sign': 4.2, 'verify': 96.5}}
+    profile: {'ms': 25120, 'positions': 60, 'chars': 134}
+service ms by ledger (runMs p50):
+   delivery/submit {'0': (43.1, 100), '100': (51.2, 26)}
+   authority/discover {'0': (18.2, 1)}
+   history/v1/checkpoint {'0': (146.5, 7), '100': (206.9, 11)}
+   delivery/read-v2 (empty) {'0': (36.5, 12), '100': (35.4, 125)}
+   membership/v2/discover {'0': (118.7, 5), '100': (88.5, 11)}
+   delivery/read-v2 (entry) {'0': (44.5, 5), '100': (50.8, 121)}

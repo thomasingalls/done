@@ -1,0 +1,107 @@
+{
+ "base": {
+  "commit": "7b6d8d9f315b03cc0875782e3145fbeafecbc97f",
+  "role": "client and service; client unmodified, service carries the probe",
+  "patch": "service-probe.patch",
+  "patchSha256": "358e75281033c24cb4e8e2a3a3de35bfc25fc1fd65e4ad2794123ffa6da683cb",
+  "buildEnv": "APP_BUILD_REVISION=<commit> APP_BUILD_DATE=2026-10-11; ledger setting unset (incremental default)",
+  "distFiles": 59,
+  "distBytes": 8974594,
+  "distDigest": "52fea410869e2a26bf751e24aee2bdbb88c7bdb9d9b7d1bb6d15ec50efd7e4e7",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main-C_mjSoBv.js",
+    "sha256": "6792b3ba7789b9a8e43b78fa75bf41a9c21581b95eca54d21c7a3b40b851ac0e",
+    "bytes": 283711
+   },
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "index.html",
+    "sha256": "703af3bde06ea9faffa63cc643ad56075cc619c2bc3a281ae3766a1a21fcfcb4",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "6b02aa4bdbd4be7d5461771b7a5a6f251b6dacadd70cdafb3b1cf54c87a60eba",
+    "bytes": 7331
+   }
+  ]
+ },
+ "varA": {
+  "commit": "7b6d8d9f315b03cc0875782e3145fbeafecbc97f",
+  "role": "client with diagnostic A",
+  "patch": "diagnostic-A-no-interpass-delay.patch",
+  "patchSha256": "b7740395af461400870c5ba94784bf3af22db3498ef5e2df071d9b945ff3d619",
+  "buildEnv": "APP_BUILD_REVISION=<commit> APP_BUILD_DATE=2026-10-11; ledger setting unset (incremental default)",
+  "distFiles": 59,
+  "distBytes": 8974753,
+  "distDigest": "cf89aeb72f941839990c8dc8021530e22e11740562a566109acebd3ce83fc6d1",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "assets/main-eGDOV1gs.js",
+    "sha256": "a0605a9d49384b5a993914acf8dc9b59bb81d85915cddfb203920f92fd942f7e",
+    "bytes": 283711
+   },
+   {
+    "path": "index.html",
+    "sha256": "f9d0fc7fc74469fa6e40503bb731048e159086e34e70314e9fb925bcc5573867",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "28f3de6d2a77fe06ff1362545ff497f680dad44a3dbd8e1ea868bbcf1da2c712",
+    "bytes": 7331
+   }
+  ]
+ },
+ "varB": {
+  "commit": "7b6d8d9f315b03cc0875782e3145fbeafecbc97f",
+  "role": "client with diagnostic B",
+  "patch": "diagnostic-B-sticky-publisher.patch",
+  "patchSha256": "453d8514785b83a8fe78a0d742661477f567ae265cc603e70edb144aa1f2015b",
+  "buildEnv": "APP_BUILD_REVISION=<commit> APP_BUILD_DATE=2026-10-11; ledger setting unset (incremental default)",
+  "distFiles": 59,
+  "distBytes": 8975508,
+  "distDigest": "0c7faa538d0c068f45e5a529c2356a561e6d787defa14cd8ac61fa92a15e333d",
+  "distDigestRule": "sha256 over sorted lines \"<file sha256>  <path relative to dist>\"",
+  "entryFiles": [
+   {
+    "path": "assets/main-D0nty_UB.js",
+    "sha256": "d596c21ee839f05b115376f89473d35dffdaf24a9c227018cb29a6f034bc32fa",
+    "bytes": 283711
+   },
+   {
+    "path": "assets/main-apPaEBJm.css",
+    "sha256": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "bytes": 32729
+   },
+   {
+    "path": "index.html",
+    "sha256": "1bca02e05040556dbcf26398974ec3c2e3ae7fb5c93d04029846263e276fc810",
+    "bytes": 2013
+   },
+   {
+    "path": "sw.js",
+    "sha256": "f77d28e6ab31f363c552d93b7c6c589675ffcf31b1815347098e1ef307ed6d06",
+    "bytes": 7331
+   }
+  ]
+ },
+ "svcC": {
+  "commit": "7b6d8d9f315b03cc0875782e3145fbeafecbc97f",
+  "role": "service copy with the verification cache bounds read from the environment; served the base client build",
+  "patch": "diagnostic-C-cache-bound-env.patch",
+  "patchSha256": "f5915cd3ec033b1f5b9c2af0516f78d9480343d7a0090a48a02497767270f6c0"
+ }
+}

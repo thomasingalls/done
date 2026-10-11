@@ -1,0 +1,66 @@
+profile service-prof/CPU.20261011.142744.74922.0.001.cpuprofile
+divisor 1; sampled 114056 ms; idle 94505 ms; active 19551 ms = 19550.6 ms per unit (17% busy)
+
+CATEGORIES (ms per unit, innermost matching frame decides)
+14974.7   77%  inbound verification and ledger (verify page, inbound/delivery/spool ledger, coverage)
+ 4093.7   21%  other (program, native, unattributed)
+  482.2    2%  gc
+
+TOP-DOWN (ms per unit inclusive, self in brackets; nodes >= 2.5% of active)
+ 2464.9 [   65.5]   census account-service/delivery.ts:676
+ 2080.6 [   15.1]     check account-service/deliveryVerification.ts:36
+ 2014.1 [    1.2]       verify account-service/delivery.ts:736
+ 2010.1 [    5.2]         verifyWire account-service/delivery.ts:596
+ 1110.2 [    3.7]           verifySubmission account-protocol/submission.ts:116
+  819.5 [    1.3]             decodeSubmission account-protocol/submission.ts:64
+  584.3 [  354.7]               hex account-protocol/recovery.ts:15
+  809.9 [    2.5]           decodeSubmission account-protocol/submission.ts:64
+  568.2 [  330.2]             hex account-protocol/recovery.ts:15
+ 1338.7 [   58.5]   verifyWorkspaceAuthority account-service/delivery.ts:336
+ 1308.8 [    8.6]   readInbound account-service/delivery.ts:1110
+  950.5 [   81.7]     snapshotBytes account-service/delivery.ts:315
+  868.8 [   57.7]       (anonymous) account-service/delivery.ts:319
+  811.1 [  514.9]         hex account-protocol/recovery.ts:15
+ 1213.8 [    8.7]   verifyContentDelivery account-protocol/contentDelivery.ts:163
+  567.5 [    3.8]     verifyCeremonyContext account-protocol/ceremonyExchange.ts:162
+  538.1 [    2.5]       verifySuccessor account-protocol/successor.ts:300
+ 1118.6 [    8.8]   verifyOffer account-protocol/admission.ts:339
+  540.4 [    0.0]     firstEpoch account-protocol/admission.ts:238
+ 1097.2 [    6.3]   verify account-service/delivery.ts:736
+ 1072.6 [    9.3]     verifyPositionResponse account-protocol/positionDecision.ts:225
+  589.9 [   23.6]       decodePositionResponse account-protocol/positionDecision.ts:161
+  998.4 [  998.4]   (program)
+  988.3 [    8.9]   verifyCreatingProofs account-protocol/admission.ts:223
+  986.5 [    5.0]   verifyCapturedSuccessor account-protocol/successor.ts:227
+  934.5 [    5.0]   verifyReceipt account-protocol/admission.ts:557
+  750.3 [    0.0]   processTicksAndRejections task_queues:72
+  618.3 [    1.3]     runMicrotasks
+  537.9 [    7.1]       (anonymous) account-service/scoped-http.ts:163
+  729.0 [   74.2]   decideSubmission account-service/delivery.ts:807
+
+BOTTOM-UP (self ms per unit, top 25)
+ 3989.0  unhex account-protocol/recovery.ts:17
+ 2306.7  hex account-protocol/recovery.ts:15
+ 2094.6  (anonymous) account-protocol/recovery.ts:20
+ 1298.4  (anonymous) account-protocol/recovery.ts:16
+  998.4  (program)
+  482.2  (garbage collector)
+  414.2  closed account-protocol/preparation.ts:33
+  408.7  jobPromise util:959
+  369.2  #encode encoding:344
+  356.6  (anonymous) account-protocol/recovery.ts:23
+  305.8  RegExp: ^[0-9a-f]+$
+  252.0  structuredClone js_transferable:101
+  236.9  json account-protocol/admission.ts:107
+  228.3  RegExp: ..
+  213.9  snapshotWorkspaceAuthority account-service/delivery.ts:200
+  180.0  importRawKey webcrypto_util:217
+  178.8  (anonymous) hash:271
+  141.0  snapshotBytes account-service/delivery.ts:315
+  134.3  text account-protocol/envelope.ts:149
+  132.8  lp account-protocol/recovery.ts:22
+  123.2  encodeUtf8String
+  107.1  snapshot account-service/delivery.ts:290
+  103.2  (anonymous) cfrg:190
+  101.9  normalizeAlgorithm util:778
+   90.4  same account-protocol/admission.ts:108

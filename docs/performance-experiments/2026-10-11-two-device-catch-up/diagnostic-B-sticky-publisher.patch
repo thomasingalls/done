@@ -1,0 +1,33 @@
+--- pristine/src/crdt/accountReceive.ts	2026-10-11 13:27:30
++++ varB/src/crdt/accountReceive.ts	2026-10-11 13:27:30
+@@ -535,6 +535,7 @@
+     }
+   };
+   let nextPublisher = 0;
++  let diagnosticSticky: { id: string; position: number } | undefined;
+   const describe = (s: Awaited<ReturnType<typeof state>>) =>
+     Object.freeze({
+       state:
+@@ -558,10 +559,21 @@
+     if (account.detached) throw Error('This local copy is detached from sync');
+     const all = await state(task, owner, route);
+     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
++    // CATCH-UP DIAGNOSTIC B: read the publisher whose last page advanced again before rotating.
++    const again =
++      after === undefined &&
++      diagnosticSticky &&
++      publishers.includes(diagnosticSticky.id) &&
++      publisherState(all, base, diagnosticSticky.id).prefix.position > diagnosticSticky.position
++        ? diagnosticSticky.id
++        : undefined;
+     const publisher =
+-      after === undefined ? publishers[nextPublisher++ % publishers.length]! : base.publisher.id;
++      after === undefined
++        ? (again ?? publishers[nextPublisher++ % publishers.length]!)
++        : base.publisher.id;
+     const s = publisherState(all, base, publisher),
+       cursor = after ?? s.prefix.position;
++    if (after === undefined) diagnosticSticky = { id: publisher, position: s.prefix.position };
+     if (s.conflict) throw Error('Inbound stream is conflicted');
+     if (
+       !Number.isSafeInteger(cursor) ||

@@ -1,0 +1,104 @@
+{
+ "A-smoke": {
+  "runs": 1,
+  "runs_pass": 1,
+  "pairings": 2,
+  "pairings_failed": 0,
+  "pairing_ci": [
+   0.0,
+   0.84
+  ],
+  "delivery_reached": 1,
+  "delivery_over_15s": 0,
+  "step_ms": [
+   8885
+  ]
+ },
+ "A": {
+  "runs": 6,
+  "runs_pass": 2,
+  "pairings": 12,
+  "pairings_failed": 4,
+  "pairing_ci": [
+   0.1,
+   0.65
+  ],
+  "delivery_reached": 4,
+  "delivery_over_15s": 0,
+  "step_ms": [
+   13974,
+   14967,
+   11928,
+   9424
+  ]
+ },
+ "B": {
+  "runs": 6,
+  "runs_pass": 1,
+  "pairings": 12,
+  "pairings_failed": 6,
+  "pairing_ci": [
+   0.21,
+   0.79
+  ],
+  "delivery_reached": 2,
+  "delivery_over_15s": 0,
+  "step_ms": [
+   10932,
+   12958
+  ]
+ },
+ "D1": {
+  "runs": 6,
+  "runs_pass": 1,
+  "pairings": 12,
+  "pairings_failed": 8,
+  "pairing_ci": [
+   0.35,
+   0.9
+  ],
+  "delivery_reached": 3,
+  "delivery_over_15s": 0,
+  "step_ms": [
+   7935,
+   7888,
+   7888
+  ]
+ },
+ "D2": {
+  "runs": 6,
+  "runs_pass": 1,
+  "pairings": 12,
+  "pairings_failed": 6,
+  "pairing_ci": [
+   0.21,
+   0.79
+  ],
+  "delivery_reached": 2,
+  "delivery_over_15s": 0,
+  "step_ms": [
+   12453,
+   12954
+  ]
+ },
+ "C": {
+  "runs": 6,
+  "runs_pass": 5,
+  "pairings": 12,
+  "pairings_failed": 0,
+  "pairing_ci": [
+   0.0,
+   0.26
+  ],
+  "delivery_reached": 6,
+  "delivery_over_15s": 0,
+  "step_ms": [
+   13015,
+   12461,
+   9468,
+   9472,
+   9477,
+   9974
+  ]
+ }
+}
