@@ -1,0 +1,12 @@
+[
+  {
+    "test": "a slightly fast device clock can receive history and writing while continuing to upload",
+    "status": "passed",
+    "durationMs": 15805
+  },
+  {
+    "test": "a required sign-in offers the passkey action and resumes both lanes without reloading",
+    "status": "passed",
+    "durationMs": 46578
+  }
+]

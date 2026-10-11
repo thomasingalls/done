@@ -1,0 +1,154 @@
+{
+  "scope": "Signed-source publication preparation; no registry push or deployment",
+  "sourceCommit": "77657e23c994727c8db56201a8c3d4cfe310b7b9",
+  "commits": {
+    "compaction": "ae30694a1406e0f92beea90e9dce3cbbf00b795d",
+    "signIn": "cb8884a3df91fdf0f2a0221f1a0d1b89f2fed250",
+    "historyClock": "77657e23c994727c8db56201a8c3d4cfe310b7b9"
+  },
+  "applicationMain": "e948c52af392268083f603012c57c220815395c3",
+  "cleanGitArchive": true,
+  "sourceArchiveSha256": "45e5a26dcb521520b1c2e5436f9807334f4baf538e1012dded08ac0361485586",
+  "image": "done-public:77657e23",
+  "localIndexDigest": "sha256:21c744f542d6dcd450f7af9e099bce80175de834e2c9d48d6b6a1bf7f1f3d080",
+  "runtimeManifestDigest": "sha256:448facb4ee929624bfcec90c5b988cc800c29dec4f487df354830f4c1d44e294",
+  "platform": "linux/arm64",
+  "node": "24.18.0",
+  "buildDate": "2026-10-11",
+  "published": false,
+  "buildPassed": true,
+  "initialJsGzipKB": 136.7,
+  "existingContainerTests": {
+    "runtimeGateway": 14,
+    "backup": 5,
+    "restore": 6,
+    "maintenance": 6
+  },
+  "focusedNode24Checks": {
+    "passed": 32,
+    "historyService": 15,
+    "loginClient": 17,
+    "image": "done-check:77657e23",
+    "network": "none",
+    "fixture": "signed docs/account-crypto read-only; build stage supplies test-only Vite"
+  },
+  "smoke": {
+    "image": "done-public:77657e23",
+    "started": "2026-10-11T21:36:13.577Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:21c744f542d6dcd450f7af9e099bce80175de834e2c9d48d6b6a1bf7f1f3d080",
+    "platform": "linux/arm64",
+    "sourceRevision": "77657e23c994727c8db56201a8c3d4cfe310b7b9",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-11T21:36:20.357Z"
+  },
+  "browser": [
+    {
+      "test": "a slightly fast device clock can receive history and writing while continuing to upload",
+      "status": "passed",
+      "durationMs": 15805
+    },
+    {
+      "test": "a required sign-in offers the passkey action and resumes both lanes without reloading",
+      "status": "passed",
+      "durationMs": 46578
+    }
+  ],
+  "browserScope": "Exact extracted runtime frontend; disposable host Node 26.11.1 services from signed archive, not container API",
+  "physicalPhone": "Incident observed on deployed 203a0655; recovery on updated frontend pending rollout",
+  "compatibility": {
+    "accountSchema": 26,
+    "authoritySchema": 1,
+    "schemaChanges": false,
+    "signedWireFormatChanges": false,
+    "serverExpiryChanges": false,
+    "limit": "Focused checks and source review, not exhaustive mixed-version qualification"
+  },
+  "releaseValidation": "paused",
+  "next": [
+    "Merge application PR preserving signed commits",
+    "Publish and verify this exact tested image",
+    "Prepare ol-infra image pin PR",
+    "After operator merges, verify rollout/backup health and actual phone receiving"
+  ],
+  "artifacts": [
+    {
+      "path": "build-metadata.json",
+      "bytes": 1822,
+      "sha256": "5ff450264a7d9f84304820f39770cbffd1461b43d15250e9d1ba1f3e0b4bfcaa"
+    },
+    {
+      "path": "container-build.log.gz",
+      "bytes": 5593,
+      "sha256": "e9c8c9f34081112434950a2063236d3295315425453e37b5f179b590fe04aba7",
+      "uncompressedBytes": 17070,
+      "uncompressedSha256": "8c30e5311a33c4bc53c0b0a24ee6552f7dd164005d79df6057d9c189af17e057"
+    },
+    {
+      "path": "container-check-stage.log.gz",
+      "bytes": 1103,
+      "sha256": "d59586f25824f5269150446872a45904a0b77a8b1a0d8d8fe366ea5f6f7e422e",
+      "uncompressedBytes": 2683,
+      "uncompressedSha256": "e2bc9c7b3191d1742c0d19fdeaec5864921bda2cdc49399c3b7714647499c47c"
+    },
+    {
+      "path": "container-focused.log.gz",
+      "bytes": 1737,
+      "sha256": "3ea16bc712c9c766bba579ed0b679575ce8c58dc3e0afcde454a71aac1fef84a",
+      "uncompressedBytes": 4130,
+      "uncompressedSha256": "1c484173db2c9a74a9769e98b8fe2e992134251c487d41d7e65db0ed08bc21b0"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1124,
+      "sha256": "b181708802be99bb8870b066366ad9fb82442e44cee1f7a8158cba7fc96ecd25"
+    },
+    {
+      "path": "container-smoke.log.gz",
+      "bytes": 476,
+      "sha256": "205e4bc8fd765d4a1497c9b27894a68472884a669efc9eb68a31b4a196867d54",
+      "uncompressedBytes": 743,
+      "uncompressedSha256": "bd73ce6443a19c982e0c4ff3107c30e8f849e91917bf006a578aad51d1d9846e"
+    },
+    {
+      "path": "frontend-files.json",
+      "bytes": 9662,
+      "sha256": "eeb5826a2c7e70481af20ff9d9b8faba4079693639f451199e6d7455902f738a"
+    },
+    {
+      "path": "image-identity.json",
+      "bytes": 269,
+      "sha256": "dc6fd844c6a138202b909bddb54412081698a26d66a4461dd49946e249fdd8fb"
+    },
+    {
+      "path": "packaged-browser.json",
+      "bytes": 321,
+      "sha256": "39909f504353008e4fbbb5e7d2432e61f76507d3008ed5ecd6ffeb99cacdc804"
+    },
+    {
+      "path": "packaged-browser.log.gz",
+      "bytes": 355,
+      "sha256": "a630d5fa7b6f3e4415db84f8298b02505856930065b7a7d679253db890b9af6f",
+      "uncompressedBytes": 525,
+      "uncompressedSha256": "3bdac44e2db2b6e3e63033d928ff6af7ed85b77f3d7f082781f58671ab7f057b"
+    },
+    {
+      "path": "packaged-source-files.json",
+      "bytes": 1116,
+      "sha256": "b4581b2dc4c7732e3190b72386c38069ccfab8f920f77c1c3e73cc1dc8aae78c"
+    }
+  ]
+}
