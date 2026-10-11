@@ -1,0 +1,38 @@
+{
+  "base": "9586c7a0ba8ed09d5eb39d4a80ad06f27f88ea64",
+  "date": "2026-10-11",
+  "node": "v26.11.1",
+  "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+  "files": {
+    "Dockerfile": "c89f9874fee795cf0ef4c899d67aa4292c3fc21bbbdcf5aaba54a34d1cdc81e6",
+    "src/crdt/accountLedgerMode.ts": "9a133d21490e8ac8cc05243baddc172a93cf7da9fdded9750f097ab6bc6b7a30",
+    "src/crdt/accountReceive.ts": "c8f070d0a795a07f79f9640c45a32b2ac91b078510bde8e37949a92329681ce7",
+    "vite.config.ts": "6925d45bea164927004239f95068739cc857aa5792faa580a4ff33f6dbc2a22a",
+    "vite/privateMigration.config.ts": "0ee17d6c995464201b48a26b9169a5c5f2f49dfda050f2d1b6a7efb848c79858",
+    "tsconfig.node.json": "d73f509a259b99cf08f172ba5d8b0c6be40258ecff912aced36c56aaf79c7ca4",
+    "test/accountLedgerMode.test.ts": "b92ff66c5ce4df630de882b76cc4f2dc423ae875c0b1a62ee4282ae07da94df0",
+    "test/account-sync/fixtures.mjs": "3d182e1f6ad85f4eb3880df7733fde5324435774b5a42532d33cdf8074d480e5",
+    "test/account-sync/native.test.mjs": "9eed529e8daea637093eccee0987b25cf6b1e82a4369568d9ba290f4c1d8e331"
+  },
+  "runtimePatchSha256": "ed20483c71b34f36413c834c730afaba2ad4a7256171f8606dba892b6ad111ae",
+  "ordinaryBuild": {
+    "ledger": "unset",
+    "audit": "unset",
+    "profiling": "unset",
+    "indexSha256": "ab40a8d4673db68c3cd382c209dc85475480b79acea182c3de1b7fc4a81751e5"
+  },
+  "nativeDefault": {
+    "ledger": "unset",
+    "audit": "every",
+    "profiling": "unset"
+  },
+  "nativeReference": {
+    "ledger": "reference",
+    "audit": "unset",
+    "profiling": "unset"
+  },
+  "notes": [
+    "Native test comment placement was adjusted after execution; executable test code is unchanged.",
+    "Packaged service state and browser profiles are excluded. No deployed build changed."
+  ]
+}

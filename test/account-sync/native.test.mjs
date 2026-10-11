@@ -57,11 +57,13 @@ test(
     await syncing(f.page, item);
     const initial = await view(f.page);
     await settled(f.page);
-    if (process.env.ACCOUNT_LEDGER_MODE === 'incremental') {
-      const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
-      assert.ok(metrics.incremental > 0, 'candidate path actually executed');
+    const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+    if (process.env.ACCOUNT_LEDGER_MODE !== 'reference') {
+      assert.ok(metrics.incremental > 0, 'incremental path actually executed');
       assert.equal(metrics.mismatches, 0);
       if (process.env.ACCOUNT_LEDGER_AUDIT === 'every') assert.ok(metrics.audits > 0);
+    } else {
+      assert.equal(metrics.incremental, 0, 'reference override never extends a verified ledger');
     }
     const baseline = await captures(f.page);
     const readsBeforeEdit = reads.length;
@@ -644,13 +646,97 @@ for (const mode of ['fitting', 'oversized', 'no-preflight', 'sealed', 'submitted
     },
   );
 
+test(
+  'retained Account writing crosses reference, default and rollback builds without migration',
+  { timeout: 90000, skip: process.env.ACCOUNT_LEDGER_MODE !== undefined },
+  async (t) => {
+    const reference = await syncBundle(undefined, 'reference'),
+      ordinary = await syncBundle(),
+      f = await native(t),
+      item = await selected(f, 'ledger-default-rollback');
+    let expected;
+    for (const [index, script] of [reference, ordinary, reference, ordinary].entries()) {
+      if (index) await cold(f);
+      await f.page.evaluate(script);
+      await configure(f.page, f.testOperatorToken);
+      await syncing(f.page, item);
+      await settled(f.page);
+      expected ??= await view(f.page);
+      assert.equal(await view(f.page), expected);
+      assert.ok(
+        (await f.page.evaluate(() => Harness.accountLedgerMetrics())).full > 0,
+        'each build cold-verifies the retained data',
+      );
+      const added = ' build-' + index;
+      await edit(f.page, expected.length, 0, added);
+      expected += added;
+      await settled(f.page);
+      await f.page.evaluate(() => opened.compactContent());
+      assert.equal(await view(f.page), expected);
+      const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+      if (index % 2) assert.ok(metrics.incremental > 0, 'unset flag selects incremental');
+      else assert.equal(metrics.incremental, 0, 'rollback uses reference verification');
+      assert.equal(metrics.mismatches, 0);
+      assert.equal(await f.page.evaluate(() => '__doneLedgerMetrics' in globalThis), false);
+      await close(f.page);
+    }
+  },
+);
+
+test(
+  'reference audit disagreement refuses the warm owner and cold replay preserves writing',
+  {
+    timeout: 60000,
+    skip:
+      process.env.ACCOUNT_LEDGER_MODE === 'reference' ||
+      process.env.ACCOUNT_LEDGER_AUDIT !== 'every',
+  },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'ledger-audit-disagreement');
+    await f.page.evaluate(await syncBundle('audit-disagreement'));
+    await configure(f.page, f.testOperatorToken);
+    const errors = [];
+    f.page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(message.text());
+    });
+    await syncing(f.page, item);
+    await settled(f.page);
+    let expected = await view(f.page);
+    await edit(f.page, expected.length, 0, ' acknowledged');
+    expected += ' acknowledged';
+    await settled(f.page);
+    const sent = f.invocations.length;
+    await f.page.evaluate(() => {
+      globalThis.forceLedgerDisagreement = true;
+    });
+    await assert.rejects(
+      f.page.evaluate(() => opened.compactContent()),
+      /Account ledger reference mismatch/,
+    );
+    const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+    assert.equal(metrics.mismatches, 1);
+    assert.ok(errors.includes('done/account-ledger-reference-mismatch'));
+    await assert.rejects(f.page.evaluate(() => opened.spoolStatus()));
+    assert.equal(f.invocations.length, sent, 'the refused view cannot authorize a submission');
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(await view(f.page), expected);
+    assert.ok((await f.page.evaluate(() => Harness.accountLedgerMetrics())).full > 0);
+    assert.equal((await f.page.evaluate(() => Harness.accountLedgerMetrics())).mismatches, 0);
+    await close(f.page);
+  },
+);
+
 // Small differential histories, not a release campaign. AUDIT=every compares every delta to cold replay.
 test(
   'generated incremental ledger histories preserve inserts, deletes, compaction and cold continuation',
   {
     timeout: 90000,
     skip:
-      process.env.ACCOUNT_LEDGER_MODE !== 'incremental' ||
+      process.env.ACCOUNT_LEDGER_MODE === 'reference' ||
       process.env.ACCOUNT_LEDGER_AUDIT !== 'every',
   },
   async (t) => {

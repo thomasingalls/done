@@ -3,9 +3,14 @@ import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { native as base, args, waitPredicate } from '../account-receive-driver/fixtures.mjs';
 export * from '../account-receive-driver/fixtures.mjs';
-export async function syncBundle(control) {
+export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE) {
   let hits = 0;
   const targets = {
+    'audit-disagreement': [
+      '/src/crdt/accountReceive.ts',
+      'if (!sameAccountLedger(result, oracle)) {',
+      'if (!sameAccountLedger(result, oracle) || globalThis.forceLedgerDisagreement) {',
+    ],
     'self-decision-refusal': [
       '/src/crdt/accountDelivery.ts',
       'recordResponse: async (position: number, answer: Bytes) => {',
@@ -48,9 +53,10 @@ export async function syncBundle(control) {
     configFile: false,
     logLevel: 'error',
     define: {
-      'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify(
-        process.env.ACCOUNT_LEDGER_MODE ?? 'reference',
-      ),
+      // Omit the define entirely to exercise the source default, not an explicit opt-in.
+      ...(mode === undefined
+        ? {}
+        : { 'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify(mode) }),
       'import.meta.env.VITE_ACCOUNT_LEDGER_AUDIT': JSON.stringify(
         process.env.ACCOUNT_LEDGER_AUDIT ?? '',
       ),

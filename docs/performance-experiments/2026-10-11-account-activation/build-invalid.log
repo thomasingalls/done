@@ -1,0 +1,9 @@
+failed to load config from /Users/thomasingalls/.codex/worktrees/c030/done/vite.config.ts
+error during build:
+Error: VITE_ACCOUNT_LEDGER must be incremental or reference
+    at accountLedgerMode (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.vite-temp/vite.config.ts.timestamp-1791711654900-3b245ad122d628.mjs:13:8)
+    at file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.vite-temp/vite.config.ts.timestamp-1791711654900-3b245ad122d628.mjs:162:57
+    at loadConfigFromFile (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:36003:62)
+    at async resolveConfig (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:35617:22)
+    at async createBuilder (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33458:17)
+    at async CAC.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/cli.js:765:19)

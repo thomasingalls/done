@@ -1,0 +1,148 @@
+diff --git a/Dockerfile b/Dockerfile
+index 801734ac..3d144259 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -11,7 +11,9 @@ FROM dependencies AS build
+ COPY . .
+ ARG APP_BUILD_REVISION
+ ARG APP_BUILD_DATE
++ARG VITE_ACCOUNT_LEDGER
+ ENV APP_BUILD_REVISION=${APP_BUILD_REVISION} APP_BUILD_DATE=${APP_BUILD_DATE}
++ENV VITE_ACCOUNT_LEDGER=${VITE_ACCOUNT_LEDGER}
+ # Existing build checks and the bounded runtime/gateway checks, not the paused full campaign.
+ RUN pnpm build
+ # Exercise filesystem ownership and child/worker processes as the runtime UID too.
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index fc63cedc..dac186e1 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,5 +1,6 @@
+ import type { OpenedRecord } from './contentRecord';
+ import { countLedgerWork } from './accountLedgerMetrics';
++import { accountLedgerMode } from './accountLedgerMode';
+ import { originalMembershipBoundaries } from './accountSuccessor';
+ import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
+ import {
+@@ -141,6 +142,8 @@ import {
+ import { createAdmittedWorkspace } from './admittedWorkspace';
+ import type { AccountWorkspaceOptions } from './accountWorkspace';
+ 
++const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
++
+ class ReceiveAuthorityChanged extends AdmissionError {
+   constructor() {
+     super('receive-refused', 'Receive authority was superseded');
+@@ -160,7 +163,7 @@ async function openAccountReceiveOwner(
+ ) {
+   const options = captureAccountOptions(input);
+   const verified = createVerifiedRecords<AccountLedgerView>();
+-  const incremental = import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental';
++  const incremental = ledgerMode === 'incremental';
+   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
+   let sinceAudit = 0;
+   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
+@@ -1785,9 +1788,7 @@ async function openReceivingWorkspace(
+         ...(options.today ? { today: options.today } : {}),
+         ...(options.signal ? { signal: options.signal } : {}),
+       },
+-      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental'
+-        ? 'account-snapshots'
+-        : 'reference',
++      ledgerMode === 'incremental' ? 'account-snapshots' : 'reference',
+     );
+     if (options.signal?.aborted || workspace.status.state !== 'active') {
+       await workspace.close();
+diff --git a/tsconfig.node.json b/tsconfig.node.json
+index 83af69d4..d8e7295f 100644
+--- a/tsconfig.node.json
++++ b/tsconfig.node.json
+@@ -14,6 +14,7 @@
+   "include": [
+     "account-service",
+     "vite.config.ts",
++    "src/crdt/accountLedgerMode.ts",
+     "vite",
+     "playwright.config.ts",
+     "playwright.account-setup.config.ts",
+diff --git a/vite.config.ts b/vite.config.ts
+index 8e956afa..d0b17b45 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -1,6 +1,8 @@
+ import { execFileSync } from 'node:child_process';
+ import { readFileSync } from 'node:fs';
+ import { defineConfig } from 'vitest/config';
++import { loadEnv } from 'vite';
++import { accountLedgerMode } from './src/crdt/accountLedgerMode.ts';
+ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+ import babel from '@rolldown/plugin-babel';
+ import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
+@@ -75,11 +77,14 @@ const relayProxy = () => {
+   };
+ };
+ 
+-export default defineConfig({
++export default defineConfig(({ mode }) => ({
+   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
+   define: {
+     'import.meta.env.VITE_APP_VERSION': JSON.stringify(commit.version),
+     'import.meta.env.VITE_APP_COMMIT_DATE': JSON.stringify(commit.date),
++    'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify(
++      accountLedgerMode(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_LEDGER')['VITE_ACCOUNT_LEDGER']),
++    ),
+   },
+   build: {
+     rollupOptions: { input: { app: 'index.html', local: 'local.html' } },
+@@ -100,4 +105,4 @@ export default defineConfig({
+     setupFiles: ['./test/setup.ts'],
+     include: ['test/**/*.test.ts', 'test/**/*.test.tsx', 'vite/**/*.test.ts'],
+   },
+-});
++}));
+diff --git a/vite/privateMigration.config.ts b/vite/privateMigration.config.ts
+index 06582646..0d36f5c1 100644
+--- a/vite/privateMigration.config.ts
++++ b/vite/privateMigration.config.ts
+@@ -1,16 +1,18 @@
+-import { mergeConfig } from 'vite';
++import { defineConfig, mergeConfig } from 'vite';
+ import app from '../vite.config';
+ 
+ // Keep rehearsal optimization separate from the operator's running development server, and
+ // discover the fixture's dependencies alongside the UI so seeding does not introduce new ones.
+-export default mergeConfig(app, {
+-  cacheDir: 'test-results/private-migration/vite-cache',
+-  optimizeDeps: {
+-    entries: [
+-      'index.html',
+-      'local.html',
+-      'private/migration.html',
+-      'test/legacy-export/index.html',
+-    ],
+-  },
+-});
++export default defineConfig((env) =>
++  mergeConfig(app(env), {
++    cacheDir: 'test-results/private-migration/vite-cache',
++    optimizeDeps: {
++      entries: [
++        'index.html',
++        'local.html',
++        'private/migration.html',
++        'test/legacy-export/index.html',
++      ],
++    },
++  }),
++);
+diff --git a/src/crdt/accountLedgerMode.ts b/src/crdt/accountLedgerMode.ts
+new file mode 100644
+index 00000000..26acddf4
+--- /dev/null
++++ b/src/crdt/accountLedgerMode.ts
+@@ -0,0 +1,6 @@
++/** Build-time rollback only; neither choice changes the stored Account format. */
++export function accountLedgerMode(value: string | undefined): 'incremental' | 'reference' {
++  if (value === undefined || value === '' || value === 'incremental') return 'incremental';
++  if (value === 'reference') return 'reference';
++  throw Error('VITE_ACCOUNT_LEDGER must be incremental or reference');
++}

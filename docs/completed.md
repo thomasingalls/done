@@ -12809,3 +12809,29 @@ Peer hint discovery/read amplification remains a measured opportunity (roughly f
 accepted submission in the two-device run), alongside later load/copying, retention, cold reconstruction
 and burst-batching work. Release validation remains paused. The other seat's `docs/progress.md` is
 unchanged.
+
+### Incremental Account verification becomes the ordinary build
+
+**Date:** 2026-10-11 · **Commit:** this entry's commit, based on signed `9586c7a0`; source hashes
+and runtime/configuration patch retained in the packet · **Stage:** bounded default integration
+
+**Exit.** Ordinary builds now select incremental ledger verification and the Account editor snapshot
+path through one policy. An explicit `VITE_ACCOUNT_LEDGER=reference` build retains both reference
+paths; invalid values fail the build. The Docker build exposes the same override. Persistent formats,
+cold verification, invalidation and the existing periodic reference audit are unchanged. Operator
+[rollback instructions](./public-runtime.md#container-boundary) distinguish rebuilding cached assets
+from changing the service's runtime environment.
+
+**Verification.** The [activation record](./performance-experiments/2026-10-11-account-activation/README.md)
+retains 16 passing unit tests, seven default-mode native checks with an audit on every append, four
+reference native checks and all three existing packaged history journeys. The unset-flag checks prove
+the default executes, retained writing survives reference/default/rollback/default transitions, and an
+injected audit disagreement refuses the warm owner before cold replay recovers acknowledged writing.
+Packaged checks cover two-device approval/delivery and returning-device catch-up after pruning.
+Both builds, type-checking, targeted lint/format, patched Yjs, bundle-budget and origin checks pass;
+the invalid-override build intentionally fails. No generalized campaign was started.
+
+**Next.** Commit and use the normal publication path; the public deployment has not changed. These
+checks add no typing-latency claim. Peer discovery traffic, retained bytes, cold reconstruction,
+maintenance and burst batching remain opportunities after activation. Release validation remains
+paused, and the other seat's `docs/progress.md` is unchanged.
