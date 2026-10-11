@@ -1,0 +1,168 @@
+{
+  "scope": "Signed-source publication preparation; no registry push or deployment",
+  "sourceCommit": "203a0655bc67fdcb5480ae98cfc4e4ddb2a9f6ce",
+  "clientCommit": "34f9b0b9b459d6a42a1ecbe5ee539a39fbce5930",
+  "applicationMain": "9fe66395c2db4f684c1bad328c7fc19ac06f5c20",
+  "cleanGitArchive": true,
+  "sourceArchiveSha256": "edef13a1cb3f5325cef6ba735cf7f48eb2c0f40f0c480ebe8bc60498a04970db",
+  "image": "done-public:203a0655",
+  "localIndexDigest": "sha256:df225ef4f95306b7668aa0ca45788ff46c0301ddcd48777993f5f2567f242ae9",
+  "runtimeManifestDigest": "sha256:f501ab1a4c1dd241ce1be799c0a262fe30c49e429165b3c13b31e8ce3383d4e2",
+  "platform": "linux/arm64",
+  "node": "24.18.0",
+  "buildDate": "2026-10-11",
+  "published": false,
+  "buildPassed": true,
+  "initialJsGzipKB": 136.7,
+  "existingContainerTests": {
+    "runtimeGateway": 14,
+    "backup": 5,
+    "restore": 6,
+    "maintenance": 6
+  },
+  "focusedNode24Checks": {
+    "passed": 9,
+    "historyRaceAndBoundaries": 5,
+    "notificationAndGateway": 4,
+    "image": "done-check:203a0655",
+    "network": "none",
+    "fixture": "signed docs/account-crypto read-only; build stage supplies test-only Vite"
+  },
+  "smoke": {
+    "image": "done-public:203a0655",
+    "started": "2026-10-11T20:20:25.136Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:df225ef4f95306b7668aa0ca45788ff46c0301ddcd48777993f5f2567f242ae9",
+    "platform": "linux/arm64",
+    "sourceRevision": "203a0655bc67fdcb5480ae98cfc4e4ddb2a9f6ce",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-11T20:20:32.669Z"
+  },
+  "browser": [
+    {
+      "test": "a certified second device opens its writing while the first device resumes sync",
+      "status": "passed",
+      "durationMs": 13148
+    },
+    {
+      "test": "an invalid receive page stays stopped, shows a stable notice and retries without reloading",
+      "status": "passed",
+      "durationMs": 46208
+    }
+  ],
+  "browserScope": "Exact extracted runtime frontend; disposable host Node 26.11.1 service from signed archive, not container API",
+  "failedAttempts": [
+    {
+      "log": "container-build-wrong-revision.log.gz",
+      "metadata": "build-metadata-wrong-revision.json",
+      "reason": "Incorrect full source revision supplied as build argument. Artifact excluded; corrected rebuild used the verified commit SHA. No source change."
+    }
+  ],
+  "compatibility": {
+    "accountSchema": 26,
+    "authoritySchema": 1,
+    "schemaChanges": false,
+    "signedWireFormatChanges": false,
+    "notification": "content event only after client opt-in; legacy hint remains",
+    "limit": "Focused checks and source review, not exhaustive mixed-version qualification"
+  },
+  "releaseValidation": "paused",
+  "next": [
+    "Merge application PR preserving signed commits",
+    "Publish and verify this exact tested image",
+    "Prepare ol-infra image pin PR",
+    "After operator merges, verify rollout and backup health"
+  ],
+  "artifacts": [
+    {
+      "path": "build-metadata-wrong-revision.json",
+      "bytes": 1826,
+      "sha256": "0e748cc953d0474391b4cb2e137818bc99d35a1c2c341361b389b5c16395752c"
+    },
+    {
+      "path": "build-metadata.json",
+      "bytes": 1826,
+      "sha256": "4c2f46a657f8da350b291f6d85adffb9411da3c81371ef2e31f7eb08317fe56b"
+    },
+    {
+      "path": "container-build-wrong-revision.log.gz",
+      "bytes": 5556,
+      "sha256": "4bc92a3b9cbfe0fcc87869a2b7ef468fc492a33807291b77b727bc2406e4dc4f",
+      "uncompressedBytes": 16978,
+      "uncompressedSha256": "12f95775d85292774ba52ca51e77ff3303544186f402d069084023a359c7cf91"
+    },
+    {
+      "path": "container-build.log.gz",
+      "bytes": 5565,
+      "sha256": "1a6dd7db60666467b21b6c4e2b9b0d5d8df1c12c23f3fe709bf39e52a50e1623",
+      "uncompressedBytes": 17025,
+      "uncompressedSha256": "66bcb0a588e2c62171862736cf00593fe2ac35ca20a20e8e0ccdde52ccd5d006"
+    },
+    {
+      "path": "container-check-stage.log.gz",
+      "bytes": 1108,
+      "sha256": "c2620cfce6de29dc845062ac45866cd7ec8f02b9bb894a53e21bb1d374321df5",
+      "uncompressedBytes": 2783,
+      "uncompressedSha256": "b658a2b7ee9907c58ccf9eb98677fa0117b475c3d8b77041b5bbfedcd2a9fa1c"
+    },
+    {
+      "path": "container-focused.log.gz",
+      "bytes": 800,
+      "sha256": "bc10f83916b61cae35643da343b81c2b308b0bb66652830de8a80d75b1e5f862",
+      "uncompressedBytes": 2128,
+      "uncompressedSha256": "7d7a7112519dc086de9aef31ecdc7da3c03f59cc461cc647a412524c57cd207f"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1124,
+      "sha256": "d234cd4569f3be23fd666273ae55ccad95f8529795ba5bc399e0372313eb881f"
+    },
+    {
+      "path": "container-smoke.log.gz",
+      "bytes": 475,
+      "sha256": "ecfcd65dd4e132771fd0286ed15209f240889911f144992644317cf5ad5d04c9",
+      "uncompressedBytes": 746,
+      "uncompressedSha256": "0934020ac7b965d2d3a04c8c62d17e4e11dc8a634e51fe6a717a6bdb16410142"
+    },
+    {
+      "path": "frontend-files.json",
+      "bytes": 9367,
+      "sha256": "c23bab41da295a3db7b42ca725e78bcb15f5bcc14f4ce5c988cbce8cebdbd2d1"
+    },
+    {
+      "path": "image-identity.json",
+      "bytes": 188,
+      "sha256": "0fa2daed8517d57d68bf53b66ee9fd154efcf99bf43092e42f625dc9dc73a639"
+    },
+    {
+      "path": "packaged-browser.json",
+      "bytes": 528,
+      "sha256": "cb3d4c4f9e34ea613ff465b48e97f248ebf6ccab835108f2d0700b611a854308"
+    },
+    {
+      "path": "packaged-browser.log.gz",
+      "bytes": 546,
+      "sha256": "61b824e12deed3f6eb30c80525b96b3de78a169867ee79b8913bd1a9b434c405",
+      "uncompressedBytes": 1436,
+      "uncompressedSha256": "4c03999188422a12b1a01fe65fbfe3446a7b21e14be5c068052e9140b3e2987d"
+    },
+    {
+      "path": "packaged-source-files.json",
+      "bytes": 538,
+      "sha256": "d764ea77529a37fc9a9d6c9aacf312a42bf98921ae4c2e2afb7284324f7af8ed"
+    }
+  ]
+}

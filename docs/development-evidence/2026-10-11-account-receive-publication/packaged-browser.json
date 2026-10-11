@@ -1,0 +1,17 @@
+{
+  "source": "203a0655bc67fdcb5480ae98cfc4e4ddb2a9f6ce",
+  "frontend": "extracted without rebuilding from done-public:203a0655",
+  "api": "host Node 26.11.1, signed source",
+  "cases": [
+    {
+      "test": "a certified second device opens its writing while the first device resumes sync",
+      "status": "passed",
+      "durationMs": 13148
+    },
+    {
+      "test": "an invalid receive page stays stopped, shows a stable notice and retries without reloading",
+      "status": "passed",
+      "durationMs": 46208
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "image": "done-public:203a0655",
+  "started": "2026-10-11T20:20:25.136Z",
+  "checks": [
+    "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+    "Explicit initialization publishes a pinned identity using external secret custody",
+    "Ordinary API startup refuses an uninitialized volume",
+    "A second container cannot take ownership of the same live store",
+    "Keyless app container serves the session API through exact-origin scoped boundaries",
+    "Every packaged service-worker precache response matches its recorded bytes",
+    "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+    "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+  ],
+  "imageId": "sha256:df225ef4f95306b7668aa0ca45788ff46c0301ddcd48777993f5f2567f242ae9",
+  "platform": "linux/arm64",
+  "sourceRevision": "203a0655bc67fdcb5480ae98cfc4e4ddb2a9f6ce",
+  "nodeVersion": "v24.18.0",
+  "ageVersion": "1.1.1",
+  "precacheUrls": 34,
+  "ok": true,
+  "cleanupFailures": [],
+  "finished": "2026-10-11T20:20:32.669Z"
+}
