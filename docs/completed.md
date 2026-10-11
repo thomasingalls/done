@@ -12850,3 +12850,39 @@ all 34 precache URLs and retained-state restart. Image identities and source are
 publication/remote digest verification, then the ol-infra image-pin PR and ordinary rollout checks.
 There is no schema or wire-format change. Registry publication and deployment have not occurred;
 the retained public service is untouched. Release validation remains paused.
+
+### Account burst batching and coordinated journal flushing
+
+**Date:** 2026-10-11 · **Source:** working phase on `codex/account-burst-batching`, based on merged
+`7b6d8d9f` (deployed runtime `5ccee4d0`) · **Stage:** bounded performance repair, not release validation
+
+**Exit.** Account defaults to a 300 ms quiet / 2,000 ms maximum publication and local-flush policy,
+with an explicit `VITE_ACCOUNT_BATCH=reference` build override and Docker argument. Synchronous
+encrypted journalling still precedes acceptance; explicit barriers/pressure still force disk commit.
+Failure backoff is independent of typing. Hidden/pagehide requests best-effort work, while lock still
+revokes the owner promptly. Owned peer pages keep original frame order and pending dependencies but
+verify/publish the completed projection once. Persistent and wire formats are unchanged.
+
+**Evidence.** The [batching packet](./performance-experiments/2026-10-11-account-batching/README.md)
+records predictions, exact source variants, queue/flush instrumentation, baseline bookends, raw numeric
+captures, CPU profiles and the selected policy. At identical retained 2,320-edit history, 300-key
+stable-text p95 falls from 285–337.5 ms to 57.1 ms; sampled CPU/key falls from 148.9–150.6 to 95.6 ms.
+Publication-only batching barely helps; the coordinated 2s policy reduces dirty flushes from 124–125
+to 41 and total local admission wait from 13.5–15.5s to 0.56s. Existing-history cold open remains
+12.6–13.0s. In a separate uninterrupted new-history run, deep p95 is 39.4ms versus 240.7ms; both runs
+exercise nine compactions and the candidate's largest still takes about one second.
+
+Two disposable devices each type 300 keys while receiving. Both texts converge, no HTTP 429 occurs,
+and own typing p95 improves on both devices; submissions fall from 74 to 47. Candidate peer-arrival
+p95 is 3.4–3.6s, including work and delivery. These small desktop samples do not establish phone
+latency or rare-stall reliability.
+
+**Verification.** 50 focused unit tests and selected native receive, journal recovery, receipt,
+batch-envelope crash, exact retry, observer-close, default and reference cases pass. TypeScript,
+format/lint, ordinary/reference builds, patched Yjs, bundle and origin checks pass; an invalid override
+refuses configuration. The packet lists exact commands and case counts without crediting unrun suites.
+
+**Next.** Commit and publish through the existing application/image/infra sequence. No deployment
+occurred in this phase. Repeated cold-open parsing, full physical census/copying, maintenance pauses
+and peer discovery traffic remain opportunities. Release validation and the other seat's live progress
+file remain untouched.

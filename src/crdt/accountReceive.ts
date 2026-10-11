@@ -1,6 +1,7 @@
 import type { OpenedRecord } from './contentRecord';
 import { countLedgerWork } from './accountLedgerMetrics';
 import { accountLedgerMode } from './accountLedgerMode';
+import { accountBatchPolicy } from './accountBatchPolicy';
 import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
 import {
@@ -1772,12 +1773,21 @@ async function openReceivingWorkspace(
   );
   operatorToken = access ?? operatorToken;
   let enqueue!: OwnedReceiveQueue;
+  const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
     const workspace = await createAdmittedWorkspace(
       (config) =>
-        createAdmissionOwner(carrier, config, (receive) => {
-          enqueue = receive;
-        }),
+        createAdmissionOwner(
+          carrier,
+          {
+            ...config,
+            ...(batching.localFlush ? { flushBatch: batching.localFlush } : {}),
+            ...(batching.publication ? { publishReceivePage: true } : {}),
+          },
+          (receive) => {
+            enqueue = receive;
+          },
+        ),
       {
         identity: options.identity,
         captureSources: true,
@@ -1936,6 +1946,21 @@ async function openReceivingWorkspace(
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
+      const flushOnHide = () => {
+        if (carrier.signal.aborted) return;
+        scheduler.wake('flush');
+        // Best effort only. Suspension/lock can cancel all async work; admitted source
+        // frames already have synchronous journal custody and resume on reopening.
+        void workspace.whenDurable().then(
+          // Input already queued when hiding can be admitted during the barrier. Close
+          // its window too; lock still cancels the owner without waiting for this work.
+          () => scheduler.wake('flush'),
+          () => {},
+        );
+      };
+      const visibility = () => {
+        if (globalThis.document?.visibilityState === 'hidden') flushOnHide();
+      };
       const online = () => {
           resetDiscovery();
           scheduler.wake('online');
@@ -1945,7 +1970,9 @@ async function openReceivingWorkspace(
         signal: carrier.signal,
         gate,
         receiveInterval: () => (notificationHealthy ? 60000 + Math.random() * 5000 : 5000),
-        send: () => driveOutboundStep(outbound, operatorToken ?? '', gate),
+        ...(batching.publication ? { publicationBatch: batching.publication } : {}),
+        send: (beforeNewEnvelope) =>
+          driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
         receive: async () => {
           const authority = await refreshAuthority(operatorToken ?? '');
           if (authority.kind === 'adopted') scheduler.wake('authority');
@@ -1995,6 +2022,8 @@ async function openReceivingWorkspace(
           operatorToken = undefined;
           unsubscribe?.();
           unsubscribeLocal?.();
+          globalThis.document?.removeEventListener('visibilitychange', visibility);
+          globalThis.removeEventListener?.('pagehide', flushOnHide, true);
           globalThis.removeEventListener?.('online', online);
           globalThis.removeEventListener?.('offline', offline);
         },
@@ -2005,6 +2034,10 @@ async function openReceivingWorkspace(
           bytes.fill(0);
           scheduler.wake('local');
         });
+        if (batching.publication) {
+          globalThis.document?.addEventListener('visibilitychange', visibility);
+          globalThis.addEventListener?.('pagehide', flushOnHide, true);
+        }
         unsubscribe = workspace.onStatus(() => {
           const current = gate();
           if (current !== previousGate) {

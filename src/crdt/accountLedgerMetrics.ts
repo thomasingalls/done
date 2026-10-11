@@ -11,6 +11,9 @@ const workNames = [
   'sourceParseBytes',
   'recordCopies',
   'recordCopyBytes',
+  'journalFlushes',
+  'dirtyJournalFlushes',
+  'projectionChecks',
 ] as const;
 const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   (typeof workNames)[number],
@@ -26,7 +29,13 @@ type WorkTiming =
   | 'storageOperation'
   | 'sourceParse'
   | 'validateUpdates'
-  | 'envelopeSelection';
+  | 'envelopeSelection'
+  | 'admissionLocal'
+  | 'admissionRemote'
+  | 'admissionFlush'
+  | 'waitLocal'
+  | 'waitRemote'
+  | 'waitFlush';
 const costs: Partial<Record<WorkTiming, { calls: number; totalMs: number; maxMs: number }>> = {};
 /** Bounded numeric-only development counters. Names are internal literals, never input. */
 export const countLedgerWork = (name: keyof typeof work, count = 1) => {
@@ -55,7 +64,16 @@ export const measureLedger = (name: (typeof names)[number], since: number) => {
   row.totalMs += ms;
   row.maxMs = Math.max(row.maxMs, ms);
 };
+const queuePeaks = { local: 0, remote: 0, flush: 0 };
+export const observeAdmissionQueue = (queue: readonly { kind: keyof typeof queuePeaks }[]) => {
+  if (!ledgerProfiling) return;
+  const counts = { local: 0, remote: 0, flush: 0 };
+  for (const job of queue) counts[job.kind]++;
+  for (const kind of ['local', 'remote', 'flush'] as const)
+    queuePeaks[kind] = Math.max(queuePeaks[kind], counts[kind]);
+};
 export const accountLedgerMetrics = () => ({
+  queuePeaks: { ...queuePeaks },
   ...counters,
   timings: structuredClone(timings),
   work: { ...work },

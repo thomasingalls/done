@@ -181,7 +181,16 @@ it('outbound progress comes only from durable decisions and pending exact submis
       return { kind: 'accepted' };
     },
   };
-  expect(await driveOutboundStep(ops, 'token', () => gate)).toEqual({
+  expect(
+    await driveOutboundStep(
+      ops,
+      'token',
+      () => gate,
+      () => {
+        throw Error('exact retry must not wait for a new batch');
+      },
+    ),
+  ).toEqual({
     kind: 'unknown',
     acceptedThrough: 0,
   });

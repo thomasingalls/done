@@ -1471,3 +1471,18 @@ One host under load, one device, one run per condition, a small workspace and no
 blocks ran slower than their requested cadence, so those latencies are lower bounds. F-17 stays
 partial. The earlier gate's two misses are unchanged and were not rerun.
 [Measurement, studies, raw data and limits](./performance-experiments/2026-10-10-account-desktop-typing/README.md).
+
+## 2026-10-11 — Account batching must include local flush scheduling
+
+The [bounded batching packet](./performance-experiments/2026-10-11-account-batching/README.md)
+compares publication-only and coordinated local-flush/publication timing on copies of the same
+already-grown account. Publication-only barely changes deep stalls; the selected 300ms quiet / 2s
+maximum coordinated policy lowers stable-text p95 from 285–337.5ms to 57.1ms, and sampled CPU/key
+from about 150ms to 96ms. Ordinary Account builds now select it; Local-only scheduling is unchanged.
+A reference build override retains the prior behavior without changing persistent formats.
+
+The packet includes uninterrupted history, current cold-open and compaction costs, heap, queue job
+counts/times, two-device typing and peer arrival, and focused crash/retry evidence. Batching does not
+make existing cold history cheap: the fixed-history cold opening remains about 12–13s and the largest
+candidate compaction still takes about one second. No phone latency, general release-validation or
+production-publication claim follows from these disposable desktop measurements.

@@ -1,3 +1,11 @@
+import {
+  ledgerProfiling,
+  ledgerWorkStart,
+  countLedgerWork,
+  measureLedgerWork,
+  observeAdmissionQueue,
+} from './accountLedgerMetrics';
+import { createBatchWindow, type BatchTiming } from './batchWindow';
 import { applyUpdate, createDoc, encodeState, forkDoc, sameDocState, type YDoc } from './yjs';
 import {
   createWorkspacePreparation,
@@ -46,6 +54,10 @@ export class AdmissionError extends Error {
   }
 }
 export interface AdmissionOptions {
+  /** Internal Account flush policy. Journal acknowledgment and forced barriers are unchanged. */
+  readonly flushBatch?: BatchTiming;
+  /** Private owned receives retain/apply frames in order, then publish the verified page once. */
+  readonly publishReceivePage?: boolean;
   readonly [localWorkspacePreparation]?: LocalWorkspacePreparation;
   readonly prepare: PrepareIntent;
   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
@@ -71,6 +83,8 @@ export interface AcceptedUpdate {
   readonly source: 'local' | 'remote';
   readonly revision: number;
   readonly update: Bytes;
+  /** Only the private owned receive can mark an intermediate frame. */
+  readonly publicationComplete?: false;
 }
 export interface AdmissionStatus {
   readonly state: 'active' | 'blocked' | 'closing' | 'closed' | 'failed';
@@ -157,6 +171,10 @@ export const createAdmissionOwner = async (
     listeners = new Set<(e: AcceptedUpdate) => void>(),
     statusListeners = new Set<(s: AdmissionStatus) => void>();
   const queue: Job[] = [];
+  const queuedAt = ledgerProfiling ? new WeakMap<Job, number>() : undefined;
+  const flushBatch = options.flushBatch
+    ? createBatchWindow(options.flushBatch, () => performance.now())
+    : undefined;
   let state: AdmissionStatus['state'] = 'active',
     revision = 0,
     nextId = 0,
@@ -274,6 +292,7 @@ export const createAdmissionOwner = async (
     const done = deferred<void>();
     closing = done.promise;
     state = 'closing';
+    flushBatch?.clear();
     clearTimer();
     clearMaintenanceTimer();
     carrier.signal.removeEventListener('abort', cancelled);
@@ -325,6 +344,7 @@ export const createAdmissionOwner = async (
         );
       journalBytes = recovery.journal.reduce((n, r) => n + r.bytes.length, 0);
       journalDirty = recovery.journal.length > 0;
+      if (journalDirty) flushBatch?.note();
     } finally {
       for (const r of [...recovery.records, ...recovery.journal]) r.bytes.fill(0);
     }
@@ -353,7 +373,7 @@ export const createAdmissionOwner = async (
       probe?.destroy();
     }
   };
-  const promote = (job: InputJob, update: Bytes) => {
+  const promote = (job: InputJob, update: Bytes, publicationComplete = true) => {
     live();
     // A closing observer may revoke and erase the handoff during publication.
     const publication = update.slice();
@@ -390,7 +410,14 @@ export const createAdmissionOwner = async (
       for (const listener of [...listeners]) {
         if (state !== 'active') break;
         try {
-          listener(Object.freeze({ source: job.kind, revision, update: publication.slice() }));
+          listener(
+            Object.freeze({
+              source: job.kind,
+              revision,
+              update: publication.slice(),
+              ...(!publicationComplete ? { publicationComplete: false as const } : {}),
+            }),
+          );
         } catch {
           /* completed acceptance cannot be rolled back */
         }
@@ -431,6 +458,8 @@ export const createAdmissionOwner = async (
   };
   const flush = async () => {
     live();
+    countLedgerWork('journalFlushes');
+    if (journalDirty) countLedgerWork('dirtyJournalFlushes');
     const receipt = await carrier.flushJournal();
     live();
     if (receipt.retained) {
@@ -445,6 +474,7 @@ export const createAdmissionOwner = async (
     changedContent(receipt.removed ?? 0, journalBytes);
     journalBytes = 0;
     journalDirty = false;
+    flushBatch?.clear();
   };
   const forceLocal = async (job: InputJob) => {
     await flush();
@@ -485,7 +515,8 @@ export const createAdmissionOwner = async (
               updates.reduce((n, b) => n + b.length, 0),
             );
             // Preserve original frames and their delivery order, including pending buffers/deletions.
-            for (const update of updates) promote(job, update);
+            for (let i = 0; i < updates.length; i++)
+              promote(job, updates[i]!, !options.publishReceivePage || i === updates.length - 1);
           })
           .then(() => {
             live();
@@ -630,6 +661,7 @@ export const createAdmissionOwner = async (
     }
     if (attempt.status === 'journalled') {
       journalDirty = true;
+      flushBatch?.note();
       journalBytes += (job.prepared.carrierBytes ?? job.prepared.update).length;
       promote(job, job.prepared.update);
       completeInput(job);
@@ -689,18 +721,57 @@ export const createAdmissionOwner = async (
   };
   const schedule = () => {
     scheduleMaintenance();
-    if (state !== 'active' || !journalDirty || timer !== undefined) return;
-    timer = setTimeout(() => {
-      timer = undefined;
-      if (state === 'active') void barrier().catch(() => {});
-    }, FLUSH_DELAY_MS);
+    if (state !== 'active' || !journalDirty) return;
+    if (timer !== undefined) {
+      if (!flushBatch) return;
+      clearTimeout(timer);
+    }
+    timer = setTimeout(
+      () => {
+        timer = undefined;
+        if (state === 'active') void barrier().catch(() => {});
+      },
+      flushBatch ? Math.max(0, flushBatch.due! - performance.now()) : FLUSH_DELAY_MS,
+    );
+  };
+  const processMeasured = (job: Job) => {
+    if (!ledgerProfiling) return process(job);
+    const wait = queuedAt!.get(job);
+    if (wait !== undefined) {
+      measureLedgerWork(
+        ({ local: 'waitLocal', remote: 'waitRemote', flush: 'waitFlush' } as const)[job.kind],
+        wait,
+      );
+      queuedAt!.delete(job);
+    }
+    const start = ledgerWorkStart();
+    const finish = () =>
+      measureLedgerWork(
+        ({ local: 'admissionLocal', remote: 'admissionRemote', flush: 'admissionFlush' } as const)[
+          job.kind
+        ],
+        start,
+      );
+    try {
+      const result = process(job);
+      if (result) return result.finally(finish);
+      finish();
+    } catch (error) {
+      finish();
+      throw error;
+    }
+  };
+  const recordQueue = (job: Job) => {
+    if (!ledgerProfiling) return;
+    queuedAt!.set(job, ledgerWorkStart());
+    observeAdmissionQueue(queue);
   };
   const pump = () => {
     if (busy || state !== 'active') return;
     busy = true;
     try {
       while (queue.length && state === 'active') {
-        const result = process(queue[0]!);
+        const result = processMeasured(queue[0]!);
         if (result) {
           inFlight = result.then(undefined, block).finally(() => {
             busy = false;
@@ -754,6 +825,7 @@ export const createAdmissionOwner = async (
     };
     clearMaintenanceTimer();
     queue.push(job);
+    recordQueue(job);
     pump();
     notify();
     return Object.freeze({ id: job.id, accepted: completion.promise });
@@ -783,7 +855,9 @@ export const createAdmissionOwner = async (
         );
       const completion = deferred<void>();
       clearMaintenanceTimer();
-      queue.push({ kind: 'flush', completion });
+      const job: FlushJob = { kind: 'flush', completion };
+      queue.push(job);
+      recordQueue(job);
       pump();
       notify();
       return completion.promise;

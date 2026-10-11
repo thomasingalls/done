@@ -59,6 +59,7 @@ import {
   type PreparedWorkspaceState,
 } from './workspacePreparation';
 import type { AdmittedTextSurface, TextAction, TextSelection } from '../editor/admittedText';
+import { countLedgerWork } from './accountLedgerMetrics';
 
 export type { WorkspaceCommand, TextTarget } from './workspaceCommands';
 export interface WorkspaceTicket {
@@ -580,6 +581,7 @@ export const createAdmittedWorkspace = async (
       throw error;
     }
     const verifyProjection = () => {
+      countLedgerWork('projectionChecks');
       if (!session.matches(accepted!.history.doc))
         throw new AdmissionError(
           'projection-mismatch',
@@ -617,7 +619,14 @@ export const createAdmittedWorkspace = async (
           commands.invalidate(accepted!.history);
           applyUpdate(accepted!.history.doc, event.update, 'received');
         }
-        // Check every accepted transition, including later remote dependencies, before exposure.
+        // The owned page is already durable and its original frames have been authenticated.
+        // Apply all of them in order (including pending information), then compare and expose
+        // the completed page once. Nothing may expose the intermediate projection here.
+        if (event.publicationComplete === false) {
+          if (event.source !== 'remote') throw Error('Only owned receive may defer publication');
+          return;
+        }
+        // Check the complete accepted transition/page, including pending dependencies, before exposure.
         if (!localHandoff || event.source === 'remote') verifyProjection();
         verifiedRevision = event.revision;
         emit();

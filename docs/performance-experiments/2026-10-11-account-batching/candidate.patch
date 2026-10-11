@@ -1,0 +1,883 @@
+--- /dev/null
++++ b/src/crdt/accountBatchPolicy.ts
+@@ -0,0 +1,16 @@
++import type { BatchTiming } from './batchWindow';
++
++/** Opt-in experiment until the measured candidate and focused guards pass. */
++export function accountBatchPolicy(value: string | undefined): {
++  publication?: BatchTiming;
++  localFlush?: BatchTiming;
++} {
++  if (value === undefined || value === '' || value === 'reference') return {};
++  const match = /^(publication|coordinated)-(1000|2000)$/.exec(value);
++  if (!match) throw Error('Invalid VITE_ACCOUNT_BATCH');
++  const timing = Object.freeze({ quietMs: 300, maxMs: Number(match[2]) });
++  return Object.freeze({
++    publication: timing,
++    ...(match[1] === 'coordinated' ? { localFlush: timing } : {}),
++  });
++}
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -11,6 +11,9 @@
+   'sourceParseBytes',
+   'recordCopies',
+   'recordCopyBytes',
++  'journalFlushes',
++  'dirtyJournalFlushes',
++  'projectionChecks',
+ ] as const;
+ const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
+   (typeof workNames)[number],
+@@ -26,7 +29,13 @@
+   | 'storageOperation'
+   | 'sourceParse'
+   | 'validateUpdates'
+-  | 'envelopeSelection';
++  | 'envelopeSelection'
++  | 'admissionLocal'
++  | 'admissionRemote'
++  | 'admissionFlush'
++  | 'waitLocal'
++  | 'waitRemote'
++  | 'waitFlush';
+ const costs: Partial<Record<WorkTiming, { calls: number; totalMs: number; maxMs: number }>> = {};
+ /** Bounded numeric-only development counters. Names are internal literals, never input. */
+ export const countLedgerWork = (name: keyof typeof work, count = 1) => {
+@@ -55,7 +64,16 @@
+   row.totalMs += ms;
+   row.maxMs = Math.max(row.maxMs, ms);
+ };
++const queuePeaks = { local: 0, remote: 0, flush: 0 };
++export const observeAdmissionQueue = (queue: readonly { kind: keyof typeof queuePeaks }[]) => {
++  if (!ledgerProfiling) return;
++  const counts = { local: 0, remote: 0, flush: 0 };
++  for (const job of queue) counts[job.kind]++;
++  for (const kind of ['local', 'remote', 'flush'] as const)
++    queuePeaks[kind] = Math.max(queuePeaks[kind], counts[kind]);
++};
+ export const accountLedgerMetrics = () => ({
++  queuePeaks: { ...queuePeaks },
+   ...counters,
+   timings: structuredClone(timings),
+   work: { ...work },
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,6 +1,7 @@
+ import type { OpenedRecord } from './contentRecord';
+ import { countLedgerWork } from './accountLedgerMetrics';
+ import { accountLedgerMode } from './accountLedgerMode';
++import { accountBatchPolicy } from './accountBatchPolicy';
+ import { originalMembershipBoundaries } from './accountSuccessor';
+ import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
+ import {
+@@ -1772,12 +1773,21 @@
+   );
+   operatorToken = access ?? operatorToken;
+   let enqueue!: OwnedReceiveQueue;
++  const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
+   try {
+     const workspace = await createAdmittedWorkspace(
+       (config) =>
+-        createAdmissionOwner(carrier, config, (receive) => {
+-          enqueue = receive;
+-        }),
++        createAdmissionOwner(
++          carrier,
++          {
++            ...config,
++            ...(batching.localFlush ? { flushBatch: batching.localFlush } : {}),
++            ...(batching.publication ? { publishReceivePage: true } : {}),
++          },
++          (receive) => {
++            enqueue = receive;
++          },
++        ),
+       {
+         identity: options.identity,
+         captureSources: true,
+@@ -1936,6 +1946,16 @@
+       let notifications: ReturnType<typeof startNotifications> | undefined;
+       let notificationHealthy = false;
+       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
++      const flushOnHide = () => {
++        if (carrier.signal.aborted) return;
++        scheduler.wake('flush');
++        // Best effort only. Suspension/lock can cancel all async work; admitted source
++        // frames already have synchronous journal custody and resume on reopening.
++        void workspace.whenDurable().catch(() => {});
++      };
++      const visibility = () => {
++        if (globalThis.document?.visibilityState === 'hidden') flushOnHide();
++      };
+       const online = () => {
+           resetDiscovery();
+           scheduler.wake('online');
+@@ -1945,7 +1965,9 @@
+         signal: carrier.signal,
+         gate,
+         receiveInterval: () => (notificationHealthy ? 60000 + Math.random() * 5000 : 5000),
+-        send: () => driveOutboundStep(outbound, operatorToken ?? '', gate),
++        ...(batching.publication ? { publicationBatch: batching.publication } : {}),
++        send: (beforeNewEnvelope) =>
++          driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
+         receive: async () => {
+           const authority = await refreshAuthority(operatorToken ?? '');
+           if (authority.kind === 'adopted') scheduler.wake('authority');
+@@ -1995,6 +2017,8 @@
+           operatorToken = undefined;
+           unsubscribe?.();
+           unsubscribeLocal?.();
++          globalThis.document?.removeEventListener('visibilitychange', visibility);
++          globalThis.removeEventListener?.('pagehide', flushOnHide, true);
+           globalThis.removeEventListener?.('online', online);
+           globalThis.removeEventListener?.('offline', offline);
+         },
+@@ -2005,6 +2029,10 @@
+           bytes.fill(0);
+           scheduler.wake('local');
+         });
++        if (batching.publication) {
++          globalThis.document?.addEventListener('visibilitychange', visibility);
++          globalThis.addEventListener?.('pagehide', flushOnHide, true);
++        }
+         unsubscribe = workspace.onStatus(() => {
+           const current = gate();
+           if (current !== previousGate) {
+--- a/src/crdt/accountSyncDriver.ts
++++ b/src/crdt/accountSyncDriver.ts
+@@ -3,6 +3,7 @@
+ import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
+ import type { ReceiveStep } from './accountReceiveDriver';
+ import { EnvelopeSizeError } from '../../account-protocol/envelope';
++import { createBatchWindow, type BatchTiming } from './batchWindow';
+ export type SyncLane = 'send' | 'receive';
+ export type SyncHalt =
+   | 'closed'
+@@ -12,6 +13,7 @@
+   | import('./accountReceiveDriver').ReceiveHalt;
+ export type OutboundStep = { receivedThrough?: number } & (
+   | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
++  | { kind: 'batching'; acceptedThrough: number; due: number }
+   | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
+ );
+ export interface SyncLaneStatus {
+@@ -43,13 +45,17 @@
+ export function createSyncScheduler(options: {
+   signal: AbortSignal;
+   gate(): DriverGate;
+-  send(): Promise<OutboundStep>;
++  send(beforeNewEnvelope?: () => number | undefined): Promise<OutboundStep>;
+   receive(): Promise<ReceiveStep>;
+   detach(): void;
+   clock?: DriverClock;
+   receiveInterval?(): number;
++  publicationBatch?: BatchTiming;
+ }) {
+   const clock = options.clock ?? clockDefault;
++  const batch = options.publicationBatch
++    ? createBatchWindow(options.publicationBatch, () => clock.now())
++    : undefined;
+   const fresh = (): Lane => ({
+     phase: 'starting',
+     position: 0,
+@@ -79,7 +85,12 @@
+               : lane.phase,
+       failures: lane.failures,
+       nextAttemptAt:
+-        !stopped && gate === 'ready' && !lane.halt && active !== name ? (lane.due ?? null) : null,
++        !stopped && gate === 'ready' && !lane.halt && active !== name && lane.due !== undefined
++          ? Math.max(
++              lane.due,
++              name === 'send' && lane.failures === 0 ? (batch?.due ?? -Infinity) : -Infinity,
++            )
++          : null,
+       reason: stopped
+         ? null
+         : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : (lane.retryReason ?? null))),
+@@ -112,6 +123,7 @@
+   const stop = () => {
+     if (stopped) return;
+     stopped = true;
++    batch?.clear();
+     clear();
+     for (const name of names) {
+       lanes[name].due = undefined;
+@@ -128,6 +140,11 @@
+     return !stopped && options.gate() === 'ready';
+   };
+   const eligible = () => names.filter((name) => !lanes[name].halt && lanes[name].due !== undefined);
++  // A failed operation owns its retry clock. New typing cannot move it in either direction.
++  const dueAt = (name: SyncLane) =>
++    name === 'send' && lanes.send.failures === 0
++      ? Math.max(lanes.send.due!, batch?.due ?? -Infinity)
++      : lanes[name].due!;
+   const arm = () => {
+     if (!ready() || work) {
+       clear();
+@@ -137,7 +154,7 @@
+     clear();
+     const pending = eligible();
+     if (!pending.length) return;
+-    const due = Math.min(...pending.map((name) => lanes[name].due!));
++    const due = Math.min(...pending.map(dueAt));
+     timer = clock.set(
+       () => {
+         timer = undefined;
+@@ -148,7 +165,7 @@
+   };
+   const begin = () => {
+     if (stopped || work || !ready()) return;
+-    const due = eligible().filter((name) => lanes[name].due! <= clock.now());
++    const due = eligible().filter((name) => dueAt(name) <= clock.now());
+     const name = due.find((n) => n !== last) ?? due[0];
+     if (!name) {
+       arm();
+@@ -165,7 +182,20 @@
+         lane.due = undefined;
+         lane.dirty = lane.expedite = false;
+         last = name;
+-        const result = await options[name]();
++        const result =
++          name === 'receive'
++            ? await options.receive()
++            : await options.send(
++                batch
++                  ? () => {
++                      // Local edits may have arrived while the send prelude awaited storage. Delay only
++                      // allocation of a new envelope; persisted submissions still retry on their own clock.
++                      if (batch.due !== undefined && batch.due > clock.now()) return batch.due;
++                      batch.clear();
++                      return undefined;
++                    }
++                  : undefined,
++              );
+         if (stopped) return;
+         const position =
+           'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
+@@ -191,7 +221,13 @@
+           lanes.receive.failures === 0
+         )
+           lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
+-        if (result.kind === 'blocked') {
++        if (result.kind === 'batching') {
++          lane.phase = 'idle';
++          lane.failures = 0;
++          lane.retryReason = undefined;
++          lane.due = result.due;
++          lane.dirty = lane.expedite = false;
++        } else if (result.kind === 'blocked') {
+           lane.halt = result.reason;
+           lane.due = undefined;
+           lane.expedite = lane.dirty = false;
+@@ -238,10 +274,12 @@
+       });
+   };
+   const wake = (
+-    cause: 'start' | 'gate' | 'online' | 'authority' | 'local' | 'remote' | 'retry',
++    cause: 'start' | 'gate' | 'online' | 'authority' | 'local' | 'remote' | 'retry' | 'flush',
+     target?: SyncLane,
+   ) => {
+     if (stopped) return;
++    if (cause === 'local') batch?.note();
++    if (cause === 'flush' || cause === 'authority') batch?.close();
+     for (const name of names) {
+       if (cause === 'retry' && name !== target) continue;
+       const lane = lanes[name];
+@@ -255,6 +293,16 @@
+       if (cause === 'local' && name === 'send') {
+         lane.dirty = true;
+         if (!lane.halt && active !== name && lane.due === undefined) lane.due = clock.now() + 50;
++      }
++      if (
++        cause === 'flush' &&
++        name === 'send' &&
++        batch?.due !== undefined &&
++        !lane.halt &&
++        lane.failures === 0
++      ) {
++        if (active === name) lane.dirty = true;
++        else lane.due = Math.min(lane.due ?? clock.now(), clock.now());
+       }
+       if (cause === 'start' && lane.due === undefined && active !== name && !lane.halt)
+         lane.due = clock.now();
+@@ -294,6 +342,7 @@
+   ops: DriverOperations,
+   token: AccountAccess,
+   gate: () => DriverGate,
++  beforeNewEnvelope?: () => number | undefined,
+ ): Promise<OutboundStep> {
+   const progress = (s: Awaited<ReturnType<DriverOperations['deliveryStatus']>>) => ({
+     acceptedThrough: s.acceptedThrough,
+@@ -316,6 +365,8 @@
+     paused = pause();
+     if (paused) return paused;
+     if (!spool.positions.some((p) => p.position === position && p.persisted)) {
++      const due = beforeNewEnvelope?.();
++      if (due !== undefined) return { kind: 'batching', due, ...progress(status) };
+       const prepared = await ops.prepareNextEnvelope();
+       if (!prepared) return pause() ?? { kind: 'idle', ...progress(status) };
+       prepared.bytes.fill(0);
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -1,3 +1,11 @@
++import {
++  ledgerProfiling,
++  ledgerWorkStart,
++  countLedgerWork,
++  measureLedgerWork,
++  observeAdmissionQueue,
++} from './accountLedgerMetrics';
++import { createBatchWindow, type BatchTiming } from './batchWindow';
+ import { applyUpdate, createDoc, encodeState, forkDoc, sameDocState, type YDoc } from './yjs';
+ import {
+   createWorkspacePreparation,
+@@ -46,6 +54,10 @@
+   }
+ }
+ export interface AdmissionOptions {
++  /** Internal Account experiment. Journal acknowledgment and forced barriers are unchanged. */
++  readonly flushBatch?: BatchTiming;
++  /** Private owned receives retain/apply frames in order, then publish the verified page once. */
++  readonly publishReceivePage?: boolean;
+   readonly [localWorkspacePreparation]?: LocalWorkspacePreparation;
+   readonly prepare: PrepareIntent;
+   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
+@@ -71,6 +83,8 @@
+   readonly source: 'local' | 'remote';
+   readonly revision: number;
+   readonly update: Bytes;
++  /** Only the private owned receive can mark an intermediate frame. */
++  readonly publicationComplete?: false;
+ }
+ export interface AdmissionStatus {
+   readonly state: 'active' | 'blocked' | 'closing' | 'closed' | 'failed';
+@@ -157,6 +171,10 @@
+     listeners = new Set<(e: AcceptedUpdate) => void>(),
+     statusListeners = new Set<(s: AdmissionStatus) => void>();
+   const queue: Job[] = [];
++  const queuedAt = ledgerProfiling ? new WeakMap<Job, number>() : undefined;
++  const flushBatch = options.flushBatch
++    ? createBatchWindow(options.flushBatch, () => performance.now())
++    : undefined;
+   let state: AdmissionStatus['state'] = 'active',
+     revision = 0,
+     nextId = 0,
+@@ -274,6 +292,7 @@
+     const done = deferred<void>();
+     closing = done.promise;
+     state = 'closing';
++    flushBatch?.clear();
+     clearTimer();
+     clearMaintenanceTimer();
+     carrier.signal.removeEventListener('abort', cancelled);
+@@ -325,6 +344,7 @@
+         );
+       journalBytes = recovery.journal.reduce((n, r) => n + r.bytes.length, 0);
+       journalDirty = recovery.journal.length > 0;
++      if (journalDirty) flushBatch?.note();
+     } finally {
+       for (const r of [...recovery.records, ...recovery.journal]) r.bytes.fill(0);
+     }
+@@ -353,7 +373,7 @@
+       probe?.destroy();
+     }
+   };
+-  const promote = (job: InputJob, update: Bytes) => {
++  const promote = (job: InputJob, update: Bytes, publicationComplete = true) => {
+     live();
+     // A closing observer may revoke and erase the handoff during publication.
+     const publication = update.slice();
+@@ -390,7 +410,14 @@
+       for (const listener of [...listeners]) {
+         if (state !== 'active') break;
+         try {
+-          listener(Object.freeze({ source: job.kind, revision, update: publication.slice() }));
++          listener(
++            Object.freeze({
++              source: job.kind,
++              revision,
++              update: publication.slice(),
++              ...(!publicationComplete ? { publicationComplete: false as const } : {}),
++            }),
++          );
+         } catch {
+           /* completed acceptance cannot be rolled back */
+         }
+@@ -431,6 +458,8 @@
+   };
+   const flush = async () => {
+     live();
++    countLedgerWork('journalFlushes');
++    if (journalDirty) countLedgerWork('dirtyJournalFlushes');
+     const receipt = await carrier.flushJournal();
+     live();
+     if (receipt.retained) {
+@@ -445,6 +474,7 @@
+     changedContent(receipt.removed ?? 0, journalBytes);
+     journalBytes = 0;
+     journalDirty = false;
++    flushBatch?.clear();
+   };
+   const forceLocal = async (job: InputJob) => {
+     await flush();
+@@ -485,7 +515,8 @@
+               updates.reduce((n, b) => n + b.length, 0),
+             );
+             // Preserve original frames and their delivery order, including pending buffers/deletions.
+-            for (const update of updates) promote(job, update);
++            for (let i = 0; i < updates.length; i++)
++              promote(job, updates[i]!, !options.publishReceivePage || i === updates.length - 1);
+           })
+           .then(() => {
+             live();
+@@ -630,6 +661,7 @@
+     }
+     if (attempt.status === 'journalled') {
+       journalDirty = true;
++      flushBatch?.note();
+       journalBytes += (job.prepared.carrierBytes ?? job.prepared.update).length;
+       promote(job, job.prepared.update);
+       completeInput(job);
+@@ -689,18 +721,57 @@
+   };
+   const schedule = () => {
+     scheduleMaintenance();
+-    if (state !== 'active' || !journalDirty || timer !== undefined) return;
+-    timer = setTimeout(() => {
+-      timer = undefined;
+-      if (state === 'active') void barrier().catch(() => {});
+-    }, FLUSH_DELAY_MS);
++    if (state !== 'active' || !journalDirty) return;
++    if (timer !== undefined) {
++      if (!flushBatch) return;
++      clearTimeout(timer);
++    }
++    timer = setTimeout(
++      () => {
++        timer = undefined;
++        if (state === 'active') void barrier().catch(() => {});
++      },
++      flushBatch ? Math.max(0, flushBatch.due! - performance.now()) : FLUSH_DELAY_MS,
++    );
++  };
++  const processMeasured = (job: Job) => {
++    if (!ledgerProfiling) return process(job);
++    const wait = queuedAt!.get(job);
++    if (wait !== undefined) {
++      measureLedgerWork(
++        ({ local: 'waitLocal', remote: 'waitRemote', flush: 'waitFlush' } as const)[job.kind],
++        wait,
++      );
++      queuedAt!.delete(job);
++    }
++    const start = ledgerWorkStart();
++    const finish = () =>
++      measureLedgerWork(
++        ({ local: 'admissionLocal', remote: 'admissionRemote', flush: 'admissionFlush' } as const)[
++          job.kind
++        ],
++        start,
++      );
++    try {
++      const result = process(job);
++      if (result) return result.finally(finish);
++      finish();
++    } catch (error) {
++      finish();
++      throw error;
++    }
++  };
++  const recordQueue = (job: Job) => {
++    if (!ledgerProfiling) return;
++    queuedAt!.set(job, ledgerWorkStart());
++    observeAdmissionQueue(queue);
+   };
+   const pump = () => {
+     if (busy || state !== 'active') return;
+     busy = true;
+     try {
+       while (queue.length && state === 'active') {
+-        const result = process(queue[0]!);
++        const result = processMeasured(queue[0]!);
+         if (result) {
+           inFlight = result.then(undefined, block).finally(() => {
+             busy = false;
+@@ -754,6 +825,7 @@
+     };
+     clearMaintenanceTimer();
+     queue.push(job);
++    recordQueue(job);
+     pump();
+     notify();
+     return Object.freeze({ id: job.id, accepted: completion.promise });
+@@ -783,7 +855,9 @@
+         );
+       const completion = deferred<void>();
+       clearMaintenanceTimer();
+-      queue.push({ kind: 'flush', completion });
++      const job: FlushJob = { kind: 'flush', completion };
++      queue.push(job);
++      recordQueue(job);
+       pump();
+       notify();
+       return completion.promise;
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -59,6 +59,7 @@
+   type PreparedWorkspaceState,
+ } from './workspacePreparation';
+ import type { AdmittedTextSurface, TextAction, TextSelection } from '../editor/admittedText';
++import { countLedgerWork } from './accountLedgerMetrics';
+ 
+ export type { WorkspaceCommand, TextTarget } from './workspaceCommands';
+ export interface WorkspaceTicket {
+@@ -580,6 +581,7 @@
+       throw error;
+     }
+     const verifyProjection = () => {
++      countLedgerWork('projectionChecks');
+       if (!session.matches(accepted!.history.doc))
+         throw new AdmissionError(
+           'projection-mismatch',
+@@ -616,6 +618,13 @@
+           stable.delete(accepted!.history);
+           commands.invalidate(accepted!.history);
+           applyUpdate(accepted!.history.doc, event.update, 'received');
++        }
++        // The owned page is already durable and its original frames have been authenticated.
++        // Apply all of them in order (including pending information), then compare and expose
++        // the completed page once. Nothing may expose the intermediate projection here.
++        if (event.publicationComplete === false) {
++          if (event.source !== 'remote') throw Error('Only owned receive may defer publication');
++          return;
+         }
+         // Check every accepted transition, including later remote dependencies, before exposure.
+         if (!localHandoff || event.source === 'remote') verifyProjection();
+--- /dev/null
++++ b/src/crdt/batchWindow.ts
+@@ -0,0 +1,39 @@
++/** Scheduling only. A deadline is never evidence of persistence or permission to send. */
++export interface BatchTiming {
++  readonly quietMs: number;
++  readonly maxMs: number;
++}
++export function createBatchWindow(timing: BatchTiming, now: () => number) {
++  if (
++    !Number.isFinite(timing.quietMs) ||
++    !Number.isFinite(timing.maxMs) ||
++    timing.quietMs < 0 ||
++    timing.maxMs < timing.quietMs
++  )
++    throw Error('Invalid batch timing');
++  const { quietMs, maxMs } = timing;
++  let first: number | undefined,
++    due: number | undefined,
++    closed = false;
++  return {
++    get due() {
++      return due;
++    },
++    note() {
++      if (closed) return;
++      const at = now();
++      first ??= at;
++      due = Math.min(first + maxMs, at + quietMs);
++    },
++    close() {
++      if (first !== undefined) {
++        due = Math.min(due!, now());
++        closed = true;
++      }
++    },
++    clear() {
++      first = due = undefined;
++      closed = false;
++    },
++  };
++}
+--- a/test/account-receive-editor/fixtures.mjs
++++ b/test/account-receive-editor/fixtures.mjs
+@@ -7,6 +7,14 @@
+   const result = await build({
+     configFile: false,
+     logLevel: 'error',
++    define: {
++      ...(process.env.ACCOUNT_BATCH_MODE
++        ? {
++            'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(process.env.ACCOUNT_BATCH_MODE),
++            'import.meta.env.VITE_ACCOUNT_LEDGER_PROFILE': JSON.stringify('1'),
++          }
++        : {}),
++    },
+     plugins: control
+       ? [
+           {
+--- a/test/account-receive-editor/native.test.mjs
++++ b/test/account-receive-editor/native.test.mjs
+@@ -543,7 +543,9 @@
+     });
+     await assert.rejects(receive(f.page, a.bytes), /inactive|closed/);
+     await f.page.evaluate(() => closing);
+-    assert.deepEqual(await f.page.evaluate(() => seen), ['A' + initial]);
++    assert.deepEqual(await f.page.evaluate(() => seen), [
++      (process.env.ACCOUNT_BATCH_MODE ? 'BA' : 'A') + initial,
++    ]);
+     await cold(f);
+     await open(f.page, item);
+     assert.equal(await view(f.page), 'BA' + initial);
+@@ -552,3 +554,46 @@
+     await close(f.page);
+   },
+ );
++
++test(
++  'batched received page verifies and publishes once while retaining pending frames and undo isolation',
++  { timeout: 45000, skip: !process.env.ACCOUNT_BATCH_MODE },
++  async (t) => {
++    const { f, item, initial, snapshot } = await ready(t, 'batched-page');
++    const originals = frames(snapshot, [
++      (t) => t.insert(0, 'A'),
++      (t) => t.insert(0, 'B'),
++      (t) => t.delete(0, 1),
++    ]);
++    const wire = await envelope(f.page, item, 1, [originals[1], originals[0], originals[2]]);
++    await open(f.page, item);
++    const before = await captures(f.page);
++    const checks = await f.page.evaluate(() => __doneLedgerMetrics().work.projectionChecks);
++    await f.page.evaluate(() => {
++      window.seen = [];
++      window.sent = [];
++      editor.subscribe(() => seen.push(editor.read().master));
++      editor.outgoing((b) => sent.push([...b]));
++    });
++    const a = answer(f, item, await request(f.page), wire);
++    await receive(f.page, a.bytes);
++    assert.deepEqual(await f.page.evaluate(() => seen), ['A' + initial]);
++    assert.equal(
++      await f.page.evaluate(() => __doneLedgerMetrics().work.projectionChecks),
++      checks + 1,
++    );
++    assert.equal(await f.page.evaluate(() => sent.length), 0);
++    assert.equal(await f.page.evaluate(() => editor.read().undo), 0);
++    assert.deepEqual(await captures(f.page), before);
++    await edit(f.page, 0, 0, 'LOCAL ');
++    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
++    assert.equal(await view(f.page), 'A' + initial);
++    await f.page.evaluate(() => editor.whenDurable());
++    await close(f.page);
++    await cold(f);
++    await open(f.page, item);
++    assert.equal(await view(f.page), 'A' + initial);
++    assert.equal((await status(f.page)).receivedThrough, 1);
++    await close(f.page);
++  },
++);
+--- a/test/account-sync/fixtures.mjs
++++ b/test/account-sync/fixtures.mjs
+@@ -53,6 +53,12 @@
+     configFile: false,
+     logLevel: 'error',
+     define: {
++      ...(process.env.ACCOUNT_BATCH_MODE
++        ? {
++            'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(process.env.ACCOUNT_BATCH_MODE),
++            'import.meta.env.VITE_ACCOUNT_LEDGER_PROFILE': JSON.stringify('1'),
++          }
++        : {}),
+       // Omit the define entirely to exercise the source default, not an explicit opt-in.
+       ...(mode === undefined
+         ? {}
+--- a/test/account-sync/native.test.mjs
++++ b/test/account-sync/native.test.mjs
+@@ -26,6 +26,49 @@
+ const sendPath = (f) => f.server.origin + '/account/delivery/submit';
+ const parsed = (wire) =>
+   decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
++
++test(
++  'hidden-page batch close sends promptly; death before the next batch recovers journalled writing',
++  { timeout: 60000, skip: !process.env.ACCOUNT_BATCH_MODE },
++  async (t) => {
++    const f = await native(t),
++      item = await selected(f, 'batch-lifecycle');
++    await syncing(f.page, item);
++    await settled(f.page);
++    const initial = await view(f.page);
++    await f.page.evaluate(() => {
++      // Hold ordinary batch deadlines well beyond this test, then exercise the real listener.
++      const timeout = globalThis.setTimeout;
++      globalThis.setTimeout = (fn, ms, ...args) =>
++        timeout(fn, ms >= 250 && ms <= 2000 ? 60000 : ms, ...args);
++    });
++    await edit(f.page, initial.length, 0, ' HIDDEN');
++    const before = (await syncStatus(f.page)).send.acceptedThrough;
++    await f.page.evaluate((before) => { window.expectedThrough = before + 1; }, before);
++    await f.page.evaluate(() => {
++      Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
++      document.dispatchEvent(new Event('visibilitychange'));
++    });
++    await waitPredicate(
++      f.page,
++      () => opened.sync.status.send.acceptedThrough >= expectedThrough && opened.sync.status.send.phase === 'idle',
++    );
++    assert.ok((await syncStatus(f.page)).send.acceptedThrough > before);
++    await f.page.evaluate(() => {
++      delete document.visibilityState;
++    });
++    await edit(f.page, initial.length + ' HIDDEN'.length, 0, ' JOURNAL');
++    assert.equal(await view(f.page), initial + ' HIDDEN JOURNAL');
++    // The delayed flush/send timers have not run. Renderer death must retain the acknowledged edit.
++    await crash(f);
++    await cold(f);
++    await syncing(f.page, item);
++    await settled(f.page);
++    assert.equal(await view(f.page), initial + ' HIDDEN JOURNAL');
++    assert.ok((await syncStatus(f.page)).send.acceptedThrough > before);
++    await close(f.page);
++  },
++);
+ 
+ test(
+   'one owner advances from submit receipts without self content readback, through compaction and cold replay',
+--- a/test/accountSyncDriver.test.ts
++++ b/test/accountSyncDriver.test.ts
+@@ -181,7 +181,16 @@
+       return { kind: 'accepted' };
+     },
+   };
+-  expect(await driveOutboundStep(ops, 'token', () => gate)).toEqual({
++  expect(
++    await driveOutboundStep(
++      ops,
++      'token',
++      () => gate,
++      () => {
++        throw Error('exact retry must not wait for a new batch');
++      },
++    ),
++  ).toEqual({
+     kind: 'unknown',
+     acceptedThrough: 0,
+   });
+--- a/test/admissionQueue.test.ts
++++ b/test/admissionQueue.test.ts
+@@ -5,6 +5,7 @@
+   createAdmissionOwner,
+   AdmissionError,
+   MAX_PENDING_BYTES,
++  type AdmissionOptions,
+ } from '../src/crdt/admissionQueue';
+ import type { JournalSession, JournalRecovery } from '../src/crdt/custody';
+ import type { Bytes } from '../src/crdt/custodyCrypto';
+@@ -54,7 +55,11 @@
+   d.destroy();
+   return result;
+ };
+-const fixture = async (prepare: PrepareIntent = append, recovery?: JournalRecovery) => {
++const fixture = async (
++  prepare: PrepareIntent = append,
++  recovery?: JournalRecovery,
++  options: Pick<AdmissionOptions, 'flushBatch'> = {},
++) => {
+   const abort = new AbortController(),
+     disk: Bytes[] = [],
+     wal: Bytes[] = [],
+@@ -114,7 +119,11 @@
+       abort.abort();
+     },
+   } as unknown as JournalSession;
+-  const owner = await createAdmissionOwner(carrier, { prepare, validateReceive: () => {} });
++  const owner = await createAdmissionOwner(carrier, {
++    prepare,
++    validateReceive: () => {},
++    ...options,
++  });
+   return {
+     owner,
+     disk,
+@@ -780,3 +789,49 @@
+     await f.owner.close();
+   }
+ });
++
++it('Account flush window keeps immediate journal admission, a hard deadline, and explicit barriers', async () => {
++  vi.useFakeTimers();
++  const f = await fixture(append, undefined, { flushBatch: { quietMs: 300, maxMs: 1000 } });
++  try {
++    for (let i = 0; i < 10; i++) {
++      await f.owner.submit(intent('x')).accepted;
++      expect(f.wal.length).toBe(i + 1);
++      expect(view(f.owner.snapshot())).toBe('x'.repeat(i + 1));
++      expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(0);
++      await vi.advanceTimersByTimeAsync(100);
++    }
++    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(1);
++    expect(f.wal).toHaveLength(0);
++    await f.owner.submit(intent('y')).accepted;
++    await vi.advanceTimersByTimeAsync(299);
++    expect(f.wal).toHaveLength(1);
++    await f.owner.whenDurable();
++    expect(f.wal).toHaveLength(0);
++    await vi.advanceTimersByTimeAsync(1000);
++    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(2);
++  } finally {
++    await f.owner.close();
++    vi.useRealTimers();
++  }
++});
++
++it('locking before a batched flush retains the journal for cold recovery and cancels its timer', async () => {
++  vi.useFakeTimers();
++  const f = await fixture(append, undefined, { flushBatch: { quietMs: 300, maxMs: 1000 } });
++  try {
++    await f.owner.submit(intent('saved before lock')).accepted;
++    await f.owner.close();
++    await vi.advanceTimersByTimeAsync(2000);
++    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(0);
++    const restored = await fixture(append, await f.carrier.loadRecovery());
++    try {
++      expect(view(restored.owner.snapshot())).toBe('saved before lock');
++    } finally {
++      await restored.owner.close();
++    }
++  } finally {
++    await f.owner.close();
++    vi.useRealTimers();
++  }
++});
+--- a/tsconfig.node.json
++++ b/tsconfig.node.json
+@@ -15,6 +15,8 @@
+     "account-service",
+     "vite.config.ts",
+     "src/crdt/accountLedgerMode.ts",
++    "src/crdt/accountBatchPolicy.ts",
++    "src/crdt/batchWindow.ts",
+     "vite",
+     "playwright.config.ts",
+     "playwright.account-setup.config.ts",
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -3,6 +3,7 @@
+ import { defineConfig } from 'vitest/config';
+ import { loadEnv } from 'vite';
+ import { accountLedgerMode } from './src/crdt/accountLedgerMode.ts';
++import { accountBatchPolicy } from './src/crdt/accountBatchPolicy.ts';
+ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+ import babel from '@rolldown/plugin-babel';
+ import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
+@@ -80,6 +81,13 @@
+ export default defineConfig(({ mode }) => ({
+   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
+   define: {
++    'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(
++      (() => {
++        const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_BATCH')['VITE_ACCOUNT_BATCH'];
++        accountBatchPolicy(value);
++        return value ?? 'reference';
++      })(),
++    ),
+     'import.meta.env.VITE_APP_VERSION': JSON.stringify(commit.version),
+     'import.meta.env.VITE_APP_COMMIT_DATE': JSON.stringify(commit.date),
+     'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify(

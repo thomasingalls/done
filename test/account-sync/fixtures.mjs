@@ -53,6 +53,12 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     configFile: false,
     logLevel: 'error',
     define: {
+      ...(process.env.ACCOUNT_BATCH_MODE
+        ? {
+            'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(process.env.ACCOUNT_BATCH_MODE),
+            'import.meta.env.VITE_ACCOUNT_LEDGER_PROFILE': JSON.stringify('1'),
+          }
+        : {}),
       // Omit the define entirely to exercise the source default, not an explicit opt-in.
       ...(mode === undefined
         ? {}

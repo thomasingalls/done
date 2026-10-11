@@ -7,6 +7,14 @@ export async function editorBundle(control) {
   const result = await build({
     configFile: false,
     logLevel: 'error',
+    define: {
+      ...(process.env.ACCOUNT_BATCH_MODE
+        ? {
+            'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(process.env.ACCOUNT_BATCH_MODE),
+            'import.meta.env.VITE_ACCOUNT_LEDGER_PROFILE': JSON.stringify('1'),
+          }
+        : {}),
+    },
     plugins: control
       ? [
           {

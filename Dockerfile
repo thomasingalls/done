@@ -12,8 +12,10 @@ COPY . .
 ARG APP_BUILD_REVISION
 ARG APP_BUILD_DATE
 ARG VITE_ACCOUNT_LEDGER
+ARG VITE_ACCOUNT_BATCH
 ENV APP_BUILD_REVISION=${APP_BUILD_REVISION} APP_BUILD_DATE=${APP_BUILD_DATE}
 ENV VITE_ACCOUNT_LEDGER=${VITE_ACCOUNT_LEDGER}
+ENV VITE_ACCOUNT_BATCH=${VITE_ACCOUNT_BATCH}
 # Existing build checks and the bounded runtime/gateway checks, not the paused full campaign.
 RUN pnpm build
 # Exercise filesystem ownership and child/worker processes as the runtime UID too.
