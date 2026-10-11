@@ -1,3 +1,4 @@
+import { maintenanceTask } from './contentMaintenance';
 import {
   captureCreationSeed,
   sealCreationSeed,
@@ -1200,7 +1201,7 @@ export interface JournalSession extends ContentSession {
   /** Internal composed lifetime cleanup, after native drain and before permit release. */
   beforeRelease?(cleanup: () => void | Promise<void>): void;
   /** Explicit disk-union maintenance. Never accepts a caller snapshot or deletes journal/heads/outbound. */
-  compactContent(): Promise<ContentCompactionReceipt>;
+  compactContent(interrupt?: AbortSignal): Promise<ContentCompactionReceipt>;
   /** Synchronous carrier result. No canonical mutation, timer, or implicit flush. */
   appendLocal(update: Bytes): JournalAdmission;
   /** Capture journal before content, so concurrent handoff cannot fall between reads. */
@@ -1271,10 +1272,10 @@ export const attachJournal = (
       return owner.journal.observedCharacters;
     },
     appendLocal: (update: Bytes) => live.write(() => owner.journal.append(update)),
-    compactContent: () =>
+    compactContent: (interrupt?: AbortSignal) =>
       live
         .run((task) =>
-          owner.carrier.compact(task, () => {
+          owner.carrier.compact(maintenanceTask(task, interrupt), () => {
             const snapshot = owner.journal.snapshot();
             try {
               validateContentUpdates(snapshot.map((e) => e.bytes));

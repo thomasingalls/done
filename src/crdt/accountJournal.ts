@@ -111,7 +111,7 @@ export const openAccountJournalSession = async (
       loadRecords: () => checked(() => carrier.loadRecords()),
       loadRecovery: () => checked(() => carrier.loadRecovery()),
       flushJournal: () => checked(() => carrier.flushJournal()),
-      compactContent: () => checked(() => carrier.compactContent()),
+      compactContent: (interrupt?: AbortSignal) => checked(() => carrier.compactContent(interrupt)),
     }),
   };
 };

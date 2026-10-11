@@ -1,0 +1,188 @@
+{
+  "source": "/tmp/done-receive-publish-203a0655/source",
+  "profiled": true,
+  "collision": false,
+  "cold": {
+    "ms": 7680.800001144409,
+    "native": {
+      "decrypt": 3180,
+      "verify": 5428,
+      "digest": 6179
+    }
+  },
+  "heap": 19218724,
+  "exportHash": "f7f09a510e85f09d3dfd6baa627edbe90fd93e5b1884161897abd83560db2bd5",
+  "exportBytes": 54211,
+  "maintenance": {
+    "starts": [
+      11068.30000114441
+    ],
+    "keys": [
+      {
+        "at": 8847,
+        "visible": 29.200000762939453
+      },
+      {
+        "at": 9384.70000076294,
+        "visible": 25.5
+      },
+      {
+        "at": 9918.20000076294,
+        "visible": 19.299999237060547
+      }
+    ],
+    "tasks": [
+      {
+        "at": 10256.30000114441,
+        "ms": 54
+      }
+    ],
+    "transactions": [
+      {
+        "at": 9173.39999961853,
+        "mode": "readonly",
+        "ms": 11.80000114440918,
+        "aborted": false
+      },
+      {
+        "at": 9203.80000114441,
+        "mode": "readonly",
+        "ms": 0.8999996185302734,
+        "aborted": false
+      },
+      {
+        "at": 9204.89999961853,
+        "mode": "readwrite",
+        "ms": 0.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 9205.60000038147,
+        "mode": "readonly",
+        "ms": 0.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 9206.20000076294,
+        "mode": "readwrite",
+        "ms": 0.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 9706.89999961853,
+        "mode": "readonly",
+        "ms": 13.700000762939453,
+        "aborted": false
+      },
+      {
+        "at": 9757.80000114441,
+        "mode": "readonly",
+        "ms": 1.3999996185302734,
+        "aborted": false
+      },
+      {
+        "at": 9759.30000114441,
+        "mode": "readwrite",
+        "ms": 0.7999992370605469,
+        "aborted": false
+      },
+      {
+        "at": 9760.10000038147,
+        "mode": "readonly",
+        "ms": 0.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 9760.70000076294,
+        "mode": "readwrite",
+        "ms": 0.39999961853027344,
+        "aborted": false
+      },
+      {
+        "at": 10235.80000114441,
+        "mode": "readonly",
+        "ms": 20.5,
+        "aborted": false
+      },
+      {
+        "at": 10310.30000114441,
+        "mode": "readonly",
+        "ms": 1.2999992370605469,
+        "aborted": false
+      },
+      {
+        "at": 10311.70000076294,
+        "mode": "readwrite",
+        "ms": 3.1999988555908203,
+        "aborted": false
+      },
+      {
+        "at": 10315.10000038147,
+        "mode": "readonly",
+        "ms": 1,
+        "aborted": false
+      },
+      {
+        "at": 10316.20000076294,
+        "mode": "readwrite",
+        "ms": 0.6999988555908203,
+        "aborted": false
+      },
+      {
+        "at": 11068.80000114441,
+        "mode": "readonly",
+        "ms": 14.899999618530273,
+        "aborted": false
+      },
+      {
+        "at": 11122.5,
+        "mode": "readonly",
+        "ms": 12.80000114440918,
+        "aborted": false
+      },
+      {
+        "at": 11157.80000114441,
+        "mode": "readonly",
+        "ms": 1.5999984741210938,
+        "aborted": false
+      },
+      {
+        "at": 11159.39999961853,
+        "mode": "readwrite",
+        "ms": 0.8000011444091797,
+        "aborted": false
+      },
+      {
+        "at": 11160.39999961853,
+        "mode": "readonly",
+        "ms": 0.6000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 11161.10000038147,
+        "mode": "readwrite",
+        "ms": 1.1000003814697266,
+        "aborted": false
+      },
+      {
+        "at": 11162.5,
+        "mode": "readonly",
+        "ms": 12.600000381469727,
+        "aborted": false
+      },
+      {
+        "at": 11222.30000114441,
+        "mode": "readwrite",
+        "ms": 55.5,
+        "aborted": false
+      }
+    ]
+  },
+  "retained": {
+    "content": 1,
+    "heads": 662,
+    "outbound": 146
+  },
+  "reopenedMatches": true,
+  "status": "passed"
+}

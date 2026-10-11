@@ -7,7 +7,29 @@ import { client as c } from './client.mjs';
 import { AuthorizationRefused } from '../../account-service/authorization.ts';
 import { AccountCore } from '../../account-service/core.ts';
 import { DatabaseSync } from 'node:sqlite';
+import {
+  HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
+  checkHistoryExchangeLifetime,
+} from '../../account-protocol/historyExchange.ts';
 const zero = '00'.repeat(32);
+test('history senders leave clock headroom without weakening service expiry bounds', async (t) => {
+  const f = await setup(t);
+  // The server fixture is at 1000; the device is 700 ms ahead, like the affected phone.
+  const clientNow = 1700;
+  const old = await f.makeRequest('read', 'catalog', { expiresAt: clientNow + 60000 });
+  assert.deepEqual(await f.exchange(old), { ok: false, refusal: 'unavailable' });
+  for (const skew of [-5000, 700, 5000]) {
+    const expiresAt = 1000 + skew + HISTORY_EXCHANGE_REQUEST_LIFETIME_MS;
+    const request = await f.makeRequest('read', 'catalog', { expiresAt });
+    const result = await f.exchange(request);
+    await f.check(request, result);
+  }
+  // No extra grace period at either verifier boundary, including the commit-time guard.
+  assert.throws(() => checkHistoryExchangeLifetime(1000, 1000), /expired/);
+  assert.throws(() => checkHistoryExchangeLifetime(61001, 1000), /expired/);
+  const expired = await f.makeRequest('read', 'catalog', { expiresAt: 1000 });
+  assert.deepEqual(await f.exchange(expired), { ok: false, refusal: 'unavailable' });
+});
 test('history read retries an append during retained checkpoint cut verification', async (t) => {
   const f = await setup(t),
     head = await f.upload(1, 'checkpoint prefix');

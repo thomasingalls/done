@@ -1,0 +1,37 @@
+[
+  {
+    "path": "playwright.packaged-account.config.ts",
+    "bytes": 545,
+    "sha256": "0906bf9cc220e4919f9faa56c8802243d75b3e2086f196926e318db14fa442c8"
+  },
+  {
+    "path": "test/packaged-account/history-clock.spec.ts",
+    "bytes": 1831,
+    "sha256": "5dcb6590dd371c92cb1d163203bcad59a0d74150755b4386b656e0f84099e01f"
+  },
+  {
+    "path": "test/packaged-account/sync-login.spec.ts",
+    "bytes": 1954,
+    "sha256": "ca59a0ce2f4a70c764f11feb3383f5a99f5656c78bc18cf1cef76b10add23798"
+  },
+  {
+    "path": "test/packaged-account/devices.ts",
+    "bytes": 4788,
+    "sha256": "9bc406ad56f7f064f8d11091a438fb5e79cca987a34055b15f99af3e7cbc0df3"
+  },
+  {
+    "path": "test/packaged-account/server.ts",
+    "bytes": 3186,
+    "sha256": "8d15970e91704eceb06bd2d3d985af7e3855f400e369f93ba578b62bb95d616b"
+  },
+  {
+    "path": "scripts/serve-account-service.mjs",
+    "bytes": 709,
+    "sha256": "60c4802ce8deca06e30c60025d4b8ea8ab7bc3def64ffd97d0d0e54a1a90ea67"
+  },
+  {
+    "path": "scripts/serve-account.mjs",
+    "bytes": 742,
+    "sha256": "315c2a7bb2a58870f52e48a1f483b5cbfe934decc4d5601b7f86853be4fb6b8b"
+  }
+]

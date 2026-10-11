@@ -1,0 +1,237 @@
+diff --git a/src/crdt/accountCapture.ts b/src/crdt/accountCapture.ts
+index 6ce4746d..b6cfad56 100644
+--- a/src/crdt/accountCapture.ts
++++ b/src/crdt/accountCapture.ts
+@@ -1,3 +1,4 @@
++import { maintenanceTask } from './contentMaintenance';
+ import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import { verifyJoinedAccount } from './joinedAccount';
+ import { historyAuthority } from '../../account-protocol/admissionHistory';
+@@ -404,8 +405,9 @@ export async function openAccountCaptureOwner(
+           owner!.journal.flush(task, entries, (t, values) => persist(t, values)),
+         ),
+       ),
+-    compactContent: () =>
+-      run(async (task) => {
++    compactContent: (interrupt?: AbortSignal) =>
++      run(async (ownedTask) => {
++        const task = maintenanceTask(ownedTask, interrupt);
+         // The generic compactor already retains every outbound row. Validate capsule syntax/identity
+         // before it may delete any content, including exact journal/disk overlap.
+         await withSnapshot(task, async (journal) => {
+diff --git a/src/crdt/accountJournal.ts b/src/crdt/accountJournal.ts
+index 4555886f..dc67c7b4 100644
+--- a/src/crdt/accountJournal.ts
++++ b/src/crdt/accountJournal.ts
+@@ -111,7 +111,7 @@ export const openAccountJournalSession = async (
+       loadRecords: () => checked(() => carrier.loadRecords()),
+       loadRecovery: () => checked(() => carrier.loadRecovery()),
+       flushJournal: () => checked(() => carrier.flushJournal()),
+-      compactContent: () => checked(() => carrier.compactContent()),
++      compactContent: (interrupt?: AbortSignal) => checked(() => carrier.compactContent(interrupt)),
+     }),
+   };
+ };
+diff --git a/src/crdt/admissionQueue.ts b/src/crdt/admissionQueue.ts
+index 6591a692..3ba4fc9e 100644
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -1,3 +1,4 @@
++import { MaintenanceInterrupted } from './contentMaintenance';
+ import {
+   ledgerProfiling,
+   ledgerWorkStart,
+@@ -197,6 +198,7 @@ export const createAdmissionOwner = async (
+   let timer: ReturnType<typeof setTimeout> | undefined, inFlight: Promise<void> | undefined;
+   let closing: Promise<void> | undefined;
+   let maintenanceTimer: ReturnType<typeof setTimeout> | undefined;
++  let maintenanceStop: AbortController | undefined;
+   let maintenance: AdmissionStatus['maintenance'];
+   let contentChanges = 0,
+     contentBytes = 0,
+@@ -296,6 +298,7 @@ export const createAdmissionOwner = async (
+     clearTimer();
+     clearMaintenanceTimer();
+     carrier.signal.removeEventListener('abort', cancelled);
++    maintenanceStop?.abort();
+     const error = new AdmissionError(
+       'inactive-session',
+       'Admission closed before this input completed.',
+@@ -688,8 +691,12 @@ export const createAdmissionOwner = async (
+     maintenanceTimer = setTimeout(() => {
+       maintenanceTimer = undefined;
+       if (state !== 'active' || busy || queue.length || journalDirty) return;
+-      // This shares admission's owned flight. Later inputs wait behind native maintenance;
+-      // close invalidates the carrier immediately and drains this flight before releasing it.
++      // Preserve FIFO and native settlement. Foreground work interrupts this discretionary
++      // flight at its next safe boundary; it never overtakes an active storage transaction.
++      const stop = new AbortController();
++      maintenanceStop = stop;
++      const attemptedChanges = contentChanges,
++        attemptedBytes = contentBytes;
+       contentChanges = 0;
+       contentBytes = 0;
+       busy = true;
+@@ -698,7 +705,7 @@ export const createAdmissionOwner = async (
+       inFlight = Promise.resolve()
+         .then(() => {
+           live();
+-          return carrier.compactContent();
++          return carrier.compactContent(stop.signal);
+         })
+         .then((receipt) => {
+           if (state !== 'active') return;
+@@ -707,11 +714,19 @@ export const createAdmissionOwner = async (
+         .catch((error) => {
+           if (state !== 'active') return;
+           maintenance = 'deferred';
++          if (error instanceof MaintenanceInterrupted) {
++            // Unlike a quota/incomplete-union failure, interruption should retry at the
++            // next durable idle opportunity, even if the new input only requested a barrier.
++            contentChanges += attemptedChanges;
++            contentBytes += attemptedBytes;
++            return;
++          }
+           if (['repair-required', 'generation-changed'].includes(codeOf(error))) block(error);
+           // Quota/budget/unavailable maintenance does not refuse already durable writing.
+           // New durable growth (or a fresh open) is required before another attempt.
+         })
+         .finally(() => {
++          maintenanceStop = undefined;
+           busy = false;
+           inFlight = undefined;
+           notify();
+@@ -824,6 +839,7 @@ export const createAdmissionOwner = async (
+       ...(commit ? { commit } : {}),
+     };
+     clearMaintenanceTimer();
++    maintenanceStop?.abort();
+     queue.push(job);
+     recordQueue(job);
+     pump();
+@@ -855,6 +871,7 @@ export const createAdmissionOwner = async (
+         );
+       const completion = deferred<void>();
+       clearMaintenanceTimer();
++      maintenanceStop?.abort();
+       const job: FlushJob = { kind: 'flush', completion };
+       queue.push(job);
+       recordQueue(job);
+diff --git a/src/crdt/contentCompaction.ts b/src/crdt/contentCompaction.ts
+index adc93a01..cbec1343 100644
+--- a/src/crdt/contentCompaction.ts
++++ b/src/crdt/contentCompaction.ts
+@@ -126,20 +126,24 @@ const removeCovered = (
+           result(true);
+         };
+         for (const name of CONTENT_STORES) {
+-          const req = tx.objectStore(name).openCursor();
+-          req.onsuccess = () =>
++          // Keep every key/value and the same all-store transaction. Bulk collection
++          // avoids one native cursor round trip for every retained Account ledger row.
++          const store = tx.objectStore(name),
++            values = store.getAll(),
++            keys = store.getAllKeys();
++          keys.onsuccess = () =>
+             guard(() => {
+-              const c = req.result;
+-              if (!c) {
+-                done();
+-                return;
++              if (keys.result.length !== values.result.length) corrupt('Content census differs.');
++              for (let i = 0; i < keys.result.length; i++) {
++                const key = keys.result[i]!,
++                  value = values.result[i];
++                if (name === 'meta') {
++                  if (counter || key !== 'counter')
++                    corrupt('Unknown content metadata during trim.');
++                  counter = parseCounter(value, owner.scope, owner.intent);
++                } else rows.push({ store: name, key, value });
+               }
+-              if (name === 'meta') {
+-                if (counter || c.key !== 'counter')
+-                  corrupt('Unknown content metadata during trim.');
+-                counter = parseCounter(c.value, owner.scope, owner.intent);
+-              } else rows.push({ store: name, key: c.key, value: c.value });
+-              c.continue();
++              done();
+             });
+         }
+       },
+diff --git a/src/crdt/custody.ts b/src/crdt/custody.ts
+index 151fd83e..7502b62e 100644
+--- a/src/crdt/custody.ts
++++ b/src/crdt/custody.ts
+@@ -1,3 +1,4 @@
++import { maintenanceTask } from './contentMaintenance';
+ import {
+   captureCreationSeed,
+   sealCreationSeed,
+@@ -1200,7 +1201,7 @@ export interface JournalSession extends ContentSession {
+   /** Internal composed lifetime cleanup, after native drain and before permit release. */
+   beforeRelease?(cleanup: () => void | Promise<void>): void;
+   /** Explicit disk-union maintenance. Never accepts a caller snapshot or deletes journal/heads/outbound. */
+-  compactContent(): Promise<ContentCompactionReceipt>;
++  compactContent(interrupt?: AbortSignal): Promise<ContentCompactionReceipt>;
+   /** Synchronous carrier result. No canonical mutation, timer, or implicit flush. */
+   appendLocal(update: Bytes): JournalAdmission;
+   /** Capture journal before content, so concurrent handoff cannot fall between reads. */
+@@ -1271,10 +1272,10 @@ export const attachJournal = (
+       return owner.journal.observedCharacters;
+     },
+     appendLocal: (update: Bytes) => live.write(() => owner.journal.append(update)),
+-    compactContent: () =>
++    compactContent: (interrupt?: AbortSignal) =>
+       live
+         .run((task) =>
+-          owner.carrier.compact(task, () => {
++          owner.carrier.compact(maintenanceTask(task, interrupt), () => {
+             const snapshot = owner.journal.snapshot();
+             try {
+               validateContentUpdates(snapshot.map((e) => e.bytes));
+diff --git a/src/crdt/contentMaintenance.ts b/src/crdt/contentMaintenance.ts
+new file mode 100644
+index 00000000..df15d419
+--- /dev/null
++++ b/src/crdt/contentMaintenance.ts
+@@ -0,0 +1,40 @@
++import type { SessionTask } from './writeSession';
++
++/** Discretionary maintenance yielded to queued input; never a storage/integrity refusal. */
++export class MaintenanceInterrupted extends Error {
++  override readonly name = 'MaintenanceInterrupted';
++  constructor() {
++    super('Content maintenance yielded to foreground work.');
++  }
++}
++
++/** Keep the writer lifetime and native settlement ownership. Cancellation prevents the next
++ * effect; it does not release admission while an earlier transaction or crypto job is in flight.
++ * Yield only before starting async work, never inside an active IDB transaction callback. */
++export function maintenanceTask(parent: SessionTask, interrupt?: AbortSignal): SessionTask {
++  if (!interrupt) return parent;
++  let yieldedAt = performance.now();
++  const check = () => {
++    if (interrupt.aborted) throw new MaintenanceInterrupted();
++  };
++  return {
++    signal: parent.signal,
++    step(effect) {
++      parent.step(check);
++      return parent.step(effect);
++    },
++    wait(start) {
++      return parent.wait(async () => {
++        parent.step(check);
++        if (performance.now() - yieldedAt >= 8) {
++          await new Promise<void>((resolve) => setTimeout(resolve, 0));
++          yieldedAt = performance.now();
++          parent.step(check);
++        }
++        // Return owned outputs to their existing cleanup scopes even if input arrives while
++        // this operation is pending. The next step/wait checks cancellation before any effect.
++        return start();
++      });
++    },
++  };
++}

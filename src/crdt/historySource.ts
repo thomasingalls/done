@@ -19,6 +19,7 @@ import {
 } from '../../account-protocol/historyCheckpoint';
 import {
   historyExchangeMessage,
+  HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
   parseHistoryExchange,
   verifyHistoryCheckpointPage,
   type HistoryExchange,
@@ -298,7 +299,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
         head: p.head,
         credentialId: producer,
         nonce: hex(random(32)),
-        expiresAt: (lifetime.now?.() ?? Date.now()) + 60000,
+        expiresAt: (lifetime.now?.() ?? Date.now()) + HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
         action: 'source',
         payload: ref.head,
         signature: '00'.repeat(64),

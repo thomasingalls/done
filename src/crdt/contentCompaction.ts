@@ -126,20 +126,24 @@ const removeCovered = (
           result(true);
         };
         for (const name of CONTENT_STORES) {
-          const req = tx.objectStore(name).openCursor();
-          req.onsuccess = () =>
+          // Keep every key/value and the same all-store transaction. Bulk collection
+          // avoids one native cursor round trip for every retained Account ledger row.
+          const store = tx.objectStore(name),
+            values = store.getAll(),
+            keys = store.getAllKeys();
+          keys.onsuccess = () =>
             guard(() => {
-              const c = req.result;
-              if (!c) {
-                done();
-                return;
+              if (keys.result.length !== values.result.length) corrupt('Content census differs.');
+              for (let i = 0; i < keys.result.length; i++) {
+                const key = keys.result[i]!,
+                  value = values.result[i];
+                if (name === 'meta') {
+                  if (counter || key !== 'counter')
+                    corrupt('Unknown content metadata during trim.');
+                  counter = parseCounter(value, owner.scope, owner.intent);
+                } else rows.push({ store: name, key, value });
               }
-              if (name === 'meta') {
-                if (counter || c.key !== 'counter')
-                  corrupt('Unknown content metadata during trim.');
-                counter = parseCounter(c.value, owner.scope, owner.intent);
-              } else rows.push({ store: name, key: c.key, value: c.value });
-              c.continue();
+              done();
             });
         }
       },

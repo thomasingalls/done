@@ -2,7 +2,7 @@
 
 `JournalSession.compactContent()` is explicit maintenance inside the existing shared writer lifetime. The
 host supplies no document, state vector, sequence watermark or deletion set. Custody still verifies its
-scoped authority and mandatory generated factor before the journal-capable session opens. This checkpoint
+scoped authority and mandatory generated factor before the journal-capable session opens. The original safety checkpoint
 covers the generation-one encrypted carrier; it does not schedule maintenance, change the default app,
 archive application days, retire keys, or implement Account checkpoint/receive authority.
 
@@ -53,6 +53,31 @@ also closes the stale session and requires reopening. Storage aborts or the boun
 publication/deletion and drains pending crypto/native work before releasing the shared permit to an
 exclusive transition. This operation never upgrades its lock.
 
+## Foreground interruption (2026-10-11)
+
+Automatic admission maintenance now supplies an interruption signal to `compactContent`.
+New local/remote input or a durability barrier requests interruption; the queue remains exclusive
+until the current owned flight has settled. `maintenanceTask` checks interruption before effects
+and async operations, and periodically yields before starting async work. Its lifetime signal is
+still the writer's signal: foreground input does not close the workspace or release its permit.
+An already running crypto job returns its output to its cleanup scope. A transaction whose guarded
+callback observes interruption aborts; an already completed transaction remains completed.
+
+Only `MaintenanceInterrupted` restores the scheduling threshold for a fresh attempt after durable
+idle. Storage/size failures, incomplete unions, integrity failures and generation changes retain
+their existing dispositions. A cancelled reservation remains consumed; a published replacement can
+remain beside its covered inputs. Retrying always begins with a new authenticated census.
+
+The final deleting transaction collects all keys and values with paired `getAll`/`getAllKeys`
+requests instead of cursor round trips. It still checks every row's placement and exact bytes,
+the complete counter, and the synchronous journal before deleting the original exact coverage.
+No stored-format, journal-flush timing, authority, nonce or durability rule changes.
+
+This is cooperative interruption, not concurrent admission or a split prepare/commit design.
+Synchronous Yjs work and a native operation already in progress can still delay input. Continued
+typing can defer compaction until idle. See the [bounded measurement packet](./performance-experiments/2026-10-11-foreground-maintenance/README.md)
+for measured scope and remaining limits.
+
 The final journal check and IndexedDB commit span different browser storage APIs. It authenticates the
 journal visible at that synchronous check; it is not an atomic cross-storage observation against arbitrary
 external tampering. Participating writers append immutable journal identities, and compaction never removes
@@ -71,6 +96,7 @@ at the same identity, proving that an exact-byte check is necessary even beyond 
 
 Unit tests use fake IndexedDB and immediate-grant lock doubles for wiring only. Browser schedules cover
 exclusion and crash behavior on the recorded host, not power loss or a supported-platform population.
-The entire disk union is read, authenticated and merged in memory; its resource cost, low-end latency,
-large-state chunking and automatic scheduling remain later work. The 4 MiB output bound does not imply
+The entire disk union is read, authenticated and merged in memory; its resource cost, low-end latency and
+large-state chunking remain open. Automatic admission scheduling now has the foreground interruption
+described above. The 4 MiB output bound does not imply
 bounded input memory. No independent crypto/storage review or release debt is paid by this checkpoint.

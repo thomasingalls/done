@@ -1,5 +1,11 @@
 # Account session client — phase 2
 
+2026-10-11 follow-up: the composed editor now reports `sign-in-required` and presents the actual
+Connect/Reconnect sync action in its fixed notice after the existing online delay. Successful
+login wakes delivery without clearing independent integrity halts. Cancelling a required passkey
+prompt preserves the actionable status. This repair is not deployed; see the
+[incident and focused evidence](./performance-experiments/2026-10-11-sync-recovery/README.md).
+
 2026-10-07. Builds on signed phase 1 commit `57bcba5f` and the
 [session/subscription plan](./account-sessions-subscriptions.md).
 Signed with the scoped grant foundation at `a2060547`. The subsequent

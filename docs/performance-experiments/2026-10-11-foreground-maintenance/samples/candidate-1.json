@@ -1,0 +1,57 @@
+{
+  "source": "/Users/thomasingalls/.codex/worktrees/c030/done",
+  "profile": false,
+  "runs": [
+    {
+      "collision": false,
+      "events": [
+        {
+          "start": 1085,
+          "receipt": {
+            "status": "compacted",
+            "removed": 128
+          },
+          "ms": 94.0999984741211
+        }
+      ],
+      "requests": {
+        "cursor": 4,
+        "all": 10,
+        "keys": 10
+      },
+      "longTasks": [],
+      "matches": true,
+      "reopenedMatches": true,
+      "retainedRows": 1200
+    },
+    {
+      "collision": true,
+      "events": [
+        {
+          "start": 952.6999988555908,
+          "dispatchDelay": 12.100000381469727,
+          "error": "MaintenanceInterrupted",
+          "ms": 39,
+          "inputMs": 5.799999237060547
+        },
+        {
+          "start": 2011.5,
+          "receipt": {
+            "status": "compacted",
+            "removed": 129
+          },
+          "ms": 87.69999885559082
+        }
+      ],
+      "requests": {
+        "cursor": 7,
+        "all": 13,
+        "keys": 13
+      },
+      "longTasks": [],
+      "matches": true,
+      "reopenedMatches": true,
+      "retainedRows": 1200
+    }
+  ]
+}

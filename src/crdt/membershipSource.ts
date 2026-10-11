@@ -41,6 +41,7 @@ import { historyCheckpointHash } from '../../account-protocol/historyCheckpoint'
 import {
   parseHistoryExchange,
   historyExchangeMessage,
+  HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
   verifyHistoryCheckpointPage,
   type HistoryExchange,
 } from '../../account-protocol/historyExchange';
@@ -302,7 +303,7 @@ export async function prepareNativeReplacement(
       head: p.head,
       credentialId: source.producer,
       nonce: hex(random(32)),
-      expiresAt: Date.now() + 60000,
+      expiresAt: Date.now() + HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
       action: 'read',
       payload: 'latest',
       signature: '00'.repeat(64),

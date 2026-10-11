@@ -168,7 +168,9 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           </div>
         )}
         {accountId && <AccountIdentity id={accountId} />}
-        {sync && <SyncNotice sync={sync} details />}
+        {sync && (
+          <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} details />
+        )}
         {showDevices && (
           <button className="menu-button" onClick={showDevices}>
             Devices
