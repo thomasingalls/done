@@ -1,3 +1,5 @@
+import { SyncNotice } from './SyncNotice';
+import type { SyncRuntime } from '../crdt/accountSyncDriver';
 import type { NetworkLogin } from '../account/networkLogin';
 /** Read projections and admitted commands for the application. No Y.Doc or legacy Store crosses this port. */
 import {
@@ -26,6 +28,7 @@ interface CommandFeedback {
 
 export interface WorkspaceUi {
   workspace: AdmittedWorkspace;
+  sync?: SyncRuntime | undefined;
   snapshot: WorkspaceSnapshot;
   actorId: string;
   status: AdmittedWorkspace['status'];
@@ -57,6 +60,7 @@ export const useWorkspaceUi = (): WorkspaceUi => {
 
 export const WorkspaceUiProvider = ({
   workspace,
+  sync,
   actorId,
   registerEditor,
   onLock,
@@ -70,6 +74,7 @@ export const WorkspaceUiProvider = ({
   children,
 }: {
   workspace: AdmittedWorkspace;
+  sync?: SyncRuntime | undefined;
   actorId: string;
   registerEditor: (destroy: () => void) => () => void;
   onLock: () => void;
@@ -208,6 +213,7 @@ export const WorkspaceUiProvider = ({
     <Context
       value={{
         workspace,
+        sync,
         snapshot,
         actorId,
         status,
@@ -225,6 +231,7 @@ export const WorkspaceUiProvider = ({
       }}
     >
       {children}
+      {sync && <SyncNotice sync={sync} />}
       {(blocked || error || status.pendingItems > 0) && (
         <aside className="workspace-status" role="status">
           <span>

@@ -1,0 +1,1016 @@
+diff --git a/account-service/notifications.ts b/account-service/notifications.ts
+index fe37188e..63783764 100644
+--- a/account-service/notifications.ts
++++ b/account-service/notifications.ts
+@@ -12,7 +12,7 @@ export const NOTIFICATION_LIMITS = Object.freeze({
+   body: 4096,
+ });
+ type Watch = ReturnType<ScopedGrants['subscription']>;
+-type Connection = { watch: Watch; hint(): void; check(): void; close(): void };
++type Connection = { watch: Watch; hint(content: boolean): void; check(): void; close(): void };
+ 
+ export class AccountNotifications {
+   #grants: ScopedGrants;
+@@ -47,7 +47,7 @@ export class AccountNotifications {
+         checkpoint ||
+         (scope.kind === 'enrollment' && s.kind === 'enrollment' && s.attemptId === scope.attemptId)
+       )
+-        c.hint();
++        c.hint(content);
+     }
+   }
+   async handle(request: IncomingMessage, response: ServerResponse) {
+@@ -102,7 +102,8 @@ export class AccountNotifications {
+       )
+         return fail(429, 'capacity');
+       let closed = false,
+-        queued = false;
++        queued = false,
++        pendingContent = false;
+       let heartbeat: ReturnType<typeof setInterval> | undefined;
+       let expiry: ReturnType<typeof setTimeout> | undefined;
+       const close = () => {
+@@ -134,12 +135,20 @@ export class AccountNotifications {
+         watch,
+         close,
+         check,
+-        hint: () => {
+-          if (closed || queued) return;
++        hint: (content) => {
++          if (closed) return;
++          // A control change dominates coalesced content hints. Legacy clients continue
++          // receiving precisely v1's hint alphabet unless they explicitly opt in.
++          pendingContent = queued ? pendingContent && content : content;
++          if (queued) return;
+           queued = true;
+           queueMicrotask(() => {
+             queued = false;
+-            send('event: hint\ndata: {}\n\n');
++            const event =
++              pendingContent && request.headers['x-done-notification-events'] === '2'
++                ? 'content'
++                : 'hint';
++            send(`event: ${event}\ndata: {}\n\n`);
+           });
+         },
+       };
+diff --git a/scripts/lib/account-gateway.mjs b/scripts/lib/account-gateway.mjs
+index 496fc5c8..cfb886d7 100644
+--- a/scripts/lib/account-gateway.mjs
++++ b/scripts/lib/account-gateway.mjs
+@@ -6,7 +6,14 @@ function proxyAccountRequest(request, response, servicePort, streams) {
+   // Forward only framing and the client's authority inputs. Never invent an Origin,
+   // Authorization or forwarded-host claim, follow redirects, or retry a lost reply.
+   const headers = {};
+-  for (const key of ['host', 'origin', 'authorization', 'content-type', 'content-length'])
++  for (const key of [
++    'host',
++    'origin',
++    'authorization',
++    'content-type',
++    'content-length',
++    'x-done-notification-events',
++  ])
+     if (request.headers[key] !== undefined) headers[key] = request.headers[key];
+   response.setHeader('Cache-Control', 'no-store');
+   response.setHeader('X-Content-Type-Options', 'nosniff');
+diff --git a/src/account/deviceEnrollment.ts b/src/account/deviceEnrollment.ts
+index 41597e96..681421d3 100644
+--- a/src/account/deviceEnrollment.ts
++++ b/src/account/deviceEnrollment.ts
+@@ -135,6 +135,7 @@ export interface EnrollmentView {
+   message: string;
+   editor?: {
+     workspace: AdmittedWorkspace;
++    sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
+     devices: import('./deviceRoster').DeviceRoster;
+     actorId: string;
+     accountId: string;
+@@ -944,6 +945,7 @@ export function createDeviceEnrollment(
+     return view('editing', {
+       editor: {
+         workspace: opened.workspace,
++        sync: opened.sync,
+         devices: opened.devices,
+         actorId: joined.principalId,
+         accountId: opened.accountId,
+diff --git a/src/account/firstDeviceSetup.ts b/src/account/firstDeviceSetup.ts
+index d6684f14..2109bf61 100644
+--- a/src/account/firstDeviceSetup.ts
++++ b/src/account/firstDeviceSetup.ts
+@@ -71,6 +71,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
+   let openedPrincipal: string | undefined;
+   let context: RecoveryContext | undefined;
+   let workspace: AdmittedWorkspace | undefined;
++  let sync: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
+   let devices: import('./deviceRoster').DeviceRoster | undefined;
+   let operation: Promise<void> | undefined;
+   let closing: Promise<void> | undefined;
+@@ -346,7 +347,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
+     delete saved.requestedName;
+     await progress(saved);
+     guard();
+-    publish({ kind: 'ready', workspace, actorId: openedPrincipal, devices });
++    publish({ kind: 'ready', workspace, actorId: openedPrincipal, devices, sync });
+   };
+   const openAccount = async (principalId: string) => {
+     if (networkLogin?.retired) {
+@@ -376,6 +377,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
+       token,
+     );
+     workspace = opened.workspace;
++    sync = opened.sync;
+     devices = opened.devices;
+     openedPrincipal = principalId;
+     try {
+diff --git a/src/account/historyHttp.ts b/src/account/historyHttp.ts
+index 8544de2b..1695f078 100644
+--- a/src/account/historyHttp.ts
++++ b/src/account/historyHttp.ts
+@@ -12,6 +12,16 @@ import {
+ import type { ScopedAccess } from './scopedTransport';
+ 
+ export class HistoryTransportUnavailable extends Error {}
++export class HistoryReplyRefused extends Error {
++  constructor(
++    readonly reason: 'size' | 'integrity',
++    cause?: unknown,
++  ) {
++    super(cause instanceof Error ? cause.message : 'History service evidence was refused', {
++      cause,
++    });
++  }
++}
+ 
+ export function createHistoryTransport(
+   authority: VerifiedMembership,
+@@ -51,14 +61,17 @@ export function createHistoryTransport(
+       stopped.aborted ||
+       response.status !== 200 ||
+       !response.body ||
+-      response.headers.get('content-type')?.split(';')[0] !== 'application/json' ||
+-      (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > limit))
++      response.headers.get('content-type')?.split(';')[0] !== 'application/json'
+     ) {
+       await response.body?.cancel();
+       throw new HistoryTransportUnavailable(
+         'History service reply unavailable. Saved progress can be retried.',
+       );
+     }
++    if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > limit)) {
++      await response.body.cancel();
++      throw new HistoryReplyRefused(/^\d+$/.test(declared) ? 'size' : 'integrity');
++    }
+     const reader = response.body.getReader(),
+       decoder = new TextDecoder('utf-8', { fatal: true });
+     let length = 0,
+@@ -76,7 +89,7 @@ export function createHistoryTransport(
+         live();
+         if (done) break;
+         length += value.length;
+-        if (length > limit) throw Error('History service reply is too large');
++        if (length > limit) throw new HistoryReplyRefused('size');
+         text += decoder.decode(value, { stream: true });
+       }
+       if (declared !== null && length !== Number(declared))
+@@ -87,6 +100,10 @@ export function createHistoryTransport(
+       const page = await verifyHistoryCheckpointPage(result['page'], request, p.pin);
+       live();
+       return page;
++    } catch (cause) {
++      if (cause instanceof HistoryTransportUnavailable || cause instanceof HistoryReplyRefused)
++        throw cause;
++      throw new HistoryReplyRefused('integrity', cause);
+     } finally {
+       stopped.removeEventListener('abort', cancel);
+       await reader.cancel().catch(() => {});
+diff --git a/src/account/membershipEnrollment.ts b/src/account/membershipEnrollment.ts
+index 9e5ca6dd..89080103 100644
+--- a/src/account/membershipEnrollment.ts
++++ b/src/account/membershipEnrollment.ts
+@@ -310,6 +310,7 @@ export function createMembershipEnrollment(
+     return view('editing', {
+       editor: {
+         workspace: opened.workspace,
++        sync: opened.sync,
+         devices: opened.devices,
+         actorId: joined.principalId,
+         accountId: opened.accountId,
+diff --git a/src/account/notifications.ts b/src/account/notifications.ts
+index b1bef13e..38266ee9 100644
+--- a/src/account/notifications.ts
++++ b/src/account/notifications.ts
+@@ -2,7 +2,7 @@
+ export class NotificationFrames {
+   #partial = '';
+   #ready = false;
+-  push(bytes: Uint8Array, emit: (event: 'ready' | 'hint') => void) {
++  push(bytes: Uint8Array, emit: (event: 'ready' | 'hint' | 'content') => void) {
+     // A fetch chunk can contain many frames. Never accumulate it as one unbounded string.
+     for (const byte of bytes) {
+       // This protocol's entire alphabet is ASCII; reject extensions rather than accepting
+@@ -14,10 +14,10 @@ export class NotificationFrames {
+       const frame = this.#partial;
+       this.#partial = '';
+       if (frame === ': heartbeat\n\n') continue;
+-      const event = /^event: (ready|hint)\ndata: \{\}\n\n$/.exec(frame)?.[1];
++      const event = /^event: (ready|hint|content)\ndata: \{\}\n\n$/.exec(frame)?.[1];
+       if (!event || (event === 'ready') === this.#ready) throw Error('Invalid notification frame');
+       this.#ready = true;
+-      emit(event as 'ready' | 'hint');
++      emit(event as 'ready' | 'hint' | 'content');
+     }
+   }
+ }
+@@ -25,7 +25,7 @@ export class NotificationFrames {
+ export async function readNotifications(
+   response: Response,
+   signal: AbortSignal,
+-  emit: (event: 'ready' | 'hint') => void,
++  emit: (event: 'ready' | 'hint' | 'content') => void,
+ ) {
+   if (
+     !response.ok ||
+@@ -67,7 +67,7 @@ export async function readNotifications(
+ export function startNotifications(options: {
+   signal: AbortSignal;
+   open(signal: AbortSignal): Promise<Response>;
+-  wake(): void;
++  wake(event: 'ready' | 'hint' | 'content' | 'resume'): void;
+   health(connected: boolean): void;
+ }) {
+   let stopped = false,
+@@ -100,7 +100,7 @@ export function startNotifications(options: {
+             health(true);
+           }
+           signal.throwIfAborted();
+-          options.wake();
++          options.wake(event);
+         });
+       } catch {
+         /* The bounded poll remains available; the owner presents operation failures. */
+@@ -122,7 +122,7 @@ export function startNotifications(options: {
+   const resume = () => {
+     if (stopped || (typeof document !== 'undefined' && document.visibilityState === 'hidden'))
+       return;
+-    options.wake();
++    options.wake('resume');
+     if (connected) return;
+     if (flight) {
+       expedited = true;
+diff --git a/src/account/scopedTransport.ts b/src/account/scopedTransport.ts
+index 5a7f7f53..c318494c 100644
+--- a/src/account/scopedTransport.ts
++++ b/src/account/scopedTransport.ts
+@@ -165,7 +165,11 @@ export class ScopedTransport {
+       signal.throwIfAborted();
+       const response = await this.#fetch(new URL(path, this.#pin.origin), {
+         method: 'POST',
+-        headers: { 'Content-Type': type, Authorization: 'Bearer ' + token },
++        headers: {
++          'Content-Type': type,
++          Authorization: 'Bearer ' + token,
++          ...(path === notificationPath ? { 'X-Done-Notification-Events': '2' } : {}),
++        },
+         body,
+         signal,
+         credentials: 'omit',
+diff --git a/src/account/setupProgress.ts b/src/account/setupProgress.ts
+index 405eddaf..88a77cd5 100644
+--- a/src/account/setupProgress.ts
++++ b/src/account/setupProgress.ts
+@@ -63,6 +63,7 @@ export type SetupState = (
+   | {
+       kind: 'ready';
+       workspace: AdmittedWorkspace;
++      sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
+       actorId: string;
+       devices: import('./deviceRoster').DeviceRoster;
+     }
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 8c452028..6b34d49d 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,4 @@
++import { createReceiveSelection } from './receiveSelection';
+ import { markAccountOpen } from './accountLedgerMetrics';
+ import type { OpenedRecord } from './contentRecord';
+ import { countLedgerWork } from './accountLedgerMetrics';
+@@ -536,7 +537,7 @@ async function openAccountReceiveOwner(
+       for (const r of records) r.bytes.fill(0);
+     }
+   };
+-  let nextPublisher = 0;
++  const receiveSelection = createReceiveSelection();
+   const describe = (s: Awaited<ReturnType<typeof state>>) =>
+     Object.freeze({
+       state:
+@@ -560,8 +561,7 @@ async function openAccountReceiveOwner(
+     if (account.detached) throw Error('This local copy is detached from sync');
+     const all = await state(task, owner, route);
+     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
+-    const publisher =
+-      after === undefined ? publishers[nextPublisher++ % publishers.length]! : base.publisher.id;
++    const publisher = after === undefined ? receiveSelection.next(publishers) : base.publisher.id;
+     const s = publisherState(all, base, publisher),
+       cursor = after ?? s.prefix.position;
+     if (s.conflict) throw Error('Inbound stream is conflicted');
+@@ -682,7 +682,7 @@ async function openAccountReceiveOwner(
+           (catalog.sequence === prepared.installed.sequence &&
+             catalog.latest !== prepared.installed.hash)
+         )
+-          throw Error('History catalog regressed or forked');
++          return captureError('History catalog regressed or forked');
+         if (catalog.latest === prepared.installed.hash && prepared.installed.receiveCuts)
+           return null;
+       }
+@@ -713,7 +713,7 @@ async function openAccountReceiveOwner(
+         page.catalog.sequence < catalog.sequence ||
+         (page.catalog.sequence === catalog.sequence && page.catalog.latest !== catalog.latest)
+       )
+-        throw Error('Admitted history changed during reading');
++        return captureError('Admitted history changed during reading');
+       return encodeHistoryInstall({
+         version: 2,
+         baseline: prepared.baseline,
+@@ -1714,6 +1714,14 @@ async function openAccountReceiveOwner(
+     carrier,
+     listCaptures,
+     fetchPage,
++    completedRead: (request: Bytes, kind: string) => {
++      const publisher = decodeInboundRequest(request).publisher;
++      receiveSelection.completed(
++        base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
++        publisher,
++        kind === 'received',
++      );
++    },
+     fetchHistory,
+     installHistory,
+     createOutbound,
+@@ -1752,6 +1760,7 @@ async function openReceivingWorkspace(
+     access,
+     devices,
+     publisherCount,
++    completedRead,
+     isSelfRequest,
+     api,
+     account,
+@@ -1881,9 +1890,12 @@ async function openReceivingWorkspace(
+                   proof.fill(0);
+                 }
+               }
++              completedRead(request, received.kind);
+               return { kind: received.kind, recorded: false };
+             }
+-            return await receivePage(page, request);
++            const received = await receivePage(page, request);
++            completedRead(request, received.kind);
++            return received;
+           } catch (cause) {
+             if (cause instanceof ReceiveAuthorityChanged)
+               return { kind: 'unknown' as const, recorded: false };
+@@ -2056,9 +2068,11 @@ async function openReceivingWorkspace(
+           notifications = startNotifications({
+             signal: carrier.signal,
+             open: (signal) => access.openNotifications(signal),
+-            wake: () => {
+-              resetDiscovery();
+-              scheduler.wake('remote');
++            wake: (event) => {
++              if (event !== 'content') resetDiscovery();
++              // A fresh subscription handshake proves renewed reachability. Content
++              // hints alone never override a failed operation's retry clock.
++              scheduler.wake(event === 'ready' ? 'online' : 'remote');
+             },
+             health: (healthy) => {
+               notificationHealthy = healthy;
+diff --git a/src/crdt/accountSyncDriver.ts b/src/crdt/accountSyncDriver.ts
+index 993679ac..73d83ec6 100644
+--- a/src/crdt/accountSyncDriver.ts
++++ b/src/crdt/accountSyncDriver.ts
+@@ -1,8 +1,13 @@
++import { HistoryReplyRefused } from '../account/historyHttp';
+ import { type AccountAccess } from '../account/accountHttp';
+ /** Two lanes, one pass. Runtime scheduling contains no account or storage authority. */
+ import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
+ import type { ReceiveStep } from './accountReceiveDriver';
+ import { EnvelopeSizeError } from '../../account-protocol/envelope';
++import { AdmissionError } from './admissionQueue';
++import { ContentError } from './contentRecord';
++import { CustodyError } from './custodyRecord';
++import { InboundError } from './accountInbound';
+ import { createBatchWindow, type BatchTiming } from './batchWindow';
+ export type SyncLane = 'send' | 'receive';
+ export type SyncHalt =
+@@ -10,6 +15,7 @@ export type SyncHalt =
+   | 'conflict'
+   | 'finalized'
+   | 'envelope-size'
++  | 'integrity'
+   | import('./accountReceiveDriver').ReceiveHalt;
+ export type OutboundStep = { receivedThrough?: number } & (
+   | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
+@@ -20,7 +26,9 @@ export interface SyncLaneStatus {
+   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
+   readonly failures: number;
+   readonly nextAttemptAt: number | null;
+-  readonly reason: SyncHalt | 'local-storage' | 'request-expired' | null;
++  readonly reason: SyncHalt | 'local-storage' | 'request-expired' | 'network-unavailable' | null;
++  readonly issueSince: number | null;
++  readonly lastSuccessAt: number | null;
+ }
+ export interface SyncStatus {
+   readonly send: SyncLaneStatus & { readonly acceptedThrough: number };
+@@ -32,7 +40,9 @@ interface Lane {
+   failures: number;
+   due?: number | undefined;
+   halt?: SyncHalt | undefined;
+-  retryReason?: 'request-expired' | undefined;
++  retryReason?: 'request-expired' | 'operation-failed' | 'network-unavailable' | undefined;
++  issueSince?: number;
++  lastSuccessAt?: number;
+   expedite: boolean;
+   dirty: boolean;
+ }
+@@ -91,6 +101,8 @@ export function createSyncScheduler(options: {
+               name === 'send' && lane.failures === 0 ? (batch?.due ?? -Infinity) : -Infinity,
+             )
+           : null,
++      issueSince: lane.issueSince ?? null,
++      lastSuccessAt: lane.lastSuccessAt ?? null,
+       reason: stopped
+         ? null
+         : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : (lane.retryReason ?? null))),
+@@ -199,7 +211,8 @@ export function createSyncScheduler(options: {
+         if (stopped) return;
+         const position =
+           'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
+-        if (position < lane.position) throw Error('Durable lane position regressed');
++        if (position < lane.position)
++          throw new ContentError('repair-required', 'Durable lane position regressed');
+         lane.position = position;
+         // A retained submit receipt already contributes to the composed inbound prefix.
+         // Publish that verified aggregate without scheduling a network read of our own write.
+@@ -209,9 +222,11 @@ export function createSyncScheduler(options: {
+           result.receivedThrough !== undefined
+         ) {
+           if (result.receivedThrough < lanes.receive.position)
+-            throw Error('Durable receive position regressed');
++            throw new ContentError('repair-required', 'Durable receive position regressed');
+           lanes.receive.position = result.receivedThrough;
+         }
++        if (result.kind === 'progress' || (name === 'receive' && result.kind === 'idle'))
++          lane.lastSuccessAt = clock.now();
+         // An unanswered submit can have committed. Preserve independent read reconciliation,
+         // but never override a receiver's failure backoff or diagnostic halt.
+         if (
+@@ -222,6 +237,7 @@ export function createSyncScheduler(options: {
+         )
+           lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
+         if (result.kind === 'batching') {
++          delete lane.issueSince;
+           lane.phase = 'idle';
+           lane.failures = 0;
+           lane.retryReason = undefined;
+@@ -229,6 +245,7 @@ export function createSyncScheduler(options: {
+           lane.dirty = lane.expedite = false;
+         } else if (result.kind === 'blocked') {
+           lane.halt = result.reason;
++          lane.issueSince ??= clock.now();
+           lane.due = undefined;
+           lane.expedite = lane.dirty = false;
+         } else if (result.kind === 'paused') {
+@@ -236,20 +253,29 @@ export function createSyncScheduler(options: {
+           lane.expedite = false;
+         } else {
+           const retryable = result.kind === 'unknown' || result.kind === 'expired';
+-          lane.retryReason = result.kind === 'expired' ? 'request-expired' : undefined;
++          lane.retryReason =
++            result.kind === 'expired'
++              ? 'request-expired'
++              : retryable
++                ? 'network-unavailable'
++                : undefined;
++          if (retryable) lane.issueSince ??= clock.now();
++          else delete lane.issueSince;
+           lane.phase = retryable ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
+           lane.failures = retryable ? Math.min(lane.failures + 1, 6) : 0;
+           const delay = retryable
+             ? Math.min(1000 * 2 ** (lane.failures - 1), 30000)
+             : result.kind === 'progress'
+-              ? 50
++              ? name === 'receive'
++                ? 0
++                : 50
+               : name === 'receive'
+                 ? (options.receiveInterval?.() ?? 5000)
+                 : undefined;
+           lane.due = lane.expedite
+             ? clock.now()
+             : lane.dirty && !retryable
+-              ? clock.now() + 50
++              ? clock.now() + (name === 'receive' ? 0 : 50)
+               : delay !== undefined
+                 ? clock.now() + delay
+                 : lane.dirty
+@@ -261,8 +287,25 @@ export function createSyncScheduler(options: {
+       })
+       .catch((cause) => {
+         if (!stopped) {
+-          lane.halt = cause instanceof EnvelopeSizeError ? 'envelope-size' : 'operation-failed';
+-          lane.due = undefined;
++          if (options.gate() === 'offline') delete lane.issueSince;
++          else lane.issueSince ??= clock.now();
++          if (cause instanceof EnvelopeSizeError) lane.halt = 'envelope-size';
++          else if (cause instanceof HistoryReplyRefused)
++            lane.halt = cause.reason === 'size' ? 'inbound-size' : 'integrity';
++          else if (
++            cause instanceof AdmissionError ||
++            cause instanceof InboundError ||
++            (cause instanceof ContentError && cause.code !== 'storage-failed') ||
++            (cause instanceof CustodyError && cause.code !== 'storage-failed')
++          )
++            lane.halt = 'integrity';
++          if (lane.halt) lane.due = undefined;
++          else {
++            lane.phase = 'retrying';
++            lane.retryReason = 'operation-failed';
++            lane.failures = Math.min(lane.failures + 1, 6);
++            lane.due = clock.now() + Math.min(1000 * 2 ** (lane.failures - 1), 30000);
++          }
+           lane.expedite = lane.dirty = false;
+           ready();
+         }
+@@ -278,11 +321,15 @@ export function createSyncScheduler(options: {
+     target?: SyncLane,
+   ) => {
+     if (stopped) return;
++    if (options.gate() === 'offline')
++      for (const lane of Object.values(lanes)) delete lane.issueSince;
+     if (cause === 'local') batch?.note();
+     if (cause === 'flush' || cause === 'authority') batch?.close();
+     for (const name of names) {
+       if (cause === 'retry' && name !== target) continue;
+       const lane = lanes[name];
++      if (options.gate() === 'ready' && (lane.halt || lane.failures))
++        lane.issueSince ??= clock.now();
+       if (cause === 'remote' && name === 'receive' && !lane.halt) {
+         if (active === name) lane.dirty = true;
+         else if (lane.failures === 0) lane.due = Math.min(lane.due ?? clock.now(), clock.now());
+@@ -403,3 +450,5 @@ export async function driveOutboundStep(
+     ...progress(next),
+   };
+ }
++
++export type SyncRuntime = ReturnType<typeof createSyncScheduler>['runtime'];
+diff --git a/src/crdt/custodyRecord.ts b/src/crdt/custodyRecord.ts
+index d01ef06f..296a2924 100644
+--- a/src/crdt/custodyRecord.ts
++++ b/src/crdt/custodyRecord.ts
+@@ -11,6 +11,7 @@ import {
+   type SealedCredential,
+ } from './custodyCrypto';
+ import type { SessionTask } from './writeSession';
++import { sameBytes } from './verifiedRecords';
+ 
+ export type CustodyRefusal =
+   | 'invalid-input'
+@@ -310,72 +311,81 @@ export const parseRecord = (value: unknown, scope: CustodyScope): CustodyRecord
+     mac: bytes(r['mac'], 32),
+   };
+ };
+-const sealTuple = (s: LockSeal) => [s.v, s.factor, s.id, hex(s.salt), hex(s.nonce), hex(s.ct)];
++const sealTuple = (s: LockSeal, encode: (bytes: Bytes) => string | Bytes) => [
++  s.v,
++  s.factor,
++  s.id,
++  encode(s.salt),
++  encode(s.nonce),
++  encode(s.ct),
++];
+ /** Closed, ordered encoding; JSON object enumeration order never enters the MAC. */
++const recordValues = (r: CustodyRecord, encode: (bytes: Bytes) => string | Bytes) => [
++  'done/custody-metadata/v2',
++  r.v,
++  r.state,
++  r.slot_id,
++  r.principal_id,
++  r.workspace_id,
++  r.store_id,
++  r.root_id,
++  r.seals.map((seal) => sealTuple(seal, encode)),
++  r.seal_reserved,
++  r.rotation_owed,
++  r.creation_intent
++    ? [
++        r.creation_intent.id,
++        r.creation_intent.storeId,
++        r.creation_intent.rootId,
++        r.creation_intent.wrappingId,
++        r.creation_intent.signingId,
++      ]
++    : null,
++  r.envelope
++    ? [r.envelope.v, r.envelope.gen, encode(r.envelope.nonce), encode(r.envelope.ct)]
++    : null,
++  r.credentials?.map((c) => [
++    c.role,
++    c.id,
++    encode(c.publicKey),
++    [c.sealed.v, encode(c.sealed.nonce), encode(c.sealed.ct)],
++  ]) ?? null,
++  ...(r.creation_seed
++    ? [
++        [
++          'creation-seed',
++          r.creation_seed.v,
++          encode(r.creation_seed.salt),
++          encode(r.creation_seed.nonce),
++          encode(r.creation_seed.ct),
++        ],
++      ]
++    : []),
++  ...(r.approval
++    ? [['content-approval', r.approval.v, r.approval.sequence, encode(r.approval.ct)]]
++    : []),
++  ...(r.active_rotation ? [['active-rotation', r.active_rotation]] : []),
++  ...(r.rotation
++    ? [['content-rotation', r.rotation.v, r.rotation.sequence, encode(r.rotation.ct)]]
++    : []),
++  ...(r.history
++    ? [['history-maintenance', r.history.v, r.history.sequence, encode(r.history.ct)]]
++    : []),
++  ...(r.initial_account
++    ? [
++        [
++          'initial-account',
++          r.initial_account.generation,
++          r.initial_account.deliveryHash,
++          r.initial_account.key.sequence,
++          r.initial_account.key.ct,
++        ],
++      ]
++    : []),
++];
+ export const recordPayload = (r: CustodyRecord): Bytes =>
+-  utf8(
+-    JSON.stringify([
+-      'done/custody-metadata/v2',
+-      r.v,
+-      r.state,
+-      r.slot_id,
+-      r.principal_id,
+-      r.workspace_id,
+-      r.store_id,
+-      r.root_id,
+-      r.seals.map(sealTuple),
+-      r.seal_reserved,
+-      r.rotation_owed,
+-      r.creation_intent
+-        ? [
+-            r.creation_intent.id,
+-            r.creation_intent.storeId,
+-            r.creation_intent.rootId,
+-            r.creation_intent.wrappingId,
+-            r.creation_intent.signingId,
+-          ]
+-        : null,
+-      r.envelope ? [r.envelope.v, r.envelope.gen, hex(r.envelope.nonce), hex(r.envelope.ct)] : null,
+-      r.credentials?.map((c) => [
+-        c.role,
+-        c.id,
+-        hex(c.publicKey),
+-        [c.sealed.v, hex(c.sealed.nonce), hex(c.sealed.ct)],
+-      ]) ?? null,
+-      ...(r.creation_seed
+-        ? [
+-            [
+-              'creation-seed',
+-              r.creation_seed.v,
+-              hex(r.creation_seed.salt),
+-              hex(r.creation_seed.nonce),
+-              hex(r.creation_seed.ct),
+-            ],
+-          ]
+-        : []),
+-      ...(r.approval
+-        ? [['content-approval', r.approval.v, r.approval.sequence, hex(r.approval.ct)]]
+-        : []),
+-      ...(r.active_rotation ? [['active-rotation', r.active_rotation]] : []),
+-      ...(r.rotation
+-        ? [['content-rotation', r.rotation.v, r.rotation.sequence, hex(r.rotation.ct)]]
+-        : []),
+-      ...(r.history
+-        ? [['history-maintenance', r.history.v, r.history.sequence, hex(r.history.ct)]]
+-        : []),
+-      ...(r.initial_account
+-        ? [
+-            [
+-              'initial-account',
+-              r.initial_account.generation,
+-              r.initial_account.deliveryHash,
+-              r.initial_account.key.sequence,
+-              r.initial_account.key.ct,
+-            ],
+-          ]
+-        : []),
+-    ]),
+-  );
++  utf8(JSON.stringify(recordValues(r, hex)));
++
+ const macKey = (root: Bytes, r: CustodyRecord, subtle: SubtleCrypto) =>
+   hkdf(
+     root,
+@@ -401,8 +411,18 @@ export const signRecord = async (
+   ...r,
+   mac: new Uint8Array(await subtle.sign('HMAC', await macKey(root, r, subtle), recordPayload(r))),
+ });
++// Compare the same closed values used by the MAC without encoding large sealed progress
++// carriers to hex/JSON/UTF-8/hex on every authority fence. No cached equality or MAC-only shortcut.
++const equalValues = (a: unknown, b: unknown): boolean => {
++  if (a instanceof Uint8Array) return b instanceof Uint8Array && sameBytes(a, b);
++  if (!Array.isArray(a)) return a === b;
++  if (!Array.isArray(b) || a.length !== b.length) return false;
++  for (let i = 0; i < a.length; i++) if (!equalValues(a[i], b[i])) return false;
++  return true;
++};
++const rawBytes = (bytes: Bytes) => bytes;
+ export const recordEqual = (a: CustodyRecord, b: CustodyRecord): boolean =>
+-  hex(recordPayload(a)) === hex(recordPayload(b)) && hex(a.mac) === hex(b.mac);
++  sameBytes(a.mac, b.mac) && equalValues(recordValues(a, rawBytes), recordValues(b, rawBytes));
+ 
+ export const openCustodyDb = (): Promise<IDBDatabase> =>
+   new Promise((resolve, reject) => {
+diff --git a/src/styles/shell.css b/src/styles/shell.css
+index 95535222..43a72b95 100644
+--- a/src/styles/shell.css
++++ b/src/styles/shell.css
+@@ -1087,3 +1087,28 @@
+     }
+   }
+ }
++
++/* A persistent sync failure never displaces the writing or the storage-admission notice. */
++.sync-notice {
++  position: fixed;
++  z-index: 100;
++  inset-inline-end: max(1rem, env(safe-area-inset-right));
++  inset-block-end: max(1rem, env(safe-area-inset-bottom));
++  width: min(28rem, calc(100vw - 2rem));
++  max-height: 40vh;
++  overflow: auto;
++  padding: 1rem;
++  border: 1px solid var(--color-border);
++  border-radius: 0.5rem;
++  background: var(--color-surface);
++  color: var(--color-text);
++  box-shadow: 0 0.25rem 1rem #0004;
++}
++.sync-notice p,
++.sync-details p {
++  margin: 0.35rem 0;
++}
++.sync-notice code,
++.sync-details code {
++  user-select: text;
++}
+diff --git a/src/ui/AccountEnrollmentApp.tsx b/src/ui/AccountEnrollmentApp.tsx
+index 233b0e7f..16a7068e 100644
+--- a/src/ui/AccountEnrollmentApp.tsx
++++ b/src/ui/AccountEnrollmentApp.tsx
+@@ -295,6 +295,7 @@ export function AccountEnrollmentApp({
+     return (
+       <WorkspaceUiProvider
+         workspace={state.editor.workspace}
++        sync={state.editor.sync}
+         actorId={state.editor.actorId}
+         devices={state.editor.devices}
+         onShowDevices={() => setScreen('devices')}
+diff --git a/src/ui/AccountRecoveryApp.tsx b/src/ui/AccountRecoveryApp.tsx
+index 225c0720..90f412a7 100644
+--- a/src/ui/AccountRecoveryApp.tsx
++++ b/src/ui/AccountRecoveryApp.tsx
+@@ -194,6 +194,7 @@ export function AccountRecoveryApp({
+     return (
+       <WorkspaceUiProvider
+         workspace={opened.editor.workspace}
++        sync={opened.editor.sync}
+         actorId={opened.actorId}
+         devices={opened.editor.devices}
+         onShowDevices={() => setStep('devices')}
+diff --git a/src/ui/AccountSetupApp.tsx b/src/ui/AccountSetupApp.tsx
+index 04401ac0..9cda8547 100644
+--- a/src/ui/AccountSetupApp.tsx
++++ b/src/ui/AccountSetupApp.tsx
+@@ -158,6 +158,7 @@ export function Setup({
+     return (
+       <WorkspaceUiProvider
+         workspace={state.workspace}
++        sync={state.sync}
+         actorId={state.actorId}
+         devices={state.devices}
+         onShowDevices={() => setScreen('devices')}
+diff --git a/src/ui/Menu.tsx b/src/ui/Menu.tsx
+index 8f1a7997..ea64fc54 100644
+--- a/src/ui/Menu.tsx
++++ b/src/ui/Menu.tsx
+@@ -1,3 +1,4 @@
++import { SyncNotice } from './SyncNotice';
+ import { AccountHistory } from './AccountHistory';
+ import { NetworkLoginNotice } from './NetworkLoginNotice';
+ /** Local navigation, explicit preferences, recovery export and lock. */
+@@ -32,6 +33,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
+     networkLogin,
+     showDevices,
+     devices,
++    sync,
+   } = useWorkspaceUi();
+   const installState = useSyncExternalStore(
+     subscribeToInstallState,
+@@ -166,6 +168,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
+           </div>
+         )}
+         {accountId && <AccountIdentity id={accountId} />}
++        {sync && <SyncNotice sync={sync} details />}
+         {showDevices && (
+           <button className="menu-button" onClick={showDevices}>
+             Devices
+diff --git a/src/ui/workspaceUi.tsx b/src/ui/workspaceUi.tsx
+index 3a9d85bf..6c9c69fb 100644
+--- a/src/ui/workspaceUi.tsx
++++ b/src/ui/workspaceUi.tsx
+@@ -1,3 +1,5 @@
++import { SyncNotice } from './SyncNotice';
++import type { SyncRuntime } from '../crdt/accountSyncDriver';
+ import type { NetworkLogin } from '../account/networkLogin';
+ /** Read projections and admitted commands for the application. No Y.Doc or legacy Store crosses this port. */
+ import {
+@@ -26,6 +28,7 @@ interface CommandFeedback {
+ 
+ export interface WorkspaceUi {
+   workspace: AdmittedWorkspace;
++  sync?: SyncRuntime | undefined;
+   snapshot: WorkspaceSnapshot;
+   actorId: string;
+   status: AdmittedWorkspace['status'];
+@@ -57,6 +60,7 @@ export const useWorkspaceUi = (): WorkspaceUi => {
+ 
+ export const WorkspaceUiProvider = ({
+   workspace,
++  sync,
+   actorId,
+   registerEditor,
+   onLock,
+@@ -70,6 +74,7 @@ export const WorkspaceUiProvider = ({
+   children,
+ }: {
+   workspace: AdmittedWorkspace;
++  sync?: SyncRuntime | undefined;
+   actorId: string;
+   registerEditor: (destroy: () => void) => () => void;
+   onLock: () => void;
+@@ -208,6 +213,7 @@ export const WorkspaceUiProvider = ({
+     <Context
+       value={{
+         workspace,
++        sync,
+         snapshot,
+         actorId,
+         status,
+@@ -225,6 +231,7 @@ export const WorkspaceUiProvider = ({
+       }}
+     >
+       {children}
++      {sync && <SyncNotice sync={sync} />}
+       {(blocked || error || status.pendingItems > 0) && (
+         <aside className="workspace-status" role="status">
+           <span>
+diff --git a/src/crdt/receiveSelection.ts b/src/crdt/receiveSelection.ts
+new file mode 100644
+index 00000000..15c01439
+--- /dev/null
++++ b/src/crdt/receiveSelection.ts
+@@ -0,0 +1,25 @@
++/** Scheduling only. A selected publisher and every returned page still require fresh authority. */
++export function createReceiveSelection() {
++  let next = 0;
++  let streak = 0;
++  let previous: string | undefined;
++  return {
++    next(publishers: readonly string[]) {
++      if (!publishers.length) throw Error('No eligible receive publisher');
++      return publishers[next++ % publishers.length]!;
++    },
++    completed(publishers: readonly string[], publisher: string, progress: boolean) {
++      const index = publishers.indexOf(publisher);
++      if (index < 0) return;
++      streak = progress ? (previous === publisher ? streak + 1 : 1) : 0;
++      previous = publisher;
++      // Four useful pages, then let other publishers reconcile. The outer scheduler
++      // yields to the event loop and any due sender after EVERY page.
++      if (progress && streak < 4) next = index;
++      else {
++        next = index + 1;
++        streak = 0;
++      }
++    },
++  };
++}
+diff --git a/src/ui/SyncNotice.tsx b/src/ui/SyncNotice.tsx
+new file mode 100644
+index 00000000..e60011c0
+--- /dev/null
++++ b/src/ui/SyncNotice.tsx
+@@ -0,0 +1,91 @@
++import { useEffect, useState, useSyncExternalStore } from 'react';
++import type { SyncLane, SyncLaneStatus, SyncRuntime } from '../crdt/accountSyncDriver';
++
++const lanes: SyncLane[] = ['send', 'receive'];
++export function syncNeedsAttention(lane: SyncLaneStatus, online: boolean, now: number) {
++  return (
++    online &&
++    lane.phase !== 'closed' &&
++    lane.phase !== 'offline' &&
++    lane.reason !== 'local-storage' &&
++    lane.issueSince !== null &&
++    now - lane.issueSince >= 30000
++  );
++}
++const time = (at: number | null) =>
++  at === null ? 'None since opening' : new Date(at).toLocaleTimeString();
++
++/** This port can schedule retries, never change accepted positions or clear evidence. */
++export function SyncNotice({ sync, details = false }: { sync: SyncRuntime; details?: boolean }) {
++  const status = useSyncExternalStore(sync.onStatus, () => sync.status);
++  const [now, setNow] = useState(Date.now);
++  const [online, setOnline] = useState(() => navigator.onLine);
++  useEffect(() => {
++    const update = () => {
++      setOnline(navigator.onLine);
++      setNow(Date.now());
++    };
++    addEventListener('online', update);
++    addEventListener('offline', update);
++    const deadlines = lanes
++      .map((name) => status[name].issueSince)
++      .filter((at): at is number => at !== null && at + 30000 > Date.now());
++    const timer = deadlines.length
++      ? setTimeout(update, Math.min(...deadlines) + 30000 - Date.now())
++      : undefined;
++    return () => {
++      clearTimeout(timer);
++      removeEventListener('online', update);
++      removeEventListener('offline', update);
++    };
++  }, [status]);
++  const affected = lanes.filter((name) => syncNeedsAttention(status[name], online, now));
++  if (!details && !affected.length) return null;
++  return (
++    <aside
++      className={details ? 'sync-details' : 'sync-notice'}
++      aria-label="Sync status"
++      role={details ? undefined : 'status'}
++    >
++      {(details ? lanes : affected).map((name) => {
++        const lane = status[name];
++        const failed = lane.issueSince !== null && lane.reason !== 'local-storage';
++        return (
++          <div key={name}>
++            <p>
++              {details
++                ? `${name === 'send' ? 'Sending' : 'Receiving'}: ${lane.phase}`
++                : name === 'send'
++                  ? 'Changes on this device are not reaching your other devices.'
++                  : 'Changes from your other devices are not arriving here.'}
++            </p>
++            <p className="menu-note">
++              {name === 'send' ? 'Last accepted upload' : 'Last successful receive check'}:{' '}
++              {time(lane.lastSuccessAt)}
++            </p>
++            {details && (
++              <p className="menu-note">
++                {name === 'send'
++                  ? `Accepted position: ${status.send.acceptedThrough}`
++                  : `Received positions: ${status.receive.receivedThrough}`}
++              </p>
++            )}
++            {lane.reason && (
++              <p className="menu-note">
++                Reason:{' '}
++                <code>
++                  {name}:{lane.reason}
++                </code>
++              </p>
++            )}
++            {online && failed && lane.phase !== 'closed' && (
++              <button className="menu-button" onClick={() => sync.retry(name)}>
++                Retry {name === 'send' ? 'sending' : 'receiving'}
++              </button>
++            )}
++          </div>
++        );
++      })}
++    </aside>
++  );
++}

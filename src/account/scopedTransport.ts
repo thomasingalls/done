@@ -165,7 +165,11 @@ export class ScopedTransport {
       signal.throwIfAborted();
       const response = await this.#fetch(new URL(path, this.#pin.origin), {
         method: 'POST',
-        headers: { 'Content-Type': type, Authorization: 'Bearer ' + token },
+        headers: {
+          'Content-Type': type,
+          Authorization: 'Bearer ' + token,
+          ...(path === notificationPath ? { 'X-Done-Notification-Events': '2' } : {}),
+        },
         body,
         signal,
         credentials: 'omit',

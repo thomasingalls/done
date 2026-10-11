@@ -158,6 +158,7 @@ export function Setup({
     return (
       <WorkspaceUiProvider
         workspace={state.workspace}
+        sync={state.sync}
         actorId={state.actorId}
         devices={state.devices}
         onShowDevices={() => setScreen('devices')}

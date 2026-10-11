@@ -1,8 +1,13 @@
+import { HistoryReplyRefused } from '../account/historyHttp';
 import { type AccountAccess } from '../account/accountHttp';
 /** Two lanes, one pass. Runtime scheduling contains no account or storage authority. */
 import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
 import type { ReceiveStep } from './accountReceiveDriver';
 import { EnvelopeSizeError } from '../../account-protocol/envelope';
+import { AdmissionError } from './admissionQueue';
+import { ContentError } from './contentRecord';
+import { CustodyError } from './custodyRecord';
+import { InboundError } from './accountInbound';
 import { createBatchWindow, type BatchTiming } from './batchWindow';
 export type SyncLane = 'send' | 'receive';
 export type SyncHalt =
@@ -10,8 +15,9 @@ export type SyncHalt =
   | 'conflict'
   | 'finalized'
   | 'envelope-size'
+  | 'integrity'
   | import('./accountReceiveDriver').ReceiveHalt;
-export type OutboundStep = { receivedThrough?: number } & (
+export type OutboundStep = { receivedThrough?: number; acceptedNow?: true } & (
   | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
   | { kind: 'batching'; acceptedThrough: number; due: number }
   | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
@@ -20,7 +26,9 @@ export interface SyncLaneStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly failures: number;
   readonly nextAttemptAt: number | null;
-  readonly reason: SyncHalt | 'local-storage' | 'request-expired' | null;
+  readonly reason: SyncHalt | 'local-storage' | 'request-expired' | 'network-unavailable' | null;
+  readonly issueSince: number | null;
+  readonly lastSuccessAt: number | null;
 }
 export interface SyncStatus {
   readonly send: SyncLaneStatus & { readonly acceptedThrough: number };
@@ -32,7 +40,9 @@ interface Lane {
   failures: number;
   due?: number | undefined;
   halt?: SyncHalt | undefined;
-  retryReason?: 'request-expired' | undefined;
+  retryReason?: 'request-expired' | 'operation-failed' | 'network-unavailable' | undefined;
+  issueSince?: number;
+  lastSuccessAt?: number;
   expedite: boolean;
   dirty: boolean;
 }
@@ -91,6 +101,8 @@ export function createSyncScheduler(options: {
               name === 'send' && lane.failures === 0 ? (batch?.due ?? -Infinity) : -Infinity,
             )
           : null,
+      issueSince: lane.issueSince ?? null,
+      lastSuccessAt: lane.lastSuccessAt ?? null,
       reason: stopped
         ? null
         : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : (lane.retryReason ?? null))),
@@ -199,7 +211,8 @@ export function createSyncScheduler(options: {
         if (stopped) return;
         const position =
           'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
-        if (position < lane.position) throw Error('Durable lane position regressed');
+        if (position < lane.position)
+          throw new ContentError('repair-required', 'Durable lane position regressed');
         lane.position = position;
         // A retained submit receipt already contributes to the composed inbound prefix.
         // Publish that verified aggregate without scheduling a network read of our own write.
@@ -209,9 +222,14 @@ export function createSyncScheduler(options: {
           result.receivedThrough !== undefined
         ) {
           if (result.receivedThrough < lanes.receive.position)
-            throw Error('Durable receive position regressed');
+            throw new ContentError('repair-required', 'Durable receive position regressed');
           lanes.receive.position = result.receivedThrough;
         }
+        if (
+          (name === 'send' && 'acceptedNow' in result && result.acceptedNow) ||
+          (name === 'receive' && (result.kind === 'progress' || result.kind === 'idle'))
+        )
+          lane.lastSuccessAt = clock.now();
         // An unanswered submit can have committed. Preserve independent read reconciliation,
         // but never override a receiver's failure backoff or diagnostic halt.
         if (
@@ -222,6 +240,7 @@ export function createSyncScheduler(options: {
         )
           lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
         if (result.kind === 'batching') {
+          delete lane.issueSince;
           lane.phase = 'idle';
           lane.failures = 0;
           lane.retryReason = undefined;
@@ -229,6 +248,7 @@ export function createSyncScheduler(options: {
           lane.dirty = lane.expedite = false;
         } else if (result.kind === 'blocked') {
           lane.halt = result.reason;
+          lane.issueSince ??= clock.now();
           lane.due = undefined;
           lane.expedite = lane.dirty = false;
         } else if (result.kind === 'paused') {
@@ -236,20 +256,29 @@ export function createSyncScheduler(options: {
           lane.expedite = false;
         } else {
           const retryable = result.kind === 'unknown' || result.kind === 'expired';
-          lane.retryReason = result.kind === 'expired' ? 'request-expired' : undefined;
+          lane.retryReason =
+            result.kind === 'expired'
+              ? 'request-expired'
+              : retryable
+                ? 'network-unavailable'
+                : undefined;
+          if (retryable) lane.issueSince ??= clock.now();
+          else delete lane.issueSince;
           lane.phase = retryable ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
           lane.failures = retryable ? Math.min(lane.failures + 1, 6) : 0;
           const delay = retryable
             ? Math.min(1000 * 2 ** (lane.failures - 1), 30000)
             : result.kind === 'progress'
-              ? 50
+              ? name === 'receive'
+                ? 0
+                : 50
               : name === 'receive'
                 ? (options.receiveInterval?.() ?? 5000)
                 : undefined;
           lane.due = lane.expedite
             ? clock.now()
             : lane.dirty && !retryable
-              ? clock.now() + 50
+              ? clock.now() + (name === 'receive' ? 0 : 50)
               : delay !== undefined
                 ? clock.now() + delay
                 : lane.dirty
@@ -261,8 +290,32 @@ export function createSyncScheduler(options: {
       })
       .catch((cause) => {
         if (!stopped) {
-          lane.halt = cause instanceof EnvelopeSizeError ? 'envelope-size' : 'operation-failed';
-          lane.due = undefined;
+          if (options.gate() === 'offline') delete lane.issueSince;
+          else lane.issueSince ??= clock.now();
+          if (cause instanceof EnvelopeSizeError) lane.halt = 'envelope-size';
+          else if (cause instanceof HistoryReplyRefused)
+            lane.halt = cause.reason === 'size' ? 'inbound-size' : 'integrity';
+          else if (
+            cause instanceof AdmissionError &&
+            (cause.code === 'inactive-session' || cause.code === 'discarded')
+          )
+            lane.halt = 'closed';
+          else if (
+            (cause instanceof AdmissionError &&
+              cause.code !== 'storage-failed' &&
+              cause.code !== 'queue-full') ||
+            cause instanceof InboundError ||
+            (cause instanceof ContentError && cause.code !== 'storage-failed') ||
+            (cause instanceof CustodyError && cause.code !== 'storage-failed')
+          )
+            lane.halt = 'integrity';
+          if (lane.halt) lane.due = undefined;
+          else {
+            lane.phase = 'retrying';
+            lane.retryReason = 'operation-failed';
+            lane.failures = Math.min(lane.failures + 1, 6);
+            lane.due = clock.now() + Math.min(1000 * 2 ** (lane.failures - 1), 30000);
+          }
           lane.expedite = lane.dirty = false;
           ready();
         }
@@ -278,11 +331,16 @@ export function createSyncScheduler(options: {
     target?: SyncLane,
   ) => {
     if (stopped) return;
+    if (options.gate() === 'offline')
+      for (const lane of Object.values(lanes)) delete lane.issueSince;
     if (cause === 'local') batch?.note();
-    if (cause === 'flush' || cause === 'authority') batch?.close();
+    if (cause === 'flush' || cause === 'authority' || (cause === 'retry' && target === 'send'))
+      batch?.close();
     for (const name of names) {
       if (cause === 'retry' && name !== target) continue;
       const lane = lanes[name];
+      if (options.gate() === 'ready' && (lane.halt || lane.failures))
+        lane.issueSince ??= clock.now();
       if (cause === 'remote' && name === 'receive' && !lane.halt) {
         if (active === name) lane.dirty = true;
         else if (lane.failures === 0) lane.due = Math.min(lane.due ?? clock.now(), clock.now());
@@ -401,5 +459,8 @@ export async function driveOutboundStep(
           ? 'paused'
           : 'unknown',
     ...progress(next),
+    ...(next.acceptedThrough > status.acceptedThrough ? { acceptedNow: true as const } : {}),
   };
 }
+
+export type SyncRuntime = ReturnType<typeof createSyncScheduler>['runtime'];

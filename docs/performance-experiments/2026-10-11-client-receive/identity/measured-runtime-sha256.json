@@ -1,0 +1,22 @@
+{
+  "account-service/notifications.ts": "589b3891d3eda5b8d9c7b8e780ea2c8b9ce42fc52038247434acc914d1bbe8d9",
+  "scripts/lib/account-gateway.mjs": "32945ff4c8e613b1c8c484fc8717ff3d9f715bea64770341e857ea270b58365f",
+  "src/account/deviceEnrollment.ts": "6a2b1ece517990ba2f57165d60c1f220212e3515e0e3b51a4eee65037c8806cf",
+  "src/account/firstDeviceSetup.ts": "f74faa3cc403c51ad5add733aa682e9d88c116448a4d2d998c1126354ae25b0e",
+  "src/account/historyHttp.ts": "63d327104398be014072acc3811fe6f4db8236281d6739ed2d49315decc85209",
+  "src/account/membershipEnrollment.ts": "c34bca286b2a7331e32044bdd6d0ef394f8d336592ed08fffa46b3cb19e69791",
+  "src/account/notifications.ts": "5c0fdd0aaa19c0257ef5cc36d295eba825cf147ee753af047726a60fcdd3ec2c",
+  "src/account/scopedTransport.ts": "109c6952ba66f37081b6a2b339f905c9c727bd318ed4a7c2aa0f24a20b0030e9",
+  "src/account/setupProgress.ts": "e98ee6ca5b8c4b086528ed0a0660c8d64befc7d0cdba569a3e8a96e1ea0d7331",
+  "src/crdt/accountReceive.ts": "3ba85e6d5405122d3af724f4314683c94f31650a7f2f65e3ac7827ffa6544536",
+  "src/crdt/accountSyncDriver.ts": "67434e2ce2c5d0154edc6f8046948e0b9daa582c5adf1f4834a0ec9cf26a0b2f",
+  "src/crdt/custodyRecord.ts": "9ee9599ca7375d47c020dace263ddc0c7a160cd56c5c50f5961d6fc248424a95",
+  "src/crdt/receiveSelection.ts": "f572d1ec133b02e607f2c33e9f18d0763925adbe900ef940dbb5fd0b58fc2cbc",
+  "src/styles/shell.css": "ad4cca637cdb48fb49dd725105199aa1466197197fe303fccb8f1c21e88d0c6c",
+  "src/ui/AccountEnrollmentApp.tsx": "3ffd70a7d4fc34525cb5f22fcf2b58aa4d1d458b6f5b7e3c9bebb6f1a8b8bd05",
+  "src/ui/AccountRecoveryApp.tsx": "b13f865632f4735210df5c4e92be5f86912778db0e4a6a4b3b67e255676b7367",
+  "src/ui/AccountSetupApp.tsx": "1f0eb8e8e4621c3cbb317898f700c62002a2a481e64253d9522a55a6ea540bc4",
+  "src/ui/Menu.tsx": "a83f3640baa57a5ef9de07e8621cf1d32a27a1b585df7b9b35c07f6d58b0c4b3",
+  "src/ui/SyncNotice.tsx": "7d03bd7681a1f0f8f7cbe7b98e00205e5d5cbd5d7795a809e3d1791674bc4439",
+  "src/ui/workspaceUi.tsx": "8541a4aed3f66d21dc9f62a3e07a0e8f4b9bf24a22e4a69f68df3e79a4b44be2"
+}

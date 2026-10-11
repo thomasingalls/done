@@ -12,6 +12,16 @@ import {
 import type { ScopedAccess } from './scopedTransport';
 
 export class HistoryTransportUnavailable extends Error {}
+export class HistoryReplyRefused extends Error {
+  constructor(
+    readonly reason: 'size' | 'integrity',
+    cause?: unknown,
+  ) {
+    super(cause instanceof Error ? cause.message : 'History service evidence was refused', {
+      cause,
+    });
+  }
+}
 
 export function createHistoryTransport(
   authority: VerifiedMembership,
@@ -51,13 +61,16 @@ export function createHistoryTransport(
       stopped.aborted ||
       response.status !== 200 ||
       !response.body ||
-      response.headers.get('content-type')?.split(';')[0] !== 'application/json' ||
-      (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > limit))
+      response.headers.get('content-type')?.split(';')[0] !== 'application/json'
     ) {
       await response.body?.cancel();
       throw new HistoryTransportUnavailable(
         'History service reply unavailable. Saved progress can be retried.',
       );
+    }
+    if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > limit)) {
+      await response.body.cancel().catch(() => {});
+      throw new HistoryReplyRefused(/^\d+$/.test(declared) ? 'size' : 'integrity');
     }
     const reader = response.body.getReader(),
       decoder = new TextDecoder('utf-8', { fatal: true });
@@ -76,7 +89,7 @@ export function createHistoryTransport(
         live();
         if (done) break;
         length += value.length;
-        if (length > limit) throw Error('History service reply is too large');
+        if (length > limit) throw new HistoryReplyRefused('size');
         text += decoder.decode(value, { stream: true });
       }
       if (declared !== null && length !== Number(declared))
@@ -87,6 +100,10 @@ export function createHistoryTransport(
       const page = await verifyHistoryCheckpointPage(result['page'], request, p.pin);
       live();
       return page;
+    } catch (cause) {
+      if (cause instanceof HistoryTransportUnavailable || cause instanceof HistoryReplyRefused)
+        throw cause;
+      throw new HistoryReplyRefused('integrity', cause);
     } finally {
       stopped.removeEventListener('abort', cancel);
       await reader.cancel().catch(() => {});

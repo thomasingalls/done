@@ -194,6 +194,7 @@ export function AccountRecoveryApp({
     return (
       <WorkspaceUiProvider
         workspace={opened.editor.workspace}
+        sync={opened.editor.sync}
         actorId={opened.actorId}
         devices={opened.editor.devices}
         onShowDevices={() => setStep('devices')}

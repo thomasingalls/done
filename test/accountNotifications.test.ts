@@ -138,3 +138,13 @@ it('closing during an unresolved handshake cancels the late response without wak
   expect(cancelled).toBe(true);
   expect(vi.getTimerCount()).toBe(0);
 });
+
+it('recognizes opted-in content hints without treating them as control changes', () => {
+  const parser = new NotificationFrames(),
+    events: string[] = [];
+  parser.push(bytes(ready + 'event: content\ndata: {}\n\n' + hint), (event) => events.push(event));
+  expect(events).toEqual(['ready', 'content', 'hint']);
+  expect(() =>
+    new NotificationFrames().push(bytes('event: content\ndata: {}\n\n'), () => {}),
+  ).toThrow();
+});

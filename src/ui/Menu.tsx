@@ -1,3 +1,4 @@
+import { SyncNotice } from './SyncNotice';
 import { AccountHistory } from './AccountHistory';
 import { NetworkLoginNotice } from './NetworkLoginNotice';
 /** Local navigation, explicit preferences, recovery export and lock. */
@@ -32,6 +33,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
     networkLogin,
     showDevices,
     devices,
+    sync,
   } = useWorkspaceUi();
   const installState = useSyncExternalStore(
     subscribeToInstallState,
@@ -166,6 +168,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           </div>
         )}
         {accountId && <AccountIdentity id={accountId} />}
+        {sync && <SyncNotice sync={sync} details />}
         {showDevices && (
           <button className="menu-button" onClick={showDevices}>
             Devices

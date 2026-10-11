@@ -18,11 +18,12 @@ const built = await build({
   },
 });
 const dir = mkdtempSync(join(tmpdir(), 'done-generation-retry-'));
-const path = join(dir, 'client.mjs');
-writeFileSync(
-  path,
-  (Array.isArray(built) ? built[0] : built).output.find((o) => o.type === 'chunk').code,
-);
+const output = (Array.isArray(built) ? built[0] : built).output;
+// Retain dynamically split dependencies instead of assuming the entry is the only chunk.
+writeFileSync(join(dir, 'package.json'), JSON.stringify({ type: 'module' }));
+for (const file of output)
+  writeFileSync(join(dir, file.fileName), file.type === 'chunk' ? file.code : file.source);
+const path = join(dir, output.find((o) => o.type === 'chunk' && o.isEntry).fileName);
 process.once('exit', () => rmSync(dir, { recursive: true, force: true }));
 const client = await import(pathToFileURL(path).href);
 const zero = '00'.repeat(32),
@@ -300,6 +301,7 @@ test('the outbound driver retries only with installed newer authority and does n
     () => 'ready',
   );
   assert.equal(result.kind, 'progress');
+  assert.equal(result.acceptedNow, undefined, 'a generation retry is not a successful upload');
   assert.equal(sends, 1);
   assert.equal((await ops.deliveryStatus()).state, 'ready');
   ops = f.open();

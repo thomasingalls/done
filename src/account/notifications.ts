@@ -2,7 +2,7 @@
 export class NotificationFrames {
   #partial = '';
   #ready = false;
-  push(bytes: Uint8Array, emit: (event: 'ready' | 'hint') => void) {
+  push(bytes: Uint8Array, emit: (event: 'ready' | 'hint' | 'content') => void) {
     // A fetch chunk can contain many frames. Never accumulate it as one unbounded string.
     for (const byte of bytes) {
       // This protocol's entire alphabet is ASCII; reject extensions rather than accepting
@@ -14,10 +14,10 @@ export class NotificationFrames {
       const frame = this.#partial;
       this.#partial = '';
       if (frame === ': heartbeat\n\n') continue;
-      const event = /^event: (ready|hint)\ndata: \{\}\n\n$/.exec(frame)?.[1];
+      const event = /^event: (ready|hint|content)\ndata: \{\}\n\n$/.exec(frame)?.[1];
       if (!event || (event === 'ready') === this.#ready) throw Error('Invalid notification frame');
       this.#ready = true;
-      emit(event as 'ready' | 'hint');
+      emit(event as 'ready' | 'hint' | 'content');
     }
   }
 }
@@ -25,7 +25,7 @@ export class NotificationFrames {
 export async function readNotifications(
   response: Response,
   signal: AbortSignal,
-  emit: (event: 'ready' | 'hint') => void,
+  emit: (event: 'ready' | 'hint' | 'content') => void,
 ) {
   if (
     !response.ok ||
@@ -67,7 +67,7 @@ export async function readNotifications(
 export function startNotifications(options: {
   signal: AbortSignal;
   open(signal: AbortSignal): Promise<Response>;
-  wake(): void;
+  wake(event: 'ready' | 'hint' | 'content' | 'resume'): void;
   health(connected: boolean): void;
 }) {
   let stopped = false,
@@ -100,7 +100,7 @@ export function startNotifications(options: {
             health(true);
           }
           signal.throwIfAborted();
-          options.wake();
+          options.wake(event);
         });
       } catch {
         /* The bounded poll remains available; the owner presents operation failures. */
@@ -122,7 +122,7 @@ export function startNotifications(options: {
   const resume = () => {
     if (stopped || (typeof document !== 'undefined' && document.visibilityState === 'hidden'))
       return;
-    options.wake();
+    options.wake('resume');
     if (connected) return;
     if (flight) {
       expedited = true;

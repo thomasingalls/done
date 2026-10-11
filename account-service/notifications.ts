@@ -12,7 +12,7 @@ export const NOTIFICATION_LIMITS = Object.freeze({
   body: 4096,
 });
 type Watch = ReturnType<ScopedGrants['subscription']>;
-type Connection = { watch: Watch; hint(): void; check(): void; close(): void };
+type Connection = { watch: Watch; hint(content: boolean): void; check(): void; close(): void };
 
 export class AccountNotifications {
   #grants: ScopedGrants;
@@ -47,7 +47,7 @@ export class AccountNotifications {
         checkpoint ||
         (scope.kind === 'enrollment' && s.kind === 'enrollment' && s.attemptId === scope.attemptId)
       )
-        c.hint();
+        c.hint(content);
     }
   }
   async handle(request: IncomingMessage, response: ServerResponse) {
@@ -102,7 +102,8 @@ export class AccountNotifications {
       )
         return fail(429, 'capacity');
       let closed = false,
-        queued = false;
+        queued = false,
+        pendingContent = false;
       let heartbeat: ReturnType<typeof setInterval> | undefined;
       let expiry: ReturnType<typeof setTimeout> | undefined;
       const close = () => {
@@ -134,12 +135,20 @@ export class AccountNotifications {
         watch,
         close,
         check,
-        hint: () => {
-          if (closed || queued) return;
+        hint: (content) => {
+          if (closed) return;
+          // A control change dominates coalesced content hints. Legacy clients continue
+          // receiving precisely v1's hint alphabet unless they explicitly opt in.
+          pendingContent = queued ? pendingContent && content : content;
+          if (queued) return;
           queued = true;
           queueMicrotask(() => {
             queued = false;
-            send('event: hint\ndata: {}\n\n');
+            const event =
+              pendingContent && request.headers['x-done-notification-events'] === '2'
+                ? 'content'
+                : 'hint';
+            send(`event: ${event}\ndata: {}\n\n`);
           });
         },
       };

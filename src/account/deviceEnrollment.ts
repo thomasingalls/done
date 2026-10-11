@@ -135,6 +135,7 @@ export interface EnrollmentView {
   message: string;
   editor?: {
     workspace: AdmittedWorkspace;
+    sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
     devices: import('./deviceRoster').DeviceRoster;
     actorId: string;
     accountId: string;
@@ -944,6 +945,7 @@ export function createDeviceEnrollment(
     return view('editing', {
       editor: {
         workspace: opened.workspace,
+        sync: opened.sync,
         devices: opened.devices,
         actorId: joined.principalId,
         accountId: opened.accountId,

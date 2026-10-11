@@ -63,6 +63,7 @@ export type SetupState = (
   | {
       kind: 'ready';
       workspace: AdmittedWorkspace;
+      sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
       actorId: string;
       devices: import('./deviceRoster').DeviceRoster;
     }

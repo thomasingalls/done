@@ -1,0 +1,73 @@
+[
+  {
+    "run": "baseline-1",
+    "source": "/tmp/done-client-receive/baseline",
+    "status": "failed",
+    "primaryDeadlineMissed": true,
+    "primaryMs": 600000,
+    "completionMs": null,
+    "liveMs": null,
+    "records": [],
+    "requests": {
+      "A /account/session/v1/begin pending": 1,
+      "A /account/session/v1/acknowledge pending": 2,
+      "B /account/session/v1/begin pending": 1,
+      "B /account/session/v1/acknowledge pending": 2,
+      "A /account/session/v1/acknowledge 200": 2,
+      "B /account/session/v1/acknowledge 200": 3,
+      "A /account/session/v1/renew 200": 2,
+      "B /account/session/v1/renew 200": 3,
+      "A /account/grant/v1/begin 200": 2,
+      "B /account/grant/v1/begin 200": 3,
+      "B /account/grant/v1/finish 200": 3,
+      "B /account/notifications/v1/subscribe 200": 3,
+      "A /account/grant/v1/finish 200": 2,
+      "A /account/notifications/v1/subscribe 200": 2,
+      "A /account/delivery/submit 200": 10,
+      "B /account/membership/v2/discover 200": 104,
+      "B /account/history/v1/checkpoint 200": 103,
+      "B /account/delivery/read-v2 200": 761,
+      "A /account/membership/v2/discover 200": 12,
+      "A /account/history/v1/checkpoint 200": 12,
+      "A /account/delivery/read-v2 200": 26,
+      "B /account/delivery/submit 200": 1
+    },
+    "requestFailures": {
+      "A": 12,
+      "B": 330
+    },
+    "primary": {
+      "receiverOwnReads": 380,
+      "receiverPeerReads": 381,
+      "lastPeerAfter": 387,
+      "writerSubmitReplies": 10,
+      "writerReplyIntervalMs": {
+        "n": 9,
+        "p50": 2394,
+        "p95": 2992,
+        "max": 2992
+      },
+      "receiverSubmitMs": [
+        2800
+      ]
+    },
+    "completedCatchup": {
+      "receiverOwnReads": 380,
+      "receiverPeerReads": 381,
+      "lastPeerAfter": 387,
+      "writerSubmitReplies": 10,
+      "writerReplyIntervalMs": {
+        "n": 9,
+        "p50": 2394,
+        "p95": 2992,
+        "max": 2992
+      },
+      "receiverSubmitMs": [
+        2800
+      ]
+    },
+    "catchupLongTasksMs": null,
+    "typingFrameMs": null,
+    "typingLongTasksMs": null
+  }
+]

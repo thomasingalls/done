@@ -1,5 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
+import fc from 'fast-check';
 import { random, sealFactor, utf8 } from '../src/crdt/custodyCrypto';
 import {
   authenticateRecord,
@@ -42,6 +43,48 @@ const make = async () => {
   };
   return { root, record: await signRecord(root, r) };
 };
+it('binary equality matches the encoded reference for large carriers and nested mutations', async () => {
+  const { record } = await make();
+  const reference = (a: CustodyRecord, b: CustodyRecord) =>
+    Buffer.from(recordPayload(a)).equals(Buffer.from(recordPayload(b))) &&
+    Buffer.from(a.mac).equals(Buffer.from(b.mac));
+  fc.assert(
+    fc.property(fc.uint8Array({ minLength: 1, maxLength: 65536 }), fc.nat(), (ct, n) => {
+      const a: CustodyRecord = {
+        ...record,
+        approval: { v: 1, sequence: 2, ct },
+        history: { v: 1, sequence: 3, ct: ct.slice() },
+        rotation: { v: 1, sequence: 4, ct: ct.slice() },
+      };
+      const b = structuredClone(a);
+      expect(recordEqual(a, b)).toBe(true);
+      const edits = [
+        () => {
+          b.approval!.ct[n % ct.length]! ^= 1;
+        },
+        () => {
+          b.history!.sequence++;
+        },
+        () => {
+          delete b.rotation;
+        },
+        () => {
+          b.seals[0].ct[n % b.seals[0].ct.length]! ^= 1;
+        },
+        () => {
+          b.creation_intent!.signingId += '0';
+        },
+        () => {
+          b.mac[n % b.mac.length]! ^= 1;
+        },
+      ];
+      edits[n % edits.length]!();
+      expect(recordEqual(a, b)).toBe(reference(a, b));
+      expect(recordEqual(a, b)).toBe(false);
+    }),
+    { seed: 101126, numRuns: 100 },
+  );
+});
 describe('custody v2 metadata', () => {
   it('authenticates every state, identity, reservation and intent field', async () => {
     const { root, record } = await make();

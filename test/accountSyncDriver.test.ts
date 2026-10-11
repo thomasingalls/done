@@ -205,6 +205,7 @@ it('outbound progress comes only from durable decisions and pending exact submis
   expect(await driveOutboundStep(ops, 'token', () => gate)).toEqual({
     kind: 'progress',
     acceptedThrough: 1,
+    acceptedNow: true,
   });
 });
 
@@ -300,7 +301,11 @@ it('400 generated deferred histories agree with an independent two-lane event mo
                 m.lanes.receive.fail === 0
               )
                 m.lanes.receive.at = Math.min(m.lanes.receive.at ?? m.time, m.time);
-              if (a.result === 'blocked' || a.result === 'error') {
+              if (a.result === 'error') {
+                l.fail = Math.min(6, l.fail + 1);
+                l.at = m.time + Math.min(30000, 1000 * 2 ** (l.fail - 1));
+                l.fast = l.dirty = false;
+              } else if (a.result === 'blocked') {
                 l.halt = true;
                 l.at = undefined;
                 l.fast = l.dirty = false;
@@ -313,7 +318,9 @@ it('400 generated deferred histories agree with an independent two-lane event mo
                   a.result === 'unknown'
                     ? Math.min(30000, 1000 * 2 ** (l.fail - 1))
                     : a.result === 'progress'
-                      ? 50
+                      ? n === 'receive'
+                        ? 0
+                        : 50
                       : n === 'receive'
                         ? 5000
                         : undefined;
@@ -563,9 +570,8 @@ it('remote hints coalesce during catch-up and retain backoff, evidence halts and
   for (let n = 0; n < 30; n++) f.scheduler.wake('remote');
   f.calls[1]!.finish('idle');
   await flush();
-  await f.tick(49);
-  expect(f.calls).toHaveLength(2);
-  await f.tick(1);
+  expect(f.calls).toHaveLength(2); // The next page still yields through a timer.
+  await f.tick(0);
   expect(f.calls[2]!.lane).toBe('receive');
   f.scheduler.wake('remote');
   f.calls[2]!.finish('unknown');
@@ -623,5 +629,149 @@ it('verified authority adoption rechecks a closed sender without clearing confli
     f.calls[3]!.finish('idle');
     await flush();
     await f.scheduler.dispose();
+  }
+});
+
+it('retries unexpected errors with capped backoff, but integrity errors require a lane-specific retry', async () => {
+  const { ContentError } = await import('../src/crdt/contentRecord');
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  const stop = new AbortController(),
+    attempts: number[] = [];
+  let corrupt = false,
+    repaired = false;
+  const s = createSyncScheduler({
+    signal: stop.signal,
+    gate: () => 'ready',
+    detach: () => {},
+    send: async () => ({ kind: 'idle', acceptedThrough: 0 }),
+    receive: async () => {
+      attempts.push(Date.now());
+      if (corrupt) throw new ContentError('repair-required', 'fixture');
+      if (!repaired) throw Error('fixture');
+      return { kind: 'idle', receivedThrough: 0 };
+    },
+  });
+  try {
+    s.wake('start');
+    await vi.advanceTimersByTimeAsync(31001);
+    expect(attempts).toEqual([1, 1001, 3001, 7001, 15001, 31001]);
+    expect(s.runtime.status.receive).toMatchObject({
+      phase: 'retrying',
+      reason: 'operation-failed',
+      issueSince: 1,
+      nextAttemptAt: 61001,
+    });
+    corrupt = true;
+    s.runtime.retry('receive');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(s.runtime.status.receive.reason).toBe('integrity');
+    const count = attempts.length;
+    s.wake('remote');
+    s.wake('online');
+    await vi.advanceTimersByTimeAsync(60000);
+    expect(attempts).toHaveLength(count);
+    corrupt = false;
+    repaired = true;
+    s.runtime.retry('send');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(attempts).toHaveLength(count);
+    s.runtime.retry('receive');
+    await vi.advanceTimersByTimeAsync(0);
+    expect(s.runtime.status.receive).toMatchObject({
+      phase: 'idle',
+      reason: null,
+      issueSince: null,
+      lastSuccessAt: Date.now(),
+    });
+  } finally {
+    await s.dispose();
+    vi.useRealTimers();
+  }
+});
+
+it('yields after every receive page and gives a due sender the next turn', async () => {
+  const f = fixture();
+  f.scheduler.wake('start');
+  await f.tick(0);
+  f.calls[0]!.finish('idle');
+  await flush();
+  await f.tick(0);
+  f.scheduler.wake('local');
+  await f.tick(50);
+  f.calls[1]!.finish('progress', 1);
+  await flush();
+  expect(f.calls).toHaveLength(2);
+  await f.tick(0);
+  expect(f.calls[2]!.lane).toBe('send');
+  f.calls[2]!.finish('idle');
+  await flush();
+  await f.tick(0);
+  expect(f.calls[3]!.lane).toBe('receive');
+  f.calls[3]!.finish('idle', 1);
+  await flush();
+  expect(f.maximum).toBe(1);
+  await f.scheduler.dispose();
+});
+
+it('does not classify temporary admission capacity/storage failures as corrupt evidence', async () => {
+  const { AdmissionError } = await import('../src/crdt/admissionQueue');
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  let attempts = 0;
+  const s = createSyncScheduler({
+    signal: new AbortController().signal,
+    gate: () => 'ready',
+    detach: () => {},
+    send: async () => ({ kind: 'idle', acceptedThrough: 0 }),
+    receive: async () => {
+      attempts++;
+      if (attempts <= 2)
+        throw new AdmissionError(attempts === 1 ? 'queue-full' : 'storage-failed', 'fixture');
+      return { kind: 'idle', receivedThrough: 0 };
+    },
+  });
+  try {
+    s.wake('start');
+    await vi.advanceTimersByTimeAsync(1001);
+    expect(attempts).toBe(2);
+    expect(s.runtime.status.receive).toMatchObject({
+      phase: 'retrying',
+      reason: 'operation-failed',
+    });
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(attempts).toBe(3);
+    expect(s.runtime.status.receive).toMatchObject({ phase: 'idle', reason: null });
+  } finally {
+    await s.dispose();
+    vi.useRealTimers();
+  }
+});
+
+it('reports a successful upload only after a newly retained acceptance, not local retry preparation', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  let accepted = false;
+  const s = createSyncScheduler({
+    signal: new AbortController().signal,
+    gate: () => 'ready',
+    detach: () => {},
+    send: async () => ({
+      kind: 'progress',
+      acceptedThrough: accepted ? 8 : 7,
+      ...(accepted ? { acceptedNow: true as const } : {}),
+    }),
+    receive: async () => ({ kind: 'idle', receivedThrough: 7 }),
+  });
+  try {
+    s.wake('start');
+    await vi.advanceTimersByTimeAsync(1);
+    expect(s.runtime.status.send.lastSuccessAt).toBeNull();
+    accepted = true;
+    await vi.advanceTimersByTimeAsync(49);
+    expect(s.runtime.status.send.lastSuccessAt).toBe(Date.now());
+  } finally {
+    await s.dispose();
+    vi.useRealTimers();
   }
 });
