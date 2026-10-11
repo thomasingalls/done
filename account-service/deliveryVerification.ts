@@ -1,3 +1,5 @@
+import type { DatabaseSync } from 'node:sqlite';
+import { createPublisherTips } from './publisherTips.ts';
 /** Bounded, core-owned reuse of cryptographic evidence only. No keys or commit authority. */
 const MAX_ENTRIES = 512,
   MAX_BYTES = 16 * 1024 * 1024;
@@ -12,7 +14,12 @@ function erase(value: unknown): void {
   if (value instanceof Uint8Array) value.fill(0);
   else if (value && typeof value === 'object') for (const v of Object.values(value)) erase(v);
 }
-export function createDeliveryVerification() {
+export function createDeliveryVerification(options?: {
+  db: DatabaseSync;
+  path: string;
+  signal: () => void;
+}) {
+  const tips = options && createPublisherTips(options.db, options.path, options.signal);
   const entries = new Map<
     string,
     { context: string; inputs: Uint8Array[]; value: unknown; size: number }
@@ -28,8 +35,14 @@ export function createDeliveryVerification() {
     }
   };
   return {
+    tips,
+    close() {
+      tips?.close();
+      this.clear();
+    },
     clear() {
       revision++;
+      tips?.invalidate();
       for (const slot of entries.keys()) remove(slot);
     },
     async check<T>(

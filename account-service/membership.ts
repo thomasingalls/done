@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 import { retainedRecoveryCheckpoint } from './recoveryStore.ts';
 import { parseRecoverySuccessor } from '../account-protocol/recoveryTransition.ts';
 import {
@@ -27,7 +29,6 @@ import {
   snapshotBytes,
   verifyCurrentWorkspaceAuthority,
   selectPublisher,
-  census,
   type Snapshot,
   type DeliveryIssuer,
 } from './delivery.ts';
@@ -59,6 +60,7 @@ export async function admitMembership(
   now: () => number,
   hook: Hook,
   diagnostics?: DiagnosticSink,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return no('unavailable');
   let request;
@@ -188,7 +190,7 @@ export async function admitMembership(
           continue;
         }
         const publisher = selectPublisher(auth, source.publisher);
-        const ledger = await census(source, publisher);
+        const ledger = await verifiedCensus(source, publisher, reuse);
         if (current.roster.some((m) => m.id === id && m.state === 'certified'))
           ledgers.push({ publisher, ledger, raw });
       }

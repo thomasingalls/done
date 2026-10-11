@@ -1,0 +1,15 @@
+(node:97828) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97828) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:97828) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history maintenance preserves admitted ancestry across rotation and rechecks eligible admitters (1915.850417ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ retained generation-one reader adopts admitted history across interrupted save and preserves suffix receipts (5002.320625ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7336.654958

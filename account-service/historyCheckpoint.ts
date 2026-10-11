@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { LedgerIntegrityError } from './publisherTips.ts';
 import {
   isPrunedCheckpoint,
   verifyPrunedCheckpoint,
@@ -40,6 +42,10 @@ import {
 } from '../account-protocol/admissionHistory.ts';
 import { decodePositionResponse } from '../account-protocol/positionDecision.ts';
 import {
+  read,
+  unchanged,
+  verifiedCensus,
+  verifyServed,
   snapshot,
   snapshotBytes,
   selectPublisher,
@@ -124,6 +130,7 @@ export async function exchangeHistoryCheckpoint(
   issuer: HistoryCheckpointIssuer,
   now: () => number,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return no('unavailable');
   let r;
@@ -140,8 +147,11 @@ export async function exchangeHistoryCheckpoint(
         : r.action === 'discard'
           ? (r.payload as string)
           : null;
+  const fast = r.action === 'read' || r.action === 'source' ? reuse : undefined;
+  // A pruning commit replaces old wire bytes under the same authority. Never reuse through it.
+  if (!fast) reuse?.clear();
   const capture = () => {
-    const original = snapshot(db, r.workspaceId);
+    const original = fast?.tips ? fast.tips.capture(r.workspaceId) : snapshot(db, r.workspaceId);
     if (!original) return null;
     const publishers = db
       .prepare(
@@ -149,7 +159,12 @@ export async function exchangeHistoryCheckpoint(
       )
       .all(original.account.id, original.account.id, HISTORY_HEAD_LIMIT + 1);
     if (publishers.length > HISTORY_HEAD_LIMIT) throw Error('Too many history publishers');
-    const streams = publishers.map((v) => snapshot(db, r.workspaceId, String(v.credential_id))!);
+    const streams = publishers.map(
+      (v) =>
+        (fast?.tips
+          ? fast.tips.capture(r.workspaceId, String(v.credential_id))
+          : snapshot(db, r.workspaceId, String(v.credential_id)))!,
+    );
     const raw = db
       .prepare('SELECT value FROM history_checkpoint_catalog WHERE workspace_id=?')
       .get(r.workspaceId)?.value;
@@ -203,8 +218,8 @@ export async function exchangeHistoryCheckpoint(
     c
       ? JSON.stringify({
           ...c,
-          original: snapshotBytes(c.original),
-          streams: c.streams.map(snapshotBytes),
+          original: snapshotBytes(fast?.tips ? { ...c.original, rows: [] } : c.original),
+          streams: c.streams.map((s) => snapshotBytes(fast?.tips ? { ...s, rows: [] } : s)),
         })
       : 'null';
   for (let retry = 0; retry < 4; retry++) {
@@ -344,6 +359,8 @@ export async function exchangeHistoryCheckpoint(
         before.streams.some((s) => !eligible.some((h) => h.credentialId === s.publisher))
       )
         throw Error('Unknown retained publisher');
+      const cutSnapshots: Snapshot[] = [];
+      const publisherSnapshots = new Map<string, Snapshot>();
       const ledgers = new Map<string, Awaited<ReturnType<typeof census>>>();
       const currentHeads = [];
       for (const head of eligible) {
@@ -353,16 +370,33 @@ export async function exchangeHistoryCheckpoint(
           currentHeads.push({ ...head });
           continue;
         }
-        const s =
+        let s =
           head.credentialId === auth.request.candidate.signer
             ? before.original
-            : (before.streams.find((s) => s.publisher === head.credentialId) ?? {
-                ...before.original,
-                publisher: head.credentialId,
-                publisherWitness: null,
-                rows: [],
-              });
-        const ledger = await census(s, selectPublisher(auth, head.credentialId));
+            : before.streams.find((s) => s.publisher === head.credentialId);
+        if (!s && fast?.tips) {
+          // A certified device may never have published. Give that empty stream a real count,
+          // witness and transaction capture; a fabricated Snapshot has no reusable evidence.
+          const empty = read(db, r.workspaceId, head.credentialId, fast);
+          const authorityBytes = (value: Snapshot) =>
+            snapshotBytes({
+              ...value,
+              rows: [],
+              publisher: undefined,
+              publisherWitness: undefined,
+            });
+          if (!empty || authorityBytes(empty) !== authorityBytes(before.original))
+            throw Error('Empty publisher authority changed');
+          s = empty;
+        }
+        s ??= {
+          ...before.original,
+          publisher: head.credentialId,
+          publisherWitness: null,
+          rows: [],
+        };
+        publisherSnapshots.set(head.credentialId, s);
+        const ledger = await verifiedCensus(s, selectPublisher(auth, head.credentialId), reuse);
         ledgers.set(head.credentialId, ledger);
         currentHeads.push({
           credentialId: head.credentialId,
@@ -370,18 +404,39 @@ export async function exchangeHistoryCheckpoint(
           link: ledger.previous,
         });
       }
-      const verifyCuts = (c: HistoryCheckpoint) => {
+      const verifyCuts = async (c: HistoryCheckpoint) => {
         for (const h of c.heads) {
           const ledger = ledgers.get(h.credentialId);
           if (h.position === 0) continue;
-          const accepted = ledger?.accepted.get(h.position),
-            proof = accepted ? decodePositionResponse(accepted) : null;
+          let accepted = ledger?.accepted.get(h.position);
+          if (fast?.tips) {
+            const source = publisherSnapshots.get(h.credentialId)!;
+            const cut = read(db, r.workspaceId, h.credentialId, fast, {
+              after: h.position - 1,
+              limit: 1,
+            });
+            if (
+              !cut ||
+              snapshotBytes({ ...cut, rows: [] }) !== snapshotBytes({ ...source, rows: [] })
+            )
+              throw Error('Checkpoint ledger changed');
+            cutSnapshots.push(cut);
+            const rows = await verifyServed(
+              cut,
+              selectPublisher(auth, h.credentialId),
+              h.position - 1,
+              fast,
+            );
+            accepted = rows[0] ? new Uint8Array(rows[0].response) : undefined;
+          }
+          const proof = accepted ? decodePositionResponse(accepted) : null;
           if (!proof || proof.kind !== 'accepted' || proof.head.link !== h.link)
             throw Error('Checkpoint cut is not an accepted prefix');
         }
       };
-      // Admitted snapshots never conceal decision-ledger damage, including after ciphertext pruning.
-      for (const item of verified.values()) verifyCuts(item.checkpoint);
+      // Snapshot claims must pass the ledger fence and fresh cut checks, including compact evidence.
+      // Unread old rows in a warm prefix follow the asynchronous audit policy.
+      for (const item of verified.values()) await verifyCuts(item.checkpoint);
       if (r.action === 'source' && !before.handoffs.source) return no('source-unavailable');
       let selected =
         r.action === 'read' && r.payload !== 'catalog'
@@ -405,7 +460,7 @@ export async function exchangeHistoryCheckpoint(
           const checkpoint = await verifyHistoryCheckpoint(r.payload, membership);
           if (checkpoint.manifest.producer !== r.credentialId) return no('invalid-proof');
           await verifyHistoryCheckpointParent(checkpoint, latest?.checkpoint ?? null);
-          verifyCuts(checkpoint);
+          await verifyCuts(checkpoint);
           if (!same(checkpoint.sources, before.handoffs.sources)) return no('sources-changed');
           write = { checkpoint, admission: null, hash: requestedHash! };
           selected = write;
@@ -430,7 +485,7 @@ export async function exchangeHistoryCheckpoint(
             membership,
           );
           if (admission.admittingCredential !== r.credentialId) return no('invalid-proof');
-          verifyCuts(old.checkpoint);
+          await verifyCuts(old.checkpoint);
           if (!same(old.checkpoint.sources, before.handoffs.sources)) return no('sources-changed');
           await verifyHistoryCheckpointParent(old.checkpoint, latest?.checkpoint ?? null);
           write = { checkpoint: old.checkpoint, admission, hash: requestedHash! };
@@ -473,7 +528,7 @@ export async function exchangeHistoryCheckpoint(
           const old = await get(item.hash, false);
           if (!old) continue; // Already compacted receipts were authenticated by get.
           if (!old.admission) throw Error('Unadmitted history cannot be pruned');
-          verifyCuts(old.checkpoint);
+          await verifyCuts(old.checkpoint);
           const receipt = await preparePrunedCheckpoint(
             old.checkpoint,
             old.admission,
@@ -539,7 +594,11 @@ export async function exchangeHistoryCheckpoint(
       });
       hook('after-verify', 'history-checkpoint');
       db.exec('BEGIN IMMEDIATE');
-      if (captureBytes(capture()) !== captureBytes(before)) {
+      if (
+        (fast?.tips &&
+          [...publisherSnapshots.values(), ...cutSnapshots].some((s) => !unchanged(db, s, fast))) ||
+        captureBytes(capture()) !== captureBytes(before)
+      ) {
         db.exec('ROLLBACK');
         continue;
       }
@@ -601,8 +660,11 @@ export async function exchangeHistoryCheckpoint(
       return { ok: true as const, page };
     } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      if (cause instanceof LedgerIntegrityError) return no('ledger-integrity');
       rethrowAuthorization(cause);
       return no('unavailable');
+    } finally {
+      if (!fast) reuse?.clear();
     }
   }
   return no('state-changed');

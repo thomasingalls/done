@@ -16,7 +16,10 @@ const cycle = new BackupCycle(config, source, new B2Store(config, backupNamespac
 let stopped = false;
 const report = () => parentPort!.postMessage(cycle.health());
 const run = () => {
-  if (!stopped) void cycle.tick().then(report);
+  if (!stopped) {
+    parentPort!.postMessage({ kind: 'backup-cycle' });
+    void cycle.tick().then(report);
+  }
 };
 const ticks = setInterval(run, 30000),
   health = setInterval(report, 5000);

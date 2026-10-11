@@ -4448,3 +4448,23 @@ migration, interruption/retry and preserved-authority checks before deployment. 
 expiry is an operator command after seven days, requiring a newer verified routine recovery set;
 unresolved or unverifiable copies remain held. Application-image updates and quarantined disaster
 restore retain their separate rules. [Procedure and scope](./public-maintenance.md).
+
+### 2026-10-11 — Verified service publisher tips with asynchronous integrity audits
+
+The operator approves replacing repeated full delivery-ledger scans with bounded verified tips,
+subject to a fresh witness/count check on every request, fresh verification of served rows, and
+new signatures derived only from verified chain state. Fully verify first use after startup and
+invalidate on authority or external-connection changes. Run full audits off the request path,
+triggered by appended-row cadence and backup cycles, rather than an inline five-minute stall.
+On mismatch quarantine the publisher, emit fixed `ledger-integrity`, signal the operator and
+attempt no repair. Late audits may not restore invalidated/closed state.
+
+An old unread row changed without altering witness/count or SQLite change tracking may remain
+undetected until audit. Signing an extension of the previously verified prefix before detection
+does not authenticate the altered bytes; it also cannot promise that all latent corruption stops
+new signing immediately. Indexed COUNT avoids loading blobs but is not literally constant-time.
+The [implementation/measurement protocol](./performance-experiments/2026-10-11-service-verified-tips/plan.md)
+records these limits. The [implemented service slice and focused evidence](./performance-experiments/2026-10-11-service-verified-tips/README.md)
+retain the full reference for exceptional lifecycle/retry paths and audit public authority in a
+separate read-only worker. This is not a release-qualification result or a deployment receipt;
+release validation remains paused.

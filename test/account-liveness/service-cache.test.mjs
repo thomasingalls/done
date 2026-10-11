@@ -138,6 +138,12 @@ test('warm service read matches cold verification, reduces crypto, and rechecks 
   mutate(x, (db) =>
     db.prepare('UPDATE delivery_decisions SET digest=? WHERE ordinal=1').run(first.digest),
   );
+  assert.equal(
+    (await read(x, q)).reason,
+    'ledger-integrity',
+    'quarantine survives byte restoration',
+  );
+  x.f.restart(); // Operator restoration is checked by a new full census.
   assert.deepEqual(await read(x, q), expected);
   mutate(x, (db) => db.exec("UPDATE accounts SET state='pending'"));
   assert.equal((await read(x, q)).kind, 'unknown');

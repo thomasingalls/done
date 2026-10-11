@@ -1,0 +1,78 @@
+(node:96577) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96577) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:96577) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ pruning removes only ciphertext covered by both retained snapshots and preserves exact acceptance retries (249.677625ms)
+✔ pruning resumes atomically after before-commit and restart (167.237459ms)
+✔ pruning resumes atomically after after-commit and restart (179.550792ms)
+✖ pruning refuses a stale boundary, and modified compact evidence cannot conceal ledger damage (154.051875ms)
+(node:96577) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ older snapshot ciphertext becomes an authenticated completion receipt without breaking lost-reply retries (240.177958ms)
+(node:96577) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ pruning keeps refusal and parent evidence while accepted retries remain closed over their original decision (140.621958ms)
+✔ revoked commit authorization refuses pruning before either ciphertext carrier changes (113.707083ms)
+(node:96578) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:96578) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:96578) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix (197.367625ms)
+✔ publish resumes exact bytes after before-commit interruption and restart (61.602333ms)
+✔ publish resumes exact bytes after after-commit interruption and restart (68.047959ms)
+✔ admit resumes exact bytes after before-commit interruption and restart (82.379917ms)
+✔ admit resumes exact bytes after after-commit interruption and restart (106.486ms)
+✔ false accepted cuts and catalog/record tampering refuse without becoming a baseline (88.525833ms)
+✔ competing proposals do not overwrite, and stale proposals can be discarded after an epoch change (160.207708ms)
+✔ authority changes during verification and revoked authorization at commit cannot publish (62.286291ms)
+✔ schema 24 requires an explicit offline upgrade and preserves account rows (56.302ms)
+✖ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (56.138208ms)
+✔ catalog reads authenticate the current pointers without downloading checkpoint content (95.929541ms)
+✔ schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written (46.100208ms)
+(node:96579) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cold source preserves accepted removed-device edits, deletions and writing present only in a handoff (406.223833ms)
+✔ missing prefixes, false cuts, unresolved dependencies and missing keys never produce a source (1039.910208ms)
+✔ handoff substitution and owner cancellation refuse before returning plaintext (290.841875ms)
+✔ a single-device account replays only the suffix after its admitted epoch-one checkpoint (99.330458ms)
+✔ a certified replacement uses exact history and handoff coverage with only its current key (502.448042ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 22
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2798.530167
+
+✖ failing tests:
+
+test at test/account-history/pruning.test.mjs:85:1
+✖ pruning refuses a stale boundary, and modified compact evidence cannot conceal ledger damage (154.051875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unknown'
+  - 'decision'
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-history/pruning.test.mjs:114:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unknown',
+    expected: 'decision',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-history/service.test.mjs:181:1
+✖ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (56.138208ms)
+  Error: listen EPERM: operation not permitted 127.0.0.1
+      at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+      at listenInCluster (node:net:2499:12)
+      at node:net:2728:7
+      at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+    code: 'EPERM',
+    errno: -1,
+    syscall: 'listen',
+    address: '127.0.0.1'
+  }

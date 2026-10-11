@@ -121,6 +121,45 @@ restoration of the entire account/authority state. Unrewound, unbranched service
 The null genesis sentinel is not evidence against such coordinated rollback. Full scans and indefinite
 retention deliberately leave backlog performance and pruning to later work.
 
+## Current verified-tip integrity policy (2026-10-11)
+
+The operator has approved the [verified-tip design and measurement protocol](./performance-experiments/2026-10-11-service-verified-tips/plan.md).
+It supersedes the per-request full-census/fresh-BLOB comparison policy above for the current
+service delivery, discovery and history-read paths. First use/invalidation still performs a full verification. Warm
+operations compare the stored witness and indexed row count, verify new suffixes and freshly
+verify each served entry. New signatures extend only authenticated cached chain state.
+
+External-connection writes and authority changes invalidate reuse. Full audits run off the request
+path after 256 new rows and on backup cycles. Mismatches refuse the affected publisher with fixed
+`ledger-integrity`, signal the operator and attempt no repair. Cache lifetime and asynchronous
+audits must not resurrect invalidated evidence. The row-count query may scan an index; it does
+not load historical ciphertext and is not a claim of constant-time SQLite counting.
+
+Unread old-byte changes that preserve count/witness and evade SQLite change tracking wait for an
+audit. Consequently the earlier blanket statement that altered rows get no new signatures becomes:
+**detected** alteration gets no new signatures; undetected alteration cannot change the verified
+prefix used to sign an extension. Coordinated rollback remains outside this mechanism. This
+implementation is covered by the [focused tests and measurements](./performance-experiments/2026-10-11-service-verified-tips/README.md).
+
+The owner retains at most 128 publisher tips with a 16 MiB accounting ceiling. Each contains only
+chain scalars, witness, service pin and a SHA-256 digest of the exact authority snapshot; no old
+submission, response, checkpoint content or process-local membership object is retained. Eviction
+requires a full census at next use. An unfinished refusal tail and historical decision retries use
+the full verifier, preserving issued-parent/closure checks without retaining unbounded maps.
+
+Audits use one read-only SQLite worker snapshot at a time. The worker explicitly enables the
+same membership readers and reconstructs verified public authority in its own realm. Neither
+signing issuer nor operator wrapping key is supplied. Completion checks current authority in a
+short read transaction; stale results cannot reinstate evidence. Backup ticks request/coalesce
+audits independently of upload success; they do not certify that each uploaded snapshot is free
+of latent semantic corruption.
+
+Quarantine survives cache invalidation and byte restoration until owner restart; the new owner
+must perform a full census. No automatic repair occurs. Other lifecycle paths keep their complete
+census and honor the same quarantine. Operator diagnostics always use `ledger-integrity`; ordinary
+delivery and history-read responses use that unsigned reason. Older closed lifecycle refusal
+envelopes retain their generic unavailable/storage refusal. No refusal grants client remint authority.
+
 ## Evidence and following boundary
 
 Independent Node/OpenSSL fixtures construct and verify envelope/wrapper/response bytes; 80 generated

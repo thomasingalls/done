@@ -6310,6 +6310,19 @@ test('history maintenance preserves admitted ancestry across rotation and rechec
     1,
     'removed accepted ciphertext remains retained',
   );
+  // Worker verification must re-establish the process-local membership brands, including
+  // historical publishers across rotation; copying a verified object across realms is not proof.
+  x.f.core.auditDelivery();
+  const deadline = Date.now() + 8000;
+  while (
+    x.f.core.deliveryVerificationStatus.auditActive ||
+    x.f.core.deliveryVerificationStatus.auditsQueued
+  ) {
+    assert.ok(Date.now() < deadline, 'membership audit did not finish');
+    await new Promise((resolve) => setTimeout(resolve, 20));
+  }
+  assert.equal(x.f.core.deliveryVerificationStatus.quarantined, 0);
+  assert.ok(x.f.core.deliveryVerificationStatus.auditsCompleted >= 1);
 });
 
 test('retained generation-one reader adopts admitted history across interrupted save and preserves suffix receipts', async (t) => {

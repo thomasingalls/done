@@ -1,0 +1,355 @@
+{
+  "membership-baseline": [
+    {
+      "positions": 0,
+      "cold-read": {
+        "medianMs": 6.931,
+        "samples": 1,
+        "minMs": 6.931,
+        "maxMs": 6.931
+      },
+      "warm-read": {
+        "medianMs": 6.304,
+        "samples": 5,
+        "minMs": 5.959,
+        "maxMs": 6.823
+      },
+      "submit": {
+        "medianMs": 9.139,
+        "samples": 5,
+        "minMs": 8.603,
+        "maxMs": 9.23
+      },
+      "catalog": {
+        "medianMs": 14.456,
+        "samples": 5,
+        "minMs": 13.909,
+        "maxMs": 16.418
+      }
+    },
+    {
+      "positions": 128,
+      "cold-read": {
+        "medianMs": 122.517,
+        "samples": 1,
+        "minMs": 122.517,
+        "maxMs": 122.517
+      },
+      "warm-read": {
+        "medianMs": 25.14,
+        "samples": 5,
+        "minMs": 21.443,
+        "maxMs": 27.603
+      },
+      "submit": {
+        "medianMs": 23.958,
+        "samples": 5,
+        "minMs": 23.645,
+        "maxMs": 24.09
+      },
+      "catalog": {
+        "medianMs": 112.694,
+        "samples": 5,
+        "minMs": 109.73,
+        "maxMs": 115.153
+      }
+    },
+    {
+      "positions": 512,
+      "cold-read": {
+        "medianMs": 423.749,
+        "samples": 1,
+        "minMs": 423.749,
+        "maxMs": 423.749
+      },
+      "warm-read": {
+        "medianMs": 66.024,
+        "samples": 5,
+        "minMs": 64.742,
+        "maxMs": 92.004
+      },
+      "submit": {
+        "medianMs": 413.342,
+        "samples": 5,
+        "minMs": 68.22,
+        "maxMs": 446.221
+      },
+      "catalog": {
+        "medianMs": 396.626,
+        "samples": 5,
+        "minMs": 392.73,
+        "maxMs": 414.482
+      }
+    },
+    {
+      "positions": 1024,
+      "cold-read": {
+        "medianMs": 813.149,
+        "samples": 1,
+        "minMs": 813.149,
+        "maxMs": 813.149
+      },
+      "warm-read": {
+        "medianMs": 813.789,
+        "samples": 5,
+        "minMs": 809.875,
+        "maxMs": 836.954
+      },
+      "submit": {
+        "medianMs": 837.209,
+        "samples": 5,
+        "minMs": 812.012,
+        "maxMs": 878.951
+      },
+      "catalog": {
+        "medianMs": 775.782,
+        "samples": 5,
+        "minMs": 766.42,
+        "maxMs": 797.575
+      }
+    },
+    {
+      "positions": 3072,
+      "cold-read": {
+        "medianMs": 2417.164,
+        "samples": 1,
+        "minMs": 2417.164,
+        "maxMs": 2417.164
+      },
+      "warm-read": {
+        "medianMs": 2409.439,
+        "samples": 5,
+        "minMs": 2383.17,
+        "maxMs": 2641.779
+      },
+      "submit": {
+        "medianMs": 2397.445,
+        "samples": 5,
+        "minMs": 2372.735,
+        "maxMs": 2415.423
+      },
+      "catalog": {
+        "medianMs": 2286.958,
+        "samples": 5,
+        "minMs": 2271.684,
+        "maxMs": 2321.135
+      }
+    }
+  ],
+  "final-candidate": [
+    {
+      "positions": 0,
+      "cold-read": {
+        "medianMs": 6.33,
+        "samples": 1,
+        "minMs": 6.33,
+        "maxMs": 6.33
+      },
+      "warm-read": {
+        "medianMs": 4.854,
+        "samples": 5,
+        "minMs": 4.739,
+        "maxMs": 5.639
+      },
+      "submit": {
+        "medianMs": 6.795,
+        "samples": 5,
+        "minMs": 5.912,
+        "maxMs": 6.822
+      },
+      "catalog": {
+        "medianMs": 8.432,
+        "samples": 5,
+        "minMs": 7.715,
+        "maxMs": 10.248
+      },
+      "counts": {
+        "depth": 0,
+        "kind": "verification-counts",
+        "publishers": 1,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 1650,
+        "verifiedRows": 5,
+        "servedChecks": 0,
+        "fullCensuses": 1,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      }
+    },
+    {
+      "positions": 128,
+      "cold-read": {
+        "medianMs": 87.04,
+        "samples": 1,
+        "minMs": 87.04,
+        "maxMs": 87.04
+      },
+      "warm-read": {
+        "medianMs": 6.624,
+        "samples": 5,
+        "minMs": 6.004,
+        "maxMs": 6.99
+      },
+      "submit": {
+        "medianMs": 6.636,
+        "samples": 5,
+        "minMs": 6.088,
+        "maxMs": 6.894
+      },
+      "catalog": {
+        "medianMs": 8.622,
+        "samples": 5,
+        "minMs": 8.316,
+        "maxMs": 9.013
+      },
+      "counts": {
+        "depth": 128,
+        "kind": "verification-counts",
+        "publishers": 1,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 1666,
+        "verifiedRows": 133,
+        "servedChecks": 12,
+        "fullCensuses": 1,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      }
+    },
+    {
+      "positions": 512,
+      "cold-read": {
+        "medianMs": 312.821,
+        "samples": 1,
+        "minMs": 312.821,
+        "maxMs": 312.821
+      },
+      "warm-read": {
+        "medianMs": 6.04,
+        "samples": 5,
+        "minMs": 5.822,
+        "maxMs": 6.682
+      },
+      "submit": {
+        "medianMs": 6.216,
+        "samples": 5,
+        "minMs": 5.802,
+        "maxMs": 6.672
+      },
+      "catalog": {
+        "medianMs": 8.414,
+        "samples": 5,
+        "minMs": 8.015,
+        "maxMs": 9.343
+      },
+      "counts": {
+        "depth": 512,
+        "kind": "verification-counts",
+        "publishers": 1,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 1666,
+        "verifiedRows": 517,
+        "servedChecks": 12,
+        "fullCensuses": 1,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      }
+    },
+    {
+      "positions": 1024,
+      "cold-read": {
+        "medianMs": 555.543,
+        "samples": 1,
+        "minMs": 555.543,
+        "maxMs": 555.543
+      },
+      "warm-read": {
+        "medianMs": 5.622,
+        "samples": 5,
+        "minMs": 5.22,
+        "maxMs": 8.834
+      },
+      "submit": {
+        "medianMs": 6.185,
+        "samples": 5,
+        "minMs": 5.778,
+        "maxMs": 6.39
+      },
+      "catalog": {
+        "medianMs": 8.869,
+        "samples": 5,
+        "minMs": 7.76,
+        "maxMs": 9.998
+      },
+      "counts": {
+        "depth": 1024,
+        "kind": "verification-counts",
+        "publishers": 1,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 1674,
+        "verifiedRows": 1029,
+        "servedChecks": 12,
+        "fullCensuses": 1,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      }
+    },
+    {
+      "positions": 3072,
+      "cold-read": {
+        "medianMs": 1688.715,
+        "samples": 1,
+        "minMs": 1688.715,
+        "maxMs": 1688.715
+      },
+      "warm-read": {
+        "medianMs": 6.07,
+        "samples": 5,
+        "minMs": 5.755,
+        "maxMs": 7.403
+      },
+      "submit": {
+        "medianMs": 5.834,
+        "samples": 5,
+        "minMs": 5.439,
+        "maxMs": 6.148
+      },
+      "catalog": {
+        "medianMs": 8.054,
+        "samples": 5,
+        "minMs": 7.514,
+        "maxMs": 8.424
+      },
+      "counts": {
+        "depth": 3072,
+        "kind": "verification-counts",
+        "publishers": 1,
+        "quarantined": 0,
+        "auditActive": false,
+        "auditsQueued": 0,
+        "retainedBytes": 1674,
+        "verifiedRows": 3077,
+        "servedChecks": 12,
+        "fullCensuses": 1,
+        "auditsStarted": 0,
+        "auditsCompleted": 0
+      }
+    }
+  ],
+  "audit": {
+    "durationMs": 1683.28,
+    "requests": 102,
+    "medianRequestMs": 5.726,
+    "p95RequestMs": 6.316,
+    "maxRequestMs": 10.151,
+    "completed": 1,
+    "quarantined": 0
+  }
+}

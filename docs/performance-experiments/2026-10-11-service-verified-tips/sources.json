@@ -1,0 +1,153 @@
+{
+  "baseline": "39914c69",
+  "baseRuntime": "c15ced0e",
+  "candidate": "working sources in this commit",
+  "node": "v26.11.1",
+  "files": [
+    {
+      "path": "account-protocol/diagnostics.ts",
+      "bytes": 4819,
+      "sha256": "f93658a96adad49a0f8dd4cc7ad64ffef2712f3c4f1bbaeb0c1ee2029e8cab15"
+    },
+    {
+      "path": "account-protocol/recovery.ts",
+      "bytes": 5266,
+      "sha256": "6b43ecc35b2718ec478ef52024ed3a3792724b787109ef5dca79e1c30d80690d"
+    },
+    {
+      "path": "account-service/backup/owner.ts",
+      "bytes": 1343,
+      "sha256": "04c7046483ccee4f1b6443868269c70291d5a0add2dfa5d8c2a881b3627023d5"
+    },
+    {
+      "path": "account-service/backup/worker.ts",
+      "bytes": 1505,
+      "sha256": "b04dc55a439ee5516b052a692d68059e63666e5d73ec579fdd437a576d3fc2b5"
+    },
+    {
+      "path": "account-service/contentTransfer.ts",
+      "bytes": 7523,
+      "sha256": "93abda74289df2a7f99c3ecc5854fcaa5368171e6dfc9c5ee46fc246bc89be77"
+    },
+    {
+      "path": "account-service/core.ts",
+      "bytes": 65979,
+      "sha256": "a7d3c6fa206ca5710f6f94225f3d905ce92298054bf31ebff8179cf543b90e9c"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "bytes": 50180,
+      "sha256": "550a7149a0e76c9f3ec57ec7264b8d5292fa5f797e70c0793f383d19fae5c206"
+    },
+    {
+      "path": "account-service/deliveryVerification.ts",
+      "bytes": 3088,
+      "sha256": "c273ebe4887f7dddcd104fd820aa564d80cc8be7388712f5d4cd526c5062456e"
+    },
+    {
+      "path": "account-service/discovery.ts",
+      "bytes": 4163,
+      "sha256": "8261c3194034a5275bce6e91aebbec5c1b70989cf8c898429d0dcf7fd0a09631"
+    },
+    {
+      "path": "account-service/historyCheckpoint.ts",
+      "bytes": 27790,
+      "sha256": "116427a17ba1a4ff7d15e5faf6905d4368c22cbb00e3130752db1830ed905318"
+    },
+    {
+      "path": "account-service/lostDeviceRecovery.ts",
+      "bytes": 38959,
+      "sha256": "e0df1bd7af6e02fe350b2517db143e813d64d570fa67dffc48903b477b4661fd"
+    },
+    {
+      "path": "account-service/membership.ts",
+      "bytes": 14339,
+      "sha256": "7fc7441d0e72b6cf2e2a41e59c40824a07f2a7a69459e2ecfe3fa0fb38e9ac9b"
+    },
+    {
+      "path": "account-service/membershipCancellation.ts",
+      "bytes": 10072,
+      "sha256": "5cf9d630c95544271a4ecdbe5c6264f8cc09f6c8ae1d0aa40776c8418051a61d"
+    },
+    {
+      "path": "account-service/membershipCheckpoint.ts",
+      "bytes": 4017,
+      "sha256": "50285b60fac49054690cb6c3d009e6f196d73cf1a3109e3fd7598fe167ea5064"
+    },
+    {
+      "path": "account-service/membershipLocator.ts",
+      "bytes": 7993,
+      "sha256": "6d58d703d71dbce07132bc96f06bb9cf9805fa2eceaf6f6a0fbac483ef78af82"
+    },
+    {
+      "path": "account-service/membershipTransfer.ts",
+      "bytes": 13104,
+      "sha256": "67af2cef80a544e3eb5681640d268e9cd13015cdd803a0cf3011625050d678e2"
+    },
+    {
+      "path": "account-service/public-runtime.ts",
+      "bytes": 1643,
+      "sha256": "64dd92b6713bc3f9f7d2278f7a417e886e7ff43d5f1d3bf7acd4fc6da7f7d1cc"
+    },
+    {
+      "path": "account-service/publisherAudit.worker.ts",
+      "bytes": 1375,
+      "sha256": "7ec5a73b1ccc2d5e19ed2da8fcd0fe8e6e11078d5bf2c3597f54586b8ad3820c"
+    },
+    {
+      "path": "account-service/publisherTips.ts",
+      "bytes": 12619,
+      "sha256": "b1fb4841dd5f7b24286753b7f638353972e96bea5f3c3363abaed24abb815a3a"
+    },
+    {
+      "path": "account-service/removalDiscovery.ts",
+      "bytes": 4603,
+      "sha256": "c01fa9ae7280a72a4624396d5bafef519aa67199148b9ddeadbe0fadff0db464"
+    },
+    {
+      "path": "account-service/removalPreparation.ts",
+      "bytes": 5946,
+      "sha256": "a3e9cbc05da1c3709dfd8297e47e14ab79d2a24f4fb4e567359f8ba45c3de28b"
+    },
+    {
+      "path": "account-service/rotation.ts",
+      "bytes": 9360,
+      "sha256": "148c74cb7d155829c0ab72ecb67a7d0a75649f1d6af2d458738eafd0ec5f39ed"
+    },
+    {
+      "path": "account-service/successor.ts",
+      "bytes": 9045,
+      "sha256": "3d56a877a34e16573044ba5f940bf074875e2e5243e2e5b9c5f367dadcede13b"
+    },
+    {
+      "path": "scripts/performance/service-verified-tips.mjs",
+      "bytes": 6203,
+      "sha256": "49fcfae807e50ed409325d139bc8b1c97de5a05509213743afa0162a713641b1"
+    },
+    {
+      "path": "test/account-ceremony/content-transfer.test.mjs",
+      "bytes": 248083,
+      "sha256": "d74af5bc2326e88f0e7b36024518ce90925373e494b221f6c14c5d7bf77c52b6"
+    },
+    {
+      "path": "test/account-history/pruning.test.mjs",
+      "bytes": 9482,
+      "sha256": "e3ce556e9fe199d064d855d779c0842e56e5c72dd36c5be58f17be8d5f74a70b"
+    },
+    {
+      "path": "test/account-history/service.test.mjs",
+      "bytes": 14686,
+      "sha256": "8eedbe27286bddb9def7096b8ff0484093d07e34146580e0a9d1a9138f6b08e8"
+    },
+    {
+      "path": "test/account-liveness/service-cache.test.mjs",
+      "bytes": 5978,
+      "sha256": "7a0138cb9954339b08b83530acb26c4f86c3aaecf92fb97274844a5656a9eea0"
+    },
+    {
+      "path": "test/account-service-delivery/publisher-tips.test.mjs",
+      "bytes": 9225,
+      "sha256": "99889890b56e2fb1870a62ac492aa30e07add8acc9565804ca2e7d36fa6845ab"
+    }
+  ]
+}

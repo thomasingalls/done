@@ -19,7 +19,9 @@ export function openPublicAccountService(options: PublicServiceOptions) {
       notifications,
     );
     const backup = options.backup
-      ? startBackupOwner(options.directory, state.pin, options.backup)
+      ? startBackupOwner(options.directory, state.pin, options.backup, () =>
+          state.core.auditDelivery(),
+        )
       : undefined;
     const lifetime = ownAccountRequests(
       dispatch,

@@ -1,3 +1,4 @@
+import { LedgerIntegrityError } from './publisherTips.ts';
 import { rethrowAuthorization } from './authorization.ts';
 /** Private signed locator. No ciphertext, wrapping key or publication capability is returned. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -11,11 +12,10 @@ import {
   type AuthorityDiscoveryResponse,
 } from '../account-protocol/successor.ts';
 import {
+  unchanged,
+  verifiedCensus,
   read,
-  snapshot,
-  snapshotBytes,
   verifyWorkspaceAuthority,
-  census,
   type DeliveryIssuer,
 } from './delivery.ts';
 import type { DeliveryVerification } from './deliveryVerification.ts';
@@ -34,7 +34,12 @@ export type DiscoveryResult =
   | AuthorityDiscoveryResponse
   | {
       ok: false;
-      refusal: 'invalid-request' | 'unavailable' | 'state-changed' | 'storage-unavailable';
+      refusal:
+        | 'ledger-integrity'
+        | 'invalid-request'
+        | 'unavailable'
+        | 'state-changed'
+        | 'storage-unavailable';
     };
 const refused = (
   refusal: Exclude<DiscoveryResult, AuthorityDiscoveryResponse>['refusal'],
@@ -58,7 +63,7 @@ export async function discoverAuthority(
   for (let retry = 0; retry < 4; retry++) {
     let phase: 'storage' | 'verify' | 'response' = 'storage';
     try {
-      const before = read(db, request.workspaceId);
+      const before = read(db, request.workspaceId, undefined, reuse);
       if (!before) return refused('unavailable');
       phase = 'verify';
       const auth = await verifyWorkspaceAuthority(before, issuer),
@@ -67,7 +72,7 @@ export async function discoverAuthority(
       if (auth.certificationSuccessor) return refused('unavailable');
       await verifyDiscoveryRequest(request, base, auth.successor, now());
       // A signed pointer alone is insufficient: preserve the same complete-history interlock as reads.
-      await census(before, auth, reuse);
+      await verifiedCensus(before, auth, reuse);
       hook('after-verify', 'discover-authority');
       phase = 'response';
       const result = parseDiscoveryResponse(
@@ -80,7 +85,7 @@ export async function discoverAuthority(
       );
       await verifyDiscoveryResponse(result, request, base, now());
       db.exec('BEGIN');
-      if (snapshotBytes(snapshot(db, request.workspaceId)) !== snapshotBytes(before)) {
+      if (!unchanged(db, before, reuse)) {
         db.exec('ROLLBACK');
         continue;
       }

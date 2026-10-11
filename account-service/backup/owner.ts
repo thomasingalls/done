@@ -2,7 +2,12 @@ import { Worker } from 'node:worker_threads';
 import type { BackupConfig } from './config.ts';
 import type { AuthorityPin } from '../../account-protocol/authority.ts';
 
-export function startBackupOwner(directory: string, pin: AuthorityPin, config: BackupConfig) {
+export function startBackupOwner(
+  directory: string,
+  pin: AuthorityPin,
+  config: BackupConfig,
+  audit?: () => void,
+) {
   const worker = new Worker(new URL('./worker.ts', import.meta.url), {
     workerData: { directory, pin, config },
   });
@@ -10,6 +15,10 @@ export function startBackupOwner(directory: string, pin: AuthorityPin, config: B
   let updated = Date.now(),
     stopping = false;
   worker.on('message', (value) => {
+    if (value?.kind === 'backup-cycle') {
+      audit?.();
+      return;
+    }
     latest = value;
     updated = Date.now();
   });

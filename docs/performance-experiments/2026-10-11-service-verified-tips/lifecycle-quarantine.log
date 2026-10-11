@@ -1,0 +1,22 @@
+(node:98115) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:98115) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ rotation commits once across rollback, lost reply, restart and a competing signed intent (762.900875ms)
+✔ rotation retains old accepted history and allows survivor offline work before and after its new generation writes (983.602834ms)
+✔ removed-device discovery stops at its own removal even after another rotation (1770.530166ms)
+✔ replacement admission fences new historical-key uploads but retains accepted bytes and signed retry outcomes (1462.37625ms)
+✔ lost-device recovery verifies rotated history and reads finalized publisher writing without a surviving-device grant (540.847625ms)
+(node:98115) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ lost-device recovery cold-replays removed writing and a later generation using the saved code (1892.592666ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ history maintenance preserves admitted ancestry across rotation and rechecks eligible admitters (1737.023167ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ retained generation-one reader adopts admitted history across interrupted save and preserves suffix receipts (4872.815083ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14591.761334

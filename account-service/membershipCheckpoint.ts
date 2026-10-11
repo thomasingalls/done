@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 /** Later certified readers reuse the immutable generation-one baseline; no publish/admit alias. */
 import type { DatabaseSync } from 'node:sqlite';
 import { same } from '../account-protocol/admission.ts';
@@ -13,7 +15,6 @@ import {
   snapshotBytes,
   verifyCurrentWorkspaceAuthority,
   selectPublisher,
-  census,
   type DeliveryIssuer,
   type DeliveryHook,
 } from './delivery.ts';
@@ -37,6 +38,7 @@ export async function readMembershipCheckpoint(
   issuer: DeliveryIssuer,
   now: () => number,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   const no = (refusal: string) => ({ ok: false as const, refusal });
   if (!membershipEnabled(db)) return no('unavailable');
@@ -74,7 +76,7 @@ export async function readMembershipCheckpoint(
         auth.history,
       );
       // A new baseline read must not conceal damage to this reader's already accepted writing.
-      await census(s, auth);
+      await verifiedCensus(s, auth, reuse);
       hook('after-verify', 'membership-checkpoint');
       db.exec('BEGIN');
       const current = capture();

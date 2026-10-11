@@ -1,0 +1,25 @@
+(node:735) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:735) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ canonical byte conversions match previous framing and rejection, including detached input (3.581333ms)
+✔ warm reads verify only served rows; appends extend a compact prefix; historical retries stay exact (134.209125ms)
+✔ overlapping reads and append cannot install a stale tip or expose a buffer erased by a loser (82.946333ms)
+✔ same-connection row damage is refused immediately when examined (65.602ms)
+✔ same-connection predecessor damage is refused immediately when examined (59.578958ms)
+✔ same-connection count damage is refused immediately when examined (77.746209ms)
+✔ same-connection witness damage is refused immediately when examined (63.954ms)
+✔ same-connection witness-signature damage is refused immediately when examined (54.034208ms)
+✔ external connection invalidates the whole prefix even for an unserved altered row (58.236708ms)
+✔ off-path audit detects latent old damage, quarantines without repair, and never signs thereafter (150.08125ms)
+✔ successful snapshot audit, stale result and close cannot reinstall a tip (256.166084ms)
+✔ commit abort never moves verified evidence past durable rows; lost reply finds exact decision (78.197875ms)
+✔ a changed cold snapshot detected at the commit fence cannot install its old verified tip (55.386416ms)
+✔ 256 appended rows schedule a full worker audit while the prefix stores no decision bytes (1937.318916ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3473.263208

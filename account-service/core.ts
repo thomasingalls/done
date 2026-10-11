@@ -181,7 +181,7 @@ type Hook = (point: 'before-commit' | 'after-commit' | 'after-verify', operation
 /** Private account and first-admission transactions. No plaintext content or relay. */
 export class AccountCore {
   #db: DatabaseSync;
-  #deliveryVerification = createDeliveryVerification();
+  #deliveryVerification: ReturnType<typeof createDeliveryVerification>;
   #diagnostics = createDiagnostics();
   get diagnostics() {
     return this.#diagnostics.read();
@@ -241,6 +241,20 @@ export class AccountCore {
     this.#now = instrumentation.now ?? Date.now;
     this.#hook = instrumentation.hook ?? (() => {});
     this.#db = new DatabaseSync(path);
+    this.#deliveryVerification = createDeliveryVerification({
+      db: this.#db,
+      path,
+      signal: () => {
+        this.#diagnostics.record({
+          operation: 'delivery-audit',
+          phase: 'verify',
+          code: 'ledger-integrity',
+        });
+        process.emitWarning('Publisher ledger verification failed; operator inspection required', {
+          code: 'ledger-integrity',
+        });
+      },
+    });
     try {
       this.#db.exec(
         'PRAGMA busy_timeout=5000; PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL;',
@@ -551,7 +565,14 @@ export class AccountCore {
     return membershipBootstrap(this.#db, input, issuer);
   }
   discoverMembership(input: unknown, issuer: MembershipLocatorIssuer) {
-    return discoverMembership(this.#db, input, issuer, this.#now, this.#hook);
+    return discoverMembership(
+      this.#db,
+      input,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#deliveryVerification,
+    );
   }
   ceremonyBootstrap(input: unknown, issuer: CeremonyIssuer) {
     return ceremonyBootstrap(this.#db, input, issuer);
@@ -564,19 +585,27 @@ export class AccountCore {
       this.#now,
       this.#hook,
       this.#diagnostics.record,
+      this.#deliveryVerification,
     );
   }
   discoverRemoval(input: unknown, issuer: RemovalDiscoveryIssuer) {
-    return discoverRemoval(this.#db, input, issuer, this.#now, this.#hook);
+    return discoverRemoval(
+      this.#db,
+      input,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#deliveryVerification,
+    );
   }
   commitRotation(input: unknown, issuer: RotationIssuer) {
-    return commitRotation(this.#db, input, issuer, this.#hook);
+    return commitRotation(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
   prepareRemoval(input: unknown, issuer: RemovalIssuer) {
-    return prepareRemoval(this.#db, input, issuer, this.#hook);
+    return prepareRemoval(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
   cancelMembership(input: unknown, issuer: MembershipCancellationIssuer) {
-    return cancelMembership(this.#db, input, issuer, this.#hook);
+    return cancelMembership(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
   relayCeremony(input: unknown, issuer: DeliveryIssuer) {
     return relayCeremony(this.#db, input, issuer, this.#now, this.#hook);
@@ -585,10 +614,10 @@ export class AccountCore {
     return relayCeremony(this.#db, input, issuer, this.#now, this.#hook, true);
   }
   transferMembership(input: unknown, issuer: MembershipTransferIssuer) {
-    return transferMembership(this.#db, input, issuer, this.#hook);
+    return transferMembership(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
   transferContent(input: unknown, issuer: ContentTransferIssuer) {
-    return transferContent(this.#db, input, issuer, this.#hook);
+    return transferContent(this.#db, input, issuer, this.#hook, this.#deliveryVerification);
   }
 
   discoverAuthority(input: unknown, issuer: DiscoveryIssuer) {
@@ -623,6 +652,7 @@ export class AccountCore {
       this.#now,
       this.#hook,
       this.#sessions,
+      this.#deliveryVerification,
     ).commit(input);
   }
   readRecovery(input: unknown, issuer: LostRecoveryIssuer) {
@@ -633,6 +663,7 @@ export class AccountCore {
       this.#now,
       this.#hook,
       this.#sessions,
+      this.#deliveryVerification,
     ).read(input);
   }
 
@@ -644,6 +675,7 @@ export class AccountCore {
       this.#now,
       this.#hook,
       this.#sessions,
+      this.#deliveryVerification,
     ).run(operation, input);
   }
 
@@ -671,13 +703,27 @@ export class AccountCore {
     );
   }
   exchangeHistoryCheckpoint(input: unknown, issuer: HistoryCheckpointIssuer) {
-    return exchangeHistoryCheckpoint(this.#db, input, issuer, this.#now, this.#hook);
+    return exchangeHistoryCheckpoint(
+      this.#db,
+      input,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#deliveryVerification,
+    );
   }
   exchangeCheckpoint(input: unknown, issuer: DeliveryIssuer) {
     return exchangeCheckpoint(this.#db, input, issuer, this.#hook);
   }
   readMembershipCheckpoint(input: unknown, issuer: DeliveryIssuer) {
-    return readMembershipCheckpoint(this.#db, input, issuer, this.#now, this.#hook);
+    return readMembershipCheckpoint(
+      this.#db,
+      input,
+      issuer,
+      this.#now,
+      this.#hook,
+      this.#deliveryVerification,
+    );
   }
   exchangeReplacementCheckpoint(input: unknown, issuer: ReplacementCheckpointIssuer) {
     return exchangeReplacementCheckpoint(this.#db, input, issuer, this.#hook);
@@ -702,11 +748,17 @@ export class AccountCore {
       this.#diagnostics.record,
     );
   }
+  auditDelivery() {
+    this.#deliveryVerification.tips?.audit();
+  }
+  get deliveryVerificationStatus() {
+    return this.#deliveryVerification.tips?.status();
+  }
   close(): void {
     this.#grants?.close();
     this.#sessions?.close();
     this.#diagnostics.clear();
-    this.#deliveryVerification.clear();
+    this.#deliveryVerification.close();
     this.#db.close();
   }
 

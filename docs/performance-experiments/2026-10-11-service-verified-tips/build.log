@@ -1,0 +1,58 @@
+Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.
+vite v8.1.5 building client environment for production...
+✓ 437 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+dist/assets/main-apPaEBJm.css                    32.72 kB │ gzip:   6.92 kB
+dist/assets/checkpointTimeline-gol_R3LA.js        0.58 kB │ gzip:   0.39 kB │ map:     2.14 kB
+dist/assets/accountProgressCustody-Bn1jKcHy.js    1.70 kB │ gzip:   0.89 kB │ map:     6.02 kB
+dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.65 kB
+dist/assets/membershipLocator-CpKtwrZa.js         5.21 kB │ gzip:   1.67 kB │ map:    16.73 kB
+dist/assets/rotationObservation-DkAe34nD.js       6.69 kB │ gzip:   2.59 kB │ map:    19.45 kB
+dist/assets/accountRotation-BReDQCfh.js           7.83 kB │ gzip:   3.43 kB │ map:    29.50 kB
+dist/assets/preload-helper-DfKBSWen.js            8.34 kB │ gzip:   3.59 kB │ map:    24.22 kB
+dist/assets/historyOwner-CrBBABit.js             10.60 kB │ gzip:   3.64 kB │ map:    35.78 kB
+dist/assets/ceremonyVault-DWW5U4pB.js            10.61 kB │ gzip:   3.96 kB │ map:    36.47 kB
+dist/assets/accountAccess-CaACqe5r.js            13.00 kB │ gzip:   4.69 kB │ map:    53.69 kB
+dist/assets/membershipSource-DmdKwF7G.js         14.42 kB │ gzip:   5.16 kB │ map:    50.50 kB
+dist/assets/LocalApp-Bp0WcToY.js                 16.30 kB │ gzip:   6.01 kB │ map:    49.01 kB
+dist/assets/deviceRemovalVault-BMIaNJ3E.js       21.63 kB │ gzip:   7.20 kB │ map:    73.86 kB
+dist/assets/AccountRecoveryApp-8qYJ6y7Q.js       29.18 kB │ gzip:   9.89 kB │ map:    95.74 kB
+dist/assets/ceremonyNavigation-BL1C0w1O.js       34.75 kB │ gzip:  12.22 kB │ map:   116.66 kB
+dist/assets/promotionRecord-tsgPbRXc.js          37.92 kB │ gzip:  12.47 kB │ map:   135.84 kB
+dist/assets/AccountSetupApp-DcTkT5yv.js          39.29 kB │ gzip:  13.24 kB │ map:   113.01 kB
+dist/assets/localGenesisStorage-CEppGOKT.js      64.63 kB │ gzip:  21.44 kB │ map:   194.11 kB
+dist/assets/joinedAccount-CqK25CLO.js            73.79 kB │ gzip:  22.91 kB │ map:   268.56 kB
+dist/assets/AccountEnrollmentApp-CRPXNObX.js     79.43 kB │ gzip:  23.44 kB │ map:   262.55 kB
+dist/assets/AccountDevices-BWNcGQyp.js           90.62 kB │ gzip:  28.33 kB │ map:   343.41 kB
+dist/assets/admissionHistory-Co1JuEtq.js        102.77 kB │ gzip:  25.50 kB │ map:   346.44 kB
+dist/assets/admissionDocument-BWuxF-3K.js       139.96 kB │ gzip:  43.73 kB │ map:   824.07 kB
+dist/assets/main-CN6-q_LA.js                    283.71 kB │ gzip:  92.03 kB │ map: 1,245.94 kB
+dist/assets/localGenesis-DWqWwfiX.js            679.83 kB │ gzip: 235.59 kB │ map: 2,801.35 kB
+
+✓ built in 2.53s
+index.html
+     4.6 kB  /assets/accountAccess-CaACqe5r.js
+    24.7 kB  /assets/admissionHistory-Co1JuEtq.js
+    11.8 kB  /assets/ceremonyNavigation-BL1C0w1O.js
+     1.8 kB  /assets/custodyCrypto-C44ppXTm.js
+    88.6 kB  /assets/main-CN6-q_LA.js
+     1.6 kB  /assets/membershipLocator-CpKtwrZa.js
+     3.5 kB  /assets/preload-helper-DfKBSWen.js
+initial JS, gzipped: 136.7 kB of 350.0 kB budget
+local.html
+     4.6 kB  /assets/accountAccess-CaACqe5r.js
+    24.7 kB  /assets/admissionHistory-Co1JuEtq.js
+    11.8 kB  /assets/ceremonyNavigation-BL1C0w1O.js
+     1.8 kB  /assets/custodyCrypto-C44ppXTm.js
+    88.6 kB  /assets/main-CN6-q_LA.js
+     1.6 kB  /assets/membershipLocator-CpKtwrZa.js
+     3.5 kB  /assets/preload-helper-DfKBSWen.js
+initial JS, gzipped: 136.7 kB of 350.0 kB budget
+     6.7 kB  (css, informational — the budget is on JS)
+origin isolation: scanned 31 built files
+  1 allowlisted origin: http://www.w3.org (2, namespace-identifier)
+  no literal remote URL in built output, allowlisted namespace identifiers aside (§10.9, row 17 A1)
+
