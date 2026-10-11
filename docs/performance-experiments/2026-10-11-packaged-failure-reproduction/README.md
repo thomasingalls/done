@@ -209,12 +209,12 @@ Unexplained:
 | [logs-manifest.json](./logs-manifest.json) | Path, size and SHA-256 of all 189 per-run log files, and of one archive of them |
 | [forensics.md](./forensics.md), [code-review.md](./code-review.md) | The two read-only analyses |
 
-**The per-run logs are not in this packet.** They are 4.2 MB in 189 files (`run.log`,
+**The per-run logs are included in [results-logs.tar.gz](./results-logs.tar.gz).** They are 4.2 MB in 189 files (`run.log`,
 `service.jsonl`, `sampler.jsonl`, `meta.json`, `results.json` per run), archived as
 `results-logs.tar.gz` (463,528 bytes, SHA-256
-`6c0eaa12348952b08c57f35d7d71219533c77cfff5da88aab8a70fed492444b8`). The manifest records where
-they were when this packet was written: the review session's scratch directory under `/private/tmp`,
-which is not durable. The failed runs' Playwright artifacts (about 21 MB) include disposable service
+`6c0eaa12348952b08c57f35d7d71219533c77cfff5da88aab8a70fed492444b8`). The manifest now resolves the archive inside this packet and preserves the original review-session
+scratch location for provenance. On integration, the archive hash and all 189 recorded member hashes
+were verified; original macOS metadata members are separately counted. No archive bytes or results changed. The failed runs' Playwright artifacts (about 21 MB) include disposable service
 state and test credentials; they are neither archived nor hashed.
 
 ## Reproduction

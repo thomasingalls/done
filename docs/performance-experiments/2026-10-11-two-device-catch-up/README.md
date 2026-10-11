@@ -135,7 +135,7 @@ ledger 105, 505 ms at 505 and 608 ms at 676 with the bound at 512; 106 ms at 585
 at 105 with it at 64. The history checkpoint costs about 1 ms per position at every length, with or
 without the bound. The measuring agent also reported the writer's own empty reads rising to about
 558 ms in the 500–599 bucket; the retained table mixes both devices' empty reads, so that figure is
-not recomputable from this packet without the per-run logs.
+not recomputable from the summary tables alone; the retained per-run log archive is required.
 
 The service's CPU profile (`runs/06-DP-cache-64-profile/service-profile-tree.txt`) puts 51% of active
 CPU in the per-byte `hex` and `unhex` helpers at `account-protocol/recovery.ts:15-23`.
@@ -192,12 +192,12 @@ split of the client remainder between waiting and CPU comes from the CPU profile
 | [logs-manifest.json](./logs-manifest.json) | Path, size and SHA-256 of the 58 per-run log files, and of one archive of them |
 | [receive-trace.md](./receive-trace.md) | The read-only trace of the receive path |
 
-**The per-run logs are not in this packet.** They are 2.3 MB in 58 files (`catchup.json`,
+**The per-run logs are included in [results-logs.tar.gz](./results-logs.tar.gz).** They are 2.3 MB in 58 files (`catchup.json`,
 `service.jsonl`, `sampler.jsonl`, `run.log` and the copies of the files above), archived as
 `results-logs.tar.gz` (250,965 bytes, SHA-256
-`cf1faadd8234d717420c5b00f2175dcbeac1d82b9cf8e0bfd0d5d28d5bd55480`). The manifest records where they
-were when this packet was written: the review session's scratch directory under `/private/tmp`, which
-is not durable. Disposable service state, Playwright artifacts, raw CPU profiles and the service
+`cf1faadd8234d717420c5b00f2175dcbeac1d82b9cf8e0bfd0d5d28d5bd55480`). The manifest now resolves the archive inside this packet and preserves the original review-session
+scratch location for provenance. On integration, the archive hash and all 58 recorded member hashes
+were verified; original macOS metadata members are separately counted. No archive bytes or results changed. Disposable service state, Playwright artifacts, raw CPU profiles and the service
 profiler's output are neither archived nor hashed. The probe's two TypeScript files and
 `profile-tree.mjs` were formatted after the run; nothing else in the copies was changed.
 

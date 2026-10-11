@@ -1,11 +1,17 @@
 {
- "location": "/private/tmp/claude-502/-Users-thomasingalls-Code-done/1e3b4d0e-997f-4cdd-83d9-eeeec8b026f0/scratchpad/flake",
- "locationNote": "Session scratch directory under /private/tmp; it is not durable. Copy the archive elsewhere to keep the logs.",
+ "location": ".",
+ "locationNote": "Archive retained beside this manifest in the repository. File paths are archive members; originalLocation records the measurement session scratch directory.",
  "archive": {
   "path": "results-logs.tar.gz",
   "bytes": 463528,
   "sha256": "6c0eaa12348952b08c57f35d7d71219533c77cfff5da88aab8a70fed492444b8",
-  "contents": "results/ without the artifacts/ directories"
+  "contents": "results/ without the artifacts/ directories",
+  "additionalMetadata": {
+   "kind": "macOS AppleDouble members in original archive",
+   "files": 228,
+   "bytes": 37164
+  },
+  "includedInPacket": true
  },
  "files": [
   {
@@ -1038,5 +1044,6 @@
     "bytes": 1067252
    }
   }
- }
+ },
+ "originalLocation": "/private/tmp/claude-502/-Users-thomasingalls-Code-done/1e3b4d0e-997f-4cdd-83d9-eeeec8b026f0/scratchpad/flake"
 }
