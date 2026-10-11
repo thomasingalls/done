@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 import { membershipProofChain } from './membershipLocator.ts';
 import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
 import { requireNoRemoval } from './removalStore.ts';
@@ -46,6 +48,7 @@ export async function transferMembership(
   input: unknown,
   issuer: MembershipTransferIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return refuse('unavailable');
   let request;
@@ -164,7 +167,7 @@ export async function transferMembership(
           continue;
         }
         const publisher = selectPublisher(composed, source.publisher),
-          ledger = await census(source, publisher);
+          ledger = await verifiedCensus(source, publisher, reuse);
         ledgers.push({ publisher, ledger, witness: raw ? parseWitness(JSON.parse(raw)) : null });
       }
       if (request.action === 'install') {

@@ -15,6 +15,8 @@
     "account-service",
     "vite.config.ts",
     "src/crdt/accountLedgerMode.ts",
+    "src/crdt/accountBatchPolicy.ts",
+    "src/crdt/batchWindow.ts",
     "vite",
     "playwright.config.ts",
     "playwright.account-setup.config.ts",

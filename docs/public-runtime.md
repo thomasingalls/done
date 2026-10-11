@@ -114,6 +114,14 @@ restore is involved. Unset, empty and `incremental` select the default; other va
 The [activation record](./performance-experiments/2026-10-11-account-activation/README.md) describes
 the bounded evidence, retained reference audits and remaining performance limits.
 
+Account publication and local journal flushing also use a 300 ms quiet / 2,000 ms maximum batch
+policy by default. To restore the previous scheduling and per-frame receive publication, build with
+`--build-arg VITE_ACCOUNT_BATCH=reference` (or `VITE_ACCOUNT_BATCH=reference pnpm build`). This is
+independent of the ledger-verification override and likewise requires new application assets. It
+changes no stored/wire format and needs no migration. Local-only flushing is unchanged. The
+[batching packet](./performance-experiments/2026-10-11-account-batching/README.md) records the measured
+tradeoff, journal-before-acknowledgment rule, immediate locking and best-effort hidden-page sending.
+
 The same image has three commands, using exec-form entrypoint `node scripts/public-account.mjs`:
 
 1. Run `initialize` explicitly once with a writable data volume and the externally provisioned

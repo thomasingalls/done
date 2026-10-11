@@ -1,0 +1,88 @@
+{
+  "base": "4bcac41928dae58a1795d4adb126595b898a56ca",
+  "instrumentation": "instrumentation.patch",
+  "candidate": "candidate.patch",
+  "candidateSource": {
+    "src/crdt/accountCapture.ts": "04c1d59d4c88ad996a56a92b7a8cfd23730f2830dd431095f487ef5190517f37",
+    "src/crdt/accountLedgerMetrics.ts": "cd3973f295fc48cee6dd757a775838540653dc3f9416539445577d100b1d617b",
+    "src/crdt/accountReceive.ts": "4c33d90fd15b3860f47f15c23815d3ff406b47371928183906de13f6e9682e44",
+    "src/crdt/accountStartup.ts": "24fe66a93930f1848c9dd27a89d63ad437bb98c16d4fb7cf0623bb91c90c585c",
+    "src/crdt/deliveryRecord.ts": "bf16d1f17819b33a73a18be285431fdd8fe85567a05e5cfab9ba64d17b5aceb4",
+    "src/crdt/inboundLedger.ts": "6f0b3a9b4f84d9b357431be726ad3967904fbfc1c3aee561da6550abf2e12f45",
+    "src/crdt/joinedAccount.ts": "c4eea924f1329a0940e8f613391fc1151291a2ff4a5c309241b6cdf2b1427d08"
+  },
+  "ordinaryAssets": {
+    "dist/local.html": "325cb98bbae9c14a94193656dc2dc73a0d6c2943fd868efb0cdf57676bf9b20e",
+    "dist/index.html": "e3a298065dee398040708799e05141fbf71e8c3520b1276189e536fd204b5fd4",
+    "dist/sw.js": "44f53b6c4d3a2b146cc5de4241d92c0c8a5055d2df4d20b66b09df09cb1e9287",
+    "dist/assets/AccountSetupApp-CqM0nvcf.js": "798f4f9b618debc988396fd875e4507ebabad6cfe918deb6c08df6b64371526f",
+    "dist/assets/accountRotation-C3tL8CNl.js": "382ca1398b86a35467ea27c6decf0354b562ed1180c42c838493195d7dab24bb",
+    "dist/assets/membershipSource-BFuaapEW.js": "e043b759f7af11efd3ed5b33fb4bf3ddcd414b7a6f330f8f38ec4bb4ef2a0c0a",
+    "dist/assets/accountAccess-MzHwzJNy.js": "1ed3ceb2ac3db44f0ed08ecf8c4d9e49e049c02480925ff44c50b4a81397e6cb",
+    "dist/assets/preload-helper-B_9xYlei.js": "35dfccc3c78c9fe1f7cbd668adde9c9c73453f1fd7ef70f35c166244de35876d",
+    "dist/assets/custodyCrypto-C44ppXTm.js": "06c03e084a5222d1677dc6030c072846241d15573e540c8461e6c9892703d280",
+    "dist/assets/admissionDocument-ZXpcHLMN.js": "8eddb7907b30f725e843a40d38770a9abcb669e2bc257a9b47a4cb06ed8fa9e3",
+    "dist/assets/rotationObservation-DLG7fQls.js": "9b1ba3f6e5f69c177568c7208dd39f4c86c8f1fb5a20842287df9461384f0785",
+    "dist/assets/historyOwner-DO2jPsvz.js": "23d98572dbfe8262dd253efe551013a3349441cbe2ca2fbda774b93528e9579e",
+    "dist/assets/deviceRemovalVault-BVFG4mgw.js": "23679c13039c1a189f24a8b6dcf84dce900970ba17edc186a8c03bc60b3a386b",
+    "dist/assets/accountProgressCustody-EQtjXTXL.js": "543b83e136e63752b61c10239250a36e8518b4ba217985a4b99630c06617dc90",
+    "dist/assets/AccountRecoveryApp-BpGx2PWY.js": "ec85039046b68da0bbd067ac7c35f56f2ce77706f41707d9f4cedbbe31b8f874",
+    "dist/assets/AccountDevices-Dc3vLzpl.js": "f2bf356838837d4055beea10bfb9145aeb0052bc5c6fb7294f86d37a50dfd6d0",
+    "dist/assets/promotionRecord-5MRFOWzT.js": "bb736d7a961e6bf061d0c8f26083d05ba5f70541f39a15dfbc32656376e684f6",
+    "dist/assets/AccountEnrollmentApp-B2xWdmid.js": "41ff616502933af1922d6c4780983fc78a1d593a5377be4970fb33cf6e0115bd",
+    "dist/assets/joinedAccount-CDULvW2o.js": "b972003521b2ad9c213aac930f2cb22199c0fc61db82025aebd24fb0db2ee79f",
+    "dist/assets/localGenesisStorage-1W8VAswp.js": "8300f8339a9cff16544f5e1c6e8f3ab47a874fa84aa1d173ebe144d44401a9c8",
+    "dist/assets/checkpointTimeline-DdvidAM9.js": "b7b2290ab08c63f2c30e5b415ce3e2d47cdfa8f1999098c84456072f563855e9",
+    "dist/assets/admissionHistory-BJqiB6yy.js": "94f8a95c55bb32de1a45da7252799ca53ae463931b23b7591b7058c6cbd942a2",
+    "dist/assets/localGenesis-PGbDuPFo.js": "bba2a1c653aa8e8614653ed4976837b8061341e10b19ddff0410bb291b66777e",
+    "dist/assets/main-DZeMZ-AI.js": "18d16087db7f649ec9c17a9097926881ae1f3f5d9a7deaac0edeb5b457f65832",
+    "dist/assets/ceremonyNavigation-DrNsj12C.js": "6a78a3fe8758efba9f7d5c55ed923b58119292e2f48a0eb361bcbbe276abe774",
+    "dist/assets/LocalApp-BkQ6rkJL.js": "8d304a1f3b33b9c5aa311509043621c10e369d2873e7a0aff685e2137e93632e",
+    "dist/assets/membershipLocator-CFok42yu.js": "df7d4cd8af9abc3a1461130e05c1ceff568f2131035a5e08e855c74a8195aaf3",
+    "dist/assets/ceremonyVault-DaazlrIk.js": "dd5ceb7a7feb9535fc0ab07c4e008f1ce480b149fb60c041cd290c932ea21861",
+    "dist/assets/main-apPaEBJm.css": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3"
+  },
+  "host": {
+    "node": "v26.11.1",
+    "platform": "darwin-arm64",
+    "chromiumPackage": {
+      "name": "chromium-headless-shell",
+      "revision": "1234",
+      "installByDefault": true,
+      "browserVersion": "151.0.7922.34",
+      "title": "Chrome Headless Shell"
+    }
+  },
+  "fixtures": {
+    "deep": {
+      "typedEdits": 2320,
+      "positions": 295,
+      "sourceCapsules": 2354,
+      "content": 1,
+      "heads": 885,
+      "outbound": 2944
+    },
+    "receiver": {
+      "deliveredBursts": 48,
+      "content": 52,
+      "heads": 51,
+      "outbound": 0
+    }
+  },
+  "conditions": {
+    "baseline": "parent plus numeric instrumentation; same batching default",
+    "candidate": "chain cache in every replay and one census per startup validation",
+    "ordinary": "candidate without VITE_ACCOUNT_LEDGER_PROFILE"
+  },
+  "limits": [
+    "Paired desktop sample, not phone or release qualification.",
+    "Other investigation processes were present on this host; alternating order and operation counts constrain, but do not eliminate, load confounding."
+  ],
+  "testAndProbeSources": {
+    "test/account-ledger-contract/cold-open.test.mjs": "272add3eb417730f386ca03b2064d64a22cb49d50b2cec4575385ffb3d473ce3",
+    "test/account-ledger-contract/runtime.mjs": "64a22f8e45d62feeffd2e53a21542a306041a440c1a976056d67c7eff6e144a5",
+    "docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts": "46379cb6ba837bcedd0bd389f9e944d0ed7ed423c59c21c3fd8d4c1c2f5a7038",
+    "docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.config.ts": "67d4ad3dab891d6daf85634edf84ac734b6f0659ccc9da62faf815fafd4ac96c",
+    "docs/performance-experiments/2026-10-11-account-cold-open/probe/run-pairs.mjs": "36526f176ccb4d38ce1c59d68671139f685bad1e624c361ffc280c1a4c739dc2"
+  }
+}

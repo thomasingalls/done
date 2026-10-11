@@ -308,3 +308,19 @@ test('schema 25 requires explicit offline upgrade before compact ciphertext evid
     upgraded.close();
   }
 });
+
+test('publisher quarantine also fences checkpoint mutation until operator restart and full verification', async (t) => {
+  const f = await setup(t),
+    head = await f.upload(1, 'quarantine');
+  const cp = await f.create(null, [head]);
+  const original = f.f.rows('delivery_decisions')[0].submission;
+  mutate(f, (db) => db.exec("UPDATE delivery_decisions SET submission=X'00' WHERE ordinal=1"));
+  assert.equal((await f.call(f.make(2))).reason, 'ledger-integrity');
+  mutate(f, (db) =>
+    db.prepare('UPDATE delivery_decisions SET submission=? WHERE ordinal=1').run(original),
+  );
+  const publish = await f.makeRequest('publish', cp);
+  assert.deepEqual(await f.exchange(publish), { ok: false, refusal: 'ledger-integrity' });
+  f.f.restart();
+  await f.check(publish, await f.exchange(publish));
+});

@@ -1,3 +1,4 @@
+import { verifiedCensus } from './delivery.ts';
 import { rethrowAuthorization } from './authorization.ts';
 /** Private atomic preparation consumption. Ordinary application entry remains disabled. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -14,7 +15,6 @@ import {
   snapshot,
   snapshotBytes,
   verifyWorkspaceAuthority,
-  census,
   type DeliveryIssuer,
 } from './delivery.ts';
 import {
@@ -97,7 +97,7 @@ export async function admitPrepared(
       if (preparation.receiptId !== request.receiptId) return refused('request-conflict');
       if (!authority || !delivery) return refused('unavailable');
       const auth = await verifyWorkspaceAuthority(delivery, issuer);
-      const ledger = await census(delivery, auth, reuse);
+      const ledger = await verifiedCensus(delivery, auth, reuse);
       let result = auth.successor;
       if (result) {
         if (delivery.successor!.preparation_id !== row.id) return refused('stale');

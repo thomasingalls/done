@@ -1,0 +1,1 @@
+{"seq":"05","label":"DC-cache-lifted","clientArm":"base","serviceArm":"svcC","env":"CATCHUP_PHASES=580 CATCHUP_CADENCE=450 CATCHUP_MAX_BUILD_S=660 CATCHUP_MAX_CATCH_S=420 DONE_CATCHUP_CACHE_ENTRIES=1000000 DONE_CATCHUP_CACHE_BYTES=1073741824","exit":0,"seconds":926,"start":1791720736,"ownPortsLeftListening":0}

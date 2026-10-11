@@ -1,0 +1,138 @@
+{
+  "scope": "Signed-source publication preparation; no registry push or deployment",
+  "sourceCommit": "c609d8c7c77f8e2e006a7d80704b5d6e907a376b",
+  "applicationMain": "7b6d8d9f315b03cc0875782e3145fbeafecbc97f",
+  "cleanGitArchive": true,
+  "image": "done-public:c609d8c7",
+  "localIndexDigest": "sha256:67da5b75d28947e399b92dbf9da8443819bec99d87993552df1350573faae192",
+  "runtimeManifestDigest": "sha256:e072aadecf04bc41a8ceb182f1833afc7972a5f06a891753812544f3ca2e2b4b",
+  "platform": "linux/arm64",
+  "node": "24.18.0",
+  "buildDate": "2026-10-11",
+  "ledgerMode": "default incremental",
+  "batchPolicy": "default coordinated-2000",
+  "published": false,
+  "buildPassed": true,
+  "existingContainerTests": {
+    "runtimeGateway": 14,
+    "backup": 5,
+    "restore": 6,
+    "maintenance": 6
+  },
+  "packagedPublisherTipTests": {
+    "passed": 14,
+    "network": "none",
+    "mounts": "signed-source test and src directories read-only; service/protocol from runtime image"
+  },
+  "additionalMembershipAuditTests": {
+    "passed": 2,
+    "image": "done-check:c609d8c7 (Dockerfile build stage)",
+    "network": "none",
+    "fixture": "signed docs/account-crypto read-only",
+    "limit": "These require test-only Vite, so ran in the build stage rather than the production image."
+  },
+  "smoke": {
+    "image": "done-public:c609d8c7",
+    "started": "2026-10-11T17:03:31.488Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:67da5b75d28947e399b92dbf9da8443819bec99d87993552df1350573faae192",
+    "platform": "linux/arm64",
+    "sourceRevision": "c609d8c7c77f8e2e006a7d80704b5d6e907a376b",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-11T17:03:38.625Z"
+  },
+  "failedAttempts": [
+    {
+      "log": "container-build-invalid-date.log",
+      "reason": "Operator supplied timestamp where build contract requires YYYY-MM-DD; corrected build argument, no source edit."
+    },
+    {
+      "log": "container-membership-audit.log",
+      "reason": "Test-only Vite absent from production runtime image."
+    },
+    {
+      "log": "container-membership-audit-build-stage.log",
+      "reason": "Checked-in public crypto fixture absent from allowlisted container context; quarantine case passed, ceremony case failed to import fixture."
+    }
+  ],
+  "compatibility": {
+    "schemaChanges": false,
+    "signedWireFormatChanges": false,
+    "accountSchema": 26,
+    "authoritySchema": 1,
+    "unsignedDiagnostic": "ledger-integrity",
+    "mixedVersionLimit": "Source and focused checks, not exhaustive mixed-version validation."
+  },
+  "releaseValidation": "paused",
+  "next": [
+    "Merge application PR preserving signed history",
+    "Publish and verify the exact tested image",
+    "Prepare and merge ol-infra image pin PR",
+    "Verify rollout and backup health"
+  ],
+  "artifacts": [
+    {
+      "path": "build-metadata.json",
+      "bytes": 1826,
+      "sha256": "019c3c472194514be32282a0fdebc638028848a08c40fc49982444737d30ea79"
+    },
+    {
+      "path": "container-build-invalid-date.log",
+      "bytes": 6048,
+      "sha256": "ef8d4bcd6eb2b018eb1ddba25117f3df8c8b7c90c5169b655150b3a652879f82"
+    },
+    {
+      "path": "container-build.log",
+      "bytes": 16970,
+      "sha256": "3ad49d6927de77b846c5e15180647e38e276043371c48d0b73a08caa52440554"
+    },
+    {
+      "path": "container-check-stage.log",
+      "bytes": 2784,
+      "sha256": "44e70255578e09a02bb7afd2b21a6165865fe35fe5c00c1888fd23631807ee0c"
+    },
+    {
+      "path": "container-membership-audit-build-stage.log",
+      "bytes": 1508,
+      "sha256": "bf725cda50961ca6414c278c2b02f9c9d3d7e1b6924f50cd4241d84a1d446319"
+    },
+    {
+      "path": "container-membership-audit-final.log",
+      "bytes": 1091,
+      "sha256": "495f7e589a04b6abf9adb1b099f10a9f96f0864ab0c09bc64abaecbded9b5bec"
+    },
+    {
+      "path": "container-membership-audit.log",
+      "bytes": 2561,
+      "sha256": "27a82c1d43ce5db4b3a07f3d4821003e66cf4d797e75dcff072eed2ea642f11b"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1124,
+      "sha256": "6554ce181d8759e60906d2660889dab7b1c1886e196e88883d70078ef6f51307"
+    },
+    {
+      "path": "container-smoke.log",
+      "bytes": 744,
+      "sha256": "ef90b60b30002e58cc15cf1f44a8135c6d80a30bcc3675793cdc1d3739455c02"
+    },
+    {
+      "path": "container-tips.log",
+      "bytes": 1845,
+      "sha256": "212693369cc96c6f301bbe8de7042e27f4446001db21fc033544e1bcda7a05b2"
+    }
+  ]
+}

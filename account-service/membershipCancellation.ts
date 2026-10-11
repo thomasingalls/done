@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 import { membershipProofChain } from './membershipLocator.ts';
 import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
 import { requireNoRemoval } from './removalStore.ts';
@@ -19,7 +21,6 @@ import {
 import {
   snapshot,
   snapshotBytes,
-  census,
   selectPublisher,
   type Snapshot,
   type DeliveryIssuer,
@@ -40,6 +41,7 @@ export async function cancelMembership(
   input: unknown,
   issuer: MembershipCancellationIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return no('unavailable');
   let request;
@@ -120,7 +122,7 @@ export async function cancelMembership(
           continue;
         }
         const publisher = selectPublisher(composed, source.publisher),
-          ledger = await census(source, publisher);
+          ledger = await verifiedCensus(source, publisher, reuse);
         ledgers.push({ publisher, ledger, witness: raw ? parseWitness(JSON.parse(raw)) : null });
       }
       const heads = ledgers

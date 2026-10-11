@@ -1,0 +1,19 @@
+(node:99858) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99858) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:99858) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ history maintenance preserves admitted ancestry across rotation and rechecks eligible admitters (2031.059208ms)
+(node:99859) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99859) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:99859) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(node:99859) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ publisher quarantine also fences checkpoint mutation until operator restart and full verification (96.967833ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2477.767834

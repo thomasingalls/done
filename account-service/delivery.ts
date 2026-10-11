@@ -30,6 +30,7 @@ import {
   type Diagnostic,
   type DiagnosticSink,
 } from '../account-protocol/diagnostics.ts';
+import { LedgerIntegrityError } from './publisherTips.ts';
 import type { DeliveryVerification } from './deliveryVerification.ts';
 import type { ContentTransferRow } from './contentTransfer.ts';
 import {
@@ -82,6 +83,8 @@ import {
   SUBMISSION_LIMIT,
 } from '../account-protocol/submission.ts';
 import {
+  decodePositionResponse,
+  headMessage,
   acceptanceLink,
   verifyPositionResponse,
   ZERO_REFUSAL,
@@ -115,6 +118,7 @@ export type ServiceDeliveryResult =
   | {
       kind: 'unknown';
       reason:
+        | 'ledger-integrity'
         | 'invalid-request'
         | 'envelope-size'
         | 'unavailable'
@@ -287,16 +291,27 @@ export function snapshotWorkspaceAuthority(
     ...(membershipCancellations.length ? { membershipCancellations } : {}),
   };
 }
-export function snapshot(db: DatabaseSync, workspace: string, publisher?: string): Snapshot | null {
+export function snapshot(
+  db: DatabaseSync,
+  workspace: string,
+  publisher?: string,
+  afterOrdinal = 0,
+): Snapshot | null {
   const base = snapshotWorkspaceAuthority(db, workspace);
   if (!base) return null;
   const original = JSON.parse(base.promotion.request).candidate.signer;
   if (publisher && publisher !== original) {
     const rows = db
       .prepare(
-        'SELECT account_id,ordinal,position,digest,envelope_epoch,kind,submission,response FROM publisher_decisions WHERE account_id=? AND credential_id=? ORDER BY ordinal',
+        'SELECT account_id,ordinal,position,digest,envelope_epoch,kind,submission,response FROM publisher_decisions WHERE account_id=? AND credential_id=?' +
+          (afterOrdinal ? ' AND ordinal>?' : '') +
+          ' ORDER BY ordinal',
       )
-      .all(base.account.id, publisher) as unknown as DecisionRow[];
+      .all(
+        base.account.id,
+        publisher,
+        ...(afterOrdinal ? [afterOrdinal] : []),
+      ) as unknown as DecisionRow[];
     const retained = db
       .prepare('SELECT witness FROM publisher_witnesses WHERE account_id=? AND credential_id=?')
       .get(base.account.id, publisher);
@@ -308,8 +323,12 @@ export function snapshot(db: DatabaseSync, workspace: string, publisher?: string
     };
   }
   const rows = db
-    .prepare('SELECT * FROM delivery_decisions WHERE account_id=? ORDER BY ordinal')
-    .all(base.account.id) as unknown as DecisionRow[];
+    .prepare(
+      'SELECT * FROM delivery_decisions WHERE account_id=?' +
+        (afterOrdinal ? ' AND ordinal>?' : '') +
+        ' ORDER BY ordinal',
+    )
+    .all(base.account.id, ...(afterOrdinal ? [afterOrdinal] : [])) as unknown as DecisionRow[];
   return { ...base, rows };
 }
 export function snapshotBytes(s: Snapshot | null): string {
@@ -323,10 +342,18 @@ export function snapshotBytes(s: Snapshot | null): string {
     })),
   });
 }
-export function read(db: DatabaseSync, workspace: string, publisher?: string) {
+export function read(
+  db: DatabaseSync,
+  workspace: string,
+  publisher?: string,
+  reuse?: DeliveryVerification,
+  options?: { after?: number; limit?: number; position?: number },
+) {
   db.exec('BEGIN');
   try {
-    const s = snapshot(db, workspace, publisher);
+    const s = reuse?.tips
+      ? reuse.tips.capture(workspace, publisher, options)
+      : snapshot(db, workspace, publisher);
     db.exec('COMMIT');
     return s;
   } finally {
@@ -674,10 +701,11 @@ async function verifyLedgerWitness(
   if (commitment !== (witness?.hash ?? ZERO_LEDGER)) throw Error('Delivery ledger commitment');
 }
 export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerification) {
-  let count = 0,
-    commitment = ZERO_LEDGER,
-    through = 0,
-    previous = ZERO_REFUSAL;
+  const prefix = reuse?.tips?.prefix(s);
+  let count = prefix?.count ?? 0,
+    commitment = prefix?.commitment ?? ZERO_LEDGER,
+    through = prefix?.through ?? 0,
+    previous = prefix?.previous ?? ZERO_REFUSAL;
   const accepted = new Map<number, Bytes>(),
     refused = new Map<string, Bytes>(),
     issued = new Map<string, number>(),
@@ -712,7 +740,9 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
   )
     throw Error('Reversed authority boundaries');
   const boundaryScope = JSON.stringify(boundaries);
-  const checkedBoundaries = new Set<string>();
+  const checkedBoundaries = new Set<string>(
+    boundaries.filter((b) => (b.witness?.events ?? 0) < count).map((b) => b.successor.head),
+  );
   const checkBoundary = async () => {
     for (const b of boundaries) {
       if (count !== (b.witness?.events ?? 0)) continue;
@@ -748,14 +778,15 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
       );
       return { ...opened, proof, issuance };
     };
-    const { e, submission, subject, proof, issuance, originalHash } = reuse
-      ? await reuse.check(
-          s.account.id + ':' + auth.credential + ':' + row.ordinal,
-          scope + ':' + boundaryScope + ':' + previous,
-          [bytes, response],
-          verify,
-        )
-      : await verify();
+    const { e, submission, subject, proof, issuance, originalHash } =
+      reuse && !reuse.tips
+        ? await reuse.check(
+            s.account.id + ':' + auth.credential + ':' + row.ordinal,
+            scope + ':' + boundaryScope + ':' + previous,
+            [bytes, response],
+            verify,
+          )
+        : await verify();
     if (
       row.account_id !== s.account.id ||
       row.ordinal !== count + 1 ||
@@ -802,7 +833,128 @@ export async function census(s: Snapshot, auth: Authority, reuse?: DeliveryVerif
   }
   if (checkedBoundaries.size !== boundaries.length) throw Error('Missing successor boundary');
   await verifyLedgerWitness(witness, auth, count, commitment);
-  return { count, commitment, through, previous, accepted, refused, issued, closedPositions };
+  const result = {
+    count,
+    commitment,
+    through,
+    previous,
+    accepted,
+    refused,
+    issued,
+    closedPositions,
+  };
+  reuse?.tips?.remember(s, auth, result);
+  return result;
+}
+export async function verifiedCensus(s: Snapshot, auth: Authority, reuse?: DeliveryVerification) {
+  try {
+    return await census(s, auth, reuse);
+  } catch (cause) {
+    if (reuse?.tips && !(cause instanceof LedgerIntegrityError)) reuse.tips.failure(s);
+    throw cause;
+  }
+}
+export function unchanged(db: DatabaseSync, s: Snapshot, reuse?: DeliveryVerification) {
+  return reuse?.tips
+    ? reuse.tips.guard(s)
+    : snapshotBytes(snapshot(db, s.promotion.workspace_id, s.publisher)) === snapshotBytes(s);
+}
+/** Freshly authenticate the predecessor's signed link and every row actually served. */
+export async function verifyServed(
+  s: Snapshot,
+  auth: Authority,
+  after: number,
+  reuse?: DeliveryVerification,
+) {
+  const selected = reuse?.tips?.served(s);
+  if (!selected) return s.rows;
+  try {
+    let previous = ZERO_REFUSAL;
+    const result = [];
+    for (const row of selected) {
+      reuse!.tips!.checkedServed();
+      if (row.account_id !== s.account.id || row.kind !== 'accepted' || row.ordinal < 1)
+        throw Error('Invalid served row');
+      const response = new Uint8Array(row.response),
+        decoded = decodePositionResponse(response);
+      if (
+        decoded.kind !== 'accepted' ||
+        decoded.head.final ||
+        decoded.head.workspace !== auth.a.workspace ||
+        decoded.head.credential !== auth.credential ||
+        decoded.head.position !== row.position
+      )
+        throw Error('Invalid served head');
+      const boundaries = auth.ledgerBoundaries?.get(auth.credential) ?? [
+        ...(!auth.joinedPublisher && auth.successor
+          ? [{ witness: auth.boundaryWitness, authority: auth.firstA }]
+          : []),
+        ...(auth.certificationSuccessor
+          ? [
+              {
+                witness: auth.joinedPublisher ? null : auth.certificationBoundary,
+                authority: auth.secondA,
+              },
+            ]
+          : []),
+      ];
+      const issuance =
+        boundaries.find((b) => row.ordinal <= (b.witness?.events ?? 0))?.authority ?? auth.a;
+      if (decoded.head.epoch !== issuance.tip) throw Error('Invalid served epoch');
+      if (row.position === after) {
+        const key = await crypto.subtle.importKey(
+          'raw',
+          unhex(issuance.acceptanceKey, 32),
+          'Ed25519',
+          false,
+          ['verify'],
+        );
+        if (
+          !(await crypto.subtle.verify(
+            'Ed25519',
+            key,
+            unhex(decoded.head.signature, 64),
+            headMessage(decoded.head),
+          ))
+        )
+          throw Error('Invalid predecessor');
+      } else {
+        if (
+          row.position !== after + result.length + 1 ||
+          (after && !result.length && selected[0]?.position !== after)
+        )
+          throw Error('Missing served predecessor');
+        const opened = isPrunedDecision(row.submission)
+          ? await verifyPrunedDecision(
+              new Uint8Array(row.submission),
+              response,
+              auth,
+              row.ordinal,
+              issuance.tip,
+            )
+          : await verifyWire(new Uint8Array(row.submission), auth, issuance.tip);
+        const proof = await verifyPositionResponse(
+          response,
+          { ...opened.subject, previous, parent: opened.submission.parentId },
+          issuance,
+        );
+        if (
+          proof.kind !== 'accepted' ||
+          row.digest !== opened.subject.digest ||
+          row.envelope_epoch !== opened.e.epoch ||
+          row.position !== opened.e.seq ||
+          generationRefusal(auth, opened.e.epoch, opened.e.gen, issuance.tip) !== null
+        )
+          throw Error('Invalid served decision');
+        result.push(row);
+      }
+      previous = decoded.head.link;
+    }
+    return result;
+  } catch (cause) {
+    reuse!.tips!.failure(s);
+    throw cause;
+  }
 }
 export async function decideSubmission(
   db: DatabaseSync,
@@ -833,17 +985,21 @@ export async function decideSubmission(
     let s: Snapshot | null;
     try {
       phase = 'storage';
-      s = read(db, workspace, publisher);
+      s = read(db, workspace, publisher, reuse, {
+        position: decodeNetworkEnvelope(decodeSubmission(bytes).envelope).seq,
+      });
     } catch (cause) {
       note(cause);
-      return unknown('storage-unavailable');
+      return unknown(
+        cause instanceof LedgerIntegrityError ? 'ledger-integrity' : 'storage-unavailable',
+      );
     }
     if (!s) return unknown('unavailable');
     let auth: Authority, ledger: Awaited<ReturnType<typeof census>>;
     try {
       phase = 'verify';
       auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);
-      ledger = await census(s, auth, reuse);
+      ledger = await verifiedCensus(s, auth, reuse);
       if (auth.removal?.request.targetId === auth.credential) {
         const cut = auth.removal.cutoff.find((h) => h.credentialId === auth.credential)!;
         if (ledger.through !== cut.position || ledger.previous !== cut.link)
@@ -852,7 +1008,7 @@ export async function decideSubmission(
     } catch (cause) {
       note(cause);
       reuse?.clear();
-      return unknown('unavailable');
+      return unknown(cause instanceof LedgerIntegrityError ? 'ledger-integrity' : 'unavailable');
     }
     const envelope = decodeNetworkEnvelope(decodeSubmission(bytes).envelope);
     if (envelope.epoch < 1 || envelope.epoch > auth.a.tip) return unknown('unsupported-epoch');
@@ -916,7 +1072,7 @@ export async function decideSubmission(
       phase = 'commit';
       hook('after-verify', 'decide-submission');
       db.exec('BEGIN IMMEDIATE');
-      if (snapshotBytes(snapshot(db, workspace, publisher)) !== snapshotBytes(s)) {
+      if (!unchanged(db, s, reuse)) {
         db.exec('ROLLBACK');
         continue;
       }
@@ -981,7 +1137,9 @@ export async function decideSubmission(
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       rethrowAuthorization(cause);
-      return unknown('storage-unavailable');
+      return unknown(
+        cause instanceof LedgerIntegrityError ? 'ledger-integrity' : 'storage-unavailable',
+      );
     }
   }
   return unknown('state-changed');
@@ -1018,7 +1176,10 @@ export async function readAccepted(
   for (let retry = 0; retry < 4; retry++) {
     try {
       phase = 'storage';
-      const s = read(db, request.workspace, request.credential);
+      const s = read(db, request.workspace, request.credential, reuse, {
+        after: request.after,
+        limit: request.limit,
+      });
       if (!s) return unknown('unavailable');
       phase = 'verify';
       const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher);
@@ -1034,7 +1195,7 @@ export async function readAccepted(
         ))
       )
         return unknown('invalid-request');
-      const ledger = await census(s, auth, reuse);
+      const ledger = await verifiedCensus(s, auth, reuse);
       if (request.after > ledger.through) return unknown('out-of-order');
       const page: ReadPage = {
         request: hash(bytes),
@@ -1043,7 +1204,7 @@ export async function readAccepted(
         entries: [],
         signature: '00'.repeat(64),
       };
-      for (const row of s.rows) {
+      for (const row of await verifyServed(s, auth, request.after, reuse)) {
         if (row.kind !== 'accepted' || row.position <= request.after) continue;
         if (isPrunedDecision(row.submission)) return unknown('unavailable');
         const entry = {
@@ -1065,7 +1226,7 @@ export async function readAccepted(
       phase = 'commit';
       hook('after-verify', 'read-accepted');
       db.exec('BEGIN');
-      if (snapshotBytes(s) !== snapshotBytes(snapshot(db, request.workspace, request.credential))) {
+      if (!unchanged(db, s, reuse)) {
         db.exec('ROLLBACK');
         continue;
       }
@@ -1089,7 +1250,7 @@ export async function readAccepted(
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       rethrowAuthorization(cause);
-      return unknown('unavailable');
+      return unknown(cause instanceof LedgerIntegrityError ? 'ledger-integrity' : 'unavailable');
     }
   }
   return unknown('state-changed');
@@ -1135,7 +1296,10 @@ export async function readInbound(
   for (let retry = 0; retry < 4; retry++) {
     try {
       phase = 'storage';
-      const s = read(db, request.workspace, request.publisher);
+      const s = read(db, request.workspace, request.publisher, reuse, {
+        after: request.after,
+        limit: request.limit,
+      });
       if (!s) return unknown('unavailable');
       const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher),
         { reader, publisher } = resolveInboundRoles(auth, request);
@@ -1158,7 +1322,7 @@ export async function readInbound(
         return unknown('invalid-request');
       // Each certified publisher has an independently witnessed position sequence.
       if (publisher.id !== auth.scope.credential) return unknown('unavailable');
-      const ledger = await census(s, auth, reuse);
+      const ledger = await verifiedCensus(s, auth, reuse);
       if (request.after > ledger.through) return unknown('out-of-order');
       const page: InboundReadPage = {
         request: hash(bytes),
@@ -1167,7 +1331,7 @@ export async function readInbound(
         entries: [],
         signature: '00'.repeat(64),
       };
-      for (const row of s.rows) {
+      for (const row of await verifyServed(s, auth, request.after, reuse)) {
         if (row.kind !== 'accepted' || row.position <= request.after) continue;
         if (isPrunedDecision(row.submission)) return unknown('unavailable');
         page.entries.push({
@@ -1188,8 +1352,7 @@ export async function readInbound(
       phase = 'commit';
       hook('after-verify', 'read-inbound');
       db.exec('BEGIN IMMEDIATE');
-      const current =
-        snapshotBytes(snapshot(db, request.workspace, request.publisher)) === snapshotBytes(s);
+      const current = unchanged(db, s, reuse);
       if (!current) {
         db.exec('ROLLBACK');
         continue;
@@ -1226,7 +1389,7 @@ export async function readInbound(
       reuse?.clear();
       if (db.isTransaction) db.exec('ROLLBACK');
       rethrowAuthorization(cause);
-      return unknown('unavailable');
+      return unknown(cause instanceof LedgerIntegrityError ? 'ledger-integrity' : 'unavailable');
     }
   }
   return unknown('state-changed');

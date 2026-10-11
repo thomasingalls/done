@@ -1,0 +1,17 @@
+[
+  {
+    "positions": 8,
+    "candidateLinks": 16,
+    "referenceLinks": 64
+  },
+  {
+    "positions": 32,
+    "candidateLinks": 64,
+    "referenceLinks": 1024
+  },
+  {
+    "positions": 128,
+    "candidateLinks": 256,
+    "referenceLinks": 16384
+  }
+]

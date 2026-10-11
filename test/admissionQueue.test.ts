@@ -5,6 +5,7 @@ import {
   createAdmissionOwner,
   AdmissionError,
   MAX_PENDING_BYTES,
+  type AdmissionOptions,
 } from '../src/crdt/admissionQueue';
 import type { JournalSession, JournalRecovery } from '../src/crdt/custody';
 import type { Bytes } from '../src/crdt/custodyCrypto';
@@ -54,7 +55,11 @@ const remote = (
   d.destroy();
   return result;
 };
-const fixture = async (prepare: PrepareIntent = append, recovery?: JournalRecovery) => {
+const fixture = async (
+  prepare: PrepareIntent = append,
+  recovery?: JournalRecovery,
+  options: Pick<AdmissionOptions, 'flushBatch'> = {},
+) => {
   const abort = new AbortController(),
     disk: Bytes[] = [],
     wal: Bytes[] = [],
@@ -114,7 +119,11 @@ const fixture = async (prepare: PrepareIntent = append, recovery?: JournalRecove
       abort.abort();
     },
   } as unknown as JournalSession;
-  const owner = await createAdmissionOwner(carrier, { prepare, validateReceive: () => {} });
+  const owner = await createAdmissionOwner(carrier, {
+    prepare,
+    validateReceive: () => {},
+    ...options,
+  });
   return {
     owner,
     disk,
@@ -778,5 +787,51 @@ it('preparation revisions advance for no ops and new work uses the writer chosen
     expect(view(f.owner.snapshot())).toBe('ARL');
   } finally {
     await f.owner.close();
+  }
+});
+
+it('Account flush window keeps immediate journal admission, a hard deadline, and explicit barriers', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, { flushBatch: { quietMs: 300, maxMs: 1000 } });
+  try {
+    for (let i = 0; i < 10; i++) {
+      await f.owner.submit(intent('x')).accepted;
+      expect(f.wal.length).toBe(i + 1);
+      expect(view(f.owner.snapshot())).toBe('x'.repeat(i + 1));
+      expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(0);
+      await vi.advanceTimersByTimeAsync(100);
+    }
+    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(1);
+    expect(f.wal).toHaveLength(0);
+    await f.owner.submit(intent('y')).accepted;
+    await vi.advanceTimersByTimeAsync(299);
+    expect(f.wal).toHaveLength(1);
+    await f.owner.whenDurable();
+    expect(f.wal).toHaveLength(0);
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(2);
+  } finally {
+    await f.owner.close();
+    vi.useRealTimers();
+  }
+});
+
+it('locking before a batched flush retains the journal for cold recovery and cancels its timer', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, { flushBatch: { quietMs: 300, maxMs: 1000 } });
+  try {
+    await f.owner.submit(intent('saved before lock')).accepted;
+    await f.owner.close();
+    await vi.advanceTimersByTimeAsync(2000);
+    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(0);
+    const restored = await fixture(append, await f.carrier.loadRecovery());
+    try {
+      expect(view(restored.owner.snapshot())).toBe('saved before lock');
+    } finally {
+      await restored.owner.close();
+    }
+  } finally {
+    await f.owner.close();
+    vi.useRealTimers();
   }
 });

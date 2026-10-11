@@ -1,0 +1,156 @@
+
+Running 1 test using 1 worker
+
+(node:77051) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+restoring browser 0
+browser restored
+load chooser
+unlock prepared
+starting unlock
+failed screen Offline. Saved workspaces remain available; sync resumes when connected.
+DAY
+
+Sun 11 Oct 2026
+
+Sun 4 Oct
+Fri 9 Oct
+Yesterday
+Today
+Tomorrow
+Tue 13 Oct
+Sun 18 Oct
+Go to date
+STORAGE
+Local data
+Best-effort
+
+Writing is encrypted in this browser. Export a readable backup when you need one.
+
+Export markdown
+Lock workspace
+Undo
+Redo
+ACCOUNT
+Name
+Device owner
+Account ID
+GQhd__omEKM5lyuL5ILjK3OOaAzKxteCHqvVUyypVPk
+Devices
+History maintenance
+Use another account
+
+Network login is unavailable. Your writing remains available offline.
+
+Reconnect sync
+Sign out
+IDENTITY AND PREFERENCES
+Actor
+Device owner
+Version
+unknown
+Device
+Name
+Color
+Day rollover
+00:00
+01:00
+02:00
+03:00
+04:00
+05:00
+06:00
+07:00
+08:00
+09:00
+10:00
+11:00
+12:00
+13:00
+14:00
+15:00
+16:00
+17:00
+18:00
+19:00
+20:00
+21:00
+22:00
+23:00
+Save preferences
+INSTALL
+
+If the install button does not appear, use Install app in your browser menu.
+
+Unfiled
+0
+Close
+
+These cards were retained because their original collection can no longer display them. Choose a new home or remove them explicitly.
+
+Sat 10 Oct
+Today
+NEXT
+0/3
+
+Empty.
+
+DONE
+
+Nothing yet.
+
+Add
+Sun 11 Oct
+NEXT
+0/3
+
+Empty.
+
+DONE
+Keep the first device writing
+Unlock
+Remove
+Add
+Mon 12 Oct
+Today
+NEXT
+0/3
+
+Empty.
+
+DONE
+
+Nothing yet.
+
+Add
+Goals
+ receiver history 000; receiver history 001; receiver history 002; receiver history 003; receiver history 004; receiver history 005; receiver history 006; receiver history 007; receiver history 008; receiver history 009; receiver history 010; receiver history 011; receiver history 012; receiver history 013; receiver history 014; receiver history 015; receiver history 016; receiver history 017; receiver history 018; receiver history 019; receiver history 020; receiver history 021; receiver history 022; receiver history 023; receiver history 024; receiver history 025; receiver history 026; receiver history 027; receiver history 028; receiver history 029; receiver history 030; receiver history 031; receiver history 032; receiver history 033; receiver history 034; receiver history 035; receiver history 036; receiver history 037; receiver history 038; receiver history 039; receiver history 040; receiver history 041; receiver history 042; receiver history 043; receiver history 044; receiver history 045; receiver history 046; receiver history 047;
+Transfer selected lines
+Copy to
+Move to
+Next
+Scheduled
+Done
+  ✘  1 docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:16:1 › retained Account cold open (31.7s)
+
+
+  1) docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:16:1 › retained Account cold open 
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Open your writing', exact: true })
+
+
+      124 |             .getByRole('button', { name: /^(Unlock enrollment|Unlock and get invitation)$/ })
+      125 |             .click();
+    > 126 |           const openWriting = p.getByRole('button', { name: 'Open your writing', exact: true });
+          |                                                                                   ^
+      127 |           await expect(p.locator('.shell').or(openWriting)).toBeVisible({ timeout: 120000 });
+      128 |           if (await openWriting.isVisible()) await openWriting.click();
+      129 |         } else
+        at /Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:126:83
+
+    Error Context: ../../../../../../tmp/done-account-cold-open/received-0-baseline/artifacts/cold-retained-Account-cold-open/error-context.md
+
+  1 failed
+    docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:16:1 › retained Account cold open 

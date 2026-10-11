@@ -1,0 +1,42 @@
+
+Running 1 test using 1 worker
+
+(node:75587) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:16:1 › retained Account cold open (44.3s)
+
+
+  1) docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:16:1 › retained Account cold open 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('.goals .cm-content')
+    Timeout: 30000ms
+    - Expected  - 1
+    + Received  + 0
+
+    - Everything. Tasks, projects, someday-maybes, notes to self.
+       receiver history 000;
+
+    Call log:
+      - Expect "toHaveText" with timeout 30000ms
+      - waiting for locator('.goals .cm-content')
+        8 × locator resolved to <div translate="no" role="textbox" autocorrect="off" spellcheck="false" autocapitalize="off" aria-multiline="true" contenteditable="true" data-language="markdown" writingsuggestions="false" class="cm-content cm-lineWrapping" aria-placeholder="Everything. Tasks, projects, someday-maybes, notes to self.">…</div>
+          - unexpected value "Everything. Tasks, projects, someday-maybes, notes to self."
+        55 × locator resolved to <div translate="no" role="textbox" autocorrect="off" spellcheck="false" autocapitalize="off" aria-multiline="true" contenteditable="true" data-language="markdown" writingsuggestions="false" class="cm-content cm-lineWrapping" aria-placeholder="Everything. Tasks, projects, someday-maybes, notes to self.">…</div>
+           - unexpected value " receiver history 000;"
+
+
+      31 |         await page.keyboard.insertText(text);
+      32 |         expected += text;
+    > 33 |         await expect(pair.second.locator('.goals .cm-content')).toHaveText(expected, {
+         |                                                                 ^
+      34 |           timeout: 30000,
+      35 |         });
+      36 |         // Every burst has arrived before the next is produced, forcing a separate delivered page.
+        at /Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:33:65
+
+    Error Context: ../../../../../../tmp/done-account-cold-open/create-receiver/artifacts/cold-retained-Account-cold-open/error-context.md
+
+  1 failed
+    docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:16:1 › retained Account cold open 

@@ -1,0 +1,12 @@
+--- pristine/account-service/deliveryVerification.ts	2026-10-11 13:50:38
++++ svcC/account-service/deliveryVerification.ts	2026-10-11 13:50:38
+@@ -1,6 +1,7 @@
+ /** Bounded, core-owned reuse of cryptographic evidence only. No keys or commit authority. */
+-const MAX_ENTRIES = 512,
+-  MAX_BYTES = 16 * 1024 * 1024;
++// CATCH-UP DIAGNOSTIC C: bounds overridable from the environment in this scratch copy only.
++const MAX_ENTRIES = Number(process.env['DONE_CATCHUP_CACHE_ENTRIES'] ?? 512),
++  MAX_BYTES = Number(process.env['DONE_CATCHUP_CACHE_BYTES'] ?? 16 * 1024 * 1024);
+ function size(value: unknown): number {
+   if (value instanceof Uint8Array) return value.byteLength;
+   if (typeof value === 'string') return value.length * 2;

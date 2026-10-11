@@ -1,0 +1,71 @@
+profile 02-main/B-p1.cpuprofile
+divisor 28; sampled 30102 ms; idle 23172 ms; active 6930 ms = 247.5 ms per unit (23% busy)
+
+CATEGORIES (ms per unit, innermost matching frame decides)
+  132.3   53%  storage (content store, IndexedDB callbacks, journal, custody)
+   51.0   21%  inbound verification and ledger (verify page, inbound/delivery/spool ledger, coverage)
+   39.5   16%  other (program, native, unattributed)
+   10.9    4%  receive/sync driver and transport
+    8.4    3%  gc
+    2.6    1%  authority and membership checks
+    2.2    1%  ui-publication (workspace read, React, CodeMirror, layout)
+    0.6    0%  promotion and document comparison (admission, Yjs apply/fork/compare)
+
+TOP-DOWN (ms per unit inclusive, self in brackets; nodes >= 1.5% of active)
+   82.6 [    0.6]   P src/crdt/accountReceive.ts:198
+   71.3 [   48.8]     At src/crdt/custodyRecord.ts:404
+   22.6 [    2.0]       Et src/crdt/custodyRecord.ts:315
+   17.7 [   17.7]         n src/crdt/custodyCrypto.ts:23
+   10.0 [   10.0]     n src/crdt/custodyCrypto.ts:23
+   38.0 [   38.0]   (program)
+   21.0 [    0.1]   (anonymous) src/crdt/writeSession.ts:156
+   10.2 [    0.0]     (anonymous) src/crdt/contentStore.ts:287
+   10.2 [    0.0]       (anonymous) src/crdt/accountCapture.ts:110
+   10.2 [    0.0]         validate src/crdt/accountReceive.ts:311
+   10.2 [    0.0]           verify src/crdt/verifiedRecords.ts:77
+    6.2 [    0.0]             al src/crdt/verifiedRecords.ts:24
+    6.2 [    0.0]               (anonymous) src/crdt/verifiedRecords.ts:26
+    6.2 [    6.2]                 rl src/crdt/verifiedRecords.ts:4
+   14.8 [    0.8]   C src/crdt/contentStore.ts:234
+    6.5 [    0.0]     (anonymous) src/crdt/contentStore.ts:266
+    6.5 [    2.9]       sl src/crdt/contentCompaction.ts:49
+   14.6 [    0.0]   $ src/crdt/joinedAccount.ts:266
+   13.3 [    0.0]     Ai src/crdt/joinedAccount.ts:158
+    4.8 [    0.0]       cr account-protocol/contentDelivery.ts:304
+    4.4 [    0.0]         or account-protocol/contentDelivery.ts:239
+   13.9 [    0.0]   Ot src/crdt/custodyRecord.ts:388
+   12.6 [    1.1]     Et src/crdt/custodyRecord.ts:315
+   10.1 [   10.1]       n src/crdt/custodyCrypto.ts:23
+    9.7 [    9.4]   B src/crdt/accountReceive.ts:524
+    8.4 [    8.4]   (garbage collector)
+    8.3 [    0.0]   o.onsuccess src/crdt/startupStorage.ts:101
+    8.3 [    0.0]     p src/crdt/contentDatabase.ts:98
+    8.3 [    0.1]       step src/crdt/writeSession.ts:150
+    8.1 [    7.1]         (anonymous) src/crdt/startupStorage.ts:102
+
+BOTTOM-UP (self ms per unit, top 25)
+   48.8  At src/crdt/custodyRecord.ts:404
+   38.0  (program)
+   38.0  n src/crdt/custodyCrypto.ts:23
+   10.5  rl src/crdt/verifiedRecords.ts:4
+    9.4  B src/crdt/accountReceive.ts:524
+    8.4  (garbage collector)
+    7.1  (anonymous) src/crdt/startupStorage.ts:102
+    7.0  encode
+    5.0  (anonymous) account-protocol/recovery.ts:20
+    4.4  verify
+    3.6  sl src/crdt/contentCompaction.ts:49
+    3.2  Et src/crdt/custodyRecord.ts:315
+    3.1  w account-protocol/admission.ts:109
+    2.8  w src/crdt/contentRecord.ts:101
+    2.6  (anonymous) src/crdt/contentStore.ts:178
+    2.5  verify src/crdt/verifiedRecords.ts:77
+    2.4  (anonymous) src/crdt/verifiedRecords.ts:16
+    2.2  open
+    2.1  dr src/crdt/incrementalAccountLedger.ts:82
+    1.9  y account-protocol/preparation.ts:33
+    1.9  d account-protocol/recovery.ts:17
+    1.6  N account-protocol/ceremonyExchange.ts:68
+    1.6  x account-protocol/genesis.ts:30
+    1.5  transaction
+    1.1  (anonymous) src/crdt/contentStore.ts:289

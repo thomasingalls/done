@@ -4,6 +4,7 @@ import fc from 'fast-check';
 import * as Y from 'yjs';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { accountBatchPolicy } from '../../src/crdt/accountBatchPolicy.ts';
 import {
   ready,
   open,
@@ -543,12 +544,60 @@ test(
     });
     await assert.rejects(receive(f.page, a.bytes), /inactive|closed/);
     await f.page.evaluate(() => closing);
-    assert.deepEqual(await f.page.evaluate(() => seen), ['A' + initial]);
+    assert.deepEqual(await f.page.evaluate(() => seen), [
+      (accountBatchPolicy(process.env.ACCOUNT_BATCH_MODE).publication ? 'BA' : 'A') + initial,
+    ]);
     await cold(f);
     await open(f.page, item);
     assert.equal(await view(f.page), 'BA' + initial);
     assert.equal((await status(f.page)).receivedThrough, 1);
     assert.deepEqual(await captures(f.page), before);
+    await close(f.page);
+  },
+);
+
+test(
+  'batched received page verifies and publishes once while retaining pending frames and undo isolation',
+  {
+    timeout: 45000,
+    skip: !process.env.ACCOUNT_BATCH_MODE || process.env.ACCOUNT_BATCH_MODE === 'reference',
+  },
+  async (t) => {
+    const { f, item, initial, snapshot } = await ready(t, 'batched-page');
+    const originals = frames(snapshot, [
+      (t) => t.insert(0, 'A'),
+      (t) => t.insert(0, 'B'),
+      (t) => t.delete(0, 1),
+    ]);
+    const wire = await envelope(f.page, item, 1, [originals[1], originals[0], originals[2]]);
+    await open(f.page, item);
+    const before = await captures(f.page);
+    const checks = await f.page.evaluate(() => __doneLedgerMetrics().work.projectionChecks);
+    await f.page.evaluate(() => {
+      window.seen = [];
+      window.sent = [];
+      editor.subscribe(() => seen.push(editor.read().master));
+      editor.outgoing((b) => sent.push([...b]));
+    });
+    const a = answer(f, item, await request(f.page), wire);
+    await receive(f.page, a.bytes);
+    assert.deepEqual(await f.page.evaluate(() => seen), ['A' + initial]);
+    assert.equal(
+      await f.page.evaluate(() => __doneLedgerMetrics().work.projectionChecks),
+      checks + 1,
+    );
+    assert.equal(await f.page.evaluate(() => sent.length), 0);
+    assert.equal(await f.page.evaluate(() => editor.read().undo), 0);
+    assert.deepEqual(await captures(f.page), before);
+    await edit(f.page, 0, 0, 'LOCAL ');
+    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
+    assert.equal(await view(f.page), 'A' + initial);
+    await f.page.evaluate(() => editor.whenDurable());
+    await close(f.page);
+    await cold(f);
+    await open(f.page, item);
+    assert.equal(await view(f.page), 'A' + initial);
+    assert.equal((await status(f.page)).receivedThrough, 1);
     await close(f.page);
   },
 );

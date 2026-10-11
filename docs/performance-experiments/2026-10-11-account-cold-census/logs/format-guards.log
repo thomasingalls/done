@@ -1,0 +1,16 @@
+(node:87608) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ removing exact capsule identity consistency accepts two different original payloads under one ID (85.227917ms)
+✔ real source-digest and envelope-body omissions rescue separately signed and encrypted semantic substitutions (177.982917ms)
+(node:87609) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ twenty fixed carriers, chain steps, source digest and baseline agree with actual encoders and crypto (252.632042ms)
+✔ canonical framing rejects whitespace, BOM, alternate spellings, bad UTF-8, extra fields and all truncated prefixes (110.85625ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 782.340042

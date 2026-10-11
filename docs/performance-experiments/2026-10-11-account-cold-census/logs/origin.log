@@ -1,0 +1,4 @@
+origin isolation: scanned 31 built files
+  1 allowlisted origin: http://www.w3.org (2, namespace-identifier)
+  no literal remote URL in built output, allowlisted namespace identifiers aside (§10.9, row 17 A1)
+fatal: not a git repository (or any of the parent directories): .git

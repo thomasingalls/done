@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 import { membershipProofChain } from './membershipLocator.ts';
 import { parseMembershipChain } from '../account-protocol/membershipLocator.ts';
 /** Commit distribution, membership, final cutoff and retry evidence as one service transition. */
@@ -22,7 +24,6 @@ import type { AcceptedHead } from '../account-protocol/positionDecision.ts';
 import {
   snapshot,
   snapshotBytes,
-  census,
   selectPublisher,
   verifyCurrentWorkspaceAuthority,
   type Snapshot,
@@ -43,6 +44,7 @@ export async function commitRotation(
   input: unknown,
   issuer: RotationIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return no('unavailable');
   let request;
@@ -94,7 +96,7 @@ export async function commitRotation(
           continue;
         }
         const publisher = selectPublisher(auth, member.id),
-          ledger = await census(source, publisher);
+          ledger = await verifiedCensus(source, publisher, reuse);
         ledgers.push({ publisher, ledger, witness: raw ? parseWitness(JSON.parse(raw)) : null });
         heads.push({ credentialId: member.id, position: ledger.through, link: ledger.previous });
       }

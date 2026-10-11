@@ -28,6 +28,56 @@ const parsed = (wire) =>
   decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
 
 test(
+  'hidden-page batch close sends promptly; death before the next batch recovers journalled writing',
+  {
+    timeout: 60000,
+    skip: !process.env.ACCOUNT_BATCH_MODE || process.env.ACCOUNT_BATCH_MODE === 'reference',
+  },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'batch-lifecycle');
+    await syncing(f.page, item);
+    await settled(f.page);
+    const initial = await view(f.page);
+    await f.page.evaluate(() => {
+      // Hold ordinary batch deadlines well beyond this test, then exercise the real listener.
+      const timeout = globalThis.setTimeout;
+      globalThis.setTimeout = (fn, ms, ...args) =>
+        timeout(fn, ms >= 250 && ms <= 2000 ? 60000 : ms, ...args);
+    });
+    await edit(f.page, initial.length, 0, ' HIDDEN');
+    const before = (await syncStatus(f.page)).send.acceptedThrough;
+    await f.page.evaluate((before) => {
+      window.expectedThrough = before + 1;
+    }, before);
+    await f.page.evaluate(() => {
+      Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await waitPredicate(
+      f.page,
+      () =>
+        opened.sync.status.send.acceptedThrough >= expectedThrough &&
+        opened.sync.status.send.phase === 'idle',
+    );
+    assert.ok((await syncStatus(f.page)).send.acceptedThrough > before);
+    await f.page.evaluate(() => {
+      delete document.visibilityState;
+    });
+    await edit(f.page, initial.length + ' HIDDEN'.length, 0, ' JOURNAL');
+    assert.equal(await view(f.page), initial + ' HIDDEN JOURNAL');
+    // The delayed flush/send timers have not run. Renderer death must retain the acknowledged edit.
+    await crash(f);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(await view(f.page), initial + ' HIDDEN JOURNAL');
+    assert.ok((await syncStatus(f.page)).send.acceptedThrough > before);
+    await close(f.page);
+  },
+);
+
+test(
   'one owner advances from submit receipts without self content readback, through compaction and cold replay',
   { timeout: 60000 },
   async (t) => {

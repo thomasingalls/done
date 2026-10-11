@@ -1,0 +1,12 @@
+(node:87599) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ independent batch bytes retain two original updates; signed second-update substitution needs the real guard (95.568417ms)
+✔ actual actor, order and byte-budget omissions expose forbidden batch allocations (314.244709ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 838.083041

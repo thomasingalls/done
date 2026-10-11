@@ -1,0 +1,28 @@
+
+Running 1 test using 1 worker
+
+(node:74368) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:11:1 › retained Account cold open (2.0m)
+
+
+  1) docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:11:1 › retained Account cold open 
+
+    TimeoutError: locator.waitFor: Timeout 120000ms exceeded.
+    Call log:
+      - waiting for locator('.shell') to be visible
+
+
+      78 |           await p.getByRole('button', { name: 'Open your writing', exact: true }).click();
+      79 |         } else await p.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
+    > 80 |         await p.locator('.shell').waitFor({ state: 'visible', timeout: 120000 });
+         |                                   ^
+      81 |         const ready = await p.evaluate(() => ({
+      82 |           now: performance.now(), ledger: (globalThis as any).__doneLedgerMetrics?.(),
+      83 |           milestones: (globalThis as any).__doneOpenMilestones?.(), native: (globalThis as any).__coldNative(),
+        at /Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:80:35
+
+    Error Context: ../../../../../../tmp/done-account-cold-open/baseline-diagnostic/artifacts/cold-retained-Account-cold-open/error-context.md
+
+  1 failed
+    docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:11:1 › retained Account cold open 

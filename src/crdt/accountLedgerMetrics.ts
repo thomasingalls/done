@@ -2,6 +2,13 @@
 const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
 export const ledgerProfiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
 const workNames = [
+  'startupValidations',
+  'joinedStartupValidations',
+  'deliveryVerifications',
+  'inboundVerifications',
+  'inboundCensuses',
+  'deliveryPrefixLinks',
+  'coverageBaselines',
   'loads',
   'loadedRows',
   'loadedBytes',
@@ -11,6 +18,9 @@ const workNames = [
   'sourceParseBytes',
   'recordCopies',
   'recordCopyBytes',
+  'journalFlushes',
+  'dirtyJournalFlushes',
+  'projectionChecks',
 ] as const;
 const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   (typeof workNames)[number],
@@ -26,7 +36,13 @@ type WorkTiming =
   | 'storageOperation'
   | 'sourceParse'
   | 'validateUpdates'
-  | 'envelopeSelection';
+  | 'envelopeSelection'
+  | 'admissionLocal'
+  | 'admissionRemote'
+  | 'admissionFlush'
+  | 'waitLocal'
+  | 'waitRemote'
+  | 'waitFlush';
 const costs: Partial<Record<WorkTiming, { calls: number; totalMs: number; maxMs: number }>> = {};
 /** Bounded numeric-only development counters. Names are internal literals, never input. */
 export const countLedgerWork = (name: keyof typeof work, count = 1) => {
@@ -55,7 +71,16 @@ export const measureLedger = (name: (typeof names)[number], since: number) => {
   row.totalMs += ms;
   row.maxMs = Math.max(row.maxMs, ms);
 };
+const queuePeaks = { local: 0, remote: 0, flush: 0 };
+export const observeAdmissionQueue = (queue: readonly { kind: keyof typeof queuePeaks }[]) => {
+  if (!ledgerProfiling) return;
+  const counts = { local: 0, remote: 0, flush: 0 };
+  for (const job of queue) counts[job.kind]++;
+  for (const kind of ['local', 'remote', 'flush'] as const)
+    queuePeaks[kind] = Math.max(queuePeaks[kind], counts[kind]);
+};
 export const accountLedgerMetrics = () => ({
+  queuePeaks: { ...queuePeaks },
   ...counters,
   timings: structuredClone(timings),
   work: { ...work },
@@ -67,3 +92,23 @@ if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
     configurable: true,
   });
 }
+
+/** Fixed milestones for a single opening; numeric diagnostics never retain account identifiers. */
+const openMilestones: Partial<
+  Record<
+    'authorized' | 'classified' | 'owner' | 'editor',
+    {
+      at: number;
+      metrics: ReturnType<typeof accountLedgerMetrics>;
+    }
+  >
+> = {};
+export const markAccountOpen = (name: keyof typeof openMilestones) => {
+  if (ledgerProfiling)
+    openMilestones[name] = { at: performance.now(), metrics: accountLedgerMetrics() };
+};
+if (ledgerProfiling)
+  Object.defineProperty(globalThis, '__doneOpenMilestones', {
+    value: () => structuredClone(openMilestones),
+    configurable: true,
+  });

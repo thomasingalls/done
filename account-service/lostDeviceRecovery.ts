@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 import { isPrunedDecision } from './prunedDecision.ts';
 import { captureRecoveryHistory, verifyRecoveryHistory } from './recoveryHistory.ts';
 import { historySources } from './historySources.ts';
@@ -35,7 +37,7 @@ import {
 import { digest, hex } from '../account-protocol/recovery.ts';
 import { json } from '../account-protocol/admission.ts';
 import { decodeSubmission } from '../account-protocol/submission.ts';
-import { read, snapshot, snapshotBytes, selectPublisher, census } from './delivery.ts';
+import { read, snapshot, snapshotBytes, selectPublisher } from './delivery.ts';
 /** Fresh account recovery preparation, reads and an exact atomic membership replacement. */
 import type { DatabaseSync } from 'node:sqlite';
 import { randomBytes } from 'node:crypto';
@@ -113,6 +115,7 @@ export class LostDeviceRecovery {
   private now: () => number;
   private hook: Hook;
   private sessions: AccountSessions | undefined;
+  private reuse: DeliveryVerification | undefined;
   constructor(
     db: DatabaseSync,
     policy: Policy,
@@ -120,6 +123,7 @@ export class LostDeviceRecovery {
     now: () => number,
     hook: Hook,
     sessions?: AccountSessions,
+    reuse?: DeliveryVerification,
   ) {
     this.db = db;
     this.policy = policy;
@@ -127,6 +131,7 @@ export class LostDeviceRecovery {
     this.now = now;
     this.hook = hook;
     this.sessions = sessions;
+    this.reuse = reuse;
   }
   private issuance(
     result: import('../account-protocol/session.ts').SessionResult,
@@ -311,7 +316,7 @@ export class LostDeviceRecovery {
       const ledgers = [];
       for (const [i, source] of (before as Snapshot[]).entries()) {
         const publisher = selectPublisher(auth, intent.heads[i]!.credentialId),
-          ledger = await census(source, publisher);
+          ledger = await verifiedCensus(source, publisher, this.reuse);
         if (
           !same(intent.heads[i], {
             credentialId: publisher.credential,
@@ -576,7 +581,7 @@ export class LostDeviceRecovery {
           auth.removal
         )
           return no('state-changed');
-        const ledger = await census(before, auth);
+        const ledger = await verifiedCensus(before, auth, this.reuse);
         if (request.after > ledger.through) return no('request-conflict');
         const body: Omit<RecoveryReadPage, 'signature'> = {
           v: 1,

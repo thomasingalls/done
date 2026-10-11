@@ -160,7 +160,7 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
       if (result[key] !== historical[key]) throw Error('route');
     const encoded = encodeSourceCapsule(result);
     try {
-      if (hex(encoded) !== hex(bytes)) throw Error('noncanonical');
+      if (!sameBytes(encoded, bytes)) throw Error('noncanonical');
     } finally {
       encoded.fill(0);
     }
@@ -202,6 +202,35 @@ export function captureCatalog(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
 ): Map<string, Bytes> {
+  return scanCapturedSources(records, route);
+}
+
+/** Scalar metadata used only during a synchronous census, with no decoded update buffers. */
+interface CapturedSourceDescription {
+  sequence: number;
+  epoch: number;
+  sources: { actor: string; kind: SourceUpdate['kind']; length: number }[];
+}
+export function inspectCapturedSources(records: readonly OpenedRecord[], route: CaptureRoute) {
+  const descriptions = new Map<string, CapturedSourceDescription>();
+  const sources = scanCapturedSources(records, route, (c, record) => {
+    const prior = descriptions.get(c.id);
+    if (prior) prior.sequence = Math.min(prior.sequence, record.seq);
+    else
+      descriptions.set(c.id, {
+        sequence: record.seq,
+        epoch: c.epoch,
+        sources: c.sources.map((s) => ({ actor: s.actor, kind: s.kind, length: s.bytes.length })),
+      });
+  });
+  return { sources, descriptions };
+}
+
+function scanCapturedSources(
+  records: readonly OpenedRecord[],
+  route: CaptureRoute,
+  describe?: (capsule: SourceCapsule, record: OpenedRecord) => void,
+): Map<string, Bytes> {
   const catalog = new Map<string, Bytes>();
   for (const r of records) {
     if (r.kind === 'heads') captureError('Unexpected acceptance head before relay integration');
@@ -209,9 +238,10 @@ export function captureCatalog(
     const c = decodeSourceCapsule(r.bytes, route);
     try {
       const existing = catalog.get(c.id);
-      if (existing && hex(existing) !== hex(r.bytes))
+      if (existing && !sameBytes(existing, r.bytes))
         captureError('Conflicting source capsule identity');
       catalog.set(c.id, r.bytes);
+      describe?.(c, r);
     } finally {
       eraseCapsule(c);
     }

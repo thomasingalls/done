@@ -1,0 +1,15 @@
+
+Running 1 test using 1 worker
+
+(node:75976) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+received bursts 1
+received bursts 9
+received bursts 17
+received bursts 25
+received bursts 33
+received bursts 41
+receiver fixture saved
+  ✓  1 docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts:16:1 › retained Account cold open (1.3m)
+
+  1 passed (1.3m)

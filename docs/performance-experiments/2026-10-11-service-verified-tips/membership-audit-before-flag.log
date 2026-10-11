@@ -1,0 +1,39 @@
+(node:99694) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99694) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:99694) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(node:99694) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✖ history maintenance preserves admitted ancestry across rotation and rechecks eligible admitters (1942.41975ms)
+(node:99695) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99695) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:99695) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(node:99695) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ publisher quarantine also fences checkpoint mutation until operator restart and full verification (108.4575ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2452.984416
+
+✖ failing tests:
+
+test at test/account-ceremony/content-transfer.test.mjs:6145:1
+✖ history maintenance preserves admitted ancestry across rotation and rechecks eligible admitters (1942.41975ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(x.f.core.deliveryVerificationStatus.auditsCompleted >= 1)
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-ceremony/content-transfer.test.mjs:6322:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

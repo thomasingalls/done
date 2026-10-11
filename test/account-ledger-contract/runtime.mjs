@@ -3,6 +3,11 @@ import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import * as Y from 'yjs';
 export const controls = {
+  coldPrefixReference: [
+    'deliveryRecord.ts',
+    'const expectedAt = async (position: number) => {',
+    'const expectedAt = async (position: number) => { if (!reuse && !continuation) return expectedPosition(active, position, subtle);',
+  ],
   batchActor: ['spoolRecord.ts', "captureError('Source batch actor changed');", 'void 0;'],
   batchOrder: ['spoolRecord.ts', "captureError('Source batch order changed');", 'void 0;'],
   batchBytes: ['spoolRecord.ts', "captureError('Source batch too large');", 'void 0;'],
@@ -50,12 +55,17 @@ export async function load(control) {
             name: 'ledger-control',
             enforce: 'pre',
             transform(code, id) {
-              if (control === 'oldBatchReader') {
+              if (control === 'oldBatchReader' || control === 'repeatedSourceReader') {
                 if (!id.endsWith('/src/crdt/spoolRecord.ts')) return;
                 hits++;
                 return execFileSync(
                   'git',
-                  ['show', '284a97a27dc3344fcb7c55a8757a2a41c74fe0b9:src/crdt/spoolRecord.ts'],
+                  [
+                    'show',
+                    (control === 'oldBatchReader'
+                      ? '284a97a27dc3344fcb7c55a8757a2a41c74fe0b9'
+                      : '4bcac41928dae58a1795d4adb126595b898a56ca') + ':src/crdt/spoolRecord.ts',
+                  ],
                   {
                     encoding: 'utf8',
                   },
@@ -81,7 +91,12 @@ export async function load(control) {
       minify: false,
       rollupOptions: { external: ['yjs'], output: { globals: { yjs: 'LedgerYjs' } } },
       lib: {
-        entry: resolve('test/account-ledger-contract/browser.ts'),
+        // The historical reader predates exports now required by unrelated live consumers.
+        entry: resolve(
+          control === 'oldBatchReader'
+            ? 'src/crdt/spoolRecord.ts'
+            : 'test/account-ledger-contract/browser.ts',
+        ),
         name: 'LedgerContract',
         formats: ['iife'],
       },

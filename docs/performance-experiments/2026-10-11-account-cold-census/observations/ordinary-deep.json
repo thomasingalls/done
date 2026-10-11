@@ -1,0 +1,20 @@
+[
+  {
+    "run": 0,
+    "coldMs": 3416.300001144409,
+    "ready": {
+      "now": 4351.5,
+      "native": {
+        "importKey": 1934,
+        "deriveKey": 979,
+        "decrypt": 12419,
+        "verify": 3646,
+        "digest": 16318
+      }
+    },
+    "nativeBefore": {},
+    "heap": 17277220,
+    "editMs": 25,
+    "errors": []
+  }
+]

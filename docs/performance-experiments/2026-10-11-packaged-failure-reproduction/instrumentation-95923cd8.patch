@@ -1,0 +1,524 @@
+--- a/account-service/scoped-http.ts	2026-10-11 00:05:46
++++ b/account-service/scoped-http.ts	2026-10-11 00:46:53
+@@ -23,6 +23,7 @@
+ import type { AccountNotifications } from './notifications.ts';
+ import { AuthorizationRefused } from './authorization.ts';
+ import { createSessionHandler } from './session-http.ts';
++import { flake, flakeOn, flakeTag, flakeUnlimited } from './flakeProbe.ts';
+ 
+ export function createScopedAccountHandler(
+   core: AccountCore,
+@@ -160,6 +161,7 @@
+   let active = 0,
+     budget = 120,
+     last = performance.now();
++  flake({ event: 'scoped-start', unlimited: flakeUnlimited });
+   return async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
+     if (request.url?.startsWith('/account/session/v1/')) {
+       try {
+@@ -172,11 +174,14 @@
+     response.setHeader('Content-Type', 'application/json');
+     response.setHeader('X-Content-Type-Options', 'nosniff');
+     const send = (status: number, body: unknown) => {
++      if (flakeOn && status >= 400 && status !== 429)
++        flake({ event: 'error-body', source: 'scoped', path: request.url, status, body: JSON.stringify(body).slice(0, 300) });
+       if (response.destroyed || response.writableEnded) return;
+       if (status >= 400) response.setHeader('Connection', 'close');
+       response.writeHead(status).end(JSON.stringify(body));
+     };
+-    const authFailure = (refusal: GrantRefusal) =>
++    const authFailure = (refusal: GrantRefusal) => (
++      flake({ event: 'auth-failure', source: 'scoped', path: request.url, refusal }),
+       send(
+         refusal === 'capacity'
+           ? 429
+@@ -188,7 +193,8 @@
+                 ? 403
+                 : 409,
+         { v: 1, kind: 'authorization-refused', refusal },
+-      );
++      )
++    );
+     const path = request.url ?? '',
+       json = jsonRoutes.get(path),
+       binary = binaryRoutes.get(path);
+@@ -208,9 +214,34 @@
+     const now = performance.now();
+     budget = Math.min(120, budget + ((now - last) * 2) / 1000);
+     last = now;
+-    if (active >= 16 || budget < 1) return void authFailure('capacity');
++    if (flakeUnlimited) budget = 120;
++    const tag = flakeTag(token);
++    if (active >= 16 || budget < 1) {
++      flake({ event: 'refused', source: 'scoped', path, tag, active, budget: Math.round(budget * 100) / 100 });
++      return void authFailure('capacity');
++    }
+     active++;
+     budget--;
++    let probeAction: unknown, probePayload: unknown;
++    if (flakeOn) {
++      const t0 = performance.now(),
++        activeAt = active,
++        budgetAt = Math.round(budget * 100) / 100;
++      response.once('close', () =>
++        flake({
++          event: 'done',
++          source: 'scoped',
++          path,
++          tag,
++          status: response.writableFinished ? response.statusCode : 0,
++          ms: Math.round((performance.now() - t0) * 10) / 10,
++          active: activeAt,
++          budget: budgetAt,
++          ...(typeof probeAction === 'string' ? { action: probeAction.slice(0, 24) } : {}),
++          ...(typeof probePayload === 'string' ? { payload: probePayload.slice(0, 24) } : {}),
++        }),
++      );
++    }
+     const timer = setTimeout(() => {
+       response.destroy();
+       request.destroy();
+@@ -293,8 +324,19 @@
+         } catch {
+           return void send(400, { ok: false, refusal: 'malformed' });
+         }
++        if (flakeOn && value && typeof value === 'object') {
++          probeAction = (value as { action?: unknown }).action;
++          probePayload = (value as { payload?: unknown }).payload;
++        }
+         const result = await json!.run(value, token, authorization);
+         if (result && typeof result === 'object' && 'ok' in result && result.ok === false) {
++          flake({
++            event: 'result-refused',
++            source: 'scoped',
++            path,
++            tag,
++            refusal: 'refusal' in result ? String(result.refusal).slice(0, 40) : 'reason' in result ? String((result as { reason?: unknown }).reason).slice(0, 40) : 'unknown',
++          });
+           if (isGrant && 'refusal' in result) authFailure(result.refusal as GrantRefusal);
+           else send(409, result);
+         } else {
+@@ -314,7 +356,10 @@
+       }
+     } catch (cause) {
+       if (cause instanceof AuthorizationRefused) authFailure(cause.refusal);
+-      else send(400, { ok: false, refusal: 'malformed' });
++      else {
++        flake({ event: 'threw', source: 'scoped', path, tag });
++        send(400, { ok: false, refusal: 'malformed' });
++      }
+     } finally {
+       clearTimeout(timer);
+       active--;
+--- a/account-service/session-http.ts	2026-10-11 00:05:46
++++ b/account-service/session-http.ts	2026-10-11 00:46:53
+@@ -7,6 +7,7 @@
+   type SessionOperation,
+   type SessionResult,
+ } from '../account-protocol/session.ts';
++import { flake, flakeOn, flakeUnlimited } from './flakeProbe.ts';
+ 
+ export function createSessionHandler(sessions: AccountSessions, policy: Policy) {
+   validatePolicy(policy);
+@@ -28,6 +29,8 @@
+     response.setHeader('Content-Type', 'application/json');
+     response.setHeader('X-Content-Type-Options', 'nosniff');
+     const send = (status: number, result: unknown) => {
++      if (flakeOn && status >= 400 && status !== 429)
++        flake({ event: 'error-body', source: 'session', path: request.url, status, body: JSON.stringify(result).slice(0, 300) });
+       if (!response.destroyed && !response.writableEnded) {
+         if (status >= 400) response.setHeader('Connection', 'close');
+         response.writeHead(status).end(JSON.stringify(result));
+@@ -47,12 +50,26 @@
+     const now = performance.now();
+     budget = Math.min(120, budget + ((now - last) * 2) / 1000);
+     last = now;
++    if (flakeUnlimited) budget = 120;
+     if (active >= 16 || budget < 1) {
++      flake({ event: 'refused', source: 'session', path: request.url, active, budget: Math.round(budget * 100) / 100 });
+       response.setHeader('Retry-After', '1');
+       return void send(429, { ok: false, refusal: 'capacity' });
+     }
+     budget--;
+     active++;
++    if (flakeOn) {
++      const t0 = performance.now();
++      response.once('close', () =>
++        flake({
++          event: 'done',
++          source: 'session',
++          path: request.url,
++          status: response.writableFinished ? response.statusCode : 0,
++          ms: Math.round((performance.now() - t0) * 10) / 10,
++        }),
++      );
++    }
+     const timer = setTimeout(() => {
+       response.destroy();
+       request.destroy();
+--- a/account-service/session-host.ts	2026-10-11 00:05:46
++++ b/account-service/session-host.ts	2026-10-11 00:46:53
+@@ -1,3 +1,4 @@
++import { flake, flakeOn, flakeUnlimited } from './flakeProbe.ts';
+ import { RECOVERY_COMMIT_LIMIT } from '../account-protocol/recoveryCommit.ts';
+ import { RECOVERY_READ_REQUEST_LIMIT } from '../account-protocol/recoveryRead.ts';
+ import { LOST_RECOVERY_REQUEST_LIMIT } from '../account-protocol/lostDeviceRecovery.ts';
+@@ -112,6 +113,8 @@
+     response.setHeader('Content-Type', 'application/json');
+     response.setHeader('X-Content-Type-Options', 'nosniff');
+     const send = (status: number, value: unknown) => {
++      if (flakeOn && status >= 400 && status !== 429)
++        flake({ event: 'error-body', source: 'setup', path: request.url, status, body: JSON.stringify(value).slice(0, 300) });
+       if (response.destroyed || response.writableEnded) return;
+       if (status >= 400) response.setHeader('Connection', 'close');
+       response.writeHead(status).end(JSON.stringify(value));
+@@ -126,9 +129,25 @@
+     const now = performance.now();
+     budget = Math.min(120, budget + ((now - last) * 2) / 1000);
+     last = now;
+-    if (active >= 16 || budget < 1) return void send(429, { ok: false, refusal: 'capacity' });
++    if (flakeUnlimited) budget = 120;
++    if (active >= 16 || budget < 1) {
++      flake({ event: 'refused', source: 'setup', path, active, budget: Math.round(budget * 100) / 100 });
++      return void send(429, { ok: false, refusal: 'capacity' });
++    }
+     active++;
+     budget--;
++    if (flakeOn) {
++      const t0 = performance.now();
++      response.once('close', () =>
++        flake({
++          event: 'done',
++          source: 'setup',
++          path,
++          status: response.writableFinished ? response.statusCode : 0,
++          ms: Math.round((performance.now() - t0) * 10) / 10,
++        }),
++      );
++    }
+     const timer = setTimeout(() => {
+       response.destroy();
+       request.destroy();
+--- a/account-service/notifications.ts	2026-10-11 00:05:46
++++ b/account-service/notifications.ts	2026-10-11 00:46:53
+@@ -4,6 +4,7 @@
+ import type { AuthorityPin } from '../account-protocol/authority.ts';
+ import type { GrantScope } from '../account-protocol/scopedGrant.ts';
+ import { AuthorizationRefused } from './authorization.ts';
++import { flake, flakeTag, flakeUnlimited } from './flakeProbe.ts';
+ export const NOTIFICATION_PATH = '/account/notifications/v1/subscribe';
+ export const NOTIFICATION_LIMITS = Object.freeze({
+   streams: 128,
+@@ -51,6 +52,7 @@
+     response.setHeader('Cache-Control', 'no-store');
+     response.setHeader('X-Content-Type-Options', 'nosniff');
+     const fail = (status: number, refusal: string) => {
++      flake({ event: 'notify-fail', source: 'notify', status, refusal });
+       if (!response.destroyed && !response.headersSent)
+         response
+           .writeHead(status, { 'Content-Type': 'application/json', Connection: 'close' })
+@@ -71,9 +73,14 @@
+     const now = performance.now();
+     this.#budget = Math.min(120, this.#budget + ((now - this.#last) * 2) / 1000);
+     this.#last = now;
+-    if (this.#pending >= 16 || this.#budget < 1) return fail(429, 'capacity');
++    if (flakeUnlimited) this.#budget = 120;
++    if (this.#pending >= 16 || this.#budget < 1) {
++      flake({ event: 'refused', source: 'notify', path: NOTIFICATION_PATH, tag: flakeTag(token), active: this.#pending, budget: Math.round(this.#budget * 100) / 100 });
++      return fail(429, 'capacity');
++    }
+     this.#budget--;
+     this.#pending++;
++    flake({ event: 'notify-accepted', source: 'notify', tag: flakeTag(token), budget: Math.round(this.#budget * 100) / 100 });
+     const timer = setTimeout(() => {
+       request.destroy();
+       response.destroy();
+--- a/test/packaged-account/history.spec.ts	2026-10-11 00:05:46
++++ b/test/packaged-account/history.spec.ts	2026-10-11 00:47:10
+@@ -4,6 +4,22 @@
+ import { startService, stopService } from './server';
+ 
+ const panel = (p: Page) => p.getByRole('region', { name: 'History maintenance', exact: true });
++// FLAKE-PROBE (scratch only): wall-clock step timings on stdout; no change to the journey.
++const mark = (test: string, name: string, extra: Record<string, unknown> = {}) =>
++  console.log('FLAKE_MARK ' + JSON.stringify({ test, name, t: Date.now(), ...extra }));
++async function step<T>(test: string, name: string, run: () => Promise<T>): Promise<T> {
++  const t = Date.now();
++  try {
++    const value = await run();
++    console.log('FLAKE_STEP ' + JSON.stringify({ test, name, t, ms: Date.now() - t, ok: true }));
++    return value;
++  } catch (cause) {
++    console.log('FLAKE_STEP ' + JSON.stringify({ test, name, t, ms: Date.now() - t, ok: false }));
++    throw cause;
++  }
++}
++let flakeTimings: { path: string; status: number; elapsed: number }[] = [];
++let flakeStarted = 0;
+ async function inspect(p: Page) {
+   await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+   await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+@@ -56,10 +72,13 @@
+   const service = await startService(info.outputPath('service'), undefined, true, true);
+   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+   try {
+-    pair = await pairedEditors(page, browser, true);
++    mark('two', 'start');
++    pair = await step('two', 'pairing', () => pairedEditors(page, browser, true));
+     const second = pair.second;
+     const timings: { path: string; status: number; elapsed: number }[] = [];
+     const started = Date.now();
++    flakeTimings = timings;
++    flakeStarted = started;
+     page.on('response', (response) => {
+       const path = new URL(response.url()).pathname;
+       if (path.startsWith('/account/'))
+@@ -67,13 +86,23 @@
+     });
+ 
+     await add(second, 'Second device before snapshot');
+-    await expect(page.locator('.shell')).toContainText('Second device before snapshot', {
+-      timeout: 15000,
+-    });
++    await step('two', 'pre-snapshot-delivery', () =>
++      expect(page.locator('.shell')).toContainText('Second device before snapshot', {
++        timeout: 15000,
++      }),
++    );
++    mark('two', 'submit-blocked');
+     // Neither edit reaches delivery. The first is carried only in its admitted snapshot;
+     // the second remains an independent local original while that snapshot is installed.
+-    await page.route('**/account/delivery/submit', (route) => route.abort());
+-    await second.route('**/account/delivery/submit', (route) => route.abort());
++    const aborts = { first: [] as number[], second: [] as number[] };
++    await page.route('**/account/delivery/submit', (route) => {
++      aborts.first.push(Date.now());
++      return route.abort();
++    });
++    await second.route('**/account/delivery/submit', (route) => {
++      aborts.second.push(Date.now());
++      return route.abort();
++    });
+     await add(page, 'First device snapshot-only writing');
+     await add(second, 'Second device retained offline original');
+     await expect(second.locator('.shell')).not.toContainText('First device snapshot-only writing');
+@@ -133,11 +162,14 @@
+     await expect(second.locator('.shell')).not.toContainText('First device snapshot-only writing');
+     await expect(second.locator('.shell')).toContainText('Second device retained offline original');
+     // A new renderer has no test fault, and retries from the unchanged durable witness.
++    mark('two', 'reopen-after-abort');
+     await second.goto('/');
+     await openSaved(second, pair.next.code, true);
+-    await expect(second.locator('.shell')).toContainText('First device snapshot-only writing', {
+-      timeout: 20000,
+-    });
++    await step('two', 'install-after-reopen', () =>
++      expect(second.locator('.shell')).toContainText('First device snapshot-only writing', {
++        timeout: 20000,
++      }),
++    );
+     await expect(second.locator('.shell')).toContainText('Second device retained offline original');
+     await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+     await pair.other.setOffline(true);
+@@ -147,20 +179,27 @@
+     await expect(second.locator('.shell')).toContainText('Second device retained offline original');
+     await page.unroute('**/account/delivery/submit');
+     await second.unroute('**/account/delivery/submit');
++    mark('two', 'submit-unblocked');
++    console.log('FLAKE_ABORTS ' + JSON.stringify({ unrouteAt: Date.now(), ...aborts }));
+     await pair.other.setOffline(false);
+     // The first device stayed browser-online while its submit route was unavailable.
+     // Removing that fault must announce recovery: local typing deliberately preserves
+     // unknown-outcome backoff, which can exceed this journey's 15-second delivery check.
+     await page.evaluate(() => dispatchEvent(new Event('online')));
++    mark('two', 'online-again');
+     await inspect(second);
+     await add(page, 'First device after maintenance');
+-    await expect(second.locator('.shell')).toContainText('First device after maintenance', {
+-      timeout: 15000,
+-    });
++    await step('two', 'post-maintenance-first-to-second', () =>
++      expect(second.locator('.shell')).toContainText('First device after maintenance', {
++        timeout: 15000,
++      }),
++    );
+     await add(second, 'Second device after maintenance');
+-    await expect(page.locator('.shell')).toContainText('Second device after maintenance', {
+-      timeout: 15000,
+-    });
++    await step('two', 'post-maintenance-second-to-first', () =>
++      expect(page.locator('.shell')).toContainText('Second device after maintenance', {
++        timeout: 15000,
++      }),
++    );
+     // Reconcile the producer's retained exact proposal after the peer's successful admission.
+     await panel(page).getByRole('button', { name: 'Check history', exact: true }).click();
+     await panel(page).getByRole('button', { name: 'Resume history snapshot' }).click();
+@@ -174,11 +213,14 @@
+     const verificationStarted = Date.now();
+     await panel(page).getByRole('button', { name: 'Verify history snapshot' }).click();
+     try {
+-      await expect(panel(page)).toContainText('Verified snapshot 2 is saved.', { timeout: 15000 });
++      await step('two', 'final-verify-snapshot-2', () =>
++        expect(panel(page)).toContainText('Verified snapshot 2 is saved.', { timeout: 15000 }),
++      );
+     } catch (cause) {
+       console.log('History request timings:', timings.slice(-25));
+       throw cause;
+     }
++    mark('two', 'end');
+     await info.attach('history-verification-timing', {
+       contentType: 'application/json',
+       body: JSON.stringify({
+@@ -187,6 +229,7 @@
+       }),
+     });
+   } finally {
++    console.log('FLAKE_FIRST_RESPONSES ' + JSON.stringify({ started: flakeStarted, timings: flakeTimings }));
+     await pair?.other.close();
+     await stopService(service);
+   }
+@@ -200,7 +243,8 @@
+   const service = await startService(info.outputPath('service'), undefined, true, true);
+   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+   try {
+-    pair = await pairedEditors(page, browser, true);
++    mark('returning', 'start');
++    pair = await step('returning', 'pairing', () => pairedEditors(page, browser, true));
+     const second = pair.second;
+     // Block the normal receive owner's catalog read. Explicit peer verification still independently
+     // reads the latest baseline and accepted suffix, without installing either in the editor.
+@@ -286,10 +330,14 @@
+       ])
+         await expect(second.locator('.shell')).toContainText(text, { timeout: 20000 });
+       await second.unroute('**/account/delivery/submit');
++      mark('returning', 'suffix-after-pruning');
+       await add(page, 'New accepted suffix after pruning');
+-      await expect(second.locator('.shell')).toContainText('New accepted suffix after pruning', {
+-        timeout: 20000,
+-      });
++      await step('returning', 'suffix-delivery', () =>
++        expect(second.locator('.shell')).toContainText('New accepted suffix after pruning', {
++          timeout: 20000,
++        }),
++      );
++      mark('returning', 'end');
+       await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+       await pair.other.setOffline(true);
+       await second.goto('/');
+--- a/test/packaged-account/devices.ts	2026-10-11 00:05:46
++++ b/test/packaged-account/devices.ts	2026-10-11 00:46:53
+@@ -9,9 +9,20 @@
+     beforeInvite?: () => Promise<'invite' | void>;
+   } = {},
+ ) {
++  // FLAKE-PROBE (scratch only): which device saw which 4xx during pairing; status and time only.
++  const flake4xx: { device: string; path: string; status: number; t: number }[] = [];
++  const flakeWatch = (p: Page, device: string) =>
++    p.on('response', (r) => {
++      if (r.status() < 400) return;
++      const path = new URL(r.url()).pathname;
++      if (path.startsWith('/account/') || path.startsWith('/__account-setup/'))
++        flake4xx.push({ device, path, status: r.status(), t: Date.now() });
++    });
++  flakeWatch(page, 'first');
+   const first = await account(page, hooks.beforeInvite);
+   const other = await browser.newContext();
+   const second = await other.newPage();
++  flakeWatch(second, 'second');
+   try {
+     const next = await pending(second, first.link, first.auth);
+     if (sessions) {
+@@ -27,10 +38,17 @@
+     await hooks.beforeCompare?.(second);
+     await page.getByLabel('Code on the new device').fill(comparison);
+     await page.getByRole('button', { name: 'Compare and approve' }).click();
+-    for (const p of [page, second])
++    const approved = Date.now();
++    console.log('FLAKE_MARK ' + JSON.stringify({ name: 'enrollment-approved', t: approved }));
++    for (const [i, p] of [page, second].entries()) {
+       await expect(
+         p.getByText('Content access is installed and certified.', { exact: false }),
+       ).toBeVisible({ timeout: 30000 });
++      console.log(
++        'FLAKE_MARK ' +
++          JSON.stringify({ name: 'certified-' + (i ? 'second' : 'first'), t: Date.now(), ms: Date.now() - approved }),
++      );
++    }
+     await page.getByRole('button', { name: 'Make writing available', exact: true }).click();
+     await expect(
+       page.getByText('Your writing is available to the approved device.', { exact: false }),
+@@ -59,9 +77,24 @@
+           },
+         )
+         .toContain('activated');
++    console.log('FLAKE_PAIRING_4XX ' + JSON.stringify(flake4xx));
+     return { first, next, second, other };
+   } catch (cause) {
++    console.log('FLAKE_PAIRING_4XX ' + JSON.stringify(flake4xx));
+     console.log(
++      'FLAKE_FIRST ' +
++        JSON.stringify({
++          state: await page
++            .locator('[data-enrollment-state]')
++            .getAttribute('data-enrollment-state')
++            .catch(() => 'none'),
++          messages: await page
++            .locator('[role=alert], [role=status]')
++            .allTextContents()
++            .catch(() => []),
++        }),
++    );
++    console.log(
+       'Joining state:',
+       await second
+         .locator('[data-enrollment-state]')
+--- a/test/packaged-account/server.ts	2026-10-11 00:05:46
++++ b/test/packaged-account/server.ts	2026-10-11 00:46:53
+@@ -1,8 +1,8 @@
+ import { spawn, type ChildProcess } from 'node:child_process';
+ import { resolve } from 'node:path';
+-export const port = '53221';
++export const port = process.env['DONE_FLAKE_PORT'] ?? '53221';
+ export const origin = 'http://localhost:' + port;
+-const servicePort = '53222';
++const servicePort = process.env['DONE_FLAKE_SERVICE_PORT'] ?? '53222';
+ const processOutput = new WeakMap<ChildProcess, () => string>();
+ async function startProcess(
+   script: string,
+--- a/playwright.packaged-account.config.ts	2026-10-11 00:05:46
++++ b/playwright.packaged-account.config.ts	2026-10-11 00:46:53
+@@ -2,12 +2,12 @@
+ export default defineConfig({
+   testDir: './test/packaged-account',
+   outputDir: './test-results/packaged-account/artifacts',
+-  timeout: 120000,
++  timeout: Number(process.env['DONE_FLAKE_TEST_TIMEOUT'] ?? 120000),
+   workers: 1,
+   retries: 0,
+   reporter: [['list'], ['json', { outputFile: 'test-results/packaged-account/results.json' }]],
+   use: {
+-    baseURL: 'http://localhost:53221',
++    baseURL: 'http://localhost:' + (process.env['DONE_FLAKE_PORT'] ?? '53221'),
+     viewport: { width: 1280, height: 900 },
+     ...(process.env['CHROMIUM_PATH']
+       ? { launchOptions: { executablePath: process.env['CHROMIUM_PATH'] } }
+--- /dev/null	2026-10-11 00:47:10
++++ b/account-service/flakeProbe.ts	2026-10-11 00:46:53
+@@ -0,0 +1,16 @@
++/** FLAKE-PROBE (scratch only): numeric request log, active only when DONE_FLAKE_LOG is set. */
++import { appendFileSync } from 'node:fs';
++import { createHash } from 'node:crypto';
++const file = process.env['DONE_FLAKE_LOG'];
++export const flakeOn = !!file;
++export const flake = (line: Record<string, unknown>): void => {
++  if (!file) return;
++  try {
++    appendFileSync(file, JSON.stringify({ t: Date.now(), pid: process.pid, ...line }) + '\n');
++  } catch {
++    /* probe only */
++  }
++};
++export const flakeTag = (token: string | undefined): string =>
++  file && token ? createHash('sha256').update(token).digest('hex').slice(0, 6) : '';
++export const flakeUnlimited = process.env['DONE_FLAKE_UNLIMITED'] === '1';

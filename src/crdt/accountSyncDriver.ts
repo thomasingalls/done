@@ -3,6 +3,7 @@ import { type AccountAccess } from '../account/accountHttp';
 import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
 import type { ReceiveStep } from './accountReceiveDriver';
 import { EnvelopeSizeError } from '../../account-protocol/envelope';
+import { createBatchWindow, type BatchTiming } from './batchWindow';
 export type SyncLane = 'send' | 'receive';
 export type SyncHalt =
   | 'closed'
@@ -12,6 +13,7 @@ export type SyncHalt =
   | import('./accountReceiveDriver').ReceiveHalt;
 export type OutboundStep = { receivedThrough?: number } & (
   | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
+  | { kind: 'batching'; acceptedThrough: number; due: number }
   | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
 );
 export interface SyncLaneStatus {
@@ -43,13 +45,17 @@ const names: SyncLane[] = ['send', 'receive'];
 export function createSyncScheduler(options: {
   signal: AbortSignal;
   gate(): DriverGate;
-  send(): Promise<OutboundStep>;
+  send(beforeNewEnvelope?: () => number | undefined): Promise<OutboundStep>;
   receive(): Promise<ReceiveStep>;
   detach(): void;
   clock?: DriverClock;
   receiveInterval?(): number;
+  publicationBatch?: BatchTiming;
 }) {
   const clock = options.clock ?? clockDefault;
+  const batch = options.publicationBatch
+    ? createBatchWindow(options.publicationBatch, () => clock.now())
+    : undefined;
   const fresh = (): Lane => ({
     phase: 'starting',
     position: 0,
@@ -79,7 +85,12 @@ export function createSyncScheduler(options: {
               : lane.phase,
       failures: lane.failures,
       nextAttemptAt:
-        !stopped && gate === 'ready' && !lane.halt && active !== name ? (lane.due ?? null) : null,
+        !stopped && gate === 'ready' && !lane.halt && active !== name && lane.due !== undefined
+          ? Math.max(
+              lane.due,
+              name === 'send' && lane.failures === 0 ? (batch?.due ?? -Infinity) : -Infinity,
+            )
+          : null,
       reason: stopped
         ? null
         : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : (lane.retryReason ?? null))),
@@ -112,6 +123,7 @@ export function createSyncScheduler(options: {
   const stop = () => {
     if (stopped) return;
     stopped = true;
+    batch?.clear();
     clear();
     for (const name of names) {
       lanes[name].due = undefined;
@@ -128,6 +140,11 @@ export function createSyncScheduler(options: {
     return !stopped && options.gate() === 'ready';
   };
   const eligible = () => names.filter((name) => !lanes[name].halt && lanes[name].due !== undefined);
+  // A failed operation owns its retry clock. New typing cannot move it in either direction.
+  const dueAt = (name: SyncLane) =>
+    name === 'send' && lanes.send.failures === 0
+      ? Math.max(lanes.send.due!, batch?.due ?? -Infinity)
+      : lanes[name].due!;
   const arm = () => {
     if (!ready() || work) {
       clear();
@@ -137,7 +154,7 @@ export function createSyncScheduler(options: {
     clear();
     const pending = eligible();
     if (!pending.length) return;
-    const due = Math.min(...pending.map((name) => lanes[name].due!));
+    const due = Math.min(...pending.map(dueAt));
     timer = clock.set(
       () => {
         timer = undefined;
@@ -148,7 +165,7 @@ export function createSyncScheduler(options: {
   };
   const begin = () => {
     if (stopped || work || !ready()) return;
-    const due = eligible().filter((name) => lanes[name].due! <= clock.now());
+    const due = eligible().filter((name) => dueAt(name) <= clock.now());
     const name = due.find((n) => n !== last) ?? due[0];
     if (!name) {
       arm();
@@ -165,7 +182,20 @@ export function createSyncScheduler(options: {
         lane.due = undefined;
         lane.dirty = lane.expedite = false;
         last = name;
-        const result = await options[name]();
+        const result =
+          name === 'receive'
+            ? await options.receive()
+            : await options.send(
+                batch
+                  ? () => {
+                      // Local edits may have arrived while the send prelude awaited storage. Delay only
+                      // allocation of a new envelope; persisted submissions still retry on their own clock.
+                      if (batch.due !== undefined && batch.due > clock.now()) return batch.due;
+                      batch.clear();
+                      return undefined;
+                    }
+                  : undefined,
+              );
         if (stopped) return;
         const position =
           'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
@@ -191,7 +221,13 @@ export function createSyncScheduler(options: {
           lanes.receive.failures === 0
         )
           lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
-        if (result.kind === 'blocked') {
+        if (result.kind === 'batching') {
+          lane.phase = 'idle';
+          lane.failures = 0;
+          lane.retryReason = undefined;
+          lane.due = result.due;
+          lane.dirty = lane.expedite = false;
+        } else if (result.kind === 'blocked') {
           lane.halt = result.reason;
           lane.due = undefined;
           lane.expedite = lane.dirty = false;
@@ -238,10 +274,12 @@ export function createSyncScheduler(options: {
       });
   };
   const wake = (
-    cause: 'start' | 'gate' | 'online' | 'authority' | 'local' | 'remote' | 'retry',
+    cause: 'start' | 'gate' | 'online' | 'authority' | 'local' | 'remote' | 'retry' | 'flush',
     target?: SyncLane,
   ) => {
     if (stopped) return;
+    if (cause === 'local') batch?.note();
+    if (cause === 'flush' || cause === 'authority') batch?.close();
     for (const name of names) {
       if (cause === 'retry' && name !== target) continue;
       const lane = lanes[name];
@@ -255,6 +293,16 @@ export function createSyncScheduler(options: {
       if (cause === 'local' && name === 'send') {
         lane.dirty = true;
         if (!lane.halt && active !== name && lane.due === undefined) lane.due = clock.now() + 50;
+      }
+      if (
+        cause === 'flush' &&
+        name === 'send' &&
+        batch?.due !== undefined &&
+        !lane.halt &&
+        lane.failures === 0
+      ) {
+        if (active === name) lane.dirty = true;
+        else lane.due = Math.min(lane.due ?? clock.now(), clock.now());
       }
       if (cause === 'start' && lane.due === undefined && active !== name && !lane.halt)
         lane.due = clock.now();
@@ -294,6 +342,7 @@ export async function driveOutboundStep(
   ops: DriverOperations,
   token: AccountAccess,
   gate: () => DriverGate,
+  beforeNewEnvelope?: () => number | undefined,
 ): Promise<OutboundStep> {
   const progress = (s: Awaited<ReturnType<DriverOperations['deliveryStatus']>>) => ({
     acceptedThrough: s.acceptedThrough,
@@ -316,6 +365,8 @@ export async function driveOutboundStep(
     paused = pause();
     if (paused) return paused;
     if (!spool.positions.some((p) => p.position === position && p.persisted)) {
+      const due = beforeNewEnvelope?.();
+      if (due !== undefined) return { kind: 'batching', due, ...progress(status) };
       const prepared = await ops.prepareNextEnvelope();
       if (!prepared) return pause() ?? { kind: 'idle', ...progress(status) };
       prepared.bytes.fill(0);

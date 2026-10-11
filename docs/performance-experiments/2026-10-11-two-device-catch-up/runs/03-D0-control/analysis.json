@@ -1,0 +1,320 @@
+{
+ "run": "03-D0-control",
+ "tagA": "e91f88",
+ "phases": [
+  {
+   "index": 0,
+   "target": 120,
+   "keys": 331,
+   "positionsBuilt": 121,
+   "ledgerAfterBuild": 125,
+   "buildMs": 56621,
+   "db": {
+    "state/account.sqlite": 643072,
+    "state/account.sqlite-shm": 32768,
+    "state/account.sqlite-wal": 4132392,
+    "state/authority.sqlite": 8192,
+    "state/authority.sqlite-shm": 32768,
+    "state/authority.sqlite-wal": 0
+   },
+   "backlogChars": 331,
+   "converged": true,
+   "catchupMs": 51076,
+   "load": [
+    11.677734375,
+    8.388671875,
+    8.72021484375
+   ],
+   "positionsDelivered": 121,
+   "positionsPerSecond": 2.37,
+   "charsPerSecond": 6.48,
+   "keysPerPosition": 2.74,
+   "positionsPerSecondByQuarter": [
+    2.43,
+    2.42,
+    2.4,
+    2.26
+   ],
+   "serviceRequests": {
+    "delivery/read-v2 (empty) 200": {
+     "n": 122,
+     "perPosition": 1.01,
+     "handlingMs": {
+      "n": 122,
+      "p50": 36.2,
+      "p95": 40.8,
+      "max": 48.0,
+      "mean": 36.7
+     },
+     "runMs": {
+      "n": 122,
+      "p50": 35.0,
+      "p95": 39.8,
+      "max": 46.9,
+      "mean": 35.5
+     },
+     "outBytes": {
+      "n": 122,
+      "p50": 236,
+      "p95": 236,
+      "max": 236,
+      "mean": 236.0
+     }
+    },
+    "delivery/read-v2 (entry) 200": {
+     "n": 121,
+     "perPosition": 1.0,
+     "handlingMs": {
+      "n": 121,
+      "p50": 51.8,
+      "p95": 57.4,
+      "max": 69.5,
+      "mean": 52.3
+     },
+     "runMs": {
+      "n": 121,
+      "p50": 50.7,
+      "p95": 56.4,
+      "max": 68.4,
+      "mean": 51.1
+     },
+     "outBytes": {
+      "n": 121,
+      "p50": 1760,
+      "p95": 1813,
+      "max": 1861,
+      "mean": 1744.6
+     }
+    },
+    "history/v1/checkpoint 200": {
+     "n": 10,
+     "perPosition": 0.08,
+     "handlingMs": {
+      "n": 10,
+      "p50": 201.7,
+      "p95": 404.3,
+      "max": 404.3,
+      "mean": 224.0
+     },
+     "runMs": {
+      "n": 10,
+      "p50": 200.5,
+      "p95": 403.1,
+      "max": 403.1,
+      "mean": 222.8
+     },
+     "outBytes": {
+      "n": 10,
+      "p50": 1381,
+      "p95": 1381,
+      "max": 1381,
+      "mean": 1381.0
+     }
+    },
+    "membership/v2/discover 200": {
+     "n": 10,
+     "perPosition": 0.08,
+     "handlingMs": {
+      "n": 10,
+      "p50": 88.4,
+      "p95": 103.2,
+      "max": 103.2,
+      "mean": 89.9
+     },
+     "runMs": {
+      "n": 10,
+      "p50": 87.2,
+      "p95": 101.8,
+      "max": 101.8,
+      "mean": 88.7
+     },
+     "outBytes": {
+      "n": 10,
+      "p50": 12930,
+      "p95": 12930,
+      "max": 12930,
+      "mean": 12930.0
+     }
+    }
+   },
+   "clientRequests": {
+    "delivery/read-v2 200": {
+     "n": 244,
+     "p50": 49,
+     "p95": 57,
+     "max": 70,
+     "mean": 45.4
+    },
+    "history/v1/checkpoint 200": {
+     "n": 10,
+     "p50": 203,
+     "p95": 407,
+     "max": 407,
+     "mean": 225.1
+    },
+    "membership/v2/discover 200": {
+     "n": 10,
+     "p50": 97,
+     "p95": 127,
+     "max": 127,
+     "mean": 102.3
+    }
+   },
+   "status429": 0,
+   "cycleMsPerPosition": {
+    "n": 120,
+    "p50": 383,
+    "p95": 824,
+    "max": 1062,
+    "mean": 417.6
+   },
+   "clientGapBeforeEntryReadMs": {
+    "n": 121,
+    "p50": 86,
+    "p95": 97,
+    "max": 133,
+    "mean": 86.8
+   },
+   "clientGapAfterEntryReadMs": {
+    "n": 121,
+    "p50": 203,
+    "p95": 222,
+    "max": 238,
+    "mean": 204.2
+   },
+   "clientRequestTimeShare": 0.281,
+   "clientRequestMsPerPosition": 118.5,
+   "serviceHandlingMsPerPosition": 115.2,
+   "visible": {
+    "updates": 121,
+    "charsPerUpdate": {
+     "n": 120,
+     "p50": 3,
+     "p95": 4,
+     "max": 5,
+     "mean": 2.8
+    },
+    "msBetweenUpdates": {
+     "n": 120,
+     "p50": 384.2,
+     "p95": 831.8,
+     "max": 1051.2,
+     "mean": 417.7
+    }
+   },
+   "longTasks": {
+    "n": 0,
+    "totalMs": 0,
+    "maxMs": 0,
+    "msPerPosition": 0.0
+   },
+   "perPositionCounters": {
+    "idbReadTx": 121.2,
+    "idbWriteTx": 2.0,
+    "webCrypto": {
+     "decrypt": 32.8,
+     "deriveBits": 0.3,
+     "deriveKey": 83.0,
+     "digest": 60.8,
+     "encrypt": 3.7,
+     "exportKey": 0.0,
+     "generateKey": 0.0,
+     "importKey": 112.6,
+     "sign": 4.2,
+     "verify": 96.4
+    }
+   }
+  }
+ ],
+ "serviceMsByLedger": {
+  "delivery/submit": {
+   "0": {
+    "n": 100,
+    "p50": 45.5,
+    "p95": 64.0,
+    "max": 311.8,
+    "mean": 50.0
+   },
+   "100": {
+    "n": 26,
+    "p50": 55.2,
+    "p95": 79.8,
+    "max": 111.7,
+    "mean": 58.4
+   }
+  },
+  "authority/discover": {
+   "0": {
+    "n": 1,
+    "p50": 20.4,
+    "p95": 20.4,
+    "max": 20.4,
+    "mean": 20.4
+   }
+  },
+  "history/v1/checkpoint": {
+   "0": {
+    "n": 6,
+    "p50": 131.8,
+    "p95": 159.4,
+    "max": 159.4,
+    "mean": 111.0
+   },
+   "100": {
+    "n": 11,
+    "p50": 200.5,
+    "p95": 403.1,
+    "max": 403.1,
+    "mean": 224.0
+   }
+  },
+  "delivery/read-v2 (empty)": {
+   "0": {
+    "n": 10,
+    "p50": 38.5,
+    "p95": 54.2,
+    "max": 54.2,
+    "mean": 38.5
+   },
+   "100": {
+    "n": 125,
+    "p50": 35.1,
+    "p95": 41.3,
+    "max": 87.6,
+    "mean": 36.1
+   }
+  },
+  "membership/v2/discover": {
+   "0": {
+    "n": 5,
+    "p50": 126.5,
+    "p95": 136.7,
+    "max": 136.7,
+    "mean": 123.8
+   },
+   "100": {
+    "n": 11,
+    "p50": 87.2,
+    "p95": 218.7,
+    "max": 218.7,
+    "mean": 100.5
+   }
+  },
+  "delivery/read-v2 (entry)": {
+   "0": {
+    "n": 5,
+    "p50": 45.7,
+    "p95": 53.7,
+    "max": 53.7,
+    "mean": 44.9
+   },
+   "100": {
+    "n": 121,
+    "p50": 50.7,
+    "p95": 56.4,
+    "max": 68.4,
+    "mean": 51.1
+   }
+  }
+ }
+}

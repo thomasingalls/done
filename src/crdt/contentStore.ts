@@ -43,7 +43,7 @@ import {
 import type { SessionTask } from './writeSession';
 
 export interface ContentCrypto {
-  /** Only the private v9 owner opts into lifetime-local plaintext reuse. Validation still runs. */
+  /** Account owners opt into lifetime-local plaintext reuse. The validation callback still runs. */
   reuseOpened?: true;
   /** Optional private carrier payload validation, including every compaction audit. */
   allowSpoolCounter?: true;

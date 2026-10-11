@@ -12,12 +12,25 @@ export interface RecoveryDraft extends RecoveryContext {
   bootstrapSigner: string;
   envelope: { v: 1; salt: string; nonce: string; ct: string };
 }
-export const hex = (value: Uint8Array): string =>
-  Array.from(value, (byte) => byte.toString(16).padStart(2, '0')).join('');
+const HEX_BYTES = Array.from({ length: 256 }, (_, byte) => byte.toString(16).padStart(2, '0'));
+export const hex = (value: Uint8Array): string => {
+  if (!value.length) value.subarray(0, 0); // Keep detached-buffer failure, including empty views.
+  const parts = new Array<string>(value.length);
+  for (let i = 0; i < value.length; i++) parts[i] = HEX_BYTES[value[i]!]!;
+  return parts.join('');
+};
 export const unhex = (value: unknown, size: number): Uint8Array<ArrayBuffer> => {
   if (typeof value !== 'string' || value.length !== size * 2 || !/^[0-9a-f]+$/.test(value))
     throw Error('Invalid canonical hex');
-  return Uint8Array.from(value.match(/../g)!, (byte) => parseInt(byte, 16));
+  // Preserve the old pair parser's behavior; validation is deliberately unchanged.
+  if (value.length === 1) throw new TypeError('No complete hex pair');
+  const bytes = new Uint8Array(Math.floor(value.length / 2));
+  for (let i = 0; i < bytes.length; i++) {
+    const high = value.charCodeAt(2 * i),
+      low = value.charCodeAt(2 * i + 1);
+    bytes[i] = ((high < 58 ? high - 48 : high - 87) << 4) | (low < 58 ? low - 48 : low - 87);
+  }
+  return bytes;
 };
 export const lp = (...values: string[]): Uint8Array<ArrayBuffer> => {
   const parts = values.map((value) => {

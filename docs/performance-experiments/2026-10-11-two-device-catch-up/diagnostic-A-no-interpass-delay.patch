@@ -1,0 +1,13 @@
+--- pristine/src/crdt/accountSyncDriver.ts	2026-10-11 13:22:24
++++ varA/src/crdt/accountSyncDriver.ts	2026-10-11 13:27:30
+@@ -206,7 +206,9 @@
+           const delay = retryable
+             ? Math.min(1000 * 2 ** (lane.failures - 1), 30000)
+             : result.kind === 'progress'
+-              ? 50
++              ? name === 'receive'
++                ? 0 // CATCH-UP DIAGNOSTIC A: no inter-pass delay after receive progress
++                : 50
+               : name === 'receive'
+                 ? (options.receiveInterval?.() ?? 5000)
+                 : undefined;

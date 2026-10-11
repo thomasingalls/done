@@ -1,0 +1,560 @@
+{
+  "totalMs": 3078.7,
+  "idleMs": 438,
+  "activeMs": 2640.7,
+  "activeMsPerKey": 2640.7,
+  "self": [
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23",
+      "ms": 214,
+      "msPerKey": 214
+    },
+    {
+      "name": "(garbage collector)",
+      "ms": 192.7,
+      "msPerKey": 192.7
+    },
+    {
+      "name": "(program)",
+      "ms": 174,
+      "msPerKey": 174
+    },
+    {
+      "name": "encodeInto",
+      "ms": 126.1,
+      "msPerKey": 126.1
+    },
+    {
+      "name": "u account-protocol/recovery.ts:15",
+      "ms": 82.3,
+      "msPerKey": 82.3
+    },
+    {
+      "name": "verify",
+      "ms": 81.7,
+      "msPerKey": 81.7
+    },
+    {
+      "name": "getRandomValues",
+      "ms": 79.3,
+      "msPerKey": 79.3
+    },
+    {
+      "name": "decode",
+      "ms": 78.3,
+      "msPerKey": 78.3
+    },
+    {
+      "name": "encode",
+      "ms": 74.3,
+      "msPerKey": 74.3
+    },
+    {
+      "name": "It npm:lib0/encoding.js:408",
+      "ms": 64.8,
+      "msPerKey": 64.8
+    },
+    {
+      "name": "Dt npm:lib0/encoding.js:39",
+      "ms": 63.3,
+      "msPerKey": 63.3
+    },
+    {
+      "name": "(anonymous) account-protocol/recovery.ts:16",
+      "ms": 54,
+      "msPerKey": 54
+    },
+    {
+      "name": "ni src/crdt/deliveryRecord.ts:79",
+      "ms": 52,
+      "msPerKey": 52
+    },
+    {
+      "name": "(anonymous) npm:lib0/encoding.js:344",
+      "ms": 49.3,
+      "msPerKey": 49.3
+    },
+    {
+      "name": "j npm:lib0/encoding.js:130",
+      "ms": 46.4,
+      "msPerKey": 46.4
+    },
+    {
+      "name": "d account-protocol/recovery.ts:17",
+      "ms": 45.9,
+      "msPerKey": 45.9
+    },
+    {
+      "name": "(anonymous) account-protocol/recovery.ts:23",
+      "ms": 37.2,
+      "msPerKey": 37.2
+    },
+    {
+      "name": "SubtleCrypto.<computed>",
+      "ms": 28.3,
+      "msPerKey": 28.3
+    },
+    {
+      "name": "Rc src/crdt/yjs.ts:182",
+      "ms": 28.2,
+      "msPerKey": 28.2
+    },
+    {
+      "name": "integrate npm:yjs/dist/yjs.mjs:9910",
+      "ms": 27.2,
+      "msPerKey": 27.2
+    },
+    {
+      "name": "cl src/crdt/verifiedRecords.ts:4",
+      "ms": 27,
+      "msPerKey": 27
+    },
+    {
+      "name": "e src/crdt/custodyCrypto.ts:21",
+      "ms": 26.9,
+      "msPerKey": 26.9
+    },
+    {
+      "name": "write npm:yjs/dist/yjs.mjs:10146",
+      "ms": 26.8,
+      "msPerKey": 26.8
+    },
+    {
+      "name": "U src/crdt/sourceCapture.ts:119",
+      "ms": 25.8,
+      "msPerKey": 25.8
+    },
+    {
+      "name": "text account-protocol/envelope.ts:149",
+      "ms": 25.6,
+      "msPerKey": 25.6
+    },
+    {
+      "name": "TextDecoder",
+      "ms": 25.5,
+      "msPerKey": 25.5
+    },
+    {
+      "name": "Kt src/crdt/spoolRecord.ts:73",
+      "ms": 24.5,
+      "msPerKey": 24.5
+    },
+    {
+      "name": "TextEncoder",
+      "ms": 22.9,
+      "msPerKey": 22.9
+    },
+    {
+      "name": "emit npm:lib0/observable.js:80",
+      "ms": 22,
+      "msPerKey": 22
+    },
+    {
+      "name": "digest",
+      "ms": 21.9,
+      "msPerKey": 21.9
+    },
+    {
+      "name": "(anonymous) account-protocol/recovery.ts:20",
+      "ms": 21.2,
+      "msPerKey": 21.2
+    },
+    {
+      "name": "ia npm:yjs/dist/yjs.mjs:1496",
+      "ms": 20.2,
+      "msPerKey": 20.2
+    },
+    {
+      "name": "decrypt",
+      "ms": 19.5,
+      "msPerKey": 19.5
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:178",
+      "ms": 16.1,
+      "msPerKey": 16.1
+    },
+    {
+      "name": "Xt src/crdt/spoolRecord.ts:225",
+      "ms": 15.6,
+      "msPerKey": 15.6
+    },
+    {
+      "name": "(anonymous) src/crdt/yjs.ts:183",
+      "ms": 15.4,
+      "msPerKey": 15.4
+    },
+    {
+      "name": "b src/crdt/contentRecord.ts:78",
+      "ms": 15.1,
+      "msPerKey": 15.1
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:289",
+      "ms": 15.1,
+      "msPerKey": 15.1
+    },
+    {
+      "name": "x src/crdt/contentRecord.ts:88",
+      "ms": 14.5,
+      "msPerKey": 14.5
+    },
+    {
+      "name": "Ga npm:yjs/dist/yjs.mjs:2870",
+      "ms": 13.7,
+      "msPerKey": 13.7
+    }
+  ],
+  "inclusive": [
+    {
+      "name": "(root)",
+      "ms": 2640.7,
+      "msPerKey": 2640.7
+    },
+    {
+      "name": "p src/crdt/accountReceive.ts:314",
+      "ms": 942.6,
+      "msPerKey": 942.6
+    },
+    {
+      "name": "wi src/crdt/accountSyncState.ts:36",
+      "ms": 681.3,
+      "msPerKey": 681.3
+    },
+    {
+      "name": "check src/crdt/inboundLedger.ts:328",
+      "ms": 607.2,
+      "msPerKey": 607.2
+    },
+    {
+      "name": "check src/crdt/inboundLedger.ts:422",
+      "ms": 607.2,
+      "msPerKey": 607.2
+    },
+    {
+      "name": "(anonymous) src/crdt/accountReceive.ts:369",
+      "ms": 607.2,
+      "msPerKey": 607.2
+    },
+    {
+      "name": "ui src/crdt/inboundLedger.ts:88",
+      "ms": 544.7,
+      "msPerKey": 544.7
+    },
+    {
+      "name": "ai src/crdt/deliveryRecord.ts:146",
+      "ms": 530.7,
+      "msPerKey": 530.7
+    },
+    {
+      "name": "(anonymous) src/crdt/writeSession.ts:156",
+      "ms": 484.8,
+      "msPerKey": 484.8
+    },
+    {
+      "name": "U src/crdt/sourceCapture.ts:119",
+      "ms": 382,
+      "msPerKey": 382
+    },
+    {
+      "name": "Lc src/crdt/yjs.ts:151",
+      "ms": 375.2,
+      "msPerKey": 375.2
+    },
+    {
+      "name": "Ic src/crdt/yjs.ts:150",
+      "ms": 375.2,
+      "msPerKey": 375.2
+    },
+    {
+      "name": "K npm:yjs/dist/yjs.mjs:3400",
+      "ms": 336.9,
+      "msPerKey": 336.9
+    },
+    {
+      "name": "oa npm:yjs/dist/yjs.mjs:1651",
+      "ms": 333.9,
+      "msPerKey": 333.9
+    },
+    {
+      "name": "It src/crdt/sourceCapture.ts:68",
+      "ms": 319.3,
+      "msPerKey": 319.3
+    },
+    {
+      "name": "ua npm:yjs/dist/yjs.mjs:1794",
+      "ms": 308.9,
+      "msPerKey": 308.9
+    },
+    {
+      "name": "(anonymous) npm:yjs/dist/yjs.mjs:1652",
+      "ms": 302.2,
+      "msPerKey": 302.2
+    },
+    {
+      "name": "na npm:yjs/dist/yjs.mjs:1350",
+      "ms": 280.9,
+      "msPerKey": 280.9
+    },
+    {
+      "name": "(anonymous) npm:yjs/dist/yjs.mjs:1368",
+      "ms": 273.5,
+      "msPerKey": 273.5
+    },
+    {
+      "name": "ta npm:yjs/dist/yjs.mjs:1326",
+      "ms": 271.9,
+      "msPerKey": 271.9
+    },
+    {
+      "name": "la npm:yjs/dist/yjs.mjs:1776",
+      "ms": 269.2,
+      "msPerKey": 269.2
+    },
+    {
+      "name": "write npm:yjs/dist/yjs.mjs:10146",
+      "ms": 261.6,
+      "msPerKey": 261.6
+    },
+    {
+      "name": "pl src/crdt/contentCompaction.ts:58",
+      "ms": 255.4,
+      "msPerKey": 255.4
+    },
+    {
+      "name": "Xt src/crdt/spoolRecord.ts:225",
+      "ms": 253.1,
+      "msPerKey": 253.1
+    },
+    {
+      "name": "ii src/crdt/deliveryRecord.ts:115",
+      "ms": 252,
+      "msPerKey": 252
+    },
+    {
+      "name": "ou src/crdt/custody.ts:1078",
+      "ms": 235.5,
+      "msPerKey": 235.5
+    },
+    {
+      "name": "ia npm:yjs/dist/yjs.mjs:1496",
+      "ms": 231.8,
+      "msPerKey": 231.8
+    },
+    {
+      "name": "s.v.allowSpoolCounter src/crdt/accountStartup.ts:178",
+      "ms": 231,
+      "msPerKey": 231
+    },
+    {
+      "name": "Vt src/crdt/sourceCapture.ts:229",
+      "ms": 226.2,
+      "msPerKey": 226.2
+    },
+    {
+      "name": "Yc src/crdt/yjs.ts:336",
+      "ms": 221.1,
+      "msPerKey": 221.1
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23",
+      "ms": 214,
+      "msPerKey": 214
+    },
+    {
+      "name": "sa npm:yjs/dist/yjs.mjs:1748",
+      "ms": 204.3,
+      "msPerKey": 204.3
+    },
+    {
+      "name": "ca npm:yjs/dist/yjs.mjs:1764",
+      "ms": 204.3,
+      "msPerKey": 204.3
+    },
+    {
+      "name": "(anonymous) npm:lib0/encoding.js:344",
+      "ms": 203.6,
+      "msPerKey": 203.6
+    },
+    {
+      "name": "si src/crdt/deliveryRecord.ts:207",
+      "ms": 202.8,
+      "msPerKey": 202.8
+    },
+    {
+      "name": "verify src/crdt/verifiedRecords.ts:77",
+      "ms": 202,
+      "msPerKey": 202
+    },
+    {
+      "name": "(garbage collector)",
+      "ms": 192.7,
+      "msPerKey": 192.7
+    },
+    {
+      "name": "validate src/crdt/accountStartup.ts:240",
+      "ms": 192.4,
+      "msPerKey": 192.4
+    },
+    {
+      "name": "(anonymous) src/crdt/custody.ts:1100",
+      "ms": 190.9,
+      "msPerKey": 190.9
+    },
+    {
+      "name": "validate src/crdt/accountReceive.ts:313",
+      "ms": 189.4,
+      "msPerKey": 189.4
+    },
+    {
+      "name": "(anonymous) src/crdt/accountCapture.ts:165",
+      "ms": 189.4,
+      "msPerKey": 189.4
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:287",
+      "ms": 189.4,
+      "msPerKey": 189.4
+    },
+    {
+      "name": "Yt src/crdt/spoolRecord.ts:168",
+      "ms": 174.4,
+      "msPerKey": 174.4
+    },
+    {
+      "name": "(program)",
+      "ms": 174,
+      "msPerKey": 174
+    },
+    {
+      "name": "Wc src/crdt/yjs.ts:270",
+      "ms": 170.5,
+      "msPerKey": 170.5
+    },
+    {
+      "name": "SubtleCrypto.<computed>",
+      "ms": 159,
+      "msPerKey": 159
+    },
+    {
+      "name": "Bt src/crdt/sourceCapture.ts:214",
+      "ms": 139.7,
+      "msPerKey": 139.7
+    },
+    {
+      "name": "u account-protocol/recovery.ts:15",
+      "ms": 136.3,
+      "msPerKey": 136.3
+    },
+    {
+      "name": "(anonymous) src/crdt/custodyCrypto.ts:377",
+      "ms": 135,
+      "msPerKey": 135
+    },
+    {
+      "name": "encodeInto",
+      "ms": 126.1,
+      "msPerKey": 126.1
+    },
+    {
+      "name": "toUint8Array npm:yjs/dist/yjs.mjs:1166",
+      "ms": 123.5,
+      "msPerKey": 123.5
+    },
+    {
+      "name": "ri src/crdt/deliveryRecord.ts:84",
+      "ms": 120.6,
+      "msPerKey": 120.6
+    },
+    {
+      "name": "writeString src/crdt/yjs.ts:217",
+      "ms": 115.1,
+      "msPerKey": 115.1
+    },
+    {
+      "name": "l src/crdt/spoolRecord.ts:355",
+      "ms": 114.8,
+      "msPerKey": 114.8
+    },
+    {
+      "name": "writeString npm:yjs/dist/yjs.mjs:1050",
+      "ms": 109.1,
+      "msPerKey": 109.1
+    },
+    {
+      "name": "ct account-protocol/submission.ts:64",
+      "ms": 108.8,
+      "msPerKey": 108.8
+    },
+    {
+      "name": "e npm:yjs/dist/yjs.mjs:422",
+      "ms": 103.4,
+      "msPerKey": 103.4
+    },
+    {
+      "name": "ia account-protocol/positionDecision.ts:161",
+      "ms": 103.1,
+      "msPerKey": 103.1
+    },
+    {
+      "name": "write npm:yjs/dist/yjs.mjs:9225",
+      "ms": 102.1,
+      "msPerKey": 102.1
+    },
+    {
+      "name": "check src/crdt/verificationMemo.ts:20",
+      "ms": 91.7,
+      "msPerKey": 91.7
+    },
+    {
+      "name": "(anonymous) src/crdt/custody.ts:771",
+      "ms": 91.3,
+      "msPerKey": 91.3
+    },
+    {
+      "name": "hn npm:lib0/random.js:15",
+      "ms": 89.6,
+      "msPerKey": 89.6
+    },
+    {
+      "name": "_r src/crdt/incrementalAccountLedger.ts:143",
+      "ms": 88.5,
+      "msPerKey": 88.5
+    },
+    {
+      "name": "f account-protocol/recovery.ts:22",
+      "ms": 87.9,
+      "msPerKey": 87.9
+    },
+    {
+      "name": "zt src/crdt/sourceCapture.ts:201",
+      "ms": 86.5,
+      "msPerKey": 86.5
+    },
+    {
+      "name": "Ht src/crdt/sourceCapture.ts:252",
+      "ms": 86.5,
+      "msPerKey": 86.5
+    },
+    {
+      "name": "ja account-protocol/envelope.ts:282",
+      "ms": 86.4,
+      "msPerKey": 86.4
+    },
+    {
+      "name": "dt account-protocol/submission.ts:116",
+      "ms": 83.8,
+      "msPerKey": 83.8
+    },
+    {
+      "name": "verify",
+      "ms": 81.7,
+      "msPerKey": 81.7
+    },
+    {
+      "name": "e src/crdt/custodyCrypto.ts:21",
+      "ms": 79.9,
+      "msPerKey": 79.9
+    }
+  ]
+}

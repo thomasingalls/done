@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 /** A terminal proof route; it cannot authorize content reads, writes, invitations or subscriptions. */
 import type { DatabaseSync } from 'node:sqlite';
 import { json, same, verifySignature } from '../account-protocol/admission.ts';
@@ -14,7 +16,6 @@ import {
   snapshot,
   snapshotBytes,
   selectPublisher,
-  census,
   verifyCurrentWorkspaceAuthority,
   type DeliveryIssuer,
   type DeliveryHook,
@@ -33,6 +34,7 @@ export async function discoverRemoval(
   issuer: RemovalDiscoveryIssuer,
   now: () => number,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return no('unavailable');
   let request;
@@ -62,7 +64,7 @@ export async function discoverRemoval(
       };
       const checked = await verifyRemovalDiscoveryRequest(request, issuer.pin, base, proofs, now());
       if (checked.member.state === 'certified')
-        await census(before, selectPublisher(auth, request.credentialId));
+        await verifiedCensus(before, selectPublisher(auth, request.credentialId), reuse);
       else if (before.rows.length || before.publisherWitness)
         throw Error('Pending removed device has a ledger');
       hook('after-verify', 'discover-removal');

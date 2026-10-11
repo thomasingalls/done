@@ -1,0 +1,13 @@
+03 P1-A-1 exit=1 1791669371-1791669290=81s load=5.98 7.00 7.04->7.15 7.07 7.05 waited=90 foreignAtStart=0
+04 P1-B-2 exit=1 1791669474-1791669373=101s load=7.15 7.07 7.05->4.48 6.29 6.75 waited=0 foreignAtStart=0
+05 P1-B-3 exit=1 1791669555-1791669475=80s load=4.52 6.27 6.74->3.65 5.59 6.44 waited=0 foreignAtStart=0
+06 P1-A-4 exit=1 1791669658-1791669557=101s load=3.65 5.59 6.44->5.28 5.66 6.37 waited=0 foreignAtStart=0
+07 P1-A-5 exit=0 1791669763-1791669659=104s load=5.28 5.66 6.37->4.07 5.17 6.10 waited=0 foreignAtStart=0
+08 P1-B-6 exit=1 1791669842-1791669765=77s load=4.07 5.17 6.10->3.94 4.93 5.93 waited=0 foreignAtStart=0
+09 P1-B-7 exit=1 1791669926-1791669844=82s load=3.94 4.93 5.93->5.43 5.23 5.94 waited=0 foreignAtStart=0
+10 P1-A-8 exit=0 1791670030-1791669927=103s load=5.43 5.23 5.94->8.95 6.45 6.33 waited=0 foreignAtStart=0
+11 P1-A-9 exit=1 1791670116-1791670032=84s load=8.95 6.45 6.33->4.47 5.66 6.04 waited=0 foreignAtStart=0
+12 P1-B-10 exit=0 1791670217-1791670117=100s load=4.47 5.66 6.04->4.71 5.48 5.93 waited=0 foreignAtStart=0
+13 P1-B-11 exit=1 1791670300-1791670218=82s load=4.71 5.48 5.93->8.05 6.06 6.09 waited=0 foreignAtStart=0
+14 P1-A-12 exit=1 1791670404-1791670301=103s load=7.48 5.97 6.06->5.02 5.62 5.91 waited=0 foreignAtStart=0
+PHASE1-DONE

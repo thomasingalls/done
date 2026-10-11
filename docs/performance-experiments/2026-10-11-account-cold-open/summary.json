@@ -1,0 +1,291 @@
+{
+  "deep": {
+    "baseline": {
+      "coldMs": {
+        "n": 5,
+        "median": 11621.900001525879,
+        "min": 11517.89999961853,
+        "max": 11959.10000038147
+      },
+      "heap": {
+        "n": 5,
+        "median": 17279712,
+        "min": 17235556,
+        "max": 17576184
+      },
+      "editMs": {
+        "n": 5,
+        "median": 29,
+        "min": 27,
+        "max": 33
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 8,
+        "deliveryPrefixLinks": 173755,
+        "loads": 5,
+        "loadedRows": 19150,
+        "loadedBytes": 10690970,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 72985,
+        "sourceParseBytes": 19387700,
+        "recordCopies": 19151,
+        "recordCopyBytes": 10718938,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "nativeDelta": {
+        "importKey": 1910,
+        "deriveKey": 955,
+        "decrypt": 12411,
+        "verify": 3627,
+        "digest": 189187
+      }
+    },
+    "candidate": {
+      "coldMs": {
+        "n": 5,
+        "median": 4213.10000038147,
+        "min": 4184.10000038147,
+        "max": 4390.89999961853
+      },
+      "heap": {
+        "n": 5,
+        "median": 17230200,
+        "min": 17225220,
+        "max": 17529272
+      },
+      "editMs": {
+        "n": 5,
+        "median": 27,
+        "min": 25,
+        "max": 36
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 885,
+        "loads": 5,
+        "loadedRows": 19150,
+        "loadedBytes": 10690970,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 44733,
+        "sourceParseBytes": 11883084,
+        "recordCopies": 19151,
+        "recordCopyBytes": 10718938,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "nativeDelta": {
+        "importKey": 1910,
+        "deriveKey": 955,
+        "decrypt": 12411,
+        "verify": 3627,
+        "digest": 16317
+      }
+    },
+    "medianImprovementPercent": 63.7486125347119
+  },
+  "receiver": {
+    "baseline": {
+      "coldMs": {
+        "n": 3,
+        "median": 1173,
+        "min": 1163.6999988555908,
+        "max": 1174.2000007629395
+      },
+      "heap": {
+        "n": 3,
+        "median": 9669028,
+        "min": 9666548,
+        "max": 9669100
+      },
+      "editMs": {
+        "n": 3,
+        "median": 24,
+        "min": 22,
+        "max": 26
+      },
+      "work": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 2,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 515,
+        "loadedBytes": 1285785,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 0,
+        "sourceParseBytes": 0,
+        "recordCopies": 567,
+        "recordCopyBytes": 1289019,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "nativeDelta": {
+        "importKey": 1115,
+        "deriveKey": 226,
+        "decrypt": 500,
+        "verify": 912,
+        "digest": 1280
+      }
+    },
+    "candidate": {
+      "coldMs": {
+        "n": 3,
+        "median": 1175.6000003814697,
+        "min": 1174.8000011444092,
+        "max": 1177.7000007629395
+      },
+      "heap": {
+        "n": 3,
+        "median": 9669696,
+        "min": 9669184,
+        "max": 9672816
+      },
+      "editMs": {
+        "n": 3,
+        "median": 24,
+        "min": 22,
+        "max": 25
+      },
+      "work": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 2,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 515,
+        "loadedBytes": 1285785,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 0,
+        "sourceParseBytes": 0,
+        "recordCopies": 567,
+        "recordCopyBytes": 1289019,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "nativeDelta": {
+        "importKey": 1115,
+        "deriveKey": 226,
+        "decrypt": 500,
+        "verify": 912,
+        "digest": 1280
+      }
+    }
+  },
+  "fresh": {
+    "baseline": {
+      "coldMs": {
+        "n": 3,
+        "median": 260,
+        "min": 258.79999923706055,
+        "max": 261.3999996185303
+      },
+      "heap": {
+        "n": 3,
+        "median": 8314596,
+        "min": 8314204,
+        "max": 8314836
+      },
+      "editMs": {
+        "n": 3,
+        "median": 24,
+        "min": 23,
+        "max": 26
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 8,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 15,
+        "loadedBytes": 3335,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 19,
+        "sourceParseBytes": 6992,
+        "recordCopies": 17,
+        "recordCopyBytes": 3634,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "nativeDelta": {
+        "importKey": 140,
+        "deriveKey": 70,
+        "decrypt": 45,
+        "verify": 87,
+        "digest": 107
+      }
+    },
+    "candidate": {
+      "coldMs": {
+        "n": 3,
+        "median": 263.3000011444092,
+        "min": 254.70000076293945,
+        "max": 284.3999996185303
+      },
+      "heap": {
+        "n": 3,
+        "median": 8289020,
+        "min": 8286948,
+        "max": 8289020
+      },
+      "editMs": {
+        "n": 3,
+        "median": 26,
+        "min": 25,
+        "max": 28
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 15,
+        "loadedBytes": 3335,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 11,
+        "sourceParseBytes": 4048,
+        "recordCopies": 17,
+        "recordCopyBytes": 3634,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "nativeDelta": {
+        "importKey": 140,
+        "deriveKey": 70,
+        "decrypt": 45,
+        "verify": 87,
+        "digest": 107
+      }
+    }
+  }
+}

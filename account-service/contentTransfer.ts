@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 import { rethrowAuthorization } from './authorization.ts';
 /** Exact store-and-forward delivery followed by one atomic certification successor. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -16,7 +18,6 @@ import {
   snapshot,
   snapshotBytes,
   verifyWorkspaceAuthority,
-  census,
   type DeliveryIssuer,
   type DeliveryHook,
 } from './delivery.ts';
@@ -37,6 +38,7 @@ export async function transferContent(
   input: unknown,
   issuer: ContentTransferIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   let request;
   try {
@@ -107,7 +109,7 @@ export async function transferContent(
           if (!same(installation, certification.epoch.installation))
             return refuse('installation-conflict');
         } else {
-          const ledger = await census(s, auth);
+          const ledger = await verifiedCensus(s, auth, reuse);
           const heads = admission.epoch.heads.map((h) =>
             h.credentialId === existing.id
               ? { ...h, position: ledger.through, link: ledger.previous }

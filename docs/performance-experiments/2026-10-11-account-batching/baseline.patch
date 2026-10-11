@@ -1,0 +1,116 @@
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -11,6 +11,8 @@
+   'sourceParseBytes',
+   'recordCopies',
+   'recordCopyBytes',
++  'journalFlushes',
++  'dirtyJournalFlushes',
+ ] as const;
+ const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
+   (typeof workNames)[number],
+@@ -26,7 +28,9 @@
+   | 'storageOperation'
+   | 'sourceParse'
+   | 'validateUpdates'
+-  | 'envelopeSelection';
++  | 'envelopeSelection'
++  | 'admissionLocal' | 'admissionRemote' | 'admissionFlush'
++  | 'waitLocal' | 'waitRemote' | 'waitFlush';
+ const costs: Partial<Record<WorkTiming, { calls: number; totalMs: number; maxMs: number }>> = {};
+ /** Bounded numeric-only development counters. Names are internal literals, never input. */
+ export const countLedgerWork = (name: keyof typeof work, count = 1) => {
+@@ -55,7 +59,16 @@
+   row.totalMs += ms;
+   row.maxMs = Math.max(row.maxMs, ms);
+ };
++const queuePeaks = { local: 0, remote: 0, flush: 0 };
++export const observeAdmissionQueue = (queue: readonly { kind: keyof typeof queuePeaks }[]) => {
++  if (!ledgerProfiling) return;
++  const counts = { local: 0, remote: 0, flush: 0 };
++  for (const job of queue) counts[job.kind]++;
++  for (const kind of ['local', 'remote', 'flush'] as const)
++    queuePeaks[kind] = Math.max(queuePeaks[kind], counts[kind]);
++};
+ export const accountLedgerMetrics = () => ({
++  queuePeaks: { ...queuePeaks },
+   ...counters,
+   timings: structuredClone(timings),
+   work: { ...work },
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -1,3 +1,4 @@
++import { ledgerProfiling, ledgerWorkStart, countLedgerWork, measureLedgerWork, observeAdmissionQueue } from './accountLedgerMetrics';
+ import { applyUpdate, createDoc, encodeState, forkDoc, sameDocState, type YDoc } from './yjs';
+ import {
+   createWorkspacePreparation,
+@@ -157,6 +158,7 @@
+     listeners = new Set<(e: AcceptedUpdate) => void>(),
+     statusListeners = new Set<(s: AdmissionStatus) => void>();
+   const queue: Job[] = [];
++  const queuedAt = ledgerProfiling ? new WeakMap<Job, number>() : undefined;
+   let state: AdmissionStatus['state'] = 'active',
+     revision = 0,
+     nextId = 0,
+@@ -431,6 +433,8 @@
+   };
+   const flush = async () => {
+     live();
++    countLedgerWork('journalFlushes');
++    if (journalDirty) countLedgerWork('dirtyJournalFlushes');
+     const receipt = await carrier.flushJournal();
+     live();
+     if (receipt.retained) {
+@@ -695,12 +699,32 @@
+       if (state === 'active') void barrier().catch(() => {});
+     }, FLUSH_DELAY_MS);
+   };
++  const processMeasured = (job: Job) => {
++    if (!ledgerProfiling) return process(job);
++    const wait = queuedAt!.get(job);
++    if (wait !== undefined) {
++      measureLedgerWork(({ local: 'waitLocal', remote: 'waitRemote', flush: 'waitFlush' } as const)[job.kind], wait);
++      queuedAt!.delete(job);
++    }
++    const start = ledgerWorkStart();
++    const finish = () => measureLedgerWork(({ local: 'admissionLocal', remote: 'admissionRemote', flush: 'admissionFlush' } as const)[job.kind], start);
++    try {
++      const result = process(job);
++      if (result) return result.finally(finish);
++      finish();
++    } catch (error) { finish(); throw error; }
++  };
++  const recordQueue = (job: Job) => {
++    if (!ledgerProfiling) return;
++    queuedAt!.set(job, ledgerWorkStart());
++    observeAdmissionQueue(queue);
++  };
+   const pump = () => {
+     if (busy || state !== 'active') return;
+     busy = true;
+     try {
+       while (queue.length && state === 'active') {
+-        const result = process(queue[0]!);
++        const result = processMeasured(queue[0]!);
+         if (result) {
+           inFlight = result.then(undefined, block).finally(() => {
+             busy = false;
+@@ -754,6 +778,7 @@
+     };
+     clearMaintenanceTimer();
+     queue.push(job);
++    recordQueue(job);
+     pump();
+     notify();
+     return Object.freeze({ id: job.id, accepted: completion.promise });
+@@ -783,7 +808,9 @@
+         );
+       const completion = deferred<void>();
+       clearMaintenanceTimer();
+-      queue.push({ kind: 'flush', completion });
++      const job: FlushJob = { kind: 'flush', completion };
++      queue.push(job);
++      recordQueue(job);
+       pump();
+       notify();
+       return completion.promise;

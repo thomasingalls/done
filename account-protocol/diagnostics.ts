@@ -1,5 +1,6 @@
 /** Unsigned diagnostic vocabulary. None of these observations grants protocol authority. */
 export const SERVICE_HINTS = [
+  'ledger-integrity',
   'invalid-request',
   'envelope-size',
   'unavailable',
@@ -65,6 +66,7 @@ export function checkPromotionRefusal(input: unknown, stage: PromotionRefusalErr
 }
 
 export const DIAGNOSTIC_OPERATIONS = [
+  'delivery-audit',
   'submit',
   'read',
   'read-v2',
@@ -132,6 +134,7 @@ export function causeCode(cause: unknown): Diagnostic['code'] {
   if (!(cause instanceof Error)) return 'unexpected-failure';
   const code = Object.getOwnPropertyDescriptor(cause, 'code')?.value;
   const sqlite = Object.getOwnPropertyDescriptor(cause, 'errcode')?.value;
+  if (code === 'ledger-integrity') return 'ledger-integrity';
   if (code === 'ERR_SQLITE_ERROR' && [5, 6].includes(sqlite)) return 'storage-busy';
   if (cause instanceof DOMException && cause.name === 'OperationError') return 'crypto-failure';
   return 'unexpected-failure';

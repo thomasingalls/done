@@ -1,0 +1,60 @@
+(node:77690) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77690) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ abort during a pending passkey drains the ceremony before releasing and does not activate (3025.904583ms)
+(node:77702) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77702) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:77702) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (4124.486042ms)
+(node:77729) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77729) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ cold replay refuses missing or changed content (3989.522458ms)
+✖ cold replay refuses missing or changed event (3067.620875ms)
+✔ cold replay refuses missing or changed ciphertext (2590.21225ms)
+(node:77751) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:77751) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:77751) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ hidden-page batch close sends promptly; death before the next batch recovers journalled writing (5524.051334ms)
+✔ one owner advances from submit receipts without self content readback, through compaction and cold replay (5726.261167ms)
+✔ lost reply and unavailable reconciliation retry the exact retained submission after cold open (5149.297583ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 6
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 40973.083833
+
+✖ failing tests:
+
+test at test/account-receive/native.test.mjs:155:3
+✖ cold replay refuses missing or changed content (3989.522458ms)
+  Error: ENOENT: no such file or directory, open '/tmp/done-account-cold-open/native/control-coverage.json'
+      at writeFileSync (node:fs:3028:20)
+      at artifact (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs:38:5)
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs:178:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/tmp/done-account-cold-open/native/control-coverage.json'
+  }
+
+test at test/account-receive/native.test.mjs:155:3
+✖ cold replay refuses missing or changed event (3067.620875ms)
+  Error: ENOENT: no such file or directory, open '/tmp/done-account-cold-open/native/control-witness.json'
+      at writeFileSync (node:fs:3028:20)
+      at artifact (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs:38:5)
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/native.test.mjs:192:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/tmp/done-account-cold-open/native/control-witness.json'
+  }

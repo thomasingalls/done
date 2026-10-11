@@ -1,0 +1,19 @@
+
+Running 1 test using 1 worker
+
+(node:63552) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+backend source /private/tmp/done-account-batching/baseline
+setup begins
+editors open
+typing begins
+typed 0 0
+typed 1 0
+typed 1 100
+typed 0 100
+typed 1 200
+typed 0 200
+{"durationMs":47972,"requests":374,"submits":74,"requestsPerKey":0.6233333333333333,"requestsPerSubmit":5.054054054054054,"refusals":0,"counts":{"/account/delivery/submit":74,"/account/membership/v2/discover":72,"/account/history/v1/checkpoint":72,"/account/delivery/read-v2":156},"convergenceMs":5174,"devices":[{"stableOwnMs":{"n":300,"p50":0.800048828125,"p95":59.300048828125,"max":131.699951171875},"peerDelayMs":{"n":300,"p50":3837.300048828125,"p95":6426.800048828125,"max":7438.300048828125},"longTasks":{"n":1,"p50":167,"p95":167,"max":167},"longTaskMs":167,"work":{"loads":1192,"loadedRows":659444,"loadedBytes":310184043,"authorityChecks":1061,"positions":38,"sourceParses":9240,"sourceParseBytes":2478741,"recordCopies":1309898,"recordCopyBytes":611365963,"journalFlushes":172,"dirtyJournalFlushes":160}},{"stableOwnMs":{"n":300,"p50":0.800048828125,"p95":46.699951171875,"max":118},"peerDelayMs":{"n":300,"p50":1629.800048828125,"p95":3376.10009765625,"max":4148.599853515625},"longTasks":{"n":1,"p50":144,"p95":144,"max":144},"longTaskMs":144,"work":{"loads":1163,"loadedRows":612485,"loadedBytes":305624735,"authorityChecks":1045,"positions":36,"sourceParses":8930,"sourceParseBytes":2351192,"recordCopies":1215471,"recordCopyBytes":598996110,"journalFlushes":169,"dirtyJournalFlushes":159}}]}
+  ✓  1 docs/performance-experiments/2026-10-11-account-batching/paired.spec.ts:7:1 › bounded paired typing and receive cost (1.2m)
+
+  1 passed (1.2m)

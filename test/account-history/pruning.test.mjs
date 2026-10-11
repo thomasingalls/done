@@ -107,10 +107,14 @@ test('pruning refuses a stale boundary, and modified compact evidence cannot con
         .run(Buffer.from(JSON.stringify(proof))),
     );
     assert.equal((await f.call(f.retained[2].wire)).kind, 'unknown');
+    // Each injected corruption is examined afresh, not hidden behind an earlier quarantine.
+    f.f.restart();
   }
   mutate(f, (db) =>
     db.prepare('UPDATE delivery_decisions SET submission=? WHERE ordinal=1').run(original),
   );
+  // Operator restoration and a cold owner are required to clear detected corruption.
+  f.f.restart();
   assert.equal((await f.call(f.retained[2].wire)).kind, 'decision');
 });
 

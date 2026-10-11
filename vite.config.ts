@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vitest/config';
 import { loadEnv } from 'vite';
 import { accountLedgerMode } from './src/crdt/accountLedgerMode.ts';
+import { accountBatchPolicy } from './src/crdt/accountBatchPolicy.ts';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
@@ -80,6 +81,13 @@ const relayProxy = () => {
 export default defineConfig(({ mode }) => ({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
   define: {
+    'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(
+      (() => {
+        const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_BATCH')['VITE_ACCOUNT_BATCH'];
+        accountBatchPolicy(value);
+        return value || 'coordinated-2000';
+      })(),
+    ),
     'import.meta.env.VITE_APP_VERSION': JSON.stringify(commit.version),
     'import.meta.env.VITE_APP_COMMIT_DATE': JSON.stringify(commit.date),
     'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify(

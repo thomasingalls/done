@@ -1,0 +1,19 @@
+(node:99599) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:99599) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/recoveryStore.ts:24
+  if (!db.isTransaction) throw Error('Recovery capture requires a transaction');
+                         ^
+
+Error: Recovery capture requires a transaction
+    at recoveryRows (file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/recoveryStore.ts:24:32)
+    at snapshotWorkspaceAuthority (file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/delivery.ts:260:22)
+    at snapshot (file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/delivery.ts:300:16)
+    at finish (file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/publisherTips.ts:170:25)
+    at Worker.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/account-service/publisherTips.ts:198:31)
+    at Worker.wrapper (node:events:639:12)
+    at Worker.emit (node:events:514:20)
+    at [kOnExit] (node:internal/worker:405:10)
+    at Worker.<computed>.onexit (node:internal/worker:299:20)
+
+Node.js v26.11.1

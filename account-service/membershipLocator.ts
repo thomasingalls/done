@@ -1,3 +1,6 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { LedgerIntegrityError } from './publisherTips.ts';
+import { unchanged, verifiedCensus } from './delivery.ts';
 import { parseRecoverySuccessor } from '../account-protocol/recoveryTransition.ts';
 /** Private continuation locators. Returned proof chains do not grant keys or install client state. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -28,10 +31,7 @@ import {
   snapshotWorkspaceAuthority,
   verifyCurrentWorkspaceAuthority,
   read,
-  snapshot,
-  snapshotBytes,
   selectPublisher,
-  census,
   type WorkspaceAuthoritySnapshot,
   type DeliveryIssuer,
   type DeliveryHook,
@@ -43,7 +43,7 @@ export interface MembershipLocatorIssuer extends DeliveryIssuer {
   bootstrap(value: Omit<BootstrapResponse, 'signature'>): Promise<BootstrapResponse>;
   discovery(value: Omit<DiscoveryResponse, 'signature'>): Promise<DiscoveryResponse>;
 }
-const no = (refusal: 'malformed' | 'unavailable' | 'state-changed') => ({
+const no = (refusal: 'malformed' | 'unavailable' | 'state-changed' | 'ledger-integrity') => ({
   ok: false as const,
   refusal,
 });
@@ -133,6 +133,7 @@ export async function discoverMembership(
   issuer: MembershipLocatorIssuer,
   now: () => number,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return no('unavailable');
   let request;
@@ -143,7 +144,7 @@ export async function discoverMembership(
   }
   for (let retry = 0; retry < 4; retry++) {
     try {
-      const before = read(db, request.workspaceId, request.credentialId);
+      const before = read(db, request.workspaceId, request.credentialId, reuse);
       if (!before) return no('unavailable');
       const auth = selectPublisher(
           await verifyCurrentWorkspaceAuthority(before, issuer),
@@ -155,7 +156,7 @@ export async function discoverMembership(
       await verifyMembershipDiscoveryRequest(request, issuer.pin, history, now());
       // Keep the requesting publisher's complete-history interlock. Discovery must not hide a
       // missing accepted prefix behind a correctly signed current pointer.
-      await census(before, auth);
+      await verifiedCensus(before, auth, reuse);
       hook('after-verify', 'discover-membership');
       const body = {
         v: 2 as const,
@@ -172,10 +173,7 @@ export async function discoverMembership(
         await membershipDiscoveryResponseMessage(response),
       );
       db.exec('BEGIN');
-      if (
-        snapshotBytes(snapshot(db, request.workspaceId, request.credentialId)) !==
-        snapshotBytes(before)
-      ) {
+      if (!unchanged(db, before, reuse)) {
         db.exec('ROLLBACK');
         continue;
       }
@@ -200,6 +198,7 @@ export async function discoverMembership(
       return response;
     } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      if (cause instanceof LedgerIntegrityError) return no('ledger-integrity');
       rethrowAuthorization(cause);
       return no('unavailable');
     }

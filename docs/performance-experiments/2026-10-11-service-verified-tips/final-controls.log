@@ -1,0 +1,69 @@
+(node:163) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:163) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:163) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ pruning removes only ciphertext covered by both retained snapshots and preserves exact acceptance retries (218.426625ms)
+✔ pruning resumes atomically after before-commit and restart (121.866333ms)
+✔ pruning resumes atomically after after-commit and restart (124.238625ms)
+(node:163) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:163) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:163) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:163) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:163) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ pruning refuses a stale boundary, and modified compact evidence cannot conceal ledger damage (188.053625ms)
+✔ older snapshot ciphertext becomes an authenticated completion receipt without breaking lost-reply retries (243.685917ms)
+(node:163) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ pruning keeps refusal and parent evidence while accepted retries remain closed over their original decision (126.280292ms)
+✔ revoked commit authorization refuses pruning before either ciphertext carrier changes (122.04725ms)
+(node:179) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:179) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:179) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix (161.275584ms)
+✔ publish resumes exact bytes after before-commit interruption and restart (51.151917ms)
+✔ publish resumes exact bytes after after-commit interruption and restart (50.578208ms)
+✔ admit resumes exact bytes after before-commit interruption and restart (63.541542ms)
+✔ admit resumes exact bytes after after-commit interruption and restart (64.854542ms)
+✔ false accepted cuts and catalog/record tampering refuse without becoming a baseline (67.369125ms)
+✔ competing proposals do not overwrite, and stale proposals can be discarded after an epoch change (136.613875ms)
+✔ authority changes during verification and revoked authorization at commit cannot publish (46.576458ms)
+✔ schema 24 requires an explicit offline upgrade and preserves account rows (48.240667ms)
+✔ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (98.659792ms)
+✔ catalog reads authenticate the current pointers without downloading checkpoint content (66.36175ms)
+✔ schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written (37.669625ms)
+(node:179) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ publisher quarantine also fences checkpoint mutation until operator restart and full verification (62.5ms)
+(node:187) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:187) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ service cache retains reuse with 65536-byte checkpoint and 35 larger rows (604.391542ms)
+✔ service cache retains reuse with 1048576-byte checkpoint and 35 larger rows (3056.542625ms)
+✔ bounded service cache owns bytes/context, evicts, and cannot repopulate after close (8.475958ms)
+(node:187) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ warm service read matches cold verification, reduces crypto, and rechecks SQL fields and membership (95.391583ms)
+(node:187) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:203) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:203) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ canonical byte conversions match previous framing and rejection, including detached input (2.329917ms)
+✔ warm reads verify only served rows; appends extend a compact prefix; historical retries stay exact (129.515667ms)
+✔ overlapping reads and append cannot install a stale tip or expose a buffer erased by a loser (82.283542ms)
+✔ same-connection row damage is refused immediately when examined (55.924542ms)
+✔ same-connection predecessor damage is refused immediately when examined (53.856125ms)
+✔ same-connection count damage is refused immediately when examined (52.640666ms)
+✔ same-connection witness damage is refused immediately when examined (53.191334ms)
+✔ same-connection witness-signature damage is refused immediately when examined (50.216291ms)
+✔ external connection invalidates the whole prefix even for an unserved altered row (54.917542ms)
+✔ off-path audit detects latent old damage, quarantines without repair, and never signs thereafter (139.099459ms)
+✔ successful snapshot audit, stale result and close cannot reinstall a tip (247.028ms)
+✔ commit abort never moves verified evidence past durable rows; lost reply finds exact decision (67.146917ms)
+✔ a changed cold snapshot detected at the commit fence cannot install its old verified tip (53.587917ms)
+✔ 256 appended rows schedule a full worker audit while the prefix stores no decision bytes (1600.405792ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10522.53025

@@ -12,3 +12,9 @@ docs/storage-conformance-runs/2026-09-10-legacy-host/**
 
 # Generated measurement data for the 2026-10-10 Account typing diagnostic.
 docs/performance-experiments/2026-10-10-account-desktop-typing/**/*.json
+
+# Derived tables and run records for the 2026-10-11 packaged failure reproduction.
+docs/performance-experiments/2026-10-11-packaged-failure-reproduction/**/*.json
+
+# Derived tables and run records for the 2026-10-11 two-device catch-up measurement.
+docs/performance-experiments/2026-10-11-two-device-catch-up/**/*.json

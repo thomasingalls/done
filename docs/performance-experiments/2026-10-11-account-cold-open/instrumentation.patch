@@ -1,0 +1,191 @@
+diff --git a/src/crdt/accountCapture.ts b/src/crdt/accountCapture.ts
+index e4c9cf3f..6ce4746d 100644
+--- a/src/crdt/accountCapture.ts
++++ b/src/crdt/accountCapture.ts
+@@ -1,4 +1,4 @@
+-import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
++import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import { verifyJoinedAccount } from './joinedAccount';
+ import { historyAuthority } from '../../account-protocol/admissionHistory';
+ import { claimScope } from './localGenesisRecord';
+@@ -100,6 +100,7 @@ export async function openAccountCaptureOwner(
+           if (extension?.version !== 9 || !extension.initializeJoined)
+             throw Error('Certified device needs the sync owner');
+           const v = await verifyJoinedAccount(task, options);
++          markAccountOpen('classified');
+           if (principalId !== undefined && principalId !== v.account.principalId)
+             throw Error('Account actor identity changed');
+           route = v.route;
+@@ -119,6 +120,7 @@ export async function openAccountCaptureOwner(
+           return;
+         }
+         let v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
++        markAccountOpen('classified');
+         if (extension?.version !== 9 && v.marker.captureBootstrap)
+           throw Error('Account upload conversion must finish before editing');
+         if (principalId !== undefined && v.account.principalId !== principalId)
+diff --git a/src/crdt/accountLedgerMetrics.ts b/src/crdt/accountLedgerMetrics.ts
+index 3981268e..304bc265 100644
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -2,6 +2,12 @@
+ const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
+ export const ledgerProfiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
+ const workNames = [
++  'startupValidations',
++  'joinedStartupValidations',
++  'deliveryVerifications',
++  'inboundVerifications',
++  'inboundCensuses',
++  'deliveryPrefixLinks',
+   'loads',
+   'loadedRows',
+   'loadedBytes',
+@@ -85,3 +91,14 @@ if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
+     configurable: true,
+   });
+ }
++
++/** Fixed milestones for a single opening; numeric diagnostics never retain account identifiers. */
++const openMilestones: Partial<Record<'authorized' | 'classified' | 'owner' | 'editor', {
++  at: number; metrics: ReturnType<typeof accountLedgerMetrics>;
++}>> = {};
++export const markAccountOpen = (name: keyof typeof openMilestones) => {
++  if (ledgerProfiling) openMilestones[name] = { at: performance.now(), metrics: accountLedgerMetrics() };
++};
++if (ledgerProfiling) Object.defineProperty(globalThis, '__doneOpenMilestones', {
++  value: () => structuredClone(openMilestones), configurable: true,
++});
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 6482114a..8c452028 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,4 @@
++import { markAccountOpen } from './accountLedgerMetrics';
+ import type { OpenedRecord } from './contentRecord';
+ import { countLedgerWork } from './accountLedgerMetrics';
+ import { accountLedgerMode } from './accountLedgerMode';
+@@ -1771,6 +1772,7 @@ async function openReceivingWorkspace(
+     composed,
+     joined,
+   );
++  markAccountOpen('owner');
+   operatorToken = access ?? operatorToken;
+   let enqueue!: OwnedReceiveQueue;
+   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
+@@ -1804,6 +1806,7 @@ async function openReceivingWorkspace(
+       await workspace.close();
+       throw Error('Account opening was cancelled');
+     }
++    markAccountOpen('editor');
+     gate = () => {
+       if (
+         carrier.signal.aborted ||
+diff --git a/src/crdt/accountStartup.ts b/src/crdt/accountStartup.ts
+index 44a2cc28..1f31bc98 100644
+--- a/src/crdt/accountStartup.ts
++++ b/src/crdt/accountStartup.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import type { NetworkLogin } from '../account/networkLogin';
+ import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
+ import { openContentCheckpoint } from './contentCheckpoint';
+@@ -96,6 +97,7 @@ export async function verifyAccountUnderPermit(
+     );
+     await options.networkLogin.unlock(task, proof, options.assertPasskey);
+   } else await requireAccountAccess(task, proof, options.pin, options.assertPasskey);
++  markAccountOpen('authorized');
+   const current = await readPromotion(task, options.slotId, options.code);
+   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');
+   const census = await localCensus(task, claim, options.code);
+@@ -235,6 +237,7 @@ export async function verifyAccountUnderPermit(
+             ? {
+                 allowSpoolCounter: true,
+                 validate: async (records, _task, counter) => {
++                  countLedgerWork('startupValidations');
+                   const state =
+                     marker.v === 9
+                       ? inspectInbound(records, route, inbound!).delivery.spool
+diff --git a/src/crdt/deliveryRecord.ts b/src/crdt/deliveryRecord.ts
+index bea3ee0c..0011fea2 100644
+--- a/src/crdt/deliveryRecord.ts
++++ b/src/crdt/deliveryRecord.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork } from './accountLedgerMetrics';
+ import { historyAuthority, verifyHistoryDecision } from '../../account-protocol/admissionHistory';
+ /** Private v8 delivery ledger. Status is derived from authenticated proof bytes, never a stored setter. */
+ import { hex, utf8, type Bytes } from './custodyCrypto';
+@@ -198,6 +199,7 @@ export async function expectedPosition(spool: SpoolState, position: number, subt
+         decoded?.kind === 'refused' ? await refusalId(decoded.refusal, subtle) : ZERO_REFUSAL;
+       return { ...subject, previous, parent };
+     }
++    countLedgerWork('deliveryPrefixLinks');
+     previous = await acceptanceLink(subject, previous, subtle);
+   }
+   return null;
+@@ -219,6 +221,7 @@ export async function verifyDelivery(
+     >;
+   },
+ ): Promise<DeliveryState> {
++  countLedgerWork('deliveryVerifications');
+   const state = continuation?.state ?? emptyDelivery(),
+     entries = new Map(c.entries.map((e) => [e.record.seq, e])),
+     envelopes = continuation?.envelopes ?? new Map<number, number>();
+@@ -251,6 +254,7 @@ export async function verifyDelivery(
+     for (let n = expectedCache.size + 1; n <= position; n++) {
+       const p = active.positions[n - 1];
+       if (!p?.wire) return null;
++      countLedgerWork('deliveryPrefixLinks');
+       const e = decodeNetworkEnvelope(p.wire),
+         subject = {
+           workspace: e.workspace_id,
+diff --git a/src/crdt/inboundLedger.ts b/src/crdt/inboundLedger.ts
+index 30175803..6806997d 100644
+--- a/src/crdt/inboundLedger.ts
++++ b/src/crdt/inboundLedger.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork } from './accountLedgerMetrics';
+ import { measureLedger } from './accountLedgerMetrics';
+ import {
+   isHistoryInstallTag,
+@@ -89,6 +90,7 @@ export function inspectInbound(
+   route: CaptureRoute,
+   context: InboundContext,
+ ) {
++  countLedgerWork('inboundCensuses');
+   const prior: OpenedRecord[] = [],
+     entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
+     installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
+@@ -441,6 +443,7 @@ export async function verifyInboundLedger(
+   },
+   continuation?: { state: InboundState; after: number },
+ ): Promise<InboundState> {
++  countLedgerWork('inboundVerifications');
+   const clone = (s: InboundState): InboundState => ({
+     ...s,
+     prefix: { ...s.prefix },
+diff --git a/src/crdt/joinedAccount.ts b/src/crdt/joinedAccount.ts
+index bdf0a10a..15b13fa5 100644
+--- a/src/crdt/joinedAccount.ts
++++ b/src/crdt/joinedAccount.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import {
+   captureHandoffHistory,
+   handoffHistoryPrefix,
+@@ -889,6 +890,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
+         );
+       else
+         await requireAccountAccess(task, joinedBinding(marker), options.pin, options.assertPasskey);
++      markAccountOpen('authorized');
+       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
+         throw Error('Certified device changed during unlock');
+       const scope = claimScope(state.claim),
+@@ -1011,6 +1013,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
+         {
+           allowSpoolCounter: true,
+           validate: async (records, _task, counter) => {
++            countLedgerWork('joinedStartupValidations');
+             const census = inspectInbound(records, b.route, b.base);
+             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);
+             await verifySpool(

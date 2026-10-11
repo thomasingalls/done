@@ -1,0 +1,5634 @@
+[
+ {
+  "dir": "01-S0-smoke-A",
+  "label": "S0-smoke-A",
+  "arm": "A",
+  "env": "",
+  "exit": 0,
+  "seconds": 97,
+  "loadStart": "7.11",
+  "loadEnd": "8.95",
+  "foreign_frac": 0.65,
+  "waited": 0,
+  "pairing4xx": [],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 293,
+   "cap429": 31,
+   "cap_by_source": {
+    "scoped": 31
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 14,
+    "membership/v2/discover": 10,
+    "history/v1/checkpoint": 6,
+    "grant/v1/begin": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 29.7,
+   "last_cap_s": 58.1,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 0.02,
+   "backoff_n": 29,
+   "backoff_p50_ms": 1056,
+   "backoff_max_ms": 2239,
+   "pm": {
+    "ok": true,
+    "ms": 8885,
+    "cap_in_window": 6,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 4,
+     "membership/v2/discover": 2
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 126,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 664,
+    "unblocked_to_step_ms": 896
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 7885
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14846
+   },
+   "pass": true,
+   "test_s": 58.9,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 255,
+   "cap429": 13,
+   "cap_by_source": {
+    "scoped": 13
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 8,
+    "delivery/read-v2": 3,
+    "grant/v1/finish": 1,
+    "membership/v2/discover": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -0.8,
+   "last_cap_s": 35.9,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 0.03,
+   "backoff_n": 11,
+   "backoff_p50_ms": 1049,
+   "backoff_max_ms": 1157,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13889
+   },
+   "pass": true,
+   "test_s": 37.5,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "03-P1-A-1",
+  "label": "P1-A-1",
+  "arm": "A",
+  "env": "",
+  "exit": 1,
+  "seconds": 81,
+  "loadStart": "5.98",
+  "loadEnd": "7.15",
+  "foreign_frac": 0.0,
+  "waited": 90,
+  "pairing4xx": [],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "35"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 76.42,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 65
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39090
+   },
+   "pass": false,
+   "test_s": 39.6,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 256,
+   "cap429": 18,
+   "cap_by_source": {
+    "scoped": 18
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 10,
+    "membership/v2/discover": 5,
+    "delivery/read-v2": 2,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 23.7,
+   "last_cap_s": 37.8,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0,
+   "backoff_n": 16,
+   "backoff_p50_ms": 1114,
+   "backoff_max_ms": 2128,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14347
+   },
+   "pass": true,
+   "test_s": 40.0,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "04-P1-B-2",
+  "label": "P1-B-2",
+  "arm": "B",
+  "env": "",
+  "exit": 1,
+  "seconds": 101,
+  "loadStart": "7.15",
+  "loadEnd": "4.48",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "35"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 298,
+   "cap429": 39,
+   "cap_by_source": {
+    "scoped": 39
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 19,
+    "history/v1/checkpoint": 10,
+    "membership/v2/discover": 8,
+    "delivery/submit": 1,
+    "grant/v1/begin": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 25.5,
+   "last_cap_s": 59.6,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.01,
+   "backoff_n": 37,
+   "backoff_p50_ms": 1074,
+   "backoff_max_ms": 2220,
+   "pm": {
+    "ok": true,
+    "ms": 10932,
+    "cap_in_window": 11,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 7,
+     "membership/v2/discover": 2,
+     "delivery/submit": 1,
+     "history/v1/checkpoint": 1
+    },
+    "submit_refused_in_window": 1,
+    "first_ok_submit_ms": 156,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 645,
+    "unblocked_to_step_ms": 871
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 8388
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 3,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13536
+   },
+   "pass": true,
+   "test_s": 60.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 114,
+   "cap429": 2,
+   "cap_by_source": {
+    "scoped": 2
+   },
+   "cap_by_path": {
+    "membership/v2/discover": 1,
+    "history/v1/checkpoint": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -0.8,
+   "last_cap_s": -0.7,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 0.34,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 81
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38897
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "05-P1-B-3",
+  "label": "P1-B-3",
+  "arm": "B",
+  "env": "",
+  "exit": 1,
+  "seconds": 80,
+  "loadStart": "4.52",
+  "loadEnd": "3.65",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found",
+   "expect(locator).toBeVisible() failed"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "35"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 108,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 3,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 77.47,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 57
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38921
+   },
+   "pass": false,
+   "test_s": 39.5,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 107,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 75.78,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 79
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38959
+   },
+   "pass": false,
+   "test_s": 39.5,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "06-P1-A-4",
+  "label": "P1-A-4",
+  "arm": "A",
+  "env": "",
+  "exit": 1,
+  "seconds": 101,
+  "loadStart": "3.65",
+  "loadEnd": "5.28",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "35"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 302,
+   "cap429": 32,
+   "cap_by_source": {
+    "scoped": 32
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 15,
+    "history/v1/checkpoint": 12,
+    "membership/v2/discover": 5
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 25.6,
+   "last_cap_s": 60.5,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.04,
+   "backoff_n": 30,
+   "backoff_p50_ms": 1076,
+   "backoff_max_ms": 2126,
+   "pm": {
+    "ok": true,
+    "ms": 13974,
+    "cap_in_window": 12,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 6,
+     "membership/v2/discover": 3,
+     "history/v1/checkpoint": 3
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 156,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 649,
+    "unblocked_to_step_ms": 868
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 5348
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13344
+   },
+   "pass": true,
+   "test_s": 60.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 113,
+   "cap429": 3,
+   "cap_by_source": {
+    "scoped": 3
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 3
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.1,
+   "last_cap_s": -0.6,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 3,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 0.21,
+   "backoff_n": 1,
+   "backoff_p50_ms": 1136,
+   "backoff_max_ms": 1136,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 72
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38871
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "07-P1-A-5",
+  "label": "P1-A-5",
+  "arm": "A",
+  "env": "",
+  "exit": 0,
+  "seconds": 104,
+  "loadStart": "5.28",
+  "loadEnd": "4.07",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669667275
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669670980
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669671038
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669671363
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791669672421
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669673442
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669728395
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669731734
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669731787
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669732115
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791669733155
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669734043
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 302,
+   "cap429": 40,
+   "cap_by_source": {
+    "scoped": 40
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 23,
+    "history/v1/checkpoint": 11,
+    "membership/v2/discover": 6
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 26.1,
+   "last_cap_s": 60.5,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0,
+   "backoff_n": 39,
+   "backoff_p50_ms": 1051,
+   "backoff_max_ms": 2096,
+   "pm": {
+    "ok": true,
+    "ms": 14967,
+    "cap_in_window": 14,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 10,
+     "membership/v2/discover": 4
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 155,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 1642,
+    "unblocked_to_step_ms": 867
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 4342
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8141,
+    "last_abort_to_unroute_ms": 774,
+    "first_abort_offsets_ms": [
+     0,
+     1305,
+     3335,
+     7367
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7297,
+    "first_device_429_after_unroute": 20
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13966
+   },
+   "pass": true,
+   "test_s": 60.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 267,
+   "cap429": 24,
+   "cap_by_source": {
+    "scoped": 24
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 11,
+    "delivery/read-v2": 8,
+    "membership/v2/discover": 4,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.0,
+   "last_cap_s": 40.0,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.02,
+   "backoff_n": 22,
+   "backoff_p50_ms": 1078,
+   "backoff_max_ms": 2106,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13300
+   },
+   "pass": true,
+   "test_s": 41.8,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "08-P1-B-6",
+  "label": "P1-B-6",
+  "arm": "B",
+  "env": "",
+  "exit": 1,
+  "seconds": 77,
+  "loadStart": "4.07",
+  "loadEnd": "3.94",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669772514
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669774579
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669776123
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669776189
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791669776438
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669812831
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669816565
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669816618
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669816958
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791669818070
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669818956
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 76.6,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 47
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39492
+   },
+   "pass": false,
+   "test_s": 40.0,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 250,
+   "cap429": 13,
+   "cap_by_source": {
+    "scoped": 13
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 6,
+    "delivery/read-v2": 4,
+    "membership/v2/discover": 2,
+    "grant/v1/finish": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 23.0,
+   "last_cap_s": 34.8,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.02,
+   "backoff_n": 12,
+   "backoff_p50_ms": 1112,
+   "backoff_max_ms": 2103,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13825
+   },
+   "pass": true,
+   "test_s": 36.4,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "09-P1-B-7",
+  "label": "P1-B-7",
+  "arm": "B",
+  "env": "",
+  "exit": 1,
+  "seconds": 82,
+  "loadStart": "3.94",
+  "loadEnd": "5.43",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669851589
+    },
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669854804
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669854903
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791669855131
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669891518
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669894867
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669894942
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669895309
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791669896308
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669897198
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 101,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 4,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 1,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 80.87,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 67
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39116
+   },
+   "pass": false,
+   "test_s": 39.7,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 260,
+   "cap429": 17,
+   "cap_by_source": {
+    "scoped": 17
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 7,
+    "membership/v2/discover": 4,
+    "delivery/read-v2": 4,
+    "grant/v1/finish": 1,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 23.3,
+   "last_cap_s": 39.7,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.04,
+   "backoff_n": 17,
+   "backoff_p50_ms": 1115,
+   "backoff_max_ms": 2104,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13837
+   },
+   "pass": true,
+   "test_s": 41.5,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "10-P1-A-8",
+  "label": "P1-A-8",
+  "arm": "A",
+  "env": "",
+  "exit": 0,
+  "seconds": 103,
+  "loadStart": "5.43",
+  "loadEnd": "8.95",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669935322
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669937412
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669938993
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669939052
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669939410
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669941522
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791669994387
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669998015
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669998077
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791669998455
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791669999627
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670000465
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 297,
+   "cap429": 33,
+   "cap_by_source": {
+    "scoped": 33
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 16,
+    "history/v1/checkpoint": 14,
+    "membership/v2/discover": 3
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 26.3,
+   "last_cap_s": 57.9,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 0.03,
+   "backoff_n": 32,
+   "backoff_p50_ms": 1052,
+   "backoff_max_ms": 4468,
+   "pm": {
+    "ok": true,
+    "ms": 11928,
+    "cap_in_window": 14,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 9,
+     "membership/v2/discover": 1,
+     "history/v1/checkpoint": 4
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 156,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 670,
+    "unblocked_to_step_ms": 871
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 6861
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8180,
+    "last_abort_to_unroute_ms": 686,
+    "first_abort_offsets_ms": [
+     0,
+     1423,
+     3461,
+     7494
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7398,
+    "first_device_429_after_unroute": 18
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13938
+   },
+   "pass": true,
+   "test_s": 58.8,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 266,
+   "cap429": 18,
+   "cap_by_source": {
+    "scoped": 18
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 6,
+    "delivery/read-v2": 6,
+    "membership/v2/discover": 4,
+    "grant/v1/finish": 1,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.2,
+   "last_cap_s": 41.4,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 2,
+   "budget_min": 0.01,
+   "backoff_n": 17,
+   "backoff_p50_ms": 1120,
+   "backoff_max_ms": 2111,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14496
+   },
+   "pass": true,
+   "test_s": 43.2,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "11-P1-A-9",
+  "label": "P1-A-9",
+  "arm": "A",
+  "env": "",
+  "exit": 1,
+  "seconds": 84,
+  "loadStart": "8.95",
+  "loadEnd": "4.47",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670040427
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670042617
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670044133
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670044190
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670044494
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670081237
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670083372
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670084881
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670084940
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670085303
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670087331
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 107,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 76.85,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 59
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39707
+   },
+   "pass": false,
+   "test_s": 40.4,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 258,
+   "cap429": 13,
+   "cap_by_source": {
+    "scoped": 13
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 6,
+    "delivery/read-v2": 5,
+    "membership/v2/discover": 2
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 25.6,
+   "last_cap_s": 40.2,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.12,
+   "backoff_n": 13,
+   "backoff_p50_ms": 1117,
+   "backoff_max_ms": 2044,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14612
+   },
+   "pass": true,
+   "test_s": 42.1,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "12-P1-B-10",
+  "label": "P1-B-10",
+  "arm": "B",
+  "env": "",
+  "exit": 0,
+  "seconds": 100,
+  "loadStart": "4.47",
+  "loadEnd": "4.71",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670125705
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670127779
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670129152
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670129213
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670129587
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670131498
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670186500
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670188779
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670190177
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670190235
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670190601
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670192632
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 299,
+   "cap429": 39,
+   "cap_by_source": {
+    "scoped": 39
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 20,
+    "history/v1/checkpoint": 11,
+    "membership/v2/discover": 8
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 26.1,
+   "last_cap_s": 60.1,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.01,
+   "backoff_n": 37,
+   "backoff_p50_ms": 1060,
+   "backoff_max_ms": 2130,
+   "pm": {
+    "ok": true,
+    "ms": 12958,
+    "cap_in_window": 15,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 11,
+     "membership/v2/discover": 3,
+     "history/v1/checkpoint": 1
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 163,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 615,
+    "unblocked_to_step_ms": 878
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 6362
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8001,
+    "last_abort_to_unroute_ms": 738,
+    "first_abort_offsets_ms": [
+     0,
+     1192,
+     3229,
+     7263
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7335,
+    "first_device_429_after_unroute": 21
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14302
+   },
+   "pass": true,
+   "test_s": 60.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 253,
+   "cap429": 12,
+   "cap_by_source": {
+    "scoped": 12
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 7,
+    "membership/v2/discover": 4,
+    "delivery/read-v2": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.1,
+   "last_cap_s": 35.4,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.04,
+   "backoff_n": 8,
+   "backoff_p50_ms": 1074,
+   "backoff_max_ms": 2122,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14631
+   },
+   "pass": true,
+   "test_s": 37.7,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "13-P1-B-11",
+  "label": "P1-B-11",
+  "arm": "B",
+  "env": "",
+  "exit": 1,
+  "seconds": 82,
+  "loadStart": "4.71",
+  "loadEnd": "8.05",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670226510
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670230163
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670230225
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670230526
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670267456
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670271107
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670271167
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670271547
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791670272684
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670273608
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 105,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 4,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 1,
+   "budget_min": 79.76,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 58
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39706
+   },
+   "pass": false,
+   "test_s": 40.3,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 251,
+   "cap429": 10,
+   "cap_by_source": {
+    "scoped": 10
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 5,
+    "delivery/read-v2": 3,
+    "delivery/submit": 2
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 27.3,
+   "last_cap_s": 37.8,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.06,
+   "backoff_n": 9,
+   "backoff_p50_ms": 1116,
+   "backoff_max_ms": 1183,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14684
+   },
+   "pass": true,
+   "test_s": 39.9,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "14-P1-A-12",
+  "label": "P1-A-12",
+  "arm": "A",
+  "env": "",
+  "exit": 1,
+  "seconds": 103,
+  "loadStart": "7.48",
+  "loadEnd": "5.02",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670309621
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670313113
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670313174
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670313562
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791670314503
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670315372
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670370756
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670372860
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670374386
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670374447
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670374804
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 299,
+   "cap429": 36,
+   "cap_by_source": {
+    "scoped": 36
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 16,
+    "history/v1/checkpoint": 14,
+    "membership/v2/discover": 5,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 28.6,
+   "last_cap_s": 60.5,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.07,
+   "backoff_n": 34,
+   "backoff_p50_ms": 1054,
+   "backoff_max_ms": 2136,
+   "pm": {
+    "ok": true,
+    "ms": 9424,
+    "cap_in_window": 9,
+    "cap_in_window_by_path": {
+     "history/v1/checkpoint": 2,
+     "delivery/read-v2": 5,
+     "delivery/submit": 1,
+     "membership/v2/discover": 1
+    },
+    "submit_refused_in_window": 1,
+    "first_ok_submit_ms": -250,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 345,
+    "unblocked_to_step_ms": 928
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 7874
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 9416,
+    "last_abort_to_unroute_ms": 2134,
+    "first_abort_offsets_ms": [
+     0,
+     1209,
+     3247,
+     7282
+    ],
+    "first_device_submit_ok_after_unroute_ms": 5944,
+    "first_device_429_after_unroute": 20
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14334
+   },
+   "pass": true,
+   "test_s": 60.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 112,
+   "cap429": 3,
+   "cap_by_source": {
+    "scoped": 3
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 2,
+    "membership/v2/discover": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.3,
+   "last_cap_s": -0.8,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 1,
+   "budget_min": 0.19,
+   "backoff_n": 1,
+   "backoff_p50_ms": 1135,
+   "backoff_max_ms": 1135,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 62
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39664
+   },
+   "pass": false,
+   "test_s": 40.3,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "15-D1-B-unlimited-1",
+  "label": "D1-B-unlimited-1",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "exit": 1,
+  "seconds": 80,
+  "loadStart": "4.06",
+  "loadEnd": "4.34",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670460975
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670463450
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670464396
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670464448
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670464781
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670466763
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670500171
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670502181
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670503350
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670503422
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670503676
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670503754
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 306,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "pm": {
+    "ok": true,
+    "ms": 7935,
+    "cap_in_window": 0,
+    "cap_in_window_by_path": {},
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 162,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 658,
+    "unblocked_to_step_ms": 865
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 1312
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 7995,
+    "last_abort_to_unroute_ms": 632,
+    "first_abort_offsets_ms": [
+     0,
+     1294,
+     3329,
+     7363
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7435,
+    "first_device_429_after_unroute": 0
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13599
+   },
+   "pass": true,
+   "test_s": 39.4,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 131,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 1,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 67
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38879
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "16-D1-B-unlimited-2",
+  "label": "D1-B-unlimited-2",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "exit": 1,
+  "seconds": 80,
+  "loadStart": "4.34",
+  "loadEnd": "3.47",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670541781
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670544228
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670545126
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670545180
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670545505
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670547419
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670581099
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670584308
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670584371
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670584626
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670584714
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 306,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "pm": {
+    "ok": true,
+    "ms": 7888,
+    "cap_in_window": 0,
+    "cap_in_window_by_path": {},
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 163,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 661,
+    "unblocked_to_step_ms": 865
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 1809
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 7919,
+    "last_abort_to_unroute_ms": 613,
+    "first_abort_offsets_ms": [
+     0,
+     1237,
+     3273,
+     7306
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7459,
+    "first_device_429_after_unroute": 0
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13412
+   },
+   "pass": true,
+   "test_s": 39.4,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 130,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 3,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 1,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 56
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38853
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "17-D1-B-unlimited-3",
+  "label": "D1-B-unlimited-3",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "exit": 1,
+  "seconds": 80,
+  "loadStart": "3.47",
+  "loadEnd": "4.58",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670622595
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670625794
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670625871
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670626133
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670626202
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670662598
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670665816
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670665897
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670666167
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670666242
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found",
+   "expect(locator).toBeVisible() failed"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 81
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38931
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 81
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38985
+   },
+   "pass": false,
+   "test_s": 39.5,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "18-D1-B-unlimited-4",
+  "label": "D1-B-unlimited-4",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "exit": 0,
+  "seconds": 73,
+  "loadStart": "4.85",
+  "loadEnd": "5.10",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670704335
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670706557
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670707949
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670708004
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670708333
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670710478
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670744826
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670746989
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670748152
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670748205
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670748577
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670750711
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 309,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "pm": {
+    "ok": true,
+    "ms": 7888,
+    "cap_in_window": 0,
+    "cap_in_window_by_path": {},
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 152,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 687,
+    "unblocked_to_step_ms": 877
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 1814
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8139,
+    "last_abort_to_unroute_ms": 743,
+    "first_abort_offsets_ms": [
+     0,
+     1334,
+     3365,
+     7396
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7334,
+    "first_device_429_after_unroute": 0
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14262
+   },
+   "pass": true,
+   "test_s": 40.4,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 284,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 2,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13609
+   },
+   "pass": true,
+   "test_s": 31.2,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "19-D1-B-unlimited-5",
+  "label": "D1-B-unlimited-5",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "exit": 1,
+  "seconds": 81,
+  "loadStart": "5.10",
+  "loadEnd": "3.85",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670778049
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670780402
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670781743
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670781797
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670782067
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670818337
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670820488
+    },
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670821553
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670821655
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670821890
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found",
+   "expect(locator).toBeVisible() failed"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 53
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39414
+   },
+   "pass": false,
+   "test_s": 39.9,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 101,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 3,
+    "~ceremony/exchange": 1,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 73
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38862
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "20-D1-B-unlimited-6",
+  "label": "D1-B-unlimited-6",
+  "arm": "B",
+  "env": "DONE_FLAKE_UNLIMITED=1",
+  "exit": 1,
+  "seconds": 82,
+  "loadStart": "3.85",
+  "loadEnd": "5.62",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670860096
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670862469
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670863543
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670863600
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670863886
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670900563
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670902921
+    },
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670904225
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670904325
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670904573
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found",
+   "expect(locator).toBeVisible() failed"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 106,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 50
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39172
+   },
+   "pass": false,
+   "test_s": 39.7,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 104,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 3,
+    "~ceremony/exchange": 1,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 119,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 62
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39647
+   },
+   "pass": false,
+   "test_s": 40.2,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "21-D2-B-deadline120-1",
+  "label": "D2-B-deadline120-1",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "exit": 1,
+  "seconds": 83,
+  "loadStart": "5.62",
+  "loadEnd": "3.62",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670943556
+    },
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670946794
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670946897
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791670947099
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791670983569
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670987210
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670987265
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670987593
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791670988749
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791670989671
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 101,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 4,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 1,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 81.03,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 50
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39091
+   },
+   "pass": false,
+   "test_s": 40.4,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 260,
+   "cap429": 16,
+   "cap_by_source": {
+    "scoped": 16
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 7,
+    "delivery/read-v2": 5,
+    "membership/v2/discover": 4
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 23.2,
+   "last_cap_s": 39.2,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.07,
+   "backoff_n": 16,
+   "backoff_p50_ms": 1099,
+   "backoff_max_ms": 2110,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13785
+   },
+   "pass": true,
+   "test_s": 41.0,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "22-D2-B-deadline120-2",
+  "label": "D2-B-deadline120-2",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "exit": 1,
+  "seconds": 100,
+  "loadStart": "3.62",
+  "loadEnd": "3.58",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671026790
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671028798
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671030409
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671030466
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671030803
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671032949
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671086646
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671089069
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671089982
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671090041
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671090292
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 300,
+   "cap429": 44,
+   "cap_by_source": {
+    "scoped": 44
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 24,
+    "history/v1/checkpoint": 17,
+    "membership/v2/discover": 2,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 25.7,
+   "last_cap_s": 59.3,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.01,
+   "backoff_n": 42,
+   "backoff_p50_ms": 1058,
+   "backoff_max_ms": 2125,
+   "pm": {
+    "ok": true,
+    "ms": 12453,
+    "cap_in_window": 17,
+    "cap_in_window_by_path": {
+     "history/v1/checkpoint": 4,
+     "delivery/read-v2": 12,
+     "membership/v2/discover": 1
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 151,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 1607,
+    "unblocked_to_step_ms": 861
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 5853
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8054,
+    "last_abort_to_unroute_ms": 681,
+    "first_abort_offsets_ms": [
+     0,
+     1313,
+     3343,
+     7373
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7388,
+    "first_device_429_after_unroute": 24
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14313
+   },
+   "pass": true,
+   "test_s": 60.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 111,
+   "cap429": 3,
+   "cap_by_source": {
+    "scoped": 3
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 2,
+    "delivery/read-v2": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.2,
+   "last_cap_s": -0.7,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 0.2,
+   "backoff_n": 1,
+   "backoff_p50_ms": 1126,
+   "backoff_max_ms": 1126,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 47
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38901
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "23-D2-B-deadline120-3",
+  "label": "D2-B-deadline120-3",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "exit": 1,
+  "seconds": 81,
+  "loadStart": "3.58",
+  "loadEnd": "4.28",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671128126
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671131326
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671131403
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671131659
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671131728
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671168040
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671171676
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671171728
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671172073
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791671173207
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671174201
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 76.15,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 79
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38860
+   },
+   "pass": false,
+   "test_s": 39.3,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 259,
+   "cap429": 26,
+   "cap_by_source": {
+    "scoped": 26
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 11,
+    "delivery/read-v2": 7,
+    "membership/v2/discover": 6,
+    "grant/v1/finish": 1,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 22.3,
+   "last_cap_s": 39.8,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0,
+   "backoff_n": 23,
+   "backoff_p50_ms": 1102,
+   "backoff_max_ms": 3607,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14259
+   },
+   "pass": true,
+   "test_s": 40.7,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "24-D2-B-deadline120-4",
+  "label": "D2-B-deadline120-4",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "exit": 1,
+  "seconds": 80,
+  "loadStart": "4.28",
+  "loadEnd": "2.95",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671210901
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671214083
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671214157
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671214415
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671214497
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671250637
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671252700
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671253818
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671253889
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671254151
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671254230
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found",
+   "expect(locator).toBeVisible() failed"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 75.82,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 70
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38857
+   },
+   "pass": false,
+   "test_s": 39.4,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 109,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/transfer": 2,
+    "~ceremony/exchange": 2
+   },
+   "timeouts0": 0,
+   "budget_min": 75.53,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 2,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 74
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 38884
+   },
+   "pass": false,
+   "test_s": 39.3,
+   "failed_step": "pairing"
+  }
+ },
+ {
+  "dir": "25-D2-B-deadline120-5",
+  "label": "D2-B-deadline120-5",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "exit": 0,
+  "seconds": 102,
+  "loadStart": "2.95",
+  "loadEnd": "4.14",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671292049
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671294184
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671295668
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671295720
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671296042
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671298245
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671354027
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671357295
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671357353
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671357663
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791671358731
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671359767
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 304,
+   "cap429": 45,
+   "cap_by_source": {
+    "scoped": 45
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 20,
+    "history/v1/checkpoint": 13,
+    "membership/v2/discover": 10,
+    "delivery/submit": 1,
+    "grant/v1/begin": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 25.7,
+   "last_cap_s": 61.3,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.02,
+   "backoff_n": 43,
+   "backoff_p50_ms": 1056,
+   "backoff_max_ms": 2212,
+   "pm": {
+    "ok": true,
+    "ms": 12954,
+    "cap_in_window": 17,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 10,
+     "membership/v2/discover": 4,
+     "history/v1/checkpoint": 3
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 149,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 1602,
+    "unblocked_to_step_ms": 873
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 6363
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8129,
+    "last_abort_to_unroute_ms": 730,
+    "first_abort_offsets_ms": [
+     0,
+     1334,
+     3363,
+     7399
+    ],
+    "first_device_submit_ok_after_unroute_ms": 7343,
+    "first_device_429_after_unroute": 24
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14286
+   },
+   "pass": true,
+   "test_s": 60.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 258,
+   "cap429": 21,
+   "cap_by_source": {
+    "scoped": 21
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 8,
+    "history/v1/checkpoint": 7,
+    "membership/v2/discover": 4,
+    "grant/v1/begin": 1,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -0.8,
+   "last_cap_s": 36.9,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.03,
+   "backoff_n": 17,
+   "backoff_p50_ms": 1054,
+   "backoff_max_ms": 2048,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13799
+   },
+   "pass": true,
+   "test_s": 38.8,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "26-D2-B-deadline120-6",
+  "label": "D2-B-deadline120-6",
+  "arm": "B",
+  "env": "DONE_FLAKE_DELIVERY_TIMEOUT=120000 DONE_FLAKE_TEST_TIMEOUT=360000",
+  "exit": 1,
+  "seconds": 78,
+  "loadStart": "4.13",
+  "loadEnd": "5.28",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671395033
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671398725
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671398782
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671399042
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671435443
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671437553
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671439077
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671439132
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671439455
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671441602
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toBeVisible() failed",
+   "element(s) not found"
+  ],
+  "fail_at": [
+   [
+    "devices.ts",
+    "46"
+   ],
+   [
+    "history.spec.ts",
+    "13"
+   ]
+  ],
+  "first_page": [
+   {
+    "state": "approved",
+    "messages": [
+     "Device approved. Finishing content access with your other device.",
+     "Account authorization refused: authority-changed"
+    ]
+   }
+  ],
+  "two": {
+   "requests": 105,
+   "cap429": 0,
+   "cap_by_source": {},
+   "cap_by_path": {},
+   "cap_concurrency": 0,
+   "first_cap_s": null,
+   "last_cap_s": null,
+   "authority_changed": 4,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 2,
+    "~ceremony/transfer": 1
+   },
+   "timeouts0": 0,
+   "budget_min": 79.77,
+   "backoff_n": 0,
+   "backoff_p50_ms": null,
+   "backoff_max_ms": null,
+   "transfer": {
+    "deliver200": 1,
+    "deliver409": 1,
+    "install200": 1,
+    "last_deliver_status": 409,
+    "deliver409_after_install_ms": 47
+   },
+   "pairing": {
+    "ok": false,
+    "ms": 39467
+   },
+   "pass": false,
+   "test_s": 40.0,
+   "failed_step": "pairing"
+  },
+  "returning": {
+   "requests": 250,
+   "cap429": 15,
+   "cap_by_source": {
+    "scoped": 15
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 8,
+    "delivery/read-v2": 4,
+    "membership/v2/discover": 2,
+    "grant/v1/finish": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 22.7,
+   "last_cap_s": 34.5,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.05,
+   "backoff_n": 14,
+   "backoff_p50_ms": 1103,
+   "backoff_max_ms": 2003,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13885
+   },
+   "pass": true,
+   "test_s": 36.4,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "27-C-prev-incremental-1",
+  "label": "C-prev-incremental-1",
+  "arm": "C",
+  "env": "",
+  "exit": 0,
+  "seconds": 97,
+  "loadStart": "5.28",
+  "loadEnd": "6.86",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671474109
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671476585
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671477442
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671477505
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671477812
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671479817
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671532007
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671534024
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671535644
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671535713
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671536026
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671538152
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 295,
+   "cap429": 33,
+   "cap_by_source": {
+    "scoped": 33
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 16,
+    "history/v1/checkpoint": 14,
+    "membership/v2/discover": 2,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 27.4,
+   "last_cap_s": 57.2,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 0.02,
+   "backoff_n": 32,
+   "backoff_p50_ms": 1108,
+   "backoff_max_ms": 2520,
+   "pm": {
+    "ok": true,
+    "ms": 13015,
+    "cap_in_window": 9,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 5,
+     "delivery/submit": 1,
+     "membership/v2/discover": 1,
+     "history/v1/checkpoint": 2
+    },
+    "submit_refused_in_window": 1,
+    "first_ok_submit_ms": 261,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 717,
+    "unblocked_to_step_ms": 953
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 3336
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8565,
+    "last_abort_to_unroute_ms": 1335,
+    "first_abort_offsets_ms": [
+     0,
+     1143,
+     3187,
+     7230
+    ],
+    "first_device_submit_ok_after_unroute_ms": 6761,
+    "first_device_429_after_unroute": 15
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13939
+   },
+   "pass": true,
+   "test_s": 57.9,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 257,
+   "cap429": 12,
+   "cap_by_source": {
+    "scoped": 12
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 5,
+    "membership/v2/discover": 3,
+    "delivery/read-v2": 2,
+    "delivery/submit": 1,
+    "grant/v1/begin": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.1,
+   "last_cap_s": 35.7,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.06,
+   "backoff_n": 9,
+   "backoff_p50_ms": 1117,
+   "backoff_max_ms": 2004,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14292
+   },
+   "pass": true,
+   "test_s": 37.6,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "28-C-prev-incremental-2",
+  "label": "C-prev-incremental-2",
+  "arm": "C",
+  "env": "",
+  "exit": 1,
+  "seconds": 110,
+  "loadStart": "6.86",
+  "loadEnd": "4.38",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671571760
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671575449
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671575505
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671575817
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791671576987
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671577838
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671640956
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671643164
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671644278
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671644348
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671644691
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671646588
+    }
+   ]
+  ],
+  "errors": [
+   "expect(locator).toContainText(expected) failed"
+  ],
+  "fail_at": [
+   [
+    "history.spec.ts",
+    "213"
+   ]
+  ],
+  "first_page": [],
+  "two": {
+   "requests": 295,
+   "cap429": 30,
+   "cap_by_source": {
+    "scoped": 30
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 15,
+    "history/v1/checkpoint": 11,
+    "membership/v2/discover": 3,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 28.5,
+   "last_cap_s": 56.6,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.01,
+   "backoff_n": 29,
+   "backoff_p50_ms": 1053,
+   "backoff_max_ms": 2115,
+   "pm": {
+    "ok": true,
+    "ms": 12461,
+    "cap_in_window": 10,
+    "cap_in_window_by_path": {
+     "membership/v2/discover": 2,
+     "delivery/read-v2": 5,
+     "delivery/submit": 1,
+     "history/v1/checkpoint": 2
+    },
+    "submit_refused_in_window": 1,
+    "first_ok_submit_ms": 282,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 734,
+    "unblocked_to_step_ms": 936
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 4845
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 9106,
+    "last_abort_to_unroute_ms": 1689,
+    "first_abort_offsets_ms": [
+     0,
+     1324,
+     3372,
+     7417
+    ],
+    "first_device_submit_ok_after_unroute_ms": 6405,
+    "first_device_429_after_unroute": 14
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14378
+   },
+   "pass": false,
+   "test_s": 66.0,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 257,
+   "cap429": 10,
+   "cap_by_source": {
+    "scoped": 10
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 5,
+    "delivery/read-v2": 4,
+    "membership/v2/discover": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 25.4,
+   "last_cap_s": 38.8,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.09,
+   "backoff_n": 10,
+   "backoff_p50_ms": 1111,
+   "backoff_max_ms": 2051,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13752
+   },
+   "pass": true,
+   "test_s": 40.4,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "29-C-prev-incremental-3",
+  "label": "C-prev-incremental-3",
+  "arm": "C",
+  "env": "",
+  "exit": 0,
+  "seconds": 98,
+  "loadStart": "4.38",
+  "loadEnd": "4.70",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671683638
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671685870
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671687367
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671687421
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671687754
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671689785
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671742198
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671745423
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671745494
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671745830
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671745912
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791671746930
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 297,
+   "cap429": 33,
+   "cap_by_source": {
+    "scoped": 33
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 14,
+    "history/v1/checkpoint": 11,
+    "membership/v2/discover": 6,
+    "delivery/submit": 2
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 28.5,
+   "last_cap_s": 57.9,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.01,
+   "backoff_n": 31,
+   "backoff_p50_ms": 1055,
+   "backoff_max_ms": 2098,
+   "pm": {
+    "ok": true,
+    "ms": 9468,
+    "cap_in_window": 7,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 4,
+     "delivery/submit": 1,
+     "membership/v2/discover": 2
+    },
+    "submit_refused_in_window": 1,
+    "first_ok_submit_ms": 279,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 716,
+    "unblocked_to_step_ms": 953
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 6868
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8700,
+    "last_abort_to_unroute_ms": 1269,
+    "first_abort_offsets_ms": [
+     0,
+     1332,
+     3380,
+     7431
+    ],
+    "first_device_submit_ok_after_unroute_ms": 6820,
+    "first_device_429_after_unroute": 18
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14453
+   },
+   "pass": true,
+   "test_s": 58.7,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 259,
+   "cap429": 15,
+   "cap_by_source": {
+    "scoped": 15
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 7,
+    "history/v1/checkpoint": 4,
+    "membership/v2/discover": 3,
+    "delivery/submit": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.3,
+   "last_cap_s": 38.2,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/transfer": 1,
+    "~ceremony/exchange": 3
+   },
+   "timeouts0": 1,
+   "budget_min": 0.04,
+   "backoff_n": 12,
+   "backoff_p50_ms": 1094,
+   "backoff_max_ms": 2049,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 3,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13376
+   },
+   "pass": true,
+   "test_s": 38.8,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "30-C-prev-incremental-4",
+  "label": "C-prev-incremental-4",
+  "arm": "C",
+  "env": "",
+  "exit": 0,
+  "seconds": 101,
+  "loadStart": "4.70",
+  "loadEnd": "4.25",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671783176
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671785524
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671786483
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671786546
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671786881
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671788862
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671841347
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671845033
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671845097
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671845399
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791671846525
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671847496
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 296,
+   "cap429": 31,
+   "cap_by_source": {
+    "scoped": 31
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 15,
+    "history/v1/checkpoint": 14,
+    "delivery/submit": 1,
+    "membership/v2/discover": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 28.1,
+   "last_cap_s": 56.3,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 0.01,
+   "backoff_n": 30,
+   "backoff_p50_ms": 1054,
+   "backoff_max_ms": 2119,
+   "pm": {
+    "ok": true,
+    "ms": 9472,
+    "cap_in_window": 7,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 4,
+     "delivery/submit": 1,
+     "history/v1/checkpoint": 2
+    },
+    "submit_refused_in_window": 1,
+    "first_ok_submit_ms": 287,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 731,
+    "unblocked_to_step_ms": 941
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 6879
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8742,
+    "last_abort_to_unroute_ms": 1331,
+    "first_abort_offsets_ms": [
+     0,
+     1317,
+     3361,
+     7411
+    ],
+    "first_device_submit_ok_after_unroute_ms": 6763,
+    "first_device_429_after_unroute": 15
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13830
+   },
+   "pass": true,
+   "test_s": 58.2,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 267,
+   "cap429": 15,
+   "cap_by_source": {
+    "scoped": 15
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 8,
+    "delivery/read-v2": 6,
+    "membership/v2/discover": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.9,
+   "last_cap_s": 40.2,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.02,
+   "backoff_n": 14,
+   "backoff_p50_ms": 1106,
+   "backoff_max_ms": 2053,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14263
+   },
+   "pass": true,
+   "test_s": 41.8,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "31-C-prev-incremental-5",
+  "label": "C-prev-incremental-5",
+  "arm": "C",
+  "env": "",
+  "exit": 0,
+  "seconds": 97,
+  "loadStart": "4.31",
+  "loadEnd": "4.22",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671885351
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671887430
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671888957
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671889019
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671889350
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671891476
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671943950
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671946102
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671947577
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671947643
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671947937
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671950076
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 298,
+   "cap429": 34,
+   "cap_by_source": {
+    "scoped": 34
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 16,
+    "delivery/read-v2": 16,
+    "membership/v2/discover": 2
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 28.3,
+   "last_cap_s": 57.9,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 1,
+   "budget_min": 0.07,
+   "backoff_n": 33,
+   "backoff_p50_ms": 1103,
+   "backoff_max_ms": 2588,
+   "pm": {
+    "ok": true,
+    "ms": 9477,
+    "cap_in_window": 7,
+    "cap_in_window_by_path": {
+     "history/v1/checkpoint": 3,
+     "delivery/read-v2": 3,
+     "membership/v2/discover": 1
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 278,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 719,
+    "unblocked_to_step_ms": 935
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 6868
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8712,
+    "last_abort_to_unroute_ms": 1296,
+    "first_abort_offsets_ms": [
+     0,
+     1325,
+     3371,
+     7416
+    ],
+    "first_device_submit_ok_after_unroute_ms": 6787,
+    "first_device_429_after_unroute": 16
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14312
+   },
+   "pass": true,
+   "test_s": 58.6,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 259,
+   "cap429": 13,
+   "cap_by_source": {
+    "scoped": 13
+   },
+   "cap_by_path": {
+    "history/v1/checkpoint": 5,
+    "delivery/read-v2": 5,
+    "delivery/submit": 2,
+    "membership/v2/discover": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.1,
+   "last_cap_s": 37.1,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.07,
+   "backoff_n": 10,
+   "backoff_p50_ms": 1100,
+   "backoff_max_ms": 1127,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 14311
+   },
+   "pass": true,
+   "test_s": 38.0,
+   "failed_step": null
+  }
+ },
+ {
+  "dir": "32-C-prev-incremental-6",
+  "label": "C-prev-incremental-6",
+  "arm": "C",
+  "env": "",
+  "exit": 0,
+  "seconds": 98,
+  "loadStart": "4.22",
+  "loadEnd": "4.23",
+  "foreign_frac": 0.0,
+  "waited": 0,
+  "pairing4xx": [
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791671984196
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/transfer",
+     "status": 409,
+     "t": 1791671987462
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671987522
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671987903
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791671987979
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/content/checkpoint",
+     "status": 401,
+     "t": 1791671988978
+    }
+   ],
+   [
+    {
+     "device": "second",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791672041898
+    },
+    {
+     "device": "first",
+     "path": "/account/notifications/v1/subscribe",
+     "status": 401,
+     "t": 1791672043902
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791672045244
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791672045307
+    },
+    {
+     "device": "first",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791672045613
+    },
+    {
+     "device": "second",
+     "path": "/__account-setup/ceremony/exchange",
+     "status": 409,
+     "t": 1791672047643
+    }
+   ]
+  ],
+  "errors": [],
+  "fail_at": [],
+  "first_page": [],
+  "two": {
+   "requests": 293,
+   "cap429": 31,
+   "cap_by_source": {
+    "scoped": 31
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 13,
+    "history/v1/checkpoint": 9,
+    "membership/v2/discover": 7,
+    "delivery/submit": 1,
+    "grant/v1/begin": 1
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": 27.3,
+   "last_cap_s": 57.0,
+   "authority_changed": 5,
+   "authority_changed_paths": {
+    "notify": 1,
+    "~ceremony/transfer": 1,
+    "~ceremony/exchange": 3
+   },
+   "timeouts0": 1,
+   "budget_min": 0.02,
+   "backoff_n": 29,
+   "backoff_p50_ms": 1056,
+   "backoff_max_ms": 2283,
+   "pm": {
+    "ok": true,
+    "ms": 9974,
+    "cap_in_window": 6,
+    "cap_in_window_by_path": {
+     "delivery/read-v2": 3,
+     "membership/v2/discover": 2,
+     "history/v1/checkpoint": 1
+    },
+    "submit_refused_in_window": 0,
+    "first_ok_submit_ms": 187,
+    "ok_submits": 3,
+    "readv2_ok_after_submit_ms": 630,
+    "unblocked_to_step_ms": 936
+   },
+   "pm2": {
+    "ok": true,
+    "ms": 6371
+   },
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 3,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "aborts": {
+    "first_n": 4,
+    "second_n": 4,
+    "first_abort_to_unroute_ms": 8620,
+    "last_abort_to_unroute_ms": 1149,
+    "first_abort_offsets_ms": [
+     0,
+     1372,
+     3417,
+     7471
+    ],
+    "first_device_submit_ok_after_unroute_ms": 6945,
+    "first_device_429_after_unroute": 17
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13395
+   },
+   "pass": true,
+   "test_s": 57.8,
+   "failed_step": null
+  },
+  "returning": {
+   "requests": 259,
+   "cap429": 14,
+   "cap_by_source": {
+    "scoped": 14
+   },
+   "cap_by_path": {
+    "delivery/read-v2": 5,
+    "membership/v2/discover": 4,
+    "history/v1/checkpoint": 3,
+    "delivery/submit": 2
+   },
+   "cap_concurrency": 0,
+   "first_cap_s": -2.2,
+   "last_cap_s": 37.6,
+   "authority_changed": 6,
+   "authority_changed_paths": {
+    "notify": 2,
+    "~ceremony/exchange": 4
+   },
+   "timeouts0": 0,
+   "budget_min": 0.03,
+   "backoff_n": 10,
+   "backoff_p50_ms": 1082,
+   "backoff_max_ms": 1139,
+   "transfer": {
+    "deliver200": 4,
+    "deliver409": 0,
+    "install200": 2,
+    "last_deliver_status": 200,
+    "deliver409_after_install_ms": null
+   },
+   "pairing": {
+    "ok": true,
+    "ms": 13914
+   },
+   "pass": true,
+   "test_s": 39.1,
+   "failed_step": null
+  }
+ }
+]

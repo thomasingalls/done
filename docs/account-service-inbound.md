@@ -77,3 +77,11 @@ All real-Account gates recorded in the checkpoint remain open, including fresh a
 protocol capacity corrections, exact Account construction registration, recovery alignment, invocation
 accounting across power loss and production provisioning/restore. Witnesses do not detect coordinated
 rewind of both data and witness. No whole-protocol debt is paid by this phase.
+
+## 2026-10-11 integrity-policy update
+
+The [current service verified-tip policy](./account-service-delivery.md#current-verified-tip-integrity-policy-2026-10-11)
+supersedes this phase record's full-history reread on every request. The selected entry and its
+signed predecessor are read and verified afresh, witness/count and authority remain fenced, and
+new suffixes are verified before signing a page. Old unread bytes follow the documented off-path
+audit policy. No paging, scope, expiry, membership or wire-size limit changes.

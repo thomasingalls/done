@@ -1,0 +1,68 @@
+{
+  "base": "4bcac41928dae58a1795d4adb126595b898a56ca",
+  "baselinePatch": "baseline.patch",
+  "candidatePatch": "candidate.patch",
+  "incrementalPatch": "recovery.patch",
+  "source": {
+    "src/crdt/accountCapture.ts": "04c1d59d4c88ad996a56a92b7a8cfd23730f2830dd431095f487ef5190517f37",
+    "src/crdt/accountLedgerMetrics.ts": "cd3973f295fc48cee6dd757a775838540653dc3f9416539445577d100b1d617b",
+    "src/crdt/accountReceive.ts": "4c33d90fd15b3860f47f15c23815d3ff406b47371928183906de13f6e9682e44",
+    "src/crdt/accountStartup.ts": "054d286ec5c3e6bc94dc822cbe1bfff17e8ba98d5a020d862eb416ec0bae6cea",
+    "src/crdt/contentStore.ts": "1afe088c2108c769eb00c3cd1410e471d0a357449f560a922e826502c67306e6",
+    "src/crdt/custody.ts": "cf68199524f023315d189b8c8ac69e72b015eebb43e9b61f6e23ed712b8adf2f",
+    "src/crdt/deliveryRecord.ts": "bf16d1f17819b33a73a18be285431fdd8fe85567a05e5cfab9ba64d17b5aceb4",
+    "src/crdt/inboundLedger.ts": "6f0b3a9b4f84d9b357431be726ad3967904fbfc1c3aee561da6550abf2e12f45",
+    "src/crdt/joinedAccount.ts": "a04e1d8709013dad2efb5923f38460ef8c58f4ec71be4bb4c8394cdd9db6631a",
+    "src/crdt/sourceCapture.ts": "83bbf7471f9f3b60b4d606eed08d4e38c57cd0cec196c2e3c3445a9ec92a1859",
+    "src/crdt/spoolRecord.ts": "8e4eb01d65bdfafa4d927d8807f72da4574d1c2f71fabb2ae2deaa22f2095b10"
+  },
+  "primaryProbe": "../2026-10-11-account-cold-open/probe/cold.spec.ts",
+  "supplementalProbe": "probe/cold.spec.ts",
+  "testSources": {
+    "test/account-cold-recovery/native.test.mjs": "6751a63b8558e034320fe98dc125cbd18d7aca2a2ba128c88188b9959cd7e142",
+    "test/account-cold-recovery/browser.ts": "37dcf57e79a192a8d89b5ce87d73190a846cc8eaff7a8eb8c38f206dc4e60519",
+    "docs/performance-experiments/2026-10-11-account-cold-open/probe/cold.spec.ts": "46379cb6ba837bcedd0bd389f9e944d0ed7ed423c59c21c3fd8d4c1c2f5a7038",
+    "docs/performance-experiments/2026-10-11-account-cold-recovery/probe/cold.spec.ts": "7375c75af548d118eb8b3cc05099c5f02130d3b3d9cfd4470887643ddbba6989"
+  },
+  "build": {
+    "revision": "4bcac41928dae58a1795d4adb126595b898a56ca-dirty",
+    "date": "2026-10-11",
+    "profileFlag": "VITE_ACCOUNT_LEDGER_PROFILE=1; unset for ordinary"
+  },
+  "host": {
+    "node": "v26.11.1",
+    "platform": "darwin-arm64",
+    "chromium": "151.0.7922.34"
+  },
+  "ordinaryAssets": {
+    "dist/assets/AccountDevices-D4ihqhu9.js": "a559411c1048148e41612f77f1da61dd41a1770201af2b4cd88638f96e129d45",
+    "dist/assets/AccountEnrollmentApp-Bvl-pY0p.js": "87f4cb7d2a30a25e1d71022f51092b20515b2fbcc810c07c37853a9f9b858ecd",
+    "dist/assets/AccountRecoveryApp-Bo0E08Z6.js": "ea0f213f6afe9a5eb09796774977379ccce9d32c87d0b1bbd5b9f9804e143dda",
+    "dist/assets/AccountSetupApp-BL0k1k3e.js": "e10548116370c7ca10e2036ba9c5f6b73981c559eec64f66bd92b7b1f5f5a7b4",
+    "dist/assets/LocalApp-CKG79X-4.js": "7f96116332ab883a21a513ff65e7890a11a8b835e6fe3b001111dadb93daba1d",
+    "dist/assets/accountAccess-MzHwzJNy.js": "1ed3ceb2ac3db44f0ed08ecf8c4d9e49e049c02480925ff44c50b4a81397e6cb",
+    "dist/assets/accountProgressCustody-BCAF05VO.js": "bc19076980d9ab2050a0a650e019755da06134f09abe0c2efe4e57f0dac52040",
+    "dist/assets/accountRotation-vfmGFtMc.js": "3e1ed051a87ebb94d69ed98ccd3ca0a60e3d8032fce8e8b88700b58974ef11f4",
+    "dist/assets/admissionDocument-ClNX9GEj.js": "261c460188c7e3420bb8ef05b8f7930dcadffbb45913cfc327dfd196f3255278",
+    "dist/assets/admissionHistory-BJqiB6yy.js": "94f8a95c55bb32de1a45da7252799ca53ae463931b23b7591b7058c6cbd942a2",
+    "dist/assets/ceremonyNavigation-DrNsj12C.js": "6a78a3fe8758efba9f7d5c55ed923b58119292e2f48a0eb361bcbbe276abe774",
+    "dist/assets/ceremonyVault-I6pndxrU.js": "5ea00a30dd742e4d48029b3f2f0979f5127b0f5009204a807e731b3bd6ca81b2",
+    "dist/assets/checkpointTimeline-DdvidAM9.js": "b7b2290ab08c63f2c30e5b415ce3e2d47cdfa8f1999098c84456072f563855e9",
+    "dist/assets/custodyCrypto-C44ppXTm.js": "06c03e084a5222d1677dc6030c072846241d15573e540c8461e6c9892703d280",
+    "dist/assets/deviceRemovalVault-BVFG4mgw.js": "23679c13039c1a189f24a8b6dcf84dce900970ba17edc186a8c03bc60b3a386b",
+    "dist/assets/historyOwner-BQ3dJdCF.js": "cfea003f0b236c0db56b8fd2668be624562a644c753ab384a5f4c3e4c26e20e4",
+    "dist/assets/joinedAccount-DyrKSd_i.js": "8b00e1cb6cece8264ad66ef486e6853d71e01233b36edee93029ada4fbe173e7",
+    "dist/assets/localGenesis-BoTaDlOy.js": "3e120079fcdf1ab49f3dd2049ba0a130a145045be8b010856920f56a5fd0eed0",
+    "dist/assets/localGenesisStorage-XKE29Wjf.js": "5a5fa4201110f72acc7f120801443aad5f4cd9c003bf24e2dd53a21e10d0d141",
+    "dist/assets/main-MzUFEyd-.js": "499729d3015f11ccc2b11a5522417e0f79ca6e7d6440cc6c90abbbd09eb5c433",
+    "dist/assets/main-apPaEBJm.css": "fb7c962da2f81eb6db0964364cfe698baea6312e79afeffd2a3830ae17f67bf3",
+    "dist/assets/membershipLocator-CFok42yu.js": "df7d4cd8af9abc3a1461130e05c1ceff568f2131035a5e08e855c74a8195aaf3",
+    "dist/assets/membershipSource-CPqf14lo.js": "a7dbaffe4c2970743042d32782cafeb70f86c87caaf694c36822c8340b508989",
+    "dist/assets/preload-helper-B_9xYlei.js": "35dfccc3c78c9fe1f7cbd668adde9c9c73453f1fd7ef70f35c166244de35876d",
+    "dist/assets/promotionRecord-CDzoURIn.js": "4df1dc907f04d5a02cb5ab65f2668f827176f6c38eed78b6a3d7fbfda4c9579a",
+    "dist/assets/rotationObservation-D752fr7W.js": "8b454a2516dfe3aa63d522c27797f89836c69c7753cfbf12bf5b42c12b71d94d",
+    "dist/index.html": "8232e6d71b02402ffdc9b71a67f755a6021713e0f06d3ca68d3f0791577184b5",
+    "dist/local.html": "87706b74648874d18740ac29b346595302f399b8237f1610340f2d7ca9781668",
+    "dist/sw.js": "5a17ecee36aeeb5947c7a917f07f6cb6a35be63771c2a109ac9f2f9e0b9cace7"
+  }
+}

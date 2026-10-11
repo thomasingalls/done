@@ -1,3 +1,4 @@
+import { countLedgerWork } from './accountLedgerMetrics';
 import { historyAuthority, verifyHistoryDecision } from '../../account-protocol/admissionHistory';
 /** Private v8 delivery ledger. Status is derived from authenticated proof bytes, never a stored setter. */
 import { hex, utf8, type Bytes } from './custodyCrypto';
@@ -198,6 +199,7 @@ export async function expectedPosition(spool: SpoolState, position: number, subt
         decoded?.kind === 'refused' ? await refusalId(decoded.refusal, subtle) : ZERO_REFUSAL;
       return { ...subject, previous, parent };
     }
+    countLedgerWork('deliveryPrefixLinks');
     previous = await acceptanceLink(subject, previous, subtle);
   }
   return null;
@@ -219,6 +221,7 @@ export async function verifyDelivery(
     >;
   },
 ): Promise<DeliveryState> {
+  countLedgerWork('deliveryVerifications');
   const state = continuation?.state ?? emptyDelivery(),
     entries = new Map(c.entries.map((e) => [e.record.seq, e])),
     envelopes = continuation?.envelopes ?? new Map<number, number>();
@@ -247,10 +250,13 @@ export async function verifyDelivery(
     NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string }
   > = continuation?.expected ?? new Map();
   const expectedAt = async (position: number) => {
-    if (!reuse && !continuation) return expectedPosition(active, position, subtle);
+    // A complete cold replay also advances this prefix once. Rebuilding it for each
+    // submission/response is quadratic. Retry events below invalidate the affected suffix;
+    // this cache never substitutes a later envelope for the attempt being replayed.
     for (let n = expectedCache.size + 1; n <= position; n++) {
       const p = active.positions[n - 1];
       if (!p?.wire) return null;
+      countLedgerWork('deliveryPrefixLinks');
       const e = decodeNetworkEnvelope(p.wire),
         subject = {
           workspace: e.workspace_id,

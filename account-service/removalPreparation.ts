@@ -1,3 +1,5 @@
+import type { DeliveryVerification } from './deliveryVerification.ts';
+import { verifiedCensus } from './delivery.ts';
 import { membershipProofChain } from './membershipLocator.ts';
 /** Persist a stable removal cutoff against actual publisher ledgers. No key rotation yet. */
 import type { DatabaseSync } from 'node:sqlite';
@@ -14,7 +16,6 @@ import {
 import {
   snapshot,
   snapshotBytes,
-  census,
   selectPublisher,
   type Snapshot,
   type DeliveryIssuer,
@@ -32,6 +33,7 @@ export async function prepareRemoval(
   input: unknown,
   issuer: RemovalIssuer,
   hook: DeliveryHook,
+  reuse?: DeliveryVerification,
 ) {
   if (!membershipEnabled(db)) return no('unavailable');
   let request;
@@ -67,7 +69,11 @@ export async function prepareRemoval(
             throw Error('Pending target has accepted writing');
           cutoff.push({ credentialId: member.id, position: 0, link: '00'.repeat(32) });
         } else {
-          const ledger = await census(source, selectPublisher(auth, source.publisher));
+          const ledger = await verifiedCensus(
+            source,
+            selectPublisher(auth, source.publisher),
+            reuse,
+          );
           cutoff.push({ credentialId: member.id, position: ledger.through, link: ledger.previous });
         }
       }

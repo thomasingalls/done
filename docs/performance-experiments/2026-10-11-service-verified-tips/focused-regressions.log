@@ -1,0 +1,184 @@
+(node:97520) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97520) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ service catch diagnostics are bounded and redact the thrown failure while withholding a decision (88.972ms)
+(node:97521) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97521) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:97521) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ pruning removes only ciphertext covered by both retained snapshots and preserves exact acceptance retries (289.474666ms)
+✔ pruning resumes atomically after before-commit and restart (193.570916ms)
+✔ pruning resumes atomically after after-commit and restart (173.332125ms)
+(node:97521) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:97521) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:97521) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:97521) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:97521) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ pruning refuses a stale boundary, and modified compact evidence cannot conceal ledger damage (202.766083ms)
+✔ older snapshot ciphertext becomes an authenticated completion receipt without breaking lost-reply retries (241.973041ms)
+(node:97521) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ pruning keeps refusal and parent evidence while accepted retries remain closed over their original decision (133.875042ms)
+✔ revoked commit authorization refuses pruning before either ciphertext carrier changes (130.719667ms)
+(node:97537) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97537) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+(node:97537) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix (178.778125ms)
+✔ publish resumes exact bytes after before-commit interruption and restart (62.000125ms)
+✔ publish resumes exact bytes after after-commit interruption and restart (60.935ms)
+✔ admit resumes exact bytes after before-commit interruption and restart (75.564167ms)
+✔ admit resumes exact bytes after after-commit interruption and restart (80.86525ms)
+✔ false accepted cuts and catalog/record tampering refuse without becoming a baseline (87.9905ms)
+✔ competing proposals do not overwrite, and stale proposals can be discarded after an epoch change (162.110875ms)
+✔ authority changes during verification and revoked authorization at commit cannot publish (60.645292ms)
+✔ schema 24 requires an explicit offline upgrade and preserves account rows (53.128041ms)
+✔ HTTP history exchange requires a workspace grant; exact retries do not emit extra hints (122.304041ms)
+✔ catalog reads authenticate the current pointers without downloading checkpoint content (83.211667ms)
+✔ schema 25 requires explicit offline upgrade before compact ciphertext evidence can be written (57.746708ms)
+(node:97545) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cold source preserves accepted removed-device edits, deletions and writing present only in a handoff (388.931917ms)
+✔ missing prefixes, false cuts, unresolved dependencies and missing keys never produce a source (939.208542ms)
+✔ handoff substitution and owner cancellation refuse before returning plaintext (289.749834ms)
+✔ a single-device account replays only the suffix after its admitted epoch-one checkpoint (102.82125ms)
+✔ a certified replacement uses exact history and handoff coverage with only its current key (501.234334ms)
+(node:97551) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97551) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ service cache retains reuse with 65536-byte checkpoint and 35 larger rows (872.179958ms)
+✔ service cache retains reuse with 1048576-byte checkpoint and 35 larger rows (3240.753208ms)
+✔ bounded service cache owns bytes/context, evicts, and cannot repopulate after close (9.311708ms)
+(node:97551) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ warm service read matches cold verification, reduces crypto, and rechecks SQL fields and membership (94.04875ms)
+(node:97551) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ additional-device delivery and installed certification verify independent signatures from existing (42.573875ms)
+✔ additional-device delivery and installed certification verify independent signatures from new (22.363167ms)
+✔ approver-signed delivery must preserve every existing recipient, recovery, generation and exact comparison (33.654042ms)
+✔ certification cannot authorize an uninstalled device or change prior keys, rights, parent or accepted coverage (31.998792ms)
+✔ versioned bootstrap and discovery independently verify the complete current chain and captured request (109.548708ms)
+✔ nonce, pin, fork, epoch and reader eligibility cannot be replaced by a correctly signed locator (397.430334ms)
+✔ service-signed omission or replacement of device approval cannot authenticate a membership chain (184.602583ms)
+✔ real fresh key wraps open only for the exact remaining devices and recovery, with no raw key retained (75.347208ms)
+✔ lost preparation and rotation replies retry exact retained bytes and cold-resolve the committed outcome (21.880959ms)
+✔ interruption at each persistence boundary cannot send unretained intent and recovers without remint after save (150.145125ms)
+✔ changed retained state, failed self opener, wrong owner and closed lifetime stop transmission (37.470875ms)
+✔ unsigned stale response remains pending; authenticated competing outcome is retained without remint (19.586375ms)
+✔ removal HTTP bounds and cancellation leave the retained intent unchanged (31.990542ms)
+✔ a different remaining owner finishes the same preparation while the original retains its superseded intent (27.065916ms)
+✔ retained rotation openers require a completed local pointer and exact recipient history (37.338584ms)
+(node:97569) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ signed current-key retry keeps the same original edits, position and closed bytes through interrupted durable steps (199.403875ms)
+✔ unsigned, substituted and wrong-purpose refusals cannot authorize re-encryption (86.517584ms)
+✔ the outbound driver retries only with installed newer authority and does not block after recording a valid refusal (108.340625ms)
+✔ a refusal received by an old writer stays closed until newer membership is installed (109.678375ms)
+✔ committed successor verifies client distribution, outcome, recovery and final head as one authority transition (144.691708ms)
+✔ authorization signature cannot replace the signed distribution, move the excluded cutoff, or omit finalization (26.19075ms)
+✔ removed publisher accepted history survives, but later writes and current read rights do not (115.912375ms)
+✔ a joined owner can remove the original publisher without inheriting its finalization (77.914ms)
+(node:97571) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97571) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ exact persisted decisions extend a contiguous chain and survive restart without replacing ciphertext (84.509834ms)
+✔ permanent closure cannot reopen; only an owned issued parent permits a different attempt at that position (99.8115ms)
+✔ invalid, foreign, future and unordered submissions never create a permanent refusal (62.538167ms)
+✔ caller bytes are captured before asynchronous verification (32.5325ms)
+✔ before-commit generation 1 decision fault resolves from durable readback (43.517541ms)
+✔ before-commit generation 2 decision fault resolves from durable readback (45.728666ms)
+✔ after-commit generation 1 decision fault resolves from durable readback (48.194459ms)
+✔ after-commit generation 2 decision fault resolves from durable readback (46.903417ms)
+(node:97571) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ missing-tail damage refuses without signing or repairing the ledger (38.881667ms)
+(node:97571) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ missing-all damage refuses without signing or repairing the ledger (36.947667ms)
+(node:97571) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ witness damage refuses without signing or repairing the ledger (36.77525ms)
+✔ submission damage refuses without signing or repairing the ledger (42.895917ms)
+(node:97571) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:97571) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ response damage refuses without signing or repairing the ledger (40.127417ms)
+✔ seal damage refuses without signing or repairing the ledger (43.887167ms)
+✔ membership damage refuses without signing or repairing the ledger (37.484417ms)
+✔ membership changes during verification prevent commit (27.178792ms)
+✔ schema 3 upgrade preserves historical rows but cannot invent fresh activation authority (33.464125ms)
+✔ a valid acceptance-key signature is insufficient without the service-issued closure record (30.798542ms)
+✔ closing authority during verification prevents any decision or witness from escaping (30.939417ms)
+✔ R-01 independent sender cannot allocate an oversized decision, including refusal successors (368.302709ms)
+(node:97572) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97572) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ canonical byte conversions match previous framing and rejection, including detached input (2.5835ms)
+✔ warm reads verify only served rows; appends extend a compact prefix; historical retries stay exact (128.305167ms)
+✔ overlapping reads and append cannot install a stale tip or expose a buffer erased by a loser (83.027625ms)
+✔ same-connection row damage is refused immediately when examined (61.153666ms)
+✔ same-connection predecessor damage is refused immediately when examined (63.035917ms)
+✔ same-connection count damage is refused immediately when examined (57.433209ms)
+✔ same-connection witness damage is refused immediately when examined (59.388084ms)
+✔ same-connection witness-signature damage is refused immediately when examined (58.93375ms)
+✔ external connection invalidates the whole prefix even for an unserved altered row (55.63725ms)
+✔ off-path audit detects latent old damage, quarantines without repair, and never signs thereafter (122.970416ms)
+✔ successful snapshot audit, stale result and close cannot reinstall a tip (211.878375ms)
+✔ commit abort never moves verified evidence past durable rows; lost reply finds exact decision (75.263083ms)
+✔ a changed cold snapshot detected at the commit fence cannot install its old verified tip (61.027791ms)
+✔ 256 appended rows schedule a full worker audit while the prefix stores no decision bytes (1714.987625ms)
+(node:97574) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97574) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ SIGKILL before-commit generation 1 preserves the exact durable decision (629.830708ms)
+✔ SIGKILL before-commit generation 2 preserves the exact durable decision (635.103375ms)
+✔ SIGKILL after-commit generation 1 preserves the exact durable decision (652.267042ms)
+✔ SIGKILL after-commit generation 2 preserves the exact durable decision (612.436459ms)
+✔ two service processes accepting competing leaves converge on one persisted head (630.646125ms)
+✔ acceptance racing closure of the same subject can never yield both signed outcomes (622.915292ms)
+(node:97588) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97588) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ v2 returns exact bounded witnessed originals across restart; v1 remains a separate purpose (139.962ms)
+✔ each role, pin field, signature, expiry and extent is checked with no service writes (84.867916ms)
+✔ historical maximum wire sizes retain bounded pagination, cold replay and exact retries (6051.697208ms)
+(node:97588) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ registration identity is checked in its own namespace; candidate/member mismatch and lost witness refuse (56.306416ms)
+✔ state change after verification refuses and four racing snapshots exhaust retries (55.196458ms)
+✔ caller bytes are copied and a concurrent append forces fresh census after crypto (41.789166ms)
+✔ expiry and custody loss on the far side of signing withhold every page byte (37.757666ms)
+✔ another service process cannot change membership during synchronous page signing (202.460917ms)
+(node:97588) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ R-01 content-blind admission still accepts a small nonconforming member: receiver refuses 256 and receives 255 (247.815625ms)
+(node:97611) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97611) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ service SIGKILL after verified read leaves no writes and retry returns originals (360.386042ms)
+✔ service SIGKILL after signed read leaves no writes and retry returns originals (341.19025ms)
+(node:97643) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97643) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ signed discovery is a read-only locator before and after admission, including held child and cold service (146.766375ms)
+✔ candidate possession, operator access and signed wrong scope cannot discover account authority (134.433625ms)
+(node:97643) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ discovery refuses ledger damage instead of signing a locator from partial state (57.754708ms)
+✔ discovery refuses pointer damage instead of signing a locator from partial state (55.9415ms)
+✔ discovery refuses artifact damage instead of signing a locator from partial state (57.219709ms)
+✔ discovery refuses account damage instead of signing a locator from partial state (53.173583ms)
+✔ discovery refuses recovery damage instead of signing a locator from partial state (53.2375ms)
+✔ discovery rechecks expiry at after-verify (35.683875ms)
+✔ discovery rechecks custody at after-verify (35.824084ms)
+✔ discovery rechecks expiry at before-commit (40.716042ms)
+✔ discovery rechecks custody at before-commit (33.723959ms)
+✔ discovery rechecks an admission committed by another process during verification (390.497083ms)
+✔ 30 generated preparation/admission/publication/restart histories preserve exact signed discovery without database mutation (4447.346917ms)
+(node:97652) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97652) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ API-owned worker backs up through process restart, reaps its temporary state and releases ownership after shutdown (1351.334417ms)
+(node:97718) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:97718) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ public app/API preserve exact origin, scoped authority and durable attempts across independent restarts (108.785667ms)
+ℹ tests 118
+ℹ suites 0
+ℹ pass 118
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 39792.3025

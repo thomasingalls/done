@@ -1080,16 +1080,31 @@ export const withRecoveryUnderPermit = async <T>(
   authority: CustodyAuthority,
   code: string,
   operation: (recovery: JournalRecovery) => Promise<T>,
-  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter'>,
+  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter' | 'reuseOpened'>,
 ): Promise<T> => {
+  let validatedView: object | undefined;
+  const validate = validation?.validate;
   const owner = prepareCustody(
     authority,
     code,
     true,
     true,
     false,
-    validation?.validate,
+    validate && validation?.reuseOpened
+      ? async (rows, scope, counter, view) => {
+          scope.step(() => {});
+          // The carrier supplies the same identity only after a fresh authenticated read
+          // matches both its counter and every sealed row. Never share it across owners.
+          if (view && view === validatedView) return;
+          validatedView = undefined;
+          await scope.wait(() => validate(rows, scope, counter, view));
+          scope.step(() => {
+            validatedView = view;
+          });
+        }
+      : validate,
     validation?.allowSpoolCounter,
+    validation?.reuseOpened,
   );
   let journal: JournalUpdate[] | undefined, records: OpenedRecord[] | undefined;
   try {
@@ -1098,6 +1113,7 @@ export const withRecoveryUnderPermit = async <T>(
     records = await owner.carrier.load(task);
     return await operation({ records, journal });
   } finally {
+    validatedView = undefined;
     journal?.forEach((row) => row.bytes.fill(0));
     records?.forEach((row) => row.bytes.fill(0));
     owner.dispose();

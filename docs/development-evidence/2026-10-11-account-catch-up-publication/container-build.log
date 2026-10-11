@@ -1,0 +1,263 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.69kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24.18.0-bookworm-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 686B done
+#3 DONE 0.0s
+
+#4 [dependencies 1/7] FROM docker.io/library/node:24.18.0-bookworm-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d
+#4 resolve docker.io/library/node:24.18.0-bookworm-slim@sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 90.14kB 0.1s done
+#5 DONE 0.1s
+
+#6 [dependencies 2/7] WORKDIR /app
+#6 CACHED
+
+#7 [dependencies 3/7] RUN apt-get update && apt-get install --no-install-recommends -y age=1.1.1-1+b3 ca-certificates && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [dependencies 6/7] COPY vendor-patches ./vendor-patches
+#8 CACHED
+
+#9 [dependencies 4/7] RUN npm install --global pnpm@11.20.0 --ignore-scripts --no-audit --no-fund
+#9 CACHED
+
+#10 [dependencies 5/7] COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+#10 CACHED
+
+#11 [dependencies 7/7] RUN pnpm install --frozen-lockfile --ignore-scripts --strict-peer-dependencies
+#11 CACHED
+
+#12 [build 1/6] COPY . .
+#12 CACHED
+
+#13 [build 2/6] RUN pnpm build
+#13 0.854 ✓ Lockfile passes supply-chain policies (verified 1d ago)
+#13 0.860 Lockfile is up to date, resolution step is skipped
+#13 0.917 Already up to date
+#13 1.085 
+#13 1.085    ╭──────────────────────────────────────────╮
+#13 1.085    │                                          │
+#13 1.085    │   Update available! 11.20.0 → 12.11.2.   │
+#13 1.085    │   Changelog: https://pnpm.io/v/12.11.2   │
+#13 1.085    │     To update, run: pnpm add -g pnpm     │
+#13 1.085    │                                          │
+#13 1.085    ╰──────────────────────────────────────────╯
+#13 1.085 
+#13 1.115 
+#13 1.140 Done in 700ms using pnpm v11.20.0
+#13 1.148 $ node scripts/check-yjs-patch.mjs && tsc -b && vite build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs
+#13 1.270 Yjs patch: source/ESM/CJS hashes, lock/workspace pins, four peer resolutions and both runtime regressions pass.
+#13 3.604 vite v8.1.5 building client environment for production...
+#13 3.611 [2Ktransforming...✓ 437 modules transformed.
+#13 7.648 rendering chunks...
+#13 7.970 computing gzip size...
+#13 7.988 dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+#13 7.988 dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+#13 7.988 dist/assets/main-apPaEBJm.css                    32.72 kB │ gzip:   6.92 kB
+#13 7.988 dist/assets/checkpointTimeline-gol_R3LA.js        0.58 kB │ gzip:   0.39 kB │ map:     2.14 kB
+#13 7.988 dist/assets/accountProgressCustody-Bmio76ij.js    1.70 kB │ gzip:   0.89 kB │ map:     6.02 kB
+#13 7.988 dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.65 kB
+#13 7.988 dist/assets/membershipLocator-CpKtwrZa.js         5.21 kB │ gzip:   1.67 kB │ map:    16.73 kB
+#13 7.988 dist/assets/rotationObservation-BoinQ9Lo.js       6.69 kB │ gzip:   2.59 kB │ map:    19.45 kB
+#13 7.988 dist/assets/accountRotation-CXmGe3hn.js           7.83 kB │ gzip:   3.43 kB │ map:    29.50 kB
+#13 7.988 dist/assets/preload-helper-DfKBSWen.js            8.34 kB │ gzip:   3.59 kB │ map:    24.22 kB
+#13 7.988 dist/assets/historyOwner-B0GvAjDF.js             10.60 kB │ gzip:   3.64 kB │ map:    35.78 kB
+#13 7.988 dist/assets/ceremonyVault-NPvZI2oI.js            10.61 kB │ gzip:   3.96 kB │ map:    36.47 kB
+#13 7.988 dist/assets/accountAccess-CaACqe5r.js            13.00 kB │ gzip:   4.69 kB │ map:    53.69 kB
+#13 7.988 dist/assets/membershipSource-B4CzfWM5.js         14.42 kB │ gzip:   5.16 kB │ map:    50.50 kB
+#13 7.988 dist/assets/LocalApp-DvcGicox.js                 16.30 kB │ gzip:   6.01 kB │ map:    49.01 kB
+#13 7.988 dist/assets/deviceRemovalVault-BMIaNJ3E.js       21.63 kB │ gzip:   7.20 kB │ map:    73.86 kB
+#13 7.988 dist/assets/AccountRecoveryApp-Bov9N0B6.js       29.18 kB │ gzip:   9.89 kB │ map:    95.74 kB
+#13 7.988 dist/assets/ceremonyNavigation-BL1C0w1O.js       34.75 kB │ gzip:  12.22 kB │ map:   116.66 kB
+#13 7.988 dist/assets/promotionRecord-BYqoBeNm.js          37.92 kB │ gzip:  12.47 kB │ map:   135.84 kB
+#13 7.988 dist/assets/AccountSetupApp-BploCZhH.js          39.29 kB │ gzip:  13.24 kB │ map:   113.01 kB
+#13 7.988 dist/assets/localGenesisStorage-Cm79NWjr.js      64.63 kB │ gzip:  21.44 kB │ map:   194.11 kB
+#13 7.988 dist/assets/joinedAccount-DhwEyFbh.js            73.79 kB │ gzip:  22.91 kB │ map:   268.56 kB
+#13 7.988 dist/assets/AccountEnrollmentApp-B4KlB9al.js     79.43 kB │ gzip:  23.44 kB │ map:   262.55 kB
+#13 7.988 dist/assets/AccountDevices-CqSzKi9z.js           90.62 kB │ gzip:  28.33 kB │ map:   343.41 kB
+#13 7.988 dist/assets/admissionHistory-Co1JuEtq.js        102.77 kB │ gzip:  25.50 kB │ map:   346.44 kB
+#13 7.988 dist/assets/admissionDocument-B-Xp2OU9.js       139.96 kB │ gzip:  43.73 kB │ map:   824.07 kB
+#13 7.988 dist/assets/main-DR55bdhv.js                    283.71 kB │ gzip:  92.02 kB │ map: 1,245.94 kB
+#13 7.988 dist/assets/localGenesis-DpBO8-qZ.js            679.83 kB │ gzip: 235.59 kB │ map: 2,801.35 kB
+#13 7.988 
+#13 7.989 [33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+#13 7.989   - @rolldown/plugin-babel (91%)
+#13 7.989   - vite:css (6%)
+#13 7.989 See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.
+#13 7.989 
+#13 7.990 ✓ built in 4.38s
+#13 8.043 index.html
+#13 8.044      4.6 kB  /assets/accountAccess-CaACqe5r.js
+#13 8.046     24.7 kB  /assets/admissionHistory-Co1JuEtq.js
+#13 8.047     11.8 kB  /assets/ceremonyNavigation-BL1C0w1O.js
+#13 8.047      1.8 kB  /assets/custodyCrypto-C44ppXTm.js
+#13 8.054     88.7 kB  /assets/main-DR55bdhv.js
+#13 8.054      1.6 kB  /assets/membershipLocator-CpKtwrZa.js
+#13 8.055      3.5 kB  /assets/preload-helper-DfKBSWen.js
+#13 8.055 initial JS, gzipped: 136.7 kB of 350.0 kB budget
+#13 8.055 local.html
+#13 8.055      4.6 kB  /assets/accountAccess-CaACqe5r.js
+#13 8.057     24.7 kB  /assets/admissionHistory-Co1JuEtq.js
+#13 8.058     11.8 kB  /assets/ceremonyNavigation-BL1C0w1O.js
+#13 8.058      1.8 kB  /assets/custodyCrypto-C44ppXTm.js
+#13 8.065     88.7 kB  /assets/main-DR55bdhv.js
+#13 8.065      1.6 kB  /assets/membershipLocator-CpKtwrZa.js
+#13 8.066      3.5 kB  /assets/preload-helper-DfKBSWen.js
+#13 8.066 initial JS, gzipped: 136.7 kB of 350.0 kB budget
+#13 8.067      6.7 kB  (css, informational — the budget is on JS)
+#13 8.108 origin isolation: scanned 31 built files
+#13 8.108   1 allowlisted origin: http://www.w3.org (2, namespace-identifier)
+#13 8.108   no literal remote URL in built output, allowlisted namespace identifiers aside (§10.9, row 17 A1)
+#13 DONE 8.2s
+
+#14 [build 3/6] RUN node --test --test-timeout=15000 test/public-runtime/*.test.mjs test/account-application/gateway.test.mjs
+#14 0.485 (node:12) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#14 0.486 (Use `node --trace-warnings ...` to show where the warning was created)
+#14 0.487 (node:12) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#14 0.495 ✔ split ports keep the exact public origin and refuse a proxy loop (1.050958ms)
+#14 0.521 ✔ gateway streams exact bytes and client authority inputs only to its fixed API upstream (21.137167ms)
+#14 0.546 ✔ API-only owner retains identity through independent restarts; gateway works while API is absent (41.121917ms)
+#14 0.549 ✔ gateway never retries a request whose reply is lost or truncated (3.126459ms)
+#14 0.551 ✔ gateway drains an active reply and closes connections that become idle during shutdown (2.164375ms)
+#14 0.918 (node:20) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#14 0.918 (Use `node --trace-warnings ...` to show where the warning was created)
+#14 0.918 (node:20) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#14 0.954 ✔ public app/API preserve exact origin, scoped authority and durable attempts across independent restarts (71.116458ms)
+#14 1.421 (node:28) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#14 1.422 (Use `node --trace-warnings ...` to show where the warning was created)
+#14 1.422 (node:28) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#14 1.425 ✔ public config requires explicit HTTPS identity and separate ports without preview defaults (3.385041ms)
+#14 1.425 ✔ ordinary startup does not create missing state; explicit initialization retains a stable identity (36.164958ms)
+#14 1.425 ✔ pin, origin and wrapping-key mismatches refuse without replacing the identity (24.858209ms)
+#14 1.425 ✔ missing, empty and older account databases never become fresh stores at startup or init retry (30.764208ms)
+#14 1.425 ✔ incomplete initialization refuses retry and never replaces its already-created authority (11.18525ms)
+#14 1.426 ✔ complete staging and lost initialization replies recover the same identity (28.81875ms)
+#14 1.771 ✔ a separate API process excludes another owner and SIGKILL releases ownership without deleting a lock file (349.109ms)
+#14 1.771 ✔ shutdown keeps ownership through accepted work, including notification-close failure (25.391084ms)
+#14 1.778 ℹ tests 14
+#14 1.778 ℹ suites 0
+#14 1.778 ℹ pass 14
+#14 1.778 ℹ fail 0
+#14 1.778 ℹ cancelled 0
+#14 1.778 ℹ skipped 0
+#14 1.778 ℹ todo 0
+#14 1.778 ℹ duration_ms 1705.115292
+#14 DONE 1.8s
+
+#15 [build 4/6] RUN node --test --test-timeout=20000 test/public-backup/*.test.mjs
+#15 0.425 (node:12) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#15 0.425 (Use `node --trace-warnings ...` to show where the warning was created)
+#15 0.425 (node:12) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#15 0.676 ✔ real encrypted pipeline uses version readback; failures never authorize pruning or lose pending changes (289.538667ms)
+#15 0.676 ✔ overlapping ticks coalesce; a late write stays dirty; close aborts transfer and waits before cleanup (1.284625ms)
+#15 1.015 (node:71) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#15 1.015 (Use `node --trace-warnings ...` to show where the warning was created)
+#15 1.016 (node:71) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#15 1.087 ✔ a pinned WAL snapshot includes committed data and excludes a concurrent later transaction (105.48425ms)
+#15 1.087 ✔ retention keeps five minutes, six UTC hour buckets, seven UTC date buckets and its last verified anchor (0.504584ms)
+#15 1.438 (node:111) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#15 1.439 (Use `node --trace-warnings ...` to show where the warning was created)
+#15 1.439 (node:111) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#15 2.809 ✔ API-owned worker backs up through process restart, reaps its temporary state and releases ownership after shutdown (1406.263918ms)
+#15 2.818 ℹ tests 5
+#15 2.818 ℹ suites 0
+#15 2.818 ℹ pass 5
+#15 2.818 ℹ fail 0
+#15 2.818 ℹ cancelled 0
+#15 2.818 ℹ skipped 0
+#15 2.818 ℹ todo 0
+#15 2.818 ℹ duration_ms 2744.099002
+#15 DONE 2.8s
+
+#16 [build 5/6] RUN node --test --test-timeout=20000 test/public-restore/*.test.mjs
+#16 0.436 (node:13) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#16 0.436 (Use `node --trace-warnings ...` to show where the warning was created)
+#16 0.437 (node:13) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#16 0.564 ✔ genuine snapshot restores in quarantine, preserves writing/identity, resets custody and refuses old logins (134.600291ms)
+#16 0.892 ✔ lost completion replies preserve the same reset; interrupted unpublished work can be replayed safely (324.570209ms)
+#16 1.008 ✔ completed recovery refuses newer WAL content and survives a wrong-key inspection retry (120.765625ms)
+#16 1.194 ✔ restore refuses a live destination, wrong pin/key/digest, tampered ciphertext and malformed snapshots (184.67225ms)
+#16 1.332 ✔ archive allowlist rejects traversal, links, duplicate/missing files, oversized metadata and non-files (137.605834ms)
+#16 2.613 ✔ process death after custody commit releases ownership; CLI retry completes quarantine without a listener (1310.22625ms)
+#16 2.627 ℹ tests 6
+#16 2.627 ℹ suites 0
+#16 2.627 ℹ pass 6
+#16 2.627 ℹ fail 0
+#16 2.627 ℹ cancelled 0
+#16 2.627 ℹ skipped 0
+#16 2.627 ℹ todo 0
+#16 2.627 ℹ duration_ms 2543.75421
+#16 DONE 2.6s
+
+#17 [build 6/6] RUN node --test --test-timeout=20000 test/public-maintenance/*.test.mjs
+#17 0.432 (node:12) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+#17 0.432 (Use `node --trace-warnings ...` to show where the warning was created)
+#17 0.432 (node:12) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+#17 1.507 ✔ offline preparation verifies encrypted off-host backup, fences startup, and resumes without resetting real sessions (1077.859667ms)
+#17 1.694 ✔ wrong recovery key, lost upload reply, corrupt readback, and changed bindings stay fenced and retry safely (189.291167ms)
+#17 2.924 ✔ interruptions retain intent through resolution; SIGKILL after upload retains the fence and remote receipt is recovered (1230.240792ms)
+#17 3.076 ✔ changed live WAL, unclassified files, and unsupported schemas cannot be mistaken for unchanged maintenance (151.832916ms)
+#17 3.256 ✔ maintenance copies are excluded from routine retention, held through resolution, and expire only with a newer verified backup (180.225542ms)
+#17 3.270 ✔ cancelled preparation resumes unchanged without B2, but never recreates a lost store from maintenance history (41.373791ms)
+#17 3.282 ℹ tests 6
+#17 3.282 ℹ suites 0
+#17 3.282 ℹ pass 6
+#17 3.282 ℹ fail 0
+#17 3.282 ℹ cancelled 0
+#17 3.282 ℹ skipped 0
+#17 3.282 ℹ todo 0
+#17 3.282 ℹ duration_ms 3207.925585
+#17 DONE 3.3s
+
+#18 [runtime  4/11] COPY --from=production-dependencies /app/node_modules ./node_modules
+#18 CACHED
+
+#19 [production-dependencies 1/1] RUN pnpm prune --prod --ignore-scripts
+#19 CACHED
+
+#20 [runtime  5/11] COPY --from=build /app/package.json ./package.json
+#20 CACHED
+
+#21 [runtime  6/11] COPY --from=build /app/dist ./dist
+#21 DONE 0.0s
+
+#22 [runtime  7/11] COPY --from=build /app/account-service ./account-service
+#22 DONE 0.0s
+
+#23 [runtime  8/11] COPY --from=build /app/account-protocol ./account-protocol
+#23 DONE 0.0s
+
+#24 [runtime  9/11] COPY --from=build /app/scripts/public-account.mjs /app/scripts/public-healthcheck.mjs ./scripts/
+#24 DONE 0.0s
+
+#25 [runtime 10/11] COPY --from=build /app/scripts/lib/account-gateway.mjs /app/scripts/lib/packaged-application.mjs ./scripts/lib/
+#25 DONE 0.0s
+
+#26 [runtime 11/11] RUN mkdir /data && chown 65532:65532 /data && chmod 0770 /data
+#26 DONE 0.1s
+
+#27 exporting to image
+#27 exporting layers
+#27 exporting layers 0.3s done
+#27 exporting manifest sha256:e072aadecf04bc41a8ceb182f1833afc7972a5f06a891753812544f3ca2e2b4b done
+#27 exporting config sha256:cb9746074722f28eb4ee628a9613b822f8b203db78200562ffcf991d09e022ed done
+#27 exporting attestation manifest sha256:91a8a53d73d81fcdd47291a85e7fe69a28a3e0c745e24bf25f3d34130e4ede2a done
+#27 exporting manifest list sha256:67da5b75d28947e399b92dbf9da8443819bec99d87993552df1350573faae192 done
+#27 naming to docker.io/library/done-public:c609d8c7 done
+#27 unpacking to docker.io/library/done-public:c609d8c7 0.1s done
+#27 DONE 0.4s
+
+#28 resolving provenance for metadata file
+#28 DONE 0.0s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/72soxiwufkx7rh0lkp9ku1ubv

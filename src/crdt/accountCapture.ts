@@ -1,4 +1,4 @@
-import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
 import { claimScope } from './localGenesisRecord';
@@ -100,6 +100,7 @@ export async function openAccountCaptureOwner(
           if (extension?.version !== 9 || !extension.initializeJoined)
             throw Error('Certified device needs the sync owner');
           const v = await verifyJoinedAccount(task, options);
+          markAccountOpen('classified');
           if (principalId !== undefined && principalId !== v.account.principalId)
             throw Error('Account actor identity changed');
           route = v.route;
@@ -119,6 +120,7 @@ export async function openAccountCaptureOwner(
           return;
         }
         let v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
+        markAccountOpen('classified');
         if (extension?.version !== 9 && v.marker.captureBootstrap)
           throw Error('Account upload conversion must finish before editing');
         if (principalId !== undefined && v.account.principalId !== principalId)
