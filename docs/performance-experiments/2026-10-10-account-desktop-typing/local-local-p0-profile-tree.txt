@@ -1,0 +1,126 @@
+profile <scratch>/results/local-local-p0-P-profiled.cpuprofile
+keys 100; sampled 16994 ms; idle 16411 ms; active 582 ms = 5.8 ms/key
+
+TOP-DOWN (ms per key inclusive, self in brackets; nodes >= 1.5% of active)
+   2.7 [   2.7]   (program)
+   1.5 [   0.0]   (anonymous) npm:@codemirror/view/dist/index.js:7119
+   1.5 [   0.0]     flush npm:@codemirror/view/dist/index.js:7440
+   1.4 [   0.0]       ro npm:@codemirror/view/dist/index.js:4231
+   1.4 [   0.0]         io npm:@codemirror/view/dist/index.js:4315
+   1.4 [   0.0]           (anonymous) npm:@codemirror/view/dist/index.js:4343
+   1.4 [   0.0]             (anonymous) src/editor/admittedEditor.ts:109
+   1.4 [   0.0]               g src/editor/admittedEditor.ts:43
+   1.4 [   0.0]                 input src/crdt/admittedWorkspace.ts:834
+   1.3 [   0.0]                   ie src/crdt/admittedWorkspace.ts:519
+   1.3 [   0.0]                     submit src/crdt/admissionQueue.ts:800
+   1.3 [   0.0]                       _e src/crdt/admissionQueue.ts:721
+   1.3 [   0.0]                         ge src/crdt/admissionQueue.ts:698
+   1.3 [   0.0]                           fe src/crdt/admissionQueue.ts:465
+   0.7 [   0.0]                             prepare src/crdt/workspacePreparation.ts:371
+   0.7 [   0.0]                               command src/crdt/admittedWorkspace.ts:434
+   0.7 [   0.0]                                 M src/crdt/admittedWorkspace.ts:215
+   0.4 [   0.0]                                   catchUpText src/crdt/yjs.ts:743
+   0.2 [   0.0]                                     Ic src/crdt/yjs.ts:407
+   0.2 [   0.0]                                       Gi npm:yjs/dist/yjs.mjs:1748
+   0.2 [   0.0]                                         transact npm:yjs/dist/yjs.mjs:3400
+   0.2 [   0.0]                                           Va npm:yjs/dist/yjs.mjs:3248
+   0.2 [   0.1]                                             ui npm:lib0/logging.js:100
+   0.2 [   0.0]                                     Hc src/crdt/yjs.ts:636
+   0.2 [   0.1]                                       i src/crdt/yjs.ts:650
+   0.1 [   0.0]                                         (anonymous) src/crdt/yjs.ts:651
+   0.2 [   0.0]                                   run src/crdt/workspaceCommands.ts:143
+   0.2 [   0.0]                                     AF src/crdt/workspaceCommands.ts:156
+   0.1 [   0.0]                                       create npm:@codemirror/state/dist/index.js:2758
+   0.5 [   0.0]                             se src/crdt/admissionQueue.ts:356
+   0.3 [   0.0]                               (anonymous) src/crdt/admittedWorkspace.ts:580
+   0.3 [   0.0]                                 ne src/crdt/admittedWorkspace.ts:476
+   0.3 [   0.0]                                   x src/editor/admittedEditor.ts:218
+   0.3 [   0.0]                                     dispatch npm:@codemirror/view/dist/index.js:7926
+   0.3 [   0.0]                                       dispatchTransactions src/editor/admittedEditor.ts:194
+   0.3 [   0.0]                                         update npm:@codemirror/view/dist/index.js:7940
+   0.1 [   0.0]                                           get state npm:@codemirror/state/dist/index.js:2281
+   0.1 [   0.0]                                             applyTransaction npm:@codemirror/state/dist/index.js:2603
+   0.1 [   0.0]                                               e npm:@codemirror/state/dist/index.js:2541
+   0.1 [   0.0]                                                 Rt npm:@codemirror/state/dist/index.js:2023
+   0.1 [   0.0]                                                   (anonymous) npm:@codemirror/state/dist/index.js:2633
+   0.1 [   0.0]                                                     update npm:@codemirror/state/dist/index.js:1786
+   0.1 [   0.0]                                                       update npm:@codemirror/language/dist/index.js:550
+   0.1 [   0.0]                                                         apply npm:@codemirror/language/dist/index.js:527
+   0.1 [   0.0]                                                           work npm:@codemirror/language/dist/index.js:343
+   0.1 [   0.0]                                                             (anonymous) npm:@codemirror/language/dist/index.js:350
+   0.5 [   0.0]   (anonymous) npm:react-dom/cjs/react-dom-client.production.js:12089
+   0.5 [   0.0]     od npm:react-dom/cjs/react-dom-client.production.js:11966
+   0.4 [   0.0]       id npm:react-dom/cjs/react-dom-client.production.js:11918
+   0.4 [   0.0]         ld npm:react-dom/cjs/react-dom-client.production.js:12084
+   0.4 [   0.0]           gu npm:react-dom/cjs/react-dom-client.production.js:10681
+   0.3 [   0.0]             Ou npm:react-dom/cjs/react-dom-client.production.js:11120
+   0.2 [   0.0]               Nc npm:react-dom/cjs/react-dom-client.production.js:7392
+   0.2 [   0.0]                 gc npm:react-dom/cjs/react-dom-client.production.js:6489
+   0.2 [   0.0]             _u npm:react-dom/cjs/react-dom-client.production.js:10848
+   0.2 [   0.0]               Lu npm:react-dom/cjs/react-dom-client.production.js:11457
+   0.1 [   0.0]                 Ru npm:react-dom/cjs/react-dom-client.production.js:11524
+   0.1 [   0.0]                   vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                     gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                       vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                         gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                           vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                             gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                               vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                 gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                                   vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                     gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                                       vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                         gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                                           vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                             gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                                               vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                                 gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                                                   vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                                     gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                                                       vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                                         gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.1 [   0.0]                                                           vl npm:react-dom/cjs/react-dom-client.production.js:9427
+   0.1 [   0.0]                                                             gl npm:react-dom/cjs/react-dom-client.production.js:9384
+   0.3 [   0.0]   E npm:scheduler/cjs/scheduler.production.js:121
+   0.3 [   0.0]     cd npm:react-dom/cjs/react-dom-client.production.js:12065
+   0.3 [   0.0]       gu npm:react-dom/cjs/react-dom-client.production.js:10681
+   0.2 [   0.0]         Ou npm:react-dom/cjs/react-dom-client.production.js:11120
+   0.2 [   0.0]           Nc npm:react-dom/cjs/react-dom-client.production.js:7392
+   0.1 [   0.0]             gc npm:react-dom/cjs/react-dom-client.production.js:6489
+   0.1 [   0.0]         _u npm:react-dom/cjs/react-dom-client.production.js:10848
+   0.1 [   0.0]           Lu npm:react-dom/cjs/react-dom-client.production.js:11457
+   0.2 [   0.2]   (garbage collector)
+   0.2 [   0.0]   (anonymous) src/crdt/writeSession.ts:156
+
+BOTTOM-UP (self ms per key, then the application call chains that reach it)
+   2.7 (program)
+           2.7  <- (no application frame)
+   0.2 (garbage collector)
+           0.2  <- (no application frame)
+   0.2 ui npm:lib0/logging.js:100
+           0.2  <- Ic src/crdt/yjs.ts:407  <-  catchUpText src/crdt/yjs.ts:743  <-  M src/crdt/admittedWorkspace.ts:215  <-  command src/crdt/admittedWorkspace.ts:434  <-  prepare src/crdt/workspacePreparation.ts:371  <-  fe src/crdt/admissionQueue.ts:465
+   0.1 vy src/lib/date.ts:85
+           0.0  <- D src/crdt/admittedWorkspace.ts:206  <-  input src/crdt/admittedWorkspace.ts:834  <-  g src/editor/admittedEditor.ts:43  <-  (anonymous) src/editor/admittedEditor.ts:109
+           0.0  <- D src/crdt/admittedWorkspace.ts:206  <-  M src/crdt/admittedWorkspace.ts:215  <-  command src/crdt/admittedWorkspace.ts:434  <-  prepare src/crdt/workspacePreparation.ts:371  <-  fe src/crdt/admissionQueue.ts:465  <-  ge src/crdt/admissionQueue.ts:698
+           0.0  <- D src/crdt/admittedWorkspace.ts:206  <-  read src/crdt/admittedWorkspace.ts:812  <-  x src/editor/admittedEditor.ts:218  <-  ne src/crdt/admittedWorkspace.ts:476  <-  (anonymous) src/crdt/admittedWorkspace.ts:580  <-  se src/crdt/admissionQueue.ts:356
+   0.1 Fd npm:react-dom/cjs/react-dom-client.production.js:13577
+           0.1  <- (no application frame)
+   0.1 (anonymous)
+           0.1  <- (no application frame)
+   0.1 i src/crdt/yjs.ts:650
+           0.1  <- Hc src/crdt/yjs.ts:636  <-  catchUpText src/crdt/yjs.ts:743  <-  M src/crdt/admittedWorkspace.ts:215  <-  command src/crdt/admittedWorkspace.ts:434  <-  prepare src/crdt/workspacePreparation.ts:371  <-  fe src/crdt/admissionQueue.ts:465
+   0.1 vl npm:react-dom/cjs/react-dom-client.production.js:9427
+           0.1  <- (no application frame)
+   0.0 parse npm:@lezer/markdown/dist/index.js:2236
+           0.0  <- dispatchTransactions src/editor/admittedEditor.ts:194  <-  x src/editor/admittedEditor.ts:218  <-  ne src/crdt/admittedWorkspace.ts:476  <-  (anonymous) src/crdt/admittedWorkspace.ts:580  <-  se src/crdt/admissionQueue.ts:356  <-  fe src/crdt/admissionQueue.ts:465
+           0.0  <- AF src/crdt/workspaceCommands.ts:156  <-  run src/crdt/workspaceCommands.ts:143  <-  M src/crdt/admittedWorkspace.ts:215  <-  command src/crdt/admittedWorkspace.ts:434  <-  prepare src/crdt/workspacePreparation.ts:371  <-  fe src/crdt/admissionQueue.ts:465
+   0.0 NN src/ui/Goals.tsx:71
+           0.0  <- (no application frame)
+   0.0 r src/crdt/yjs.ts:641
+           0.0  <- (anonymous) src/crdt/yjs.ts:651  <-  i src/crdt/yjs.ts:650  <-  Hc src/crdt/yjs.ts:636  <-  catchUpText src/crdt/yjs.ts:743  <-  M src/crdt/admittedWorkspace.ts:215  <-  command src/crdt/admittedWorkspace.ts:434
+   0.0 oP src/ui/Menu.tsx:20
+           0.0  <- (no application frame)
+   0.0 Wt npm:react-dom/cjs/react-dom-client.production.js:1103
+           0.0  <- (no application frame)
+   0.0 (anonymous) src/crdt/contentStore.ts:155
+           0.0  <- step src/crdt/writeSession.ts:150  <-  p src/crdt/contentDatabase.ts:98  <-  s.onsuccess src/crdt/contentStore.ts:154

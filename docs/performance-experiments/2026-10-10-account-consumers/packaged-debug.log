@@ -1,0 +1,40 @@
+
+Running 1 test using 1 worker
+
+(node:85580) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Joining state: certified
+Joining messages: [ 'Content access is installed and certified.' ]
+  ✘  1 test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (39.9s)
+
+
+  1) test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Content access is installed and certified.')
+    Expected: visible
+    Timeout: 30000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 30000ms
+      - waiting for getByText('Content access is installed and certified.')
+
+
+       at devices.ts:33
+
+      31 |       await expect(
+      32 |         p.getByText('Content access is installed and certified.', { exact: false }),
+    > 33 |       ).toBeVisible({ timeout: 30000 });
+         |         ^
+      34 |     await page.getByRole('button', { name: 'Make writing available', exact: true }).click();
+      35 |     await expect(
+      36 |       page.getByText('Your writing is available to the approved device.', { exact: false }),
+        at pairedEditors (/Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/devices.ts:33:9)
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/consumer-debug.spec.ts:59:12
+
+    Error Context: test-results/packaged-account/artifacts/consumer-debug-two-native--6aef1-s-and-keep-two-way-delivery/error-context.md
+
+  1 failed
+    test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery 

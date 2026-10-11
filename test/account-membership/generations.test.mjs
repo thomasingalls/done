@@ -14,6 +14,7 @@ const result = await build({
   build: {
     write: false,
     minify: false,
+    rollupOptions: { output: { codeSplitting: false } },
     lib: { entry: resolve('test/account-membership/generations-entry.ts'), formats: ['es'] },
   },
 });
@@ -113,7 +114,7 @@ async function fixture() {
   const pub = await crypto.subtle.importKey('raw', bytes(history.signingKey), 'Ed25519', false, [
     'verify',
   ]);
-  return { x, keys, history, route, oldRoute, one, two, old, next, cut, pub };
+  return { x, keys, history, route, oldRoute, one, two, old, next, cut, pub, proof };
 }
 test('retained source, spool and delivery records resolve their own authenticated generation', async () => {
   const f = await fixture();
@@ -174,6 +175,46 @@ test('retained source, spool and delivery records resolve their own authenticate
     oldAuthority,
   );
   assert.deepEqual(client.decodeDeliveryEntry(delivery, f.route, f.history.current).wire, accepted);
+  // Self progress uses each decision/source at its authenticated historical epoch,
+  // including the pre-rotation acceptance retained by the surviving publisher.
+  const receipts = client.emptyDelivery();
+  const wires = [
+    accepted,
+    response({
+      kind: 'accepted',
+      head: head(f.two.subject, f.cut, 4, f.x.f.f.keys.acceptance),
+      leaf: { epoch: 4, digest: f.two.subject.digest },
+    }),
+  ];
+  for (const [i, wire] of wires.entries()) {
+    const subject = [f.one, f.two][i].subject;
+    const decision = await client.verifyDeliveryDecision(
+      wire,
+      { ...subject, previous: i ? f.cut : zero, parent: zero },
+      f.history.current,
+      f.route,
+      crypto.subtle,
+    );
+    assert.equal(decision.kind, 'accepted');
+    client.applyDecision(receipts, decision);
+    receipts.responses.set(i + 1, [wire]);
+  }
+  const own = client.emptyInbound();
+  const records = [f.old, f.next].map((bytes, i) => ({
+    seq: i + 1,
+    gen: i + 1,
+    kind: 'update',
+    bytes,
+  }));
+  client.advanceSelfReceive(
+    { spool: state, entries: [], ledger: [] },
+    receipts,
+    own,
+    f.route,
+    (updates) => client.verifyInboundCoverage(records, updates),
+  );
+  assert.equal(own.prefix.position, 2);
+  assert.equal(own.prefix.link, link(f.two.subject, f.cut));
 });
 function packet(f, wire, previous, a = f.history.current, through = wire.subject.position) {
   const requestFields = [
@@ -335,4 +376,198 @@ test('cold replay uses the stored page epoch cut, never a later membership cutof
     ),
     /prefix/,
   );
+});
+
+test('incremental replay matches the full ledger across retained and current generation decisions', async () => {
+  const f = await fixture();
+  const base = {
+    authority: f.history.current,
+    generation: 2,
+    generationKey: f.keys.get(2),
+    retainedGenerationKeys: new Map([[1, f.keys.get(1)]]),
+    publisher: { id: f.route.credential },
+  };
+  const counter = { v: 2, spool: client.emptySpoolWitness() };
+  const memo = client.createVerificationMemo(),
+    reuse = { memo, current: () => {} };
+  let records = [],
+    value = {
+      census: client.inspectInbound([], f.route, base),
+      delivery: client.emptyDelivery(),
+      inbound: client.emptyInbound(),
+    };
+  value.indexes = await client.indexVerifiedLedger(value, records, f.route, counter, crypto.subtle);
+  let installed;
+  for (const [i, route] of [f.oldRoute, f.route].entries()) {
+    if (i === 1) {
+      installed = {
+        v: 1,
+        proofs: { ...f.x.proofs, continuations: [f.proof] },
+        cuts: [{ epoch: 4, head: f.proof.head, before: { ...counter.spool } }],
+      };
+      // Adoption fully verifies the retained prefix, then rebuilds indexes under the new
+      // authority. Historical events are never eligible as new appends after this boundary.
+      await client.verifyInstalledMembership(
+        value.census.delivery.spool,
+        f.history,
+        installed,
+        3,
+        crypto.subtle,
+      );
+      memo.clear();
+      value.indexes = await client.indexVerifiedLedger(
+        value,
+        records,
+        route,
+        counter,
+        crypto.subtle,
+      );
+      assert.equal(value.indexes.epoch, 3, 'last retained event predates installed epoch 4');
+      const staleProof = response({
+        kind: 'accepted',
+        head: head(f.one.subject, zero, 3, f.x.f.f.keys.acceptance, true),
+        leaf: { epoch: 3, digest: f.one.subject.digest },
+      });
+      const stale = {
+        kind: 'heads',
+        seq: records.length + 1,
+        gen: 2,
+        bytes: client.encodeDeliveryEntry(
+          { type: 'response', position: 1, wire: staleProof },
+          f.oldRoute,
+          f.history.authorities.find((a) => a.tip === 3),
+        ),
+      };
+      const staleRows = [...records, stale];
+      const staleCounter = {
+        ...counter,
+        spool: await client.extendSpoolWitness(counter.spool, stale.bytes, crypto.subtle),
+      };
+      const staleCensus = client.inspectInbound(staleRows, route, base);
+      await assert.rejects(
+        client.verifyInstalledMembership(
+          staleCensus.delivery.spool,
+          f.history,
+          installed,
+          3,
+          crypto.subtle,
+        ),
+        /Ledger crosses membership adoption/,
+      );
+      await assert.rejects(
+        client.extendAccountLedger(
+          value,
+          records,
+          staleRows,
+          route,
+          staleCounter,
+          base,
+          f.pub,
+          crypto.subtle,
+          reuse,
+        ),
+        /authority/,
+        'a valid old-epoch decision must fail immediately, not wait for audit/cold open',
+      );
+    }
+    const wire = [f.one, f.two][i],
+      update = [f.old, f.next][i];
+    const source = client.makeSourceCapsule(route, [
+      { actor: route.principal, kind: 'human', bytes: update },
+    ]);
+    const capsule = client.decodeSourceCapsule(source, f.route);
+    const proof = response({
+      kind: 'accepted',
+      head: head(wire.subject, i ? f.cut : zero, route.epoch, f.x.f.f.keys.acceptance),
+      leaf: { epoch: route.epoch, digest: wire.subject.digest },
+    });
+    const authority = f.history.authorities.find((a) => a.tip === route.epoch);
+    const rows = [
+      ['outbound', source],
+      ['update', update],
+      [
+        'heads',
+        client.encodeSpoolEntry(
+          {
+            type: 'position',
+            position: i + 1,
+            source: { id: capsule.id, index: 0, hash: hash(source) },
+          },
+          route,
+        ),
+      ],
+      [
+        'heads',
+        client.encodeSpoolEntry({ type: 'attempt', position: i + 1, attempt: i + 1 }, route),
+      ],
+      [
+        'outbound',
+        client.encodeSpoolEntry(
+          { type: 'envelope', position: i + 1, attempt: i + 1, wire: wire.wire },
+          route,
+        ),
+      ],
+      [
+        'heads',
+        client.encodeDeliveryEntry(
+          { type: 'response', position: i + 1, wire: proof },
+          route,
+          authority,
+        ),
+      ],
+    ];
+    for (const [offset, [kind, bytes]] of rows.entries()) {
+      const next = [...records, { kind, bytes, seq: records.length + 1, gen: 2 }];
+      if (offset >= 2)
+        counter.spool = await client.extendSpoolWitness(counter.spool, bytes, crypto.subtle);
+      const delta = await client.extendAccountLedger(
+        value,
+        records,
+        next,
+        route,
+        counter,
+        base,
+        f.pub,
+        crypto.subtle,
+        reuse,
+      );
+      assert.ok(delta, 'generation delta stays eligible');
+      const inbound = structuredClone(value.inbound);
+      client.advanceSelfReceive(
+        delta.census.delivery,
+        delta.delivery,
+        inbound,
+        f.route,
+        (u) => client.verifyInboundCoverage(next, u),
+        value.delivery.acceptedThrough,
+      );
+      const census = client.inspectInbound(next, f.route, base);
+      if (installed)
+        await client.verifyInstalledMembership(
+          census.delivery.spool,
+          f.history,
+          installed,
+          3,
+          crypto.subtle,
+        );
+      await client.verifySpool(census.delivery.spool, f.route, f.keys, f.pub, crypto.subtle);
+      const delivery = await client.verifyDelivery(
+        census.delivery,
+        f.route,
+        base.authority,
+        f.pub,
+        crypto.subtle,
+      );
+      const full = client.emptyInbound();
+      client.advanceSelfReceive(census.delivery, delivery, full, f.route, (u) =>
+        client.verifyInboundCoverage(next, u),
+      );
+      value = { ...delta, inbound };
+      records = next;
+      assert.equal(client.sameAccountLedger(value, { census, delivery, inbound: full }), true);
+    }
+  }
+  assert.equal(value.delivery.acceptedThrough, 2);
+  assert.equal(value.inbound.prefix.position, 2);
+  memo.clear();
 });

@@ -1,3 +1,10 @@
+import {
+  countLedgerWork,
+  ledgerProfiling,
+  ledgerWorkStart,
+  measureLedgerWork,
+  measureLedger,
+} from './accountLedgerMetrics';
 import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
 import { copyRecords, eraseVerified } from './verifiedRecords';
 import {
@@ -296,11 +303,25 @@ export const createContentOwner = (
     }
   };
   const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
+    countLedgerWork('loads');
+    const began = ledgerWorkStart();
     try {
-      return await openSnapshot(task, await read(task, true));
+      const at = ledgerWorkStart();
+      const snapshot = await read(task, true);
+      measureLedgerWork('physicalRead', at);
+      countLedgerWork('loadedRows', snapshot.rows.length);
+      const result = await openSnapshot(task, snapshot);
+      if (ledgerProfiling)
+        countLedgerWork(
+          'loadedBytes',
+          result.reduce((n, r) => n + r.bytes.length, 0),
+        );
+      return result;
     } catch (cause) {
       clearView();
       throw cause;
+    } finally {
+      measureLedgerWork('loadElapsed', began);
     }
   };
   const appendRecords = async (
@@ -563,16 +584,22 @@ export const createContentOwner = (
         sequences: Object.freeze(records.map((r) => r.seq)),
       });
     },
-    compact: (task: SessionTask, checkJournal: () => void) =>
-      compactContent(task, {
-        scope,
-        generation,
-        intent: witness.intent,
-        db: db!,
-        read: () => read(task, true),
-        authenticate: (snapshot) => openSnapshot(task, snapshot),
-        publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
-        checkJournal,
-      }),
+    compact: async (task: SessionTask, checkJournal: () => void) => {
+      const began = performance.now();
+      try {
+        return await compactContent(task, {
+          scope,
+          generation,
+          intent: witness.intent,
+          db: db!,
+          read: () => read(task, true),
+          authenticate: (snapshot) => openSnapshot(task, snapshot),
+          publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
+          checkJournal,
+        });
+      } finally {
+        measureLedger('compaction', began);
+      }
+    },
   };
 };

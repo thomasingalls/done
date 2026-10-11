@@ -12602,3 +12602,251 @@ versions match the declared tooling, and the same build steps ran directly witho
 See [focused evidence](./development-evidence/2026-10-10-public-onboarding.json).
 This source fix still needs PR merge, immutable-image publication and an ol-infra image-pin rollout
 before the phone receives it. General release validation remains paused.
+
+### 2026-10-10 — Public onboarding fix deployed; both progress documents closed
+
+Application PR #45 merged as `23fd688d`; its tree matches signed source `5501f7b9`. The image
+`ghcr.io/thomasingalls/done:5501f7b9` (index digest `sha256:906630d8…23da04`) was pinned by
+[ol-infra PR #6](https://codeberg.org/oxidationlabs/ol-infra/pulls/6), merged as `35b1edf7` and
+reconciled the same day as an ordinary Recreate update: schema 26, service identity, custody and the
+retained volume are unchanged, and no initialization, migration or restore Job ran. The infrastructure
+record reports one Pod at that digest with zero restarts, healthy backup upload, 34 verified precache
+hashes and a desktop browser check in which **Create a workspace** opened account setup without a
+preview banner. That record is ol-infra commit `378f5f3` on local branch
+`codex/done-onboarding-checkpoint`; it has not been pushed or merged. A separate read at about 18:20
+CEST found the public `index.html` and `sw.js` hashes equal to that record's values.
+
+The operator reports having created their own account at the public origin. That is the operator's
+statement, not a retained check. Offline reopening, two-device delivery and the authenticated
+notification stream through ingress have no recorded result at the public origin.
+
+**Remaining at close, and not carried by the next slice:** backup-health monitoring; an explicit
+recovery disposition for a restored ledger that lags client evidence, and the first schema migration;
+the deferred product scope (personal history walkthrough, automatic maintenance, local ledger/root
+trimming, key retirement, account access without a passkey, recovery-code replacement and
+self/last-device removal); the 4 MiB activation/recovery/native-admission bounds; the registry pull
+token's 2027-01-08 expiry, with no reminder set; and the B2 key's bucket-settings authority. The
+operator reviewed these on 2026-10-10 and ranked none above editing latency. Account creation is open
+to anyone who finds the unannounced origin; the operator accepts that while it stays unannounced.
+Release validation stays paused deliberately. The Tailscale installation and its writing are unchanged.
+
+**The `L-2` progress document is retired without a closing slice of its own.** It was last edited on
+2026-08-29 and still named the account service as next. Its branch `claude/l2-onboarding-863db1` is
+an ancestor of `main`, the service it anticipated is the one now deployed, and the work is recorded
+in the entries above under the seats that actually did it. No outcome is lost by deleting it. The
+rule that kept it byte-for-byte unchanged assumed its seat would return to close it;
+[progress.md](./progress.md) now says what happens when a seat does not.
+
+The next slice is editing latency (`F-17`), at the operator's direction, with architecture changes in
+scope. An opt-in reduction of repeated credential prompts after setup is named as the phase after it.
+
+### Own-stream receipt progression and incremental Account ledger experiment
+
+**Date:** 2026-10-10 · **Commit:** signed `d5763346441ff98809442bb48b38ddd621516cd6` for own-stream
+progress; incremental candidate is the working tree identified by the source/build hashes in its
+packet · **Stage:** F-17 development repair; not release qualification
+
+**Exit.** The first repair derives own receive progress from verified signed delivery receipts without
+normal own-envelope download or duplicate self-inbound writes. It retains lost-reply, crash, legacy
+receipt and cold-replay behavior. The operator then authorized incremental ledger validation: a
+full physical census still gates an owner-local verified prefix, while eligible appends extend source,
+spool, delivery and inbound state. Exact content replacement requires an independent full Yjs-state
+equivalence check; positive coverage can survive it. Negative coverage is not cached. Proposed
+precommit work never installs success. Context change, failed verification and late completion are
+covered by invalidation and focused executed fault controls. Cold opening stays a full verification;
+a periodic reference audit invalidates/reports any mismatch.
+
+The [own-stream packet](./performance-experiments/2026-10-10-self-stream-progress/README.md) records
+mixed later latency results, which motivated the next repair. The
+[incremental packet](./performance-experiments/2026-10-10-incremental-account-ledger/README.md)
+records predictions first, an early source/spool/delivery-only measurement, and a complete matched
+0/520/1,220/2,220-edit pair. Both arms completed 2,320 edits. The fitted main-thread p50 slope fell
+from 0.3799 to 0.0445 ms per prior edit (88.3%); deepest stable-text p95 fell from 5,071.9 to 613.3 ms.
+Focused units, generated native edit/delete/compaction/reopen histories, commit-abort/lost-reply cases,
+cross-generation differential replay, two packaged peer/history journeys, and three invalidation
+fault controls pass. No full-reference disagreement was observed in those checks or the two normal
+maintenance audits in the measured candidate.
+
+**Notes.** The incremental product path remains **opt-in**, `VITE_ACCOUNT_LEDGER=incremental`.
+Reference remains the default. Neither repair is deployed by this work; release validation stays
+paused and F-17 stays open. Cold opening at 2,320 edits was 9.66 → 11.81 seconds, reopened post-GC
+page heap 13.56 → 15.09 MiB, and candidate maintenance still reached 1.59 seconds with a full audit.
+A synthetic 1 MiB coverage miss cost 13 ms p50. Added metadata/positive-cache budgets do not bound the
+existing retained historical byte view. The next performance slice is the remaining physical census,
+copying and admission-queue occupancy, with accepted-prefix byte retention and audit/cold costs
+explicitly outstanding. No other seat's live progress document was rewritten.
+
+### Account consumer costs and immutable selection metadata
+
+**Date:** 2026-10-10 · **Commit:** this entry's commit, based on signed `4500d9b6`; exact
+measured/final source patches and hashes in the packet · **Stage:** F-17 development repair;
+not release qualification
+
+**Exit.** The next bounded performance slice implements lookup-table hex encoding, indexed byte
+comparison, isolated Yjs validation without a random unused GUID, selected verified readbacks,
+verified source-presence lookup, and Account reuse of owner-bound immutable selection metadata.
+The uninterrupted profile identified selection-history copies as the largest avoidable consumer;
+envelope selection was measured and was smaller. Account keeps its document fork, original source
+capture, full post-admission verification, physical census, cold verifier and periodic reference
+audit. No Local document handoff, global randomness override, historical-byte eviction or new
+typing-burst batching policy was introduced.
+
+The [consumer packet](./performance-experiments/2026-10-10-account-consumers/README.md) records
+predictions first, fixed loads/transactions/authority/crypto counts per key and per position, an
+uninterrupted 2,320-edit undo history, deep cold profiles, and two four-point comparisons in reverse
+order. Against the signed baseline with its incremental path enabled, deep stable-text p95 improves
+574 → 87 ms and 601 → 172 ms (85%/71%). Main-thread p50 at depth improves 184 → 124 and 186 → 129 ms;
+its fitted history slope falls about 26%/17%. Cold opening improves 11.2–11.6 → 7.2–7.5 seconds,
+reopened heap stays within about 1%, and each matched run executes two normal audits without a
+mismatch. These are desktop observations on a small corpus, not phone estimates or an F-17 pass.
+The faster path emits more positions at depth; total observed record-copy bytes rise, despite fewer
+source decodes. Remaining cold reconstruction and maintenance costs are substantial.
+
+**Verification and activation.** 73 focused unit tests, five audit-every native sync checks, four
+current-key retry checks, the explicit reference override, TypeScript, targeted lint and the ordinary
+packaged build pass. Packaged peer/history checks have both passes and failures: repeated ordinary
+runs time out on post-maintenance delivery; other attempts stop during enrollment. Both candidate
+journeys and baseline controls also pass with diagnostics. HTTP 429s and existing retry backoff are
+plausible timing contributors, not an established explanation. Failures and diagnostic patches are
+retained. The separate probe's profiler-detach/virtual-passkey defect was reproduced in isolation
+and fixed; its failed final cold attempts are excluded from successful cold-open results.
+
+**Default activation is held.** The major optimizations remain behind
+`VITE_ACCOUNT_LEDGER=incremental`; the temporary proposed default was reverted. No public deployment
+was made in this slice, and release validation remains paused. Next resolve the packaged
+enrollment/delivery result, then reconsider activation. Accepted-prefix retention, repeated cold
+verification, rows per typing burst and maintenance stalls remain open performance work. No other
+seat's live progress document was rewritten.
+
+### Packaged Account enrollment and history failure investigation
+
+**Date:** 2026-10-10 · **Commit:** this entry's commit, based on signed `0332a9ea`; runtime
+patch and source hashes in the packet · **Stage:** focused product repair; not release qualification
+
+**Exit.** The [investigation packet](./performance-experiments/2026-10-10-account-browser-failures/README.md)
+separates two failure mechanisms. Enrollment immediately retried a stale-authority refusal once,
+but a second refusal escaped into the UI's stopped-error state. Repeated authority changes or
+exhausted capacity retries now return to the existing short retry interval, reopening authenticated
+authority and saved progress each time. The saved approval and delivery bytes are reused; permanent
+scope refusal still stops. No semantic authority check or service limit was relaxed.
+
+The history test removed an intercepted submit fault without waking its still-online sender.
+Its 15-second delivery assertion could expire within the intentional 30-second retry backoff.
+A forced six-failure control captured 29 seconds remaining at restoration and delivery 15.52 seconds
+after the failed assertion. The repaired test explicitly announces recovery after removing the
+faults, keeping the assertion unchanged. Production scheduler behavior is unchanged. Older failing
+runs lacked deadline snapshots, so this reproduction is not a claim about every historical failure.
+
+**Verification.** Both deterministic before controls reproduce their failures. The forced-backoff
+history journey passes after repair. Five ordinary packaged browser checks pass without diagnostic
+hooks, including two transient enrollment cases, permanent-scope refusal, history maintenance and
+returning-editor delivery after pruning. Fourteen scheduler tests, three scoped transport controls,
+TypeScript, targeted lint, formatting and packaged build checks pass.
+
+**Next.** Reconsider incremental default activation with this evidence; it remains opt-in in this
+change. No deployment or release-validation campaign was started. F-17's remaining performance
+work and the other seat's live progress document are unchanged.
+
+### Account epoch equivalence, verified-view ownership and self-read decisions
+
+**Date:** 2026-10-11 · **Commit:** this entry's commit, based on signed `95923cd8`; runtime
+patch and source hashes in the packet · **Stage:** focused correctness repair before activation
+
+**Exit.** The [correctness packet](./performance-experiments/2026-10-11-account-correctness/README.md)
+records three focused repairs and their before/after evidence. Incremental appends now require the
+installed route's exact epoch. A validly signed old-epoch response appended immediately after
+membership adoption reproduces the former disagreement with the reference. The generation fixture
+now verifies the actual installation boundary, while valid historical replay and current-key retries
+continue to pass.
+
+The verified-view helper rejects overlapping verification before touching borrowed state. Its unit
+control reproduced predecessor-buffer erasure; native concurrent readers confirm the current Account
+owner serializes verification. This is protection of an ownership invariant, not evidence of a
+production concurrency failure. A declined self-read decision now reaches the receive driver as a
+rejection instead of silently becoming unknown-outcome backoff. Both decline kinds preserve local
+writing and recover through explicit retry and cold reopen. Network backoff and service limits are
+unchanged.
+
+**Verification.** 39 unit tests, 12 generation/membership/retry tests, seven incremental native checks
+with an audit on every append, and four reference-mode native checks pass. TypeScript, targeted lint,
+formatting, diff checks and the reference-default packaged build pass. No broad campaign was run.
+
+**Next.** Reduce submission-triggered receive/discovery traffic and address shared-budget interference,
+then reconsider default activation and deployment. Incremental mode remains opt-in and release
+validation remains paused. No other seat's live progress document was changed.
+
+### Submit receipt scheduling and scoped-session request isolation
+
+**Date:** 2026-10-11 · **Commit:** this entry's commit, based on signed `46388e4f`; runtime patch
+and source hashes retained in the packet · **Stage:** bounded request-amplification repair
+
+**Exit.** Successful submissions now publish their verified aggregate receive position without
+expediting a self read. The server no longer hints the submitting credential's workspace stream for
+its own content commit. Unknown outcomes still trigger independent read reconciliation; peer/control
+hints, periodic repair, receive backoff and halts remain. No extra load was added to publish progress.
+
+Scoped HTTP operations share budgets by service-held session identity across access/grant renewal,
+with separate invalid-token allowance and bounded process rate, concurrency and budget storage.
+Domain authorization remains unchanged. The policy and its limits are recorded in
+[session/subscription design](./account-sessions-subscriptions.md).
+
+**Evidence.** The [request packet](./performance-experiments/2026-10-11-account-requests/README.md)
+records the predeclared protocol, source, setup failures, raw metadata and results. For 600 typed
+characters over about 96 seconds, the signed incremental baseline made 367 requests and saw 63 HTTP
+429s; the candidate made 227 requests with no refusals, about 1.01 requests per successful submission.
+Two concurrent candidate devices typed 600 characters each: all 699 measured requests returned 200,
+and both complete texts converged within 15 seconds. These small desktop/loopback runs are request
+measurements, not input-latency, mobile, deep-history or server-capacity qualifications. More successful
+positions also mean this is not evidence of less retained history.
+
+**Verification.** 15 scheduler tests, 30 service/grant/budget tests, four incremental native tests with
+reference audit on each append, and the same four native checks with the reference ledger pass.
+TypeScript, targeted lint, formatting and packaged incremental build pass. No broad campaign ran.
+
+**Next.** Decide and integrate incremental default activation, retaining the reference override and
+audit, then use the normal publication path. It remains opt-in in this change; no deployment occurred.
+Peer hint discovery/read amplification remains a measured opportunity (roughly five requests per
+accepted submission in the two-device run), alongside later load/copying, retention, cold reconstruction
+and burst-batching work. Release validation remains paused. The other seat's `docs/progress.md` is
+unchanged.
+
+### Incremental Account verification becomes the ordinary build
+
+**Date:** 2026-10-11 · **Commit:** this entry's commit, based on signed `9586c7a0`; source hashes
+and runtime/configuration patch retained in the packet · **Stage:** bounded default integration
+
+**Exit.** Ordinary builds now select incremental ledger verification and the Account editor snapshot
+path through one policy. An explicit `VITE_ACCOUNT_LEDGER=reference` build retains both reference
+paths; invalid values fail the build. The Docker build exposes the same override. Persistent formats,
+cold verification, invalidation and the existing periodic reference audit are unchanged. Operator
+[rollback instructions](./public-runtime.md#container-boundary) distinguish rebuilding cached assets
+from changing the service's runtime environment.
+
+**Verification.** The [activation record](./performance-experiments/2026-10-11-account-activation/README.md)
+retains 16 passing unit tests, seven default-mode native checks with an audit on every append, four
+reference native checks and all three existing packaged history journeys. The unset-flag checks prove
+the default executes, retained writing survives reference/default/rollback/default transitions, and an
+injected audit disagreement refuses the warm owner before cold replay recovers acknowledged writing.
+Packaged checks cover two-device approval/delivery and returning-device catch-up after pruning.
+Both builds, type-checking, targeted lint/format, patched Yjs, bundle-budget and origin checks pass;
+the invalid-override build intentionally fails. No generalized campaign was started.
+
+**Next.** Commit and use the normal publication path; the public deployment has not changed. These
+checks add no typing-latency claim. Peer discovery traffic, retained bytes, cold reconstruction,
+maintenance and burst batching remain opportunities after activation. Release validation remains
+paused, and the other seat's `docs/progress.md` is unchanged.
+
+### Signed Account performance publication candidate
+
+**Date:** 2026-10-11 · **Source:** signed `5ccee4d0` · **Stage:** publication preparation
+
+**Exit.** The activation phase is signed. All nine branch commits ahead of the fetched application
+main, before this documentation checkpoint, have valid signatures. A clean-source ARM64 image passes the application build, 31 existing
+runtime/gateway/backup/restore/maintenance checks and the disposable two-container smoke, including
+all 34 precache URLs and retained-state restart. Image identities and source are retained in the
+[publication evidence](./development-evidence/2026-10-11-account-latency-publication.json).
+
+**Next.** The [handoff](./account-latency-publication.md) specifies application PR merge, private GHCR
+publication/remote digest verification, then the ol-infra image-pin PR and ordinary rollout checks.
+There is no schema or wire-format change. Registry publication and deployment have not occurred;
+the retained public service is untouched. Release validation remains paused.

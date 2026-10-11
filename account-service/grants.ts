@@ -347,6 +347,17 @@ export class ScopedGrants {
   }
   /** A read-capable grant may subscribe only to hints for its exact scope. Recheck each emission.
    * Subscription is ephemeral; nothing here advances a content cursor or authority head. */
+  /** Attribution for HTTP budgets only. Domain authorization still checks the live parent,
+   * current scope and proof inside its transaction. No client-supplied identity is trusted. */
+  requestBudgetKey(grantToken: unknown): string | undefined {
+    if (this.#closed) return;
+    try {
+      const grant = this.#grants.get(retryHash(grantToken));
+      return grant && grant.expiresAt > this.#time() ? grant.challenge.sessionId : undefined;
+    } catch {
+      return;
+    }
+  }
   subscription(grantToken: unknown, input: unknown) {
     const scope = parseGrantScope(input),
       digest = retryHash(grantToken);

@@ -1,0 +1,65 @@
+{
+  "scope": "Signed-source publication preparation; no registry push or deployment",
+  "sourceCommit": "5ccee4d000d691cde6206e03551e5104ca5e864d",
+  "applicationMainAtPreparation": "23fd688d3fafd0765f90ec4e5ce5faa2cd293411",
+  "localImage": "done-public:5ccee4d0",
+  "localIndexDigest": "sha256:ce08e76c89ee402495fabcbac94af998c15dbd3b863942a8b4ec578718718b1a",
+  "runtimeManifestDigest": "sha256:cec24741c18d32c8a39f393b6a4ecadf5560e7025d169ad70e890f18d2bdd00d",
+  "registry": "ghcr.io/thomasingalls/done",
+  "proposedTag": "ghcr.io/thomasingalls/done:5ccee4d0",
+  "registryPublished": false,
+  "platform": "linux/arm64",
+  "build": {
+    "cleanGitArchive": true,
+    "ledgerMode": "default incremental",
+    "node": "v24.18.0",
+    "passed": true,
+    "runtimeGatewayTests": 14,
+    "backupTests": 5,
+    "restoreTests": 6,
+    "maintenanceTests": 6,
+    "initialJsGzipKiB": 136.6,
+    "log": "docs/development-evidence/2026-10-11-account-latency-container.log",
+    "logSha256": "bc3002096fb1c736dd51132321afbcea8752fd3fc89f845b533734b0042cd523"
+  },
+  "containerSmoke": {
+    "image": "done-public:5ccee4d0",
+    "started": "2026-10-11T09:52:42.890Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:ce08e76c89ee402495fabcbac94af998c15dbd3b863942a8b4ec578718718b1a",
+    "platform": "linux/arm64",
+    "sourceRevision": "5ccee4d000d691cde6206e03551e5104ca5e864d",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-11T09:52:49.177Z"
+  },
+  "compatibility": {
+    "accountSchema": 26,
+    "authoritySchema": 1,
+    "schemaChanges": false,
+    "wireFormatChanges": false,
+    "newPersistentRecordKinds": false,
+    "basis": "Diff against main: no account-protocol or core/schema/public-state changes; scoped HTTP uses the existing request/response shapes. Client changes reuse existing content/source/spool/delivery records.",
+    "mixedBuildLimits": "No exhaustive old/new-client cross-product campaign; normal cached-client update behavior remains. Reference-mode rollback at this source was tested against retained stores."
+  },
+  "deploymentChanged": false,
+  "releaseValidation": "paused",
+  "next": [
+    "Merge the application PR with its signed history",
+    "Publish this tested image and verify remote digest, ARM64 manifest and private visibility",
+    "Prepare the ol-infra image-pin PR; retain custody, service pin, PVC, backup configuration and routes",
+    "After infrastructure merge, check readiness, image identity, backup health and packaged asset version"
+  ]
+}

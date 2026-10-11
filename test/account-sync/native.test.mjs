@@ -1,3 +1,4 @@
+import fc from 'fast-check';
 import { prepare, open, request, receive, envelope, answer } from './fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -18,22 +19,23 @@ import {
   args,
   census,
   deliveryBoundary,
-  receiveBoundary,
 } from './fixtures.mjs';
 import { decodeSubmission } from '../../account-protocol/submission.ts';
 import { decodeEnvelopeBody, decodeNetworkEnvelope } from '../../account-protocol/envelope.ts';
+import { crash } from '../account-capture/fixtures.mjs';
 const sendPath = (f) => f.server.origin + '/account/delivery/submit';
 const parsed = (wire) =>
   decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
 
 test(
-  'one owner sends and reads back actual service bytes, preserves sources through edits, compaction and cold replay',
+  'one owner advances from submit receipts without self content readback, through compaction and cold replay',
   { timeout: 60000 },
   async (t) => {
     const f = await native(t),
       item = await selected(f, 'sync-roundtrip');
     const sent = [],
-      reads = [];
+      reads = [],
+      pages = [];
     let active = 0,
       maximum = 0;
     for (const [endpoint, list] of [
@@ -45,7 +47,9 @@ test(
         maximum = Math.max(maximum, active);
         list.push(route.request().postData());
         try {
-          await route.fulfill({ response: await route.fetch() });
+          const response = await route.fetch();
+          if (endpoint === path(f)) pages.push(await response.json());
+          await route.fulfill({ response });
         } finally {
           active--;
         }
@@ -53,12 +57,26 @@ test(
     await syncing(f.page, item);
     const initial = await view(f.page);
     await settled(f.page);
+    const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+    if (process.env.ACCOUNT_LEDGER_MODE !== 'reference') {
+      assert.ok(metrics.incremental > 0, 'incremental path actually executed');
+      assert.equal(metrics.mismatches, 0);
+      if (process.env.ACCOUNT_LEDGER_AUDIT === 'every') assert.ok(metrics.audits > 0);
+    } else {
+      assert.equal(metrics.incremental, 0, 'reference override never extends a verified ledger');
+    }
     const baseline = await captures(f.page);
+    const readsBeforeEdit = reads.length;
     await edit(f.page, initial.length, 0, ' COMPOSED');
     await settled(f.page);
     const c = await captures(f.page),
       expected = (await f.page.evaluate(() => opened.spoolStatus())).positions.length;
     assert.equal(c.length, baseline.length + 1);
+    assert.equal(
+      reads.length,
+      readsBeforeEdit,
+      'successful submit must not schedule self readback',
+    );
     assert.equal(await view(f.page), initial + ' COMPOSED');
     assert.equal(maximum, 1);
     assert.deepEqual(
@@ -104,7 +122,13 @@ test(
         .filter((r) => r.kind === 'heads')
         .map((r) => JSON.parse(Buffer.from(r.bytes)))
         .filter((r) => r[0] === 'done/account-inbound/v1');
-    assert.equal(entries.length, expected);
+    assert.equal(entries.length, 0);
+    // Existing v2 read remains an empty repair check beyond the signed accepted prefix.
+    assert.ok(reads.length > 0);
+    assert.ok(
+      pages.every((p) => p[5].length === 0),
+      'normal self checks returned content',
+    );
     await cold(f);
     await syncing(f.page, item);
     await settled(f.page);
@@ -130,7 +154,7 @@ test(
 );
 
 test(
-  'lost submit answer can be received before delivery resolves; cold retry uses exact bytes without resealing',
+  'lost submit answer reconciles through the delivery ledger without self content writes or cold resubmission',
   { timeout: 60000 },
   async (t) => {
     const f = await native(t),
@@ -155,25 +179,33 @@ test(
     lose = false;
     await syncing(f.page, item);
     await settled(f.page);
-    assert.equal(sent[0], sent[1]);
+    assert.equal(sent.filter((wire) => parsed(wire).seq === 1).length, 1);
     assert.equal(
       f.invocations.length,
       count + (await f.page.evaluate(() => opened.spoolStatus())).positions.length - 1,
     );
     assert.deepEqual(await captures(f.page), c);
     await close(f.page);
+    const rows = await census(f.page, item);
+    assert.equal(
+      rows.filter(
+        (r) =>
+          r.kind === 'heads' &&
+          Buffer.from(r.bytes).toString().startsWith('["done/account-inbound/v1"'),
+      ).length,
+      0,
+    );
   },
 );
 
-for (const fault of ['submission', 'receive'])
+for (const fault of ['submission', 'response'])
   test(
     'native ' + fault + ' abort retains work for cold restart',
     { timeout: 60000 },
     async (t) => {
       const f = await native(t),
         item = await selected(f, 'sync-abort-' + fault);
-      if (fault === 'submission') await deliveryBoundary(f.page, 'submission', 'before');
-      else await receiveBoundary(f.page, 'before');
+      await deliveryBoundary(f.page, fault, 'before');
       await syncing(f.page, item);
       const initial = await view(f.page);
       await waitPredicate(
@@ -192,6 +224,117 @@ for (const fault of ['submission', 'receive'])
       await close(f.page);
     },
   );
+
+test(
+  'acceptance committed before renderer death advances self progress on cold open without resubmitting',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'self-receipt-crash'),
+      sent = [];
+    await f.context.route(sendPath(f), async (route) => {
+      sent.push(requestWire(route));
+      await route.fulfill({ response: await route.fetch() });
+    });
+    await deliveryBoundary(f.page, 'response', 'after');
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => window.hit === true);
+    const first = sent[0];
+    await crash(f);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(sent.filter((wire) => wire === first).length, 1);
+    const status = await f.page.evaluate(() => opened.receiveStatus());
+    assert.equal(status.receivedThrough, (await syncStatus(f.page)).send.acceptedThrough);
+    await close(f.page);
+  },
+);
+
+test(
+  'lost reply and unavailable reconciliation retry the exact retained submission after cold open',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'self-receipt-unknown'),
+      sent = [];
+    let lose = true;
+    await f.context.route(sendPath(f), async (route) => {
+      sent.push(requestWire(route));
+      const response = await route.fetch();
+      if (lose) await route.abort();
+      else await route.fulfill({ response });
+    });
+    await f.context.route(path(f), async (route) => {
+      if (lose) await route.fulfill({ status: 503, body: '' });
+      else await route.fulfill({ response: await route.fetch() });
+    });
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => opened.sync.status.send.phase === 'retrying');
+    assert.equal((await f.page.evaluate(() => opened.receiveStatus())).receivedThrough, 0);
+    const first = sent[0],
+      seals = f.invocations.length;
+    await close(f.page);
+    await cold(f);
+    lose = false;
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(sent[1], first);
+    assert.equal(
+      f.invocations.length,
+      seals + (await f.page.evaluate(() => opened.spoolStatus())).positions.length - 1,
+    );
+    await close(f.page);
+  },
+);
+
+test(
+  'verifying an empty self check does not occupy the editor admission queue',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'self-check-queue');
+    await f.page.evaluate(() => {
+      const verify = crypto.subtle.verify.bind(crypto.subtle);
+      let held = false;
+      crypto.subtle.verify = async function (...args) {
+        if (!held && new TextDecoder().decode(args[3]).startsWith('["done/private-read-page/v2"')) {
+          held = true;
+          window.selfCheckWaiting = true;
+          await new Promise((resolve) => {
+            window.releaseSelfCheck = resolve;
+          });
+        }
+        return verify(...args);
+      };
+    });
+    await syncing(f.page, item);
+    await waitPredicate(f.page, () => window.selfCheckWaiting === true);
+    const initial = await view(f.page);
+    await f.page.evaluate(() => {
+      const n = editor.read().master.length;
+      surface
+        .input(
+          { name: 'insert', text: ' DURING SELF CHECK' },
+          {
+            ranges: [{ anchor: n, head: n }],
+            main: 0,
+          },
+        )
+        .accepted.then(() => {
+          window.editDuringSelfCheck = true;
+        });
+    });
+    try {
+      await waitPredicate(f.page, () => window.editDuringSelfCheck === true, 3000);
+      assert.equal(await view(f.page), initial + ' DURING SELF CHECK');
+    } finally {
+      await f.page.evaluate(() => window.releaseSelfCheck());
+    }
+    await settled(f.page);
+    await close(f.page);
+  },
+);
 
 test(
   'close drains a delayed send and prevents queued receive dispatch before releasing the shared permit',
@@ -306,6 +449,48 @@ test(
     );
     assert.equal(await f.page.evaluate(() => editor.status.state), 'active');
     assert.equal(await view(f.page), text);
+    await close(f.page);
+  },
+);
+
+test(
+  'legacy self-inbound evidence remains readable while later submissions need no new self-inbound rows',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'sync-legacy-self');
+    await f.page.evaluate(async (item) => {
+      window.opened = await Harness.openOwnedAccountDeliveryWorkspace(optionsFor(item));
+      window.editor = opened.workspace;
+      window.surface = editor.text({ kind: 'master' });
+    }, args(item));
+    const wire = await prepare(f.page);
+    await close(f.page);
+    await open(f.page, item);
+    const query = await request(f.page, 0);
+    await receive(f.page, answer(f, item, query, wire.bytes).bytes);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    const initial = await view(f.page);
+    await edit(f.page, initial.length, 0, ' AFTER OLD RECEIPT');
+    await settled(f.page);
+    await f.page.evaluate(() => opened.compactContent());
+    await close(f.page);
+    const rows = await census(f.page, item);
+    assert.equal(
+      rows.filter(
+        (r) =>
+          r.kind === 'heads' &&
+          Buffer.from(r.bytes).toString().startsWith('["done/account-inbound/v1"'),
+      ).length,
+      1,
+    );
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(await view(f.page), initial + ' AFTER OLD RECEIPT');
     await close(f.page);
   },
 );
@@ -460,3 +645,236 @@ for (const mode of ['fitting', 'oversized', 'no-preflight', 'sealed', 'submitted
       await close(f.page);
     },
   );
+
+test(
+  'retained Account writing crosses reference, default and rollback builds without migration',
+  { timeout: 90000, skip: process.env.ACCOUNT_LEDGER_MODE !== undefined },
+  async (t) => {
+    const reference = await syncBundle(undefined, 'reference'),
+      ordinary = await syncBundle(),
+      f = await native(t),
+      item = await selected(f, 'ledger-default-rollback');
+    let expected;
+    for (const [index, script] of [reference, ordinary, reference, ordinary].entries()) {
+      if (index) await cold(f);
+      await f.page.evaluate(script);
+      await configure(f.page, f.testOperatorToken);
+      await syncing(f.page, item);
+      await settled(f.page);
+      expected ??= await view(f.page);
+      assert.equal(await view(f.page), expected);
+      assert.ok(
+        (await f.page.evaluate(() => Harness.accountLedgerMetrics())).full > 0,
+        'each build cold-verifies the retained data',
+      );
+      const added = ' build-' + index;
+      await edit(f.page, expected.length, 0, added);
+      expected += added;
+      await settled(f.page);
+      await f.page.evaluate(() => opened.compactContent());
+      assert.equal(await view(f.page), expected);
+      const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+      if (index % 2) assert.ok(metrics.incremental > 0, 'unset flag selects incremental');
+      else assert.equal(metrics.incremental, 0, 'rollback uses reference verification');
+      assert.equal(metrics.mismatches, 0);
+      assert.equal(await f.page.evaluate(() => '__doneLedgerMetrics' in globalThis), false);
+      await close(f.page);
+    }
+  },
+);
+
+test(
+  'reference audit disagreement refuses the warm owner and cold replay preserves writing',
+  {
+    timeout: 60000,
+    skip:
+      process.env.ACCOUNT_LEDGER_MODE === 'reference' ||
+      process.env.ACCOUNT_LEDGER_AUDIT !== 'every',
+  },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'ledger-audit-disagreement');
+    await f.page.evaluate(await syncBundle('audit-disagreement'));
+    await configure(f.page, f.testOperatorToken);
+    const errors = [];
+    f.page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(message.text());
+    });
+    await syncing(f.page, item);
+    await settled(f.page);
+    let expected = await view(f.page);
+    await edit(f.page, expected.length, 0, ' acknowledged');
+    expected += ' acknowledged';
+    await settled(f.page);
+    const sent = f.invocations.length;
+    await f.page.evaluate(() => {
+      globalThis.forceLedgerDisagreement = true;
+    });
+    await assert.rejects(
+      f.page.evaluate(() => opened.compactContent()),
+      /Account ledger reference mismatch/,
+    );
+    const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+    assert.equal(metrics.mismatches, 1);
+    assert.ok(errors.includes('done/account-ledger-reference-mismatch'));
+    await assert.rejects(f.page.evaluate(() => opened.spoolStatus()));
+    assert.equal(f.invocations.length, sent, 'the refused view cannot authorize a submission');
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(await view(f.page), expected);
+    assert.ok((await f.page.evaluate(() => Harness.accountLedgerMetrics())).full > 0);
+    assert.equal((await f.page.evaluate(() => Harness.accountLedgerMetrics())).mismatches, 0);
+    await close(f.page);
+  },
+);
+
+// Small differential histories, not a release campaign. AUDIT=every compares every delta to cold replay.
+test(
+  'generated incremental ledger histories preserve inserts, deletes, compaction and cold continuation',
+  {
+    timeout: 90000,
+    skip:
+      process.env.ACCOUNT_LEDGER_MODE === 'reference' ||
+      process.env.ACCOUNT_LEDGER_AUDIT !== 'every',
+  },
+  async (t) => {
+    const histories = fc.sample(fc.array(fc.nat(4), { minLength: 8, maxLength: 8 }), {
+      seed: 101026,
+      numRuns: 3,
+    });
+    for (const [index, actions] of histories.entries()) {
+      const f = await native(t),
+        item = await selected(f, 'incremental-generated-' + index);
+      await syncing(f.page, item);
+      await settled(f.page);
+      let expected = await view(f.page);
+      for (const [step, action] of actions.entries()) {
+        if (action === 0 && expected.length) {
+          await edit(f.page, 0, 1, '');
+          expected = expected.slice(1);
+        } else {
+          const added = String.fromCharCode(97 + step);
+          await edit(f.page, expected.length, 0, added);
+          expected += added;
+        }
+        await settled(f.page);
+        if (action === 2 || step === 3) await f.page.evaluate(() => opened.compactContent());
+        const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+        assert.ok(metrics.incremental > 0);
+        assert.ok(metrics.audits > 0);
+        assert.equal(metrics.mismatches, 0);
+        assert.equal(await view(f.page), expected);
+        if (action === 3 || step === 7) {
+          await cold(f);
+          await syncing(f.page, item);
+          await settled(f.page);
+          assert.equal(await view(f.page), expected);
+        }
+      }
+      await close(f.page);
+    }
+  },
+);
+
+for (const refusal of ['unknown', 'blocked'])
+  test(
+    'self-read decision ' +
+      refusal +
+      ' stops receive without losing local work and explicit retry recovers',
+    { timeout: 60000 },
+    async (t) => {
+      const f = await native(t),
+        item = await selected(f, 'self-decision-' + refusal);
+      await f.page.evaluate(await syncBundle('self-decision-refusal'));
+      await configure(f.page, f.testOperatorToken);
+      await f.page.evaluate((kind) => {
+        globalThis.selfDecisionRefusal = kind;
+      }, refusal);
+      // The service commits the submission, but the sender never receives its answer.
+      await f.context.route(sendPath(f), async (route) => {
+        await route.fetch();
+        await route.abort();
+      });
+      await syncing(f.page, item);
+      const writing = await view(f.page);
+      await waitPredicate(
+        f.page,
+        () => globalThis.selfDecisionCalls > 0 && opened.sync.status.receive.phase !== 'working',
+      );
+      const state = await syncStatus(f.page);
+      assert.equal(state.receive.phase, 'blocked');
+      assert.equal(state.receive.reason, 'operation-failed');
+      assert.equal(state.receive.receivedThrough, 0);
+      assert.equal(state.receive.failures, 0);
+      assert.equal(await view(f.page), writing);
+      assert.equal(
+        await f.page.evaluate(() => globalThis.selfDecisionProof.every((b) => b === 0)),
+        true,
+      );
+      // Online/peer hints must not erase a diagnosed local evidence halt.
+      await f.page.evaluate(() => dispatchEvent(new Event('online')));
+      assert.equal((await syncStatus(f.page)).receive.phase, 'blocked');
+      await f.page.evaluate(() => {
+        globalThis.selfDecisionRefusal = undefined;
+        opened.sync.retry('receive');
+      });
+      await waitPredicate(f.page, () => opened.sync.status.receive.receivedThrough >= 1);
+      assert.equal(await view(f.page), writing);
+      await close(f.page);
+      await f.context.unroute(sendPath(f));
+      await cold(f);
+      await syncing(f.page, item);
+      await settled(f.page);
+      assert.equal(await view(f.page), writing);
+      await close(f.page);
+    },
+  );
+
+test(
+  'concurrent Account readers enter verified storage one at a time',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'verification-order');
+    await f.page.evaluate(await syncBundle('verification-order'));
+    await configure(f.page, f.testOperatorToken);
+    await syncing(f.page, item);
+    await settled(f.page);
+    await f.page.evaluate(() => {
+      globalThis.verificationStarts = 0;
+      globalThis.verificationOrderProbe = async () => {
+        globalThis.verificationStarts++;
+        if (globalThis.verificationStarts === 1)
+          await new Promise((r) => {
+            globalThis.releaseVerification = r;
+          });
+      };
+      globalThis.readerOne = opened.listCaptures();
+    });
+    await waitPredicate(f.page, () => globalThis.verificationStarts === 1);
+    try {
+      await f.page.evaluate(() => {
+        globalThis.readerTwo = opened.spoolStatus();
+        globalThis.readerThree = opened.listCaptures();
+      });
+      await f.page.waitForTimeout(100);
+      assert.equal(await f.page.evaluate(() => globalThis.verificationStarts), 1);
+    } finally {
+      await f.page.evaluate(() => globalThis.releaseVerification());
+    }
+    const reads = await f.page.evaluate(async () => {
+      const [first, spool, second] = await Promise.all([readerOne, readerTwo, readerThree]);
+      const same = JSON.stringify(first) === JSON.stringify(second);
+      first.forEach((c) => Harness.eraseCapsule(c));
+      second.forEach((c) => Harness.eraseCapsule(c));
+      globalThis.verificationOrderProbe = undefined;
+      return { same, positions: spool.positions.length, starts: globalThis.verificationStarts };
+    });
+    assert.equal(reads.same, true);
+    assert.ok(reads.positions > 0);
+    assert.ok(reads.starts >= 3);
+    await close(f.page);
+  },
+);

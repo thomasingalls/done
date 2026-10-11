@@ -1,0 +1,332 @@
+diff --git a/src/crdt/accountCapture.ts b/src/crdt/accountCapture.ts
+index 448d5a91..8eff47dc 100644
+--- a/src/crdt/accountCapture.ts
++++ b/src/crdt/accountCapture.ts
+@@ -1,3 +1,4 @@
++import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ import { verifyJoinedAccount } from './joinedAccount';
+ import { historyAuthority } from '../../account-protocol/admissionHistory';
+ import { claimScope } from './localGenesisRecord';
+@@ -230,9 +231,16 @@ export async function openAccountCaptureOwner(
+   options.networkLogin?.activate(live);
+   const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
+     const previous = tail;
++    const enqueued = ledgerWorkStart();
+     const result = live.run(async (task) => {
+       await task.wait(() => previous);
+-      return operation(task);
++      measureLedgerWork('storageQueueWait', enqueued);
++      const began = ledgerWorkStart();
++      try {
++        return await operation(task);
++      } finally {
++        measureLedgerWork('storageOperation', began);
++      }
+     });
+     tail = result.then(
+       () => {},
+diff --git a/src/crdt/accountEnvelopePreparation.ts b/src/crdt/accountEnvelopePreparation.ts
+index 6bbf47bd..0a743abf 100644
+--- a/src/crdt/accountEnvelopePreparation.ts
++++ b/src/crdt/accountEnvelopePreparation.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ /** Internal original-source envelope preparation. The caller owns the sole carrier and authority. */
+ import { guardedSubtle, hex, random, type Bytes } from './custodyCrypto';
+ import {
+@@ -50,42 +51,47 @@ export async function selectEnvelopeSources(
+   batch: boolean,
+   subtle: SubtleCrypto,
+ ): Promise<SourceRef[]> {
+-  const used = new Set(
+-    state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
+-  );
+-  const selected: SourceRef[] = [];
+-  let actor = '',
+-    kind = '',
+-    epoch = 0,
+-    total = 0;
+-  for (const [id, bytes] of state.sources) {
+-    const c = decodeSourceCapsule(bytes, route);
+-    let hash: string | undefined;
+-    try {
+-      for (const [index, source] of c.sources.entries()) {
+-        if (used.has(id + ':' + index)) continue;
+-        if (
+-          selected.length &&
+-          (!batch ||
+-            selected.length >= MAX_POSITION_SOURCES ||
+-            source.actor !== actor ||
+-            source.kind !== kind ||
+-            c.epoch !== epoch ||
+-            total + source.bytes.length > MAX_POSITION_BYTES)
+-        )
+-          return selected;
+-        hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+-        selected.push({ id, index, hash });
+-        epoch = c.epoch;
+-        actor = source.actor;
+-        kind = source.kind;
+-        total += source.bytes.length;
++  const began = ledgerWorkStart();
++  try {
++    const used = new Set(
++      state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
++    );
++    const selected: SourceRef[] = [];
++    let actor = '',
++      kind = '',
++      epoch = 0,
++      total = 0;
++    for (const [id, bytes] of state.sources) {
++      const c = decodeSourceCapsule(bytes, route);
++      let hash: string | undefined;
++      try {
++        for (const [index, source] of c.sources.entries()) {
++          if (used.has(id + ':' + index)) continue;
++          if (
++            selected.length &&
++            (!batch ||
++              selected.length >= MAX_POSITION_SOURCES ||
++              source.actor !== actor ||
++              source.kind !== kind ||
++              c.epoch !== epoch ||
++              total + source.bytes.length > MAX_POSITION_BYTES)
++          )
++            return selected;
++          hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
++          selected.push({ id, index, hash });
++          epoch = c.epoch;
++          actor = source.actor;
++          kind = source.kind;
++          total += source.bytes.length;
++        }
++      } finally {
++        eraseCapsule(c);
+       }
+-    } finally {
+-      eraseCapsule(c);
+     }
++    return selected;
++  } finally {
++    measureLedgerWork('envelopeSelection', began);
+   }
+-  return selected;
+ }
+ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
+   const runCaptureTask = context.run;
+@@ -175,6 +181,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
+                     sources: selected,
+                   },
+             );
++            countLedgerWork('positions');
+             for (const r of records) r.bytes.fill(0);
+             ({ records, state } = await verified(task, owner, route));
+             position = state.positions.at(-1)!;
+diff --git a/src/crdt/accountLedgerMetrics.ts b/src/crdt/accountLedgerMetrics.ts
+index 5195b188..f1e2a64c 100644
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -1,5 +1,33 @@
+ /** Numeric diagnostics only: no identities, record bytes, writing or keys. */
+ const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
++const profiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
++const work = Object.fromEntries(
++  [
++    'loads',
++    'loadedRows',
++    'loadedBytes',
++    'authorityChecks',
++    'positions',
++    'sourceParses',
++    'sourceParseBytes',
++    'recordCopies',
++    'recordCopyBytes',
++  ].map((name) => [name, 0]),
++);
++const costs: Record<string, { calls: number; totalMs: number; maxMs: number }> = {};
++/** Bounded numeric-only development counters. Names are internal literals, never input. */
++export const countLedgerWork = (name: keyof typeof work, count = 1) => {
++  if (profiling) work[name] = (work[name] ?? 0) + count;
++};
++export const ledgerWorkStart = () => (profiling ? performance.now() : 0);
++export const measureLedgerWork = (name: string, since: number) => {
++  if (!profiling) return;
++  const ms = performance.now() - since;
++  const row = (costs[name] ??= { calls: 0, totalMs: 0, maxMs: 0 });
++  row.calls++;
++  row.totalMs += ms;
++  row.maxMs = Math.max(row.maxMs, ms);
++};
+ const names = ['full', 'incremental', 'coverageCheck', 'coverageRebuild', 'compaction'] as const;
+ const timings = Object.fromEntries(
+   names.map((name) => [name, { calls: 0, totalMs: 0, maxMs: 0 }]),
+@@ -14,7 +42,12 @@ export const measureLedger = (name: (typeof names)[number], since: number) => {
+   row.totalMs += ms;
+   row.maxMs = Math.max(row.maxMs, ms);
+ };
+-export const accountLedgerMetrics = () => ({ ...counters, timings: structuredClone(timings) });
++export const accountLedgerMetrics = () => ({
++  ...counters,
++  timings: structuredClone(timings),
++  work: { ...work },
++  costs: structuredClone(costs),
++});
+ if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
+   Object.defineProperty(globalThis, '__doneLedgerMetrics', {
+     value: accountLedgerMetrics,
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index f69a552e..962f2be8 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork } from './accountLedgerMetrics';
+ import { originalMembershipBoundaries } from './accountSuccessor';
+ import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
+ import {
+@@ -176,6 +177,7 @@ async function openAccountReceiveOwner(
+   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
+   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
+   const assertCurrent = async (task: SessionTask) => {
++    countLedgerWork('authorityChecks');
+     if (handoff) throw new ReceiveAuthorityChanged();
+     if (joined) {
+       const current = await readJoinedAccount(task, options.slotId, options.code);
+diff --git a/src/crdt/contentCompaction.ts b/src/crdt/contentCompaction.ts
+index ec995f02..9a0c5c7e 100644
+--- a/src/crdt/contentCompaction.ts
++++ b/src/crdt/contentCompaction.ts
+@@ -1,3 +1,4 @@
++import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ /** Internal exact-coverage owner. No caller document, coverage token, or arbitrary deletion API. */
+ import { Y, hasPendingUpdates } from './yjs';
+ import type { Bytes } from './custodyCrypto';
+@@ -55,6 +56,7 @@ export const equalStoredRecord = (a: StoredRecord, b: StoredRecord): boolean =>
+ 
+ /** Validate even a singleton; return whether every struct/deletion dependency integrated. */
+ export const validateContentUpdates = (updates: readonly Bytes[]): boolean => {
++  const began = ledgerWorkStart();
+   const doc = new Y.Doc({ gc: false });
+   try {
+     for (const bytes of updates) {
+@@ -66,6 +68,7 @@ export const validateContentUpdates = (updates: readonly Bytes[]): boolean => {
+     throw new ContentError('repair-required', 'Persisted CRDT bytes are unreadable.', { cause });
+   } finally {
+     doc.destroy();
++    measureLedgerWork('validateUpdates', began);
+   }
+ };
+ const content = (records: OpenedRecord[]) =>
+diff --git a/src/crdt/contentStore.ts b/src/crdt/contentStore.ts
+index 7a106693..8ece6715 100644
+--- a/src/crdt/contentStore.ts
++++ b/src/crdt/contentStore.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ import { measureLedger } from './accountLedgerMetrics';
+ import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
+ import { copyRecords, eraseVerified } from './verifiedRecords';
+@@ -297,11 +298,24 @@ export const createContentOwner = (
+     }
+   };
+   const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
++    countLedgerWork('loads');
++    const began = ledgerWorkStart();
+     try {
+-      return await openSnapshot(task, await read(task, true));
++      const at = ledgerWorkStart();
++      const snapshot = await read(task, true);
++      measureLedgerWork('physicalRead', at);
++      countLedgerWork('loadedRows', snapshot.rows.length);
++      const result = await openSnapshot(task, snapshot);
++      countLedgerWork(
++        'loadedBytes',
++        result.reduce((n, r) => n + r.bytes.length, 0),
++      );
++      return result;
+     } catch (cause) {
+       clearView();
+       throw cause;
++    } finally {
++      measureLedgerWork('loadElapsed', began);
+     }
+   };
+   const appendRecords = async (
+diff --git a/src/crdt/sourceCapture.ts b/src/crdt/sourceCapture.ts
+index 44cccb8b..13782c0f 100644
+--- a/src/crdt/sourceCapture.ts
++++ b/src/crdt/sourceCapture.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ import {
+   historyEnvelopeRoute,
+   type AdmissionHistory,
+@@ -115,6 +116,9 @@ export function encodeSourceCapsule(c: SourceCapsule): Bytes {
+   return result;
+ }
+ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCapsule {
++  const began = ledgerWorkStart();
++  countLedgerWork('sourceParses');
++  countLedgerWork('sourceParseBytes', bytes.length);
+   const sources: SourceUpdate[] = [];
+   try {
+     if (!(bytes instanceof Uint8Array) || bytes.length > MAX_CAPTURE_BYTES) throw Error('length');
+@@ -163,6 +167,8 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
+   } catch (cause) {
+     for (const s of sources) s.bytes.fill(0);
+     throw new ContentError('repair-required', 'Source capsule is unreadable or unbound', { cause });
++  } finally {
++    measureLedgerWork('sourceParse', began);
+   }
+ }
+ export const makeSourceCapsule = (route: CaptureRoute, sources: readonly SourceUpdate[]): Bytes =>
+diff --git a/src/crdt/verifiedRecords.ts b/src/crdt/verifiedRecords.ts
+index 7a4a25c6..719d4817 100644
+--- a/src/crdt/verifiedRecords.ts
++++ b/src/crdt/verifiedRecords.ts
+@@ -1,9 +1,18 @@
++import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ /** Owner-local verification reuse. Identity includes every opened record, never only ledger events. */
+ import type { OpenedRecord } from './contentRecord';
+ export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean =>
+   a.length === b.length && a.every((v, i) => v === b[i]);
+-export const copyRecords = (rows: readonly OpenedRecord[]): OpenedRecord[] =>
+-  rows.map((r) => ({ ...r, bytes: r.bytes.slice() }));
++export const copyRecords = (rows: readonly OpenedRecord[]): OpenedRecord[] => {
++  const at = ledgerWorkStart();
++  const result = rows.map((r) => {
++    countLedgerWork('recordCopies');
++    countLedgerWork('recordCopyBytes', r.bytes.length);
++    return { ...r, bytes: r.bytes.slice() };
++  });
++  measureLedgerWork('copyRecords', at);
++  return result;
++};
+ export const sameRecords = (a: readonly OpenedRecord[], b: readonly OpenedRecord[]): boolean =>
+   a.length === b.length &&
+   a.every((r, i) => {
+@@ -40,7 +49,10 @@ export function createVerifiedRecords<T>() {
+     ): R {
+       if (!retained || !sameRecords(retained, records))
+         throw Error('No verified view for these records');
+-      return structuredClone(select(value!));
++      const at = ledgerWorkStart();
++      const result = structuredClone(select(value!));
++      measureLedgerWork('readProjection', at);
++      return result;
+     },
+     async verify(
+       records: readonly OpenedRecord[],
+@@ -76,8 +88,10 @@ export function createVerifiedRecords<T>() {
+         current();
+         if (at !== revision) throw Error('Verification view was invalidated');
+         // Results may reference candidate input buffers. Own both before exposing any readback.
+-        const nextValue = structuredClone(result),
+-          nextRecords = copyRecords(candidate);
++        const atClone = ledgerWorkStart();
++        const nextValue = structuredClone(result);
++        measureLedgerWork('installClone', atClone);
++        const nextRecords = copyRecords(candidate);
+         eraseVerified(value);
+         eraseVerified(retained);
+         value = nextValue;

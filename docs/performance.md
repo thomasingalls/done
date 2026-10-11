@@ -1438,3 +1438,36 @@ output retention, then remaining qualification repairs and immutable validation.
 receipt remains visible in eventual release reporting; no machine-readable waiver or release pass
 is supplied here. Larger optimization work stays deferred.
 [Protocol and disposition](./f17-rc-activation.md); [exact evidence](./account-conformance-runs/2026-09-15-f17-rc-activation/README.md).
+
+
+## 2026-10-10 — Desktop Account typing: per-key cost grows with every stored edit
+
+Diagnostic at `23fd688d`, after the operator reported obvious desktop input latency and a flickering
+saving indicator on the public installation, worse with sync. Unthrottled headless Chromium against a
+local account service in the deployed configuration; 200 realistic-cadence keys per block. This is not
+a budget run and no gate changes.
+
+Local typing is unaffected: key-to-paint 4.0/6.4 ms p50/p95, with no growth after 1,000 edits. On the
+Account path the same measure is 16.9/82 ms on a fresh account, 133/285 ms after 320 edits, 382/696 ms
+after 1,020 and 711/1,400 ms after 2,020. Key to the character stably in the editor is 27.7/210 ms
+fresh and 4,962/12,510 ms after 2,020 edits. Profiled main-thread CPU per key rises from 196 ms to
+985 ms, about 0.35 ms per key for every prior edit, and the longest single task from 115 ms to
+1,749 ms. The synchronous input handler stays near 3 ms p50; the work is in continuations after
+content-store transactions, which re-validate every stored account record. Keys queue behind those
+tasks, which is what shows the indicator. The `outbound` store gains about 1.1 rows per key and never
+shrinks.
+
+Stopping the service does not remove the cost (747 against 789 ms per key of IndexedDB-callback work),
+so the network is not the cause. The handler's p95 also grows with undo depth under the Account's
+`reference` preparation, to 56 ms after about 2,200 edits.
+
+Three read-only studies ran beside the measurement and are retained with it: a trace of the client's
+per-edit work, an audit of what the protocol and service require per edit, and a requirements study
+for the CRDT. They find that the implementation departs from the TRD in four places (sync work in the
+write path, a position per 50 ms pass, verification on local replay, an append-only proof log) and
+that the wire protocol and the CRDT are not where this cost is.
+
+One host under load, one device, one run per condition, a small workspace and no cold reopen; saturated
+blocks ran slower than their requested cadence, so those latencies are lower bounds. F-17 stays
+partial. The earlier gate's two misses are unchanged and were not rerun.
+[Measurement, studies, raw data and limits](./performance-experiments/2026-10-10-account-desktop-typing/README.md).

@@ -1,0 +1,122 @@
+[
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-1/slope-history-0-T-traced.trace.json",
+    "sha256": "0db9bb14d9e4c4d7ad0f1de2e18d88572b4112a46aff541a83ca931091eee167",
+    "bytes": 56572953
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-1/slope-history-1220-T-traced.trace.json",
+    "sha256": "c3d80556cbeb5903c86291f8131b7bf1ad124960af592df6b8ba23a47e15e2d0",
+    "bytes": 28391731
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-1/slope-history-2220-T-traced.trace.json",
+    "sha256": "273d982b0f4432932bd2a1ea37cbe3804b72019623eafbe72b6a39817813812e",
+    "bytes": 27011776
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-1/slope-history-520-T-traced.trace.json",
+    "sha256": "b106083cbefc172d51f84e8e7b60ec03593f7f9022c035fa583df44bb20d8402",
+    "bytes": 28229233
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-1/slope-history-0-T-traced.trace.json",
+    "sha256": "34e49d1d3237ff1132729588e53085c11cf1f31c76ea877c4966213d1edea545",
+    "bytes": 54525320
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-1/slope-history-1220-T-traced.trace.json",
+    "sha256": "6589b5fb5ee7aa7fd3c81ccfdeb2eb5be142de2ec09d5c1abd619726e9eaa4e8",
+    "bytes": 29047842
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-1/slope-history-2220-T-traced.trace.json",
+    "sha256": "4eac4701156edbb244f1b95695a96ff3f61e8a193d7ff563cd21f9ff5ae393c4",
+    "bytes": 29782289
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-1/slope-history-520-T-traced.trace.json",
+    "sha256": "26bb65b1d468ab77c3e12d6db36f88951f23b91de0a6357b212b56811f6a86e3",
+    "bytes": 24476913
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-2/slope-history-0-T-traced.trace.json",
+    "sha256": "3ffd1d4bf065e41815db5a0c79b9c32ddabdd7caf8550058d68512b8a3a70a75",
+    "bytes": 55455905
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-2/slope-history-1220-T-traced.trace.json",
+    "sha256": "ca0423c982aace4173f9ef4591074f490f0b5774f91987e209030585184b222c",
+    "bytes": 27977543
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-2/slope-history-2220-T-traced.trace.json",
+    "sha256": "87f10a39bdfb6459c2ff65fa7e4e445a2b1a4713e04c6d488efb72d246fbebe8",
+    "bytes": 31326411
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-candidate-2/slope-history-520-T-traced.trace.json",
+    "sha256": "16f1f99b4e37529764d5e6fd402fa91ef2c457b2e47e673ad3a38f35ddc6f33e",
+    "bytes": 23407675
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-2/slope-history-0-T-traced.trace.json",
+    "sha256": "cdb7a8a161e87af6de287024f3348c2a351a44f3d5d82df6acd7df2d5d8115f7",
+    "bytes": 56595141
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-2/slope-history-1220-T-traced.trace.json",
+    "sha256": "6fc6c4bbc8501e66c886453dfe66b9318ada0fea569694581727cda9d5b5891d",
+    "bytes": 28251830
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-2/slope-history-2220-T-traced.trace.json",
+    "sha256": "750dd7f401c078e7bad1c51c289d553a602078ebdc875538be2e8496c7538f6a",
+    "bytes": 26550532
+  },
+  {
+    "localTrace": "/tmp/done-account-consumers/results-baseline-2/slope-history-520-T-traced.trace.json",
+    "sha256": "86fbbe121f56e6dc3e721b6550d13dd47dd2aa79f7c4610fdba5ac0fb9c2cf32",
+    "bytes": 29151557
+  },
+  {
+    "file": "diagnostic-baseline/diagnostic-history-0-P-profiled.cpuprofile.gz",
+    "uncompressedSha256": "a206a067bb894b8cf9dde70408458183f6d1a8c83439d707a94361e95687169e",
+    "uncompressedBytes": 1394570
+  },
+  {
+    "file": "diagnostic-baseline/diagnostic-history-2220-P-profiled.cpuprofile.gz",
+    "uncompressedSha256": "a1b6c641f94e878700de3941e1263af48ccdef6b56b657b0bc5fbf739db3b141",
+    "uncompressedBytes": 1418514
+  },
+  {
+    "file": "diagnostic-candidate/diagnostic-history-0-P-profiled.cpuprofile.gz",
+    "uncompressedSha256": "f3e91d6808313491b2c31ffa121b5617c5571bc5127ae15e8938463be17041ff",
+    "uncompressedBytes": 1290977
+  },
+  {
+    "file": "diagnostic-candidate/diagnostic-history-2220-P-profiled.cpuprofile.gz",
+    "uncompressedSha256": "c6744035ea921c1a8b86c627ae1537f976011edd840f7abbfad3dc8fe8ee46e1",
+    "uncompressedBytes": 1261752
+  },
+  {
+    "file": "baseline-cold/reopen-cold.cpuprofile.gz",
+    "uncompressedSha256": "929cdf10fe580e6b4cdb4ef74b710fa33aebaaa89566f30277d44884c03e9609",
+    "uncompressedBytes": 1273829
+  },
+  {
+    "file": "candidate-cold/reopen-cold.cpuprofile.gz",
+    "uncompressedSha256": "bb267310a7d8798902ae955d1850f16d7415f183eb985eec308c0ce698cdb410",
+    "uncompressedBytes": 1134362
+  },
+  {
+    "file": "profile-reopen-smoke/smoke-diagnostic-cold.cpuprofile.gz",
+    "uncompressedSha256": "0a724bfdc637e700c9a231156e139f0c139d851f6b7aade0b30978ce12e72302",
+    "uncompressedBytes": 364755
+  },
+  {
+    "file": "profile-reopen-smoke/smoke-diagnostic-history-0-P-profiled.cpuprofile.gz",
+    "uncompressedSha256": "deda1ddb9316c6f0deaebf558a0c9c9c2d1082b23350632728d0affd5113febe",
+    "uncompressedBytes": 512746
+  }
+]

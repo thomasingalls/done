@@ -1,3 +1,4 @@
+import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
 import { claimScope } from './localGenesisRecord';
@@ -17,6 +18,8 @@ import {
 import { signPromotion, withPromotionRoot, writePromotion } from './promotionRecord';
 import {
   captureCatalog,
+  capturedSourcePresence,
+  type CapturedSourceIdentity,
   capturedRecovery,
   decodeSourceCapsule,
   makeSourceCapsule,
@@ -45,6 +48,11 @@ import { activateAccountUpload } from './accountUploadActivation';
 export interface CaptureExtension {
   version: 7 | 8 | 9;
   sourceRecords(records: readonly OpenedRecord[], route: CaptureRoute): OpenedRecord[];
+  sourcePresence?(
+    records: readonly OpenedRecord[],
+    route: CaptureRoute,
+    incoming: readonly CapturedSourceIdentity[],
+  ): boolean[];
   initialize(
     task: SessionTask,
     verified: Awaited<ReturnType<typeof verifyAccountUnderPermit>>,
@@ -230,9 +238,16 @@ export async function openAccountCaptureOwner(
   options.networkLogin?.activate(live);
   const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
     const previous = tail;
+    const enqueued = ledgerWorkStart();
     const result = live.run(async (task) => {
       await task.wait(() => previous);
-      return operation(task);
+      measureLedgerWork('storageQueueWait', enqueued);
+      const began = ledgerWorkStart();
+      try {
+        return await operation(task);
+      } finally {
+        measureLedgerWork('storageOperation', began);
+      }
     });
     tail = result.then(
       () => {},
@@ -259,19 +274,20 @@ export async function openAccountCaptureOwner(
   const persist = async (task: SessionTask, values: readonly Bytes[]): Promise<ContentReceipt> => {
     const records = await owner!.carrier.load(task);
     const batches: ContentInput[][] = [];
+    const decoded: SourceCapsule[] = [];
     let batch: ContentInput[] = [],
       size = 0;
     try {
-      const catalog = captureCatalog(sourceRecords(records), route);
-      for (const bytes of values) {
+      for (const bytes of values) decoded.push(decodeSourceCapsule(bytes, route));
+      const identities = decoded.map((c, i) => ({ id: c.id, bytes: values[i]! }));
+      const present = extension?.sourcePresence
+        ? extension.sourcePresence(records, route, identities)
+        : capturedSourcePresence(captureCatalog(sourceRecords(records), route), identities);
+      for (const [i, bytes] of values.entries()) {
         if (suspended) throw Error('Account generation is changing');
-        const c = decodeSourceCapsule(bytes, route);
+        const c = decoded[i]!;
         try {
-          const found = catalog.get(c.id);
-          if (found && hex(found) !== hex(bytes))
-            captureError('Conflicting source identity before commit');
-          if (found) continue;
-          catalog.set(c.id, bytes);
+          if (present[i]) continue;
           const count = c.sources.length + 1,
             length = c.sources.reduce((n, s) => n + s.bytes.length, bytes.length);
           if (
@@ -301,6 +317,7 @@ export async function openAccountCaptureOwner(
       for (const b of batches) sequences.push(...(await owner!.carrier.append(task, b)).sequences);
       return { storeId: owner!.describe().storeId, generation: route.generation, sequences };
     } finally {
+      for (const c of decoded) eraseCapsule(c);
       for (const r of records) r.bytes.fill(0);
       for (const b of [...batches, batch]) for (const r of b) r.bytes.fill(0);
     }

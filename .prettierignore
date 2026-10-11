@@ -9,3 +9,6 @@ test/yjs-delivery/ready-wakeup.json
 
 # Immutable persistent-profile preflight evidence (including nested native reports).
 docs/storage-conformance-runs/2026-09-10-legacy-host/**
+
+# Generated measurement data for the 2026-10-10 Account typing diagnostic.
+docs/performance-experiments/2026-10-10-account-desktop-typing/**/*.json

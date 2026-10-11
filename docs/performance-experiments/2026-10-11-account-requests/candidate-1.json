@@ -1,0 +1,2254 @@
+{
+  "condition": "candidate",
+  "keysPerDevice": 600,
+  "started": 1791702768308,
+  "typed": 1791702864464,
+  "end": 1791702866472,
+  "timings": [
+    {
+      "device": 0,
+      "starts": [
+        1791702768308, 1791702768468, 1791702768627, 1791702768784, 1791702768943, 1791702769107,
+        1791702769264, 1791702769422, 1791702769579, 1791702769736, 1791702769893, 1791702770050,
+        1791702770206, 1791702770362, 1791702770518, 1791702770678, 1791702770843, 1791702771007,
+        1791702771163, 1791702771318, 1791702771474, 1791702771631, 1791702771788, 1791702771945,
+        1791702772101, 1791702772256, 1791702772412, 1791702772568, 1791702772726, 1791702772884,
+        1791702773040, 1791702773196, 1791702773353, 1791702773509, 1791702773665, 1791702773822,
+        1791702773979, 1791702774137, 1791702774292, 1791702774448, 1791702774607, 1791702774763,
+        1791702774920, 1791702775078, 1791702775235, 1791702775395, 1791702775557, 1791702775714,
+        1791702775874, 1791702776029, 1791702776185, 1791702776341, 1791702776496, 1791702776652,
+        1791702776808, 1791702776964, 1791702777120, 1791702777280, 1791702777436, 1791702777593,
+        1791702777748, 1791702777905, 1791702778062, 1791702778218, 1791702778374, 1791702778530,
+        1791702778689, 1791702778848, 1791702779005, 1791702779161, 1791702779320, 1791702779477,
+        1791702779635, 1791702779791, 1791702779948, 1791702780103, 1791702780259, 1791702780415,
+        1791702780571, 1791702780727, 1791702780882, 1791702781038, 1791702781197, 1791702781352,
+        1791702781510, 1791702781665, 1791702781821, 1791702781976, 1791702782135, 1791702782294,
+        1791702782451, 1791702782609, 1791702782765, 1791702782923, 1791702783079, 1791702783240,
+        1791702783402, 1791702783559, 1791702783718, 1791702783874, 1791702784038, 1791702784195,
+        1791702784351, 1791702784513, 1791702784672, 1791702784829, 1791702784991, 1791702785150,
+        1791702785309, 1791702785465, 1791702785623, 1791702785780, 1791702785936, 1791702786098,
+        1791702786256, 1791702786414, 1791702786570, 1791702786727, 1791702786883, 1791702787039,
+        1791702787195, 1791702787351, 1791702787510, 1791702787667, 1791702787823, 1791702787980,
+        1791702788138, 1791702788303, 1791702788461, 1791702788617, 1791702788775, 1791702788934,
+        1791702789090, 1791702789249, 1791702789408, 1791702789564, 1791702789721, 1791702789884,
+        1791702790041, 1791702790200, 1791702790357, 1791702790516, 1791702790676, 1791702790836,
+        1791702791002, 1791702791159, 1791702791319, 1791702791475, 1791702791639, 1791702791796,
+        1791702791952, 1791702792109, 1791702792266, 1791702792423, 1791702792579, 1791702792741,
+        1791702792905, 1791702793061, 1791702793217, 1791702793374, 1791702793530, 1791702793686,
+        1791702793841, 1791702793998, 1791702794161, 1791702794324, 1791702794480, 1791702794637,
+        1791702794799, 1791702794957, 1791702795113, 1791702795270, 1791702795432, 1791702795587,
+        1791702795744, 1791702795905, 1791702796069, 1791702796226, 1791702796383, 1791702796542,
+        1791702796700, 1791702796856, 1791702797014, 1791702797173, 1791702797329, 1791702797486,
+        1791702797647, 1791702797809, 1791702797968, 1791702798124, 1791702798288, 1791702798453,
+        1791702798610, 1791702798767, 1791702798924, 1791702799081, 1791702799243, 1791702799405,
+        1791702799561, 1791702799716, 1791702799872, 1791702800028, 1791702800191, 1791702800348,
+        1791702800505, 1791702800662, 1791702800818, 1791702800975, 1791702801132, 1791702801288,
+        1791702801455, 1791702801612, 1791702801769, 1791702801925, 1791702802084, 1791702802241,
+        1791702802401, 1791702802558, 1791702802723, 1791702802879, 1791702803034, 1791702803190,
+        1791702803352, 1791702803520, 1791702803690, 1791702803847, 1791702804013, 1791702804169,
+        1791702804325, 1791702804481, 1791702804640, 1791702804796, 1791702804967, 1791702805125,
+        1791702805284, 1791702805449, 1791702805606, 1791702805763, 1791702805921, 1791702806077,
+        1791702806234, 1791702806392, 1791702806549, 1791702806706, 1791702806873, 1791702807041,
+        1791702807208, 1791702807365, 1791702807533, 1791702807690, 1791702807857, 1791702808014,
+        1791702808170, 1791702808327, 1791702808483, 1791702808639, 1791702808797, 1791702808954,
+        1791702809114, 1791702809270, 1791702809427, 1791702809596, 1791702809752, 1791702809909,
+        1791702810077, 1791702810233, 1791702810389, 1791702810553, 1791702810708, 1791702810865,
+        1791702811022, 1791702811186, 1791702811342, 1791702811500, 1791702811656, 1791702811816,
+        1791702811976, 1791702812136, 1791702812295, 1791702812462, 1791702812622, 1791702812790,
+        1791702812951, 1791702813107, 1791702813268, 1791702813426, 1791702813582, 1791702813739,
+        1791702813896, 1791702814059, 1791702814225, 1791702814386, 1791702814545, 1791702814716,
+        1791702814877, 1791702815042, 1791702815200, 1791702815356, 1791702815514, 1791702815671,
+        1791702815828, 1791702815999, 1791702816161, 1791702816318, 1791702816477, 1791702816634,
+        1791702816795, 1791702816952, 1791702817109, 1791702817264, 1791702817428, 1791702817603,
+        1791702817768, 1791702817936, 1791702818094, 1791702818252, 1791702818410, 1791702818568,
+        1791702818730, 1791702818886, 1791702819051, 1791702819209, 1791702819366, 1791702819528,
+        1791702819685, 1791702819845, 1791702820014, 1791702820174, 1791702820337, 1791702820498,
+        1791702820656, 1791702820825, 1791702820982, 1791702821139, 1791702821295, 1791702821452,
+        1791702821618, 1791702821778, 1791702821935, 1791702822093, 1791702822249, 1791702822409,
+        1791702822567, 1791702822728, 1791702822884, 1791702823041, 1791702823209, 1791702823366,
+        1791702823521, 1791702823678, 1791702823839, 1791702823993, 1791702824160, 1791702824316,
+        1791702824472, 1791702824629, 1791702824801, 1791702824973, 1791702825144, 1791702825300,
+        1791702825456, 1791702825614, 1791702825775, 1791702825945, 1791702826117, 1791702826277,
+        1791702826442, 1791702826599, 1791702826756, 1791702826913, 1791702827068, 1791702827229,
+        1791702827387, 1791702827548, 1791702827704, 1791702827861, 1791702828021, 1791702828193,
+        1791702828350, 1791702828508, 1791702828682, 1791702828840, 1791702829005, 1791702829168,
+        1791702829326, 1791702829496, 1791702829657, 1791702829829, 1791702829989, 1791702830145,
+        1791702830305, 1791702830461, 1791702830625, 1791702830792, 1791702830949, 1791702831106,
+        1791702831269, 1791702831439, 1791702831609, 1791702831772, 1791702831929, 1791702832085,
+        1791702832242, 1791702832415, 1791702832572, 1791702832731, 1791702832887, 1791702833048,
+        1791702833207, 1791702833364, 1791702833521, 1791702833685, 1791702833859, 1791702834015,
+        1791702834180, 1791702834346, 1791702834507, 1791702834667, 1791702834824, 1791702834991,
+        1791702835157, 1791702835321, 1791702835482, 1791702835646, 1791702835803, 1791702835960,
+        1791702836118, 1791702836275, 1791702836436, 1791702836598, 1791702836768, 1791702836941,
+        1791702837098, 1791702837259, 1791702837418, 1791702837586, 1791702837742, 1791702837898,
+        1791702838060, 1791702838227, 1791702838401, 1791702838558, 1791702838724, 1791702838902,
+        1791702839082, 1791702839238, 1791702839397, 1791702839554, 1791702839731, 1791702839888,
+        1791702840045, 1791702840201, 1791702840360, 1791702840528, 1791702840699, 1791702840857,
+        1791702841014, 1791702841173, 1791702841351, 1791702841509, 1791702841667, 1791702841824,
+        1791702841984, 1791702842162, 1791702842320, 1791702842481, 1791702842638, 1791702842809,
+        1791702842970, 1791702843125, 1791702843297, 1791702843453, 1791702843609, 1791702843766,
+        1791702843922, 1791702844079, 1791702844235, 1791702844393, 1791702844549, 1791702844707,
+        1791702844867, 1791702845024, 1791702845181, 1791702845338, 1791702845495, 1791702845655,
+        1791702845811, 1791702845967, 1791702846139, 1791702846307, 1791702846469, 1791702846626,
+        1791702846789, 1791702846965, 1791702847133, 1791702847289, 1791702847446, 1791702847606,
+        1791702847763, 1791702847925, 1791702848083, 1791702848244, 1791702848402, 1791702848568,
+        1791702848726, 1791702848884, 1791702849043, 1791702849213, 1791702849373, 1791702849555,
+        1791702849713, 1791702849885, 1791702850044, 1791702850219, 1791702850378, 1791702850539,
+        1791702850701, 1791702850860, 1791702851037, 1791702851194, 1791702851367, 1791702851522,
+        1791702851684, 1791702851839, 1791702852009, 1791702852167, 1791702852328, 1791702852497,
+        1791702852671, 1791702852887, 1791702853047, 1791702853204, 1791702853361, 1791702853518,
+        1791702853698, 1791702853863, 1791702854021, 1791702854184, 1791702854353, 1791702854510,
+        1791702854667, 1791702854847, 1791702855006, 1791702855166, 1791702855321, 1791702855483,
+        1791702855641, 1791702855814, 1791702855997, 1791702856171, 1791702856331, 1791702856495,
+        1791702856662, 1791702856834, 1791702857005, 1791702857162, 1791702857320, 1791702857496,
+        1791702857670, 1791702857826, 1791702857985, 1791702858157, 1791702858322, 1791702858480,
+        1791702858645, 1791702858802, 1791702858968, 1791702859124, 1791702859280, 1791702859438,
+        1791702859613, 1791702859772, 1791702859930, 1791702860088, 1791702860256, 1791702860419,
+        1791702860581, 1791702860738, 1791702860894, 1791702861063, 1791702861219, 1791702861376,
+        1791702861537, 1791702861699, 1791702861856, 1791702862048, 1791702862206, 1791702862361,
+        1791702862526, 1791702862702, 1791702862859, 1791702863015, 1791702863195, 1791702863352,
+        1791702863511, 1791702863674, 1791702863831, 1791702863993, 1791702864151, 1791702864307
+      ],
+      "end": 1791702864464
+    }
+  ],
+  "rows": [
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/config",
+      "start": 1791702763277,
+      "status": 200,
+      "end": 1791702763292
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/begin",
+      "start": 1791702765136,
+      "status": 200,
+      "end": 1791702765139
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/finish",
+      "start": 1791702765227,
+      "status": 200,
+      "end": 1791702765228
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/finish",
+      "start": 1791702765302,
+      "status": 200,
+      "end": 1791702765302
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702765322,
+      "status": 200,
+      "end": 1791702765324
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/recovery/begin",
+      "start": 1791702765427,
+      "status": 200,
+      "end": 1791702765430
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/recovery/finish",
+      "start": 1791702765486,
+      "status": 200,
+      "end": 1791702765486
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702765507,
+      "status": 200,
+      "end": 1791702765509
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702765525,
+      "status": 200,
+      "end": 1791702765527
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702765531,
+      "status": 200,
+      "end": 1791702765533
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702765554,
+      "status": 200,
+      "end": 1791702765555
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702765571,
+      "status": 200,
+      "end": 1791702765573
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702765588,
+      "status": 200,
+      "end": 1791702765590
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702765619,
+      "status": 200,
+      "end": 1791702765620
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702765638,
+      "status": 200,
+      "end": 1791702765640
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702765650,
+      "status": 200,
+      "end": 1791702765653
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/begin",
+      "start": 1791702765659,
+      "status": 200,
+      "end": 1791702765669
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/challenge",
+      "start": 1791702765676,
+      "status": 200,
+      "end": 1791702765684
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/finish",
+      "start": 1791702765737,
+      "status": 200,
+      "end": 1791702765737
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702765768,
+      "status": 200,
+      "end": 1791702765770
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/binding",
+      "start": 1791702765795,
+      "status": 200,
+      "end": 1791702765804
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/begin",
+      "start": 1791702765861,
+      "status": 200,
+      "end": 1791702765861
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/finish",
+      "start": 1791702765981,
+      "status": 200,
+      "end": 1791702765987
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/acknowledge",
+      "start": 1791702765989,
+      "status": 200,
+      "end": 1791702765992
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/renew",
+      "start": 1791702765992,
+      "status": 200,
+      "end": 1791702766021
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/grant/v1/begin",
+      "start": 1791702766024,
+      "status": 200,
+      "end": 1791702766038
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/grant/v1/finish",
+      "start": 1791702766039,
+      "status": 200,
+      "end": 1791702766041
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/notifications/v1/subscribe",
+      "start": 1791702766042,
+      "status": 200,
+      "end": 1791702766046
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/submit",
+      "start": 1791702766113,
+      "status": 200,
+      "end": 1791702766125
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/authority/discover",
+      "start": 1791702766160,
+      "status": 200,
+      "end": 1791702766178
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702766194,
+      "status": 200,
+      "end": 1791702766210
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702766236,
+      "status": 200,
+      "end": 1791702766245
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/submit",
+      "start": 1791702766409,
+      "status": 200,
+      "end": 1791702766420
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/submit",
+      "start": 1791702766566,
+      "status": 200,
+      "end": 1791702766578
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702768455,
+      "status": 200,
+      "end": 1791702768468,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702768628,
+      "status": 200,
+      "end": 1791702768640
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702768787,
+      "status": 200,
+      "end": 1791702768800
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702768959,
+      "status": 200,
+      "end": 1791702768970
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702769134,
+      "status": 200,
+      "end": 1791702769146
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702769302,
+      "status": 200,
+      "end": 1791702769314
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702769471,
+      "status": 200,
+      "end": 1791702769484,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702769654,
+      "status": 200,
+      "end": 1791702769671
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702769842,
+      "status": 200,
+      "end": 1791702769854
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702770025,
+      "status": 200,
+      "end": 1791702770040
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702770213,
+      "status": 200,
+      "end": 1791702770226
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702770395,
+      "status": 200,
+      "end": 1791702770408
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702770578,
+      "status": 200,
+      "end": 1791702770590
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702770830,
+      "status": 200,
+      "end": 1791702770858
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702771067,
+      "status": 200,
+      "end": 1791702771080
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702771254,
+      "status": 200,
+      "end": 1791702771266
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702771450,
+      "status": 200,
+      "end": 1791702771463
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702771652,
+      "status": 200,
+      "end": 1791702771665,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702771860,
+      "status": 200,
+      "end": 1791702771875
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702772056,
+      "status": 200,
+      "end": 1791702772070
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702772244,
+      "status": 200,
+      "end": 1791702772257
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702772442,
+      "status": 200,
+      "end": 1791702772456
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702772653,
+      "status": 200,
+      "end": 1791702772667
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702772854,
+      "status": 200,
+      "end": 1791702772868
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702773071,
+      "status": 200,
+      "end": 1791702773087
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702773302,
+      "status": 200,
+      "end": 1791702773317
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702773511,
+      "status": 200,
+      "end": 1791702773526
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702773740,
+      "status": 200,
+      "end": 1791702773755
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702773956,
+      "status": 200,
+      "end": 1791702773971
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702774197,
+      "status": 200,
+      "end": 1791702774215
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702774429,
+      "status": 200,
+      "end": 1791702774443
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702774665,
+      "status": 200,
+      "end": 1791702774679
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702774899,
+      "status": 200,
+      "end": 1791702774913,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702775120,
+      "status": 200,
+      "end": 1791702775136
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702775355,
+      "status": 200,
+      "end": 1791702775370
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702775576,
+      "status": 200,
+      "end": 1791702775591
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702775813,
+      "status": 200,
+      "end": 1791702775828
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702776028,
+      "status": 200,
+      "end": 1791702776044,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702776273,
+      "status": 200,
+      "end": 1791702776289
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702776491,
+      "status": 200,
+      "end": 1791702776506
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702776747,
+      "status": 200,
+      "end": 1791702776762
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702776964,
+      "status": 200,
+      "end": 1791702776980
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702777218,
+      "status": 200,
+      "end": 1791702777233
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702777453,
+      "status": 200,
+      "end": 1791702777468
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702777705,
+      "status": 200,
+      "end": 1791702777721
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702777973,
+      "status": 200,
+      "end": 1791702777989
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702778237,
+      "status": 200,
+      "end": 1791702778253
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702778481,
+      "status": 200,
+      "end": 1791702778497
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702778757,
+      "status": 200,
+      "end": 1791702778774
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702779012,
+      "status": 200,
+      "end": 1791702779029
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702779284,
+      "status": 200,
+      "end": 1791702779300
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702779559,
+      "status": 200,
+      "end": 1791702779575
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702779807,
+      "status": 200,
+      "end": 1791702779823
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702780082,
+      "status": 200,
+      "end": 1791702780099
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702780342,
+      "status": 200,
+      "end": 1791702780359
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702780614,
+      "status": 200,
+      "end": 1791702780632
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702780882,
+      "status": 200,
+      "end": 1791702780901
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702781137,
+      "status": 200,
+      "end": 1791702781155
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702781421,
+      "status": 200,
+      "end": 1791702781438,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702781689,
+      "status": 200,
+      "end": 1791702781707
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702781978,
+      "status": 200,
+      "end": 1791702781997
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702782257,
+      "status": 200,
+      "end": 1791702782275
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702782534,
+      "status": 200,
+      "end": 1791702782554
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702782817,
+      "status": 200,
+      "end": 1791702782836
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702783102,
+      "status": 200,
+      "end": 1791702783120
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702783394,
+      "status": 200,
+      "end": 1791702783413
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702783681,
+      "status": 200,
+      "end": 1791702783701
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702783991,
+      "status": 200,
+      "end": 1791702784009
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702784297,
+      "status": 200,
+      "end": 1791702784317
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702784594,
+      "status": 200,
+      "end": 1791702784613
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702784921,
+      "status": 200,
+      "end": 1791702784940
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702785240,
+      "status": 200,
+      "end": 1791702785260
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702785567,
+      "status": 200,
+      "end": 1791702785587
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702785907,
+      "status": 200,
+      "end": 1791702785926
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702786234,
+      "status": 200,
+      "end": 1791702786255,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702786560,
+      "status": 200,
+      "end": 1791702786586
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702786871,
+      "status": 200,
+      "end": 1791702786891
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702787195,
+      "status": 200,
+      "end": 1791702787217
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702787522,
+      "status": 200,
+      "end": 1791702787542,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702787841,
+      "status": 200,
+      "end": 1791702787861
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702788162,
+      "status": 200,
+      "end": 1791702788186
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702788537,
+      "status": 200,
+      "end": 1791702788558
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702788870,
+      "status": 200,
+      "end": 1791702788891
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702789215,
+      "status": 200,
+      "end": 1791702789237
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702789549,
+      "status": 200,
+      "end": 1791702789571
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702789867,
+      "status": 200,
+      "end": 1791702789890
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702790200,
+      "status": 200,
+      "end": 1791702790222
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702790540,
+      "status": 200,
+      "end": 1791702790562
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702790893,
+      "status": 200,
+      "end": 1791702790915,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702791240,
+      "status": 200,
+      "end": 1791702791261
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702791581,
+      "status": 200,
+      "end": 1791702791602
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702791933,
+      "status": 200,
+      "end": 1791702791958
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702792263,
+      "status": 200,
+      "end": 1791702792286
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702792605,
+      "status": 200,
+      "end": 1791702792628
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702792959,
+      "status": 200,
+      "end": 1791702792985
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702793370,
+      "status": 200,
+      "end": 1791702793398
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702793720,
+      "status": 200,
+      "end": 1791702793744
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702794109,
+      "status": 200,
+      "end": 1791702794131
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702794475,
+      "status": 200,
+      "end": 1791702794496
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702794824,
+      "status": 200,
+      "end": 1791702794846
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702795200,
+      "status": 200,
+      "end": 1791702795224
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702795571,
+      "status": 200,
+      "end": 1791702795594
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702795935,
+      "status": 200,
+      "end": 1791702795957
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702796317,
+      "status": 200,
+      "end": 1791702796341
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702796691,
+      "status": 200,
+      "end": 1791702796715
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702797059,
+      "status": 200,
+      "end": 1791702797082
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702797450,
+      "status": 200,
+      "end": 1791702797473
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702797828,
+      "status": 200,
+      "end": 1791702797855
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702798216,
+      "status": 200,
+      "end": 1791702798240
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702798597,
+      "status": 200,
+      "end": 1791702798620
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702798979,
+      "status": 200,
+      "end": 1791702799002
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702799390,
+      "status": 200,
+      "end": 1791702799413
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702799780,
+      "status": 200,
+      "end": 1791702799804,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702800207,
+      "status": 200,
+      "end": 1791702800231
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702800608,
+      "status": 200,
+      "end": 1791702800633
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702801016,
+      "status": 200,
+      "end": 1791702801039
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702801447,
+      "status": 200,
+      "end": 1791702801471
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702801852,
+      "status": 200,
+      "end": 1791702801877
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702802271,
+      "status": 200,
+      "end": 1791702802296
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702802695,
+      "status": 200,
+      "end": 1791702802719
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702803105,
+      "status": 200,
+      "end": 1791702803130
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702803576,
+      "status": 200,
+      "end": 1791702803601,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702804022,
+      "status": 200,
+      "end": 1791702804047
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702804450,
+      "status": 200,
+      "end": 1791702804474
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702804855,
+      "status": 200,
+      "end": 1791702804880
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702805315,
+      "status": 200,
+      "end": 1791702805339
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702805766,
+      "status": 200,
+      "end": 1791702805791
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702806210,
+      "status": 200,
+      "end": 1791702806237
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702806638,
+      "status": 200,
+      "end": 1791702806663
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702807075,
+      "status": 200,
+      "end": 1791702807100
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702807526,
+      "status": 200,
+      "end": 1791702807552,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702807976,
+      "status": 200,
+      "end": 1791702808002
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702808408,
+      "status": 200,
+      "end": 1791702808436
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702808883,
+      "status": 200,
+      "end": 1791702808918,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702809356,
+      "status": 200,
+      "end": 1791702809382
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702809825,
+      "status": 200,
+      "end": 1791702809851
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702810301,
+      "status": 200,
+      "end": 1791702810329,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702810788,
+      "status": 200,
+      "end": 1791702810819
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702811269,
+      "status": 200,
+      "end": 1791702811296
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702811772,
+      "status": 200,
+      "end": 1791702811800
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702812258,
+      "status": 200,
+      "end": 1791702812286
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702812733,
+      "status": 200,
+      "end": 1791702812761
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702813249,
+      "status": 200,
+      "end": 1791702813290
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702813765,
+      "status": 200,
+      "end": 1791702813793
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702814262,
+      "status": 200,
+      "end": 1791702814290
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702814746,
+      "status": 200,
+      "end": 1791702814774
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702815247,
+      "status": 200,
+      "end": 1791702815275
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702815789,
+      "status": 200,
+      "end": 1791702815819,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702816363,
+      "status": 200,
+      "end": 1791702816392
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702816886,
+      "status": 200,
+      "end": 1791702816915,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702817428,
+      "status": 200,
+      "end": 1791702817501
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702818026,
+      "status": 200,
+      "end": 1791702818057,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702818592,
+      "status": 200,
+      "end": 1791702818622
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702819136,
+      "status": 200,
+      "end": 1791702819165
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702819740,
+      "status": 200,
+      "end": 1791702819770
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702820286,
+      "status": 200,
+      "end": 1791702820317,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702820840,
+      "status": 200,
+      "end": 1791702820869
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702821407,
+      "status": 200,
+      "end": 1791702821437,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702821971,
+      "status": 200,
+      "end": 1791702822000
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702822496,
+      "status": 200,
+      "end": 1791702822527,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702823071,
+      "status": 200,
+      "end": 1791702823101
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702823610,
+      "status": 200,
+      "end": 1791702823640,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702824169,
+      "status": 200,
+      "end": 1791702824200
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702824696,
+      "status": 200,
+      "end": 1791702824727
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702825266,
+      "status": 200,
+      "end": 1791702825297
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702825859,
+      "status": 200,
+      "end": 1791702825890
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702826458,
+      "status": 200,
+      "end": 1791702826492
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702826629,
+      "status": 200,
+      "end": 1791702826664
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702826689,
+      "status": 200,
+      "end": 1791702826832
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702826886,
+      "status": 200,
+      "end": 1791702826914
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702827325,
+      "status": 200,
+      "end": 1791702827358
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702827923,
+      "status": 200,
+      "end": 1791702827953,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702828467,
+      "status": 200,
+      "end": 1791702828500
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702829030,
+      "status": 200,
+      "end": 1791702829061
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702829614,
+      "status": 200,
+      "end": 1791702829647
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702830173,
+      "status": 200,
+      "end": 1791702830203,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702830754,
+      "status": 200,
+      "end": 1791702830787
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702831346,
+      "status": 200,
+      "end": 1791702831381
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702831915,
+      "status": 200,
+      "end": 1791702831949
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702832516,
+      "status": 200,
+      "end": 1791702832549
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702833112,
+      "status": 200,
+      "end": 1791702833145
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702833729,
+      "status": 200,
+      "end": 1791702833762
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702834403,
+      "status": 200,
+      "end": 1791702834436
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702835022,
+      "status": 200,
+      "end": 1791702835055
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702835616,
+      "status": 200,
+      "end": 1791702835653
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702836243,
+      "status": 200,
+      "end": 1791702836285,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702836851,
+      "status": 200,
+      "end": 1791702836886,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702837523,
+      "status": 200,
+      "end": 1791702837557,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702838181,
+      "status": 200,
+      "end": 1791702838215
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702838806,
+      "status": 200,
+      "end": 1791702838839,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702839476,
+      "status": 200,
+      "end": 1791702839510
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702840100,
+      "status": 200,
+      "end": 1791702840133
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702840738,
+      "status": 200,
+      "end": 1791702840787
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702841408,
+      "status": 200,
+      "end": 1791702841443
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702842082,
+      "status": 200,
+      "end": 1791702842117
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702842749,
+      "status": 200,
+      "end": 1791702842784
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702843414,
+      "status": 200,
+      "end": 1791702843449
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702844058,
+      "status": 200,
+      "end": 1791702844093,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702844699,
+      "status": 200,
+      "end": 1791702844734
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702845378,
+      "status": 200,
+      "end": 1791702845413
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702846043,
+      "status": 200,
+      "end": 1791702846082
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702846697,
+      "status": 200,
+      "end": 1791702846732,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702847384,
+      "status": 200,
+      "end": 1791702847419
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702848021,
+      "status": 200,
+      "end": 1791702848057,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702848661,
+      "status": 200,
+      "end": 1791702848697
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702849328,
+      "status": 200,
+      "end": 1791702849365,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702849996,
+      "status": 200,
+      "end": 1791702850032
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702850761,
+      "status": 200,
+      "end": 1791702850798
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702851472,
+      "status": 200,
+      "end": 1791702851508
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702852287,
+      "status": 200,
+      "end": 1791702852324,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702853162,
+      "status": 200,
+      "end": 1791702853199
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702853842,
+      "status": 200,
+      "end": 1791702853879
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702854576,
+      "status": 200,
+      "end": 1791702854612
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702855273,
+      "status": 200,
+      "end": 1791702855308
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702856032,
+      "status": 200,
+      "end": 1791702856067
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702856787,
+      "status": 200,
+      "end": 1791702856826,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702857594,
+      "status": 200,
+      "end": 1791702857633
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702858369,
+      "status": 200,
+      "end": 1791702858407
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702859088,
+      "status": 200,
+      "end": 1791702859124
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702859758,
+      "status": 200,
+      "end": 1791702859795
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702860545,
+      "status": 200,
+      "end": 1791702860586
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702861262,
+      "status": 200,
+      "end": 1791702861300
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702862018,
+      "status": 200,
+      "end": 1791702862056
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702862777,
+      "status": 200,
+      "end": 1791702862814,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702863498,
+      "status": 200,
+      "end": 1791702863542
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702864278,
+      "status": 200,
+      "end": 1791702864317
+    },
+    {
+      "device": "A",
+      "phase": "drain",
+      "path": "/account/delivery/submit",
+      "start": 1791702864938,
+      "status": 200,
+      "end": 1791702864976
+    }
+  ],
+  "summary": {
+    "durationMs": 96156,
+    "requests": 227,
+    "submits": 224,
+    "requestsPerKey": 0.37833333333333335,
+    "requestsPerSubmit": 1.0133928571428572,
+    "refusals": 0,
+    "counts": {
+      "/account/delivery/submit": 224,
+      "/account/authority/discover": 1,
+      "/account/history/v1/checkpoint": 1,
+      "/account/delivery/read-v2": 1
+    },
+    "convergenceMs": 2008
+  }
+}

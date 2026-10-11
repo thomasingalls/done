@@ -1,0 +1,547 @@
+
+Running 2 tests using 1 worker
+
+(node:88453) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Diagnostic first {
+  errors: undefined,
+  scheduler: {
+    at: 1791668073813,
+    active: 'receive',
+    status: { send: [Object], receive: [Object] }
+  },
+  failures: [
+    {
+      at: 1791668013237,
+      lane: 'send',
+      message: 'WriteSessionError: This write capability is no longer live.',
+      stack: 'WriteSessionError: This write capability is no longer live.\n' +
+        '    at Pl (http://localhost:53221/assets/admissionDocument-Bc8cTrXp.js:5:53599)\n' +
+        '    at _ (http://localhost:53221/assets/admissionDocument-Bc8cTrXp.js:5:54285)\n' +
+        '    at r (http://localhost:53221/assets/admissionDocument-Bc8cTrXp.js:5:54456)\n' +
+        '    at http://localhost:53221/assets/admissionDocument-Bc8cTrXp.js:5:54604',
+      cause: 'undefined'
+    }
+  ],
+  replies: [
+    {
+      at: 1791668057924,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668059390,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668060534,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668060640,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668061761,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668061807,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668062860,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668062959,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668065684,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668065929,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668066075,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668066126,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668067249,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668067280,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668068392,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668068504,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668069086,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668069091,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668070220,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668070335,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668070386,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668071424,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668071460,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668071464,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668072513,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668072576,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668072624,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668073799,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668074094,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668074206,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    }
+  ],
+  controls: [
+    {
+      visible: false,
+      html: '<button type="button" hidden="">Retry storage</button>'
+    }
+  ]
+}
+Diagnostic second {
+  errors: undefined,
+  scheduler: {
+    at: 1791668073802,
+    active: 'receive',
+    status: { send: [Object], receive: [Object] }
+  },
+  failures: undefined,
+  replies: [
+    {
+      at: 1791668053919,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668055062,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668055117,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668056180,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668056251,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668057256,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668058763,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668058880,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668058886,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668059302,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668060019,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668060108,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668060113,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668061171,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668061175,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668062232,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668062238,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668063245,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668065305,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668065558,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668065860,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668065973,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668067115,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668067165,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668068229,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668068305,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668069312,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668071366,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668074008,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668074138,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    }
+  ],
+  controls: [
+    {
+      visible: false,
+      html: '<button type="button" hidden="">Retry storage</button>'
+    }
+  ]
+}
+  ✓  1 test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (1.1m)
+Diagnostic first {
+  errors: undefined,
+  scheduler: {
+    at: 1791668112450,
+    active: 'receive',
+    status: { send: [Object], receive: [Object] }
+  },
+  failures: [
+    {
+      at: 1791668078131,
+      lane: 'send',
+      message: 'ContentError: The content transaction did not complete.',
+      stack: 'ContentError: The content transaction did not complete.\n' +
+        '    at u.onabort (http://localhost:53221/assets/preload-helper-B_9xYlei.js:1:6647)',
+      cause: 'null'
+    }
+  ],
+  replies: [
+    {
+      at: 1791668097564,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668097789,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668097875,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668097982,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668098188,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668098390,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668098523,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668101917,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668102119,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668102133,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668102567,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668102602,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668103266,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668103716,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668103966,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668104035,
+      path: '/account/delivery/read-v2',
+      status: 429
+    },
+    {
+      at: 1791668104491,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668105102,
+      path: '/account/delivery/read-v2',
+      status: 200
+    },
+    {
+      at: 1791668105394,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668105399,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668106520,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668106629,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668106635,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668107770,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668107889,
+      path: '/account/history/v1/checkpoint',
+      status: 200
+    },
+    {
+      at: 1791668110305,
+      path: '/account/delivery/submit',
+      status: 200
+    },
+    {
+      at: 1791668110376,
+      path: '/account/membership/v2/discover',
+      status: 429
+    },
+    {
+      at: 1791668111480,
+      path: '/account/membership/v2/discover',
+      status: 200
+    },
+    {
+      at: 1791668111580,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    },
+    {
+      at: 1791668112583,
+      path: '/account/history/v1/checkpoint',
+      status: 429
+    }
+  ],
+  controls: [
+    {
+      visible: false,
+      html: '<button type="button" hidden="">Retry storage</button>'
+    }
+  ]
+}
+Diagnostic second {
+  errors: undefined,
+  scheduler: {
+    at: 1791668113680,
+    active: 'receive',
+    status: { send: [Object], receive: [Object] }
+  },
+  failures: undefined,
+  replies: undefined,
+  controls: [
+    {
+      visible: false,
+      html: '<button type="button" hidden="">Retry storage</button>'
+    }
+  ]
+}
+  ✓  2 test/packaged-account/consumer-debug.spec.ts:192:1 › a returning editor installs admitted cuts after service pruning and keeps its local writing (39.5s)
+
+  2 passed (1.8m)

@@ -1,0 +1,3 @@
+initial { credentials: 0 }
+after profiler stop { credentials: 0 }
+after profiler detach Error: cdpSession.send: Protocol error (WebAuthn.getCredentials): The Virtual Authenticator Environment has not been enabled for this session

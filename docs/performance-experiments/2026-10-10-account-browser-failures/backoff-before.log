@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+(node:90537) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/packaged-account/failure-debug.spec.ts:54:1 › two native device owners independently admit snapshots and keep two-way delivery (1.3m)
+
+
+  1) test/packaged-account/failure-debug.spec.ts:54:1 › two native device owners independently admit snapshots and keep two-way delivery 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.shell')
+    Expected substring: "First device after maintenance"
+    Received string:    "DaySat 10 Oct 2026Sat 3 OctThu 8 OctYesterdayTodayTomorrowMon 12 OctSat 17 OctGo to dateStorageLocal dataBest-effortWriting is encrypted in this browser. Export a readable backup when you need one.Export markdownLock workspaceUndoRedoAccountNameDevice ownerAccount IDIMRYbe_Xr9YEkkno6mEy98wKHX-JzszO-C6D2COpdREDevicesHistory maintenanceSave a verified encrypted snapshot of your account’s writing. If another approved device exists, use this action there too to verify it.After two snapshots are verified, you can remove older covered encrypted history from the service. The two latest snapshots and their remaining updates are kept.Verified snapshot 1 is saved.Check historyCreate history snapshotUse another accountAccount login remembered on this device.Sign outIdentity and preferencesActorDevice ownerVersionunknownDeviceNameColorDay rollover00:0001:0002:0003:0004:0005:0006:0007:0008:0009:0010:0011:0012:0013:0014:0015:0016:0017:0018:0019:0020:0021:0022:0023:00Save preferencesInstallIf the install button does not appear, use Install app in your browser menu.Unfiled0CloseThese cards were retained because their original collection can no longer display them. Choose a new home or remove them explicitly.Fri 9 OctTodayNext0/3Empty.DoneNothing yet.AddSat 10 OctNext0/3Empty.DoneSecond device retained offline originalUnlockRemoveFirst device snapshot-only writingUnlockRemoveSecond device before snapshotUnlockRemoveKeep the first device writingUnlockRemoveAddSun 11 OctTodayNext0/3Empty.DoneNothing yet.AddGoalsRetry storageDiscard pending inputEverything. Tasks, projects, someday-maybes, notes to self.Transfer selected linesCopy toMove toNextScheduledDone"
+    Timeout: 15000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 15000ms
+      - waiting for locator('.shell')
+        33 × locator resolved to <div class="shell" data-select="on" data-menu="closed" data-goals="closed" data-unfiled="closed" data-breakpoint="wide" data-local-workspace="true">…</div>
+           - unexpected value "DaySat 10 Oct 2026Sat 3 OctThu 8 OctYesterdayTodayTomorrowMon 12 OctSat 17 OctGo to dateStorageLocal dataBest-effortWriting is encrypted in this browser. Export a readable backup when you need one.Export markdownLock workspaceUndoRedoAccountNameDevice ownerAccount IDIMRYbe_Xr9YEkkno6mEy98wKHX-JzszO-C6D2COpdREDevicesHistory maintenanceSave a verified encrypted snapshot of your account’s writing. If another approved device exists, use this action there too to verify it.After two snapshots are verified, you can remove older covered encrypted history from the service. The two latest snapshots and their remaining updates are kept.Verified snapshot 1 is saved.Check historyCreate history snapshotUse another accountAccount login remembered on this device.Sign outIdentity and preferencesActorDevice ownerVersionunknownDeviceNameColorDay rollover00:0001:0002:0003:0004:0005:0006:0007:0008:0009:0010:0011:0012:0013:0014:0015:0016:0017:0018:0019:0020:0021:0022:0023:00Save preferencesInstallIf the install button does not appear, use Install app in your browser menu.Unfiled0CloseThese cards were retained because their original collection can no longer display them. Choose a new home or remove them explicitly.Fri 9 OctTodayNext0/3Empty.DoneNothing yet.AddSat 10 OctNext0/3Empty.DoneSecond device retained offline originalUnlockRemoveFirst device snapshot-only writingUnlockRemoveSecond device before snapshotUnlockRemoveKeep the first device writingUnlockRemoveAddSun 11 OctTodayNext0/3Empty.DoneNothing yet.AddGoalsRetry storageDiscard pending inputEverything. Tasks, projects, someday-maybes, notes to self.Transfer selected linesCopy toMove toNextScheduledDone"
+
+
+      182 |     await capture('unblocked');
+      183 |     try {
+    > 184 |       await expect(second.locator('.shell')).toContainText('First device after maintenance', { timeout: 15000 });
+          |                                              ^
+      185 |     } catch (cause) {
+      186 |       await capture('original-deadline-failed');
+      187 |       const after = Date.now();
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/failure-debug.spec.ts:184:46
+
+    Error Context: test-results/packaged-account/artifacts/failure-debug-two-native-d-0bec8-s-and-keep-two-way-delivery/error-context.md
+
+  1 failed
+    test/packaged-account/failure-debug.spec.ts:54:1 › two native device owners independently admit snapshots and keep two-way delivery 

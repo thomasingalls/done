@@ -1,0 +1,38 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 434 modules transformed.
+
+(!) outDir /tmp/done-account-requests/dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../../../../../tmp/done-account-requests/dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+../../../../../../tmp/done-account-requests/dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+../../../../../../tmp/done-account-requests/dist/assets/main-apPaEBJm.css                    32.72 kB │ gzip:   6.92 kB
+../../../../../../tmp/done-account-requests/dist/assets/checkpointTimeline-DdvidAM9.js        0.58 kB │ gzip:   0.39 kB │ map:     2.20 kB
+../../../../../../tmp/done-account-requests/dist/assets/accountProgressCustody-CIuPXbNg.js    1.70 kB │ gzip:   0.89 kB │ map:     6.07 kB
+../../../../../../tmp/done-account-requests/dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.71 kB
+../../../../../../tmp/done-account-requests/dist/assets/membershipLocator-CFok42yu.js         5.21 kB │ gzip:   1.67 kB │ map:    16.78 kB
+../../../../../../tmp/done-account-requests/dist/assets/rotationObservation-CoeTzG63.js       6.69 kB │ gzip:   2.59 kB │ map:    19.51 kB
+../../../../../../tmp/done-account-requests/dist/assets/accountRotation-Ci1RyrhK.js           7.83 kB │ gzip:   3.44 kB │ map:    29.61 kB
+../../../../../../tmp/done-account-requests/dist/assets/preload-helper-B_9xYlei.js            8.34 kB │ gzip:   3.59 kB │ map:    24.38 kB
+../../../../../../tmp/done-account-requests/dist/assets/historyOwner-RuopvBUP.js             10.60 kB │ gzip:   3.64 kB │ map:    35.94 kB
+../../../../../../tmp/done-account-requests/dist/assets/ceremonyVault-B_mSJ1Bl.js            10.61 kB │ gzip:   3.96 kB │ map:    36.74 kB
+../../../../../../tmp/done-account-requests/dist/assets/accountAccess-MzHwzJNy.js            13.00 kB │ gzip:   4.69 kB │ map:    54.01 kB
+../../../../../../tmp/done-account-requests/dist/assets/membershipSource-qH_cTZik.js         14.42 kB │ gzip:   5.16 kB │ map:    50.60 kB
+../../../../../../tmp/done-account-requests/dist/assets/LocalApp-C5cv2W2B.js                 16.31 kB │ gzip:   6.01 kB │ map:    49.22 kB
+../../../../../../tmp/done-account-requests/dist/assets/deviceRemovalVault-BVFG4mgw.js       21.63 kB │ gzip:   7.21 kB │ map:    74.18 kB
+../../../../../../tmp/done-account-requests/dist/assets/AccountRecoveryApp-CMPWrxq3.js       29.18 kB │ gzip:   9.89 kB │ map:    96.11 kB
+../../../../../../tmp/done-account-requests/dist/assets/ceremonyNavigation-DrNsj12C.js       34.75 kB │ gzip:  12.22 kB │ map:   117.56 kB
+../../../../../../tmp/done-account-requests/dist/assets/promotionRecord-BbY_GPz3.js          37.76 kB │ gzip:  12.41 kB │ map:   135.55 kB
+../../../../../../tmp/done-account-requests/dist/assets/AccountSetupApp-CwndrArA.js          39.29 kB │ gzip:  13.24 kB │ map:   113.27 kB
+../../../../../../tmp/done-account-requests/dist/assets/localGenesisStorage-Cc7LCC-s.js      64.63 kB │ gzip:  21.44 kB │ map:   195.23 kB
+../../../../../../tmp/done-account-requests/dist/assets/joinedAccount-BtKHqiu4.js            73.46 kB │ gzip:  22.74 kB │ map:   267.78 kB
+../../../../../../tmp/done-account-requests/dist/assets/AccountEnrollmentApp-B2ij9rwQ.js     79.43 kB │ gzip:  23.43 kB │ map:   263.34 kB
+../../../../../../tmp/done-account-requests/dist/assets/AccountDevices-Dght4zSM.js           88.62 kB │ gzip:  27.60 kB │ map:   337.19 kB
+../../../../../../tmp/done-account-requests/dist/assets/admissionHistory-BJqiB6yy.js        102.47 kB │ gzip:  25.38 kB │ map:   346.58 kB
+../../../../../../tmp/done-account-requests/dist/assets/admissionDocument-R-aZJqCb.js       138.05 kB │ gzip:  43.14 kB │ map:   818.13 kB
+../../../../../../tmp/done-account-requests/dist/assets/main-Bdn-oJfD.js                    283.71 kB │ gzip:  92.01 kB │ map: 1,249.49 kB
+../../../../../../tmp/done-account-requests/dist/assets/localGenesis-Cs2jzElB.js            678.55 kB │ gzip: 235.05 kB │ map: 2,799.59 kB
+
+✓ built in 2.54s

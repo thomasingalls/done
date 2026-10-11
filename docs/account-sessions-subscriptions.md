@@ -273,6 +273,22 @@ bounded output queue. A slow client is disconnected and catches up later. Rate-l
 grant creation and active streams per session as well as unauthenticated ingress. Exact limits belong
 with the first route implementation and its focused boundary tests.
 
+The scoped HTTP routes now attribute budgets to the service-held session behind an access token or
+scoped grant. Access/grant renewal shares the same allowance. Initial policy: 120 burst requests and
+16 requests/second per session, under a process ceiling of 480 burst and 64 requests/second; at most
+4 concurrent scoped operations per session and 16 per process. Budget attribution is not authorization:
+the existing domain transaction still checks the live parent, exact scope, current authority and proof.
+Unknown, well-formed bearer attempts have a separate bucket (120 burst, 2 requests/second), and
+session budget storage is capped at 1,024 entries. Only inactive, fully replenished entries may be
+forgotten. Bootstrap/login and subscription-handshake limits remain separate. These are admission
+policies, not a measured production capacity claim.
+
+Successful content submissions do not hint the submitting credential's workspace subscription.
+Their retained signed decisions already advance its local receive prefix; they no longer schedule an
+immediate self read. Unknown replies still schedule independent read reconciliation, preserving read
+backoff and halts. Peer content notifications and all control notifications remain unchanged, including
+their discovery reset; periodic authenticated repair and notification reconnect catch-up remain enabled.
+
 Use a heartbeat shorter than the proxy inactivity deadline (initial proposal: 10 seconds) and a
 stream-specific gateway policy. Do not reuse the current 10-second total request timeout. Forward
 without buffering/caching, propagate cancellation and close streams explicitly during gateway/service

@@ -1,0 +1,41 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ❯ test/verifiedRecords.test.ts (4 tests | 1 failed | 3 skipped) 7ms
+   × refuses overlapping verification before it can borrow or erase an in-flight predecessor 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/verifiedRecords.test.ts > refuses overlapping verification before it can borrow or erase an in-flight predecessor
+AssertionError: expected [ +0, +0, +0 ] to deeply equal [ 1, 2, 3 ]
+
+- Expected
++ Received
+
+  [
+-   1,
+-   2,
+-   3,
++   0,
++   0,
++   0,
+  ]
+
+ ❯ test/verifiedRecords.test.ts:135:35
+    133|     async (previous) => {
+    134|       await new Promise<void>((resolve) => { release = resolve; });
+    135|       expect([...previous.bytes]).toEqual([1, 2, 3]);
+       |                                   ^
+    136|       return { bytes: previous.bytes };
+    137|     });
+ ❯ Object.verify src/crdt/verifiedRecords.ts:104:15
+ ❯ test/verifiedRecords.test.ts:148:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 skipped (4)
+   Start at  01:16:23
+   Duration  212ms (transform 33ms, setup 36ms, import 34ms, tests 7ms, environment 0ms)
+

@@ -1,0 +1,17 @@
+{
+  "base": "4500d9b61b7c67b0d2abcabfc7f377ab449e23d6",
+  "files": {
+    "src/crdt/accountCapture.ts": "a48fb591301894191285cd76838e142d40b4fff589ea92bfdb99e4092c4375b2",
+    "src/crdt/accountDelivery.ts": "678be6e8f5754538f5827f058f6ffb50b11996c1c22dcce7fe6d1cb09493a38e",
+    "src/crdt/accountEnvelopePreparation.ts": "62872bf4ba5c5470b1fef601a1283be435c021deece18dac8ef2defa635eb409",
+    "src/crdt/accountLedgerMetrics.ts": "af466496728dfa57cfe4c64400ac734fdf9deccb2fdf5ca46f3ffd88e0b594fc",
+    "src/crdt/accountReceive.ts": "5d02051872eb27944ddf2631ea6c4577265b3dda306225c985fa408e9bfef22b",
+    "src/crdt/admittedWorkspace.ts": "b416e757328e1591d9fc30ef1c1aabac0b00cf3d096af9249b015c3e65acb1c6",
+    "src/crdt/contentCompaction.ts": "f8f680d59bc56a0f762d0f015f678ecb093b9ab52fa6ff069f4bc00d54562fe6",
+    "src/crdt/contentStore.ts": "5da37140dcabd1b769acf8be48c9081f1002aeb2fc07060616422e8902cd1924",
+    "src/crdt/custodyCrypto.ts": "64863f2836e51a9e5b7a46d19efb1e847a404ddb4cd1d3afd8f6242ec8834212",
+    "src/crdt/sourceCapture.ts": "cd04742b5eebc61c5539fd5b3a7241ba9a3befb05057d1aaf987cac5f976d826",
+    "src/crdt/verifiedRecords.ts": "82de9aaaa0be1a52df8f97ccd5c3c8aee1f8b97e30488db4c9de22ec36e8496c",
+    "src/crdt/yjs.ts": "3199b6d582f88950c50975cf88ddcec879a97dc1d6b7ad9e5c3528c70afddecb"
+  }
+}

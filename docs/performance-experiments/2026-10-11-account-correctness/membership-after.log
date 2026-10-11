@@ -1,0 +1,26 @@
+(node:12459) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ original and joined adopters retain exact local boundaries while skipping unseen heads (519.911417ms)
+✔ adoption rejects forged ancestry, reordered cuts, incomplete accepted prefixes and wrong installation (401.906375ms)
+✔ generation-one installation refuses a valid rotation until the actual generation owner exists (205.225041ms)
+✔ original publisher preserves epoch-one and epoch-two witnesses across later membership adoption (133.64825ms)
+(node:12460) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ retained source, spool and delivery records resolve their own authenticated generation (152.402916ms)
+✔ inbound replay opens old and successor envelopes without accepting a key or generation hint from the wire (99.489083ms)
+✔ cold replay uses the stored page epoch cut, never a later membership cutoff (172.493166ms)
+✔ incremental replay matches the full ledger across retained and current generation decisions (140.038334ms)
+(node:12461) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ signed current-key retry keeps the same original edits, position and closed bytes through interrupted durable steps (344.962ms)
+✔ unsigned, substituted and wrong-purpose refusals cannot authorize re-encryption (154.26325ms)
+✔ the outbound driver retries only with installed newer authority and does not block after recording a valid refusal (186.217583ms)
+✔ a refusal received by an old writer stays closed until newer membership is installed (181.1735ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1639.6035

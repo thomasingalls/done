@@ -143,14 +143,25 @@ const dispose = (s: State | undefined) => {
 export const createAdmittedWorkspace = async (
   open: (options: AdmissionOptions) => Promise<AdmissionSession>,
   options: WorkspaceOptions,
-  preparation: 'reference' | 'local-handoff' | 'local-snapshots' = 'reference',
+  preparation:
+    | 'reference'
+    | 'local-handoff'
+    | 'local-snapshots'
+    | 'account-snapshots' = 'reference',
 ): Promise<AdmittedWorkspace> => {
-  if (!['reference', 'local-handoff', 'local-snapshots'].includes(preparation))
+  if (!['reference', 'local-handoff', 'local-snapshots', 'account-snapshots'].includes(preparation))
     throw Error('Unknown workspace preparation');
-  const localHandoff = preparation !== 'reference';
+  const localHandoff = preparation === 'local-handoff' || preparation === 'local-snapshots';
   if (localHandoff && options.captureSources)
     throw Error('Local preparation cannot capture Account sources');
-  const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
+  if (preparation === 'account-snapshots' && !options.captureSources)
+    throw Error('Account selection snapshots require source capture');
+  // Account reuses only immutable selection metadata. It keeps the reference document fork,
+  // source capture and ordinary post-admission verification; no Local handoff/buffer reuse.
+  const selectionHistory =
+    preparation === 'local-snapshots' || preparation === 'account-snapshots'
+      ? createSelectionHistory(localHandoff)
+      : undefined;
   // Private experiment: one retired predecessor, never more than two workspace histories.
   let spare:
     | { state: State; basis: State; update: Bytes; untouched(): boolean; unwatch(): void }

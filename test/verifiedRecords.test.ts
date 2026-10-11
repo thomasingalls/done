@@ -27,7 +27,11 @@ it('projects detached readback without copying unrelated retained history', asyn
     result.through = 99;
     expect(cache.read(input, (v) => v.status)).toEqual({ through: 7 });
     expect(seen).toEqual([{ through: 7 }, { through: 7 }]);
+    const hit = cache.readIfMatches(input, (v) => v.status)!;
+    hit.value.through = 101;
+    expect(cache.readIfMatches(input, (v) => v.status)).toEqual({ value: { through: 7 } });
     input[0]!.bytes[0]!++;
+    expect(cache.readIfMatches(input, (v) => v.status)).toBeUndefined();
     expect(() => cache.read(input, (v) => v.status)).toThrow(/No verified/);
     cache.clear();
     expect(() => cache.read(rows(), (v) => v.status)).toThrow(/No verified/);
@@ -117,4 +121,52 @@ it('generated content/source/placement/metadata changes, rejection and rollback 
     ),
     { seed: 120912, numRuns: 60 },
   );
+});
+
+it('refuses overlapping verification before it can borrow or erase an in-flight predecessor', async () => {
+  const cache = createVerifiedRecords<{ bytes: Uint8Array }>();
+  const initial = rows();
+  await cache.verify(initial, 1, async (r) => ({ bytes: r[0]!.bytes }), current);
+  const next = [...rows(), { ...rows()[0]!, seq: 2 }];
+  let release!: () => void;
+  const first = cache.verify(
+    next,
+    2,
+    async () => {
+      throw Error('unexpected full verification');
+    },
+    current,
+    async (previous) => {
+      await new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      expect([...previous.bytes]).toEqual([1, 2, 3]);
+      return { bytes: previous.bytes };
+    },
+  );
+  let entered = false;
+  try {
+    await expect(
+      cache.verify(
+        [...next, { ...rows()[0]!, seq: 3 }],
+        3,
+        async () => {
+          entered = true;
+          return { bytes: new Uint8Array([9]) };
+        },
+        current,
+        async (previous) => {
+          entered = true;
+          return { bytes: previous.bytes };
+        },
+      ),
+    ).rejects.toThrow('Concurrent verification');
+    expect(entered).toBe(false);
+    expect([...cache.read(initial).bytes]).toEqual([1, 2, 3]);
+  } finally {
+    release();
+    await first;
+  }
+  expect([...cache.read(next).bytes]).toEqual([1, 2, 3]);
+  cache.clear();
 });

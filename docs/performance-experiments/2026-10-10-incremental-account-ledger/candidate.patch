@@ -1,0 +1,865 @@
+diff --git a/src/crdt/accountDelivery.ts b/src/crdt/accountDelivery.ts
+index 15c4b165..1fb5a9ac 100644
+--- a/src/crdt/accountDelivery.ts
++++ b/src/crdt/accountDelivery.ts
+@@ -54,6 +54,14 @@ export interface DeliveryContext {
+   inspect?: typeof inspectDelivery;
+   /** Detached result from the just-validated complete v9 view; never used for proposed transitions. */
+   verified?(records: readonly OpenedRecord[]): DeliveryState;
++  /** Private speculative check. A successful proposal never installs a durable cached view. */
++  verifyProposed?(
++    records: readonly OpenedRecord[],
++    proposed: OpenedRecord[],
++    route: CaptureRoute,
++    task: SessionTask,
++    after: import('./contentRecord').SpoolWitness,
++  ): Promise<boolean>;
+   reuse?(task: SessionTask): { memo: VerificationMemo; current(): void };
+   pin(): AuthorityPin;
+   canSubmit?(): boolean;
+@@ -164,16 +172,17 @@ export function createDeliveryOperations(context: DeliveryContext) {
+                   gen: sealed[0]!.gen,
+                 },
+               ];
+-              await task.wait(() =>
+-                verifyDelivery(
+-                  inspect(proposed, route, context.authority()),
+-                  route,
+-                  context.authority(),
+-                  context.publicKey(),
+-                  subtleFor(task),
+-                  context.reuse?.(task),
+-                ),
+-              );
++              if (!(await context.verifyProposed?.(rows, proposed, route, task, after)))
++                await task.wait(() =>
++                  verifyDelivery(
++                    inspect(proposed, route, context.authority()),
++                    route,
++                    context.authority(),
++                    context.publicKey(),
++                    subtleFor(task),
++                    context.reuse?.(task),
++                  ),
++                );
+             } finally {
+               for (const r of rows) r.bytes.fill(0);
+             }
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 46eec160..f69a552e 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -60,11 +60,16 @@ import {
+ } from '../../account-protocol/admissionHistory';
+ import type { DeviceRoster } from '../account/deviceRoster';
+ import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
+-import { createVerifiedRecords } from './verifiedRecords';
++import { createVerifiedRecords, eraseVerified, copyRecords } from './verifiedRecords';
+ import { createVerificationMemo } from './verificationMemo';
++import {
++  extendAccountLedger,
++  indexVerifiedLedger,
++  sameAccountLedger,
++  type AccountLedgerView,
++} from './incrementalAccountLedger';
++import { countLedger, measureLedger } from './accountLedgerMetrics';
+ import { createInboundCoverage } from './inboundLedger';
+-import type { DeliveryState } from './deliveryRecord';
+-import type { InboundState } from './inboundLedger';
+ import { createEnvelopePreparation } from './accountEnvelopePreparation';
+ import { createDeliveryOperations, describeDelivery } from './accountDelivery';
+ import { publicationState } from './deliveryRecord';
+@@ -147,14 +152,13 @@ async function openAccountReceiveOwner(
+   joined = false,
+ ) {
+   const options = captureAccountOptions(input);
+-  const verified = createVerifiedRecords<{
+-    delivery: DeliveryState;
+-    inbound: InboundState;
+-    census: ReturnType<typeof inspectInbound>;
+-  }>();
++  const verified = createVerifiedRecords<AccountLedgerView>();
++  const incremental = import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental';
++  let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
++  let sinceAudit = 0;
+   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
+   const memo = createVerificationMemo(),
+-    coverage = createInboundCoverage();
++    coverage = createInboundCoverage({ incremental });
+   const inspectCensus = (records: Parameters<typeof inspectInbound>[0], route: CaptureRoute) =>
+     verified.matches(records)
+       ? verified.read(records, (v) => v.census)
+@@ -271,84 +275,169 @@ async function openAccountReceiveOwner(
+     },
+     activate: (task, owner) => owner.carrier.enableSpool(task),
+     async validate(task, records, route, counter, view) {
++      const checkFull = async (
++        records: import('./contentRecord').OpenedRecord[],
++        audit = false,
++      ): Promise<AccountLedgerView> => {
++        const began = performance.now();
++        countLedger('full');
++        const isolated = audit ? createInboundCoverage() : undefined;
++        const checking = (isolated ?? coverage).bind(records);
++        try {
++          const census = inspectInbound(records, route, base),
++            subtle = subtleFor(task),
++            reuse = { memo, current: () => task.step(() => {}) };
++          await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
++          if (!joined)
++            await verifyInstalledSuccessor(
++              census.delivery.spool,
++              route,
++              installed,
++              subtle,
++              reuse,
++              membership,
++            );
++          else if (membership)
++            await verifyInstalledMembership(
++              census.delivery.spool,
++              route.history!,
++              membership,
++              initialEpoch,
++              subtle,
++              reuse,
++            );
++          await verifySpool(
++            census.delivery.spool,
++            route,
++            new Map([
++              ...(base.retainedGenerationKeys ?? []),
++              [base.generation, base.generationKey],
++            ]),
++            publicKey,
++            subtle,
++            reuse,
++          );
++          const delivery = await verifyDelivery(
++            census.delivery,
++            route,
++            base.authority,
++            publicKey,
++            subtle,
++            reuse,
++          );
++          const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
++            memo,
++            coverage: checking,
++          });
++          if (composed)
++            advanceSelfReceive(census.delivery, delivery, inbound, route, (updates) =>
++              checking.check(records, updates),
++            );
++          memo.retain(
++            new Set([
++              'admission-prefix',
++              ...census.delivery.spool.positions.flatMap((p) => [
++                'spool:' + p.position,
++                'link:' + p.position,
++              ]),
++              ...census.delivery.spool.events.map((_, i) => 'witness:' + i),
++              ...census.delivery.entries.map((e) => 'delivery:' + e.record.seq),
++              ...census.entries.map((e) => 'inbound:' + e.record.seq),
++              ...census.installations.map((e) => 'history:' + e.record.seq),
++            ]),
++          );
++          const result: AccountLedgerView = { delivery, inbound, census };
++          if (incremental && !audit) {
++            const indexes = await indexVerifiedLedger(result, records, route, counter, subtle);
++            if (indexes) result.indexes = indexes;
++          }
++          return result;
++        } finally {
++          isolated?.clear();
++          measureLedger('full', began);
++        }
++      };
+       try {
+         await verified.verify(
+           records,
+           view ?? {},
+-          async (records) => {
+-            const census = inspectInbound(records, route, base),
+-              subtle = subtleFor(task),
+-              reuse = { memo, current: () => task.step(() => {}) };
+-            await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
+-            if (!joined)
+-              await verifyInstalledSuccessor(
+-                census.delivery.spool,
+-                route,
+-                installed,
+-                subtle,
+-                reuse,
+-                membership,
+-              );
+-            else if (membership)
+-              await verifyInstalledMembership(
+-                census.delivery.spool,
+-                route.history!,
+-                membership,
+-                initialEpoch,
+-                subtle,
+-                reuse,
+-              );
+-            await verifySpool(
+-              census.delivery.spool,
+-              route,
+-              new Map([
+-                ...(base.retainedGenerationKeys ?? []),
+-                [base.generation, base.generationKey],
+-              ]),
+-              publicKey,
+-              subtle,
+-              reuse,
+-            );
+-            const delivery = await verifyDelivery(
+-              census.delivery,
+-              route,
+-              base.authority,
+-              publicKey,
+-              subtle,
+-              reuse,
+-            );
+-            const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
+-              memo,
+-              coverage,
+-            });
+-            if (composed)
+-              advanceSelfReceive(census.delivery, delivery, inbound, route, (updates) =>
+-                coverage.check(records, updates),
+-              );
+-            memo.retain(
+-              new Set([
+-                'admission-prefix',
+-                ...census.delivery.spool.positions.flatMap((p) => [
+-                  'spool:' + p.position,
+-                  'link:' + p.position,
+-                ]),
+-                ...census.delivery.spool.events.map((_, i) => 'witness:' + i),
+-                ...census.delivery.entries.map((e) => 'delivery:' + e.record.seq),
+-                ...census.entries.map((e) => 'inbound:' + e.record.seq),
+-                ...census.installations.map((e) => 'history:' + e.record.seq),
+-              ]),
+-            );
+-            return { delivery, inbound, census };
+-          },
++          checkFull,
+           () => task.step(() => {}),
++          incremental
++            ? async (previous, before, records) => {
++                const began = performance.now();
++                try {
++                  const next = await extendAccountLedger(
++                    previous,
++                    before,
++                    records,
++                    route,
++                    counter,
++                    base,
++                    publicKey,
++                    subtleFor(task),
++                    { memo, current: () => task.step(() => {}) },
++                    () => coverage.prepare(records) === 'equivalent',
++                  );
++                  if (!next) return;
++                  const checking = coverage.bind(records);
++                  const inbound = await verifyInboundLedger(
++                    next.census,
++                    records,
++                    base,
++                    lifetime(task),
++                    { memo, coverage: checking },
++                    { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
++                  );
++                  if (composed)
++                    advanceSelfReceive(
++                      next.census.delivery,
++                      next.delivery,
++                      inbound,
++                      route,
++                      (updates) => checking.check(records, updates),
++                      previous.delivery.acceptedThrough,
++                    );
++                  const result = { ...next, inbound };
++                  sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
++                  const auditEvery =
++                    import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
++                    (sinceAudit >= 1024 &&
++                      records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
++                  if (auditEvery) {
++                    countLedger('audits');
++                    const auditRows = copyRecords(records);
++                    let oracle;
++                    try {
++                      oracle = await checkFull(auditRows, true);
++                      if (!sameAccountLedger(result, oracle)) {
++                        countLedger('mismatches');
++                        console.error('done/account-ledger-reference-mismatch');
++                        captureError('Account ledger reference mismatch');
++                      }
++                      sinceAudit = 0;
++                    } finally {
++                      eraseVerified(oracle);
++                      eraseVerified(auditRows);
++                    }
++                  }
++                  return result;
++                } finally {
++                  measureLedger('incremental', began);
++                }
++              }
++            : undefined,
+         );
++        verifiedCounter = structuredClone(counter);
+       } catch (e) {
++        verifiedCounter = undefined;
+         memo.clear();
+         coverage.clear();
+         throw e;
+       }
+     },
+     dispose() {
++      verifiedCounter = undefined;
+       verified.clear();
+       memo.clear();
+       coverage.clear();
+@@ -908,6 +997,8 @@ async function openAccountReceiveOwner(
+               base = nextBase;
+               installed = successor;
+               expectedPayload = hex(promotionPayload(next));
++              verifiedCounter = undefined;
++              sinceAudit = 0;
+               verified.clear();
+               memo.clear();
+               coverage.clear();
+@@ -1061,6 +1152,8 @@ async function openAccountReceiveOwner(
+           installRoute(task, nextRoute);
+           base = nextBase;
+           membership = nextMembership;
++          verifiedCounter = undefined;
++          sinceAudit = 0;
+           verified.clear();
+           memo.clear();
+           coverage.clear();
+@@ -1335,6 +1428,45 @@ async function openAccountReceiveOwner(
+           if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+           return delivery;
+         }),
++      ...(incremental
++        ? {
++            verifyProposed: async (
++              rows: readonly import('./contentRecord').OpenedRecord[],
++              proposed: import('./contentRecord').OpenedRecord[],
++              route: CaptureRoute,
++              task: SessionTask,
++              after: import('./contentRecord').SpoolWitness,
++            ) => {
++              if (!verifiedCounter) return false;
++              const prior = verified.read(rows);
++              let candidate;
++              const existing = new Set(rows),
++                added = proposed
++                  .filter((r) => !existing.has(r))
++                  .map((r) => ({ ...r, bytes: r.bytes.slice() }));
++              const owned = proposed.map((r) => (existing.has(r) ? r : added.shift()!));
++              try {
++                candidate = await extendAccountLedger(
++                  prior,
++                  rows,
++                  owned,
++                  route,
++                  { ...verifiedCounter, v: 2, spool: after },
++                  base,
++                  publicKey,
++                  subtleFor(task),
++                  { memo, current: () => task.step(() => {}) },
++                );
++                return !!candidate;
++              } finally {
++                eraseVerified(prior);
++                eraseVerified(candidate);
++                // Erase copied proposals even when extension throws before returning a candidate.
++                for (const row of owned) if (!existing.has(row)) row.bytes.fill(0);
++              }
++            },
++          }
++        : {}),
+       reuse: (task) => ({ memo, current: () => task.step(() => {}) }),
+       network: runNetworkTask,
+       canSubmit: canReceive,
+diff --git a/src/crdt/accountSyncState.ts b/src/crdt/accountSyncState.ts
+index f47d299c..de001697 100644
+--- a/src/crdt/accountSyncState.ts
++++ b/src/crdt/accountSyncState.ts
+@@ -15,9 +15,10 @@ export function verifySyncState(
+   census: DeliveryCensus,
+   delivery: DeliveryState,
+   inbound: InboundState,
++  after = 0,
+ ) {
+   for (const [position, retained] of inbound.retained)
+-    requireSelfEnvelope(census, position, retained.envelope);
++    if (position > after) requireSelfEnvelope(census, position, retained.envelope);
+   const accepted = inbound.prefix.observedThrough;
+   if (
+     [...delivery.refusals.keys()].some((n) => n <= accepted) ||
+@@ -38,17 +39,26 @@ export function advanceSelfReceive(
+   inbound: InboundState,
+   route: CaptureRoute,
+   checkCoverage: (updates: readonly Bytes[]) => void,
++  after = 0,
+ ): void {
+-  verifySyncState(census, delivery, inbound);
++  verifySyncState(census, delivery, inbound, after);
++  if (after > delivery.acceptedThrough) captureError('Accepted self prefix regressed');
+   // A later conflict blocks use of the stream, but must not erase its already retained
+   // accepted prefix (or make the scheduler observe progress going backwards).
+   const conflict = delivery.conflict || inbound.conflict;
+   const capsules = new Map<string, ReturnType<typeof decodeSourceCapsule>>();
+   const updates: Bytes[] = [];
+-  let previous = ZERO_REFUSAL,
+-    position = 0;
++  const prior = after
++    ? delivery.responses
++        .get(after)
++        ?.map(decodePositionResponse)
++        .find((r) => r.kind === 'accepted')
++    : undefined;
++  if (after && prior?.kind !== 'accepted') captureError('Missing previous self acceptance');
++  let previous = prior?.kind === 'accepted' ? prior.head.link : ZERO_REFUSAL,
++    position = after;
+   try {
+-    for (const entry of census.spool.positions) {
++    for (const entry of census.spool.positions.slice(after)) {
+       if (entry.position > delivery.acceptedThrough) break;
+       if (entry.position !== position + 1 || !entry.wire)
+         return captureError('Accepted self stream has a gap');
+diff --git a/src/crdt/contentStore.ts b/src/crdt/contentStore.ts
+index 1e61a2c7..7a106693 100644
+--- a/src/crdt/contentStore.ts
++++ b/src/crdt/contentStore.ts
+@@ -1,3 +1,4 @@
++import { measureLedger } from './accountLedgerMetrics';
+ import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
+ import { copyRecords, eraseVerified } from './verifiedRecords';
+ import {
+@@ -563,16 +564,22 @@ export const createContentOwner = (
+         sequences: Object.freeze(records.map((r) => r.seq)),
+       });
+     },
+-    compact: (task: SessionTask, checkJournal: () => void) =>
+-      compactContent(task, {
+-        scope,
+-        generation,
+-        intent: witness.intent,
+-        db: db!,
+-        read: () => read(task, true),
+-        authenticate: (snapshot) => openSnapshot(task, snapshot),
+-        publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
+-        checkJournal,
+-      }),
++    compact: async (task: SessionTask, checkJournal: () => void) => {
++      const began = performance.now();
++      try {
++        return await compactContent(task, {
++          scope,
++          generation,
++          intent: witness.intent,
++          db: db!,
++          read: () => read(task, true),
++          authenticate: (snapshot) => openSnapshot(task, snapshot),
++          publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
++          checkJournal,
++        });
++      } finally {
++        measureLedger('compaction', began);
++      }
++    },
+   };
+ };
+diff --git a/src/crdt/deliveryRecord.ts b/src/crdt/deliveryRecord.ts
+index 6303092c..bea3ee0c 100644
+--- a/src/crdt/deliveryRecord.ts
++++ b/src/crdt/deliveryRecord.ts
+@@ -209,26 +209,45 @@ export async function verifyDelivery(
+   publicKey: CryptoKey,
+   subtle: SubtleCrypto,
+   reuse?: { memo: VerificationMemo; current(): void },
++  continuation?: {
++    state: DeliveryState;
++    spool: SpoolState;
++    envelopes: Map<number, number>;
++    expected: Map<
++      number,
++      NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string }
++    >;
++  },
+ ): Promise<DeliveryState> {
+-  const state = emptyDelivery(),
++  const state = continuation?.state ?? emptyDelivery(),
+     entries = new Map(c.entries.map((e) => [e.record.seq, e])),
+-    envelopes = new Map<number, number>();
++    envelopes = continuation?.envelopes ?? new Map<number, number>();
+   // Replay each attempt at its own point in the append-only ledger, not using its final successor.
+   const active: SpoolState = {
+     ...c.spool,
+-    positions: c.spool.positions.map((p) => ({
+-      position: p.position,
+-      source: p.source,
+-      ...(p.additional ? { additional: p.additional } : {}),
+-      attempts: [],
+-    })),
++    positions: c.spool.positions.map((p, i) =>
++      continuation?.spool.positions[i]
++        ? {
++            ...continuation.spool.positions[i]!,
++            attempts: [...continuation.spool.positions[i]!.attempts],
++            ...(continuation.spool.positions[i]!.retries
++              ? { retries: [...continuation.spool.positions[i]!.retries!] }
++              : {}),
++          }
++        : {
++            position: p.position,
++            source: p.source,
++            ...(p.additional ? { additional: p.additional } : {}),
++            attempts: [],
++          },
++    ),
+   };
+-  const expectedCache = new Map<
++  const expectedCache: Map<
+     number,
+     NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string }
+-  >();
++  > = continuation?.expected ?? new Map();
+   const expectedAt = async (position: number) => {
+-    if (!reuse) return expectedPosition(active, position, subtle);
++    if (!reuse && !continuation) return expectedPosition(active, position, subtle);
+     for (let n = expectedCache.size + 1; n <= position; n++) {
+       const p = active.positions[n - 1];
+       if (!p?.wire) return null;
+@@ -245,13 +264,15 @@ export async function verifyDelivery(
+         closed = proof ? decodePositionResponse(proof) : null,
+         parent =
+           closed?.kind === 'refused' ? await refusalId(closed.refusal, subtle) : ZERO_REFUSAL,
+-        next = await reuse.memo.check(
+-          'link:' + n,
+-          JSON.stringify([subject, previous]),
+-          [],
+-          () => acceptanceLink(subject, previous, subtle),
+-          reuse.current,
+-        );
++        next = reuse
++          ? await reuse.memo.check(
++              'link:' + n,
++              JSON.stringify([subject, previous]),
++              [],
++              () => acceptanceLink(subject, previous, subtle),
++              reuse.current,
++            )
++          : await acceptanceLink(subject, previous, subtle);
+       expectedCache.set(n, { ...subject, previous, parent, next });
+     }
+     return expectedCache.get(position) ?? null;
+diff --git a/src/crdt/inboundLedger.ts b/src/crdt/inboundLedger.ts
+index 081e6034..30175803 100644
+--- a/src/crdt/inboundLedger.ts
++++ b/src/crdt/inboundLedger.ts
+@@ -1,3 +1,4 @@
++import { measureLedger } from './accountLedgerMetrics';
+ import {
+   isHistoryInstallTag,
+   decodeHistoryInstall,
+@@ -24,8 +25,8 @@ import { acceptanceLink, decodePositionResponse } from '../../account-protocol/p
+ import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
+ import { decodeInboundRecord } from './inboundRecord';
+ import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
+-import { Y, forkDoc, sameDocState } from './yjs';
+-import { copyRecords, sameRecords, eraseVerified } from './verifiedRecords';
++import { Y, forkDoc, sameDocState, hasPendingUpdates } from './yjs';
++import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
+ import type { VerificationMemo } from './verificationMemo';
+ 
+ export async function heldInboundContext(
+@@ -246,34 +247,94 @@ export async function applyHistoryReceiveCuts(
+     if (cut.credentialId !== base.publisher.id) own.peers!.set(cut.credentialId, state);
+   }
+ }
+-/** A fork must be unchanged by each evidenced original; no vector-only or pending merge shortcut. */
++/** Exact collision-checked byte index; positive cache has a fixed byte/entry budget. */
++function updateIndex(bounded: boolean) {
++  const buckets = new Map<number, Uint8Array[]>();
++  let size = 0,
++    count = 0;
++  const hash = (b: Uint8Array) => {
++    let h = 2166136261;
++    for (const x of b) h = Math.imul(h ^ x, 16777619);
++    return h >>> 0;
++  };
++  const clear = () => {
++    if (bounded) for (const values of buckets.values()) for (const b of values) b.fill(0);
++    buckets.clear();
++    size = count = 0;
++  };
++  return {
++    clear,
++    has(bytes: Uint8Array) {
++      return buckets.get(hash(bytes))?.some((b) => sameBytes(b, bytes)) ?? false;
++    },
++    add(bytes: Uint8Array) {
++      if (bounded && bytes.length > 4 * 1024 * 1024) return;
++      if (bounded && (size + bytes.length > 4 * 1024 * 1024 || count >= 4096)) clear();
++      const h = hash(bytes),
++        values = buckets.get(h) ?? [];
++      if (values.some((b) => sameBytes(b, bytes))) return;
++      values.push(bounded ? bytes.slice() : bytes);
++      buckets.set(h, values);
++      size += bytes.length;
++      count++;
++    },
++    values: () => [...buckets.values()].flat(),
++    bytes: () => size,
++  };
++}
++/** A fork must be unchanged by each evidenced original; no vector-only shortcut. */
+ function contentCoverage(content: readonly OpenedRecord[]) {
+   const doc = new Y.Doc({ gc: false }),
+-    originals = new Set(content.map((r) => hex(r.bytes)));
+-  try {
+-    for (const r of [...content].sort((a, b) => a.seq - b.seq)) {
++    originals = updateIndex(false),
++    positives = updateIndex(true);
++  const append = (rows: readonly OpenedRecord[]) => {
++    const pending = hasPendingUpdates(doc);
++    for (const r of rows) {
+       Y.decodeUpdate(r.bytes);
+       Y.applyUpdate(doc, r.bytes);
++      originals.add(r.bytes);
+     }
++    // Exact pending framing can change as dependencies integrate. Do not assume monotonicity there.
++    if (pending || hasPendingUpdates(doc)) positives.clear();
++  };
++  const began = performance.now();
++  try {
++    append([...content].sort((a, b) => a.seq - b.seq));
+   } catch (e) {
+     doc.destroy();
++    originals.clear();
++    positives.clear();
+     throw e;
++  } finally {
++    measureLedger('coverageRebuild', began);
+   }
+   return {
++    doc,
++    append,
+     clear() {
+       doc.destroy();
+       originals.clear();
++      positives.clear();
+     },
++    preserve(previous: { doc: ReturnType<typeof forkDoc>; positives(): Uint8Array[] }): boolean {
++      if (!sameDocState(previous.doc, doc)) return false;
++      for (const b of previous.positives()) positives.add(b);
++      return true;
++    },
++    positives: positives.values,
++    positiveBytes: positives.bytes,
+     check(updates: readonly Bytes[]) {
+       for (const update of updates) {
+-        if (originals.has(hex(update))) continue;
++        if (originals.has(update) || positives.has(update)) continue;
++        const began = performance.now();
+         const copy = forkDoc(doc, false);
+         try {
+           Y.applyUpdate(copy, update);
+           if (!sameDocState(doc, copy)) captureError('Inbound content coverage is missing');
+-          originals.add(hex(update));
++          positives.add(update);
+         } finally {
+           copy.destroy();
++          measureLedger('coverageCheck', began);
+         }
+       }
+     },
+@@ -292,8 +353,8 @@ export function verifyInboundCoverage(
+     coverage.clear();
+   }
+ }
+-/** One reconstruction for the exact current content set, including invisible Yjs dependencies. */
+-export function createInboundCoverage() {
++/** Owner-local content view. Only successful coverage is memoised; failure always invalidates. */
++export function createInboundCoverage(options: { incremental?: boolean } = {}) {
+   let rows: OpenedRecord[] | undefined, coverage: ReturnType<typeof contentCoverage> | undefined;
+   const clear = () => {
+     eraseVerified(rows);
+@@ -301,26 +362,71 @@ export function createInboundCoverage() {
+     coverage?.clear();
+     coverage = undefined;
+   };
+-  return {
+-    clear,
+-    check(records: readonly OpenedRecord[], updates: readonly Bytes[]) {
+-      const content = records.filter((r) => r.kind === 'update' || r.kind === 'state');
+-      if (!rows || !sameRecords(rows, content)) {
+-        clear();
+-        rows = copyRecords(content);
+-        try {
+-          coverage = contentCoverage(rows);
+-        } catch (e) {
+-          clear();
+-          throw e;
+-        }
++  const prepare = (
++    records: readonly OpenedRecord[],
++  ): 'same' | 'append' | 'equivalent' | 'rebuild' => {
++    const content = records.filter((r) => r.kind === 'update' || r.kind === 'state');
++    if (rows && sameRecords(rows, content)) return 'same';
++    try {
++      if (
++        options.incremental &&
++        rows &&
++        content.length >= rows.length &&
++        sameRecords(rows, content.slice(0, rows.length))
++      ) {
++        const added = copyRecords(content.slice(rows.length));
++        rows.push(...added);
++        coverage!.append(added);
++        return 'append';
+       }
++      const copied = copyRecords(content);
++      let next: ReturnType<typeof contentCoverage> | undefined;
+       try {
+-        coverage!.check(updates);
+-      } catch (e) {
++        next = contentCoverage(copied);
++        const equivalent = !!(options.incremental && coverage && next.preserve(coverage));
+         clear();
++        rows = copied;
++        coverage = next;
++        return equivalent ? 'equivalent' : 'rebuild';
++      } catch (e) {
++        next?.clear();
++        eraseVerified(copied);
+         throw e;
+       }
++    } catch (e) {
++      clear();
++      throw e;
++    }
++  };
++  const check = (records: readonly OpenedRecord[], updates: readonly Bytes[]) => {
++    try {
++      prepare(records);
++      coverage!.check(updates);
++    } catch (e) {
++      clear();
++      throw e;
++    }
++  };
++  return {
++    clear,
++    check,
++    prepare,
++    positiveBytes: () => coverage?.positiveBytes() ?? 0,
++    /** Caller owns this immutable candidate under the serialized carrier task. */
++    bind(records: readonly OpenedRecord[]) {
++      prepare(records);
++      const at = coverage;
++      return {
++        check(input: readonly OpenedRecord[], updates: readonly Bytes[]) {
++          if (input !== records || coverage !== at) captureError('Coverage view was invalidated');
++          try {
++            at!.check(updates);
++          } catch (e) {
++            clear();
++            throw e;
++          }
++        },
++      };
+     },
+   };
+ }
+@@ -329,14 +435,27 @@ export async function verifyInboundLedger(
+   records: readonly OpenedRecord[],
+   base: InboundContext,
+   lifetime: InboundLifetime,
+-  reuse?: { memo: VerificationMemo; coverage: ReturnType<typeof createInboundCoverage> },
++  reuse?: {
++    memo: VerificationMemo;
++    coverage: Pick<ReturnType<typeof createInboundCoverage>, 'check'>;
++  },
++  continuation?: { state: InboundState; after: number },
+ ): Promise<InboundState> {
+-  const own = emptyInbound(baselinePrefix(base, base.publisher.id));
+-  own.peers = new Map();
++  const clone = (s: InboundState): InboundState => ({
++    ...s,
++    prefix: { ...s.prefix },
++    retained: new Map(s.retained),
++  });
++  const own = continuation
++    ? clone(continuation.state)
++    : emptyInbound(baselinePrefix(base, base.publisher.id));
++  own.peers = new Map([...(continuation?.state.peers ?? [])].map(([id, s]) => [id, clone(s)]));
+   const events = [
+     ...census.entries.map((e) => ({ ...e, kind: 'page' as const })),
+     ...census.installations.map((e) => ({ ...e, kind: 'history' as const })),
+-  ].sort((a, b) => a.record.seq - b.record.seq);
++  ]
++    .filter((e) => !continuation || e.record.seq > continuation.after)
++    .sort((a, b) => a.record.seq - b.record.seq);
+   for (const entry of events) {
+     if (entry.kind === 'history') {
+       if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
+diff --git a/src/crdt/verifiedRecords.ts b/src/crdt/verifiedRecords.ts
+index cb21d11f..7a4a25c6 100644
+--- a/src/crdt/verifiedRecords.ts
++++ b/src/crdt/verifiedRecords.ts
+@@ -47,6 +47,11 @@ export function createVerifiedRecords<T>() {
+       token: unknown,
+       check: (copy: OpenedRecord[]) => Promise<T>,
+       current: () => void,
++      extend?: (
++        previous: Readonly<T>,
++        before: readonly OpenedRecord[],
++        candidate: OpenedRecord[],
++      ) => Promise<T | undefined>,
+     ): Promise<void> {
+       try {
+         current();
+@@ -55,17 +60,28 @@ export function createVerifiedRecords<T>() {
+         throw e;
+       }
+       if (retained && identity === token && sameRecords(retained, records)) return;
+-      clear();
+-      const at = revision,
++      const previous = value,
++        before = retained;
++      // A candidate may borrow the previous result only until it has been detached below.
++      // Neither a speculative append nor a late verification may publish into this view.
++      const at = ++revision,
+         candidate = copyRecords(records);
+       let result: T | undefined;
+       try {
+-        result = await check(candidate);
++        result =
++          previous !== undefined && before && extend
++            ? await extend(previous, before, candidate)
++            : undefined;
++        result ??= await check(candidate);
+         current();
+         if (at !== revision) throw Error('Verification view was invalidated');
+         // Results may reference candidate input buffers. Own both before exposing any readback.
+-        value = structuredClone(result);
+-        retained = copyRecords(candidate);
++        const nextValue = structuredClone(result),
++          nextRecords = copyRecords(candidate);
++        eraseVerified(value);
++        eraseVerified(retained);
++        value = nextValue;
++        retained = nextRecords;
+         identity = token;
+       } catch (e) {
+         eraseVerified(candidate);

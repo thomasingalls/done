@@ -1,5 +1,10 @@
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
-import { ScopedTransport, NetworkSignInRequired, NetworkAuthorityChanged } from './scopedTransport';
+import {
+  ScopedTransport,
+  NetworkSignInRequired,
+  NetworkAuthorityChanged,
+  NetworkThrottled,
+} from './scopedTransport';
 import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
 import { checkEnrollmentLogin, completeEnrollmentLogin } from './enrollmentLogin';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
@@ -104,6 +109,8 @@ interface Progress {
   terminal: 'expired' | 'restart-required' | 'cancelled' | null;
 }
 export interface EnrollmentView {
+  /** Retry retained progress soon even when the notification stream is healthy. */
+  retryPending?: boolean;
   /** A disabled continuation action must not claim to remove pending membership. */
   canCancel?: boolean;
   canOpenWriting?: boolean;
@@ -885,14 +892,25 @@ export function createDeviceEnrollment(
     }
   };
   const operate = async (input?: Parameters<typeof runOperation>[0]) => {
-    try {
-      return await runOperation(input);
-    } catch (cause) {
-      if (!(cause instanceof NetworkAuthorityChanged)) throw cause;
-      // An expected admission/certification can invalidate a cached grant. Reopen the actual
-      // permit and authenticate bootstrap against retained progress before retrying once.
-      // runOperation still requires restart for a competing head and reuses saved semantic proofs.
-      return runOperation(input);
+    for (let attempt = 0; ; attempt++) {
+      try {
+        return await runOperation(input);
+      } catch (cause) {
+        // Delivery and certification can each invalidate a grant during one continuation.
+        // Retry once immediately under a fresh permit/bootstrap, then let the UI back off.
+        // Every pass still verifies retained progress and stops for a competing head; no
+        // refusal authorizes a new comparison, key wrap or membership transition.
+        if (cause instanceof NetworkAuthorityChanged && attempt === 0) continue;
+        if (cause instanceof NetworkAuthorityChanged || cause instanceof NetworkThrottled)
+          return view('waiting', {
+            retryPending: true,
+            message:
+              cause instanceof NetworkThrottled
+                ? cause.message
+                : 'Checking the saved connection again…',
+          });
+        throw cause;
+      }
     }
   };
   const openEditor = async () => {

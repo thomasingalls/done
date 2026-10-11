@@ -1,6 +1,8 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vitest/config';
+import { loadEnv } from 'vite';
+import { accountLedgerMode } from './src/crdt/accountLedgerMode.ts';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
@@ -75,11 +77,14 @@ const relayProxy = () => {
   };
 };
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
   define: {
     'import.meta.env.VITE_APP_VERSION': JSON.stringify(commit.version),
     'import.meta.env.VITE_APP_COMMIT_DATE': JSON.stringify(commit.date),
+    'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify(
+      accountLedgerMode(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_LEDGER')['VITE_ACCOUNT_LEDGER']),
+    ),
   },
   build: {
     rollupOptions: { input: { app: 'index.html', local: 'local.html' } },
@@ -100,4 +105,4 @@ export default defineConfig({
     setupFiles: ['./test/setup.ts'],
     include: ['test/**/*.test.ts', 'test/**/*.test.tsx', 'vite/**/*.test.ts'],
   },
-});
+}));

@@ -209,26 +209,45 @@ export async function verifyDelivery(
   publicKey: CryptoKey,
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
+  continuation?: {
+    state: DeliveryState;
+    spool: SpoolState;
+    envelopes: Map<number, number>;
+    expected: Map<
+      number,
+      NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string }
+    >;
+  },
 ): Promise<DeliveryState> {
-  const state = emptyDelivery(),
+  const state = continuation?.state ?? emptyDelivery(),
     entries = new Map(c.entries.map((e) => [e.record.seq, e])),
-    envelopes = new Map<number, number>();
+    envelopes = continuation?.envelopes ?? new Map<number, number>();
   // Replay each attempt at its own point in the append-only ledger, not using its final successor.
   const active: SpoolState = {
     ...c.spool,
-    positions: c.spool.positions.map((p) => ({
-      position: p.position,
-      source: p.source,
-      ...(p.additional ? { additional: p.additional } : {}),
-      attempts: [],
-    })),
+    positions: c.spool.positions.map((p, i) =>
+      continuation?.spool.positions[i]
+        ? {
+            ...continuation.spool.positions[i]!,
+            attempts: [...continuation.spool.positions[i]!.attempts],
+            ...(continuation.spool.positions[i]!.retries
+              ? { retries: [...continuation.spool.positions[i]!.retries!] }
+              : {}),
+          }
+        : {
+            position: p.position,
+            source: p.source,
+            ...(p.additional ? { additional: p.additional } : {}),
+            attempts: [],
+          },
+    ),
   };
-  const expectedCache = new Map<
+  const expectedCache: Map<
     number,
     NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string }
-  >();
+  > = continuation?.expected ?? new Map();
   const expectedAt = async (position: number) => {
-    if (!reuse) return expectedPosition(active, position, subtle);
+    if (!reuse && !continuation) return expectedPosition(active, position, subtle);
     for (let n = expectedCache.size + 1; n <= position; n++) {
       const p = active.positions[n - 1];
       if (!p?.wire) return null;
@@ -245,13 +264,15 @@ export async function verifyDelivery(
         closed = proof ? decodePositionResponse(proof) : null,
         parent =
           closed?.kind === 'refused' ? await refusalId(closed.refusal, subtle) : ZERO_REFUSAL,
-        next = await reuse.memo.check(
-          'link:' + n,
-          JSON.stringify([subject, previous]),
-          [],
-          () => acceptanceLink(subject, previous, subtle),
-          reuse.current,
-        );
+        next = reuse
+          ? await reuse.memo.check(
+              'link:' + n,
+              JSON.stringify([subject, previous]),
+              [],
+              () => acceptanceLink(subject, previous, subtle),
+              reuse.current,
+            )
+          : await acceptanceLink(subject, previous, subtle);
       expectedCache.set(n, { ...subject, previous, parent, next });
     }
     return expectedCache.get(position) ?? null;

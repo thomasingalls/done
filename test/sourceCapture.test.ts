@@ -149,6 +149,10 @@ describe('Account source capsule conformance', () => {
     );
   });
   it('refuses noncanonical framing, unknown version, malformed CRDT, oversized payload and too many sources', () => {
+    for (const value of [null, undefined, 'not bytes', {}, []])
+      expect(() => decodeSourceCapsule(value as unknown as Bytes, route)).toThrow(
+        'Source capsule is unreadable or unbound',
+      );
     const c = capsule(1),
       b = encodeSourceCapsule(c),
       text = new TextDecoder().decode(b);
@@ -218,58 +222,76 @@ describe('Account source capsule conformance', () => {
       base.destroy();
     }
   });
-  it('private initialization retains system attribution and subsequent editing retains the human actor', async () => {
-    const admitted: SourceCapsule[] = [];
-    const carrier = {
-      state: 'active',
-      signal: new AbortController().signal,
-      loadRecovery: async () => ({ records: [], journal: [] }),
-      captureLocal(_update: Bytes, sources: SourceCapsule['sources']) {
-        const c = { ...capsule(admitted.length + 1), sources };
-        const b = encodeSourceCapsule(c);
-        return b;
-      },
-      appendLocal(b: Bytes) {
-        admitted.push(decodeSourceCapsule(b, route));
-        return { status: 'journalled' };
-      },
-      flushJournal: async () => ({ retained: 0 }),
-      close: async () => {},
-    } as unknown as JournalSession;
-    const workspace = await createAdmittedWorkspace((o) => createAdmissionOwner(carrier, o), {
-      identity: {
-        id: route.principal,
-        actor: { kind: 'human', name: 'author', color: '#123456' },
-        device: { id: 'device', name: 'fixture' },
-      },
-      captureSources: true,
-      validateReceive: () => {},
-      today: () => '2026-09-10',
-    });
-    try {
-      expect(new Set(admitted[0]!.sources.map((s) => s.kind))).toEqual(new Set(['system']));
-      await workspace.text({ kind: 'master' }).input({ name: 'insert', text: 'human edit' })
-        .accepted;
-      expect(
-        admitted[1]!.sources.every((s) => s.kind === 'human' && s.actor === route.principal),
-      ).toBe(true);
-      expect(
-        admitted[0]!.sources.filter((s) => s.kind === 'system').every((s) => s.actor === 'system'),
-      ).toBe(true);
-      const d = createDoc(),
-        accepted = createDoc();
+  it.each(['reference', 'account-snapshots'] as const)(
+    'private %s initialization and undo retain original transaction attribution',
+    async (preparation) => {
+      const admitted: SourceCapsule[] = [];
+      const carrier = {
+        state: 'active',
+        signal: new AbortController().signal,
+        loadRecovery: async () => ({ records: [], journal: [] }),
+        captureLocal(_update: Bytes, sources: SourceCapsule['sources']) {
+          const c = { ...capsule(admitted.length + 1), sources };
+          const b = encodeSourceCapsule(c);
+          return b;
+        },
+        appendLocal(b: Bytes) {
+          admitted.push(decodeSourceCapsule(b, route));
+          return { status: 'journalled' };
+        },
+        flushJournal: async () => ({ retained: 0 }),
+        close: async () => {},
+      } as unknown as JournalSession;
+      const workspace = await createAdmittedWorkspace(
+        (o) => createAdmissionOwner(carrier, o),
+        {
+          identity: {
+            id: route.principal,
+            actor: { kind: 'human', name: 'author', color: '#123456' },
+            device: { id: 'device', name: 'fixture' },
+          },
+          captureSources: true,
+          validateReceive: () => {},
+          today: () => '2026-09-10',
+        },
+        preparation,
+      );
       try {
-        for (const c of admitted) for (const s of c.sources) applyUpdate(d, s.bytes);
-        applyUpdate(accepted, workspace.snapshot());
-        expect(sameDocState(d, accepted)).toBe(true);
+        expect(new Set(admitted[0]!.sources.map((s) => s.kind))).toEqual(new Set(['system']));
+        await workspace.text({ kind: 'master' }).input({ name: 'insert', text: 'human edit' })
+          .accepted;
+        expect(
+          admitted[1]!.sources.every((s) => s.kind === 'human' && s.actor === route.principal),
+        ).toBe(true);
+        expect(
+          admitted[0]!.sources
+            .filter((s) => s.kind === 'system')
+            .every((s) => s.actor === 'system'),
+        ).toBe(true);
+        const surface = workspace.text({ kind: 'master' });
+        for (let i = 0; i < 24; i++) {
+          await surface.input({ name: 'insert', text: i % 2 ? 'x' : '😀' }).accepted;
+        }
+        const beforeUndo = workspace.read().master;
+        await workspace.command({ kind: 'undo' }).accepted;
+        expect(workspace.read().master).not.toBe(beforeUndo);
+        await workspace.command({ kind: 'redo' }).accepted;
+        expect(workspace.read().master).toBe(beforeUndo);
+        const d = createDoc(),
+          accepted = createDoc();
+        try {
+          for (const c of admitted) for (const s of c.sources) applyUpdate(d, s.bytes);
+          applyUpdate(accepted, workspace.snapshot());
+          expect(sameDocState(d, accepted)).toBe(true);
+        } finally {
+          d.destroy();
+          accepted.destroy();
+        }
       } finally {
-        d.destroy();
-        accepted.destroy();
+        await workspace.close();
       }
-    } finally {
-      await workspace.close();
-    }
-  });
+    },
+  );
   it('repeated oversized preparation does not accumulate capsule reservations or acknowledge input', async () => {
     const d = createDoc(),
       large = transaction(d, () =>

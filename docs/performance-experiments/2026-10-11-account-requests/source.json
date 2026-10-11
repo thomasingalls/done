@@ -1,0 +1,21 @@
+{
+  "base": "46388e4febe96ac0fbdffcd3fc9f704a75a39df0",
+  "mode": "incremental",
+  "candidate": "base plus runtime.patch",
+  "sourceSha256": {
+    "account-service/grants.ts": "b13965acf05fa2b4f85bb26147316a6ef484ba891793d93d495af4b5e9d7ac36",
+    "account-service/notifications.ts": "d1e1344588fbf600e797c109057b5932028e707c999d81400879d9a97de77d64",
+    "account-service/scoped-http.ts": "f6b606eed422a6c136693bb482e8e5e7880139a4bef5c6356931340204ce6a33",
+    "account-service/sessions.ts": "192896eaec4e6a986ce7e6e883405a50eb8ad55813811eaea6c0ebeb3b671b70",
+    "src/crdt/accountDriver.ts": "4b941ce9ae0e477d7810036139b0ae89857c3241f11575dc0169a380974db502",
+    "src/crdt/accountReceive.ts": "1c0e0473f56bf3e65d639e4aa060ac4f59f40cf3a1b9e96c1ca53c9ac53de96e",
+    "src/crdt/accountSyncDriver.ts": "6312e3de4b54e26ae851d367bfdeb2f2988dc3cd1f7466bd59a7b3a922ad7123",
+    "account-service/requestBudget.ts": "7a17f6719b1f843600bfa2616313cfe345ae3032f8bc8a25bd615081049964df"
+  },
+  "notes": [
+    "Packaged baseline backend and application both from git archive of base.",
+    "Candidate backend from working tree; candidate dist built with VITE_ACCOUNT_LEDGER=incremental.",
+    "Baseline initial attempts failed during probe setup, before typing. baseline-1 also used the candidate backend accidentally; excluded.",
+    "No release validation or deployment. Default remains reference."
+  ]
+}

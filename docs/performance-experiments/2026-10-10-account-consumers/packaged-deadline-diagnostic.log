@@ -1,0 +1,195 @@
+
+Running 1 test using 1 worker
+
+(node:88663) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Joining state: certified
+Joining messages: [ 'Content access is installed and certified.' ]
+Diagnostic first {
+  errors: undefined,
+  scheduler: {
+    at: 1791668150517,
+    active: undefined,
+    status: { send: [Object], receive: [Object] }
+  },
+  failures: [
+    {
+      at: 1791668150517,
+      lane: 'send',
+      message: 'ContentError: The content transaction did not complete.',
+      stack: 'ContentError: The content transaction did not complete.\n' +
+        '    at u.onabort (http://localhost:53221/assets/preload-helper-B_9xYlei.js:1:6647)',
+      cause: 'null'
+    }
+  ],
+  replies: [
+    { at: 1791668150462, path: '/account/grant/v1/begin', status: 200 },
+    {
+      at: 1791668150479,
+      path: '/account/grant/v1/finish',
+      status: 200
+    },
+    {
+      at: 1791668150489,
+      path: '/account/notifications/v1/subscribe',
+      status: 200
+    },
+    { at: 1791668151484, path: '/account/grant/v1/begin', status: 200 },
+    {
+      at: 1791668151487,
+      path: '/account/grant/v1/finish',
+      status: 200
+    },
+    {
+      at: 1791668151491,
+      path: '/account/notifications/v1/subscribe',
+      status: 200
+    },
+    {
+      at: 1791668156010,
+      path: '/account/notifications/v1/subscribe',
+      status: 401
+    },
+    { at: 1791668156217, path: '/account/grant/v1/begin', status: 200 },
+    {
+      at: 1791668156221,
+      path: '/account/grant/v1/finish',
+      status: 200
+    },
+    {
+      at: 1791668156240,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156282,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156301,
+      path: '/account/notifications/v1/subscribe',
+      status: 200
+    },
+    {
+      at: 1791668156372,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156401,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156460,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156546,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156581,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156616,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156637,
+      path: '/account/notifications/v1/subscribe',
+      status: 200
+    },
+    {
+      at: 1791668156707,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156741,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156770,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156809,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668156872,
+      path: '/__account-setup/ceremony/transfer',
+      status: 200
+    },
+    {
+      at: 1791668156979,
+      path: '/__account-setup/ceremony/exchange',
+      status: 409
+    },
+    { at: 1791668157034, path: '/account/grant/v1/begin', status: 200 },
+    {
+      at: 1791668157040,
+      path: '/account/grant/v1/finish',
+      status: 200
+    },
+    {
+      at: 1791668157042,
+      path: '/account/notifications/v1/subscribe',
+      status: 200
+    },
+    {
+      at: 1791668157131,
+      path: '/__account-setup/ceremony/exchange',
+      status: 200
+    },
+    {
+      at: 1791668157256,
+      path: '/__account-setup/ceremony/transfer',
+      status: 409
+    }
+  ],
+  controls: []
+}
+  ✘  1 test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (40.4s)
+
+
+  1) test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Content access is installed and certified.')
+    Expected: visible
+    Timeout: 30000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 30000ms
+      - waiting for getByText('Content access is installed and certified.')
+
+
+       at devices.ts:33
+
+      31 |       await expect(
+      32 |         p.getByText('Content access is installed and certified.', { exact: false }),
+    > 33 |       ).toBeVisible({ timeout: 30000 });
+         |         ^
+      34 |     await page.getByRole('button', { name: 'Make writing available', exact: true }).click();
+      35 |     await expect(
+      36 |       page.getByText('Your writing is available to the approved device.', { exact: false }),
+        at pairedEditors (/Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/devices.ts:33:9)
+        at /Users/thomasingalls/.codex/worktrees/c030/done/test/packaged-account/consumer-debug.spec.ts:59:12
+
+    Error Context: test-results/packaged-account/artifacts/consumer-debug-two-native--6aef1-s-and-keep-two-way-delivery/error-context.md
+
+  1 failed
+    test/packaged-account/consumer-debug.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery 

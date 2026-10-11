@@ -1,3 +1,6 @@
+import type { OpenedRecord } from './contentRecord';
+import { countLedgerWork } from './accountLedgerMetrics';
+import { accountLedgerMode } from './accountLedgerMode';
 import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
 import {
@@ -60,15 +63,20 @@ import {
 } from '../../account-protocol/admissionHistory';
 import type { DeviceRoster } from '../account/deviceRoster';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
-import { createVerifiedRecords } from './verifiedRecords';
+import { createVerifiedRecords, eraseVerified, copyRecords } from './verifiedRecords';
 import { createVerificationMemo } from './verificationMemo';
+import {
+  extendAccountLedger,
+  indexVerifiedLedger,
+  sameAccountLedger,
+  type AccountLedgerView,
+} from './incrementalAccountLedger';
+import { countLedger, measureLedger } from './accountLedgerMetrics';
 import { createInboundCoverage } from './inboundLedger';
-import type { DeliveryState } from './deliveryRecord';
-import type { InboundState } from './inboundLedger';
 import { createEnvelopePreparation } from './accountEnvelopePreparation';
 import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
-import { requireSelfEnvelope, verifySyncState } from './accountSyncState';
+import { advanceSelfReceive, requireSelfEnvelope, verifySyncState } from './accountSyncState';
 import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
@@ -117,7 +125,12 @@ import {
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery } from './deliveryRecord';
-import { captureError, type CaptureRoute } from './sourceCapture';
+import {
+  captureError,
+  capturedSourcePresence,
+  type CaptureRoute,
+  type CapturedSourceIdentity,
+} from './sourceCapture';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
 import {
@@ -128,6 +141,8 @@ import {
 } from './admissionQueue';
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
+
+const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
 
 class ReceiveAuthorityChanged extends AdmissionError {
   constructor() {
@@ -147,18 +162,27 @@ async function openAccountReceiveOwner(
   joined = false,
 ) {
   const options = captureAccountOptions(input);
-  const verified = createVerifiedRecords<{
-    delivery: DeliveryState;
-    inbound: InboundState;
-    census: ReturnType<typeof inspectInbound>;
-  }>();
+  const verified = createVerifiedRecords<AccountLedgerView>();
+  const incremental = ledgerMode === 'incremental';
+  let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
+  let sinceAudit = 0;
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
-    coverage = createInboundCoverage();
-  const inspectCensus = (records: Parameters<typeof inspectInbound>[0], route: CaptureRoute) =>
-    verified.matches(records)
-      ? verified.read(records, (v) => v.census)
-      : inspectInbound(records, route, base);
+    coverage = createInboundCoverage({ incremental });
+  const inspectCensus = <R>(
+    records: Parameters<typeof inspectInbound>[0],
+    route: CaptureRoute,
+    select: (census: AccountLedgerView['census']) => R,
+  ): R => {
+    if (!incremental)
+      return select(
+        verified.matches(records)
+          ? verified.read(records, (v) => v.census)
+          : inspectInbound(records, route, base),
+      );
+    const projected = verified.readIfMatches(records, (v) => select(v.census));
+    return projected ? projected.value : select(inspectInbound(records, route, base));
+  };
   let installed: InstalledSuccessor | undefined;
   let membership: InstalledMembership | undefined,
     initialEpoch = 3;
@@ -172,6 +196,7 @@ async function openAccountReceiveOwner(
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const assertCurrent = async (task: SessionTask) => {
+    countLedgerWork('authorityChecks');
     if (handoff) throw new ReceiveAuthorityChanged();
     if (joined) {
       const current = await readJoinedAccount(task, options.slotId, options.code);
@@ -193,7 +218,20 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
-    sourceRecords: (records, route) => inspectCensus(records, route).delivery.spool.sourceRecords,
+    sourceRecords: (records, route) =>
+      inspectCensus(records, route, (c) => c.delivery.spool.sourceRecords),
+    ...(incremental
+      ? {
+          sourcePresence: (
+            records: readonly OpenedRecord[],
+            route: CaptureRoute,
+            incoming: readonly CapturedSourceIdentity[],
+          ) =>
+            inspectCensus(records, route, (c) =>
+              capturedSourcePresence(c.delivery.spool.sources, incoming),
+            ),
+        }
+      : {}),
     async initialize(task, v) {
       expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
       expectedRecord = v.record;
@@ -271,81 +309,169 @@ async function openAccountReceiveOwner(
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
     async validate(task, records, route, counter, view) {
+      const checkFull = async (
+        records: import('./contentRecord').OpenedRecord[],
+        audit = false,
+      ): Promise<AccountLedgerView> => {
+        const began = performance.now();
+        countLedger('full');
+        const isolated = audit ? createInboundCoverage() : undefined;
+        const checking = (isolated ?? coverage).bind(records);
+        try {
+          const census = inspectInbound(records, route, base),
+            subtle = subtleFor(task),
+            reuse = { memo, current: () => task.step(() => {}) };
+          await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
+          if (!joined)
+            await verifyInstalledSuccessor(
+              census.delivery.spool,
+              route,
+              installed,
+              subtle,
+              reuse,
+              membership,
+            );
+          else if (membership)
+            await verifyInstalledMembership(
+              census.delivery.spool,
+              route.history!,
+              membership,
+              initialEpoch,
+              subtle,
+              reuse,
+            );
+          await verifySpool(
+            census.delivery.spool,
+            route,
+            new Map([
+              ...(base.retainedGenerationKeys ?? []),
+              [base.generation, base.generationKey],
+            ]),
+            publicKey,
+            subtle,
+            reuse,
+          );
+          const delivery = await verifyDelivery(
+            census.delivery,
+            route,
+            base.authority,
+            publicKey,
+            subtle,
+            reuse,
+          );
+          const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
+            memo,
+            coverage: checking,
+          });
+          if (composed)
+            advanceSelfReceive(census.delivery, delivery, inbound, route, (updates) =>
+              checking.check(records, updates),
+            );
+          memo.retain(
+            new Set([
+              'admission-prefix',
+              ...census.delivery.spool.positions.flatMap((p) => [
+                'spool:' + p.position,
+                'link:' + p.position,
+              ]),
+              ...census.delivery.spool.events.map((_, i) => 'witness:' + i),
+              ...census.delivery.entries.map((e) => 'delivery:' + e.record.seq),
+              ...census.entries.map((e) => 'inbound:' + e.record.seq),
+              ...census.installations.map((e) => 'history:' + e.record.seq),
+            ]),
+          );
+          const result: AccountLedgerView = { delivery, inbound, census };
+          if (incremental && !audit) {
+            const indexes = await indexVerifiedLedger(result, records, route, counter, subtle);
+            if (indexes) result.indexes = indexes;
+          }
+          return result;
+        } finally {
+          isolated?.clear();
+          measureLedger('full', began);
+        }
+      };
       try {
         await verified.verify(
           records,
           view ?? {},
-          async (records) => {
-            const census = inspectInbound(records, route, base),
-              subtle = subtleFor(task),
-              reuse = { memo, current: () => task.step(() => {}) };
-            await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
-            if (!joined)
-              await verifyInstalledSuccessor(
-                census.delivery.spool,
-                route,
-                installed,
-                subtle,
-                reuse,
-                membership,
-              );
-            else if (membership)
-              await verifyInstalledMembership(
-                census.delivery.spool,
-                route.history!,
-                membership,
-                initialEpoch,
-                subtle,
-                reuse,
-              );
-            await verifySpool(
-              census.delivery.spool,
-              route,
-              new Map([
-                ...(base.retainedGenerationKeys ?? []),
-                [base.generation, base.generationKey],
-              ]),
-              publicKey,
-              subtle,
-              reuse,
-            );
-            const delivery = await verifyDelivery(
-              census.delivery,
-              route,
-              base.authority,
-              publicKey,
-              subtle,
-              reuse,
-            );
-            const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
-              memo,
-              coverage,
-            });
-            if (composed) verifySyncState(census.delivery, delivery, inbound);
-            memo.retain(
-              new Set([
-                'admission-prefix',
-                ...census.delivery.spool.positions.flatMap((p) => [
-                  'spool:' + p.position,
-                  'link:' + p.position,
-                ]),
-                ...census.delivery.spool.events.map((_, i) => 'witness:' + i),
-                ...census.delivery.entries.map((e) => 'delivery:' + e.record.seq),
-                ...census.entries.map((e) => 'inbound:' + e.record.seq),
-                ...census.installations.map((e) => 'history:' + e.record.seq),
-              ]),
-            );
-            return { delivery, inbound, census };
-          },
+          checkFull,
           () => task.step(() => {}),
+          incremental
+            ? async (previous, before, records) => {
+                const began = performance.now();
+                try {
+                  const next = await extendAccountLedger(
+                    previous,
+                    before,
+                    records,
+                    route,
+                    counter,
+                    base,
+                    publicKey,
+                    subtleFor(task),
+                    { memo, current: () => task.step(() => {}) },
+                    () => coverage.prepare(records) === 'equivalent',
+                  );
+                  if (!next) return;
+                  const checking = coverage.bind(records);
+                  const inbound = await verifyInboundLedger(
+                    next.census,
+                    records,
+                    base,
+                    lifetime(task),
+                    { memo, coverage: checking },
+                    { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
+                  );
+                  if (composed)
+                    advanceSelfReceive(
+                      next.census.delivery,
+                      next.delivery,
+                      inbound,
+                      route,
+                      (updates) => checking.check(records, updates),
+                      previous.delivery.acceptedThrough,
+                    );
+                  const result = { ...next, inbound };
+                  sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
+                  const auditEvery =
+                    import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
+                    (sinceAudit >= 1024 &&
+                      records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
+                  if (auditEvery) {
+                    countLedger('audits');
+                    const auditRows = copyRecords(records);
+                    let oracle;
+                    try {
+                      oracle = await checkFull(auditRows, true);
+                      if (!sameAccountLedger(result, oracle)) {
+                        countLedger('mismatches');
+                        console.error('done/account-ledger-reference-mismatch');
+                        captureError('Account ledger reference mismatch');
+                      }
+                      sinceAudit = 0;
+                    } finally {
+                      eraseVerified(oracle);
+                      eraseVerified(auditRows);
+                    }
+                  }
+                  return result;
+                } finally {
+                  measureLedger('incremental', began);
+                }
+              }
+            : undefined,
         );
+        verifiedCounter = structuredClone(counter);
       } catch (e) {
+        verifiedCounter = undefined;
         memo.clear();
         coverage.clear();
         throw e;
       }
     },
     dispose() {
+      verifiedCounter = undefined;
       verified.clear();
       memo.clear();
       coverage.clear();
@@ -624,7 +750,11 @@ async function openAccountReceiveOwner(
             try {
               const census = inspectInbound(rows, route, base);
               await applyHistoryReceiveCuts(current, base, census, result!.heads);
-              verifySyncState(census.delivery, verified.read(rows).delivery, current);
+              verifySyncState(
+                census.delivery,
+                verified.read(rows, (v) => v.delivery),
+                current,
+              );
             } finally {
               for (const row of rows) row.bytes.fill(0);
             }
@@ -679,6 +809,7 @@ async function openAccountReceiveOwner(
       input: Bytes,
       promote: (updates: readonly Bytes[]) => void = () => {},
       expectedRequest?: Bytes,
+      selfOnly = false,
     ) => {
       if (account.detached) return Promise.reject(Error('This local copy is detached from sync'));
       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
@@ -698,6 +829,11 @@ async function openAccountReceiveOwner(
         let committed = false;
         try {
           const r = decodeInboundRequest(request);
+          if (selfOnly && (!composed || r.publisher !== base.publisher.id))
+            throw new AdmissionError(
+              'receive-refused',
+              'Self receipt requires the owned publisher',
+            );
           if (publisherState(s, base, r.publisher).conflict)
             throw new AdmissionError('receive-refused', 'Inbound publisher is conflicted');
           // Own successful plaintext before wait's final lifetime check can reject it.
@@ -728,7 +864,7 @@ async function openAccountReceiveOwner(
             const rows = await owner.carrier.load(task);
             try {
               const census = inspectInbound(rows, route, base).delivery;
-              const delivery = verified.read(rows).delivery;
+              const delivery = verified.read(rows, (v) => v.delivery);
               try {
                 requireSelfEnvelope(
                   census,
@@ -749,6 +885,20 @@ async function openAccountReceiveOwner(
             } finally {
               for (const row of rows) row.bytes.fill(0);
             }
+          }
+          if (selfOnly) {
+            // This body is only a reconciliation read after an unknown submit outcome. Its
+            // exact originals are already local; persist the signed decision through delivery,
+            // outside this storage task, rather than writing/promoting a second content copy.
+            return {
+              kind: result.kind,
+              recorded: false,
+              status: describe(s),
+              selfDecision: {
+                position: result.position,
+                proof: decodeInboundPage(page).entries[0]!.proof.slice(),
+              },
+            };
           }
           const evidence = result.record;
           const before = await owner.carrier.spoolWitness(task),
@@ -885,6 +1035,8 @@ async function openAccountReceiveOwner(
               base = nextBase;
               installed = successor;
               expectedPayload = hex(promotionPayload(next));
+              verifiedCounter = undefined;
+              sinceAudit = 0;
               verified.clear();
               memo.clear();
               coverage.clear();
@@ -1038,6 +1190,8 @@ async function openAccountReceiveOwner(
           installRoute(task, nextRoute);
           base = nextBase;
           membership = nextMembership;
+          verifiedCounter = undefined;
+          sinceAudit = 0;
           verified.clear();
           memo.clear();
           coverage.clear();
@@ -1280,7 +1434,7 @@ async function openAccountReceiveOwner(
     const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
       records,
       route,
-    ) => inspectCensus(records, route).delivery;
+    ) => inspectCensus(records, route, (c) => c.delivery);
     const checkPublication = async (
       task: SessionTask,
       owner: ReturnType<typeof prepareAccountCustody>,
@@ -1312,6 +1466,50 @@ async function openAccountReceiveOwner(
           if (inbound.conflict) throw Error('Publication halted by inbound conflict');
           return delivery;
         }),
+      ...(incremental
+        ? {
+            selectVerified: (records, select) =>
+              verified.read(records, ({ inbound, delivery }) => {
+                if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+                return select(delivery);
+              }),
+            verifyProposed: async (
+              rows: readonly import('./contentRecord').OpenedRecord[],
+              proposed: import('./contentRecord').OpenedRecord[],
+              route: CaptureRoute,
+              task: SessionTask,
+              after: import('./contentRecord').SpoolWitness,
+            ) => {
+              if (!verifiedCounter) return false;
+              const prior = verified.read(rows);
+              let candidate;
+              const existing = new Set(rows),
+                added = proposed
+                  .filter((r) => !existing.has(r))
+                  .map((r) => ({ ...r, bytes: r.bytes.slice() }));
+              const owned = proposed.map((r) => (existing.has(r) ? r : added.shift()!));
+              try {
+                candidate = await extendAccountLedger(
+                  prior,
+                  rows,
+                  owned,
+                  route,
+                  { ...verifiedCounter, v: 2, spool: after },
+                  base,
+                  publicKey,
+                  subtleFor(task),
+                  { memo, current: () => task.step(() => {}) },
+                );
+                return !!candidate;
+              } finally {
+                eraseVerified(prior);
+                eraseVerified(candidate);
+                // Erase copied proposals even when extension throws before returning a candidate.
+                for (const row of owned) if (!existing.has(row)) row.bytes.fill(0);
+              }
+            },
+          }
+        : {}),
       reuse: (task) => ({ memo, current: () => task.step(() => {}) }),
       network: runNetworkTask,
       canSubmit: canReceive,
@@ -1327,6 +1525,7 @@ async function openAccountReceiveOwner(
           try {
             return verified.read(records, ({ inbound, delivery }) => ({
               ...describeDelivery(delivery),
+              receivedThrough: describe(inbound).receivedThrough,
               state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
             }));
           } finally {
@@ -1339,24 +1538,23 @@ async function openAccountReceiveOwner(
         signer: () => signer!,
         whenDurable,
         checkPublication,
-        inspect: (records, route) => inspect(records, route, base.authority).spool,
+        inspect: (records, route) => inspectCensus(records, route, (c) => c.delivery.spool),
         run: runCaptureTask,
       }),
       spoolStatus: () =>
         runCaptureTask(async (task, owner, route) => {
           const records = await owner.carrier.load(task);
           try {
-            const spool = inspect(records, route, base.authority).spool;
-            return {
+            return inspectCensus(records, route, ({ delivery: { spool } }) => ({
               attempts: spool.attempts,
               positions: spool.positions.map((p) => ({
                 position: p.position,
-                source: { ...p.source },
-                ...(p.additional ? { additional: p.additional.map((s) => ({ ...s })) } : {}),
-                attempts: [...p.attempts],
+                source: p.source,
+                ...(p.additional ? { additional: p.additional } : {}),
+                attempts: p.attempts,
                 persisted: !!p.wire,
               })),
-            };
+            }));
           } finally {
             for (const r of records) r.bytes.fill(0);
           }
@@ -1507,6 +1705,8 @@ async function openAccountReceiveOwner(
         }),
     }) satisfies DeviceRoster,
     publisherCount: () => base.history?.readers.length ?? 1,
+    isSelfRequest: (request: Bytes) =>
+      composed && decodeInboundRequest(request).publisher === base.publisher.id,
     api,
     account,
     carrier,
@@ -1550,6 +1750,7 @@ async function openReceivingWorkspace(
     access,
     devices,
     publisherCount,
+    isSelfRequest,
     api,
     account,
     carrier,
@@ -1587,6 +1788,7 @@ async function openReceivingWorkspace(
         ...(options.today ? { today: options.today } : {}),
         ...(options.signal ? { signal: options.signal } : {}),
       },
+      ledgerMode === 'incremental' ? 'account-snapshots' : 'reference',
     );
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
@@ -1621,6 +1823,8 @@ async function openReceivingWorkspace(
         return Promise.reject(cause);
       }
     };
+    const outbound =
+      composed && !account.detached ? createOutbound(() => workspace.whenDurable()) : undefined;
     let flight: Promise<unknown> | undefined;
     carrier.beforeRelease?.(async () => {
       await flight?.catch(() => {});
@@ -1643,6 +1847,29 @@ async function openReceivingWorkspace(
           if (!page) return { kind: 'unknown' as const, recorded: false };
           // Only the ordered owner may verify, persist and publish this exact request's page.
           try {
+            if (outbound && isSelfRequest(request)) {
+              // No remote dependency is introduced by our own stream. Even an empty self
+              // check must not occupy the editor admission FIFO while verifying its reply.
+              const received = await api.receivePage(page, undefined, request, true);
+              if ('selfDecision' in received && received.selfDecision) {
+                const { position, proof } = received.selfDecision;
+                try {
+                  const decision = await outbound.recordResponse(position, proof);
+                  // A verified page does not prove the delivery owner retained its decision.
+                  // Duplicates may be unrecorded but accepted; a declined decision must stop
+                  // this receive attempt rather than become an unexplained network backoff.
+                  if (decision.kind === 'unknown' || decision.kind === 'blocked')
+                    return {
+                      kind: 'rejected' as const,
+                      reason: 'self-decision-refused' as const,
+                      recorded: false,
+                    };
+                } finally {
+                  proof.fill(0);
+                }
+              }
+              return { kind: received.kind, recorded: false };
+            }
             return await receivePage(page, request);
           } catch (cause) {
             if (cause instanceof ReceiveAuthorityChanged)
@@ -1705,8 +1932,7 @@ async function openReceivingWorkspace(
       },
       listCaptures,
     });
-    if (composed && !account.detached) {
-      const outbound = createOutbound(() => workspace.whenDurable());
+    if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;

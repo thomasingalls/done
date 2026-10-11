@@ -3,12 +3,19 @@ import assert from 'node:assert/strict';
 import { createServer, request } from 'node:http';
 import { sign } from 'node:crypto';
 import { createScopedAccountHandler } from '../../account-service/scoped-http.ts';
+import { ScopedRequestBudget, REQUEST_LIMITS } from '../../account-service/requestBudget.ts';
 import { fixture, message } from './grant-fixtures.mjs';
 import { query } from '../account-service-inbound/oracle.mjs';
 import { fresh } from '../account-core/fixtures.mjs';
 
-async function serve(t, x) {
-  const handler = createScopedAccountHandler(x.f.core, x.authority.owner, x.authority.pin);
+async function serve(t, x, budget) {
+  const handler = createScopedAccountHandler(
+    x.f.core,
+    x.authority.owner,
+    x.authority.pin,
+    undefined,
+    budget,
+  );
   const server = createServer((req, res) => void handler(req, res));
   await new Promise((resolve, reject) => {
     server.once('error', reject);
@@ -117,4 +124,26 @@ test('HTTP rejects wrong framing/bounds and separates authorization from domain 
   assert.equal(domain.status, 409);
   assert.equal(domain.body.kind, 'unknown');
   assert.equal(domain.body.refusal, undefined);
+});
+
+test('HTTP attributes access and refreshed grants to one session, and isolates a second login', async (t) => {
+  const x = await fixture(t),
+    call = await serve(t, x, new ScopedRequestBudget(() => 0)),
+    first = await x.grant(),
+    other = await x.login(),
+    second = await x.grant(x.scope, x.s.privateKey, other.access),
+    path = '/account/delivery/read-v2',
+    body = query(x);
+  for (let i = 0; i < REQUEST_LIMITS.sessionBurst; i++)
+    assert.equal((await call(path, body, first.grantToken)).status, 200);
+  const renewed = x.first.renew(),
+    refreshed = await x.grant(x.scope, x.s.privateKey, renewed);
+  assert.equal((await call(path, body, refreshed.grantToken)).status, 429);
+  assert.equal((await call('/account/grant/v1/begin', x.scope, renewed.accessToken)).status, 429);
+  assert.equal((await call(path, body, second.grantToken)).status, 200);
+  // Budget attribution does not authorize a wrong scope or a revoked parent.
+  const wrong = await call(path, body, second.grantToken, { Origin: 'https://other.invalid' });
+  assert.equal(wrong.status, 403);
+  other.revoke();
+  assert.equal((await call(path, body, second.grantToken)).body.refusal, 'sign-in-required');
 });

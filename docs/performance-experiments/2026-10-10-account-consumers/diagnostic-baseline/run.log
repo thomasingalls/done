@@ -1,0 +1,13 @@
+[diagnostic] block history-0-P-profiled: 100 keys ...
+   text p50/p95/max 0.8/5.9/8 ms (>100ms: 0); paint p50/p95/max 5.2/10.2/13.6 ms; queue p95 5.5; indicator 4x on 4/100 keys; requests/key 1.5; profiled active 101.9 ms/key
+[diagnostic] preloaded 2120 edits in 292714 ms (now 2220)
+[diagnostic] block history-2220-P-profiled: 100 keys ...
+   text p50/p95/max 61.5/545.9/684.6 ms (>100ms: 39); paint p50/p95/max 85.1/204.7/240.7 ms; queue p95 173.2; indicator 28x on 66/100 keys; requests/key 0.2; profiled active 248 ms/key
+NOTE CAMPAIGN FAILED: locator.waitFor: Timeout 180000ms exceeded.
+Call log:
+[2m  - waiting for locator('.shell') to be visible[22m
+
+    at reopen (/private/tmp/done-account-consumers/probe/campaign.mjs:496:38)
+    at async profiled (/private/tmp/done-account-consumers/probe/lib.mjs:415:14)
+    at async file:///private/tmp/done-account-consumers/probe/campaign.mjs:499:19
+[diagnostic] done; typed 2320; summary /tmp/done-account-consumers/results-diagnostic-baseline/diagnostic.summary.json

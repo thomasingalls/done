@@ -1,0 +1,856 @@
+diff --git a/src/crdt/accountCapture.ts b/src/crdt/accountCapture.ts
+index 448d5a91..e4c9cf3f 100644
+--- a/src/crdt/accountCapture.ts
++++ b/src/crdt/accountCapture.ts
+@@ -1,3 +1,4 @@
++import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ import { verifyJoinedAccount } from './joinedAccount';
+ import { historyAuthority } from '../../account-protocol/admissionHistory';
+ import { claimScope } from './localGenesisRecord';
+@@ -17,6 +18,8 @@ import {
+ import { signPromotion, withPromotionRoot, writePromotion } from './promotionRecord';
+ import {
+   captureCatalog,
++  capturedSourcePresence,
++  type CapturedSourceIdentity,
+   capturedRecovery,
+   decodeSourceCapsule,
+   makeSourceCapsule,
+@@ -45,6 +48,11 @@ import { activateAccountUpload } from './accountUploadActivation';
+ export interface CaptureExtension {
+   version: 7 | 8 | 9;
+   sourceRecords(records: readonly OpenedRecord[], route: CaptureRoute): OpenedRecord[];
++  sourcePresence?(
++    records: readonly OpenedRecord[],
++    route: CaptureRoute,
++    incoming: readonly CapturedSourceIdentity[],
++  ): boolean[];
+   initialize(
+     task: SessionTask,
+     verified: Awaited<ReturnType<typeof verifyAccountUnderPermit>>,
+@@ -230,9 +238,16 @@ export async function openAccountCaptureOwner(
+   options.networkLogin?.activate(live);
+   const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
+     const previous = tail;
++    const enqueued = ledgerWorkStart();
+     const result = live.run(async (task) => {
+       await task.wait(() => previous);
+-      return operation(task);
++      measureLedgerWork('storageQueueWait', enqueued);
++      const began = ledgerWorkStart();
++      try {
++        return await operation(task);
++      } finally {
++        measureLedgerWork('storageOperation', began);
++      }
+     });
+     tail = result.then(
+       () => {},
+@@ -259,19 +274,20 @@ export async function openAccountCaptureOwner(
+   const persist = async (task: SessionTask, values: readonly Bytes[]): Promise<ContentReceipt> => {
+     const records = await owner!.carrier.load(task);
+     const batches: ContentInput[][] = [];
++    const decoded: SourceCapsule[] = [];
+     let batch: ContentInput[] = [],
+       size = 0;
+     try {
+-      const catalog = captureCatalog(sourceRecords(records), route);
+-      for (const bytes of values) {
++      for (const bytes of values) decoded.push(decodeSourceCapsule(bytes, route));
++      const identities = decoded.map((c, i) => ({ id: c.id, bytes: values[i]! }));
++      const present = extension?.sourcePresence
++        ? extension.sourcePresence(records, route, identities)
++        : capturedSourcePresence(captureCatalog(sourceRecords(records), route), identities);
++      for (const [i, bytes] of values.entries()) {
+         if (suspended) throw Error('Account generation is changing');
+-        const c = decodeSourceCapsule(bytes, route);
++        const c = decoded[i]!;
+         try {
+-          const found = catalog.get(c.id);
+-          if (found && hex(found) !== hex(bytes))
+-            captureError('Conflicting source identity before commit');
+-          if (found) continue;
+-          catalog.set(c.id, bytes);
++          if (present[i]) continue;
+           const count = c.sources.length + 1,
+             length = c.sources.reduce((n, s) => n + s.bytes.length, bytes.length);
+           if (
+@@ -301,6 +317,7 @@ export async function openAccountCaptureOwner(
+       for (const b of batches) sequences.push(...(await owner!.carrier.append(task, b)).sequences);
+       return { storeId: owner!.describe().storeId, generation: route.generation, sequences };
+     } finally {
++      for (const c of decoded) eraseCapsule(c);
+       for (const r of records) r.bytes.fill(0);
+       for (const b of [...batches, batch]) for (const r of b) r.bytes.fill(0);
+     }
+diff --git a/src/crdt/accountDelivery.ts b/src/crdt/accountDelivery.ts
+index 1fb5a9ac..47a46e01 100644
+--- a/src/crdt/accountDelivery.ts
++++ b/src/crdt/accountDelivery.ts
+@@ -54,6 +54,11 @@ export interface DeliveryContext {
+   inspect?: typeof inspectDelivery;
+   /** Detached result from the just-validated complete v9 view; never used for proposed transitions. */
+   verified?(records: readonly OpenedRecord[]): DeliveryState;
++  /** Select synchronously from the current verified state, then detach only the selected result. */
++  selectVerified?<T>(
++    records: readonly OpenedRecord[],
++    select: (state: Readonly<DeliveryState>) => T,
++  ): T;
+   /** Private speculative check. A successful proposal never installs a durable cached view. */
+   verifyProposed?(
+     records: readonly OpenedRecord[],
+@@ -119,6 +124,29 @@ export function createDeliveryOperations(context: DeliveryContext) {
+     context.verified
+       ? Promise.resolve(context.verified(records))
+       : verifyDelivery(c, route, context.authority(), context.publicKey(), subtleFor(task));
++  const selectDelivery = async <T>(
++    records: readonly OpenedRecord[],
++    route: CaptureRoute,
++    task: SessionTask,
++    select: (state: Readonly<DeliveryState>) => T,
++  ): Promise<T> =>
++    context.selectVerified
++      ? context.selectVerified(records, select)
++      : select(await validated(records, inspect(records, route, context.authority()), route, task));
++  const withSelection = <T, R>(
++    select: (state: Readonly<DeliveryState>) => T,
++    operation: (task: SessionTask, selected: T) => Promise<R>,
++  ) =>
++    context.run(async (task, owner, route) => {
++      const records = await owner.carrier.load(task);
++      try {
++        const selected = await task.wait(() => selectDelivery(records, route, task, select));
++        await context.assertCurrent(task);
++        return await operation(task, selected);
++      } finally {
++        for (const row of records) row.bytes.fill(0);
++      }
++    });
+   const withState = <T>(
+     operation: (
+       task: SessionTask,
+@@ -218,13 +246,11 @@ export function createDeliveryOperations(context: DeliveryContext) {
+     await persist(task, owner, route, { type: 'response', position, wire: bytes });
+     const rows = await owner.carrier.load(task);
+     try {
+-      const checked = await task.wait(() =>
+-        validated(rows, inspect(rows, route, context.authority()), route, task),
+-      );
++      const status = await task.wait(() => selectDelivery(rows, route, task, describeDelivery));
+       return task.step(() => ({
+         kind: evidence.kind,
+         recorded: true,
+-        status: describeDelivery(checked),
++        status,
+       }));
+     } finally {
+       for (const r of rows) r.bytes.fill(0);
+@@ -232,15 +258,20 @@ export function createDeliveryOperations(context: DeliveryContext) {
+   };
+   const submitOwned = (operatorToken: AccountAccess) =>
+     context.network!(async (network) => {
+-      const prepared = await withState(async (task, _owner, _route, _c, s) => {
+-        if (publicationState(s) !== 'ready')
+-          return { kind: 'blocked' as const, state: publicationState(s) };
+-        const position = s.acceptedThrough + 1,
+-          bytes = s.submissions.get(position);
+-        if (!bytes) return { kind: 'idle' as const };
+-        await context.assertCurrent(task);
+-        return { kind: 'ready' as const, position, bytes: bytes.slice() };
+-      });
++      const prepared = await withSelection(
++        (s) => {
++          if (publicationState(s) !== 'ready')
++            return { kind: 'blocked' as const, state: publicationState(s) };
++          const position = s.acceptedThrough + 1,
++            bytes = s.submissions.get(position);
++          if (!bytes) return { kind: 'idle' as const };
++          return { kind: 'ready' as const, position, bytes: bytes.slice() };
++        },
++        async (task, result) => {
++          if (result.kind === 'ready') await context.assertCurrent(task);
++          return result;
++        },
++      );
+       if (prepared.kind !== 'ready') return prepared;
+       const payload = encodeSubmit(context.authority().workspace, prepared.bytes);
+       let answer: Bytes | null = null;
+@@ -305,14 +336,17 @@ export function createDeliveryOperations(context: DeliveryContext) {
+         }
+         return false;
+       }),
+-    deliveryStatus: () => withState(async (_task, _owner, _route, _c, s) => describeDelivery(s)),
++    deliveryStatus: () => withSelection(describeDelivery, async (_task, status) => status),
+     pendingSubmissions: () =>
+-      withState(async (_task, _owner, _route, _c, s) => {
+-        if (publicationState(s) !== 'ready') return [];
+-        const position = s.acceptedThrough + 1,
+-          bytes = s.submissions.get(position);
+-        return bytes ? [{ position, bytes: bytes.slice() }] : [];
+-      }),
++      withSelection(
++        (s) => {
++          if (publicationState(s) !== 'ready') return [];
++          const position = s.acceptedThrough + 1,
++            bytes = s.submissions.get(position);
++          return bytes ? [{ position, bytes: bytes.slice() }] : [];
++        },
++        async (_task, pending) => pending,
++      ),
+     prepareSubmission: (position: number) =>
+       withState(async (task, owner, route, c, s) => {
+         if (!Number.isSafeInteger(position) || position < 1)
+@@ -348,10 +382,11 @@ export function createDeliveryOperations(context: DeliveryContext) {
+           await persist(task, owner, route, { type: 'submission', position, wire });
+           const rows = await owner.carrier.load(task);
+           try {
+-            const checked = await task.wait(() =>
+-                validated(rows, inspect(rows, route, context.authority()), route, task),
++            const saved = await task.wait(() =>
++              selectDelivery(rows, route, task, (state) =>
++                state.submissions.get(position)?.slice(),
+               ),
+-              saved = checked.submissions.get(position);
++            );
+             if (!saved) captureError('Persisted submission missing');
+             return task.step(() => ({ kind: 'ready' as const, position, bytes: saved!.slice() }));
+           } finally {
+diff --git a/src/crdt/accountEnvelopePreparation.ts b/src/crdt/accountEnvelopePreparation.ts
+index 6bbf47bd..0a743abf 100644
+--- a/src/crdt/accountEnvelopePreparation.ts
++++ b/src/crdt/accountEnvelopePreparation.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ /** Internal original-source envelope preparation. The caller owns the sole carrier and authority. */
+ import { guardedSubtle, hex, random, type Bytes } from './custodyCrypto';
+ import {
+@@ -50,42 +51,47 @@ export async function selectEnvelopeSources(
+   batch: boolean,
+   subtle: SubtleCrypto,
+ ): Promise<SourceRef[]> {
+-  const used = new Set(
+-    state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
+-  );
+-  const selected: SourceRef[] = [];
+-  let actor = '',
+-    kind = '',
+-    epoch = 0,
+-    total = 0;
+-  for (const [id, bytes] of state.sources) {
+-    const c = decodeSourceCapsule(bytes, route);
+-    let hash: string | undefined;
+-    try {
+-      for (const [index, source] of c.sources.entries()) {
+-        if (used.has(id + ':' + index)) continue;
+-        if (
+-          selected.length &&
+-          (!batch ||
+-            selected.length >= MAX_POSITION_SOURCES ||
+-            source.actor !== actor ||
+-            source.kind !== kind ||
+-            c.epoch !== epoch ||
+-            total + source.bytes.length > MAX_POSITION_BYTES)
+-        )
+-          return selected;
+-        hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
+-        selected.push({ id, index, hash });
+-        epoch = c.epoch;
+-        actor = source.actor;
+-        kind = source.kind;
+-        total += source.bytes.length;
++  const began = ledgerWorkStart();
++  try {
++    const used = new Set(
++      state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
++    );
++    const selected: SourceRef[] = [];
++    let actor = '',
++      kind = '',
++      epoch = 0,
++      total = 0;
++    for (const [id, bytes] of state.sources) {
++      const c = decodeSourceCapsule(bytes, route);
++      let hash: string | undefined;
++      try {
++        for (const [index, source] of c.sources.entries()) {
++          if (used.has(id + ':' + index)) continue;
++          if (
++            selected.length &&
++            (!batch ||
++              selected.length >= MAX_POSITION_SOURCES ||
++              source.actor !== actor ||
++              source.kind !== kind ||
++              c.epoch !== epoch ||
++              total + source.bytes.length > MAX_POSITION_BYTES)
++          )
++            return selected;
++          hash ??= hex(new Uint8Array(await subtle.digest('SHA-256', bytes)));
++          selected.push({ id, index, hash });
++          epoch = c.epoch;
++          actor = source.actor;
++          kind = source.kind;
++          total += source.bytes.length;
++        }
++      } finally {
++        eraseCapsule(c);
+       }
+-    } finally {
+-      eraseCapsule(c);
+     }
++    return selected;
++  } finally {
++    measureLedgerWork('envelopeSelection', began);
+   }
+-  return selected;
+ }
+ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
+   const runCaptureTask = context.run;
+@@ -175,6 +181,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
+                     sources: selected,
+                   },
+             );
++            countLedgerWork('positions');
+             for (const r of records) r.bytes.fill(0);
+             ({ records, state } = await verified(task, owner, route));
+             position = state.positions.at(-1)!;
+diff --git a/src/crdt/accountLedgerMetrics.ts b/src/crdt/accountLedgerMetrics.ts
+index 5195b188..d6f4a334 100644
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -1,5 +1,46 @@
+ /** Numeric diagnostics only: no identities, record bytes, writing or keys. */
+ const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
++export const ledgerProfiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
++const workNames = [
++  'loads',
++  'loadedRows',
++  'loadedBytes',
++  'authorityChecks',
++  'positions',
++  'sourceParses',
++  'sourceParseBytes',
++  'recordCopies',
++  'recordCopyBytes',
++] as const;
++const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
++  (typeof workNames)[number],
++  number
++>;
++type WorkTiming =
++  | 'copyRecords'
++  | 'readProjection'
++  | 'installClone'
++  | 'physicalRead'
++  | 'loadElapsed'
++  | 'storageQueueWait'
++  | 'storageOperation'
++  | 'sourceParse'
++  | 'validateUpdates'
++  | 'envelopeSelection';
++const costs: Partial<Record<WorkTiming, { calls: number; totalMs: number; maxMs: number }>> = {};
++/** Bounded numeric-only development counters. Names are internal literals, never input. */
++export const countLedgerWork = (name: keyof typeof work, count = 1) => {
++  if (ledgerProfiling) work[name] = (work[name] ?? 0) + count;
++};
++export const ledgerWorkStart = () => (ledgerProfiling ? performance.now() : 0);
++export const measureLedgerWork = (name: WorkTiming, since: number) => {
++  if (!ledgerProfiling) return;
++  const ms = performance.now() - since;
++  const row = (costs[name] ??= { calls: 0, totalMs: 0, maxMs: 0 });
++  row.calls++;
++  row.totalMs += ms;
++  row.maxMs = Math.max(row.maxMs, ms);
++};
+ const names = ['full', 'incremental', 'coverageCheck', 'coverageRebuild', 'compaction'] as const;
+ const timings = Object.fromEntries(
+   names.map((name) => [name, { calls: 0, totalMs: 0, maxMs: 0 }]),
+@@ -14,7 +55,12 @@ export const measureLedger = (name: (typeof names)[number], since: number) => {
+   row.totalMs += ms;
+   row.maxMs = Math.max(row.maxMs, ms);
+ };
+-export const accountLedgerMetrics = () => ({ ...counters, timings: structuredClone(timings) });
++export const accountLedgerMetrics = () => ({
++  ...counters,
++  timings: structuredClone(timings),
++  work: { ...work },
++  costs: structuredClone(costs),
++});
+ if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
+   Object.defineProperty(globalThis, '__doneLedgerMetrics', {
+     value: accountLedgerMetrics,
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index f69a552e..6048dbe7 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,5 @@
++import type { OpenedRecord } from './contentRecord';
++import { countLedgerWork } from './accountLedgerMetrics';
+ import { originalMembershipBoundaries } from './accountSuccessor';
+ import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
+ import {
+@@ -122,7 +124,12 @@ import {
+ } from './inboundLedger';
+ import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
+ import { verifyDelivery } from './deliveryRecord';
+-import { captureError, type CaptureRoute } from './sourceCapture';
++import {
++  captureError,
++  capturedSourcePresence,
++  type CaptureRoute,
++  type CapturedSourceIdentity,
++} from './sourceCapture';
+ import type { SessionTask } from './writeSession';
+ import type { prepareAccountCustody } from './custody';
+ import {
+@@ -159,10 +166,20 @@ async function openAccountReceiveOwner(
+   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
+   const memo = createVerificationMemo(),
+     coverage = createInboundCoverage({ incremental });
+-  const inspectCensus = (records: Parameters<typeof inspectInbound>[0], route: CaptureRoute) =>
+-    verified.matches(records)
+-      ? verified.read(records, (v) => v.census)
+-      : inspectInbound(records, route, base);
++  const inspectCensus = <R>(
++    records: Parameters<typeof inspectInbound>[0],
++    route: CaptureRoute,
++    select: (census: AccountLedgerView['census']) => R,
++  ): R => {
++    if (!incremental)
++      return select(
++        verified.matches(records)
++          ? verified.read(records, (v) => v.census)
++          : inspectInbound(records, route, base),
++      );
++    const projected = verified.readIfMatches(records, (v) => select(v.census));
++    return projected ? projected.value : select(inspectInbound(records, route, base));
++  };
+   let installed: InstalledSuccessor | undefined;
+   let membership: InstalledMembership | undefined,
+     initialEpoch = 3;
+@@ -176,6 +193,7 @@ async function openAccountReceiveOwner(
+   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
+   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
+   const assertCurrent = async (task: SessionTask) => {
++    countLedgerWork('authorityChecks');
+     if (handoff) throw new ReceiveAuthorityChanged();
+     if (joined) {
+       const current = await readJoinedAccount(task, options.slotId, options.code);
+@@ -197,7 +215,20 @@ async function openAccountReceiveOwner(
+   };
+   const extension: CaptureExtension = {
+     version: 9,
+-    sourceRecords: (records, route) => inspectCensus(records, route).delivery.spool.sourceRecords,
++    sourceRecords: (records, route) =>
++      inspectCensus(records, route, (c) => c.delivery.spool.sourceRecords),
++    ...(incremental
++      ? {
++          sourcePresence: (
++            records: readonly OpenedRecord[],
++            route: CaptureRoute,
++            incoming: readonly CapturedSourceIdentity[],
++          ) =>
++            inspectCensus(records, route, (c) =>
++              capturedSourcePresence(c.delivery.spool.sources, incoming),
++            ),
++        }
++      : {}),
+     async initialize(task, v) {
+       expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
+       expectedRecord = v.record;
+@@ -716,7 +747,11 @@ async function openAccountReceiveOwner(
+             try {
+               const census = inspectInbound(rows, route, base);
+               await applyHistoryReceiveCuts(current, base, census, result!.heads);
+-              verifySyncState(census.delivery, verified.read(rows).delivery, current);
++              verifySyncState(
++                census.delivery,
++                verified.read(rows, (v) => v.delivery),
++                current,
++              );
+             } finally {
+               for (const row of rows) row.bytes.fill(0);
+             }
+@@ -826,7 +861,7 @@ async function openAccountReceiveOwner(
+             const rows = await owner.carrier.load(task);
+             try {
+               const census = inspectInbound(rows, route, base).delivery;
+-              const delivery = verified.read(rows).delivery;
++              const delivery = verified.read(rows, (v) => v.delivery);
+               try {
+                 requireSelfEnvelope(
+                   census,
+@@ -1396,7 +1431,7 @@ async function openAccountReceiveOwner(
+     const inspect: NonNullable<Parameters<typeof createDeliveryOperations>[0]['inspect']> = (
+       records,
+       route,
+-    ) => inspectCensus(records, route).delivery;
++    ) => inspectCensus(records, route, (c) => c.delivery);
+     const checkPublication = async (
+       task: SessionTask,
+       owner: ReturnType<typeof prepareAccountCustody>,
+@@ -1430,6 +1465,11 @@ async function openAccountReceiveOwner(
+         }),
+       ...(incremental
+         ? {
++            selectVerified: (records, select) =>
++              verified.read(records, ({ inbound, delivery }) => {
++                if (inbound.conflict) throw Error('Publication halted by inbound conflict');
++                return select(delivery);
++              }),
+             verifyProposed: async (
+               rows: readonly import('./contentRecord').OpenedRecord[],
+               proposed: import('./contentRecord').OpenedRecord[],
+@@ -1494,24 +1534,23 @@ async function openAccountReceiveOwner(
+         signer: () => signer!,
+         whenDurable,
+         checkPublication,
+-        inspect: (records, route) => inspect(records, route, base.authority).spool,
++        inspect: (records, route) => inspectCensus(records, route, (c) => c.delivery.spool),
+         run: runCaptureTask,
+       }),
+       spoolStatus: () =>
+         runCaptureTask(async (task, owner, route) => {
+           const records = await owner.carrier.load(task);
+           try {
+-            const spool = inspect(records, route, base.authority).spool;
+-            return {
++            return inspectCensus(records, route, ({ delivery: { spool } }) => ({
+               attempts: spool.attempts,
+               positions: spool.positions.map((p) => ({
+                 position: p.position,
+-                source: { ...p.source },
+-                ...(p.additional ? { additional: p.additional.map((s) => ({ ...s })) } : {}),
+-                attempts: [...p.attempts],
++                source: p.source,
++                ...(p.additional ? { additional: p.additional } : {}),
++                attempts: p.attempts,
+                 persisted: !!p.wire,
+               })),
+-            };
++            }));
+           } finally {
+             for (const r of records) r.bytes.fill(0);
+           }
+@@ -1745,6 +1784,7 @@ async function openReceivingWorkspace(
+         ...(options.today ? { today: options.today } : {}),
+         ...(options.signal ? { signal: options.signal } : {}),
+       },
++      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental' ? 'account-snapshots' : 'reference',
+     );
+     if (options.signal?.aborted || workspace.status.state !== 'active') {
+       await workspace.close();
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index b0f3e3fe..91195749 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -143,14 +143,25 @@ const dispose = (s: State | undefined) => {
+ export const createAdmittedWorkspace = async (
+   open: (options: AdmissionOptions) => Promise<AdmissionSession>,
+   options: WorkspaceOptions,
+-  preparation: 'reference' | 'local-handoff' | 'local-snapshots' = 'reference',
++  preparation:
++    | 'reference'
++    | 'local-handoff'
++    | 'local-snapshots'
++    | 'account-snapshots' = 'reference',
+ ): Promise<AdmittedWorkspace> => {
+-  if (!['reference', 'local-handoff', 'local-snapshots'].includes(preparation))
++  if (!['reference', 'local-handoff', 'local-snapshots', 'account-snapshots'].includes(preparation))
+     throw Error('Unknown workspace preparation');
+-  const localHandoff = preparation !== 'reference';
++  const localHandoff = preparation === 'local-handoff' || preparation === 'local-snapshots';
+   if (localHandoff && options.captureSources)
+     throw Error('Local preparation cannot capture Account sources');
+-  const selectionHistory = preparation === 'local-snapshots' ? createSelectionHistory() : undefined;
++  if (preparation === 'account-snapshots' && !options.captureSources)
++    throw Error('Account selection snapshots require source capture');
++  // Account reuses only immutable selection metadata. It keeps the reference document fork,
++  // source capture and ordinary post-admission verification; no Local handoff/buffer reuse.
++  const selectionHistory =
++    preparation === 'local-snapshots' || preparation === 'account-snapshots'
++      ? createSelectionHistory(localHandoff)
++      : undefined;
+   // Private experiment: one retired predecessor, never more than two workspace histories.
+   let spare:
+     | { state: State; basis: State; update: Bytes; untouched(): boolean; unwatch(): void }
+diff --git a/src/crdt/contentCompaction.ts b/src/crdt/contentCompaction.ts
+index ec995f02..adc93a01 100644
+--- a/src/crdt/contentCompaction.ts
++++ b/src/crdt/contentCompaction.ts
+@@ -1,5 +1,7 @@
++import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ /** Internal exact-coverage owner. No caller document, coverage token, or arbitrary deletion API. */
+ import { Y, hasPendingUpdates } from './yjs';
++import { sameBytes } from './verifiedRecords';
+ import type { Bytes } from './custodyCrypto';
+ import {
+   CONTENT_STORES,
+@@ -44,18 +46,21 @@ interface Owner {
+   publish(bytes: Bytes): Promise<StoredRecord>;
+   checkJournal(): void;
+ }
+-const equalBytes = (a: Bytes, b: Bytes) => a.length === b.length && a.every((v, i) => v === b[i]);
+ export const equalStoredRecord = (a: StoredRecord, b: StoredRecord): boolean =>
+   a.v === b.v &&
+   a.gen === b.gen &&
+   a.seq === b.seq &&
+   a.kind === b.kind &&
+-  equalBytes(a.nonce, b.nonce) &&
+-  equalBytes(a.ct, b.ct);
++  sameBytes(a.nonce, b.nonce) &&
++  sameBytes(a.ct, b.ct);
+ 
+ /** Validate even a singleton; return whether every struct/deletion dependency integrated. */
+ export const validateContentUpdates = (updates: readonly Bytes[]): boolean => {
+-  const doc = new Y.Doc({ gc: false });
++  const began = ledgerWorkStart();
++  // This isolated receiver never joins a provider or escapes this function. Its GUID has no
++  // identity role; omit Yjs's 31 random GUID draws but keep its fresh random client ID.
++  // Always allocate a clean document: pending structs/deletions cannot survive between calls.
++  const doc = new Y.Doc({ gc: false, guid: 'done-content-validation' });
+   try {
+     for (const bytes of updates) {
+       Y.decodeUpdate(bytes);
+@@ -66,6 +71,7 @@ export const validateContentUpdates = (updates: readonly Bytes[]): boolean => {
+     throw new ContentError('repair-required', 'Persisted CRDT bytes are unreadable.', { cause });
+   } finally {
+     doc.destroy();
++    measureLedgerWork('validateUpdates', began);
+   }
+ };
+ const content = (records: OpenedRecord[]) =>
+diff --git a/src/crdt/contentStore.ts b/src/crdt/contentStore.ts
+index 7a106693..b34221ca 100644
+--- a/src/crdt/contentStore.ts
++++ b/src/crdt/contentStore.ts
+@@ -1,4 +1,10 @@
+-import { measureLedger } from './accountLedgerMetrics';
++import {
++  countLedgerWork,
++  ledgerProfiling,
++  ledgerWorkStart,
++  measureLedgerWork,
++  measureLedger,
++} from './accountLedgerMetrics';
+ import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
+ import { copyRecords, eraseVerified } from './verifiedRecords';
+ import {
+@@ -297,11 +303,25 @@ export const createContentOwner = (
+     }
+   };
+   const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
++    countLedgerWork('loads');
++    const began = ledgerWorkStart();
+     try {
+-      return await openSnapshot(task, await read(task, true));
++      const at = ledgerWorkStart();
++      const snapshot = await read(task, true);
++      measureLedgerWork('physicalRead', at);
++      countLedgerWork('loadedRows', snapshot.rows.length);
++      const result = await openSnapshot(task, snapshot);
++      if (ledgerProfiling)
++        countLedgerWork(
++          'loadedBytes',
++          result.reduce((n, r) => n + r.bytes.length, 0),
++        );
++      return result;
+     } catch (cause) {
+       clearView();
+       throw cause;
++    } finally {
++      measureLedgerWork('loadElapsed', began);
+     }
+   };
+   const appendRecords = async (
+diff --git a/src/crdt/custodyCrypto.ts b/src/crdt/custodyCrypto.ts
+index b99cc0a0..f53caaf1 100644
+--- a/src/crdt/custodyCrypto.ts
++++ b/src/crdt/custodyCrypto.ts
+@@ -19,8 +19,18 @@ export interface KeyEnvelope {
+   ct: Bytes;
+ }
+ export const utf8 = (s: string): Bytes => new TextEncoder().encode(s);
+-export const hex = (b: Uint8Array): string =>
+-  Array.from(b, (n) => n.toString(16).padStart(2, '0')).join('');
++const hexByte = Array.from({ length: 256 }, (_, n) => n.toString(16).padStart(2, '0'));
++export const hex = (b: Uint8Array): string => {
++  // Preserve the original iterator's refusal of detached buffers, including zero-length views.
++  if (!b.length) {
++    b.subarray(0, 0);
++    return '';
++  }
++  // oxlint-disable-next-line unicorn/no-new-array -- Preallocate the byte count; every slot is filled below.
++  const parts = new Array<string>(b.length);
++  for (let i = 0; i < b.length; i++) parts[i] = hexByte[b[i]!]!;
++  return parts.join('');
++};
+ export const random = (n: number): Bytes => crypto.getRandomValues(new Uint8Array(n));
+ export const concat = (...parts: Uint8Array[]): Bytes => {
+   const out = new Uint8Array(parts.reduce((n, b) => n + b.length, 0));
+diff --git a/src/crdt/sourceCapture.ts b/src/crdt/sourceCapture.ts
+index 44cccb8b..dff0cc09 100644
+--- a/src/crdt/sourceCapture.ts
++++ b/src/crdt/sourceCapture.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ import {
+   historyEnvelopeRoute,
+   type AdmissionHistory,
+@@ -7,6 +8,7 @@ import { hex, random, utf8, type Bytes } from './custodyCrypto';
+ import { ContentError, MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
+ import type { JournalRecovery } from './custody';
+ import { validateContentUpdates } from './contentCompaction';
++import { sameBytes } from './verifiedRecords';
+ import type { PromotionRecord } from './promotionRecord';
+ 
+ export interface SourceUpdate {
+@@ -115,9 +117,12 @@ export function encodeSourceCapsule(c: SourceCapsule): Bytes {
+   return result;
+ }
+ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCapsule {
++  const began = ledgerWorkStart();
++  countLedgerWork('sourceParses');
+   const sources: SourceUpdate[] = [];
+   try {
+     if (!(bytes instanceof Uint8Array) || bytes.length > MAX_CAPTURE_BYTES) throw Error('length');
++    countLedgerWork('sourceParseBytes', bytes.length);
+     const v: unknown = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
+     if (
+       !Array.isArray(v) ||
+@@ -163,6 +168,8 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
+   } catch (cause) {
+     for (const s of sources) s.bytes.fill(0);
+     throw new ContentError('repair-required', 'Source capsule is unreadable or unbound', { cause });
++  } finally {
++    measureLedgerWork('sourceParse', began);
+   }
+ }
+ export const makeSourceCapsule = (route: CaptureRoute, sources: readonly SourceUpdate[]): Bytes =>
+@@ -171,6 +178,25 @@ export const eraseCapsule = (c: SourceCapsule) => {
+   for (const s of c.sources) s.bytes.fill(0);
+ };
+ 
++export interface CapturedSourceIdentity {
++  readonly id: string;
++  readonly bytes: Bytes;
++}
++/** Read only already-verified originals; also detect identity conflicts within this incoming batch. */
++export function capturedSourcePresence(
++  catalog: ReadonlyMap<string, Bytes>,
++  incoming: readonly CapturedSourceIdentity[],
++): boolean[] {
++  const seen = new Map<string, Bytes>();
++  return incoming.map(({ id, bytes }) => {
++    const prior = seen.get(id) ?? catalog.get(id);
++    if (prior && !sameBytes(prior, bytes))
++      captureError('Conflicting source identity before commit');
++    seen.set(id, bytes);
++    return prior !== undefined;
++  });
++}
++
+ /** Exact identity deduplication, never Yjs vector or snapshot coverage. Caller owns record buffers. */
+ export function captureCatalog(
+   records: readonly OpenedRecord[],
+diff --git a/src/crdt/verifiedRecords.ts b/src/crdt/verifiedRecords.ts
+index 7a4a25c6..558a0403 100644
+--- a/src/crdt/verifiedRecords.ts
++++ b/src/crdt/verifiedRecords.ts
+@@ -1,9 +1,26 @@
++import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+ /** Owner-local verification reuse. Identity includes every opened record, never only ledger events. */
+ import type { OpenedRecord } from './contentRecord';
+-export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean =>
+-  a.length === b.length && a.every((v, i) => v === b[i]);
+-export const copyRecords = (rows: readonly OpenedRecord[]): OpenedRecord[] =>
+-  rows.map((r) => ({ ...r, bytes: r.bytes.slice() }));
++export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean => {
++  if (a.length !== b.length) return false;
++  if (!a.length) {
++    // A detached left-hand view must still fail, as the original typed-array every did.
++    a.subarray(0, 0);
++    return true;
++  }
++  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
++  return true;
++};
++export const copyRecords = (rows: readonly OpenedRecord[]): OpenedRecord[] => {
++  const at = ledgerWorkStart();
++  const result = rows.map((r) => {
++    countLedgerWork('recordCopies');
++    countLedgerWork('recordCopyBytes', r.bytes.length);
++    return { ...r, bytes: r.bytes.slice() };
++  });
++  measureLedgerWork('copyRecords', at);
++  return result;
++};
+ export const sameRecords = (a: readonly OpenedRecord[], b: readonly OpenedRecord[]): boolean =>
+   a.length === b.length &&
+   a.every((r, i) => {
+@@ -33,6 +50,17 @@ export function createVerifiedRecords<T>() {
+   return {
+     clear,
+     matches: (records: readonly OpenedRecord[]) => !!retained && sameRecords(retained, records),
++    /** A single exact-match pass; the projection is detached before leaving this call. */
++    readIfMatches<R>(
++      records: readonly OpenedRecord[],
++      select: (value: Readonly<T>) => R,
++    ): { value: R } | undefined {
++      if (!retained || !sameRecords(retained, records)) return;
++      const at = ledgerWorkStart();
++      const result = { value: structuredClone(select(value!)) };
++      measureLedgerWork('readProjection', at);
++      return result;
++    },
+     /** Internal read-only projection; only the selected result is copied to the caller. */
+     read<R = T>(
+       records: readonly OpenedRecord[],
+@@ -40,7 +68,10 @@ export function createVerifiedRecords<T>() {
+     ): R {
+       if (!retained || !sameRecords(retained, records))
+         throw Error('No verified view for these records');
+-      return structuredClone(select(value!));
++      const at = ledgerWorkStart();
++      const result = structuredClone(select(value!));
++      measureLedgerWork('readProjection', at);
++      return result;
+     },
+     async verify(
+       records: readonly OpenedRecord[],
+@@ -76,8 +107,10 @@ export function createVerifiedRecords<T>() {
+         current();
+         if (at !== revision) throw Error('Verification view was invalidated');
+         // Results may reference candidate input buffers. Own both before exposing any readback.
+-        const nextValue = structuredClone(result),
+-          nextRecords = copyRecords(candidate);
++        const atClone = ledgerWorkStart();
++        const nextValue = structuredClone(result);
++        measureLedgerWork('installClone', atClone);
++        const nextRecords = copyRecords(candidate);
+         eraseVerified(value);
+         eraseVerified(retained);
+         value = nextValue;
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index 933fec1e..be9f9d97 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -708,8 +708,8 @@ export const isTextBufferBasis = (doc: YDoc): boolean => {
+   return true;
+ };
+ 
+-/** Explicit private Local history mode. Never infer it from a metadata shape or token lookalike. */
+-export const createSelectionHistory = () => {
++/** Explicit private selection history mode. Never infer it from a metadata shape or token lookalike. */
++export const createSelectionHistory = (reuseStrings = true) => {
+   const snapshots = createSelectionSnapshots();
+   let histories: WeakSet<YUndoManager> | undefined = new WeakSet();
+   const live = () => {
+@@ -733,7 +733,7 @@ export const createSelectionHistory = () => {
+     },
+     fork(history: YUndoManager, origin: unknown): YUndoManager {
+       check(history);
+-      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), true));
++      return bind(forkHistory(history, origin, (meta) => snapshots.fork(meta), reuseStrings));
+     },
+     /** A retired predecessor catches up only across an owner-proven text transition.
+      * The workspace must supply its untouched exact predecessor and retained accepted delta.

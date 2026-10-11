@@ -1,0 +1,3428 @@
+{
+  "condition": "baseline",
+  "keysPerDevice": 600,
+  "started": 1791702618841,
+  "typed": 1791702714301,
+  "end": 1791702716313,
+  "timings": [
+    {
+      "device": 0,
+      "starts": [
+        1791702618841, 1791702619005, 1791702619163, 1791702619321, 1791702619478, 1791702619636,
+        1791702619795, 1791702619950, 1791702620108, 1791702620264, 1791702620422, 1791702620578,
+        1791702620734, 1791702620891, 1791702621048, 1791702621205, 1791702621362, 1791702621519,
+        1791702621676, 1791702621833, 1791702621988, 1791702622145, 1791702622304, 1791702622459,
+        1791702622616, 1791702622771, 1791702622926, 1791702623083, 1791702623237, 1791702623393,
+        1791702623548, 1791702623706, 1791702623862, 1791702624019, 1791702624177, 1791702624334,
+        1791702624490, 1791702624645, 1791702624803, 1791702624959, 1791702625115, 1791702625272,
+        1791702625430, 1791702625587, 1791702625744, 1791702625902, 1791702626059, 1791702626215,
+        1791702626370, 1791702626525, 1791702626682, 1791702626839, 1791702626996, 1791702627151,
+        1791702627307, 1791702627464, 1791702627625, 1791702627790, 1791702627959, 1791702628132,
+        1791702628304, 1791702628461, 1791702628618, 1791702628777, 1791702628943, 1791702629101,
+        1791702629269, 1791702629429, 1791702629586, 1791702629743, 1791702629900, 1791702630063,
+        1791702630229, 1791702630395, 1791702630555, 1791702630721, 1791702630885, 1791702631042,
+        1791702631201, 1791702631368, 1791702631532, 1791702631701, 1791702631863, 1791702632023,
+        1791702632178, 1791702632334, 1791702632492, 1791702632657, 1791702632819, 1791702632985,
+        1791702633143, 1791702633306, 1791702633464, 1791702633627, 1791702633793, 1791702633960,
+        1791702634119, 1791702634285, 1791702634442, 1791702634599, 1791702634757, 1791702634918,
+        1791702635089, 1791702635251, 1791702635418, 1791702635576, 1791702635737, 1791702635898,
+        1791702636057, 1791702636219, 1791702636385, 1791702636548, 1791702636712, 1791702636873,
+        1791702637035, 1791702637193, 1791702637354, 1791702637519, 1791702637687, 1791702637856,
+        1791702638022, 1791702638178, 1791702638334, 1791702638490, 1791702638650, 1791702638816,
+        1791702638978, 1791702639135, 1791702639296, 1791702639463, 1791702639620, 1791702639783,
+        1791702639947, 1791702640112, 1791702640272, 1791702640441, 1791702640604, 1791702640760,
+        1791702640916, 1791702641076, 1791702641244, 1791702641408, 1791702641576, 1791702641742,
+        1791702641899, 1791702642074, 1791702642231, 1791702642390, 1791702642548, 1791702642706,
+        1791702642869, 1791702643029, 1791702643189, 1791702643347, 1791702643510, 1791702643672,
+        1791702643844, 1791702644003, 1791702644161, 1791702644318, 1791702644477, 1791702644640,
+        1791702644804, 1791702644964, 1791702645122, 1791702645278, 1791702645435, 1791702645592,
+        1791702645749, 1791702645909, 1791702646066, 1791702646222, 1791702646380, 1791702646542,
+        1791702646703, 1791702646860, 1791702647017, 1791702647174, 1791702647332, 1791702647491,
+        1791702647647, 1791702647804, 1791702647969, 1791702648126, 1791702648283, 1791702648440,
+        1791702648597, 1791702648755, 1791702648911, 1791702649068, 1791702649232, 1791702649389,
+        1791702649547, 1791702649703, 1791702649860, 1791702650019, 1791702650177, 1791702650335,
+        1791702650498, 1791702650656, 1791702650814, 1791702650971, 1791702651128, 1791702651286,
+        1791702651442, 1791702651601, 1791702651758, 1791702651915, 1791702652072, 1791702652228,
+        1791702652385, 1791702652543, 1791702652702, 1791702652866, 1791702653024, 1791702653181,
+        1791702653338, 1791702653495, 1791702653659, 1791702653816, 1791702653976, 1791702654146,
+        1791702654307, 1791702654462, 1791702654619, 1791702654777, 1791702654934, 1791702655092,
+        1791702655248, 1791702655406, 1791702655562, 1791702655718, 1791702655875, 1791702656038,
+        1791702656195, 1791702656351, 1791702656511, 1791702656671, 1791702656831, 1791702656991,
+        1791702657151, 1791702657310, 1791702657467, 1791702657626, 1791702657790, 1791702657949,
+        1791702658110, 1791702658272, 1791702658431, 1791702658591, 1791702658755, 1791702658913,
+        1791702659071, 1791702659227, 1791702659384, 1791702659540, 1791702659698, 1791702659855,
+        1791702660012, 1791702660171, 1791702660328, 1791702660484, 1791702660642, 1791702660799,
+        1791702660955, 1791702661113, 1791702661271, 1791702661428, 1791702661584, 1791702661743,
+        1791702661901, 1791702662061, 1791702662220, 1791702662383, 1791702662543, 1791702662700,
+        1791702662856, 1791702663013, 1791702663172, 1791702663330, 1791702663488, 1791702663646,
+        1791702663805, 1791702663964, 1791702664122, 1791702664279, 1791702664435, 1791702664593,
+        1791702664751, 1791702664909, 1791702665067, 1791702665226, 1791702665388, 1791702665544,
+        1791702665701, 1791702665860, 1791702666019, 1791702666179, 1791702666344, 1791702666502,
+        1791702666662, 1791702666823, 1791702666979, 1791702667136, 1791702667296, 1791702667452,
+        1791702667611, 1791702667769, 1791702667926, 1791702668083, 1791702668243, 1791702668401,
+        1791702668557, 1791702668715, 1791702668874, 1791702669033, 1791702669192, 1791702669354,
+        1791702669512, 1791702669670, 1791702669826, 1791702669982, 1791702670140, 1791702670297,
+        1791702670454, 1791702670614, 1791702670775, 1791702670935, 1791702671090, 1791702671247,
+        1791702671404, 1791702671561, 1791702671718, 1791702671880, 1791702672040, 1791702672198,
+        1791702672352, 1791702672510, 1791702672671, 1791702672828, 1791702672984, 1791702673142,
+        1791702673296, 1791702673454, 1791702673612, 1791702673790, 1791702673964, 1791702674128,
+        1791702674285, 1791702674442, 1791702674599, 1791702674755, 1791702674912, 1791702675069,
+        1791702675226, 1791702675384, 1791702675540, 1791702675697, 1791702675868, 1791702676035,
+        1791702676193, 1791702676349, 1791702676507, 1791702676665, 1791702676822, 1791702676978,
+        1791702677139, 1791702677295, 1791702677453, 1791702677609, 1791702677766, 1791702677925,
+        1791702678081, 1791702678242, 1791702678400, 1791702678560, 1791702678718, 1791702678880,
+        1791702679037, 1791702679194, 1791702679352, 1791702679509, 1791702679667, 1791702679825,
+        1791702679987, 1791702680148, 1791702680306, 1791702680460, 1791702680616, 1791702680773,
+        1791702680934, 1791702681093, 1791702681254, 1791702681410, 1791702681569, 1791702681726,
+        1791702681886, 1791702682046, 1791702682202, 1791702682358, 1791702682516, 1791702682676,
+        1791702682833, 1791702682994, 1791702683162, 1791702683318, 1791702683475, 1791702683632,
+        1791702683790, 1791702683951, 1791702684108, 1791702684268, 1791702684434, 1791702684591,
+        1791702684747, 1791702684903, 1791702685059, 1791702685219, 1791702685385, 1791702685543,
+        1791702685713, 1791702685877, 1791702686033, 1791702686193, 1791702686352, 1791702686509,
+        1791702686665, 1791702686823, 1791702686982, 1791702687140, 1791702687299, 1791702687457,
+        1791702687614, 1791702687771, 1791702687931, 1791702688089, 1791702688248, 1791702688407,
+        1791702688569, 1791702688729, 1791702688892, 1791702689049, 1791702689205, 1791702689364,
+        1791702689525, 1791702689682, 1791702689839, 1791702689996, 1791702690156, 1791702690312,
+        1791702690469, 1791702690626, 1791702690783, 1791702690940, 1791702691098, 1791702691260,
+        1791702691418, 1791702691577, 1791702691735, 1791702691891, 1791702692049, 1791702692207,
+        1791702692367, 1791702692526, 1791702692685, 1791702692847, 1791702693005, 1791702693168,
+        1791702693325, 1791702693490, 1791702693647, 1791702693803, 1791702693962, 1791702694126,
+        1791702694282, 1791702694443, 1791702694601, 1791702694765, 1791702694922, 1791702695086,
+        1791702695246, 1791702695403, 1791702695563, 1791702695720, 1791702695881, 1791702696040,
+        1791702696202, 1791702696359, 1791702696523, 1791702696680, 1791702696843, 1791702697002,
+        1791702697160, 1791702697327, 1791702697486, 1791702697648, 1791702697807, 1791702697965,
+        1791702698129, 1791702698288, 1791702698448, 1791702698607, 1791702698765, 1791702698926,
+        1791702699082, 1791702699243, 1791702699400, 1791702699560, 1791702699717, 1791702699879,
+        1791702700037, 1791702700196, 1791702700352, 1791702700514, 1791702700672, 1791702700829,
+        1791702700986, 1791702701142, 1791702701298, 1791702701456, 1791702701612, 1791702701769,
+        1791702701930, 1791702702087, 1791702702248, 1791702702407, 1791702702564, 1791702702721,
+        1791702702892, 1791702703049, 1791702703207, 1791702703365, 1791702703524, 1791702703685,
+        1791702703844, 1791702704000, 1791702704167, 1791702704325, 1791702704484, 1791702704644,
+        1791702704802, 1791702704963, 1791702705120, 1791702705280, 1791702705439, 1791702705596,
+        1791702705754, 1791702705911, 1791702706068, 1791702706225, 1791702706383, 1791702706540,
+        1791702706698, 1791702706854, 1791702707011, 1791702707173, 1791702707330, 1791702707487,
+        1791702707644, 1791702707802, 1791702707958, 1791702708115, 1791702708272, 1791702708429,
+        1791702708593, 1791702708750, 1791702708906, 1791702709062, 1791702709220, 1791702709380,
+        1791702709537, 1791702709694, 1791702709852, 1791702710013, 1791702710170, 1791702710330,
+        1791702710488, 1791702710644, 1791702710801, 1791702710958, 1791702711116, 1791702711274,
+        1791702711433, 1791702711590, 1791702711750, 1791702711911, 1791702712068, 1791702712224,
+        1791702712400, 1791702712558, 1791702712716, 1791702712881, 1791702713038, 1791702713199,
+        1791702713356, 1791702713512, 1791702713668, 1791702713826, 1791702713983, 1791702714141
+      ],
+      "end": 1791702714301
+    }
+  ],
+  "rows": [
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/config",
+      "start": 1791702613815,
+      "status": 200,
+      "end": 1791702613837
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/begin",
+      "start": 1791702615718,
+      "status": 200,
+      "end": 1791702615720
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/finish",
+      "start": 1791702615823,
+      "status": 200,
+      "end": 1791702615823
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/finish",
+      "start": 1791702615889,
+      "status": 200,
+      "end": 1791702615889
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702615903,
+      "status": 200,
+      "end": 1791702615905
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/recovery/begin",
+      "start": 1791702615974,
+      "status": 200,
+      "end": 1791702615977
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/recovery/finish",
+      "start": 1791702616032,
+      "status": 200,
+      "end": 1791702616032
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702616050,
+      "status": 200,
+      "end": 1791702616051
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702616061,
+      "status": 200,
+      "end": 1791702616063
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702616066,
+      "status": 200,
+      "end": 1791702616068
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702616086,
+      "status": 200,
+      "end": 1791702616087
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702616099,
+      "status": 200,
+      "end": 1791702616101
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702616110,
+      "status": 200,
+      "end": 1791702616114
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702616139,
+      "status": 200,
+      "end": 1791702616141
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702616153,
+      "status": 200,
+      "end": 1791702616155
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/preparation/inspect",
+      "start": 1791702616161,
+      "status": 200,
+      "end": 1791702616163
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/begin",
+      "start": 1791702616169,
+      "status": 200,
+      "end": 1791702616178
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/challenge",
+      "start": 1791702616184,
+      "status": 200,
+      "end": 1791702616192
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/finish",
+      "start": 1791702616247,
+      "status": 200,
+      "end": 1791702616247
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/authority/prove",
+      "start": 1791702616273,
+      "status": 200,
+      "end": 1791702616274
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/__account-setup/promotion/binding",
+      "start": 1791702616295,
+      "status": 200,
+      "end": 1791702616303
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/begin",
+      "start": 1791702616357,
+      "status": 200,
+      "end": 1791702616357
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/finish",
+      "start": 1791702616466,
+      "status": 200,
+      "end": 1791702616472
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/acknowledge",
+      "start": 1791702616474,
+      "status": 200,
+      "end": 1791702616475
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/session/v1/renew",
+      "start": 1791702616476,
+      "status": 200,
+      "end": 1791702616502
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/grant/v1/begin",
+      "start": 1791702616503,
+      "status": 200,
+      "end": 1791702616515
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/grant/v1/finish",
+      "start": 1791702616515,
+      "status": 200,
+      "end": 1791702616518
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/notifications/v1/subscribe",
+      "start": 1791702616518,
+      "status": 200,
+      "end": 1791702616521
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/submit",
+      "start": 1791702616572,
+      "status": 200,
+      "end": 1791702616584
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/authority/discover",
+      "start": 1791702616615,
+      "status": 200,
+      "end": 1791702616635
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702616651,
+      "status": 200,
+      "end": 1791702616667
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702616683,
+      "status": 200,
+      "end": 1791702616692
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/submit",
+      "start": 1791702616944,
+      "status": 200,
+      "end": 1791702616955
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/authority/discover",
+      "start": 1791702616986,
+      "status": 200,
+      "end": 1791702617002
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702617016,
+      "status": 200,
+      "end": 1791702617030
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702617048,
+      "status": 200,
+      "end": 1791702617057
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/submit",
+      "start": 1791702617131,
+      "status": 200,
+      "end": 1791702617141
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/authority/discover",
+      "start": 1791702617171,
+      "status": 200,
+      "end": 1791702617188
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702617201,
+      "status": 200,
+      "end": 1791702617216
+    },
+    {
+      "device": "A",
+      "phase": "setup",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702617233,
+      "status": 200,
+      "end": 1791702617241
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702618980,
+      "status": 200,
+      "end": 1791702618991,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702619029,
+      "status": 200,
+      "end": 1791702619046
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702619060,
+      "status": 200,
+      "end": 1791702619076
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702619093,
+      "status": 200,
+      "end": 1791702619102
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702619191,
+      "status": 200,
+      "end": 1791702619201
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702619243,
+      "status": 200,
+      "end": 1791702619259
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702619274,
+      "status": 200,
+      "end": 1791702619290
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702619308,
+      "status": 200,
+      "end": 1791702619317
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702619406,
+      "status": 200,
+      "end": 1791702619416
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702619447,
+      "status": 200,
+      "end": 1791702619465
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702619488,
+      "status": 200,
+      "end": 1791702619504
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702619527,
+      "status": 200,
+      "end": 1791702619536
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702619628,
+      "status": 200,
+      "end": 1791702619643,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702619678,
+      "status": 200,
+      "end": 1791702619697
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702619717,
+      "status": 200,
+      "end": 1791702619738
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702619756,
+      "status": 200,
+      "end": 1791702619766
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702619856,
+      "status": 200,
+      "end": 1791702619866
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702619897,
+      "status": 200,
+      "end": 1791702619917
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702619931,
+      "status": 200,
+      "end": 1791702619950
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702619973,
+      "status": 200,
+      "end": 1791702619983
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702620068,
+      "status": 200,
+      "end": 1791702620079,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702620117,
+      "status": 200,
+      "end": 1791702620134
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702620151,
+      "status": 200,
+      "end": 1791702620171
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702620211,
+      "status": 200,
+      "end": 1791702620225
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702620333,
+      "status": 200,
+      "end": 1791702620344
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702620390,
+      "status": 200,
+      "end": 1791702620408
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702620428,
+      "status": 200,
+      "end": 1791702620449
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702620471,
+      "status": 200,
+      "end": 1791702620480
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702620590,
+      "status": 200,
+      "end": 1791702620601
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702620644,
+      "status": 200,
+      "end": 1791702620662
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702620682,
+      "status": 200,
+      "end": 1791702620703
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702620723,
+      "status": 200,
+      "end": 1791702620734
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702620852,
+      "status": 200,
+      "end": 1791702620863
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702620908,
+      "status": 200,
+      "end": 1791702620925
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702620941,
+      "status": 200,
+      "end": 1791702620965
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702620987,
+      "status": 200,
+      "end": 1791702620997
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702621109,
+      "status": 200,
+      "end": 1791702621120,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702621176,
+      "status": 200,
+      "end": 1791702621194
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702621215,
+      "status": 200,
+      "end": 1791702621238
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702621259,
+      "status": 200,
+      "end": 1791702621270
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702621381,
+      "status": 200,
+      "end": 1791702621392
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702621434,
+      "status": 200,
+      "end": 1791702621451
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702621472,
+      "status": 200,
+      "end": 1791702621520
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702621554,
+      "status": 200,
+      "end": 1791702621566
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702621672,
+      "status": 200,
+      "end": 1791702621684
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702621719,
+      "status": 200,
+      "end": 1791702621736
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702621750,
+      "status": 200,
+      "end": 1791702621772
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702621790,
+      "status": 200,
+      "end": 1791702621800
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702621899,
+      "status": 200,
+      "end": 1791702621909
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702621947,
+      "status": 200,
+      "end": 1791702621964
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702621979,
+      "status": 200,
+      "end": 1791702622003
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702622021,
+      "status": 200,
+      "end": 1791702622032
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702622142,
+      "status": 200,
+      "end": 1791702622155
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702622199,
+      "status": 200,
+      "end": 1791702622216
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702622233,
+      "status": 200,
+      "end": 1791702622260
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702622297,
+      "status": 200,
+      "end": 1791702622309
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702622412,
+      "status": 200,
+      "end": 1791702622423
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702622458,
+      "status": 200,
+      "end": 1791702622476
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702622493,
+      "status": 200,
+      "end": 1791702622518
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702622536,
+      "status": 200,
+      "end": 1791702622546
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702622656,
+      "status": 200,
+      "end": 1791702622669
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702622705,
+      "status": 200,
+      "end": 1791702622723
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702622739,
+      "status": 200,
+      "end": 1791702622771
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702622801,
+      "status": 200,
+      "end": 1791702622811
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702622923,
+      "status": 200,
+      "end": 1791702622936
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702622974,
+      "status": 200,
+      "end": 1791702622993
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702623008,
+      "status": 200,
+      "end": 1791702623036
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702623056,
+      "status": 200,
+      "end": 1791702623066
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702623187,
+      "status": 200,
+      "end": 1791702623199,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702623237,
+      "status": 200,
+      "end": 1791702623256
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702623270,
+      "status": 200,
+      "end": 1791702623297
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702623317,
+      "status": 200,
+      "end": 1791702623328
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702623441,
+      "status": 200,
+      "end": 1791702623453
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702623500,
+      "status": 200,
+      "end": 1791702623520
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702623537,
+      "status": 200,
+      "end": 1791702623568
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702623592,
+      "status": 200,
+      "end": 1791702623602
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702623717,
+      "status": 200,
+      "end": 1791702623729
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702623772,
+      "status": 200,
+      "end": 1791702623790
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702623807,
+      "status": 200,
+      "end": 1791702623837
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702623857,
+      "status": 200,
+      "end": 1791702623869
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702623991,
+      "status": 200,
+      "end": 1791702624003
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702624045,
+      "status": 200,
+      "end": 1791702624063
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702624078,
+      "status": 200,
+      "end": 1791702624107
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702624126,
+      "status": 200,
+      "end": 1791702624137
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702624256,
+      "status": 200,
+      "end": 1791702624269,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702624306,
+      "status": 200,
+      "end": 1791702624324
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702624346,
+      "status": 200,
+      "end": 1791702624376
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702624394,
+      "status": 200,
+      "end": 1791702624408
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702624520,
+      "status": 200,
+      "end": 1791702624532
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702624582,
+      "status": 200,
+      "end": 1791702624600
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702624615,
+      "status": 200,
+      "end": 1791702624646
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702624669,
+      "status": 200,
+      "end": 1791702624680
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702624793,
+      "status": 200,
+      "end": 1791702624808
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702624851,
+      "status": 200,
+      "end": 1791702624869
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702624884,
+      "status": 200,
+      "end": 1791702624919
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702624939,
+      "status": 200,
+      "end": 1791702624950
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702625067,
+      "status": 200,
+      "end": 1791702625079
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702625126,
+      "status": 200,
+      "end": 1791702625145
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702625160,
+      "status": 200,
+      "end": 1791702625192
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702625212,
+      "status": 200,
+      "end": 1791702625224
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702625357,
+      "status": 200,
+      "end": 1791702625369,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702625408,
+      "status": 200,
+      "end": 1791702625427
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702625447,
+      "status": 200,
+      "end": 1791702625479
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702625500,
+      "status": 200,
+      "end": 1791702625512
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702625635,
+      "status": 200,
+      "end": 1791702625647
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702625687,
+      "status": 200,
+      "end": 1791702625706
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702625725,
+      "status": 200,
+      "end": 1791702625759
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702625779,
+      "status": 200,
+      "end": 1791702625790
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702625916,
+      "status": 200,
+      "end": 1791702625928
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702625984,
+      "status": 200,
+      "end": 1791702626003
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702626018,
+      "status": 200,
+      "end": 1791702626051
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702626076,
+      "status": 200,
+      "end": 1791702626088
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702626202,
+      "status": 200,
+      "end": 1791702626215
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702626262,
+      "status": 200,
+      "end": 1791702626281
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702626296,
+      "status": 200,
+      "end": 1791702626333
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702626354,
+      "status": 200,
+      "end": 1791702626365
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702626489,
+      "status": 200,
+      "end": 1791702626503
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702626550,
+      "status": 200,
+      "end": 1791702626568
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702626583,
+      "status": 200,
+      "end": 1791702626619
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702626639,
+      "status": 200,
+      "end": 1791702626651
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702626788,
+      "status": 200,
+      "end": 1791702626801
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702626847,
+      "status": 200,
+      "end": 1791702626866
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702626882,
+      "status": 200,
+      "end": 1791702626918
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702626944,
+      "status": 200,
+      "end": 1791702626955
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702627089,
+      "status": 200,
+      "end": 1791702627103
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702627146,
+      "status": 200,
+      "end": 1791702627166
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702627184,
+      "status": 200,
+      "end": 1791702627221
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702627241,
+      "status": 429,
+      "end": 1791702627243
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702628244,
+      "status": 200,
+      "end": 1791702628265,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702628393,
+      "status": 200,
+      "end": 1791702628406
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702628449,
+      "status": 429,
+      "end": 1791702628450
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702629452,
+      "status": 200,
+      "end": 1791702629483,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702629500,
+      "status": 200,
+      "end": 1791702629539
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702629562,
+      "status": 200,
+      "end": 1791702629574
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702629715,
+      "status": 429,
+      "end": 1791702629716
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702630721,
+      "status": 200,
+      "end": 1791702630750,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702630802,
+      "status": 200,
+      "end": 1791702630822
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702630840,
+      "status": 429,
+      "end": 1791702630841
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702631846,
+      "status": 200,
+      "end": 1791702631907
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702631932,
+      "status": 200,
+      "end": 1791702631945
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702632092,
+      "status": 200,
+      "end": 1791702632106
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702632153,
+      "status": 429,
+      "end": 1791702632154
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702633156,
+      "status": 200,
+      "end": 1791702633191,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702633210,
+      "status": 200,
+      "end": 1791702633251
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702633276,
+      "status": 429,
+      "end": 1791702633277
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702634281,
+      "status": 200,
+      "end": 1791702634296,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702634458,
+      "status": 200,
+      "end": 1791702634472
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702634523,
+      "status": 200,
+      "end": 1791702634544
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702634560,
+      "status": 429,
+      "end": 1791702634561
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702635569,
+      "status": 200,
+      "end": 1791702635632,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702635657,
+      "status": 200,
+      "end": 1791702635670
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702635833,
+      "status": 429,
+      "end": 1791702635835
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702636839,
+      "status": 200,
+      "end": 1791702636867
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702636930,
+      "status": 200,
+      "end": 1791702636950
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702636966,
+      "status": 429,
+      "end": 1791702636968
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702637969,
+      "status": 200,
+      "end": 1791702638023
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702638052,
+      "status": 200,
+      "end": 1791702638065
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702638228,
+      "status": 200,
+      "end": 1791702638243
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702638295,
+      "status": 429,
+      "end": 1791702638296
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702639301,
+      "status": 200,
+      "end": 1791702639340
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702639363,
+      "status": 200,
+      "end": 1791702639406
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702639432,
+      "status": 429,
+      "end": 1791702639433
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702640437,
+      "status": 200,
+      "end": 1791702640464,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702640630,
+      "status": 200,
+      "end": 1791702640644
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702640701,
+      "status": 200,
+      "end": 1791702640722
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702640739,
+      "status": 429,
+      "end": 1791702640740
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702641743,
+      "status": 200,
+      "end": 1791702641793,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702641918,
+      "status": 200,
+      "end": 1791702641924
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702642231,
+      "status": 200,
+      "end": 1791702642253
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702642356,
+      "status": 429,
+      "end": 1791702642361,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702643366,
+      "status": 200,
+      "end": 1791702643402
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702643440,
+      "status": 200,
+      "end": 1791702643509
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702643563,
+      "status": 200,
+      "end": 1791702643589
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702643979,
+      "status": 429,
+      "end": 1791702643983,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702644985,
+      "status": 200,
+      "end": 1791702645002
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702645087,
+      "status": 200,
+      "end": 1791702645111
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702645140,
+      "status": 200,
+      "end": 1791702645186
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702645213,
+      "status": 429,
+      "end": 1791702645215
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702646217,
+      "status": 200,
+      "end": 1791702646235
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702646481,
+      "status": 200,
+      "end": 1791702646498
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702646587,
+      "status": 200,
+      "end": 1791702646610
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702646632,
+      "status": 429,
+      "end": 1791702646633
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702647635,
+      "status": 200,
+      "end": 1791702647689
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702647732,
+      "status": 200,
+      "end": 1791702647747
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702647980,
+      "status": 429,
+      "end": 1791702647981
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702648984,
+      "status": 200,
+      "end": 1791702649002,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702649113,
+      "status": 200,
+      "end": 1791702649135
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702649160,
+      "status": 200,
+      "end": 1791702649215
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702649257,
+      "status": 429,
+      "end": 1791702649259
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702650261,
+      "status": 200,
+      "end": 1791702650288
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702650525,
+      "status": 200,
+      "end": 1791702650543
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702650611,
+      "status": 200,
+      "end": 1791702650634
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702650656,
+      "status": 429,
+      "end": 1791702650662
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702651663,
+      "status": 200,
+      "end": 1791702651718
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702651756,
+      "status": 200,
+      "end": 1791702651772
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702652000,
+      "status": 429,
+      "end": 1791702652001
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702653004,
+      "status": 200,
+      "end": 1791702653032,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702653110,
+      "status": 200,
+      "end": 1791702653133
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702653155,
+      "status": 200,
+      "end": 1791702653205
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702653237,
+      "status": 429,
+      "end": 1791702653238
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702654241,
+      "status": 200,
+      "end": 1791702654267,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702654517,
+      "status": 200,
+      "end": 1791702654534
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702654598,
+      "status": 200,
+      "end": 1791702654619
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702654642,
+      "status": 429,
+      "end": 1791702654643
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702655647,
+      "status": 200,
+      "end": 1791702655719,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702655768,
+      "status": 200,
+      "end": 1791702655783
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702656011,
+      "status": 200,
+      "end": 1791702656026
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702656095,
+      "status": 429,
+      "end": 1791702656096
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702657097,
+      "status": 200,
+      "end": 1791702657131,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702657155,
+      "status": 200,
+      "end": 1791702657205
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702657239,
+      "status": 429,
+      "end": 1791702657240
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702658242,
+      "status": 200,
+      "end": 1791702658263,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702658519,
+      "status": 200,
+      "end": 1791702658536
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702658619,
+      "status": 200,
+      "end": 1791702658644
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702658670,
+      "status": 429,
+      "end": 1791702658672
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702659674,
+      "status": 200,
+      "end": 1791702659735
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702659777,
+      "status": 200,
+      "end": 1791702659794
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702660083,
+      "status": 200,
+      "end": 1791702660100
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702660222,
+      "status": 429,
+      "end": 1791702660223,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702661225,
+      "status": 200,
+      "end": 1791702661268,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702661299,
+      "status": 200,
+      "end": 1791702661355
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702661389,
+      "status": 429,
+      "end": 1791702661391
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702662392,
+      "status": 200,
+      "end": 1791702662416,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702662662,
+      "status": 200,
+      "end": 1791702662678
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702662763,
+      "status": 200,
+      "end": 1791702662787
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702662810,
+      "status": 429,
+      "end": 1791702662811
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702663813,
+      "status": 200,
+      "end": 1791702663872,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702663910,
+      "status": 200,
+      "end": 1791702663925
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702664181,
+      "status": 200,
+      "end": 1791702664198
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702664295,
+      "status": 429,
+      "end": 1791702664296
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702665299,
+      "status": 200,
+      "end": 1791702665338
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702665371,
+      "status": 200,
+      "end": 1791702665428
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702665459,
+      "status": 429,
+      "end": 1791702665460
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702666463,
+      "status": 200,
+      "end": 1791702666486
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702666749,
+      "status": 200,
+      "end": 1791702666765
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702666853,
+      "status": 200,
+      "end": 1791702666877
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702666903,
+      "status": 429,
+      "end": 1791702666904
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702667906,
+      "status": 200,
+      "end": 1791702667963
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702668001,
+      "status": 200,
+      "end": 1791702668016
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702668263,
+      "status": 200,
+      "end": 1791702668280
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702668379,
+      "status": 429,
+      "end": 1791702668380
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702669383,
+      "status": 200,
+      "end": 1791702669412,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702669442,
+      "status": 200,
+      "end": 1791702669502
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702669541,
+      "status": 200,
+      "end": 1791702669557
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702669826,
+      "status": 429,
+      "end": 1791702669832
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702670833,
+      "status": 200,
+      "end": 1791702670856,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702670969,
+      "status": 200,
+      "end": 1791702670993
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702671014,
+      "status": 200,
+      "end": 1791702671070
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702671105,
+      "status": 429,
+      "end": 1791702671106
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702672109,
+      "status": 200,
+      "end": 1791702672133
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702672418,
+      "status": 200,
+      "end": 1791702672435
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702672542,
+      "status": 200,
+      "end": 1791702672565
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702672589,
+      "status": 429,
+      "end": 1791702672592
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702673602,
+      "status": 200,
+      "end": 1791702673934,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702673993,
+      "status": 200,
+      "end": 1791702674020
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702674305,
+      "status": 200,
+      "end": 1791702674322
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702674417,
+      "status": 429,
+      "end": 1791702674418
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702675420,
+      "status": 200,
+      "end": 1791702675450,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702675483,
+      "status": 200,
+      "end": 1791702675546
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702675604,
+      "status": 200,
+      "end": 1791702675621
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702675926,
+      "status": 429,
+      "end": 1791702675927
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702676936,
+      "status": 200,
+      "end": 1791702676955,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702677069,
+      "status": 200,
+      "end": 1791702677094
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702677120,
+      "status": 200,
+      "end": 1791702677188
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702677230,
+      "status": 429,
+      "end": 1791702677231
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702678234,
+      "status": 200,
+      "end": 1791702678256,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702678560,
+      "status": 200,
+      "end": 1791702678578
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702678671,
+      "status": 200,
+      "end": 1791702678697
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702678724,
+      "status": 429,
+      "end": 1791702678731
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702679730,
+      "status": 200,
+      "end": 1791702679804,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702679866,
+      "status": 200,
+      "end": 1791702679890
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702680221,
+      "status": 200,
+      "end": 1791702680240
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702680362,
+      "status": 429,
+      "end": 1791702680364
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702681366,
+      "status": 200,
+      "end": 1791702681408
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702681450,
+      "status": 200,
+      "end": 1791702681509
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702681563,
+      "status": 200,
+      "end": 1791702681581
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702681910,
+      "status": 429,
+      "end": 1791702681911
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702682914,
+      "status": 200,
+      "end": 1791702682952
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702683060,
+      "status": 200,
+      "end": 1791702683087
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702683113,
+      "status": 200,
+      "end": 1791702683180
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702683219,
+      "status": 429,
+      "end": 1791702683221
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702684232,
+      "status": 200,
+      "end": 1791702684256,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702684574,
+      "status": 200,
+      "end": 1791702684592
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702684683,
+      "status": 200,
+      "end": 1791702684708
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702684737,
+      "status": 429,
+      "end": 1791702684739
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702685741,
+      "status": 200,
+      "end": 1791702685818
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702685862,
+      "status": 200,
+      "end": 1791702685882
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702686210,
+      "status": 200,
+      "end": 1791702686231
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702686334,
+      "status": 429,
+      "end": 1791702686335
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702687337,
+      "status": 200,
+      "end": 1791702687368
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702687397,
+      "status": 200,
+      "end": 1791702687463
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702687507,
+      "status": 200,
+      "end": 1791702687523
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702687827,
+      "status": 429,
+      "end": 1791702687828
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702688830,
+      "status": 200,
+      "end": 1791702688860,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702688970,
+      "status": 200,
+      "end": 1791702688994
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702689016,
+      "status": 200,
+      "end": 1791702689078
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702689111,
+      "status": 429,
+      "end": 1791702689112
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702690126,
+      "status": 200,
+      "end": 1791702690151
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702690486,
+      "status": 200,
+      "end": 1791702690505
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702690608,
+      "status": 200,
+      "end": 1791702690634
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702690667,
+      "status": 429,
+      "end": 1791702690669
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702691671,
+      "status": 200,
+      "end": 1791702691747,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702691795,
+      "status": 200,
+      "end": 1791702691812
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702692135,
+      "status": 200,
+      "end": 1791702692154
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702692264,
+      "status": 429,
+      "end": 1791702692266
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702693269,
+      "status": 200,
+      "end": 1791702693303
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702693336,
+      "status": 200,
+      "end": 1791702693399
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702693439,
+      "status": 429,
+      "end": 1791702693441
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702694444,
+      "status": 200,
+      "end": 1791702694467
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702694808,
+      "status": 200,
+      "end": 1791702694826
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702694954,
+      "status": 200,
+      "end": 1791702694978
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702695006,
+      "status": 200,
+      "end": 1791702695075
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702695116,
+      "status": 429,
+      "end": 1791702695117
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702696121,
+      "status": 200,
+      "end": 1791702696163
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702696508,
+      "status": 200,
+      "end": 1791702696529
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702696624,
+      "status": 200,
+      "end": 1791702696650
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702696682,
+      "status": 429,
+      "end": 1791702696691
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702697693,
+      "status": 200,
+      "end": 1791702697773
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702697824,
+      "status": 200,
+      "end": 1791702697840
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702698173,
+      "status": 200,
+      "end": 1791702698192
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702698319,
+      "status": 429,
+      "end": 1791702698320
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702699323,
+      "status": 200,
+      "end": 1791702699361,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702699394,
+      "status": 200,
+      "end": 1791702699466
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702699502,
+      "status": 429,
+      "end": 1791702699504
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702700506,
+      "status": 200,
+      "end": 1791702700526
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702700874,
+      "status": 200,
+      "end": 1791702700893
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702701021,
+      "status": 200,
+      "end": 1791702701046
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702701070,
+      "status": 200,
+      "end": 1791702701137
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702701177,
+      "status": 429,
+      "end": 1791702701178
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702702180,
+      "status": 200,
+      "end": 1791702702214
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702702559,
+      "status": 200,
+      "end": 1791702702577
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702702674,
+      "status": 200,
+      "end": 1791702702700
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702702732,
+      "status": 429,
+      "end": 1791702702740
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702703738,
+      "status": 200,
+      "end": 1791702703815
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702703869,
+      "status": 200,
+      "end": 1791702703887
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702704238,
+      "status": 200,
+      "end": 1791702704257
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702704380,
+      "status": 429,
+      "end": 1791702704381
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702705384,
+      "status": 200,
+      "end": 1791702705428
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702705466,
+      "status": 200,
+      "end": 1791702705538
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702705599,
+      "status": 200,
+      "end": 1791702705617
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702705957,
+      "status": 429,
+      "end": 1791702705958
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702706959,
+      "status": 200,
+      "end": 1791702706981
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702707109,
+      "status": 200,
+      "end": 1791702707137
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702707164,
+      "status": 200,
+      "end": 1791702707244
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702707286,
+      "status": 429,
+      "end": 1791702707288
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702708290,
+      "status": 200,
+      "end": 1791702708310,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702708698,
+      "status": 200,
+      "end": 1791702708718
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702708831,
+      "status": 200,
+      "end": 1791702708856
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702708880,
+      "status": 429,
+      "end": 1791702708882
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702709885,
+      "status": 200,
+      "end": 1791702709970
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702710032,
+      "status": 200,
+      "end": 1791702710050
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702710419,
+      "status": 200,
+      "end": 1791702710439
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702710556,
+      "status": 200,
+      "end": 1791702710591
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702710617,
+      "status": 429,
+      "end": 1791702710618
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702711620,
+      "status": 200,
+      "end": 1791702711708
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702711765,
+      "status": 200,
+      "end": 1791702711784
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702712152,
+      "status": 200,
+      "end": 1791702712172
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702712299,
+      "status": 429,
+      "end": 1791702712301
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/authority/discover",
+      "start": 1791702713303,
+      "status": 200,
+      "end": 1791702713341,
+      "failed": "net::ERR_ABORTED"
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702713378,
+      "status": 200,
+      "end": 1791702713451
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702713524,
+      "status": 200,
+      "end": 1791702713542
+    },
+    {
+      "device": "A",
+      "phase": "typing",
+      "path": "/account/delivery/submit",
+      "start": 1791702713907,
+      "status": 429,
+      "end": 1791702713909
+    },
+    {
+      "device": "A",
+      "phase": "drain",
+      "path": "/account/delivery/submit",
+      "start": 1791702714911,
+      "status": 200,
+      "end": 1791702714939
+    },
+    {
+      "device": "A",
+      "phase": "drain",
+      "path": "/account/authority/discover",
+      "start": 1791702715378,
+      "status": 200,
+      "end": 1791702715404
+    },
+    {
+      "device": "A",
+      "phase": "drain",
+      "path": "/account/history/v1/checkpoint",
+      "start": 1791702715436,
+      "status": 200,
+      "end": 1791702715511
+    },
+    {
+      "device": "A",
+      "phase": "drain",
+      "path": "/account/delivery/read-v2",
+      "start": 1791702715546,
+      "status": 200,
+      "end": 1791702715565
+    },
+    {
+      "device": "A",
+      "phase": "drain",
+      "path": "/account/delivery/submit",
+      "start": 1791702715859,
+      "status": 429,
+      "end": 1791702715861
+    }
+  ],
+  "summary": {
+    "durationMs": 95460,
+    "requests": 367,
+    "submits": 76,
+    "requestsPerKey": 0.6116666666666667,
+    "requestsPerSubmit": 4.828947368421052,
+    "refusals": 63,
+    "counts": {
+      "/account/delivery/submit": 88,
+      "/account/authority/discover": 91,
+      "/account/history/v1/checkpoint": 94,
+      "/account/delivery/read-v2": 94
+    },
+    "convergenceMs": 2012
+  }
+}

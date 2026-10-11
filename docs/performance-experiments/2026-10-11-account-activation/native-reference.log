@@ -1,0 +1,16 @@
+(node:45887) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:45887) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:45887) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ one owner advances from submit receipts without self content readback, through compaction and cold replay (5554.708542ms)
+✔ lost submit answer reconciles through the delivery ledger without self content writes or cold resubmission (4852.573125ms)
+✔ native submission abort retains work for cold restart (4490.884792ms)
+✔ native response abort retains work for cold restart (4539.425625ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21793.32625
