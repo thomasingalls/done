@@ -1,0 +1,46 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/c030/done
+
+ ❯ test/preparedCoverage.test.ts (4 tests | 1 failed) 56ms
+   × matches independent full checks through 120 generated mixed-type, GC and partial-delivery histories 40ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/preparedCoverage.test.ts > matches independent full checks through 120 generated mixed-type, GC and partial-delivery histories
+Error: Property failed after 1 tests
+{ seed: 111026, path: "0:0:2:2:2:2:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0", endOnFailure: true }
+Counterexample: [[{"op":3,"author":false,"deliver":false,"reverse":0},{"op":0,"author":false,"deliver":false,"reverse":0},{"op":0,"author":false,"deliver":false,"reverse":0},{"op":0,"author":false,"deliver":false,"reverse":0},{"op":0,"author":false,"deliver":false,"reverse":0}],false]
+Shrunk 20 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+ ❯ buildError node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2462:16
+ ❯ throwIfFailed node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2469:8
+ ❯ reportRunDetails node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2485:14
+ ❯ Module.assert node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2542:7
+ ❯ test/preparedCoverage.test.ts:89:6
+     87|     refused = 0,
+     88|     pending = 0;
+     89|   fc.assert(
+       |      ^
+     90|     fc.property(
+     91|       fc.array(
+
+Caused by: TypeError: Cannot read properties of undefined (reading 'constructor')
+ ❯ node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5391:17
+ ❯ typeListInsertGenericsAfter node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5387:11
+ ❯ typeListInsertGenerics node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5444:12
+ ❯ node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5835:9
+ ❯ transact node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:3417:14
+ ❯ YArray.insert node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:5834:7
+ ❯ test/preparedCoverage.test.ts:126:69
+ ❯ Property.predicate node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1353:99
+ ❯ Property.run node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1322:24
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 4 passed (5)
+      Tests  1 failed | 23 passed (24)
+   Start at  17:36:26
+   Duration  1.28s (transform 1.67s, setup 211ms, import 2.47s, tests 1.46s, environment 0ms)
+

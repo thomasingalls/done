@@ -1,0 +1,24 @@
+{
+  "base": "4bcac41928dae58a1795d4adb126595b898a56ca",
+  "baselinePatch": "baseline.patch",
+  "candidatePatch": "candidate.patch",
+  "incrementalPatch": "coverage.patch",
+  "source": {
+    "src/crdt/accountCapture.ts": "04c1d59d4c88ad996a56a92b7a8cfd23730f2830dd431095f487ef5190517f37",
+    "src/crdt/accountLedgerMetrics.ts": "c219490dc220b8ac0c13af7f1d31efab711ff1844d5c066c3f1f464a0a2ac303",
+    "src/crdt/accountReceive.ts": "4c33d90fd15b3860f47f15c23815d3ff406b47371928183906de13f6e9682e44",
+    "src/crdt/accountStartup.ts": "054d286ec5c3e6bc94dc822cbe1bfff17e8ba98d5a020d862eb416ec0bae6cea",
+    "src/crdt/contentStore.ts": "1afe088c2108c769eb00c3cd1410e471d0a357449f560a922e826502c67306e6",
+    "src/crdt/custody.ts": "cf68199524f023315d189b8c8ac69e72b015eebb43e9b61f6e23ed712b8adf2f",
+    "src/crdt/deliveryRecord.ts": "bf16d1f17819b33a73a18be285431fdd8fe85567a05e5cfab9ba64d17b5aceb4",
+    "src/crdt/inboundLedger.ts": "76c7e9d59912047a2512b8e93611fc057ad02cb3d2aa599bbbddcf220e92d173",
+    "src/crdt/joinedAccount.ts": "a04e1d8709013dad2efb5923f38460ef8c58f4ec71be4bb4c8394cdd9db6631a",
+    "src/crdt/sourceCapture.ts": "83bbf7471f9f3b60b4d606eed08d4e38c57cd0cec196c2e3c3445a9ec92a1859",
+    "src/crdt/spoolRecord.ts": "8e4eb01d65bdfafa4d927d8807f72da4574d1c2f71fabb2ae2deaa22f2095b10",
+    "src/crdt/yjs.ts": "84f37c8c0d5752133e6c070521d7d6659b4955c86883056013e72e3e9f3e74ee"
+  },
+  "test": {
+    "test/preparedCoverage.test.ts": "9382d59dd09aa065122939518c11185f0a1f3bc2749eb33f8bf4b0deaa11e262"
+  },
+  "fixtures": "Private disposable fixtures from the cold-open/batching packets; intentionally not copied"
+}

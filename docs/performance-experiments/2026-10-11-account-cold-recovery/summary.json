@@ -1,0 +1,341 @@
+{
+  "deep": {
+    "baseline": {
+      "n": 5,
+      "coldMs": {
+        "median": 3431.699998855591,
+        "min": 3402.7999992370605,
+        "max": 3453.5
+      },
+      "heapBytes": {
+        "median": 17512548,
+        "min": 17220484,
+        "max": 17514320
+      },
+      "firstEditMs": {
+        "median": 27,
+        "min": 25,
+        "max": 30
+      },
+      "preliminaryMs": {
+        "median": 1387.3999996185303,
+        "min": 1363.6000003814697,
+        "max": 1412.5
+      },
+      "ownerMs": {
+        "median": 1451.3000011444092,
+        "min": 1439.7000007629395,
+        "max": 1480
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 885,
+        "loads": 5,
+        "loadedRows": 19150,
+        "loadedBytes": 10690970,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 25897,
+        "sourceParseBytes": 6878456,
+        "recordCopies": 19151,
+        "recordCopyBytes": 10718938,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 1910,
+        "deriveKey": 955,
+        "decrypt": 12411,
+        "verify": 3627,
+        "digest": 16317
+      }
+    },
+    "candidate": {
+      "n": 5,
+      "coldMs": {
+        "median": 2921.5,
+        "min": 2912.7999992370605,
+        "max": 2942.2000007629395
+      },
+      "heapBytes": {
+        "median": 17556124,
+        "min": 17551980,
+        "max": 17560088
+      },
+      "firstEditMs": {
+        "median": 25,
+        "min": 24,
+        "max": 26
+      },
+      "preliminaryMs": {
+        "median": 883.8999996185303,
+        "min": 873.6999988555908,
+        "max": 890.2000007629395
+      },
+      "ownerMs": {
+        "median": 1442.0,
+        "min": 1423.5,
+        "max": 1464.6999988555908
+      },
+      "work": {
+        "startupValidations": 1,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 2,
+        "inboundVerifications": 2,
+        "inboundCensuses": 3,
+        "deliveryPrefixLinks": 590,
+        "loads": 5,
+        "loadedRows": 19150,
+        "loadedBytes": 10690970,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 21188,
+        "sourceParseBytes": 5627299,
+        "recordCopies": 26811,
+        "recordCopyBytes": 14995326,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 1320,
+        "deriveKey": 660,
+        "decrypt": 8286,
+        "verify": 2447,
+        "digest": 11012
+      }
+    },
+    "medianReductionPercent": 14.86726692384921
+  },
+  "receiver": {
+    "baseline": {
+      "n": 3,
+      "coldMs": {
+        "median": 1157.2000007629395,
+        "min": 1155.3000011444092,
+        "max": 1160.7000007629395
+      },
+      "heapBytes": {
+        "median": 9666628,
+        "min": 9663208,
+        "max": 9666724
+      },
+      "firstEditMs": {
+        "median": 23,
+        "min": 21,
+        "max": 24
+      },
+      "preliminaryMs": {
+        "median": 402.1000003814697,
+        "min": 399.29999923706055,
+        "max": 410.8000011444092
+      },
+      "ownerMs": {
+        "median": 200.29999923706055,
+        "min": 198.20000076293945,
+        "max": 200.79999923706055
+      },
+      "work": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 2,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 515,
+        "loadedBytes": 1285785,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 0,
+        "sourceParseBytes": 0,
+        "recordCopies": 567,
+        "recordCopyBytes": 1289019,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 1115,
+        "deriveKey": 226,
+        "decrypt": 500,
+        "verify": 912,
+        "digest": 1280
+      }
+    },
+    "candidate": {
+      "n": 3,
+      "coldMs": {
+        "median": 1177.1999988555908,
+        "min": 1177,
+        "max": 1183.3000011444092
+      },
+      "heapBytes": {
+        "median": 9633116,
+        "min": 9633056,
+        "max": 9633192
+      },
+      "firstEditMs": {
+        "median": 24,
+        "min": 23,
+        "max": 24
+      },
+      "preliminaryMs": {
+        "median": 240.0,
+        "min": 236.70000076293945,
+        "max": 243.10000038146973
+      },
+      "ownerMs": {
+        "median": 198.5,
+        "min": 190.19999885559082,
+        "max": 199.69999885559082
+      },
+      "work": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 1,
+        "deliveryVerifications": 2,
+        "inboundVerifications": 2,
+        "inboundCensuses": 3,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 515,
+        "loadedBytes": 1285785,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 0,
+        "sourceParseBytes": 0,
+        "recordCopies": 773,
+        "recordCopyBytes": 1803333,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 860,
+        "deriveKey": 175,
+        "decrypt": 346,
+        "verify": 708,
+        "digest": 1076
+      }
+    },
+    "medianReductionPercent": -1.7283095471366527
+  },
+  "fresh": {
+    "baseline": {
+      "n": 3,
+      "coldMs": {
+        "median": 256.8000011444092,
+        "min": 252.0999984741211,
+        "max": 261.29999923706055
+      },
+      "heapBytes": {
+        "median": 8285824,
+        "min": 8282128,
+        "max": 8286072
+      },
+      "firstEditMs": {
+        "median": 23,
+        "min": 23,
+        "max": 24
+      },
+      "preliminaryMs": {
+        "median": 29.399999618530273,
+        "min": 29.30000114440918,
+        "max": 29.399999618530273
+      },
+      "ownerMs": {
+        "median": 16,
+        "min": 16.0,
+        "max": 16.100000381469727
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 15,
+        "loadedBytes": 3335,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 7,
+        "sourceParseBytes": 2576,
+        "recordCopies": 17,
+        "recordCopyBytes": 3634,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 140,
+        "deriveKey": 70,
+        "decrypt": 45,
+        "verify": 87,
+        "digest": 107
+      }
+    },
+    "candidate": {
+      "n": 3,
+      "coldMs": {
+        "median": 261,
+        "min": 257.79999923706055,
+        "max": 262.3999996185303
+      },
+      "heapBytes": {
+        "median": 8259960,
+        "min": 8259568,
+        "max": 8260060
+      },
+      "firstEditMs": {
+        "median": 24,
+        "min": 23,
+        "max": 24
+      },
+      "preliminaryMs": {
+        "median": 29.299999237060547,
+        "min": 28.69999885559082,
+        "max": 31.299999237060547
+      },
+      "ownerMs": {
+        "median": 16.399999618530273,
+        "min": 15.0,
+        "max": 16.900001525878906
+      },
+      "work": {
+        "startupValidations": 1,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 2,
+        "inboundVerifications": 2,
+        "inboundCensuses": 3,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 15,
+        "loadedBytes": 3335,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 6,
+        "sourceParseBytes": 2208,
+        "recordCopies": 23,
+        "recordCopyBytes": 4968,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 140,
+        "deriveKey": 70,
+        "decrypt": 42,
+        "verify": 87,
+        "digest": 107
+      }
+    },
+    "medianReductionPercent": -1.6355135657608377
+  }
+}

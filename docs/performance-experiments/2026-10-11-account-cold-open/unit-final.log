@@ -1,0 +1,26 @@
+(node:77693) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ complete cold replay computes a linear number of chain links and agrees with the prior walker (1372.968208ms)
+✔ one thousand authenticated positions still require only two thousand link hashes (1693.706042ms)
+✔ a correctly signed response with the wrong preceding chain is still refused (41.318375ms)
+✔ missing earlier allocation and reordered authentic delivery remain refused (31.214625ms)
+(node:77694) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ signed current-key retry keeps the same original edits, position and closed bytes through interrupted durable steps (391.687417ms)
+✔ unsigned, substituted and wrong-purpose refusals cannot authorize re-encryption (135.591958ms)
+✔ the outbound driver retries only with installed newer authority and does not block after recording a valid refusal (177.516875ms)
+✔ a refusal received by an old writer stays closed until newer membership is installed (187.475167ms)
+(node:77695) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ three controls expose stale success after abort, late reinstatement and changed-old-row append classification (490.21775ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3600.023208

@@ -1,0 +1,20 @@
+(node:89489) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:89489) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ only opted-in exact snapshots reuse validation, and nothing survives a recovery owner (2615.182417ms)
+✔ a missing change between the two physical reads refuses recovery (2005.089542ms)
+✔ a row change between the two physical reads refuses recovery (2006.745208ms)
+✔ a ciphertext change between the two physical reads refuses recovery (1936.337334ms)
+✔ a counter-mac change between the two physical reads refuses recovery (1920.322334ms)
+✔ authenticated counter-only change forces another validation; late journal entries remain visible (1938.573042ms)
+✔ fail during verification cannot install success or outlive cleanup (1928.6575ms)
+✔ cancel during verification cannot install success or outlive cleanup (1923.832916ms)
+✔ weakening exact identity to any prior success exposes missing-row acceptance (2256.912458ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20511.727584

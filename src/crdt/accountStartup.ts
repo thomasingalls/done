@@ -1,3 +1,4 @@
+import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import type { NetworkLogin } from '../account/networkLogin';
 import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
 import { openContentCheckpoint } from './contentCheckpoint';
@@ -96,6 +97,7 @@ export async function verifyAccountUnderPermit(
     );
     await options.networkLogin.unlock(task, proof, options.assertPasskey);
   } else await requireAccountAccess(task, proof, options.pin, options.assertPasskey);
+  markAccountOpen('authorized');
   const current = await readPromotion(task, options.slotId, options.code);
   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');
   const census = await localCensus(task, claim, options.code);
@@ -234,13 +236,17 @@ export async function verifyAccountUnderPermit(
           marker.v >= 7
             ? {
                 allowSpoolCounter: true,
+                ...(marker.v === 9 ? { reuseOpened: true as const } : {}),
                 validate: async (records, _task, counter) => {
-                  const state =
-                    marker.v === 9
-                      ? inspectInbound(records, route, inbound!).delivery.spool
-                      : marker.v === 8
-                        ? inspectDelivery(records, route, authority).spool
-                        : inspectSpool(records, route);
+                  countLedgerWork('startupValidations');
+                  // These reducers inspect the same authenticated immutable snapshot.
+                  // Build its nested census once; each verifier still checks its own contract.
+                  const received =
+                    marker.v === 9 ? inspectInbound(records, route, inbound!) : undefined;
+                  const delivery =
+                    received?.delivery ??
+                    (marker.v === 8 ? inspectDelivery(records, route, authority) : undefined);
+                  const state = delivery?.spool ?? inspectSpool(records, route);
                   await verifySpoolWitness(state, counter, subtle);
                   if (detached)
                     await (
@@ -255,12 +261,9 @@ export async function verifyAccountUnderPermit(
                     marker.membership,
                   );
                   if (marker.v === 9)
-                    await verifyInboundLedger(
-                      inspectInbound(records, route, inbound!),
-                      records,
-                      inbound!,
-                      { assertCurrent: () => task.step(() => {}) },
-                    );
+                    await verifyInboundLedger(received!, records, inbound!, {
+                      assertCurrent: () => task.step(() => {}),
+                    });
                   await verifySpool(
                     state,
                     route,
@@ -271,15 +274,7 @@ export async function verifyAccountUnderPermit(
                     subtle,
                   );
                   if (marker.v >= 8)
-                    await verifyDelivery(
-                      marker.v === 9
-                        ? inspectInbound(records, route, inbound!).delivery
-                        : inspectDelivery(records, route, authority),
-                      route,
-                      authority,
-                      signer!,
-                      subtle,
-                    );
+                    await verifyDelivery(delivery!, route, authority, signer!, subtle);
                 },
               }
             : undefined,

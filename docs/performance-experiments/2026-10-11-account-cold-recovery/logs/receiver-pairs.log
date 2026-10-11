@@ -1,0 +1,12 @@
+START /tmp/done-account-cold-recovery/receiver-0-baseline
+PASS /tmp/done-account-cold-recovery/receiver-0-baseline
+START /tmp/done-account-cold-recovery/receiver-0-candidate
+PASS /tmp/done-account-cold-recovery/receiver-0-candidate
+START /tmp/done-account-cold-recovery/receiver-1-candidate
+PASS /tmp/done-account-cold-recovery/receiver-1-candidate
+START /tmp/done-account-cold-recovery/receiver-1-baseline
+PASS /tmp/done-account-cold-recovery/receiver-1-baseline
+START /tmp/done-account-cold-recovery/receiver-2-baseline
+PASS /tmp/done-account-cold-recovery/receiver-2-baseline
+START /tmp/done-account-cold-recovery/receiver-2-candidate
+PASS /tmp/done-account-cold-recovery/receiver-2-candidate

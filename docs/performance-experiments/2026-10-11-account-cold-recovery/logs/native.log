@@ -1,0 +1,30 @@
+(node:90172) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90172) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ abort during a pending passkey drains the ceremony before releasing and does not activate (2535.354084ms)
+(node:90183) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90183) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:90183) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (3803.596667ms)
+(node:90201) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90201) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ cold replay refuses missing or changed content (3823.504ms)
+✔ cold replay refuses missing or changed event (2920.05025ms)
+✔ cold replay refuses missing or changed ciphertext (2471.9165ms)
+(node:90230) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:90230) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:90230) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ hidden-page batch close sends promptly; death before the next batch recovers journalled writing (5282.273292ms)
+✔ one owner advances from submit receipts without self content readback, through compaction and cold replay (5884.780833ms)
+✔ lost reply and unavailable reconciliation retry the exact retained submission after cold open (4657.827ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38664.209625

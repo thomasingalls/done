@@ -1,0 +1,22 @@
+[
+  {
+    "run": 0,
+    "coldMs": 2891,
+    "frameColdMs": 2601.300001144409,
+    "ready": {
+      "shellFrameAt": 3527.800001144409,
+      "now": 3817.5,
+      "native": {
+        "importKey": 1344,
+        "deriveKey": 684,
+        "decrypt": 8294,
+        "verify": 2466,
+        "digest": 11013
+      }
+    },
+    "nativeBefore": {},
+    "heap": 17612728,
+    "editMs": 26,
+    "errors": []
+  }
+]

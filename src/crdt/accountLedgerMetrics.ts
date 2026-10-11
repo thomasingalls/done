@@ -2,6 +2,13 @@
 const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
 export const ledgerProfiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
 const workNames = [
+  'startupValidations',
+  'joinedStartupValidations',
+  'deliveryVerifications',
+  'inboundVerifications',
+  'inboundCensuses',
+  'deliveryPrefixLinks',
+  'coverageBaselines',
   'loads',
   'loadedRows',
   'loadedBytes',
@@ -85,3 +92,23 @@ if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
     configurable: true,
   });
 }
+
+/** Fixed milestones for a single opening; numeric diagnostics never retain account identifiers. */
+const openMilestones: Partial<
+  Record<
+    'authorized' | 'classified' | 'owner' | 'editor',
+    {
+      at: number;
+      metrics: ReturnType<typeof accountLedgerMetrics>;
+    }
+  >
+> = {};
+export const markAccountOpen = (name: keyof typeof openMilestones) => {
+  if (ledgerProfiling)
+    openMilestones[name] = { at: performance.now(), metrics: accountLedgerMetrics() };
+};
+if (ledgerProfiling)
+  Object.defineProperty(globalThis, '__doneOpenMilestones', {
+    value: () => structuredClone(openMilestones),
+    configurable: true,
+  });

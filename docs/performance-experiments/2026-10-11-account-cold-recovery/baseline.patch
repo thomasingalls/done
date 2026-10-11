@@ -1,0 +1,394 @@
+diff --git a/src/crdt/accountCapture.ts b/src/crdt/accountCapture.ts
+index e4c9cf3f..6ce4746d 100644
+--- a/src/crdt/accountCapture.ts
++++ b/src/crdt/accountCapture.ts
+@@ -1,4 +1,4 @@
+-import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
++import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import { verifyJoinedAccount } from './joinedAccount';
+ import { historyAuthority } from '../../account-protocol/admissionHistory';
+ import { claimScope } from './localGenesisRecord';
+@@ -100,6 +100,7 @@ export async function openAccountCaptureOwner(
+           if (extension?.version !== 9 || !extension.initializeJoined)
+             throw Error('Certified device needs the sync owner');
+           const v = await verifyJoinedAccount(task, options);
++          markAccountOpen('classified');
+           if (principalId !== undefined && principalId !== v.account.principalId)
+             throw Error('Account actor identity changed');
+           route = v.route;
+@@ -119,6 +120,7 @@ export async function openAccountCaptureOwner(
+           return;
+         }
+         let v = await verifyAccountUnderPermit(task, options, extension?.version === 9 ? 9 : 8);
++        markAccountOpen('classified');
+         if (extension?.version !== 9 && v.marker.captureBootstrap)
+           throw Error('Account upload conversion must finish before editing');
+         if (principalId !== undefined && v.account.principalId !== principalId)
+diff --git a/src/crdt/accountLedgerMetrics.ts b/src/crdt/accountLedgerMetrics.ts
+index 3981268e..547e7e4a 100644
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -2,6 +2,12 @@
+ const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
+ export const ledgerProfiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
+ const workNames = [
++  'startupValidations',
++  'joinedStartupValidations',
++  'deliveryVerifications',
++  'inboundVerifications',
++  'inboundCensuses',
++  'deliveryPrefixLinks',
+   'loads',
+   'loadedRows',
+   'loadedBytes',
+@@ -85,3 +91,23 @@ if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
+     configurable: true,
+   });
+ }
++
++/** Fixed milestones for a single opening; numeric diagnostics never retain account identifiers. */
++const openMilestones: Partial<
++  Record<
++    'authorized' | 'classified' | 'owner' | 'editor',
++    {
++      at: number;
++      metrics: ReturnType<typeof accountLedgerMetrics>;
++    }
++  >
++> = {};
++export const markAccountOpen = (name: keyof typeof openMilestones) => {
++  if (ledgerProfiling)
++    openMilestones[name] = { at: performance.now(), metrics: accountLedgerMetrics() };
++};
++if (ledgerProfiling)
++  Object.defineProperty(globalThis, '__doneOpenMilestones', {
++    value: () => structuredClone(openMilestones),
++    configurable: true,
++  });
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 6482114a..8c452028 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,4 @@
++import { markAccountOpen } from './accountLedgerMetrics';
+ import type { OpenedRecord } from './contentRecord';
+ import { countLedgerWork } from './accountLedgerMetrics';
+ import { accountLedgerMode } from './accountLedgerMode';
+@@ -1771,6 +1772,7 @@ async function openReceivingWorkspace(
+     composed,
+     joined,
+   );
++  markAccountOpen('owner');
+   operatorToken = access ?? operatorToken;
+   let enqueue!: OwnedReceiveQueue;
+   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
+@@ -1804,6 +1806,7 @@ async function openReceivingWorkspace(
+       await workspace.close();
+       throw Error('Account opening was cancelled');
+     }
++    markAccountOpen('editor');
+     gate = () => {
+       if (
+         carrier.signal.aborted ||
+diff --git a/src/crdt/accountStartup.ts b/src/crdt/accountStartup.ts
+index 44a2cc28..296609e4 100644
+--- a/src/crdt/accountStartup.ts
++++ b/src/crdt/accountStartup.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import type { NetworkLogin } from '../account/networkLogin';
+ import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
+ import { openContentCheckpoint } from './contentCheckpoint';
+@@ -96,6 +97,7 @@ export async function verifyAccountUnderPermit(
+     );
+     await options.networkLogin.unlock(task, proof, options.assertPasskey);
+   } else await requireAccountAccess(task, proof, options.pin, options.assertPasskey);
++  markAccountOpen('authorized');
+   const current = await readPromotion(task, options.slotId, options.code);
+   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');
+   const census = await localCensus(task, claim, options.code);
+@@ -235,12 +237,15 @@ export async function verifyAccountUnderPermit(
+             ? {
+                 allowSpoolCounter: true,
+                 validate: async (records, _task, counter) => {
+-                  const state =
+-                    marker.v === 9
+-                      ? inspectInbound(records, route, inbound!).delivery.spool
+-                      : marker.v === 8
+-                        ? inspectDelivery(records, route, authority).spool
+-                        : inspectSpool(records, route);
++                  countLedgerWork('startupValidations');
++                  // These reducers inspect the same authenticated immutable snapshot.
++                  // Build its nested census once; each verifier still checks its own contract.
++                  const received =
++                    marker.v === 9 ? inspectInbound(records, route, inbound!) : undefined;
++                  const delivery =
++                    received?.delivery ??
++                    (marker.v === 8 ? inspectDelivery(records, route, authority) : undefined);
++                  const state = delivery?.spool ?? inspectSpool(records, route);
+                   await verifySpoolWitness(state, counter, subtle);
+                   if (detached)
+                     await (
+@@ -255,12 +260,9 @@ export async function verifyAccountUnderPermit(
+                     marker.membership,
+                   );
+                   if (marker.v === 9)
+-                    await verifyInboundLedger(
+-                      inspectInbound(records, route, inbound!),
+-                      records,
+-                      inbound!,
+-                      { assertCurrent: () => task.step(() => {}) },
+-                    );
++                    await verifyInboundLedger(received!, records, inbound!, {
++                      assertCurrent: () => task.step(() => {}),
++                    });
+                   await verifySpool(
+                     state,
+                     route,
+@@ -271,15 +273,7 @@ export async function verifyAccountUnderPermit(
+                     subtle,
+                   );
+                   if (marker.v >= 8)
+-                    await verifyDelivery(
+-                      marker.v === 9
+-                        ? inspectInbound(records, route, inbound!).delivery
+-                        : inspectDelivery(records, route, authority),
+-                      route,
+-                      authority,
+-                      signer!,
+-                      subtle,
+-                    );
++                    await verifyDelivery(delivery!, route, authority, signer!, subtle);
+                 },
+               }
+             : undefined,
+diff --git a/src/crdt/deliveryRecord.ts b/src/crdt/deliveryRecord.ts
+index bea3ee0c..1ca7a97d 100644
+--- a/src/crdt/deliveryRecord.ts
++++ b/src/crdt/deliveryRecord.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork } from './accountLedgerMetrics';
+ import { historyAuthority, verifyHistoryDecision } from '../../account-protocol/admissionHistory';
+ /** Private v8 delivery ledger. Status is derived from authenticated proof bytes, never a stored setter. */
+ import { hex, utf8, type Bytes } from './custodyCrypto';
+@@ -198,6 +199,7 @@ export async function expectedPosition(spool: SpoolState, position: number, subt
+         decoded?.kind === 'refused' ? await refusalId(decoded.refusal, subtle) : ZERO_REFUSAL;
+       return { ...subject, previous, parent };
+     }
++    countLedgerWork('deliveryPrefixLinks');
+     previous = await acceptanceLink(subject, previous, subtle);
+   }
+   return null;
+@@ -219,6 +221,7 @@ export async function verifyDelivery(
+     >;
+   },
+ ): Promise<DeliveryState> {
++  countLedgerWork('deliveryVerifications');
+   const state = continuation?.state ?? emptyDelivery(),
+     entries = new Map(c.entries.map((e) => [e.record.seq, e])),
+     envelopes = continuation?.envelopes ?? new Map<number, number>();
+@@ -247,10 +250,13 @@ export async function verifyDelivery(
+     NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string }
+   > = continuation?.expected ?? new Map();
+   const expectedAt = async (position: number) => {
+-    if (!reuse && !continuation) return expectedPosition(active, position, subtle);
++    // A complete cold replay also advances this prefix once. Rebuilding it for each
++    // submission/response is quadratic. Retry events below invalidate the affected suffix;
++    // this cache never substitutes a later envelope for the attempt being replayed.
+     for (let n = expectedCache.size + 1; n <= position; n++) {
+       const p = active.positions[n - 1];
+       if (!p?.wire) return null;
++      countLedgerWork('deliveryPrefixLinks');
+       const e = decodeNetworkEnvelope(p.wire),
+         subject = {
+           workspace: e.workspace_id,
+diff --git a/src/crdt/inboundLedger.ts b/src/crdt/inboundLedger.ts
+index 30175803..6806997d 100644
+--- a/src/crdt/inboundLedger.ts
++++ b/src/crdt/inboundLedger.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork } from './accountLedgerMetrics';
+ import { measureLedger } from './accountLedgerMetrics';
+ import {
+   isHistoryInstallTag,
+@@ -89,6 +90,7 @@ export function inspectInbound(
+   route: CaptureRoute,
+   context: InboundContext,
+ ) {
++  countLedgerWork('inboundCensuses');
+   const prior: OpenedRecord[] = [],
+     entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
+     installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
+@@ -441,6 +443,7 @@ export async function verifyInboundLedger(
+   },
+   continuation?: { state: InboundState; after: number },
+ ): Promise<InboundState> {
++  countLedgerWork('inboundVerifications');
+   const clone = (s: InboundState): InboundState => ({
+     ...s,
+     prefix: { ...s.prefix },
+diff --git a/src/crdt/joinedAccount.ts b/src/crdt/joinedAccount.ts
+index bdf0a10a..15b13fa5 100644
+--- a/src/crdt/joinedAccount.ts
++++ b/src/crdt/joinedAccount.ts
+@@ -1,3 +1,4 @@
++import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import {
+   captureHandoffHistory,
+   handoffHistoryPrefix,
+@@ -889,6 +890,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
+         );
+       else
+         await requireAccountAccess(task, joinedBinding(marker), options.pin, options.assertPasskey);
++      markAccountOpen('authorized');
+       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
+         throw Error('Certified device changed during unlock');
+       const scope = claimScope(state.claim),
+@@ -1011,6 +1013,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
+         {
+           allowSpoolCounter: true,
+           validate: async (records, _task, counter) => {
++            countLedgerWork('joinedStartupValidations');
+             const census = inspectInbound(records, b.route, b.base);
+             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);
+             await verifySpool(
+diff --git a/src/crdt/sourceCapture.ts b/src/crdt/sourceCapture.ts
+index dff0cc09..6030d3c3 100644
+--- a/src/crdt/sourceCapture.ts
++++ b/src/crdt/sourceCapture.ts
+@@ -160,7 +160,7 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
+       if (result[key] !== historical[key]) throw Error('route');
+     const encoded = encodeSourceCapsule(result);
+     try {
+-      if (hex(encoded) !== hex(bytes)) throw Error('noncanonical');
++      if (!sameBytes(encoded, bytes)) throw Error('noncanonical');
+     } finally {
+       encoded.fill(0);
+     }
+@@ -201,6 +201,35 @@ export function capturedSourcePresence(
+ export function captureCatalog(
+   records: readonly OpenedRecord[],
+   route: CaptureRoute,
++): Map<string, Bytes> {
++  return scanCapturedSources(records, route);
++}
++
++/** Scalar metadata used only during a synchronous census, with no decoded update buffers. */
++interface CapturedSourceDescription {
++  sequence: number;
++  epoch: number;
++  sources: { actor: string; kind: SourceUpdate['kind']; length: number }[];
++}
++export function inspectCapturedSources(records: readonly OpenedRecord[], route: CaptureRoute) {
++  const descriptions = new Map<string, CapturedSourceDescription>();
++  const sources = scanCapturedSources(records, route, (c, record) => {
++    const prior = descriptions.get(c.id);
++    if (prior) prior.sequence = Math.min(prior.sequence, record.seq);
++    else
++      descriptions.set(c.id, {
++        sequence: record.seq,
++        epoch: c.epoch,
++        sources: c.sources.map((s) => ({ actor: s.actor, kind: s.kind, length: s.bytes.length })),
++      });
++  });
++  return { sources, descriptions };
++}
++
++function scanCapturedSources(
++  records: readonly OpenedRecord[],
++  route: CaptureRoute,
++  describe?: (capsule: SourceCapsule, record: OpenedRecord) => void,
+ ): Map<string, Bytes> {
+   const catalog = new Map<string, Bytes>();
+   for (const r of records) {
+@@ -209,9 +238,10 @@ export function captureCatalog(
+     const c = decodeSourceCapsule(r.bytes, route);
+     try {
+       const existing = catalog.get(c.id);
+-      if (existing && hex(existing) !== hex(r.bytes))
++      if (existing && !sameBytes(existing, r.bytes))
+         captureError('Conflicting source capsule identity');
+       catalog.set(c.id, r.bytes);
++      describe?.(c, r);
+     } finally {
+       eraseCapsule(c);
+     }
+diff --git a/src/crdt/spoolRecord.ts b/src/crdt/spoolRecord.ts
+index 2c46b84a..a2bf6289 100644
+--- a/src/crdt/spoolRecord.ts
++++ b/src/crdt/spoolRecord.ts
+@@ -21,7 +21,7 @@ import {
+   type OpenedRecord,
+ } from './contentRecord';
+ import {
+-  captureCatalog,
++  inspectCapturedSources,
+   captureRouteAt,
+   decodeSourceCapsule,
+   eraseCapsule,
+@@ -249,16 +249,9 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
+     }
+   }
+   sourceRecords.sort((a, b) => a.seq - b.seq);
+-  const sources = captureCatalog(sourceRecords, route),
++  const { sources, descriptions } = inspectCapturedSources(sourceRecords, route),
+     positions: SpoolPosition[] = [],
+-    used = new Set<string>(),
+-    sourceSequences = new Map<string, number>();
+-  for (const r of sourceRecords)
+-    if (r.kind === 'outbound') {
+-      const c = decodeSourceCapsule(r.bytes, route);
+-      sourceSequences.set(c.id, Math.min(sourceSequences.get(c.id) ?? Infinity, r.seq));
+-      eraseCapsule(c);
+-    }
++    used = new Set<string>();
+   let attempts = 0,
+     previousEpoch = 1;
+   for (const { record, entry: e, epoch } of events.sort((a, b) => a.record.seq - b.record.seq)) {
+@@ -276,32 +269,27 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
+         kind = '',
+         sourceEpoch = 0;
+       for (const ref of refs) {
+-        const bytes = sources.get(ref.id),
++        const description = descriptions.get(ref.id),
+           key = ref.id + ':' + ref.index,
+-          sequence = sourceSequences.get(ref.id)!;
+-        if (!bytes || used.has(key) || sequence >= record.seq)
++          sequence = description?.sequence ?? Infinity;
++        if (!description || used.has(key) || sequence >= record.seq)
+           captureError('Missing, repeated or late source');
+         if (
+           sequence < previousSequence ||
+           (sequence === previousSequence && ref.index <= previousIndex)
+         )
+           captureError('Source batch order changed');
+-        const c = decodeSourceCapsule(bytes!, route);
+-        try {
+-          if (sourceEpoch && c.epoch !== sourceEpoch)
+-            captureError('Source batch crosses authority');
+-          sourceEpoch = c.epoch;
+-          const source = c.sources[ref.index];
+-          if (!source) captureError('Missing source index');
+-          if (actor && (actor !== source!.actor || kind !== source!.kind))
+-            captureError('Source batch actor changed');
+-          actor = source!.actor;
+-          kind = source!.kind;
+-          total += source!.bytes.length;
+-          if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
+-        } finally {
+-          eraseCapsule(c);
+-        }
++        if (sourceEpoch && description!.epoch !== sourceEpoch)
++          captureError('Source batch crosses authority');
++        sourceEpoch = description!.epoch;
++        const source = description!.sources[ref.index];
++        if (!source) captureError('Missing source index');
++        if (actor && (actor !== source!.actor || kind !== source!.kind))
++          captureError('Source batch actor changed');
++        actor = source!.actor;
++        kind = source!.kind;
++        total += source!.length;
++        if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
+         previousSequence = sequence;
+         previousIndex = ref.index;
+         used.add(key);

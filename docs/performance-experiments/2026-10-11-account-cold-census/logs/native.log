@@ -1,0 +1,30 @@
+(node:88485) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:88485) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ abort during a pending passkey drains the ceremony before releasing and does not activate (2532.129334ms)
+(node:88495) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:88495) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:88495) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (3771.51525ms)
+(node:88513) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:88513) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ cold replay refuses missing or changed content (3796.101916ms)
+✔ cold replay refuses missing or changed event (2890.338125ms)
+✔ cold replay refuses missing or changed ciphertext (2440.979375ms)
+(node:88535) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:88535) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:88535) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ hidden-page batch close sends promptly; death before the next batch recovers journalled writing (5472.5825ms)
+✔ one owner advances from submit receipts without self content readback, through compaction and cold replay (5582.531375ms)
+✔ lost reply and unavailable reconciliation retry the exact retained submission after cold open (4754.671084ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38555.799542

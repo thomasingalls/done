@@ -1,0 +1,75 @@
+--- a/src/crdt/accountStartup.ts
++++ b/src/crdt/accountStartup.ts
+@@ -236,6 +236,7 @@
+           marker.v >= 7
+             ? {
+                 allowSpoolCounter: true,
++                ...(marker.v === 9 ? { reuseOpened: true as const } : {}),
+                 validate: async (records, _task, counter) => {
+                   countLedgerWork('startupValidations');
+                   // These reducers inspect the same authenticated immutable snapshot.
+--- a/src/crdt/joinedAccount.ts
++++ b/src/crdt/joinedAccount.ts
+@@ -1012,6 +1012,7 @@
+         },
+         {
+           allowSpoolCounter: true,
++          reuseOpened: true,
+           validate: async (records, _task, counter) => {
+             countLedgerWork('joinedStartupValidations');
+             const census = inspectInbound(records, b.route, b.base);
+--- a/src/crdt/contentStore.ts
++++ b/src/crdt/contentStore.ts
+@@ -43,7 +43,7 @@
+ import type { SessionTask } from './writeSession';
+ 
+ export interface ContentCrypto {
+-  /** Only the private v9 owner opts into lifetime-local plaintext reuse. Validation still runs. */
++  /** Account owners opt into lifetime-local plaintext reuse. The validation callback still runs. */
+   reuseOpened?: true;
+   /** Optional private carrier payload validation, including every compaction audit. */
+   allowSpoolCounter?: true;
+--- a/src/crdt/custody.ts
++++ b/src/crdt/custody.ts
+@@ -1080,16 +1080,31 @@
+   authority: CustodyAuthority,
+   code: string,
+   operation: (recovery: JournalRecovery) => Promise<T>,
+-  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter'>,
++  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter' | 'reuseOpened'>,
+ ): Promise<T> => {
++  let validatedView: object | undefined;
++  const validate = validation?.validate;
+   const owner = prepareCustody(
+     authority,
+     code,
+     true,
+     true,
+     false,
+-    validation?.validate,
++    validate && validation?.reuseOpened
++      ? async (rows, scope, counter, view) => {
++          scope.step(() => {});
++          // The carrier supplies the same identity only after a fresh authenticated read
++          // matches both its counter and every sealed row. Never share it across owners.
++          if (view && view === validatedView) return;
++          validatedView = undefined;
++          await scope.wait(() => validate(rows, scope, counter, view));
++          scope.step(() => {
++            validatedView = view;
++          });
++        }
++      : validate,
+     validation?.allowSpoolCounter,
++    validation?.reuseOpened,
+   );
+   let journal: JournalUpdate[] | undefined, records: OpenedRecord[] | undefined;
+   try {
+@@ -1098,6 +1113,7 @@
+     records = await owner.carrier.load(task);
+     return await operation({ records, journal });
+   } finally {
++    validatedView = undefined;
+     journal?.forEach((row) => row.bytes.fill(0));
+     records?.forEach((row) => row.bytes.fill(0));
+     owner.dispose();

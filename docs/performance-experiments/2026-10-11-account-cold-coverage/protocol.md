@@ -1,0 +1,13 @@
+# Prepare a coverage baseline once per synchronous check
+
+Recorded before implementation. Baseline is signed `4bcac419` plus the three retained cold-open repairs. Previous browser-frame medians were 2.581s for the deep fixture and 0.706s for received history. The separate profile attributed about 607ms inclusive CPU to coverage, with repeated forks/serialization within that cost.
+
+Hypothesis: within the live incremental owner's synchronous coverage call, encode the immutable baseline once, then reconstruct an independent fork and compare its complete state for every previously unproved source. Keep pending structs, missing-dependency maps and pending deletions exact. Dispose the prepared bytes at the end of the call, including refusal. No shared fork between sources, grouping of verdicts, vector-only proof, cross-call cache or persisted format change. Keep the existing full/reference and audit path independent.
+
+Prediction: at least 15% lower coverage time and roughly 0.15–0.30s lower deep first-frame time (6–12%). Independent per-source checks, full verification passes, crypto counts and physical reads should remain unchanged. Most received-page originals already hit exact-byte coverage; little gain is expected on that fixture. The 2.5s budget is a separate observation, not an adoption condition.
+
+Use the previous packet's in-page two-animation-frame timestamp as the primary measure (retain polling observations separately). Same private deep, 48-burst receiving, and fresh fixtures; five alternating deep pairs and three each receiving/fresh, serial offline opens after caching. Preserve every attempt. One separate deep CPU profile, ordinary-build edit/reopen checks, collected heap and first edit. Do not run CPU-heavy checks during paired timing. Report sample medians/ranges, not phone or population claims.
+
+Safety: compare the new probe against the untouched fork/apply/full-state reference in directed and generated mixed-type histories, pending structs/deletions, out-of-order delivery, missing content and malformed updates. Check each original independently; exercise reuse after a failed check, source/template detachment and disposal. Existing coverage/invalidation, pending-content, corruption, compaction, journal and retry native regressions remain required. No generalized qualification or release-validation campaign.
+
+Adopt only if proof checks pass, measured coverage work falls, deep frame median improves at least 5%, and receiving/fresh time and retained heap do not materially regress. If the preparation costs or semantic discrepancies defeat this, retain evidence and revert this slice alone.

@@ -12886,3 +12886,142 @@ refuses configuration. The packet lists exact commands and case counts without c
 occurred in this phase. Repeated cold-open parsing, full physical census/copying, maintenance pauses
 and peer discovery traffic remain opportunities. Release validation and the other seat's live progress
 file remain untouched.
+
+### Account cold opening — forward delivery prefix and one preliminary census
+
+**Date:** 2026-10-11 · **Commit:** working tree, signed parent `4bcac419` · **Stage:** bounded performance repair, not release validation
+
+**Exit.** Complete delivery replay now advances a per-pass prefix cache even without a warm memo or
+incremental continuation. Retired-generation retries invalidate the affected suffix, preserving the
+historical attempt and all signature/order checks. Preliminary Account validation constructs its nested
+inbound/delivery/spool census once. There is no persistent-format change, skip-verification flag or
+new reuse across startup lifetimes. Numeric-only diagnostics expose actual pass counts and milestones
+only in profiling builds.
+
+**Evidence.** The [cold-open packet](./performance-experiments/2026-10-11-account-cold-open/README.md)
+records the parent and source patches, predeclared comparison, raw numeric opens, independent hash
+counts, profile, limitations and failed harness attempts. Five alternating pairs on the same retained
+2,320-edit / 295-position history reduce median offline opening from 11.62s to 4.21s (63.7%). Prefix
+computations fall from 173,755 to 885; census construction falls from eight to four, with all three
+complete delivery/inbound passes retained. Independent signed-history tests show linear hash work
+through 1,000 positions. Three receive-heavy pairs (51 inbound records) stay about 1.17s and three
+fresh pairs about 0.26s. Retained heap is unchanged in practical terms; peak heap was not measured.
+
+**Verification.** Nine focused node checks pass. Eight selected native cases pass across the initial
+six successes and two reruns after creating their missing evidence directory: corruption/completeness,
+pending structs/deletion, journal death, receipt progress, lost-reply exact retry and cancellation.
+Candidate offline first-edit recovery and ordinary-build online/deep plus offline/second-device
+edit/reopen pass; ordinary builds expose neither diagnostic global. TypeScript, targeted format/lint,
+patched Yjs, ordinary build, bundle budget and built-origin scan pass. An existing ledger ordering
+mutation's claimed rescue fails on both parent and candidate; it remains documented and uncredited.
+
+**Remaining.** The deep fixture still exceeds the 2.5s cold-start budget. Capsule decoding within a
+census, coverage costs and reusing verification across the preliminary/live-owner boundary are future
+cold-open slices. The repaired profile splits the remaining initialization cost roughly between those
+owners; no ownership handoff was introduced here. Delayed second-device catch-up is a separate ongoing
+investigation. Batching and this repair have not been deployed. Release validation and the other seat's
+live progress file remain untouched.
+
+### Account cold opening — one validated source parse per census
+
+**Date:** 2026-10-11 · **Commit:** working tree, following the uncommitted cold-open repair on signed parent `4bcac419` · **Stage:** bounded performance repair
+
+**Exit.** Spool census now gathers canonical source bytes and scalar allocation metadata in one
+validated pass. Decoded updates are erased immediately; descriptions remain within that synchronous
+census. Earliest duplicate sequence, exact identity, epoch/actor/order/size checks remain. Canonical
+source equality compares bytes directly instead of allocating hexadecimal strings. Full cryptographic
+verification and all ownership boundaries are unchanged.
+
+**Evidence.** The [follow-up packet](./performance-experiments/2026-10-11-account-cold-census/README.md)
+compares against the preceding repaired cold-open implementation, not the original quadratic one.
+Five alternating deep-history pairs reduce median opening from 4.07s to 3.44s (15.4%, 625ms), with
+source parses falling from 44,733 to 25,897. Three receiving-device pairs remain about 1.16s; three
+fresh-account pairs remain about 0.26s. Full passes, native cryptographic work and physical reads are
+unchanged. Deep collected heap medians are 17.23/17.51MB with overlapping ranges; first-card medians
+are both 26ms. A separate profile identifies remaining verification and coverage costs.
+
+**Verification.** 18 focused node cases and eight native cases pass across the recorded invocations.
+The historical batch reader needed an isolated test entry because newer unrelated consumers require
+an export it predates; the initial failure and passing rerun are retained. All 22 measured opens pass.
+Profile and ordinary-build online/deep plus offline/receiver edit/reopen checks pass; ordinary builds
+expose no diagnostic globals. TypeScript, targeted format/lint, Yjs, ordinary build, bundle and origin
+checks pass. Exact scope and remaining stale prior control are recorded in the packet.
+
+**Remaining.** Deep opening still exceeds 2.5s. Investigate reuse within the preliminary recovery
+owner, which still validates the full store twice, before introducing cross-owner handoff. Coverage
+work is the other measured opportunity. No deployment or release-validation resumption; the live
+progress file remains untouched. This slice and its predecessor are uncommitted.
+
+### Account cold opening — reuse inside preliminary recovery
+
+**Date:** 2026-10-11 · **Commit:** working tree, following both cold-open repairs on signed parent `4bcac419` · **Stage:** bounded performance repair
+
+**Exit.** Current first-device and joined Account recovery opt into the existing content owner's
+lifetime-local opened-record reuse. Successful semantic validation is reused only when the next fresh,
+authenticated storage read supplies the same complete snapshot identity. Counter/row changes revalidate;
+corrupt authentication refuses. Journal reads stay fresh. Cancellation/failure cannot install reusable
+success; disposal clears the cache. The live editor remains a separate, fully validating owner.
+
+**Evidence.** The [recovery packet](./performance-experiments/2026-10-11-account-cold-recovery/README.md)
+records five alternating deep-history pairs: 3.43s to 2.92s (14.9%, 510ms), one preliminary validation
+instead of two, and 12,411 to 8,286 native decryptions with all five physical reads retained. Collected
+heap medians are 17.51/17.56MB; copied bytes rise 10.72/15.00MB, an explicit temporary reuse cost.
+The original receiver visibility observer hid the improvement, so a separately recorded supplemental
+probe timestamps an editor frame in-page. Three pairs per fixture give deep 3.11s to 2.58s and receiver
+0.85s to 0.71s. The original 22 observations and supplemental 12 remain separate and fully retained.
+
+**Verification.** Nine new native boundary tests and eight selected native regressions pass. Tests
+cover exact identity, missing/authentically changed rows, counter changes, ciphertext/MAC corruption,
+fresh journal entries, failed/late/cancelled validation and cleanup. Weakening identity matching causes
+the helper to deliver a missing-row snapshot, proving that control is effective. All 34 measured opens
+pass, plus separate profile and ordinary-build online/deep and offline/receiver edit/reopen checks.
+TypeScript, targeted format/lint, Yjs, build, bundle and origin checks pass.
+
+**Remaining.** The 2.5s budget remains unmet even with the frame timestamp. The strongest remaining
+profiled candidate is live-owner accepted-source coverage checking (~0.6s inclusive). No coverage
+repair, cross-owner handoff, deployment or release-validation resumption occurred. All three cold-open
+slices remain uncommitted; the other seat's live progress file remains untouched.
+
+### Account cold opening — prepared coverage baseline
+
+**Date:** 2026-10-11 · **Commit:** working tree, following three cold-open repairs on signed parent `4bcac419` · **Stage:** bounded performance repair
+
+**Exit.** Live incremental coverage encodes its immutable baseline once within a synchronous check.
+Every unseen original still receives an independent fork and full comparison, including pending
+structs/deletions and dependency bookkeeping. Temporary preparation is disposed in `finally`. The
+ordinary full verifier and isolated audit keep the previous reference algorithm. No persisted format,
+authority boundary, cross-call cache or admission-policy change.
+
+**Evidence.** The [coverage packet](./performance-experiments/2026-10-11-account-cold-coverage/README.md)
+records five alternating deep pairs: editor-frame median 2.577s to 2.341s (9.2%, 236ms), coverage
+615ms to 376ms (38.9%), with all 2,355 independent checks and unchanged crypto/read/full-pass counts.
+Receiver medians remain 0.699s; fresh medians are 0.193/0.204s. Deep collected-heap median increases
+0.29MB with overlapping ranges, and first edits remain 23ms. All candidate deep samples are below
+2.5s on this desktop fixture; historical polling values are not directly comparable.
+
+**Verification.** 25 focused unit tests, including 120 new generated differential histories, and eight
+native regressions pass. Checks cover independent forks, refusal/retry, malformed inputs, detachment,
+disposal, simultaneous preparation, normalization, pending dependencies/deletions, corruption,
+compaction, journal death, receipt advancement and cancellation. All 22 paired opens pass. Separate
+profile and ordinary-build online/deep and offline/receiver edit/reopen checks pass. Two initial runs
+exposed the same invalid generator input, corrected and retained in the evidence; no measured browser
+attempt failed. TypeScript, format/lint, Yjs, ordinary build, bundle and origin checks pass.
+
+**Remaining.** Further cold-open optimization would address repeated census parsing and byte/text
+conversion, now larger than coverage. Receiver network catch-up, phone performance, peak memory and
+large-history scaling remain separate. No release-validation resumption or deployment. All four
+cold-open slices remain uncommitted; `docs/progress.md` remains untouched.
+
+### Account cold opening — commit checkpoint
+
+**Date:** 2026-10-11 · **Commit:** this cold-open integration commit, parent `4bcac419` · **Stage:** recorded implementation and evidence
+
+The four preceding slices are committed together: linear delivery-prefix verification/shared census,
+one source parse per census, preliminary-owner recovery reuse, and prepared coverage baselines.
+Their focused tests, exact intermediate patches, source manifests, measurements and failed-attempt
+records are included. The final coverage packet's runtime/test hashes still match the committed
+implementation; no executable code changed after the recorded checks. Earlier working-tree status
+statements describe when each experiment ran and are superseded by this checkpoint.
+
+Nothing is deployed or pushed by this checkpoint. Release validation remains paused. The unrelated
+root review documents and the other seat's `docs/progress.md` are not part of this commit.

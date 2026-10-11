@@ -1,0 +1,281 @@
+{
+  "deep": {
+    "baseline": {
+      "n": 5,
+      "coldMs": {
+        "median": 4069.3999996185303,
+        "min": 4017.2000007629395,
+        "max": 4117.5
+      },
+      "heapBytes": {
+        "median": 17226256,
+        "min": 17223144,
+        "max": 17529120
+      },
+      "firstEditMs": {
+        "median": 26,
+        "min": 26,
+        "max": 29
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 885,
+        "loads": 5,
+        "loadedRows": 19150,
+        "loadedBytes": 10690970,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 44733,
+        "sourceParseBytes": 11883084,
+        "recordCopies": 19151,
+        "recordCopyBytes": 10718938,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 1910,
+        "deriveKey": 955,
+        "decrypt": 12411,
+        "verify": 3627,
+        "digest": 16317
+      }
+    },
+    "candidate": {
+      "n": 5,
+      "coldMs": {
+        "median": 3444.3999996185303,
+        "min": 3419.5,
+        "max": 3503.1000003814697
+      },
+      "heapBytes": {
+        "median": 17509260,
+        "min": 17218588,
+        "max": 17524920
+      },
+      "firstEditMs": {
+        "median": 26,
+        "min": 24,
+        "max": 28
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 885,
+        "loads": 5,
+        "loadedRows": 19150,
+        "loadedBytes": 10690970,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 25897,
+        "sourceParseBytes": 6878456,
+        "recordCopies": 19151,
+        "recordCopyBytes": 10718938,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 1910,
+        "deriveKey": 955,
+        "decrypt": 12411,
+        "verify": 3627,
+        "digest": 16317
+      }
+    },
+    "medianReductionPercent": 15.35852951439004
+  },
+  "receiver": {
+    "baseline": {
+      "n": 3,
+      "coldMs": {
+        "median": 1157.3999996185303,
+        "min": 1146.2000007629395,
+        "max": 1175.6000003814697
+      },
+      "heapBytes": {
+        "median": 9668988,
+        "min": 9668820,
+        "max": 9669416
+      },
+      "firstEditMs": {
+        "median": 21,
+        "min": 21,
+        "max": 22
+      },
+      "work": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 2,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 515,
+        "loadedBytes": 1285785,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 0,
+        "sourceParseBytes": 0,
+        "recordCopies": 567,
+        "recordCopyBytes": 1289019,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 1115,
+        "deriveKey": 226,
+        "decrypt": 500,
+        "verify": 912,
+        "digest": 1280
+      }
+    },
+    "candidate": {
+      "n": 3,
+      "coldMs": {
+        "median": 1159.8999996185303,
+        "min": 1155.2999992370605,
+        "max": 1165.8999996185303
+      },
+      "heapBytes": {
+        "median": 9666344,
+        "min": 9663084,
+        "max": 9666396
+      },
+      "firstEditMs": {
+        "median": 23,
+        "min": 19,
+        "max": 25
+      },
+      "work": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 2,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 515,
+        "loadedBytes": 1285785,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 0,
+        "sourceParseBytes": 0,
+        "recordCopies": 567,
+        "recordCopyBytes": 1289019,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 1115,
+        "deriveKey": 226,
+        "decrypt": 500,
+        "verify": 912,
+        "digest": 1280
+      }
+    },
+    "medianReductionPercent": -0.21600138248003553
+  },
+  "fresh": {
+    "baseline": {
+      "n": 3,
+      "coldMs": {
+        "median": 260.8000011444092,
+        "min": 254,
+        "max": 262
+      },
+      "heapBytes": {
+        "median": 8289020,
+        "min": 8288564,
+        "max": 8289160
+      },
+      "firstEditMs": {
+        "median": 23,
+        "min": 23,
+        "max": 23
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 15,
+        "loadedBytes": 3335,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 11,
+        "sourceParseBytes": 4048,
+        "recordCopies": 17,
+        "recordCopyBytes": 3634,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 140,
+        "deriveKey": 70,
+        "decrypt": 45,
+        "verify": 87,
+        "digest": 107
+      }
+    },
+    "candidate": {
+      "n": 3,
+      "coldMs": {
+        "median": 257.3999996185303,
+        "min": 252.9000015258789,
+        "max": 266
+      },
+      "heapBytes": {
+        "median": 8285620,
+        "min": 8285580,
+        "max": 8285636
+      },
+      "firstEditMs": {
+        "median": 24,
+        "min": 23,
+        "max": 25
+      },
+      "work": {
+        "startupValidations": 2,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 3,
+        "inboundVerifications": 3,
+        "inboundCensuses": 4,
+        "deliveryPrefixLinks": 0,
+        "loads": 5,
+        "loadedRows": 15,
+        "loadedBytes": 3335,
+        "authorityChecks": 0,
+        "positions": 0,
+        "sourceParses": 7,
+        "sourceParseBytes": 2576,
+        "recordCopies": 17,
+        "recordCopyBytes": 3634,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 2
+      },
+      "crypto": {
+        "importKey": 140,
+        "deriveKey": 70,
+        "decrypt": 45,
+        "verify": 87,
+        "digest": 107
+      }
+    },
+    "medianReductionPercent": 1.303681560950709
+  }
+}

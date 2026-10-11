@@ -1,3 +1,4 @@
+import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
 import { countLedgerWork } from './accountLedgerMetrics';
 import { accountLedgerMode } from './accountLedgerMode';
@@ -1771,6 +1772,7 @@ async function openReceivingWorkspace(
     composed,
     joined,
   );
+  markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
   let enqueue!: OwnedReceiveQueue;
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
@@ -1804,6 +1806,7 @@ async function openReceivingWorkspace(
       await workspace.close();
       throw Error('Account opening was cancelled');
     }
+    markAccountOpen('editor');
     gate = () => {
       if (
         carrier.signal.aborted ||

@@ -1,0 +1,30 @@
+(node:92360) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92360) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ abort during a pending passkey drains the ceremony before releasing and does not activate (2582.692667ms)
+(node:92368) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92368) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:92368) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ pending remote deletion and structs survive compaction/cold open, then integrate without relabeling (3760.297625ms)
+(node:92383) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92383) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ cold replay refuses missing or changed content (3792.377542ms)
+✔ cold replay refuses missing or changed event (2908.199875ms)
+✔ cold replay refuses missing or changed ciphertext (2420.721375ms)
+(node:92404) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92404) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:92404) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ hidden-page batch close sends promptly; death before the next batch recovers journalled writing (5317.025375ms)
+✔ one owner advances from submit receipts without self content readback, through compaction and cold replay (5525.286084ms)
+✔ lost reply and unavailable reconciliation retry the exact retained submission after cold open (4721.731375ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38327.890042

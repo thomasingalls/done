@@ -1,0 +1,483 @@
+[
+  {
+    "run": 0,
+    "coldMs": 1160.7000007629395,
+    "ready": {
+      "now": 2095,
+      "ledger": {
+        "queuePeaks": {
+          "local": 1,
+          "remote": 0,
+          "flush": 1
+        },
+        "full": 1,
+        "incremental": 0,
+        "sourceDecodes": 0,
+        "events": 0,
+        "audits": 0,
+        "mismatches": 0,
+        "timings": {
+          "full": {
+            "calls": 1,
+            "totalMs": 174.39999961853027,
+            "maxMs": 174.39999961853027
+          },
+          "incremental": {
+            "calls": 0,
+            "totalMs": 0,
+            "maxMs": 0
+          },
+          "coverageCheck": {
+            "calls": 0,
+            "totalMs": 0,
+            "maxMs": 0
+          },
+          "coverageRebuild": {
+            "calls": 103,
+            "totalMs": 28.09999656677246,
+            "maxMs": 1
+          },
+          "compaction": {
+            "calls": 0,
+            "totalMs": 0,
+            "maxMs": 0
+          }
+        },
+        "work": {
+          "startupValidations": 0,
+          "joinedStartupValidations": 2,
+          "deliveryVerifications": 3,
+          "inboundVerifications": 3,
+          "inboundCensuses": 4,
+          "deliveryPrefixLinks": 0,
+          "loads": 5,
+          "loadedRows": 515,
+          "loadedBytes": 1285785,
+          "authorityChecks": 0,
+          "positions": 0,
+          "sourceParses": 0,
+          "sourceParseBytes": 0,
+          "recordCopies": 567,
+          "recordCopyBytes": 1289019,
+          "journalFlushes": 1,
+          "dirtyJournalFlushes": 0,
+          "projectionChecks": 2
+        },
+        "costs": {
+          "physicalRead": {
+            "calls": 5,
+            "totalMs": 13.200002670288086,
+            "maxMs": 7.600000381469727
+          },
+          "loadElapsed": {
+            "calls": 5,
+            "totalMs": 537.4000034332275,
+            "maxMs": 179.5
+          },
+          "copyRecords": {
+            "calls": 6,
+            "totalMs": 0.29999732971191406,
+            "maxMs": 0.10000038146972656
+          },
+          "installClone": {
+            "calls": 1,
+            "totalMs": 0.5,
+            "maxMs": 0.5
+          },
+          "storageQueueWait": {
+            "calls": 2,
+            "totalMs": 0,
+            "maxMs": 0
+          },
+          "readProjection": {
+            "calls": 1,
+            "totalMs": 0.10000038146972656,
+            "maxMs": 0.10000038146972656
+          },
+          "storageOperation": {
+            "calls": 2,
+            "totalMs": 2.700000762939453,
+            "maxMs": 2.700000762939453
+          },
+          "waitLocal": {
+            "calls": 1,
+            "totalMs": 0.09999847412109375,
+            "maxMs": 0.09999847412109375
+          },
+          "admissionLocal": {
+            "calls": 1,
+            "totalMs": 2.5,
+            "maxMs": 2.5
+          },
+          "waitFlush": {
+            "calls": 1,
+            "totalMs": 0,
+            "maxMs": 0
+          },
+          "admissionFlush": {
+            "calls": 1,
+            "totalMs": 0,
+            "maxMs": 0
+          }
+        }
+      },
+      "milestones": {
+        "authorized": {
+          "at": 1159.7999992370605,
+          "metrics": {
+            "queuePeaks": {
+              "local": 0,
+              "remote": 0,
+              "flush": 0
+            },
+            "full": 0,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "compaction": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              }
+            },
+            "work": {
+              "startupValidations": 0,
+              "joinedStartupValidations": 0,
+              "deliveryVerifications": 0,
+              "inboundVerifications": 0,
+              "inboundCensuses": 0,
+              "deliveryPrefixLinks": 0,
+              "loads": 0,
+              "loadedRows": 0,
+              "loadedBytes": 0,
+              "authorityChecks": 0,
+              "positions": 0,
+              "sourceParses": 0,
+              "sourceParseBytes": 0,
+              "recordCopies": 0,
+              "recordCopyBytes": 0,
+              "journalFlushes": 0,
+              "dirtyJournalFlushes": 0,
+              "projectionChecks": 0
+            },
+            "costs": {}
+          }
+        },
+        "classified": {
+          "at": 1570.6000003814697,
+          "metrics": {
+            "queuePeaks": {
+              "local": 0,
+              "remote": 0,
+              "flush": 0
+            },
+            "full": 0,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 102,
+                "totalMs": 27.699996948242188,
+                "maxMs": 1
+              },
+              "compaction": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              }
+            },
+            "work": {
+              "startupValidations": 0,
+              "joinedStartupValidations": 2,
+              "deliveryVerifications": 2,
+              "inboundVerifications": 2,
+              "inboundCensuses": 3,
+              "deliveryPrefixLinks": 0,
+              "loads": 2,
+              "loadedRows": 206,
+              "loadedBytes": 514314,
+              "authorityChecks": 0,
+              "positions": 0,
+              "sourceParses": 0,
+              "sourceParseBytes": 0,
+              "recordCopies": 0,
+              "recordCopyBytes": 0,
+              "journalFlushes": 0,
+              "dirtyJournalFlushes": 0,
+              "projectionChecks": 0
+            },
+            "costs": {
+              "physicalRead": {
+                "calls": 2,
+                "totalMs": 3.4000015258789062,
+                "maxMs": 2
+              },
+              "loadElapsed": {
+                "calls": 2,
+                "totalMs": 347.00000190734863,
+                "maxMs": 178.80000114440918
+              }
+            }
+          }
+        },
+        "owner": {
+          "at": 1770.8999996185303,
+          "metrics": {
+            "queuePeaks": {
+              "local": 0,
+              "remote": 0,
+              "flush": 0
+            },
+            "full": 1,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 1,
+                "totalMs": 174.39999961853027,
+                "maxMs": 174.39999961853027
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 103,
+                "totalMs": 28.09999656677246,
+                "maxMs": 1
+              },
+              "compaction": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              }
+            },
+            "work": {
+              "startupValidations": 0,
+              "joinedStartupValidations": 2,
+              "deliveryVerifications": 3,
+              "inboundVerifications": 3,
+              "inboundCensuses": 4,
+              "deliveryPrefixLinks": 0,
+              "loads": 4,
+              "loadedRows": 412,
+              "loadedBytes": 1028628,
+              "authorityChecks": 0,
+              "positions": 0,
+              "sourceParses": 0,
+              "sourceParseBytes": 0,
+              "recordCopies": 464,
+              "recordCopyBytes": 1031862,
+              "journalFlushes": 0,
+              "dirtyJournalFlushes": 0,
+              "projectionChecks": 0
+            },
+            "costs": {
+              "physicalRead": {
+                "calls": 4,
+                "totalMs": 12.000001907348633,
+                "maxMs": 7.600000381469727
+              },
+              "loadElapsed": {
+                "calls": 4,
+                "totalMs": 535.3000030517578,
+                "maxMs": 179.5
+              },
+              "copyRecords": {
+                "calls": 5,
+                "totalMs": 0.29999732971191406,
+                "maxMs": 0.10000038146972656
+              },
+              "installClone": {
+                "calls": 1,
+                "totalMs": 0.5,
+                "maxMs": 0.5
+              }
+            }
+          }
+        },
+        "editor": {
+          "at": 1778.8999996185303,
+          "metrics": {
+            "queuePeaks": {
+              "local": 1,
+              "remote": 0,
+              "flush": 1
+            },
+            "full": 1,
+            "incremental": 0,
+            "sourceDecodes": 0,
+            "events": 0,
+            "audits": 0,
+            "mismatches": 0,
+            "timings": {
+              "full": {
+                "calls": 1,
+                "totalMs": 174.39999961853027,
+                "maxMs": 174.39999961853027
+              },
+              "incremental": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageCheck": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "coverageRebuild": {
+                "calls": 103,
+                "totalMs": 28.09999656677246,
+                "maxMs": 1
+              },
+              "compaction": {
+                "calls": 0,
+                "totalMs": 0,
+                "maxMs": 0
+              }
+            },
+            "work": {
+              "startupValidations": 0,
+              "joinedStartupValidations": 2,
+              "deliveryVerifications": 3,
+              "inboundVerifications": 3,
+              "inboundCensuses": 4,
+              "deliveryPrefixLinks": 0,
+              "loads": 5,
+              "loadedRows": 515,
+              "loadedBytes": 1285785,
+              "authorityChecks": 0,
+              "positions": 0,
+              "sourceParses": 0,
+              "sourceParseBytes": 0,
+              "recordCopies": 567,
+              "recordCopyBytes": 1289019,
+              "journalFlushes": 1,
+              "dirtyJournalFlushes": 0,
+              "projectionChecks": 2
+            },
+            "costs": {
+              "physicalRead": {
+                "calls": 5,
+                "totalMs": 13.200002670288086,
+                "maxMs": 7.600000381469727
+              },
+              "loadElapsed": {
+                "calls": 5,
+                "totalMs": 537.4000034332275,
+                "maxMs": 179.5
+              },
+              "copyRecords": {
+                "calls": 6,
+                "totalMs": 0.29999732971191406,
+                "maxMs": 0.10000038146972656
+              },
+              "installClone": {
+                "calls": 1,
+                "totalMs": 0.5,
+                "maxMs": 0.5
+              },
+              "storageQueueWait": {
+                "calls": 2,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "readProjection": {
+                "calls": 1,
+                "totalMs": 0.10000038146972656,
+                "maxMs": 0.10000038146972656
+              },
+              "storageOperation": {
+                "calls": 2,
+                "totalMs": 2.700000762939453,
+                "maxMs": 2.700000762939453
+              },
+              "waitLocal": {
+                "calls": 1,
+                "totalMs": 0.09999847412109375,
+                "maxMs": 0.09999847412109375
+              },
+              "admissionLocal": {
+                "calls": 1,
+                "totalMs": 2.5,
+                "maxMs": 2.5
+              },
+              "waitFlush": {
+                "calls": 1,
+                "totalMs": 0,
+                "maxMs": 0
+              },
+              "admissionFlush": {
+                "calls": 1,
+                "totalMs": 0,
+                "maxMs": 0
+              }
+            }
+          }
+        }
+      },
+      "native": {
+        "importKey": 1115,
+        "deriveKey": 226,
+        "decrypt": 500,
+        "verify": 912,
+        "digest": 1280
+      }
+    },
+    "nativeBefore": {},
+    "heap": 9663208,
+    "editMs": 23,
+    "errors": []
+  }
+]

@@ -1,3 +1,4 @@
+import { countLedgerWork } from './accountLedgerMetrics';
 import { measureLedger } from './accountLedgerMetrics';
 import {
   isHistoryInstallTag,
@@ -25,7 +26,7 @@ import { acceptanceLink, decodePositionResponse } from '../../account-protocol/p
 import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
 import { decodeInboundRecord } from './inboundRecord';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
-import { Y, forkDoc, sameDocState, hasPendingUpdates } from './yjs';
+import { Y, forkDoc, sameDocState, hasPendingUpdates, prepareDocCoverage } from './yjs';
 import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
 import type { VerificationMemo } from './verificationMemo';
 
@@ -89,6 +90,7 @@ export function inspectInbound(
   route: CaptureRoute,
   context: InboundContext,
 ) {
+  countLedgerWork('inboundCensuses');
   const prior: OpenedRecord[] = [],
     entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
     installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
@@ -283,7 +285,7 @@ function updateIndex(bounded: boolean) {
   };
 }
 /** A fork must be unchanged by each evidenced original; no vector-only shortcut. */
-function contentCoverage(content: readonly OpenedRecord[]) {
+function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false) {
   const doc = new Y.Doc({ gc: false }),
     originals = updateIndex(false),
     positives = updateIndex(true);
@@ -324,18 +326,34 @@ function contentCoverage(content: readonly OpenedRecord[]) {
     positives: positives.values,
     positiveBytes: positives.bytes,
     check(updates: readonly Bytes[]) {
-      for (const update of updates) {
-        if (originals.has(update) || positives.has(update)) continue;
-        const began = performance.now();
-        const copy = forkDoc(doc, false);
-        try {
-          Y.applyUpdate(copy, update);
-          if (!sameDocState(doc, copy)) captureError('Inbound content coverage is missing');
-          positives.add(update);
-        } finally {
-          copy.destroy();
-          measureLedger('coverageCheck', began);
+      let prepared: ReturnType<typeof prepareDocCoverage> | undefined;
+      try {
+        for (const update of updates) {
+          if (originals.has(update) || positives.has(update)) continue;
+          const began = performance.now();
+          let copy: ReturnType<typeof forkDoc> | undefined;
+          try {
+            let covered: boolean;
+            if (reuseBaseline) {
+              if (!prepared) {
+                prepared = prepareDocCoverage(doc);
+                countLedgerWork('coverageBaselines');
+              }
+              covered = prepared.check(update);
+            } else {
+              copy = forkDoc(doc, false);
+              Y.applyUpdate(copy, update);
+              covered = sameDocState(doc, copy);
+            }
+            if (!covered) captureError('Inbound content coverage is missing');
+            positives.add(update);
+          } finally {
+            copy?.destroy();
+            measureLedger('coverageCheck', began);
+          }
         }
+      } finally {
+        prepared?.dispose();
       }
     },
   };
@@ -382,7 +400,7 @@ export function createInboundCoverage(options: { incremental?: boolean } = {}) {
       const copied = copyRecords(content);
       let next: ReturnType<typeof contentCoverage> | undefined;
       try {
-        next = contentCoverage(copied);
+        next = contentCoverage(copied, options.incremental);
         const equivalent = !!(options.incremental && coverage && next.preserve(coverage));
         clear();
         rows = copied;
@@ -441,6 +459,7 @@ export async function verifyInboundLedger(
   },
   continuation?: { state: InboundState; after: number },
 ): Promise<InboundState> {
+  countLedgerWork('inboundVerifications');
   const clone = (s: InboundState): InboundState => ({
     ...s,
     prefix: { ...s.prefix },

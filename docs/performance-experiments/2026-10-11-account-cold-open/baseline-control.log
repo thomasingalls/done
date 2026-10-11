@@ -1,0 +1,23 @@
+(node:75689) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories (168.202625ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1135.216
+
+✖ failing tests:
+
+test at test/account-ledger-contract/controls.test.mjs:87:1
+✖ delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories (168.202625ms)
+  Error: Malformed network envelope
+      at bad (eval at load (file:///private/tmp/done-account-cold-open/baseline/test/account-ledger-contract/runtime.mjs:94:10), <anonymous>:3752:10)
+      at decodeNetworkEnvelope (eval at load (file:///private/tmp/done-account-cold-open/baseline/test/account-ledger-contract/runtime.mjs:94:10), <anonymous>:3696:72)
+      at Module.verifyDelivery (eval at load (file:///private/tmp/done-account-cold-open/baseline/test/account-ledger-contract/runtime.mjs:94:10), <anonymous>:6128:19)
+      at TestContext.<anonymous> (file:///private/tmp/done-account-cold-open/baseline/test/account-ledger-contract/controls.test.mjs:99:5)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)

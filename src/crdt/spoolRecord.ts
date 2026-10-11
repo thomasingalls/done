@@ -21,7 +21,7 @@ import {
   type OpenedRecord,
 } from './contentRecord';
 import {
-  captureCatalog,
+  inspectCapturedSources,
   captureRouteAt,
   decodeSourceCapsule,
   eraseCapsule,
@@ -249,16 +249,9 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
     }
   }
   sourceRecords.sort((a, b) => a.seq - b.seq);
-  const sources = captureCatalog(sourceRecords, route),
+  const { sources, descriptions } = inspectCapturedSources(sourceRecords, route),
     positions: SpoolPosition[] = [],
-    used = new Set<string>(),
-    sourceSequences = new Map<string, number>();
-  for (const r of sourceRecords)
-    if (r.kind === 'outbound') {
-      const c = decodeSourceCapsule(r.bytes, route);
-      sourceSequences.set(c.id, Math.min(sourceSequences.get(c.id) ?? Infinity, r.seq));
-      eraseCapsule(c);
-    }
+    used = new Set<string>();
   let attempts = 0,
     previousEpoch = 1;
   for (const { record, entry: e, epoch } of events.sort((a, b) => a.record.seq - b.record.seq)) {
@@ -276,32 +269,27 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
         kind = '',
         sourceEpoch = 0;
       for (const ref of refs) {
-        const bytes = sources.get(ref.id),
+        const description = descriptions.get(ref.id),
           key = ref.id + ':' + ref.index,
-          sequence = sourceSequences.get(ref.id)!;
-        if (!bytes || used.has(key) || sequence >= record.seq)
+          sequence = description?.sequence ?? Infinity;
+        if (!description || used.has(key) || sequence >= record.seq)
           captureError('Missing, repeated or late source');
         if (
           sequence < previousSequence ||
           (sequence === previousSequence && ref.index <= previousIndex)
         )
           captureError('Source batch order changed');
-        const c = decodeSourceCapsule(bytes!, route);
-        try {
-          if (sourceEpoch && c.epoch !== sourceEpoch)
-            captureError('Source batch crosses authority');
-          sourceEpoch = c.epoch;
-          const source = c.sources[ref.index];
-          if (!source) captureError('Missing source index');
-          if (actor && (actor !== source!.actor || kind !== source!.kind))
-            captureError('Source batch actor changed');
-          actor = source!.actor;
-          kind = source!.kind;
-          total += source!.bytes.length;
-          if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
-        } finally {
-          eraseCapsule(c);
-        }
+        if (sourceEpoch && description!.epoch !== sourceEpoch)
+          captureError('Source batch crosses authority');
+        sourceEpoch = description!.epoch;
+        const source = description!.sources[ref.index];
+        if (!source) captureError('Missing source index');
+        if (actor && (actor !== source!.actor || kind !== source!.kind))
+          captureError('Source batch actor changed');
+        actor = source!.actor;
+        kind = source!.kind;
+        total += source!.length;
+        if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
         previousSequence = sequence;
         previousIndex = ref.index;
         used.add(key);

@@ -1,3 +1,4 @@
+import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import {
   captureHandoffHistory,
   handoffHistoryPrefix,
@@ -889,6 +890,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         );
       else
         await requireAccountAccess(task, joinedBinding(marker), options.pin, options.assertPasskey);
+      markAccountOpen('authorized');
       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
         throw Error('Certified device changed during unlock');
       const scope = claimScope(state.claim),
@@ -1010,7 +1012,9 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         },
         {
           allowSpoolCounter: true,
+          reuseOpened: true,
           validate: async (records, _task, counter) => {
+            countLedgerWork('joinedStartupValidations');
             const census = inspectInbound(records, b.route, b.base);
             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);
             await verifySpool(

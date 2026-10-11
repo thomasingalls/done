@@ -374,6 +374,99 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
   }
 };
 
+/**
+ * Synchronous coverage baseline. Each check gets an independent gc:false fork and the same full
+ * comparison as fork/apply/sameDocState; only encoding the immutable starting state is shared.
+ * Pending framing/bookkeeping stays exact. Callers must dispose in finally, never retain this
+ * across tasks or content changes. The ordinary full verifier remains an independent reference.
+ */
+export const prepareDocCoverage = (source: YDoc) => {
+  const snapshot = Y.snapshot(source),
+    pending = source.store.pendingStructs,
+    missing = pending ? new Map(pending.missing) : null,
+    structs = pending?.update.slice() ?? null,
+    deletes = source.store.pendingDs?.slice() ?? null;
+  let forkBytes: Uint8Array | undefined,
+    reference: ReturnType<typeof comparisonEncoding> | undefined;
+  const dispose = () => {
+    forkBytes?.fill(0);
+    forkBytes = undefined;
+    if (reference) {
+      reference.bytes.fill(0);
+      returnComparisonScratch(reference.encoder);
+      reference = undefined;
+    }
+    structs?.fill(0);
+    deletes?.fill(0);
+    missing?.clear();
+    snapshot.sv.clear();
+    snapshot.ds.clients.clear();
+  };
+  try {
+    forkBytes = Y.encodeStateAsUpdateV2(
+      { ...source, store: { ...source.store, pendingStructs: null, pendingDs: null } } as YDoc,
+      undefined,
+      new ForkEncoder(),
+    );
+    reference = comparisonEncoding(source);
+  } catch (error) {
+    dispose();
+    throw error;
+  }
+  return {
+    dispose,
+    check(update: Uint8Array): boolean {
+      if (!forkBytes || !reference) throw Error('Coverage baseline was disposed');
+      const copy = new Y.Doc({ gc: false });
+      let actual: ReturnType<typeof comparisonEncoding> | undefined,
+        rawReference: Uint8Array | undefined,
+        rawActual: Uint8Array | undefined;
+      try {
+        const decoder = decoding.createDecoder(forkBytes),
+          paired = new ForkDecoder(decoder);
+        Y.readUpdateV2(decoder, copy, undefined, paired);
+        paired.complete();
+        copy.store.pendingStructs =
+          missing && structs ? { missing: new Map(missing), update: structs.slice() } : null;
+        copy.store.pendingDs = deletes?.slice() ?? null;
+        Y.applyUpdate(copy, update);
+        if (!Y.equalSnapshots(snapshot, Y.snapshot(copy))) return false;
+        const next = copy.store.pendingStructs;
+        if (Boolean(missing) !== Boolean(next)) return false;
+        if (
+          missing &&
+          next &&
+          (missing.size !== next.missing.size ||
+            [...missing].some(([id, clock]) => next.missing.get(id) !== clock) ||
+            !equalBytes(structs, next.update))
+        )
+          return false;
+        if (!equalBytes(deletes, copy.store.pendingDs)) return false;
+        actual = comparisonEncoding(copy);
+        if (
+          sameComparisonStrings(reference.encoder, actual.encoder) &&
+          equalBytes(reference.bytes, actual.bytes)
+        )
+          return true;
+        // Complete both encodings before normalizing, just as sameDocState does. completeEncoding
+        // may borrow reference.bytes, so its fallback copy must not clear the reusable baseline.
+        rawReference = completeEncoding(reference);
+        if (rawReference === reference.bytes) rawReference = rawReference.slice();
+        rawActual = completeEncoding(actual);
+        return sameEncoding(rawReference, rawActual);
+      } finally {
+        rawReference?.fill(0);
+        rawActual?.fill(0);
+        if (actual) {
+          actual.bytes.fill(0);
+          returnComparisonScratch(actual.encoder);
+        }
+        copy.destroy();
+      }
+    },
+  };
+};
+
 /** Current Account recovery must already contain its genesis. Never repair the live document by
  * overlaying the checkpoint; a detached fork must remain unchanged, including pending bookkeeping. */
 export const coversGenesis = (current: YDoc, checkpoint: YDoc): boolean => {

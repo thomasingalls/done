@@ -1,0 +1,971 @@
+{
+  "deep": {
+    "baseline": {
+      "n": 5,
+      "frameColdMs": {
+        "median": 2577,
+        "min": 2551,
+        "max": 2594.5
+      },
+      "pollingColdMs": {
+        "median": 2905,
+        "min": 2896.800001144409,
+        "max": 2938.400001525879
+      },
+      "heapMB": {
+        "median": 17.256356,
+        "min": 17.232348,
+        "max": 17.559368
+      },
+      "editMs": {
+        "median": 23,
+        "min": 22,
+        "max": 26
+      },
+      "preliminaryMs": {
+        "median": 873.0,
+        "min": 857.0,
+        "max": 887.9000015258789
+      },
+      "liveOwnerMs": {
+        "median": 1446.2999992370605,
+        "min": 1433.5,
+        "max": 1449.7999992370605
+      },
+      "coverageMs": {
+        "median": 615.0000019073486,
+        "min": 603.6999969482422,
+        "max": 623.9000015258789
+      },
+      "coverageChecks": {
+        "median": 2355,
+        "min": 2355,
+        "max": 2355
+      },
+      "startupValidations": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "joinedStartupValidations": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "deliveryVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundCensuses": {
+        "median": 3,
+        "min": 3,
+        "max": 3
+      },
+      "deliveryPrefixLinks": {
+        "median": 590,
+        "min": 590,
+        "max": 590
+      },
+      "loads": {
+        "median": 5,
+        "min": 5,
+        "max": 5
+      },
+      "loadedRows": {
+        "median": 19150,
+        "min": 19150,
+        "max": 19150
+      },
+      "loadedBytes": {
+        "median": 10690970,
+        "min": 10690970,
+        "max": 10690970
+      },
+      "authorityChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "positions": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParses": {
+        "median": 21188,
+        "min": 21188,
+        "max": 21188
+      },
+      "sourceParseBytes": {
+        "median": 5627299,
+        "min": 5627299,
+        "max": 5627299
+      },
+      "recordCopies": {
+        "median": 26811,
+        "min": 26811,
+        "max": 26811
+      },
+      "recordCopyBytes": {
+        "median": 14995326,
+        "min": 14995326,
+        "max": 14995326
+      },
+      "journalFlushes": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dirtyJournalFlushes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "projectionChecks": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "native_importKey": {
+        "median": 1320,
+        "min": 1320,
+        "max": 1320
+      },
+      "native_deriveKey": {
+        "median": 660,
+        "min": 660,
+        "max": 660
+      },
+      "native_decrypt": {
+        "median": 8286,
+        "min": 8286,
+        "max": 8286
+      },
+      "native_verify": {
+        "median": 2447,
+        "min": 2447,
+        "max": 2447
+      },
+      "native_digest": {
+        "median": 11012,
+        "min": 11012,
+        "max": 11012
+      }
+    },
+    "candidate": {
+      "n": 5,
+      "frameColdMs": {
+        "median": 2341.199998855591,
+        "min": 2302,
+        "max": 2355.8999996185303
+      },
+      "pollingColdMs": {
+        "median": 2677.800001144409,
+        "min": 2644.3999996185303,
+        "max": 2690.2000007629395
+      },
+      "heapMB": {
+        "median": 17.543072,
+        "min": 17.214428,
+        "max": 17.544216
+      },
+      "editMs": {
+        "median": 23,
+        "min": 22,
+        "max": 26
+      },
+      "preliminaryMs": {
+        "median": 880.3999996185303,
+        "min": 863.5,
+        "max": 895.6000003814697
+      },
+      "liveOwnerMs": {
+        "median": 1204.7999992370605,
+        "min": 1191.6000003814697,
+        "max": 1218.2999992370605
+      },
+      "coverageMs": {
+        "median": 375.89999771118164,
+        "min": 373.6000003814697,
+        "max": 379.1999988555908
+      },
+      "coverageChecks": {
+        "median": 2355,
+        "min": 2355,
+        "max": 2355
+      },
+      "startupValidations": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "joinedStartupValidations": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "deliveryVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundCensuses": {
+        "median": 3,
+        "min": 3,
+        "max": 3
+      },
+      "deliveryPrefixLinks": {
+        "median": 590,
+        "min": 590,
+        "max": 590
+      },
+      "coverageBaselines": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "loads": {
+        "median": 5,
+        "min": 5,
+        "max": 5
+      },
+      "loadedRows": {
+        "median": 19150,
+        "min": 19150,
+        "max": 19150
+      },
+      "loadedBytes": {
+        "median": 10690970,
+        "min": 10690970,
+        "max": 10690970
+      },
+      "authorityChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "positions": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParses": {
+        "median": 21188,
+        "min": 21188,
+        "max": 21188
+      },
+      "sourceParseBytes": {
+        "median": 5627299,
+        "min": 5627299,
+        "max": 5627299
+      },
+      "recordCopies": {
+        "median": 26811,
+        "min": 26811,
+        "max": 26811
+      },
+      "recordCopyBytes": {
+        "median": 14995326,
+        "min": 14995326,
+        "max": 14995326
+      },
+      "journalFlushes": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dirtyJournalFlushes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "projectionChecks": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "native_importKey": {
+        "median": 1320,
+        "min": 1320,
+        "max": 1320
+      },
+      "native_deriveKey": {
+        "median": 660,
+        "min": 660,
+        "max": 660
+      },
+      "native_decrypt": {
+        "median": 8286,
+        "min": 8286,
+        "max": 8286
+      },
+      "native_verify": {
+        "median": 2447,
+        "min": 2447,
+        "max": 2447
+      },
+      "native_digest": {
+        "median": 11012,
+        "min": 11012,
+        "max": 11012
+      }
+    }
+  },
+  "receiver": {
+    "baseline": {
+      "n": 3,
+      "frameColdMs": {
+        "median": 698.9000015258789,
+        "min": 687.7999992370605,
+        "max": 702.6999988555908
+      },
+      "pollingColdMs": {
+        "median": 1173.6000003814697,
+        "min": 1157.7999992370605,
+        "max": 1175.2999992370605
+      },
+      "heapMB": {
+        "median": 9.637388,
+        "min": 9.637388,
+        "max": 9.637504
+      },
+      "editMs": {
+        "median": 21,
+        "min": 19,
+        "max": 21
+      },
+      "preliminaryMs": {
+        "median": 238.89999961853027,
+        "min": 236.89999961853027,
+        "max": 241.0
+      },
+      "liveOwnerMs": {
+        "median": 198.70000076293945,
+        "min": 197.0,
+        "max": 199.5
+      },
+      "coverageMs": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "coverageChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "startupValidations": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "joinedStartupValidations": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "deliveryVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundCensuses": {
+        "median": 3,
+        "min": 3,
+        "max": 3
+      },
+      "deliveryPrefixLinks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "loads": {
+        "median": 5,
+        "min": 5,
+        "max": 5
+      },
+      "loadedRows": {
+        "median": 515,
+        "min": 515,
+        "max": 515
+      },
+      "loadedBytes": {
+        "median": 1285785,
+        "min": 1285785,
+        "max": 1285785
+      },
+      "authorityChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "positions": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParses": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParseBytes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "recordCopies": {
+        "median": 773,
+        "min": 773,
+        "max": 773
+      },
+      "recordCopyBytes": {
+        "median": 1803333,
+        "min": 1803333,
+        "max": 1803333
+      },
+      "journalFlushes": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dirtyJournalFlushes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "projectionChecks": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "native_importKey": {
+        "median": 860,
+        "min": 860,
+        "max": 860
+      },
+      "native_deriveKey": {
+        "median": 175,
+        "min": 175,
+        "max": 175
+      },
+      "native_decrypt": {
+        "median": 346,
+        "min": 346,
+        "max": 346
+      },
+      "native_verify": {
+        "median": 708,
+        "min": 708,
+        "max": 708
+      },
+      "native_digest": {
+        "median": 1076,
+        "min": 1076,
+        "max": 1076
+      }
+    },
+    "candidate": {
+      "n": 3,
+      "frameColdMs": {
+        "median": 699.1999988555908,
+        "min": 696.9000015258789,
+        "max": 704
+      },
+      "pollingColdMs": {
+        "median": 1170.6999988555908,
+        "min": 1166.7000007629395,
+        "max": 1177.1000003814697
+      },
+      "heapMB": {
+        "median": 9.639636,
+        "min": 9.636348,
+        "max": 9.639708
+      },
+      "editMs": {
+        "median": 20,
+        "min": 20,
+        "max": 20
+      },
+      "preliminaryMs": {
+        "median": 240.70000076293945,
+        "min": 239.0,
+        "max": 244.0
+      },
+      "liveOwnerMs": {
+        "median": 197.29999923706055,
+        "min": 196.39999961853027,
+        "max": 198.10000038146973
+      },
+      "coverageMs": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "coverageChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "startupValidations": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "joinedStartupValidations": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "deliveryVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundCensuses": {
+        "median": 3,
+        "min": 3,
+        "max": 3
+      },
+      "deliveryPrefixLinks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "coverageBaselines": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "loads": {
+        "median": 5,
+        "min": 5,
+        "max": 5
+      },
+      "loadedRows": {
+        "median": 515,
+        "min": 515,
+        "max": 515
+      },
+      "loadedBytes": {
+        "median": 1285785,
+        "min": 1285785,
+        "max": 1285785
+      },
+      "authorityChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "positions": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParses": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParseBytes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "recordCopies": {
+        "median": 773,
+        "min": 773,
+        "max": 773
+      },
+      "recordCopyBytes": {
+        "median": 1803333,
+        "min": 1803333,
+        "max": 1803333
+      },
+      "journalFlushes": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dirtyJournalFlushes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "projectionChecks": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "native_importKey": {
+        "median": 860,
+        "min": 860,
+        "max": 860
+      },
+      "native_deriveKey": {
+        "median": 175,
+        "min": 175,
+        "max": 175
+      },
+      "native_decrypt": {
+        "median": 346,
+        "min": 346,
+        "max": 346
+      },
+      "native_verify": {
+        "median": 708,
+        "min": 708,
+        "max": 708
+      },
+      "native_digest": {
+        "median": 1076,
+        "min": 1076,
+        "max": 1076
+      }
+    }
+  },
+  "fresh": {
+    "baseline": {
+      "n": 3,
+      "frameColdMs": {
+        "median": 192.60000038146973,
+        "min": 189.5,
+        "max": 196.9000015258789
+      },
+      "pollingColdMs": {
+        "median": 248.39999961853027,
+        "min": 247.60000038146973,
+        "max": 253.4000015258789
+      },
+      "heapMB": {
+        "median": 8.268972,
+        "min": 8.267628,
+        "max": 8.26948
+      },
+      "editMs": {
+        "median": 21,
+        "min": 21,
+        "max": 22
+      },
+      "preliminaryMs": {
+        "median": 29.80000114440918,
+        "min": 29.30000114440918,
+        "max": 29.80000114440918
+      },
+      "liveOwnerMs": {
+        "median": 15.299999237060547,
+        "min": 14.100000381469727,
+        "max": 16.600000381469727
+      },
+      "coverageMs": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "coverageChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "startupValidations": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "joinedStartupValidations": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "deliveryVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundCensuses": {
+        "median": 3,
+        "min": 3,
+        "max": 3
+      },
+      "deliveryPrefixLinks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "loads": {
+        "median": 5,
+        "min": 5,
+        "max": 5
+      },
+      "loadedRows": {
+        "median": 15,
+        "min": 15,
+        "max": 15
+      },
+      "loadedBytes": {
+        "median": 3335,
+        "min": 3335,
+        "max": 3335
+      },
+      "authorityChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "positions": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParses": {
+        "median": 6,
+        "min": 6,
+        "max": 6
+      },
+      "sourceParseBytes": {
+        "median": 2208,
+        "min": 2208,
+        "max": 2208
+      },
+      "recordCopies": {
+        "median": 23,
+        "min": 23,
+        "max": 23
+      },
+      "recordCopyBytes": {
+        "median": 4968,
+        "min": 4968,
+        "max": 4968
+      },
+      "journalFlushes": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dirtyJournalFlushes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "projectionChecks": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "native_importKey": {
+        "median": 140,
+        "min": 140,
+        "max": 140
+      },
+      "native_deriveKey": {
+        "median": 70,
+        "min": 70,
+        "max": 70
+      },
+      "native_decrypt": {
+        "median": 42,
+        "min": 42,
+        "max": 42
+      },
+      "native_verify": {
+        "median": 87,
+        "min": 87,
+        "max": 87
+      },
+      "native_digest": {
+        "median": 107,
+        "min": 107,
+        "max": 107
+      }
+    },
+    "candidate": {
+      "n": 3,
+      "frameColdMs": {
+        "median": 204.10000038146973,
+        "min": 186.10000038146973,
+        "max": 206.29999923706055
+      },
+      "pollingColdMs": {
+        "median": 262.5,
+        "min": 243.39999961853027,
+        "max": 263.6000003814697
+      },
+      "heapMB": {
+        "median": 8.268676,
+        "min": 8.268088,
+        "max": 8.269444
+      },
+      "editMs": {
+        "median": 23,
+        "min": 22,
+        "max": 23
+      },
+      "preliminaryMs": {
+        "median": 29.399999618530273,
+        "min": 29.399999618530273,
+        "max": 30.0
+      },
+      "liveOwnerMs": {
+        "median": 15.799999237060547,
+        "min": 14.600000381469727,
+        "max": 16.299999237060547
+      },
+      "coverageMs": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "coverageChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "startupValidations": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "joinedStartupValidations": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "deliveryVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundVerifications": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "inboundCensuses": {
+        "median": 3,
+        "min": 3,
+        "max": 3
+      },
+      "deliveryPrefixLinks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "coverageBaselines": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "loads": {
+        "median": 5,
+        "min": 5,
+        "max": 5
+      },
+      "loadedRows": {
+        "median": 15,
+        "min": 15,
+        "max": 15
+      },
+      "loadedBytes": {
+        "median": 3335,
+        "min": 3335,
+        "max": 3335
+      },
+      "authorityChecks": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "positions": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "sourceParses": {
+        "median": 6,
+        "min": 6,
+        "max": 6
+      },
+      "sourceParseBytes": {
+        "median": 2208,
+        "min": 2208,
+        "max": 2208
+      },
+      "recordCopies": {
+        "median": 23,
+        "min": 23,
+        "max": 23
+      },
+      "recordCopyBytes": {
+        "median": 4968,
+        "min": 4968,
+        "max": 4968
+      },
+      "journalFlushes": {
+        "median": 1,
+        "min": 1,
+        "max": 1
+      },
+      "dirtyJournalFlushes": {
+        "median": 0,
+        "min": 0,
+        "max": 0
+      },
+      "projectionChecks": {
+        "median": 2,
+        "min": 2,
+        "max": 2
+      },
+      "native_importKey": {
+        "median": 140,
+        "min": 140,
+        "max": 140
+      },
+      "native_deriveKey": {
+        "median": 70,
+        "min": 70,
+        "max": 70
+      },
+      "native_decrypt": {
+        "median": 42,
+        "min": 42,
+        "max": 42
+      },
+      "native_verify": {
+        "median": 87,
+        "min": 87,
+        "max": 87
+      },
+      "native_digest": {
+        "median": 107,
+        "min": 107,
+        "max": 107
+      }
+    }
+  }
+}

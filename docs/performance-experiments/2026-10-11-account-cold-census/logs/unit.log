@@ -1,0 +1,66 @@
+(node:87461) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✗ Build failed in 314ms
+node:internal/modules/run_main:111
+    triggerUncaughtException(
+    ^
+
+Build failed with 1 error:
+
+[31m[MISSING_EXPORT] [0m"positionSources" is not exported by "src/crdt/spoolRecord.ts".
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m src/crdt/accountSyncState.ts:5:10 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m5 │[0m [38;5;249mi[0m[38;5;249mm[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249mt[0m[38;5;249m [0m[38;5;249m{[0m[38;5;249m [0mpositionSources[38;5;249m [0m[38;5;249m}[0m[38;5;249m [0m[38;5;249mf[0m[38;5;249mr[0m[38;5;249mo[0m[38;5;249mm[0m[38;5;249m [0m[38;5;249m"[0m[38;5;249m.[0m[38;5;249m/[0m[38;5;249ms[0m[38;5;249mp[0m[38;5;249mo[0m[38;5;249mo[0m[38;5;249ml[0m[38;5;249mR[0m[38;5;249me[0m[38;5;249mc[0m[38;5;249mo[0m[38;5;249mr[0m[38;5;249md[0m[38;5;249m"[0m[38;5;249m;[0m
+ [38;5;240m  │[0m          ───────┬───────  
+ [38;5;240m  │[0m                 ╰───────── Missing export
+[38;5;246m───╯[0m
+
+    at aggregateBindingErrorsIntoJsError (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:48:18)
+    at unwrapBindingResult (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:18:128)
+    at #build (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/rolldown-build-CtPvmZgJ.mjs:3276:34)
+    at async buildEnvironment (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33061:66)
+    at async Object.build (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33483:19)
+    at async load (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/runtime.mjs:49:18)
+    at async file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-ledger-contract/batch.test.mjs:8:19 {
+  errors: [Getter/Setter]
+}
+
+Node.js v26.11.1
+✖ test/account-ledger-contract/batch.test.mjs (630.159958ms)
+(node:87462) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ complete cold replay computes a linear number of chain links and agrees with the prior walker (1198.506541ms)
+✔ one thousand authenticated positions still require only two thousand link hashes (1479.06025ms)
+✔ a correctly signed response with the wrong preceding chain is still refused (36.328625ms)
+✔ missing earlier allocation and reordered authentic delivery remain refused (29.2155ms)
+(node:87463) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ a cold spool census reads each source once for its tag and once for full validation (113.182792ms)
+✔ identical duplicate sources retain their earliest sequence; late and conflicting sources refuse (2.247083ms)
+✔ metadata is rebuilt for each census and still checks source indices and canonical framing (1.627167ms)
+(node:87464) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ signed current-key retry keeps the same original edits, position and closed bytes through interrupted durable steps (433.132708ms)
+✔ unsigned, substituted and wrong-purpose refusals cannot authorize re-encryption (115.084291ms)
+✔ the outbound driver retries only with installed newer authority and does not block after recording a valid refusal (153.660708ms)
+✔ a refusal received by an old writer stays closed until newer membership is installed (154.529ms)
+(node:87465) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ three controls expose stale success after abort, late reinstatement and changed-old-row append classification (656.9225ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 12
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3450.065125
+
+✖ failing tests:
+
+test at test/account-ledger-contract/batch.test.mjs:1:1
+✖ test/account-ledger-contract/batch.test.mjs (630.159958ms)
+  'test failed'

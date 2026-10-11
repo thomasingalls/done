@@ -1,0 +1,11 @@
+# Cold-open source census follow-up
+
+Decision recorded before implementation: compare against the already repaired cold-open working tree (signed parent `4bcac419` plus the retained first-cold-open candidate patch), not the older quadratic baseline. Keep release validation and sync catch-up work separate.
+
+Hypothesis: one validated source parse per physical capsule per spool census can replace the catalogue, sequence and per-allocation parses. Retain only epoch, earliest sequence, actor, kind and byte length during that synchronous census; erase decoded updates as before. Envelope/source equality, hashes, signatures, witnesses and every full verification pass remain required. Also compare canonical source bytes directly rather than allocating two hexadecimal strings for equality.
+
+Prediction: the retained 2,354-source / 295-position fixture should lose approximately 18,800 of its 44,733 source parses (four censuses, roughly two redundant parses per source). Predict 0.5–1.0 seconds improvement from the prior approximately 4.2-second open, with uncertainty because profile stacks overlap. Full verification passes, native cryptographic operations and physical loads should not decrease. No expected material improvement in the received-page fixture, which has no captured outbound sources.
+
+Use the same private deep-history, 48-burst received-page and fresh-account fixtures as the first packet. Compare five alternating deep pairs and three pairs for each guardrail. Profile separately. Record every attempt, wall time, numeric work counters, collected heap and first edit; exclude human factor entry and keep network offline for primary timings. No concurrent CPU-heavy task of ours during timing. Other sessions' machine activity remains a limitation. Preserve exact runtime patches/build identity and raw numeric observations, not credentials.
+
+Adopt if source parsing falls by the predicted structural amount, deep median improves materially (target at least 10%), valid states match the prior census, invalid canonical bytes and changed/reordered/late/conflicting sources remain refused, and receive/fresh opening, retained memory and offline edit recovery show no material regression. A result above 2.5 seconds leaves the cold-open budget unresolved. Do not remove another verification pass or add cross-owner reuse in this slice.

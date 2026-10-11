@@ -1,0 +1,187 @@
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -374,6 +374,99 @@
+   }
+ };
+ 
++/**
++ * Synchronous coverage baseline. Each check gets an independent gc:false fork and the same full
++ * comparison as fork/apply/sameDocState; only encoding the immutable starting state is shared.
++ * Pending framing/bookkeeping stays exact. Callers must dispose in finally, never retain this
++ * across tasks or content changes. The ordinary full verifier remains an independent reference.
++ */
++export const prepareDocCoverage = (source: YDoc) => {
++  const snapshot = Y.snapshot(source),
++    pending = source.store.pendingStructs,
++    missing = pending ? new Map(pending.missing) : null,
++    structs = pending?.update.slice() ?? null,
++    deletes = source.store.pendingDs?.slice() ?? null;
++  let forkBytes: Uint8Array | undefined,
++    reference: ReturnType<typeof comparisonEncoding> | undefined;
++  const dispose = () => {
++    forkBytes?.fill(0);
++    forkBytes = undefined;
++    if (reference) {
++      reference.bytes.fill(0);
++      returnComparisonScratch(reference.encoder);
++      reference = undefined;
++    }
++    structs?.fill(0);
++    deletes?.fill(0);
++    missing?.clear();
++    snapshot.sv.clear();
++    snapshot.ds.clients.clear();
++  };
++  try {
++    forkBytes = Y.encodeStateAsUpdateV2(
++      { ...source, store: { ...source.store, pendingStructs: null, pendingDs: null } } as YDoc,
++      undefined,
++      new ForkEncoder(),
++    );
++    reference = comparisonEncoding(source);
++  } catch (error) {
++    dispose();
++    throw error;
++  }
++  return {
++    dispose,
++    check(update: Uint8Array): boolean {
++      if (!forkBytes || !reference) throw Error('Coverage baseline was disposed');
++      const copy = new Y.Doc({ gc: false });
++      let actual: ReturnType<typeof comparisonEncoding> | undefined,
++        rawReference: Uint8Array | undefined,
++        rawActual: Uint8Array | undefined;
++      try {
++        const decoder = decoding.createDecoder(forkBytes),
++          paired = new ForkDecoder(decoder);
++        Y.readUpdateV2(decoder, copy, undefined, paired);
++        paired.complete();
++        copy.store.pendingStructs =
++          missing && structs ? { missing: new Map(missing), update: structs.slice() } : null;
++        copy.store.pendingDs = deletes?.slice() ?? null;
++        Y.applyUpdate(copy, update);
++        if (!Y.equalSnapshots(snapshot, Y.snapshot(copy))) return false;
++        const next = copy.store.pendingStructs;
++        if (Boolean(missing) !== Boolean(next)) return false;
++        if (
++          missing &&
++          next &&
++          (missing.size !== next.missing.size ||
++            [...missing].some(([id, clock]) => next.missing.get(id) !== clock) ||
++            !equalBytes(structs, next.update))
++        )
++          return false;
++        if (!equalBytes(deletes, copy.store.pendingDs)) return false;
++        actual = comparisonEncoding(copy);
++        if (
++          sameComparisonStrings(reference.encoder, actual.encoder) &&
++          equalBytes(reference.bytes, actual.bytes)
++        )
++          return true;
++        // Complete both encodings before normalizing, just as sameDocState does. completeEncoding
++        // may borrow reference.bytes, so its fallback copy must not clear the reusable baseline.
++        rawReference = completeEncoding(reference);
++        if (rawReference === reference.bytes) rawReference = rawReference.slice();
++        rawActual = completeEncoding(actual);
++        return sameEncoding(rawReference, rawActual);
++      } finally {
++        rawReference?.fill(0);
++        rawActual?.fill(0);
++        if (actual) {
++          actual.bytes.fill(0);
++          returnComparisonScratch(actual.encoder);
++        }
++        copy.destroy();
++      }
++    },
++  };
++};
++
+ /** Current Account recovery must already contain its genesis. Never repair the live document by
+  * overlaying the checkpoint; a detached fork must remain unchanged, including pending bookkeeping. */
+ export const coversGenesis = (current: YDoc, checkpoint: YDoc): boolean => {
+--- a/src/crdt/inboundLedger.ts
++++ b/src/crdt/inboundLedger.ts
+@@ -26,7 +26,7 @@
+ import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
+ import { decodeInboundRecord } from './inboundRecord';
+ import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
+-import { Y, forkDoc, sameDocState, hasPendingUpdates } from './yjs';
++import { Y, forkDoc, sameDocState, hasPendingUpdates, prepareDocCoverage } from './yjs';
+ import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
+ import type { VerificationMemo } from './verificationMemo';
+ 
+@@ -285,7 +285,7 @@
+   };
+ }
+ /** A fork must be unchanged by each evidenced original; no vector-only shortcut. */
+-function contentCoverage(content: readonly OpenedRecord[]) {
++function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false) {
+   const doc = new Y.Doc({ gc: false }),
+     originals = updateIndex(false),
+     positives = updateIndex(true);
+@@ -326,18 +326,34 @@
+     positives: positives.values,
+     positiveBytes: positives.bytes,
+     check(updates: readonly Bytes[]) {
+-      for (const update of updates) {
+-        if (originals.has(update) || positives.has(update)) continue;
+-        const began = performance.now();
+-        const copy = forkDoc(doc, false);
+-        try {
+-          Y.applyUpdate(copy, update);
+-          if (!sameDocState(doc, copy)) captureError('Inbound content coverage is missing');
+-          positives.add(update);
+-        } finally {
+-          copy.destroy();
+-          measureLedger('coverageCheck', began);
++      let prepared: ReturnType<typeof prepareDocCoverage> | undefined;
++      try {
++        for (const update of updates) {
++          if (originals.has(update) || positives.has(update)) continue;
++          const began = performance.now();
++          let copy: ReturnType<typeof forkDoc> | undefined;
++          try {
++            let covered: boolean;
++            if (reuseBaseline) {
++              if (!prepared) {
++                prepared = prepareDocCoverage(doc);
++                countLedgerWork('coverageBaselines');
++              }
++              covered = prepared.check(update);
++            } else {
++              copy = forkDoc(doc, false);
++              Y.applyUpdate(copy, update);
++              covered = sameDocState(doc, copy);
++            }
++            if (!covered) captureError('Inbound content coverage is missing');
++            positives.add(update);
++          } finally {
++            copy?.destroy();
++            measureLedger('coverageCheck', began);
++          }
+         }
++      } finally {
++        prepared?.dispose();
+       }
+     },
+   };
+@@ -384,7 +400,7 @@
+       const copied = copyRecords(content);
+       let next: ReturnType<typeof contentCoverage> | undefined;
+       try {
+-        next = contentCoverage(copied);
++        next = contentCoverage(copied, options.incremental);
+         const equivalent = !!(options.incremental && coverage && next.preserve(coverage));
+         clear();
+         rows = copied;
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -8,6 +8,7 @@
+   'inboundVerifications',
+   'inboundCensuses',
+   'deliveryPrefixLinks',
++  'coverageBaselines',
+   'loads',
+   'loadedRows',
+   'loadedBytes',

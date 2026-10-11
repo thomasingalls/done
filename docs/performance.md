@@ -1486,3 +1486,93 @@ counts/times, two-device typing and peer arrival, and focused crash/retry eviden
 make existing cold history cheap: the fixed-history cold opening remains about 12–13s and the largest
 candidate compaction still takes about one second. No phone latency, general release-validation or
 production-publication claim follows from these disposable desktop measurements.
+
+## 2026-10-11 — Linear delivery-prefix verification on existing-history cold open
+
+The [cold-opening packet](./performance-experiments/2026-10-11-account-cold-open/README.md) repairs
+quadratic prefix reconstruction in complete delivery verification and constructs one nested census
+per preliminary validation. Against the signed batching parent `4bcac419`, five alternating pairs
+of the same existing 2,320-edit / 295-position fixture improve median offline unlock-to-editor from
+11.62s to 4.21s (63.7%). Prefix computations fall from 173,755 to 885; all three complete delivery and
+inbound verifications remain. Independent signed histories establish linear link-hash counts through
+1,000 positions. Source parses fall from 72,985 to 44,733, without changing the five physical loads.
+
+Three receiver pairs (51 inbound head records) remain about 1.17s, and three fresh pairs about 0.26s.
+Retained heap and first-edit guards show no material regression. Ordinary-build online/deep and
+offline/approved-device edit/reopen checks pass without diagnostic globals. Focused corruption,
+completeness, pending-dependency, crash/retry and cancellation checks pass; an older stale ledger
+mutation control fails on both parent and candidate and is explicitly retained as a limitation.
+
+The deep fixture still exceeds the 2.5s budget. Repeated source parsing, coverage checks and the
+preliminary/live-owner boundary remain opportunities. Static assets are installed before measurement;
+virtual unlock is inside it. These desktop samples do not establish phone performance, peak heap,
+large receive-history scaling or network catch-up latency. No deployment or release-validation resume.
+
+## 2026-10-11 — Parse each source once within the cold census
+
+The [census follow-up](./performance-experiments/2026-10-11-account-cold-census/README.md) consolidates
+catalogue, sequence and allocation-metadata parsing into one validation per physical source capsule
+per spool census. It also replaces hexadecimal-string equality with direct canonical byte comparison.
+Decoded updates are erased; temporary scalar descriptions do not enter the returned ledger view.
+
+Against the already repaired cold-open working tree, five alternating deep-history pairs improve
+median opening from 4.07s to 3.44s (15.4%, 625ms). Source parses fall from 44,733 to 25,897, with full
+passes, crypto counts and physical reads unchanged. Receiving-device and fresh-account medians remain
+about 1.16s and 0.26s. Deep collected heap increases about 0.28MB at the median with overlapping
+ranges; first-card medians are both 26ms. All 22 measured opens and the focused correctness/recovery
+checks pass. Exact patches, raw observations, profile, predeclared predictions and limitations are
+retained in the packet.
+
+The 2.5s deep cold-open budget remains unresolved. Preliminary recovery still repeats full validation
+inside one owner; scoped reuse there is the next candidate, before a more delicate cross-owner
+handoff. Coverage checking remains substantial. These results do not qualify network catch-up,
+phone performance or peak heap; no deployment or release-validation campaign occurred.
+
+## 2026-10-11 — Reuse the preliminary owner's verified snapshot
+
+The [recovery follow-up](./performance-experiments/2026-10-11-account-cold-recovery/README.md) reuses
+one successful semantic validation within a single preliminary recovery owner. Its second read still
+authenticates storage and checks the complete counter and sealed rows; any change revalidates. Journal
+reads stay fresh, and live-owner validation remains independent. Nine new boundary tests plus eight
+native regressions pass, including an effective weakened-identity control.
+
+Five deep pairs against the preceding census repair improve the original observation from 3.43s to
+2.92s (14.9%). Preliminary validation count falls two to one, native decryptions 12,411 to 8,286, and
+physical reads stay five. Collected heap stays near 17.5MB; extra temporary copying is recorded.
+
+The receiver's preliminary work falls 402ms to 240ms, but Playwright visibility polling obscures the
+gain in its final observation. A separately recorded in-page frame probe confirms deep 3.11s to 2.58s
+and receiver 0.85s to 0.71s in three alternating pairs each. These values are not directly comparable
+with older polling-based measurements; both methods and all raw observations are retained. Future
+cold-open comparisons should include the frame timestamp. No phone or hardware-scanout claim follows.
+
+The 2.5s budget remains unresolved. Live-owner accepted-source coverage checking is now the strongest
+remaining measured candidate (~0.6s inclusive in a separate profile). No new coverage strategy,
+cross-owner handoff, production rollout or release-validation campaign was introduced.
+
+## 2026-10-11 — Prepare one baseline for accepted-source coverage
+
+The [coverage follow-up](./performance-experiments/2026-10-11-account-cold-coverage/README.md) shares
+only baseline serialization within the live incremental owner's synchronous coverage call. Each
+original still receives an independent fork and complete comparison, including pending state and
+deletions. Preparation is disposed on success/refusal; full/reference and isolated audit checks retain
+the previous algorithm. No stored format or cross-owner reuse changes.
+
+Five alternating deep-history pairs improve the in-page editor-frame median from 2.577s to 2.341s
+(9.2%, 236ms). Coverage falls 615ms to 376ms (38.9%) while retaining all 2,355 independent checks;
+one prepared baseline replaces repeated setup. Full passes, physical reads, source parses and native
+crypto counts remain unchanged. Receiver frame medians are both 0.699s; fresh medians are 0.193/0.204s,
+with overlapping ranges and essentially unchanged owner/recovery work. Deep collected heap rises
+0.29MB at the median with overlapping ranges; first-edit medians remain 23ms.
+
+All five candidate deep samples are below 2.5s on this desktop fixture. This does not qualify phone,
+arbitrary-history or network-catch-up performance. All 22 paired opens, 25 focused unit tests and eight
+native regressions pass, plus separate profile and ordinary-build edit/reopen checks. Two initial
+generated-test attempts hit the same fixture error before candidate comparison; evidence records the
+correction. Build/type/lint/Yjs/bundle/origin checks pass. The remaining profile points to census
+parsing and byte/text conversion; inclusive costs overlap and are not predicted removable time.
+
+All four cold-open slices are recorded together in the cold-open integration commit on signed parent
+`4bcac419`. The experiment packets retain their original working-tree descriptions and tested source
+hashes. Nothing has been deployed; release validation remains paused, and the other seat's live
+progress file remains untouched.

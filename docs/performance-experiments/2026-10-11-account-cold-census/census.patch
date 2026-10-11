@@ -1,0 +1,140 @@
+diff --git a/src/crdt/sourceCapture.ts b/src/crdt/sourceCapture.ts
+index dff0cc09..6030d3c3 100644
+--- a/src/crdt/sourceCapture.ts
++++ b/src/crdt/sourceCapture.ts
+@@ -160,7 +160,7 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
+       if (result[key] !== historical[key]) throw Error('route');
+     const encoded = encodeSourceCapsule(result);
+     try {
+-      if (hex(encoded) !== hex(bytes)) throw Error('noncanonical');
++      if (!sameBytes(encoded, bytes)) throw Error('noncanonical');
+     } finally {
+       encoded.fill(0);
+     }
+@@ -201,6 +201,35 @@ export function capturedSourcePresence(
+ export function captureCatalog(
+   records: readonly OpenedRecord[],
+   route: CaptureRoute,
++): Map<string, Bytes> {
++  return scanCapturedSources(records, route);
++}
++
++/** Scalar metadata used only during a synchronous census, with no decoded update buffers. */
++interface CapturedSourceDescription {
++  sequence: number;
++  epoch: number;
++  sources: { actor: string; kind: SourceUpdate['kind']; length: number }[];
++}
++export function inspectCapturedSources(records: readonly OpenedRecord[], route: CaptureRoute) {
++  const descriptions = new Map<string, CapturedSourceDescription>();
++  const sources = scanCapturedSources(records, route, (c, record) => {
++    const prior = descriptions.get(c.id);
++    if (prior) prior.sequence = Math.min(prior.sequence, record.seq);
++    else
++      descriptions.set(c.id, {
++        sequence: record.seq,
++        epoch: c.epoch,
++        sources: c.sources.map((s) => ({ actor: s.actor, kind: s.kind, length: s.bytes.length })),
++      });
++  });
++  return { sources, descriptions };
++}
++
++function scanCapturedSources(
++  records: readonly OpenedRecord[],
++  route: CaptureRoute,
++  describe?: (capsule: SourceCapsule, record: OpenedRecord) => void,
+ ): Map<string, Bytes> {
+   const catalog = new Map<string, Bytes>();
+   for (const r of records) {
+@@ -209,9 +238,10 @@ export function captureCatalog(
+     const c = decodeSourceCapsule(r.bytes, route);
+     try {
+       const existing = catalog.get(c.id);
+-      if (existing && hex(existing) !== hex(r.bytes))
++      if (existing && !sameBytes(existing, r.bytes))
+         captureError('Conflicting source capsule identity');
+       catalog.set(c.id, r.bytes);
++      describe?.(c, r);
+     } finally {
+       eraseCapsule(c);
+     }
+diff --git a/src/crdt/spoolRecord.ts b/src/crdt/spoolRecord.ts
+index 2c46b84a..a2bf6289 100644
+--- a/src/crdt/spoolRecord.ts
++++ b/src/crdt/spoolRecord.ts
+@@ -21,7 +21,7 @@ import {
+   type OpenedRecord,
+ } from './contentRecord';
+ import {
+-  captureCatalog,
++  inspectCapturedSources,
+   captureRouteAt,
+   decodeSourceCapsule,
+   eraseCapsule,
+@@ -249,16 +249,9 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
+     }
+   }
+   sourceRecords.sort((a, b) => a.seq - b.seq);
+-  const sources = captureCatalog(sourceRecords, route),
++  const { sources, descriptions } = inspectCapturedSources(sourceRecords, route),
+     positions: SpoolPosition[] = [],
+-    used = new Set<string>(),
+-    sourceSequences = new Map<string, number>();
+-  for (const r of sourceRecords)
+-    if (r.kind === 'outbound') {
+-      const c = decodeSourceCapsule(r.bytes, route);
+-      sourceSequences.set(c.id, Math.min(sourceSequences.get(c.id) ?? Infinity, r.seq));
+-      eraseCapsule(c);
+-    }
++    used = new Set<string>();
+   let attempts = 0,
+     previousEpoch = 1;
+   for (const { record, entry: e, epoch } of events.sort((a, b) => a.record.seq - b.record.seq)) {
+@@ -276,32 +269,27 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
+         kind = '',
+         sourceEpoch = 0;
+       for (const ref of refs) {
+-        const bytes = sources.get(ref.id),
++        const description = descriptions.get(ref.id),
+           key = ref.id + ':' + ref.index,
+-          sequence = sourceSequences.get(ref.id)!;
+-        if (!bytes || used.has(key) || sequence >= record.seq)
++          sequence = description?.sequence ?? Infinity;
++        if (!description || used.has(key) || sequence >= record.seq)
+           captureError('Missing, repeated or late source');
+         if (
+           sequence < previousSequence ||
+           (sequence === previousSequence && ref.index <= previousIndex)
+         )
+           captureError('Source batch order changed');
+-        const c = decodeSourceCapsule(bytes!, route);
+-        try {
+-          if (sourceEpoch && c.epoch !== sourceEpoch)
+-            captureError('Source batch crosses authority');
+-          sourceEpoch = c.epoch;
+-          const source = c.sources[ref.index];
+-          if (!source) captureError('Missing source index');
+-          if (actor && (actor !== source!.actor || kind !== source!.kind))
+-            captureError('Source batch actor changed');
+-          actor = source!.actor;
+-          kind = source!.kind;
+-          total += source!.bytes.length;
+-          if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
+-        } finally {
+-          eraseCapsule(c);
+-        }
++        if (sourceEpoch && description!.epoch !== sourceEpoch)
++          captureError('Source batch crosses authority');
++        sourceEpoch = description!.epoch;
++        const source = description!.sources[ref.index];
++        if (!source) captureError('Missing source index');
++        if (actor && (actor !== source!.actor || kind !== source!.kind))
++          captureError('Source batch actor changed');
++        actor = source!.actor;
++        kind = source!.kind;
++        total += source!.length;
++        if (refs.length > 1 && total > MAX_POSITION_BYTES) captureError('Source batch too large');
+         previousSequence = sequence;
+         previousIndex = ref.index;
+         used.add(key);

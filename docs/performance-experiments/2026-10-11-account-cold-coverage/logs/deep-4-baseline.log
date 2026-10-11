@@ -1,0 +1,15 @@
+
+Running 1 test using 1 worker
+
+(node:92719) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+restoring browser 0
+browser restored
+load chooser
+unlock prepared
+starting unlock
+unlock clicked
+{"run":0,"coldMs":2938.400001525879,"heap":17555316,"editMs":24,"passes":{"startupValidations":1,"joinedStartupValidations":0,"deliveryVerifications":2,"inboundVerifications":2,"inboundCensuses":3,"deliveryPrefixLinks":590,"loads":5,"loadedRows":19150,"loadedBytes":10690970,"authorityChecks":0,"positions":0,"sourceParses":21188,"sourceParseBytes":5627299,"recordCopies":26811,"recordCopyBytes":14995326,"journalFlushes":1,"dirtyJournalFlushes":0,"projectionChecks":2},"milestones":{"authorized":135,"classified":1022.9000015258789,"owner":2472.400001525879,"editor":2557.300001144409},"errors":[]}
+  ✓  1 docs/performance-experiments/2026-10-11-account-cold-coverage/probe/cold.spec.ts:22:1 › retained Account cold open (4.8s)
+
+  1 passed (5.2s)
