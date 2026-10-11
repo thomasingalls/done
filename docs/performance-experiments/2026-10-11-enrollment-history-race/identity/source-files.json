@@ -1,0 +1,18 @@
+[
+  {
+    "path": "account-service/historyCheckpoint.ts",
+    "sha256": "503946fb7655065a2366a1e400b0877c32efab7d2653b7588edb5aada8be70ba"
+  },
+  {
+    "path": "test/account-ceremony/content-transfer.test.mjs",
+    "sha256": "07a5250c87d7a8e718a3d4ad82d3eec9ae8f97a9509d40ee18efd0eee961e21a"
+  },
+  {
+    "path": "test/account-history/service.test.mjs",
+    "sha256": "86ad1b66366040a1badb551c17006b0187a8fb038f60ebaaf2d38779c915f2ef"
+  },
+  {
+    "path": "test/packaged-account/enrollment-open.spec.ts",
+    "sha256": "fb67a85386eb7bc0fa5cdae6ba618344bb3634725c8816beadc737edb657423c"
+  }
+]

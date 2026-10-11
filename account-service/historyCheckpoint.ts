@@ -84,6 +84,9 @@ interface RecordRow {
 }
 const no = (refusal: string) => ({ ok: false as const, refusal });
 const zero = EMPTY_HISTORY_CHECKPOINT;
+// A later read can observe a legitimate append while the initial snapshot is being verified.
+// Discard that attempt and reverify a fresh snapshot within the existing bounded retry loop.
+class HistorySnapshotChanged extends Error {}
 /** Resolve historical eligibility from the same verified chain, never a producer-supplied key. */
 async function memberships(s: Snapshot, auth: DeliveryAuthority, pin: DeliveryIssuer['pin']) {
   const base = { pin, request: auth.request, receipt: auth.receipt },
@@ -386,7 +389,7 @@ export async function exchangeHistoryCheckpoint(
               publisherWitness: undefined,
             });
           if (!empty || authorityBytes(empty) !== authorityBytes(before.original))
-            throw Error('Empty publisher authority changed');
+            throw new HistorySnapshotChanged();
           s = empty;
         }
         s ??= {
@@ -419,7 +422,7 @@ export async function exchangeHistoryCheckpoint(
               !cut ||
               snapshotBytes({ ...cut, rows: [] }) !== snapshotBytes({ ...source, rows: [] })
             )
-              throw Error('Checkpoint ledger changed');
+              throw new HistorySnapshotChanged();
             cutSnapshots.push(cut);
             const rows = await verifyServed(
               cut,
@@ -660,6 +663,7 @@ export async function exchangeHistoryCheckpoint(
       return { ok: true as const, page };
     } catch (cause) {
       if (db.isTransaction) db.exec('ROLLBACK');
+      if (cause instanceof HistorySnapshotChanged) continue;
       if (cause instanceof LedgerIntegrityError) return no('ledger-integrity');
       rethrowAuthorization(cause);
       return no('unavailable');

@@ -8,6 +8,31 @@ import { AuthorizationRefused } from '../../account-service/authorization.ts';
 import { AccountCore } from '../../account-service/core.ts';
 import { DatabaseSync } from 'node:sqlite';
 const zero = '00'.repeat(32);
+test('history read retries an append during retained checkpoint cut verification', async (t) => {
+  const f = await setup(t),
+    head = await f.upload(1, 'checkpoint prefix');
+  const cp = await f.create(null, [head]);
+  const publish = await f.makeRequest('publish', cp);
+  await f.check(publish, await f.exchange(publish));
+  const admit = await f.makeRequest('admit', await f.admit(cp));
+  await f.check(admit, await f.exchange(admit));
+  const request = await f.makeRequest('read', 'latest');
+  let appended = false,
+    next;
+  const verify = crypto.subtle.verify.bind(crypto.subtle);
+  t.mock.method(crypto.subtle, 'verify', async (...args) => {
+    if (!appended) {
+      appended = true;
+      next = await f.upload(2, 'after checkpoint');
+    }
+    return verify(...args);
+  });
+  const response = await f.exchange(request);
+  assert(appended);
+  const page = await f.check(request, response);
+  assert.deepEqual(page.checkpoint, cp);
+  assert.deepEqual(page.heads, [next]);
+});
 test('repeatable service checkpoints retain a previous snapshot and an untrimmed accepted suffix', async (t) => {
   const f = await setup(t),
     head = await f.upload(1, 'first');

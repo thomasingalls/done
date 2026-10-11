@@ -1606,3 +1606,22 @@ Measured and final source/bundle identities differ only by recorded follow-up ob
 corrections. Focused tests and final build pass. One final packaged attempt failed during initial
 enrollment before the recovery test; its isolated rerun passed and the unexplained refusal remains
 recorded for follow-up before publication. Nothing is deployed; release qualification remains paused.
+
+## 2026-10-11 — Enrollment refusal investigation before publication
+
+Client receive work and its measurements are signed as `34f9b0b9`. The
+[bounded follow-up](./performance-experiments/2026-10-11-enrollment-history-race/README.md) reproduces
+the second-device opening failure: three of six pairings receive `409 unavailable` from the history
+checkpoint route. A temporary service diagnostic identifies `Empty publisher authority changed`.
+An ordinary first-device upload changes the stored witness between two captures, and the history
+reader reports an error instead of restarting its snapshot verification. The check came from
+deployed service optimization `c609d8c7`. The original run lacked a refusal body, so its precise cause
+cannot be recovered retrospectively; the new runs establish this concrete defect with the same symptom.
+
+The local repair retries only the two explicit snapshot-race checks within the existing four-attempt
+bound. All five directed controls pass, including authority/row-damage refusals; 35 affected service
+regressions and six repaired packaged pairings pass. The second matched check concerns a concurrent
+append during retained checkpoint-cut verification. No client behavior, authentication, schema or
+format changes. These are correctness observations, not new performance measurements or qualification.
+The original stopped-receive notice/manual retry journey also passes, including reverse-direction
+editing. The repair is local; no publication has been prepared or deployed.

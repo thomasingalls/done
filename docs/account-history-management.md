@@ -1,5 +1,12 @@
 # Account history management
 
+2026-10-11 follow-up: history reads now restart their existing bounded verification loop when a
+later empty-stream or checkpoint-cut capture observes a concurrent append. The original implementation
+mistook those snapshot races for `unavailable`, intermittently preventing an already certified second
+device from opening. Witness comparisons, full re-verification, four-attempt limits and authority/
+integrity refusals remain. See the [reproduction and repair evidence](./performance-experiments/2026-10-11-enrollment-history-race/README.md).
+This repair has not been deployed; the deployment chronology below remains historical.
+
 2026-10-09. Bounded product implementation, with unsigned intermediate commits authorized.
 Release validation remains paused until after a version is published and the operator resumes it.
 The retained :8443 installation now serves `95433108`, schema 26. The personal history walkthrough is deferred.
