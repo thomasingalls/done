@@ -180,6 +180,8 @@ export interface DriverOperations {
   deliveryStatus(): Promise<{
     state: 'ready' | 'closed' | 'conflict' | 'finalized';
     acceptedThrough: number;
+    /** Aggregate verified inbound progress, when composed with the receiver. */
+    receivedThrough?: number;
     submissions: number[];
   }>;
   spoolStatus(): Promise<{ positions: { position: number; persisted: boolean }[] }>;

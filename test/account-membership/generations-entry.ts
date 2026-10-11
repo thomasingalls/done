@@ -25,3 +25,5 @@ export { verifyDelivery } from '../../src/crdt/deliveryRecord';
 export { emptySpoolWitness } from '../../src/crdt/contentRecord';
 export { extendSpoolWitness } from '../../src/crdt/spoolRecord';
 export { createVerificationMemo } from '../../src/crdt/verificationMemo';
+
+export { verifyInstalledMembership } from '../../src/crdt/accountMembership';

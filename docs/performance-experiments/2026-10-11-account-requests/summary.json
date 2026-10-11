@@ -1,0 +1,154 @@
+{
+  "baseline-3": {
+    "durationMs": 95460,
+    "requests": 367,
+    "submits": 76,
+    "requestsPerKey": 0.6116666666666667,
+    "requestsPerSubmit": 4.828947368421052,
+    "refusals": 63,
+    "counts": {
+      "/account/delivery/submit": 88,
+      "/account/authority/discover": 91,
+      "/account/history/v1/checkpoint": 94,
+      "/account/delivery/read-v2": 94
+    },
+    "convergenceMs": 2012,
+    "statusCounts": {
+      "200": 304,
+      "429": 63
+    },
+    "bins": [
+      {
+        "fromMs": 0,
+        "requests": 185,
+        "statuses": {
+          "200": 168,
+          "429": 17
+        }
+      },
+      {
+        "fromMs": 30000,
+        "requests": 84,
+        "statuses": {
+          "200": 62,
+          "429": 22
+        }
+      },
+      {
+        "fromMs": 60000,
+        "requests": 79,
+        "statuses": {
+          "200": 60,
+          "429": 19
+        }
+      },
+      {
+        "fromMs": 90000,
+        "requests": 19,
+        "statuses": {
+          "429": 5,
+          "200": 14
+        }
+      }
+    ],
+    "maxSubmitMs": 38
+  },
+  "candidate-1": {
+    "durationMs": 96156,
+    "requests": 227,
+    "submits": 224,
+    "requestsPerKey": 0.37833333333333335,
+    "requestsPerSubmit": 1.0133928571428572,
+    "refusals": 0,
+    "counts": {
+      "/account/delivery/submit": 224,
+      "/account/authority/discover": 1,
+      "/account/history/v1/checkpoint": 1,
+      "/account/delivery/read-v2": 1
+    },
+    "convergenceMs": 2008,
+    "statusCounts": {
+      "200": 227
+    },
+    "bins": [
+      {
+        "fromMs": 0,
+        "requests": 109,
+        "statuses": {
+          "200": 109
+        }
+      },
+      {
+        "fromMs": 30000,
+        "requests": 63,
+        "statuses": {
+          "200": 63
+        }
+      },
+      {
+        "fromMs": 60000,
+        "requests": 45,
+        "statuses": {
+          "200": 45
+        }
+      },
+      {
+        "fromMs": 90000,
+        "requests": 10,
+        "statuses": {
+          "200": 10
+        }
+      }
+    ],
+    "maxSubmitMs": 73
+  },
+  "candidate-two": {
+    "durationMs": 95687,
+    "requests": 699,
+    "submits": 139,
+    "requestsPerKey": 0.5825,
+    "requestsPerSubmit": 5.028776978417266,
+    "refusals": 0,
+    "counts": {
+      "/account/delivery/submit": 139,
+      "/account/membership/v2/discover": 131,
+      "/account/history/v1/checkpoint": 131,
+      "/account/delivery/read-v2": 298
+    },
+    "convergenceMs": 9150,
+    "statusCounts": {
+      "200": 699
+    },
+    "bins": [
+      {
+        "fromMs": 0,
+        "requests": 260,
+        "statuses": {
+          "200": 260
+        }
+      },
+      {
+        "fromMs": 30000,
+        "requests": 205,
+        "statuses": {
+          "200": 205
+        }
+      },
+      {
+        "fromMs": 60000,
+        "requests": 169,
+        "statuses": {
+          "200": 169
+        }
+      },
+      {
+        "fromMs": 90000,
+        "requests": 65,
+        "statuses": {
+          "200": 65
+        }
+      }
+    ],
+    "maxSubmitMs": 114
+  }
+}

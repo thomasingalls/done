@@ -1,0 +1,38 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 435 modules transformed.
+
+(!) outDir /tmp/done-account-activation/reference-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../../../../../tmp/done-account-activation/reference-dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+../../../../../../tmp/done-account-activation/reference-dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/main-apPaEBJm.css                    32.72 kB │ gzip:   6.92 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/checkpointTimeline-DdvidAM9.js        0.58 kB │ gzip:   0.39 kB │ map:     2.20 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/accountProgressCustody-ZpUMa3Er.js    1.70 kB │ gzip:   0.89 kB │ map:     6.07 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.71 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/membershipLocator-CFok42yu.js         5.21 kB │ gzip:   1.67 kB │ map:    16.78 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/rotationObservation-CmvWgoQr.js       6.69 kB │ gzip:   2.59 kB │ map:    19.51 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/accountRotation-D0PP6lxu.js           7.83 kB │ gzip:   3.44 kB │ map:    29.61 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/preload-helper-B_9xYlei.js            8.34 kB │ gzip:   3.59 kB │ map:    24.38 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/historyOwner-CYGEDU6P.js             10.60 kB │ gzip:   3.64 kB │ map:    35.94 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/ceremonyVault-CEyCzxwe.js            10.61 kB │ gzip:   3.96 kB │ map:    36.74 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/accountAccess-MzHwzJNy.js            13.00 kB │ gzip:   4.69 kB │ map:    54.01 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/membershipSource-CmIUYCUY.js         14.42 kB │ gzip:   5.16 kB │ map:    50.60 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/LocalApp-BI6lV7rO.js                 16.31 kB │ gzip:   6.01 kB │ map:    49.22 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/deviceRemovalVault-BVFG4mgw.js       21.63 kB │ gzip:   7.21 kB │ map:    74.18 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/AccountRecoveryApp-EiyU7_UY.js       29.18 kB │ gzip:   9.89 kB │ map:    96.11 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/ceremonyNavigation-DrNsj12C.js       34.75 kB │ gzip:  12.22 kB │ map:   117.56 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/promotionRecord-CQoKNqHO.js          37.76 kB │ gzip:  12.41 kB │ map:   135.55 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/AccountSetupApp-CYCI2z0e.js          39.29 kB │ gzip:  13.24 kB │ map:   113.27 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/localGenesisStorage-D_pjobG9.js      64.63 kB │ gzip:  21.44 kB │ map:   195.23 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/joinedAccount-KUO31GmH.js            73.46 kB │ gzip:  22.75 kB │ map:   267.78 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/AccountEnrollmentApp-BOlfv7iv.js     79.43 kB │ gzip:  23.43 kB │ map:   263.34 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/AccountDevices-DL8sIEDT.js           88.65 kB │ gzip:  27.69 kB │ map:   337.88 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/admissionHistory-BJqiB6yy.js        102.47 kB │ gzip:  25.38 kB │ map:   346.58 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/admissionDocument-DtC5Ib_k.js       138.06 kB │ gzip:  43.15 kB │ map:   818.13 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/main-Bs9Ge6Vc.js                    283.71 kB │ gzip:  92.03 kB │ map: 1,249.49 kB
+../../../../../../tmp/done-account-activation/reference-dist/assets/localGenesis-C1sLgIpS.js            678.55 kB │ gzip: 235.05 kB │ map: 2,799.59 kB
+
+✓ built in 2.32s

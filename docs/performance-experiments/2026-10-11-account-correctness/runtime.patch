@@ -1,0 +1,155 @@
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 6048dbe7..1d38cc26 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1784,7 +1784,9 @@ async function openReceivingWorkspace(
+         ...(options.today ? { today: options.today } : {}),
+         ...(options.signal ? { signal: options.signal } : {}),
+       },
+-      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental' ? 'account-snapshots' : 'reference',
++      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental'
++        ? 'account-snapshots'
++        : 'reference',
+     );
+     if (options.signal?.aborted || workspace.status.state !== 'active') {
+       await workspace.close();
+@@ -1850,7 +1852,16 @@ async function openReceivingWorkspace(
+               if ('selfDecision' in received && received.selfDecision) {
+                 const { position, proof } = received.selfDecision;
+                 try {
+-                  await outbound.recordResponse(position, proof);
++                  const decision = await outbound.recordResponse(position, proof);
++                  // A verified page does not prove the delivery owner retained its decision.
++                  // Duplicates may be unrecorded but accepted; a declined decision must stop
++                  // this receive attempt rather than become an unexplained network backoff.
++                  if (decision.kind === 'unknown' || decision.kind === 'blocked')
++                    return {
++                      kind: 'rejected' as const,
++                      reason: 'self-decision-refused' as const,
++                      recorded: false,
++                    };
+                 } finally {
+                   proof.fill(0);
+                 }
+diff --git a/src/crdt/incrementalAccountLedger.ts b/src/crdt/incrementalAccountLedger.ts
+index 10d4f661..d6c4f7d5 100644
+--- a/src/crdt/incrementalAccountLedger.ts
++++ b/src/crdt/incrementalAccountLedger.ts
+@@ -320,7 +320,11 @@ export async function extendAccountLedger(
+     const epoch = inboundEvent
+       ? decodeInboundRequest(inboundEvent.request).epoch
+       : (f[5] as number);
+-    if (route.history && epoch < indexes.epoch) captureError('Account ledger authority regressed');
++    // Adoption takes the full verifier and fixes its event boundary before append reuse.
++    // The last retained event can still precede that boundary: monotonicity alone would
++    // admit another old-epoch event that the reference rejects at the next audit/open.
++    if (route.history && epoch !== route.epoch)
++      captureError('Account ledger crosses installed authority');
+     indexes.epoch = epoch;
+     countLedger('events');
+     spool.events.push(row.bytes);
+diff --git a/src/crdt/verifiedRecords.ts b/src/crdt/verifiedRecords.ts
+index 558a0403..cbb4880f 100644
+--- a/src/crdt/verifiedRecords.ts
++++ b/src/crdt/verifiedRecords.ts
+@@ -38,7 +38,8 @@ export function createVerifiedRecords<T>() {
+   let retained: OpenedRecord[] | undefined,
+     value: T | undefined,
+     identity: unknown,
+-    revision = 0;
++    revision = 0,
++    verifying = false;
+   const clear = () => {
+     revision++;
+     eraseVerified(retained);
+@@ -84,45 +85,53 @@ export function createVerifiedRecords<T>() {
+         candidate: OpenedRecord[],
+       ) => Promise<T | undefined>,
+     ): Promise<void> {
++      // The Account storage owner serializes calls. Enforce that borrowing invariant here
++      // too: a competing verification must never erase a predecessor another call uses.
++      if (verifying) throw Error('Concurrent verification is not allowed');
++      verifying = true;
+       try {
+-        current();
+-      } catch (e) {
+-        clear();
+-        throw e;
+-      }
+-      if (retained && identity === token && sameRecords(retained, records)) return;
+-      const previous = value,
+-        before = retained;
+-      // A candidate may borrow the previous result only until it has been detached below.
+-      // Neither a speculative append nor a late verification may publish into this view.
+-      const at = ++revision,
+-        candidate = copyRecords(records);
+-      let result: T | undefined;
+-      try {
+-        result =
+-          previous !== undefined && before && extend
+-            ? await extend(previous, before, candidate)
+-            : undefined;
+-        result ??= await check(candidate);
+-        current();
+-        if (at !== revision) throw Error('Verification view was invalidated');
+-        // Results may reference candidate input buffers. Own both before exposing any readback.
+-        const atClone = ledgerWorkStart();
+-        const nextValue = structuredClone(result);
+-        measureLedgerWork('installClone', atClone);
+-        const nextRecords = copyRecords(candidate);
+-        eraseVerified(value);
+-        eraseVerified(retained);
+-        value = nextValue;
+-        retained = nextRecords;
+-        identity = token;
+-      } catch (e) {
+-        eraseVerified(candidate);
+-        if (at === revision) clear();
+-        throw e;
++        try {
++          current();
++        } catch (e) {
++          clear();
++          throw e;
++        }
++        if (retained && identity === token && sameRecords(retained, records)) return;
++        const previous = value,
++          before = retained;
++        // A candidate may borrow the previous result only until it has been detached below.
++        // Neither a speculative append nor a late verification may publish into this view.
++        const at = ++revision,
++          candidate = copyRecords(records);
++        let result: T | undefined;
++        try {
++          result =
++            previous !== undefined && before && extend
++              ? await extend(previous, before, candidate)
++              : undefined;
++          result ??= await check(candidate);
++          current();
++          if (at !== revision) throw Error('Verification view was invalidated');
++          // Results may reference candidate input buffers. Own both before exposing any readback.
++          const atClone = ledgerWorkStart();
++          const nextValue = structuredClone(result);
++          measureLedgerWork('installClone', atClone);
++          const nextRecords = copyRecords(candidate);
++          eraseVerified(value);
++          eraseVerified(retained);
++          value = nextValue;
++          retained = nextRecords;
++          identity = token;
++        } catch (e) {
++          eraseVerified(candidate);
++          if (at === revision) clear();
++          throw e;
++        } finally {
++          eraseVerified(result);
++          eraseVerified(candidate);
++        }
+       } finally {
+-        eraseVerified(result);
+-        eraseVerified(candidate);
++        verifying = false;
+       }
+     },
+   };

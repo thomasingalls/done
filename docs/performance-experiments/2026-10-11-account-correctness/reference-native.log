@@ -1,0 +1,16 @@
+(node:12542) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12542) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:12542) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ lost submit answer reconciles through the delivery ledger without self content writes or cold resubmission (5544.574208ms)
+✔ self-read decision unknown stops receive without losing local work and explicit retry recovers (5687.936125ms)
+✔ self-read decision blocked stops receive without losing local work and explicit retry recovers (5778.6415ms)
+✔ concurrent Account readers enter verified storage one at a time (4462.219375ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23998.942583

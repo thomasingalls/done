@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:45979) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/history.spec.ts:13:1 › sole device creates repeated native snapshots, retries lost publication and keeps editing (7.8s)
+  ✓  2 test/packaged-account/history.spec.ts:52:1 › two native device owners independently admit snapshots and keep two-way delivery (33.4s)
+  ✓  3 test/packaged-account/history.spec.ts:195:1 › a returning editor installs admitted cuts after service pruning and keeps its local writing (29.9s)
+
+  3 passed (1.2m)

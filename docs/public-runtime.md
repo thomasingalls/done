@@ -104,6 +104,16 @@ or running this smoke command does not push an image or modify an existing insta
 command creates named disposable Docker volumes/containers and records its result below
 `test-results/public-runtime/`; it never mounts host service state.
 
+Account operations use incremental ledger verification and the corresponding editor snapshot path
+by default. For a diagnostic rollback, add `--build-arg VITE_ACCOUNT_LEDGER=reference` to the image
+build, or use `VITE_ACCOUNT_LEDGER=reference pnpm build` for a local application build. This is a
+**build-time** choice: changing the running container's environment cannot change cached JavaScript.
+Use the normal application-update procedure to deliver the replacement assets. Both paths read the
+same stored format, and every cold open still performs full verification; no database migration or
+restore is involved. Unset, empty and `incremental` select the default; other values fail the build.
+The [activation record](./performance-experiments/2026-10-11-account-activation/README.md) describes
+the bounded evidence, retained reference audits and remaining performance limits.
+
 The same image has three commands, using exec-form entrypoint `node scripts/public-account.mjs`:
 
 1. Run `initialize` explicitly once with a writable data volume and the externally provisioned

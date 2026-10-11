@@ -10,9 +10,10 @@ export type SyncHalt =
   | 'finalized'
   | 'envelope-size'
   | import('./accountReceiveDriver').ReceiveHalt;
-export type OutboundStep =
+export type OutboundStep = { receivedThrough?: number } & (
   | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
-  | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt };
+  | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
+);
 export interface SyncLaneStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly failures: number;
@@ -169,14 +170,23 @@ export function createSyncScheduler(options: {
         const position =
           'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
         if (position < lane.position) throw Error('Durable lane position regressed');
-        const advanced = position > lane.position;
         lane.position = position;
-        // Durable send progress makes a new read useful. Preserve receive backoff and evidence halts.
+        // A retained submit receipt already contributes to the composed inbound prefix.
+        // Publish that verified aggregate without scheduling a network read of our own write.
         if (
           name === 'send' &&
-          advanced &&
-          result.kind !== 'blocked' &&
-          position > lanes.receive.position &&
+          'receivedThrough' in result &&
+          result.receivedThrough !== undefined
+        ) {
+          if (result.receivedThrough < lanes.receive.position)
+            throw Error('Durable receive position regressed');
+          lanes.receive.position = result.receivedThrough;
+        }
+        // An unanswered submit can have committed. Preserve independent read reconciliation,
+        // but never override a receiver's failure backoff or diagnostic halt.
+        if (
+          name === 'send' &&
+          result.kind === 'unknown' &&
           !lanes.receive.halt &&
           lanes.receive.failures === 0
         )
@@ -285,13 +295,17 @@ export async function driveOutboundStep(
   token: AccountAccess,
   gate: () => DriverGate,
 ): Promise<OutboundStep> {
+  const progress = (s: Awaited<ReturnType<DriverOperations['deliveryStatus']>>) => ({
+    acceptedThrough: s.acceptedThrough,
+    ...(s.receivedThrough !== undefined ? { receivedThrough: s.receivedThrough } : {}),
+  });
   let status = await ops.deliveryStatus();
   if (status.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.()))
     status = await ops.deliveryStatus();
   const pause = (): OutboundStep | null => {
     if (status.state !== 'ready')
-      return { kind: 'blocked', acceptedThrough: status.acceptedThrough, reason: status.state };
-    if (gate() !== 'ready') return { kind: 'paused', acceptedThrough: status.acceptedThrough };
+      return { kind: 'blocked', ...progress(status), reason: status.state };
+    if (gate() !== 'ready') return { kind: 'paused', ...progress(status) };
     return null;
   };
   let paused = pause();
@@ -303,7 +317,7 @@ export async function driveOutboundStep(
     if (paused) return paused;
     if (!spool.positions.some((p) => p.position === position && p.persisted)) {
       const prepared = await ops.prepareNextEnvelope();
-      if (!prepared) return pause() ?? { kind: 'idle', acceptedThrough: status.acceptedThrough };
+      if (!prepared) return pause() ?? { kind: 'idle', ...progress(status) };
       prepared.bytes.fill(0);
       if (prepared.position !== position) throw Error('Unexpected delivery position');
     }
@@ -313,7 +327,7 @@ export async function driveOutboundStep(
     if ('bytes' in submission && submission.bytes instanceof Uint8Array) submission.bytes.fill(0);
     if (submission.kind !== 'ready') {
       status = await ops.deliveryStatus();
-      return pause() ?? { kind: 'progress', acceptedThrough: status.acceptedThrough };
+      return pause() ?? { kind: 'progress', ...progress(status) };
     }
   }
   paused = pause();
@@ -327,8 +341,7 @@ export async function driveOutboundStep(
   }
   if (next.acceptedThrough < status.acceptedThrough)
     throw Error('Durable delivery prefix regressed');
-  if (next.state !== 'ready')
-    return { kind: 'blocked', acceptedThrough: next.acceptedThrough, reason: next.state };
+  if (next.state !== 'ready') return { kind: 'blocked', ...progress(next), reason: next.state };
   return {
     kind:
       retried || next.acceptedThrough > status.acceptedThrough
@@ -336,6 +349,6 @@ export async function driveOutboundStep(
         : gate() !== 'ready'
           ? 'paused'
           : 'unknown',
-    acceptedThrough: next.acceptedThrough,
+    ...progress(next),
   };
 }

@@ -35,10 +35,13 @@ export class AccountNotifications {
     for (const c of this.#connections) c.check();
   }
   /** The HTTP/domain composition supplies the target only after verified operation completion. */
-  committed(scope: GrantScope, checkpoint = false) {
+  committed(scope: GrantScope, checkpoint = false, content = false) {
     for (const c of this.#connections) {
       const s = c.watch.scope;
       if (s.workspaceId !== scope.workspaceId) continue;
+      // Content submit replies carry the writer's durable decision. Peer watchers still
+      // need a hint; control changes must continue notifying the initiating device too.
+      if (content && s.kind === 'workspace' && s.credentialId === scope.credentialId) continue;
       if (
         s.kind === 'workspace' ||
         checkpoint ||

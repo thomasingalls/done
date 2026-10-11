@@ -1,0 +1,34 @@
+(node:12314) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:12314) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:12314) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✖ self-read decision unknown stops receive without losing local work and explicit retry recovers (5043.53025ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7843.7755
+
+✖ failing tests:
+
+test at test/account-sync/native.test.mjs:690:3
+✖ self-read decision unknown stops receive without losing local work and explicit retry recovers (5043.53025ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'retrying'
+  - 'blocked'
+  
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native.test.mjs:706:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'retrying',
+    expected: 'blocked',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

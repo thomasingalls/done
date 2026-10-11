@@ -114,7 +114,7 @@ async function fixture() {
   const pub = await crypto.subtle.importKey('raw', bytes(history.signingKey), 'Ed25519', false, [
     'verify',
   ]);
-  return { x, keys, history, route, oldRoute, one, two, old, next, cut, pub };
+  return { x, keys, history, route, oldRoute, one, two, old, next, cut, pub, proof };
 }
 test('retained source, spool and delivery records resolve their own authenticated generation', async () => {
   const f = await fixture();
@@ -397,7 +397,79 @@ test('incremental replay matches the full ledger across retained and current gen
       inbound: client.emptyInbound(),
     };
   value.indexes = await client.indexVerifiedLedger(value, records, f.route, counter, crypto.subtle);
+  let installed;
   for (const [i, route] of [f.oldRoute, f.route].entries()) {
+    if (i === 1) {
+      installed = {
+        v: 1,
+        proofs: { ...f.x.proofs, continuations: [f.proof] },
+        cuts: [{ epoch: 4, head: f.proof.head, before: { ...counter.spool } }],
+      };
+      // Adoption fully verifies the retained prefix, then rebuilds indexes under the new
+      // authority. Historical events are never eligible as new appends after this boundary.
+      await client.verifyInstalledMembership(
+        value.census.delivery.spool,
+        f.history,
+        installed,
+        3,
+        crypto.subtle,
+      );
+      memo.clear();
+      value.indexes = await client.indexVerifiedLedger(
+        value,
+        records,
+        route,
+        counter,
+        crypto.subtle,
+      );
+      assert.equal(value.indexes.epoch, 3, 'last retained event predates installed epoch 4');
+      const staleProof = response({
+        kind: 'accepted',
+        head: head(f.one.subject, zero, 3, f.x.f.f.keys.acceptance, true),
+        leaf: { epoch: 3, digest: f.one.subject.digest },
+      });
+      const stale = {
+        kind: 'heads',
+        seq: records.length + 1,
+        gen: 2,
+        bytes: client.encodeDeliveryEntry(
+          { type: 'response', position: 1, wire: staleProof },
+          f.oldRoute,
+          f.history.authorities.find((a) => a.tip === 3),
+        ),
+      };
+      const staleRows = [...records, stale];
+      const staleCounter = {
+        ...counter,
+        spool: await client.extendSpoolWitness(counter.spool, stale.bytes, crypto.subtle),
+      };
+      const staleCensus = client.inspectInbound(staleRows, route, base);
+      await assert.rejects(
+        client.verifyInstalledMembership(
+          staleCensus.delivery.spool,
+          f.history,
+          installed,
+          3,
+          crypto.subtle,
+        ),
+        /Ledger crosses membership adoption/,
+      );
+      await assert.rejects(
+        client.extendAccountLedger(
+          value,
+          records,
+          staleRows,
+          route,
+          staleCounter,
+          base,
+          f.pub,
+          crypto.subtle,
+          reuse,
+        ),
+        /authority/,
+        'a valid old-epoch decision must fail immediately, not wait for audit/cold open',
+      );
+    }
     const wire = [f.one, f.two][i],
       update = [f.old, f.next][i];
     const source = client.makeSourceCapsule(route, [
@@ -452,7 +524,7 @@ test('incremental replay matches the full ledger across retained and current gen
         value,
         records,
         next,
-        f.route,
+        route,
         counter,
         base,
         f.pub,
@@ -470,6 +542,14 @@ test('incremental replay matches the full ledger across retained and current gen
         value.delivery.acceptedThrough,
       );
       const census = client.inspectInbound(next, f.route, base);
+      if (installed)
+        await client.verifyInstalledMembership(
+          census.delivery.spool,
+          f.history,
+          installed,
+          3,
+          crypto.subtle,
+        );
       await client.verifySpool(census.delivery.spool, f.route, f.keys, f.pub, crypto.subtle);
       const delivery = await client.verifyDelivery(
         census.delivery,

@@ -57,18 +57,26 @@ test(
     await syncing(f.page, item);
     const initial = await view(f.page);
     await settled(f.page);
-    if (process.env.ACCOUNT_LEDGER_MODE === 'incremental') {
-      const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
-      assert.ok(metrics.incremental > 0, 'candidate path actually executed');
+    const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+    if (process.env.ACCOUNT_LEDGER_MODE !== 'reference') {
+      assert.ok(metrics.incremental > 0, 'incremental path actually executed');
       assert.equal(metrics.mismatches, 0);
       if (process.env.ACCOUNT_LEDGER_AUDIT === 'every') assert.ok(metrics.audits > 0);
+    } else {
+      assert.equal(metrics.incremental, 0, 'reference override never extends a verified ledger');
     }
     const baseline = await captures(f.page);
+    const readsBeforeEdit = reads.length;
     await edit(f.page, initial.length, 0, ' COMPOSED');
     await settled(f.page);
     const c = await captures(f.page),
       expected = (await f.page.evaluate(() => opened.spoolStatus())).positions.length;
     assert.equal(c.length, baseline.length + 1);
+    assert.equal(
+      reads.length,
+      readsBeforeEdit,
+      'successful submit must not schedule self readback',
+    );
     assert.equal(await view(f.page), initial + ' COMPOSED');
     assert.equal(maximum, 1);
     assert.deepEqual(
@@ -638,13 +646,97 @@ for (const mode of ['fitting', 'oversized', 'no-preflight', 'sealed', 'submitted
     },
   );
 
+test(
+  'retained Account writing crosses reference, default and rollback builds without migration',
+  { timeout: 90000, skip: process.env.ACCOUNT_LEDGER_MODE !== undefined },
+  async (t) => {
+    const reference = await syncBundle(undefined, 'reference'),
+      ordinary = await syncBundle(),
+      f = await native(t),
+      item = await selected(f, 'ledger-default-rollback');
+    let expected;
+    for (const [index, script] of [reference, ordinary, reference, ordinary].entries()) {
+      if (index) await cold(f);
+      await f.page.evaluate(script);
+      await configure(f.page, f.testOperatorToken);
+      await syncing(f.page, item);
+      await settled(f.page);
+      expected ??= await view(f.page);
+      assert.equal(await view(f.page), expected);
+      assert.ok(
+        (await f.page.evaluate(() => Harness.accountLedgerMetrics())).full > 0,
+        'each build cold-verifies the retained data',
+      );
+      const added = ' build-' + index;
+      await edit(f.page, expected.length, 0, added);
+      expected += added;
+      await settled(f.page);
+      await f.page.evaluate(() => opened.compactContent());
+      assert.equal(await view(f.page), expected);
+      const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+      if (index % 2) assert.ok(metrics.incremental > 0, 'unset flag selects incremental');
+      else assert.equal(metrics.incremental, 0, 'rollback uses reference verification');
+      assert.equal(metrics.mismatches, 0);
+      assert.equal(await f.page.evaluate(() => '__doneLedgerMetrics' in globalThis), false);
+      await close(f.page);
+    }
+  },
+);
+
+test(
+  'reference audit disagreement refuses the warm owner and cold replay preserves writing',
+  {
+    timeout: 60000,
+    skip:
+      process.env.ACCOUNT_LEDGER_MODE === 'reference' ||
+      process.env.ACCOUNT_LEDGER_AUDIT !== 'every',
+  },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'ledger-audit-disagreement');
+    await f.page.evaluate(await syncBundle('audit-disagreement'));
+    await configure(f.page, f.testOperatorToken);
+    const errors = [];
+    f.page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(message.text());
+    });
+    await syncing(f.page, item);
+    await settled(f.page);
+    let expected = await view(f.page);
+    await edit(f.page, expected.length, 0, ' acknowledged');
+    expected += ' acknowledged';
+    await settled(f.page);
+    const sent = f.invocations.length;
+    await f.page.evaluate(() => {
+      globalThis.forceLedgerDisagreement = true;
+    });
+    await assert.rejects(
+      f.page.evaluate(() => opened.compactContent()),
+      /Account ledger reference mismatch/,
+    );
+    const metrics = await f.page.evaluate(() => Harness.accountLedgerMetrics());
+    assert.equal(metrics.mismatches, 1);
+    assert.ok(errors.includes('done/account-ledger-reference-mismatch'));
+    await assert.rejects(f.page.evaluate(() => opened.spoolStatus()));
+    assert.equal(f.invocations.length, sent, 'the refused view cannot authorize a submission');
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    assert.equal(await view(f.page), expected);
+    assert.ok((await f.page.evaluate(() => Harness.accountLedgerMetrics())).full > 0);
+    assert.equal((await f.page.evaluate(() => Harness.accountLedgerMetrics())).mismatches, 0);
+    await close(f.page);
+  },
+);
+
 // Small differential histories, not a release campaign. AUDIT=every compares every delta to cold replay.
 test(
   'generated incremental ledger histories preserve inserts, deletes, compaction and cold continuation',
   {
     timeout: 90000,
     skip:
-      process.env.ACCOUNT_LEDGER_MODE !== 'incremental' ||
+      process.env.ACCOUNT_LEDGER_MODE === 'reference' ||
       process.env.ACCOUNT_LEDGER_AUDIT !== 'every',
   },
   async (t) => {
@@ -683,5 +775,106 @@ test(
       }
       await close(f.page);
     }
+  },
+);
+
+for (const refusal of ['unknown', 'blocked'])
+  test(
+    'self-read decision ' +
+      refusal +
+      ' stops receive without losing local work and explicit retry recovers',
+    { timeout: 60000 },
+    async (t) => {
+      const f = await native(t),
+        item = await selected(f, 'self-decision-' + refusal);
+      await f.page.evaluate(await syncBundle('self-decision-refusal'));
+      await configure(f.page, f.testOperatorToken);
+      await f.page.evaluate((kind) => {
+        globalThis.selfDecisionRefusal = kind;
+      }, refusal);
+      // The service commits the submission, but the sender never receives its answer.
+      await f.context.route(sendPath(f), async (route) => {
+        await route.fetch();
+        await route.abort();
+      });
+      await syncing(f.page, item);
+      const writing = await view(f.page);
+      await waitPredicate(
+        f.page,
+        () => globalThis.selfDecisionCalls > 0 && opened.sync.status.receive.phase !== 'working',
+      );
+      const state = await syncStatus(f.page);
+      assert.equal(state.receive.phase, 'blocked');
+      assert.equal(state.receive.reason, 'operation-failed');
+      assert.equal(state.receive.receivedThrough, 0);
+      assert.equal(state.receive.failures, 0);
+      assert.equal(await view(f.page), writing);
+      assert.equal(
+        await f.page.evaluate(() => globalThis.selfDecisionProof.every((b) => b === 0)),
+        true,
+      );
+      // Online/peer hints must not erase a diagnosed local evidence halt.
+      await f.page.evaluate(() => dispatchEvent(new Event('online')));
+      assert.equal((await syncStatus(f.page)).receive.phase, 'blocked');
+      await f.page.evaluate(() => {
+        globalThis.selfDecisionRefusal = undefined;
+        opened.sync.retry('receive');
+      });
+      await waitPredicate(f.page, () => opened.sync.status.receive.receivedThrough >= 1);
+      assert.equal(await view(f.page), writing);
+      await close(f.page);
+      await f.context.unroute(sendPath(f));
+      await cold(f);
+      await syncing(f.page, item);
+      await settled(f.page);
+      assert.equal(await view(f.page), writing);
+      await close(f.page);
+    },
+  );
+
+test(
+  'concurrent Account readers enter verified storage one at a time',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'verification-order');
+    await f.page.evaluate(await syncBundle('verification-order'));
+    await configure(f.page, f.testOperatorToken);
+    await syncing(f.page, item);
+    await settled(f.page);
+    await f.page.evaluate(() => {
+      globalThis.verificationStarts = 0;
+      globalThis.verificationOrderProbe = async () => {
+        globalThis.verificationStarts++;
+        if (globalThis.verificationStarts === 1)
+          await new Promise((r) => {
+            globalThis.releaseVerification = r;
+          });
+      };
+      globalThis.readerOne = opened.listCaptures();
+    });
+    await waitPredicate(f.page, () => globalThis.verificationStarts === 1);
+    try {
+      await f.page.evaluate(() => {
+        globalThis.readerTwo = opened.spoolStatus();
+        globalThis.readerThree = opened.listCaptures();
+      });
+      await f.page.waitForTimeout(100);
+      assert.equal(await f.page.evaluate(() => globalThis.verificationStarts), 1);
+    } finally {
+      await f.page.evaluate(() => globalThis.releaseVerification());
+    }
+    const reads = await f.page.evaluate(async () => {
+      const [first, spool, second] = await Promise.all([readerOne, readerTwo, readerThree]);
+      const same = JSON.stringify(first) === JSON.stringify(second);
+      first.forEach((c) => Harness.eraseCapsule(c));
+      second.forEach((c) => Harness.eraseCapsule(c));
+      globalThis.verificationOrderProbe = undefined;
+      return { same, positions: spool.positions.length, starts: globalThis.verificationStarts };
+    });
+    assert.equal(reads.same, true);
+    assert.ok(reads.positions > 0);
+    assert.ok(reads.starts >= 3);
+    await close(f.page);
   },
 );

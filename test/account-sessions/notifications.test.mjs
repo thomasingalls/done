@@ -111,7 +111,7 @@ async function host(t, options = {}) {
   };
   return { ...x, broker, call, stream, headers, app };
 }
-test('packaged gateway delivers ready then a post-commit hint; durable catch-up repairs a deliberately missed notification', async (t) => {
+test('packaged gateway delivers ready, suppresses content echo, retains control hints; durable catch-up repairs a deliberately missed notification', async (t) => {
   const x = await host(t, { gateway: true }),
     g = await x.grant(),
     s = await x.stream(g);
@@ -124,6 +124,9 @@ test('packaged gateway delivers ready then a post-commit hint; durable catch-up 
     { 'Content-Type': 'application/octet-stream' },
   );
   assert.equal(submitted.status, 200);
+  await tick();
+  assert.equal(s.frames.length, 0, 'own submit must not hint its writer');
+  x.broker.committed(x.scope);
   assert.equal(await s.next(), 'event: hint\ndata: {}');
   const read = await x.call('/account/delivery/read-v2', query(x), g.grantToken, {
     'Content-Type': 'application/octet-stream',
@@ -160,6 +163,9 @@ test('streams are exact-scope authorized; fake access, another reader, query cre
   x.broker.committed({ ...x.scope, workspaceId: '00'.repeat(16) });
   await tick();
   assert.equal(s.frames.length, 0);
+  // Another publisher in this workspace still wakes us on content commits.
+  x.broker.committed({ ...x.scope, credentialId: '11'.repeat(16) }, false, true);
+  assert.equal(await s.next(), 'event: hint\ndata: {}');
   for (let i = 0; i < 100; i++) x.broker.committed(x.scope);
   assert.equal(await s.next(), 'event: hint\ndata: {}');
   await tick();

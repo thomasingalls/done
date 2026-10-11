@@ -38,7 +38,8 @@ export function createVerifiedRecords<T>() {
   let retained: OpenedRecord[] | undefined,
     value: T | undefined,
     identity: unknown,
-    revision = 0;
+    revision = 0,
+    verifying = false;
   const clear = () => {
     revision++;
     eraseVerified(retained);
@@ -84,45 +85,53 @@ export function createVerifiedRecords<T>() {
         candidate: OpenedRecord[],
       ) => Promise<T | undefined>,
     ): Promise<void> {
+      // The Account storage owner serializes calls. Enforce that borrowing invariant here
+      // too: a competing verification must never erase a predecessor another call uses.
+      if (verifying) throw Error('Concurrent verification is not allowed');
+      verifying = true;
       try {
-        current();
-      } catch (e) {
-        clear();
-        throw e;
-      }
-      if (retained && identity === token && sameRecords(retained, records)) return;
-      const previous = value,
-        before = retained;
-      // A candidate may borrow the previous result only until it has been detached below.
-      // Neither a speculative append nor a late verification may publish into this view.
-      const at = ++revision,
-        candidate = copyRecords(records);
-      let result: T | undefined;
-      try {
-        result =
-          previous !== undefined && before && extend
-            ? await extend(previous, before, candidate)
-            : undefined;
-        result ??= await check(candidate);
-        current();
-        if (at !== revision) throw Error('Verification view was invalidated');
-        // Results may reference candidate input buffers. Own both before exposing any readback.
-        const atClone = ledgerWorkStart();
-        const nextValue = structuredClone(result);
-        measureLedgerWork('installClone', atClone);
-        const nextRecords = copyRecords(candidate);
-        eraseVerified(value);
-        eraseVerified(retained);
-        value = nextValue;
-        retained = nextRecords;
-        identity = token;
-      } catch (e) {
-        eraseVerified(candidate);
-        if (at === revision) clear();
-        throw e;
+        try {
+          current();
+        } catch (e) {
+          clear();
+          throw e;
+        }
+        if (retained && identity === token && sameRecords(retained, records)) return;
+        const previous = value,
+          before = retained;
+        // A candidate may borrow the previous result only until it has been detached below.
+        // Neither a speculative append nor a late verification may publish into this view.
+        const at = ++revision,
+          candidate = copyRecords(records);
+        let result: T | undefined;
+        try {
+          result =
+            previous !== undefined && before && extend
+              ? await extend(previous, before, candidate)
+              : undefined;
+          result ??= await check(candidate);
+          current();
+          if (at !== revision) throw Error('Verification view was invalidated');
+          // Results may reference candidate input buffers. Own both before exposing any readback.
+          const atClone = ledgerWorkStart();
+          const nextValue = structuredClone(result);
+          measureLedgerWork('installClone', atClone);
+          const nextRecords = copyRecords(candidate);
+          eraseVerified(value);
+          eraseVerified(retained);
+          value = nextValue;
+          retained = nextRecords;
+          identity = token;
+        } catch (e) {
+          eraseVerified(candidate);
+          if (at === revision) clear();
+          throw e;
+        } finally {
+          eraseVerified(result);
+          eraseVerified(candidate);
+        }
       } finally {
-        eraseVerified(result);
-        eraseVerified(candidate);
+        verifying = false;
       }
     },
   };

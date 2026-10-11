@@ -1,5 +1,6 @@
 import type { OpenedRecord } from './contentRecord';
 import { countLedgerWork } from './accountLedgerMetrics';
+import { accountLedgerMode } from './accountLedgerMode';
 import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
 import {
@@ -141,6 +142,8 @@ import {
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
+const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
+
 class ReceiveAuthorityChanged extends AdmissionError {
   constructor() {
     super('receive-refused', 'Receive authority was superseded');
@@ -160,7 +163,7 @@ async function openAccountReceiveOwner(
 ) {
   const options = captureAccountOptions(input);
   const verified = createVerifiedRecords<AccountLedgerView>();
-  const incremental = import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental';
+  const incremental = ledgerMode === 'incremental';
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
   let sinceAudit = 0;
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
@@ -1522,6 +1525,7 @@ async function openAccountReceiveOwner(
           try {
             return verified.read(records, ({ inbound, delivery }) => ({
               ...describeDelivery(delivery),
+              receivedThrough: describe(inbound).receivedThrough,
               state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
             }));
           } finally {
@@ -1784,7 +1788,7 @@ async function openReceivingWorkspace(
         ...(options.today ? { today: options.today } : {}),
         ...(options.signal ? { signal: options.signal } : {}),
       },
-      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental' ? 'account-snapshots' : 'reference',
+      ledgerMode === 'incremental' ? 'account-snapshots' : 'reference',
     );
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
@@ -1850,7 +1854,16 @@ async function openReceivingWorkspace(
               if ('selfDecision' in received && received.selfDecision) {
                 const { position, proof } = received.selfDecision;
                 try {
-                  await outbound.recordResponse(position, proof);
+                  const decision = await outbound.recordResponse(position, proof);
+                  // A verified page does not prove the delivery owner retained its decision.
+                  // Duplicates may be unrecorded but accepted; a declined decision must stop
+                  // this receive attempt rather than become an unexplained network backoff.
+                  if (decision.kind === 'unknown' || decision.kind === 'blocked')
+                    return {
+                      kind: 'rejected' as const,
+                      reason: 'self-decision-refused' as const,
+                      recorded: false,
+                    };
                 } finally {
                   proof.fill(0);
                 }

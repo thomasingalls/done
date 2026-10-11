@@ -1,0 +1,30 @@
+
+Running 1 test using 1 worker
+
+(node:37280) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+setup begins
+editors open
+  ✘  1 docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:7:1 › bounded sustained request volume (18.6s)
+
+
+  1) docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:7:1 › bounded sustained request volume 
+
+    TimeoutError: locator.waitFor: Timeout 15000ms exceeded.
+    Call log:
+      - waiting for locator('.card[data-editing="true"] .cm-content') to be visible
+
+
+      53 |         .locator('.card-surface')
+      54 |         .click();
+    > 55 |       await writers[i]!.locator('.card[data-editing="true"] .cm-content').waitFor();
+         |                                                                           ^
+      56 |       await writers[i]!.keyboard.press('ControlOrMeta+End');
+      57 |     }
+      58 |     await page.waitForTimeout(2000);
+        at /Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:55:75
+
+    Error Context: ../../../../../../tmp/done-account-requests/baseline-1/artifacts/requests-bounded-sustained-request-volume/error-context.md
+
+  1 failed
+    docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:7:1 › bounded sustained request volume 
