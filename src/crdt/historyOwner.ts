@@ -18,6 +18,7 @@ import {
 } from '../../account-protocol/historyCheckpoint';
 import {
   historyExchangeMessage,
+  HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
   parseHistoryExchange,
 } from '../../account-protocol/historyExchange';
 import {
@@ -84,7 +85,7 @@ export async function runNativeHistoryMaintenance(
         head: p.head,
         credentialId: source.producer,
         nonce: hex(random(32)),
-        expiresAt: Date.now() + 60000,
+        expiresAt: Date.now() + HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
         action: 'read',
         payload: 'latest',
         signature: '00'.repeat(64),

@@ -1,0 +1,8 @@
+{
+  "method": "30 serial health requests; intersection of HTTP Date whole-second rounding and request/response bounds",
+  "samples": 30,
+  "phoneAheadMinMs": 656,
+  "phoneAheadMaxMs": 717,
+  "rttMinMs": 32,
+  "rttMaxMs": 41
+}

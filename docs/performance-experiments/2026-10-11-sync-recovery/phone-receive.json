@@ -1,0 +1,54 @@
+[
+  {
+    "event": "request",
+    "path": "/account/membership/v2/discover"
+  },
+  {
+    "event": "response",
+    "path": "/account/membership/v2/discover",
+    "status": 200,
+    "ms": 330
+  },
+  {
+    "event": "request",
+    "path": "/account/history/v1/checkpoint"
+  },
+  {
+    "event": "response",
+    "path": "/account/history/v1/checkpoint",
+    "status": 409,
+    "ms": 275
+  },
+  {
+    "event": "refusal",
+    "path": "/account/history/v1/checkpoint",
+    "status": 409,
+    "refusal": "unavailable"
+  },
+  {
+    "event": "request",
+    "path": "/account/membership/v2/discover"
+  },
+  {
+    "event": "response",
+    "path": "/account/membership/v2/discover",
+    "status": 200,
+    "ms": 344
+  },
+  {
+    "event": "request",
+    "path": "/account/history/v1/checkpoint"
+  },
+  {
+    "event": "response",
+    "path": "/account/history/v1/checkpoint",
+    "status": 409,
+    "ms": 318
+  },
+  {
+    "event": "refusal",
+    "path": "/account/history/v1/checkpoint",
+    "status": 409,
+    "refusal": "unavailable"
+  }
+]

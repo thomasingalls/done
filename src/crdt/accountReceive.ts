@@ -8,6 +8,7 @@ import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
 import {
   historyExchangeMessage,
+  HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
   parseHistoryExchange,
 } from '../../account-protocol/historyExchange';
 import { EMPTY_HISTORY_CHECKPOINT } from '../../account-protocol/historyCheckpoint';
@@ -653,7 +654,7 @@ async function openAccountReceiveOwner(
           head: base.authority.head,
           credentialId: base.reader.id,
           nonce: hex(random(32)),
-          expiresAt: Date.now() + 60000,
+          expiresAt: Date.now() + HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
           action: 'read',
           payload: 'catalog',
           signature: '00'.repeat(64),
@@ -696,7 +697,7 @@ async function openAccountReceiveOwner(
           ...prepared.request,
           payload: 'latest',
           nonce: hex(random(32)),
-          expiresAt: Date.now() + 60000,
+          expiresAt: Date.now() + HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
         });
         r.signature = hex(
           new Uint8Array(
