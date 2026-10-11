@@ -1,0 +1,19 @@
+--- phase 0: built 121 positions from 316 keys (2.61 keys/pos), ledger 125, backlog 316 chars
+    catch-up 35529 ms converged=True: 121 positions, 3.41/s, 8.89 chars/s; by quarter [3.55, 3.47, 3.5, 3.23]
+    cycle/pos {'n': 120, 'p50': 269, 'p95': 702, 'max': 753, 'mean': 289.1}; gap before entry read {'n': 121, 'p50': 211, 'p95': 231, 'max': 253, 'mean': 200.7}; gap after {'n': 121, 'p50': 211, 'p95': 233, 'max': 253, 'mean': 209.4}
+    client request ms/pos 74.9 (share 0.255); service handling ms/pos 73.7; 429s 0
+      svc delivery/read-v2 (empty) 200: n=2 perPos=0.02 handling={'n': 2, 'p50': 58.0, 'p95': 58.0, 'max': 58.0, 'mean': 49.8} out=240
+      svc delivery/read-v2 (entry) 200: n=121 perPos=1.0 handling={'n': 121, 'p50': 53.7, 'p95': 62.5, 'max': 74.6, 'mean': 55.0} out=1748
+      svc history/v1/checkpoint 200: n=7 perPos=0.06 handling={'n': 7, 'p50': 211.7, 'p95': 246.3, 'max': 246.3, 'mean': 215.7} out=1381
+      svc membership/v2/discover 200: n=7 perPos=0.06 handling={'n': 7, 'p50': 90.6, 'p95': 100.3, 'max': 100.3, 'mean': 92.7} out=12930
+      cli delivery/read-v2 200: {'n': 123, 'p50': 55, 'p95': 65, 'max': 76, 'mean': 56.0}
+      cli history/v1/checkpoint 200: {'n': 7, 'p50': 213, 'p95': 246, 'max': 246, 'mean': 216.9}
+      cli membership/v2/discover 200: {'n': 7, 'p50': 92, 'p95': 101, 'max': 101, 'mean': 93.7}
+    visible {'updates': 121, 'charsPerUpdate': {'n': 120, 'p50': 3, 'p95': 4, 'max': 4, 'mean': 2.6}, 'msBetweenUpdates': {'n': 120, 'p50': 269.5, 'p95': 707.0, 'max': 738.3, 'mean': 289.4}}; long tasks {'n': 0, 'totalMs': 0, 'maxMs': 0, 'msPerPosition': 0.0}; counters/pos {'idbReadTx': 76.1, 'idbWriteTx': 2.0, 'webCrypto': {'decrypt': 22.4, 'deriveBits': 0.2, 'deriveKey': 52.3, 'digest': 44.3, 'encrypt': 3.6, 'exportKey': 0.0, 'generateKey': 0.0, 'importKey': 74.0, 'sign': 3.1, 'verify': 64.1}}
+service ms by ledger (runMs p50):
+   delivery/submit {'0': (44.4, 100), '100': (55.3, 26)}
+   authority/discover {'0': (18.2, 1)}
+   history/v1/checkpoint {'0': (143.0, 7), '100': (214.2, 8)}
+   delivery/read-v2 (empty) {'0': (46.7, 11), '100': (56.8, 4)}
+   membership/v2/discover {'0': (124.9, 5), '100': (95.8, 8)}
+   delivery/read-v2 (entry) {'0': (53.1, 5), '100': (52.4, 121)}

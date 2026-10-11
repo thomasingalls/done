@@ -1,0 +1,1 @@
+{"seq":"08","label":"DB-sticky-publisher","clientArm":"varB","serviceArm":"base","env":"CATCHUP_PHASES=120 CATCHUP_MAX_CATCH_S=300","exit":0,"seconds":112,"start":1791721908,"ownPortsLeftListening":0}

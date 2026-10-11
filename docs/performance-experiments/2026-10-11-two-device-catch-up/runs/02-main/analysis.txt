@@ -1,0 +1,55 @@
+--- phase 0: built 101 positions from 263 keys (2.6 keys/pos), ledger 105, backlog 263 chars
+    catch-up 40734 ms converged=True: 101 positions, 2.48/s, 6.46 chars/s; by quarter [2.58, 2.52, 2.45, 2.42]
+    cycle/pos {'n': 100, 'p50': 365, 'p95': 772, 'max': 903, 'mean': 399.2}; gap before entry read {'n': 101, 'p50': 81, 'p95': 96, 'max': 150, 'mean': 82.6}; gap after {'n': 101, 'p50': 195, 'p95': 213, 'max': 246, 'mean': 196.0}
+    client request ms/pos 114.9 (share 0.285); service handling ms/pos 110.3; 429s 0
+      svc delivery/read-v2 (empty) 200: n=102 perPos=1.01 handling={'n': 102, 'p50': 34.9, 'p95': 44.7, 'max': 162.9, 'mean': 37.3} out=236
+      svc delivery/read-v2 (entry) 200: n=101 perPos=1.0 handling={'n': 101, 'p50': 47.9, 'p95': 58.5, 'max': 125.8, 'mean': 50.1} out=1748
+      svc history/v1/checkpoint 200: n=8 perPos=0.08 handling={'n': 8, 'p50': 185.6, 'p95': 249.8, 'max': 249.8, 'mean': 191.6} out=1381
+      svc membership/v2/discover 200: n=8 perPos=0.08 handling={'n': 8, 'p50': 88.0, 'p95': 116.5, 'max': 116.5, 'mean': 92.4} out=12930
+      cli delivery/read-v2 200: {'n': 204, 'p50': 46, 'p95': 58, 'max': 173, 'mean': 44.7}
+      cli history/v1/checkpoint 200: {'n': 8, 'p50': 187, 'p95': 251, 'max': 251, 'mean': 192.9}
+      cli membership/v2/discover 200: {'n': 8, 'p50': 122, 'p95': 132, 'max': 132, 'mean': 116.5}
+    visible {'updates': 101, 'charsPerUpdate': {'n': 100, 'p50': 3, 'p95': 4, 'max': 4, 'mean': 2.6}, 'msBetweenUpdates': {'n': 100, 'p50': 365.3, 'p95': 771.0, 'max': 906.0, 'mean': 399.4}}; long tasks {'n': 0, 'totalMs': 0, 'maxMs': 0, 'msPerPosition': 0.0}; counters/pos {'idbReadTx': 121.0, 'idbWriteTx': 2.0, 'webCrypto': {'decrypt': 32.6, 'deriveBits': 0.3, 'deriveKey': 82.9, 'digest': 58.7, 'encrypt': 3.6, 'exportKey': 0.0, 'generateKey': 0.0, 'importKey': 111.7, 'sign': 4.2, 'verify': 95.5}}
+--- phase 1: built 400 positions from 3734 keys (9.34 keys/pos), ledger 505, backlog 3734 chars
+    catch-up 474666 ms converged=True: 401 positions, 0.84/s, 7.87 chars/s; by quarter [0.92, 0.94, 0.81, 0.74]
+    cycle/pos {'n': 400, 'p50': 1087, 'p95': 1841, 'max': 3071, 'mean': 1181.4}; gap before entry read {'n': 401, 'p50': 130, 'p95': 170, 'max': 291, 'mean': 130.8}; gap after {'n': 401, 'p50': 268, 'p95': 361, 'max': 616, 'mean': 275.1}
+    client request ms/pos 725.7 (share 0.613); service handling ms/pos 715.3; 429s 0
+      svc delivery/read-v2 (empty) 200: n=401 perPos=1.0 handling={'n': 401, 'p50': 43.6, 'p95': 64.7, 'max': 345.3, 'mean': 47.5} out=236
+      svc delivery/read-v2 (entry) 200: n=401 perPos=1.0 handling={'n': 401, 'p50': 505.0, 'p95': 713.9, 'max': 1346, 'mean': 530.3} out=2005
+      svc delivery/submit 200: n=6 perPos=0.01 handling={'n': 6, 'p50': 59.5, 'p95': 80.4, 'max': 80.4, 'mean': 60.8} out=389
+      svc grant/v1/begin 200: n=2 perPos=0.0 handling={'n': 2, 'p50': 59.5, 'p95': 59.5, 'max': 59.5, 'mean': 49.8} out=708
+      svc grant/v1/finish 200: n=2 perPos=0.0 handling={'n': 2, 'p50': 1.7, 'p95': 1.7, 'max': 1.7, 'mean': 1.7} out=242
+      svc history/v1/checkpoint 200: n=78 perPos=0.19 handling={'n': 78, 'p50': 560.8, 'p95': 833.3, 'max': 1133.1, 'mean': 597.7} out=1381
+      svc membership/v2/discover 200: n=78 perPos=0.19 handling={'n': 78, 'p50': 99.4, 'p95': 139.6, 'max': 172.9, 'mean': 103.1} out=12930
+      cli delivery/read-v2 200: {'n': 802, 'p50': 275, 'p95': 661, 'max': 1756, 'mean': 291.9}
+      cli delivery/submit 200: {'n': 6, 'p50': 59, 'p95': 82, 'max': 82, 'mean': 61.8}
+      cli grant/v1/begin 200: {'n': 2, 'p50': 62, 'p95': 62, 'max': 62, 'mean': 51.5}
+      cli grant/v1/finish 200: {'n': 2, 'p50': 3, 'p95': 3, 'max': 3, 'mean': 3.0}
+      cli history/v1/checkpoint 200: {'n': 78, 'p50': 562, 'p95': 903, 'max': 1424, 'mean': 608.3}
+      cli membership/v2/discover 200: {'n': 79, 'p50': 107, 'p95': 151, 'max': 178, 'mean': 113.4}
+    visible {'updates': 401, 'charsPerUpdate': {'n': 400, 'p50': 8, 'p95': 17, 'max': 32, 'mean': 9.3}, 'msBetweenUpdates': {'n': 400, 'p50': 1076.7, 'p95': 1865.6, 'max': 2798.2, 'mean': 1181.0}}; long tasks {'n': 5, 'totalMs': 3525, 'maxMs': 1333, 'msPerPosition': 8.8}; counters/pos {'idbReadTx': 129.0, 'idbWriteTx': 2.5, 'webCrypto': {'decrypt': 41.4, 'deriveBits': 0.8, 'deriveKey': 88.0, 'digest': 133.1, 'encrypt': 10.8, 'exportKey': 0.0, 'generateKey': 0.0, 'importKey': 144.2, 'sign': 4.7, 'verify': 127.0}}
+    profile: {'ms': 30137, 'positions': 28, 'chars': 94}
+    typingOnB: {'keys': 60, 'keydownListenerDelayMs': {'n': 60, 'p50': 0.3, 'p95': 6.9, 'max': 7.5, 'mean': 1.2}, 'stableTextMs': {'n': 60, 'p50': 0.8, 'p95': 56.9, 'max': 108.0, 'mean': 6.8}, 'positionsDeliveredMeanwhile': 5}
+--- phase 2: built 170 positions from 3974 keys (23.38 keys/pos), ledger 676, backlog 3974 chars
+    catch-up 252311 ms converged=True: 171 positions, 0.68/s, 15.75 chars/s; by quarter [0.72, 0.69, 0.66, 0.65]
+    cycle/pos {'n': 170, 'p50': 1274, 'p95': 2018, 'max': 4075, 'mean': 1468.8}; gap before entry read {'n': 171, 'p50': 172, 'p95': 201, 'max': 253, 'mean': 173.9}; gap after {'n': 171, 'p50': 341, 'p95': 406, 'max': 566, 'mean': 344.1}
+    client request ms/pos 855.7 (share 0.58); service handling ms/pos 848.3; 429s 0
+      svc delivery/read-v2 (empty) 200: n=172 perPos=1.01 handling={'n': 172, 'p50': 40.2, 'p95': 50.5, 'max': 175.7, 'mean': 42.0} out=236
+      svc delivery/read-v2 (entry) 200: n=171 perPos=1.0 handling={'n': 171, 'p50': 608, 'p95': 783.7, 'max': 928.9, 'mean': 624.1} out=2677
+      svc grant/v1/begin 200: n=1 perPos=0.01 handling={'n': 1, 'p50': 42.2, 'p95': 42.2, 'max': 42.2, 'mean': 42.2} out=708
+      svc grant/v1/finish 200: n=1 perPos=0.01 handling={'n': 1, 'p50': 1.9, 'p95': 1.9, 'max': 1.9, 'mean': 1.9} out=242
+      svc history/v1/checkpoint 200: n=41 perPos=0.24 handling={'n': 41, 'p50': 650.4, 'p95': 717.5, 'max': 900.3, 'mean': 666.3} out=1381
+      svc membership/v2/discover 200: n=41 perPos=0.24 handling={'n': 41, 'p50': 90.5, 'p95': 102.5, 'max': 118.0, 'mean': 91.3} out=12930
+      cli delivery/read-v2 200: {'n': 343, 'p50': 165, 'p95': 647, 'max': 953, 'mean': 333.7}
+      cli grant/v1/begin 200: {'n': 1, 'p50': 48, 'p95': 48, 'max': 48, 'mean': 48.0}
+      cli grant/v1/finish 200: {'n': 1, 'p50': 6, 'p95': 6, 'max': 6, 'mean': 6.0}
+      cli history/v1/checkpoint 200: {'n': 41, 'p50': 651, 'p95': 718, 'max': 906, 'mean': 668.9}
+      cli membership/v2/discover 200: {'n': 41, 'p50': 93, 'p95': 134, 'max': 155, 'mean': 107.3}
+    visible {'updates': 171, 'charsPerUpdate': {'n': 170, 'p50': 23, 'p95': 32, 'max': 32, 'mean': 23.4}, 'msBetweenUpdates': {'n': 170, 'p50': 1353.2, 'p95': 2033.9, 'max': 4129.5, 'mean': 1470.4}}; long tasks {'n': 3, 'totalMs': 5373, 'maxMs': 2038, 'msPerPosition': 31.4}; counters/pos {'idbReadTx': 129.7, 'idbWriteTx': 2.5, 'webCrypto': {'decrypt': 55.3, 'deriveBits': 1.0, 'deriveKey': 88.7, 'digest': 160.2, 'encrypt': 24.4, 'exportKey': 0.0, 'generateKey': 0.0, 'importKey': 155.5, 'sign': 4.6, 'verify': 137.7}}
+service ms by ledger (runMs p50):
+   delivery/submit {'0': (48.4, 100), '100': (55.4, 100), '200': (72.0, 100), '300': (88.0, 100), '400': (106.9, 100), '500': (561.1, 106), '600': (648.0, 78)}
+   authority/discover {'0': (24.2, 1)}
+   history/v1/checkpoint {'0': (134.0, 7), '100': (189.0, 10), '200': (326.7, 2), '300': (449.4, 3), '400': (544.5, 5), '500': (583.5, 98), '600': (655.6, 53)}
+   membership/v2/discover {'0': (146.8, 5), '100': (91.5, 10), '200': (312.8, 2), '300': (424.4, 4), '400': (491.3, 5), '500': (103.4, 100), '600': (89.7, 53)}
+   delivery/read-v2 (empty) {'0': (43.9, 9), '100': (33.9, 107), '200': (65.4, 4), '300': (80.9, 8), '400': (93.9, 10), '500': (43.0, 443), '600': (39.7, 197)}
+   delivery/read-v2 (entry) {'0': (56.2, 5), '100': (46.8, 101), '500': (502.8, 407), '600': (606.9, 171)}

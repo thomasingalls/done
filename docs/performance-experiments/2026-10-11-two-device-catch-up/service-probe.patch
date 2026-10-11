@@ -1,0 +1,102 @@
+--- pristine/account-service/scoped-http.ts	2026-10-11 13:22:24
++++ base/account-service/scoped-http.ts	2026-10-11 13:24:01
+@@ -23,6 +23,7 @@
+ import type { AccountNotifications } from './notifications.ts';
+ import { AuthorizationRefused } from './authorization.ts';
+ import { createSessionHandler } from './session-http.ts';
++import { probe, probeOn, probeTag } from './catchupProbe.ts';
+ import { ScopedRequestBudget } from './requestBudget.ts';
+ 
+ export function createScopedAccountHandler(
+@@ -170,6 +171,32 @@
+     response.setHeader('Cache-Control', 'no-store');
+     response.setHeader('Content-Type', 'application/json');
+     response.setHeader('X-Content-Type-Options', 'nosniff');
++    const probeStart = performance.now();
++    let probeSession = '',
++      probeRun = -1,
++      probeIn = 0,
++      probeOut = 0;
++    if (probeOn) {
++      const probeEnd = response.end.bind(response) as (...a: unknown[]) => ServerResponse;
++      (response as { end: unknown }).end = (...a: unknown[]) => {
++        const chunk = a[0];
++        if (typeof chunk === 'string' || chunk instanceof Uint8Array)
++          probeOut = Buffer.byteLength(chunk as string);
++        return probeEnd(...a);
++      };
++      response.once('close', () =>
++        probe({
++          event: 'done',
++          path: request.url,
++          tag: probeSession,
++          status: response.writableFinished ? response.statusCode : 0,
++          ms: Math.round((performance.now() - probeStart) * 100) / 100,
++          runMs: Math.round(probeRun * 100) / 100,
++          inBytes: probeIn,
++          outBytes: probeOut,
++        }),
++      );
++    }
+     const send = (status: number, body: unknown) => {
+       if (response.destroyed || response.writableEnded) return;
+       if (status >= 400) response.setHeader('Connection', 'close');
+@@ -213,6 +240,7 @@
+       return void authFailure(
+         budget.invalid() ? (isGrant ? 'access-required' : 'grant-required') : 'capacity',
+       );
++    probeSession = probeTag(String(sessionKey));
+     const release = budget.acquire(sessionKey);
+     if (!release) return void authFailure('capacity');
+     const timer = setTimeout(() => {
+@@ -281,8 +309,11 @@
+         };
+       };
+       const bytes = Buffer.concat(chunks);
++      probeIn = bytes.length;
++      const probeRunStart = performance.now();
+       if (binary) {
+         const result = await binary.run(new Uint8Array(bytes), token, authorization);
++        probeRun = performance.now() - probeRunStart;
+         if (result.kind === 'decision') {
+           if (target && path === '/account/delivery/submit')
+             notifications?.committed(target, false, true);
+@@ -299,6 +330,7 @@
+           return void send(400, { ok: false, refusal: 'malformed' });
+         }
+         const result = await json!.run(value, token, authorization);
++        probeRun = performance.now() - probeRunStart;
+         if (result && typeof result === 'object' && 'ok' in result && result.ok === false) {
+           if (isGrant && 'refusal' in result) authFailure(result.refusal as GrantRefusal);
+           else send(409, result);
+--- pristine/test/packaged-account/server.ts	2026-10-11 13:22:24
++++ base/test/packaged-account/server.ts	2026-10-11 13:22:24
+@@ -1,8 +1,8 @@
+ import { spawn, type ChildProcess } from 'node:child_process';
+ import { resolve } from 'node:path';
+-export const port = '53221';
++export const port = process.env['DONE_CATCHUP_PORT'] ?? '53221';
+ export const origin = 'http://localhost:' + port;
+-const servicePort = '53222';
++const servicePort = process.env['DONE_CATCHUP_SERVICE_PORT'] ?? '53222';
+ const processOutput = new WeakMap<ChildProcess, () => string>();
+ async function startProcess(
+   script: string,
+--- /dev/null	2026-10-11 13:24:01
++++ base/account-service/catchupProbe.ts	2026-10-11 13:22:24
+@@ -0,0 +1,15 @@
++/** CATCH-UP PROBE (scratch only): numeric request log, active only when DONE_CATCHUP_LOG is set. */
++import { appendFileSync } from 'node:fs';
++import { createHash } from 'node:crypto';
++const file = process.env['DONE_CATCHUP_LOG'];
++export const probeOn = !!file;
++export const probe = (line: Record<string, unknown>): void => {
++  if (!file) return;
++  try {
++    appendFileSync(file, JSON.stringify({ t: Date.now(), ...line }) + '\n');
++  } catch {
++    /* probe only */
++  }
++};
++export const probeTag = (key: string): string =>
++  file && key ? createHash('sha256').update(key).digest('hex').slice(0, 6) : '';

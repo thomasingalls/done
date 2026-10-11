@@ -1,0 +1,1 @@
+{"seq":"06","label":"DP-cache-64-profile","clientArm":"base","serviceArm":"svcC","env":"CATCHUP_PHASES=100 CATCHUP_MAX_CATCH_S=300 DONE_CATCHUP_CACHE_ENTRIES=64 CATCHUP_SERVICE_PROF=1","exit":0,"seconds":115,"start":1791721663,"ownPortsLeftListening":0}
