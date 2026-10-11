@@ -1,0 +1,19 @@
+
+Running 1 test using 1 worker
+
+(node:37574) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+backend source /Users/thomasingalls/.codex/worktrees/c030/done
+setup begins
+editors open
+typing begins
+typed 0 0
+typed 0 100
+typed 0 200
+typed 0 300
+typed 0 400
+typed 0 500
+{"durationMs":96156,"requests":227,"submits":224,"requestsPerKey":0.37833333333333335,"requestsPerSubmit":1.0133928571428572,"refusals":0,"counts":{"/account/delivery/submit":224,"/account/authority/discover":1,"/account/history/v1/checkpoint":1,"/account/delivery/read-v2":1},"convergenceMs":2008}
+  ✓  1 docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:7:1 › bounded sustained request volume (1.7m)
+
+  1 passed (1.7m)

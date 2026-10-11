@@ -1522,6 +1522,7 @@ async function openAccountReceiveOwner(
           try {
             return verified.read(records, ({ inbound, delivery }) => ({
               ...describeDelivery(delivery),
+              receivedThrough: describe(inbound).receivedThrough,
               state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
             }));
           } finally {

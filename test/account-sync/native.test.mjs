@@ -64,11 +64,17 @@ test(
       if (process.env.ACCOUNT_LEDGER_AUDIT === 'every') assert.ok(metrics.audits > 0);
     }
     const baseline = await captures(f.page);
+    const readsBeforeEdit = reads.length;
     await edit(f.page, initial.length, 0, ' COMPOSED');
     await settled(f.page);
     const c = await captures(f.page),
       expected = (await f.page.evaluate(() => opened.spoolStatus())).positions.length;
     assert.equal(c.length, baseline.length + 1);
+    assert.equal(
+      reads.length,
+      readsBeforeEdit,
+      'successful submit must not schedule self readback',
+    );
     assert.equal(await view(f.page), initial + ' COMPOSED');
     assert.equal(maximum, 1);
     assert.deepEqual(

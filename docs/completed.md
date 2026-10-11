@@ -12774,3 +12774,38 @@ formatting, diff checks and the reference-default packaged build pass. No broad 
 **Next.** Reduce submission-triggered receive/discovery traffic and address shared-budget interference,
 then reconsider default activation and deployment. Incremental mode remains opt-in and release
 validation remains paused. No other seat's live progress document was changed.
+
+### Submit receipt scheduling and scoped-session request isolation
+
+**Date:** 2026-10-11 · **Commit:** this entry's commit, based on signed `46388e4f`; runtime patch
+and source hashes retained in the packet · **Stage:** bounded request-amplification repair
+
+**Exit.** Successful submissions now publish their verified aggregate receive position without
+expediting a self read. The server no longer hints the submitting credential's workspace stream for
+its own content commit. Unknown outcomes still trigger independent read reconciliation; peer/control
+hints, periodic repair, receive backoff and halts remain. No extra load was added to publish progress.
+
+Scoped HTTP operations share budgets by service-held session identity across access/grant renewal,
+with separate invalid-token allowance and bounded process rate, concurrency and budget storage.
+Domain authorization remains unchanged. The policy and its limits are recorded in
+[session/subscription design](./account-sessions-subscriptions.md).
+
+**Evidence.** The [request packet](./performance-experiments/2026-10-11-account-requests/README.md)
+records the predeclared protocol, source, setup failures, raw metadata and results. For 600 typed
+characters over about 96 seconds, the signed incremental baseline made 367 requests and saw 63 HTTP
+429s; the candidate made 227 requests with no refusals, about 1.01 requests per successful submission.
+Two concurrent candidate devices typed 600 characters each: all 699 measured requests returned 200,
+and both complete texts converged within 15 seconds. These small desktop/loopback runs are request
+measurements, not input-latency, mobile, deep-history or server-capacity qualifications. More successful
+positions also mean this is not evidence of less retained history.
+
+**Verification.** 15 scheduler tests, 30 service/grant/budget tests, four incremental native tests with
+reference audit on each append, and the same four native checks with the reference ledger pass.
+TypeScript, targeted lint, formatting and packaged incremental build pass. No broad campaign ran.
+
+**Next.** Decide and integrate incremental default activation, retaining the reference override and
+audit, then use the normal publication path. It remains opt-in in this change; no deployment occurred.
+Peer hint discovery/read amplification remains a measured opportunity (roughly five requests per
+accepted submission in the two-device run), alongside later load/copying, retention, cold reconstruction
+and burst-batching work. Release validation remains paused. The other seat's `docs/progress.md` is
+unchanged.

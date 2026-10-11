@@ -1,0 +1,333 @@
+diff --git a/account-service/grants.ts b/account-service/grants.ts
+index a2ea266b..96d8cb81 100644
+--- a/account-service/grants.ts
++++ b/account-service/grants.ts
+@@ -347,6 +347,17 @@ export class ScopedGrants {
+   }
+   /** A read-capable grant may subscribe only to hints for its exact scope. Recheck each emission.
+    * Subscription is ephemeral; nothing here advances a content cursor or authority head. */
++  /** Attribution for HTTP budgets only. Domain authorization still checks the live parent,
++   * current scope and proof inside its transaction. No client-supplied identity is trusted. */
++  requestBudgetKey(grantToken: unknown): string | undefined {
++    if (this.#closed) return;
++    try {
++      const grant = this.#grants.get(retryHash(grantToken));
++      return grant && grant.expiresAt > this.#time() ? grant.challenge.sessionId : undefined;
++    } catch {
++      return;
++    }
++  }
+   subscription(grantToken: unknown, input: unknown) {
+     const scope = parseGrantScope(input),
+       digest = retryHash(grantToken);
+diff --git a/account-service/notifications.ts b/account-service/notifications.ts
+index 8dcd49de..fe37188e 100644
+--- a/account-service/notifications.ts
++++ b/account-service/notifications.ts
+@@ -35,10 +35,13 @@ export class AccountNotifications {
+     for (const c of this.#connections) c.check();
+   }
+   /** The HTTP/domain composition supplies the target only after verified operation completion. */
+-  committed(scope: GrantScope, checkpoint = false) {
++  committed(scope: GrantScope, checkpoint = false, content = false) {
+     for (const c of this.#connections) {
+       const s = c.watch.scope;
+       if (s.workspaceId !== scope.workspaceId) continue;
++      // Content submit replies carry the writer's durable decision. Peer watchers still
++      // need a hint; control changes must continue notifying the initiating device too.
++      if (content && s.kind === 'workspace' && s.credentialId === scope.credentialId) continue;
+       if (
+         s.kind === 'workspace' ||
+         checkpoint ||
+diff --git a/account-service/scoped-http.ts b/account-service/scoped-http.ts
+index da08ff35..657a2585 100644
+--- a/account-service/scoped-http.ts
++++ b/account-service/scoped-http.ts
+@@ -23,12 +23,14 @@ import type { GrantScope } from '../account-protocol/scopedGrant.ts';
+ import type { AccountNotifications } from './notifications.ts';
+ import { AuthorizationRefused } from './authorization.ts';
+ import { createSessionHandler } from './session-http.ts';
++import { ScopedRequestBudget } from './requestBudget.ts';
+ 
+ export function createScopedAccountHandler(
+   core: AccountCore,
+   authority: PrivateAuthority,
+   inputPin: AuthorityPin,
+   notifications?: AccountNotifications,
++  budget = new ScopedRequestBudget(),
+ ) {
+   const pin = parseAuthorityPin(inputPin),
+     host = new URL(pin.origin).host;
+@@ -157,9 +159,6 @@ export function createScopedAccountHandler(
+       },
+     ],
+   ]);
+-  let active = 0,
+-    budget = 120,
+-    last = performance.now();
+   return async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
+     if (request.url?.startsWith('/account/session/v1/')) {
+       try {
+@@ -205,12 +204,17 @@ export function createScopedAccountHandler(
+     const token = /^Bearer ([A-Za-z0-9_-]{43})$/.exec(request.headers.authorization ?? '')?.[1];
+     const isGrant = path.startsWith('/account/grant/v1/');
+     if (!token) return void authFailure(isGrant ? 'access-required' : 'grant-required');
+-    const now = performance.now();
+-    budget = Math.min(120, budget + ((now - last) * 2) / 1000);
+-    last = now;
+-    if (active >= 16 || budget < 1) return void authFailure('capacity');
+-    active++;
+-    budget--;
++    // Budget identity comes from server-held access/grant state, never request fields.
++    // This does not authorize the operation: its existing domain boundary still does that.
++    const sessionKey = isGrant
++      ? core.sessions.requestBudgetKey(token)
++      : core.grants.requestBudgetKey(token);
++    if (!sessionKey)
++      return void authFailure(
++        budget.invalid() ? (isGrant ? 'access-required' : 'grant-required') : 'capacity',
++      );
++    const release = budget.acquire(sessionKey);
++    if (!release) return void authFailure('capacity');
+     const timer = setTimeout(() => {
+       response.destroy();
+       request.destroy();
+@@ -280,7 +284,8 @@ export function createScopedAccountHandler(
+       if (binary) {
+         const result = await binary.run(new Uint8Array(bytes), token, authorization);
+         if (result.kind === 'decision') {
+-          if (target && path === '/account/delivery/submit') notifications?.committed(target);
++          if (target && path === '/account/delivery/submit')
++            notifications?.committed(target, false, true);
+           if (!response.destroyed && !response.writableEnded) {
+             response.setHeader('Content-Type', 'application/octet-stream');
+             response.writeHead(200).end(result.bytes);
+@@ -317,7 +322,7 @@ export function createScopedAccountHandler(
+       else send(400, { ok: false, refusal: 'malformed' });
+     } finally {
+       clearTimeout(timer);
+-      active--;
++      release();
+       notifications?.reconcile();
+     }
+   };
+diff --git a/account-service/sessions.ts b/account-service/sessions.ts
+index e153448b..9dfb8802 100644
+--- a/account-service/sessions.ts
++++ b/account-service/sessions.ts
+@@ -873,6 +873,16 @@ export class AccountSessions {
+   }
+   /** Trusted synchronous service composition only. The identity is NOT a device/relay grant.
+    * Run after any async verification, at the actual mutation boundary, never just in middleware. */
++  /** Budget attribution only; withAccess remains the operation's authorization boundary. */
++  requestBudgetKey(accessToken: unknown): string | undefined {
++    if (this.#closed) return;
++    try {
++      const access = this.#access.get(retryHash(accessToken));
++      return access && access.expires > this.#time() ? access.sessionId : undefined;
++    } catch {
++      return;
++    }
++  }
+   withAccess<T extends { ok: boolean }>(
+     accessToken: unknown,
+     accountId: string,
+diff --git a/src/crdt/accountDriver.ts b/src/crdt/accountDriver.ts
+index a573b92f..ec27c1eb 100644
+--- a/src/crdt/accountDriver.ts
++++ b/src/crdt/accountDriver.ts
+@@ -180,6 +180,8 @@ export interface DriverOperations {
+   deliveryStatus(): Promise<{
+     state: 'ready' | 'closed' | 'conflict' | 'finalized';
+     acceptedThrough: number;
++    /** Aggregate verified inbound progress, when composed with the receiver. */
++    receivedThrough?: number;
+     submissions: number[];
+   }>;
+   spoolStatus(): Promise<{ positions: { position: number; persisted: boolean }[] }>;
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 1d38cc26..fc63cedc 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1522,6 +1522,7 @@ async function openAccountReceiveOwner(
+           try {
+             return verified.read(records, ({ inbound, delivery }) => ({
+               ...describeDelivery(delivery),
++              receivedThrough: describe(inbound).receivedThrough,
+               state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
+             }));
+           } finally {
+diff --git a/src/crdt/accountSyncDriver.ts b/src/crdt/accountSyncDriver.ts
+index 5607fa12..61c602fe 100644
+--- a/src/crdt/accountSyncDriver.ts
++++ b/src/crdt/accountSyncDriver.ts
+@@ -10,9 +10,10 @@ export type SyncHalt =
+   | 'finalized'
+   | 'envelope-size'
+   | import('./accountReceiveDriver').ReceiveHalt;
+-export type OutboundStep =
++export type OutboundStep = { receivedThrough?: number } & (
+   | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
+-  | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt };
++  | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
++);
+ export interface SyncLaneStatus {
+   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
+   readonly failures: number;
+@@ -169,14 +170,23 @@ export function createSyncScheduler(options: {
+         const position =
+           'acceptedThrough' in result ? result.acceptedThrough : result.receivedThrough;
+         if (position < lane.position) throw Error('Durable lane position regressed');
+-        const advanced = position > lane.position;
+         lane.position = position;
+-        // Durable send progress makes a new read useful. Preserve receive backoff and evidence halts.
++        // A retained submit receipt already contributes to the composed inbound prefix.
++        // Publish that verified aggregate without scheduling a network read of our own write.
+         if (
+           name === 'send' &&
+-          advanced &&
+-          result.kind !== 'blocked' &&
+-          position > lanes.receive.position &&
++          'receivedThrough' in result &&
++          result.receivedThrough !== undefined
++        ) {
++          if (result.receivedThrough < lanes.receive.position)
++            throw Error('Durable receive position regressed');
++          lanes.receive.position = result.receivedThrough;
++        }
++        // An unanswered submit can have committed. Preserve independent read reconciliation,
++        // but never override a receiver's failure backoff or diagnostic halt.
++        if (
++          name === 'send' &&
++          result.kind === 'unknown' &&
+           !lanes.receive.halt &&
+           lanes.receive.failures === 0
+         )
+@@ -285,13 +295,17 @@ export async function driveOutboundStep(
+   token: AccountAccess,
+   gate: () => DriverGate,
+ ): Promise<OutboundStep> {
++  const progress = (s: Awaited<ReturnType<DriverOperations['deliveryStatus']>>) => ({
++    acceptedThrough: s.acceptedThrough,
++    ...(s.receivedThrough !== undefined ? { receivedThrough: s.receivedThrough } : {}),
++  });
+   let status = await ops.deliveryStatus();
+   if (status.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.()))
+     status = await ops.deliveryStatus();
+   const pause = (): OutboundStep | null => {
+     if (status.state !== 'ready')
+-      return { kind: 'blocked', acceptedThrough: status.acceptedThrough, reason: status.state };
+-    if (gate() !== 'ready') return { kind: 'paused', acceptedThrough: status.acceptedThrough };
++      return { kind: 'blocked', ...progress(status), reason: status.state };
++    if (gate() !== 'ready') return { kind: 'paused', ...progress(status) };
+     return null;
+   };
+   let paused = pause();
+@@ -303,7 +317,7 @@ export async function driveOutboundStep(
+     if (paused) return paused;
+     if (!spool.positions.some((p) => p.position === position && p.persisted)) {
+       const prepared = await ops.prepareNextEnvelope();
+-      if (!prepared) return pause() ?? { kind: 'idle', acceptedThrough: status.acceptedThrough };
++      if (!prepared) return pause() ?? { kind: 'idle', ...progress(status) };
+       prepared.bytes.fill(0);
+       if (prepared.position !== position) throw Error('Unexpected delivery position');
+     }
+@@ -313,7 +327,7 @@ export async function driveOutboundStep(
+     if ('bytes' in submission && submission.bytes instanceof Uint8Array) submission.bytes.fill(0);
+     if (submission.kind !== 'ready') {
+       status = await ops.deliveryStatus();
+-      return pause() ?? { kind: 'progress', acceptedThrough: status.acceptedThrough };
++      return pause() ?? { kind: 'progress', ...progress(status) };
+     }
+   }
+   paused = pause();
+@@ -327,8 +341,7 @@ export async function driveOutboundStep(
+   }
+   if (next.acceptedThrough < status.acceptedThrough)
+     throw Error('Durable delivery prefix regressed');
+-  if (next.state !== 'ready')
+-    return { kind: 'blocked', acceptedThrough: next.acceptedThrough, reason: next.state };
++  if (next.state !== 'ready') return { kind: 'blocked', ...progress(next), reason: next.state };
+   return {
+     kind:
+       retried || next.acceptedThrough > status.acceptedThrough
+@@ -336,6 +349,6 @@ export async function driveOutboundStep(
+         : gate() !== 'ready'
+           ? 'paused'
+           : 'unknown',
+-    acceptedThrough: next.acceptedThrough,
++    ...progress(next),
+   };
+ }
+diff --git a/account-service/requestBudget.ts b/account-service/requestBudget.ts
+new file mode 100644
+index 00000000..7adc015c
+--- /dev/null
++++ b/account-service/requestBudget.ts
+@@ -0,0 +1,66 @@
++/** Scoped operation policy. These are admission limits, not measured server capacity.
++ * A session has room for interactive submit + peer reads; a process ceiling, concurrency,
++ * existing byte bounds and deadlines still cap work. Renewed access/grants share the same key. */
++export const REQUEST_LIMITS = Object.freeze({
++  sessionBurst: 120,
++  sessionPerSecond: 16,
++  processBurst: 480,
++  processPerSecond: 64,
++  active: 16,
++  sessionActive: 4,
++  sessions: 1024,
++});
++type Bucket = { tokens: number; last: number; active: number };
++export class ScopedRequestBudget {
++  #now: () => number;
++  #sessions = new Map<string, Bucket>();
++  #process: Bucket;
++  #invalid: Bucket;
++  constructor(now = () => performance.now()) {
++    this.#now = now;
++    this.#process = { tokens: REQUEST_LIMITS.processBurst, last: now(), active: 0 };
++    this.#invalid = { tokens: 120, last: now(), active: 0 };
++  }
++  #refill(b: Bucket, burst: number, rate: number, now: number) {
++    b.tokens = Math.min(burst, b.tokens + (Math.max(0, now - b.last) * rate) / 1000);
++    b.last = Math.max(b.last, now);
++  }
++  /** Invalid bearer attempts have a separate bounded allowance, not one bucket per input. */
++  invalid(): boolean {
++    this.#refill(this.#invalid, 120, 2, this.#now());
++    if (this.#invalid.tokens < 1) return false;
++    this.#invalid.tokens--;
++    return true;
++  }
++  /** Only pass a service-held session key. A rejected session never debits the shared ceiling. */
++  acquire(key: string): (() => void) | undefined {
++    const now = this.#now(),
++      l = REQUEST_LIMITS;
++    let b = this.#sessions.get(key);
++    if (!b) {
++      // Forget only fully replenished, inactive buckets: churn cannot reset spent tokens.
++      for (const [id, item] of this.#sessions) {
++        this.#refill(item, l.sessionBurst, l.sessionPerSecond, now);
++        if (!item.active && item.tokens === l.sessionBurst) this.#sessions.delete(id);
++      }
++      if (this.#sessions.size >= l.sessions) return;
++      b = { tokens: l.sessionBurst, last: now, active: 0 };
++      this.#sessions.set(key, b);
++    }
++    this.#refill(b, l.sessionBurst, l.sessionPerSecond, now);
++    if (b.tokens < 1 || b.active >= l.sessionActive) return;
++    this.#refill(this.#process, l.processBurst, l.processPerSecond, now);
++    if (this.#process.tokens < 1 || this.#process.active >= l.active) return;
++    b.tokens--;
++    b.active++;
++    this.#process.tokens--;
++    this.#process.active++;
++    let released = false;
++    return () => {
++      if (released) return;
++      released = true;
++      b.active--;
++      this.#process.active--;
++    };
++  }
++}

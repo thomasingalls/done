@@ -873,6 +873,16 @@ export class AccountSessions {
   }
   /** Trusted synchronous service composition only. The identity is NOT a device/relay grant.
    * Run after any async verification, at the actual mutation boundary, never just in middleware. */
+  /** Budget attribution only; withAccess remains the operation's authorization boundary. */
+  requestBudgetKey(accessToken: unknown): string | undefined {
+    if (this.#closed) return;
+    try {
+      const access = this.#access.get(retryHash(accessToken));
+      return access && access.expires > this.#time() ? access.sessionId : undefined;
+    } catch {
+      return;
+    }
+  }
   withAccess<T extends { ok: boolean }>(
     accessToken: unknown,
     accountId: string,

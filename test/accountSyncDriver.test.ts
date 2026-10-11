@@ -50,26 +50,30 @@ it('retains local wakes during send, but cannot accelerate unknown backoff or cl
   expect(f.calls[2]!.lane).toBe('send');
   f.calls[2]!.finish('unknown');
   await flush();
+  await f.tick(0);
+  expect(f.calls[3]!.lane).toBe('receive');
+  f.calls[3]!.finish('idle');
+  await flush();
   for (let i = 0; i < 20; i++) f.scheduler.wake('local');
   await f.tick(999);
-  expect(f.calls.length).toBe(3);
+  expect(f.calls.length).toBe(4);
   await f.tick(1);
-  expect(f.calls[3]!.lane).toBe('send');
+  expect(f.calls[4]!.lane).toBe('send');
   f.setGate('offline');
   f.scheduler.wake('gate');
-  f.calls[3]!.finish('error');
+  f.calls[4]!.finish('error');
   await flush();
   f.setGate('ready');
   f.scheduler.wake('online');
   await f.tick(0);
-  expect(f.calls[4]!.lane).toBe('receive');
-  f.calls[4]!.finish('idle');
+  expect(f.calls[5]!.lane).toBe('receive');
+  f.calls[5]!.finish('idle');
   await flush();
   expect(f.scheduler.runtime.status.send.reason).toBe('operation-failed');
   f.scheduler.runtime.retry('send');
   await f.tick(0);
-  expect(f.calls[5]!.lane).toBe('send');
-  f.calls[5]!.finish('idle');
+  expect(f.calls[6]!.lane).toBe('send');
+  f.calls[6]!.finish('idle');
   await flush();
   await f.scheduler.dispose();
 });
@@ -280,6 +284,13 @@ it('400 generated deferred histories agree with an independent two-lane event mo
             f.calls.at(-1)!.finish(a.result, pos);
             if (!m.closed) {
               l.pos = pos;
+              if (
+                n === 'send' &&
+                a.result === 'unknown' &&
+                !m.lanes.receive.halt &&
+                m.lanes.receive.fail === 0
+              )
+                m.lanes.receive.at = Math.min(m.lanes.receive.at ?? m.time, m.time);
               if (a.result === 'blocked' || a.result === 'error') {
                 l.halt = true;
                 l.at = undefined;
@@ -368,7 +379,7 @@ it('400 generated deferred histories agree with an independent two-lane event mo
   );
 });
 
-it('durable send progress expedites an idle receiver; unchanged progress leaves its poll deadline alone', async () => {
+it('durable send progress preserves the receive deadline; unknown submission expedites reconciliation', async () => {
   const f = fixture();
   f.scheduler.wake('start');
   await f.tick(0);
@@ -381,19 +392,46 @@ it('durable send progress expedites an idle receiver; unchanged progress leaves 
   await f.tick(50);
   f.calls[2]!.finish('progress', 1);
   await flush();
-  await f.tick(0);
-  expect(f.calls[3]!.lane).toBe('receive');
-  expect(f.calls[3]!.at).toBe(50);
-  f.calls[3]!.finish('idle', 1);
-  await flush();
+  expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(5000);
   await f.tick(50);
+  expect(f.calls[3]!.lane).toBe('send');
+  f.calls[3]!.finish('unknown', 1);
+  await flush();
+  await f.tick(0);
+  expect(f.calls[4]!.lane).toBe('receive');
+  expect(f.calls[4]!.at).toBe(100);
   f.calls[4]!.finish('idle', 1);
   await flush();
-  expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(5050);
+  await f.scheduler.dispose();
+});
+it('publishes the verified aggregate including peers without treating an own receipt as a remote hint', async () => {
+  let receivedThrough = 7;
+  const f = fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      send: async () => ({ ...(await options.send()), receivedThrough }),
+    }),
+  );
+  f.scheduler.wake('start');
+  await f.tick(0);
+  f.calls[0]!.finish('idle');
+  await flush();
+  await f.tick(0);
+  f.calls[1]!.finish('idle', 7);
+  await flush();
+  receivedThrough = 8;
+  f.scheduler.wake('local');
+  await f.tick(50);
+  f.calls[2]!.finish('progress', 1);
+  await flush();
+  expect(f.scheduler.runtime.status.send.acceptedThrough).toBe(1);
+  expect(f.scheduler.runtime.status.receive.receivedThrough).toBe(8);
+  expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(5000);
+  expect(f.calls.filter((c) => c.lane === 'receive')).toHaveLength(1);
   await f.scheduler.dispose();
 });
 it.each(['unknown', 'blocked'] as const)(
-  'send progress preserves a receiver %s backoff or halt',
+  'unknown send preserves a receiver %s backoff or halt',
   async (kind) => {
     const f = fixture();
     f.scheduler.wake('start');
@@ -406,7 +444,7 @@ it.each(['unknown', 'blocked'] as const)(
     const deadline = f.scheduler.runtime.status.receive.nextAttemptAt;
     f.scheduler.wake('local');
     await f.tick(50);
-    f.calls[2]!.finish('progress', 1);
+    f.calls[2]!.finish('unknown', 1);
     await flush();
     expect(f.scheduler.runtime.status.receive.nextAttemptAt).toBe(deadline);
     await f.tick(0);

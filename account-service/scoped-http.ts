@@ -23,12 +23,14 @@ import type { GrantScope } from '../account-protocol/scopedGrant.ts';
 import type { AccountNotifications } from './notifications.ts';
 import { AuthorizationRefused } from './authorization.ts';
 import { createSessionHandler } from './session-http.ts';
+import { ScopedRequestBudget } from './requestBudget.ts';
 
 export function createScopedAccountHandler(
   core: AccountCore,
   authority: PrivateAuthority,
   inputPin: AuthorityPin,
   notifications?: AccountNotifications,
+  budget = new ScopedRequestBudget(),
 ) {
   const pin = parseAuthorityPin(inputPin),
     host = new URL(pin.origin).host;
@@ -157,9 +159,6 @@ export function createScopedAccountHandler(
       },
     ],
   ]);
-  let active = 0,
-    budget = 120,
-    last = performance.now();
   return async (request: IncomingMessage, response: ServerResponse): Promise<void> => {
     if (request.url?.startsWith('/account/session/v1/')) {
       try {
@@ -205,12 +204,17 @@ export function createScopedAccountHandler(
     const token = /^Bearer ([A-Za-z0-9_-]{43})$/.exec(request.headers.authorization ?? '')?.[1];
     const isGrant = path.startsWith('/account/grant/v1/');
     if (!token) return void authFailure(isGrant ? 'access-required' : 'grant-required');
-    const now = performance.now();
-    budget = Math.min(120, budget + ((now - last) * 2) / 1000);
-    last = now;
-    if (active >= 16 || budget < 1) return void authFailure('capacity');
-    active++;
-    budget--;
+    // Budget identity comes from server-held access/grant state, never request fields.
+    // This does not authorize the operation: its existing domain boundary still does that.
+    const sessionKey = isGrant
+      ? core.sessions.requestBudgetKey(token)
+      : core.grants.requestBudgetKey(token);
+    if (!sessionKey)
+      return void authFailure(
+        budget.invalid() ? (isGrant ? 'access-required' : 'grant-required') : 'capacity',
+      );
+    const release = budget.acquire(sessionKey);
+    if (!release) return void authFailure('capacity');
     const timer = setTimeout(() => {
       response.destroy();
       request.destroy();
@@ -280,7 +284,8 @@ export function createScopedAccountHandler(
       if (binary) {
         const result = await binary.run(new Uint8Array(bytes), token, authorization);
         if (result.kind === 'decision') {
-          if (target && path === '/account/delivery/submit') notifications?.committed(target);
+          if (target && path === '/account/delivery/submit')
+            notifications?.committed(target, false, true);
           if (!response.destroyed && !response.writableEnded) {
             response.setHeader('Content-Type', 'application/octet-stream');
             response.writeHead(200).end(result.bytes);
@@ -317,7 +322,7 @@ export function createScopedAccountHandler(
       else send(400, { ok: false, refusal: 'malformed' });
     } finally {
       clearTimeout(timer);
-      active--;
+      release();
       notifications?.reconcile();
     }
   };

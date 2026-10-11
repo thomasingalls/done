@@ -1,0 +1,28 @@
+
+Running 1 test using 1 worker
+
+(node:37011) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 ../../../../Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:7:1 › bounded sustained request volume (3.8m)
+
+
+  1) ../../../../Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:7:1 › bounded sustained request volume 
+
+    Test was interrupted.
+
+    Error: locator.click: Test ended.
+    Call log:
+      - waiting for locator('.card[data-section="scheduled"]').filter({ hasText: 'Probe card 0' }).first().locator('.card-surface')
+
+
+      50 |         .first()
+      51 |         .locator('.card-surface')
+    > 52 |         .click();
+         |          ^
+      53 |       await writers[i]!.locator('.card[data-editing="true"] .cm-content').waitFor();
+      54 |       await writers[i]!.keyboard.press('ControlOrMeta+End');
+      55 |     }
+        at /Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:52:10
+
+  1 interrupted
+    ../../../../Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-11-account-requests/requests.spec.ts:7:1 › bounded sustained request volume 
