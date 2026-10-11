@@ -320,7 +320,11 @@ export async function extendAccountLedger(
     const epoch = inboundEvent
       ? decodeInboundRequest(inboundEvent.request).epoch
       : (f[5] as number);
-    if (route.history && epoch < indexes.epoch) captureError('Account ledger authority regressed');
+    // Adoption takes the full verifier and fixes its event boundary before append reuse.
+    // The last retained event can still precede that boundary: monotonicity alone would
+    // admit another old-epoch event that the reference rejects at the next audit/open.
+    if (route.history && epoch !== route.epoch)
+      captureError('Account ledger crosses installed authority');
     indexes.epoch = epoch;
     countLedger('events');
     spool.events.push(row.bytes);

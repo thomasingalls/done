@@ -685,3 +685,104 @@ test(
     }
   },
 );
+
+for (const refusal of ['unknown', 'blocked'])
+  test(
+    'self-read decision ' +
+      refusal +
+      ' stops receive without losing local work and explicit retry recovers',
+    { timeout: 60000 },
+    async (t) => {
+      const f = await native(t),
+        item = await selected(f, 'self-decision-' + refusal);
+      await f.page.evaluate(await syncBundle('self-decision-refusal'));
+      await configure(f.page, f.testOperatorToken);
+      await f.page.evaluate((kind) => {
+        globalThis.selfDecisionRefusal = kind;
+      }, refusal);
+      // The service commits the submission, but the sender never receives its answer.
+      await f.context.route(sendPath(f), async (route) => {
+        await route.fetch();
+        await route.abort();
+      });
+      await syncing(f.page, item);
+      const writing = await view(f.page);
+      await waitPredicate(
+        f.page,
+        () => globalThis.selfDecisionCalls > 0 && opened.sync.status.receive.phase !== 'working',
+      );
+      const state = await syncStatus(f.page);
+      assert.equal(state.receive.phase, 'blocked');
+      assert.equal(state.receive.reason, 'operation-failed');
+      assert.equal(state.receive.receivedThrough, 0);
+      assert.equal(state.receive.failures, 0);
+      assert.equal(await view(f.page), writing);
+      assert.equal(
+        await f.page.evaluate(() => globalThis.selfDecisionProof.every((b) => b === 0)),
+        true,
+      );
+      // Online/peer hints must not erase a diagnosed local evidence halt.
+      await f.page.evaluate(() => dispatchEvent(new Event('online')));
+      assert.equal((await syncStatus(f.page)).receive.phase, 'blocked');
+      await f.page.evaluate(() => {
+        globalThis.selfDecisionRefusal = undefined;
+        opened.sync.retry('receive');
+      });
+      await waitPredicate(f.page, () => opened.sync.status.receive.receivedThrough >= 1);
+      assert.equal(await view(f.page), writing);
+      await close(f.page);
+      await f.context.unroute(sendPath(f));
+      await cold(f);
+      await syncing(f.page, item);
+      await settled(f.page);
+      assert.equal(await view(f.page), writing);
+      await close(f.page);
+    },
+  );
+
+test(
+  'concurrent Account readers enter verified storage one at a time',
+  { timeout: 60000 },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'verification-order');
+    await f.page.evaluate(await syncBundle('verification-order'));
+    await configure(f.page, f.testOperatorToken);
+    await syncing(f.page, item);
+    await settled(f.page);
+    await f.page.evaluate(() => {
+      globalThis.verificationStarts = 0;
+      globalThis.verificationOrderProbe = async () => {
+        globalThis.verificationStarts++;
+        if (globalThis.verificationStarts === 1)
+          await new Promise((r) => {
+            globalThis.releaseVerification = r;
+          });
+      };
+      globalThis.readerOne = opened.listCaptures();
+    });
+    await waitPredicate(f.page, () => globalThis.verificationStarts === 1);
+    try {
+      await f.page.evaluate(() => {
+        globalThis.readerTwo = opened.spoolStatus();
+        globalThis.readerThree = opened.listCaptures();
+      });
+      await f.page.waitForTimeout(100);
+      assert.equal(await f.page.evaluate(() => globalThis.verificationStarts), 1);
+    } finally {
+      await f.page.evaluate(() => globalThis.releaseVerification());
+    }
+    const reads = await f.page.evaluate(async () => {
+      const [first, spool, second] = await Promise.all([readerOne, readerTwo, readerThree]);
+      const same = JSON.stringify(first) === JSON.stringify(second);
+      first.forEach((c) => Harness.eraseCapsule(c));
+      second.forEach((c) => Harness.eraseCapsule(c));
+      globalThis.verificationOrderProbe = undefined;
+      return { same, positions: spool.positions.length, starts: globalThis.verificationStarts };
+    });
+    assert.equal(reads.same, true);
+    assert.ok(reads.positions > 0);
+    assert.ok(reads.starts >= 3);
+    await close(f.page);
+  },
+);

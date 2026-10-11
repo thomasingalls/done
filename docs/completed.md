@@ -12746,3 +12746,31 @@ TypeScript, targeted lint, formatting and packaged build checks pass.
 **Next.** Reconsider incremental default activation with this evidence; it remains opt-in in this
 change. No deployment or release-validation campaign was started. F-17's remaining performance
 work and the other seat's live progress document are unchanged.
+
+### Account epoch equivalence, verified-view ownership and self-read decisions
+
+**Date:** 2026-10-11 · **Commit:** this entry's commit, based on signed `95923cd8`; runtime
+patch and source hashes in the packet · **Stage:** focused correctness repair before activation
+
+**Exit.** The [correctness packet](./performance-experiments/2026-10-11-account-correctness/README.md)
+records three focused repairs and their before/after evidence. Incremental appends now require the
+installed route's exact epoch. A validly signed old-epoch response appended immediately after
+membership adoption reproduces the former disagreement with the reference. The generation fixture
+now verifies the actual installation boundary, while valid historical replay and current-key retries
+continue to pass.
+
+The verified-view helper rejects overlapping verification before touching borrowed state. Its unit
+control reproduced predecessor-buffer erasure; native concurrent readers confirm the current Account
+owner serializes verification. This is protection of an ownership invariant, not evidence of a
+production concurrency failure. A declined self-read decision now reaches the receive driver as a
+rejection instead of silently becoming unknown-outcome backoff. Both decline kinds preserve local
+writing and recover through explicit retry and cold reopen. Network backoff and service limits are
+unchanged.
+
+**Verification.** 39 unit tests, 12 generation/membership/retry tests, seven incremental native checks
+with an audit on every append, and four reference-mode native checks pass. TypeScript, targeted lint,
+formatting, diff checks and the reference-default packaged build pass. No broad campaign was run.
+
+**Next.** Reduce submission-triggered receive/discovery traffic and address shared-budget interference,
+then reconsider default activation and deployment. Incremental mode remains opt-in and release
+validation remains paused. No other seat's live progress document was changed.

@@ -1,0 +1,8 @@
+{
+  "base": "95923cd871617ab70cfe4ae2fa8a51b488fed5f9",
+  "files": {
+    "src/crdt/incrementalAccountLedger.ts": "36e11e1ab509c22700160ce885ea9e467c7ca213edf1c21f33c81966479066e1",
+    "src/crdt/verifiedRecords.ts": "11810f6c57ccddb851d2942d0a4c7e818b2891f5635ed9bc22999852ee7eaa5e",
+    "src/crdt/accountReceive.ts": "05f76d72ce45b80ca2e770fa0dbb6d14fef167f6f3e2c04b444ef44798da3be4"
+  }
+}

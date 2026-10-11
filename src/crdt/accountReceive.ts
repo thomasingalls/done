@@ -1784,7 +1784,9 @@ async function openReceivingWorkspace(
         ...(options.today ? { today: options.today } : {}),
         ...(options.signal ? { signal: options.signal } : {}),
       },
-      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental' ? 'account-snapshots' : 'reference',
+      import.meta.env?.['VITE_ACCOUNT_LEDGER'] === 'incremental'
+        ? 'account-snapshots'
+        : 'reference',
     );
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
@@ -1850,7 +1852,16 @@ async function openReceivingWorkspace(
               if ('selfDecision' in received && received.selfDecision) {
                 const { position, proof } = received.selfDecision;
                 try {
-                  await outbound.recordResponse(position, proof);
+                  const decision = await outbound.recordResponse(position, proof);
+                  // A verified page does not prove the delivery owner retained its decision.
+                  // Duplicates may be unrecorded but accepted; a declined decision must stop
+                  // this receive attempt rather than become an unexplained network backoff.
+                  if (decision.kind === 'unknown' || decision.kind === 'blocked')
+                    return {
+                      kind: 'rejected' as const,
+                      reason: 'self-decision-refused' as const,
+                      recorded: false,
+                    };
                 } finally {
                   proof.fill(0);
                 }

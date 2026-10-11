@@ -6,6 +6,22 @@ export * from '../account-receive-driver/fixtures.mjs';
 export async function syncBundle(control) {
   let hits = 0;
   const targets = {
+    'self-decision-refusal': [
+      '/src/crdt/accountDelivery.ts',
+      'recordResponse: async (position: number, answer: Bytes) => {',
+      `recordResponse: async (position: number, answer: Bytes) => {
+        if (globalThis.selfDecisionRefusal) {
+          globalThis.selfDecisionCalls = (globalThis.selfDecisionCalls ?? 0) + 1;
+          globalThis.selfDecisionProof = answer;
+          return { kind: globalThis.selfDecisionRefusal, recorded: false };
+        }`,
+    ],
+    'verification-order': [
+      '/src/crdt/accountReceive.ts',
+      'async validate(task, records, route, counter, view) {',
+      `async validate(task, records, route, counter, view) {
+        await globalThis.verificationOrderProbe?.();`,
+    ],
     classification: [
       '/src/crdt/accountReceive.ts',
       "throw new AdmissionError('receive-refused', 'Self-stream history differs', {\n                  cause,\n                });",
