@@ -81,6 +81,7 @@ import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
 import { advanceSelfReceive, requireSelfEnvelope, verifySyncState } from './accountSyncState';
 import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
+import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
 import type { DriverGate } from './accountDriver';
@@ -1961,6 +1962,7 @@ async function openReceivingWorkspace(
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
+      let unsubscribeLogin: (() => void) | undefined;
       const flushOnHide = () => {
         if (carrier.signal.aborted) return;
         scheduler.wake('flush');
@@ -1983,7 +1985,12 @@ async function openReceivingWorkspace(
         offline = () => scheduler.wake('gate');
       const scheduler = createSyncScheduler({
         signal: carrier.signal,
-        gate,
+        gate: () => {
+          const state = gate();
+          return state === 'ready' && networkLoginNeedsPasskey(options.networkLogin?.getSnapshot())
+            ? 'sign-in-required'
+            : state;
+        },
         receiveInterval: () => (notificationHealthy ? 60000 + Math.random() * 5000 : 5000),
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         send: (beforeNewEnvelope) =>
@@ -2037,6 +2044,7 @@ async function openReceivingWorkspace(
           operatorToken = undefined;
           unsubscribe?.();
           unsubscribeLocal?.();
+          unsubscribeLogin?.();
           globalThis.document?.removeEventListener('visibilitychange', visibility);
           globalThis.removeEventListener?.('pagehide', flushOnHide, true);
           globalThis.removeEventListener?.('online', online);
@@ -2045,6 +2053,11 @@ async function openReceivingWorkspace(
       });
       try {
         let previousGate = gate();
+        unsubscribeLogin = options.networkLogin?.subscribe(() => {
+          // A completed login resumes work without requiring a subscription handshake or
+          // clearing another lane's integrity halt. Login itself never prompts on this path.
+          scheduler.wake(options.networkLogin?.getSnapshot() === 'remembered' ? 'online' : 'gate');
+        });
         unsubscribeLocal = workspace.outgoing((bytes) => {
           bytes.fill(0);
           scheduler.wake('local');

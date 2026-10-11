@@ -2,16 +2,16 @@ import {
   createSyncScheduler,
   type SyncLane,
   type OutboundStep,
+  type SyncGate,
 } from '../../src/crdt/accountSyncDriver';
 import type { ReceiveStep } from '../../src/crdt/accountReceiveDriver';
-import type { DriverGate } from '../../src/crdt/accountDriver';
 export const flush = async () => {
   for (let n = 0; n < 30; n++) await Promise.resolve();
 };
 export function fixture(factory = createSyncScheduler) {
   let now = 0,
     serial = 0,
-    gate: DriverGate = 'ready',
+    gate: SyncGate = 'ready',
     active = 0,
     maximum = 0,
     detached = 0;
@@ -73,7 +73,7 @@ export function fixture(factory = createSyncScheduler) {
     controller,
     timers,
     calls,
-    setGate(value: DriverGate) {
+    setGate(value: SyncGate) {
       gate = value;
     },
     get gate() {

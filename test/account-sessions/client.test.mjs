@@ -572,6 +572,24 @@ test('sign-out cancels an outstanding reconnect passkey without installing its r
   assert.equal(x.f.rows('network_sessions').length, 0);
 });
 
+for (const remembered of [false, true])
+  test(`cancelled ${remembered ? 'reconnect' : 'first connection'} still identifies a required passkey`, async (t) => {
+    const x = await setup(t),
+      a = await x.open({ warm: remembered });
+    const token = await a.login.access();
+    await a.login.unlock(a.live.task, x.proof, async (request) => {
+      if (request.signal) throw Error('Passkey cancelled');
+      return x.assertion(request);
+    });
+    if (remembered) {
+      assert(token);
+      a.login.rejectAccess(token, true);
+    }
+    await a.login.connect();
+    assert.equal(a.login.getSnapshot(), remembered ? 'reconnect' : 'connect');
+    assert.equal(await a.login.access(), undefined);
+  });
+
 test('a wrong-account issuance reply is never saved or acknowledged', async (t) => {
   const x = await setup(t);
   let acknowledgements = 0;

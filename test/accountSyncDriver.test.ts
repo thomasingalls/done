@@ -9,6 +9,66 @@ import {
 } from '../src/crdt/accountSyncDriver';
 import type { DriverGate, DriverOperations } from '../src/crdt/accountDriver';
 
+it('reports a passkey gate without network retries, then resumes without clearing another lane halt', async () => {
+  const f = fixture();
+  f.scheduler.wake('start');
+  await f.tick(0);
+  f.calls[0]!.finish('blocked');
+  await flush();
+  await f.tick(0);
+  // Authentication becomes required during the outstanding receive request.
+  f.setGate('sign-in-required');
+  f.scheduler.wake('gate');
+  f.calls[1]!.finish('unknown');
+  await flush();
+  expect(f.scheduler.runtime.status.receive).toMatchObject({
+    phase: 'blocked',
+    reason: 'sign-in-required',
+    nextAttemptAt: null,
+    issueSince: 0,
+  });
+  expect(f.scheduler.runtime.status.send.reason).toBe('conflict');
+  f.scheduler.runtime.retry('receive');
+  await f.tick(30000);
+  expect(f.calls).toHaveLength(2);
+  f.setGate('ready');
+  f.scheduler.wake('online');
+  await f.tick(0);
+  expect(f.calls[2]!.lane).toBe('receive');
+  f.calls[2]!.finish('idle');
+  await flush();
+  expect(f.scheduler.runtime.status.receive).toMatchObject({ reason: null, issueSince: null });
+  expect(f.scheduler.runtime.status.send.reason).toBe('conflict');
+  await f.scheduler.dispose();
+});
+
+it('timestamps an initial sign-in gate, keeps offline distinct and resumes queued local work', async () => {
+  const f = fixture();
+  f.setGate('sign-in-required');
+  f.scheduler.wake('start');
+  f.scheduler.wake('local');
+  await f.tick(30000);
+  expect(f.calls).toHaveLength(0);
+  expect(f.scheduler.runtime.status.send).toMatchObject({
+    reason: 'sign-in-required',
+    issueSince: 0,
+    failures: 0,
+  });
+  f.setGate('offline');
+  f.scheduler.wake('gate');
+  expect(f.scheduler.runtime.status.receive).toMatchObject({ phase: 'offline', issueSince: null });
+  f.setGate('ready');
+  f.scheduler.wake('online');
+  await f.tick(0);
+  f.calls[0]!.finish('idle');
+  await flush();
+  await f.tick(0);
+  f.calls[1]!.finish('idle');
+  await flush();
+  expect(f.maximum).toBe(1);
+  await f.scheduler.dispose();
+});
+
 it('alternates ready lanes, keeps independent idle deadlines and wakes an idle sender', async () => {
   const f = fixture();
   f.scheduler.wake('start');

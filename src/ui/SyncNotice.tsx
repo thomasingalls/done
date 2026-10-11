@@ -1,5 +1,9 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { SyncLane, SyncLaneStatus, SyncRuntime } from '../crdt/accountSyncDriver';
+import type { NetworkLogin } from '../account/networkLogin';
+
+const noLoginSubscription = () => () => {};
+const noLoginSnapshot = () => undefined;
 
 const lanes: SyncLane[] = ['send', 'receive'];
 export function syncNeedsAttention(lane: SyncLaneStatus, online: boolean, now: number) {
@@ -16,8 +20,22 @@ const time = (at: number | null) =>
   at === null ? 'None since opening' : new Date(at).toLocaleTimeString();
 
 /** This port can schedule retries, never change accepted positions or clear evidence. */
-export function SyncNotice({ sync, details = false }: { sync: SyncRuntime; details?: boolean }) {
+export function SyncNotice({
+  sync,
+  login,
+  details = false,
+}: {
+  sync: SyncRuntime;
+  login?: NetworkLogin;
+  details?: boolean;
+}) {
   const status = useSyncExternalStore(sync.onStatus, () => sync.status);
+  const loginStatus = useSyncExternalStore(
+    login?.subscribe ?? noLoginSubscription,
+    login?.getSnapshot ?? noLoginSnapshot,
+  );
+  const [connecting, setConnecting] = useState(false);
+  const [connectionError, setConnectionError] = useState(false);
   const [now, setNow] = useState(Date.now);
   const [online, setOnline] = useState(() => navigator.onLine);
   useEffect(() => {
@@ -25,6 +43,9 @@ export function SyncNotice({ sync, details = false }: { sync: SyncRuntime; detai
       setOnline(navigator.onLine);
       setNow(Date.now());
     };
+    // A status change can arrive after its deadline but after another lane's timer fired.
+    // Refresh now as well; otherwise the later lane can remain hidden indefinitely.
+    update();
     addEventListener('online', update);
     addEventListener('offline', update);
     const deadlines = lanes
@@ -40,6 +61,7 @@ export function SyncNotice({ sync, details = false }: { sync: SyncRuntime; detai
     };
   }, [status]);
   const affected = lanes.filter((name) => syncNeedsAttention(status[name], online, now));
+  const signInRequired = lanes.some((name) => status[name].reason === 'sign-in-required');
   if (!details && !affected.length) return null;
   return (
     <aside
@@ -78,7 +100,7 @@ export function SyncNotice({ sync, details = false }: { sync: SyncRuntime; detai
                 </code>
               </p>
             )}
-            {online && failed && lane.phase !== 'closed' && (
+            {online && failed && lane.phase !== 'closed' && lane.reason !== 'sign-in-required' && (
               <button className="menu-button" onClick={() => sync.retry(name)}>
                 Retry {name === 'send' ? 'sending' : 'receiving'}
               </button>
@@ -86,6 +108,32 @@ export function SyncNotice({ sync, details = false }: { sync: SyncRuntime; detai
           </div>
         );
       })}
+      {signInRequired && (
+        <p className="menu-note">
+          Sync needs an account passkey check. Your writing remains available offline.
+        </p>
+      )}
+      {signInRequired && online && login && !details && (
+        <button
+          className="menu-button"
+          disabled={connecting || loginStatus === 'connecting'}
+          onClick={() => {
+            setConnecting(true);
+            setConnectionError(false);
+            void login
+              .connect()
+              .catch(() => setConnectionError(true))
+              .finally(() => setConnecting(false));
+          }}
+        >
+          {connecting || loginStatus === 'connecting'
+            ? 'Connecting sync…'
+            : loginStatus === 'connect'
+              ? 'Connect sync'
+              : 'Reconnect sync'}
+        </button>
+      )}
+      {connectionError && <p role="alert">Could not reconnect sync. Please try again.</p>}
     </aside>
   );
 }

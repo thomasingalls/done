@@ -10,6 +10,7 @@ import { CustodyError } from './custodyRecord';
 import { InboundError } from './accountInbound';
 import { createBatchWindow, type BatchTiming } from './batchWindow';
 export type SyncLane = 'send' | 'receive';
+export type SyncGate = DriverGate | 'sign-in-required';
 export type SyncHalt =
   | 'closed'
   | 'conflict'
@@ -26,7 +27,13 @@ export interface SyncLaneStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly failures: number;
   readonly nextAttemptAt: number | null;
-  readonly reason: SyncHalt | 'local-storage' | 'request-expired' | 'network-unavailable' | null;
+  readonly reason:
+    | SyncHalt
+    | 'local-storage'
+    | 'sign-in-required'
+    | 'request-expired'
+    | 'network-unavailable'
+    | null;
   readonly issueSince: number | null;
   readonly lastSuccessAt: number | null;
 }
@@ -54,7 +61,7 @@ const clockDefault: DriverClock = {
 const names: SyncLane[] = ['send', 'receive'];
 export function createSyncScheduler(options: {
   signal: AbortSignal;
-  gate(): DriverGate;
+  gate(): SyncGate;
   send(beforeNewEnvelope?: () => number | undefined): Promise<OutboundStep>;
   receive(): Promise<ReceiveStep>;
   detach(): void;
@@ -80,6 +87,7 @@ export function createSyncScheduler(options: {
     work: Promise<void> | undefined;
   let active: SyncLane | undefined,
     last: SyncLane = 'receive';
+  let signInSince: number | undefined;
   const laneStatus = (name: SyncLane): SyncLaneStatus => {
     const lane = lanes[name],
       gate = options.gate();
@@ -90,7 +98,7 @@ export function createSyncScheduler(options: {
           ? 'blocked'
           : gate === 'offline'
             ? 'offline'
-            : gate === 'local-storage'
+            : gate === 'local-storage' || gate === 'sign-in-required'
               ? 'blocked'
               : lane.phase,
       failures: lane.failures,
@@ -101,11 +109,14 @@ export function createSyncScheduler(options: {
               name === 'send' && lane.failures === 0 ? (batch?.due ?? -Infinity) : -Infinity,
             )
           : null,
-      issueSince: lane.issueSince ?? null,
+      issueSince: (lane.halt ? lane.issueSince : (signInSince ?? lane.issueSince)) ?? null,
       lastSuccessAt: lane.lastSuccessAt ?? null,
       reason: stopped
         ? null
-        : (lane.halt ?? (gate === 'local-storage' ? 'local-storage' : (lane.retryReason ?? null))),
+        : (lane.halt ??
+          (gate === 'local-storage' || gate === 'sign-in-required'
+            ? gate
+            : (lane.retryReason ?? null))),
     };
   };
   const snapshot = (): SyncStatus =>
@@ -115,6 +126,8 @@ export function createSyncScheduler(options: {
     });
   let value = snapshot();
   const publish = () => {
+    if (options.gate() === 'sign-in-required') signInSince ??= clock.now();
+    else signInSince = undefined;
     const next = snapshot();
     if (JSON.stringify(next) === JSON.stringify(value)) return;
     value = next;

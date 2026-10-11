@@ -61,6 +61,10 @@ export type LoginStatus =
   | 'sign-out-pending'
   | 'signed-out';
 
+/** Explicit connection is required or already in progress; lane retries cannot replace it. */
+export const networkLoginNeedsPasskey = (status: LoginStatus | undefined) =>
+  status === 'connect' || status === 'reconnect' || status === 'connecting';
+
 /** Explicit session surface only. Never obtains or falls back to a private development bearer. */
 export const postSession: Post = async (operation, body, signal) => {
   const response = await fetch('/account/session/v1/' + operation, {
@@ -611,7 +615,14 @@ export class NetworkLogin {
       await this.#run((task) => this.#prove(task, this.#proof!, this.#assert!, p));
       await this.access();
     } catch {
-      if (!this.#stop.signal.aborted && epoch === this.#epoch) this.#publish('disconnected');
+      if (!this.#stop.signal.aborted && epoch === this.#epoch)
+        this.#publish(
+          this.#needsSignIn || this.#held === 'signed-out'
+            ? 'reconnect'
+            : !this.#held
+              ? 'connect'
+              : 'disconnected',
+        );
     } finally {
       this.#connecting = false;
     }

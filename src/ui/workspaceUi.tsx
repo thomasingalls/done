@@ -231,7 +231,7 @@ export const WorkspaceUiProvider = ({
       }}
     >
       {children}
-      {sync && <SyncNotice sync={sync} />}
+      {sync && <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} />}
       {(blocked || error || status.pendingItems > 0) && (
         <aside className="workspace-status" role="status">
           <span>
