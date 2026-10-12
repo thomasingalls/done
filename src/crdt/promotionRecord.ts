@@ -1,3 +1,4 @@
+import { authorityClaim, type AccountAuthorityRows } from './accountAuthorityInventory';
 import {
   parseContentCheckpoint,
   type ContentCheckpoint,
@@ -429,10 +430,33 @@ export async function withPromotionRoot<T>(
 }
 export async function readPromotion(task: SessionTask, slotId: string, code: string) {
   const claim = await readLocalClaim(task, slotId);
+  return authenticatePromotionInventory(
+    task,
+    slotId,
+    code,
+    claim,
+    (await slotCustodyRows(task, slotId)) ?? [],
+  );
+}
+/** Internal owner check: authenticate the exact snapshot retained for unchanged-authority reuse. */
+export function authenticatePromotionRows(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  rows: AccountAuthorityRows,
+) {
+  return authenticatePromotionInventory(task, slotId, code, authorityClaim(rows, slotId), rows);
+}
+async function authenticatePromotionInventory(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  claim: Awaited<ReturnType<typeof readLocalClaim>>,
+  rows: AccountAuthorityRows,
+) {
   if (!claim || claim.stage !== 'ready') throw Error('Promotion needs ready Local');
   await verifyLocalClaim(task, claim, code);
-  const scope = claimScope(claim),
-    rows = (await slotCustodyRows(task, slotId)) ?? [];
+  const scope = claimScope(claim);
   const row = rows.find((r) => indexedDB.cmp(r.key, recordKey(scope)) === 0);
   const record = parseRecord(row?.value, scope);
   matchLocalCustody(claim, record);

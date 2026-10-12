@@ -27,6 +27,8 @@ const workNames = [
   'loadedRows',
   'loadedBytes',
   'authorityChecks',
+  'authorityAuthentications',
+  'authorityReuses',
   'positions',
   'sourceParses',
   'sourceParseBytes',

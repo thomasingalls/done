@@ -77,6 +77,7 @@ export interface CaptureExtension {
     counter: ContentCounter,
     view?: object,
   ): Promise<void>;
+  invalidateAuthority?(): void;
   dispose(): void;
 }
 export async function openAccountCaptureOwner(
@@ -317,8 +318,18 @@ export async function openAccountCaptureOwner(
         schedule(0);
       }
     };
+    const stop = () => {
+      stopped = true;
+      cancel();
+    };
+    live.signal.addEventListener('abort', stop, { once: true });
+    cleanups.add(stop);
+    schedule(owner!.carrier.warmAuditDelay());
+  }
+  if (warmLoads || extension?.invalidateAuthority) {
     const invalidate = () => {
       owner!.carrier.invalidateWarm();
+      extension?.invalidateAuthority?.();
     };
     const visible = () => {
       if (document.visibilityState === 'visible') invalidate();
@@ -327,15 +338,13 @@ export async function openAccountCaptureOwner(
     document.addEventListener('resume', invalidate);
     window.addEventListener('pageshow', invalidate);
     const stop = () => {
-      stopped = true;
-      cancel();
+      extension?.invalidateAuthority?.();
       document.removeEventListener('visibilitychange', visible);
       document.removeEventListener('resume', invalidate);
       window.removeEventListener('pageshow', invalidate);
     };
     live.signal.addEventListener('abort', stop, { once: true });
     cleanups.add(stop);
-    schedule(owner!.carrier.warmAuditDelay());
   }
   const withSnapshot = <T>(
     task: SessionTask,

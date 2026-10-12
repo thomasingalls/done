@@ -13410,3 +13410,36 @@ argument while preserving final-apply ordering, local refusal, undo, durability 
 transitions. Residual splittable receive CPU work needs budgeted yielding. Handoff and local retention
 remain design-only. Nothing is published; release validation stays paused and `docs/progress.md`
 remains unchanged.
+
+## 2026-10-12 — Reuse unchanged Account authority authentication
+
+**Boundary.** The preceding owned-reservation repair is committed signed as **`9bf9f3c6`**.
+The [new repair and evidence](./performance-experiments/2026-10-12-authority-reuse/README.md)
+are local, uncommitted and unpublished. Release validation remains paused.
+
+**Change.** The exclusive v9 owner retains a private positive authentication snapshot of its
+complete scoped custody inventory. Each check still freshly reads and exactly compares the keys
+and values; changed bytes, clear/import interlocks and unexpected authority take the full verifier.
+Only an exact unchanged snapshot skips duplicate inventory reads, factor opening, MAC checks and
+payload encoding. No decrypted keys or caller-owned buffers are retained. Resume, adoption, allowed
+history custody refresh, failure and close invalidate reuse; late verification cannot reinstall it.
+Network logins/grants and their expiration/revocation checks are independent. No format change.
+The [contract](./account-authority-authentication-reuse.md) records those limits and the reference switch.
+
+**Evidence.** Twelve matched CPU-4x sessions preserve text, last-key undo/redo, peer writing, export
+convergence and cold offline replay; every typing response is HTTP 200. Frame p95 is **21 ms** with
+a silent peer (reference **22–23 ms**), **207–211 ms** with active peer edits (reference **390–398 ms**),
+and **137–162 ms** during backlog catch-up (reference **315–324 ms**). Every warmed authority check
+reuses authentication; backlog needs one first authentication. Long tasks are fewer but still reach
+**169 ms**. Candidate copies and completed sync work both increase; totals are not fixed-work costs.
+Two separate diagnostics pass and identify ledger byte equality as the largest remaining sampled
+client category. These are desktop emulation results, not physical-phone or release qualification.
+
+**Checks/next.** 54 focused units, eight native owner checks and three targeted packaged lifecycle
+journeys pass. Initial unit/native probe mistakes are retained. The extra custody fixture's disabled
+history endpoint fails with reuse off too; enabling the current endpoint makes its assertions pass.
+TypeScript, production build, JS budget, pinned Yjs, origin isolation and scoped lint pass.
+Both unprofiled repetitions exceed the predeclared escalation threshold: proceed to
+[prepared remote handoff](./account-prepared-remote-handoff-design.md) with budgeted CPU yielding,
+not another general shrinking pass. That handoff and local retention remain design-only.
+`docs/progress.md` remains unchanged.

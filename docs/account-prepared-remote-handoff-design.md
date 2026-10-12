@@ -4,6 +4,16 @@
 remote FIFO fence stays in place for the owned-reservation and unchanged-authority repairs.
 See the [prospective escalation rule](performance-experiments/2026-10-12-owned-reservations/protocol.md).
 
+**Measured next-step decision:** the [unchanged-authority repair](performance-experiments/2026-10-12-authority-reuse/README.md)
+completes that two-slice sequence. Both repetitions exceed the threshold: active-peer frame p95
+207–211 ms, backlog 137–162 ms at CPU-4x; 9/11 of 120 backlog keys exceed 100 ms. Remote admission
+accounts for 92–98% of remaining active-peer queue wait and over 99% of backlog queue wait.
+Proceed to this bounded handoff phase; do not substitute another general shrinking pass.
+Residual long tasks reach 169 ms unprofiled. Diagnostics identify ledger byte equality as the
+largest sampled category, plus full authentication outside the new reuse check. Separating the
+logical fence must therefore be accompanied by explicit CPU-yield boundaries; it does not itself
+make synchronous validation preemptible. This document still specifies design, not implemented handoff.
+
 The ordering argument is valid in principle: a local edit against the currently displayed document
 cannot depend on a remote page that has not yet been applied there. TRD §6.1 permits a committed,
 not-yet-displayed suffix. That permits investigating verification and durable remote preparation

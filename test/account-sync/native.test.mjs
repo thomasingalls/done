@@ -27,6 +27,96 @@ const sendPath = (f) => f.server.origin + '/account/delivery/submit';
 const parsed = (wire) =>
   decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
 
+for (const damage of ['custody', 'clear', 'import']) {
+  test(
+    `authority reuse authenticates on resume and refuses changed ${damage} inventory immediately`,
+    { timeout: 60000, skip: !process.env.ACCOUNT_AUTHORITY_REUSE },
+    async (t) => {
+      const f = await native(t),
+        item = await selected(f, 'authority-' + damage);
+      await f.page.evaluate(async (item) => {
+        window.opened = await Harness.openOwnedReceivingAccountWorkspace(optionsFor(item));
+        window.authoritySlot = optionsFor(item).slotId;
+        window.editor = opened.workspace;
+      }, args(item));
+      const checked = await f.page.evaluate(async () => {
+        const capture = async () => {
+          await opened.receiveStatus();
+        };
+        await capture();
+        const before = Harness.accountLedgerMetrics().work;
+        await capture();
+        const warm = Harness.accountLedgerMetrics().work;
+        const resumed = [];
+        for (const event of ['visibilitychange', 'resume', 'pageshow']) {
+          Object.defineProperty(document, 'visibilityState', {
+            configurable: true,
+            value: 'visible',
+          });
+          const before = Harness.accountLedgerMetrics().work.authorityAuthentications;
+          (event === 'pageshow' ? window : document).dispatchEvent(new Event(event));
+          await capture();
+          resumed.push(Harness.accountLedgerMetrics().work.authorityAuthentications - before);
+        }
+        delete document.visibilityState;
+        return {
+          authentications: warm.authorityAuthentications - before.authorityAuthentications,
+          reused: warm.authorityReuses - before.authorityReuses,
+          resumed,
+        };
+      });
+      assert.equal(checked.authentications, 0);
+      assert.ok(checked.reused > 0);
+      assert.deepEqual(checked.resumed, [1, 1, 1]);
+      const refusal = await f.page.evaluate(async (damage) => {
+        const db = await new Promise((resolve, reject) => {
+          const r = indexedDB.open('done.custody');
+          r.onsuccess = () => resolve(r.result);
+          r.onerror = () => reject(r.error);
+        });
+        try {
+          await new Promise((resolve, reject) => {
+            const tx = db.transaction('entries', 'readwrite'),
+              store = tx.objectStore('entries');
+            tx.oncomplete = resolve;
+            tx.onabort = () => reject(tx.error);
+            if (damage !== 'custody') {
+              store.put({}, [
+                authoritySlot,
+                damage === 'clear' ? 'local-clear-v1' : 'legacy-import-v1',
+              ]);
+              return;
+            }
+            const r = store.openCursor();
+            r.onsuccess = () => {
+              const cursor = r.result;
+              if (!cursor) return;
+              const value = cursor.value;
+              if (cursor.key[0] === authoritySlot && value.state === 'protected') {
+                value.seal_reserved++;
+                cursor.update(value);
+              }
+              cursor.continue();
+            };
+          });
+        } finally {
+          db.close();
+        }
+        try {
+          await opened.receiveStatus();
+          return null;
+        } catch (e) {
+          return e.message;
+        }
+      }, damage);
+      assert.ok(refusal, 'changed inventory must not reuse authentication');
+      if (damage === 'clear') assert.match(refusal, /invalid-local-clear-record/);
+      if (damage === 'import') assert.match(refusal, /pre-active-import-needs-owner/);
+      await close(f.page);
+    },
+  );
+}
+
 test(
   'exclusive warm loads avoid censuses but visibility, resume and pageshow require full reads',
   { timeout: 60000, skip: process.env.ACCOUNT_LEDGER_MODE === 'reference' },
