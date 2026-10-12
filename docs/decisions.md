@@ -4483,3 +4483,23 @@ before reuse after hidden/frozen-page resumption. Counts/bounds cannot prove all
 Refuse detected damage without repair. Workers may be considered later; no worker is required by
 this decision. See [the bounded implementation contract](account-warm-ledger-loads.md) and
 [the local-retention design](account-local-retention-design.md), which changes no stored format yet.
+
+## 2026-10-13 — Define immediate-use final receive authority; runtime unchanged
+
+The operator requested a freshness/invalidation contract before moving the final authority read
+out of the editor queue. The [bounded design](account-final-apply-authority-design.md) recommends a
+complete fresh check on the serialized storage owner, followed by a single-use permission consumed
+immediately only if the editor can apply synchronously without overtaking older input. It must not
+wait in the FIFO. Any later storage-task request invalidates it conservatively, as do authority and
+lifecycle changes; revocation begins before effects/awaits, not only after successful writes.
+
+A scheduling miss after successful verification discards the permission and takes the existing
+full queue-head check once. Verifier failure, changed proposal authority, close or repair keeps the
+existing refusal/cold-replay disposition. Keep journal-before-apply, current undo history, complete
+projection verification and all receive-commit/readback checks. No task/transaction survives the
+handoff, and no new online freshness or protection against bypassing the exclusive writer is claimed.
+
+This records design work, not implementation or authorization for a general reusable authority
+cache. No new seconds/minutes custody-corruption window, format change, release campaign or deployment
+is selected. The current runtime still checks authority at the final FIFO head; physical account
+performance remains pending its separate disposable-credential fixture.

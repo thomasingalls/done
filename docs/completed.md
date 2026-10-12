@@ -13665,3 +13665,34 @@ final queue entry only with an explicit freshness/lifetime/invalidation contract
 move or weaken the present check. Remaining content-render work, protocol work, extreme tails and
 physical account evidence remain open. Local retention stays design-only; `docs/progress.md` is
 unchanged.
+
+### Immediate-use final receive authority contract — 2026-10-13
+
+**Boundary.** Status-subscription isolation, stronger measurements and their evidence are committed
+**signed `5c7ba18a`** (signature verified `G`), unpublished. This follow-up is documentation/design
+only; the complete final authority read still executes at the FIFO head. Release validation remains
+paused and the physical account comparison remains pending by the operator's choice.
+
+**Contract.** The [design](./account-final-apply-authority-design.md) recommends one complete fresh
+check outside the editor queue, followed by immediate synchronous application only when both owner
+and queue guards permit it. A ticket never waits in the queue. Conservatively invalidate on every
+other storage-task request, explicit authority change and lifecycle boundary, before possible effects;
+never revive old versions after abort or owner replacement. Preserve the exact inventory verifier,
+expected authority, interlocks, native settlement and buffer ownership. A task's expired `step`
+closure cannot serve as the final capability.
+
+A scheduling miss after successful verification uses the original full queue-head check, with at
+most one speculative check and no retry loop. Actual verification failure or changed proposal
+authority closes for cold replay. Application still uses original ordered frames and current undo;
+local edits journal before application and remote dependencies commit before exposure. The design
+names reentrant close/input, forced local writes, background flush, blocked/discarded input, lifecycle
+resumption and crash boundaries, plus the bounded focused tests and matched measurement needed next.
+It explicitly retains the exclusive-writer assumption and does not claim atomic detection of an
+arbitrary external write after a native read.
+
+**Checks/next.** Reconciled with the current owner, verifier, lifecycle, queue and projection code;
+linked from the existing handoff/authentication documents and the decision log. No runtime or test
+code changed and no campaign ran for this documentation phase. Implement the private owner gate and
+immediate admission attempt next, keeping the current full-check path as fallback/reference. Measure
+eligibility/fallback rates and extra-read cost rather than assuming the measured 18–20 ms read wait
+translates directly into the same input-latency gain. `docs/progress.md` is unchanged.

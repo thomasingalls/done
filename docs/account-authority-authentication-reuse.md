@@ -70,3 +70,11 @@ third general shrinking pass or a release-validation campaign.
 The next [prepared remote handoff](account-prepared-remote-handoff-design.md) uses this same fresh
 inventory check again at final editor application, after releasing the preparation storage task.
 Its captured authority context must still match; a changed or closed owner cannot apply the proposal.
+
+## Design-only scheduling follow-up — 2026-10-13
+
+The [final-apply authority contract](account-final-apply-authority-design.md) proposes moving the
+complete read before queue entry only for an immediately consumable, owner-private permission.
+It retains this verifier and its refusal behavior, with conservative storage/lifecycle invalidation
+and the current queue-head check as fallback. It is not a longer-lived custody authentication cache
+and has not been implemented.

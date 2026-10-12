@@ -80,3 +80,11 @@ away.
 switches; neither changes stored data. The existing ordered-receive native suite explicitly selects
 its reference fence unless `ACCOUNT_PREPARED_RECEIVE=1` is supplied. New native controls select the
 prepared product path. Local retention is still design-only and outside this slice.
+
+## Proposed final-check scheduling refinement — 2026-10-13
+
+The [immediate-use authority contract](account-final-apply-authority-design.md) defines a possible
+next optimization. It keeps the complete fresh inventory check, permits synchronous application
+only when the queue is immediately available after that check, and falls back to this document's
+queue-head check if scheduling invalidates the permission. A permission never waits in the FIFO.
+This refinement is **design-only**; the runtime ordering described above is still in force.
