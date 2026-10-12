@@ -83,6 +83,12 @@ export async function openAccountCaptureOwner(
   let owner: ReturnType<typeof prepareAccountCustody> | undefined;
   let account!: Awaited<ReturnType<typeof verifyAccountUnderPermit>>['account'];
   let route!: CaptureRoute;
+  const warmLoads =
+    extension?.version === 9 &&
+    import.meta.env?.['VITE_ACCOUNT_WARM_LOADS'] !== '0' &&
+    import.meta.env?.['VITE_ACCOUNT_LEDGER'] !== 'reference'
+      ? true
+      : undefined;
   let suspended = false;
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
@@ -114,6 +120,7 @@ export async function openAccountCaptureOwner(
               extension.validate(task, records, route, counter, view),
             true,
             true,
+            warmLoads,
           );
           await extension.initializeJoined(task, v);
           await owner.initialize(task);
@@ -170,6 +177,7 @@ export async function openAccountCaptureOwner(
           },
           extension ? true : undefined,
           extension?.version === 9 ? true : undefined,
+          warmLoads,
         );
         await extension?.initialize(task, v);
         await owner.initialize(task);
@@ -239,6 +247,7 @@ export async function openAccountCaptureOwner(
     },
   );
   options.networkLogin?.activate(live);
+  let scheduleAudit = () => {};
   const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
     const previous = tail;
     const enqueued = ledgerWorkStart();
@@ -250,6 +259,7 @@ export async function openAccountCaptureOwner(
         return await operation(task);
       } finally {
         measureLedgerWork('storageOperation', began);
+        scheduleAudit();
       }
     });
     tail = result.then(
@@ -262,6 +272,62 @@ export async function openAccountCaptureOwner(
     });
     return result;
   };
+  if (warmLoads) {
+    let timer: ReturnType<typeof setTimeout> | undefined,
+      auditing = false,
+      stopped = false;
+    const cancel = () => {
+      if (timer !== undefined) clearTimeout(timer);
+      timer = undefined;
+    };
+    const schedule = (delay: number) => {
+      if (stopped || live.signal.aborted || timer !== undefined) return;
+      timer = setTimeout(() => {
+        timer = undefined;
+        if (stopped || live.signal.aborted) return;
+        if (!auditing && !owner!.carrier.warmAuditDue()) {
+          schedule(owner!.carrier.warmAuditDelay());
+          return;
+        }
+        auditing = true;
+        // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
+        void run((task) => owner!.carrier.auditWarm(task))
+          .then((complete) => {
+            auditing = !complete;
+            schedule(complete ? owner!.carrier.warmAuditDelay() : 0);
+          })
+          .catch(() => {
+            auditing = false;
+            schedule(owner!.carrier.warmAuditDelay());
+          });
+      }, delay);
+    };
+    scheduleAudit = () => {
+      if (!auditing && owner!.carrier.warmAuditDue()) {
+        cancel();
+        schedule(0);
+      }
+    };
+    const invalidate = () => {
+      owner!.carrier.invalidateWarm();
+    };
+    const visible = () => {
+      if (document.visibilityState === 'visible') invalidate();
+    };
+    document.addEventListener('visibilitychange', visible);
+    document.addEventListener('resume', invalidate);
+    window.addEventListener('pageshow', invalidate);
+    const stop = () => {
+      stopped = true;
+      cancel();
+      document.removeEventListener('visibilitychange', visible);
+      document.removeEventListener('resume', invalidate);
+      window.removeEventListener('pageshow', invalidate);
+    };
+    live.signal.addEventListener('abort', stop, { once: true });
+    cleanups.add(stop);
+    schedule(owner!.carrier.warmAuditDelay());
+  }
   const withSnapshot = <T>(
     task: SessionTask,
     operation: (entries: ObservedEntry[]) => Promise<T>,

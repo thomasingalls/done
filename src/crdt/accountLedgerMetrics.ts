@@ -20,6 +20,9 @@ const workNames = [
   'coverageBaselines',
   'coverageDirectProofs',
   'loads',
+  'warmLoads',
+  'warmAuditRows',
+  'warmAuditBytes',
   'loadedRows',
   'loadedBytes',
   'authorityChecks',
@@ -42,6 +45,7 @@ type WorkTiming =
   | 'readProjection'
   | 'installClone'
   | 'physicalRead'
+  | 'warmShapeCheck'
   | 'loadElapsed'
   | 'storageQueueWait'
   | 'storageOperation'

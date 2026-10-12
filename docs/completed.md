@@ -13222,3 +13222,30 @@ then prepare/merge the ol-infra pin PR and verify rollout plus actual devices. N
 the registry or deployed at this checkpoint. CPU-4x input and cold-open budgets remain unmet;
 physical-phone performance, local history retention and remaining background/UI work stay open.
 Release validation remains paused and `docs/progress.md` is unchanged.
+
+
+### Account performance — exclusive warm loads and bounded rolling integrity checks
+
+**Date:** 2026-10-12 · **Commit:** working tree on merged `24481b82` · **Stage:** bounded repair
+
+**Exit.** The exclusive v9 Account owner reuses authenticated rows after a counter/count/first/last
+key check and extends them only after owned commits. Each load checks a bounded old-row slice;
+256 appended rows or five minutes schedules completion even during activity. Visibility/resume/
+reacquisition require full reads. Generic Local/shared owners keep full reads. The operator's
+accepted old-row corruption detection window is recorded; there is no stored-format change.
+The reference override remains available.
+
+**Evidence.** [Three CPU-4x matched pairs](./performance-experiments/2026-10-12-warm-ledger/README.md)
+reduce aggregate long-task duration 39.4%, maximum 170→131 ms. Each passes full block undo/redo
+and offline replay. Worst frame samples do not improve, and about 92 MB of detached copies remain
+per 120-key session. Counts/bounds grow with row count. Forty-two focused units, native warm/resume,
+compaction/replay, audit-refusal and reader-serialization checks, and the packaged two-device
+text/undo/offline journey pass. Build/type, pinned Yjs, bundle/origin and scoped lint/format pass.
+The [checks record](./performance-experiments/2026-10-12-warm-ledger/checks.md) gives exact commands.
+
+**Remaining.** Changes are uncommitted and unpublished. Remaining copies/queueing, accepted local
+history growth, current-phone evidence and latency budgets are unresolved. The
+[retention note](./account-local-retention-design.md) is design only, identifying baseline, journal,
+reader fence and crash-safe installation decisions before any deletion. Approved duplicate-docs,
+source-archive and synthetic-profile cleanup is complete with fixtures/evidence retained. No
+release campaign was resumed; `docs/progress.md` is unchanged.

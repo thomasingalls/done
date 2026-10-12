@@ -28,6 +28,56 @@ const parsed = (wire) =>
   decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
 
 test(
+  'exclusive warm loads avoid censuses but visibility, resume and pageshow require full reads',
+  { timeout: 60000, skip: process.env.ACCOUNT_LEDGER_MODE === 'reference' },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'warm-resume');
+    await syncing(f.page, item);
+    await settled(f.page);
+    const result = await f.page.evaluate(async () => {
+      const original = IDBObjectStore.prototype.getAll;
+      let reads = 0;
+      IDBObjectStore.prototype.getAll = function (...args) {
+        if (['content', 'heads', 'outbound'].includes(this.name)) reads++;
+        return original.apply(this, args);
+      };
+      const capture = async () => {
+        const values = await opened.listCaptures();
+        for (const value of values) Harness.eraseCapsule(value);
+      };
+      try {
+        await capture();
+        const warm = reads;
+        const resumed = [];
+        for (const event of ['visibilitychange', 'resume', 'pageshow']) {
+          reads = 0;
+          if (event === 'visibilitychange') {
+            Object.defineProperty(document, 'visibilityState', {
+              configurable: true,
+              value: 'visible',
+            });
+          }
+          (event === 'pageshow' ? window : document).dispatchEvent(new Event(event));
+          await capture();
+          resumed.push(reads);
+          reads = 0;
+          await capture();
+          resumed.push(reads);
+        }
+        return { warm, resumed };
+      } finally {
+        delete document.visibilityState;
+        IDBObjectStore.prototype.getAll = original;
+      }
+    });
+    assert.equal(result.warm, 0);
+    assert.deepEqual(result.resumed, [3, 0, 3, 0, 3, 0]);
+    await close(f.page);
+  },
+);
+
+test(
   'hidden-page batch close sends promptly; death before the next batch recovers journalled writing',
   {
     timeout: 60000,

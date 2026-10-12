@@ -4468,3 +4468,18 @@ records these limits. The [implemented service slice and focused evidence](./per
 retain the full reference for exceptional lifecycle/retry paths and audit public authority in a
 separate read-only worker. This is not a release-qualification result or a deployment receipt;
 release validation remains paused.
+
+## 2026-10-12 — Exclusive Account warm-load verification window
+
+The operator accepts replacing per-task old-row rereads in the exclusive Account owner with an
+owner-local authenticated view. Check the authenticated counter and per-store count plus first/last
+key on each warm load; an unexpected counter requires a full read. Do not describe IndexedDB count
+as constant time without measurement. Only completed owned commits extend the view.
+
+Old same-count interior corruption can be detected at a later audit/open; the live owner continues
+using previously verified memory. Roll through bounded old-row checks and, after a row/time trigger,
+complete audit slices even during activity. Full verification remains mandatory at acquisition and
+before reuse after hidden/frozen-page resumption. Counts/bounds cannot prove all interior bytes.
+Refuse detected damage without repair. Workers may be considered later; no worker is required by
+this decision. See [the bounded implementation contract](account-warm-ledger-loads.md) and
+[the local-retention design](account-local-retention-design.md), which changes no stored format yet.

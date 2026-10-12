@@ -1782,3 +1782,28 @@ One CPU-4x observation per arm improves handler median **27.1→6.2 ms** and vis
 This is not physical-phone acceptance. The isolated direct profile leaves UI/CodeMirror work and
 background storage verification/copying as measured residual costs. Large target texts, structural
 commands, long-session history growth and public-device measurements remain separate work.
+
+
+## 2026-10-12 — Exclusive Account warm ledger loads
+
+On merged main `24481b82` (deployed source `9465fb04`), the
+[warm-load packet](./performance-experiments/2026-10-12-warm-ledger/README.md) first attributes
+CPU-4x flush stalls to full old-row comparison/cloning. Three final matched pairs on the retained
+120-card/600+ received-position fixture reduce aggregate long-task duration **39.4%** and maximum
+task **170→131 ms**. Median of handler medians is **6.0→5.8 ms**. All six sessions preserve
+120-key undo/redo and offline replay. Frame p95 improves in each pair, but worst frame samples
+increase to **156.9–166.5 ms**; dispatch-based measurement omits blocking before event delivery,
+and input still waits behind an active flush. This is not a claim that every keystroke is faster.
+
+Nine full row reads (33.14 MB measured plaintext payload) become nine counter/shape checks plus
+126 rolling old-row checks (0.78 MB ciphertext). Approximately **92.07 MB of detached record copies
+remain**. IndexedDB count/key-bound guards are not constant time: synthetic CPU-4x median
+1.2 ms at 600 rows versus 4.4 ms at 10,000. Warm reuse defaults on for exclusive v9 owners after
+focused correctness and timing checks; explicit warm/reference overrides retain full reads.
+The accepted detection window, bounded rolling audits and resume invalidation are documented in
+[the contract](./account-warm-ledger-loads.md). No format change or deployment.
+
+[Local retention remains design-only](./account-local-retention-design.md). The separate approved
+cleanup removes 16.08 GB of allocated duplicate/temp material, retaining fixtures, evidence and
+11.19 MB of nonidentical document variants. See [the cleanup record](./performance-experiments/2026-10-12-warm-ledger/cleanup.md).
+Release validation remains paused.
