@@ -753,6 +753,7 @@ const prepareCustody = (
   reuseOpened?: true,
   recoveryJournal = false,
   warmLoads?: true,
+  selectiveLoads?: true,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -896,6 +897,7 @@ const prepareCustody = (
             ...(allowSpoolCounter ? { allowSpoolCounter } : {}),
             ...(reuseOpened ? { reuseOpened } : {}),
             ...(warmLoads ? { warmLoads } : {}),
+            ...(selectiveLoads ? { selectiveLoads } : {}),
             open: openRecord,
             seal: (task, header, plaintext) =>
               task.wait(async () => {
@@ -1356,6 +1358,7 @@ export const prepareAccountCustody = (
   allowSpoolCounter?: true,
   reuseOpened?: true,
   warmLoads?: true,
+  selectiveLoads?: true,
 ) =>
   prepareCustody(
     input,
@@ -1368,4 +1371,5 @@ export const prepareAccountCustody = (
     reuseOpened,
     false,
     warmLoads,
+    selectiveLoads,
   );

@@ -13277,3 +13277,30 @@ remain history-dependent. The [ownership contract](./account-verification-owners
 that boundary. Local retention remains design-only; online catch-up, physical-phone performance,
 remaining input tails and arbitrary history sizes were not requalified. Release validation remains
 paused and `docs/progress.md` is unchanged.
+
+
+### Account performance — detached storage selections
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `f4f01228` · **Stage:** bounded repair
+
+**Exit.** The previous verifier-ownership slice is committed signed as **`f4f01228`**. Journal
+source-presence and selected sync/status operations now obtain detached answers through a private,
+synchronous, expiring carrier lease. The lease exposes no rows or buffers. Counter/shape/audit and
+semantic checks still precede every selection; the verifier must match that exact live identity.
+Ordinary full loads, cold recovery, compaction and speculative record consumers retain caller-owned
+bytes. No format, journal, authority-check placement or audit-window change.
+
+**Evidence.** [Three CPU-4x matched pairs](./performance-experiments/2026-10-12-storage-selection/README.md)
+reduce recorded copies **33.16 MB→29.4 KB per 120 keys (99.91%)**. All sessions retain nine flushes
+and the same physical audit work, and pass full undo/redo plus offline replay. The reference has
+13 tasks at/above 50 ms; none occur in the three candidate sessions. This threshold result is not
+zero CPU work. Typical input does not improve: median handler **5.8→6.1 ms**, median frame p95
+**36.2→38.8 ms**, within the predeclared 10% limits; worst candidate frame **115.7 ms**. Forty-one
+focused units, four final native checks and the ordinary packaged two-device text/undo/offline
+journey pass, as do build/type/pinned-Yjs/budget/origin and scoped lint/format checks.
+
+**Remaining.** The new selection path is the branch default with explicit full-load rollback,
+but this slice is uncommitted/unpublished. Input queueing behind async flushes, genuine full-record
+consumers, semantic/container history growth and physical-phone evidence remain. The
+[selection contract](./account-storage-selection.md) records isolation and scope. Local retention
+remains design-only. Release validation stays paused and `docs/progress.md` is unchanged.

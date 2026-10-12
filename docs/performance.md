@@ -1832,3 +1832,30 @@ The branch enables the private ownership mode after meeting predeclared criteria
 native/unit/packaged checks. `VITE_ACCOUNT_RECORD_OWNERSHIP=0` or the full reference ledger
 restores the cloned verifier. No publication. About 33 MB/session of caller-detached copies,
 history-dependent equality/graph work and local retention remain; release validation stays paused.
+
+
+## 2026-10-12 — Account storage selection without outward history copies
+
+The verifier-ownership slice is signed as **`f4f01228`**. The next working-tree
+[storage-selection packet](./performance-experiments/2026-10-12-storage-selection/README.md)
+compares three fresh CPU-4x sessions per arm on the retained 120-card/600+ received-position fixture.
+Small verified selections replace journal source-presence full loads and selected sync/status reads;
+ordinary full-record callers keep detached bytes. Per 120 keys, recorded copies fall
+**33.16 MB→29,404 bytes (99.91%)** with nine dirty flushes, nine warm loads and the same
+126 physical-audit rows / 781,609 ciphertext bytes in every session. Each passes full undo/redo
+and offline replay.
+
+Reference sessions have 13 tasks totaling 739 ms at/above 50 ms; no such tasks appear in the three
+candidate sessions. This does not mean total CPU work fell by 739 ms: it is a thresholded metric.
+Median of session handler medians increases **5.8→6.1 ms**, and median frame p95 increases
+**36.2→38.8 ms**. Frame medians worsen in every pair; candidate worst frame **115.7 ms**.
+The predeclared 10% regression limits are met, but the 16 ms p95 budget remains unmet and this
+is not a typical-input-speed improvement. Aggregate admission-flush elapsed time falls
+**2,558.5→2,055.9 ms (19.6%)**, while per-key admission waits sum **773.7→812.4 ms**.
+Those dependent elapsed spans are not additive CPU attribution.
+
+Selections are the incremental v9 Account default after focused correctness checks; explicit
+`VITE_ACCOUNT_SELECTIVE_LOADS=0`, disabling warm loads or the full reference ledger retains full
+copies. The private lease expires synchronously and selected results stay isolated from retained
+state. No stored-format change, publication or phone evidence. Async-flush queueing, full-record
+consumers and history-dependent verification/container work remain. Release validation is paused.

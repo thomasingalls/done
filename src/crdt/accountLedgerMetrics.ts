@@ -21,6 +21,7 @@ const workNames = [
   'coverageDirectProofs',
   'loads',
   'warmLoads',
+  'selectedLoads',
   'warmAuditRows',
   'warmAuditBytes',
   'loadedRows',

@@ -6,6 +6,10 @@ import { recordAAD, type StoredRecord } from '../src/crdt/contentRecord';
 import { deriveStoreName } from '../src/crdt/storeName';
 import { WARM_AUDIT_MS } from '../src/crdt/warmContent';
 import type { SessionTask } from '../src/crdt/writeSession';
+import { createVerifiedRecords } from '../src/crdt/verifiedRecords';
+import type { OpenedRecord } from '../src/crdt/contentRecord';
+import type { ContentSelection } from '../src/crdt/contentSelection';
+import fc from 'fast-check';
 
 const cleanups: (() => void)[] = [];
 afterEach(() => {
@@ -13,7 +17,7 @@ afterEach(() => {
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
-async function fixture(count = 40) {
+async function fixture(count = 40, selective = false) {
   vi.stubGlobal('indexedDB', new IDBFactory());
   vi.stubGlobal('IDBKeyRange', IDBKeyRange);
   const scope = {
@@ -45,10 +49,21 @@ async function fixture(count = 40) {
       return v;
     },
   };
+  const verified = createVerifiedRecords<{ rows: readonly OpenedRecord[] }>({ ownResults: true });
+  cleanups.push(verified.clear);
   const crypt: ContentCrypto = {
     reuseOpened: true,
     warmLoads: true,
-    validate() {},
+    ...(selective ? { selectiveLoads: true as const } : {}),
+    validate: selective
+      ? (rows, task, _counter, view) =>
+          verified.verify(
+            rows,
+            view,
+            async (rows) => ({ rows }),
+            () => task.step(() => {}),
+          )
+      : () => {},
     sign: async (_t, b) => new Uint8Array(await crypto.subtle.sign('HMAC', hmac, b)),
     verify: (_t, b, m) => crypto.subtle.verify('HMAC', hmac, m, b),
     open: async (_t, r) =>
@@ -105,7 +120,7 @@ async function fixture(count = 40) {
         s.put(row, seq);
       };
     });
-  return { owner, task, crypt, scope, mutate, damage, abort, db };
+  return { owner, task, crypt, scope, mutate, damage, abort, db, verified };
 }
 it('unchanged loads and owned committed appends avoid full row reads and preserve detached results', async () => {
   const f = await fixture();
@@ -303,4 +318,167 @@ it('resumption during an in-flight warm validation forces a full read before ret
     f.owner.invalidateWarm();
   };
   await expect(f.owner.load(f.task)).rejects.toThrow();
+});
+
+it('private selection returns detached projections without handing carrier rows to callers', async () => {
+  const f = await fixture(40, true);
+  let expired!: ContentSelection;
+  const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+  const projected = await f.owner.select(f.task, (lease) => {
+    expired = lease;
+    expect(Object.keys(lease)).toEqual([]);
+    return f.verified.select(lease, (v) => v.rows[0]);
+  });
+  projected!.bytes.fill(7);
+  const rows = await f.owner.load(f.task);
+  rows[0]!.bytes.fill(8);
+  expect(
+    await f.owner.select(f.task, (lease) => f.verified.select(lease, (v) => v.rows[0]!.bytes)),
+  ).toEqual(new Uint8Array([0, 0]));
+  expect(read).not.toHaveBeenCalled();
+  expect(() => f.verified.select(expired, (v) => v)).toThrow('expired');
+  expect(() => f.verified.select({} as ContentSelection, (v) => v)).toThrow('expired');
+  const other = createVerifiedRecords<{ rows: readonly OpenedRecord[] }>();
+  await other.verify(
+    rows,
+    {},
+    async (rows) => ({ rows }),
+    () => {},
+  );
+  await expect(f.owner.select(f.task, (lease) => other.select(lease, (v) => v))).rejects.toThrow(
+    'No verified',
+  );
+  other.clear();
+  expect((await f.owner.load(f.task))[0]!.bytes).toEqual(new Uint8Array([0, 0]));
+});
+
+it('selection closes its lease on thrown or async callbacks and retains the ordinary full-load contract', async () => {
+  const f = await fixture(4, true);
+  let expired!: ContentSelection;
+  await expect(
+    f.owner.select(f.task, (lease) => {
+      expired = lease;
+      throw Error('selector failed');
+    }),
+  ).rejects.toThrow('selector failed');
+  expect(() => f.verified.select(expired, (v) => v)).toThrow('expired');
+  await expect(
+    f.owner.select(f.task, async (lease) => {
+      expired = lease;
+      return 1;
+    }),
+  ).rejects.toThrow();
+  expect(() => f.verified.select(expired, (v) => v)).toThrow('expired');
+  await expect(
+    f.owner.select(f.task, async (lease) => {
+      await Promise.resolve();
+      return f.verified.select(lease, (v) => v);
+    }),
+  ).rejects.toThrow('synchronous');
+  expect(
+    await f.owner.select(f.task, (lease) => f.verified.select(lease, (v) => v.rows.length)),
+  ).toBe(4);
+  const ordinary = await fixture(4);
+  await expect(ordinary.owner.select(ordinary.task, () => 1)).rejects.toThrow('private Account');
+  expect(await ordinary.owner.load(ordinary.task)).toHaveLength(4);
+});
+
+it('resume, deletion and audit failure cannot be bypassed by selecting a small answer', async () => {
+  const f = await fixture(40, true);
+  const select = () =>
+    f.owner.select(f.task, (lease) => f.verified.select(lease, (v) => v.rows.length));
+  await f.damage(25);
+  expect(await select()).toBe(40);
+  await expect(select()).rejects.toThrow('audit mismatch');
+  const g = await fixture(40, true);
+  await g.damage(25);
+  g.owner.invalidateWarm();
+  await expect(g.owner.select(g.task, () => 1)).rejects.toThrow();
+  const h = await fixture(40, true);
+  await h.mutate((s) => s.delete(25));
+  await expect(h.owner.select(h.task, () => 1)).rejects.toThrow('shape');
+});
+
+it('resume during validation rereads before selection; invalidation or close during selection refuses', async () => {
+  const f = await fixture(4, true);
+  const original = f.crypt.validate!;
+  let invalidate = true;
+  f.crypt.validate = async (...args) => {
+    await original(...args);
+    if (invalidate) {
+      invalidate = false;
+      f.owner.invalidateWarm();
+    }
+  };
+  const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+  expect(
+    await f.owner.select(f.task, (lease) => f.verified.select(lease, (v) => v.rows.length)),
+  ).toBe(4);
+  expect(read).toHaveBeenCalled();
+  await expect(
+    f.owner.select(f.task, (lease) => {
+      const result = f.verified.select(lease, (v) => v.rows.length);
+      f.owner.invalidateWarm();
+      return result;
+    }),
+  ).rejects.toThrow('invalidated');
+  await expect(
+    f.owner.select(f.task, (lease) => {
+      f.abort.abort();
+      return f.verified.select(lease, (v) => v.rows.length);
+    }),
+  ).rejects.toThrow('closed');
+});
+
+it('late failed validation exposes no lease or result', async () => {
+  const f = await fixture(4, true);
+  let entered!: () => void, release!: () => void;
+  const started = new Promise<void>((r) => {
+    entered = r;
+  });
+  const gate = new Promise<void>((r) => {
+    release = r;
+  });
+  f.crypt.validate = async () => {
+    entered();
+    await gate;
+  };
+  const select = vi.fn(() => 1);
+  const work = f.owner.select(f.task, select);
+  await started;
+  f.abort.abort();
+  release();
+  await expect(work).rejects.toThrow('closed');
+  expect(select).not.toHaveBeenCalled();
+});
+
+it('generated selective reads agree with full detached loads across appends, erasure and resume', async () => {
+  await fc.assert(
+    fc.asyncProperty(fc.array(fc.nat(255), { minLength: 1, maxLength: 10 }), async (values) => {
+      const f = await fixture(2, true);
+      try {
+        for (const [i, b] of values.entries()) {
+          await f.owner.append(f.task, [{ kind: 'update', bytes: new Uint8Array([b]) }]);
+          if (i % 3 === 0) f.owner.invalidateWarm();
+          const selected = await f.owner.select(f.task, (lease) =>
+            f.verified.select(lease, (v) => v.rows),
+          );
+          const full = await f.owner.load(f.task);
+          expect(selected).toEqual(full);
+          selected.forEach((r) => r.bytes.fill(0));
+          full.forEach((r) => r.bytes.fill(0));
+          expect(
+            await f.owner.select(f.task, (lease) =>
+              f.verified.select(lease, (v) => [...v.rows.at(-1)!.bytes]),
+            ),
+          ).toEqual([b]);
+        }
+      } finally {
+        f.owner.dispose();
+        f.verified.clear();
+        f.db.close();
+      }
+    }),
+    { seed: 121027, numRuns: 20 },
+  );
 });

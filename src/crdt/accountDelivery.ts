@@ -59,6 +59,12 @@ export interface DeliveryContext {
     records: readonly OpenedRecord[],
     select: (state: Readonly<DeliveryState>) => T,
   ): T;
+  /** Private composed owner: authenticated detached selection without loading raw history. */
+  loadSelection?<T>(
+    task: SessionTask,
+    owner: Owner,
+    select: (state: Readonly<DeliveryState>) => T,
+  ): Promise<T>;
   /** Private speculative check. A successful proposal never installs a durable cached view. */
   verifyProposed?(
     records: readonly OpenedRecord[],
@@ -138,6 +144,11 @@ export function createDeliveryOperations(context: DeliveryContext) {
     operation: (task: SessionTask, selected: T) => Promise<R>,
   ) =>
     context.run(async (task, owner, route) => {
+      if (owner.carrier.canSelect && context.loadSelection) {
+        const selected = await context.loadSelection(task, owner, select);
+        await context.assertCurrent(task);
+        return operation(task, selected);
+      }
       const records = await owner.carrier.load(task);
       try {
         const selected = await task.wait(() => selectDelivery(records, route, task, select));
@@ -244,6 +255,10 @@ export function createDeliveryOperations(context: DeliveryContext) {
     if (s.conflict)
       return { kind: 'blocked' as const, recorded: false, status: describeDelivery(s) };
     await persist(task, owner, route, { type: 'response', position, wire: bytes });
+    if (owner.carrier.canSelect && context.loadSelection) {
+      const status = await context.loadSelection(task, owner, describeDelivery);
+      return { kind: evidence.kind, recorded: true, status };
+    }
     const rows = await owner.carrier.load(task);
     try {
       const status = await task.wait(() => selectDelivery(rows, route, task, describeDelivery));
@@ -380,6 +395,13 @@ export function createDeliveryOperations(context: DeliveryContext) {
         );
         try {
           await persist(task, owner, route, { type: 'submission', position, wire });
+          if (owner.carrier.canSelect && context.loadSelection) {
+            const saved = await context.loadSelection(task, owner, (state) =>
+              state.submissions.get(position),
+            );
+            if (!saved) captureError('Persisted submission missing');
+            return { kind: 'ready' as const, position, bytes: saved };
+          }
           const rows = await owner.carrier.load(task);
           try {
             const saved = await task.wait(() =>

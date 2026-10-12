@@ -1,5 +1,6 @@
 import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
 import { MaintenanceInterrupted } from './contentMaintenance';
+import { withContentSelection, type ContentSelection } from './contentSelection';
 import {
   countLedgerWork,
   ledgerProfiling,
@@ -49,6 +50,8 @@ export interface ContentCrypto {
   reuseOpened?: true;
   /** Private exclusive Account lifetime only; generic/shared Local owners must not opt in. */
   warmLoads?: true;
+  /** Private v9 validator: reads retained input immutably and owns any bytes it retains. */
+  selectiveLoads?: true;
   /** Optional private carrier payload validation, including every compaction audit. */
   allowSpoolCounter?: true;
   validate?(
@@ -96,6 +99,12 @@ export const createContentOwner = (
     | undefined;
   let warm: ReturnType<typeof createWarmContent> | undefined;
   let forceFullRead = false;
+  const canSelect = !!(
+    crypt.selectiveLoads &&
+    crypt.warmLoads &&
+    crypt.reuseOpened &&
+    crypt.validate
+  );
   const clearView = () => {
     warm = undefined;
     eraseVerified(openedView);
@@ -314,7 +323,25 @@ export const createContentOwner = (
       throw cause;
     }
   };
-  const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
+  function load(task: SessionTask): Promise<OpenedRecord[]>;
+  function load<T>(task: SessionTask, select: (lease: ContentSelection) => T): Promise<T>;
+  async function load<T>(
+    task: SessionTask,
+    select?: (lease: ContentSelection) => T,
+  ): Promise<OpenedRecord[] | T> {
+    if (select && !canSelect) throw Error('Content selection requires the private Account owner');
+    const selected = () => {
+      const view = openedView;
+      if (!view) throw Error('No retained content view');
+      const result = withContentSelection(
+        task,
+        view.id,
+        () => openedView === view && !forceFullRead,
+        select!,
+      );
+      countLedgerWork('selectedLoads');
+      return result;
+    };
     countLedgerWork('loads');
     const began = ledgerWorkStart();
     try {
@@ -326,18 +353,22 @@ export const createContentOwner = (
         if (equalCounter(scope, checked.counter, openedView.counter) && !forceFullRead) {
           if (!checked.shapeMatches) corrupt('Warm content shape changed.');
           await warm.audit(db!, task);
-          const result = copyRecords(openedView.opened);
+          // Only the opted-in private validator borrows retained input. Selection callers receive
+          // an opaque lease, never these rows. Ordinary load callers keep independent copies.
+          const borrowed = !!select;
+          const result = borrowed ? openedView.opened : copyRecords(openedView.opened);
           try {
             if (crypt.validate)
               await task.wait(() => crypt.validate!(result, task, checked.counter, openedView!.id));
             if (forceFullRead) {
-              for (const row of result) row.bytes.fill(0);
-              return await load(task);
+              if (!borrowed) for (const row of result) row.bytes.fill(0);
+              return select ? await load(task, select) : await load(task);
             }
             countLedgerWork('warmLoads');
+            if (select) return selected();
             return task.step(() => result);
           } catch (cause) {
-            for (const row of result) row.bytes.fill(0);
+            if (!borrowed) for (const row of result) row.bytes.fill(0);
             throw cause;
           }
         }
@@ -355,7 +386,14 @@ export const createContentOwner = (
         );
       if (forceFullRead) {
         for (const row of result) row.bytes.fill(0);
-        return await load(task);
+        return select ? await load(task, select) : await load(task);
+      }
+      if (select) {
+        try {
+          return selected();
+        } finally {
+          for (const row of result) row.bytes.fill(0);
+        }
       }
       return result;
     } catch (cause) {
@@ -367,7 +405,7 @@ export const createContentOwner = (
     } finally {
       measureLedgerWork('loadElapsed', began);
     }
-  };
+  }
   const appendRecords = async (
     task: SessionTask,
     input: ContentInput[],
@@ -586,7 +624,9 @@ export const createContentOwner = (
       custodyDb!.close();
       custodyDb = undefined;
     },
-    load,
+    load: (task: SessionTask) => load(task),
+    canSelect,
+    select: <T>(task: SessionTask, select: (lease: ContentSelection) => T) => load(task, select),
     invalidateWarm() {
       forceFullRead = true;
     },

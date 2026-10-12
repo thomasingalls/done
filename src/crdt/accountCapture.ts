@@ -44,10 +44,17 @@ import { createAdmissionOwner } from './admissionQueue';
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 import { activateAccountUpload } from './accountUploadActivation';
+import type { ContentSelection } from './contentSelection';
 
 /** Internal composition hook; never supplied by application or transport callers. */
 export interface CaptureExtension {
   version: 7 | 8 | 9;
+  /** Private verifier may borrow retained carrier rows immutably during selection validation. */
+  selectiveLoads?: true;
+  selectedSourcePresence?(
+    lease: ContentSelection,
+    incoming: readonly CapturedSourceIdentity[],
+  ): boolean[];
   sourceRecords(records: readonly OpenedRecord[], route: CaptureRoute): OpenedRecord[];
   sourcePresence?(
     records: readonly OpenedRecord[],
@@ -121,6 +128,7 @@ export async function openAccountCaptureOwner(
             true,
             true,
             warmLoads,
+            warmLoads ? extension.selectiveLoads : undefined,
           );
           await extension.initializeJoined(task, v);
           await owner.initialize(task);
@@ -178,6 +186,7 @@ export async function openAccountCaptureOwner(
           extension ? true : undefined,
           extension?.version === 9 ? true : undefined,
           warmLoads,
+          warmLoads ? extension?.selectiveLoads : undefined,
         );
         await extension?.initialize(task, v);
         await owner.initialize(task);
@@ -341,7 +350,7 @@ export async function openAccountCaptureOwner(
       }
     });
   const persist = async (task: SessionTask, values: readonly Bytes[]): Promise<ContentReceipt> => {
-    const records = await owner!.carrier.load(task);
+    let records: OpenedRecord[] | undefined;
     const batches: ContentInput[][] = [];
     const decoded: SourceCapsule[] = [];
     let batch: ContentInput[] = [],
@@ -349,9 +358,17 @@ export async function openAccountCaptureOwner(
     try {
       for (const bytes of values) decoded.push(decodeSourceCapsule(bytes, route));
       const identities = decoded.map((c, i) => ({ id: c.id, bytes: values[i]! }));
-      const present = extension?.sourcePresence
-        ? extension.sourcePresence(records, route, identities)
-        : capturedSourcePresence(captureCatalog(sourceRecords(records), route), identities);
+      let present: boolean[];
+      if (owner!.carrier.canSelect && extension?.selectedSourcePresence)
+        present = await owner!.carrier.select(task, (lease) =>
+          extension.selectedSourcePresence!(lease, identities),
+        );
+      else {
+        records = await owner!.carrier.load(task);
+        present = extension?.sourcePresence
+          ? extension.sourcePresence(records, route, identities)
+          : capturedSourcePresence(captureCatalog(sourceRecords(records), route), identities);
+      }
       for (const [i, bytes] of values.entries()) {
         if (suspended) throw Error('Account generation is changing');
         const c = decoded[i]!;
@@ -387,7 +404,7 @@ export async function openAccountCaptureOwner(
       return { storeId: owner!.describe().storeId, generation: route.generation, sequences };
     } finally {
       for (const c of decoded) eraseCapsule(c);
-      for (const r of records) r.bytes.fill(0);
+      for (const r of records ?? []) r.bytes.fill(0);
       for (const b of [...batches, batch]) for (const r of b) r.bytes.fill(0);
     }
   };

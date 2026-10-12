@@ -249,6 +249,15 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
+    ...(incremental && import.meta.env?.['VITE_ACCOUNT_SELECTIVE_LOADS'] !== '0'
+      ? {
+          selectiveLoads: true as const,
+          selectedSourcePresence: (lease, incoming) =>
+            verified.select(lease, (v) =>
+              capturedSourcePresence(v.census.delivery.spool.sources, incoming),
+            ),
+        }
+      : {}),
     sourceRecords: (records, route) =>
       inspectCensus(records, route, (c) => c.delivery.spool.sourceRecords),
     ...(incremental
@@ -593,18 +602,27 @@ async function openAccountReceiveOwner(
         ),
       ),
   });
-  const readState = async <R>(
+  const selectState = async <R>(
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
     select: (view: Readonly<AccountLedgerView>) => R,
   ) => {
-    await assertCurrent(task);
+    if (owner.carrier.canSelect)
+      return owner.carrier.select(task, (lease) => verified.select(lease, select));
     const records = await owner.carrier.load(task);
     try {
       return task.step(() => ({ value: verified.read(records, select) })).value;
     } finally {
       for (const r of records) r.bytes.fill(0);
     }
+  };
+  const readState = async <R>(
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    select: (view: Readonly<AccountLedgerView>) => R,
+  ) => {
+    await assertCurrent(task);
+    return selectState(task, owner, select);
   };
   const state = async (
     task: SessionTask,
@@ -1716,6 +1734,15 @@ async function openAccountReceiveOwner(
       _route: CaptureRoute,
       currentRecords?: readonly import('./contentRecord').OpenedRecord[],
     ) => {
+      if (!currentRecords && owner.carrier.canSelect) {
+        const halted = await readState(
+          task,
+          owner,
+          ({ inbound, delivery }) => !!inbound.conflict || publicationState(delivery) !== 'ready',
+        );
+        if (halted) throw Error('Publication is halted by retained evidence');
+        return;
+      }
       await assertCurrent(task);
       const records = currentRecords ?? (await owner.carrier.load(task));
       try {
@@ -1743,6 +1770,11 @@ async function openAccountReceiveOwner(
         }),
       ...(incremental
         ? {
+            loadSelection: (task, owner, select) =>
+              selectState(task, owner, ({ inbound, delivery }) => {
+                if (inbound.conflict) throw Error('Publication halted by inbound conflict');
+                return select(delivery);
+              }),
             selectVerified: (records, select) =>
               verified.read(records, ({ inbound, delivery }) => {
                 if (inbound.conflict) throw Error('Publication halted by inbound conflict');
@@ -1795,18 +1827,13 @@ async function openAccountReceiveOwner(
     return {
       ...delivery,
       deliveryStatus: () =>
-        runCaptureTask(async (task, owner) => {
-          const records = await owner.carrier.load(task);
-          try {
-            return verified.read(records, ({ inbound, delivery }) => ({
-              ...describeDelivery(delivery),
-              receivedThrough: describe(inbound).receivedThrough,
-              state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
-            }));
-          } finally {
-            for (const row of records) row.bytes.fill(0);
-          }
-        }),
+        runCaptureTask((task, owner) =>
+          selectState(task, owner, ({ inbound, delivery }) => ({
+            ...describeDelivery(delivery),
+            receivedThrough: describe(inbound).receivedThrough,
+            state: inbound.conflict ? ('conflict' as const) : publicationState(delivery),
+          })),
+        ),
       ...createEnvelopePreparation({
         batchSources: true,
         key: () => base.generationKey,
@@ -1818,6 +1845,25 @@ async function openAccountReceiveOwner(
       }),
       spoolStatus: () =>
         runCaptureTask(async (task, owner, route) => {
+          if (owner.carrier.canSelect)
+            return selectState(
+              task,
+              owner,
+              ({
+                census: {
+                  delivery: { spool },
+                },
+              }) => ({
+                attempts: spool.attempts,
+                positions: spool.positions.map((p) => ({
+                  position: p.position,
+                  source: p.source,
+                  ...(p.additional ? { additional: p.additional } : {}),
+                  attempts: p.attempts,
+                  persisted: !!p.wire,
+                })),
+              }),
+            );
           const records = await owner.carrier.load(task);
           try {
             return inspectCensus(records, route, ({ delivery: { spool } }) => ({

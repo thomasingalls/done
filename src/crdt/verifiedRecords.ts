@@ -1,5 +1,6 @@
 import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 import { eraseUnretained } from './verificationOwnership';
+import { selectionIdentity, type ContentSelection } from './contentSelection';
 /** Owner-local verification reuse. Identity includes every opened record, never only ledger events. */
 import type { OpenedRecord } from './contentRecord';
 export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean => {
@@ -61,6 +62,14 @@ export function createVerifiedRecords<T>(
   };
   return {
     clear,
+    /** Only a live carrier lease over the exact completely validated view can select by identity. */
+    select<R>(lease: ContentSelection, project: (value: Readonly<T>) => R): R {
+      if (!retained || identity !== selectionIdentity(lease))
+        throw Error('No verified view for this selection');
+      const result = structuredClone(project(value!));
+      selectionIdentity(lease);
+      return result;
+    },
     matches: (records: readonly OpenedRecord[]) => !!retained && sameRecords(retained, records),
     /** A single exact-match pass; the projection is detached before leaving this call. */
     readIfMatches<R>(
