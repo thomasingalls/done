@@ -1,0 +1,48 @@
+(node:68297) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68297) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ four original receipts commit in one transaction and reopen in the pre-group reference reader (4197.086792ms)
+✔ group before commit crash keeps all content and receipts atomic (3121.629917ms)
+✔ group after commit crash keeps all content and receipts atomic (3251.627042ms)
+✔ group refuses invalid-tail without retaining a partial prefix (2412.602791ms)
+✖ group refuses reordered without retaining a partial prefix (2393.484708ms)
+✔ group refuses superseded without retaining a partial prefix (2390.742875ms)
+✔ group expiry during sealing cannot commit (2742.332708ms)
+✔ group authority during sealing cannot commit (2809.400333ms)
+✔ group cuts at the records bound and retains a retryable valid tail (3200.209291ms)
+✔ group cuts at the bytes bound and retains a retryable valid tail (23336.938792ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51958.925
+
+✖ failing tests:
+
+test at test/account-receive/groups.test.mjs:204:3
+✖ group refuses reordered without retaining a partial prefix (2393.484708ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /unverified|request|superseded/i. Input:
+
+  'Error: page.evaluate: AdmissionError: Error: Invalid inbound frame\n' +
+    '    at eval (eval at evaluate (:311:30), <anonymous>:60912:14)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:57017:13)\n' +
+    '    at async eval (eval at evaluate (:311:30), <anonymous>:40008:20)'
+
+      at async TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/groups.test.mjs:215:7)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: page.evaluate: AdmissionError: Error: Invalid inbound frame
+        at eval (eval at evaluate (:311:30), <anonymous>:60912:14)
+        at async eval (eval at evaluate (:311:30), <anonymous>:57017:13)
+        at async eval (eval at evaluate (:311:30), <anonymous>:40008:20)
+        at apply (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/groups.test.mjs:64:5)
+        at TestContext.<anonymous> (/Users/thomasingalls/.codex/worktrees/c030/done/test/account-receive/groups.test.mjs:215:28),
+    expected: /unverified|request|superseded/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }

@@ -1,0 +1,165 @@
+{
+  "note": "External synthetic snapshots contain disposable credentials and remain private. Hashes retain provenance; snapshots and raw browser storage are not copied into this packet. Sanitized observations omit database identifiers and replace synthetic text with lengths.",
+  "files": [
+    {
+      "path": "/tmp/done-receive-attribution-20261012/local-1/result.json",
+      "bytes": 76276,
+      "sha256": "2583b85860b76dd457df5a1a2f6586105b9d7fc79d2e4969e1f7b987c7151dc3"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/local-1.log",
+      "bytes": 2013,
+      "sha256": "b466232895f475e0b94797a854665bdeb98e194bf4ad915811f4517116e5ae73"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/local-2/result.json",
+      "bytes": 1131778,
+      "sha256": "fb8ba97a528a5f640df2c204490da15878daafaf1f3d919523c9a44ce97afa10"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/local-2.log",
+      "bytes": 575,
+      "sha256": "ecda3a96d352fac7f099e606026f3de5c104687e2c94f315eb1de6d91264a3ed"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/latency-1/result.json",
+      "bytes": 1145046,
+      "sha256": "8c4a2b33e032f8df0b1d0a4ed8f1cf47c680f03c13ed0e43b15cb544dda8f72f"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/latency-1.log",
+      "bytes": 575,
+      "sha256": "1c21da15cd5cd3057d04b931cb4b9d1b6c2ec718049dc1a8436fdcdf41dc0176"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-1/result.json",
+      "bytes": 1133834,
+      "sha256": "007660facc8a981829b6b240e0f3ffb8b437ad160364aca7938a6eb36e899f66"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-1.log",
+      "bytes": 575,
+      "sha256": "9e297a1850bdbdcb9e6056954da0066225845f11d64fe0471153f8f28de8dc7e"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/baseline-build.log",
+      "bytes": 657,
+      "sha256": "f55d03093ed5c46e6ff25fa416d545de95dafb77e6ace6b937aee468454dfd84"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/baseline-direct-build.log",
+      "bytes": 4848,
+      "sha256": "1d3ff807bdb952060f615125de9a5ebff54445d018d0e27a1b633b05dcb40769"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-direct-build.log",
+      "bytes": 4332,
+      "sha256": "6cc3edbbee47c9d567737fe458fa67bab9416b7ccaa7412400c8fd9bc1ca29c3"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-direct-build-2.log",
+      "bytes": 4906,
+      "sha256": "d848a74ee7b0e2c81dfb63aba00b3d3329d8732a33b0a549ab93de9eb130218a"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-1/catchup.cpuprofile",
+      "bytes": 3018036,
+      "sha256": "280642519a32ac14c602132dcd310662dc8e5de4921292be3fda3564a0ff42ce"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/ceremonyNavigation-qkjCodn1.js.map",
+      "bytes": 118087,
+      "sha256": "32ca7af91c1748bd21f7e68b42bad797697e3651ccc911f45b3c8da70e517866"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/localGenesis-UehNyB0u.js.map",
+      "bytes": 2814971,
+      "sha256": "85bcb736380d54dfedad8d6f91c8ed73f4e6367d040051c46700d060a1a6a490"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/AccountDevices-EP4I6oBA.js.map",
+      "bytes": 353666,
+      "sha256": "2e50211c7dd4ce5e6550724e9e2f0ac3f75ff3217e4832b7595a4b0aaa9ff548"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/main-WtnyBZUA.js.map",
+      "bytes": 1249748,
+      "sha256": "74c124877939b26f43b9ed36a9549007d926e92d543263f8947007afc0f90d28"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/admissionDocument-H5JMoV_O.js.map",
+      "bytes": 815946,
+      "sha256": "0b5d6249d00d1512d9a9f640f0a8e6af1a923f78b6f554d360f2a7e9522e2828"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/promotionRecord-Buibtp3V.js.map",
+      "bytes": 136479,
+      "sha256": "13a18e6ce70c51e8ddb4980f98bd75cdb6ddd4077dae42875b2ce0bb9eedaddd"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/localGenesisStorage-h5Of3yNb.js.map",
+      "bytes": 209894,
+      "sha256": "ea0b46b731de9fe39f51eadcdce521416ede4aa080acf3b71ad7f03d8d08fc63"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/preload-helper-DfKBSWen.js.map",
+      "bytes": 24382,
+      "sha256": "be5c2cf7d794fe4ae650f1bf418dd1e3f065b79414fbd4e1790025c59232ca4d"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/custodyCrypto-C44ppXTm.js.map",
+      "bytes": 17710,
+      "sha256": "73a1b078b1a7e3f8f4c487d71d9511163c6e38dd3bfccb51f332e9677ac32e68"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/admissionHistory-Co1JuEtq.js.map",
+      "bytes": 347668,
+      "sha256": "d86dcdcd780ae957fcdf0ff876fcdbad53b83a916db71409734b76e9a0d8b513"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/joinedAccount-C2AUF8eD.js.map",
+      "bytes": 269423,
+      "sha256": "3eed579522f512290e878a476d04d2764c6e938396cc1187a458ddf5b3de8f1e"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/deviceRemovalVault-CxkOioE0.js.map",
+      "bytes": 74351,
+      "sha256": "052389f54c34595ab80d457ee8ff4e62586dafbd7c5559b838fa9d859bb73c4f"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/membershipLocator-CpKtwrZa.js.map",
+      "bytes": 16784,
+      "sha256": "6ed4f41bcf087465e03f4aebfb91d4780706f34ae44c1e49e656c4fab5f63bde"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-dist/assets/AccountEnrollmentApp-DccCL-Qs.js.map",
+      "bytes": 263575,
+      "sha256": "1b77e9d2f9c3946483f8ab5906e93dcef22c2ba73d5796227d5202f43e282ad8"
+    },
+    {
+      "path": "/tmp/done-client-receive/fixture.json",
+      "bytes": 7707006,
+      "sha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/local-2/deep-received-fixture.json",
+      "bytes": 6661182,
+      "sha256": "ad82df766e11687bde651e634f476a47b126481f17c89cc4eb058a32cf61ba93"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/latency-1/deep-received-fixture.json",
+      "bytes": 6654550,
+      "sha256": "95d9b9956e47e611f552585eb98db01949e8dd18f2573f53fc728a8b1b71815e"
+    },
+    {
+      "path": "/tmp/done-receive-attribution-20261012/diagnostic-1/deep-received-fixture.json",
+      "bytes": 6659593,
+      "sha256": "506cdc17eb728664b3cddfa17d92322647307f9bc0b85e42ab0b1ebe9a75a609"
+    }
+  ]
+}

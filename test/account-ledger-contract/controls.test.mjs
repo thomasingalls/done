@@ -84,7 +84,7 @@ test('count has two effective checks; hash and count omissions separately weaken
     hashCheckOmitted: 'accepted wrong hash',
   });
 });
-test('delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories', async () => {
+test('delivery ordering remains guarded and coverage omission accepts missing content', async () => {
   const records = fullRecords(f, false),
     submission = records.splice(5, 1)[0];
   records.splice(1, 0, submission);
@@ -94,10 +94,19 @@ test('delivery ordering and received-content coverage controls accept otherwise 
     h.verifyDelivery(c.delivery, f.route, f.authority, await publicKey(f), crypto.subtle),
     /Delivery precedes/,
   );
-  const state = await (
-    await load('delivery')
-  ).verifyDelivery(c.delivery, f.route, f.authority, await publicKey(f), crypto.subtle);
-  assert.equal(state.acceptedThrough, 1);
+  // Attempt-by-attempt replay has an additional boundary: until the envelope's row is
+  // encountered, the active position has no wire to decode. Removing only the explicit
+  // ordering guard is no longer sufficient to admit a reordered submission.
+  await assert.rejects(
+    (await load('delivery')).verifyDelivery(
+      c.delivery,
+      f.route,
+      f.authority,
+      await publicKey(f),
+      crypto.subtle,
+    ),
+    /Malformed network envelope/,
+  );
   const noContent = fullRecords(f, false).filter((r) => r.kind !== 'update'),
     census = h.inspectInbound(noContent, f.route, context(f));
   const w = fold(census.delivery.spool.events);
@@ -105,7 +114,7 @@ test('delivery ordering and received-content coverage controls accept otherwise 
   const accepted = await audit(await load('coverage'), f, noContent, w);
   assert.equal(accepted.received.prefix.position, 1);
   report('control-semantic-order', {
-    delivery: 'source guard removal accepts signed submission before persisted envelope',
+    delivery: 'guard removal still refuses submission before its active envelope exists',
     coverage: 'coverage call omission accepts valid signed receive evidence with no disk content',
     witness: w,
   });

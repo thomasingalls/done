@@ -1,0 +1,38 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 440 modules transformed.
+
+(!) outDir /tmp/done-receive-first-repair-20261012/final-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/main-XV5ccYkD.css                    33.22 kB │ gzip:   7.02 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/checkpointTimeline-gol_R3LA.js        0.58 kB │ gzip:   0.39 kB │ map:     2.20 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/accountProgressCustody-B8XFJ3Nu.js    1.70 kB │ gzip:   0.90 kB │ map:     6.07 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.71 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/membershipLocator-CpKtwrZa.js         5.21 kB │ gzip:   1.67 kB │ map:    16.78 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/rotationObservation-DkHL8D4U.js       6.69 kB │ gzip:   2.59 kB │ map:    19.51 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/accountRotation-DpIPrWmj.js           7.83 kB │ gzip:   3.43 kB │ map:    29.61 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/preload-helper-DfKBSWen.js            8.34 kB │ gzip:   3.59 kB │ map:    24.38 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/historyOwner-BZ5INTwB.js             10.60 kB │ gzip:   3.64 kB │ map:    36.03 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/ceremonyVault-CBBwP8cD.js            10.61 kB │ gzip:   3.96 kB │ map:    36.74 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/accountAccess-CaACqe5r.js            13.00 kB │ gzip:   4.69 kB │ map:    54.01 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/membershipSource-DinZoLXK.js         14.44 kB │ gzip:   5.17 kB │ map:    50.75 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/LocalApp-B082z1L1.js                 16.31 kB │ gzip:   6.02 kB │ map:    49.22 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/deviceRemovalVault-CxkOioE0.js       21.68 kB │ gzip:   7.23 kB │ map:    74.35 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/AccountRecoveryApp-AuXb3cP2.js       29.20 kB │ gzip:   9.89 kB │ map:    96.17 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/ceremonyNavigation-qkjCodn1.js       34.87 kB │ gzip:  12.24 kB │ map:   118.08 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/promotionRecord-HazIBSwU.js          37.92 kB │ gzip:  12.46 kB │ map:   136.47 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/AccountSetupApp-Dem1pLxV.js          39.35 kB │ gzip:  13.27 kB │ map:   113.44 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/localGenesisStorage-DyFJU3Qs.js      68.37 kB │ gzip:  22.84 kB │ map:   209.87 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/joinedAccount-3YXqB7-z.js            73.79 kB │ gzip:  22.93 kB │ map:   269.40 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/AccountEnrollmentApp-CbSfSrON.js     79.47 kB │ gzip:  23.46 kB │ map:   263.55 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/AccountDevices-CQYdoZA5.js           93.42 kB │ gzip:  29.28 kB │ map:   356.73 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/admissionHistory-Co1JuEtq.js        102.77 kB │ gzip:  25.50 kB │ map:   347.66 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/admissionDocument-DAVJQKLk.js       137.07 kB │ gzip:  42.65 kB │ map:   815.85 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/main-BQ8BbzUz.js                    283.71 kB │ gzip:  92.02 kB │ map: 1,249.57 kB
+../../../../../../tmp/done-receive-first-repair-20261012/final-dist/assets/localGenesis-Cx-YU4m9.js            682.63 kB │ gzip: 236.89 kB │ map: 2,814.97 kB
+
+✓ built in 2.58s

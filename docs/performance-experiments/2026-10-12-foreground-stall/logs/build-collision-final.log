@@ -1,0 +1,38 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 442 modules transformed.
+
+(!) outDir /tmp/done-foreground-stall-20261012/collision-final-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/main-XV5ccYkD.css                    33.22 kB │ gzip:   7.02 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/checkpointTimeline-gol_R3LA.js        0.58 kB │ gzip:   0.39 kB │ map:     2.20 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/accountProgressCustody-C2e8c4Yy.js    1.70 kB │ gzip:   0.89 kB │ map:     6.07 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.71 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/membershipLocator-CpKtwrZa.js         5.21 kB │ gzip:   1.67 kB │ map:    16.78 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/rotationObservation-h0Jz0DmJ.js       6.69 kB │ gzip:   2.58 kB │ map:    19.51 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/accountRotation-DwFtyjtx.js           7.83 kB │ gzip:   3.44 kB │ map:    29.61 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/preload-helper-DfKBSWen.js            8.34 kB │ gzip:   3.59 kB │ map:    24.38 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/historyOwner-BCxm2ssi.js             10.60 kB │ gzip:   3.64 kB │ map:    36.03 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/ceremonyVault-DZDA-ehz.js            10.61 kB │ gzip:   3.96 kB │ map:    36.74 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/accountAccess-CaACqe5r.js            13.00 kB │ gzip:   4.69 kB │ map:    54.01 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/membershipSource-HR0M-ADb.js         14.44 kB │ gzip:   5.16 kB │ map:    50.75 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/LocalApp-Das_F2NX.js                 16.31 kB │ gzip:   6.02 kB │ map:    49.22 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/deviceRemovalVault-CxkOioE0.js       21.68 kB │ gzip:   7.23 kB │ map:    74.35 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/AccountRecoveryApp-CeTJGxUb.js       29.20 kB │ gzip:   9.89 kB │ map:    96.17 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/ceremonyNavigation-qkjCodn1.js       34.87 kB │ gzip:  12.24 kB │ map:   118.08 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/promotionRecord-jt0Vf0OU.js          37.92 kB │ gzip:  12.46 kB │ map:   136.47 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/AccountSetupApp-BtpPC-M1.js          39.35 kB │ gzip:  13.27 kB │ map:   113.44 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/localGenesisStorage-CEQgj56z.js      68.56 kB │ gzip:  22.90 kB │ map:   209.98 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/joinedAccount-CnOtCHjq.js            74.27 kB │ gzip:  23.07 kB │ map:   272.16 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/AccountEnrollmentApp-7mwKcKK6.js     79.48 kB │ gzip:  23.45 kB │ map:   263.55 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/AccountDevices-BhEFJ3SC.js           99.24 kB │ gzip:  31.03 kB │ map:   380.95 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/admissionHistory-Co1JuEtq.js        102.77 kB │ gzip:  25.50 kB │ map:   347.66 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/admissionDocument-DH6QoRUM.js       137.50 kB │ gzip:  42.78 kB │ map:   816.94 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/main-BeDxk34X.js                    283.71 kB │ gzip:  92.01 kB │ map: 1,249.57 kB
+../../../../../../tmp/done-foreground-stall-20261012/collision-final-dist/assets/localGenesis-BSQpxlja.js            682.66 kB │ gzip: 236.90 kB │ map: 2,814.96 kB
+
+✓ built in 2.89s

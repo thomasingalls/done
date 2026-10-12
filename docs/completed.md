@@ -13025,3 +13025,200 @@ statements describe when each experiment ran and are superseded by this checkpoi
 
 Nothing is deployed or pushed by this checkpoint. Release validation remains paused. The unrelated
 root review documents and the other seat's `docs/progress.md` are not part of this commit.
+
+### Account receiving — current-build attribution before batching
+
+**Date:** 2026-10-12 · **Commit:** working tree on `1734b2f5` · **Stage:** bounded measurement
+
+**Exit.** Committed the actual-device sync recovery checkpoint, signed, as `7f76a59` in `ol-infra`.
+The unchanged deployed frontend `77657e23` matches all 35 checked rollout asset hashes. The
+[attribution packet](./performance-experiments/2026-10-12-receive-attribution/README.md) retains
+ordinary local and +75 ms/request observations plus a separate diagnostic profile on the same
+synthetic 600-position, substantial-workspace fixture. Complete two-way exports and offline
+reopening pass in all three. Failed setup/interrupted harness attempts are retained separately.
+
+**Result.** Catch-up takes 308.307/374.759 seconds in ordinary builds. The profile points to repeated
+authority verification, marker/custody encoding and content loads; incremental coverage takes only
+0.248 seconds. Grouping must amortize owned work, not merely reduce commit count. Current-format
+grouping is preferred over a new receipt representation, with own-poll and marker-comparison work
+first. Deep received-history opens remain about 6.8 seconds; no phone or activation claim is made.
+
+**Remaining.** Implement and measure the selected prototype with focused authority/abort/retry and
+compatibility controls. No runtime or stored-format change in this phase; release validation remains
+paused. The parallel disk inventory attributes about 18.3 GB of recent retained project artifacts to
+temporary copies/builds and linked Docker cache. No deletion occurred. `docs/progress.md` is untouched.
+
+### Account receiving — first repair after attribution
+
+**Date:** 2026-10-12 · **Commit:** signed `534252e1` (measurement checkpoint `ee234d06`) · **Stage:** bounded repair
+
+**Exit.** The measurement packet is committed signed. This [repair and evidence](./performance-experiments/2026-10-12-receive-first-repair/README.md)
+remove whole-marker hex comparison and redundant own-stream polling during productive catch-up.
+Existing five-second checks, unresolved-submission reconciliation, authority resets, fresh marker
+authentication, ordinary idle sweeps and receipt formats remain. A current-key retry cannot be
+misclassified as resolved merely because its historical refusal response remains stored.
+
+**Evidence.** Final local catch-up takes 254.318 seconds for 600 positions versus a fresh frozen
+baseline's 328.126 seconds; own reads fall 150 to 44. Added-latency catch-up takes 302.023 seconds
+against the prior delayed baseline's 374.759 seconds. All five restored journeys pass complete
+exports, two-way edits and offline reopen. Intermediate observations and the idle-sweep correction
+remain recorded. Sixteen focused unit and five native cases pass; the old adversarial-control failure
+reproduces on pinned baseline source and is retained separately. Type/build/lint/format checks pass.
+
+**Remaining.** Group current-format receipt processing to amortize authority and load work. Deep
+opening remains around seven seconds; current phone performance and isolated long tasks remain
+unresolved. The repair is committed signed and unpublished; release validation remains paused.
+
+### Account receiving — group current-format receipts
+
+**Date:** 2026-10-12 · **Commit:** signed `54811c93` · **Stage:** bounded repair
+
+**Exit.** The first repair is committed signed. This [grouping repair](./performance-experiments/2026-10-12-receive-groups/README.md)
+shares preparation, custody/load work, a native transaction and authenticated readback across up to
+four independently verified receipts. Collection is sequential outside admission; original v1
+receipt bytes and the existing publisher-turn, expiry, witness and size guards remain.
+
+**Evidence.** Fresh baseline 248.795 seconds versus grouped 79.125 seconds for 600 positions;
+added-75-ms candidate 193.074 seconds versus the earlier delayed baseline's 302.023 seconds.
+All three restored journeys pass full exports, both-way writing and offline reopen. Thirty-two
+focused unit checks and seventeen distinct native cases pass, including old-reader compatibility,
+atomic crashes/retries and grouped-HTTP loss/lock boundaries. Build/type/lint/format checks pass.
+
+**Remaining.** Repair/evidence are committed signed and unpublished. Cold opening stays around seven
+seconds and an approximately 1.2-second delayed long task remains unattributed. Consider bounded
+prefetch against remaining network costs separately; no receipt migration or concurrent fetching
+was introduced. Release validation and `docs/progress.md` remain unchanged.
+
+### Account receiving — bounded prefetch of current-format receipts
+
+**Date:** 2026-10-12 · **Commit:** signed `460fefd8` · **Stage:** bounded repair
+
+**Exit.** Grouping is committed signed. The [prefetch follow-up](./performance-experiments/2026-10-12-receive-prefetch/README.md)
+overlaps at most two exact limit-one reads, retaining four-receipt turns and the existing format.
+Full-page reservations plus retained buffers fit the 4 MiB collection bound. Replies are consumed
+in cursor order; missing/terminal replies cancel and drain speculative tails, which cannot supply
+progress or overwrite attempted-prefix diagnostics. Ordered verification and atomic commit stay
+unchanged; due sending and local input retain their turns.
+
+**Evidence.** Fresh delayed baseline 194.602 seconds versus prefetch 100.978 seconds for 600
+positions (48.1% shorter). Local prefetch 68.961 seconds versus retained grouped 79.125 seconds
+(12.8% shorter; no fresh local baseline). Three restored journeys pass complete both-way exports
+and offline reopen. Fifty-two focused unit and twenty-one native cases pass, including reversed
+arrivals, missing replies, close/drain, wrong binding, bounds, concurrent input and existing
+atomicity/authority/old-reader regressions. Build/type/targeted lint/format pass; all six numeric
+summaries reproduce from content-redacted retained evidence.
+
+**Remaining at this checkpoint.** Repair/evidence are signed and unpublished. Delayed live-burst median is
+2.352 seconds; cold open is 6.804–6.907 seconds; one 1.238-second delayed foreground task remains
+unattributed. No primary-window non-200 response/429 occurs, but HTTP-200 browser abort events are
+retained. These are desktop observations, not phone/public-service evidence. Release validation
+remains paused; `docs/progress.md` is unchanged.
+
+### Account receiving — interruptible reference audit during compaction
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `460fefd8` · **Stage:** bounded repair
+
+**Exit.** Prefetch is committed signed. The [stall capture and repair](./performance-experiments/2026-10-12-foreground-stall/README.md)
+attribute a natural 1,530 ms main-thread task to full reference verification inside compaction,
+especially repeated inbound coverage proofs. The unchanged reference algorithm now gives maintenance
+budget boundaries to receipt census, receive checks and self-original coverage. Foreground work
+interrupts maintenance without discarding the already authenticated incremental view. The audit
+stays due, retries during idle maintenance and still refuses mismatches; native transaction ordering
+and exact-byte cache guards remain.
+
+**Evidence.** Matched controlled input collision: 2,157→24 ms; largest task 2,178→64 ms. The interrupted
+audit subsequently completes, no cold verification is moved onto input, and complete exports/offline
+recovery pass. Both natural captures and the intermediate repair/profile remain recorded. Ordinary
+added-75-ms catch-up takes 112.521 seconds versus retained prefetch 100.978 seconds (11.4% slower,
+within the declared 15% investigation threshold); its largest task is 73 ms versus retained 1,238 ms.
+All seven packaged observations pass. Seventy-two focused units, three native cases, type/build and
+targeted lint/format checks pass, including changed ciphertext after interruption and fail-closed
+audit disagreement.
+
+**Remaining.** This work is uncommitted/unpublished. The repair targets responsiveness, not total
+verification cost. Cold opening remains 7.497 seconds in the ordinary run; total audit CPU, large
+individual proofs and local retained-history growth remain. No phone/public-service claim, release
+campaign or deployment change was made. Release validation stays paused; `docs/progress.md` is unchanged.
+
+### Account receiving — deep received-history cold opening
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `d1e5e5ea` · **Stage:** bounded repair
+
+**Exit.** The preceding foreground audit repair is committed signed as **`d1e5e5ea`**. The
+[received-open repair and evidence](./performance-experiments/2026-10-12-received-open/README.md)
+retain one coverage document within each cold verification pass, add a conservative struct/deletion/
+dependency positive proof and remove redundant nested receipt re-encoding. Uncertain/pending cases
+fall back to the prior full proof; periodic audits remain independent. No stored-format change.
+
+**Evidence.** Three matched opens per arm on the retained 120-card, 600+ received-position fixture:
+first completed editor frame median **7.054→2.622 seconds** (62.8% shorter), range **2.502–2.909 seconds**.
+Polling-observer median **7.422→2.972 seconds**. The unchanged baseline confirmation is within 1.2%.
+All complete archive digests and native crypto-call counts match; each timing run recovers a new edit
+offline. Seventy-two focused unit cases, six native cases and the relevant contract control pass.
+One packaged two-device journey passes complete exports, both-way edits and offline recovery. Its
+109.017-second catch-up is a functional check, not an isolated throughput comparison. Type/build,
+initial bundle/origin, pinned-Yjs and targeted lint/format checks pass. An older ordering mutation's
+expectation is corrected to acknowledge its existing second refusal boundary; no delivery code changed.
+
+**Remaining.** This cold-open repair is uncommitted/unpublished and still exceeds the 2.5-second
+budget. Repeated receipt parsing/crypto, phone evidence and local ledger retention remain. The next
+bounded phase is per-keystroke text admission without whole-workspace forks, preserving journal-before-
+apply, source attribution and undo; the old path must remain the comparison oracle. No typing speedup
+is claimed by this checkpoint. Publication waits for that phase. Release validation remains paused;
+`docs/progress.md` is unchanged.
+
+### Account editing — direct text preparation with durable admission and native undo
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `68ca241d` · **Stage:** bounded repair
+
+**Exit.** The received-history cold-open repair is committed signed as **`68ca241d`**. The new
+[Account text adapter](./account-text-admission.md) computes one plain-text replacement update
+without a workspace fork, captures that exact human frame and journals/commits before applying it
+to canonical and the private undo projection. Unchanged verified bases, expected text/clock and
+pending-state checks guard promotion. Structural commands, undo/redo, sliced paste, multiple edits
+and uncertain normalization/dependency cases retain the reference path. Ordinary close audits full
+projection equality. No stored-format or journal-acknowledgement change.
+
+**Evidence.** [Three matched desktop typing observations per arm](./performance-experiments/2026-10-12-text-admission/README.md)
+on the 120-card, 600+ received-position fixture: median handler **7.6→2.1 ms**, visible-frame
+median **11.4→6.2 ms**; candidate handler p95 **3.1–3.5 ms**, frame p95 **12.9–13.9 ms**. All
+candidate keys use direct admission without full projection comparisons. Each run undoes/redoes
+120 edits and cold-recovers offline. The default packaged build also passes a two-device text,
+remote-preserving undo and offline-recovery journey. The final focused run passes 244 tests
+(one inapplicable fork-lifecycle case replaced by direct lifecycle controls), including generated
+native-encoder comparison and 60 mixed direct/reference histories. These tests identified the
+malformed-Unicode normalization guard now included. Type/build, pinned Yjs, bundle/origin and
+targeted lint/format checks pass.
+
+**Remaining.** The repair is uncommitted/unpublished; direct is now the branch default with explicit
+reference rollback. CPU-4x visible-frame p95 improves **128.2→57.1 ms** but still misses 16 ms;
+background tasks, UI/Markdown projection, large target texts, structural/undo cost, local history
+retention and physical-phone evidence remain. No generalized validation or deployment campaign
+was resumed. `docs/progress.md` is unchanged; publication preparation follows review/commit of this phase.
+
+
+### Account performance — signed candidate and publication preparation
+
+**Date:** 2026-10-12 · **Source:** signed `9465fb04` · **Stage:** publication preparation
+
+**Exit.** The direct text-admission repair and its evidence are committed signed as **`9465fb04`**.
+The [publication handoff](./account-performance-publication.md) groups the completed own-stream,
+receipt grouping/prefetch, interruptible audit, received-history opening and text-admission phases.
+The exact clean-source ARM64 image `done-public:9465fb04` has index
+`sha256:15a11309fd43a3a01d4d377a598dc3e1152734e309664d3d258b600e05ed9963`.
+
+**Evidence.** Build/type/pinned-Yjs/origin/bundle checks and all 31 existing Node 24 container
+runtime/gateway, backup, restore and maintenance checks pass. Disposable container smoke verifies
+exclusive ownership, every precache response and retained state after abrupt restart. The extracted
+frontend passes a two-device text/remote-preserving undo/offline reopening journey, plus the retained
+120-card, 600-position journey with 75 ms/request delay, concurrent writing, full export equality
+and offline cold opening. Browser services run host Node 26.11.1 from the signed archive; this is
+not a browser check against the container API. [Artifact hashes and logs](./development-evidence/2026-10-12-receive-publication/evidence.json)
+record that boundary. No schema, wire or receipt-format change; the deployed `77657e23` pin remains
+a normal rollback.
+
+**Remaining.** Merge the application PR preserving signed commits, publish the exact tested image,
+then prepare/merge the ol-infra pin PR and verify rollout plus actual devices. Nothing is pushed to
+the registry or deployed at this checkpoint. CPU-4x input and cold-open budgets remain unmet;
+physical-phone performance, local history retention and remaining background/UI work stay open.
+Release validation remains paused and `docs/progress.md` is unchanged.

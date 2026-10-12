@@ -1,0 +1,207 @@
+[
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before/result.json",
+    "bytes": 1156153,
+    "sha256": "dfa6bb62a89206db3689b0475d1de68986a39cc5bbb93250aa420abc4c61d817"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before/catchup.cpuprofile",
+    "bytes": 1662844,
+    "sha256": "62a9f5c5538f967694d54d9ecadb93ebe9d848566657c9018c30461221d90f71"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before/task-profile.json",
+    "bytes": 229,
+    "sha256": "92a9f8d4d6e372f4e88465a70fc67f4dc8a647bc093b189466505ba9a77a5e9a"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before-2/result.json",
+    "bytes": 1186358,
+    "sha256": "10d3ee7efcb6f6c8a60a6e9a9980a210243a5824d0ec92025a7f22379ec985f0"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before-2/catchup.cpuprofile",
+    "bytes": 1758277,
+    "sha256": "3b6bc5b1c509be286989134fe5390a332ee1704bc42e27b9800667550f083bec"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before-2/task-profile.json",
+    "bytes": 61069,
+    "sha256": "c69390aec4e0ea458ca2645c7acbba5e02455b3fd044c40a258538282b94a698"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-before/result.json",
+    "bytes": 44170,
+    "sha256": "3f9005a57579774f9a0a19955be7ec3859fdd2d9c537c90f5a199e8bf6a22f00"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-after/result.json",
+    "bytes": 31147,
+    "sha256": "177128bee27791fae93507c2581aca81c0caa0ff0937b1214b43893369563da0"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-after-profile/result.json",
+    "bytes": 31823,
+    "sha256": "382b50a46c143c5e9af4003db64ae1468dbbc30e35e549da390cfcbd18490ca5"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-after-profile/catchup.cpuprofile",
+    "bytes": 375234,
+    "sha256": "38e413f433391f522d245fc21055e0c0ed6c5174aca296d59a099e65b093e7eb"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-after-profile/task-profile.json",
+    "bytes": 87753,
+    "sha256": "574d760850cf6c16c4c7fe22efb373da9b0393ecac571411505fc599da48f9ea"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-final/result.json",
+    "bytes": 22454,
+    "sha256": "cd19994d1922e80200f96e1ad6d95120b975cd691d7986d665dc649823465f03"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/ordinary-final/result.json",
+    "bytes": 655743,
+    "sha256": "646c9a4ab424ecb8599d98c7830a2e61b001c90db25125edc091d89b28193471"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/ordinary-final/summary.json",
+    "bytes": 8086,
+    "sha256": "36a736080e87645a08649d39898dd9bb70d8e67d6c846db0648ccdf4bdbe6065"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/ordinary-final/observations.json",
+    "bytes": 815,
+    "sha256": "6782d16b4dedd0ee9ec767221e06a895edc0cdcfc94258378cd41af71699de81"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/build-candidate.log",
+    "bytes": 4790,
+    "sha256": "58c014f7d82d24c4293633b0d5d7ef42fe7be976844ee24af9b9f1b5c08810dc"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/build-collision-after.log",
+    "bytes": 4964,
+    "sha256": "ea89d66887d8c8f8bf3b15052515a5d03c9827a578270926d8deebdeacddf917"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/build-collision-before.log",
+    "bytes": 4993,
+    "sha256": "cc5428aae6bf19df6eec56366de7a58bed1046ba7a4b030e719b2475f924b84c"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/build-collision-final.log",
+    "bytes": 4964,
+    "sha256": "11466489cf0b71924c802ee5b38a5bbda9803ead3134aec8807613d271522d0d"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/build-diagnostic.log",
+    "bytes": 4819,
+    "sha256": "bc70c03564d3fb6886a4d2f3124995be042ef9c88107117d08a063dc1b820582"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/build-final.log",
+    "bytes": 4905,
+    "sha256": "cbf4755bb6cc9329d3065f1f6c8ad8009285c1fe8c9f6bb442e1b4cfeda477e7"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/build-ordinary.log",
+    "bytes": 4761,
+    "sha256": "8084a3c49bb01092779fbfa02cb3324d5f1be081b0284e4b5db18acb586701a4"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-after-profile.log",
+    "bytes": 405,
+    "sha256": "fee5a2a113076b3364f50b82c14a5d6a767b5090825cf8b00b7f74f5b3631448"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-after.log",
+    "bytes": 405,
+    "sha256": "a131eebec5884007f0e5a56e1613eb1e429d4a4c0ac70c3ae5ba58770513d08d"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-before.log",
+    "bytes": 405,
+    "sha256": "d9a277dc4a2cc6089e97652ba9008ec731b5e9ee7bd50ab53ba5e9f9fbd65dbc"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-final.log",
+    "bytes": 405,
+    "sha256": "62702804b143f011a6af161846940c6f84cd7b4ff76fa4ee1ca9b83b65a9fa21"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/collision-profile-analysis.log",
+    "bytes": 19940,
+    "sha256": "73a8e03934356b295dfa3ed26d02011e02a944130a1a7ca8d5449b98ded3b2d8"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before-2.log",
+    "bytes": 367,
+    "sha256": "f0030b622ed93bca619cf4f4da6ee4b5e5bc2cf9275a758700382f7cf4ba01db"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/diagnostic-before.log",
+    "bytes": 367,
+    "sha256": "dd6aaee71d3fce117ca644c966a6fe734a3c740a6c23bc65b94c33fdbac5d356"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/format-final.log",
+    "bytes": 113,
+    "sha256": "e970d8ed0705ebc21584cdefd5b37ef641407035f9aa2f2f0c72890352862b37"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/format.log",
+    "bytes": 113,
+    "sha256": "c10b534a3d3fcbe3df3c054ae81d1e7f201f16a852cf2bee37aa4d964eb7dfae"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/lint.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/native.log",
+    "bytes": 868,
+    "sha256": "6458d0d55c1db325574e6248a136e04e7f3ce3d984185afc7587eabd8fa66ec5"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/ordinary-final.log",
+    "bytes": 367,
+    "sha256": "9da1df7d49b620255fd0b7042f7a7afe91591d2476aea47e28498077862ec34c"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/ordinary-observations.log",
+    "bytes": 815,
+    "sha256": "6782d16b4dedd0ee9ec767221e06a895edc0cdcfc94258378cd41af71699de81"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/ordinary-summary.log",
+    "bytes": 8086,
+    "sha256": "36a736080e87645a08649d39898dd9bb70d8e67d6c846db0648ccdf4bdbe6065"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/task-profile-before.log",
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/typecheck-final.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/typecheck.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/unit-final.log",
+    "bytes": 237,
+    "sha256": "f5c7cc1450e255d20bf44b71addafded8a57bea468780c87feffa94f4b88e1fb"
+  },
+  {
+    "path": "/tmp/done-foreground-stall-20261012/unit.log",
+    "bytes": 236,
+    "sha256": "16b0bdb4e875477b79637cdaf914e459097755323e4eef5221b1fff4b720156a"
+  }
+]

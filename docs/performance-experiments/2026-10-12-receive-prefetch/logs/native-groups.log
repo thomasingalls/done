@@ -1,0 +1,33 @@
+(node:72997) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:72997) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:72997) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ lost later group reply commits only the fitting prefix; local input stays available during fetch (3789.534708ms)
+✔ locking during grouped HTTP discards fetched but uncommitted receipts (3183.73725ms)
+✔ prefetch completes out of order while local input and single-flight exclusion remain available (3273.38275ms)
+✔ an unavailable first reply discards a successful speculative second reply without advancing (3141.334292ms)
+✔ a prefetched page bound to another cursor refuses the whole collected group (3148.38ms)
+✔ a response over the supported single-page reservation is rejected without progress (3271.842333ms)
+(node:73044) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:73044) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ four original receipts commit in one transaction and reopen in the pre-group reference reader (3506.778125ms)
+✔ group before commit crash keeps all content and receipts atomic (2947.719209ms)
+✔ group after commit crash keeps all content and receipts atomic (3084.222208ms)
+✔ group refuses invalid-tail without retaining a partial prefix (2269.149209ms)
+✔ group refuses reordered without retaining a partial prefix (2202.081667ms)
+✔ group refuses superseded without retaining a partial prefix (2259.55925ms)
+✔ group expiry during sealing cannot commit (2578.544542ms)
+✔ group authority during sealing cannot commit (2570.81125ms)
+✔ group cuts at the records bound and retains a retryable valid tail (2894.660625ms)
+✔ group cuts at the bytes bound and retains a retryable valid tail (24865.264709ms)
+receive-group-counts {"single":{"loads":16,"readonly":220,"readwrite":8,"verify":156},"group":{"loads":4,"readonly":47,"readwrite":2,"verify":59}}
+✔ group amortizes fresh content loads and transactions while preserving each receipt (4666.913875ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77888.665417

@@ -1,0 +1,28 @@
+{
+  "parent": "534252e1dde26a02020491b2f42e2481513abb98",
+  "recordedAt": "2026-10-12T07:16:10.592610+00:00",
+  "baselineDist": "/tmp/done-receive-first-repair-20261012/final-dist",
+  "verifiedBaselineFiles": 59,
+  "fixture": {
+    "path": "/tmp/done-client-receive/fixture.json",
+    "sha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985"
+  },
+  "runtime": [
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "3b9d0a290d42f3faf08a72c32c18d425bd192bb09db336a5fa06afff3227542f"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "fdcbb5dc0532d534becb8d1f7c2e9f76b42a153074befe45414c577adc4033c6"
+    },
+    {
+      "path": "src/crdt/receiveGroup.ts",
+      "sha256": "95e6aa774513d5423849093aaab5bf08623ef1947d06403b494736578efb0485"
+    },
+    {
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "790ed622af0d109c5f1cbe144d73c256c2b65fae4c7025bb0b44043c47477f85"
+    }
+  ]
+}

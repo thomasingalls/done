@@ -1,0 +1,736 @@
+{
+  "totalMs": 306211.508,
+  "idleMs": 62685.599,
+  "activeMs": 243525.909,
+  "self": [
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23",
+      "ms": 84905.2
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4",
+      "ms": 32126.5
+    },
+    {
+      "name": "(program)",
+      "ms": 25781.4
+    },
+    {
+      "name": "encode",
+      "ms": 15137.4
+    },
+    {
+      "name": "(anonymous) src/crdt/startupStorage.ts:102",
+      "ms": 14483.6
+    },
+    {
+      "name": "f account-protocol/recovery.ts:22",
+      "ms": 12604
+    },
+    {
+      "name": "(garbage collector)",
+      "ms": 10148.5
+    },
+    {
+      "name": "verify",
+      "ms": 7002.4
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:178",
+      "ms": 3187.4
+    },
+    {
+      "name": "verify src/crdt/verifiedRecords.ts:77",
+      "ms": 3160
+    },
+    {
+      "name": "Mi src/crdt/joinedAccount.ts:146",
+      "ms": 2470.8
+    },
+    {
+      "name": "(anonymous) src/crdt/verifiedRecords.ts:16",
+      "ms": 2163.3
+    },
+    {
+      "name": "Gt src/crdt/custodyRecord.ts:386",
+      "ms": 2152.2
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:289",
+      "ms": 1980.8
+    },
+    {
+      "name": "read src/crdt/verifiedRecords.ts:66",
+      "ms": 1900.6
+    },
+    {
+      "name": "x src/crdt/contentRecord.ts:88",
+      "ms": 1359.8
+    },
+    {
+      "name": "Me account-protocol/contentCheckpoint.ts:52",
+      "ms": 1300.8
+    },
+    {
+      "name": "get result",
+      "ms": 1241.4
+    },
+    {
+      "name": "D src/crdt/verifiedRecords.ts:31",
+      "ms": 1220.4
+    },
+    {
+      "name": "b src/crdt/contentRecord.ts:78",
+      "ms": 1184.7
+    },
+    {
+      "name": "e src/crdt/custodyCrypto.ts:21",
+      "ms": 1169.7
+    },
+    {
+      "name": "C src/crdt/contentStore.ts:234",
+      "ms": 729.6
+    },
+    {
+      "name": "transaction",
+      "ms": 539.7
+    },
+    {
+      "name": "K src/crdt/custodyRecord.ts:152",
+      "ms": 474.4
+    },
+    {
+      "name": "y account-protocol/preparation.ts:33",
+      "ms": 466.9
+    },
+    {
+      "name": "O account-protocol/contentCheckpoint.ts:48",
+      "ms": 401.3
+    },
+    {
+      "name": "normalizeWhiteSpace",
+      "ms": 383.6
+    },
+    {
+      "name": "continue",
+      "ms": 367.5
+    },
+    {
+      "name": "d account-protocol/recovery.ts:16",
+      "ms": 359.3
+    },
+    {
+      "name": "open",
+      "ms": 349.8
+    },
+    {
+      "name": "deriveKey",
+      "ms": 296.2
+    },
+    {
+      "name": "(anonymous) account-protocol/recovery.ts:36",
+      "ms": 251.2
+    },
+    {
+      "name": "elementText",
+      "ms": 248
+    },
+    {
+      "name": "S account-protocol/admission.ts:107",
+      "ms": 242.6
+    },
+    {
+      "name": "SubtleCrypto.<computed>",
+      "ms": 242.3
+    },
+    {
+      "name": "importKey",
+      "ms": 228.9
+    },
+    {
+      "name": "(anonymous)",
+      "ms": 221.8
+    },
+    {
+      "name": "encodeInto",
+      "ms": 219.9
+    },
+    {
+      "name": "openCursor",
+      "ms": 207.6
+    },
+    {
+      "name": "fN src/ui/Card.tsx:76",
+      "ms": 200.2
+    },
+    {
+      "name": "cmp",
+      "ms": 186.5
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:162",
+      "ms": 177.1
+    },
+    {
+      "name": "Fd node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:13577",
+      "ms": 175.3
+    },
+    {
+      "name": "$ node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:12957",
+      "ms": 165.6
+    },
+    {
+      "name": "V src/crdt/accountReceive.ts:529",
+      "ms": 164.2
+    },
+    {
+      "name": "fetch",
+      "ms": 153.8
+    },
+    {
+      "name": "step src/crdt/writeSession.ts:150",
+      "ms": 149.3
+    },
+    {
+      "name": "structuredClone",
+      "ms": 137.5
+    },
+    {
+      "name": "_ account-protocol/authority.ts:16",
+      "ms": 131.2
+    },
+    {
+      "name": "query",
+      "ms": 128.8
+    },
+    {
+      "name": "Oe src/crdt/verifiedRecords.ts:14",
+      "ms": 127.5
+    },
+    {
+      "name": "URL",
+      "ms": 125.1
+    },
+    {
+      "name": "TextEncoder",
+      "ms": 123.5
+    },
+    {
+      "name": "ve src/crdt/accountLedgerMetrics.ts:48",
+      "ms": 119.6
+    },
+    {
+      "name": "Ac src/crdt/yjs.ts:182",
+      "ms": 118.1
+    },
+    {
+      "name": "decrypt",
+      "ms": 114.9
+    },
+    {
+      "name": "digest",
+      "ms": 109.6
+    },
+    {
+      "name": "X src/crdt/startupStorage.ts:57",
+      "ms": 106.9
+    },
+    {
+      "name": "i src/crdt/custodyCrypto.ts:35",
+      "ms": 105.1
+    },
+    {
+      "name": "Yc node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:8725",
+      "ms": 103.6
+    },
+    {
+      "name": "hi node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:2452",
+      "ms": 98.5
+    },
+    {
+      "name": "shouldSkipForTextMatching",
+      "ms": 88.8
+    },
+    {
+      "name": "read",
+      "ms": 86.7
+    },
+    {
+      "name": "SN src/ui/Collection.tsx:61",
+      "ms": 84.6
+    },
+    {
+      "name": "F src/crdt/accountReceive.ts:203",
+      "ms": 84.1
+    },
+    {
+      "name": "decode",
+      "ms": 83.7
+    },
+    {
+      "name": "add",
+      "ms": 80.2
+    },
+    {
+      "name": "(anonymous) node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:344",
+      "ms": 78.9
+    },
+    {
+      "name": "(anonymous) src/crdt/custodyCrypto.ts:46",
+      "ms": 74.8
+    },
+    {
+      "name": "querySelectorAll",
+      "ms": 72.5
+    },
+    {
+      "name": "E src/crdt/verifiedRecords.ts:24",
+      "ms": 67.8
+    },
+    {
+      "name": "o.onsuccess src/crdt/startupStorage.ts:38",
+      "ms": 65.5
+    },
+    {
+      "name": "addEventListener",
+      "ms": 63.9
+    },
+    {
+      "name": "L account-protocol/inboundTransport.ts:38",
+      "ms": 63.2
+    },
+    {
+      "name": "wr src/crdt/incrementalAccountLedger.ts:223",
+      "ms": 63.2
+    },
+    {
+      "name": "(anonymous) src/crdt/yjs.ts:183",
+      "ms": 63.1
+    },
+    {
+      "name": "(anonymous) src/crdt/verifiedRecords.ts:26",
+      "ms": 62.8
+    },
+    {
+      "name": "Q src/crdt/joinedAccount.ts:267",
+      "ms": 62
+    },
+    {
+      "name": "M node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:130",
+      "ms": 60.1
+    },
+    {
+      "name": "start",
+      "ms": 59.2
+    }
+  ],
+  "inclusive": [
+    {
+      "name": "(root)",
+      "ms": 243525.9
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23",
+      "ms": 84905.2
+    },
+    {
+      "name": "qt src/crdt/custodyRecord.ts:398",
+      "ms": 55989.3
+    },
+    {
+      "name": "F src/crdt/accountReceive.ts:203",
+      "ms": 53202.4
+    },
+    {
+      "name": "Gt src/crdt/custodyRecord.ts:386",
+      "ms": 51390.2
+    },
+    {
+      "name": "Wt src/crdt/custodyRecord.ts:323",
+      "ms": 40381.3
+    },
+    {
+      "name": "step src/crdt/writeSession.ts:150",
+      "ms": 35683.5
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4",
+      "ms": 32126.5
+    },
+    {
+      "name": "(program)",
+      "ms": 25781.4
+    },
+    {
+      "name": "p src/crdt/contentDatabase.ts:98",
+      "ms": 20119
+    },
+    {
+      "name": "C src/crdt/contentStore.ts:234",
+      "ms": 16583.1
+    },
+    {
+      "name": "E src/crdt/verifiedRecords.ts:24",
+      "ms": 16189.9
+    },
+    {
+      "name": "(anonymous) src/crdt/verifiedRecords.ts:26",
+      "ms": 16117.6
+    },
+    {
+      "name": "Q src/crdt/joinedAccount.ts:267",
+      "ms": 16077.8
+    },
+    {
+      "name": "e src/crdt/custodyCrypto.ts:21",
+      "ms": 15825.5
+    },
+    {
+      "name": "Pi src/crdt/joinedAccount.ts:159",
+      "ms": 15188.6
+    },
+    {
+      "name": "encode",
+      "ms": 15137.4
+    },
+    {
+      "name": "verify src/crdt/verifiedRecords.ts:77",
+      "ms": 14914.5
+    },
+    {
+      "name": "o.onsuccess src/crdt/startupStorage.ts:101",
+      "ms": 14901.8
+    },
+    {
+      "name": "(anonymous) src/crdt/startupStorage.ts:102",
+      "ms": 14854.7
+    },
+    {
+      "name": "(anonymous) src/crdt/writeSession.ts:156",
+      "ms": 13310.1
+    },
+    {
+      "name": "Me account-protocol/contentCheckpoint.ts:52",
+      "ms": 12845.3
+    },
+    {
+      "name": "f account-protocol/recovery.ts:22",
+      "ms": 12604
+    },
+    {
+      "name": "O account-protocol/contentCheckpoint.ts:48",
+      "ms": 11479.7
+    },
+    {
+      "name": "V src/crdt/accountReceive.ts:529",
+      "ms": 11237.4
+    },
+    {
+      "name": "read src/crdt/verifiedRecords.ts:66",
+      "ms": 11035
+    },
+    {
+      "name": "(anonymous) src/crdt/accountReceive.ts:537",
+      "ms": 11014.2
+    },
+    {
+      "name": "validate src/crdt/accountReceive.ts:316",
+      "ms": 10484.5
+    },
+    {
+      "name": "(anonymous) src/crdt/accountCapture.ts:112",
+      "ms": 10397.2
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:287",
+      "ms": 10397.2
+    },
+    {
+      "name": "(garbage collector)",
+      "ms": 10148.5
+    },
+    {
+      "name": "tl src/crdt/contentCompaction.ts:49",
+      "ms": 9264.2
+    },
+    {
+      "name": "Mi src/crdt/joinedAccount.ts:146",
+      "ms": 9097.6
+    },
+    {
+      "name": "SubtleCrypto.<computed>",
+      "ms": 8086.8
+    },
+    {
+      "name": "(anonymous) src/crdt/custodyCrypto.ts:377",
+      "ms": 7282.2
+    },
+    {
+      "name": "verify",
+      "ms": 7002.4
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:266",
+      "ms": 6690.2
+    },
+    {
+      "name": "(anonymous) src/crdt/joinedAccount.ts:291",
+      "ms": 6649.5
+    },
+    {
+      "name": "a.onsuccess src/crdt/contentStore.ts:177",
+      "ms": 4460.7
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:178",
+      "ms": 4362.4
+    },
+    {
+      "name": "Zt src/crdt/custodyRecord.ts:424",
+      "ms": 4161.3
+    },
+    {
+      "name": "Yt src/crdt/custodyRecord.ts:416",
+      "ms": 4108.1
+    },
+    {
+      "name": "(anonymous) src/crdt/accountReceive.ts:406",
+      "ms": 3900.7
+    },
+    {
+      "name": "wr src/crdt/incrementalAccountLedger.ts:223",
+      "ms": 3090.5
+    },
+    {
+      "name": "(anonymous) src/crdt/contentStore.ts:289",
+      "ms": 2754.7
+    },
+    {
+      "name": "br src/crdt/incrementalAccountLedger.ts:82",
+      "ms": 2726.3
+    },
+    {
+      "name": "w src/crdt/contentRecord.ts:101",
+      "ms": 2547.3
+    },
+    {
+      "name": "Oe src/crdt/verifiedRecords.ts:14",
+      "ms": 2416.3
+    },
+    {
+      "name": "(anonymous) src/crdt/verifiedRecords.ts:16",
+      "ms": 2273.9
+    },
+    {
+      "name": "E node_modules/.pnpm/scheduler@0.27.0/node_modules/scheduler/cjs/scheduler.production.js:121",
+      "ms": 1984.1
+    },
+    {
+      "name": "gu node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:10681",
+      "ms": 1948.1
+    },
+    {
+      "name": "cd node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:12065",
+      "ms": 1793.2
+    },
+    {
+      "name": "x src/crdt/contentRecord.ts:88",
+      "ms": 1359.8
+    },
+    {
+      "name": "(anonymous)",
+      "ms": 1324.8
+    },
+    {
+      "name": "Ou node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:11120",
+      "ms": 1259.7
+    },
+    {
+      "name": "ku node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:11181",
+      "ms": 1249.2
+    },
+    {
+      "name": "get result",
+      "ms": 1241.4
+    },
+    {
+      "name": "Mu node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:11304",
+      "ms": 1222.7
+    },
+    {
+      "name": "D src/crdt/verifiedRecords.ts:31",
+      "ms": 1220.4
+    },
+    {
+      "name": "b src/crdt/contentRecord.ts:78",
+      "ms": 1184.7
+    },
+    {
+      "name": "Nc node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:7392",
+      "ms": 1159.8
+    },
+    {
+      "name": "lr account-protocol/contentDelivery.ts:304",
+      "ms": 1076.7
+    },
+    {
+      "name": "evaluate",
+      "ms": 1031.7
+    },
+    {
+      "name": "callMatchedElements",
+      "ms": 1016.4
+    },
+    {
+      "name": "querySelectorAll",
+      "ms": 1005.8
+    },
+    {
+      "name": "(anonymous) src/crdt/accountReceive.ts:822",
+      "ms": 1001.6
+    },
+    {
+      "name": "sr account-protocol/contentDelivery.ts:239",
+      "ms": 973.4
+    },
+    {
+      "name": "_queryEngineAll",
+      "ms": 949
+    },
+    {
+      "name": "queryAll",
+      "ms": 945.9
+    },
+    {
+      "name": "(anonymous) src/crdt/accountReceive.ts:933",
+      "ms": 930.1
+    },
+    {
+      "name": "(anonymous) src/crdt/admissionQueue.ts:512",
+      "ms": 925.6
+    },
+    {
+      "name": "ce src/crdt/admissionQueue.ts:379",
+      "ms": 925.4
+    },
+    {
+      "name": "(anonymous) src/crdt/admittedWorkspace.ts:593",
+      "ms": 870
+    },
+    {
+      "name": "F src/crdt/contentDatabase.ts:76",
+      "ms": 834.5
+    },
+    {
+      "name": "er account-protocol/contentDelivery.ts:120",
+      "ms": 828.1
+    },
+    {
+      "name": "(anonymous) src/crdt/contentDatabase.ts:88",
+      "ms": 827.2
+    },
+    {
+      "name": "gc node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:6489",
+      "ms": 813.1
+    },
+    {
+      "name": "wo node_modules/.pnpm/react-dom@19.2.8_react@19.2.8/node_modules/react-dom/cjs/react-dom-client.production.js:4333",
+      "ms": 785
+    },
+    {
+      "name": "elementText",
+      "ms": 748.9
+    },
+    {
+      "name": "Vc src/crdt/yjs.ts:336",
+      "ms": 694.1
+    }
+  ],
+  "hotCallers": [
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- F src/crdt/accountReceive.ts:203",
+      "ms": 44498.3
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- Wt src/crdt/custodyRecord.ts:323",
+      "ms": 40283.2
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- (anonymous) src/crdt/verifiedRecords.ts:26",
+      "ms": 16054.8
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- tl src/crdt/contentCompaction.ts:49",
+      "ms": 9244.7
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- Yt src/crdt/custodyRecord.ts:416",
+      "ms": 4091.8
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- br src/crdt/incrementalAccountLedger.ts:82",
+      "ms": 2714.3
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- M src/crdt/contentRecord.ts:249",
+      "ms": 68.5
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- Ut src/crdt/custodyRecord.ts:314",
+      "ms": 18.1
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- (anonymous) src/crdt/custodyRecord.ts:347",
+      "ms": 11.5
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- (anonymous) src/crdt/accountReceive.ts:822",
+      "ms": 9
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- n src/crdt/incrementalAccountLedger.ts:466",
+      "ms": 9
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- (anonymous) src/crdt/joinedAccount.ts:291",
+      "ms": 7.5
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- E src/crdt/verifiedRecords.ts:24",
+      "ms": 4.5
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- Zt src/crdt/custodyRecord.ts:424",
+      "ms": 3
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- (anonymous) src/crdt/custodyRecord.ts:332",
+      "ms": 3
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- xr src/crdt/incrementalAccountLedger.ts:100",
+      "ms": 3
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- (root)",
+      "ms": 1.5
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- Yt src/crdt/spoolRecord.ts:168",
+      "ms": 1.5
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- J src/crdt/spoolRecord.ts:441",
+      "ms": 1.5
+    },
+    {
+      "name": "De src/crdt/verifiedRecords.ts:4 <- (anonymous) src/crdt/verificationMemo.ts:32",
+      "ms": 1.5
+    },
+    {
+      "name": "n src/crdt/custodyCrypto.ts:23 <- (anonymous) src/crdt/promotionRecord.ts:424",
+      "ms": 1.5
+    }
+  ],
+  "note": "Sampled main-thread CPU, not total native/crypto CPU. Inclusive functions overlap."
+}

@@ -1,6 +1,10 @@
 // @vitest-environment node
 import { expect, it, vi } from 'vitest';
-import { maintenanceTask, MaintenanceInterrupted } from '../src/crdt/contentMaintenance';
+import {
+  maintenanceTask,
+  MaintenanceInterrupted,
+  isMaintenanceTask,
+} from '../src/crdt/contentMaintenance';
 import type { SessionTask } from '../src/crdt/writeSession';
 
 it('yields before async work, fences the next effect, and retains an in-flight output for cleanup', async () => {
@@ -21,6 +25,9 @@ it('yields before async work, fences the next effect, and retains an in-flight o
     },
   };
   const task = maintenanceTask(parent, input.signal);
+  expect(isMaintenanceTask(parent)).toBe(false);
+  expect(isMaintenanceTask(task)).toBe(true);
+  expect(maintenanceTask(parent)).toBe(parent);
   let release!: (v: Uint8Array) => void;
   try {
     const held = task.wait(

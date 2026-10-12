@@ -1,0 +1,364 @@
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 6543059f..3ca9e102 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -0,0 +1,7 @@
++import {
++  RECEIVE_GROUP_LIMIT,
++  RECEIVE_COLLECT_MS,
++  packReceivePages,
++  unpackReceivePages,
++  receiveGroupFits,
++} from './receiveGroup';
+@@ -200,0 +208 @@ async function openAccountReceiveOwner(
++  let outstandingGroup: Bytes[] = [];
+@@ -488,0 +497,2 @@ async function openAccountReceiveOwner(
++      for (const request of outstandingGroup) request.fill(0);
++      outstandingGroup = [];
+@@ -569,0 +580 @@ async function openAccountReceiveOwner(
++    grouped = false,
+@@ -610,18 +621,9 @@ async function openAccountReceiveOwner(
+-    r.signature = hex(
+-      new Uint8Array(
+-        await task.wait(() => subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r))),
+-      ),
+-    );
+-    await assertCurrent(task);
+-    return task.step(() => {
+-      outstanding?.fill(0);
+-      outstanding = encodeInboundRequest(r);
+-      return outstanding.slice();
+-    });
+-  };
+-  // Prepare in order, wait under the same lifetime outside the storage tail, then let the
+-  // admission FIFO verify this exact request against fresh authority and prefix before commit.
+-  const fetchPage = async (operatorToken: AccountAccess) => {
+-    let request: Bytes | undefined,
+-      page: Bytes | null = null;
+-    let oversized = false;
++    const count =
++      grouped && (!composed || publisher !== base.publisher.id)
++        ? Math.min(
++            RECEIVE_GROUP_LIMIT,
++            receiveSelection.capacity(publisher),
++            Math.max(1, s.prefix.observedThrough - cursor),
++          )
++        : 1;
++    const requests: Bytes[] = [];
+@@ -629,21 +631,18 @@ async function openAccountReceiveOwner(
+-      return await runNetworkTask(async (network) => {
+-        const query = (request = await runCaptureTask((task, owner, route) =>
+-          prepareRead(task, owner, route),
+-        ));
+-        await network.wait(async () => {
+-          page = canReceive()
+-            ? await privateDeliveryPost(
+-                options.pin,
+-                access ?? operatorToken,
+-                'read-v2',
+-                query,
+-                MAX_PENDING_BYTES,
+-                network.signal,
+-                (event) => {
+-                  recordPrivateTransportDiagnostic(event);
+-                  if (event.code === 'response-too-large') oversized = true;
+-                },
+-              )
+-            : null;
+-        });
+-        return network.step(() => ({ request: query, page, oversized }));
++      for (let i = 0; i < count; i++) {
++        const next = { ...r, after: cursor + i, nonce: hex(task.step(() => random(32))) };
++        next.signature = hex(
++          new Uint8Array(
++            await task.wait(() =>
++              subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
++            ),
++          ),
++        );
++        requests.push(encodeInboundRequest(next));
++      }
++      await assertCurrent(task);
++      return task.step(() => {
++        outstanding?.fill(0);
++        for (const request of outstandingGroup) request.fill(0);
++        outstandingGroup = requests;
++        outstanding = requests[0]!;
++        return outstanding.slice();
+@@ -652,2 +651,70 @@ async function openAccountReceiveOwner(
+-      request?.fill(0);
+-      (page as Bytes | null)?.fill(0);
++      for (const request of requests) request.fill(0);
++      throw cause;
++    }
++  };
++  const prepareGroup = () =>
++    runCaptureTask(async (task, owner, route) => {
++      const first = await prepareRead(task, owner, route, undefined, true);
++      first.fill(0);
++      return outstandingGroup.map((r) => r.slice());
++    });
++  // Future cursors are only scheduling predictions through an authenticated observed tip.
++  // The exact request set remains owned, and no prefix advances before ordered verification.
++  const fetchPage = async (operatorToken: AccountAccess) => {
++    let requests: Bytes[] = [];
++    const pages: Bytes[] = [];
++    let oversized = false,
++      pendingPage: Bytes | null = null;
++    try {
++      return await runNetworkTask(async (network) => {
++        requests = await prepareGroup();
++        const began = performance.now();
++        let bytes = 0;
++        for (const request of requests) {
++          let page: Bytes | null = null;
++          await network.wait(async () => {
++            page = pendingPage = canReceive()
++              ? await privateDeliveryPost(
++                  options.pin,
++                  access ?? operatorToken,
++                  'read-v2',
++                  request,
++                  MAX_PENDING_BYTES - 4,
++                  network.signal,
++                  (event) => {
++                    recordPrivateTransportDiagnostic(event);
++                    if (event.code === 'response-too-large') oversized = true;
++                  },
++                )
++              : null;
++          });
++          const received = page as Bytes | null;
++          pendingPage = null;
++          if (!received) break;
++          // Keep the fitting prefix. A large tail is refetched in the next operation.
++          if (bytes + received.length + 4 > MAX_PENDING_BYTES) {
++            received.fill(0);
++            break;
++          }
++          pages.push(received);
++          bytes += received.length + 4;
++          // Wire hints can only shorten collection, never grant progress or authority.
++          try {
++            if (!decodeInboundPage(received).entries.length) break;
++          } catch {
++            break;
++          }
++          if (performance.now() - began >= RECEIVE_COLLECT_MS) break;
++        }
++        return network.step(() => ({
++          request: requests[0]!,
++          page: pages[0] ?? null,
++          requests,
++          pages,
++          oversized: oversized && !pages.length,
++        }));
++      });
++    } catch (cause) {
++      (pendingPage as Bytes | null)?.fill(0);
++      for (const request of requests) request.fill(0);
++      for (const page of pages) page.fill(0);
+@@ -970,0 +1038,130 @@ async function openAccountReceiveOwner(
++  const receiveGroup = (
++    inputs: readonly Bytes[],
++    expected: readonly Bytes[],
++    promote: (updates: readonly Bytes[]) => void = () => {},
++  ) => {
++    if (
++      account.detached ||
++      inputs.length < 2 ||
++      inputs.length > RECEIVE_GROUP_LIMIT ||
++      expected.length !== inputs.length ||
++      inputs.some((b) => !(b instanceof Uint8Array) || !b.length) ||
++      inputs.reduce((n, b) => n + 4 + b.length, 0) > MAX_PENDING_BYTES ||
++      expected.some((b) => !(b instanceof Uint8Array) || !b.length || b.length > 4096)
++    )
++      return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
++    const pages = inputs.map((b) => b.slice()),
++      requests = expected.map((b) => b.slice());
++    return runCaptureTask(async (task, owner, route) => {
++      const s = await state(task, owner, route);
++      const first = decodeInboundRequest(requests[0]!);
++      if (first.epoch < base.authority.tip) throw new ReceiveAuthorityChanged();
++      if (composed && first.publisher === base.publisher.id)
++        throw new AdmissionError('receive-refused', 'Own reconciliation must remain single-entry');
++      const peer = publisherState(s, base, first.publisher);
++      if (s.conflict || peer.conflict || first.after !== peer.prefix.position)
++        throw new AdmissionError('receive-refused', 'Inbound group prefix changed');
++      for (let i = 0; i < requests.length; i++) {
++        if (!outstandingGroup[i] || !sameBytes(requests[i]!, outstandingGroup[i]!))
++          throw new AdmissionError('receive-refused', 'Receive request was superseded');
++        const r = decodeInboundRequest(requests[i]!);
++        if (
++          r.publisher !== first.publisher ||
++          r.epoch !== first.epoch ||
++          r.after !== first.after + i
++        )
++          throw new AdmissionError('receive-refused', 'Receive group is not contiguous');
++      }
++      const context = { ...publisherContext(base, first.publisher), prefix: { ...peer.prefix } };
++      const results: Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
++      const writes: import('./contentRecord').ContentInput[] = [];
++      const updates: Bytes[] = [];
++      let committed = false,
++        bytes = 0;
++      try {
++        for (let i = 0; i < pages.length; i++) {
++          let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
++          try {
++            await task.wait(async () => {
++              result = await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task));
++              // Retain ownership before the final lifetime check can reject.
++              results.push(result);
++            });
++          } catch (cause) {
++            task.step(() => {});
++            throw new AdmissionError('receive-refused', String(cause), { cause });
++          }
++          if (!result) throw Error('Missing inbound verification result');
++          if (result.kind === 'empty') break;
++          if (result.kind !== 'received')
++            throw new AdmissionError('receive-refused', 'Unexpected grouped receive result');
++          const size = result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
++          if (!receiveGroupFits(bytes + size, writes.length + result.updates.length + 1)) {
++            // The single-receipt verifier has already enforced its individual bounds.
++            // Keep only the fitting prefix; this valid tail is fetched again later.
++            result.record.fill(0);
++            for (const update of result.updates) update.fill(0);
++            results.pop();
++            break;
++          }
++          bytes += size;
++          writes.push(...result.updates.map((b) => ({ kind: 'update' as const, bytes: b })), {
++            kind: 'heads',
++            bytes: result.record,
++          });
++          updates.push(...result.updates);
++          context.prefix = {
++            position: result.position,
++            link: result.link,
++            observedThrough: result.through,
++          };
++        }
++        const kinds = results.map((r) => r.kind);
++        if (!writes.length)
++          return task.step(() => {
++            promote([]);
++            return { kind: 'empty' as const, recorded: false, status: describe(s), kinds };
++          });
++        const before = await owner.carrier.spoolWitness(task);
++        let after = before;
++        for (const result of results)
++          if ('record' in result)
++            after = await task.wait(() =>
++              extendSpoolWitness(after, result.record, subtleFor(task)),
++            );
++        await owner.carrier.appendInbound(task, writes, {
++          before,
++          after,
++          checkCommit: () => {
++            if (
++              requests
++                .slice(0, results.length)
++                .some((r) => decodeInboundRequest(r).expires <= Date.now())
++            )
++              throw new ReceiveRequestExpired();
++          },
++          beforeCommit: async () => {
++            const current = await state(task, owner, route);
++            if (JSON.stringify(describe(current)) !== JSON.stringify(describe(s)))
++              captureError('Inbound prefix changed before commit');
++          },
++        });
++        committed = true;
++        const saved = await state(task, owner, route);
++        return task.step(() => {
++          promote(updates);
++          return { kind: 'received' as const, recorded: true, status: describe(saved), kinds };
++        });
++      } catch (cause) {
++        if (committed) void carrier.close().catch(() => {});
++        throw cause;
++      } finally {
++        for (const result of results) {
++          if ('record' in result) result.record.fill(0);
++          if (result.kind === 'received') for (const b of result.updates) b.fill(0);
++        }
++      }
++    }).finally(() => {
++      for (const b of [...pages, ...requests]) b.fill(0);
++    });
++  };
+@@ -1731,0 +1929,2 @@ async function openAccountReceiveOwner(
++    prepareGroup,
++    receiveGroup,
+@@ -1757,2 +1956,8 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
+-  const { api } = await openAccountReceiveOwner(input);
+-  return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
++  const { api, prepareGroup, receiveGroup } = await openAccountReceiveOwner(input);
++  return Object.freeze({
++    ...api,
++    prepareGroup,
++    receiveGroup: (pages: readonly Bytes[], requests: readonly Bytes[]) =>
++      receiveGroup(pages, requests),
++    receivePage: (bytes: Bytes) => api.receivePage(bytes),
++  });
+@@ -1785,0 +1991 @@ async function openReceivingWorkspace(
++    receiveGroup,
+@@ -1875 +2081 @@ async function openReceivingWorkspace(
+-        const { request, page, oversized } = await fetchPage(operatorToken);
++        const { request, page, requests, pages, oversized } = await fetchPage(operatorToken);
+@@ -1911,0 +2118,13 @@ async function openReceivingWorkspace(
++            if (pages.length > 1) {
++              const packed = packReceivePages(pages);
++              try {
++                const received = await enqueue(packed, (input, promote) =>
++                  receiveGroup(unpackReceivePages(input), requests.slice(0, pages.length), promote),
++                );
++                for (let i = 0; i < received.kinds.length; i++)
++                  completedRead(requests[i]!, received.kinds[i]!);
++                return received;
++              } finally {
++                packed.fill(0);
++              }
++            }
+@@ -1950,2 +2169,2 @@ async function openReceivingWorkspace(
+-          request.fill(0);
+-          page?.fill(0);
++          for (const r of requests) r.fill(0);
++          for (const p of pages) p.fill(0);
+diff --git a/src/crdt/contentStore.ts b/src/crdt/contentStore.ts
+index f22669be..d6a91d62 100644
+--- a/src/crdt/contentStore.ts
++++ b/src/crdt/contentStore.ts
+@@ -332,0 +333 @@ export const createContentOwner = (
++      events?: number;
+@@ -345 +346 @@ export const createContentOwner = (
+-          spool.after.events !== spool.before.events + 1)
++          spool.after.events !== spool.before.events + (spool.events ?? 1))
+@@ -554 +555 @@ export const createContentOwner = (
+-    /** Internal multi-record receive commit. One evidence event and its original content share the witness. */
++    /** Internal receive commit. Original content/evidence pairs share one atomic witness transition. */
+@@ -567 +568,4 @@ export const createContentOwner = (
+-        if (copied.at(-1)?.kind !== 'heads' || copied.slice(0, -1).some((r) => r.kind !== 'update'))
++        if (
++          copied.at(-1)?.kind !== 'heads' ||
++          copied.some((r) => r.kind !== 'update' && r.kind !== 'heads')
++        )
+@@ -569 +573,2 @@ export const createContentOwner = (
+-        const records = await appendRecords(task, copied, transition);
++        const events = copied.filter((r) => r.kind === 'heads').length;
++        const records = await appendRecords(task, copied, { ...transition, events });
+diff --git a/src/crdt/receiveSelection.ts b/src/crdt/receiveSelection.ts
+index 9c86c982..37a5874c 100644
+--- a/src/crdt/receiveSelection.ts
++++ b/src/crdt/receiveSelection.ts
+@@ -25,0 +26,3 @@ export function createReceiveSelection(now: () => number = Date.now) {
++    capacity(publisher: string) {
++      return previous === publisher ? 4 - streak : 4;
++    },
+@@ -56,2 +59,2 @@ export function createReceiveSelection(now: () => number = Date.now) {
+-      // Four useful pages, then let other publishers reconcile. The outer scheduler
+-      // yields to the event loop and any due sender after EVERY page.
++      // Four useful pages, then let other publishers reconcile. Groups consume this
++      // same allowance; the outer scheduler yields to input and due sending between groups.

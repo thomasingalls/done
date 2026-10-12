@@ -1,0 +1,14 @@
+(node:70213) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:70213) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:70213) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ lost later group reply commits only the fitting prefix; local input stays available during fetch (3679.283125ms)
+✔ locking during grouped HTTP discards fetched but uncommitted receipts (3078.382459ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9047.003917

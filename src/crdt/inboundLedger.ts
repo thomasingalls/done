@@ -26,7 +26,14 @@ import { acceptanceLink, decodePositionResponse } from '../../account-protocol/p
 import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
 import { decodeInboundRecord } from './inboundRecord';
 import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
-import { Y, forkDoc, sameDocState, hasPendingUpdates, prepareDocCoverage } from './yjs';
+import {
+  Y,
+  forkDoc,
+  sameDocState,
+  hasPendingUpdates,
+  prepareDocCoverage,
+  provesIntegratedCoverage,
+} from './yjs';
 import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
 import type { VerificationMemo } from './verificationMemo';
 
@@ -85,7 +92,7 @@ export async function heldInboundContext(
     prefix: { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
   };
 }
-export function inspectInbound(
+function* inspectInboundSteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   context: InboundContext,
@@ -95,6 +102,7 @@ export function inspectInbound(
     entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
     installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
   for (const record of records) {
+    yield;
     let tag;
     if (record.kind === 'heads' || record.kind === 'outbound') {
       try {
@@ -121,6 +129,7 @@ export function inspectInbound(
   if (context.history) {
     let epoch = 1;
     for (const row of ledger) {
+      yield;
       const v = JSON.parse(new TextDecoder().decode(row.bytes));
       const at =
         v[0] === 'done/account-inbound/v1'
@@ -132,6 +141,31 @@ export function inspectInbound(
   }
   delivery.spool.events = ledger.map((r) => r.bytes);
   return { delivery, entries: entries.sort((a, b) => a.record.seq - b.record.seq), installations };
+}
+/** Both readers execute the same census; maintenance may pause only between complete rows. */
+export function inspectInbound(...args: Parameters<typeof inspectInboundSteps>) {
+  const steps = inspectInboundSteps(...args);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
+}
+export async function inspectInboundCooperatively(
+  records: readonly OpenedRecord[],
+  route: CaptureRoute,
+  context: InboundContext,
+  checkpoint: () => Promise<void>,
+) {
+  const steps = inspectInboundSteps(records, route, context);
+  try {
+    let next = steps.next();
+    while (!next.done) {
+      await checkpoint();
+      next = steps.next();
+    }
+    return next.value;
+  } finally {
+    steps.return(undefined as never);
+  }
 }
 export interface InboundState {
   prefix: InboundContext['prefix'];
@@ -285,7 +319,7 @@ function updateIndex(bounded: boolean) {
   };
 }
 /** A fork must be unchanged by each evidenced original; no vector-only shortcut. */
-function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false) {
+function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false, direct = false) {
   const doc = new Y.Doc({ gc: false }),
     originals = updateIndex(false),
     positives = updateIndex(true);
@@ -334,7 +368,10 @@ function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false
           let copy: ReturnType<typeof forkDoc> | undefined;
           try {
             let covered: boolean;
-            if (reuseBaseline) {
+            if (direct && provesIntegratedCoverage(doc, update)) {
+              covered = true;
+              countLedgerWork('coverageDirectProofs');
+            } else if (reuseBaseline) {
               if (!prepared) {
                 prepared = prepareDocCoverage(doc);
                 countLedgerWork('coverageBaselines');
@@ -372,7 +409,7 @@ export function verifyInboundCoverage(
   }
 }
 /** Owner-local content view. Only successful coverage is memoised; failure always invalidates. */
-export function createInboundCoverage(options: { incremental?: boolean } = {}) {
+export function createInboundCoverage(options: { incremental?: boolean; direct?: boolean } = {}) {
   let rows: OpenedRecord[] | undefined, coverage: ReturnType<typeof contentCoverage> | undefined;
   const clear = () => {
     eraseVerified(rows);
@@ -400,7 +437,7 @@ export function createInboundCoverage(options: { incremental?: boolean } = {}) {
       const copied = copyRecords(content);
       let next: ReturnType<typeof contentCoverage> | undefined;
       try {
-        next = contentCoverage(copied, options.incremental);
+        next = contentCoverage(copied, options.incremental, options.direct);
         const equivalent = !!(options.incremental && coverage && next.preserve(coverage));
         clear();
         rows = copied;
@@ -456,6 +493,8 @@ export async function verifyInboundLedger(
   reuse?: {
     memo: VerificationMemo;
     coverage: Pick<ReturnType<typeof createInboundCoverage>, 'check'>;
+    /** Reference maintenance can yield between complete receipt checks, outside native transactions. */
+    checkpoint?(): Promise<void>;
   },
   continuation?: { state: InboundState; after: number },
 ): Promise<InboundState> {
@@ -475,94 +514,107 @@ export async function verifyInboundLedger(
   ]
     .filter((e) => !continuation || e.record.seq > continuation.after)
     .sort((a, b) => a.record.seq - b.record.seq);
-  for (const entry of events) {
-    if (entry.kind === 'history') {
-      if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
-        captureError('History installation after stream conflict');
-      const check = () =>
-        verifyHistoryInstall(base, entry.record.bytes, own.installedHistory, lifetime);
-      const result = reuse
-        ? await reuse.memo.check(
-            'history:' + entry.record.seq,
-            JSON.stringify({
-              baseline: base.baseline,
-              authority: base.authority,
-              reader: base.reader,
-              previous: own.installedHistory,
-            }),
-            [entry.record.bytes],
-            check,
-            lifetime.assertCurrent,
-          )
-        : await check();
-      try {
-        if (reuse) reuse.coverage.check(records, [result.update]);
-        else verifyInboundCoverage(records, [result.update]);
-        if (result.heads)
-          await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
-        own.installedHistory = result.installed;
-      } finally {
-        result.update.fill(0);
-      }
-      continue;
-    }
-    const { record, event } = entry;
-    const request = decodeInboundRequest(event.request);
-    const publisher = publisherContext(base, request.publisher);
-    const state = publisherState(own, base, request.publisher);
-    if (request.publisher !== base.publisher.id) own.peers.set(request.publisher, state);
-    if (state.conflict) captureError('Inbound event after stream conflict');
-    const historical = publisher.history
-      ? {
-          ...publisher,
-          authority: historyAuthority(publisher.history, {
-            ...publisher.authority,
-            tip: request.epoch,
-            head: event.head,
-          }),
+  const localCoverage = reuse
+    ? undefined
+    : contentCoverage(
+        records.filter((r) => r.kind === 'update' || r.kind === 'state'),
+        false,
+        import.meta.env?.['VITE_ACCOUNT_DIRECT_COVERAGE'] !== '0',
+      );
+  try {
+    for (const entry of events) {
+      if (reuse?.checkpoint) await reuse.checkpoint();
+      lifetime.assertCurrent();
+      if (entry.kind === 'history') {
+        if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
+          captureError('History installation after stream conflict');
+        const check = () =>
+          verifyHistoryInstall(base, entry.record.bytes, own.installedHistory, lifetime);
+        const result = reuse
+          ? await reuse.memo.check(
+              'history:' + entry.record.seq,
+              JSON.stringify({
+                baseline: base.baseline,
+                authority: base.authority,
+                reader: base.reader,
+                previous: own.installedHistory,
+              }),
+              [entry.record.bytes],
+              check,
+              lifetime.assertCurrent,
+            )
+          : await check();
+        try {
+          if (reuse) reuse.coverage.check(records, [result.update]);
+          else localCoverage!.check([result.update]);
+          if (result.heads)
+            await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
+          own.installedHistory = result.installed;
+        } finally {
+          result.update.fill(0);
         }
-      : publisher;
-    const context = contextAt(historical, state, request.after),
-      check = () => verifyStoredInbound(context, record.bytes, lifetime),
-      result = reuse
-        ? await reuse.memo.check(
-            'inbound:' + record.seq,
-            JSON.stringify({ ...context, generationKey: undefined, retained: undefined }),
-            [
-              record.bytes,
-              ...(context.retained
-                ? [
-                    utf8(context.retained.previous),
-                    context.retained.envelope,
-                    context.retained.proof,
-                  ]
-                : []),
-            ],
-            check,
-            lifetime.assertCurrent,
-          )
-        : await check();
-    if (result.kind === 'conflict') state.conflict = true;
-    else if (result.kind === 'received') {
-      try {
-        if (reuse) reuse.coverage.check(records, result.updates);
-        else verifyInboundCoverage(records, result.updates);
-      } finally {
-        for (const b of result.updates) b.fill(0);
+        continue;
       }
-      state.prefix = {
-        position: result.position,
-        link: result.link,
-        observedThrough: result.through,
-      };
-      const entry = decodeInboundPage(event.page).entries[0]!;
-      state.retained.set(result.position, {
-        previous: event.previous,
-        envelope: entry.envelope,
-        proof: entry.proof,
-      });
-    } else captureError('Unexpected stored inbound observation');
+      const { record, event } = entry;
+      const request = decodeInboundRequest(event.request);
+      const publisher = publisherContext(base, request.publisher);
+      const state = publisherState(own, base, request.publisher);
+      if (request.publisher !== base.publisher.id) own.peers.set(request.publisher, state);
+      if (state.conflict) captureError('Inbound event after stream conflict');
+      const historical = publisher.history
+        ? {
+            ...publisher,
+            authority: historyAuthority(publisher.history, {
+              ...publisher.authority,
+              tip: request.epoch,
+              head: event.head,
+            }),
+          }
+        : publisher;
+      const context = contextAt(historical, state, request.after),
+        check = () => verifyStoredInbound(context, record.bytes, lifetime),
+        result = reuse
+          ? await reuse.memo.check(
+              'inbound:' + record.seq,
+              JSON.stringify({ ...context, generationKey: undefined, retained: undefined }),
+              [
+                record.bytes,
+                ...(context.retained
+                  ? [
+                      utf8(context.retained.previous),
+                      context.retained.envelope,
+                      context.retained.proof,
+                    ]
+                  : []),
+              ],
+              check,
+              lifetime.assertCurrent,
+            )
+          : await check();
+      if (result.kind === 'conflict') state.conflict = true;
+      else if (result.kind === 'received') {
+        try {
+          if (reuse) reuse.coverage.check(records, result.updates);
+          else localCoverage!.check(result.updates);
+        } finally {
+          for (const b of result.updates) b.fill(0);
+        }
+        state.prefix = {
+          position: result.position,
+          link: result.link,
+          observedThrough: result.through,
+        };
+        const entry = decodeInboundPage(event.page).entries[0]!;
+        state.retained.set(result.position, {
+          previous: event.previous,
+          envelope: entry.envelope,
+          proof: entry.proof,
+        });
+      } else captureError('Unexpected stored inbound observation');
+    }
+    lifetime.assertCurrent();
+    return own;
+  } finally {
+    localCoverage?.clear();
   }
-  lifetime.assertCurrent();
-  return own;
 }

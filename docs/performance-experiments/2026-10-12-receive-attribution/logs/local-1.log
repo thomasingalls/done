@@ -1,0 +1,40 @@
+
+Running 1 test using 1 worker
+
+(node:37290) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts:90:1 › client receive matched fixture (38.0s)
+
+
+  1) docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts:90:1 › client receive matched fixture 
+
+    TimeoutError: locator.waitFor: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for locator('.card[data-editing="true"] .cm-content') to be visible
+
+
+      20 | async function focus(p: Page) {
+      21 |   await target(p).locator('.card-surface').press('Enter');
+    > 22 |   await editor(p).waitFor();
+         |                   ^
+      23 |   await p.keyboard.press('ControlOrMeta+End');
+      24 | }
+      25 | async function openFixture(p: Page, code: string, joined: boolean) {
+        at focus (/Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts:22:19)
+        at /Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts:234:7
+
+    Error: browserContext.close: Target page, context or browser has been closed
+
+      365 |     }
+      366 |     await pair?.other.close();
+    > 367 |     for (const c of contexts) await c.close();
+          |                               ^
+      368 |     await stopAll();
+      369 |   }
+      370 | });
+        at /Users/thomasingalls/.codex/worktrees/c030/done/docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts:367:31
+
+    Error Context: ../../../../../../tmp/done-receive-attribution-20261012/local-1/artifacts/receive-client-receive-matched-fixture/error-context.md
+
+  1 failed
+    docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts:90:1 › client receive matched fixture 

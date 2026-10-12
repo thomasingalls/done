@@ -22,7 +22,7 @@ export async function receiveBundle(control) {
     ],
     coverage: [
       '/src/crdt/inboundLedger.ts',
-      'if (reuse) reuse.coverage.check(records, result.updates);\n        else verifyInboundCoverage(records, result.updates);',
+      'if (reuse) reuse.coverage.check(records, result.updates);\n          else localCoverage!.check(result.updates);',
       'void records;',
     ],
     'coverage-without-reuse': [
@@ -32,7 +32,7 @@ export async function receiveBundle(control) {
     ],
     'coverage-without-fallback': [
       '/src/crdt/inboundLedger.ts',
-      'verifyInboundCoverage(records, result.updates);',
+      'localCoverage!.check(result.updates);',
       'void records;',
     ],
     split: [

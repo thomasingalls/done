@@ -126,3 +126,12 @@ integration follow separately. See [outbound preparation](./account-outbound.md)
 [Account spool](./account-spool.md) implements the next private v7 phase: separate position and
 invocation grants, exact persisted v2 wire and an authenticated metadata witness for ledger completeness.
 All source obligations remain retained. Response/refusal authority and relay submission remain separate.
+
+## 2026-10-12 — Single-frame text preparation
+
+The owned Account editor's [direct text adapter](./account-text-admission.md) may prepare one human
+text frame without executing it speculatively. Its source is that exact update buffer; the queue
+checks this identity and the carrier retains its normal actor/route checks. Journal persistence
+or the existing forced native commit still precedes applying it under the human origin. This
+bounded source-equality proof replaces replaying a separate speculative source document for that
+case only. Native structural/system/undo preparation and all stored capsule formats are unchanged.

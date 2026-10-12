@@ -1,0 +1,15 @@
+(node:79650) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:79650) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:79650) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ one owner advances from submit receipts without self content readback, through compaction and cold replay (6289.594708ms)
+✔ reference audit disagreement refuses the warm owner and cold replay preserves writing (5730.340917ms)
+✔ concurrent Account readers enter verified storage one at a time (4233.67075ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18893.959333

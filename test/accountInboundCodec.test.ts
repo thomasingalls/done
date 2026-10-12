@@ -171,6 +171,44 @@ describe('closed inbound v2 transport and local record codecs', () => {
       expect(() => decodeInboundRecord(json(v))).toThrow();
     }
   });
+  it.each(['request', 'page', 'record'] as const)(
+    'decoded %s mutations still satisfy the original re-encoding check',
+    (kind) => {
+      const wire = kind === 'request' ? p.request : kind === 'page' ? p.page : eventWire(first);
+      const base = JSON.parse(Buffer.from(wire).toString()) as unknown[];
+      const check = (bytes: Uint8Array<ArrayBuffer>) => {
+        let encode;
+        try {
+          if (kind === 'request') {
+            const v = decodeInboundRequest(bytes);
+            encode = () => encodeInboundRequest(v);
+          } else if (kind === 'page') {
+            const v = decodeInboundPage(bytes);
+            encode = () => encodeInboundPage(v);
+          } else {
+            const v = decodeInboundRecord(bytes);
+            encode = () => encodeInboundRecord(v);
+          }
+        } catch {
+          return;
+        }
+        expect(encode()).toEqual(bytes);
+      };
+      check(wire);
+      fc.assert(
+        fc.property(
+          fc.integer({ min: 0, max: base.length - 1 }),
+          fc.oneof(fc.string(), fc.integer(), fc.constantFrom(null, [], {}, true, -0)),
+          (index, value) => {
+            const v = [...base];
+            v[index] = value;
+            check(json(v));
+          },
+        ),
+        { seed: 121026, numRuns: 300 },
+      );
+    },
+  );
   it('implements bounded contiguous page extent, including empty end pages and safe-integer exhaustion', () => {
     const r = decodeInboundRequest(p.request),
       page = decodeInboundPage(p.page);

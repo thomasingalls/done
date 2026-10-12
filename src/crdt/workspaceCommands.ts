@@ -132,6 +132,9 @@ export const runWorkspaceCommand: CommandRunner = (...args) =>
 export const createWorkspaceCommandRunner = () => {
   const repaired = new WeakSet<YUndoManager>();
   return Object.freeze({
+    eligible(history: YUndoManager) {
+      return repaired.has(history);
+    },
     inherit(source: YUndoManager, fork: YUndoManager) {
       if (source === fork) throw Error('Repair eligibility requires a detached history.');
       if (repaired.has(source)) repaired.add(fork);
@@ -152,6 +155,45 @@ export const createWorkspaceCommandRunner = () => {
     },
   });
 };
+
+/** Pure editor-command planning shared by native and direct preparation. */
+export function planWorkspaceText(
+  doc: YDoc,
+  command: Extract<WorkspaceIntent['command'], { kind: 'text' }>,
+  selections: Map<string, RelativeSelection>,
+) {
+  const text = targetText(doc, command.target),
+    key = targetKey(command.target);
+  const selection = resolveSelection(doc, text, command.selection ?? selections.get(key));
+  const state = EditorState.create({
+    doc: text.toString(),
+    selection,
+    extensions: [
+      markdown({ base: markdownLanguage, addKeymap: false }),
+      indentUnit.of('  '),
+      EditorState.allowMultipleSelections.of(true),
+    ],
+  });
+  let transaction: Transaction | undefined,
+    rest = '';
+  if (command.action.name === 'insert') {
+    let end = Math.min(1000, command.action.text.length);
+    if (end < command.action.text.length && /[\uD800-\uDBFF]/u.test(command.action.text[end - 1]!))
+      end--;
+    rest = command.action.text.slice(end);
+    transaction = state.update(state.replaceSelection(command.action.text.slice(0, end)));
+  } else {
+    if (command.action.name === 'undo' || command.action.name === 'redo')
+      throw Error('Undo is workspace-scoped.');
+    textCommands[command.action.name]({
+      state,
+      dispatch: (tr) => {
+        transaction = tr;
+      },
+    });
+  }
+  return { text, key, transaction, rest };
+}
 
 const executeWorkspaceCommand = (
   history: YUndoManager,
@@ -184,39 +226,7 @@ const executeWorkspaceCommand = (
   switch (command.kind) {
     case 'text': {
       if (!editableTarget(doc, command.target, context.today)) return { value: false };
-      const text = targetText(doc, command.target),
-        key = targetKey(command.target);
-      const selection = resolveSelection(doc, text, command.selection ?? selections.get(key));
-      const state = EditorState.create({
-        doc: text.toString(),
-        selection,
-        extensions: [
-          markdown({ base: markdownLanguage, addKeymap: false }),
-          indentUnit.of('  '),
-          EditorState.allowMultipleSelections.of(true),
-        ],
-      });
-      let transaction: Transaction | undefined,
-        rest = '';
-      if (command.action.name === 'insert') {
-        let end = Math.min(1000, command.action.text.length);
-        if (
-          end < command.action.text.length &&
-          /[\uD800-\uDBFF]/u.test(command.action.text[end - 1]!)
-        )
-          end--;
-        rest = command.action.text.slice(end);
-        transaction = state.update(state.replaceSelection(command.action.text.slice(0, end)));
-      } else {
-        if (command.action.name === 'undo' || command.action.name === 'redo')
-          throw Error('Undo is workspace-scoped.');
-        textCommands[command.action.name]({
-          state,
-          dispatch: (tr) => {
-            transaction = tr;
-          },
-        });
-      }
+      const { text, key, transaction, rest } = planWorkspaceText(doc, command, selections);
       if (transaction) {
         const edits: { from: number; to: number; insert: string }[] = [];
         transaction.changes.iterChanges((from, to, _a, _b, inserted) =>

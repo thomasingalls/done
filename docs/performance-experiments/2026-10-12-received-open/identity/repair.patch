@@ -1,0 +1,738 @@
+diff --git a/account-protocol/inboundTransport.ts b/account-protocol/inboundTransport.ts
+index 8bece34b..21c6aed8 100644
+--- a/account-protocol/inboundTransport.ts
++++ b/account-protocol/inboundTransport.ts
+@@ -96,31 +96,35 @@ export function decodeInboundRequest(bytes: Bytes): InboundReadRequest {
+     expires: v[13],
+     signature: v[14],
+   } as InboundReadRequest;
+-  encodeInboundRequest(r);
++  requestValues(r);
++  inboundHex(r.signature, 64);
+   return r;
+ }
+-const pageValues = (p: InboundReadPage) => {
++const pageFields = (p: InboundReadPage) => {
+   if (!Array.isArray(p.entries) || p.entries.length > READ_COUNT_LIMIT) invalid();
++  for (const e of p.entries) {
++    if (
++      !(e.envelope instanceof Uint8Array) ||
++      !e.envelope.length ||
++      e.envelope.length > ENVELOPE_WIRE_LIMIT ||
++      !(e.proof instanceof Uint8Array) ||
++      !e.proof.length ||
++      e.proof.length > RESPONSE_LIMIT
++    )
++      invalid();
++  }
+   return [
+     'done/private-read-page/v2',
+     2,
+     inboundHex(p.request, 32),
+     inboundInteger(p.through),
+     inboundInteger(p.next),
+-    p.entries.map((e) => {
+-      if (
+-        !(e.envelope instanceof Uint8Array) ||
+-        !e.envelope.length ||
+-        e.envelope.length > ENVELOPE_WIRE_LIMIT ||
+-        !(e.proof instanceof Uint8Array) ||
+-        !e.proof.length ||
+-        e.proof.length > RESPONSE_LIMIT
+-      )
+-        invalid();
+-      return [hex(e.envelope), hex(e.proof)];
+-    }),
+   ];
+ };
++const pageValues = (p: InboundReadPage) => [
++  ...pageFields(p),
++  p.entries.map((e) => [hex(e.envelope), hex(e.proof)]),
++];
+ export const inboundPageMessage = (p: InboundReadPage): Bytes => json(pageValues(p));
+ export function encodeInboundPage(p: InboundReadPage): Bytes {
+   const bytes = json([...pageValues(p), inboundHex(p.signature, 64)]);
+@@ -144,7 +148,10 @@ export function decodeInboundPage(bytes: Bytes): InboundReadPage {
+     }),
+     signature: v[6],
+   } as InboundReadPage;
+-  encodeInboundPage(p);
++  // Input length and canonical JSON/hex were checked before decoding. Validate the same
++  // fields as encoding without allocating another full set of hex strings and wire bytes.
++  pageFields(p);
++  inboundHex(p.signature, 64);
+   return p;
+ }
+ export function checkInboundExtent(p: InboundReadPage, r: InboundReadRequest): void {
+diff --git a/src/crdt/accountLedgerMetrics.ts b/src/crdt/accountLedgerMetrics.ts
+index aaf7ad63..158ebd78 100644
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -18,6 +18,7 @@ const workNames = [
+   'inboundCensuses',
+   'deliveryPrefixLinks',
+   'coverageBaselines',
++  'coverageDirectProofs',
+   'loads',
+   'loadedRows',
+   'loadedBytes',
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 5e45aa88..db3970c5 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -190,7 +190,10 @@ async function openAccountReceiveOwner(
+     auditDeferred = false;
+   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
+   const memo = createVerificationMemo(),
+-    coverage = createInboundCoverage({ incremental });
++    coverage = createInboundCoverage({
++      incremental,
++      direct: import.meta.env?.['VITE_ACCOUNT_DIRECT_COVERAGE'] !== '0',
++    });
+   const inspectCensus = <R>(
+     records: Parameters<typeof inspectInbound>[0],
+     route: CaptureRoute,
+diff --git a/src/crdt/inboundLedger.ts b/src/crdt/inboundLedger.ts
+index c4be626c..51a311d0 100644
+--- a/src/crdt/inboundLedger.ts
++++ b/src/crdt/inboundLedger.ts
+@@ -26,7 +26,14 @@ import { acceptanceLink, decodePositionResponse } from '../../account-protocol/p
+ import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
+ import { decodeInboundRecord } from './inboundRecord';
+ import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
+-import { Y, forkDoc, sameDocState, hasPendingUpdates, prepareDocCoverage } from './yjs';
++import {
++  Y,
++  forkDoc,
++  sameDocState,
++  hasPendingUpdates,
++  prepareDocCoverage,
++  provesIntegratedCoverage,
++} from './yjs';
+ import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
+ import type { VerificationMemo } from './verificationMemo';
+ 
+@@ -312,7 +319,7 @@ function updateIndex(bounded: boolean) {
+   };
+ }
+ /** A fork must be unchanged by each evidenced original; no vector-only shortcut. */
+-function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false) {
++function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false, direct = false) {
+   const doc = new Y.Doc({ gc: false }),
+     originals = updateIndex(false),
+     positives = updateIndex(true);
+@@ -361,7 +368,10 @@ function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false
+           let copy: ReturnType<typeof forkDoc> | undefined;
+           try {
+             let covered: boolean;
+-            if (reuseBaseline) {
++            if (direct && provesIntegratedCoverage(doc, update)) {
++              covered = true;
++              countLedgerWork('coverageDirectProofs');
++            } else if (reuseBaseline) {
+               if (!prepared) {
+                 prepared = prepareDocCoverage(doc);
+                 countLedgerWork('coverageBaselines');
+@@ -399,7 +409,7 @@ export function verifyInboundCoverage(
+   }
+ }
+ /** Owner-local content view. Only successful coverage is memoised; failure always invalidates. */
+-export function createInboundCoverage(options: { incremental?: boolean } = {}) {
++export function createInboundCoverage(options: { incremental?: boolean; direct?: boolean } = {}) {
+   let rows: OpenedRecord[] | undefined, coverage: ReturnType<typeof contentCoverage> | undefined;
+   const clear = () => {
+     eraseVerified(rows);
+@@ -427,7 +437,7 @@ export function createInboundCoverage(options: { incremental?: boolean } = {}) {
+       const copied = copyRecords(content);
+       let next: ReturnType<typeof contentCoverage> | undefined;
+       try {
+-        next = contentCoverage(copied, options.incremental);
++        next = contentCoverage(copied, options.incremental, options.direct);
+         const equivalent = !!(options.incremental && coverage && next.preserve(coverage));
+         clear();
+         rows = copied;
+@@ -504,96 +514,107 @@ export async function verifyInboundLedger(
+   ]
+     .filter((e) => !continuation || e.record.seq > continuation.after)
+     .sort((a, b) => a.record.seq - b.record.seq);
+-  for (const entry of events) {
+-    if (reuse?.checkpoint) await reuse.checkpoint();
+-    lifetime.assertCurrent();
+-    if (entry.kind === 'history') {
+-      if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
+-        captureError('History installation after stream conflict');
+-      const check = () =>
+-        verifyHistoryInstall(base, entry.record.bytes, own.installedHistory, lifetime);
+-      const result = reuse
+-        ? await reuse.memo.check(
+-            'history:' + entry.record.seq,
+-            JSON.stringify({
+-              baseline: base.baseline,
+-              authority: base.authority,
+-              reader: base.reader,
+-              previous: own.installedHistory,
+-            }),
+-            [entry.record.bytes],
+-            check,
+-            lifetime.assertCurrent,
+-          )
+-        : await check();
+-      try {
+-        if (reuse) reuse.coverage.check(records, [result.update]);
+-        else verifyInboundCoverage(records, [result.update]);
+-        if (result.heads)
+-          await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
+-        own.installedHistory = result.installed;
+-      } finally {
+-        result.update.fill(0);
+-      }
+-      continue;
+-    }
+-    const { record, event } = entry;
+-    const request = decodeInboundRequest(event.request);
+-    const publisher = publisherContext(base, request.publisher);
+-    const state = publisherState(own, base, request.publisher);
+-    if (request.publisher !== base.publisher.id) own.peers.set(request.publisher, state);
+-    if (state.conflict) captureError('Inbound event after stream conflict');
+-    const historical = publisher.history
+-      ? {
+-          ...publisher,
+-          authority: historyAuthority(publisher.history, {
+-            ...publisher.authority,
+-            tip: request.epoch,
+-            head: event.head,
+-          }),
++  const localCoverage = reuse
++    ? undefined
++    : contentCoverage(
++        records.filter((r) => r.kind === 'update' || r.kind === 'state'),
++        false,
++        import.meta.env?.['VITE_ACCOUNT_DIRECT_COVERAGE'] !== '0',
++      );
++  try {
++    for (const entry of events) {
++      if (reuse?.checkpoint) await reuse.checkpoint();
++      lifetime.assertCurrent();
++      if (entry.kind === 'history') {
++        if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
++          captureError('History installation after stream conflict');
++        const check = () =>
++          verifyHistoryInstall(base, entry.record.bytes, own.installedHistory, lifetime);
++        const result = reuse
++          ? await reuse.memo.check(
++              'history:' + entry.record.seq,
++              JSON.stringify({
++                baseline: base.baseline,
++                authority: base.authority,
++                reader: base.reader,
++                previous: own.installedHistory,
++              }),
++              [entry.record.bytes],
++              check,
++              lifetime.assertCurrent,
++            )
++          : await check();
++        try {
++          if (reuse) reuse.coverage.check(records, [result.update]);
++          else localCoverage!.check([result.update]);
++          if (result.heads)
++            await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
++          own.installedHistory = result.installed;
++        } finally {
++          result.update.fill(0);
+         }
+-      : publisher;
+-    const context = contextAt(historical, state, request.after),
+-      check = () => verifyStoredInbound(context, record.bytes, lifetime),
+-      result = reuse
+-        ? await reuse.memo.check(
+-            'inbound:' + record.seq,
+-            JSON.stringify({ ...context, generationKey: undefined, retained: undefined }),
+-            [
+-              record.bytes,
+-              ...(context.retained
+-                ? [
+-                    utf8(context.retained.previous),
+-                    context.retained.envelope,
+-                    context.retained.proof,
+-                  ]
+-                : []),
+-            ],
+-            check,
+-            lifetime.assertCurrent,
+-          )
+-        : await check();
+-    if (result.kind === 'conflict') state.conflict = true;
+-    else if (result.kind === 'received') {
+-      try {
+-        if (reuse) reuse.coverage.check(records, result.updates);
+-        else verifyInboundCoverage(records, result.updates);
+-      } finally {
+-        for (const b of result.updates) b.fill(0);
++        continue;
+       }
+-      state.prefix = {
+-        position: result.position,
+-        link: result.link,
+-        observedThrough: result.through,
+-      };
+-      const entry = decodeInboundPage(event.page).entries[0]!;
+-      state.retained.set(result.position, {
+-        previous: event.previous,
+-        envelope: entry.envelope,
+-        proof: entry.proof,
+-      });
+-    } else captureError('Unexpected stored inbound observation');
++      const { record, event } = entry;
++      const request = decodeInboundRequest(event.request);
++      const publisher = publisherContext(base, request.publisher);
++      const state = publisherState(own, base, request.publisher);
++      if (request.publisher !== base.publisher.id) own.peers.set(request.publisher, state);
++      if (state.conflict) captureError('Inbound event after stream conflict');
++      const historical = publisher.history
++        ? {
++            ...publisher,
++            authority: historyAuthority(publisher.history, {
++              ...publisher.authority,
++              tip: request.epoch,
++              head: event.head,
++            }),
++          }
++        : publisher;
++      const context = contextAt(historical, state, request.after),
++        check = () => verifyStoredInbound(context, record.bytes, lifetime),
++        result = reuse
++          ? await reuse.memo.check(
++              'inbound:' + record.seq,
++              JSON.stringify({ ...context, generationKey: undefined, retained: undefined }),
++              [
++                record.bytes,
++                ...(context.retained
++                  ? [
++                      utf8(context.retained.previous),
++                      context.retained.envelope,
++                      context.retained.proof,
++                    ]
++                  : []),
++              ],
++              check,
++              lifetime.assertCurrent,
++            )
++          : await check();
++      if (result.kind === 'conflict') state.conflict = true;
++      else if (result.kind === 'received') {
++        try {
++          if (reuse) reuse.coverage.check(records, result.updates);
++          else localCoverage!.check(result.updates);
++        } finally {
++          for (const b of result.updates) b.fill(0);
++        }
++        state.prefix = {
++          position: result.position,
++          link: result.link,
++          observedThrough: result.through,
++        };
++        const entry = decodeInboundPage(event.page).entries[0]!;
++        state.retained.set(result.position, {
++          previous: event.previous,
++          envelope: entry.envelope,
++          proof: entry.proof,
++        });
++      } else captureError('Unexpected stored inbound observation');
++    }
++    lifetime.assertCurrent();
++    return own;
++  } finally {
++    localCoverage?.clear();
+   }
+-  lifetime.assertCurrent();
+-  return own;
+ }
+diff --git a/src/crdt/inboundRecord.ts b/src/crdt/inboundRecord.ts
+index 53af80dc..ceb71ba4 100644
+--- a/src/crdt/inboundRecord.ts
++++ b/src/crdt/inboundRecord.ts
+@@ -38,7 +38,7 @@ export interface InboundRecord {
+ const invalid = (): never => {
+   throw Error('Invalid inbound record');
+ };
+-function values(e: InboundRecord) {
++function validatedFields(e: InboundRecord) {
+   if (e.kind !== 'received' && e.kind !== 'conflict') invalid();
+   const r = decodeInboundRequest(e.request),
+     p = decodeInboundPage(e.page);
+@@ -82,12 +82,12 @@ function values(e: InboundRecord) {
+     inboundInteger(e.position, 1),
+     inboundHex(e.previous, 32),
+     inboundHex(e.link, 32),
+-    hex(e.request),
+-    hex(e.page),
+   ];
+ }
+ export function encodeInboundRecord(e: InboundRecord): Bytes {
+-  const bytes = new TextEncoder().encode(JSON.stringify(values(e)));
++  const bytes = new TextEncoder().encode(
++    JSON.stringify([...validatedFields(e), hex(e.request), hex(e.page)]),
++  );
+   if (bytes.length > INBOUND_RECORD_LIMIT) invalid();
+   return bytes;
+ }
+@@ -107,6 +107,8 @@ export function decodeInboundRecord(bytes: Bytes): InboundRecord {
+     request: inboundBytes(v[11], READ_REQUEST_LIMIT),
+     page: inboundBytes(v[12], READ_PAGE_LIMIT),
+   } as InboundRecord;
+-  encodeInboundRecord(e);
++  // parseInboundArray already checked byte length and exact canonical JSON. The binary
++  // fields were decoded from canonical hex above; re-encoding them adds no validation.
++  validatedFields(e);
+   return e;
+ }
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index f39c6bfc..c5a59376 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -374,6 +374,80 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
+   }
+ };
+ 
++/** Conservative positive proof for the pinned v13 V1 apply semantics. False means use the
++ * independent fork/apply/comparison, not "missing". No mutation, vector-only inference, or
++ * retained decoded plaintext. The caller owns the document for this synchronous call. */
++export const provesIntegratedCoverage = (doc: YDoc, update: Uint8Array): boolean => {
++  if (hasPendingUpdates(doc)) return false;
++  try {
++    // The lazy decoder's delete-set map overwrites duplicate client sections, while apply reads
++    // every section. Restrict the proof to canonical framing; unusual framing keeps the oracle.
++    const canonical = Y.diffUpdate(update, new Uint8Array([0]));
++    try {
++      if (!equalBytes(canonical, update)) return false;
++    } finally {
++      canonical.fill(0);
++    }
++    const { structs, ds } = Y.decodeUpdate(update);
++    const range = (client: number, clock: number, length: number) =>
++      Number.isSafeInteger(client) &&
++      client >= 0 &&
++      Number.isSafeInteger(clock) &&
++      clock >= 0 &&
++      Number.isSafeInteger(length) &&
++      length > 0 &&
++      Number.isSafeInteger(clock + length) &&
++      clock + length <= Y.getState(doc.store, client);
++    const dependency = (id: Y.ID | null, splitAfter?: boolean): boolean => {
++      if (!id) return true;
++      if (!range(id.client, id.clock, 1)) return false;
++      if (splitAfter === undefined) return true;
++      const item = Y.getItem(doc.store, id);
++      const split = id.clock + (splitAfter ? 1 : 0) - item.id.clock;
++      // getMissing resolves/splits origins even when the incoming struct's IDs already exist.
++      // ContentString.splice replaces a high surrogate and its successor when split there.
++      if (
++        item instanceof Y.Item &&
++        item.content instanceof Y.ContentString &&
++        split > 0 &&
++        split < item.length
++      ) {
++        const code = item.content.str.charCodeAt(split - 1);
++        if (code >= 0xd800 && code <= 0xdbff) return false;
++      }
++      return true;
++    };
++    for (const struct of structs) {
++      if (struct instanceof Y.Skip) return false;
++      if (!range(struct.id.client, struct.id.clock, struct.length)) return false;
++      if (
++        struct instanceof Y.Item &&
++        (!dependency(struct.origin, true) ||
++          !dependency(struct.rightOrigin, false) ||
++          (struct.parent instanceof Y.ID && !dependency(struct.parent)))
++      )
++        return false;
++    }
++    // Clocks do not prove deletions. Every touched stored struct must already be deleted,
++    // including GC structs; otherwise applying the update changes visible or pending state.
++    for (const [client, intervals] of ds.clients) {
++      for (const { clock, len } of intervals) {
++        if (!range(client, clock, len)) return false;
++        const stored = doc.store.clients.get(client)!;
++        for (let i = Y.findIndexSS(stored, clock); ; i++) {
++          const struct = stored[i]!;
++          if (!struct.deleted) return false;
++          if (struct.id.clock + struct.length >= clock + len) break;
++        }
++      }
++    }
++    return true;
++  } catch {
++    // Unsupported/malformed encodings are interpreted solely by the reference path.
++    return false;
++  }
++};
++
+ /**
+  * Synchronous coverage baseline. Each check gets an independent gc:false fork and the same full
+  * comparison as fork/apply/sameDocState; only encoding the immutable starting state is shared.
+diff --git a/test/account-ledger-contract/controls.test.mjs b/test/account-ledger-contract/controls.test.mjs
+index c157f3ed..95f8d7d5 100644
+--- a/test/account-ledger-contract/controls.test.mjs
++++ b/test/account-ledger-contract/controls.test.mjs
+@@ -84,7 +84,7 @@ test('count has two effective checks; hash and count omissions separately weaken
+     hashCheckOmitted: 'accepted wrong hash',
+   });
+ });
+-test('delivery ordering and received-content coverage controls accept otherwise authentic but invalid histories', async () => {
++test('delivery ordering remains guarded and coverage omission accepts missing content', async () => {
+   const records = fullRecords(f, false),
+     submission = records.splice(5, 1)[0];
+   records.splice(1, 0, submission);
+@@ -94,10 +94,19 @@ test('delivery ordering and received-content coverage controls accept otherwise
+     h.verifyDelivery(c.delivery, f.route, f.authority, await publicKey(f), crypto.subtle),
+     /Delivery precedes/,
+   );
+-  const state = await (
+-    await load('delivery')
+-  ).verifyDelivery(c.delivery, f.route, f.authority, await publicKey(f), crypto.subtle);
+-  assert.equal(state.acceptedThrough, 1);
++  // Attempt-by-attempt replay has an additional boundary: until the envelope's row is
++  // encountered, the active position has no wire to decode. Removing only the explicit
++  // ordering guard is no longer sufficient to admit a reordered submission.
++  await assert.rejects(
++    (await load('delivery')).verifyDelivery(
++      c.delivery,
++      f.route,
++      f.authority,
++      await publicKey(f),
++      crypto.subtle,
++    ),
++    /Malformed network envelope/,
++  );
+   const noContent = fullRecords(f, false).filter((r) => r.kind !== 'update'),
+     census = h.inspectInbound(noContent, f.route, context(f));
+   const w = fold(census.delivery.spool.events);
+@@ -105,7 +114,7 @@ test('delivery ordering and received-content coverage controls accept otherwise
+   const accepted = await audit(await load('coverage'), f, noContent, w);
+   assert.equal(accepted.received.prefix.position, 1);
+   report('control-semantic-order', {
+-    delivery: 'source guard removal accepts signed submission before persisted envelope',
++    delivery: 'guard removal still refuses submission before its active envelope exists',
+     coverage: 'coverage call omission accepts valid signed receive evidence with no disk content',
+     witness: w,
+   });
+diff --git a/test/account-ledger-contract/runtime.mjs b/test/account-ledger-contract/runtime.mjs
+index 10c1e7e4..38dfc42c 100644
+--- a/test/account-ledger-contract/runtime.mjs
++++ b/test/account-ledger-contract/runtime.mjs
+@@ -38,11 +38,7 @@ export const controls = {
+     'void witness;',
+   ],
+   delivery: ['deliveryRecord.ts', "captureError('Delivery precedes its envelope');", 'void 0;'],
+-  coverage: [
+-    'inboundLedger.ts',
+-    'verifyInboundCoverage(records, result.updates);',
+-    'void records;',
+-  ],
++  coverage: ['inboundLedger.ts', 'localCoverage!.check(result.updates);', 'void records;'],
+ };
+ export async function load(control) {
+   let hits = 0;
+diff --git a/test/account-receive/fixtures.mjs b/test/account-receive/fixtures.mjs
+index c0d2b834..ce43f535 100644
+--- a/test/account-receive/fixtures.mjs
++++ b/test/account-receive/fixtures.mjs
+@@ -22,7 +22,7 @@ export async function receiveBundle(control) {
+     ],
+     coverage: [
+       '/src/crdt/inboundLedger.ts',
+-      'if (reuse) reuse.coverage.check(records, result.updates);\n        else verifyInboundCoverage(records, result.updates);',
++      'if (reuse) reuse.coverage.check(records, result.updates);\n          else localCoverage!.check(result.updates);',
+       'void records;',
+     ],
+     'coverage-without-reuse': [
+@@ -32,7 +32,7 @@ export async function receiveBundle(control) {
+     ],
+     'coverage-without-fallback': [
+       '/src/crdt/inboundLedger.ts',
+-      'verifyInboundCoverage(records, result.updates);',
++      'localCoverage!.check(result.updates);',
+       'void records;',
+     ],
+     split: [
+diff --git a/test/accountInboundCodec.test.ts b/test/accountInboundCodec.test.ts
+index 32d35e0c..1e092ccc 100644
+--- a/test/accountInboundCodec.test.ts
++++ b/test/accountInboundCodec.test.ts
+@@ -171,6 +171,44 @@ describe('closed inbound v2 transport and local record codecs', () => {
+       expect(() => decodeInboundRecord(json(v))).toThrow();
+     }
+   });
++  it.each(['request', 'page', 'record'] as const)(
++    'decoded %s mutations still satisfy the original re-encoding check',
++    (kind) => {
++      const wire = kind === 'request' ? p.request : kind === 'page' ? p.page : eventWire(first);
++      const base = JSON.parse(Buffer.from(wire).toString()) as unknown[];
++      const check = (bytes: Uint8Array<ArrayBuffer>) => {
++        let encode;
++        try {
++          if (kind === 'request') {
++            const v = decodeInboundRequest(bytes);
++            encode = () => encodeInboundRequest(v);
++          } else if (kind === 'page') {
++            const v = decodeInboundPage(bytes);
++            encode = () => encodeInboundPage(v);
++          } else {
++            const v = decodeInboundRecord(bytes);
++            encode = () => encodeInboundRecord(v);
++          }
++        } catch {
++          return;
++        }
++        expect(encode()).toEqual(bytes);
++      };
++      check(wire);
++      fc.assert(
++        fc.property(
++          fc.integer({ min: 0, max: base.length - 1 }),
++          fc.oneof(fc.string(), fc.integer(), fc.constantFrom(null, [], {}, true, -0)),
++          (index, value) => {
++            const v = [...base];
++            v[index] = value;
++            check(json(v));
++          },
++        ),
++        { seed: 121026, numRuns: 300 },
++      );
++    },
++  );
+   it('implements bounded contiguous page extent, including empty end pages and safe-integer exhaustion', () => {
+     const r = decodeInboundRequest(p.request),
+       page = decodeInboundPage(p.page);
+diff --git a/test/incrementalLedger.test.ts b/test/incrementalLedger.test.ts
+index 37778598..ab0171be 100644
+--- a/test/incrementalLedger.test.ts
++++ b/test/incrementalLedger.test.ts
+@@ -85,7 +85,7 @@ it('incremental coverage agrees with full replay through inserts, deletes, pendi
+       const a = new Y.Doc({ gc: false }),
+         b = new Y.Doc({ gc: false });
+       const updates: Uint8Array<ArrayBuffer>[] = [];
+-      const coverage = createInboundCoverage({ incremental: true });
++      const coverage = createInboundCoverage({ incremental: true, direct: true });
+       let records: OpenedRecord[] = [],
+         seq = 0;
+       const capture = (u: Uint8Array) => updates.push(new Uint8Array(u));
+@@ -138,7 +138,7 @@ it('incremental coverage agrees with full replay through inserts, deletes, pendi
+ });
+ it('a failed coverage check is reconsidered after its content arrives; stale bound checkers fail', () => {
+   const d = new Y.Doc(),
+-    coverage = createInboundCoverage({ incremental: true });
++    coverage = createInboundCoverage({ incremental: true, direct: true });
+   try {
+     d.getText('t').insert(0, 'dependency');
+     const u = new Uint8Array(Y.encodeStateAsUpdate(d));
+@@ -157,7 +157,7 @@ it('a failed coverage check is reconsidered after its content arrives; stale bou
+ 
+ it('rechecks positives across actual out-of-order dependencies and pending deletes', () => {
+   const doc = new Y.Doc({ gc: false }),
+-    coverage = createInboundCoverage({ incremental: true });
++    coverage = createInboundCoverage({ incremental: true, direct: true });
+   const frames: Uint8Array<ArrayBuffer>[] = [];
+   doc.on('update', (u: Uint8Array) => frames.push(new Uint8Array(u)));
+   try {
+diff --git a/test/preparedCoverage.test.ts b/test/preparedCoverage.test.ts
+index 5ae3fddf..805c1c6b 100644
+--- a/test/preparedCoverage.test.ts
++++ b/test/preparedCoverage.test.ts
+@@ -1,7 +1,15 @@
++import * as encoding from 'lib0/encoding';
+ // @vitest-environment node
+ import { expect, it } from 'vitest';
+ import fc from 'fast-check';
+-import { Y, forkDoc, sameDocState, hasPendingUpdates, prepareDocCoverage } from '../src/crdt/yjs';
++import {
++  Y,
++  forkDoc,
++  sameDocState,
++  hasPendingUpdates,
++  prepareDocCoverage,
++  provesIntegratedCoverage,
++} from '../src/crdt/yjs';
+ import { createInboundCoverage, verifyInboundCoverage } from '../src/crdt/inboundLedger';
+ import type { OpenedRecord } from '../src/crdt/contentRecord';
+ 
+@@ -64,7 +72,7 @@ it('retains exact pending structs and deletes, and does not cache a negative acr
+   Y.applyUpdate(target, updates[2]!);
+   expect(hasPendingUpdates(target)).toBe(true);
+   const probe = prepareDocCoverage(target),
+-    coverage = createInboundCoverage({ incremental: true });
++    coverage = createInboundCoverage({ incremental: true, direct: true });
+   try {
+     for (const u of updates) expect(probe.check(u)).toBe(reference(target, u));
+     const initial = [row(new Uint8Array(Y.encodeStateAsUpdate(target)))];
+@@ -155,6 +163,8 @@ it('matches independent full checks through 120 generated mixed-type, GC and par
+             for (const u of candidates) {
+               const saved = u.slice(),
+                 expected = verdict(() => reference(content, u));
++              const proved = verdict(() => provesIntegratedCoverage(content, u));
++              if (proved) expect(expected).toBe(true);
+               expect(verdict(() => probe.check(u))).toBe(expected);
+               expect(u).toEqual(saved);
+               if (expected) accepted++;
+@@ -233,3 +243,59 @@ it('keeps simultaneous baselines isolated, including legacy JSON, binary and lon
+     b.destroy();
+   }
+ });
++
++it('proves integrated text/GC/deletions, but defers pending state, missing dependencies and surrogate splits', () => {
++  const doc = new Y.Doc({ gc: false });
++  doc.clientID = 7;
++  doc.getText('t').insert(0, 'a😀b');
++  const known = Y.encodeStateAsUpdate(doc);
++  expect(provesIntegratedCoverage(doc, known)).toBe(true);
++  const duplicate = (origin: Y.ID | null, right: Y.ID | null, parent: Y.ID | string | null) => {
++    const item = new Y.Item(
++      Y.createID(7, 0),
++      null,
++      origin,
++      null,
++      right,
++      parent as Y.ID,
++      null,
++      new Y.ContentString('x'),
++    );
++    const encoder = new Y.UpdateEncoderV1();
++    // One client section, one already-known ID. Helpers use the seam's exported lib0-free wire.
++    encoding.writeVarUint(encoder.restEncoder, 1);
++    encoding.writeVarUint(encoder.restEncoder, 1);
++    encoder.writeClient(7);
++    encoding.writeVarUint(encoder.restEncoder, 0);
++    item.write(encoder, 0);
++    encoding.writeVarUint(encoder.restEncoder, 0);
++    return encoder.toUint8Array();
++  };
++  for (const bytes of [
++    duplicate(Y.createID(99, 0), null, null),
++    duplicate(null, Y.createID(99, 0), null),
++    duplicate(null, null, Y.createID(99, 0)),
++    duplicate(Y.createID(7, 1), null, null), // Split after the high surrogate.
++    duplicate(null, Y.createID(7, 2), null), // Split before the low surrogate.
++  ]) {
++    expect(provesIntegratedCoverage(doc, bytes)).toBe(false);
++    expect(verdict(() => reference(doc, bytes))).toBe(false);
++  }
++  doc.getText('t').delete(0, 1);
++  expect(provesIntegratedCoverage(doc, Y.encodeStateAsUpdate(doc))).toBe(true);
++  // Duplicate DS sections: lazy decode retains only the last; apply processes both.
++  // First deletes still-visible clock 3, second re-deletes clock 0.
++  const duplicateDeletes = new Uint8Array([0, 2, 7, 1, 3, 1, 7, 1, 0, 1]);
++  expect(provesIntegratedCoverage(doc, duplicateDeletes)).toBe(false);
++  expect(reference(doc, duplicateDeletes)).toBe(false);
++  const after = new Y.Doc({ gc: false });
++  Y.applyUpdate(after, known);
++  const updates: Uint8Array[] = [];
++  after.on('update', (u) => updates.push(u));
++  after.getText('t').insert(4, 'next');
++  const pending = new Y.Doc({ gc: false });
++  Y.applyUpdate(pending, updates[0]!);
++  expect(hasPendingUpdates(pending)).toBe(true);
++  expect(provesIntegratedCoverage(pending, new Uint8Array([0, 0]))).toBe(false);
++  for (const d of [doc, after, pending]) d.destroy();
++});

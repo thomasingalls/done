@@ -38,7 +38,7 @@ export interface InboundRecord {
 const invalid = (): never => {
   throw Error('Invalid inbound record');
 };
-function values(e: InboundRecord) {
+function validatedFields(e: InboundRecord) {
   if (e.kind !== 'received' && e.kind !== 'conflict') invalid();
   const r = decodeInboundRequest(e.request),
     p = decodeInboundPage(e.page);
@@ -82,12 +82,12 @@ function values(e: InboundRecord) {
     inboundInteger(e.position, 1),
     inboundHex(e.previous, 32),
     inboundHex(e.link, 32),
-    hex(e.request),
-    hex(e.page),
   ];
 }
 export function encodeInboundRecord(e: InboundRecord): Bytes {
-  const bytes = new TextEncoder().encode(JSON.stringify(values(e)));
+  const bytes = new TextEncoder().encode(
+    JSON.stringify([...validatedFields(e), hex(e.request), hex(e.page)]),
+  );
   if (bytes.length > INBOUND_RECORD_LIMIT) invalid();
   return bytes;
 }
@@ -107,6 +107,8 @@ export function decodeInboundRecord(bytes: Bytes): InboundRecord {
     request: inboundBytes(v[11], READ_REQUEST_LIMIT),
     page: inboundBytes(v[12], READ_PAGE_LIMIT),
   } as InboundRecord;
-  encodeInboundRecord(e);
+  // parseInboundArray already checked byte length and exact canonical JSON. The binary
+  // fields were decoded from canonical hex above; re-encoding them adds no validation.
+  validatedFields(e);
   return e;
 }

@@ -1,0 +1,35 @@
+{
+  "note": "HTTP 200 submit response intervals are proxies; response bodies are not retained. Complete export equality separately verifies eventual delivery. rAF latency is not admitted-text latency.",
+  "writerHttp200Submits": 10,
+  "writerSubmitStartIntervalMs": {
+    "n": 9,
+    "p50": 2315,
+    "p95": 3743,
+    "max": 3743
+  },
+  "writerSubmitResponseIntervalMs": {
+    "n": 9,
+    "p50": 2313,
+    "p95": 3279,
+    "max": 3279
+  },
+  "receiverFirstSubmitStartMs": 2155,
+  "peerReads": 600,
+  "peerAfterRange": [
+    7,
+    606
+  ],
+  "duplicatePeerCursors": 0,
+  "ownReads": 34,
+  "rateLimited": 0,
+  "non200": 0,
+  "failedEventOutcomes": {
+    "200 net::ERR_ABORTED": 112
+  },
+  "receiverTypingNextFrameMs": {
+    "n": 120,
+    "p50": 11.30000114440918,
+    "p95": 31,
+    "max": 47
+  }
+}

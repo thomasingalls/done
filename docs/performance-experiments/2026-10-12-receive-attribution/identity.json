@@ -1,0 +1,32 @@
+{
+  "runtime": "77657e23c994727c8db56201a8c3d4cfe310b7b9",
+  "checkout": "1734b2f59e3fe732cab480e94cb5d9a14503e030",
+  "fixture": {
+    "path": "/tmp/done-client-receive/fixture.json",
+    "bytes": 7707006,
+    "sha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985"
+  },
+  "node": "26.11.1",
+  "baselineDist": "/tmp/done-receive-attribution-20261012/baseline-dist",
+  "publicAssetComparison": {
+    "reference": "ol-infra/docs/evidence/2026-10-11-done-sync-recovery-live.json",
+    "checked": 35,
+    "mismatches": [],
+    "includes": "all precache assets, index alias and service worker"
+  },
+  "environment": {
+    "platform": "darwin",
+    "architecture": "arm64",
+    "cpus": "Apple M1 Pro",
+    "logicalCpus": 10,
+    "memoryBytes": 34359738368,
+    "playwright": "1.62.0",
+    "chromium": [
+      {
+        "name": "chromium",
+        "revision": "1234",
+        "browserVersion": "151.0.7922.34"
+      }
+    ]
+  }
+}

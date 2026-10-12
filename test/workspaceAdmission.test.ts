@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { accountTextPreparation } from '../src/crdt/accountTextPreparation';
 import { describe, it, expect, vi } from 'vitest';
 import * as fc from 'fast-check';
 import {
@@ -46,13 +47,22 @@ const until = async (condition: () => boolean) => {
 };
 const makeFixture = async (
   seed?: Uint8Array,
-  preparation: 'reference' | 'local-handoff' | 'local-snapshots' = 'reference',
+  preparation:
+    | 'reference'
+    | 'local-handoff'
+    | 'local-snapshots'
+    | 'account-snapshots'
+    | 'account-text' = 'reference',
 ) => {
   let date = '2026-09-08';
   let refuse = false,
     fail = false,
     release: (() => void) | undefined,
     gate: Promise<void> | undefined;
+  const account = preparation.startsWith('account-');
+  const sources: import('../src/crdt/sourceCapture').SourceUpdate[][] = [];
+  const direct: Uint8Array[] = [];
+  let beforeAppend: (() => void) | undefined;
   const owned: { state: PreparedWorkspaceState; scope: PreparationScope }[] = [],
     retired: PreparedWorkspaceState[] = [];
   const preparations: number[] = [],
@@ -62,6 +72,17 @@ const makeFixture = async (
     disk: Uint8Array[] = seed ? [seed] : [],
     wal: Uint8Array[] = [];
   const carrier = {
+    ...(account
+      ? {
+          captureLocal(
+            update: Uint8Array,
+            captured: import('../src/crdt/sourceCapture').SourceUpdate[],
+          ) {
+            sources.push(captured.map((s) => ({ ...s, bytes: s.bytes.slice() })));
+            return update.slice();
+          },
+        }
+      : {}),
     state: 'active',
     signal: abort.signal,
     loadRecovery: async () => ({
@@ -69,6 +90,7 @@ const makeFixture = async (
       journal: wal.map((bytes) => ({ bytes: bytes.slice() })),
     }),
     appendLocal(bytes: Uint8Array) {
+      beforeAppend?.();
       if (refuse) return { status: 'refused', reason: 'quota' };
       wal.push(bytes.slice());
       return { status: 'journalled' };
@@ -96,6 +118,20 @@ const makeFixture = async (
       const local = options[localWorkspacePreparation];
       return createAdmissionOwner(carrier, {
         ...options,
+        ...(options[accountTextPreparation]
+          ? {
+              [accountTextPreparation]: {
+                prepare(input, head) {
+                  const result = options[accountTextPreparation]!.prepare(input, head);
+                  if (result) {
+                    preparations.push(head.writer);
+                    direct.push(result.update);
+                  }
+                  return result;
+                },
+              },
+            }
+          : {}),
         prepare: (...args) => {
           preparations.push(args[0].clientID);
           return options.prepare(...args);
@@ -130,6 +166,7 @@ const makeFixture = async (
     },
     {
       identity,
+      ...(account ? { captureSources: true, suppressEmptySources: true } : {}),
       validateReceive: () => {},
       today: () => date,
     },
@@ -139,6 +176,11 @@ const makeFixture = async (
   doc.outgoing((b) => emitted.push(b));
   return {
     doc,
+    sources,
+    direct,
+    beforeAppend: (fn: () => void) => {
+      beforeAppend = fn;
+    },
     owned,
     retired,
     preparations,
@@ -169,7 +211,14 @@ const makeFixture = async (
     },
   };
 };
-describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
+const referenceAndOptimizedWorkspacePreparations = [
+  'reference',
+  'local-handoff',
+  'local-snapshots',
+  'account-snapshots',
+  'account-text',
+] as const;
+describe.each(referenceAndOptimizedWorkspacePreparations)(
   'workspace preparation %s',
   (preparation) => {
     const fixture = (seed?: Uint8Array) => makeFixture(seed, preparation);
@@ -820,64 +869,67 @@ describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
       });
     });
 
-    it('private prepared histories remain unpublished under pressure and are disposed on discard and drained close', async () => {
-      const histories = new Set<Y.Doc>(),
-        original = Y.Doc.prototype.transact;
-      const spy = vi.spyOn(Y.Doc.prototype, 'transact').mockImplementation(function <T>(
-        this: Y.Doc,
-        fn: (tr: Y.Transaction) => T,
-        origin?: unknown,
-      ): T {
-        if (
-          !this.gc &&
-          origin &&
-          typeof origin === 'object' &&
-          'kind' in origin &&
-          origin.kind === 'human'
-        )
-          histories.add(this);
-        return original.call(this, fn, origin) as T;
-      });
-      let f: Awaited<ReturnType<typeof fixture>> | undefined;
-      try {
-        f = await fixture();
-        await master(f.doc).input(insert('kept')).accepted;
-        const accepted = [...histories].at(-1)!;
-        expect(accepted).toBeDefined();
-        f.refuse();
-        f.fail();
-        const refused = master(f.doc).input(insert('refused'));
-        await until(() => f!.doc.status.state === 'blocked');
-        const abandoned = [...histories].at(-1)!;
-        expect(abandoned).not.toBe(accepted);
-        expect(abandoned.isDestroyed).toBe(false);
-        expect(f.doc.read().master, 'refused history must not be published').toBe('kept');
-        expect(f.emitted).toHaveLength(1);
-        f.doc.discardPending();
-        await expect(refused.accepted).rejects.toHaveProperty('code', 'discarded');
-        expect(abandoned.isDestroyed, 'discard must dispose its private history').toBe(true);
-        expect(accepted.isDestroyed).toBe(false);
-        f.pause();
-        const late = master(f.doc).input(insert('late'));
-        await until(() => [...histories].at(-1) !== abandoned);
-        const closingHistory = [...histories].at(-1)!;
-        expect(closingHistory.isDestroyed).toBe(false);
-        expect(f.doc.read().master).toBe('kept');
-        const closing = f.doc.close();
-        f.resume();
-        await closing;
-        await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
-        expect(f.emitted, 'close must not publish a late preparation').toHaveLength(1);
-        expect(
-          [...histories].every((d) => d.isDestroyed),
-          'close must dispose every owned history',
-        ).toBe(true);
-      } finally {
-        await f?.doc.close();
-        for (const history of histories) history.destroy();
-        spy.mockRestore();
-      }
-    });
+    it.skipIf(preparation === 'account-text')(
+      'private prepared histories remain unpublished under pressure and are disposed on discard and drained close',
+      async () => {
+        const histories = new Set<Y.Doc>(),
+          original = Y.Doc.prototype.transact;
+        const spy = vi.spyOn(Y.Doc.prototype, 'transact').mockImplementation(function <T>(
+          this: Y.Doc,
+          fn: (tr: Y.Transaction) => T,
+          origin?: unknown,
+        ): T {
+          if (
+            !this.gc &&
+            origin &&
+            typeof origin === 'object' &&
+            'kind' in origin &&
+            origin.kind === 'human'
+          )
+            histories.add(this);
+          return original.call(this, fn, origin) as T;
+        });
+        let f: Awaited<ReturnType<typeof fixture>> | undefined;
+        try {
+          f = await fixture();
+          await master(f.doc).input(insert('kept')).accepted;
+          const accepted = [...histories].at(-1)!;
+          expect(accepted).toBeDefined();
+          f.refuse();
+          f.fail();
+          const refused = master(f.doc).input(insert('refused'));
+          await until(() => f!.doc.status.state === 'blocked');
+          const abandoned = [...histories].at(-1)!;
+          expect(abandoned).not.toBe(accepted);
+          expect(abandoned.isDestroyed).toBe(false);
+          expect(f.doc.read().master, 'refused history must not be published').toBe('kept');
+          expect(f.emitted).toHaveLength(1);
+          f.doc.discardPending();
+          await expect(refused.accepted).rejects.toHaveProperty('code', 'discarded');
+          expect(abandoned.isDestroyed, 'discard must dispose its private history').toBe(true);
+          expect(accepted.isDestroyed).toBe(false);
+          f.pause();
+          const late = master(f.doc).input(insert('late'));
+          await until(() => [...histories].at(-1) !== abandoned);
+          const closingHistory = [...histories].at(-1)!;
+          expect(closingHistory.isDestroyed).toBe(false);
+          expect(f.doc.read().master).toBe('kept');
+          const closing = f.doc.close();
+          f.resume();
+          await closing;
+          await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
+          expect(f.emitted, 'close must not publish a late preparation').toHaveLength(1);
+          expect(
+            [...histories].every((d) => d.isDestroyed),
+            'close must dispose every owned history',
+          ).toBe(true);
+        } finally {
+          await f?.doc.close();
+          for (const history of histories) history.destroy();
+          spy.mockRestore();
+        }
+      },
+    );
     it('no-op and remote writer collisions renew the verified preparation basis', async () => {
       const f = await fixture();
       try {
@@ -1543,118 +1595,260 @@ describe('persistent text buffers', () => {
     }
   });
 
-  it('generated buffer histories match fresh forks through deletion, grouping, reset and refusal', async () => {
-    const actions = fc.array(
-      fc.record({
-        kind: fc.constantFrom(
-          'insert',
-          'delete',
-          'undo',
-          'redo',
-          'remote',
-          'metadata',
-          'retry',
-          'discard',
-          'noop',
-          'unicode',
-          'sliced',
-        ),
-        n: fc.integer({ min: 0, max: 20 }),
-      }),
-      { minLength: 15, maxLength: 35 },
-    );
-    await fc.assert(
-      fc.asyncProperty(actions, async (generated) => {
-        const a = await makeFixture(undefined, 'local-handoff'),
-          b = await makeFixture(undefined, 'local-snapshots');
-        const prefix = [
-          'insert',
-          'insert',
-          'delete',
-          'undo',
-          'redo',
-          'retry',
-          'discard',
-          'remote',
-          'metadata',
-          'noop',
-        ];
-        try {
-          for (const step of [...prefix.map((kind) => ({ kind, n: 1 })), ...generated]) {
-            const outputs = [];
-            for (const f of [a, b]) {
-              const text = f.doc.read().master,
-                at = Math.min(step.n, text.length);
-              if (
-                ['insert', 'delete', 'retry', 'discard', 'noop', 'unicode', 'sliced'].includes(
-                  step.kind,
-                )
-              ) {
-                if (step.kind === 'retry' || step.kind === 'discard') {
-                  f.refuse();
-                  f.fail();
-                }
-                const inserted =
-                  step.kind === 'unicode'
-                    ? '\u{1f600}'
-                    : step.kind === 'sliced'
-                      ? 'q'.repeat(1001)
-                      : step.kind === 'noop'
-                        ? ''
-                        : 'x';
-                const action =
-                  step.kind === 'delete' ? { name: 'backspace' as const } : insert(inserted);
-                const ticket = master(f.doc).input(action, selection(at));
-                if (step.kind === 'retry' || step.kind === 'discard') {
-                  await until(() => f.doc.status.state === 'blocked');
-                  expect(f.doc.read().master).toBe(text);
-                  if (step.kind === 'discard') {
-                    f.doc.discardPending();
-                    await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
-                    outputs.push('discarded');
-                    continue;
-                  }
-                  const calls = f.preparations.length;
-                  f.doc.retry();
-                  await ticket.accepted;
-                  expect(f.preparations).toHaveLength(calls);
-                }
-                outputs.push((await ticket.accepted).revision);
-              } else if (step.kind === 'remote') {
-                await f.doc.receive(
-                  remote(f.doc, (d) => d.getText('master').insert(d.getText('master').length, 'R')),
-                ).accepted;
-                outputs.push('remote');
-              } else
-                outputs.push(
-                  (
-                    await f.doc.command(
-                      step.kind === 'metadata'
-                        ? { kind: 'device-label', name: 'device' + step.n }
-                        : { kind: step.kind as 'undo' | 'redo' },
-                    ).accepted
-                  ).value,
-                );
-            }
-            expect(outputs[1]).toEqual(outputs[0]);
-            expect(b.doc.read()).toEqual(a.doc.read());
-            expect(master(b.doc).read()).toEqual(master(a.doc).read());
-            expect(b.doc.status.revision).toBe(a.doc.status.revision);
-          }
-          const replay = createDoc();
+  it.each(['local-snapshots', 'account-text'] as const)(
+    'generated %s histories match fresh forks through deletion, grouping, reset and refusal',
+    async (mode) => {
+      const actions = fc.array(
+        fc.record({
+          kind: fc.constantFrom(
+            'insert',
+            'delete',
+            'undo',
+            'redo',
+            'remote',
+            'metadata',
+            'retry',
+            'discard',
+            'noop',
+            'unicode',
+            'sliced',
+          ),
+          n: fc.integer({ min: 0, max: 20 }),
+        }),
+        { minLength: 15, maxLength: 35 },
+      );
+      await fc.assert(
+        fc.asyncProperty(actions, async (generated) => {
+          const a = await makeFixture(
+              undefined,
+              mode === 'account-text' ? 'account-snapshots' : 'local-handoff',
+            ),
+            b = await makeFixture(undefined, mode);
+          const prefix = [
+            'insert',
+            'insert',
+            'delete',
+            'undo',
+            'redo',
+            'retry',
+            'discard',
+            'remote',
+            'metadata',
+            'noop',
+          ];
           try {
-            for (const bytes of [...b.disk, ...b.wal]) applyUpdate(replay, bytes);
-            expect(replay.getText('master').toString()).toBe(b.doc.read().master);
+            for (const step of [...prefix.map((kind) => ({ kind, n: 1 })), ...generated]) {
+              const outputs = [];
+              for (const f of [a, b]) {
+                const text = f.doc.read().master,
+                  at = Math.min(step.n, text.length);
+                if (
+                  ['insert', 'delete', 'retry', 'discard', 'noop', 'unicode', 'sliced'].includes(
+                    step.kind,
+                  )
+                ) {
+                  if (step.kind === 'retry' || step.kind === 'discard') {
+                    f.refuse();
+                    f.fail();
+                  }
+                  const inserted =
+                    step.kind === 'unicode'
+                      ? '\u{1f600}'
+                      : step.kind === 'sliced'
+                        ? 'q'.repeat(1001)
+                        : step.kind === 'noop'
+                          ? ''
+                          : 'x';
+                  const action =
+                    step.kind === 'delete' ? { name: 'backspace' as const } : insert(inserted);
+                  const ticket = master(f.doc).input(action, selection(at));
+                  if (step.kind === 'retry' || step.kind === 'discard') {
+                    await until(() => f.doc.status.state === 'blocked');
+                    expect(f.doc.read().master).toBe(text);
+                    if (step.kind === 'discard') {
+                      f.doc.discardPending();
+                      await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
+                      outputs.push('discarded');
+                      continue;
+                    }
+                    const calls = f.preparations.length;
+                    f.doc.retry();
+                    await ticket.accepted;
+                    expect(f.preparations).toHaveLength(calls);
+                  }
+                  outputs.push((await ticket.accepted).revision);
+                } else if (step.kind === 'remote') {
+                  await f.doc.receive(
+                    remote(f.doc, (d) =>
+                      d.getText('master').insert(d.getText('master').length, 'R'),
+                    ),
+                  ).accepted;
+                  outputs.push('remote');
+                } else
+                  outputs.push(
+                    (
+                      await f.doc.command(
+                        step.kind === 'metadata'
+                          ? { kind: 'device-label', name: 'device' + step.n }
+                          : { kind: step.kind as 'undo' | 'redo' },
+                      ).accepted
+                    ).value,
+                  );
+              }
+              expect(outputs[1]).toEqual(outputs[0]);
+              expect(b.doc.read()).toEqual(a.doc.read());
+              expect(master(b.doc).read()).toEqual(master(a.doc).read());
+              expect(b.doc.status.revision).toBe(a.doc.status.revision);
+            }
+            const replay = createDoc();
+            try {
+              for (const bytes of [...b.disk, ...b.wal]) applyUpdate(replay, bytes);
+              expect(replay.getText('master').toString()).toBe(b.doc.read().master);
+            } finally {
+              replay.destroy();
+            }
           } finally {
-            replay.destroy();
+            await a.doc.close();
+            await b.doc.close();
           }
-        } finally {
-          await a.doc.close();
-          await b.doc.close();
-        }
-        expect(b.owned.every((x) => x.state.history.doc.isDestroyed)).toBe(true);
-      }),
-      { seed: 171510, numRuns: 60 },
-    );
-  }, 30000);
+          expect(b.owned.every((x) => x.state.history.doc.isDestroyed)).toBe(true);
+        }),
+        { seed: 171510, numRuns: 60 },
+      );
+    },
+    30000,
+  );
+});
+
+describe('direct Account text boundary', () => {
+  it('journals before changing the visible document or its undo history', async () => {
+    const f = await makeFixture(undefined, 'account-text');
+    try {
+      const before = master(f.doc).read();
+      let observed = false;
+      f.beforeAppend(() => {
+        observed = true;
+        expect(master(f.doc).read()).toEqual(before);
+        expect(f.emitted).toHaveLength(0);
+      });
+      await master(f.doc).input({ name: 'insert', text: 'durable first' }).accepted;
+      expect(observed).toBe(true);
+      expect(f.direct).toHaveLength(1);
+      expect(f.wal.at(-1)).toEqual(f.emitted.at(-1));
+    } finally {
+      await f.doc.close();
+    }
+  });
+  it('drains a forced write on close without applying it late and clears retained plaintext', async () => {
+    const f = await makeFixture(undefined, 'account-text');
+    await master(f.doc).input({ name: 'insert', text: 'kept' }).accepted;
+    f.refuse();
+    f.pause();
+    const ticket = master(f.doc).input({ name: 'insert', text: 'late' });
+    await until(() => f.direct.length === 2 && f.writeReferences.length > 0);
+    const bytes = f.direct.at(-1)!;
+    expect(bytes.some((v) => v !== 0)).toBe(true);
+    const closing = f.doc.close();
+    // Account carriers copy their input synchronously; unlike Local buffer leases,
+    // the ordinary byte preparation can be erased as soon as the owner closes.
+    expect(bytes.every((v) => v === 0)).toBe(true);
+    f.resume();
+    await closing;
+    await expect(ticket.accepted).rejects.toHaveProperty('code', 'inactive-session');
+    expect(bytes.every((v) => v === 0)).toBe(true);
+    expect(f.emitted).toHaveLength(1);
+  });
+  it('refuses changed projection state between preparation and durable promotion', async () => {
+    const original = historySeam.createSelectionHistory;
+    let projection: Y.Doc | undefined;
+    const spy = vi.spyOn(historySeam, 'createSelectionHistory').mockImplementation((reuse) => {
+      const owner = original(reuse);
+      return {
+        ...owner,
+        create(doc, origin) {
+          projection = doc;
+          return owner.create(doc, origin);
+        },
+        fork(history, origin) {
+          const next = owner.fork(history, origin);
+          projection = next.doc;
+          return next;
+        },
+      };
+    });
+    const f = await makeFixture(undefined, 'account-text');
+    try {
+      f.beforeAppend(() => {
+        projection!.getText('master').insert(0, 'unowned');
+      });
+      const ticket = master(f.doc).input({ name: 'insert', text: 'journalled' });
+      await expect(ticket.accepted).rejects.toThrow();
+      expect(f.emitted).toHaveLength(0);
+      expect(() => f.doc.read()).toThrow();
+      const cold = createDoc();
+      for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
+      expect(cold.getText('master').toString()).toBe('journalled');
+      cold.destroy();
+    } finally {
+      spy.mockRestore();
+      await f.doc.close();
+    }
+  });
+
+  it('does not fork or compare on eligible text; refused text leaves undo and outgoing unchanged', async () => {
+    const f = await makeFixture(undefined, 'account-text');
+    const fork = vi.spyOn(historySeam, 'forkDoc');
+    const compare = vi.spyOn(historySeam, 'sameDocState');
+    try {
+      const before = master(f.doc).read();
+      f.refuse();
+      f.pause();
+      const pending = master(f.doc).input({ name: 'insert', text: 'private until durable' });
+      expect(f.direct).toHaveLength(1);
+      expect(master(f.doc).read()).toEqual(before);
+      expect(f.emitted).toHaveLength(0);
+      expect(fork).not.toHaveBeenCalled();
+      expect(compare).not.toHaveBeenCalled();
+      f.resume();
+      await pending.accepted;
+      expect(master(f.doc).read().text).toBe('private until durable');
+      expect(f.sources.at(-1)).toHaveLength(1);
+      expect(f.sources.at(-1)![0]!.actor).toBe(identity.id);
+      expect(f.sources.at(-1)![0]!.bytes).toEqual(f.emitted.at(-1));
+      expect(f.direct[0]!.every((v) => v === 0)).toBe(true);
+      expect(fork).not.toHaveBeenCalled();
+      expect(compare).not.toHaveBeenCalled();
+      await f.doc.command({ kind: 'undo' }).accepted;
+      expect(master(f.doc).read().text).toBe('');
+      await f.doc.command({ kind: 'redo' }).accepted;
+      expect(master(f.doc).read().text).toBe('private until durable');
+    } finally {
+      fork.mockRestore();
+      compare.mockRestore();
+      await f.doc.close();
+    }
+  });
+  it('erases a discarded failed candidate without consuming undo or writer clocks', async () => {
+    const f = await makeFixture(undefined, 'account-text');
+    try {
+      await master(f.doc).input({ name: 'insert', text: 'accepted' }).accepted;
+      const before = master(f.doc).read();
+      f.refuse();
+      f.fail();
+      const ticket = master(f.doc).input({ name: 'insert', text: ' discard' });
+      await until(() => f.doc.status.state === 'blocked');
+      const retained = f.direct.at(-1)!;
+      expect(retained.some((v) => v !== 0)).toBe(true);
+      f.doc.discardPending();
+      await expect(ticket.accepted).rejects.toThrow();
+      expect(retained.every((v) => v === 0)).toBe(true);
+      expect(master(f.doc).read()).toEqual(before);
+      await master(f.doc).input({ name: 'insert', text: ' retry' }).accepted;
+      expect(master(f.doc).read().text).toBe('accepted retry');
+      await f.doc.command({ kind: 'undo' }).accepted;
+      expect(master(f.doc).read().text).toBe('accepted');
+    } finally {
+      await f.doc.close();
+    }
+  });
 });

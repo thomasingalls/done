@@ -1,15 +1,19 @@
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 // @vitest-environment node
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import fc from 'fast-check';
 import { Y } from '../src/crdt/yjs';
 import {
+  createInboundCoverage,
   verifyInboundCoverage,
   inspectInbound,
+  inspectInboundCooperatively,
   verifyInboundLedger,
 } from '../src/crdt/inboundLedger';
 import { sources, entry, packet, A, ZERO } from './account-inbound/fixtures';
+import { createVerificationMemo } from '../src/crdt/verificationMemo';
+import { MaintenanceInterrupted } from '../src/crdt/contentMaintenance';
 import { context, eventWire, live } from './account-inbound-codecs/oracle';
 import type { OpenedRecord } from '../src/crdt/contentRecord';
 const row = (
@@ -135,4 +139,119 @@ it('200 generated content/deletion histories remain covered after valid compacti
     { seed: 9172026, numRuns: 200 },
   );
   save('passed');
+});
+
+it('reference receipt checkpoints interrupt cached work, retry fully, and retain coverage failures', async () => {
+  const f = sources(),
+    a = f.entries[0]!,
+    b = f.entries[1]!,
+    c = context();
+  const rows = [
+    row(f.baseline),
+    row(a.updates[0]!, 2),
+    row(eventWire(a), 3, 'heads'),
+    row(b.updates[0]!, 4),
+    row(eventWire(b), 5, 'heads'),
+  ];
+  const census = inspectInbound(rows, route, c),
+    memo = createVerificationMemo();
+  const reference = createInboundCoverage();
+  try {
+    const expected = await verifyInboundLedger(census, rows, c, live, {
+      memo,
+      coverage: reference,
+    });
+    reference.clear();
+    const check = vi.fn(reference.check);
+    let checkpoints = 0;
+    await expect(
+      verifyInboundLedger(census, rows, c, live, {
+        memo,
+        coverage: { check },
+        checkpoint: async () => {
+          if (++checkpoints === 2) throw new MaintenanceInterrupted();
+        },
+      }),
+    ).rejects.toBeInstanceOf(MaintenanceInterrupted);
+    expect(checkpoints).toBe(2);
+    expect(check).toHaveBeenCalledTimes(1);
+    // A retry still walks every receipt, with an independent coverage baseline.
+    reference.clear();
+    check.mockClear();
+    expect(
+      await verifyInboundLedger(census, rows, c, live, {
+        memo,
+        coverage: { check },
+        checkpoint: async () => {},
+      }),
+    ).toEqual(expected);
+    expect(check).toHaveBeenCalledTimes(2);
+    const missing = rows.filter((r) => r.seq !== 4);
+    await expect(
+      verifyInboundLedger(census, missing, c, live, {
+        memo,
+        coverage: reference,
+        checkpoint: async () => {},
+      }),
+    ).rejects.toThrow('coverage');
+  } finally {
+    reference.clear();
+    memo.clear();
+  }
+});
+
+it('rechecks lifetime after a reference checkpoint before touching the next receipt', async () => {
+  const f = sources(),
+    a = f.entries[0]!,
+    c = context();
+  const rows = [row(f.baseline), row(a.updates[0]!, 2), row(eventWire(a), 3, 'heads')];
+  const memo = createVerificationMemo(),
+    coverage = { check: vi.fn() };
+  let closed = false;
+  try {
+    await expect(
+      verifyInboundLedger(
+        inspectInbound(rows, route, c),
+        rows,
+        c,
+        {
+          assertCurrent() {
+            if (closed) throw Error('closed owner');
+          },
+        },
+        {
+          memo,
+          coverage,
+          checkpoint: async () => {
+            closed = true;
+          },
+        },
+      ),
+    ).rejects.toThrow('closed owner');
+    expect(coverage.check).not.toHaveBeenCalled();
+  } finally {
+    memo.clear();
+  }
+});
+
+it('cooperative and synchronous receipt censuses agree, and cancellation exposes no partial census', async () => {
+  const f = sources(),
+    a = f.entries[0]!,
+    c = context();
+  const rows = [row(f.baseline), row(a.updates[0]!, 2), row(eventWire(a), 3, 'heads')];
+  const checkpoint = vi.fn(async () => {});
+  expect(await inspectInboundCooperatively(rows, route, c, checkpoint)).toEqual(
+    inspectInbound(rows, route, c),
+  );
+  expect(checkpoint).toHaveBeenCalledTimes(rows.length);
+  await expect(
+    inspectInboundCooperatively(rows, route, c, async () => {
+      throw new MaintenanceInterrupted();
+    }),
+  ).rejects.toBeInstanceOf(MaintenanceInterrupted);
+  const wrong = [...rows, row(new Uint8Array([255]), 4, 'heads')];
+  expect(() => inspectInbound(wrong, route, c)).toThrow('Unreadable inbound');
+  await expect(inspectInboundCooperatively(wrong, route, c, async () => {})).rejects.toThrow(
+    'Unreadable inbound',
+  );
 });

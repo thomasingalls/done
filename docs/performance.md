@@ -1625,3 +1625,160 @@ append during retained checkpoint-cut verification. No client behavior, authenti
 format changes. These are correctness observations, not new performance measurements or qualification.
 The original stopped-receive notice/manual retry journey also passes, including reverse-direction
 editing. The repair is local; no publication has been prepared or deployed.
+
+## 2026-10-12 — Deployed receive attribution before batching
+
+The user confirmed both actual devices on `77657e23` and two-way sync restored; catch-up remains
+slow. The signed recovery checkpoint is `7f76a59f6249a03b822d73de63e96bcf98fb96df` in `ol-infra`.
+The [new attribution packet](./performance-experiments/2026-10-12-receive-attribution/README.md)
+measures that unchanged frontend locally: 600 positions take 308.307 seconds, versus 374.759 seconds
+with 75 ms added per request. A separate diagnostic run takes 306.068 seconds. Each completes both
+directions, export equality and offline reopen; the ordinary deep received-history opens remain
+about 6.8 seconds. These are three individual observations, not phone or public-service measurements.
+
+The diagnostic counts 4,286 content loads and 5,793 authority checks, with 195 seconds accumulated
+inside authority checks versus 0.248 seconds in coverage checks. Inclusive timers overlap. Sampled
+hex self time is 84.9 seconds: 44.5 in marker comparison and 40.3 in custody authentication
+serialization. Read-write transactions accumulate only 0.78 seconds; reducing commits alone misses
+the main cost. Own-stream reads remain 149–150 per 600 useful reads.
+
+Next prototype: redundant own-poll suppression and exact marker comparison without hex, then
+amortized owned processing of existing one-position receipts. Keep receipt formats and per-entry
+authentication intact. Any grouped commit needs ordered witness extension, bounds, expiry and
+authority checks, authenticated readback and abort/retry controls. Coverage and new multi-position
+receipt formats are not selected for this first repair. Runtime remains unchanged; release validation
+stays paused. The packet also records the requested read-only disk investigation; nothing was deleted.
+
+## 2026-10-12 — Own-stream poll suppression and exact marker-byte equality
+
+Measurements are signed as `ee234d06`. The [first repair](./performance-experiments/2026-10-12-receive-first-repair/README.md)
+compares the same canonical authenticated marker bytes without hex conversion, and suppresses recent
+own-stream checks during productive peer catch-up only when verified delivery has no unresolved
+submission. Current-key retries with historical refusal responses remain eligible; authority changes
+reset the hint. Empty peer responses finish the ordinary sweep instead of causing duplicate reads.
+Fresh authority checks, native receipt formats and retry back-off remain unchanged.
+
+The final local restored 600-position run takes 254.318 seconds versus 328.126 seconds in a fresh
+frozen baseline (22.5% less time); own reads fall from 150 to 44. With 75 ms added per request, the
+final candidate takes 302.023 seconds against the previous packet's 374.759-second delayed baseline
+(19.4% less time; no fresh delayed baseline). All five journeys, including the preserved intermediate
+candidate, pass both-way writing, complete exports and offline reopen. Cold opening remains around
+seven seconds. These are single serial desktop observations; no phone or release claim follows.
+
+Sixteen focused unit and five native checks pass, plus type/build/targeted lint/format checks. One
+older fault-control expectation fails identically on pinned pre-repair source and is preserved as
+an existing fixture limitation, not changed to weaken a safeguard. The repair and evidence are
+committed signed as `534252e1`. Next: grouped owned processing of current-format receipts. No publication or resumed
+release validation; `docs/progress.md` is unchanged.
+
+## 2026-10-12 — Group existing receive receipts
+
+The previous repair is signed as `534252e1`. The [grouped implementation](./performance-experiments/2026-10-12-receive-groups/README.md)
+collects up to four separate limit-one replies sequentially outside admission, then verifies and
+commits their original content/evidence pairs with one checked witness transition and readback.
+It preserves exact receipt bytes and allows the pre-group reader to cold-open the result.
+
+For the same 600-position fixture, fresh first-repair baseline catch-up takes 248.795 seconds;
+grouped catch-up takes 79.125 seconds (68.2% less time). Added-75-ms catch-up takes 193.074 seconds,
+against the prior delayed observation's 302.023 seconds (36.1% less; no fresh delayed baseline).
+All three journeys pass both-way export equality and offline reopen. Burst medians remain around
+2.34 seconds; cold opening remains around seven seconds. The delayed candidate has one unattributed
+1.189-second long task. No phone or public-service inference is made from these individual runs.
+
+A preparation-inclusive four-receipt count comparison reduces content loads 16→4, read-only
+transactions 220→47 and write transactions 8→2. Per-entry authentication is retained. Thirty-two
+focused unit and seventeen native cases pass, including group atomicity, stale/invalid evidence,
+expiry, authority change, both native size bounds, older-reader compatibility, lost HTTP tails and
+locking during collection. Build/type/targeted lint/format checks pass. This repair/evidence is committed signed as
+`54811c93` and unpublished. This phase introduced no concurrent prefetch or release-validation resumption.
+
+## 2026-10-12 — Prefetch current-format receive replies
+
+Receipt grouping is signed as `54811c93`. The [bounded prefetch follow-up](./performance-experiments/2026-10-12-receive-prefetch/README.md)
+uses at most two concurrent reads within the unchanged four-receipt turn and 250 ms launch window.
+Full supported-page reservations and retained bytes share the existing 4 MiB collection ceiling.
+Out-of-order replies still enter authentication and commit in prefix order; gaps never advance,
+and cancellation drains/erases speculation. Self reads remain singleton. No receipt/service schema
+change, migration or relaxed verification was introduced.
+
+With 75 ms added per request, a fresh grouped baseline takes 194.602 seconds for the same 600-position
+fixture; prefetch takes 100.978 seconds, 48.1% less. Local prefetch takes 68.961 seconds versus the
+prior grouped observation's 79.125 seconds (12.8% less; no fresh local baseline). All three journeys
+pass complete export equality and offline reopening, with receiver sending during catch-up and
+similar writer submit-response intervals. The delayed candidate reads four concurrent-writer
+positions beyond the original backlog before the catch-up observation; no peer cursor repeats.
+
+Delayed burst median remains 2.352 seconds, cold open 6.804–6.907 seconds across candidates, and a
+1.238-second delayed long task remains unattributed. No primary HTTP response is non-200 or 429;
+HTTP-200 `ERR_ABORTED` browser events remain and are retained. Fifty-two focused units, twenty-one
+native cases and build/type/targeted lint/format checks pass. Content-redacted samples reproduce
+all three primary and three supplementary summaries. Repair/evidence are signed as `460fefd8` and
+unpublished. No phone campaign or resumed release validation occurred.
+
+## 2026-10-12 — Foreground reference-audit stalls
+
+The [captured stall and focused repair](./performance-experiments/2026-10-12-foreground-stall/README.md)
+start from signed prefetch `460fefd8`. A natural traced run captures a 1,530 ms main-thread task:
+1,178 ms sampled in inbound verification, including 1,106 ms in reference coverage. An earlier
+capture had no audit/task; both remain in evidence. Receipt-by-receipt budget boundaries alone left
+~277 ms tasks. A second profile identified the initial receipt census and final self-coverage array;
+these now use the same maintenance budget too.
+
+A matched controlled collision reduces input sent→admitted text from 2,157 to 24 ms and maximum
+task from 2,178 to 64 ms. Audit interruption retains the fully authenticated incremental view under
+its exact binding, leaves the audit due, and retries it at idle maintenance. Two retry/completion
+checks and offline full-export equality pass; no partial oracle state publishes. Reference coverage,
+physical census, native atomicity, mismatch refusal and lifetime/authority invalidation remain.
+
+The ordinary delayed 600-position journey passes, with maximum task 73 ms but catch-up elapsed
+112.521 seconds versus retained prefetch 100.978 seconds, **11.4% slower**. This is below the
+predeclared >15% investigation threshold; it is not a throughput gain or a fresh paired ordinary
+comparison. Burst median is 2.366 seconds and offline cold opening 7.497 seconds. There are no
+primary non-200 responses/429s; 73 HTTP-200 browser abort events remain recorded. All seven packaged
+observations, 72 focused units, three native cases and type/build/targeted lint/format checks pass.
+Work is uncommitted/unpublished; release validation remains paused. Total history/audit cost,
+individual large synchronous proofs, deep opening and phone evidence remain separate work.
+
+## 2026-10-12 — Received-history cold opening
+
+Working tree on signed **`d1e5e5ea`**, bound to exact runtime hashes and patch in the
+[received-open packet](./performance-experiments/2026-10-12-received-open/README.md). That signed base
+is the completed foreground-audit responsiveness repair, not a deployed release.
+
+On the same synthetic 120-card / 600+ received-position fixture (54,211 exported Markdown bytes),
+three unprofiled offline opens per arm: first completed editor frame median **7.054→2.622 s**, final
+range **2.502–2.909 s**; polling-observer median **7.422→2.972 s**. Reusing one coverage document per
+verification pass and proving integrated struct/deletion coverage accounts for most of the improvement;
+omitting redundant outer/nested receipt re-encoding adds a smaller gain. Native crypto counts and the
+complete archive digest are unchanged; every timing observation also accepts and cold-recovers an edit.
+Heap stays about 17.4 MB. Baseline confirmation differs by under 1.2%. The **2.5-second budget remains
+unmet**, and no phone or arbitrary-history-size claim follows.
+
+The final isolated CPU profile reduces inclusive coverage checks from about 2,931 to 37 ms;
+baseline document reconstruction separately cost about 1,289 ms. Hex/unhex remain about 371/373 ms
+self time. Profiles are separate from timing samples; one overlapping-test profile is marked confounded.
+A packaged two-device functional regression also passes complete exports, both-way later edits and
+offline replay. No generalized release validation was resumed; per-key admission remains the next slice.
+
+## 2026-10-12 — Account text admission without workspace forks
+
+The received-open repair is now signed as **`68ca241d`**. The
+[text-admission packet](./performance-experiments/2026-10-12-text-admission/README.md) measures the
+next working-tree slice on the same synthetic 120-card / 600+ received-position fixture. Three
+interleaved observations per arm (120 keys each): handler median-of-medians **7.6→2.1 ms**;
+run-level handler p95 **11.2–11.8→3.1–3.5 ms**. Key-to-visible-frame median-of-medians
+**11.4→6.2 ms**, p95 **15.5–16.4→12.9–13.9 ms**. Every candidate key avoids workspace forks and
+full projection comparison. Every run undoes/redoes the whole block and reopens offline correctly.
+
+Direct text is the branch default after meeting the predeclared improvement/correctness criteria;
+`VITE_ACCOUNT_TEXT_ADMISSION=reference` retains the full native Account preparation path.
+[The contract](./account-text-admission.md) preserves journal-before-apply, exact human source
+bytes and workspace undo, with conservative fallback and a full projection audit on ordinary close.
+No format change or deployment. Type/build, 244 focused tests and the real two-device text/undo/
+offline-reopen regression pass. Release validation remains paused.
+
+One CPU-4x observation per arm improves handler median **27.1→6.2 ms** and visible-text p95
+**128.2→57.1 ms**, still above the 16 ms budget; the largest background task is 170/176 ms.
+This is not physical-phone acceptance. The isolated direct profile leaves UI/CodeMirror work and
+background storage verification/copying as measured residual costs. Large target texts, structural
+commands, long-session history growth and public-device measurements remain separate work.

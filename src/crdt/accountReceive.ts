@@ -1,4 +1,14 @@
-import { createReceiveSelection } from './receiveSelection';
+import { accountTextMode } from './accountTextMode';
+import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
+import { collectReceivePages } from './receivePrefetch';
+import type { Diagnostic } from '../../account-protocol/diagnostics';
+import {
+  RECEIVE_GROUP_LIMIT,
+  packReceivePages,
+  unpackReceivePages,
+  receiveGroupFits,
+} from './receiveGroup';
+import { createReceiveSelection, unresolvedSelfSubmission } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
 import { countLedgerWork } from './accountLedgerMetrics';
@@ -67,7 +77,7 @@ import {
 } from '../../account-protocol/admissionHistory';
 import type { DeviceRoster } from '../account/deviceRoster';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
-import { createVerifiedRecords, eraseVerified, copyRecords } from './verifiedRecords';
+import { createVerifiedRecords, eraseVerified, copyRecords, sameBytes } from './verifiedRecords';
 import { createVerificationMemo } from './verificationMemo';
 import {
   extendAccountLedger,
@@ -80,7 +90,12 @@ import { createInboundCoverage } from './inboundLedger';
 import { createEnvelopePreparation } from './accountEnvelopePreparation';
 import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
-import { advanceSelfReceive, requireSelfEnvelope, verifySyncState } from './accountSyncState';
+import {
+  advanceSelfReceive,
+  advanceSelfReceiveCooperatively,
+  requireSelfEnvelope,
+  verifySyncState,
+} from './accountSyncState';
 import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
@@ -123,6 +138,7 @@ import {
   applyHistoryReceiveCuts,
   heldInboundContext,
   inspectInbound,
+  inspectInboundCooperatively,
   verifyInboundLedger,
   contextAt,
   publisherContext,
@@ -170,10 +186,15 @@ async function openAccountReceiveOwner(
   const verified = createVerifiedRecords<AccountLedgerView>();
   const incremental = ledgerMode === 'incremental';
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
-  let sinceAudit = 0;
+  let sinceAudit = 0,
+    auditDue = false,
+    auditDeferred = false;
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
-    coverage = createInboundCoverage({ incremental });
+    coverage = createInboundCoverage({
+      incremental,
+      direct: import.meta.env?.['VITE_ACCOUNT_DIRECT_COVERAGE'] !== '0',
+    });
   const inspectCensus = <R>(
     records: Parameters<typeof inspectInbound>[0],
     route: CaptureRoute,
@@ -195,9 +216,10 @@ async function openAccountReceiveOwner(
   let inheritedHistoryHash: string | undefined;
   let handoff = false,
     transition = '';
-  let expectedPayload = '',
+  let expectedPayload: Bytes = new Uint8Array(),
     expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
+  let outstandingGroup: Bytes[] = [];
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const assertCurrent = async (task: SessionTask) => {
@@ -207,7 +229,7 @@ async function openAccountReceiveOwner(
       const current = await readJoinedAccount(task, options.slotId, options.code);
       if (
         !current.marker ||
-        hex(joinedPayload(current.marker)) !== expectedPayload ||
+        !sameBytes(joinedPayload(current.marker), expectedPayload) ||
         !recordEqual(current.record, expectedRecord)
       )
         captureError('Certified device authority changed');
@@ -216,7 +238,7 @@ async function openAccountReceiveOwner(
     const current = await readPromotion(task, options.slotId, options.code);
     if (
       !current.marker ||
-      hex(promotionPayload(current.marker)) !== expectedPayload ||
+      !sameBytes(promotionPayload(current.marker), expectedPayload) ||
       !recordEqual(current.record, expectedRecord)
     )
       captureError('Inbound authority changed before commit');
@@ -238,7 +260,7 @@ async function openAccountReceiveOwner(
         }
       : {}),
     async initialize(task, v) {
-      expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
+      expectedPayload = promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' });
       expectedRecord = v.record;
       installed = v.marker.successor;
       membership = v.marker.membership;
@@ -276,7 +298,7 @@ async function openAccountReceiveOwner(
       });
     },
     async initializeJoined(task, v) {
-      expectedPayload = hex(joinedPayload(v.marker!));
+      expectedPayload = joinedPayload(v.marker!);
       expectedRecord = v.record;
       membership = v.marker!.membership;
       inheritedHistoryHash =
@@ -322,11 +344,19 @@ async function openAccountReceiveOwner(
         countLedger('full');
         const isolated = audit ? createInboundCoverage() : undefined;
         const checking = (isolated ?? coverage).bind(records);
+        // Cached crypto checks resolve in microtasks. A real maintenance budget is needed
+        // between receipts so input can cancel before the next complete coverage proof.
+        const checkpoint =
+          audit && isMaintenanceTask(task) ? () => task.wait(() => Promise.resolve()) : undefined;
         try {
-          const census = inspectInbound(records, route, base),
+          const census = checkpoint
+              ? await inspectInboundCooperatively(records, route, base, checkpoint)
+              : inspectInbound(records, route, base),
             subtle = subtleFor(task),
             reuse = { memo, current: () => task.step(() => {}) };
+          await checkpoint?.();
           await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
+          await checkpoint?.();
           if (!joined)
             await verifyInstalledSuccessor(
               census.delivery.spool,
@@ -345,6 +375,7 @@ async function openAccountReceiveOwner(
               subtle,
               reuse,
             );
+          await checkpoint?.();
           await verifySpool(
             census.delivery.spool,
             route,
@@ -356,6 +387,7 @@ async function openAccountReceiveOwner(
             subtle,
             reuse,
           );
+          await checkpoint?.();
           const delivery = await verifyDelivery(
             census.delivery,
             route,
@@ -364,14 +396,25 @@ async function openAccountReceiveOwner(
             subtle,
             reuse,
           );
+          await checkpoint?.();
           const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
             memo,
             coverage: checking,
+            ...(checkpoint ? { checkpoint } : {}),
           });
-          if (composed)
-            advanceSelfReceive(census.delivery, delivery, inbound, route, (updates) =>
-              checking.check(records, updates),
-            );
+          if (composed) {
+            const check = (updates: readonly Bytes[]) => checking.check(records, updates);
+            if (checkpoint)
+              await advanceSelfReceiveCooperatively(
+                census.delivery,
+                delivery,
+                inbound,
+                route,
+                check,
+                checkpoint,
+              );
+            else advanceSelfReceive(census.delivery, delivery, inbound, route, check);
+          }
           memo.retain(
             new Set([
               'admission-prefix',
@@ -396,6 +439,7 @@ async function openAccountReceiveOwner(
           measureLedger('full', began);
         }
       };
+      let validationComplete = false;
       try {
         await verified.verify(
           records,
@@ -439,27 +483,10 @@ async function openAccountReceiveOwner(
                     );
                   const result = { ...next, inbound };
                   sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
-                  const auditEvery =
+                  auditDue ||=
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
                     (sinceAudit >= 1024 &&
                       records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
-                  if (auditEvery) {
-                    countLedger('audits');
-                    const auditRows = copyRecords(records);
-                    let oracle;
-                    try {
-                      oracle = await checkFull(auditRows, true);
-                      if (!sameAccountLedger(result, oracle)) {
-                        countLedger('mismatches');
-                        console.error('done/account-ledger-reference-mismatch');
-                        captureError('Account ledger reference mismatch');
-                      }
-                      sinceAudit = 0;
-                    } finally {
-                      eraseVerified(oracle);
-                      eraseVerified(auditRows);
-                    }
-                  }
                   return result;
                 } finally {
                   measureLedger('incremental', began);
@@ -467,8 +494,41 @@ async function openAccountReceiveOwner(
               }
             : undefined,
         );
+        validationComplete = true;
         verifiedCounter = structuredClone(counter);
+        // Install only the fully authenticated delta before discretionary reference work.
+        // A cancelled audit stays due, but must not migrate onto the next foreground edit.
+        if (auditDue && (!auditDeferred || isMaintenanceTask(task))) {
+          countLedger('audits');
+          const auditRows = copyRecords(records),
+            result = verified.read(records);
+          let oracle;
+          try {
+            oracle = await checkFull(auditRows, true);
+            task.step(() => {});
+            if (!sameAccountLedger(result, oracle)) {
+              countLedger('mismatches');
+              console.error('done/account-ledger-reference-mismatch');
+              captureError('Account ledger reference mismatch');
+            }
+            countLedger('auditCompletions');
+            sinceAudit = 0;
+            auditDue = auditDeferred = false;
+          } catch (e) {
+            if (e instanceof MaintenanceInterrupted) {
+              auditDeferred = true;
+              countLedger('auditInterruptions');
+            }
+            throw e;
+          } finally {
+            eraseVerified(oracle);
+            eraseVerified(result);
+            eraseVerified(auditRows);
+          }
+        }
       } catch (e) {
+        if (validationComplete && e instanceof MaintenanceInterrupted) throw e;
+        verified.clear();
         verifiedCounter = undefined;
         memo.clear();
         coverage.clear();
@@ -476,6 +536,7 @@ async function openAccountReceiveOwner(
       }
     },
     dispose() {
+      expectedPayload.fill(0);
       verifiedCounter = undefined;
       verified.clear();
       memo.clear();
@@ -485,6 +546,8 @@ async function openAccountReceiveOwner(
       signer = undefined;
       outstanding?.fill(0);
       outstanding = undefined;
+      for (const request of outstandingGroup) request.fill(0);
+      outstandingGroup = [];
     },
   };
   // The actor comes from the authenticated marker, not application identity. This read happens under
@@ -526,18 +589,25 @@ async function openAccountReceiveOwner(
         ),
       ),
   });
+  const readState = async <R>(
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    select: (view: Readonly<AccountLedgerView>) => R,
+  ) => {
+    await assertCurrent(task);
+    const records = await owner.carrier.load(task);
+    try {
+      return task.step(() => ({ value: verified.read(records, select) })).value;
+    } finally {
+      for (const r of records) r.bytes.fill(0);
+    }
+  };
   const state = async (
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
     _route: CaptureRoute,
   ) => {
-    await assertCurrent(task);
-    const records = await owner.carrier.load(task);
-    try {
-      return task.step(() => verified.read(records, (v) => v.inbound));
-    } finally {
-      for (const r of records) r.bytes.fill(0);
-    }
+    return await readState(task, owner, (v) => v.inbound);
   };
   const receiveSelection = createReceiveSelection();
   const describe = (s: Awaited<ReturnType<typeof state>>) =>
@@ -557,13 +627,25 @@ async function openAccountReceiveOwner(
   const prepareRead = async (
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
-    route: CaptureRoute,
+    _route: CaptureRoute,
     after?: number,
+    grouped = false,
   ) => {
     if (account.detached) throw Error('This local copy is detached from sync');
-    const all = await state(task, owner, route);
+    // The scheduling hint comes from the same fresh, authenticated load as the prefix.
+    // A retained submission without a decision must still get its reconciliation read.
+    const { inbound: all, pendingSelf } = await readState(task, owner, (v) => ({
+      inbound: v.inbound,
+      pendingSelf: unresolvedSelfSubmission(v.delivery),
+    }));
     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
-    const publisher = after === undefined ? receiveSelection.next(publishers) : base.publisher.id;
+    const publisher =
+      after === undefined
+        ? receiveSelection.next(
+            publishers,
+            composed ? { publisher: base.publisher.id, pending: pendingSelf } : undefined,
+          )
+        : base.publisher.id;
     const s = publisherState(all, base, publisher),
       cursor = after ?? s.prefix.position;
     if (s.conflict) throw Error('Inbound stream is conflicted');
@@ -588,50 +670,101 @@ async function openAccountReceiveOwner(
       expires: Date.now() + 30000,
       signature: '00'.repeat(64),
     };
-    r.signature = hex(
-      new Uint8Array(
-        await task.wait(() => subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r))),
-      ),
-    );
-    await assertCurrent(task);
-    return task.step(() => {
-      outstanding?.fill(0);
-      outstanding = encodeInboundRequest(r);
-      return outstanding.slice();
-    });
-  };
-  // Prepare in order, wait under the same lifetime outside the storage tail, then let the
-  // admission FIFO verify this exact request against fresh authority and prefix before commit.
-  const fetchPage = async (operatorToken: AccountAccess) => {
-    let request: Bytes | undefined,
-      page: Bytes | null = null;
-    let oversized = false;
+    const count =
+      grouped && (!composed || publisher !== base.publisher.id)
+        ? Math.min(
+            RECEIVE_GROUP_LIMIT,
+            receiveSelection.capacity(publisher),
+            Math.max(1, s.prefix.observedThrough - cursor),
+          )
+        : 1;
+    const requests: Bytes[] = [];
     try {
-      return await runNetworkTask(async (network) => {
-        const query = (request = await runCaptureTask((task, owner, route) =>
-          prepareRead(task, owner, route),
-        ));
-        await network.wait(async () => {
-          page = canReceive()
-            ? await privateDeliveryPost(
-                options.pin,
-                access ?? operatorToken,
-                'read-v2',
-                query,
-                MAX_PENDING_BYTES,
-                network.signal,
-                (event) => {
-                  recordPrivateTransportDiagnostic(event);
-                  if (event.code === 'response-too-large') oversized = true;
-                },
-              )
-            : null;
-        });
-        return network.step(() => ({ request: query, page, oversized }));
+      for (let i = 0; i < count; i++) {
+        const next = { ...r, after: cursor + i, nonce: hex(task.step(() => random(32))) };
+        next.signature = hex(
+          new Uint8Array(
+            await task.wait(() =>
+              subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+            ),
+          ),
+        );
+        requests.push(encodeInboundRequest(next));
+      }
+      await assertCurrent(task);
+      return task.step(() => {
+        outstanding?.fill(0);
+        for (const request of outstandingGroup) request.fill(0);
+        outstandingGroup = requests;
+        outstanding = requests[0]!;
+        return outstanding.slice();
       });
     } catch (cause) {
-      request?.fill(0);
-      (page as Bytes | null)?.fill(0);
+      for (const request of requests) request.fill(0);
+      throw cause;
+    }
+  };
+  const prepareGroup = () =>
+    runCaptureTask(async (task, owner, route) => {
+      const first = await prepareRead(task, owner, route, undefined, true);
+      first.fill(0);
+      return outstandingGroup.map((r) => r.slice());
+    });
+  // Future cursors are only scheduling predictions through an authenticated observed tip.
+  // The exact request set remains owned, and no prefix advances before ordered verification.
+  const fetchPage = async (operatorToken: AccountAccess) => {
+    let requests: Bytes[] = [],
+      pages: Bytes[] = [];
+    try {
+      return await runNetworkTask(async (network) => {
+        requests = await prepareGroup();
+        const events: Diagnostic[][] = requests.map(() => []);
+        let attempted = 0;
+        await network.wait(async () => {
+          const collected = await collectReceivePages(
+            requests.length,
+            network.signal,
+            (index, signal, limit) =>
+              canReceive()
+                ? privateDeliveryPost(
+                    options.pin,
+                    access ?? operatorToken,
+                    'read-v2',
+                    requests[index]!,
+                    limit,
+                    signal,
+                    (event) => {
+                      events[index]!.push(event);
+                    },
+                  )
+                : Promise.resolve(null),
+            (page) => {
+              // Unverified hints may shorten collection, never grant progress or authority.
+              try {
+                return decodeInboundPage(page).entries.length > 0;
+              } catch {
+                return false;
+              }
+            },
+          );
+          pages = collected.pages;
+          attempted = collected.attempted;
+        });
+        // A speculative tail cannot overwrite the diagnostic for the attempted prefix.
+        for (const observations of events.slice(0, attempted))
+          for (const event of observations) recordPrivateTransportDiagnostic(event);
+        return network.step(() => ({
+          request: requests[0]!,
+          page: pages[0] ?? null,
+          requests,
+          pages,
+          oversized:
+            !pages.length && events[0]!.some((event) => event.code === 'response-too-large'),
+        }));
+      });
+    } catch (cause) {
+      for (const request of requests) request.fill(0);
+      for (const page of pages) page.fill(0);
       throw cause;
     }
   };
@@ -949,6 +1082,136 @@ async function openAccountReceiveOwner(
     },
     compactContent: () => carrier.compactContent(),
   });
+  const receiveGroup = (
+    inputs: readonly Bytes[],
+    expected: readonly Bytes[],
+    promote: (updates: readonly Bytes[]) => void = () => {},
+  ) => {
+    if (
+      account.detached ||
+      inputs.length < 2 ||
+      inputs.length > RECEIVE_GROUP_LIMIT ||
+      expected.length !== inputs.length ||
+      inputs.some((b) => !(b instanceof Uint8Array) || !b.length) ||
+      inputs.reduce((n, b) => n + 4 + b.length, 0) > MAX_PENDING_BYTES ||
+      expected.some((b) => !(b instanceof Uint8Array) || !b.length || b.length > 4096)
+    )
+      return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+    const pages = inputs.map((b) => b.slice()),
+      requests = expected.map((b) => b.slice());
+    return runCaptureTask(async (task, owner, route) => {
+      const s = await state(task, owner, route);
+      const first = decodeInboundRequest(requests[0]!);
+      if (first.epoch < base.authority.tip) throw new ReceiveAuthorityChanged();
+      if (composed && first.publisher === base.publisher.id)
+        throw new AdmissionError('receive-refused', 'Own reconciliation must remain single-entry');
+      const peer = publisherState(s, base, first.publisher);
+      if (s.conflict || peer.conflict || first.after !== peer.prefix.position)
+        throw new AdmissionError('receive-refused', 'Inbound group prefix changed');
+      for (let i = 0; i < requests.length; i++) {
+        if (!outstandingGroup[i] || !sameBytes(requests[i]!, outstandingGroup[i]!))
+          throw new AdmissionError('receive-refused', 'Receive request was superseded');
+        const r = decodeInboundRequest(requests[i]!);
+        if (
+          r.publisher !== first.publisher ||
+          r.epoch !== first.epoch ||
+          r.after !== first.after + i
+        )
+          throw new AdmissionError('receive-refused', 'Receive group is not contiguous');
+      }
+      const context = { ...publisherContext(base, first.publisher), prefix: { ...peer.prefix } };
+      const results: Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
+      const writes: import('./contentRecord').ContentInput[] = [];
+      const updates: Bytes[] = [];
+      let committed = false,
+        bytes = 0;
+      try {
+        for (let i = 0; i < pages.length; i++) {
+          let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
+          try {
+            await task.wait(async () => {
+              result = await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task));
+              // Retain ownership before the final lifetime check can reject.
+              results.push(result);
+            });
+          } catch (cause) {
+            task.step(() => {});
+            throw new AdmissionError('receive-refused', String(cause), { cause });
+          }
+          if (!result) throw Error('Missing inbound verification result');
+          if (result.kind === 'empty') break;
+          if (result.kind !== 'received')
+            throw new AdmissionError('receive-refused', 'Unexpected grouped receive result');
+          const size = result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
+          if (!receiveGroupFits(bytes + size, writes.length + result.updates.length + 1)) {
+            // The single-receipt verifier has already enforced its individual bounds.
+            // Keep only the fitting prefix; this valid tail is fetched again later.
+            result.record.fill(0);
+            for (const update of result.updates) update.fill(0);
+            results.pop();
+            break;
+          }
+          bytes += size;
+          writes.push(...result.updates.map((b) => ({ kind: 'update' as const, bytes: b })), {
+            kind: 'heads',
+            bytes: result.record,
+          });
+          updates.push(...result.updates);
+          context.prefix = {
+            position: result.position,
+            link: result.link,
+            observedThrough: result.through,
+          };
+        }
+        const kinds = results.map((r) => r.kind);
+        if (!writes.length)
+          return task.step(() => {
+            promote([]);
+            return { kind: 'empty' as const, recorded: false, status: describe(s), kinds };
+          });
+        const before = await owner.carrier.spoolWitness(task);
+        let after = before;
+        for (const result of results)
+          if ('record' in result)
+            after = await task.wait(() =>
+              extendSpoolWitness(after, result.record, subtleFor(task)),
+            );
+        await owner.carrier.appendInbound(task, writes, {
+          before,
+          after,
+          checkCommit: () => {
+            if (
+              requests
+                .slice(0, results.length)
+                .some((r) => decodeInboundRequest(r).expires <= Date.now())
+            )
+              throw new ReceiveRequestExpired();
+          },
+          beforeCommit: async () => {
+            const current = await state(task, owner, route);
+            if (JSON.stringify(describe(current)) !== JSON.stringify(describe(s)))
+              captureError('Inbound prefix changed before commit');
+          },
+        });
+        committed = true;
+        const saved = await state(task, owner, route);
+        return task.step(() => {
+          promote(updates);
+          return { kind: 'received' as const, recorded: true, status: describe(saved), kinds };
+        });
+      } catch (cause) {
+        if (committed) void carrier.close().catch(() => {});
+        throw cause;
+      } finally {
+        for (const result of results) {
+          if ('record' in result) result.record.fill(0);
+          if (result.kind === 'received') for (const b of result.updates) b.fill(0);
+        }
+      }
+    }).finally(() => {
+      for (const b of [...pages, ...requests]) b.fill(0);
+    });
+  };
   const adoptSuccessor = (input: unknown, checkCommit?: () => void) => {
     // Closed, bounded copy before enqueueing; no caller-owned data crosses crypto or storage awaits.
     const artifact = parseSuccessor(input);
@@ -1038,9 +1301,11 @@ async function openAccountReceiveOwner(
               installRoute(task, nextRoute);
               base = nextBase;
               installed = successor;
-              expectedPayload = hex(promotionPayload(next));
+              receiveSelection.reset();
+              expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
               sinceAudit = 0;
+              auditDue = auditDeferred = false;
               verified.clear();
               memo.clear();
               coverage.clear();
@@ -1162,7 +1427,7 @@ async function openAccountReceiveOwner(
             checkCommit,
           );
           committed = true;
-          expectedPayload = hex(joinedPayload(next));
+          expectedPayload = joinedPayload(next);
         } else {
           const state = current as Awaited<ReturnType<typeof readPromotion>>;
           await withPromotionRoot(
@@ -1186,7 +1451,7 @@ async function openAccountReceiveOwner(
                 checkCommit,
               );
               committed = true;
-              expectedPayload = hex(promotionPayload(next));
+              expectedPayload = promotionPayload(next);
             },
           );
         }
@@ -1194,8 +1459,10 @@ async function openAccountReceiveOwner(
           installRoute(task, nextRoute);
           base = nextBase;
           membership = nextMembership;
+          receiveSelection.reset();
           verifiedCounter = undefined;
           sinceAudit = 0;
+          auditDue = auditDeferred = false;
           verified.clear();
           memo.clear();
           coverage.clear();
@@ -1592,37 +1859,29 @@ async function openAccountReceiveOwner(
                       mac: record.mac,
                     };
                     const oldPayload = joined
-                      ? hex(
-                          joinedPayload({
-                            ...(current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
-                            custodyMac: hex(expectedRecord.mac),
-                          }),
-                        )
-                      : hex(
-                          promotionPayload({
-                            ...(current as Awaited<ReturnType<typeof readPromotion>>).marker!,
-                            custodyMac: hex(expectedRecord.mac),
-                            sealReserved: expectedRecord.seal_reserved,
-                          }),
-                        );
+                      ? joinedPayload({
+                          ...(current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
+                          custodyMac: hex(expectedRecord.mac),
+                        })
+                      : promotionPayload({
+                          ...(current as Awaited<ReturnType<typeof readPromotion>>).marker!,
+                          custodyMac: hex(expectedRecord.mac),
+                          sealReserved: expectedRecord.seal_reserved,
+                        });
                     if (
                       !recordEqual(record, expected) ||
                       record.seal_reserved < expectedRecord.seal_reserved ||
-                      oldPayload !== expectedPayload
+                      !sameBytes(oldPayload, expectedPayload)
                     ) {
                       throw Error('Account custody changed during history maintenance');
                     }
                     expectedRecord = record;
                     expectedPayload = joined
-                      ? hex(
-                          joinedPayload(
-                            (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
-                          ),
+                      ? joinedPayload(
+                          (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
                         )
-                      : hex(
-                          promotionPayload(
-                            (current as Awaited<ReturnType<typeof readPromotion>>).marker!,
-                          ),
+                      : promotionPayload(
+                          (current as Awaited<ReturnType<typeof readPromotion>>).marker!,
                         );
                   } catch (cause) {
                     handoff = true;
@@ -1716,12 +1975,15 @@ async function openAccountReceiveOwner(
     carrier,
     listCaptures,
     fetchPage,
+    prepareGroup,
+    receiveGroup,
     completedRead: (request: Bytes, kind: string) => {
       const publisher = decodeInboundRequest(request).publisher;
       receiveSelection.completed(
         base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
         publisher,
         kind === 'received',
+        composed && publisher === base.publisher.id && (kind === 'received' || kind === 'empty'),
       );
     },
     fetchHistory,
@@ -1740,8 +2002,14 @@ async function openAccountReceiveOwner(
 
 /** Storage-only surface retained for independent conformance and preparation. */
 export async function openOwnedAccountReceiveStore(input: AccountStartupOptions) {
-  const { api } = await openAccountReceiveOwner(input);
-  return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
+  const { api, prepareGroup, receiveGroup } = await openAccountReceiveOwner(input);
+  return Object.freeze({
+    ...api,
+    prepareGroup,
+    receiveGroup: (pages: readonly Bytes[], requests: readonly Bytes[]) =>
+      receiveGroup(pages, requests),
+    receivePage: (bytes: Bytes) => api.receivePage(bytes),
+  });
 }
 
 async function openReceivingWorkspace(
@@ -1769,6 +2037,7 @@ async function openReceivingWorkspace(
     carrier,
     listCaptures,
     fetchPage,
+    receiveGroup,
     fetchHistory,
     installHistory,
     createOutbound,
@@ -1811,7 +2080,9 @@ async function openReceivingWorkspace(
         ...(options.today ? { today: options.today } : {}),
         ...(options.signal ? { signal: options.signal } : {}),
       },
-      ledgerMode === 'incremental' ? 'account-snapshots' : 'reference',
+      ledgerMode === 'incremental'
+        ? accountTextMode(import.meta.env?.['VITE_ACCOUNT_TEXT_ADMISSION'])
+        : 'reference',
     );
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
@@ -1858,7 +2129,7 @@ async function openReceivingWorkspace(
         return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
       if (flight) return Promise.resolve({ kind: 'busy' as const });
       const work = (async () => {
-        const { request, page, oversized } = await fetchPage(operatorToken);
+        const { request, page, requests, pages, oversized } = await fetchPage(operatorToken);
         try {
           if (carrier.signal.aborted)
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
@@ -1894,6 +2165,19 @@ async function openReceivingWorkspace(
               }
               completedRead(request, received.kind);
               return { kind: received.kind, recorded: false };
+            }
+            if (pages.length > 1) {
+              const packed = packReceivePages(pages);
+              try {
+                const received = await enqueue(packed, (input, promote) =>
+                  receiveGroup(unpackReceivePages(input), requests.slice(0, pages.length), promote),
+                );
+                for (let i = 0; i < received.kinds.length; i++)
+                  completedRead(requests[i]!, received.kinds[i]!);
+                return received;
+              } finally {
+                packed.fill(0);
+              }
             }
             const received = await receivePage(page, request);
             completedRead(request, received.kind);
@@ -1933,8 +2217,8 @@ async function openReceivingWorkspace(
             throw cause;
           }
         } finally {
-          request.fill(0);
-          page?.fill(0);
+          for (const r of requests) r.fill(0);
+          for (const p of pages) p.fill(0);
         }
       })();
       flight = work;

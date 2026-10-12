@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-12T06:44:10.141770+00:00",
+  "parent": "ee234d06521400e9d938b1874799e82f7fcac0e3",
+  "unitChecksPassed": 16,
+  "nativeChecksPassed": 5,
+  "measuredJourneysPassed": 5,
+  "numericSummariesReproduced": 5,
+  "checks": [
+    "Ordinary final build",
+    "TypeScript",
+    "Targeted lint and format",
+    "Whitespace",
+    "Final runtime hashes match measured code"
+  ],
+  "knownFailedControl": "Historical self-binding mutation expectation fails identically on pinned pre-repair source. Production-only refusal case passes. Logs and loader retained; original test unchanged.",
+  "notRun": [
+    "Release validation",
+    "General conformance or mutation campaign"
+  ],
+  "published": false,
+  "finalSourceNativeLog": "logs/native-final.log"
+}

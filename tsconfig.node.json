@@ -15,6 +15,7 @@
     "account-service",
     "vite.config.ts",
     "src/crdt/accountLedgerMode.ts",
+    "src/crdt/accountTextMode.ts",
     "src/crdt/accountBatchPolicy.ts",
     "src/crdt/batchWindow.ts",
     "vite",

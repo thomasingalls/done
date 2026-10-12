@@ -1,0 +1,13 @@
+(node:68834) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:68834) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+receive-group-counts {"single":{"loads":16,"readonly":220,"readwrite":8,"verify":156},"group":{"loads":4,"readonly":47,"readwrite":2,"verify":59}}
+✔ group amortizes fresh content loads and transactions while preserving each receipt (5095.322042ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7075.743584

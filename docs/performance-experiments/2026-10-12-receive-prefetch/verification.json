@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-10-12T08:25:05.677409+00:00",
+  "parent": "54811c93",
+  "unitPassed": 52,
+  "nativeDistinctPassed": 21,
+  "journeysPassed": 3,
+  "summariesReproduced": 3,
+  "supplementaryObservationsReproduced": 3,
+  "runtimeMatchesMeasured": true,
+  "checks": [
+    "ordinary build",
+    "TypeScript",
+    "targeted lint and format",
+    "whitespace"
+  ],
+  "limits": [
+    "Individual serial desktop observations",
+    "No fresh local baseline",
+    "HTTP 200 aborted browser events retained",
+    "Unattributed delayed long task remains",
+    "Cold opening remains about seven seconds",
+    "Existing self-binding mutation control not rerun or repaired",
+    "No release validation or publication"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "parent": "460fefd88a45fc3849d4ceda1565c994cef64ed2",
+  "runtimeAndTests": [
+    {
+      "path": "src/crdt/accountLedgerMetrics.ts",
+      "bytes": 3965,
+      "sha256": "d3479b8b2518e8b23b40f4de4d1b9fa0df1588bc78857e4efb4657d589bbac21"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "bytes": 97742,
+      "sha256": "e83c04a60cae7bd488c345129a56164edfba0ff9016b1ea1aafffa770eeef8d7"
+    },
+    {
+      "path": "src/crdt/accountSyncState.ts",
+      "bytes": 6347,
+      "sha256": "a41ccff5e348928bf5d5f35ff1453ef40734315be47478c33e67e1e30f918f01"
+    },
+    {
+      "path": "src/crdt/contentMaintenance.ts",
+      "bytes": 1737,
+      "sha256": "a3bd509488589eb758baf9bce1016c309f59c7ad8fe6eae206af2e516e364929"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "bytes": 22621,
+      "sha256": "617318e8fc76c25beccbaf28962c371694cb71df7d529b89b89b433ce929aa74"
+    },
+    {
+      "path": "src/crdt/inboundLedger.ts",
+      "bytes": 21783,
+      "sha256": "6165e98e752414dcfd00cf927eab8e766ca655ecdebd6acce9c298e09a1926e2"
+    },
+    {
+      "path": "test/accountReceiveLedger.test.ts",
+      "bytes": 8752,
+      "sha256": "7e17bf2d0266fc77cdd90cc14c1997b040f0b73559545e12f211c658103f0c29"
+    },
+    {
+      "path": "test/accountSelfReceive.test.ts",
+      "bytes": 8262,
+      "sha256": "217b78b86dbadff1645ab4ae5d4789ad554f184df8fc84f0358e7c2b8f89fc50"
+    },
+    {
+      "path": "test/contentMaintenance.test.ts",
+      "bytes": 2318,
+      "sha256": "cdf1e26d6a4ce8577079359729bdd1f75d5b961b46553fca477ef1e28ae1d961"
+    },
+    {
+      "path": "test/contentInterruptedReuse.test.ts",
+      "bytes": 3633,
+      "sha256": "4451f52caf66241b283f8ed3f156f02d9730c88750a827ad49192b3a8dade320"
+    }
+  ],
+  "fixtures": [
+    {
+      "path": "/tmp/done-client-receive/fixture.json",
+      "bytes": 7707006,
+      "sha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985"
+    },
+    {
+      "path": "/tmp/done-foreground-stall-20261012/diagnostic-before-2/deep-received-fixture.json",
+      "bytes": 6654559,
+      "sha256": "426a1199ecc320e6df8caa77264efc9ae08255a88f39db1a1c89cd65632be868"
+    }
+  ],
+  "node": "v26.11.1",
+  "note": "First two diagnostic captures and collision-before use parent runtime. collision-after/profile use the intermediate repair. collision-final and ordinary-final use the final repair. Bundles, maps and credential-bearing replay fixtures stay external. Hash manifests bind them; CPU profiles, numeric results and logs are retained here."
+}

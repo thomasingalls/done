@@ -38,11 +38,7 @@ export const controls = {
     'void witness;',
   ],
   delivery: ['deliveryRecord.ts', "captureError('Delivery precedes its envelope');", 'void 0;'],
-  coverage: [
-    'inboundLedger.ts',
-    'verifyInboundCoverage(records, result.updates);',
-    'void records;',
-  ],
+  coverage: ['inboundLedger.ts', 'localCoverage!.check(result.updates);', 'void records;'],
 };
 export async function load(control) {
   let hits = 0;

@@ -1,0 +1,38 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 442 modules transformed.
+
+(!) outDir /tmp/done-foreground-stall-20261012/ordinary-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/main-XV5ccYkD.css                    33.22 kB │ gzip:   7.02 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/checkpointTimeline-gol_R3LA.js        0.58 kB │ gzip:   0.39 kB │ map:     2.20 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/accountProgressCustody-BigDd5Gv.js    1.70 kB │ gzip:   0.89 kB │ map:     6.07 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.71 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/membershipLocator-CpKtwrZa.js         5.21 kB │ gzip:   1.67 kB │ map:    16.78 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/rotationObservation-BSyl6ZDY.js       6.69 kB │ gzip:   2.59 kB │ map:    19.51 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/accountRotation-B2wGTgV-.js           7.83 kB │ gzip:   3.44 kB │ map:    29.61 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/preload-helper-DfKBSWen.js            8.34 kB │ gzip:   3.59 kB │ map:    24.38 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/historyOwner-CMCw0fbJ.js             10.60 kB │ gzip:   3.63 kB │ map:    36.03 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/ceremonyVault-CAbwXSc2.js            10.61 kB │ gzip:   3.96 kB │ map:    36.74 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/accountAccess-CaACqe5r.js            13.00 kB │ gzip:   4.69 kB │ map:    54.01 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/membershipSource-BAtrasdX.js         14.44 kB │ gzip:   5.16 kB │ map:    50.75 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/LocalApp-CeCb1-b0.js                 16.31 kB │ gzip:   6.01 kB │ map:    49.22 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/deviceRemovalVault-CxkOioE0.js       21.68 kB │ gzip:   7.23 kB │ map:    74.35 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/AccountRecoveryApp-BvSfT4jK.js       29.20 kB │ gzip:   9.89 kB │ map:    96.17 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/ceremonyNavigation-qkjCodn1.js       34.87 kB │ gzip:  12.24 kB │ map:   118.08 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/promotionRecord-DxN6WAuW.js          37.92 kB │ gzip:  12.46 kB │ map:   136.47 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/AccountSetupApp-DX_p2ZfZ.js          39.35 kB │ gzip:  13.27 kB │ map:   113.44 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/localGenesisStorage-B_QO9CMh.js      68.41 kB │ gzip:  22.86 kB │ map:   209.97 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/joinedAccount-2D8pPInm.js            74.27 kB │ gzip:  23.07 kB │ map:   272.16 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/AccountEnrollmentApp-H3w49NWo.js     79.48 kB │ gzip:  23.45 kB │ map:   263.55 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/AccountDevices-CyGFOd0_.js           99.04 kB │ gzip:  30.98 kB │ map:   380.93 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/admissionHistory-Co1JuEtq.js        102.77 kB │ gzip:  25.50 kB │ map:   347.66 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/admissionDocument-DvLlT1dn.js       137.23 kB │ gzip:  42.72 kB │ map:   816.93 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/main-HDMsaw52.js                    283.71 kB │ gzip:  92.02 kB │ map: 1,249.57 kB
+../../../../../../tmp/done-foreground-stall-20261012/ordinary-dist/assets/localGenesis-CO90Dw_l.js            682.63 kB │ gzip: 236.89 kB │ map: 2,814.97 kB
+
+✓ built in 2.56s

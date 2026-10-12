@@ -374,6 +374,80 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
   }
 };
 
+/** Conservative positive proof for the pinned v13 V1 apply semantics. False means use the
+ * independent fork/apply/comparison, not "missing". No mutation, vector-only inference, or
+ * retained decoded plaintext. The caller owns the document for this synchronous call. */
+export const provesIntegratedCoverage = (doc: YDoc, update: Uint8Array): boolean => {
+  if (hasPendingUpdates(doc)) return false;
+  try {
+    // The lazy decoder's delete-set map overwrites duplicate client sections, while apply reads
+    // every section. Restrict the proof to canonical framing; unusual framing keeps the oracle.
+    const canonical = Y.diffUpdate(update, new Uint8Array([0]));
+    try {
+      if (!equalBytes(canonical, update)) return false;
+    } finally {
+      canonical.fill(0);
+    }
+    const { structs, ds } = Y.decodeUpdate(update);
+    const range = (client: number, clock: number, length: number) =>
+      Number.isSafeInteger(client) &&
+      client >= 0 &&
+      Number.isSafeInteger(clock) &&
+      clock >= 0 &&
+      Number.isSafeInteger(length) &&
+      length > 0 &&
+      Number.isSafeInteger(clock + length) &&
+      clock + length <= Y.getState(doc.store, client);
+    const dependency = (id: Y.ID | null, splitAfter?: boolean): boolean => {
+      if (!id) return true;
+      if (!range(id.client, id.clock, 1)) return false;
+      if (splitAfter === undefined) return true;
+      const item = Y.getItem(doc.store, id);
+      const split = id.clock + (splitAfter ? 1 : 0) - item.id.clock;
+      // getMissing resolves/splits origins even when the incoming struct's IDs already exist.
+      // ContentString.splice replaces a high surrogate and its successor when split there.
+      if (
+        item instanceof Y.Item &&
+        item.content instanceof Y.ContentString &&
+        split > 0 &&
+        split < item.length
+      ) {
+        const code = item.content.str.charCodeAt(split - 1);
+        if (code >= 0xd800 && code <= 0xdbff) return false;
+      }
+      return true;
+    };
+    for (const struct of structs) {
+      if (struct instanceof Y.Skip) return false;
+      if (!range(struct.id.client, struct.id.clock, struct.length)) return false;
+      if (
+        struct instanceof Y.Item &&
+        (!dependency(struct.origin, true) ||
+          !dependency(struct.rightOrigin, false) ||
+          (struct.parent instanceof Y.ID && !dependency(struct.parent)))
+      )
+        return false;
+    }
+    // Clocks do not prove deletions. Every touched stored struct must already be deleted,
+    // including GC structs; otherwise applying the update changes visible or pending state.
+    for (const [client, intervals] of ds.clients) {
+      for (const { clock, len } of intervals) {
+        if (!range(client, clock, len)) return false;
+        const stored = doc.store.clients.get(client)!;
+        for (let i = Y.findIndexSS(stored, clock); ; i++) {
+          const struct = stored[i]!;
+          if (!struct.deleted) return false;
+          if (struct.id.clock + struct.length >= clock + len) break;
+        }
+      }
+    }
+    return true;
+  } catch {
+    // Unsupported/malformed encodings are interpreted solely by the reference path.
+    return false;
+  }
+};
+
 /**
  * Synchronous coverage baseline. Each check gets an independent gc:false fork and the same full
  * comparison as fork/apply/sameDocState; only encoding the immutable starting state is shared.
@@ -752,10 +826,14 @@ const copyHistoryStacks = (
 };
 
 /** Conservative once-per-basis guard for delta catch-up to equal a fresh normalized fork.
- * Reject every surrogate, including complete pairs; extending that domain is separate work. */
-export const isTextBufferBasis = (doc: YDoc): boolean => {
+ * Buffer catch-up rejects every surrogate. Direct text permits paired surrogates but separately
+ * rejects splits that would repair them in place. All other normalization guards are shared. */
+export const isTextBufferBasis = (doc: YDoc, allowPairs = false): boolean => {
   if (hasPendingUpdates(doc) || doc.isDestroyed || doc.gc) return false;
-  const cleanString = (s: string) => !/[\uD800-\uDFFF]/.test(s);
+  const cleanString = (s: string) =>
+    allowPairs
+      ? !/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(s)
+      : !/[\uD800-\uDFFF]/.test(s);
   const seen = new Set<object>();
   const value = (v: unknown): boolean => {
     if (typeof v === 'string') return cleanString(v);
@@ -867,3 +945,113 @@ export const genesisCoverageParts = (doc: YDoc) => {
     ds: new Uint8Array(Y.encodeSnapshot(Y.createSnapshot(Y.snapshot(doc).ds, new Map()))),
   };
 };
+
+/** Pinned v13 plain-text V1 update encoder. Read-only: no transaction, split, clone or undo mutation.
+ * A conservative miss returns to native Y.Text preparation. Only one replacement range is supported.
+ */
+export function preparePlainTextUpdate(
+  text: YText,
+  writer: number,
+  clock: number,
+  from: number,
+  to: number,
+  insert: string,
+): Uint8Array<ArrayBuffer> | undefined {
+  const doc = text.doc;
+  if (
+    !doc ||
+    hasPendingUpdates(doc) ||
+    !Number.isSafeInteger(writer) ||
+    writer < 0 ||
+    writer > 0xffffffff ||
+    !Number.isSafeInteger(clock) ||
+    clock < 0 ||
+    Y.getState(doc.store, writer) !== clock ||
+    !Number.isSafeInteger(from) ||
+    !Number.isSafeInteger(to) ||
+    from < 0 ||
+    to < from ||
+    to > text.length ||
+    !Number.isSafeInteger(clock + insert.length) ||
+    /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(insert)
+  )
+    return undefined;
+  for (let parent: Y.AbstractType<any> | null = text; parent; parent = parent.parent)
+    if (parent._item?.deleted) return undefined;
+  const deletions = new Map<number, { clock: number; len: number }[]>();
+  let position = 0,
+    left: Y.ID | null = null,
+    right: Y.ID | null = null;
+  let found = false;
+  for (let item = text._start; item; item = item.right) {
+    if (
+      !(item.content instanceof Y.ContentString) &&
+      !(item.deleted && item.content instanceof Y.ContentDeleted)
+    )
+      return undefined;
+    if (!item.deleted) {
+      const value = (item.content as Y.ContentString).str;
+      // Native splitting repairs broken UTF-16 in place. Such edits must use the reference.
+      for (const boundary of [from, to]) {
+        const offset = boundary - position;
+        if (offset > 0 && offset < item.length && /[\uD800-\uDBFF]/u.test(value[offset - 1]!))
+          return undefined;
+      }
+      if (/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value))
+        return undefined;
+      const start = Math.max(from, position),
+        end = Math.min(to, position + item.length);
+      if (end > start) {
+        const ranges = deletions.get(item.id.client) ?? [];
+        ranges.push({ clock: item.id.clock + start - position, len: end - start });
+        deletions.set(item.id.client, ranges);
+      }
+    }
+    if (!found) {
+      if (item.deleted || position + item.length <= to) left = item.lastId;
+      else {
+        const offset = to - position;
+        if (offset > 0) left = Y.createID(item.id.client, item.id.clock + offset - 1);
+        right = Y.createID(item.id.client, item.id.clock + Math.max(0, offset));
+        found = true;
+      }
+    }
+    if (!item.deleted) position += item.length;
+  }
+  if (position !== text.length) return undefined;
+  const encoder = new Y.UpdateEncoderV1();
+  encoding.writeVarUint(encoder.restEncoder, insert ? 1 : 0);
+  if (insert) {
+    encoding.writeVarUint(encoder.restEncoder, 1);
+    encoder.writeClient(writer);
+    encoding.writeVarUint(encoder.restEncoder, clock);
+    new Y.Item(
+      Y.createID(writer, clock),
+      null,
+      left,
+      null,
+      right,
+      text,
+      null,
+      new Y.ContentString(insert),
+    ).write(encoder, 0);
+  }
+  encoding.writeVarUint(encoder.restEncoder, deletions.size);
+  for (const [client, ranges] of [...deletions].sort((a, b) => b[0] - a[0])) {
+    ranges.sort((a, b) => a.clock - b.clock);
+    const merged: typeof ranges = [];
+    for (const range of ranges) {
+      const last = merged.at(-1);
+      if (last && last.clock + last.len === range.clock) last.len += range.len;
+      else merged.push({ ...range });
+    }
+    encoder.resetDsCurVal();
+    encoding.writeVarUint(encoder.restEncoder, client);
+    encoding.writeVarUint(encoder.restEncoder, merged.length);
+    for (const range of merged) {
+      encoder.writeDsClock(range.clock);
+      encoder.writeDsLen(range.len);
+    }
+  }
+  return new Uint8Array(encoder.toUint8Array());
+}

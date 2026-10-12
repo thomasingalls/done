@@ -96,31 +96,35 @@ export function decodeInboundRequest(bytes: Bytes): InboundReadRequest {
     expires: v[13],
     signature: v[14],
   } as InboundReadRequest;
-  encodeInboundRequest(r);
+  requestValues(r);
+  inboundHex(r.signature, 64);
   return r;
 }
-const pageValues = (p: InboundReadPage) => {
+const pageFields = (p: InboundReadPage) => {
   if (!Array.isArray(p.entries) || p.entries.length > READ_COUNT_LIMIT) invalid();
+  for (const e of p.entries) {
+    if (
+      !(e.envelope instanceof Uint8Array) ||
+      !e.envelope.length ||
+      e.envelope.length > ENVELOPE_WIRE_LIMIT ||
+      !(e.proof instanceof Uint8Array) ||
+      !e.proof.length ||
+      e.proof.length > RESPONSE_LIMIT
+    )
+      invalid();
+  }
   return [
     'done/private-read-page/v2',
     2,
     inboundHex(p.request, 32),
     inboundInteger(p.through),
     inboundInteger(p.next),
-    p.entries.map((e) => {
-      if (
-        !(e.envelope instanceof Uint8Array) ||
-        !e.envelope.length ||
-        e.envelope.length > ENVELOPE_WIRE_LIMIT ||
-        !(e.proof instanceof Uint8Array) ||
-        !e.proof.length ||
-        e.proof.length > RESPONSE_LIMIT
-      )
-        invalid();
-      return [hex(e.envelope), hex(e.proof)];
-    }),
   ];
 };
+const pageValues = (p: InboundReadPage) => [
+  ...pageFields(p),
+  p.entries.map((e) => [hex(e.envelope), hex(e.proof)]),
+];
 export const inboundPageMessage = (p: InboundReadPage): Bytes => json(pageValues(p));
 export function encodeInboundPage(p: InboundReadPage): Bytes {
   const bytes = json([...pageValues(p), inboundHex(p.signature, 64)]);
@@ -144,7 +148,10 @@ export function decodeInboundPage(bytes: Bytes): InboundReadPage {
     }),
     signature: v[6],
   } as InboundReadPage;
-  encodeInboundPage(p);
+  // Input length and canonical JSON/hex were checked before decoding. Validate the same
+  // fields as encoding without allocating another full set of hex strings and wire bytes.
+  pageFields(p);
+  inboundHex(p.signature, 64);
   return p;
 }
 export function checkInboundExtent(p: InboundReadPage, r: InboundReadRequest): void {

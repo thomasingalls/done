@@ -1,0 +1,827 @@
+[
+  {
+    "task": {
+      "atSeconds": 1.242699951171875,
+      "ms": 273
+    },
+    "self": [
+      {
+        "name": "L account-protocol/inboundTransport.ts:38",
+        "ms": 46.4
+      },
+      {
+        "name": "rn src/crdt/inboundRecord.ts:41",
+        "ms": 42.8
+      },
+      {
+        "name": "d account-protocol/recovery.ts:16",
+        "ms": 26.7
+      },
+      {
+        "name": "on src/crdt/inboundRecord.ts:94",
+        "ms": 22.9
+      },
+      {
+        "name": "f account-protocol/recovery.ts:22",
+        "ms": 17.5
+      },
+      {
+        "name": "(garbage collector)",
+        "ms": 13.5
+      },
+      {
+        "name": "globalThis.structuredClone",
+        "ms": 12.5
+      },
+      {
+        "name": "encode",
+        "ms": 12.4
+      },
+      {
+        "name": "De src/crdt/verifiedRecords.ts:4",
+        "ms": 6.9
+      },
+      {
+        "name": "URL",
+        "ms": 6.3
+      },
+      {
+        "name": "text account-protocol/envelope.ts:149",
+        "ms": 6.3
+      },
+      {
+        "name": "decode",
+        "ms": 6.1
+      }
+    ],
+    "inclusive": [
+      {
+        "name": "(root)",
+        "ms": 273
+      },
+      {
+        "name": "validate src/crdt/accountReceive.ts:328",
+        "ms": 244.2
+      },
+      {
+        "name": "m src/crdt/accountReceive.ts:329",
+        "ms": 227.4
+      },
+      {
+        "name": "di src/crdt/inboundLedger.ts:88",
+        "ms": 222.3
+      },
+      {
+        "name": "on src/crdt/inboundRecord.ts:94",
+        "ms": 203.4
+      },
+      {
+        "name": "an src/crdt/inboundRecord.ts:89",
+        "ms": 150.6
+      },
+      {
+        "name": "rn src/crdt/inboundRecord.ts:41",
+        "ms": 145.8
+      },
+      {
+        "name": "L account-protocol/inboundTransport.ts:38",
+        "ms": 46.4
+      },
+      {
+        "name": "Mt account-protocol/inboundTransport.ts:130",
+        "ms": 45.3
+      },
+      {
+        "name": "aa account-protocol/positionDecision.ts:161",
+        "ms": 33.9
+      },
+      {
+        "name": "d account-protocol/recovery.ts:16",
+        "ms": 26.7
+      },
+      {
+        "name": "(anonymous) account-protocol/inboundTransport.ts:138",
+        "ms": 22.6
+      }
+    ],
+    "overlapping": [
+      {
+        "name": "ledger.storageOperation",
+        "atSeconds": 1.123199951171875,
+        "ms": 404.29999923706055
+      },
+      {
+        "name": "ledger.compaction",
+        "atSeconds": 1.187599853515625,
+        "ms": 339.8999996185303
+      },
+      {
+        "name": "contentCompaction.ts.compactContent",
+        "atSeconds": 1.1877998046875,
+        "ms": 339.70000076293945
+      },
+      {
+        "name": "accountReceive.ts.checkFull",
+        "atSeconds": 1.2785,
+        "ms": 247.5
+      },
+      {
+        "name": "ledger.full",
+        "atSeconds": 1.278599853515625,
+        "ms": 247.39999961853027
+      },
+      {
+        "name": "ledger.incremental",
+        "atSeconds": 1.243699951171875,
+        "ms": 7.099998474121094
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 1.25089990234375,
+        "ms": 6.30000114440918
+      },
+      {
+        "name": "ledger.installClone",
+        "atSeconds": 1.25089990234375,
+        "ms": 6.30000114440918
+      },
+      {
+        "name": "ledger.copyRecords",
+        "atSeconds": 1.262699951171875,
+        "ms": 5.799999237060547
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 1.2727998046875,
+        "ms": 5.700000762939453
+      },
+      {
+        "name": "ledger.readProjection",
+        "atSeconds": 1.2727998046875,
+        "ms": 5.700000762939453
+      },
+      {
+        "name": "ledger.coverageRebuild",
+        "atSeconds": 1.2787998046875,
+        "ms": 4.600000381469727
+      }
+    ]
+  },
+  {
+    "task": {
+      "atSeconds": 2.6732998046875,
+      "ms": 273
+    },
+    "self": [
+      {
+        "name": "rn src/crdt/inboundRecord.ts:41",
+        "ms": 47.7
+      },
+      {
+        "name": "L account-protocol/inboundTransport.ts:38",
+        "ms": 38.7
+      },
+      {
+        "name": "f account-protocol/recovery.ts:22",
+        "ms": 26.3
+      },
+      {
+        "name": "d account-protocol/recovery.ts:16",
+        "ms": 23.9
+      },
+      {
+        "name": "globalThis.structuredClone",
+        "ms": 15.2
+      },
+      {
+        "name": "on src/crdt/inboundRecord.ts:94",
+        "ms": 15.1
+      },
+      {
+        "name": "De src/crdt/verifiedRecords.ts:4",
+        "ms": 8.5
+      },
+      {
+        "name": "(garbage collector)",
+        "ms": 8.5
+      },
+      {
+        "name": "decode",
+        "ms": 7.6
+      },
+      {
+        "name": "encode",
+        "ms": 7.5
+      },
+      {
+        "name": "R account-protocol/inboundTransport.ts:43",
+        "ms": 6.3
+      },
+      {
+        "name": "(anonymous) account-protocol/inboundTransport.ts:138",
+        "ms": 6.3
+      }
+    ],
+    "inclusive": [
+      {
+        "name": "(root)",
+        "ms": 273
+      },
+      {
+        "name": "validate src/crdt/accountReceive.ts:328",
+        "ms": 245.8
+      },
+      {
+        "name": "m src/crdt/accountReceive.ts:329",
+        "ms": 224.6
+      },
+      {
+        "name": "di src/crdt/inboundLedger.ts:88",
+        "ms": 218.3
+      },
+      {
+        "name": "on src/crdt/inboundRecord.ts:94",
+        "ms": 196.9
+      },
+      {
+        "name": "an src/crdt/inboundRecord.ts:89",
+        "ms": 161.9
+      },
+      {
+        "name": "rn src/crdt/inboundRecord.ts:41",
+        "ms": 159.3
+      },
+      {
+        "name": "Mt account-protocol/inboundTransport.ts:130",
+        "ms": 48.9
+      },
+      {
+        "name": "L account-protocol/inboundTransport.ts:38",
+        "ms": 38.7
+      },
+      {
+        "name": "aa account-protocol/positionDecision.ts:161",
+        "ms": 31.4
+      },
+      {
+        "name": "z account-protocol/inboundTransport.ts:81",
+        "ms": 27.6
+      },
+      {
+        "name": "f account-protocol/recovery.ts:22",
+        "ms": 26.3
+      }
+    ],
+    "overlapping": [
+      {
+        "name": "ledger.storageOperation",
+        "atSeconds": 2.6437998046875,
+        "ms": 5494.400001525879
+      },
+      {
+        "name": "ledger.loadElapsed",
+        "atSeconds": 2.64389990234375,
+        "ms": 2732.6000003814697
+      },
+      {
+        "name": "accountReceive.ts.checkFull",
+        "atSeconds": 2.710699951171875,
+        "ms": 2648.599998474121
+      },
+      {
+        "name": "ledger.full",
+        "atSeconds": 2.7107998046875,
+        "ms": 2648.5
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 2.700699951171875,
+        "ms": 10
+      },
+      {
+        "name": "ledger.readProjection",
+        "atSeconds": 2.700699951171875,
+        "ms": 10
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 2.68089990234375,
+        "ms": 8.200000762939453
+      },
+      {
+        "name": "ledger.installClone",
+        "atSeconds": 2.68089990234375,
+        "ms": 8.200000762939453
+      },
+      {
+        "name": "ledger.incremental",
+        "atSeconds": 2.674599853515625,
+        "ms": 6.19999885559082
+      },
+      {
+        "name": "ledger.coverageRebuild",
+        "atSeconds": 2.71089990234375,
+        "ms": 4.899999618530273
+      },
+      {
+        "name": "ledger.copyRecords",
+        "atSeconds": 2.689099853515625,
+        "ms": 4.100000381469727
+      }
+    ]
+  },
+  {
+    "task": {
+      "atSeconds": 5.14039990234375,
+      "ms": 243
+    },
+    "self": [
+      {
+        "name": "encodeInto",
+        "ms": 37.4
+      },
+      {
+        "name": "(anonymous) node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:344",
+        "ms": 17.3
+      },
+      {
+        "name": "De src/crdt/verifiedRecords.ts:4",
+        "ms": 16.4
+      },
+      {
+        "name": "decode",
+        "ms": 16.2
+      },
+      {
+        "name": "M node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:130",
+        "ms": 12.6
+      },
+      {
+        "name": "(anonymous) src/crdt/yjs.ts:183",
+        "ms": 12.3
+      },
+      {
+        "name": "encode",
+        "ms": 11
+      },
+      {
+        "name": "Vc src/crdt/yjs.ts:336",
+        "ms": 10.1
+      },
+      {
+        "name": "integrate node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:9910",
+        "ms": 10
+      },
+      {
+        "name": "Xi node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1496",
+        "ms": 8.9
+      },
+      {
+        "name": "write node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:10146",
+        "ms": 8.6
+      },
+      {
+        "name": "La node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:2870",
+        "ms": 6.1
+      }
+    ],
+    "inclusive": [
+      {
+        "name": "(root)",
+        "ms": 243
+      },
+      {
+        "name": "check src/crdt/inboundLedger.ts:328",
+        "ms": 202.1
+      },
+      {
+        "name": "check src/crdt/inboundLedger.ts:438",
+        "ms": 202.1
+      },
+      {
+        "name": "Ti src/crdt/accountSyncState.ts:36",
+        "ms": 201.3
+      },
+      {
+        "name": "m src/crdt/accountReceive.ts:329",
+        "ms": 201.3
+      },
+      {
+        "name": "(anonymous) src/crdt/accountReceive.ts:394",
+        "ms": 197.5
+      },
+      {
+        "name": "na node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1794",
+        "ms": 121.9
+      },
+      {
+        "name": "kc src/crdt/yjs.ts:151",
+        "ms": 105.6
+      },
+      {
+        "name": "Oc src/crdt/yjs.ts:150",
+        "ms": 105.6
+      },
+      {
+        "name": "ta node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1776",
+        "ms": 98.7
+      },
+      {
+        "name": "Ji node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1350",
+        "ms": 97.5
+      },
+      {
+        "name": "Vc src/crdt/yjs.ts:336",
+        "ms": 95.2
+      }
+    ],
+    "overlapping": [
+      {
+        "name": "ledger.storageOperation",
+        "atSeconds": 2.6437998046875,
+        "ms": 5494.400001525879
+      },
+      {
+        "name": "ledger.loadElapsed",
+        "atSeconds": 2.64389990234375,
+        "ms": 2732.6000003814697
+      },
+      {
+        "name": "accountReceive.ts.checkFull",
+        "atSeconds": 2.710699951171875,
+        "ms": 2648.599998474121
+      },
+      {
+        "name": "ledger.full",
+        "atSeconds": 2.7107998046875,
+        "ms": 2648.5
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 5.3727998046875,
+        "ms": 3
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 5.3207998046875,
+        "ms": 2.9000015258789062
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 5.199699951171875,
+        "ms": 2.8999996185302734
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 5.259199951171875,
+        "ms": 2.8999996185302734
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 5.197599853515625,
+        "ms": 2.1000003814697266
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 5.140599853515625,
+        "ms": 2
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 5.1887998046875,
+        "ms": 2
+      }
+    ]
+  },
+  {
+    "task": {
+      "atSeconds": 5.4475,
+      "ms": 269
+    },
+    "self": [
+      {
+        "name": "rn src/crdt/inboundRecord.ts:41",
+        "ms": 42.7
+      },
+      {
+        "name": "L account-protocol/inboundTransport.ts:38",
+        "ms": 41.4
+      },
+      {
+        "name": "d account-protocol/recovery.ts:16",
+        "ms": 38.7
+      },
+      {
+        "name": "on src/crdt/inboundRecord.ts:94",
+        "ms": 20.1
+      },
+      {
+        "name": "f account-protocol/recovery.ts:22",
+        "ms": 12.7
+      },
+      {
+        "name": "encode",
+        "ms": 12.5
+      },
+      {
+        "name": "(garbage collector)",
+        "ms": 11.5
+      },
+      {
+        "name": "globalThis.structuredClone",
+        "ms": 10.1
+      },
+      {
+        "name": "De src/crdt/verifiedRecords.ts:4",
+        "ms": 9
+      },
+      {
+        "name": "decode",
+        "ms": 7.4
+      },
+      {
+        "name": "text account-protocol/envelope.ts:149",
+        "ms": 5.1
+      },
+      {
+        "name": "(program)",
+        "ms": 5
+      }
+    ],
+    "inclusive": [
+      {
+        "name": "(root)",
+        "ms": 269
+      },
+      {
+        "name": "validate src/crdt/accountReceive.ts:328",
+        "ms": 240.5
+      },
+      {
+        "name": "m src/crdt/accountReceive.ts:329",
+        "ms": 224.6
+      },
+      {
+        "name": "di src/crdt/inboundLedger.ts:88",
+        "ms": 217.1
+      },
+      {
+        "name": "on src/crdt/inboundRecord.ts:94",
+        "ms": 205.8
+      },
+      {
+        "name": "an src/crdt/inboundRecord.ts:89",
+        "ms": 154.2
+      },
+      {
+        "name": "rn src/crdt/inboundRecord.ts:41",
+        "ms": 150.4
+      },
+      {
+        "name": "Mt account-protocol/inboundTransport.ts:130",
+        "ms": 50.1
+      },
+      {
+        "name": "L account-protocol/inboundTransport.ts:38",
+        "ms": 41.4
+      },
+      {
+        "name": "d account-protocol/recovery.ts:16",
+        "ms": 38.7
+      },
+      {
+        "name": "aa account-protocol/positionDecision.ts:161",
+        "ms": 29.8
+      },
+      {
+        "name": "jt account-protocol/inboundTransport.ts:125",
+        "ms": 27.6
+      }
+    ],
+    "overlapping": [
+      {
+        "name": "ledger.storageOperation",
+        "atSeconds": 2.6437998046875,
+        "ms": 5494.400001525879
+      },
+      {
+        "name": "contentCompaction.ts.compactContent",
+        "atSeconds": 5.384099853515625,
+        "ms": 2754.1000003814697
+      },
+      {
+        "name": "ledger.compaction",
+        "atSeconds": 5.384099853515625,
+        "ms": 2754.1000003814697
+      },
+      {
+        "name": "ledger.full",
+        "atSeconds": 5.476599853515625,
+        "ms": 2607.699998855591
+      },
+      {
+        "name": "accountReceive.ts.checkFull",
+        "atSeconds": 5.476599853515625,
+        "ms": 2607.699998855591
+      },
+      {
+        "name": "ledger.incremental",
+        "atSeconds": 5.448699951171875,
+        "ms": 9.19999885559082
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 5.45789990234375,
+        "ms": 6.399999618530273
+      },
+      {
+        "name": "ledger.installClone",
+        "atSeconds": 5.45789990234375,
+        "ms": 6.399999618530273
+      },
+      {
+        "name": "ledger.coverageRebuild",
+        "atSeconds": 5.4767998046875,
+        "ms": 6
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 5.47139990234375,
+        "ms": 5.100000381469727
+      },
+      {
+        "name": "ledger.readProjection",
+        "atSeconds": 5.47139990234375,
+        "ms": 5.100000381469727
+      }
+    ]
+  },
+  {
+    "task": {
+      "atSeconds": 7.87289990234375,
+      "ms": 235
+    },
+    "self": [
+      {
+        "name": "encodeInto",
+        "ms": 42.8
+      },
+      {
+        "name": "M node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:130",
+        "ms": 19.6
+      },
+      {
+        "name": "integrate node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:9910",
+        "ms": 13.9
+      },
+      {
+        "name": "De src/crdt/verifiedRecords.ts:4",
+        "ms": 12.6
+      },
+      {
+        "name": "decode",
+        "ms": 12.4
+      },
+      {
+        "name": "Vc src/crdt/yjs.ts:336",
+        "ms": 12.3
+      },
+      {
+        "name": "(anonymous) node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:344",
+        "ms": 10.1
+      },
+      {
+        "name": "(anonymous) src/crdt/yjs.ts:183",
+        "ms": 7.5
+      },
+      {
+        "name": "qi node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1326",
+        "ms": 7.4
+      },
+      {
+        "name": "Xi node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1496",
+        "ms": 6.1
+      },
+      {
+        "name": "(garbage collector)",
+        "ms": 5.1
+      },
+      {
+        "name": "N node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js:260",
+        "ms": 5.1
+      }
+    ],
+    "inclusive": [
+      {
+        "name": "(root)",
+        "ms": 235
+      },
+      {
+        "name": "Ti src/crdt/accountSyncState.ts:36",
+        "ms": 197.6
+      },
+      {
+        "name": "m src/crdt/accountReceive.ts:329",
+        "ms": 197.6
+      },
+      {
+        "name": "check src/crdt/inboundLedger.ts:328",
+        "ms": 196.9
+      },
+      {
+        "name": "check src/crdt/inboundLedger.ts:438",
+        "ms": 196.9
+      },
+      {
+        "name": "(anonymous) src/crdt/accountReceive.ts:394",
+        "ms": 195.1
+      },
+      {
+        "name": "na node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1794",
+        "ms": 111.2
+      },
+      {
+        "name": "kc src/crdt/yjs.ts:151",
+        "ms": 111.2
+      },
+      {
+        "name": "Oc src/crdt/yjs.ts:150",
+        "ms": 111.2
+      },
+      {
+        "name": "ta node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1776",
+        "ms": 98.6
+      },
+      {
+        "name": "(anonymous) node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1368",
+        "ms": 96.2
+      },
+      {
+        "name": "Ji node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs:1350",
+        "ms": 96.2
+      }
+    ],
+    "overlapping": [
+      {
+        "name": "ledger.storageOperation",
+        "atSeconds": 2.6437998046875,
+        "ms": 5494.400001525879
+      },
+      {
+        "name": "contentCompaction.ts.compactContent",
+        "atSeconds": 5.384099853515625,
+        "ms": 2754.1000003814697
+      },
+      {
+        "name": "ledger.compaction",
+        "atSeconds": 5.384099853515625,
+        "ms": 2754.1000003814697
+      },
+      {
+        "name": "ledger.full",
+        "atSeconds": 5.476599853515625,
+        "ms": 2607.699998855591
+      },
+      {
+        "name": "accountReceive.ts.checkFull",
+        "atSeconds": 5.476599853515625,
+        "ms": 2607.699998855591
+      },
+      {
+        "name": "ledger.validateUpdates",
+        "atSeconds": 8.102699951171875,
+        "ms": 4.299999237060547
+      },
+      {
+        "name": "contentCompaction.ts.validateContentUpdates",
+        "atSeconds": 8.102699951171875,
+        "ms": 4.299999237060547
+      },
+      {
+        "name": "structuredClone",
+        "atSeconds": 8.098699951171875,
+        "ms": 3
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 7.9782998046875,
+        "ms": 2.9000015258789062
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 8.0377998046875,
+        "ms": 2.700000762939453
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 7.9197998046875,
+        "ms": 2.6000003814697266
+      },
+      {
+        "name": "ledger.coverageCheck",
+        "atSeconds": 7.997099853515625,
+        "ms": 2.1000003814697266
+      }
+    ]
+  }
+]

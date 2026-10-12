@@ -92,3 +92,42 @@ is started and no prior async Playwright wait is credited. Next is v9 activation
 witness storage under the factor-owned permit, with complete stored-wire replay, content coverage,
 old-reader refusal and native abort/crash/lost-ack tests. Editor promotion, v2 service reader/publisher
 resolution and real two-gate enrollment follow their own checkpoints. No whole-protocol debt is paid.
+
+## 2026-10-12 — Yielding reference maintenance
+
+The [foreground-stall repair](./performance-experiments/2026-10-12-foreground-stall/README.md)
+keeps full independent reference coverage and its existing row/state trigger. During interruptible
+compaction, the same receipt census, historical receive checks and self-original coverage use the
+maintenance task's budget boundaries. No native transaction is suspended to admit another job.
+
+The fully authenticated incremental result is installed before this diagnostic comparison. If
+foreground work interrupts the reference audit, that result remains usable only under its exact
+record/owner binding. The audit remains due and is retried at the next maintenance opportunity;
+it is not marked complete or transferred onto the next keystroke. Reference work starts over on
+the then-current snapshot, using independent coverage. Continuous activity can postpone completion
+until a sufficiently quiet maintenance window; closing/reopening still requires full verification.
+
+Only `MaintenanceInterrupted` after successful validation preserves this verified view. Other
+errors, mismatches and owner/authority invalidation clear it and retain the existing refusal path.
+The carrier may retain its prior detached plaintext cache after interruption, but every reuse still
+checks the authenticated counter and exact sealed row bytes. Partial reference results cannot
+publish, grant authority, delete rows or advance durable cursors.
+
+## 2026-10-12 — Received-history cold coverage
+
+The [received-open repair](./performance-experiments/2026-10-12-received-open/README.md) keeps one
+private coverage document per cold receipt pass instead of rebuilding it per receipt. It is disposed
+on success, refusal or cancellation. It does not transfer a verified view across startup owners.
+
+A pinned-Yjs positive proof may avoid fork/apply/comparison for a canonical V1 update when the current
+document has no pending state. It checks full struct clock ranges, resolvable origin/right-origin/
+parent dependencies, safe string-splitting boundaries and already-deleted intervals. A clock-vector
+subset alone is not sufficient: even already-known structs run Yjs dependency resolution. Duplicate
+delete-set client sections, unusual encodings, pending data and uncertain cases use the reference
+algorithm. No negative conclusion is cached. Existing exact-byte positive cache bounds remain.
+
+`VITE_ACCOUNT_DIRECT_COVERAGE=0` disables the positive proof. The standalone reference checker and
+isolated periodic audit remain fork/apply/full-state oracles independently of this switch. Cold replay
+still checks native record authentication, completeness, original signed receipts, authority and
+lifetime. Request/page/receipt decoders omit redundant re-serialization only after validating their
+unchanged canonical input, field, extent and size rules; no stored bytes or format fences change.

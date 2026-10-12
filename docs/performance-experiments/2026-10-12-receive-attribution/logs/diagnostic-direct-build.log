@@ -1,0 +1,33 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 419 modules transformed.
+✗ Build failed in 1.85s
+error during build:
+Build failed with 3 errors:
+
+[plugin receive-attribution] /Users/thomasingalls/.codex/worktrees/c030/done/src/crdt/accountReceive.ts
+TypeError: Cannot read properties of undefined (reading 'Latest')
+    at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.vite-temp/diagnostic.config.ts.timestamp-1791757473615-92cbb1650bb728.mjs:222:66)
+    at TransformPluginContextImpl.handler (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)
+    at plugin (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)
+    at plugin.<computed> (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)
+[plugin receive-attribution] /Users/thomasingalls/.codex/worktrees/c030/done/src/crdt/inboundLedger.ts
+TypeError: Cannot read properties of undefined (reading 'Latest')
+    at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.vite-temp/diagnostic.config.ts.timestamp-1791757473615-92cbb1650bb728.mjs:222:66)
+    at TransformPluginContextImpl.handler (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)
+    at plugin (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)
+    at plugin.<computed> (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)
+[plugin receive-attribution] /Users/thomasingalls/.codex/worktrees/c030/done/src/crdt/accountInbound.ts
+TypeError: Cannot read properties of undefined (reading 'Latest')
+    at TransformPluginContextImpl.transform (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.vite-temp/diagnostic.config.ts.timestamp-1791757473615-92cbb1650bb728.mjs:222:66)
+    at TransformPluginContextImpl.handler (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33304:13)
+    at plugin (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1511:30)
+    at plugin.<computed> (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/bindingify-input-options-XPJLJOD0.mjs:1959:18)
+    at aggregateBindingErrorsIntoJsError (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:48:18)
+    at unwrapBindingResult (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/error-BHRSI0R7.mjs:18:128)
+    at #build (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/rolldown@1.1.5/node_modules/rolldown/dist/shared/rolldown-build-CtPvmZgJ.mjs:3276:34)
+    at async buildEnvironment (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33061:66)
+    at async Object.build (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33483:19)
+    at async Object.buildApp (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33480:153)
+    at async CAC.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/cli.js:776:3) {
+  errors: [Getter/Setter]
+}
