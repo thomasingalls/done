@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Exact recovery intent and signed membership successor. Neither installs local keys. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { json, same, domainMessage, verifySignature } from './admission.ts';
@@ -101,6 +102,7 @@ export async function verifyRecoveryIntent(
   input: unknown,
   parent: VerifiedMembership,
   recoveryInput: RecoveryDraft,
+  checkpoint?: ProofCheckpoint,
 ) {
   const intent = parseRecoveryIntent(input),
     p = membershipState(parent),
@@ -114,17 +116,23 @@ export async function verifyRecoveryIntent(
     p.finalized.some((m) => m.credential === b.newCredentialId)
   )
     throw Error('Recovery parent changed');
-  const head = await verifyRecoveryHeadAssertion(intent.head, p.pin, {
-    workspaceId: p.workspaceId,
-    clientNonce: b.clientNonce,
-  });
-  await verifyRecoveryBootstrap(b, {
-    head,
-    recovery,
-    currentRecoveryStateDigest: p.certificate.recoveryStateDigest,
-    candidate: { credentialId: b.newCredentialId, wPub: b.newWPub, sPub: b.newSPub },
-    conflictParent: p.head,
-  });
+  const head = await proofWork(
+    checkpoint,
+    verifyRecoveryHeadAssertion(intent.head, p.pin, {
+      workspaceId: p.workspaceId,
+      clientNonce: b.clientNonce,
+    }),
+  );
+  await proofWork(
+    checkpoint,
+    verifyRecoveryBootstrap(b, {
+      head,
+      recovery,
+      currentRecoveryStateDigest: p.certificate.recoveryStateDigest,
+      candidate: { credentialId: b.newCredentialId, wPub: b.newWPub, sPub: b.newSPub },
+      conflictParent: p.head,
+    }),
+  );
   // Include finalized historical publishers as well as all currently certified writers.
   const expected = [
     ...p.certificate.members.map((m) => m.id),
@@ -149,7 +157,14 @@ export async function verifyRecoveryIntent(
     )
       throw Error('Recovery accepted boundary changed');
   }
-  await verifySignature(b.newSPub, intent.signature, await recoveryIntentMessage(intent));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      b.newSPub,
+      intent.signature,
+      await proofWork(checkpoint, recoveryIntentMessage(intent)),
+    ),
+  );
   return intent;
 }
 export function parseRecoverySuccessor(input: unknown) {
@@ -201,6 +216,7 @@ export const recoverySuccessorMessage = (input: unknown) => {
 export async function verifyRecoverySuccessorState(
   input: unknown,
   parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
 ): Promise<MembershipState> {
   const proof = parseRecoverySuccessor(input),
     p = membershipState(parent),
@@ -214,7 +230,10 @@ export async function verifyRecoverySuccessorState(
     e.acceptancePublicKey !== p.acceptancePublicKey
   )
     throw Error('Recovery continuity changed');
-  const intent = await verifyRecoveryIntent(e.intent, parent, e.recovery),
+  const intent = await proofWork(
+      checkpoint,
+      verifyRecoveryIntent(e.intent, parent, e.recovery, checkpoint),
+    ),
     b = intent.bootstrap;
   const member = { id: b.newCredentialId, wPub: b.newWPub, sPub: b.newSPub };
   const own = { credentialId: member.id, position: 0, link: EMPTY_LINK };
@@ -242,22 +261,25 @@ export async function verifyRecoverySuccessorState(
       final.link !== cut.link
     )
       throw Error('Recovery finalization changed');
-    await verifySignature(
-      p.acceptancePublicKey,
-      final.signature,
-      removalFinalizationMessage(final),
+    await proofWork(
+      checkpoint,
+      verifySignature(p.acceptancePublicKey, final.signature, removalFinalizationMessage(final)),
     );
   }
-  const message = await recoverySuccessorMessage(proof);
-  if (proof.head !== (await digest(message))) throw Error('Recovery head changed');
-  await verifySignature(p.pin.authRoot, proof.signature, message);
+  const message = await proofWork(checkpoint, recoverySuccessorMessage(proof));
+  if (proof.head !== (await proofWork(checkpoint, digest(message))))
+    throw Error('Recovery head changed');
+  await proofWork(checkpoint, verifySignature(p.pin.authRoot, proof.signature, message));
   const certificate = {
     v: 1 as const,
     kind: 'recovery-recipient-certificate' as const,
     members: [member],
     recoveryStateDigest: b.newRecoveryStateDigest,
     approver: member.id,
-    intentId: await digest(await recoveryIntentMessage(intent)),
+    intentId: await proofWork(
+      checkpoint,
+      digest(await proofWork(checkpoint, recoveryIntentMessage(intent))),
+    ),
   };
   return {
     ...structuredClone(p),
@@ -265,7 +287,7 @@ export async function verifyRecoverySuccessorState(
     head: proof.head,
     generation: e.generation,
     certificate,
-    certifiedSetDigest: await digest(json(certificate)),
+    certifiedSetDigest: await proofWork(checkpoint, digest(json(certificate))),
     roster: [
       {
         ...member,

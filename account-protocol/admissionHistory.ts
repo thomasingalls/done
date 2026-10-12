@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Verified admission/certification history. No storage, installation or send authority. */
 import { parseRecoverySuccessor } from './recoveryTransition.ts';
 import { verifySuccessor, type SuccessorBase, type AuthorityAnchor } from './successor.ts';
@@ -79,19 +80,27 @@ export async function verifyAdmissionHistory(
   input: unknown,
   base: SuccessorBase,
   held: AuthorityAnchor,
+  checkpoint?: ProofCheckpoint,
 ): Promise<AdmissionHistory> {
   const capturedBase = structuredClone(base);
-  const successor = await verifySuccessor(input, capturedBase, held);
-  return verifyEarlyHistory(capturedBase, successor);
+  const successor = await proofWork(
+    checkpoint,
+    verifySuccessor(input, capturedBase, held, checkpoint),
+  );
+  return verifyEarlyHistory(capturedBase, successor, checkpoint);
 }
 /** A real first-admission (or pending first enrollment) anchor for recovery. */
 export async function verifyEarlyHistory(
   baseInput: SuccessorBase,
   admissionInput: unknown | null = null,
+  checkpoint?: ProofCheckpoint,
 ): Promise<AdmissionHistory> {
   const base = structuredClone(baseInput),
     admission = structuredClone(admissionInput);
-  const membership = await verifyEarlyMembership(base, admission),
+  const membership = await proofWork(
+      checkpoint,
+      verifyEarlyMembership(base, admission, checkpoint),
+    ),
     state = membershipState(membership);
   const m = state.certificate.members[0]!;
   const first = captureAuthority({
@@ -128,7 +137,12 @@ export async function verifyEarlyHistory(
   timelines.set(result, {
     membership,
     memberships: new Map([
-      [1, state.epoch === 1 ? membership : await verifyEarlyMembership(base)],
+      [
+        1,
+        state.epoch === 1
+          ? membership
+          : await proofWork(checkpoint, verifyEarlyMembership(base, undefined, checkpoint)),
+      ],
       [state.epoch, membership],
     ]),
     generations: new Map(authorities.map((a) => [a.tip, 1])),
@@ -144,19 +158,39 @@ export async function verifyCertificationHistory(
   admissionInput: unknown,
   base: SuccessorBase,
   held: { epoch: 3; head: string },
+  checkpoint?: ProofCheckpoint,
 ): Promise<AdmissionHistory> {
   const captured = parseCertificationSuccessor(input);
   const capturedBase = structuredClone(base);
   if (held.epoch !== 3 || held.head !== captured.head) throw Error('Certification anchor changed');
-  const admission = await verifySuccessor(admissionInput, capturedBase, {
-    epoch: 2,
-    head: captured.epoch.parent,
-  });
-  const prior = await verifyAdmissionHistory(admission, capturedBase, {
-    epoch: 2,
-    head: admission.head,
-  });
-  const certification = await verifyCertificationSuccessor(captured, capturedBase, admission);
+  const admission = await proofWork(
+    checkpoint,
+    verifySuccessor(
+      admissionInput,
+      capturedBase,
+      {
+        epoch: 2,
+        head: captured.epoch.parent,
+      },
+      checkpoint,
+    ),
+  );
+  const prior = await proofWork(
+    checkpoint,
+    verifyAdmissionHistory(
+      admission,
+      capturedBase,
+      {
+        epoch: 2,
+        head: admission.head,
+      },
+      checkpoint,
+    ),
+  );
+  const certification = await proofWork(
+    checkpoint,
+    verifyCertificationSuccessor(captured, capturedBase, admission, undefined, checkpoint),
+  );
   const current = captureAuthority({ ...prior.first, tip: 3, head: certification.head });
   const head = certification.epoch.heads.find((h) => h.credentialId === prior.credential)!;
   const boundary = Object.freeze({ position: head.position, link: head.link });
@@ -170,10 +204,19 @@ export async function verifyCertificationHistory(
       certification.epoch.roster.map((m) => Object.freeze({ id: m.id, publicKey: m.sPub })),
     ),
   });
-  const membership = await verifyMembershipAnchor(capturedBase, admission, certification, {
-    epoch: 3,
-    head: certification.head,
-  });
+  const membership = await proofWork(
+    checkpoint,
+    verifyMembershipAnchor(
+      capturedBase,
+      admission,
+      certification,
+      {
+        epoch: 3,
+        head: certification.head,
+      },
+      checkpoint,
+    ),
+  );
   const publishers = new Map<string, PublisherTimeline>();
   for (const m of result.readers)
     publishers.set(
@@ -225,6 +268,7 @@ export async function verifyCertificationHistory(
 export async function extendMembershipHistory(
   input: unknown,
   prior: AdmissionHistory,
+  checkpoint?: ProofCheckpoint,
 ): Promise<AdmissionHistory> {
   const held = requireHistory(prior),
     root = publisherRoots.get(held) ?? held;
@@ -242,14 +286,26 @@ export async function extendMembershipHistory(
             : parseMembershipCertification(input);
   const membership =
     proof.kind === 'recovery-successor'
-      ? await verifyRecoverySuccessor(proof, timeline.membership)
+      ? await proofWork(checkpoint, verifyRecoverySuccessor(proof, timeline.membership, checkpoint))
       : proof.kind === 'membership-admission'
-        ? await verifyMembershipAdmission(proof, timeline.membership)
+        ? await proofWork(
+            checkpoint,
+            verifyMembershipAdmission(proof, timeline.membership, checkpoint),
+          )
         : proof.kind === 'membership-cancellation'
-          ? await verifyMembershipCancellation(proof, timeline.membership)
+          ? await proofWork(
+              checkpoint,
+              verifyMembershipCancellation(proof, timeline.membership, checkpoint),
+            )
           : proof.kind === 'membership-rotation'
-            ? await verifyMembershipRotation(proof, timeline.membership)
-            : await verifyMembershipCertification(proof, timeline.membership);
+            ? await proofWork(
+                checkpoint,
+                verifyMembershipRotation(proof, timeline.membership, checkpoint),
+              )
+            : await proofWork(
+                checkpoint,
+                verifyMembershipCertification(proof, timeline.membership, checkpoint),
+              );
   const state = membershipState(membership);
   const current = captureAuthority({
     ...root.current,

@@ -29,6 +29,7 @@ const workNames = [
   'authorityChecks',
   'authorityAuthentications',
   'authorityReuses',
+  'membershipProofTransfers',
   'positions',
   'sourceParses',
   'sourceParseBytes',

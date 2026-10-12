@@ -1,4 +1,4 @@
-import { cpuCheckpoint } from './cpuBudget';
+import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
 import { createAuthorityAuthentication } from './accountAuthority';
 import { authenticateJoinedAccountRows } from './joinedAccount';
 import { authenticatePromotionRows } from './promotionRecord';
@@ -72,6 +72,7 @@ import {
   parseDiscoveryRequest,
   discoveryRequestMessage,
   verifyDiscoveryResponse,
+  type SuccessorBase,
 } from '../../account-protocol/successor';
 import {
   verifyAdmissionHistory,
@@ -79,6 +80,7 @@ import {
   historyPublisher,
   historyAuthority,
   historyGeneration,
+  type AdmissionHistory,
 } from '../../account-protocol/admissionHistory';
 import type { DeviceRoster } from '../account/deviceRoster';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
@@ -224,6 +226,25 @@ async function openAccountReceiveOwner(
     initialEpoch = 3;
   let base!: InboundContext, signer: CryptoKey | undefined, publicKey!: CryptoKey;
   let inheritedHistoryHash: string | undefined;
+  // Captured from authenticated startup; usable only after the complete fresh inventory check.
+  let membershipAnchor: SuccessorBase | undefined;
+  const membershipWorkEnabled = import.meta.env?.['VITE_ACCOUNT_MEMBERSHIP_WORK'] !== '0';
+  const membershipWork = (task: SessionTask, context = base, payload = expectedPayload) =>
+    membershipWorkEnabled
+      ? createCpuBudget(() =>
+          task.step(() => {
+            if (handoff || base !== context || expectedPayload !== payload)
+              throw new ReceiveAuthorityChanged();
+          }),
+        )
+      : undefined;
+  type DiscoveryHandoff = {
+    context: InboundContext;
+    payload: Bytes;
+    history: AdmissionHistory;
+    proofs: ReturnType<typeof parseMembershipChain>;
+  };
+
   let handoff = false,
     transition = '';
   let expectedPayload: Bytes = new Uint8Array(),
@@ -318,6 +339,13 @@ async function openAccountReceiveOwner(
       authority.invalidate();
       expectedPayload = promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' });
       expectedRecord = v.record;
+      membershipAnchor = v.marker.admission?.receipt
+        ? structuredClone({
+            pin: options.pin,
+            request: v.marker.admission.request,
+            receipt: v.marker.admission.receipt,
+          })
+        : undefined;
       installed = v.marker.successor;
       membership = v.marker.membership;
       await withPromotionRoot(task, v.claim, v.record, options.code, async (root, subtle) => {
@@ -357,6 +385,7 @@ async function openAccountReceiveOwner(
       authority.invalidate();
       expectedPayload = joinedPayload(v.marker!);
       expectedRecord = v.record;
+      membershipAnchor = structuredClone(v.marker!.authority.base);
       membership = v.marker!.membership;
       inheritedHistoryHash =
         v.marker!.v === 3
@@ -614,6 +643,7 @@ async function openAccountReceiveOwner(
     },
     dispose() {
       authority.dispose();
+      membershipAnchor = undefined;
       expectedPayload.fill(0);
       verifiedCounter = undefined;
       verified.clear();
@@ -1429,27 +1459,48 @@ async function openAccountReceiveOwner(
       }
     });
   };
-  const adoptMembership = (input: unknown, checkCommit?: () => void) => {
-    const proofs = parseMembershipChain(input);
+  // Only discovery can supply this private handoff. The public method below accepts raw proofs.
+  const installMembership = (
+    input: unknown,
+    checkCommit?: () => void,
+    prepared?: DiscoveryHandoff,
+  ) => {
+    const proofs = prepared ? prepared.proofs : parseMembershipChain(input);
     if (!composed)
       return Promise.reject(Error('Membership installation requires the composed owner'));
     return runCaptureTask(async (task, owner, route) => {
       await assertCurrent(task);
       task.step(() => checkCommit?.());
-      const current = joined
-        ? await readJoinedAccount(task, options.slotId, options.code)
-        : await readPromotion(task, options.slotId, options.code);
-      const anchor = joined
-        ? (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!.authority.base
-        : {
-            pin: options.pin,
-            request: (current as Awaited<ReturnType<typeof readPromotion>>).marker!.admission!
-              .request,
-            receipt: (current as Awaited<ReturnType<typeof readPromotion>>).marker!.admission!
-              .receipt!,
-          };
-      const verifiedHistory = await task.wait(() => verifyMembershipChain(proofs, anchor)),
-        history = historyPublisher(verifiedHistory.history, route.credential);
+      let current:
+        | Awaited<ReturnType<typeof readJoinedAccount>>
+        | Awaited<ReturnType<typeof readPromotion>>
+        | undefined;
+      let checkedHistory: AdmissionHistory;
+      if (prepared) {
+        task.step(() => {
+          if (base !== prepared.context || expectedPayload !== prepared.payload)
+            throw new ReceiveAuthorityChanged();
+        });
+        checkedHistory = prepared.history;
+        countLedgerWork('membershipProofTransfers');
+      } else {
+        current = joined
+          ? await readJoinedAccount(task, options.slotId, options.code)
+          : await readPromotion(task, options.slotId, options.code);
+        const anchor = joined
+          ? (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!.authority.base
+          : {
+              pin: options.pin,
+              request: (current as Awaited<ReturnType<typeof readPromotion>>).marker!.admission!
+                .request,
+              receipt: (current as Awaited<ReturnType<typeof readPromotion>>).marker!.admission!
+                .receipt!,
+            };
+        checkedHistory = (
+          await task.wait(() => verifyMembershipChain(proofs, anchor, membershipWork(task)))
+        ).history;
+      }
+      const history = historyPublisher(checkedHistory, route.credential);
       historyAuthority(history, route.history?.current ?? base.authority);
       task.step(() => checkCommit?.());
       if (history.current.tip === route.epoch)
@@ -1481,6 +1532,10 @@ async function openAccountReceiveOwner(
       if (!route.history || (route.epoch < 3 && base.generation < 2))
         throw Error('Membership needs a certified installation');
       if (history.current.tip < route.epoch) throw Error('Membership cannot regress');
+      // A real transition still obtains its independently authenticated writable custody state.
+      current ??= joined
+        ? await readJoinedAccount(task, options.slotId, options.code)
+        : await readPromotion(task, options.slotId, options.code);
       const records = await owner.carrier.load(task);
       let committed = false;
       try {
@@ -1586,6 +1641,8 @@ async function openAccountReceiveOwner(
       }
     });
   };
+  const adoptMembership = (input: unknown, checkCommit?: () => void) =>
+    installMembership(input, checkCommit);
   let discoveryDue = 0,
     discoveryRevision = 0;
   let discoveryFlight:
@@ -1596,7 +1653,7 @@ async function openAccountReceiveOwner(
     anchor: Parameters<typeof verifyMembershipChain>[1],
   ) => {
     if (!terminalAccess) return { kind: 'unknown' as const };
-    const request = await runCaptureTask(async (task) => {
+    const prepared = await runCaptureTask(async (task) => {
       await assertCurrent(task);
       const r = parseRemovalDiscoveryRequest({
         v: 1,
@@ -1616,19 +1673,37 @@ async function openAccountReceiveOwner(
           ),
         ),
       );
-      return r;
+      return { request: r, context: base, payload: expectedPayload };
     });
+    const request = prepared.request;
     const terminal = await network.wait(() =>
       privateDiscoveryPost(options.pin, terminalAccess, request, network.signal),
     );
     if (terminal) {
       const verified = await network.wait(() =>
-        verifyRemovalDiscoveryResponse(terminal, request, anchor, Date.now()),
+        verifyRemovalDiscoveryResponse(
+          terminal,
+          request,
+          anchor,
+          Date.now(),
+          membershipWork(network, prepared.context, prepared.payload),
+        ),
       );
-      await adoptMembership(verified.proofs, () => {
-        network.step(() => {});
-        if (request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
-      });
+      await installMembership(
+        verified.proofs,
+        () => {
+          network.step(() => {});
+          if (request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
+        },
+        membershipWorkEnabled
+          ? {
+              context: prepared.context,
+              payload: prepared.payload,
+              history: verified.history,
+              proofs: verified.proofs,
+            }
+          : undefined,
+      );
       return { kind: 'adopted' as const };
     }
     return { kind: 'unknown' as const };
@@ -1653,13 +1728,17 @@ async function openAccountReceiveOwner(
       if (base.authority.tip >= 3 || base.generation > 1) {
         const prepared = await runCaptureTask(async (task) => {
           await assertCurrent(task);
-          const anchor = joined
-            ? (await readJoinedAccount(task, options.slotId, options.code)).marker!.authority.base
-            : await readPromotion(task, options.slotId, options.code).then(({ marker }) => ({
-                pin: options.pin,
-                request: marker!.admission!.request,
-                receipt: marker!.admission!.receipt!,
-              }));
+          const anchor =
+            membershipWorkEnabled && membershipAnchor
+              ? structuredClone(membershipAnchor)
+              : joined
+                ? (await readJoinedAccount(task, options.slotId, options.code)).marker!.authority
+                    .base
+                : await readPromotion(task, options.slotId, options.code).then(({ marker }) => ({
+                    pin: options.pin,
+                    request: marker!.admission!.request,
+                    receipt: marker!.admission!.receipt!,
+                  }));
           const request = parseMembershipDiscoveryRequest({
             v: 2,
             kind: 'membership-discovery-request',
@@ -1685,7 +1764,7 @@ async function openAccountReceiveOwner(
             ),
           );
           await assertCurrent(task);
-          return { request, anchor };
+          return { request, anchor, context: base, payload: expectedPayload };
         });
         if (!canReceive()) return { kind: 'paused' as const };
         const response = await network.wait(() =>
@@ -1701,12 +1780,24 @@ async function openAccountReceiveOwner(
               prepared.request,
               prepared.anchor,
               Date.now(),
+              membershipWork(network, prepared.context, prepared.payload),
             ),
           );
-          const result = await adoptMembership(answer.response.proofs, () => {
-            network.step(() => {});
-            if (prepared.request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
-          });
+          const result = await installMembership(
+            answer.response.proofs,
+            () => {
+              network.step(() => {});
+              if (prepared.request.expiresAt <= Date.now()) throw new ReceiveRequestExpired();
+            },
+            membershipWorkEnabled
+              ? {
+                  context: prepared.context,
+                  payload: prepared.payload,
+                  history: answer.history,
+                  proofs: answer.response.proofs,
+                }
+              : undefined,
+          );
           discoveryDue = revision === discoveryRevision ? performance.now() + 5000 : 0;
           return {
             kind:

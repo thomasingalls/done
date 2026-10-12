@@ -13545,3 +13545,40 @@ verified-result transfer within one owned discovery/adoption operation. Preserve
 response signatures, expiry/rollback/competing-authority checks and live undo. Further IO work needs
 separate attribution of open/scheduling waits; this experiment does not identify their individual
 costs. Local retention remains design-only; `docs/progress.md` remains unchanged.
+
+### Budgeted membership proofs and private discovery/adoption reuse — 2026-10-12
+
+**Boundary.** The preceding bulk custody experiment is committed **signed `b656553a`** (signature
+verified `G`). This implementation and its [packet](./performance-experiments/2026-10-12-membership-work/README.md)
+remain local, uncommitted and unpublished. Release validation remains paused.
+
+**Change.** Client membership verification uses optional checkpoints with the existing 8 ms cooperative
+budget and owner/context/lifetime checks. Service callers retain normal verification without a
+checkpoint. One private discovery/adoption operation may transfer its verified history after the
+complete fresh custody check, matching captured context/payload, held-authority validation and
+expiry checks. It uses an authenticated startup anchor instead of two extra full custody
+authentications. Public adoption remains independently verified; actual transitions preserve their
+full authenticated custody reads, ledger checks and CAS/readback. No cross-request proof memo,
+stored/wire format, editor, undo or journal-before-apply change.
+
+**Evidence/decision.** One complete unchanged discovery reduces generic signature checks **214→108**,
+receipt checks **20→10**, and extra full joined-custody authentications **2→0** while keeping **three
+fresh authority checks**. Eight matched CPU-4x sessions reduce maximum long tasks **30–53%** in all
+four comparisons. Active-peer typing p95 is **59→47 / 50→52 ms**; backlog **49→75 / 90→87 ms**.
+The first backlog regression does not repeat with reversed run order. The predeclared mechanism,
+maximum-task and no-repeated-p95-regression conditions are met, so the change stays enabled;
+`VITE_ACCOUNT_MEMBERSHIP_WORK=0` retains the reference. Neither the 50 ms working target nor 16 ms TRD
+target is met across conditions. No catch-up throughput or physical-phone gain is claimed.
+
+**Checks.** All eight sessions preserve exact writing, undo/redo, peer text, convergence and cold
+replay, with HTTP 200 throughout completed typing requests. 230 units pass (one existing skip),
+37 focused protocol tests, three native prepared-receive tests, six packaged fault controls and two
+complete-operation diagnostics pass. Changed context/payload/custody, expiry and close refuse private
+reuse; cancellation rejects the full chain and fresh retries work. TypeScript, scoped lint/format,
+ordinary build and JS budgets pass. Harness mistakes and an accidentally broad legacy run are retained;
+the narrowed legacy comparison has the same 15 failures in 20 tests on both baseline and candidate.
+
+**Next.** Fresh final-authority read medians remain **30–46 ms**, apply/publication **7–8 ms**.
+Attribute open/read/close and scheduling waits before another IO or final-fence repair. Keep fresh
+checks and avoid holding storage while waiting behind a forced local write. Local retention remains
+design-only; the other seat's `docs/progress.md` is unchanged.

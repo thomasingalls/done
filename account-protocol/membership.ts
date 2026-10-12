@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Verified membership ancestry, including a recovery anchored in the first admission. */
 import { verifyRecoverySuccessorState } from './recoveryTransition.ts';
 import { closed, accountIdentifier } from './preparation.ts';
@@ -168,6 +169,7 @@ export async function verifyMembershipAnchor(
   admissionInput: unknown,
   certificationInput: unknown,
   heldInput: { epoch: 3; head: string },
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedMembership> {
   const base = {
     pin: parseAuthorityPin(baseInput.pin),
@@ -179,8 +181,14 @@ export async function verifyMembershipAnchor(
   const held = closed(heldInput, ['epoch', 'head']);
   if (held['epoch'] !== 3 || held['head'] !== certification.head)
     throw Error('Membership anchor changed');
-  await verifySuccessor(admission, base, { epoch: 2, head: admission.head });
-  await verifyCertificationSuccessor(certification, base, admission);
+  await proofWork(
+    checkpoint,
+    verifySuccessor(admission, base, { epoch: 2, head: admission.head }, checkpoint),
+  );
+  await proofWork(
+    checkpoint,
+    verifyCertificationSuccessor(certification, base, admission, undefined, checkpoint),
+  );
   const e = admission.epoch,
     certificate = certification.epoch.delivery.certificate;
   return retain({
@@ -194,7 +202,7 @@ export async function verifyMembershipAnchor(
     head: certification.head,
     generation: 1,
     acceptancePublicKey: e.acceptancePublicKey,
-    certifiedSetDigest: await digest(json(certificate)),
+    certifiedSetDigest: await proofWork(checkpoint, digest(json(certificate))),
     certificate,
     finalized: [],
     preparations: [],
@@ -208,6 +216,7 @@ export async function verifyMembershipAnchor(
 export async function verifyEarlyMembership(
   baseInput: SuccessorBase,
   admissionInput: unknown | null = null,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedMembership> {
   const base = {
     pin: parseAuthorityPin(baseInput.pin),
@@ -215,9 +224,15 @@ export async function verifyEarlyMembership(
     receipt: parseReceipt(baseInput.receipt),
   };
   const admission = admissionInput === null ? null : parseSuccessor(admissionInput);
-  await verifyReceipt(base.receipt, base.request, base.pin);
+  await proofWork(
+    checkpoint,
+    verifyReceipt(base.receipt, base.request, base.pin, undefined, checkpoint),
+  );
   if (admission)
-    await verifySuccessor(admission, base, { epoch: 1, head: base.receipt.offer.head });
+    await proofWork(
+      checkpoint,
+      verifySuccessor(admission, base, { epoch: 1, head: base.receipt.offer.head }, checkpoint),
+    );
   const e = base.receipt.offer.epoch,
     member = base.request.certification.members[0];
   return retain({
@@ -232,7 +247,7 @@ export async function verifyEarlyMembership(
     generation: 1,
     acceptancePublicKey: e.acceptancePublicKey,
     certificate: base.request.certification,
-    certifiedSetDigest: await digest(json(base.request.certification)),
+    certifiedSetDigest: await proofWork(checkpoint, digest(json(base.request.certification))),
     finalized: [],
     preparations: [],
     roster: admission?.epoch.roster ?? [
@@ -249,8 +264,11 @@ export async function verifyEarlyMembership(
 export async function verifyRecoverySuccessor(
   input: unknown,
   parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedMembership> {
-  return retain(await verifyRecoverySuccessorState(input, parent));
+  return retain(
+    await proofWork(checkpoint, verifyRecoverySuccessorState(input, parent, checkpoint)),
+  );
 }
 
 export interface MembershipAdmissionEpoch {
@@ -327,6 +345,7 @@ export const membershipAdmissionMessage = (input: unknown) =>
 export async function verifyMembershipAdmission(
   input: unknown,
   parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedMembership> {
   const p = membershipState(parent),
     proof = parseMembershipAdmission(input),
@@ -387,10 +406,11 @@ export async function verifyMembershipAdmission(
     )
       throw Error('Membership accepted boundary changed');
   }
-  await verifyEnrollmentReceipt(e.preparation, p.pin, candidate);
-  const message = await membershipAdmissionMessage(e);
-  if (proof.head !== (await digest(message))) throw Error('Membership head changed');
-  await verifySignature(p.pin.authRoot, proof.signature, message);
+  await proofWork(checkpoint, verifyEnrollmentReceipt(e.preparation, p.pin, candidate));
+  const message = await proofWork(checkpoint, membershipAdmissionMessage(e));
+  if (proof.head !== (await proofWork(checkpoint, digest(message))))
+    throw Error('Membership head changed');
+  await proofWork(checkpoint, verifySignature(p.pin.authRoot, proof.signature, message));
   // Carry the verified recipient object, with its original approval context, through admission.
   const result = retain({
     ...structuredClone(p),
@@ -483,6 +503,7 @@ export const membershipCertificationMessage = (input: unknown) =>
 export async function verifyMembershipCertification(
   input: unknown,
   parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedMembership> {
   const p = membershipState(parent),
     proof = parseMembershipCertification(input),
@@ -496,8 +517,11 @@ export async function verifyMembershipCertification(
     e.acceptancePublicKey !== p.acceptancePublicKey
   )
     throw Error('Membership certification continuity changed');
-  const { delivery } = await verifyMembershipDelivery(e.delivery, parent);
-  await verifyMembershipInstallation(e.installation, delivery);
+  const { delivery } = await proofWork(
+    checkpoint,
+    verifyMembershipDelivery(e.delivery, parent, checkpoint),
+  );
+  await proofWork(checkpoint, verifyMembershipInstallation(e.installation, delivery, checkpoint));
   const candidate = delivery.existing.context.candidate.id;
   const roster = p.roster.map((m) =>
     m.id === candidate
@@ -521,15 +545,16 @@ export async function verifyMembershipCertification(
     )
       throw Error('Membership certification accepted boundary changed');
   }
-  const message = await membershipCertificationMessage(e);
-  if (proof.head !== (await digest(message))) throw Error('Membership certification head changed');
-  await verifySignature(p.pin.authRoot, proof.signature, message);
+  const message = await proofWork(checkpoint, membershipCertificationMessage(e));
+  if (proof.head !== (await proofWork(checkpoint, digest(message))))
+    throw Error('Membership certification head changed');
+  await proofWork(checkpoint, verifySignature(p.pin.authRoot, proof.signature, message));
   return retain({
     ...structuredClone(p),
     epoch: e.epoch,
     head: proof.head,
     certificate: delivery.certificate,
-    certifiedSetDigest: await digest(json(delivery.certificate)),
+    certifiedSetDigest: await proofWork(checkpoint, digest(json(delivery.certificate))),
     preparations: p.preparations.filter((entry) => entry.credentialId !== candidate),
     roster: e.roster,
     heads: e.heads,
@@ -590,6 +615,7 @@ export const membershipCancellationRequestMessage = (input: unknown) => {
 export async function verifyMembershipCancellationRequest(
   input: unknown,
   parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
 ) {
   const p = membershipState(parent),
     r = parseMembershipCancellationRequest(input),
@@ -608,7 +634,14 @@ export async function verifyMembershipCancellationRequest(
     (actor.id !== candidate.id && actor.state !== 'certified')
   )
     throw Error('Membership cancellation authority changed');
-  await verifySignature(actor.sPub, r.signature, await membershipCancellationRequestMessage(r));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      actor.sPub,
+      r.signature,
+      await proofWork(checkpoint, membershipCancellationRequestMessage(r)),
+    ),
+  );
   return r;
 }
 export interface MembershipCancellationEpoch {
@@ -685,6 +718,7 @@ export const membershipCancellationMessage = (input: unknown) =>
 export async function verifyMembershipCancellation(
   input: unknown,
   parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedMembership> {
   const p = membershipState(parent),
     proof = parseMembershipCancellation(input),
@@ -699,7 +733,10 @@ export async function verifyMembershipCancellation(
     e.certifiedSetDigest !== p.certifiedSetDigest
   )
     throw Error('Membership cancellation continuity changed');
-  const request = await verifyMembershipCancellationRequest(e.cancellation, parent),
+  const request = await proofWork(
+      checkpoint,
+      verifyMembershipCancellationRequest(e.cancellation, parent, checkpoint),
+    ),
     candidate = request.candidateId;
   if (
     !same(
@@ -723,9 +760,10 @@ export async function verifyMembershipCancellation(
     )
       throw Error('Membership cancellation accepted boundary changed');
   }
-  const message = await membershipCancellationMessage(e);
-  if (proof.head !== (await digest(message))) throw Error('Membership cancellation head changed');
-  await verifySignature(p.pin.authRoot, proof.signature, message);
+  const message = await proofWork(checkpoint, membershipCancellationMessage(e));
+  if (proof.head !== (await proofWork(checkpoint, digest(message))))
+    throw Error('Membership cancellation head changed');
+  await proofWork(checkpoint, verifySignature(p.pin.authRoot, proof.signature, message));
   return retain({
     ...structuredClone(p),
     epoch: e.epoch,
@@ -813,6 +851,7 @@ export const membershipRotationMessage = (input: unknown) =>
 export async function verifyMembershipRotation(
   input: unknown,
   parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedMembership> {
   const p = membershipState(parent),
     proof = parseMembershipRotation(input),
@@ -826,8 +865,14 @@ export async function verifyMembershipRotation(
     e.acceptancePublicKey !== p.acceptancePublicKey
   )
     throw Error('Membership rotation continuity changed');
-  const rotation = await verifyRotationRequest(e.rotation, parent, e.recovery);
-  const finalization = await verifyRemovalFinalization(e.finalization, rotation, e.outcome);
+  const rotation = await proofWork(
+    checkpoint,
+    verifyRotationRequest(e.rotation, parent, e.recovery),
+  );
+  const finalization = await proofWork(
+    checkpoint,
+    verifyRemovalFinalization(e.finalization, rotation, e.outcome),
+  );
   if (
     e.outcome.epoch !== e.epoch ||
     !same(
@@ -846,9 +891,10 @@ export async function verifyMembershipRotation(
     )
       throw Error('Membership rotation accepted boundary changed');
   }
-  const message = await membershipRotationMessage(e);
-  if (proof.head !== (await digest(message))) throw Error('Membership rotation head changed');
-  await verifySignature(p.pin.authRoot, proof.signature, message);
+  const message = await proofWork(checkpoint, membershipRotationMessage(e));
+  if (proof.head !== (await proofWork(checkpoint, digest(message))))
+    throw Error('Membership rotation head changed');
+  await proofWork(checkpoint, verifySignature(p.pin.authRoot, proof.signature, message));
   const certificate: RotatedRecipientCertificate = {
     v: 1,
     kind: 'rotation-recipient-certificate',
@@ -865,7 +911,7 @@ export async function verifyMembershipRotation(
     head: proof.head,
     generation: e.generation,
     certificate,
-    certifiedSetDigest: await digest(json(certificate)),
+    certifiedSetDigest: await proofWork(checkpoint, digest(json(certificate))),
     roster: p.roster.filter((m) => m.id !== finalization.credential).map((m) => structuredClone(m)),
     heads: e.heads.filter((h) => h.credentialId !== finalization.credential),
     finalized: [...p.finalized, finalization],

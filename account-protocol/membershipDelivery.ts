@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Versioned delivery to one pending member of a verified continuation parent. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { domainMessage, json, same, verifySignature } from './admission.ts';
@@ -178,7 +179,11 @@ export const membershipDeliveryHash = (input: unknown) =>
   digest(json(parseMembershipDelivery(input)));
 
 /** Historical verification: the live relay separately checks expiry and current authority at commit. */
-export async function verifyMembershipDelivery(input: unknown, parent: VerifiedMembership) {
+export async function verifyMembershipDelivery(
+  input: unknown,
+  parent: VerifiedMembership,
+  checkpoint?: ProofCheckpoint,
+) {
   const p = membershipState(parent),
     d = parseMembershipDelivery(input),
     c = d.existing.context;
@@ -188,8 +193,14 @@ export async function verifyMembershipDelivery(input: unknown, parent: VerifiedM
     { role: 'existing', ...c.existing },
     c.createdAt,
   );
-  const pair = await verifyCeremonyPair(authority, d.existing, d.candidate, c.createdAt);
-  const opening = await deriveCeremonyExchange(pair, d.existingReveal, d.newReveal, c.createdAt);
+  const pair = await proofWork(
+    checkpoint,
+    verifyCeremonyPair(authority, d.existing, d.candidate, c.createdAt, undefined, checkpoint),
+  );
+  const opening = await proofWork(
+    checkpoint,
+    deriveCeremonyExchange(pair, d.existingReveal, d.newReveal, c.createdAt, undefined, checkpoint),
+  );
   const preparation = p.preparations.find((entry) => entry.credentialId === c.candidate.id);
   const expectedMembers = [...p.certificate.members, c.candidate].sort((a, b) =>
     a.id < b.id ? -1 : 1,
@@ -220,17 +231,35 @@ export async function verifyMembershipDelivery(input: unknown, parent: VerifiedM
     !same(cert.members, expectedMembers) ||
     cert.approver !== c.existing.id ||
     cert.recoveryStateDigest !== p.certificate.recoveryStateDigest ||
-    (await recoveryStateDigest(d.recovery)) !== p.certificate.recoveryStateDigest
+    (await proofWork(checkpoint, recoveryStateDigest(d.recovery))) !==
+      p.certificate.recoveryStateDigest
   )
     throw Error('Delivery differs from approved membership');
   const approver = p.certificate.members.find((m) => m.id === c.existing.id)!;
-  await verifySignature(
-    approver.sPub,
-    d.decision.signature,
-    await ceremonyRequestMessage(d.decision),
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      approver.sPub,
+      d.decision.signature,
+      await proofWork(checkpoint, ceremonyRequestMessage(d.decision)),
+    ),
   );
-  await verifySignature(approver.sPub, cert.signature, await membershipCertificateMessage(cert));
-  await verifySignature(approver.sPub, d.signature, await membershipDeliveryMessage(d));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      approver.sPub,
+      cert.signature,
+      await proofWork(checkpoint, membershipCertificateMessage(cert)),
+    ),
+  );
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      approver.sPub,
+      d.signature,
+      await proofWork(checkpoint, membershipDeliveryMessage(d)),
+    ),
+  );
   return { delivery: d, opening };
 }
 export function parseMembershipInstallation(input: unknown): MembershipInstallation {
@@ -259,14 +288,18 @@ export const membershipInstallationMessage = (input: unknown) => {
   const { signature: _, ...body } = parseMembershipInstallation(input);
   return domainMessage(`done/membership-key-installed/v${body.v}`, body);
 };
-export async function verifyMembershipInstallation(input: unknown, delivery: MembershipDelivery) {
+export async function verifyMembershipInstallation(
+  input: unknown,
+  delivery: MembershipDelivery,
+  checkpoint?: ProofCheckpoint,
+) {
   const i = parseMembershipInstallation(input),
     d = parseMembershipDelivery(delivery),
     c = d.existing.context.candidate;
   if (
     i.v !== d.v ||
     i.credentialId !== c.id ||
-    i.deliveryHash !== (await membershipDeliveryHash(d))
+    i.deliveryHash !== (await proofWork(checkpoint, membershipDeliveryHash(d)))
   )
     throw Error('Membership installation target changed');
   if (i.v === 3 && d.v === 3) {
@@ -276,13 +309,23 @@ export async function verifyMembershipInstallation(input: unknown, delivery: Mem
       i.checkpoint.parent !== d.parent
     )
       throw Error('Replacement installation checkpoint changed');
-    await verifySignature(
-      c.sPub,
-      i.checkpoint.signature,
-      await replacementCheckpointAdmissionMessage(i.checkpoint),
+    await proofWork(
+      checkpoint,
+      verifySignature(
+        c.sPub,
+        i.checkpoint.signature,
+        await proofWork(checkpoint, replacementCheckpointAdmissionMessage(i.checkpoint)),
+      ),
     );
   }
-  await verifySignature(c.sPub, i.signature, await membershipInstallationMessage(i));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      c.sPub,
+      i.signature,
+      await proofWork(checkpoint, membershipInstallationMessage(i)),
+    ),
+  );
   return i;
 }
 

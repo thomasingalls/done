@@ -199,3 +199,85 @@ test('service-signed omission or replacement of device approval cannot authentic
   );
   assert.throws(() => parseMembershipChain({ ...f.proofs, extra: true }));
 });
+
+test('budgeted discovery preserves every proof, captures inputs before yielding, and permits other tasks', async () => {
+  const f = await fixture(),
+    request = f.discover(),
+    reply = f.reply(request);
+  const expected = await verifyMembershipDiscoveryResponse(reply, request, f.base, 1000);
+  const originalHead = expected.history.current.head;
+  let checks = 0,
+    yielded = false;
+  const base = structuredClone(f.base);
+  const actual = await verifyMembershipDiscoveryResponse(reply, request, base, 1000, () => {
+    checks++;
+    if (yielded) return;
+    yielded = true;
+    return new Promise((resolve) =>
+      setTimeout(() => {
+        reply.proofs.continuations.splice(0);
+        request.nonce = '00'.repeat(32);
+        base.pin.authRoot = '00'.repeat(32);
+        resolve();
+      }, 0),
+    );
+  });
+  assert(yielded);
+  assert(checks > 100, 'nested verification must reach the owning budget');
+  assert.equal(actual.history.current.head, originalHead);
+  assert.deepEqual(actual.history, expected.history);
+});
+
+test('cancellation at a nested proof checkpoint rejects the whole discovery and a fresh retry verifies again', async () => {
+  const f = await fixture(),
+    request = f.discover(),
+    reply = f.reply(request);
+  let checks = 0;
+  await assert.rejects(
+    verifyMembershipDiscoveryResponse(reply, request, f.base, 1000, () => {
+      if (++checks === 25) return Promise.reject(Error('owner closed'));
+    }),
+    /owner closed/,
+  );
+  assert.equal(checks, 25);
+  assert.equal(
+    (await verifyMembershipDiscoveryResponse(reply, request, f.base, 1000, () => undefined)).history
+      .current.tip,
+    5,
+  );
+});
+
+test('yielding still refuses bad reply binding, nested signatures and expired requests', async () => {
+  const f = await fixture(),
+    request = f.discover(),
+    reply = f.reply(request),
+    checkpoint = () => Promise.resolve();
+  await assert.rejects(
+    verifyMembershipDiscoveryResponse(
+      { ...reply, signature: '00'.repeat(64) },
+      request,
+      f.base,
+      1000,
+      checkpoint,
+    ),
+  );
+  await assert.rejects(
+    verifyMembershipDiscoveryResponse(
+      { ...reply, requestHash: '00'.repeat(32) },
+      request,
+      f.base,
+      1000,
+      checkpoint,
+    ),
+    /request changed/,
+  );
+  const bad = structuredClone(f.proofs);
+  bad.certification.signature = '00'.repeat(64);
+  await assert.rejects(
+    verifyMembershipDiscoveryResponse(f.reply(request, bad), request, f.base, 1000, checkpoint),
+  );
+  await assert.rejects(
+    verifyMembershipDiscoveryResponse(reply, request, f.base, request.expiresAt, checkpoint),
+    /lifetime/,
+  );
+});

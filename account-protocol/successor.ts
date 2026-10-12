@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** One private admission-only successor. Historical evidence, never a live consumption grant. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
@@ -221,13 +222,17 @@ function freeze<T>(value: T): T {
   }
   return value;
 }
-async function verifyBase(base: SuccessorBase) {
-  await verifyReceipt(base.receipt, base.request, base.pin);
+async function verifyBase(base: SuccessorBase, checkpoint?: ProofCheckpoint) {
+  await proofWork(
+    checkpoint,
+    verifyReceipt(base.receipt, base.request, base.pin, undefined, checkpoint),
+  );
 }
 async function verifyCapturedSuccessor(
   s: AdmissionSuccessor,
   base: SuccessorBase,
   held: AuthorityAnchor,
+  checkpoint?: ProofCheckpoint,
 ) {
   const e = s.epoch,
     first = base.receipt.offer,
@@ -276,7 +281,7 @@ async function verifyCapturedSuccessor(
   // Recipient authority is the original client approval, never the new service roster.
   if (
     !same(e.certified.value, first.epoch.certification) ||
-    e.certified.digest !== (await digest(json(first.epoch.certification))) ||
+    e.certified.digest !== (await proofWork(checkpoint, digest(json(first.epoch.certification)))) ||
     c.certifiedSetDigest !== e.certified.digest ||
     c.recoveryStateDigest !== first.epoch.certification.recoveryStateDigest
   )
@@ -289,9 +294,17 @@ async function verifyCapturedSuccessor(
     e.heads.find((v) => v.credentialId === candidate.credentialId)!.position !== 0
   )
     throw Error('Successor stream coverage changed');
-  await verifyEnrollmentReceipt(p, base.pin, candidate);
-  if (s.head !== (await successorHead(e))) throw Error('Successor head changed');
-  await verifySignature(base.pin.authRoot, s.signature, await successorMessage(e));
+  await proofWork(checkpoint, verifyEnrollmentReceipt(p, base.pin, candidate));
+  if (s.head !== (await proofWork(checkpoint, successorHead(e))))
+    throw Error('Successor head changed');
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      base.pin.authRoot,
+      s.signature,
+      await proofWork(checkpoint, successorMessage(e)),
+    ),
+  );
   if (held.epoch === 1 ? held.head !== first.head : held.head !== s.head)
     throw Error('Successor fork or rollback');
   return freeze(s);
@@ -301,12 +314,13 @@ export async function verifySuccessor(
   input: unknown,
   baseInput: SuccessorBase,
   heldInput: AuthorityAnchor,
+  checkpoint?: ProofCheckpoint,
 ) {
   const s = parseSuccessor(input),
     base = captureBase(baseInput),
     held = anchor(heldInput);
-  await verifyBase(base);
-  return verifyCapturedSuccessor(s, base, held);
+  await proofWork(checkpoint, verifyBase(base, checkpoint));
+  return verifyCapturedSuccessor(s, base, held, checkpoint);
 }
 export function parseDiscoveryRequest(input: unknown): AuthorityDiscoveryRequest {
   bounded(input, DISCOVERY_REQUEST_LIMIT);

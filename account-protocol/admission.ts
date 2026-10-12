@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 import {
   parseActivationAuthorization,
   requireActivationTarget,
@@ -220,20 +221,38 @@ export const originMessage = (request: AdmissionRequest) => {
   const { originSignature: _sig, ...body } = parseAdmissionRequest(request);
   return domainMessage('done/genesis-origin/v1', body);
 };
-async function verifyCreatingProofs(r: AdmissionRequest) {
+async function verifyCreatingProofs(r: AdmissionRequest, checkpoint?: ProofCheckpoint) {
   const c = r.candidate,
     key = r.certification.members[0].sPub;
   for (const k of ['principalId', 'workspaceId', 'lineageId', 'authRoot'] as const)
     if (c[k] !== r.recovery[k]) throw Error('Genesis origin context changed');
   if (
     r.recovery.rPub !== c.wraps[1]!.publicKey ||
-    (await rootCommitment(r.recovery)) !== r.recovery.rootCommitment ||
-    (await recoveryStateDigest(r.recovery)) !== r.certification.recoveryStateDigest
+    (await proofWork(checkpoint, rootCommitment(r.recovery))) !== r.recovery.rootCommitment ||
+    (await proofWork(checkpoint, recoveryStateDigest(r.recovery))) !==
+      r.certification.recoveryStateDigest
   )
     throw Error('Genesis recovery binding changed');
-  await verifySignature(key, c.signature, await genesisMessage(c));
-  await verifySignature(key, r.certification.signature, await certificationMessage(r));
-  await verifySignature(r.recovery.bootstrapSigner, r.originSignature, await originMessage(r));
+  await proofWork(
+    checkpoint,
+    verifySignature(key, c.signature, await proofWork(checkpoint, genesisMessage(c))),
+  );
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      key,
+      r.certification.signature,
+      await proofWork(checkpoint, certificationMessage(r)),
+    ),
+  );
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      r.recovery.bootstrapSigner,
+      r.originSignature,
+      await proofWork(checkpoint, originMessage(r)),
+    ),
+  );
 }
 export async function firstEpoch(
   request: AdmissionRequest,
@@ -340,17 +359,21 @@ export async function verifyOffer(
   input: unknown,
   request: AdmissionRequest,
   pin: AuthorityPin,
+  checkpoint?: ProofCheckpoint,
 ): Promise<AdmissionOffer> {
-  await verifyCreatingProofs(parseAdmissionRequest(request));
+  await proofWork(checkpoint, verifyCreatingProofs(parseAdmissionRequest(request), checkpoint));
   const o = parseOffer(input),
-    expected = await firstEpoch(request, pin, o.epoch.acceptancePublicKey);
+    expected = await proofWork(checkpoint, firstEpoch(request, pin, o.epoch.acceptancePublicKey));
   if (
     !same(o.epoch, expected) ||
-    o.head !== (await epochHead(expected)) ||
+    o.head !== (await proofWork(checkpoint, epochHead(expected))) ||
     hex(pinBytes(o.epoch.pin)) !== hex(pinBytes(parseAuthorityPin(pin)))
   )
     throw Error('Offer target changed');
-  await verifySignature(pin.authRoot, o.signature, await offerMessage(o));
+  await proofWork(
+    checkpoint,
+    verifySignature(pin.authRoot, o.signature, await proofWork(checkpoint, offerMessage(o))),
+  );
   return o;
 }
 export function parseCompletion(input: unknown): AdmissionCompletion {
@@ -505,15 +528,30 @@ export async function verifyCompletion(
   request: AdmissionRequest,
   offer: AdmissionOffer,
   parts?: CoverageParts,
+  checkpoint?: ProofCheckpoint,
 ): Promise<AdmissionCompletion> {
   const c = parseCompletion(input),
-    expected = await completionBodies(request, offer, parts ?? c.manifest);
+    expected = await proofWork(checkpoint, completionBodies(request, offer, parts ?? c.manifest));
   expected.manifest.signature = c.manifest.signature;
   expected.admission.signature = c.admission.signature;
   if (!same(c, expected)) throw Error('Semantic coverage or manifest changed');
   const key = request.certification.members[0].sPub;
-  await verifySignature(key, c.manifest.signature, await manifestMessage(c.manifest));
-  await verifySignature(key, c.admission.signature, await semanticMessage(c.admission));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      key,
+      c.manifest.signature,
+      await proofWork(checkpoint, manifestMessage(c.manifest)),
+    ),
+  );
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      key,
+      c.admission.signature,
+      await proofWork(checkpoint, semanticMessage(c.admission)),
+    ),
+  );
   return c;
 }
 export async function activationTarget(
@@ -559,17 +597,28 @@ export async function verifyReceipt(
   request: AdmissionRequest,
   pin: AuthorityPin,
   parts?: CoverageParts,
+  checkpoint?: ProofCheckpoint,
 ): Promise<AdmissionReceipt> {
   const r = parseReceipt(input);
-  await verifyOffer(r.offer, request, pin);
-  await verifyCompletion(r.completion, request, r.offer, parts);
+  await proofWork(checkpoint, verifyOffer(r.offer, request, pin, checkpoint));
+  await proofWork(checkpoint, verifyCompletion(r.completion, request, r.offer, parts, checkpoint));
   requireActivationTarget(
     r.activation.context,
-    await activationTarget(request, r.offer, r.completion),
+    await proofWork(checkpoint, activationTarget(request, r.offer, r.completion)),
     pin,
   );
-  await verifySignature(pin.authRoot, r.epochSignature, await epochMessage(r.offer.epoch));
-  await verifySignature(pin.authRoot, r.signature, await receiptMessage(r));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      pin.authRoot,
+      r.epochSignature,
+      await proofWork(checkpoint, epochMessage(r.offer.epoch)),
+    ),
+  );
+  await proofWork(
+    checkpoint,
+    verifySignature(pin.authRoot, r.signature, await proofWork(checkpoint, receiptMessage(r))),
+  );
   return r;
 }
 

@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Bounded, request-bound membership discovery. Proof verification never installs an authority. */
 import { parseRecoverySuccessor } from './recoveryTransition.ts';
 import { closed } from './preparation.ts';
@@ -80,16 +81,30 @@ export function parseMembershipChain(input: unknown) {
     ),
   };
 }
-export async function verifyMembershipChain(input: unknown, base: SuccessorBase) {
+export async function verifyMembershipChain(
+  input: unknown,
+  base: SuccessorBase,
+  checkpoint?: ProofCheckpoint,
+) {
   const proofs = parseMembershipChain(input);
   const capturedBase = structuredClone(base);
   let history = proofs.certification
-    ? await verifyCertificationHistory(proofs.certification, proofs.successor, capturedBase, {
-        epoch: 3,
-        head: proofs.certification.head,
-      })
-    : await verifyEarlyHistory(capturedBase, proofs.successor);
-  for (const proof of proofs.continuations) history = await extendMembershipHistory(proof, history);
+    ? await proofWork(
+        checkpoint,
+        verifyCertificationHistory(
+          proofs.certification,
+          proofs.successor,
+          capturedBase,
+          {
+            epoch: 3,
+            head: proofs.certification.head,
+          },
+          checkpoint,
+        ),
+      )
+    : await proofWork(checkpoint, verifyEarlyHistory(capturedBase, proofs.successor, checkpoint));
+  for (const proof of proofs.continuations)
+    history = await proofWork(checkpoint, extendMembershipHistory(proof, history, checkpoint));
   return { proofs, history };
 }
 function memberAt(
@@ -237,6 +252,7 @@ export async function verifyMembershipDiscoveryRequest(
   pin: AuthorityPin,
   history: AdmissionHistory,
   now: number,
+  checkpoint?: ProofCheckpoint,
 ) {
   const r = parseMembershipDiscoveryRequest(input),
     member = memberAt(history, r.credentialId, r);
@@ -250,7 +266,14 @@ export async function verifyMembershipDiscoveryRequest(
     r.lineageId !== history.current.lineage
   )
     throw Error('Membership discovery scope or lifetime changed');
-  await verifySignature(member.publicKey, r.signature, await membershipDiscoveryRequestMessage(r));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      member.publicKey,
+      r.signature,
+      await proofWork(checkpoint, membershipDiscoveryRequestMessage(r)),
+    ),
+  );
   return r;
 }
 export function parseMembershipDiscoveryResponse(input: unknown) {
@@ -275,18 +298,28 @@ export async function verifyMembershipDiscoveryResponse(
   requestInput: unknown,
   baseInput: SuccessorBase,
   now: number,
+  checkpoint?: ProofCheckpoint,
 ) {
   const response = parseMembershipDiscoveryResponse(input),
     request = parseMembershipDiscoveryRequest(requestInput),
     base = structuredClone(baseInput);
-  if (response.requestHash !== (await digest(json(request))))
+  if (response.requestHash !== (await proofWork(checkpoint, digest(json(request)))))
     throw Error('Membership discovery request changed');
-  await verifySignature(
-    base.pin.authRoot,
-    response.signature,
-    await membershipDiscoveryResponseMessage(response),
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      base.pin.authRoot,
+      response.signature,
+      await proofWork(checkpoint, membershipDiscoveryResponseMessage(response)),
+    ),
   );
-  const { history } = await verifyMembershipChain(response.proofs, base);
-  await verifyMembershipDiscoveryRequest(request, base.pin, history, now);
+  const { history } = await proofWork(
+    checkpoint,
+    verifyMembershipChain(response.proofs, base, checkpoint),
+  );
+  await proofWork(
+    checkpoint,
+    verifyMembershipDiscoveryRequest(request, base.pin, history, now, checkpoint),
+  );
   return { response, history };
 }
