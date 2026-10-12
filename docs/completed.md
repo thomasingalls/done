@@ -13478,3 +13478,38 @@ TypeScript, ordinary build, JS budget, pinned Yjs, origin isolation and scoped l
 **Next.** Separate diagnostic profiles identify remaining protocol parsing/authentication bursts,
 synchronous read comparisons, and a still-fenced final apply/authority-check span. Isolate those spans
 before the next repair. Local retention remains design-only. `docs/progress.md` stays unchanged.
+
+### Final-apply and protocol-verification stall attribution — 2026-10-12
+
+**Boundary.** Prepared remote handoff and cooperative Account work are committed **signed
+`02829405`** (signature verified `G`). The initial signer refusal left the index staged; the user's
+approved retry succeeded. This follow-up is investigation only. Runtime, authority, stored formats,
+undo and deployment remain unchanged; release validation remains paused.
+
+Four restored CPU-4x diagnostic sessions separate final handoff's storage-queue acquisition, fresh
+authority inventory read/comparison, canonical apply, live projection check and publication. The two
+sessions without CPU sampling spend 369.8 / 584.5 ms checking authority across 7 / 14 final jobs
+(active peer / backlog), versus 65.2 / 119.7 ms applying/publishing. Fresh read dominates the authority
+span; acquiring the storage queue is at most 1 ms. These are elapsed-time attribution results, not
+CPU costs or an intervention's speedup. Separate sampled sessions corroborate the split.
+
+The longest unsampled tasks are 115–138 ms and overlap repeated admission/certification verification.
+Both sessions make eight full joined-custody reads, from discovery preparation and membership adoption,
+even while ordinary authority checks reuse the positive exact-inventory memo. Each records 80 receipt
+verifications and 16 certification-successor verifications. Instrumented individual parses top out
+at 9.3 / 10.2 ms. The remaining bursts include many parses, canonical encodings and crypto calls inside
+a full proof chain; a single parser or Yjs undo handling is not established as their cause.
+
+All four sessions preserve exact text, undo/redo, peer writing, export convergence and cold offline
+replay, with typing-window completed account requests all HTTP 200. The probe's initial build failed
+on the installed TypeScript version-only API; using the already-installed Babel parser corrected the
+instrumentation before any browser run. Failure and successful build logs are retained. No general
+validation campaign was run. The profiles show the instrumentation itself doing work; its absolute overhead is unmeasured.
+These desktop sessions do not qualify phone latency or release performance.
+
+[Investigation and evidence](./performance-experiments/2026-10-12-final-apply/README.md) recommend
+bounded bulk fresh inventory reads, then cooperative membership proof work and safe transfer of an
+already verified result within one owned discovery/adoption operation. Fresh checks, response signatures,
+expiry/rollback/competing-authority checks, live undo and synchronous final promotion must remain.
+Further queue restructuring must avoid holding storage while waiting behind a forced local write.
+This new evidence packet is local and unpublished; no additional repair was made in this investigation.

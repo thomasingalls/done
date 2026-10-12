@@ -1,0 +1,1074 @@
+{
+  "base": "02829405",
+  "comparison": false,
+  "sessions": [
+    {
+      "session": "active-1",
+      "condition": "active",
+      "phase": "passed",
+      "window": {
+        "begin": 7198,
+        "end": 29628.60000038147,
+        "ms": 22430.6
+      },
+      "guardrails": {
+        "undoRedo": true,
+        "converged": true,
+        "coldReplay": true,
+        "errors": []
+      },
+      "finalStages": {
+        "queue": {
+          "n": 7,
+          "total": 3.4,
+          "median": 0.6,
+          "max": 1
+        },
+        "authority": {
+          "n": 7,
+          "total": 369.8,
+          "median": 37.9,
+          "max": 86.9
+        },
+        "read": {
+          "n": 7,
+          "total": 341.1,
+          "median": 33.8,
+          "max": 82.9
+        },
+        "equal": {
+          "n": 7,
+          "total": 26.6,
+          "median": 3.8,
+          "max": 4.2
+        },
+        "apply": {
+          "n": 7,
+          "total": 65.2,
+          "median": 9.3,
+          "max": 11.1
+        },
+        "canonical": {
+          "n": 7,
+          "total": 1.7,
+          "median": 0.1,
+          "max": 0.7
+        },
+        "projectionApply": {
+          "n": 7,
+          "total": 0.7,
+          "median": 0,
+          "max": 0.4
+        },
+        "projectionCheck": {
+          "n": 7,
+          "total": 34.6,
+          "median": 4.9,
+          "max": 6
+        },
+        "publish": {
+          "n": 7,
+          "total": 13.4,
+          "median": 1.9,
+          "max": 2.5
+        }
+      },
+      "counters": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 70,
+        "inboundVerifications": 56,
+        "inboundCensuses": 0,
+        "deliveryPrefixLinks": 42,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 176,
+        "warmLoads": 175,
+        "selectedLoads": 126,
+        "warmAuditRows": 2534,
+        "warmAuditBytes": 12964603,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 159,
+        "authorityAuthentications": 0,
+        "authorityReuses": 159,
+        "positions": 7,
+        "sourceParses": 1294,
+        "sourceParseBytes": 502370,
+        "recordCopies": 38253,
+        "recordCopyBytes": 176967520,
+        "journalFlushes": 15,
+        "dirtyJournalFlushes": 15,
+        "projectionChecks": 14,
+        "directTextPreparations": 113
+      },
+      "longTasks": 29,
+      "longestTasks": [
+        {
+          "at": 23888.39999961853,
+          "ms": 138,
+          "parserUnionLowerBound": 10.6,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 71.1
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 60.4
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 53
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 40.8
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 20.6
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 10.9
+            },
+            {
+              "name": "joinedAccount.ts.authenticateJoinedAccountInventory",
+              "overlap": 7.9
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 7.2
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 4.9
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 3.3
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 2.5
+            },
+            {
+              "name": "admission.ts.parseEpoch",
+              "overlap": 2.3
+            }
+          ]
+        },
+        {
+          "at": 11297.30000114441,
+          "ms": 134,
+          "parserUnionLowerBound": 6.9,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 72.5
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 61.8
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 54.9
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 41
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 23.7
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 9.9
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 3.4
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 2.3
+            },
+            {
+              "name": "recovery.ts.unhex",
+              "overlap": 1.6
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 1.1
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 1.1
+            },
+            {
+              "name": "contentDelivery.ts.parseContentInstallation",
+              "overlap": 1
+            }
+          ]
+        },
+        {
+          "at": 29470.80000114441,
+          "ms": 134,
+          "parserUnionLowerBound": 9.4,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 74.2
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 60.5
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 52.6
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 39.6
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 23.3
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 12.8
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 6
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 5.1
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 3.5
+            },
+            {
+              "name": "recovery.ts.unhex",
+              "overlap": 1.3
+            },
+            {
+              "name": "admission.ts.parseCompletion",
+              "overlap": 1.3
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentInstallation",
+              "overlap": 1.3
+            }
+          ]
+        }
+      ],
+      "fullJoinedReadCalls": 7,
+      "verifyReceipt": 80,
+      "verifySignature": 865
+    },
+    {
+      "session": "backlog-1",
+      "condition": "backlog",
+      "phase": "passed",
+      "window": {
+        "begin": 3434.3999996185303,
+        "end": 25022.89999961853,
+        "ms": 21588.5
+      },
+      "guardrails": {
+        "undoRedo": true,
+        "converged": true,
+        "coldReplay": true,
+        "errors": []
+      },
+      "finalStages": {
+        "queue": {
+          "n": 14,
+          "total": 5.9,
+          "median": 0.5,
+          "max": 0.8
+        },
+        "authority": {
+          "n": 14,
+          "total": 584.5,
+          "median": 37.7,
+          "max": 70.3
+        },
+        "read": {
+          "n": 14,
+          "total": 534.4,
+          "median": 34.4,
+          "max": 66.2
+        },
+        "equal": {
+          "n": 14,
+          "total": 48,
+          "median": 3.7,
+          "max": 4
+        },
+        "apply": {
+          "n": 14,
+          "total": 119.7,
+          "median": 8.5,
+          "max": 11.4
+        },
+        "canonical": {
+          "n": 14,
+          "total": 5.9,
+          "median": 0.1,
+          "max": 3.1
+        },
+        "projectionApply": {
+          "n": 14,
+          "total": 1.2,
+          "median": 0,
+          "max": 0.5
+        },
+        "projectionCheck": {
+          "n": 14,
+          "total": 65.9,
+          "median": 4.5,
+          "max": 6.7
+        },
+        "publish": {
+          "n": 14,
+          "total": 25.1,
+          "median": 1.9,
+          "max": 2.6
+        }
+      },
+      "counters": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 87,
+        "inboundVerifications": 71,
+        "inboundCensuses": 0,
+        "deliveryPrefixLinks": 44,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 252,
+        "warmLoads": 251,
+        "selectedLoads": 195,
+        "warmAuditRows": 3930,
+        "warmAuditBytes": 11012274,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 242,
+        "authorityAuthentications": 1,
+        "authorityReuses": 241,
+        "positions": 8,
+        "sourceParses": 1314,
+        "sourceParseBytes": 339042,
+        "recordCopies": 19616,
+        "recordCopyBytes": 45421646,
+        "journalFlushes": 16,
+        "dirtyJournalFlushes": 16,
+        "projectionChecks": 29,
+        "directTextPreparations": 106
+      },
+      "longTasks": 17,
+      "longestTasks": [
+        {
+          "at": 4057,
+          "ms": 130,
+          "parserUnionLowerBound": 8.9,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 67.6
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 59.9
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 53.6
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 39.5
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 22.9
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 6.7
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 5.2
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 4.6
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 4.3
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentInstallation",
+              "overlap": 1.2
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 1
+            },
+            {
+              "name": "admission.ts.parseAdmissionRequest",
+              "overlap": 1
+            }
+          ]
+        },
+        {
+          "at": 4336.699998855591,
+          "ms": 116,
+          "parserUnionLowerBound": 4,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 63.3
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 49.8
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 43.8
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 34.3
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 16.3
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 6.5
+            },
+            {
+              "name": "joinedAccount.ts.authenticateJoinedAccountInventory",
+              "overlap": 5.8
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 2.4
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentInstallation",
+              "overlap": 2.3
+            },
+            {
+              "name": "recovery.ts.lp",
+              "overlap": 1.6
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 1
+            }
+          ]
+        },
+        {
+          "at": 12835.5,
+          "ms": 115,
+          "parserUnionLowerBound": 4.6,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 58.4
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 50.1
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 43.8
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 31.9
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 18.3
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 7.5
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 3.5
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 2.3
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 2.2
+            }
+          ]
+        }
+      ],
+      "fullJoinedReadCalls": 8,
+      "verifyReceipt": 80,
+      "verifySignature": 868
+    },
+    {
+      "session": "backlog-2-profile",
+      "condition": "backlog",
+      "phase": "passed",
+      "window": {
+        "begin": 4055.1000003814697,
+        "end": 25995.10000038147,
+        "ms": 21940
+      },
+      "guardrails": {
+        "undoRedo": true,
+        "converged": true,
+        "coldReplay": true,
+        "errors": []
+      },
+      "finalStages": {
+        "queue": {
+          "n": 14,
+          "total": 5.5,
+          "median": 0.3,
+          "max": 1.1
+        },
+        "authority": {
+          "n": 14,
+          "total": 550.3,
+          "median": 38.5,
+          "max": 55.4
+        },
+        "read": {
+          "n": 14,
+          "total": 494,
+          "median": 34.7,
+          "max": 51.3
+        },
+        "equal": {
+          "n": 14,
+          "total": 52.3,
+          "median": 3.8,
+          "max": 4.1
+        },
+        "apply": {
+          "n": 14,
+          "total": 127.8,
+          "median": 8.5,
+          "max": 14.1
+        },
+        "canonical": {
+          "n": 14,
+          "total": 1.7,
+          "median": 0,
+          "max": 0.5
+        },
+        "projectionApply": {
+          "n": 14,
+          "total": 3.5,
+          "median": 0.3,
+          "max": 0.7
+        },
+        "projectionCheck": {
+          "n": 14,
+          "total": 71.5,
+          "median": 4.8,
+          "max": 9.3
+        },
+        "publish": {
+          "n": 14,
+          "total": 23.1,
+          "median": 1.5,
+          "max": 3.2
+        }
+      },
+      "counters": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 78,
+        "inboundVerifications": 64,
+        "inboundCensuses": 0,
+        "deliveryPrefixLinks": 35,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 229,
+        "warmLoads": 229,
+        "selectedLoads": 180,
+        "warmAuditRows": 3568,
+        "warmAuditBytes": 10137909,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 227,
+        "authorityAuthentications": 1,
+        "authorityReuses": 226,
+        "positions": 7,
+        "sourceParses": 1216,
+        "sourceParseBytes": 308920,
+        "recordCopies": 16466,
+        "recordCopyBytes": 38886080,
+        "journalFlushes": 15,
+        "dirtyJournalFlushes": 15,
+        "projectionChecks": 28,
+        "directTextPreparations": 106
+      },
+      "longTasks": 24,
+      "longestTasks": [
+        {
+          "at": 25548.30000114441,
+          "ms": 146,
+          "parserUnionLowerBound": 11.7,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 73.6
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 62.6
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 52.1
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 41.2
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 22.4
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 15.2
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 8
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 5.9
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentInstallation",
+              "overlap": 4.6
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 3.9
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 3.6
+            },
+            {
+              "name": "recovery.ts.lp",
+              "overlap": 2
+            }
+          ]
+        },
+        {
+          "at": 4673.39999961853,
+          "ms": 142,
+          "parserUnionLowerBound": 12.1,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 70.7
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 63
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 56.2
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 39.8
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 22.3
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 6.5
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 6.4
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 6.2
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 5.3
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentInstallation",
+              "overlap": 2.4
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 2.1
+            },
+            {
+              "name": "admission.ts.parseAdmissionRequest",
+              "overlap": 1.1
+            }
+          ]
+        },
+        {
+          "at": 19518.70000076294,
+          "ms": 139,
+          "parserUnionLowerBound": 18.4,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 77.9
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 73.6
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 66.5
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 44.6
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 20.1
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 11.7
+            },
+            {
+              "name": "admission.ts.parseEpoch",
+              "overlap": 7.7
+            },
+            {
+              "name": "admission.ts.parseOffer",
+              "overlap": 6.6
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 6.4
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 4.9
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 2.7
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 2.2
+            }
+          ]
+        }
+      ],
+      "fullJoinedReadCalls": 10,
+      "verifyReceipt": 100,
+      "verifySignature": 1082
+    },
+    {
+      "session": "active-2-profile",
+      "condition": "active",
+      "phase": "passed",
+      "window": {
+        "begin": 7761.099998474121,
+        "end": 30127.39999961853,
+        "ms": 22366.3
+      },
+      "guardrails": {
+        "undoRedo": true,
+        "converged": true,
+        "coldReplay": true,
+        "errors": []
+      },
+      "finalStages": {
+        "queue": {
+          "n": 7,
+          "total": 4.4,
+          "median": 0.6,
+          "max": 1
+        },
+        "authority": {
+          "n": 7,
+          "total": 313.7,
+          "median": 36.4,
+          "max": 64.3
+        },
+        "read": {
+          "n": 7,
+          "total": 287.4,
+          "median": 32.6,
+          "max": 60.6
+        },
+        "equal": {
+          "n": 7,
+          "total": 26.1,
+          "median": 3.7,
+          "max": 4.2
+        },
+        "apply": {
+          "n": 7,
+          "total": 67.4,
+          "median": 9.5,
+          "max": 13.5
+        },
+        "canonical": {
+          "n": 7,
+          "total": 2.3,
+          "median": 0.1,
+          "max": 1.1
+        },
+        "projectionApply": {
+          "n": 7,
+          "total": 1.3,
+          "median": 0,
+          "max": 0.7
+        },
+        "projectionCheck": {
+          "n": 7,
+          "total": 39.2,
+          "median": 4.9,
+          "max": 7.5
+        },
+        "publish": {
+          "n": 7,
+          "total": 13.2,
+          "median": 1.8,
+          "max": 2.7
+        }
+      },
+      "counters": {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 71,
+        "inboundVerifications": 57,
+        "inboundCensuses": 0,
+        "deliveryPrefixLinks": 42,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 179,
+        "warmLoads": 179,
+        "selectedLoads": 129,
+        "warmAuditRows": 2587,
+        "warmAuditBytes": 13200122,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 157,
+        "authorityAuthentications": 0,
+        "authorityReuses": 156,
+        "positions": 7,
+        "sourceParses": 1300,
+        "sourceParseBytes": 503918,
+        "recordCopies": 39135,
+        "recordCopyBytes": 180530315,
+        "journalFlushes": 16,
+        "dirtyJournalFlushes": 16,
+        "projectionChecks": 14,
+        "directTextPreparations": 113
+      },
+      "longTasks": 29,
+      "longestTasks": [
+        {
+          "at": 26495.19999885559,
+          "ms": 129,
+          "parserUnionLowerBound": 13.1,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 73.4
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 67.7
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 61.6
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 42.5
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 20.3
+            },
+            {
+              "name": "recovery.ts.lp",
+              "overlap": 8.2
+            },
+            {
+              "name": "admission.ts.parseEpoch",
+              "overlap": 8.2
+            },
+            {
+              "name": "admission.ts.parseOffer",
+              "overlap": 8.2
+            },
+            {
+              "name": "joinedAccount.ts.authenticateJoinedAccountInventory",
+              "overlap": 7
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 6.7
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 3.4
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 2.5
+            }
+          ]
+        },
+        {
+          "at": 26219.39999961853,
+          "ms": 122,
+          "parserUnionLowerBound": 3,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 68.3
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 53.8
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 48.8
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 39.7
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 21.5
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 13.2
+            },
+            {
+              "name": "admission.ts.verifySignature",
+              "overlap": 4.2
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentInstallation",
+              "overlap": 2.2
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 2
+            },
+            {
+              "name": "admission.ts.parseReceipt",
+              "overlap": 1
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 1
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 1
+            }
+          ]
+        },
+        {
+          "at": 11868.89999961853,
+          "ms": 115,
+          "parserUnionLowerBound": 4.2,
+          "stages": [
+            {
+              "name": "admission.ts.verifyReceipt",
+              "overlap": 57.8
+            },
+            {
+              "name": "contentDelivery.ts.verifyCertificationSuccessor",
+              "overlap": 55.7
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentDelivery",
+              "overlap": 49.9
+            },
+            {
+              "name": "admission.ts.verifyOffer",
+              "overlap": 32.2
+            },
+            {
+              "name": "admission.ts.verifyCreatingProofs",
+              "overlap": 19.4
+            },
+            {
+              "name": "admission.ts.verifyCompletion",
+              "overlap": 12.3
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationEpoch",
+              "overlap": 2.2
+            },
+            {
+              "name": "contentDelivery.ts.parseCertificationSuccessor",
+              "overlap": 2.1
+            },
+            {
+              "name": "contentDelivery.ts.parseContentDelivery",
+              "overlap": 1
+            },
+            {
+              "name": "admission.ts.parseOffer",
+              "overlap": 1
+            },
+            {
+              "name": "contentDelivery.ts.verifyContentInstallation",
+              "overlap": 1
+            }
+          ]
+        }
+      ],
+      "fullJoinedReadCalls": 6,
+      "verifyReceipt": 60,
+      "verifySignature": 651
+    }
+  ]
+}
