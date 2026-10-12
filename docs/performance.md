@@ -1648,3 +1648,25 @@ authentication intact. Any grouped commit needs ordered witness extension, bound
 authority checks, authenticated readback and abort/retry controls. Coverage and new multi-position
 receipt formats are not selected for this first repair. Runtime remains unchanged; release validation
 stays paused. The packet also records the requested read-only disk investigation; nothing was deleted.
+
+## 2026-10-12 — Own-stream poll suppression and exact marker-byte equality
+
+Measurements are signed as `ee234d06`. The [first repair](./performance-experiments/2026-10-12-receive-first-repair/README.md)
+compares the same canonical authenticated marker bytes without hex conversion, and suppresses recent
+own-stream checks during productive peer catch-up only when verified delivery has no unresolved
+submission. Current-key retries with historical refusal responses remain eligible; authority changes
+reset the hint. Empty peer responses finish the ordinary sweep instead of causing duplicate reads.
+Fresh authority checks, native receipt formats and retry back-off remain unchanged.
+
+The final local restored 600-position run takes 254.318 seconds versus 328.126 seconds in a fresh
+frozen baseline (22.5% less time); own reads fall from 150 to 44. With 75 ms added per request, the
+final candidate takes 302.023 seconds against the previous packet's 374.759-second delayed baseline
+(19.4% less time; no fresh delayed baseline). All five journeys, including the preserved intermediate
+candidate, pass both-way writing, complete exports and offline reopen. Cold opening remains around
+seven seconds. These are single serial desktop observations; no phone or release claim follows.
+
+Sixteen focused unit and five native checks pass, plus type/build/targeted lint/format checks. One
+older fault-control expectation fails identically on pinned pre-repair source and is preserved as
+an existing fixture limitation, not changed to weaken a safeguard. The repair and evidence are
+uncommitted. Next: grouped owned processing of current-format receipts. No publication or resumed
+release validation; `docs/progress.md` is unchanged.

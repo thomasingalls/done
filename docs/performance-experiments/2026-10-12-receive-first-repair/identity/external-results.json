@@ -1,0 +1,60 @@
+{
+  "note": "Private synthetic snapshots and credentials remain outside Git. Sanitized numeric observations omit database identifiers and replace synthetic text with lengths.",
+  "files": [
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/candidate-local/result.json",
+      "bytes": 1071648,
+      "sha256": "c39f7470aa22a66954be9c5a16db95aa6b083aa9a2644d585e16a2a6620d269e"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/candidate-local/deep-received-fixture.json",
+      "bytes": 6661185,
+      "sha256": "c0b927cb53efa4500c0f4cd4941c61d7b913c63bf66f712ce5ac9ef71113d284"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/candidate-latency/result.json",
+      "bytes": 1095937,
+      "sha256": "fe5786bc15f193bc2d59c600d548a9d41466ad573113dbae903ab3d56223f7c6"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/candidate-latency/deep-received-fixture.json",
+      "bytes": 6654557,
+      "sha256": "9b03cf41292a4f62f569acd8f4cc9ae8063844688cb2f9edb2b6dd2334fd786c"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/baseline-local/result.json",
+      "bytes": 1134497,
+      "sha256": "77783b4034a583fc3c5e4ab285b6f10e7909c546eaff389054e3b903127915fd"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/baseline-local/deep-received-fixture.json",
+      "bytes": 6652206,
+      "sha256": "e849320e45d59ab798bde014adbee608944dfca8327e30522bcde20d3ac363cb"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/final-local/result.json",
+      "bytes": 1069689,
+      "sha256": "3dadfc07905c627740fb81314fa92a0c9cc43acc925d66831f4052035dc22918"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/final-local/deep-received-fixture.json",
+      "bytes": 6661181,
+      "sha256": "0af9856f8cc05ea544431aa4a770dfe94ab9d01baae2c57573de0327e9733fd1"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/final-latency/result.json",
+      "bytes": 1072728,
+      "sha256": "2371b71407fc9f33b0e39a1d91d8cb67630e4ebbe4f16f309cd07ba02ee70b56"
+    },
+    {
+      "path": "/tmp/done-receive-first-repair-20261012/final-latency/deep-received-fixture.json",
+      "bytes": 6654533,
+      "sha256": "61c28e140b4df70b43c50ea6ae39e1fcce6affe7eefd371113c136f9121323ed"
+    },
+    {
+      "path": "/tmp/done-client-receive/fixture.json",
+      "bytes": 7707006,
+      "sha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985"
+    }
+  ]
+}

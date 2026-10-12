@@ -1,0 +1,38 @@
+(node:64776) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:64776) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(node:64776) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+Pinned baseline source: src/crdt/accountReceive.ts
+Pinned baseline source: src/crdt/receiveSelection.ts
+{"reference":"ee234d06","mode":"baseline","receive":{"phase":"blocked","failures":0,"nextAttemptAt":null,"issueSince":1791786199579,"lastSuccessAt":null,"reason":"integrity","receivedThrough":0}}
+Pinned baseline source: src/crdt/accountReceive.ts
+Pinned baseline source: src/crdt/receiveSelection.ts
+{"reference":"ee234d06","mode":"self","receive":{"phase":"retrying","failures":1,"nextAttemptAt":1791786204498,"issueSince":1791786203498,"lastSuccessAt":null,"reason":"operation-failed","receivedThrough":0}}
+✖ self-stream byte binding refuses a different valid envelope from the same synthetic credential (7988.215875ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10566.207459
+
+✖ failing tests:
+
+test at test/account-sync/native-controls.test.mjs:117:1
+✖ self-stream byte binding refuses a different valid envelope from the same synthetic credential (7988.215875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+  false !== true
+
+      at TestContext.<anonymous> (file:///Users/thomasingalls/.codex/worktrees/c030/done/test/account-sync/native-controls.test.mjs:170:14)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

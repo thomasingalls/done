@@ -1,4 +1,4 @@
-import { createReceiveSelection } from './receiveSelection';
+import { createReceiveSelection, unresolvedSelfSubmission } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
 import { countLedgerWork } from './accountLedgerMetrics';
@@ -67,7 +67,7 @@ import {
 } from '../../account-protocol/admissionHistory';
 import type { DeviceRoster } from '../account/deviceRoster';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
-import { createVerifiedRecords, eraseVerified, copyRecords } from './verifiedRecords';
+import { createVerifiedRecords, eraseVerified, copyRecords, sameBytes } from './verifiedRecords';
 import { createVerificationMemo } from './verificationMemo';
 import {
   extendAccountLedger,
@@ -195,7 +195,7 @@ async function openAccountReceiveOwner(
   let inheritedHistoryHash: string | undefined;
   let handoff = false,
     transition = '';
-  let expectedPayload = '',
+  let expectedPayload: Bytes = new Uint8Array(),
     expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
@@ -207,7 +207,7 @@ async function openAccountReceiveOwner(
       const current = await readJoinedAccount(task, options.slotId, options.code);
       if (
         !current.marker ||
-        hex(joinedPayload(current.marker)) !== expectedPayload ||
+        !sameBytes(joinedPayload(current.marker), expectedPayload) ||
         !recordEqual(current.record, expectedRecord)
       )
         captureError('Certified device authority changed');
@@ -216,7 +216,7 @@ async function openAccountReceiveOwner(
     const current = await readPromotion(task, options.slotId, options.code);
     if (
       !current.marker ||
-      hex(promotionPayload(current.marker)) !== expectedPayload ||
+      !sameBytes(promotionPayload(current.marker), expectedPayload) ||
       !recordEqual(current.record, expectedRecord)
     )
       captureError('Inbound authority changed before commit');
@@ -238,7 +238,7 @@ async function openAccountReceiveOwner(
         }
       : {}),
     async initialize(task, v) {
-      expectedPayload = hex(promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' }));
+      expectedPayload = promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' });
       expectedRecord = v.record;
       installed = v.marker.successor;
       membership = v.marker.membership;
@@ -276,7 +276,7 @@ async function openAccountReceiveOwner(
       });
     },
     async initializeJoined(task, v) {
-      expectedPayload = hex(joinedPayload(v.marker!));
+      expectedPayload = joinedPayload(v.marker!);
       expectedRecord = v.record;
       membership = v.marker!.membership;
       inheritedHistoryHash =
@@ -476,6 +476,7 @@ async function openAccountReceiveOwner(
       }
     },
     dispose() {
+      expectedPayload.fill(0);
       verifiedCounter = undefined;
       verified.clear();
       memo.clear();
@@ -526,18 +527,25 @@ async function openAccountReceiveOwner(
         ),
       ),
   });
+  const readState = async <R>(
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    select: (view: Readonly<AccountLedgerView>) => R,
+  ) => {
+    await assertCurrent(task);
+    const records = await owner.carrier.load(task);
+    try {
+      return task.step(() => ({ value: verified.read(records, select) })).value;
+    } finally {
+      for (const r of records) r.bytes.fill(0);
+    }
+  };
   const state = async (
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
     _route: CaptureRoute,
   ) => {
-    await assertCurrent(task);
-    const records = await owner.carrier.load(task);
-    try {
-      return task.step(() => verified.read(records, (v) => v.inbound));
-    } finally {
-      for (const r of records) r.bytes.fill(0);
-    }
+    return await readState(task, owner, (v) => v.inbound);
   };
   const receiveSelection = createReceiveSelection();
   const describe = (s: Awaited<ReturnType<typeof state>>) =>
@@ -557,13 +565,24 @@ async function openAccountReceiveOwner(
   const prepareRead = async (
     task: SessionTask,
     owner: ReturnType<typeof prepareAccountCustody>,
-    route: CaptureRoute,
+    _route: CaptureRoute,
     after?: number,
   ) => {
     if (account.detached) throw Error('This local copy is detached from sync');
-    const all = await state(task, owner, route);
+    // The scheduling hint comes from the same fresh, authenticated load as the prefix.
+    // A retained submission without a decision must still get its reconciliation read.
+    const { inbound: all, pendingSelf } = await readState(task, owner, (v) => ({
+      inbound: v.inbound,
+      pendingSelf: unresolvedSelfSubmission(v.delivery),
+    }));
     const publishers = base.history?.readers.map((r) => r.id) ?? [base.publisher.id];
-    const publisher = after === undefined ? receiveSelection.next(publishers) : base.publisher.id;
+    const publisher =
+      after === undefined
+        ? receiveSelection.next(
+            publishers,
+            composed ? { publisher: base.publisher.id, pending: pendingSelf } : undefined,
+          )
+        : base.publisher.id;
     const s = publisherState(all, base, publisher),
       cursor = after ?? s.prefix.position;
     if (s.conflict) throw Error('Inbound stream is conflicted');
@@ -1038,7 +1057,8 @@ async function openAccountReceiveOwner(
               installRoute(task, nextRoute);
               base = nextBase;
               installed = successor;
-              expectedPayload = hex(promotionPayload(next));
+              receiveSelection.reset();
+              expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
               sinceAudit = 0;
               verified.clear();
@@ -1162,7 +1182,7 @@ async function openAccountReceiveOwner(
             checkCommit,
           );
           committed = true;
-          expectedPayload = hex(joinedPayload(next));
+          expectedPayload = joinedPayload(next);
         } else {
           const state = current as Awaited<ReturnType<typeof readPromotion>>;
           await withPromotionRoot(
@@ -1186,7 +1206,7 @@ async function openAccountReceiveOwner(
                 checkCommit,
               );
               committed = true;
-              expectedPayload = hex(promotionPayload(next));
+              expectedPayload = promotionPayload(next);
             },
           );
         }
@@ -1194,6 +1214,7 @@ async function openAccountReceiveOwner(
           installRoute(task, nextRoute);
           base = nextBase;
           membership = nextMembership;
+          receiveSelection.reset();
           verifiedCounter = undefined;
           sinceAudit = 0;
           verified.clear();
@@ -1592,37 +1613,29 @@ async function openAccountReceiveOwner(
                       mac: record.mac,
                     };
                     const oldPayload = joined
-                      ? hex(
-                          joinedPayload({
-                            ...(current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
-                            custodyMac: hex(expectedRecord.mac),
-                          }),
-                        )
-                      : hex(
-                          promotionPayload({
-                            ...(current as Awaited<ReturnType<typeof readPromotion>>).marker!,
-                            custodyMac: hex(expectedRecord.mac),
-                            sealReserved: expectedRecord.seal_reserved,
-                          }),
-                        );
+                      ? joinedPayload({
+                          ...(current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
+                          custodyMac: hex(expectedRecord.mac),
+                        })
+                      : promotionPayload({
+                          ...(current as Awaited<ReturnType<typeof readPromotion>>).marker!,
+                          custodyMac: hex(expectedRecord.mac),
+                          sealReserved: expectedRecord.seal_reserved,
+                        });
                     if (
                       !recordEqual(record, expected) ||
                       record.seal_reserved < expectedRecord.seal_reserved ||
-                      oldPayload !== expectedPayload
+                      !sameBytes(oldPayload, expectedPayload)
                     ) {
                       throw Error('Account custody changed during history maintenance');
                     }
                     expectedRecord = record;
                     expectedPayload = joined
-                      ? hex(
-                          joinedPayload(
-                            (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
-                          ),
+                      ? joinedPayload(
+                          (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
                         )
-                      : hex(
-                          promotionPayload(
-                            (current as Awaited<ReturnType<typeof readPromotion>>).marker!,
-                          ),
+                      : promotionPayload(
+                          (current as Awaited<ReturnType<typeof readPromotion>>).marker!,
                         );
                   } catch (cause) {
                     handoff = true;
@@ -1722,6 +1735,7 @@ async function openAccountReceiveOwner(
         base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
         publisher,
         kind === 'received',
+        composed && publisher === base.publisher.id && (kind === 'received' || kind === 'empty'),
       );
     },
     fetchHistory,

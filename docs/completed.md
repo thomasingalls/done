@@ -13047,3 +13047,24 @@ first. Deep received-history opens remain about 6.8 seconds; no phone or activat
 compatibility controls. No runtime or stored-format change in this phase; release validation remains
 paused. The parallel disk inventory attributes about 18.3 GB of recent retained project artifacts to
 temporary copies/builds and linked Docker cache. No deletion occurred. `docs/progress.md` is untouched.
+
+### Account receiving — first repair after attribution
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `ee234d06` · **Stage:** bounded repair
+
+**Exit.** The measurement packet is committed signed. This [repair and evidence](./performance-experiments/2026-10-12-receive-first-repair/README.md)
+remove whole-marker hex comparison and redundant own-stream polling during productive catch-up.
+Existing five-second checks, unresolved-submission reconciliation, authority resets, fresh marker
+authentication, ordinary idle sweeps and receipt formats remain. A current-key retry cannot be
+misclassified as resolved merely because its historical refusal response remains stored.
+
+**Evidence.** Final local catch-up takes 254.318 seconds for 600 positions versus a fresh frozen
+baseline's 328.126 seconds; own reads fall 150 to 44. Added-latency catch-up takes 302.023 seconds
+against the prior delayed baseline's 374.759 seconds. All five restored journeys pass complete
+exports, two-way edits and offline reopen. Intermediate observations and the idle-sweep correction
+remain recorded. Sixteen focused unit and five native cases pass; the old adversarial-control failure
+reproduces on pinned baseline source and is retained separately. Type/build/lint/format checks pass.
+
+**Remaining.** Group current-format receipt processing to amortize authority and load work. Deep
+opening remains around seven seconds; current phone performance and isolated long tasks remain
+unresolved. The repair is uncommitted and unpublished; release validation remains paused.

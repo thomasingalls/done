@@ -1,0 +1,10 @@
+[
+  {
+    "path": "src/crdt/accountReceive.ts",
+    "sha256": "57de7b43a816969b9c78655ac77ef04ab8c47f8cc3f90dbccae31ce49b9b8f47"
+  },
+  {
+    "path": "src/crdt/receiveSelection.ts",
+    "sha256": "5bfbfc49c763af7cf6a1d7bc5a0bf8c00cf3f3cc239fd14a96142f4a49a1779b"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "parent": "ee234d06521400e9d938b1874799e82f7fcac0e3",
+  "baselineDist": "/tmp/done-receive-attribution-20261012/baseline-dist",
+  "candidateDist": "/tmp/done-receive-first-repair-20261012/candidate-dist",
+  "fixtureSha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985",
+  "source": [
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "57de7b43a816969b9c78655ac77ef04ab8c47f8cc3f90dbccae31ce49b9b8f47"
+    },
+    {
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "603680edb21c49454ef081dfdc5601f72c4bfb38fa7207f6c69e6b7284fee6af"
+    }
+  ],
+  "note": "Candidate built from working-tree patch on recorded parent; version label is parent plus dirty state. Backend source unchanged."
+}

@@ -1,0 +1,435 @@
+{
+  "phase": "passed",
+  "diagnostic": false,
+  "delayMs": 0,
+  "catchupMs": 254318,
+  "primaryDeadlineMissed": false,
+  "counts": {
+    "A /account/session/v1/acknowledge": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 13,
+        "mean": 13,
+        "p50": 13,
+        "p95": 13,
+        "max": 13
+      }
+    },
+    "B /account/session/v1/acknowledge": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 11,
+        "mean": 11,
+        "p50": 11,
+        "p95": 11,
+        "max": 11
+      }
+    },
+    "A /account/session/v1/renew": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 10,
+        "mean": 10,
+        "p50": 10,
+        "p95": 10,
+        "max": 10
+      }
+    },
+    "B /account/session/v1/renew": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 10,
+        "mean": 10,
+        "p50": 10,
+        "p95": 10,
+        "max": 10
+      }
+    },
+    "A /account/grant/v1/begin": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 65,
+        "mean": 65,
+        "p50": 65,
+        "p95": 65,
+        "max": 65
+      }
+    },
+    "B /account/grant/v1/begin": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 63,
+        "mean": 63,
+        "p50": 63,
+        "p95": 63,
+        "max": 63
+      }
+    },
+    "B /account/grant/v1/finish": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 3,
+        "mean": 3,
+        "p50": 3,
+        "p95": 3,
+        "max": 3
+      }
+    },
+    "B /account/notifications/v1/subscribe": {
+      "n": 1,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 6,
+        "mean": 6,
+        "p50": 6,
+        "p95": 6,
+        "max": 6
+      }
+    },
+    "A /account/grant/v1/finish": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 4,
+        "mean": 4,
+        "p50": 4,
+        "p95": 4,
+        "max": 4
+      }
+    },
+    "A /account/notifications/v1/subscribe": {
+      "n": 1,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 32,
+        "mean": 32,
+        "p50": 32,
+        "p95": 32,
+        "max": 32
+      }
+    },
+    "B /account/membership/v2/discover": {
+      "n": 48,
+      "non200": 0,
+      "failed": 10,
+      "requestToHeadersMs": {
+        "n": 48,
+        "total": 2699,
+        "mean": 56.23,
+        "p50": 55,
+        "p95": 60,
+        "max": 114
+      }
+    },
+    "A /account/delivery/submit": {
+      "n": 11,
+      "non200": 0,
+      "failed": 3,
+      "requestToHeadersMs": {
+        "n": 11,
+        "total": 834,
+        "mean": 75.82,
+        "p50": 32,
+        "p95": 503,
+        "max": 503
+      }
+    },
+    "B /account/history/v1/checkpoint": {
+      "n": 48,
+      "non200": 0,
+      "failed": 9,
+      "requestToHeadersMs": {
+        "n": 48,
+        "total": 3941,
+        "mean": 82.1,
+        "p50": 72,
+        "p95": 84,
+        "max": 498
+      }
+    },
+    "B /account/delivery/read-v2 peer": {
+      "n": 601,
+      "non200": 0,
+      "failed": 130,
+      "requestToHeadersMs": {
+        "n": 601,
+        "total": 16045,
+        "mean": 26.7,
+        "p50": 26,
+        "p95": 30,
+        "max": 154
+      }
+    },
+    "A /account/membership/v2/discover": {
+      "n": 4,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 4,
+        "total": 261,
+        "mean": 65.25,
+        "p50": 67,
+        "p95": 68,
+        "max": 68
+      }
+    },
+    "A /account/history/v1/checkpoint": {
+      "n": 4,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 4,
+        "total": 331,
+        "mean": 82.75,
+        "p50": 84,
+        "p95": 84,
+        "max": 84
+      }
+    },
+    "A /account/delivery/read-v2 self": {
+      "n": 5,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 5,
+        "total": 147,
+        "mean": 29.4,
+        "p50": 29,
+        "p95": 33,
+        "max": 33
+      }
+    },
+    "B /account/delivery/submit": {
+      "n": 1,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 33,
+        "mean": 33,
+        "p50": 33,
+        "p95": 33,
+        "max": 33
+      }
+    },
+    "A /account/delivery/read-v2 peer": {
+      "n": 5,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 5,
+        "total": 157,
+        "mean": 31.4,
+        "p50": 32,
+        "p95": 34,
+        "max": 34
+      }
+    },
+    "B /account/delivery/read-v2 self": {
+      "n": 44,
+      "non200": 0,
+      "failed": 7,
+      "requestToHeadersMs": {
+        "n": 44,
+        "total": 1152,
+        "mean": 26.18,
+        "p50": 25,
+        "p95": 31,
+        "max": 49
+      }
+    }
+  },
+  "receiverNetworkUnionMs": 23963,
+  "peerIntervalMs": {
+    "n": 600,
+    "total": 252986,
+    "mean": 421.64,
+    "p50": 394,
+    "p95": 643,
+    "max": 1241
+  },
+  "peerIntervalsBy100": [
+    {
+      "from": 0,
+      "to": 100,
+      "n": 92,
+      "total": 35447,
+      "mean": 385.29,
+      "p50": 347,
+      "p95": 615,
+      "max": 1241
+    },
+    {
+      "from": 100,
+      "to": 200,
+      "n": 100,
+      "total": 36866,
+      "mean": 368.66,
+      "p50": 331,
+      "p95": 557,
+      "max": 761
+    },
+    {
+      "from": 200,
+      "to": 300,
+      "n": 100,
+      "total": 39127,
+      "mean": 391.27,
+      "p50": 355,
+      "p95": 581,
+      "max": 807
+    },
+    {
+      "from": 300,
+      "to": 400,
+      "n": 100,
+      "total": 43144,
+      "mean": 431.44,
+      "p50": 388,
+      "p95": 623,
+      "max": 674
+    },
+    {
+      "from": 400,
+      "to": 500,
+      "n": 100,
+      "total": 46241,
+      "mean": 462.41,
+      "p50": 416,
+      "p95": 656,
+      "max": 748
+    },
+    {
+      "from": 500,
+      "to": 600,
+      "n": 100,
+      "total": 48148,
+      "mean": 481.48,
+      "p50": 431,
+      "p95": 764,
+      "max": 1042
+    },
+    {
+      "from": 600,
+      "to": 700,
+      "n": 8,
+      "total": 4013,
+      "mean": 501.63,
+      "p50": 430,
+      "p95": 775,
+      "max": 775
+    }
+  ],
+  "backendRoundtripMs": {
+    "/account/session/v1/acknowledge": {
+      "n": 2,
+      "total": 9,
+      "mean": 4.5,
+      "p50": 5,
+      "p95": 5,
+      "max": 5
+    },
+    "/account/session/v1/renew": {
+      "n": 2,
+      "total": 11,
+      "mean": 5.5,
+      "p50": 7,
+      "p95": 7,
+      "max": 7
+    },
+    "/account/grant/v1/begin": {
+      "n": 2,
+      "total": 116,
+      "mean": 58,
+      "p50": 58,
+      "p95": 58,
+      "max": 58
+    },
+    "/account/grant/v1/finish": {
+      "n": 2,
+      "total": 4,
+      "mean": 2,
+      "p50": 2,
+      "p95": 2,
+      "max": 2
+    },
+    "/account/membership/v2/discover": {
+      "n": 52,
+      "total": 2865,
+      "mean": 55.1,
+      "p50": 53,
+      "p95": 65,
+      "max": 111
+    },
+    "/account/delivery/submit": {
+      "n": 12,
+      "total": 841,
+      "mean": 70.08,
+      "p50": 30,
+      "p95": 499,
+      "max": 499
+    },
+    "/account/history/v1/checkpoint": {
+      "n": 52,
+      "total": 4164,
+      "mean": 80.08,
+      "p50": 70,
+      "p95": 82,
+      "max": 495
+    },
+    "/account/delivery/read-v2": {
+      "n": 655,
+      "total": 16285,
+      "mean": 24.86,
+      "p50": 24,
+      "p95": 28,
+      "max": 147
+    }
+  },
+  "liveDelayMs": {
+    "n": 12,
+    "total": 24831,
+    "mean": 2069.25,
+    "p50": 1858,
+    "p95": 2410,
+    "max": 2410
+  },
+  "coldMs": 6957.200000762939,
+  "heap": 19569928,
+  "exportBytes": 54211,
+  "longTasks": {
+    "n": 0,
+    "total": 0,
+    "mean": null,
+    "p50": null,
+    "p95": null,
+    "max": null
+  }
+}

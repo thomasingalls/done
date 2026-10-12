@@ -1,0 +1,2 @@
+src/crdt/accountReceive.ts(538,30): error TS2322: Type 'R' is not assignable to type 'R & Synchronous<R>'.
+  Type 'R' is not assignable to type 'Synchronous<R>'.
