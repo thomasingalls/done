@@ -1,0 +1,11 @@
+{
+  "test/packaged-account/text-admission.spec.ts": "11cb3b1ed24605a18fcaf6e27f1ec15a19a9c10bd561d96d5927055fe24cd232",
+  "test/packaged-account/membership-custody.spec.ts": "8602f5c6988cf30a39ecf8eeb9d7cf8f13760a84e16a4069c2a73b8d0da3df44",
+  "test/packaged-account/devices.ts": "9bc406ad56f7f064f8d11091a438fb5e79cca987a34055b15f99af3e7cbc0df3",
+  "test/packaged-account/server.ts": "8d15970e91704eceb06bd2d3d985af7e3855f400e369f93ba578b62bb95d616b",
+  "test/account-membership/custody-entry.ts": "88769dcefd46ac87f3d1c4b71943bb97788a0eba360de43b2335ecb269230988",
+  "playwright.packaged-account.config.ts": "0906bf9cc220e4919f9faa56c8802243d75b3e2086f196926e318db14fa442c8",
+  "docs/performance-experiments/2026-10-12-foreground-stall/probe/stall.config.ts": "87fce440981e53a0f3252e7e21f76fb7a951910633888dc1ab5bf54314875214",
+  "docs/performance-experiments/2026-10-12-foreground-stall/probe/stall.spec.ts": "6c512734c179bdade55c450e738e231a0c77a07f25f1504ab7a840caaec8238a",
+  "docs/performance-experiments/2026-10-12-receive-attribution/probe/runtime.mjs": "5d9989f22659312395398c76ae12f371463f62a0e1ecde09587e494863037144"
+}

@@ -1,0 +1,218 @@
+{
+  "scope": "Signed-source publication preparation; no registry push or deployment",
+  "sourceCommit": "f516a958e88b17d17f7dc5cb65b1fa386dbec45f",
+  "archiveSha256": "47ee88c10c48ec228fcfa969fe1bba0d1bcd5c4c9959e4b8c35dc19873c8763c",
+  "applicationMain": "24481b8210f6e04aae153198b871b8329fb81ed5",
+  "cleanGitArchive": true,
+  "image": "done-public:f516a958",
+  "localIndexDigest": "sha256:5bb003b0a49cb61f0a2734beceabf86799d8f5dc841db9cdd391e93d5af58b1e",
+  "runtimeManifestDigest": "sha256:f89b7c4a50c150d0c785fac33a7402a7328258dbf4af38ed52c64048caef80e7",
+  "platform": "linux/arm64",
+  "containerNode": "24.18.0",
+  "buildDate": "2026-10-13",
+  "published": false,
+  "buildPassed": true,
+  "initialJsGzipKB": 137.1,
+  "focusedUnits": {
+    "files": 11,
+    "passed": 349,
+    "skipped": 1,
+    "failed": 0
+  },
+  "existingContainerTests": {
+    "runtimeGateway": 14,
+    "backup": 5,
+    "restore": 6,
+    "maintenance": 6
+  },
+  "smoke": {
+    "image": "done-public:f516a958",
+    "started": "2026-10-12T22:52:12.429Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:5bb003b0a49cb61f0a2734beceabf86799d8f5dc841db9cdd391e93d5af58b1e",
+    "platform": "linux/arm64",
+    "sourceRevision": "f516a958e88b17d17f7dc5cb65b1fa386dbec45f",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-12T22:52:19.144Z"
+  },
+  "browser": [
+    {
+      "test": "original and joined native custody preserve prior setup, interrupted progress and installed keys",
+      "status": "passed",
+      "durationMs": 18902
+    },
+    {
+      "test": "Account text undo spans received edits and journal-only offline reopening",
+      "status": "passed",
+      "durationMs": 24410
+    }
+  ],
+  "deepReceivedJourney": {
+    "phase": "passed",
+    "delayMs": 75,
+    "diagnostic": false,
+    "started": 1791845658989,
+    "caughtAt": 1791845716706,
+    "coldMs": 2672.1000003814697,
+    "exportBytes": 54211,
+    "live": [
+      {
+        "ms": 1320
+      },
+      {
+        "ms": 2873
+      },
+      {
+        "ms": 1314
+      },
+      {
+        "ms": 1331
+      },
+      {
+        "ms": 1313
+      },
+      {
+        "ms": 1313
+      },
+      {
+        "ms": 1311
+      },
+      {
+        "ms": 1307
+      },
+      {
+        "ms": 1308
+      },
+      {
+        "ms": 1309
+      },
+      {
+        "ms": 1305
+      },
+      {
+        "ms": 1307
+      }
+    ],
+    "catchupMs": 57717,
+    "measurementScope": "One functional publication check; no comparative performance inference."
+  },
+  "browserScope": "Exact extracted runtime frontend; disposable host Node 26.11.1 services from signed archive, not container API",
+  "nativeBoundaryEvidence": "../../performance-experiments/2026-10-13-immediate-authority/README.md (seven earlier passing controls; not rerun for publication)",
+  "compatibility": {
+    "accountSchema": 26,
+    "authoritySchema": 1,
+    "schemaChanges": false,
+    "storedReceiptChanges": false,
+    "wireFormatChanges": false,
+    "limit": "Source review and focused checks, not exhaustive mixed-version qualification"
+  },
+  "hostLoadQualification": "Operator reported heavy VM use during prior measurements; overlap and effect unknown. Publication checks are functional.",
+  "releaseValidation": "paused",
+  "physicalAccountPhoneComparison": "pending by operator choice",
+  "next": [
+    "Merge application PR preserving signed commits",
+    "Publish and verify this tested image",
+    "Prepare ol-infra image pin PR",
+    "After operator merges, reconcile and verify rollout/backup health and actual devices"
+  ],
+  "artifacts": [
+    {
+      "path": "README.md",
+      "bytes": 3055,
+      "sha256": "36ccf42c7e784426b8b8b9da97feeeef4513a8b0f4bf150fa67516f1eb889147"
+    },
+    {
+      "path": "browser-source-files.json",
+      "bytes": 1132,
+      "sha256": "9f7761e5d303f3d609bd93df66410619022b10ca16aabbb1bd2e228a8b9aeaeb"
+    },
+    {
+      "path": "build-metadata.json",
+      "bytes": 1826,
+      "sha256": "3fd6d7da4c71e24a11c186e8e1996eb0522ba46c00fc7fe8b53359fa100884cb"
+    },
+    {
+      "path": "container-build.log.gz",
+      "bytes": 5569,
+      "sha256": "1b987a82e82397bab4e2f2ebcd51a341b4776d42170cb2080c0c2d07cfbcecf3",
+      "uncompressedBytes": 17033,
+      "uncompressedSha256": "723fad9fa4f0540e945b4ded5bd79e559369f33a2fe0549162fb39816ec01fd9"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1124,
+      "sha256": "4684081ecc99373b08637ea617d5595896dbd562b7586684f82cbc4d0814b22d"
+    },
+    {
+      "path": "container-smoke.log.gz",
+      "bytes": 475,
+      "sha256": "327328bffb3bcbb3e9f6c450c71949abac755a52f437a3c70489a54b27fed521",
+      "uncompressedBytes": 743,
+      "uncompressedSha256": "f9b3b25abdbc6c1447217ae5d5e514b62abd9b277749ca24f20b77a70e286b95"
+    },
+    {
+      "path": "deep-receive.json",
+      "bytes": 672,
+      "sha256": "448254b85d04f21317c920e230fc12cc029e4e0d87eb9b7c8b0dd997a609fa51"
+    },
+    {
+      "path": "deep-receive.log.gz",
+      "bytes": 283,
+      "sha256": "b8d02f80d1bcd5adf32946c5bae32a87bf5aec9fcca149e33f383d2e50a9caa9",
+      "uncompressedBytes": 366,
+      "uncompressedSha256": "adc46b34c9ae032799d3f20d814feaab7ac771a3a23602edeadff92d67692b4f"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 309,
+      "sha256": "c4e7e6515c8b8eaed51512f4500535b8dd40360b365259e19adab46ca5e5deb7"
+    },
+    {
+      "path": "focused-unit.log.gz",
+      "bytes": 255,
+      "sha256": "838ed9eabee6ec0db0256d8e04b78acbafca661cb263b047e6d91779df41856f",
+      "uncompressedBytes": 324,
+      "uncompressedSha256": "91e372d5178d155c468a9c43e99ccbc6eb667050f584cda2f47d6a420b7155e0"
+    },
+    {
+      "path": "frontend-files.json",
+      "bytes": 6302,
+      "sha256": "5b70aabd1c3a04bcea792340c56ff89cde23181da4ba04446a1f12712b46773f"
+    },
+    {
+      "path": "image-identity.json",
+      "bytes": 214,
+      "sha256": "6d83341a1196d3503a8a17b6029a91d9bdb2452ce3b0d29b3105b47a31cbed26"
+    },
+    {
+      "path": "packaged-browser.json",
+      "bytes": 318,
+      "sha256": "bb3f804d801cc808994d791086aa575acbf43ad87774eaab65576f258ef29da3"
+    },
+    {
+      "path": "packaged-browser.log.gz",
+      "bytes": 370,
+      "sha256": "854be99a7c4150d0f9f2b06cfd43270b5ac2ee52f2d2b563bc0b0b98d4841b5c",
+      "uncompressedBytes": 534,
+      "uncompressedSha256": "54cbaed9b0152b52e3157d697654f8e7f7b09194271d8a210d796736fdec0b2e"
+    },
+    {
+      "path": "source.json",
+      "bytes": 217,
+      "sha256": "0c966059d7feafad01b8c6d759a2415aeafd7463cec50c597b52c88476aa7953"
+    }
+  ]
+}

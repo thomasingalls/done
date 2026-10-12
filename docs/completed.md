@@ -13741,3 +13741,30 @@ Correctness outcomes and mechanism counts remain recorded, while timing comparis
 an isolated effect. The earlier mixed-p95 conclusion is not upgraded to a performance win.
 Publication preparation will use the normal bounded packaged/container checks. The general release
 campaign stays paused and physical account performance stays pending.
+
+### Warm Account storage and foreground-sync publication prepared — 2026-10-13
+
+**Boundary.** Immediate final application and its qualified evidence committed **signed `f516a958`**,
+verified `G`. All fifteen source/design/evidence commits since application main `24481b82` are signed.
+The [publication handoff](./account-warm-sync-publication.md) collects warm ledger reuse, private
+ownership/selections, journalled input during flush/receive, unchanged-authority authentication,
+budgeted membership work, isolated status subscriptions and the immediate final-apply gate. The
+unsuccessful bulk custody experiment remains opt-in. No schema, stored receipt or wire format changes.
+
+**Checks.** A clean signed-source archive built immutable ARM64 image `done-public:f516a958`, index
+`sha256:5bb003b0a49cb61f0a2734beceabf86799d8f5dc841db9cdd391e93d5af58b1e`.
+Build/Yjs/TypeScript/origin checks and 137.1 kB initial JS budget pass; 349 focused unit tests pass
+(one existing skip). All 31 container runtime/gateway/backup/restore/maintenance tests and the
+non-root two-process restart smoke pass. The exact extracted frontend passes both packaged custody/
+text journeys and the retained 600-position journey: two-way edits, undo/redo, converged full exports
+and cold offline replay. [Evidence](./development-evidence/2026-10-13-warm-sync-publication/evidence.json)
+records hashes, commands, immutable image identity and sanitized outputs.
+
+**Limits/next.** Heavy VM use was reported after the recent measurements; its overlap/effect is unknown.
+Keep the timing qualifications, all earlier observations and the mixed input-p95 conclusion. The
+publication journey is a functional check, not a new comparative speedup claim. Physical account-phone
+performance remains pending and release qualification paused. Warm old-row reuse retains the accepted
+rolling-audit detection window; custody authority checks remain complete and fresh. Prepare the
+application PR for the operator's merge, then publish this exact tested image and prepare the ol-infra
+pin PR. No registry push, infrastructure change or deployment has occurred in this preparation.
+`docs/progress.md` remains untouched.
