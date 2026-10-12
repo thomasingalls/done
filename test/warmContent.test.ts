@@ -482,3 +482,169 @@ it('generated selective reads agree with full detached loads across appends, era
     { seed: 121027, numRuns: 20 },
   );
 });
+
+async function receiveFixture(count = 40, selective = true) {
+  const f = await fixture(count, selective);
+  f.crypt.allowSpoolCounter = true;
+  await f.owner.enableSpool(f.task);
+  await f.owner.load(f.task);
+  const append = async (beforeCommit: () => Promise<void>, checkCommit?: () => void) => {
+    const before = await f.owner.spoolWitness(f.task);
+    const evidence = new Uint8Array([5, 6]);
+    const { extendSpoolWitness } = await import('../src/crdt/spoolRecord');
+    const after = await extendSpoolWitness(before, evidence, crypto.subtle);
+    return f.owner.appendInbound(
+      f.task,
+      [
+        { kind: 'update', bytes: new Uint8Array([3, 4]) },
+        { kind: 'heads', bytes: evidence },
+      ],
+      { before, after, beforeCommit, ...(checkCommit ? { checkCommit } : {}) },
+    );
+  };
+  return { ...f, append };
+}
+
+it('owned reservation pre-commit loads keep verified rows warm, detached and unextended until commit', async () => {
+  const f = await receiveFixture();
+  const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+  const validate = vi.spyOn(f.crypt, 'validate');
+  let called = false;
+  await f.append(async () => {
+    called = true;
+    const rows = await f.owner.load(f.task);
+    expect(rows).toHaveLength(40);
+    rows[0]!.bytes.fill(77);
+    const answer = await f.owner.select(f.task, (lease) =>
+      f.verified.select(lease, (value) => value.rows[0]!.bytes),
+    );
+    expect(answer).toEqual(new Uint8Array([0, 0]));
+    answer.fill(88);
+    expect((await f.owner.load(f.task))[0]!.bytes).toEqual(new Uint8Array([0, 0]));
+    expect(read).not.toHaveBeenCalled();
+  });
+  expect(called).toBe(true);
+  expect(validate).toHaveBeenCalled();
+  const rows = await f.owner.load(f.task);
+  expect(rows).toHaveLength(42);
+  expect(rows.at(-2)!.bytes).toEqual(new Uint8Array([3, 4]));
+  expect(read).not.toHaveBeenCalled();
+  f.owner.invalidateWarm();
+  expect(await f.owner.load(f.task)).toEqual(rows);
+  expect(read).toHaveBeenCalled();
+});
+
+it('an owned reservation does not bypass shape, counter authentication or rolling audit checks', async () => {
+  for (const fault of ['shape', 'mac', 'audit'] as const) {
+    const f = await receiveFixture(8);
+    await expect(
+      f.append(async () => {
+        if (fault === 'shape') await f.mutate((s) => s.delete(4));
+        else if (fault === 'audit') await f.damage(4);
+        else
+          await new Promise<void>((resolve, reject) => {
+            const tx = f.db.transaction('meta', 'readwrite'),
+              s = tx.objectStore('meta'),
+              r = s.get('counter');
+            r.onsuccess = () => {
+              r.result.mac[0] ^= 1;
+              s.put(r.result, 'counter');
+            };
+            tx.oncomplete = () => resolve();
+            tx.onabort = () => reject(tx.error);
+          });
+        await f.owner.load(f.task);
+      }),
+    ).rejects.toThrow();
+  }
+});
+
+it('resume and an unknown counter transition still force full reads inside a reservation', async () => {
+  for (const change of ['resume', 'other-owner'] as const) {
+    const f = await receiveFixture();
+    const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+    await f.append(async () => {
+      if (change === 'resume') f.owner.invalidateWarm();
+      else {
+        const crypt = { ...f.crypt };
+        delete crypt.selectiveLoads;
+        const other = createContentOwner(f.scope, 1, crypt);
+        cleanups.push(() => other.dispose());
+        await other.initialize(f.task);
+        await other.append(f.task, [{ kind: 'update', bytes: new Uint8Array([9]) }]);
+      }
+      read.mockClear();
+      await f.owner.load(f.task);
+      expect(read).toHaveBeenCalled();
+    });
+    expect(await f.owner.load(f.task)).toHaveLength(change === 'resume' ? 42 : 43);
+    read.mockRestore();
+  }
+});
+
+it('reservation abort never advances reuse; record abort clears a pre-commit warm view', async () => {
+  for (const boundary of ['reservation', 'records'] as const) {
+    const f = await receiveFixture();
+    let visited = false;
+    const original = IDBObjectStore.prototype.put;
+    const put = vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementation(function (
+      this: IDBObjectStore,
+      ...args
+    ) {
+      const r = original.apply(this, args);
+      if (boundary === 'reservation' && this.name === 'meta') this.transaction.abort();
+      return r;
+    });
+    await expect(
+      f.append(
+        async () => {
+          visited = true;
+          expect(await f.owner.load(f.task)).toHaveLength(40);
+        },
+        () => {
+          if (boundary === 'records') throw Error('commit fault');
+        },
+      ),
+    ).rejects.toThrow();
+    put.mockRestore();
+    expect(visited).toBe(boundary === 'records');
+    const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+    expect(await f.owner.load(f.task)).toHaveLength(40);
+    expect(read).toHaveBeenCalled();
+    read.mockRestore();
+    const next = await f.append(async () => {});
+    expect(next.sequences).toEqual(boundary === 'reservation' ? [41, 42] : [43, 44]);
+  }
+});
+
+it('generated reservation/abort/erasure histories agree with full cold reads', async () => {
+  await fc.assert(
+    fc.asyncProperty(fc.array(fc.boolean(), { minLength: 1, maxLength: 8 }), async (failures) => {
+      const f = await receiveFixture(3);
+      let count = 3;
+      for (const fail of failures) {
+        const pending = f.append(
+          async () => {
+            const rows = await f.owner.load(f.task);
+            expect(rows).toHaveLength(count);
+            for (const r of rows) r.bytes.fill(0);
+          },
+          () => {
+            if (fail) throw Error('generated fault');
+          },
+        );
+        if (fail) await expect(pending).rejects.toThrow('generated fault');
+        else {
+          await pending;
+          count += 2;
+        }
+        const warm = await f.owner.load(f.task);
+        expect(warm).toHaveLength(count);
+        f.owner.invalidateWarm();
+        expect(await f.owner.load(f.task)).toEqual(warm);
+      }
+      for (const cleanup of cleanups.splice(0)) cleanup();
+    }),
+    { seed: 20261012, numRuns: 20 },
+  );
+});

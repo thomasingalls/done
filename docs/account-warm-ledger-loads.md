@@ -30,13 +30,22 @@ storage tasks. Only those composed owners request warm loads; `reuseOpened` alon
 Each acquisition performs a complete physical read and full Account verification before use.
 
 A successful warm load reads the authenticated counter and, in the same IndexedDB transaction,
-each store's count and first/last key. Unknown metadata refuses. A changed counter forces the
+each store's count and first/last key. Unknown metadata refuses. An unexpected counter change forces the
 existing full read/verification; unchanged counter plus changed shape refuses. Counts are native
 key operations, not a constant-time complexity claim. They do not prove the middle rows match.
 
 Only this owner's completed `compareAndWrite` can extend the retained ciphertext/plaintext arrays.
 The verified predecessor must match either the committed counter or the exact before/reserved
-counter pair of this attempt. A reserved sequence is never classified as a committed row. A failed
+counter pair of this attempt. After this owner's exact reservation transaction completes, its
+retained counter may advance from that verified predecessor without changing the rows or semantic
+identity. Pre-commit sync loads still authenticate the counter, check the shape, audit old rows
+and validate semantic evidence. They no longer reread all history merely because this owner
+reserved sequences. This does not clear a resume/full-read invalidation, reset the audit cursor,
+or accept an unknown transition. See the [owned-reservation repair](performance-experiments/2026-10-12-owned-reservations/README.md).
+Removing that incidental full read means an old same-shape ciphertext change can now wait for
+its rolling audit even across a reservation, within the already accepted warm-owner window.
+The load uses only prior verified memory until then; it does not read and trust that changed row.
+A reserved sequence is never classified as a committed row. A failed
 reservation/seal/commit clears reuse, and uncertain predecessor state takes the full path. All
 new semantic Account evidence is validated before a later load returns it. Returned records stay
 detached: caller erasure cannot damage retained plaintext. No naked borrowed buffers escape.
@@ -67,7 +76,8 @@ drains active native work and clears buffers. There is no worker or background k
 
 ## Remaining work
 
-Downstream `createVerifiedRecords` still copies and compares detached histories and clones semantic
-state. This repair does not make all warm work independent of ledger length. Further ownership
-reuse needs its own lifetime/aliasing checks; physical local retention needs the separate
+Private Account selections and owned verification now avoid copying whole histories for small
+answers, but `createVerifiedRecords` still byte-compares its detached history, and ordinary full
+loads retain caller-owned copies. Custody authentication is also unchanged. Warm work is not all
+independent of ledger length. Further reuse needs its own lifetime/aliasing checks; physical local retention needs the separate
 [authenticated-baseline design](account-local-retention-design.md).

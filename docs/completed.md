@@ -13371,3 +13371,42 @@ caller isolation, audits and foreground ordering. This is a proposed sequence, n
 or implementation. The 16 ms p95 budget remains unmet; real-phone and same-text concurrent editing
 are not measured. These records accompany the measurement commit; local retention remains design-only and
 `docs/progress.md` is unchanged.
+
+## 2026-10-12 — Keep verified sync loads warm through owned reservations
+
+**Boundary.** The preceding online/Goals measurements are committed signed as **`008b2fa9`**.
+This bounded [owned-reservation repair](./performance-experiments/2026-10-12-owned-reservations/README.md)
+changes only `contentStore` at runtime. After its exact reservation transaction completes, the
+exclusive warm owner advances its retained counter without adding rows or changing semantic identity.
+Pre-commit sync loads retain counter authentication, count/end-key checks, rolling audit and semantic
+validation. Caller results remain detached; unknown transitions and resume/reacquisition force full
+reads. Failure clears reuse. No wire, stored format, nonce accounting or admission-order change.
+The earlier incidental full read disappears within the already accepted old-row audit window.
+
+**Checks.** The directed before/after control reproduces three full-store reads on the reference
+and none after repair. Six unit files pass **46 tests**, including 20 small generated reservation /
+abort / erasure histories; four native owner checks pass, including reference-audit refusal,
+serialized readers, compaction and cold continuation. TypeScript, pinned Yjs, ordinary production
+build, JS budget (136.7 kB gzip / 350 kB) and origin isolation pass. Twelve unprofiled paired sessions
+and two separate profiles all preserve text, last-key undo/redo, peer writing, export convergence
+and cold offline replay. The initial missing-metrics setup and test-scaffolding error are retained
+separately; no failed timing run is discarded.
+
+**Measured result.** At CPU-4x / 75 ms request delay / 120 keys, every candidate typing load stays
+warm: full-load plaintext drops to **zero** from 79–122 MB in settled online cases. Active-peer frame
+p95 improves **505–523 → 403–408 ms**. Silent-peer p95 is **21–27 → 22–24 ms**, while background long
+tasks remain. Backlog p95 is mixed: **352–399 → 334–367 ms**; each candidate still has 12/120 keys above
+100 ms. Backlog remains pending during typing, with sending progressing too. Receive status is an
+aggregate and initializes on first online work; its 0→28 value is not 28 new peer positions.
+Candidate long tasks remain **108–182 ms**, and detached record copies remain substantial.
+
+**Next.** Separate profiles identify custody payload encoding (3.71 s active-peer / 4.86 s backlog)
+and ledger byte comparisons (3.45 / 1.02 s) across their typing windows. Proceed to the planned
+unchanged-authority reuse slice with explicit lifetime/invalidation rules. The prospective escalation
+rule is recorded: after those two slices, online/backlog p95 above 50 ms or backlog >5% of keys above
+100 ms triggers prepared remote handoff instead of a third general shrinking pass. The
+[handoff design](./account-prepared-remote-handoff-design.md) accepts the committed-undisplayed-suffix
+argument while preserving final-apply ordering, local refusal, undo, durability and fenced authority
+transitions. Residual splittable receive CPU work needs budgeted yielding. Handoff and local retention
+remain design-only. Nothing is published; release validation stays paused and `docs/progress.md`
+remains unchanged.

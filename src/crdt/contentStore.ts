@@ -434,6 +434,19 @@ export const createContentOwner = (
         next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
         if (await compareAndWrite(task, before, next)) {
           reserved = next;
+          // Reservation changes authenticated metadata, not the committed rows. Retain
+          // only an exact owned predecessor so pre-commit loads can still authenticate
+          // the counter, check shape and audit without rereading all old rows. Never
+          // advance the semantic identity or clear a pending full-read invalidation.
+          if (
+            crypt.warmLoads &&
+            warm &&
+            openedView &&
+            equalCounter(scope, openedView.counter, before)
+          )
+            task.step(() => {
+              openedView!.counter = structuredClone(reserved);
+            });
           break;
         }
       }
