@@ -59,7 +59,7 @@ const remote = (
 const fixture = async (
   prepare: PrepareIntent = append,
   recovery?: JournalRecovery,
-  options: Pick<AdmissionOptions, 'flushBatch'> = {},
+  options: Pick<AdmissionOptions, 'flushBatch' | 'backgroundFlush'> = {},
 ) => {
   const abort = new AbortController(),
     disk: Bytes[] = [],
@@ -695,56 +695,59 @@ describe('automatic owned content maintenance', () => {
   );
 });
 
-it('generated flush/idle schedules preserve every admitted input and bound maintenance attempts', async () => {
-  vi.useFakeTimers();
-  try {
-    await fc.assert(
-      fc.asyncProperty(
-        fc.array(
-          fc.record({
-            count: fc.integer({ min: 1, max: 70 }),
-            idle: fc.integer({ min: 0, max: 1100 }),
-            flush: fc.boolean(),
-          }),
-          { minLength: 1, maxLength: 5 },
-        ),
-        async (groups) => {
-          const f = await fixture();
-          const compact = vi.fn(async () => ({
-            status: 'compacted' as const,
-            removed: [],
-            storeId: 'store',
-            generation: 1,
-            stateSequence: 129,
-          }));
-          f.carrier.compactContent = compact as JournalSession['compactContent'];
-          let count = 0;
-          try {
-            for (const group of groups) {
-              for (let i = 0; i < group.count; i++) {
-                await f.owner.submit(intent('x')).accepted;
-                count++;
+it.each([false, true])(
+  'generated flush/idle schedules preserve every admitted input and bound maintenance attempts, background %s',
+  async (background) => {
+    vi.useFakeTimers();
+    try {
+      await fc.assert(
+        fc.asyncProperty(
+          fc.array(
+            fc.record({
+              count: fc.integer({ min: 1, max: 70 }),
+              idle: fc.integer({ min: 0, max: 1100 }),
+              flush: fc.boolean(),
+            }),
+            { minLength: 1, maxLength: 5 },
+          ),
+          async (groups) => {
+            const f = await fixture(append, undefined, background ? { backgroundFlush: true } : {});
+            const compact = vi.fn(async () => ({
+              status: 'compacted' as const,
+              removed: [],
+              storeId: 'store',
+              generation: 1,
+              stateSequence: 129,
+            }));
+            f.carrier.compactContent = compact as JournalSession['compactContent'];
+            let count = 0;
+            try {
+              for (const group of groups) {
+                for (let i = 0; i < group.count; i++) {
+                  await f.owner.submit(intent('x')).accepted;
+                  count++;
+                }
+                if (group.flush) await f.owner.whenDurable();
+                await vi.advanceTimersByTimeAsync(group.idle);
+                expect(view(f.owner.snapshot())).toBe('x'.repeat(count));
+                expect(compact.mock.calls.length).toBeLessThanOrEqual(Math.floor(count / 128));
               }
-              if (group.flush) await f.owner.whenDurable();
-              await vi.advanceTimersByTimeAsync(group.idle);
-              expect(view(f.owner.snapshot())).toBe('x'.repeat(count));
-              expect(compact.mock.calls.length).toBeLessThanOrEqual(Math.floor(count / 128));
+              await f.owner.whenDurable();
+              await vi.advanceTimersByTimeAsync(1000);
+              if (count >= 128) expect(compact).toHaveBeenCalled();
+              expect(f.owner.status.state).toBe('active');
+            } finally {
+              await f.owner.close();
             }
-            await f.owner.whenDurable();
-            await vi.advanceTimersByTimeAsync(1000);
-            if (count >= 128) expect(compact).toHaveBeenCalled();
-            expect(f.owner.status.state).toBe('active');
-          } finally {
-            await f.owner.close();
-          }
-        },
-      ),
-      { seed: 120916, numRuns: 24 },
-    );
-  } finally {
-    vi.useRealTimers();
-  }
-});
+          },
+        ),
+        { seed: 120916, numRuns: 24 },
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  },
+);
 
 it('80 generated preparation traces preserve the accepted basis through retry discard and remote delivery', async () => {
   await fc.assert(
@@ -925,6 +928,202 @@ it('locking before a batched flush retains the journal for cold recovery and can
       await restored.owner.close();
     }
   } finally {
+    await f.owner.close();
+    vi.useRealTimers();
+  }
+});
+
+it.each([false, true])(
+  'timed flush overlap %s preserves immediate journal admission and its suffix',
+  async (background) => {
+    vi.useFakeTimers();
+    const f = await fixture(append, undefined, background ? { backgroundFlush: true } : {});
+    const gate = f.gateFlush();
+    try {
+      await f.owner.submit(intent('A')).accepted;
+      await vi.advanceTimersByTimeAsync(250);
+      const b = f.owner.submit(intent('B'));
+      expect(view(f.owner.snapshot())).toBe(background ? 'AB' : 'A');
+      expect(f.wal.length).toBe(background ? 2 : 1);
+      expect(f.owner.status.durable).toBe(false);
+      gate.resolve();
+      await vi.advanceTimersByTimeAsync(0);
+      await b.accepted;
+      expect(f.disk).toHaveLength(1);
+      expect(f.wal).toHaveLength(1);
+      expect(f.owner.status.durable).toBe(false);
+      await f.owner.whenDurable();
+      expect(f.disk).toHaveLength(2);
+      expect(f.wal).toHaveLength(0);
+      expect(f.owner.status.durable).toBe(true);
+    } finally {
+      gate.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  },
+);
+
+it.each(['barrier', 'remote'] as const)(
+  'a %s behind a timed flush fences later local inputs',
+  async (kind) => {
+    vi.useFakeTimers();
+    const prepared: string[] = [];
+    const f = await fixture(
+      (d, i) => {
+        prepared.push(text(i));
+        append(d, i, 16384);
+      },
+      undefined,
+      { backgroundFlush: true },
+    );
+    const gate = f.gateFlush();
+    try {
+      await f.owner.submit(intent('A')).accepted;
+      await vi.advanceTimersByTimeAsync(250);
+      await f.owner.submit(intent('B')).accepted;
+      const fence =
+        kind === 'barrier'
+          ? f.owner.whenDurable()
+          : f.owner.receive(remote(f.owner.snapshot())).accepted;
+      const c = f.owner.submit(intent('C'));
+      expect(prepared).toEqual(['A', 'B']);
+      expect(view(f.owner.snapshot())).toBe('AB');
+      gate.resolve();
+      await Promise.all([fence, c.accepted]);
+      expect(view(f.owner.snapshot())).toBe(kind === 'barrier' ? 'ABC' : 'RABC');
+      expect(f.calls.indexOf('flush-complete')).toBeLessThan(f.calls.lastIndexOf('journal'));
+    } finally {
+      gate.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  },
+);
+
+it.each([false, true])(
+  'journal refusal behind a timed flush waits for storage; failure %s retains the suffix',
+  async (fail) => {
+    vi.useFakeTimers();
+    const f = await fixture(append, undefined, { backgroundFlush: true });
+    const gate = f.gateFlush(),
+      content = f.gateContent();
+    try {
+      await f.owner.submit(intent('A')).accepted;
+      await vi.advanceTimersByTimeAsync(250);
+      await f.owner.submit(intent('B')).accepted;
+      f.refuse();
+      const c = f.owner.submit(intent('C'));
+      f.allow();
+      const d = f.owner.submit(intent('D'));
+      expect(view(f.owner.snapshot())).toBe('AB');
+      expect(f.calls).not.toContain('content-start');
+      if (fail) f.failFlush();
+      gate.resolve();
+      await vi.advanceTimersByTimeAsync(0);
+      if (fail) {
+        expect(f.owner.status.state).toBe('blocked');
+        expect(f.wal).toHaveLength(2);
+        expect(f.calls).not.toContain('content-start');
+        f.owner.retry();
+        await vi.advanceTimersByTimeAsync(0);
+      }
+      expect(f.calls).toContain('content-start');
+      expect(view(f.owner.snapshot())).toBe('AB');
+      content.resolve();
+      await Promise.all([c.accepted, d.accepted]);
+      expect(view(f.owner.snapshot())).toBe('ABCD');
+      expect(f.wal).toHaveLength(1);
+      await f.owner.whenDurable();
+      expect(f.disk).toHaveLength(4);
+    } finally {
+      gate.resolve();
+      content.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  },
+);
+
+it('a failed background flush blocks pending barriers and retains acknowledged journal inputs for recovery', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, { backgroundFlush: true });
+  const gate = f.gateFlush();
+  try {
+    await f.owner.submit(intent('A')).accepted;
+    await vi.advanceTimersByTimeAsync(250);
+    await f.owner.submit(intent('B')).accepted;
+    const refusal = expect(f.owner.whenDurable()).rejects.toThrow('flush failure');
+    f.failFlush();
+    gate.resolve();
+    await vi.advanceTimersByTimeAsync(0);
+    await refusal;
+    expect(f.owner.status.state).toBe('blocked');
+    expect(f.wal).toHaveLength(2);
+    expect(view(f.owner.snapshot())).toBe('AB');
+    const recovered = await fixture(append, await f.carrier.loadRecovery());
+    expect(view(recovered.owner.snapshot())).toBe('AB');
+    await recovered.owner.close();
+    f.owner.retry();
+    await f.owner.whenDurable();
+    expect(f.owner.status.durable).toBe(true);
+  } finally {
+    gate.resolve();
+    await f.owner.close();
+    vi.useRealTimers();
+  }
+});
+
+it('a background flush preserves the next batch deadline without overlapping copies', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, {
+    backgroundFlush: true,
+    flushBatch: { quietMs: 300, maxMs: 1000 },
+  });
+  const gate = f.gateFlush();
+  try {
+    await f.owner.submit(intent('A')).accepted;
+    await vi.advanceTimersByTimeAsync(300);
+    await f.owner.submit(intent('B')).accepted;
+    await vi.advanceTimersByTimeAsync(100);
+    gate.resolve();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(1);
+    await vi.advanceTimersByTimeAsync(199);
+    expect(f.wal).toHaveLength(1);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(2);
+    expect(f.owner.status.durable).toBe(true);
+  } finally {
+    gate.resolve();
+    await f.owner.close();
+    vi.useRealTimers();
+  }
+});
+
+it('close drains the background copy and retains its newer journal suffix without late publication', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, { backgroundFlush: true });
+  const gate = f.gateFlush();
+  try {
+    await f.owner.submit(intent('A')).accepted;
+    await vi.advanceTimersByTimeAsync(250);
+    await f.owner.submit(intent('B')).accepted;
+    let closed = false;
+    const closing = f.owner.close().then(() => {
+      closed = true;
+    });
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(closed).toBe(false);
+    expect(f.owner.status.state).toBe('closing');
+    gate.resolve();
+    await closing;
+    expect(f.wal).toHaveLength(1);
+    const recovered = await fixture(append, await f.carrier.loadRecovery());
+    expect(view(recovered.owner.snapshot())).toBe('AB');
+    await recovered.owner.close();
+  } finally {
+    gate.resolve();
     await f.owner.close();
     vi.useRealTimers();
   }

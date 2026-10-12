@@ -1,5 +1,9 @@
 # Ordered admission — implementation phase five
 
+**Current Account scheduling addendum:** [timed journal copies](./account-background-journal-flush.md)
+can overlap synchronous journal admission without changing foreground FIFO or explicit barriers.
+The timer description below records the original/general Local behavior.
+
 **Scope:** the FIFO owner over generation-1 [journal](./journal-store.md) and [content](./content-store.md)
 carriers, with mandatory-factor custody and a private canonical Yjs document. This implements the
 SC-01/02 admission boundary in isolation. The existing application still uses its earlier store; the

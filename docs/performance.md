@@ -1859,3 +1859,32 @@ Selections are the incremental v9 Account default after focused correctness chec
 copies. The private lease expires synchronously and selected results stay isolated from retained
 state. No stored-format change, publication or phone evidence. Async-flush queueing, full-record
 consumers and history-dependent verification/container work remain. Release validation is paused.
+
+## 2026-10-12 — Remove journal-flush waits from ordinary Account typing
+
+Storage selection is signed as **`7b088f80`**. The next
+[packet](./performance-experiments/2026-10-12-journal-flush-admission/README.md) profiles the
+remaining queue wait: three inputs wait 35.6–65.1 ms, wholly within timed flushes, contributing
+161.8 of 163.7 ms of admission waiting. These are elapsed spans, not synchronous CPU.
+
+The candidate runs timed Account snapshot copies separately from synchronous journal admission.
+Every input still journals before application. Foreground FIFO, explicit durability/remote
+barriers, forced content acknowledgement, exact snapshot cleanup and guarded close remain.
+The next batch's revision/deadline survives completion of an older copy. No format/audit change.
+
+Three fresh CPU-4x pairs (120 cards, 600+ received positions, 120 offline keys, single undo history)
+reduce aggregate local queue wait **630.9→7.9 ms (98.7%)**, worst key-to-visible frame
+**100.2→40.3 ms**, and median session frame p95 **22.6→20.3 ms**. Handler median stays near
+unchanged (**5.7→5.6 ms**). Frame medians remain near one display frame; pair two worsens
+16.0→16.5 ms. Both arms have zero >=50 ms tasks. All sessions retain nine dirty flushes,
+nine warm selective loads and 126 audited rows / 781,609 ciphertext bytes. Source boundaries
+vary slightly; record copies remain 28.8–29.7 KB. Do not describe elapsed flush/wait spans
+as additive CPU savings.
+
+Every comparison passes undo/redo and cold replay. Controlled queue tests and native renderer
+crashes cover admission during the copy; packaged two-device delivery/undo/offline recovery passes.
+The background path is now the local default, with `VITE_ACCOUNT_BACKGROUND_FLUSH=0` restoring
+timed FIFO barriers. This slice is uncommitted/unpublished. The **16 ms p95 budget is not met**;
+explicit barriers and receives can still delay typing. Online latency and physical-phone gains
+are unmeasured. History-dependent verification/containers and local retention remain. Release
+validation stays paused.

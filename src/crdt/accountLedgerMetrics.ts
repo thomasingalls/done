@@ -57,6 +57,7 @@ type WorkTiming =
   | 'admissionLocal'
   | 'admissionRemote'
   | 'admissionFlush'
+  | 'admissionBackgroundFlush'
   | 'waitLocal'
   | 'waitRemote'
   | 'waitFlush';

@@ -978,3 +978,64 @@ test(
     await close(f.page);
   },
 );
+
+for (const boundary of ['before-commit', 'after-commit']) {
+  for (const die of [false, true]) {
+    test(
+      `timed Account flush ${boundary}, crash ${die}: later journal admission survives exact cleanup`,
+      { timeout: 60000, skip: process.env.ACCOUNT_BACKGROUND_FLUSH === '0' },
+      async (t) => {
+        const { syncBundle } = await import('./fixtures.mjs');
+        const f = await native(t),
+          item = await selected(f, 'background-journal');
+        await f.page.evaluate(await syncBundle('flush-copy-boundary'));
+        await f.page.evaluate(async (item) => {
+          window.opened = await Harness.openOwnedReceivingAccountWorkspace(optionsFor(item));
+          window.editor = opened.workspace;
+          window.surface = editor.text({ kind: 'master' });
+        }, args(item));
+        const initial = await view(f.page);
+        const original = await captures(f.page);
+        await f.page.evaluate((boundary) => {
+          window.copyPaused = false;
+          window.flushCopyProbe = async (stage) => {
+            if (stage !== boundary || window.copyPaused) return;
+            window.copyPaused = true;
+            await new Promise((resolve) => {
+              window.resumeCopy = resolve;
+            });
+          };
+        }, boundary);
+        await edit(f.page, initial.length, 0, ' FIRST');
+        await waitPredicate(f.page, () => window.copyPaused);
+        // This must complete while persistence is deliberately stalled, with actual custody,
+        // source capsule capture and synchronous encrypted localStorage journal writes.
+        await edit(f.page, initial.length + 6, 0, ' SECOND');
+        assert.equal(await view(f.page), initial + ' FIRST SECOND');
+        const before = await f.page.evaluate(() => editor.status);
+        assert.equal(before.durable, false);
+        if (die) {
+          await crash(f);
+          await cold(f);
+          await f.page.evaluate(async (item) => {
+            window.opened = await Harness.openOwnedReceivingAccountWorkspace(optionsFor(item));
+            window.editor = opened.workspace;
+            window.surface = editor.text({ kind: 'master' });
+          }, args(item));
+        } else {
+          await f.page.evaluate(() => window.resumeCopy());
+        }
+        await f.page.evaluate(() => editor.whenDurable());
+        assert.equal(await view(f.page), initial + ' FIRST SECOND');
+        const after = await captures(f.page);
+        assert.equal(
+          after.length,
+          original.length + 2,
+          'no lost or duplicate capsule after replay/cleanup',
+        );
+        assert.equal(new Set(after.map((c) => c.id)).size, after.length);
+        await close(f.page);
+      },
+    );
+  }
+}

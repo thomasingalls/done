@@ -2114,6 +2114,9 @@ async function openReceivingWorkspace(
           {
             ...config,
             ...(batching.localFlush ? { flushBatch: batching.localFlush } : {}),
+            ...(import.meta.env?.['VITE_ACCOUNT_BACKGROUND_FLUSH'] !== '0'
+              ? { backgroundFlush: true as const }
+              : {}),
             ...(batching.publication ? { publishReceivePage: true } : {}),
           },
           (receive) => {

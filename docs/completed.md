@@ -13304,3 +13304,36 @@ but this slice is uncommitted/unpublished. Input queueing behind async flushes, 
 consumers, semantic/container history growth and physical-phone evidence remain. The
 [selection contract](./account-storage-selection.md) records isolation and scope. Local retention
 remains design-only. Release validation stays paused and `docs/progress.md` is unchanged.
+
+## 2026-10-12 — Timed Account flushes no longer fence ordinary journal admission
+
+**Request/boundary.** The storage-selection repair is signed as **`7b088f80`**. The next
+slice profiles and removes input queue waits behind asynchronous timed journal copies, preserving
+journal-before-apply, undo, explicit durability barriers and recovery. Local retention stays
+design-only and release validation remains paused.
+
+**Implementation.** Account timer flushes own a separate tracked flight; only synchronous journal
+admission overlaps it. Foreground jobs remain FIFO. Remote receipt handoffs, explicit barriers and
+journal-refused forced writes wait for the copy; later inputs remain behind them. Revision/byte
+accounting preserves newer journal entries and their next batch deadline. Failure blocks/retries
+normally and close drains both flights. Generic Local timer behavior and all stored formats stay
+unchanged. `VITE_ACCOUNT_BACKGROUND_FLUSH=0` retains the reference barrier path.
+
+**Evidence.** [The packet](./performance-experiments/2026-10-12-journal-flush-admission/README.md)
+first captures 161.8 of 163.7 ms of meaningful baseline input waiting inside flush spans. Three
+serial matched CPU-4x pairs then reduce total local queue wait **630.9→7.9 ms (98.7%)** on the
+120-card/600+ received-position fixture. Worst visible frame falls **100.2→40.3 ms**, median
+session frame p95 **22.6→20.3 ms**, handler median **5.7→5.6 ms**. Nine flushes and the same
+126 physical-audit rows remain in every run. No >=50 ms task occurs in either comparison arm;
+this is elapsed-wait removal, not elimination of storage CPU. Every run passes full undo/redo
+and cold replay.
+
+**Checks/status.** 264 focused unit tests pass (one existing skip), including 24 generated
+flush/idle histories in each mode. Four native gates prove concurrent journal suffix recovery
+before commit and after commit/before cleanup, with and without renderer death. The final default
+passes those four plus the existing own-submit/compaction/replay check, and the packaged two-device
+text/undo/offline-recovery journey. Production build, TypeScript, pinned Yjs, JS budget and origin
+isolation pass. The repair is enabled locally, uncommitted and unpublished. Explicit durability
+and receive jobs still fence input, the 16 ms p95 budget remains unmet, and current-path phone
+and online performance are unmeasured. [Contract](./account-background-journal-flush.md).
+`docs/progress.md` remains unchanged.

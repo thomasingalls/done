@@ -62,6 +62,8 @@ export class AdmissionError extends Error {
 export interface AdmissionOptions {
   /** Internal Account flush policy. Journal acknowledgment and forced barriers are unchanged. */
   readonly flushBatch?: BatchTiming;
+  /** Private Account composition: timed snapshot copies may overlap synchronous journal admission. */
+  readonly backgroundFlush?: true;
   /** Private owned receives retain/apply frames in order, then publish the verified page once. */
   readonly publishReceivePage?: boolean;
   readonly [accountTextPreparation]?: AccountTextPreparation;
@@ -205,6 +207,8 @@ export const createAdmissionOwner = async (
     journalDirty = false,
     busy = false;
   let timer: ReturnType<typeof setTimeout> | undefined, inFlight: Promise<void> | undefined;
+  let backgroundFlush: Promise<void> | undefined;
+  let journalRevision = 0;
   let closing: Promise<void> | undefined;
   let maintenanceTimer: ReturnType<typeof setTimeout> | undefined;
   let maintenanceStop: AbortController | undefined;
@@ -229,7 +233,7 @@ export const createAdmissionOwner = async (
   };
   try {
     carrier.beforeRelease?.(async () => {
-      await inFlight;
+      await Promise.all([inFlight, backgroundFlush]);
       await preparation?.close();
       dispose();
     });
@@ -262,7 +266,12 @@ export const createAdmissionOwner = async (
         0,
       ),
       reservedBytes: queue.reduce((n, j) => n + (j.kind === 'flush' ? 0 : j.reservation), 0),
-      durable: state === 'active' && !queue.length && !journalDirty && pressure === null,
+      durable:
+        state === 'active' &&
+        !queue.length &&
+        !journalDirty &&
+        !backgroundFlush &&
+        pressure === null,
       pressure,
       ...(maintenance ? { maintenance } : {}),
     });
@@ -320,15 +329,17 @@ export const createAdmissionOwner = async (
     queue.length = 0;
     notify();
     const stopped = carrier.close();
-    void Promise.allSettled([inFlight, stopped, preparationStopped]).then((results) => {
-      dispose();
-      const failure = results.find((r) => r.status === 'rejected');
-      state = failure ? 'failed' : 'closed';
-      notify();
-      statusListeners.clear();
-      if (failure?.status === 'rejected') done.reject(failure.reason);
-      else done.resolve();
-    });
+    void Promise.allSettled([inFlight, backgroundFlush, stopped, preparationStopped]).then(
+      (results) => {
+        dispose();
+        const failure = results.find((r) => r.status === 'rejected');
+        state = failure ? 'failed' : 'closed';
+        notify();
+        statusListeners.clear();
+        if (failure?.status === 'rejected') done.reject(failure.reason);
+        else done.resolve();
+      },
+    );
     return closing;
   };
   const cancelled = () => {
@@ -479,8 +490,13 @@ export const createAdmissionOwner = async (
     pressure = null;
     notify();
   };
-  const flush = async () => {
+  const flush = async (background = false) => {
     live();
+    const startedRevision = journalRevision,
+      startedBytes = journalBytes;
+    // New journal admissions own the next window even if this snapshot is captured later
+    // on the serialized storage tail. A redundant follow-up flush is safe; lost suffixes aren't.
+    if (background) flushBatch?.clear();
     countLedgerWork('journalFlushes');
     if (journalDirty) countLedgerWork('dirtyJournalFlushes');
     const receipt = await carrier.flushJournal();
@@ -494,12 +510,18 @@ export const createAdmissionOwner = async (
         'Content committed, but journal cleanup still needs retry.',
       );
     }
-    changedContent(receipt.removed ?? 0, journalBytes);
-    journalBytes = 0;
-    journalDirty = false;
-    flushBatch?.clear();
+    changedContent(receipt.removed ?? 0, startedBytes);
+    journalBytes -= startedBytes;
+    journalDirty = journalRevision !== startedRevision;
+    if (!journalDirty) flushBatch?.clear();
   };
   const forceLocal = async (job: InputJob) => {
+    if (backgroundFlush) {
+      await backgroundFlush;
+      // A failed background copy blocks the queue; it cannot authorize a forced write.
+      if (state !== 'active')
+        throw new AdmissionError('storage-failed', 'Journal flush did not complete.');
+    }
     await flush();
     live();
     const lease = job.preparation ? preparation!.borrow(job.preparation) : undefined;
@@ -705,6 +727,7 @@ export const createAdmissionOwner = async (
     }
     if (attempt.status === 'journalled') {
       journalDirty = true;
+      journalRevision++;
       flushBatch?.note();
       journalBytes += (job.prepared.carrierBytes ?? job.prepared.update).length;
       promote(job, job.prepared.update);
@@ -723,6 +746,7 @@ export const createAdmissionOwner = async (
       !carrier.compactContent ||
       state !== 'active' ||
       busy ||
+      backgroundFlush ||
       queue.length ||
       journalDirty
     )
@@ -731,7 +755,7 @@ export const createAdmissionOwner = async (
       return;
     maintenanceTimer = setTimeout(() => {
       maintenanceTimer = undefined;
-      if (state !== 'active' || busy || queue.length || journalDirty) return;
+      if (state !== 'active' || busy || backgroundFlush || queue.length || journalDirty) return;
       // Preserve FIFO and native settlement. Foreground work interrupts this discretionary
       // flight at its next safe boundary; it never overtakes an active storage transaction.
       const stop = new AbortController();
@@ -778,6 +802,7 @@ export const createAdmissionOwner = async (
   const schedule = () => {
     scheduleMaintenance();
     if (state !== 'active' || !journalDirty) return;
+    if (options.backgroundFlush && (busy || backgroundFlush || queue.length)) return;
     if (timer !== undefined) {
       if (!flushBatch) return;
       clearTimeout(timer);
@@ -785,7 +810,24 @@ export const createAdmissionOwner = async (
     timer = setTimeout(
       () => {
         timer = undefined;
-        if (state === 'active') void barrier().catch(() => {});
+        if (state !== 'active') return;
+        if (!options.backgroundFlush) {
+          void barrier().catch(() => {});
+          return;
+        }
+        if (busy || backgroundFlush || queue.length) return;
+        const started = ledgerWorkStart();
+        // Register before calling the carrier; close must drain this flight too. No canonical
+        // mutation happens here. Foreground jobs keep their FIFO; only journal writes overlap.
+        backgroundFlush = Promise.resolve()
+          .then(() => flush(true))
+          .catch(block)
+          .finally(() => {
+            measureLedgerWork('admissionBackgroundFlush', started);
+            backgroundFlush = undefined;
+            notify();
+            pump();
+          });
       },
       flushBatch ? Math.max(0, flushBatch.due! - performance.now()) : FLUSH_DELAY_MS,
     );
@@ -827,6 +869,8 @@ export const createAdmissionOwner = async (
     busy = true;
     try {
       while (queue.length && state === 'active') {
+        // A remote handoff or explicit barrier fences later inputs while the snapshot settles.
+        if (backgroundFlush && queue[0]!.kind !== 'local') break;
         const result = processMeasured(queue[0]!);
         if (result) {
           inFlight = result.then(undefined, block).finally(() => {
@@ -842,7 +886,7 @@ export const createAdmissionOwner = async (
       block(error);
     }
     busy = false;
-    if (state === 'active' && queue.length) queueMicrotask(pump);
+    if (state === 'active' && queue.length && !backgroundFlush) queueMicrotask(pump);
     schedule();
   };
   const enqueue = (
@@ -984,7 +1028,7 @@ export const createAdmissionOwner = async (
           'repair-required',
           'Pending discard cannot repair persisted carriers.',
         );
-      if (state !== 'blocked' || busy)
+      if (state !== 'blocked' || busy || backgroundFlush)
         throw new AdmissionError('invalid-input', 'Discard requires a blocked, settled queue.');
       const error = new AdmissionError('discarded', 'The unaccepted pending suffix was discarded.');
       for (const job of queue) {
