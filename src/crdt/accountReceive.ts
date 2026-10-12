@@ -183,8 +183,12 @@ async function openAccountReceiveOwner(
   joined = false,
 ) {
   const options = captureAccountOptions(input);
-  const verified = createVerifiedRecords<AccountLedgerView>();
   const incremental = ledgerMode === 'incremental';
+  const verified = createVerifiedRecords<AccountLedgerView>({
+    ...(incremental && import.meta.env?.['VITE_ACCOUNT_RECORD_OWNERSHIP'] !== '0'
+      ? { ownResults: true as const }
+      : {}),
+  });
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
   let sinceAudit = 0,
     auditDue = false,

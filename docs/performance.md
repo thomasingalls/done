@@ -1807,3 +1807,28 @@ The accepted detection window, bounded rolling audits and resume invalidation ar
 cleanup removes 16.08 GB of allocated duplicate/temp material, retaining fixtures, evidence and
 11.19 MB of nonidentical document variants. See [the cleanup record](./performance-experiments/2026-10-12-warm-ledger/cleanup.md).
 Release validation remains paused.
+
+
+## 2026-10-12 — Private Account verifier ownership
+
+The warm-ledger slice is signed as **`e88c19a5`**. The next working-tree
+[ownership packet](./performance-experiments/2026-10-12-owned-verification/README.md) attributes
+approximately 33 MB of record copies to caller-detached storage loads and two additional 29.5 MB
+copies to verifier input/retention. The verifier also deep-clones its semantic result, outside the
+record-byte counter. It now reuses exact private prefixes and owns the result/candidate directly,
+with backing-buffer-aware cleanup and unchanged caller isolation.
+
+Three serial CPU-4x matched pairs on the retained 120-card/600+ received-position fixture reduce
+record-copy bytes **64.0% (92.07→33.16 MB/120 keys)**. Aggregate long-task duration falls
+**61.3% (2,111→818 ms across three sessions)** and maximum **104→60 ms**. Median of session
+handler medians is **5.9→5.6 ms**; median of frame p95s **39.0→23.8 ms**. All sessions retain
+nine flushes, nine warm loads and the same 126 physical-audit rows, and pass complete block
+undo/redo and offline replay. Timings, baseline attribution profile and pilot remain separate.
+
+Tails remain mixed: pair 1's maximum frame worsens **46.0→101.2 ms**, pair 3's p95 worsens
+**39.0→45.8 ms**, and candidate worst frame is **117.6 ms**. Dispatch timing omits pre-dispatch
+blocking. CPU-4x is not a physical-phone measurement; the 16 ms p95 budget remains unmet.
+The branch enables the private ownership mode after meeting predeclared criteria and focused
+native/unit/packaged checks. `VITE_ACCOUNT_RECORD_OWNERSHIP=0` or the full reference ledger
+restores the cloned verifier. No publication. About 33 MB/session of caller-detached copies,
+history-dependent equality/graph work and local retention remain; release validation stays paused.

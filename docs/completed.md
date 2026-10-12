@@ -13249,3 +13249,31 @@ history growth, current-phone evidence and latency budgets are unresolved. The
 reader fence and crash-safe installation decisions before any deletion. Approved duplicate-docs,
 source-archive and synthetic-profile cleanup is complete with fixtures/evidence retained. No
 release campaign was resumed; `docs/progress.md` is unchanged.
+
+
+### Account performance — private verification ownership
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `e88c19a5` · **Stage:** bounded repair
+
+**Exit.** The warm-ledger repair and its evidence are committed signed as **`e88c19a5`**.
+The next slice transfers verified candidates/results into private ownership, reusing only byte-equal
+prefix rows and erasing only buffers no longer retained. Storage load callers and outward projections
+still receive detached bytes. Failure, invalidation and overlapping-proof guards remain; the generic
+verifier keeps its cloning default. There is no format, authority, journal or audit-policy change.
+
+**Evidence.** [Three CPU-4x matched pairs](./performance-experiments/2026-10-12-owned-verification/README.md)
+on the retained 120-card/600+ received-position fixture reduce recorded copies **92.07→33.16 MB**
+per 120-key session (**64.0%**) and aggregate long-task time **2,111→818 ms** (**61.3%**).
+Maximum long task falls **104→60 ms**. Every run passes full undo/redo and offline reopening.
+Frame tails remain mixed, with candidate frame p95 **19.8–45.8 ms** and maximum **117.6 ms**;
+this is not a phone or latency-budget acceptance. Thirty-four focused units, four existing native
+checks and the ordinary packaged two-device text/undo/offline journey pass. Production build/type,
+pinned Yjs, budget/origin and scoped lint/format pass. Ownership transfer is now the incremental
+Account default with an explicit cloned-reference override.
+
+**Remaining.** This new slice is uncommitted and unpublished. The caller-detached storage load copy
+still accounts for approximately 33 MB/session; equality scans and graph/container traversal also
+remain history-dependent. The [ownership contract](./account-verification-ownership.md) records
+that boundary. Local retention remains design-only; online catch-up, physical-phone performance,
+remaining input tails and arbitrary history sizes were not requalified. Release validation remains
+paused and `docs/progress.md` is unchanged.

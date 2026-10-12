@@ -53,6 +53,13 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     configFile: false,
     logLevel: 'error',
     define: {
+      ...(process.env.ACCOUNT_RECORD_OWNERSHIP
+        ? {
+            'import.meta.env.VITE_ACCOUNT_RECORD_OWNERSHIP': JSON.stringify(
+              process.env.ACCOUNT_RECORD_OWNERSHIP,
+            ),
+          }
+        : {}),
       ...(process.env.ACCOUNT_BATCH_MODE
         ? {
             'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(process.env.ACCOUNT_BATCH_MODE),

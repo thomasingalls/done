@@ -44,6 +44,7 @@ type WorkTiming =
   | 'copyRecords'
   | 'readProjection'
   | 'installClone'
+  | 'installOwned'
   | 'physicalRead'
   | 'warmShapeCheck'
   | 'loadElapsed'
