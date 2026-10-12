@@ -13337,3 +13337,37 @@ isolation pass. The repair is enabled locally, uncommitted and unpublished. Expl
 and receive jobs still fence input, the 16 ms p95 budget remains unmet, and current-path phone
 and online performance are unmeasured. [Contract](./account-background-journal-flush.md).
 `docs/progress.md` remains unchanged.
+
+
+## 2026-10-12 — Online Account typing and individual Goals measurement
+
+**Commit/boundary.** The timed journal-flush repair is committed signed as **`9ba0ae63`**.
+The next [measurement packet](./performance-experiments/2026-10-12-online-typing/README.md)
+adds no runtime changes. Release validation remains paused; nothing is pushed or published.
+
+**Exit.** Sixteen fresh unprofiled sessions compare offline with two-way online typing at
+CPU-4x, using 120 cards / 600+ received positions, 120 keys, 75 ms per-request proxy delay
+and ten peer edits. Targets are a 615-character card and synthetic Goals of 3 / 12 / 64 KB;
+3 KB reflects the user's reported current size. All sessions pass full-text admission,
+last-key undo/redo, peer preservation, export convergence and cold offline replay. Three
+separate diagnostic profiles also pass. One mismatched seed fails before timing and is retained;
+the replacement contemporaneous pair and its derived seeds all pass. No timing run is discarded.
+
+**Findings.** Frame p95 is **20–30 ms offline, 431–510 ms online**. Handler medians change
+only slightly within each size. Online input waiting sums **3.81–4.91 s per session**;
+**90–94%** overlaps remote-admission jobs. Those are dependent elapsed waits, not CPU totals.
+Every online timing request returns HTTP 200. The card diagnostic samples **3.66 s** in
+non-custody byte comparison (mostly ledger checks) and **3.35 s** in custody authentication
+payload encoding. The longest tasks contain those operations. Unprofiled online card sessions
+materialize **82.6–86.2 MB** through full loads and record **154.4–158.1 MB** of instrumented
+record copies despite selective/warm loading. These are not total allocation or physical-I/O counts.
+
+**Goals/next.** Offline Goals planning costs about **2.3 ms/key at both 3 and 12 KB**, rising
+to **2.7 ms at 64 KB**; whole projection rises **1.9→2.7→7.0 ms/key**, only part of which is
+string/diff work. Next recommendation: keep verified sync loads warm through owned reservations
+and private-view reuse, then remove redundant custody re-authentication at unchanged authority
+boundaries, then target Goals planning and projection. Preserve received-dependency durability,
+caller isolation, audits and foreground ordering. This is a proposed sequence, not a new proof
+or implementation. The 16 ms p95 budget remains unmet; real-phone and same-text concurrent editing
+are not measured. These records accompany the measurement commit; local retention remains design-only and
+`docs/progress.md` is unchanged.

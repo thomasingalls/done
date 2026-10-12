@@ -1888,3 +1888,41 @@ timed FIFO barriers. This slice is uncommitted/unpublished. The **16 ms p95 budg
 explicit barriers and receives can still delay typing. Online latency and physical-phone gains
 are unmeasured. History-dependent verification/containers and local retention remain. Release
 validation stays paused.
+
+
+## 2026-10-12 — Online typing reveals verification stalls; Goals size adds smaller synchronous cost
+
+Measured signed **`9ba0ae63`**, the timed-flush repair, with build-only numeric instrumentation.
+[Packet, all sessions and profiles](./performance-experiments/2026-10-12-online-typing/README.md).
+Two fresh sessions per offline/online condition for a 615-character card and Goals 3 / 12 / 64 KB,
+120 keys each, CPU-4x on the joined device, roughly 120 cards / 600+ received positions.
+Online uses a 75 ms per-request proxy plus ten peer edits to another card. Profiled diagnostics
+are separate from comparison numbers. Initial mismatched setup is retained and excluded before
+any timing; all matched seeds and all 19 timing/diagnostic observations pass correctness checks.
+
+| Target | Offline frame p95, both sessions ms | Online frame p95, both sessions ms |
+| --- | --- | --- |
+| Card, 615 characters | 20.1 / 20.1 | 431.4 / 510.4 |
+| Goals 3 KB | 22.9 / 21.7 | 491.2 / 488.0 |
+| Goals 12 KB | 22.2 / 23.6 | 496.0 / 432.2 |
+| Goals 64 KB stress case | 29.8 / 28.2 | 493.1 / 431.8 |
+
+Online input waits sum **3.81–4.91 s per 120 keys**, versus **1.8–5.8 ms offline**;
+**90–94%** overlaps owned remote admission. Multiple inputs can wait behind one job, and async
+spans are not additive CPU costs. There are **129–145 online long tasks**, maxima **138–180 ms**,
+and worst visible frame **833.4 ms**. All timing requests return 200; lanes progress and converge.
+The card profile attributes **3.66 s** to non-custody byte comparison (predominantly ledger)
+and **3.35 s** to custody payload encoding. Repeated same-history checks and owned-reservation
+fallbacks remain despite warm/selective loading. Detailed counters and source trace are retained.
+
+Offline Goals planning averages **2.32 / 2.31 / 2.68 ms per key** at 3 / 12 / 64 KB; whole
+projection averages **1.88 / 2.74 / 6.98 ms**. String/read/diff substeps account for only
+**0.21 / 0.39 / 1.65 ms** of that projection, so persistent planning and string comparison
+alone cannot be credited with eliminating the entire measured cost. Different size seeds have
+different source-row counts; within-size comparisons restore the identical seed.
+
+This is a descriptive measurement, not a new repair or qualification. Two repeats, CPU emulation,
+synthetic Markdown, fixed delay and omitted browser pre-dispatch time limit generality. The
+16 ms p95 budget remains unmet. Next recommendation is verified-view/reservation reuse on the
+online path, then unchanged-authority authentication reuse, then Goals planning/projection.
+No runtime changes or publication. Release validation remains paused.
