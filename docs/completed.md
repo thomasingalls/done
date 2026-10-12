@@ -13091,7 +13091,7 @@ was introduced. Release validation and `docs/progress.md` remain unchanged.
 
 ### Account receiving — bounded prefetch of current-format receipts
 
-**Date:** 2026-10-12 · **Commit:** working tree on signed `54811c93` · **Stage:** bounded repair
+**Date:** 2026-10-12 · **Commit:** signed `460fefd8` · **Stage:** bounded repair
 
 **Exit.** Grouping is committed signed. The [prefetch follow-up](./performance-experiments/2026-10-12-receive-prefetch/README.md)
 overlaps at most two exact limit-one reads, retaining four-receipt turns and the existing format.
@@ -13108,8 +13108,34 @@ arrivals, missing replies, close/drain, wrong binding, bounds, concurrent input 
 atomicity/authority/old-reader regressions. Build/type/targeted lint/format pass; all six numeric
 summaries reproduce from content-redacted retained evidence.
 
-**Remaining.** New repair/evidence are uncommitted and unpublished. Delayed live-burst median is
+**Remaining at this checkpoint.** Repair/evidence are signed and unpublished. Delayed live-burst median is
 2.352 seconds; cold open is 6.804–6.907 seconds; one 1.238-second delayed foreground task remains
 unattributed. No primary-window non-200 response/429 occurs, but HTTP-200 browser abort events are
 retained. These are desktop observations, not phone/public-service evidence. Release validation
 remains paused; `docs/progress.md` is unchanged.
+
+### Account receiving — interruptible reference audit during compaction
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `460fefd8` · **Stage:** bounded repair
+
+**Exit.** Prefetch is committed signed. The [stall capture and repair](./performance-experiments/2026-10-12-foreground-stall/README.md)
+attribute a natural 1,530 ms main-thread task to full reference verification inside compaction,
+especially repeated inbound coverage proofs. The unchanged reference algorithm now gives maintenance
+budget boundaries to receipt census, receive checks and self-original coverage. Foreground work
+interrupts maintenance without discarding the already authenticated incremental view. The audit
+stays due, retries during idle maintenance and still refuses mismatches; native transaction ordering
+and exact-byte cache guards remain.
+
+**Evidence.** Matched controlled input collision: 2,157→24 ms; largest task 2,178→64 ms. The interrupted
+audit subsequently completes, no cold verification is moved onto input, and complete exports/offline
+recovery pass. Both natural captures and the intermediate repair/profile remain recorded. Ordinary
+added-75-ms catch-up takes 112.521 seconds versus retained prefetch 100.978 seconds (11.4% slower,
+within the declared 15% investigation threshold); its largest task is 73 ms versus retained 1,238 ms.
+All seven packaged observations pass. Seventy-two focused units, three native cases, type/build and
+targeted lint/format checks pass, including changed ciphertext after interruption and fail-closed
+audit disagreement.
+
+**Remaining.** This work is uncommitted/unpublished. The repair targets responsiveness, not total
+verification cost. Cold opening remains 7.497 seconds in the ordinary run; total audit CPU, large
+individual proofs and local retained-history growth remain. No phone/public-service claim, release
+campaign or deployment change was made. Release validation stays paused; `docs/progress.md` is unchanged.

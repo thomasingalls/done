@@ -85,7 +85,7 @@ export async function heldInboundContext(
     prefix: { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
   };
 }
-export function inspectInbound(
+function* inspectInboundSteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   context: InboundContext,
@@ -95,6 +95,7 @@ export function inspectInbound(
     entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
     installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
   for (const record of records) {
+    yield;
     let tag;
     if (record.kind === 'heads' || record.kind === 'outbound') {
       try {
@@ -121,6 +122,7 @@ export function inspectInbound(
   if (context.history) {
     let epoch = 1;
     for (const row of ledger) {
+      yield;
       const v = JSON.parse(new TextDecoder().decode(row.bytes));
       const at =
         v[0] === 'done/account-inbound/v1'
@@ -132,6 +134,31 @@ export function inspectInbound(
   }
   delivery.spool.events = ledger.map((r) => r.bytes);
   return { delivery, entries: entries.sort((a, b) => a.record.seq - b.record.seq), installations };
+}
+/** Both readers execute the same census; maintenance may pause only between complete rows. */
+export function inspectInbound(...args: Parameters<typeof inspectInboundSteps>) {
+  const steps = inspectInboundSteps(...args);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
+}
+export async function inspectInboundCooperatively(
+  records: readonly OpenedRecord[],
+  route: CaptureRoute,
+  context: InboundContext,
+  checkpoint: () => Promise<void>,
+) {
+  const steps = inspectInboundSteps(records, route, context);
+  try {
+    let next = steps.next();
+    while (!next.done) {
+      await checkpoint();
+      next = steps.next();
+    }
+    return next.value;
+  } finally {
+    steps.return(undefined as never);
+  }
 }
 export interface InboundState {
   prefix: InboundContext['prefix'];
@@ -456,6 +483,8 @@ export async function verifyInboundLedger(
   reuse?: {
     memo: VerificationMemo;
     coverage: Pick<ReturnType<typeof createInboundCoverage>, 'check'>;
+    /** Reference maintenance can yield between complete receipt checks, outside native transactions. */
+    checkpoint?(): Promise<void>;
   },
   continuation?: { state: InboundState; after: number },
 ): Promise<InboundState> {
@@ -476,6 +505,8 @@ export async function verifyInboundLedger(
     .filter((e) => !continuation || e.record.seq > continuation.after)
     .sort((a, b) => a.record.seq - b.record.seq);
   for (const entry of events) {
+    if (reuse?.checkpoint) await reuse.checkpoint();
+    lifetime.assertCurrent();
     if (entry.kind === 'history') {
       if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
         captureError('History installation after stream conflict');

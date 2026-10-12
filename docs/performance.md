@@ -1712,5 +1712,29 @@ Delayed burst median remains 2.352 seconds, cold open 6.804–6.907 seconds acro
 1.238-second delayed long task remains unattributed. No primary HTTP response is non-200 or 429;
 HTTP-200 `ERR_ABORTED` browser events remain and are retained. Fifty-two focused units, twenty-one
 native cases and build/type/targeted lint/format checks pass. Content-redacted samples reproduce
-all three primary and three supplementary summaries. New repair/evidence remain uncommitted and
+all three primary and three supplementary summaries. Repair/evidence are signed as `460fefd8` and
 unpublished. No phone campaign or resumed release validation occurred.
+
+## 2026-10-12 — Foreground reference-audit stalls
+
+The [captured stall and focused repair](./performance-experiments/2026-10-12-foreground-stall/README.md)
+start from signed prefetch `460fefd8`. A natural traced run captures a 1,530 ms main-thread task:
+1,178 ms sampled in inbound verification, including 1,106 ms in reference coverage. An earlier
+capture had no audit/task; both remain in evidence. Receipt-by-receipt budget boundaries alone left
+~277 ms tasks. A second profile identified the initial receipt census and final self-coverage array;
+these now use the same maintenance budget too.
+
+A matched controlled collision reduces input sent→admitted text from 2,157 to 24 ms and maximum
+task from 2,178 to 64 ms. Audit interruption retains the fully authenticated incremental view under
+its exact binding, leaves the audit due, and retries it at idle maintenance. Two retry/completion
+checks and offline full-export equality pass; no partial oracle state publishes. Reference coverage,
+physical census, native atomicity, mismatch refusal and lifetime/authority invalidation remain.
+
+The ordinary delayed 600-position journey passes, with maximum task 73 ms but catch-up elapsed
+112.521 seconds versus retained prefetch 100.978 seconds, **11.4% slower**. This is below the
+predeclared >15% investigation threshold; it is not a throughput gain or a fresh paired ordinary
+comparison. Burst median is 2.366 seconds and offline cold opening 7.497 seconds. There are no
+primary non-200 responses/429s; 73 HTTP-200 browser abort events remain recorded. All seven packaged
+observations, 72 focused units, three native cases and type/build/targeted lint/format checks pass.
+Work is uncommitted/unpublished; release validation remains paused. Total history/audit cost,
+individual large synchronous proofs, deep opening and phone evidence remain separate work.

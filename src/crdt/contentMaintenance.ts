@@ -8,6 +8,9 @@ export class MaintenanceInterrupted extends Error {
   }
 }
 
+const maintenanceTasks = new WeakSet<SessionTask>();
+export const isMaintenanceTask = (task: SessionTask): boolean => maintenanceTasks.has(task);
+
 /** Keep the writer lifetime and native settlement ownership. Cancellation prevents the next
  * effect; it does not release admission while an earlier transaction or crypto job is in flight.
  * Yield only before starting async work, never inside an active IDB transaction callback. */
@@ -17,7 +20,7 @@ export function maintenanceTask(parent: SessionTask, interrupt?: AbortSignal): S
   const check = () => {
     if (interrupt.aborted) throw new MaintenanceInterrupted();
   };
-  return {
+  const task: SessionTask = {
     signal: parent.signal,
     step(effect) {
       parent.step(check);
@@ -37,4 +40,6 @@ export function maintenanceTask(parent: SessionTask, interrupt?: AbortSignal): S
       });
     },
   };
+  maintenanceTasks.add(task);
+  return task;
 }

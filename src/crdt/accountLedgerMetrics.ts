@@ -1,5 +1,14 @@
 /** Numeric diagnostics only: no identities, record bytes, writing or keys. */
-const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
+const counters = {
+  full: 0,
+  incremental: 0,
+  sourceDecodes: 0,
+  events: 0,
+  audits: 0,
+  auditCompletions: 0,
+  auditInterruptions: 0,
+  mismatches: 0,
+};
 export const ledgerProfiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
 const workNames = [
   'startupValidations',

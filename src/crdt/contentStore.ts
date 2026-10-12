@@ -1,3 +1,4 @@
+import { MaintenanceInterrupted } from './contentMaintenance';
 import {
   countLedgerWork,
   ledgerProfiling,
@@ -297,7 +298,9 @@ export const createContentOwner = (
         });
       return task.step(() => opened.sort((a, b) => a.seq - b.seq));
     } catch (cause) {
-      clearView();
+      // Interruption is not failed authentication. Retain only the previous detached view;
+      // every subsequent reuse still compares the counter and exact sealed row bytes.
+      if (!(cause instanceof MaintenanceInterrupted)) clearView();
       for (const r of opened) r.bytes.fill(0);
       throw cause;
     }
@@ -318,7 +321,9 @@ export const createContentOwner = (
         );
       return result;
     } catch (cause) {
-      clearView();
+      // Interruption is not failed authentication. Retain only the previous detached view;
+      // every subsequent reuse still compares the counter and exact sealed row bytes.
+      if (!(cause instanceof MaintenanceInterrupted)) clearView();
       throw cause;
     } finally {
       measureLedgerWork('loadElapsed', began);

@@ -1,0 +1,399 @@
+diff --git a/src/crdt/accountLedgerMetrics.ts b/src/crdt/accountLedgerMetrics.ts
+index 0ff7ea61..aaf7ad63 100644
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -1,5 +1,14 @@
+ /** Numeric diagnostics only: no identities, record bytes, writing or keys. */
+-const counters = { full: 0, incremental: 0, sourceDecodes: 0, events: 0, audits: 0, mismatches: 0 };
++const counters = {
++  full: 0,
++  incremental: 0,
++  sourceDecodes: 0,
++  events: 0,
++  audits: 0,
++  auditCompletions: 0,
++  auditInterruptions: 0,
++  mismatches: 0,
++};
+ export const ledgerProfiling = import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1';
+ const workNames = [
+   'startupValidations',
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 8d83d977..5e45aa88 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,4 @@
++import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
+ import { collectReceivePages } from './receivePrefetch';
+ import type { Diagnostic } from '../../account-protocol/diagnostics';
+ import {
+@@ -88,7 +89,12 @@ import { createInboundCoverage } from './inboundLedger';
+ import { createEnvelopePreparation } from './accountEnvelopePreparation';
+ import { createDeliveryOperations, describeDelivery } from './accountDelivery';
+ import { publicationState } from './deliveryRecord';
+-import { advanceSelfReceive, requireSelfEnvelope, verifySyncState } from './accountSyncState';
++import {
++  advanceSelfReceive,
++  advanceSelfReceiveCooperatively,
++  requireSelfEnvelope,
++  verifySyncState,
++} from './accountSyncState';
+ import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
+ import { networkLoginNeedsPasskey } from '../account/networkLogin';
+ import { startNotifications } from '../account/notifications';
+@@ -131,6 +137,7 @@ import {
+   applyHistoryReceiveCuts,
+   heldInboundContext,
+   inspectInbound,
++  inspectInboundCooperatively,
+   verifyInboundLedger,
+   contextAt,
+   publisherContext,
+@@ -178,7 +185,9 @@ async function openAccountReceiveOwner(
+   const verified = createVerifiedRecords<AccountLedgerView>();
+   const incremental = ledgerMode === 'incremental';
+   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
+-  let sinceAudit = 0;
++  let sinceAudit = 0,
++    auditDue = false,
++    auditDeferred = false;
+   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
+   const memo = createVerificationMemo(),
+     coverage = createInboundCoverage({ incremental });
+@@ -331,11 +340,19 @@ async function openAccountReceiveOwner(
+         countLedger('full');
+         const isolated = audit ? createInboundCoverage() : undefined;
+         const checking = (isolated ?? coverage).bind(records);
++        // Cached crypto checks resolve in microtasks. A real maintenance budget is needed
++        // between receipts so input can cancel before the next complete coverage proof.
++        const checkpoint =
++          audit && isMaintenanceTask(task) ? () => task.wait(() => Promise.resolve()) : undefined;
+         try {
+-          const census = inspectInbound(records, route, base),
++          const census = checkpoint
++              ? await inspectInboundCooperatively(records, route, base, checkpoint)
++              : inspectInbound(records, route, base),
+             subtle = subtleFor(task),
+             reuse = { memo, current: () => task.step(() => {}) };
++          await checkpoint?.();
+           await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
++          await checkpoint?.();
+           if (!joined)
+             await verifyInstalledSuccessor(
+               census.delivery.spool,
+@@ -354,6 +371,7 @@ async function openAccountReceiveOwner(
+               subtle,
+               reuse,
+             );
++          await checkpoint?.();
+           await verifySpool(
+             census.delivery.spool,
+             route,
+@@ -365,6 +383,7 @@ async function openAccountReceiveOwner(
+             subtle,
+             reuse,
+           );
++          await checkpoint?.();
+           const delivery = await verifyDelivery(
+             census.delivery,
+             route,
+@@ -373,14 +392,25 @@ async function openAccountReceiveOwner(
+             subtle,
+             reuse,
+           );
++          await checkpoint?.();
+           const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
+             memo,
+             coverage: checking,
++            ...(checkpoint ? { checkpoint } : {}),
+           });
+-          if (composed)
+-            advanceSelfReceive(census.delivery, delivery, inbound, route, (updates) =>
+-              checking.check(records, updates),
+-            );
++          if (composed) {
++            const check = (updates: readonly Bytes[]) => checking.check(records, updates);
++            if (checkpoint)
++              await advanceSelfReceiveCooperatively(
++                census.delivery,
++                delivery,
++                inbound,
++                route,
++                check,
++                checkpoint,
++              );
++            else advanceSelfReceive(census.delivery, delivery, inbound, route, check);
++          }
+           memo.retain(
+             new Set([
+               'admission-prefix',
+@@ -405,6 +435,7 @@ async function openAccountReceiveOwner(
+           measureLedger('full', began);
+         }
+       };
++      let validationComplete = false;
+       try {
+         await verified.verify(
+           records,
+@@ -448,27 +479,10 @@ async function openAccountReceiveOwner(
+                     );
+                   const result = { ...next, inbound };
+                   sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
+-                  const auditEvery =
++                  auditDue ||=
+                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
+                     (sinceAudit >= 1024 &&
+                       records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
+-                  if (auditEvery) {
+-                    countLedger('audits');
+-                    const auditRows = copyRecords(records);
+-                    let oracle;
+-                    try {
+-                      oracle = await checkFull(auditRows, true);
+-                      if (!sameAccountLedger(result, oracle)) {
+-                        countLedger('mismatches');
+-                        console.error('done/account-ledger-reference-mismatch');
+-                        captureError('Account ledger reference mismatch');
+-                      }
+-                      sinceAudit = 0;
+-                    } finally {
+-                      eraseVerified(oracle);
+-                      eraseVerified(auditRows);
+-                    }
+-                  }
+                   return result;
+                 } finally {
+                   measureLedger('incremental', began);
+@@ -476,8 +490,41 @@ async function openAccountReceiveOwner(
+               }
+             : undefined,
+         );
++        validationComplete = true;
+         verifiedCounter = structuredClone(counter);
++        // Install only the fully authenticated delta before discretionary reference work.
++        // A cancelled audit stays due, but must not migrate onto the next foreground edit.
++        if (auditDue && (!auditDeferred || isMaintenanceTask(task))) {
++          countLedger('audits');
++          const auditRows = copyRecords(records),
++            result = verified.read(records);
++          let oracle;
++          try {
++            oracle = await checkFull(auditRows, true);
++            task.step(() => {});
++            if (!sameAccountLedger(result, oracle)) {
++              countLedger('mismatches');
++              console.error('done/account-ledger-reference-mismatch');
++              captureError('Account ledger reference mismatch');
++            }
++            countLedger('auditCompletions');
++            sinceAudit = 0;
++            auditDue = auditDeferred = false;
++          } catch (e) {
++            if (e instanceof MaintenanceInterrupted) {
++              auditDeferred = true;
++              countLedger('auditInterruptions');
++            }
++            throw e;
++          } finally {
++            eraseVerified(oracle);
++            eraseVerified(result);
++            eraseVerified(auditRows);
++          }
++        }
+       } catch (e) {
++        if (validationComplete && e instanceof MaintenanceInterrupted) throw e;
++        verified.clear();
+         verifiedCounter = undefined;
+         memo.clear();
+         coverage.clear();
+@@ -1254,6 +1301,7 @@ async function openAccountReceiveOwner(
+               expectedPayload = promotionPayload(next);
+               verifiedCounter = undefined;
+               sinceAudit = 0;
++              auditDue = auditDeferred = false;
+               verified.clear();
+               memo.clear();
+               coverage.clear();
+@@ -1410,6 +1458,7 @@ async function openAccountReceiveOwner(
+           receiveSelection.reset();
+           verifiedCounter = undefined;
+           sinceAudit = 0;
++          auditDue = auditDeferred = false;
+           verified.clear();
+           memo.clear();
+           coverage.clear();
+diff --git a/src/crdt/accountSyncState.ts b/src/crdt/accountSyncState.ts
+index de001697..92234dc7 100644
+--- a/src/crdt/accountSyncState.ts
++++ b/src/crdt/accountSyncState.ts
+@@ -108,3 +108,30 @@ export function advanceSelfReceive(
+     for (const capsule of capsules.values()) eraseCapsule(capsule);
+   }
+ }
++
++/** Audit-only projection. The caller keeps this state private until all originals are checked.
++ * Copy originals before the synchronous projector erases its decoded capsules. No vector-only
++ * check or incremental coverage cache substitutes for the reference proof. */
++export async function advanceSelfReceiveCooperatively(
++  census: DeliveryCensus,
++  delivery: DeliveryState,
++  inbound: InboundState,
++  route: CaptureRoute,
++  checkCoverage: (updates: readonly Bytes[]) => void,
++  checkpoint: () => Promise<void>,
++): Promise<void> {
++  const originals: Bytes[] = [];
++  try {
++    await checkpoint();
++    advanceSelfReceive(census, delivery, inbound, route, (updates) => {
++      for (const update of updates) originals.push(update.slice());
++    });
++    for (const update of originals) {
++      await checkpoint();
++      checkCoverage([update]);
++    }
++    await checkpoint();
++  } finally {
++    for (const update of originals) update.fill(0);
++  }
++}
+diff --git a/src/crdt/contentMaintenance.ts b/src/crdt/contentMaintenance.ts
+index df15d419..aff30eb2 100644
+--- a/src/crdt/contentMaintenance.ts
++++ b/src/crdt/contentMaintenance.ts
+@@ -8,6 +8,9 @@ export class MaintenanceInterrupted extends Error {
+   }
+ }
+ 
++const maintenanceTasks = new WeakSet<SessionTask>();
++export const isMaintenanceTask = (task: SessionTask): boolean => maintenanceTasks.has(task);
++
+ /** Keep the writer lifetime and native settlement ownership. Cancellation prevents the next
+  * effect; it does not release admission while an earlier transaction or crypto job is in flight.
+  * Yield only before starting async work, never inside an active IDB transaction callback. */
+@@ -17,7 +20,7 @@ export function maintenanceTask(parent: SessionTask, interrupt?: AbortSignal): S
+   const check = () => {
+     if (interrupt.aborted) throw new MaintenanceInterrupted();
+   };
+-  return {
++  const task: SessionTask = {
+     signal: parent.signal,
+     step(effect) {
+       parent.step(check);
+@@ -37,4 +40,6 @@ export function maintenanceTask(parent: SessionTask, interrupt?: AbortSignal): S
+       });
+     },
+   };
++  maintenanceTasks.add(task);
++  return task;
+ }
+diff --git a/src/crdt/contentStore.ts b/src/crdt/contentStore.ts
+index d6a91d62..695bd5e6 100644
+--- a/src/crdt/contentStore.ts
++++ b/src/crdt/contentStore.ts
+@@ -1,3 +1,4 @@
++import { MaintenanceInterrupted } from './contentMaintenance';
+ import {
+   countLedgerWork,
+   ledgerProfiling,
+@@ -297,7 +298,9 @@ export const createContentOwner = (
+         });
+       return task.step(() => opened.sort((a, b) => a.seq - b.seq));
+     } catch (cause) {
+-      clearView();
++      // Interruption is not failed authentication. Retain only the previous detached view;
++      // every subsequent reuse still compares the counter and exact sealed row bytes.
++      if (!(cause instanceof MaintenanceInterrupted)) clearView();
+       for (const r of opened) r.bytes.fill(0);
+       throw cause;
+     }
+@@ -318,7 +321,9 @@ export const createContentOwner = (
+         );
+       return result;
+     } catch (cause) {
+-      clearView();
++      // Interruption is not failed authentication. Retain only the previous detached view;
++      // every subsequent reuse still compares the counter and exact sealed row bytes.
++      if (!(cause instanceof MaintenanceInterrupted)) clearView();
+       throw cause;
+     } finally {
+       measureLedgerWork('loadElapsed', began);
+diff --git a/src/crdt/inboundLedger.ts b/src/crdt/inboundLedger.ts
+index f25aae4b..c4be626c 100644
+--- a/src/crdt/inboundLedger.ts
++++ b/src/crdt/inboundLedger.ts
+@@ -85,7 +85,7 @@ export async function heldInboundContext(
+     prefix: { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
+   };
+ }
+-export function inspectInbound(
++function* inspectInboundSteps(
+   records: readonly OpenedRecord[],
+   route: CaptureRoute,
+   context: InboundContext,
+@@ -95,6 +95,7 @@ export function inspectInbound(
+     entries: { record: OpenedRecord; event: ReturnType<typeof decodeInboundRecord> }[] = [],
+     installations: { record: OpenedRecord; event: ReturnType<typeof decodeHistoryInstall> }[] = [];
+   for (const record of records) {
++    yield;
+     let tag;
+     if (record.kind === 'heads' || record.kind === 'outbound') {
+       try {
+@@ -121,6 +122,7 @@ export function inspectInbound(
+   if (context.history) {
+     let epoch = 1;
+     for (const row of ledger) {
++      yield;
+       const v = JSON.parse(new TextDecoder().decode(row.bytes));
+       const at =
+         v[0] === 'done/account-inbound/v1'
+@@ -133,6 +135,31 @@ export function inspectInbound(
+   delivery.spool.events = ledger.map((r) => r.bytes);
+   return { delivery, entries: entries.sort((a, b) => a.record.seq - b.record.seq), installations };
+ }
++/** Both readers execute the same census; maintenance may pause only between complete rows. */
++export function inspectInbound(...args: Parameters<typeof inspectInboundSteps>) {
++  const steps = inspectInboundSteps(...args);
++  let next = steps.next();
++  while (!next.done) next = steps.next();
++  return next.value;
++}
++export async function inspectInboundCooperatively(
++  records: readonly OpenedRecord[],
++  route: CaptureRoute,
++  context: InboundContext,
++  checkpoint: () => Promise<void>,
++) {
++  const steps = inspectInboundSteps(records, route, context);
++  try {
++    let next = steps.next();
++    while (!next.done) {
++      await checkpoint();
++      next = steps.next();
++    }
++    return next.value;
++  } finally {
++    steps.return(undefined as never);
++  }
++}
+ export interface InboundState {
+   prefix: InboundContext['prefix'];
+   startingPoint?: { position: number; link: string };
+@@ -456,6 +483,8 @@ export async function verifyInboundLedger(
+   reuse?: {
+     memo: VerificationMemo;
+     coverage: Pick<ReturnType<typeof createInboundCoverage>, 'check'>;
++    /** Reference maintenance can yield between complete receipt checks, outside native transactions. */
++    checkpoint?(): Promise<void>;
+   },
+   continuation?: { state: InboundState; after: number },
+ ): Promise<InboundState> {
+@@ -476,6 +505,8 @@ export async function verifyInboundLedger(
+     .filter((e) => !continuation || e.record.seq > continuation.after)
+     .sort((a, b) => a.record.seq - b.record.seq);
+   for (const entry of events) {
++    if (reuse?.checkpoint) await reuse.checkpoint();
++    lifetime.assertCurrent();
+     if (entry.kind === 'history') {
+       if (own.conflict || [...own.peers.values()].some((s) => s.conflict))
+         captureError('History installation after stream conflict');

@@ -1,3 +1,4 @@
+import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
 import { collectReceivePages } from './receivePrefetch';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
@@ -88,7 +89,12 @@ import { createInboundCoverage } from './inboundLedger';
 import { createEnvelopePreparation } from './accountEnvelopePreparation';
 import { createDeliveryOperations, describeDelivery } from './accountDelivery';
 import { publicationState } from './deliveryRecord';
-import { advanceSelfReceive, requireSelfEnvelope, verifySyncState } from './accountSyncState';
+import {
+  advanceSelfReceive,
+  advanceSelfReceiveCooperatively,
+  requireSelfEnvelope,
+  verifySyncState,
+} from './accountSyncState';
 import { createSyncScheduler, driveOutboundStep } from './accountSyncDriver';
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
@@ -131,6 +137,7 @@ import {
   applyHistoryReceiveCuts,
   heldInboundContext,
   inspectInbound,
+  inspectInboundCooperatively,
   verifyInboundLedger,
   contextAt,
   publisherContext,
@@ -178,7 +185,9 @@ async function openAccountReceiveOwner(
   const verified = createVerifiedRecords<AccountLedgerView>();
   const incremental = ledgerMode === 'incremental';
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
-  let sinceAudit = 0;
+  let sinceAudit = 0,
+    auditDue = false,
+    auditDeferred = false;
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
     coverage = createInboundCoverage({ incremental });
@@ -331,11 +340,19 @@ async function openAccountReceiveOwner(
         countLedger('full');
         const isolated = audit ? createInboundCoverage() : undefined;
         const checking = (isolated ?? coverage).bind(records);
+        // Cached crypto checks resolve in microtasks. A real maintenance budget is needed
+        // between receipts so input can cancel before the next complete coverage proof.
+        const checkpoint =
+          audit && isMaintenanceTask(task) ? () => task.wait(() => Promise.resolve()) : undefined;
         try {
-          const census = inspectInbound(records, route, base),
+          const census = checkpoint
+              ? await inspectInboundCooperatively(records, route, base, checkpoint)
+              : inspectInbound(records, route, base),
             subtle = subtleFor(task),
             reuse = { memo, current: () => task.step(() => {}) };
+          await checkpoint?.();
           await verifySpoolWitness(census.delivery.spool, counter, subtle, reuse);
+          await checkpoint?.();
           if (!joined)
             await verifyInstalledSuccessor(
               census.delivery.spool,
@@ -354,6 +371,7 @@ async function openAccountReceiveOwner(
               subtle,
               reuse,
             );
+          await checkpoint?.();
           await verifySpool(
             census.delivery.spool,
             route,
@@ -365,6 +383,7 @@ async function openAccountReceiveOwner(
             subtle,
             reuse,
           );
+          await checkpoint?.();
           const delivery = await verifyDelivery(
             census.delivery,
             route,
@@ -373,14 +392,25 @@ async function openAccountReceiveOwner(
             subtle,
             reuse,
           );
+          await checkpoint?.();
           const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
             memo,
             coverage: checking,
+            ...(checkpoint ? { checkpoint } : {}),
           });
-          if (composed)
-            advanceSelfReceive(census.delivery, delivery, inbound, route, (updates) =>
-              checking.check(records, updates),
-            );
+          if (composed) {
+            const check = (updates: readonly Bytes[]) => checking.check(records, updates);
+            if (checkpoint)
+              await advanceSelfReceiveCooperatively(
+                census.delivery,
+                delivery,
+                inbound,
+                route,
+                check,
+                checkpoint,
+              );
+            else advanceSelfReceive(census.delivery, delivery, inbound, route, check);
+          }
           memo.retain(
             new Set([
               'admission-prefix',
@@ -405,6 +435,7 @@ async function openAccountReceiveOwner(
           measureLedger('full', began);
         }
       };
+      let validationComplete = false;
       try {
         await verified.verify(
           records,
@@ -448,27 +479,10 @@ async function openAccountReceiveOwner(
                     );
                   const result = { ...next, inbound };
                   sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
-                  const auditEvery =
+                  auditDue ||=
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
                     (sinceAudit >= 1024 &&
                       records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
-                  if (auditEvery) {
-                    countLedger('audits');
-                    const auditRows = copyRecords(records);
-                    let oracle;
-                    try {
-                      oracle = await checkFull(auditRows, true);
-                      if (!sameAccountLedger(result, oracle)) {
-                        countLedger('mismatches');
-                        console.error('done/account-ledger-reference-mismatch');
-                        captureError('Account ledger reference mismatch');
-                      }
-                      sinceAudit = 0;
-                    } finally {
-                      eraseVerified(oracle);
-                      eraseVerified(auditRows);
-                    }
-                  }
                   return result;
                 } finally {
                   measureLedger('incremental', began);
@@ -476,8 +490,41 @@ async function openAccountReceiveOwner(
               }
             : undefined,
         );
+        validationComplete = true;
         verifiedCounter = structuredClone(counter);
+        // Install only the fully authenticated delta before discretionary reference work.
+        // A cancelled audit stays due, but must not migrate onto the next foreground edit.
+        if (auditDue && (!auditDeferred || isMaintenanceTask(task))) {
+          countLedger('audits');
+          const auditRows = copyRecords(records),
+            result = verified.read(records);
+          let oracle;
+          try {
+            oracle = await checkFull(auditRows, true);
+            task.step(() => {});
+            if (!sameAccountLedger(result, oracle)) {
+              countLedger('mismatches');
+              console.error('done/account-ledger-reference-mismatch');
+              captureError('Account ledger reference mismatch');
+            }
+            countLedger('auditCompletions');
+            sinceAudit = 0;
+            auditDue = auditDeferred = false;
+          } catch (e) {
+            if (e instanceof MaintenanceInterrupted) {
+              auditDeferred = true;
+              countLedger('auditInterruptions');
+            }
+            throw e;
+          } finally {
+            eraseVerified(oracle);
+            eraseVerified(result);
+            eraseVerified(auditRows);
+          }
+        }
       } catch (e) {
+        if (validationComplete && e instanceof MaintenanceInterrupted) throw e;
+        verified.clear();
         verifiedCounter = undefined;
         memo.clear();
         coverage.clear();
@@ -1254,6 +1301,7 @@ async function openAccountReceiveOwner(
               expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
               sinceAudit = 0;
+              auditDue = auditDeferred = false;
               verified.clear();
               memo.clear();
               coverage.clear();
@@ -1410,6 +1458,7 @@ async function openAccountReceiveOwner(
           receiveSelection.reset();
           verifiedCounter = undefined;
           sinceAudit = 0;
+          auditDue = auditDeferred = false;
           verified.clear();
           memo.clear();
           coverage.clear();

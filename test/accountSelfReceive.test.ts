@@ -2,7 +2,7 @@
 import { createHash } from 'node:crypto';
 import { expect, it } from 'vitest';
 import fc from 'fast-check';
-import { advanceSelfReceive } from '../src/crdt/accountSyncState';
+import { advanceSelfReceive, advanceSelfReceiveCooperatively } from '../src/crdt/accountSyncState';
 import { emptyInbound, verifyInboundCoverage } from '../src/crdt/inboundLedger';
 import { applyDecision, emptyDelivery, type DeliveryCensus } from '../src/crdt/deliveryRecord';
 import { makeSourceCapsule } from '../src/crdt/sourceCapture';
@@ -172,4 +172,59 @@ it('generated insert/delete histories give the same progress after exact compact
     }),
     { seed: 10102026, numRuns: 35 },
   );
+});
+
+it('cooperative self coverage matches the reference and erases owned originals on interruption or refusal', async () => {
+  const f = await fixture(),
+    expected = emptyInbound(),
+    actual = emptyInbound();
+  advanceSelfReceive(f.census, f.delivery, expected, f.route, (u) =>
+    verifyInboundCoverage(f.rows, u),
+  );
+  let checked = 0;
+  await advanceSelfReceiveCooperatively(
+    f.census,
+    f.delivery,
+    actual,
+    f.route,
+    (u) => {
+      expect(u).toHaveLength(1);
+      checked++;
+      verifyInboundCoverage(f.rows, u);
+    },
+    async () => {},
+  );
+  expect(actual).toEqual(expected);
+  expect(checked).toBe(3);
+  for (const failure of ['interrupt', 'coverage']) {
+    let checkpoints = 0;
+    const borrowed: Uint8Array[] = [];
+    await expect(
+      advanceSelfReceiveCooperatively(
+        f.census,
+        f.delivery,
+        emptyInbound(),
+        f.route,
+        (u) => {
+          borrowed.push(...u);
+          verifyInboundCoverage(failure === 'coverage' ? [] : f.rows, u);
+        },
+        async () => {
+          if (failure === 'interrupt' && ++checkpoints === 3) throw Error('cancelled');
+        },
+      ),
+    ).rejects.toThrow(failure === 'interrupt' ? 'cancelled' : 'coverage');
+    expect(borrowed.length).toBeGreaterThan(0);
+    expect(borrowed.every((b) => b.every((x) => x === 0))).toBe(true);
+  }
+  const reopened = emptyInbound();
+  await advanceSelfReceiveCooperatively(
+    f.census,
+    f.delivery,
+    reopened,
+    f.route,
+    (u) => verifyInboundCoverage(f.rows, u),
+    async () => {},
+  );
+  expect(reopened).toEqual(expected);
 });

@@ -108,3 +108,30 @@ export function advanceSelfReceive(
     for (const capsule of capsules.values()) eraseCapsule(capsule);
   }
 }
+
+/** Audit-only projection. The caller keeps this state private until all originals are checked.
+ * Copy originals before the synchronous projector erases its decoded capsules. No vector-only
+ * check or incremental coverage cache substitutes for the reference proof. */
+export async function advanceSelfReceiveCooperatively(
+  census: DeliveryCensus,
+  delivery: DeliveryState,
+  inbound: InboundState,
+  route: CaptureRoute,
+  checkCoverage: (updates: readonly Bytes[]) => void,
+  checkpoint: () => Promise<void>,
+): Promise<void> {
+  const originals: Bytes[] = [];
+  try {
+    await checkpoint();
+    advanceSelfReceive(census, delivery, inbound, route, (updates) => {
+      for (const update of updates) originals.push(update.slice());
+    });
+    for (const update of originals) {
+      await checkpoint();
+      checkCoverage([update]);
+    }
+    await checkpoint();
+  } finally {
+    for (const update of originals) update.fill(0);
+  }
+}

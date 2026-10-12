@@ -1,0 +1,43 @@
+vite v8.1.5 building client environment for production...
+[2Ktransforming...✓ 442 modules transformed.
+
+(!) outDir /tmp/done-foreground-stall-20261012/final-dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/local.html                                   1.07 kB │ gzip:   0.46 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/index.html                                   2.01 kB │ gzip:   0.78 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/main-XV5ccYkD.css                    33.22 kB │ gzip:   7.02 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/checkpointTimeline-gol_R3LA.js        0.58 kB │ gzip:   0.39 kB │ map:     2.20 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/accountProgressCustody-BMxAW_16.js    1.70 kB │ gzip:   0.89 kB │ map:     6.07 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/custodyCrypto-C44ppXTm.js             4.78 kB │ gzip:   1.88 kB │ map:    17.71 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/membershipLocator-CpKtwrZa.js         5.21 kB │ gzip:   1.67 kB │ map:    16.78 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/rotationObservation-9mf2dcBy.js       6.69 kB │ gzip:   2.58 kB │ map:    19.51 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/accountRotation-k-BAXbGX.js           7.83 kB │ gzip:   3.43 kB │ map:    29.61 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/preload-helper-DfKBSWen.js            8.34 kB │ gzip:   3.59 kB │ map:    24.38 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/historyOwner-BNWavMWZ.js             10.60 kB │ gzip:   3.64 kB │ map:    36.03 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/ceremonyVault-DWmPNHKe.js            10.61 kB │ gzip:   3.96 kB │ map:    36.74 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/accountAccess-CaACqe5r.js            13.00 kB │ gzip:   4.69 kB │ map:    54.01 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/membershipSource-5u3vL_68.js         14.44 kB │ gzip:   5.16 kB │ map:    50.75 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/LocalApp-BD7tL9X6.js                 16.31 kB │ gzip:   6.02 kB │ map:    49.22 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/deviceRemovalVault-CxkOioE0.js       21.68 kB │ gzip:   7.23 kB │ map:    74.35 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/AccountRecoveryApp-DLcFWQ_K.js       29.20 kB │ gzip:   9.89 kB │ map:    96.17 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/ceremonyNavigation-qkjCodn1.js       34.87 kB │ gzip:  12.24 kB │ map:   118.08 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/promotionRecord-CzQY-cpS.js          37.92 kB │ gzip:  12.46 kB │ map:   136.47 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/AccountSetupApp-Bn5acA9j.js          39.35 kB │ gzip:  13.27 kB │ map:   113.44 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/localGenesisStorage-DrOQ5D-5.js      68.47 kB │ gzip:  22.86 kB │ map:   209.97 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/joinedAccount-BUYrwui-.js            74.27 kB │ gzip:  23.07 kB │ map:   272.16 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/AccountEnrollmentApp-BkB5qSPo.js     79.48 kB │ gzip:  23.45 kB │ map:   263.55 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/AccountDevices-CV0anTBj.js           99.13 kB │ gzip:  30.99 kB │ map:   380.93 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/admissionHistory-Co1JuEtq.js        102.77 kB │ gzip:  25.50 kB │ map:   347.66 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/admissionDocument-BSFJidsu.js       137.23 kB │ gzip:  42.72 kB │ map:   816.93 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/main-BBTxnt36.js                    283.71 kB │ gzip:  92.01 kB │ map: 1,249.57 kB
+../../../../../../tmp/done-foreground-stall-20261012/final-dist/assets/localGenesis-CpF-Aly7.js            682.66 kB │ gzip: 236.90 kB │ map: 2,814.97 kB
+
+[33m[PLUGIN_TIMINGS] [0mYour build spent significant time in plugins. Here is a breakdown:
+  - @rolldown/plugin-babel (88%)
+  - vite:css (8%)
+See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.
+
+✓ built in 4.28s
