@@ -13582,3 +13582,39 @@ the narrowed legacy comparison has the same 15 failures in 20 tests on both base
 Attribute open/read/close and scheduling waits before another IO or final-fence repair. Keep fresh
 checks and avoid holding storage while waiting behind a forced local write. Local retention remains
 design-only; the other seat's `docs/progress.md` is unchanged.
+
+
+### Fresh final-authority read attribution — 2026-10-12
+
+**Boundary.** Membership-proof yielding and one-operation reuse are committed **signed `b60d535d`**
+(signature verified `G`). This follow-up is investigation only; runtime, complete authority checks,
+undo and deployment are unchanged. Release validation remains paused.
+
+**Evidence.** Four restored diagnostic sessions separate opening, layout/cursor transactions, value
+retrieval, budget yields, close calls and continuation time inside each fresh check. Unsampled active
+peer/backlog final-read medians are **31.2 / 24.9 ms**: opening **15.6 / 13.5 ms**, cursor transaction
+**11.0 / 9.0 ms**, yields **0.7 / 0.7 ms**. Opening accounts for **43% / 47%** of total read elapsed
+and cursor transactions **53% / 46%**; neither meets the prospective >50%-in-both dominance rule.
+Yields account for only **3.0% / 5.5%**; accounting residual is below 2% in every session. Each read
+returns four rows; median value-getter time is **3.3 / 3.0 ms**, nested inside the transaction.
+
+**Interpretation.** Other authority checks in all four sessions open the same database in **0.9 ms**
+median. Both sampled runs show React/UI work during final opening spans: **66/151 and 112/277**
+samples, with only one idle sample in each; `(program)` remains unclassified. The UI overlap survives
+excluding interval edges by the clock-alignment uncertainty. Source inspection identifies a matching
+path: admission queue status changes call `setStatus`, replace the workspace-wide context, and rerender
+cards/Goals/collections/menu while the final read is outstanding. This is a testable contention
+hypothesis, not proof that the entire opening delay is UI work or removable by connection reuse.
+
+**Checks/next.** All four sessions preserve exact writing, undo/redo, peer text, export convergence and
+cold offline replay; completed typing account requests are HTTP 200 and no page errors occur. The
+initial instrumentation build's ambiguous abort anchor was fixed before running; both build logs are
+retained. Every final job matches exactly one timed check, and disjoint elapsed accounting is checked.
+The [packet](./performance-experiments/2026-10-12-authority-read/README.md) pins numeric evidence, profiles,
+source and bundle identities. No runtime tests were broadened for this diagnostic-only phase.
+
+Recommend isolating queue-status subscriptions from stable workspace content/actions, preserving
+pending/error visibility, blocked-state controls, live editors, all fresh checks and undo. Remeasure
+before deciding on custody connection reuse; its lifecycle and benefit remain unproven. No repair or
+release qualification is claimed. This packet is local, uncommitted and unpublished; the other seat's
+`docs/progress.md` is unchanged.
