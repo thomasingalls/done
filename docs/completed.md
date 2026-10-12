@@ -13195,3 +13195,30 @@ reference rollback. CPU-4x visible-frame p95 improves **128.2→57.1 ms** but st
 background tasks, UI/Markdown projection, large target texts, structural/undo cost, local history
 retention and physical-phone evidence remain. No generalized validation or deployment campaign
 was resumed. `docs/progress.md` is unchanged; publication preparation follows review/commit of this phase.
+
+
+### Account performance — signed candidate and publication preparation
+
+**Date:** 2026-10-12 · **Source:** signed `9465fb04` · **Stage:** publication preparation
+
+**Exit.** The direct text-admission repair and its evidence are committed signed as **`9465fb04`**.
+The [publication handoff](./account-performance-publication.md) groups the completed own-stream,
+receipt grouping/prefetch, interruptible audit, received-history opening and text-admission phases.
+The exact clean-source ARM64 image `done-public:9465fb04` has index
+`sha256:15a11309fd43a3a01d4d377a598dc3e1152734e309664d3d258b600e05ed9963`.
+
+**Evidence.** Build/type/pinned-Yjs/origin/bundle checks and all 31 existing Node 24 container
+runtime/gateway, backup, restore and maintenance checks pass. Disposable container smoke verifies
+exclusive ownership, every precache response and retained state after abrupt restart. The extracted
+frontend passes a two-device text/remote-preserving undo/offline reopening journey, plus the retained
+120-card, 600-position journey with 75 ms/request delay, concurrent writing, full export equality
+and offline cold opening. Browser services run host Node 26.11.1 from the signed archive; this is
+not a browser check against the container API. [Artifact hashes and logs](./development-evidence/2026-10-12-receive-publication/evidence.json)
+record that boundary. No schema, wire or receipt-format change; the deployed `77657e23` pin remains
+a normal rollback.
+
+**Remaining.** Merge the application PR preserving signed commits, publish the exact tested image,
+then prepare/merge the ol-infra pin PR and verify rollout plus actual devices. Nothing is pushed to
+the registry or deployed at this checkpoint. CPU-4x input and cold-open budgets remain unmet;
+physical-phone performance, local history retention and remaining background/UI work stay open.
+Release validation remains paused and `docs/progress.md` is unchanged.

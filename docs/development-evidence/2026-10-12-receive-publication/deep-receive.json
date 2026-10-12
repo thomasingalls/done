@@ -1,0 +1,49 @@
+{
+  "phase": "passed",
+  "delayMs": 75,
+  "diagnostic": false,
+  "started": 1791802864791,
+  "caughtAt": 1791802971727,
+  "coldMs": 2861.2000007629395,
+  "exportBytes": 54211,
+  "live": [
+    {
+      "ms": 2833
+    },
+    {
+      "ms": 2846
+    },
+    {
+      "ms": 2886
+    },
+    {
+      "ms": 2365
+    },
+    {
+      "ms": 2352
+    },
+    {
+      "ms": 2348
+    },
+    {
+      "ms": 2347
+    },
+    {
+      "ms": 2897
+    },
+    {
+      "ms": 2876
+    },
+    {
+      "ms": 2849
+    },
+    {
+      "ms": 2880
+    },
+    {
+      "ms": 2883
+    }
+  ],
+  "catchupMs": 106936,
+  "measurementScope": "One publication functional check, not a fresh comparative performance experiment"
+}

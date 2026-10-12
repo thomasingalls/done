@@ -1,0 +1,187 @@
+{
+  "scope": "Signed-source publication preparation; no registry push or deployment",
+  "sourceCommit": "9465fb045e489bdbb2453f6c87da307b7d04f60a",
+  "applicationMain": "1734b2f59e3fe732cab480e94cb5d9a14503e030",
+  "cleanGitArchive": true,
+  "sourceArchiveSha256": "01a05c3b38fdf0fd2a5a0ddcb8193d4659d35648013d64bcc0028952b7fd23c7",
+  "image": "done-public:9465fb04",
+  "localIndexDigest": "sha256:15a11309fd43a3a01d4d377a598dc3e1152734e309664d3d258b600e05ed9963",
+  "runtimeManifestDigest": "sha256:896d3d4e6c2246bf249764250e4890cee10bbd5ab4ac461f18b87e177729bb6c",
+  "platform": "linux/arm64",
+  "node": "24.18.0",
+  "buildDate": "2026-10-12",
+  "published": false,
+  "buildPassed": true,
+  "initialJsGzipKB": 136.7,
+  "existingContainerTests": {
+    "runtimeGateway": 14,
+    "backup": 5,
+    "restore": 6,
+    "maintenance": 6
+  },
+  "smoke": {
+    "image": "done-public:9465fb04",
+    "started": "2026-10-12T10:59:29.584Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:15a11309fd43a3a01d4d377a598dc3e1152734e309664d3d258b600e05ed9963",
+    "platform": "linux/arm64",
+    "sourceRevision": "9465fb045e489bdbb2453f6c87da307b7d04f60a",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 34,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-12T10:59:36.129Z"
+  },
+  "browser": [
+    {
+      "test": "Account text undo spans received edits and journal-only offline reopening",
+      "status": "passed",
+      "durationMs": 24136
+    }
+  ],
+  "deepReceivedJourney": {
+    "phase": "passed",
+    "delayMs": 75,
+    "diagnostic": false,
+    "started": 1791802864791,
+    "caughtAt": 1791802971727,
+    "coldMs": 2861.2000007629395,
+    "exportBytes": 54211,
+    "live": [
+      {
+        "ms": 2833
+      },
+      {
+        "ms": 2846
+      },
+      {
+        "ms": 2886
+      },
+      {
+        "ms": 2365
+      },
+      {
+        "ms": 2352
+      },
+      {
+        "ms": 2348
+      },
+      {
+        "ms": 2347
+      },
+      {
+        "ms": 2897
+      },
+      {
+        "ms": 2876
+      },
+      {
+        "ms": 2849
+      },
+      {
+        "ms": 2880
+      },
+      {
+        "ms": 2883
+      }
+    ],
+    "catchupMs": 106936,
+    "measurementScope": "One publication functional check, not a fresh comparative performance experiment"
+  },
+  "browserScope": "Exact extracted runtime frontend; disposable host Node 26.11.1 services from signed archive, not container API",
+  "compatibility": {
+    "accountSchema": 26,
+    "authoritySchema": 1,
+    "schemaChanges": false,
+    "storedReceiptChanges": false,
+    "wireFormatChanges": false,
+    "limit": "Focused checks and retained old-reader replay, not exhaustive mixed-version qualification"
+  },
+  "releaseValidation": "paused",
+  "next": [
+    "Merge application PR preserving signed commits",
+    "Publish and verify this exact tested image",
+    "Prepare ol-infra immutable image pin PR",
+    "After operator merges, reconcile and check rollout/backup health and actual devices"
+  ],
+  "artifacts": [
+    {
+      "path": "README.md",
+      "bytes": 2137,
+      "sha256": "85d0b8011b1ff9582cb4abbf86084b9ca9c916367f1c6972b1627f376108ac89"
+    },
+    {
+      "path": "browser-source-files.json",
+      "bytes": 991,
+      "sha256": "9ee3e8052cd31ff9d2256b9eba31d51d6ef191f21df9ea075d099d335915eae4"
+    },
+    {
+      "path": "build-metadata.json",
+      "bytes": 1822,
+      "sha256": "2accc52a8f5d2322012f9b8e54b4e01b2065b99f19cb17eddff918b52f83bab7"
+    },
+    {
+      "path": "container-build.log.gz",
+      "bytes": 5579,
+      "sha256": "c80e48d893f84711f2ebfd384c25d09f63cdcaffa0ec5f0dcecec7bcbd5ac3d8",
+      "uncompressedBytes": 17029,
+      "uncompressedSha256": "b693e081a996ff322632a433c69de6fc8f67cb46c559f96f609b3f4fff172ec2"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1124,
+      "sha256": "68e01e93677dc8fe1a9f8d76438085445546055aa63ac47a9aeb9cd69d24626c"
+    },
+    {
+      "path": "container-smoke.log.gz",
+      "bytes": 477,
+      "sha256": "777247827b43ebee0909b06c64c8471b1e6db20ef484328fe98f6da3de11ae01",
+      "uncompressedBytes": 744,
+      "uncompressedSha256": "8e828bf21e2654fdcece520009364f6807636da0ceb2a8a5a5234c6218670f70"
+    },
+    {
+      "path": "deep-receive.json",
+      "bytes": 682,
+      "sha256": "1bb9d8793308657b62a593ac794a146b5aea66d37ee2a54bc4f37325b28c0594"
+    },
+    {
+      "path": "deep-receive.log.gz",
+      "bytes": 282,
+      "sha256": "2020669070ac821a30f13daa30877d7cddf642bcf055e20c2fd59ff4339e5f25",
+      "uncompressedBytes": 367,
+      "uncompressedSha256": "5e69b796f4362378209ed0018b2be3f0d4612004ed3291d54e628be225d84358"
+    },
+    {
+      "path": "frontend-files.json",
+      "bytes": 8659,
+      "sha256": "ca818ccbc9dceaaa2cd48f9ad509fbcdfe8722da0de78a75d776226b9e98db9b"
+    },
+    {
+      "path": "image-identity.json",
+      "bytes": 235,
+      "sha256": "4896e066a8b6dd4acc0e514d9dd9c5563acea73375955d5c473851282ccd09d9"
+    },
+    {
+      "path": "packaged-text.json",
+      "bytes": 149,
+      "sha256": "a309cd6606875ffa4ea64c1f4e3bbe4b57d884024615b3caf58d521ebdea5b19"
+    },
+    {
+      "path": "packaged-text.log.gz",
+      "bytes": 281,
+      "sha256": "a00b6f032fead268d748e5aa9b713a646120152e36b1852a6b7d43559acafa23",
+      "uncompressedBytes": 361,
+      "uncompressedSha256": "c4f6825f60ceec66d862e4bca22ca5af9d9e000d9b2bcbad2e302f6a82c2a8ff"
+    }
+  ]
+}

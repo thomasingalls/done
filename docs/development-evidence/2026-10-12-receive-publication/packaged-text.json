@@ -1,0 +1,7 @@
+[
+  {
+    "test": "Account text undo spans received edits and journal-only offline reopening",
+    "status": "passed",
+    "durationMs": 24136
+  }
+]
