@@ -1,0 +1,614 @@
+{
+  "phase": "passed",
+  "diagnostic": true,
+  "delayMs": 0,
+  "catchupMs": 306068,
+  "primaryDeadlineMissed": false,
+  "counts": {
+    "A /account/session/v1/acknowledge": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 13,
+        "mean": 6.5,
+        "p50": 10,
+        "p95": 10,
+        "max": 10
+      }
+    },
+    "B /account/session/v1/acknowledge": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 10,
+        "mean": 5,
+        "p50": 8,
+        "p95": 8,
+        "max": 8
+      }
+    },
+    "A /account/session/v1/renew": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 8,
+        "mean": 4,
+        "p50": 6,
+        "p95": 6,
+        "max": 6
+      }
+    },
+    "B /account/session/v1/renew": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 11,
+        "mean": 5.5,
+        "p50": 9,
+        "p95": 9,
+        "max": 9
+      }
+    },
+    "A /account/grant/v1/begin": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 79,
+        "mean": 39.5,
+        "p50": 55,
+        "p95": 55,
+        "max": 55
+      }
+    },
+    "B /account/grant/v1/begin": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 75,
+        "mean": 37.5,
+        "p50": 53,
+        "p95": 53,
+        "max": 53
+      }
+    },
+    "B /account/grant/v1/finish": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 8,
+        "mean": 4,
+        "p50": 5,
+        "p95": 5,
+        "max": 5
+      }
+    },
+    "B /account/notifications/v1/subscribe": {
+      "n": 1,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 5,
+        "mean": 5,
+        "p50": 5,
+        "p95": 5,
+        "max": 5
+      }
+    },
+    "A /account/grant/v1/finish": {
+      "n": 2,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 2,
+        "total": 7,
+        "mean": 3.5,
+        "p50": 4,
+        "p95": 4,
+        "max": 4
+      }
+    },
+    "A /account/notifications/v1/subscribe": {
+      "n": 1,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 4,
+        "mean": 4,
+        "p50": 4,
+        "p95": 4,
+        "max": 4
+      }
+    },
+    "A /account/delivery/submit": {
+      "n": 11,
+      "non200": 0,
+      "failed": 2,
+      "requestToHeadersMs": {
+        "n": 11,
+        "total": 791,
+        "mean": 71.91,
+        "p50": 32,
+        "p95": 472,
+        "max": 472
+      }
+    },
+    "B /account/membership/v2/discover": {
+      "n": 57,
+      "non200": 0,
+      "failed": 16,
+      "requestToHeadersMs": {
+        "n": 57,
+        "total": 3001,
+        "mean": 52.65,
+        "p50": 51,
+        "p95": 58,
+        "max": 90
+      }
+    },
+    "B /account/history/v1/checkpoint": {
+      "n": 57,
+      "non200": 0,
+      "failed": 13,
+      "requestToHeadersMs": {
+        "n": 57,
+        "total": 4739,
+        "mean": 83.14,
+        "p50": 68,
+        "p95": 74,
+        "max": 498
+      }
+    },
+    "B /account/delivery/read-v2 peer": {
+      "n": 600,
+      "non200": 0,
+      "failed": 135,
+      "requestToHeadersMs": {
+        "n": 600,
+        "total": 14803,
+        "mean": 24.67,
+        "p50": 24,
+        "p95": 28,
+        "max": 36
+      }
+    },
+    "A /account/membership/v2/discover": {
+      "n": 6,
+      "non200": 0,
+      "failed": 0,
+      "requestToHeadersMs": {
+        "n": 6,
+        "total": 358,
+        "mean": 59.67,
+        "p50": 59,
+        "p95": 71,
+        "max": 71
+      }
+    },
+    "A /account/history/v1/checkpoint": {
+      "n": 6,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 6,
+        "total": 469,
+        "mean": 78.17,
+        "p50": 78,
+        "p95": 85,
+        "max": 85
+      }
+    },
+    "A /account/delivery/read-v2 self": {
+      "n": 7,
+      "non200": 0,
+      "failed": 3,
+      "requestToHeadersMs": {
+        "n": 7,
+        "total": 193,
+        "mean": 27.57,
+        "p50": 28,
+        "p95": 31,
+        "max": 31
+      }
+    },
+    "B /account/delivery/submit": {
+      "n": 1,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 1,
+        "total": 30,
+        "mean": 30,
+        "p50": 30,
+        "p95": 30,
+        "max": 30
+      }
+    },
+    "A /account/delivery/read-v2 peer": {
+      "n": 7,
+      "non200": 0,
+      "failed": 1,
+      "requestToHeadersMs": {
+        "n": 7,
+        "total": 195,
+        "mean": 27.86,
+        "p50": 27,
+        "p95": 31,
+        "max": 31
+      }
+    },
+    "B /account/delivery/read-v2 self": {
+      "n": 150,
+      "non200": 0,
+      "failed": 30,
+      "requestToHeadersMs": {
+        "n": 150,
+        "total": 3657,
+        "mean": 24.38,
+        "p50": 24,
+        "p95": 29,
+        "max": 35
+      }
+    }
+  },
+  "receiverNetworkUnionMs": 26339,
+  "peerIntervalMs": {
+    "n": 599,
+    "total": 304257,
+    "mean": 507.94,
+    "p50": 453,
+    "p95": 765,
+    "max": 1851
+  },
+  "peerIntervalsBy100": [
+    {
+      "from": 0,
+      "to": 100,
+      "n": 92,
+      "total": 42487,
+      "mean": 461.82,
+      "p50": 392,
+      "p95": 688,
+      "max": 1328
+    },
+    {
+      "from": 100,
+      "to": 200,
+      "n": 100,
+      "total": 44902,
+      "mean": 449.02,
+      "p50": 369,
+      "p95": 819,
+      "max": 859
+    },
+    {
+      "from": 200,
+      "to": 300,
+      "n": 100,
+      "total": 48104,
+      "mean": 481.04,
+      "p50": 400,
+      "p95": 643,
+      "max": 889
+    },
+    {
+      "from": 300,
+      "to": 400,
+      "n": 100,
+      "total": 51427,
+      "mean": 514.27,
+      "p50": 425,
+      "p95": 775,
+      "max": 956
+    },
+    {
+      "from": 400,
+      "to": 500,
+      "n": 100,
+      "total": 54572,
+      "mean": 545.72,
+      "p50": 455,
+      "p95": 725,
+      "max": 802
+    },
+    {
+      "from": 500,
+      "to": 600,
+      "n": 100,
+      "total": 58857,
+      "mean": 588.57,
+      "p50": 480,
+      "p95": 822,
+      "max": 1851
+    },
+    {
+      "from": 600,
+      "to": 700,
+      "n": 7,
+      "total": 3908,
+      "mean": 558.29,
+      "p50": 470,
+      "p95": 841,
+      "max": 841
+    }
+  ],
+  "backendRoundtripMs": {
+    "/account/session/v1/acknowledge": {
+      "n": 4,
+      "total": 6,
+      "mean": 1.5,
+      "p50": 2,
+      "p95": 3,
+      "max": 3
+    },
+    "/account/session/v1/renew": {
+      "n": 4,
+      "total": 5,
+      "mean": 1.25,
+      "p50": 2,
+      "p95": 2,
+      "max": 2
+    },
+    "/account/grant/v1/begin": {
+      "n": 4,
+      "total": 144,
+      "mean": 36,
+      "p50": 49,
+      "p95": 52,
+      "max": 52
+    },
+    "/account/grant/v1/finish": {
+      "n": 4,
+      "total": 7,
+      "mean": 1.75,
+      "p50": 2,
+      "p95": 3,
+      "max": 3
+    },
+    "/account/delivery/submit": {
+      "n": 12,
+      "total": 796,
+      "mean": 66.33,
+      "p50": 30,
+      "p95": 469,
+      "max": 469
+    },
+    "/account/membership/v2/discover": {
+      "n": 63,
+      "total": 3255,
+      "mean": 51.67,
+      "p50": 50,
+      "p95": 61,
+      "max": 88
+    },
+    "/account/history/v1/checkpoint": {
+      "n": 63,
+      "total": 5101,
+      "mean": 80.97,
+      "p50": 67,
+      "p95": 78,
+      "max": 496
+    },
+    "/account/delivery/read-v2": {
+      "n": 764,
+      "total": 17539,
+      "mean": 22.96,
+      "p50": 22,
+      "p95": 27,
+      "max": 35
+    }
+  },
+  "metrics": {
+    "full": 1,
+    "incremental": 1217,
+    "sourceDecodes": 1,
+    "events": 607,
+    "audits": 1,
+    "mismatches": 0,
+    "timings": {
+      "full": {
+        "calls": 1,
+        "totalMs": 511.7
+      },
+      "incremental": {
+        "calls": 1215,
+        "totalMs": 4684.3
+      },
+      "coverageCheck": {
+        "calls": 127,
+        "totalMs": 248.1
+      },
+      "coverageRebuild": {
+        "calls": 3,
+        "totalMs": 11.9
+      },
+      "compaction": {
+        "calls": 2,
+        "totalMs": 712.8
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 1218,
+      "inboundVerifications": 1216,
+      "inboundCensuses": 1,
+      "deliveryPrefixLinks": 3,
+      "coverageBaselines": 0,
+      "loads": 4286,
+      "loadedRows": 2506611,
+      "loadedBytes": 8552924158,
+      "authorityChecks": 5793,
+      "positions": 1,
+      "sourceParses": 14,
+      "sourceParseBytes": 13720,
+      "recordCopies": 3928071,
+      "recordCopyBytes": 13400657604,
+      "journalFlushes": 4,
+      "dirtyJournalFlushes": 1,
+      "projectionChecks": 601
+    },
+    "costs": {
+      "physicalRead": {
+        "calls": 4285,
+        "totalMs": 28887.1
+      },
+      "copyRecords": {
+        "calls": 7326,
+        "totalMs": 2529.6
+      },
+      "loadElapsed": {
+        "calls": 4286,
+        "totalMs": 62160.4
+      },
+      "installClone": {
+        "calls": 1215,
+        "totalMs": 3203.6
+      },
+      "storageQueueWait": {
+        "calls": 3195,
+        "totalMs": 1008.1
+      },
+      "readProjection": {
+        "calls": 4290,
+        "totalMs": 2010.4
+      },
+      "storageOperation": {
+        "calls": 3194,
+        "totalMs": 277458.4
+      },
+      "waitLocal": {
+        "calls": 1,
+        "totalMs": 0
+      },
+      "admissionLocal": {
+        "calls": 1,
+        "totalMs": 11.9
+      },
+      "waitFlush": {
+        "calls": 4,
+        "totalMs": 0.1
+      },
+      "admissionFlush": {
+        "calls": 4,
+        "totalMs": 57.5
+      },
+      "validateUpdates": {
+        "calls": 19,
+        "totalMs": 18.8
+      },
+      "sourceParse": {
+        "calls": 14,
+        "totalMs": 3
+      },
+      "waitRemote": {
+        "calls": 600,
+        "totalMs": 8.8
+      },
+      "admissionRemote": {
+        "calls": 600,
+        "totalMs": 120657.4
+      },
+      "envelopeSelection": {
+        "calls": 3,
+        "totalMs": 0.7
+      }
+    }
+  },
+  "diagnosticCosts": {
+    "transaction.readonly": {
+      "calls": 53361,
+      "totalMs": 87146.8
+    },
+    "crypto.importKey": {
+      "calls": 55249,
+      "totalMs": 320.7
+    },
+    "crypto.deriveKey": {
+      "calls": 36638,
+      "totalMs": 345.3
+    },
+    "crypto.decrypt": {
+      "calls": 15323,
+      "totalMs": 132
+    },
+    "crypto.verify": {
+      "calls": 48122,
+      "totalMs": 7006.1
+    },
+    "crypto.digest": {
+      "calls": 41289,
+      "totalMs": 171.5
+    },
+    "crypto.sign": {
+      "calls": 2081,
+      "totalMs": 46.5
+    },
+    "crypto.deriveBits": {
+      "calls": 228,
+      "totalMs": 1.5
+    },
+    "accountInbound.ts.verify": {
+      "calls": 1350,
+      "totalMs": 952.8
+    },
+    "transaction.readwrite": {
+      "calls": 1218,
+      "totalMs": 782.5
+    },
+    "inboundLedger.ts.verifyInboundLedger": {
+      "calls": 1216,
+      "totalMs": 960.3
+    },
+    "accountReceive.ts.assertCurrent": {
+      "calls": 5792,
+      "totalMs": 195078.1
+    },
+    "crypto.encrypt": {
+      "calls": 1210,
+      "totalMs": 14.5
+    },
+    "accountReceive.ts.state": {
+      "calls": 4258,
+      "totalMs": 218509.4
+    },
+    "accountReceive.ts.prepareRead": {
+      "calls": 750,
+      "totalMs": 60376.5
+    }
+  },
+  "liveDelayMs": {
+    "n": 12,
+    "total": 26353,
+    "mean": 2196.08,
+    "p50": 2348,
+    "p95": 2389,
+    "max": 2389
+  },
+  "coldMs": 6993.800001144409,
+  "heap": 21113516,
+  "exportBytes": 54211,
+  "longTasks": {
+    "n": 1,
+    "total": 564,
+    "mean": 564,
+    "p50": 564,
+    "p95": 564,
+    "max": 564
+  }
+}

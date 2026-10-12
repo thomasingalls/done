@@ -13025,3 +13025,25 @@ statements describe when each experiment ran and are superseded by this checkpoi
 
 Nothing is deployed or pushed by this checkpoint. Release validation remains paused. The unrelated
 root review documents and the other seat's `docs/progress.md` are not part of this commit.
+
+### Account receiving — current-build attribution before batching
+
+**Date:** 2026-10-12 · **Commit:** working tree on `1734b2f5` · **Stage:** bounded measurement
+
+**Exit.** Committed the actual-device sync recovery checkpoint, signed, as `7f76a59` in `ol-infra`.
+The unchanged deployed frontend `77657e23` matches all 35 checked rollout asset hashes. The
+[attribution packet](./performance-experiments/2026-10-12-receive-attribution/README.md) retains
+ordinary local and +75 ms/request observations plus a separate diagnostic profile on the same
+synthetic 600-position, substantial-workspace fixture. Complete two-way exports and offline
+reopening pass in all three. Failed setup/interrupted harness attempts are retained separately.
+
+**Result.** Catch-up takes 308.307/374.759 seconds in ordinary builds. The profile points to repeated
+authority verification, marker/custody encoding and content loads; incremental coverage takes only
+0.248 seconds. Grouping must amortize owned work, not merely reduce commit count. Current-format
+grouping is preferred over a new receipt representation, with own-poll and marker-comparison work
+first. Deep received-history opens remain about 6.8 seconds; no phone or activation claim is made.
+
+**Remaining.** Implement and measure the selected prototype with focused authority/abort/retry and
+compatibility controls. No runtime or stored-format change in this phase; release validation remains
+paused. The parallel disk inventory attributes about 18.3 GB of recent retained project artifacts to
+temporary copies/builds and linked Docker cache. No deletion occurred. `docs/progress.md` is untouched.

@@ -1,0 +1,180 @@
+{
+  "note": "SHA-256 of retained packet files, excluding this manifest. No private snapshots or credentials included.",
+  "files": [
+    {
+      "path": "baseline-dist-sha256.json",
+      "bytes": 9367,
+      "sha256": "65c42a180035df262f54684a8c958bfee82ab8ec0da06cf8ccd871699cb8bfad"
+    },
+    {
+      "path": "code-assessment.md",
+      "bytes": 3698,
+      "sha256": "c747054e23903cb78adc97e82037034955fbc1d2cfbe0a5fa3e18977cbeee701"
+    },
+    {
+      "path": "diagnostic-dist-sha256.json",
+      "bytes": 9367,
+      "sha256": "fccc6be7a218eb664a2a30041e25748434edb0135c518caeac4fa8475b218810"
+    },
+    {
+      "path": "disk-usage.md",
+      "bytes": 6335,
+      "sha256": "a12f7ca108d230464c4ef20e384f2b25ee21c5431498c5d86105928c1b3b709e"
+    },
+    {
+      "path": "external-results.json",
+      "bytes": 7055,
+      "sha256": "7c1f0101855d6ec3e4984821f1e534c8021d5dce5053ac233eef46eff46dd132"
+    },
+    {
+      "path": "identity.json",
+      "bytes": 945,
+      "sha256": "89f4dbf0cfa42d6e63510fb5c890e6c08cf69a7aad1731876d89754014d70976"
+    },
+    {
+      "path": "logs/baseline-build.log",
+      "bytes": 657,
+      "sha256": "f55d03093ed5c46e6ff25fa416d545de95dafb77e6ace6b937aee468454dfd84"
+    },
+    {
+      "path": "logs/baseline-direct-build.log",
+      "bytes": 4848,
+      "sha256": "1d3ff807bdb952060f615125de9a5ebff54445d018d0e27a1b633b05dcb40769"
+    },
+    {
+      "path": "logs/diagnostic-1.log",
+      "bytes": 575,
+      "sha256": "9e297a1850bdbdcb9e6056954da0066225845f11d64fe0471153f8f28de8dc7e"
+    },
+    {
+      "path": "logs/diagnostic-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/diagnostic-direct-build-2.log",
+      "bytes": 4906,
+      "sha256": "d848a74ee7b0e2c81dfb63aba00b3d3329d8732a33b0a549ab93de9eb130218a"
+    },
+    {
+      "path": "logs/diagnostic-direct-build.log",
+      "bytes": 4332,
+      "sha256": "6cc3edbbee47c9d567737fe458fa67bab9416b7ccaa7412400c8fd9bc1ca29c3"
+    },
+    {
+      "path": "logs/latency-1.log",
+      "bytes": 575,
+      "sha256": "1c21da15cd5cd3057d04b931cb4b9d1b6c2ec718049dc1a8436fdcdf41dc0176"
+    },
+    {
+      "path": "logs/local-1.log",
+      "bytes": 2013,
+      "sha256": "b466232895f475e0b94797a854665bdeb98e194bf4ad915811f4517116e5ae73"
+    },
+    {
+      "path": "logs/local-2.log",
+      "bytes": 575,
+      "sha256": "ecda3a96d352fac7f099e606026f3de5c104687e2c94f315eb1de6d91264a3ed"
+    },
+    {
+      "path": "probe/analyze.mjs",
+      "bytes": 3683,
+      "sha256": "f1e6c7fb67e30f9c9e0dd14fa705866d0b8087f7f96e889b88c027b18b0a1a06"
+    },
+    {
+      "path": "probe/browser-diagnostics.js",
+      "bytes": 1389,
+      "sha256": "089a44bf8864cdecceb03a1852f595477798634f8816b51ae9c4514737d192fe"
+    },
+    {
+      "path": "probe/diagnostic.config.ts",
+      "bytes": 3013,
+      "sha256": "6e3f272f16b94926eff4a8d0c67c14d4e04f5c73a822be394434c70475646822"
+    },
+    {
+      "path": "probe/profile.mjs",
+      "bytes": 2532,
+      "sha256": "870cd265c07192f0a6a70d5d0e594018161e35420e6e7a5c9510b85a4add5c44"
+    },
+    {
+      "path": "probe/receive.config.ts",
+      "bytes": 382,
+      "sha256": "690bf5c743db6ad849a2104d122cbe19c2b8314688a0151274ec113d1a614e82"
+    },
+    {
+      "path": "probe/receive.spec.ts",
+      "bytes": 15631,
+      "sha256": "4e9ca7b6cc51cc070dc23d85448e9aa54d09578ac7affba3897a95c00132b039"
+    },
+    {
+      "path": "probe/runtime.mjs",
+      "bytes": 3628,
+      "sha256": "5d9989f22659312395398c76ae12f371463f62a0e1ecde09587e494863037144"
+    },
+    {
+      "path": "profiles/catchup.cpuprofile.gz",
+      "bytes": 432056,
+      "sha256": "e143e835dad47a2d4cadba671db3aa0f4fc005819688d90e760d4cbf558371cc"
+    },
+    {
+      "path": "profiles/cpu.json",
+      "bytes": 16285,
+      "sha256": "72b481f9b590434d54f60c5a10bc231b27963f9d99a351d2d31be9cda789f986"
+    },
+    {
+      "path": "profiles/diagnostic-maps.tar.gz",
+      "bytes": 1574208,
+      "sha256": "c9f1f37545626fd53e62d44778f6c28f8a3dbe6259a94cfbb3edbd8f677ffece"
+    },
+    {
+      "path": "protocol.md",
+      "bytes": 8009,
+      "sha256": "cebf10794ce47842682800f06b8f30866e6c843635bbdea201a909f4a5b5350e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 12932,
+      "sha256": "8d77bc5aa1b4d632f9d11b8e2b598a6b9493e9cacf0acc3f2193b37dcd014383"
+    },
+    {
+      "path": "samples/diagnostic-1-summary.json",
+      "bytes": 11747,
+      "sha256": "c3d290202739ff288eb8fa193d6ce1d6aa0baa207419c4d0b4e4e28fb571cd8b"
+    },
+    {
+      "path": "samples/diagnostic-1.json.gz",
+      "bytes": 38909,
+      "sha256": "88a9dc12841ee8eb95162500961a686d95f81595258d45223f1b422dd5cfa266"
+    },
+    {
+      "path": "samples/latency-1-summary.json",
+      "bytes": 8143,
+      "sha256": "876be6e58ce40e773d0b19ef7b429395d1f7b2129a4da3a9b8f090f44b9582a8"
+    },
+    {
+      "path": "samples/latency-1.json.gz",
+      "bytes": 40635,
+      "sha256": "604e87033dd0f87e71b8e3e919803166289a07598765648d7bff16bbbabc9243"
+    },
+    {
+      "path": "samples/local-1.json.gz",
+      "bytes": 4718,
+      "sha256": "9757cc443371f8ef732e5a2d6796b99d861d4dce97c642b188c0ea3e2d2e4e13"
+    },
+    {
+      "path": "samples/local-2-summary.json",
+      "bytes": 8056,
+      "sha256": "c7fe4e7b686a949f97f7b9274c0c52b76b3ddc95910027b3810419c18a3cc103"
+    },
+    {
+      "path": "samples/local-2.json.gz",
+      "bytes": 37529,
+      "sha256": "7719a75274e7d321390d75bd4d8652b4f28f25ab9f76ab7d0b05e1469d452217"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 917,
+      "sha256": "2237f254c2eac81677ddaaf69ef5a3ea891777735d62116592beee9b9ed6a7c7"
+    }
+  ]
+}

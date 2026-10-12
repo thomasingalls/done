@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-10-11T22:57:47.734Z",
+  "runtimeUnchanged": true,
+  "completedMeasuredJourneys": 3,
+  "archivedSummaryReproduction": {
+    "observations": 3,
+    "cpuProfile": true
+  },
+  "checks": [
+    "Ordinary and diagnostic Vite builds passed using installed CLI.",
+    "All three journeys completed backlog replay, writer and receiver edits, full export equality and offline reopen.",
+    "Archived sanitized samples reproduce all three numeric summaries exactly.",
+    "Archived CPU profile and source maps reproduce mapped aggregate exactly.",
+    "Changed-file formatter check, JavaScript syntax checks and git diff whitespace check passed."
+  ],
+  "notRun": [
+    "General conformance campaign",
+    "Release validation"
+  ],
+  "setupFailuresPreserved": [
+    "pnpm registry identity lookup unavailable",
+    "TypeScript 7 legacy AST API unavailable",
+    "local-1 fixture-date focus timeout"
+  ]
+}

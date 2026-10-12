@@ -1625,3 +1625,26 @@ append during retained checkpoint-cut verification. No client behavior, authenti
 format changes. These are correctness observations, not new performance measurements or qualification.
 The original stopped-receive notice/manual retry journey also passes, including reverse-direction
 editing. The repair is local; no publication has been prepared or deployed.
+
+## 2026-10-12 — Deployed receive attribution before batching
+
+The user confirmed both actual devices on `77657e23` and two-way sync restored; catch-up remains
+slow. The signed recovery checkpoint is `7f76a59f6249a03b822d73de63e96bcf98fb96df` in `ol-infra`.
+The [new attribution packet](./performance-experiments/2026-10-12-receive-attribution/README.md)
+measures that unchanged frontend locally: 600 positions take 308.307 seconds, versus 374.759 seconds
+with 75 ms added per request. A separate diagnostic run takes 306.068 seconds. Each completes both
+directions, export equality and offline reopen; the ordinary deep received-history opens remain
+about 6.8 seconds. These are three individual observations, not phone or public-service measurements.
+
+The diagnostic counts 4,286 content loads and 5,793 authority checks, with 195 seconds accumulated
+inside authority checks versus 0.248 seconds in coverage checks. Inclusive timers overlap. Sampled
+hex self time is 84.9 seconds: 44.5 in marker comparison and 40.3 in custody authentication
+serialization. Read-write transactions accumulate only 0.78 seconds; reducing commits alone misses
+the main cost. Own-stream reads remain 149–150 per 600 useful reads.
+
+Next prototype: redundant own-poll suppression and exact marker comparison without hex, then
+amortized owned processing of existing one-position receipts. Keep receipt formats and per-entry
+authentication intact. Any grouped commit needs ordered witness extension, bounds, expiry and
+authority checks, authenticated readback and abort/retry controls. Coverage and new multi-position
+receipt formats are not selected for this first repair. Runtime remains unchanged; release validation
+stays paused. The packet also records the requested read-only disk investigation; nothing was deleted.
