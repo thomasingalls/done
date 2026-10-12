@@ -5,11 +5,12 @@ import type { NetworkLogin } from '../account/networkLogin';
 import {
   createContext,
   useContext,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useMemo,
-  useRef,
   useState,
+  useSyncExternalStore,
 } from 'react';
 import type { Extension } from '@codemirror/state';
 import { createAdmittedEditor } from '../editor/admittedEditor';
@@ -31,8 +32,6 @@ export interface WorkspaceUi {
   sync?: SyncRuntime | undefined;
   snapshot: WorkspaceSnapshot;
   actorId: string;
-  status: AdmittedWorkspace['status'];
-  error: string;
   storage: string;
   execute(command: WorkspaceCommand, options?: CommandFeedback): Promise<unknown>;
   removeMasterLines(lines: readonly number[], options?: CommandFeedback): Promise<boolean>;
@@ -88,31 +87,8 @@ export const WorkspaceUiProvider = ({
   children: React.ReactNode;
 }) => {
   const [snapshot, setSnapshot] = useState(() => workspace.read());
-  const [status, setStatus] = useState(() => workspace.status);
   const [error, setError] = useState('');
   const [storage, setStorage] = useState('Unknown');
-  const firstRevision = useRef(workspace.status.revision);
-  const requestedPersistence = useRef(false);
-  useEffect(() => {
-    let live = true;
-    void navigator.storage
-      ?.persisted?.()
-      .then((value) => {
-        if (live) setStorage(value ? 'Persistent' : 'Best-effort');
-      })
-      .catch(() => {});
-    return () => {
-      live = false;
-    };
-  }, []);
-  useEffect(() => {
-    if (requestedPersistence.current || status.revision <= firstRevision.current) return;
-    requestedPersistence.current = true;
-    void navigator.storage
-      ?.persist?.()
-      .then((value) => setStorage(value ? 'Persistent' : 'Best-effort'))
-      .catch(() => {});
-  }, [status.revision]);
   useLayoutEffect(() => {
     const update = () => {
       try {
@@ -122,11 +98,9 @@ export const WorkspaceUiProvider = ({
       }
     };
     const unsubscribe = workspace.subscribe(update);
-    const stopStatus = workspace.onStatus(setStatus);
     update();
     return () => {
       unsubscribe();
-      stopStatus();
     };
   }, [workspace]);
   const actions = useMemo(
@@ -192,6 +166,115 @@ export const WorkspaceUiProvider = ({
     }),
     [workspace, registerEditor],
   );
+  // Queue notifications belong to WorkspaceStatus, not this content/actions value.
+  const value = useMemo<WorkspaceUi>(
+    () => ({
+      workspace,
+      sync,
+      snapshot,
+      actorId,
+      storage,
+      ...actions,
+      lock: onLock,
+      accountWorkspace,
+      ...(networkLogin ? { networkLogin } : {}),
+      ...(devices ? { devices } : {}),
+      ...(onShowDevices ? { showDevices: onShowDevices } : {}),
+      ...(accountId ? { accountId } : {}),
+      ...(onSwitchAccount ? { switchAccount: onSwitchAccount } : {}),
+      ...(onConnectAccount ? { connectAccount: onConnectAccount } : {}),
+    }),
+    [
+      workspace,
+      sync,
+      snapshot,
+      actorId,
+      storage,
+      actions,
+      onLock,
+      accountWorkspace,
+      networkLogin,
+      devices,
+      onShowDevices,
+      accountId,
+      onSwitchAccount,
+      onConnectAccount,
+    ],
+  );
+  return (
+    <Context value={value}>
+      {children}
+      {sync && <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} />}
+      <WorkspaceStatus
+        workspace={workspace}
+        error={error}
+        setError={setError}
+        setStorage={setStorage}
+      />
+    </Context>
+  );
+};
+
+/** Availability consumers do not subscribe to pending counts, revisions or maintenance. */
+export const useWorkspaceAdmissionState = (): AdmittedWorkspace['status']['state'] => {
+  const { workspace } = useWorkspaceUi();
+  const read = useCallback(() => workspace.status.state, [workspace]);
+  return useSyncExternalStore(workspace.onStatus, read, read);
+};
+
+/** Keep warnings immediate without rerendering the writing for queue-only notifications. */
+const WorkspaceStatus = ({
+  workspace,
+  error,
+  setError,
+  setStorage,
+}: {
+  workspace: AdmittedWorkspace;
+  error: string;
+  setError: (error: string) => void;
+  setStorage: (storage: string) => void;
+}) => {
+  const [observed, setObserved] = useState(() => ({ workspace, status: workspace.status }));
+  const status = observed.workspace === workspace ? observed.status : workspace.status;
+  const persistence = useMemo(
+    () => ({ firstRevision: workspace.status.revision, requested: false }),
+    [workspace],
+  );
+  // Reset cancellation on owner replacement, not on revision changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const lifetime = useMemo(() => ({ live: false }), [workspace]);
+  useLayoutEffect(() => {
+    lifetime.live = true;
+    const update = (status: AdmittedWorkspace['status']) => setObserved({ workspace, status });
+    const detach = workspace.onStatus(update);
+    update(workspace.status);
+    return () => {
+      lifetime.live = false;
+      detach();
+    };
+  }, [workspace, lifetime]);
+  useEffect(() => {
+    let current = true;
+    void navigator.storage
+      ?.persisted?.()
+      .then((value) => {
+        if (current) setStorage(value ? 'Persistent' : 'Best-effort');
+      })
+      .catch(() => {});
+    return () => {
+      current = false;
+    };
+  }, [workspace, setStorage]);
+  useEffect(() => {
+    if (persistence.requested || status.revision <= persistence.firstRevision) return;
+    persistence.requested = true;
+    void navigator.storage
+      ?.persist?.()
+      .then((value) => {
+        if (lifetime.live) setStorage(value ? 'Persistent' : 'Best-effort');
+      })
+      .catch(() => {});
+  }, [status.revision, persistence, setStorage, lifetime]);
   const blocked = status.state === 'blocked';
   const retry = () => {
     try {
@@ -209,43 +292,18 @@ export const WorkspaceUiProvider = ({
       setError('Wait for the current storage operation before discarding.');
     }
   };
-  return (
-    <Context
-      value={{
-        workspace,
-        sync,
-        snapshot,
-        actorId,
-        status,
-        error,
-        storage,
-        ...actions,
-        lock: onLock,
-        accountWorkspace,
-        ...(networkLogin ? { networkLogin } : {}),
-        ...(devices ? { devices } : {}),
-        ...(onShowDevices ? { showDevices: onShowDevices } : {}),
-        ...(accountId ? { accountId } : {}),
-        ...(onSwitchAccount ? { switchAccount: onSwitchAccount } : {}),
-        ...(onConnectAccount ? { connectAccount: onConnectAccount } : {}),
-      }}
-    >
-      {children}
-      {sync && <SyncNotice sync={sync} {...(networkLogin ? { login: networkLogin } : {})} />}
-      {(blocked || error || status.pendingItems > 0) && (
-        <aside className="workspace-status" role="status">
-          <span>
-            {blocked ? 'Input is waiting for storage.' : error || 'Input is waiting to be saved.'}
-          </span>
-          {blocked && (
-            <>
-              <button onClick={retry}>Retry storage</button>
-              <button onClick={discard}>Discard pending input</button>
-            </>
-          )}
-          {error && !blocked && <button onClick={() => setError('')}>Dismiss</button>}
-        </aside>
+  return blocked || error || status.pendingItems > 0 ? (
+    <aside className="workspace-status" role="status">
+      <span>
+        {blocked ? 'Input is waiting for storage.' : error || 'Input is waiting to be saved.'}
+      </span>
+      {blocked && (
+        <>
+          <button onClick={retry}>Retry storage</button>
+          <button onClick={discard}>Discard pending input</button>
+        </>
       )}
-    </Context>
-  );
+      {error && !blocked && <button onClick={() => setError('')}>Dismiss</button>}
+    </aside>
+  ) : null;
 };

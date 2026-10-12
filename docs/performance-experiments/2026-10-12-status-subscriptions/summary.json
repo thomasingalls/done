@@ -1,0 +1,6710 @@
+[
+  {
+    "session": "reference-silent-1",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 444,
+      "completeInsideKeys": 444,
+      "boundaryOrIncomplete": 0,
+      "finalJobs": 1
+    },
+    "frames": {
+      "n": 600,
+      "total": 10304.3,
+      "median": 16.8,
+      "p95": 20.4,
+      "p99": 23.6,
+      "max": 52.5
+    },
+    "longTasks": {
+      "n": 116,
+      "total": 6673,
+      "median": 56.0,
+      "p95": 68,
+      "p99": 71,
+      "max": 76,
+      "blockingExcess": 873
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 1,
+          "total": 23.3,
+          "median": 23.3,
+          "p95": 23.3,
+          "p99": 23.3,
+          "max": 23.3
+        },
+        "residual": {
+          "n": 1,
+          "total": 0.2,
+          "median": 0.2,
+          "p95": 0.2,
+          "p99": 0.2,
+          "max": 0.2,
+          "percent": 0.86
+        },
+        "parts": {
+          "yield": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          },
+          "open": {
+            "n": 1,
+            "total": 14.3,
+            "median": 14.3,
+            "p95": 14.3,
+            "p99": 14.3,
+            "max": 14.3,
+            "percent": 61.37
+          },
+          "layoutCall": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          },
+          "transaction": {
+            "n": 1,
+            "total": 8.8,
+            "median": 8.8,
+            "p95": 8.8,
+            "p99": 8.8,
+            "max": 8.8,
+            "percent": 37.77
+          },
+          "closeCall": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1,
+            "total": 1,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 1,
+            "total": 5,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1,
+            "total": 4,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1,
+            "total": 2.7,
+            "median": 2.7,
+            "p95": 2.7,
+            "p99": 2.7,
+            "max": 2.7
+          },
+          "valueGetterMs": {
+            "n": 1,
+            "total": 2.7,
+            "median": 2.7,
+            "p95": 2.7,
+            "p99": 2.7,
+            "max": 2.7
+          },
+          "cursorFirstWait": {
+            "n": 1,
+            "total": 1.7,
+            "median": 1.7,
+            "p95": 1.7,
+            "p99": 1.7,
+            "max": 1.7
+          },
+          "cursorLaterWaits": {
+            "n": 1,
+            "total": 3.7,
+            "median": 3.7,
+            "p95": 3.7,
+            "p99": 3.7,
+            "max": 3.7
+          },
+          "completionWait": {
+            "n": 1,
+            "total": 0.7,
+            "median": 0.7,
+            "p95": 0.7,
+            "p99": 0.7,
+            "max": 0.7
+          },
+          "longTaskOverlap": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 1,
+            "total": 0.2,
+            "median": 0.2,
+            "p95": 0.2,
+            "p99": 0.2,
+            "max": 0.2
+          },
+          "authority": {
+            "n": 1,
+            "total": 26.9,
+            "median": 26.9,
+            "p95": 26.9,
+            "p99": 26.9,
+            "max": 26.9
+          },
+          "apply": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 443,
+          "total": 6283.0,
+          "median": 9.1,
+          "p95": 35.4,
+          "p99": 62.0,
+          "max": 68.6
+        },
+        "residual": {
+          "n": 443,
+          "total": 52.1,
+          "median": 0.1,
+          "p95": 0.6,
+          "p99": 0.8,
+          "max": 1.0,
+          "percent": 0.83
+        },
+        "parts": {
+          "yield": {
+            "n": 443,
+            "total": 796.9,
+            "median": 0,
+            "p95": 19.4,
+            "p99": 22.7,
+            "max": 25.9,
+            "percent": 12.68
+          },
+          "open": {
+            "n": 443,
+            "total": 501.8,
+            "median": 0.8,
+            "p95": 2.0,
+            "p99": 10.3,
+            "max": 19.7,
+            "percent": 7.99
+          },
+          "layoutCall": {
+            "n": 443,
+            "total": 25.9,
+            "median": 0,
+            "p95": 0.2,
+            "p99": 0.7,
+            "max": 1.5,
+            "percent": 0.41
+          },
+          "transaction": {
+            "n": 443,
+            "total": 4905.6,
+            "median": 7.8,
+            "p95": 30.9,
+            "p99": 59.3,
+            "max": 65.9,
+            "percent": 78.08
+          },
+          "closeCall": {
+            "n": 443,
+            "total": 0.7,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.4,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 443,
+            "total": 233,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 443,
+            "total": 2215,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 443,
+            "total": 1772,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 443,
+            "total": 1291.2,
+            "median": 2.9,
+            "p95": 3.7,
+            "p99": 4.4,
+            "max": 6.1
+          },
+          "valueGetterMs": {
+            "n": 443,
+            "total": 1196.4,
+            "median": 2.7,
+            "p95": 3.4,
+            "p99": 3.7,
+            "max": 5.4
+          },
+          "cursorFirstWait": {
+            "n": 443,
+            "total": 1103.6,
+            "median": 1.6,
+            "p95": 6.6,
+            "p99": 23.1,
+            "max": 41.3
+          },
+          "cursorLaterWaits": {
+            "n": 443,
+            "total": 2162.1,
+            "median": 2.8,
+            "p95": 22.0,
+            "p99": 34.1,
+            "max": 52.4
+          },
+          "completionWait": {
+            "n": 443,
+            "total": 319.1,
+            "median": 0.5,
+            "p95": 1,
+            "p99": 6.1,
+            "max": 29.6
+          },
+          "longTaskOverlap": {
+            "n": 443,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 4551.6,
+        "median": 2.65,
+        "p95": 37.9,
+        "p99": 54,
+        "max": 67.7
+      },
+      "frame": {
+        "n": 600,
+        "total": 10304.3,
+        "median": 16.8,
+        "p95": 20.4,
+        "p99": 23.6,
+        "max": 52.5
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 14855.9,
+        "median": 20.4,
+        "p95": 55.2,
+        "p99": 74,
+        "max": 86.9
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 18701.2,
+        "median": 24.5,
+        "p95": 68.1,
+        "p99": 84.3,
+        "max": 90
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 178.43,
+        "median": 0.3,
+        "p95": 1.37,
+        "p99": 1.48,
+        "max": 9.87
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 13687.61,
+        "median": 18.46,
+        "p95": 52.69,
+        "p99": 72.34,
+        "max": 84.2
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89850.4,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 152.1,
+        "max": 160.0
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89850.2,
+        "median": 150.1,
+        "p95": 176.2,
+        "p99": 195.2,
+        "max": 208.4
+      },
+      "keys": 600,
+      "over50": 37,
+      "over100": 0,
+      "hostBrowserClockOffsetMs": 3.5,
+      "clockUncertaintyMs": 4.5
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839480873.6943,
+            "issueSince": null,
+            "lastSuccessAt": 1791839416818,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839484879.017,
+            "issueSince": null,
+            "lastSuccessAt": 1791839420167,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839573104.9941,
+            "issueSince": null,
+            "lastSuccessAt": 1791839512539,
+            "reason": null,
+            "receivedThrough": 647
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839512369,
+            "reason": null,
+            "acceptedThrough": 40
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839549221.7302,
+            "issueSince": null,
+            "lastSuccessAt": 1791839486113,
+            "reason": null,
+            "receivedThrough": 647
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839576334.8792,
+            "issueSince": null,
+            "lastSuccessAt": 1791839515973,
+            "reason": null,
+            "receivedThrough": 649
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839515541,
+            "reason": null,
+            "acceptedThrough": 42
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839549221.7302,
+            "issueSince": null,
+            "lastSuccessAt": 1791839486113,
+            "reason": null,
+            "receivedThrough": 649
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 3383.0,
+      "median": 5.5,
+      "p95": 7.1,
+      "p99": 8,
+      "max": 28.4
+    },
+    "requests": {
+      "typing": 187
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "candidate-silent-1",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 453,
+      "completeInsideKeys": 452,
+      "boundaryOrIncomplete": 1,
+      "finalJobs": 1
+    },
+    "frames": {
+      "n": 600,
+      "total": 10774.5,
+      "median": 17.3,
+      "p95": 22.1,
+      "p99": 28.4,
+      "max": 161.6
+    },
+    "longTasks": {
+      "n": 112,
+      "total": 6619,
+      "median": 58.0,
+      "p95": 72,
+      "p99": 79,
+      "max": 81,
+      "blockingExcess": 1019
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 1,
+          "total": 16.6,
+          "median": 16.6,
+          "p95": 16.6,
+          "p99": 16.6,
+          "max": 16.6
+        },
+        "residual": {
+          "n": 1,
+          "total": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "percent": 0.0
+        },
+        "parts": {
+          "yield": {
+            "n": 1,
+            "total": 0.5,
+            "median": 0.5,
+            "p95": 0.5,
+            "p99": 0.5,
+            "max": 0.5,
+            "percent": 3.01
+          },
+          "open": {
+            "n": 1,
+            "total": 8.0,
+            "median": 8.0,
+            "p95": 8.0,
+            "p99": 8.0,
+            "max": 8.0,
+            "percent": 48.19
+          },
+          "layoutCall": {
+            "n": 1,
+            "total": 0.1,
+            "median": 0.1,
+            "p95": 0.1,
+            "p99": 0.1,
+            "max": 0.1,
+            "percent": 0.6
+          },
+          "transaction": {
+            "n": 1,
+            "total": 8,
+            "median": 8,
+            "p95": 8,
+            "p99": 8,
+            "max": 8,
+            "percent": 48.19
+          },
+          "closeCall": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1,
+            "total": 1,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 1,
+            "total": 5,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1,
+            "total": 4,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1,
+            "total": 3.0,
+            "median": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "max": 3.0
+          },
+          "valueGetterMs": {
+            "n": 1,
+            "total": 2.6,
+            "median": 2.6,
+            "p95": 2.6,
+            "p99": 2.6,
+            "max": 2.6
+          },
+          "cursorFirstWait": {
+            "n": 1,
+            "total": 1.5,
+            "median": 1.5,
+            "p95": 1.5,
+            "p99": 1.5,
+            "max": 1.5
+          },
+          "cursorLaterWaits": {
+            "n": 1,
+            "total": 3.2,
+            "median": 3.2,
+            "p95": 3.2,
+            "p99": 3.2,
+            "max": 3.2
+          },
+          "completionWait": {
+            "n": 1,
+            "total": 0.1,
+            "median": 0.1,
+            "p95": 0.1,
+            "p99": 0.1,
+            "max": 0.1
+          },
+          "longTaskOverlap": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 1,
+            "total": 0.7,
+            "median": 0.7,
+            "p95": 0.7,
+            "p99": 0.7,
+            "max": 0.7
+          },
+          "authority": {
+            "n": 1,
+            "total": 20.6,
+            "median": 20.6,
+            "p95": 20.6,
+            "p99": 20.6,
+            "max": 20.6
+          },
+          "apply": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 451,
+          "total": 5973.7,
+          "median": 9.0,
+          "p95": 34.4,
+          "p99": 48.0,
+          "max": 71.9
+        },
+        "residual": {
+          "n": 451,
+          "total": 56.2,
+          "median": 0.1,
+          "p95": 0.6,
+          "p99": 0.9,
+          "max": 1.5,
+          "percent": 0.94
+        },
+        "parts": {
+          "yield": {
+            "n": 451,
+            "total": 623.7,
+            "median": 0,
+            "p95": 18.8,
+            "p99": 22.5,
+            "max": 31.6,
+            "percent": 10.44
+          },
+          "open": {
+            "n": 451,
+            "total": 547.9,
+            "median": 0.8,
+            "p95": 2.3,
+            "p99": 18.7,
+            "max": 23.7,
+            "percent": 9.17
+          },
+          "layoutCall": {
+            "n": 451,
+            "total": 24.6,
+            "median": 0.0,
+            "p95": 0.2,
+            "p99": 0.8,
+            "max": 0.8,
+            "percent": 0.41
+          },
+          "transaction": {
+            "n": 451,
+            "total": 4720.1,
+            "median": 7.9,
+            "p95": 28.7,
+            "p99": 38.1,
+            "max": 69.6,
+            "percent": 79.01
+          },
+          "closeCall": {
+            "n": 451,
+            "total": 1.2,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 0.6,
+            "percent": 0.02
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 451,
+            "total": 236,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 451,
+            "total": 2255,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 451,
+            "total": 1804,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 451,
+            "total": 1322.6,
+            "median": 2.9,
+            "p95": 3.9,
+            "p99": 5.1,
+            "max": 6.4
+          },
+          "valueGetterMs": {
+            "n": 451,
+            "total": 1236.4,
+            "median": 2.8,
+            "p95": 3.5,
+            "p99": 4.3,
+            "max": 6.2
+          },
+          "cursorFirstWait": {
+            "n": 451,
+            "total": 967.6,
+            "median": 1.6,
+            "p95": 4.3,
+            "p99": 20.0,
+            "max": 29.7
+          },
+          "cursorLaterWaits": {
+            "n": 451,
+            "total": 2113.3,
+            "median": 2.9,
+            "p95": 21.7,
+            "p99": 26.7,
+            "max": 62.5
+          },
+          "completionWait": {
+            "n": 451,
+            "total": 296.8,
+            "median": 0.5,
+            "p95": 1.0,
+            "p99": 5.4,
+            "max": 20.3
+          },
+          "longTaskOverlap": {
+            "n": 451,
+            "total": 0.3,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0.3
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 4498.4,
+        "median": 2.6,
+        "p95": 30.2,
+        "p99": 58.3,
+        "max": 183.3
+      },
+      "frame": {
+        "n": 600,
+        "total": 10774.5,
+        "median": 17.3,
+        "p95": 22.1,
+        "p99": 28.4,
+        "max": 161.6
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 15272.9,
+        "median": 20.8,
+        "p95": 48.6,
+        "p99": 79.8,
+        "max": 230.4
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 19404.7,
+        "median": 25.35,
+        "p95": 67.8,
+        "p99": 95,
+        "max": 236.9
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 258.88,
+        "median": 0.26,
+        "p95": 1.08,
+        "p99": 10.1,
+        "max": 23.35
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 14108.67,
+        "median": 18.88,
+        "p95": 47.05,
+        "p99": 77.19,
+        "max": 250.91
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89849.5,
+        "median": 150.0,
+        "p95": 151.1,
+        "p99": 159.0,
+        "max": 172.9
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89845.0,
+        "median": 150.1,
+        "p95": 171.9,
+        "p99": 205.4,
+        "max": 272.5
+      },
+      "keys": 600,
+      "over50": 28,
+      "over100": 4,
+      "hostBrowserClockOffsetMs": 5.0,
+      "clockUncertaintyMs": 7.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839588792.166,
+            "issueSince": null,
+            "lastSuccessAt": 1791839527291,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839593374.158,
+            "issueSince": null,
+            "lastSuccessAt": 1791839530591,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839688215.4543,
+            "issueSince": null,
+            "lastSuccessAt": 1791839623898,
+            "reason": null,
+            "receivedThrough": 648
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839624879,
+            "reason": null,
+            "acceptedThrough": 41
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839656930.5515,
+            "issueSince": null,
+            "lastSuccessAt": 1791839594765,
+            "reason": null,
+            "receivedThrough": 648
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839686950.7483,
+            "issueSince": null,
+            "lastSuccessAt": 1791839626535,
+            "reason": null,
+            "receivedThrough": 650
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839626077,
+            "reason": null,
+            "acceptedThrough": 43
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839656930.5515,
+            "issueSince": null,
+            "lastSuccessAt": 1791839594765,
+            "reason": null,
+            "receivedThrough": 650
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 3508.1,
+      "median": 5.7,
+      "p95": 7.7,
+      "p99": 9.1,
+      "max": 24.2
+    },
+    "requests": {
+      "typing": 193
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "reference-active-1",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 854,
+      "completeInsideKeys": 853,
+      "boundaryOrIncomplete": 1,
+      "finalJobs": 45
+    },
+    "frames": {
+      "n": 600,
+      "total": 13320.4,
+      "median": 17.7,
+      "p95": 52.7,
+      "p99": 94.6,
+      "max": 150.1
+    },
+    "longTasks": {
+      "n": 118,
+      "total": 7098,
+      "median": 59.5,
+      "p95": 74,
+      "p99": 79,
+      "max": 80,
+      "blockingExcess": 1198
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 45,
+          "total": 1562.0,
+          "median": 26.0,
+          "p95": 73.0,
+          "p99": 90.4,
+          "max": 90.4
+        },
+        "residual": {
+          "n": 45,
+          "total": 7.7,
+          "median": 0.0,
+          "p95": 0.7,
+          "p99": 0.8,
+          "max": 0.8,
+          "percent": 0.49
+        },
+        "parts": {
+          "yield": {
+            "n": 45,
+            "total": 28.4,
+            "median": 0.5,
+            "p95": 2.2,
+            "p99": 2.7,
+            "max": 2.7,
+            "percent": 1.82
+          },
+          "open": {
+            "n": 45,
+            "total": 710.7,
+            "median": 14.0,
+            "p95": 31.7,
+            "p99": 33.5,
+            "max": 33.5,
+            "percent": 45.5
+          },
+          "layoutCall": {
+            "n": 45,
+            "total": 5.8,
+            "median": 0.1,
+            "p95": 0.7,
+            "p99": 0.7,
+            "max": 0.7,
+            "percent": 0.37
+          },
+          "transaction": {
+            "n": 45,
+            "total": 808.9,
+            "median": 10.3,
+            "p95": 45.7,
+            "p99": 72.2,
+            "max": 72.2,
+            "percent": 51.79
+          },
+          "closeCall": {
+            "n": 45,
+            "total": 0.5,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.5,
+            "max": 0.5,
+            "percent": 0.03
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 45,
+            "total": 43,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 45,
+            "total": 225,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 45,
+            "total": 180,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 45,
+            "total": 148.0,
+            "median": 3.2,
+            "p95": 4.4,
+            "p99": 4.7,
+            "max": 4.7
+          },
+          "valueGetterMs": {
+            "n": 45,
+            "total": 135.6,
+            "median": 3.1,
+            "p95": 3.7,
+            "p99": 4.2,
+            "max": 4.2
+          },
+          "cursorFirstWait": {
+            "n": 45,
+            "total": 204.2,
+            "median": 2.1,
+            "p95": 12.9,
+            "p99": 27.3,
+            "max": 27.3
+          },
+          "cursorLaterWaits": {
+            "n": 45,
+            "total": 387.4,
+            "median": 3.5,
+            "p95": 31.1,
+            "p99": 46.4,
+            "max": 46.4
+          },
+          "completionWait": {
+            "n": 45,
+            "total": 63.1,
+            "median": 0.7,
+            "p95": 2.0,
+            "p99": 27.6,
+            "max": 27.6
+          },
+          "longTaskOverlap": {
+            "n": 45,
+            "total": 0.4,
+            "median": 0,
+            "p95": 0.1,
+            "p99": 0.1,
+            "max": 0.1
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 45,
+            "total": 15.2,
+            "median": 0.2,
+            "p95": 0.9,
+            "p99": 1.8,
+            "max": 1.8
+          },
+          "authority": {
+            "n": 45,
+            "total": 1724.4,
+            "median": 29.4,
+            "p95": 76.7,
+            "p99": 94.8,
+            "max": 94.8
+          },
+          "apply": {
+            "n": 45,
+            "total": 269.7,
+            "median": 6.7,
+            "p95": 9.0,
+            "p99": 10.0,
+            "max": 10.0
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 808,
+          "total": 13109.4,
+          "median": 10.0,
+          "p95": 40.7,
+          "p99": 74.2,
+          "max": 101.9
+        },
+        "residual": {
+          "n": 808,
+          "total": 120.3,
+          "median": 0.1,
+          "p95": 0.8,
+          "p99": 1.0,
+          "max": 7.6,
+          "percent": 0.92
+        },
+        "parts": {
+          "yield": {
+            "n": 808,
+            "total": 667.0,
+            "median": 0.0,
+            "p95": 2.1,
+            "p99": 21.0,
+            "max": 27.8,
+            "percent": 5.09
+          },
+          "open": {
+            "n": 808,
+            "total": 2524.2,
+            "median": 0.9,
+            "p95": 13.8,
+            "p99": 55.5,
+            "max": 70.9,
+            "percent": 19.25
+          },
+          "layoutCall": {
+            "n": 808,
+            "total": 46.1,
+            "median": 0.0,
+            "p95": 0.3,
+            "p99": 0.7,
+            "max": 1,
+            "percent": 0.35
+          },
+          "transaction": {
+            "n": 808,
+            "total": 9748.5,
+            "median": 8.5,
+            "p95": 32.0,
+            "p99": 58.7,
+            "max": 94.9,
+            "percent": 74.36
+          },
+          "closeCall": {
+            "n": 808,
+            "total": 3.3,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 0.8,
+            "percent": 0.03
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 808,
+            "total": 317,
+            "median": 0.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 808,
+            "total": 4040,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 808,
+            "total": 3232,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 808,
+            "total": 2472.0,
+            "median": 3.0,
+            "p95": 3.9,
+            "p99": 4.4,
+            "max": 6.5
+          },
+          "valueGetterMs": {
+            "n": 808,
+            "total": 2290.6,
+            "median": 2.8,
+            "p95": 3.6,
+            "p99": 4.1,
+            "max": 5.4
+          },
+          "cursorFirstWait": {
+            "n": 808,
+            "total": 2232.6,
+            "median": 1.7,
+            "p95": 7.8,
+            "p99": 26.8,
+            "max": 69.4
+          },
+          "cursorLaterWaits": {
+            "n": 808,
+            "total": 4379.6,
+            "median": 3.1,
+            "p95": 24.3,
+            "p99": 35.6,
+            "max": 65.5
+          },
+          "completionWait": {
+            "n": 808,
+            "total": 600.8,
+            "median": 0.5,
+            "p95": 1.0,
+            "p99": 10.3,
+            "max": 24.2
+          },
+          "longTaskOverlap": {
+            "n": 808,
+            "total": 209.4,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0,
+            "max": 54.0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 4796.8,
+        "median": 3.3,
+        "p95": 32.3,
+        "p99": 52.6,
+        "max": 65.3
+      },
+      "frame": {
+        "n": 600,
+        "total": 13320.4,
+        "median": 17.7,
+        "p95": 52.7,
+        "p99": 94.6,
+        "max": 150.1
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 18117.2,
+        "median": 22.7,
+        "p95": 71,
+        "p99": 104.2,
+        "max": 152.4
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 22649.0,
+        "median": 29.1,
+        "p95": 81.9,
+        "p99": 124.7,
+        "max": 192.3
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 117.08,
+        "median": 0.2,
+        "p95": 1.33,
+        "p99": 1.47,
+        "max": 2.2
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 14906.31,
+        "median": 20.1,
+        "p95": 51.31,
+        "p99": 69.13,
+        "max": 80.06
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89850.4,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 152.1,
+        "max": 153.0
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89866.0,
+        "median": 150.2,
+        "p95": 172.5,
+        "p99": 189.9,
+        "max": 212.9
+      },
+      "keys": 600,
+      "over50": 72,
+      "over100": 8,
+      "hostBrowserClockOffsetMs": 2.0,
+      "clockUncertaintyMs": 3.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839700948.4204,
+            "issueSince": null,
+            "lastSuccessAt": 1791839637668,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839705213.7512,
+            "issueSince": null,
+            "lastSuccessAt": 1791839641080,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839734711,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839793747.5627,
+            "issueSince": null,
+            "lastSuccessAt": 1791839732103,
+            "reason": null,
+            "receivedThrough": 685
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839731944,
+            "reason": null,
+            "acceptedThrough": 33
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791839732983,
+            "issueSince": null,
+            "lastSuccessAt": 1791839732983,
+            "reason": null,
+            "receivedThrough": 682
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839734711,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839800557.1274,
+            "issueSince": null,
+            "lastSuccessAt": 1791839737806,
+            "reason": null,
+            "receivedThrough": 687
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839737356,
+            "reason": null,
+            "acceptedThrough": 35
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839802793.2524,
+            "issueSince": null,
+            "lastSuccessAt": 1791839738000,
+            "reason": null,
+            "receivedThrough": 687
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4099.5,
+      "median": 5.9,
+      "p95": 9,
+      "p99": 34.5,
+      "max": 43.1
+    },
+    "requests": {
+      "typing": 290
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "candidate-active-1",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 901,
+      "completeInsideKeys": 901,
+      "boundaryOrIncomplete": 0,
+      "finalJobs": 50
+    },
+    "frames": {
+      "n": 600,
+      "total": 12453.3,
+      "median": 17.5,
+      "p95": 44.6,
+      "p99": 70.9,
+      "max": 113.6
+    },
+    "longTasks": {
+      "n": 101,
+      "total": 6112,
+      "median": 59,
+      "p95": 74,
+      "p99": 80,
+      "max": 81,
+      "blockingExcess": 1062
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 50,
+          "total": 1112.7,
+          "median": 19.3,
+          "p95": 34.0,
+          "p99": 53.8,
+          "max": 53.8
+        },
+        "residual": {
+          "n": 50,
+          "total": 12.8,
+          "median": 0.1,
+          "p95": 0.8,
+          "p99": 0.9,
+          "max": 0.9,
+          "percent": 1.15
+        },
+        "parts": {
+          "yield": {
+            "n": 50,
+            "total": 18.6,
+            "median": 0.0,
+            "p95": 2.0,
+            "p99": 2.8,
+            "max": 2.8,
+            "percent": 1.67
+          },
+          "open": {
+            "n": 50,
+            "total": 471.5,
+            "median": 8.25,
+            "p95": 19.2,
+            "p99": 22.0,
+            "max": 22.0,
+            "percent": 42.37
+          },
+          "layoutCall": {
+            "n": 50,
+            "total": 5.5,
+            "median": 0.0,
+            "p95": 0.5,
+            "p99": 0.8,
+            "max": 0.8,
+            "percent": 0.49
+          },
+          "transaction": {
+            "n": 50,
+            "total": 604.3,
+            "median": 9.75,
+            "p95": 22.9,
+            "p99": 44.0,
+            "max": 44.0,
+            "percent": 54.31
+          },
+          "closeCall": {
+            "n": 50,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 50,
+            "total": 37,
+            "median": 1.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 50,
+            "total": 250,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 50,
+            "total": 200,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 50,
+            "total": 164.9,
+            "median": 3.35,
+            "p95": 4.1,
+            "p99": 4.3,
+            "max": 4.3
+          },
+          "valueGetterMs": {
+            "n": 50,
+            "total": 147.3,
+            "median": 2.9,
+            "p95": 3.7,
+            "p99": 3.9,
+            "max": 3.9
+          },
+          "cursorFirstWait": {
+            "n": 50,
+            "total": 132.5,
+            "median": 1.8,
+            "p95": 7.1,
+            "p99": 23.7,
+            "max": 23.7
+          },
+          "cursorLaterWaits": {
+            "n": 50,
+            "total": 261.2,
+            "median": 3.55,
+            "p95": 16.2,
+            "p99": 28.5,
+            "max": 28.5
+          },
+          "completionWait": {
+            "n": 50,
+            "total": 38.9,
+            "median": 0.5,
+            "p95": 1.9,
+            "p99": 8.2,
+            "max": 8.2
+          },
+          "longTaskOverlap": {
+            "n": 50,
+            "total": 0.1,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0.1,
+            "max": 0.1
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 50,
+            "total": 16.4,
+            "median": 0.2,
+            "p95": 0.9,
+            "p99": 1.1,
+            "max": 1.1
+          },
+          "authority": {
+            "n": 50,
+            "total": 1298.9,
+            "median": 23.05,
+            "p95": 38.0,
+            "p99": 57.7,
+            "max": 57.7
+          },
+          "apply": {
+            "n": 50,
+            "total": 278.8,
+            "median": 6.4,
+            "p95": 8.1,
+            "p99": 8.9,
+            "max": 8.9
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 851,
+          "total": 12655.2,
+          "median": 9.6,
+          "p95": 37.2,
+          "p99": 72.9,
+          "max": 103.4
+        },
+        "residual": {
+          "n": 851,
+          "total": 114.1,
+          "median": 0.1,
+          "p95": 0.7,
+          "p99": 0.9,
+          "max": 1.6,
+          "percent": 0.9
+        },
+        "parts": {
+          "yield": {
+            "n": 851,
+            "total": 552.1,
+            "median": 0,
+            "p95": 1.0,
+            "p99": 20.9,
+            "max": 26.5,
+            "percent": 4.36
+          },
+          "open": {
+            "n": 851,
+            "total": 2253.3,
+            "median": 0.9,
+            "p95": 14.3,
+            "p99": 44.2,
+            "max": 64.9,
+            "percent": 17.81
+          },
+          "layoutCall": {
+            "n": 851,
+            "total": 53.2,
+            "median": 0.0,
+            "p95": 0.3,
+            "p99": 0.7,
+            "max": 0.8,
+            "percent": 0.42
+          },
+          "transaction": {
+            "n": 851,
+            "total": 9681.1,
+            "median": 8.3,
+            "p95": 30.0,
+            "p99": 58.9,
+            "max": 75.8,
+            "percent": 76.5
+          },
+          "closeCall": {
+            "n": 851,
+            "total": 1.4,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 0.4,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 851,
+            "total": 318,
+            "median": 0,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 851,
+            "total": 4255,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 851,
+            "total": 3404,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 851,
+            "total": 2578.6,
+            "median": 3.0,
+            "p95": 4.0,
+            "p99": 4.6,
+            "max": 5.7
+          },
+          "valueGetterMs": {
+            "n": 851,
+            "total": 2372.6,
+            "median": 2.8,
+            "p95": 3.5,
+            "p99": 4.0,
+            "max": 5.0
+          },
+          "cursorFirstWait": {
+            "n": 851,
+            "total": 2388.3,
+            "median": 1.6,
+            "p95": 10.0,
+            "p99": 25.3,
+            "max": 61.5
+          },
+          "cursorLaterWaits": {
+            "n": 851,
+            "total": 4138.6,
+            "median": 3.0,
+            "p95": 21.2,
+            "p99": 47.1,
+            "max": 55.8
+          },
+          "completionWait": {
+            "n": 851,
+            "total": 518.9,
+            "median": 0.5,
+            "p95": 1.0,
+            "p99": 4.2,
+            "max": 9.9
+          },
+          "longTaskOverlap": {
+            "n": 851,
+            "total": 53.7,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 53.0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 4523.8,
+        "median": 3.3,
+        "p95": 30.9,
+        "p99": 56.7,
+        "max": 73.7
+      },
+      "frame": {
+        "n": 600,
+        "total": 12453.3,
+        "median": 17.5,
+        "p95": 44.6,
+        "p99": 70.9,
+        "max": 113.6
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 16977.1,
+        "median": 22.2,
+        "p95": 63.3,
+        "p99": 86.3,
+        "max": 117.8
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 21633.3,
+        "median": 28.8,
+        "p95": 77.4,
+        "p99": 95.9,
+        "max": 128.9
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 122.96,
+        "median": 0.27,
+        "p95": 1.24,
+        "p99": 1.35,
+        "max": 5.17
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 14473.28,
+        "median": 19.74,
+        "p95": 51.66,
+        "p99": 71.63,
+        "max": 96.21
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89849.4,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 152.1,
+        "max": 154.0
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89850.1,
+        "median": 150.2,
+        "p95": 173.6,
+        "p99": 192.8,
+        "max": 207.1
+      },
+      "keys": 600,
+      "over50": 63,
+      "over100": 2,
+      "hostBrowserClockOffsetMs": 3.0,
+      "clockUncertaintyMs": 4.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839812690.805,
+            "issueSince": null,
+            "lastSuccessAt": 1791839749280,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839816905.1985,
+            "issueSince": null,
+            "lastSuccessAt": 1791839752625,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839846421,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839906498.4702,
+            "issueSince": null,
+            "lastSuccessAt": 1791839845458,
+            "reason": null,
+            "receivedThrough": 685
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791839847449,
+            "issueSince": null,
+            "lastSuccessAt": 1791839847399,
+            "reason": null,
+            "acceptedThrough": 33
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839843673,
+            "reason": null,
+            "receivedThrough": 682
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839846421,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839913529.9348,
+            "issueSince": null,
+            "lastSuccessAt": 1791839849088,
+            "reason": null,
+            "receivedThrough": 686
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839848321,
+            "reason": null,
+            "acceptedThrough": 34
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839916604.585,
+            "issueSince": null,
+            "lastSuccessAt": 1791839854773,
+            "reason": null,
+            "receivedThrough": 686
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4140.9,
+      "median": 5.7,
+      "p95": 19.8,
+      "p99": 30.6,
+      "max": 41.5
+    },
+    "requests": {
+      "typing": 298
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "reference-backlog-1",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 1094,
+      "completeInsideKeys": 1093,
+      "boundaryOrIncomplete": 1,
+      "finalJobs": 71
+    },
+    "frames": {
+      "n": 600,
+      "total": 13411.8,
+      "median": 16.9,
+      "p95": 69.2,
+      "p99": 85.4,
+      "max": 106.5
+    },
+    "longTasks": {
+      "n": 13,
+      "total": 700,
+      "median": 51,
+      "p95": 64,
+      "p99": 64,
+      "max": 64,
+      "blockingExcess": 50
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 71,
+          "total": 2111.5,
+          "median": 25.5,
+          "p95": 43.6,
+          "p99": 79.0,
+          "max": 79.0
+        },
+        "residual": {
+          "n": 71,
+          "total": 17.2,
+          "median": 0.1,
+          "p95": 0.8,
+          "p99": 1.6,
+          "max": 1.6,
+          "percent": 0.81
+        },
+        "parts": {
+          "yield": {
+            "n": 71,
+            "total": 54.2,
+            "median": 0.1,
+            "p95": 2.4,
+            "p99": 17.5,
+            "max": 17.5,
+            "percent": 2.57
+          },
+          "open": {
+            "n": 71,
+            "total": 1152.6,
+            "median": 14.2,
+            "p95": 29.7,
+            "p99": 31.9,
+            "max": 31.9,
+            "percent": 54.59
+          },
+          "layoutCall": {
+            "n": 71,
+            "total": 15.0,
+            "median": 0.1,
+            "p95": 0.8,
+            "p99": 0.9,
+            "max": 0.9,
+            "percent": 0.71
+          },
+          "transaction": {
+            "n": 71,
+            "total": 872.2,
+            "median": 9.1,
+            "p95": 29.5,
+            "p99": 62.6,
+            "max": 62.6,
+            "percent": 41.31
+          },
+          "closeCall": {
+            "n": 71,
+            "total": 0.3,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0.1,
+            "max": 0.1,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 71,
+            "total": 65,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 71,
+            "total": 355,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 71,
+            "total": 284,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 71,
+            "total": 230.7,
+            "median": 3.1,
+            "p95": 4.4,
+            "p99": 6.1,
+            "max": 6.1
+          },
+          "valueGetterMs": {
+            "n": 71,
+            "total": 213.1,
+            "median": 2.9,
+            "p95": 4.0,
+            "p99": 5.9,
+            "max": 5.9
+          },
+          "cursorFirstWait": {
+            "n": 71,
+            "total": 218.2,
+            "median": 2.1,
+            "p95": 9.0,
+            "p99": 10.5,
+            "max": 10.5
+          },
+          "cursorLaterWaits": {
+            "n": 71,
+            "total": 379.0,
+            "median": 3.5,
+            "p95": 21.3,
+            "p99": 45.6,
+            "max": 45.6
+          },
+          "completionWait": {
+            "n": 71,
+            "total": 36.4,
+            "median": 0.4,
+            "p95": 1.0,
+            "p99": 3.6,
+            "max": 3.6
+          },
+          "longTaskOverlap": {
+            "n": 71,
+            "total": 0.1,
+            "median": 0,
+            "p95": 0,
+            "p99": 0.1,
+            "max": 0.1
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 71,
+            "total": 27.4,
+            "median": 0.2,
+            "p95": 1.0,
+            "p99": 3.1,
+            "max": 3.1
+          },
+          "authority": {
+            "n": 71,
+            "total": 2368.1,
+            "median": 29.2,
+            "p95": 47.2,
+            "p99": 82.1,
+            "max": 82.1
+          },
+          "apply": {
+            "n": 71,
+            "total": 449.8,
+            "median": 6.3,
+            "p95": 7.7,
+            "p99": 9.5,
+            "max": 9.5
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 1022,
+          "total": 14560.4,
+          "median": 9.4,
+          "p95": 35.2,
+          "p99": 63.1,
+          "max": 108.8
+        },
+        "residual": {
+          "n": 1022,
+          "total": 111.3,
+          "median": 0.0,
+          "p95": 0.7,
+          "p99": 0.9,
+          "max": 1.6,
+          "percent": 0.76
+        },
+        "parts": {
+          "yield": {
+            "n": 1022,
+            "total": 414.2,
+            "median": 0.0,
+            "p95": 1.0,
+            "p99": 18.1,
+            "max": 23.1,
+            "percent": 2.84
+          },
+          "open": {
+            "n": 1022,
+            "total": 3088.2,
+            "median": 0.9,
+            "p95": 14.0,
+            "p99": 30.0,
+            "max": 65.3,
+            "percent": 21.21
+          },
+          "layoutCall": {
+            "n": 1022,
+            "total": 69.0,
+            "median": 0.0,
+            "p95": 0.3,
+            "p99": 0.8,
+            "max": 2.2,
+            "percent": 0.47
+          },
+          "transaction": {
+            "n": 1022,
+            "total": 10876.2,
+            "median": 8.1,
+            "p95": 28.4,
+            "p99": 48.3,
+            "max": 102.0,
+            "percent": 74.7
+          },
+          "closeCall": {
+            "n": 1022,
+            "total": 1.5,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 0.5,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1022,
+            "total": 331,
+            "median": 0.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 1022,
+            "total": 5110,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1022,
+            "total": 4088,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1022,
+            "total": 3020.8,
+            "median": 2.9,
+            "p95": 4.0,
+            "p99": 4.7,
+            "max": 11.3
+          },
+          "valueGetterMs": {
+            "n": 1022,
+            "total": 2793.7,
+            "median": 2.7,
+            "p95": 3.5,
+            "p99": 4.3,
+            "max": 11.0
+          },
+          "cursorFirstWait": {
+            "n": 1022,
+            "total": 2230.2,
+            "median": 1.7,
+            "p95": 4.8,
+            "p99": 16.2,
+            "max": 47.1
+          },
+          "cursorLaterWaits": {
+            "n": 1022,
+            "total": 4843.2,
+            "median": 2.9,
+            "p95": 21.4,
+            "p99": 31.6,
+            "max": 61.2
+          },
+          "completionWait": {
+            "n": 1022,
+            "total": 713.4,
+            "median": 0.5,
+            "p95": 1.0,
+            "p99": 6.1,
+            "max": 56.7
+          },
+          "longTaskOverlap": {
+            "n": 1022,
+            "total": 109.0,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0,
+            "max": 57.0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 3028.2,
+        "median": 2.65,
+        "p95": 17.1,
+        "p99": 32,
+        "max": 58.8
+      },
+      "frame": {
+        "n": 600,
+        "total": 13411.8,
+        "median": 16.9,
+        "p95": 69.2,
+        "p99": 85.4,
+        "max": 106.5
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 16440.0,
+        "median": 20.7,
+        "p95": 73.7,
+        "p99": 97.7,
+        "max": 121.3
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 20003.5,
+        "median": 25.05,
+        "p95": 83.4,
+        "p99": 110,
+        "max": 132.8
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 285.5,
+        "median": 0.36,
+        "p95": 1.95,
+        "p99": 2.54,
+        "max": 3.89
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 12903.15,
+        "median": 18.4,
+        "p95": 40.21,
+        "p99": 50.79,
+        "max": 103.07
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89851.5,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 153.0,
+        "max": 153.1
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89848.5,
+        "median": 150.1,
+        "p95": 163.8,
+        "p99": 176.3,
+        "max": 204.6
+      },
+      "keys": 600,
+      "over50": 47,
+      "over100": 3,
+      "hostBrowserClockOffsetMs": 2.0,
+      "clockUncertaintyMs": 3.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839864882,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791839926038.1157,
+            "issueSince": null,
+            "lastSuccessAt": 1791839865530,
+            "reason": null,
+            "receivedThrough": 607
+          }
+        },
+        {
+          "send": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 0
+          },
+          "receive": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "receivedThrough": 0
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839864882,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840020692.7603,
+            "issueSince": null,
+            "lastSuccessAt": 1791839956659,
+            "reason": null,
+            "receivedThrough": 641
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839956393,
+            "reason": null,
+            "acceptedThrough": 34
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791839960603,
+            "issueSince": null,
+            "lastSuccessAt": 1791839960603,
+            "reason": null,
+            "receivedThrough": 321
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839864882,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840023090.3774,
+            "issueSince": null,
+            "lastSuccessAt": 1791839962690,
+            "reason": null,
+            "receivedThrough": 643
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791839962232,
+            "reason": null,
+            "acceptedThrough": 36
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840054522.8374,
+            "issueSince": null,
+            "lastSuccessAt": 1791839992169,
+            "reason": null,
+            "receivedThrough": 643
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4249.4,
+      "median": 5.7,
+      "p95": 26.3,
+      "p99": 29.8,
+      "max": 45.3
+    },
+    "requests": {
+      "typing": 499
+    },
+    "actualGoalsChars": 1000
+  },
+  {
+    "session": "candidate-backlog-1",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 1116,
+      "completeInsideKeys": 1115,
+      "boundaryOrIncomplete": 1,
+      "finalJobs": 74
+    },
+    "frames": {
+      "n": 600,
+      "total": 12801.2,
+      "median": 16.6,
+      "p95": 51.7,
+      "p99": 81.3,
+      "max": 108.3
+    },
+    "longTasks": {
+      "n": 9,
+      "total": 522,
+      "median": 54,
+      "p95": 81,
+      "p99": 81,
+      "max": 81,
+      "blockingExcess": 72
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 74,
+          "total": 1616.3,
+          "median": 19.8,
+          "p95": 31,
+          "p99": 48.6,
+          "max": 48.6
+        },
+        "residual": {
+          "n": 74,
+          "total": 17.4,
+          "median": 0.1,
+          "p95": 1.1,
+          "p99": 2.0,
+          "max": 2.0,
+          "percent": 1.08
+        },
+        "parts": {
+          "yield": {
+            "n": 74,
+            "total": 15.0,
+            "median": 0.0,
+            "p95": 1.1,
+            "p99": 3.0,
+            "max": 3.0,
+            "percent": 0.93
+          },
+          "open": {
+            "n": 74,
+            "total": 635.9,
+            "median": 8.0,
+            "p95": 15.5,
+            "p99": 21.1,
+            "max": 21.1,
+            "percent": 39.34
+          },
+          "layoutCall": {
+            "n": 74,
+            "total": 8.5,
+            "median": 0.0,
+            "p95": 0.7,
+            "p99": 1.0,
+            "max": 1.0,
+            "percent": 0.53
+          },
+          "transaction": {
+            "n": 74,
+            "total": 939.5,
+            "median": 9.9,
+            "p95": 22.1,
+            "p99": 35.6,
+            "max": 35.6,
+            "percent": 58.13
+          },
+          "closeCall": {
+            "n": 74,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 74,
+            "total": 43,
+            "median": 1.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 74,
+            "total": 370,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 74,
+            "total": 296,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 74,
+            "total": 228.6,
+            "median": 3.1,
+            "p95": 4.2,
+            "p99": 4.7,
+            "max": 4.7
+          },
+          "valueGetterMs": {
+            "n": 74,
+            "total": 211.0,
+            "median": 2.9,
+            "p95": 3.7,
+            "p99": 4.0,
+            "max": 4.0
+          },
+          "cursorFirstWait": {
+            "n": 74,
+            "total": 292.4,
+            "median": 2.15,
+            "p95": 13.2,
+            "p99": 14.9,
+            "max": 14.9
+          },
+          "cursorLaterWaits": {
+            "n": 74,
+            "total": 358.3,
+            "median": 3.6,
+            "p95": 13.4,
+            "p99": 23.3,
+            "max": 23.3
+          },
+          "completionWait": {
+            "n": 74,
+            "total": 55.0,
+            "median": 0.6,
+            "p95": 1.4,
+            "p99": 10.6,
+            "max": 10.6
+          },
+          "longTaskOverlap": {
+            "n": 74,
+            "total": 2.0,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 2.0,
+            "max": 2.0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 74,
+            "total": 19.6,
+            "median": 0.1,
+            "p95": 0.9,
+            "p99": 1.2,
+            "max": 1.2
+          },
+          "authority": {
+            "n": 74,
+            "total": 1882.1,
+            "median": 23.35,
+            "p95": 34.2,
+            "p99": 52.5,
+            "max": 52.5
+          },
+          "apply": {
+            "n": 74,
+            "total": 447.8,
+            "median": 6.0,
+            "p95": 7.2,
+            "p99": 8.7,
+            "max": 8.7
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 1041,
+          "total": 14622.1,
+          "median": 9.5,
+          "p95": 33.8,
+          "p99": 60.6,
+          "max": 81.9
+        },
+        "residual": {
+          "n": 1041,
+          "total": 130.6,
+          "median": 0.0,
+          "p95": 0.8,
+          "p99": 1.0,
+          "max": 1.7,
+          "percent": 0.89
+        },
+        "parts": {
+          "yield": {
+            "n": 1041,
+            "total": 477.4,
+            "median": 0,
+            "p95": 1.0,
+            "p99": 20.1,
+            "max": 43.2,
+            "percent": 3.26
+          },
+          "open": {
+            "n": 1041,
+            "total": 2639.1,
+            "median": 1.0,
+            "p95": 13.0,
+            "p99": 24.2,
+            "max": 59.7,
+            "percent": 18.05
+          },
+          "layoutCall": {
+            "n": 1041,
+            "total": 65.4,
+            "median": 0,
+            "p95": 0.3,
+            "p99": 0.8,
+            "max": 1.1,
+            "percent": 0.45
+          },
+          "transaction": {
+            "n": 1041,
+            "total": 11308.0,
+            "median": 8.2,
+            "p95": 29.3,
+            "p99": 52.3,
+            "max": 65.1,
+            "percent": 77.33
+          },
+          "closeCall": {
+            "n": 1041,
+            "total": 1.6,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.9,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1041,
+            "total": 308,
+            "median": 0,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 1041,
+            "total": 5205,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1041,
+            "total": 4164,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1041,
+            "total": 3054.8,
+            "median": 2.9,
+            "p95": 4.0,
+            "p99": 4.7,
+            "max": 8.3
+          },
+          "valueGetterMs": {
+            "n": 1041,
+            "total": 2833.2,
+            "median": 2.7,
+            "p95": 3.6,
+            "p99": 4.0,
+            "max": 8.3
+          },
+          "cursorFirstWait": {
+            "n": 1041,
+            "total": 2550.0,
+            "median": 1.8,
+            "p95": 5.6,
+            "p99": 22.4,
+            "max": 52.3
+          },
+          "cursorLaterWaits": {
+            "n": 1041,
+            "total": 4862.9,
+            "median": 3.0,
+            "p95": 21.0,
+            "p99": 31.6,
+            "max": 56.5
+          },
+          "completionWait": {
+            "n": 1041,
+            "total": 772.0,
+            "median": 0.5,
+            "p95": 1.1,
+            "p99": 8.5,
+            "max": 21.9
+          },
+          "longTaskOverlap": {
+            "n": 1041,
+            "total": 2.2,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0.9
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 3134.0,
+        "median": 2.6,
+        "p95": 17.1,
+        "p99": 35.7,
+        "max": 89.9
+      },
+      "frame": {
+        "n": 600,
+        "total": 12801.2,
+        "median": 16.6,
+        "p95": 51.7,
+        "p99": 81.3,
+        "max": 108.3
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 15935.2,
+        "median": 19.9,
+        "p95": 60.7,
+        "p99": 99,
+        "max": 118.8
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 19486.2,
+        "median": 24.25,
+        "p95": 72.4,
+        "p99": 109.5,
+        "max": 135.7
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 452.66,
+        "median": 0.63,
+        "p95": 2.31,
+        "p99": 2.47,
+        "max": 24.79
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 12703.32,
+        "median": 17.74,
+        "p95": 43.28,
+        "p99": 52.16,
+        "max": 139.89
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89849.5,
+        "median": 150.0,
+        "p95": 152.1,
+        "p99": 153.1,
+        "max": 174.9
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89846.3,
+        "median": 149.9,
+        "p95": 163.5,
+        "p99": 179.6,
+        "max": 262.2
+      },
+      "keys": 600,
+      "over50": 49,
+      "over100": 6,
+      "hostBrowserClockOffsetMs": 4.0,
+      "clockUncertaintyMs": 5.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840002906,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840066494.6465,
+            "issueSince": null,
+            "lastSuccessAt": 1791840003552,
+            "reason": null,
+            "receivedThrough": 607
+          }
+        },
+        {
+          "send": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 0
+          },
+          "receive": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "receivedThrough": 0
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840002906,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840159414.845,
+            "issueSince": null,
+            "lastSuccessAt": 1791840096435,
+            "reason": null,
+            "receivedThrough": 641
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791840096278,
+            "issueSince": null,
+            "lastSuccessAt": 1791840095807,
+            "reason": null,
+            "acceptedThrough": 34
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840094589,
+            "reason": null,
+            "receivedThrough": 333
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840002906,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840162786.4587,
+            "issueSince": null,
+            "lastSuccessAt": 1791840100044,
+            "reason": null,
+            "receivedThrough": 642
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840099619,
+            "reason": null,
+            "acceptedThrough": 35
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840192096.355,
+            "issueSince": null,
+            "lastSuccessAt": 1791840128877,
+            "reason": null,
+            "receivedThrough": 642
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4284.5,
+      "median": 5.5,
+      "p95": 25.6,
+      "p99": 29.5,
+      "max": 36.7
+    },
+    "requests": {
+      "typing": 518
+    },
+    "actualGoalsChars": 1000
+  },
+  {
+    "session": "candidate-silent-2",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 453,
+      "completeInsideKeys": 453,
+      "boundaryOrIncomplete": 0,
+      "finalJobs": 1
+    },
+    "frames": {
+      "n": 600,
+      "total": 10188.5,
+      "median": 16.4,
+      "p95": 20.2,
+      "p99": 24.3,
+      "max": 71.2
+    },
+    "longTasks": {
+      "n": 93,
+      "total": 5356,
+      "median": 57,
+      "p95": 69,
+      "p99": 72,
+      "max": 72,
+      "blockingExcess": 706
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 1,
+          "total": 18.2,
+          "median": 18.2,
+          "p95": 18.2,
+          "p99": 18.2,
+          "max": 18.2
+        },
+        "residual": {
+          "n": 1,
+          "total": 0.1,
+          "median": 0.1,
+          "p95": 0.1,
+          "p99": 0.1,
+          "max": 0.1,
+          "percent": 0.55
+        },
+        "parts": {
+          "yield": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0,
+            "percent": 0.0
+          },
+          "open": {
+            "n": 1,
+            "total": 7.9,
+            "median": 7.9,
+            "p95": 7.9,
+            "p99": 7.9,
+            "max": 7.9,
+            "percent": 43.41
+          },
+          "layoutCall": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          },
+          "transaction": {
+            "n": 1,
+            "total": 10.2,
+            "median": 10.2,
+            "p95": 10.2,
+            "p99": 10.2,
+            "max": 10.2,
+            "percent": 56.04
+          },
+          "closeCall": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          },
+          "cursorCallbacks": {
+            "n": 1,
+            "total": 5,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1,
+            "total": 4,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1,
+            "total": 3.1,
+            "median": 3.1,
+            "p95": 3.1,
+            "p99": 3.1,
+            "max": 3.1
+          },
+          "valueGetterMs": {
+            "n": 1,
+            "total": 2.9,
+            "median": 2.9,
+            "p95": 2.9,
+            "p99": 2.9,
+            "max": 2.9
+          },
+          "cursorFirstWait": {
+            "n": 1,
+            "total": 2.1,
+            "median": 2.1,
+            "p95": 2.1,
+            "p99": 2.1,
+            "max": 2.1
+          },
+          "cursorLaterWaits": {
+            "n": 1,
+            "total": 3.2,
+            "median": 3.2,
+            "p95": 3.2,
+            "p99": 3.2,
+            "max": 3.2
+          },
+          "completionWait": {
+            "n": 1,
+            "total": 0.9,
+            "median": 0.9,
+            "p95": 0.9,
+            "p99": 0.9,
+            "max": 0.9
+          },
+          "longTaskOverlap": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 1,
+            "total": 0.2,
+            "median": 0.2,
+            "p95": 0.2,
+            "p99": 0.2,
+            "max": 0.2
+          },
+          "authority": {
+            "n": 1,
+            "total": 21.2,
+            "median": 21.2,
+            "p95": 21.2,
+            "p99": 21.2,
+            "max": 21.2
+          },
+          "apply": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 452,
+          "total": 5673.3,
+          "median": 9.0,
+          "p95": 31.2,
+          "p99": 55.6,
+          "max": 64.1
+        },
+        "residual": {
+          "n": 452,
+          "total": 58.5,
+          "median": 0.0,
+          "p95": 0.7,
+          "p99": 1.0,
+          "max": 1.2,
+          "percent": 1.03
+        },
+        "parts": {
+          "yield": {
+            "n": 452,
+            "total": 428.3,
+            "median": 0.0,
+            "p95": 1.7,
+            "p99": 20.3,
+            "max": 22.4,
+            "percent": 7.55
+          },
+          "open": {
+            "n": 452,
+            "total": 597.2,
+            "median": 0.9,
+            "p95": 1.8,
+            "p99": 21.0,
+            "max": 26.2,
+            "percent": 10.53
+          },
+          "layoutCall": {
+            "n": 452,
+            "total": 27.6,
+            "median": 0.0,
+            "p95": 0.2,
+            "p99": 0.9,
+            "max": 1.3,
+            "percent": 0.49
+          },
+          "transaction": {
+            "n": 452,
+            "total": 4561.3,
+            "median": 7.9,
+            "p95": 28.7,
+            "p99": 44.2,
+            "max": 61.1,
+            "percent": 80.4
+          },
+          "closeCall": {
+            "n": 452,
+            "total": 0.4,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.1,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 452,
+            "total": 238,
+            "median": 1.0,
+            "p95": 1,
+            "p99": 2,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 452,
+            "total": 2260,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 452,
+            "total": 1808,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 452,
+            "total": 1286.3,
+            "median": 2.8,
+            "p95": 3.8,
+            "p99": 4.4,
+            "max": 5.0
+          },
+          "valueGetterMs": {
+            "n": 452,
+            "total": 1187.8,
+            "median": 2.6,
+            "p95": 3.5,
+            "p99": 3.8,
+            "max": 4.2
+          },
+          "cursorFirstWait": {
+            "n": 452,
+            "total": 1025.6,
+            "median": 1.7,
+            "p95": 2.7,
+            "p99": 21.6,
+            "max": 35.7
+          },
+          "cursorLaterWaits": {
+            "n": 452,
+            "total": 1902.1,
+            "median": 2.8,
+            "p95": 20.2,
+            "p99": 30.7,
+            "max": 52.3
+          },
+          "completionWait": {
+            "n": 452,
+            "total": 317.3,
+            "median": 0.5,
+            "p95": 1.1,
+            "p99": 7.0,
+            "max": 28.7
+          },
+          "longTaskOverlap": {
+            "n": 452,
+            "total": 0,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 4172.7,
+        "median": 2.5,
+        "p95": 30.2,
+        "p99": 54,
+        "max": 66.4
+      },
+      "frame": {
+        "n": 600,
+        "total": 10188.5,
+        "median": 16.4,
+        "p95": 20.2,
+        "p99": 24.3,
+        "max": 71.2
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 14361.2,
+        "median": 19.9,
+        "p95": 52.5,
+        "p99": 71.5,
+        "max": 82.9
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 18611.7,
+        "median": 24.0,
+        "p95": 69.7,
+        "p99": 85.8,
+        "max": 98.6
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 416.04,
+        "median": 0.77,
+        "p95": 2.34,
+        "p99": 2.68,
+        "max": 5.96
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 13112.41,
+        "median": 17.98,
+        "p95": 48.11,
+        "p99": 67.52,
+        "max": 79.93
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89848.4,
+        "median": 150.0,
+        "p95": 152.9,
+        "p99": 153.1,
+        "max": 155.9
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89842.4,
+        "median": 150.1,
+        "p95": 171.4,
+        "p99": 198.4,
+        "max": 209.3
+      },
+      "keys": 600,
+      "over50": 34,
+      "over100": 0,
+      "hostBrowserClockOffsetMs": 3.5,
+      "clockUncertaintyMs": 4.5
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840202234.629,
+            "issueSince": null,
+            "lastSuccessAt": 1791840139980,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840203263.2097,
+            "issueSince": null,
+            "lastSuccessAt": 1791840143237,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840297780.0742,
+            "issueSince": null,
+            "lastSuccessAt": 1791840236071,
+            "reason": null,
+            "receivedThrough": 648
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840237506,
+            "reason": null,
+            "acceptedThrough": 41
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840267548.8215,
+            "issueSince": null,
+            "lastSuccessAt": 1791840205465,
+            "reason": null,
+            "receivedThrough": 648
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840301453.9683,
+            "issueSince": null,
+            "lastSuccessAt": 1791840239403,
+            "reason": null,
+            "receivedThrough": 650
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840238684,
+            "reason": null,
+            "acceptedThrough": 43
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840267548.8215,
+            "issueSince": null,
+            "lastSuccessAt": 1791840205465,
+            "reason": null,
+            "receivedThrough": 650
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 3359.2,
+      "median": 5.4,
+      "p95": 6.9,
+      "p99": 8.4,
+      "max": 23.5
+    },
+    "requests": {
+      "typing": 193
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "reference-silent-2",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 453,
+      "completeInsideKeys": 453,
+      "boundaryOrIncomplete": 0,
+      "finalJobs": 1
+    },
+    "frames": {
+      "n": 600,
+      "total": 9598.1,
+      "median": 15.3,
+      "p95": 18.8,
+      "p99": 23,
+      "max": 68.2
+    },
+    "longTasks": {
+      "n": 87,
+      "total": 4912,
+      "median": 56,
+      "p95": 66,
+      "p99": 67,
+      "max": 67,
+      "blockingExcess": 562
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 1,
+          "total": 35.2,
+          "median": 35.2,
+          "p95": 35.2,
+          "p99": 35.2,
+          "max": 35.2
+        },
+        "residual": {
+          "n": 1,
+          "total": 0.1,
+          "median": 0.1,
+          "p95": 0.1,
+          "p99": 0.1,
+          "max": 0.1,
+          "percent": 0.28
+        },
+        "parts": {
+          "yield": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0,
+            "percent": 0.0
+          },
+          "open": {
+            "n": 1,
+            "total": 11.9,
+            "median": 11.9,
+            "p95": 11.9,
+            "p99": 11.9,
+            "max": 11.9,
+            "percent": 33.81
+          },
+          "layoutCall": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0,
+            "percent": 0.0
+          },
+          "transaction": {
+            "n": 1,
+            "total": 23.2,
+            "median": 23.2,
+            "p95": 23.2,
+            "p99": 23.2,
+            "max": 23.2,
+            "percent": 65.91
+          },
+          "closeCall": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1,
+            "total": 1,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 1,
+            "total": 5,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1,
+            "total": 4,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1,
+            "total": 3.0,
+            "median": 3.0,
+            "p95": 3.0,
+            "p99": 3.0,
+            "max": 3.0
+          },
+          "valueGetterMs": {
+            "n": 1,
+            "total": 2.5,
+            "median": 2.5,
+            "p95": 2.5,
+            "p99": 2.5,
+            "max": 2.5
+          },
+          "cursorFirstWait": {
+            "n": 1,
+            "total": 1.1,
+            "median": 1.1,
+            "p95": 1.1,
+            "p99": 1.1,
+            "max": 1.1
+          },
+          "cursorLaterWaits": {
+            "n": 1,
+            "total": 17.8,
+            "median": 17.8,
+            "p95": 17.8,
+            "p99": 17.8,
+            "max": 17.8
+          },
+          "completionWait": {
+            "n": 1,
+            "total": 0.7,
+            "median": 0.7,
+            "p95": 0.7,
+            "p99": 0.7,
+            "max": 0.7
+          },
+          "longTaskOverlap": {
+            "n": 1,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          },
+          "authority": {
+            "n": 1,
+            "total": 38.4,
+            "median": 38.4,
+            "p95": 38.4,
+            "p99": 38.4,
+            "max": 38.4
+          },
+          "apply": {
+            "n": 1,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 452,
+          "total": 5559.2,
+          "median": 8.15,
+          "p95": 30.3,
+          "p99": 51.8,
+          "max": 62.9
+        },
+        "residual": {
+          "n": 452,
+          "total": 42.1,
+          "median": 0.0,
+          "p95": 0.6,
+          "p99": 0.9,
+          "max": 1.1,
+          "percent": 0.76
+        },
+        "parts": {
+          "yield": {
+            "n": 452,
+            "total": 474.0,
+            "median": 0.0,
+            "p95": 16.8,
+            "p99": 20.4,
+            "max": 21.9,
+            "percent": 8.53
+          },
+          "open": {
+            "n": 452,
+            "total": 693.4,
+            "median": 0.9,
+            "p95": 3.4,
+            "p99": 18.6,
+            "max": 35.0,
+            "percent": 12.47
+          },
+          "layoutCall": {
+            "n": 452,
+            "total": 20.3,
+            "median": 0.0,
+            "p95": 0.2,
+            "p99": 0.8,
+            "max": 1.0,
+            "percent": 0.37
+          },
+          "transaction": {
+            "n": 452,
+            "total": 4328.5,
+            "median": 7.1,
+            "p95": 26.9,
+            "p99": 36.6,
+            "max": 55.2,
+            "percent": 77.86
+          },
+          "closeCall": {
+            "n": 452,
+            "total": 0.9,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.8,
+            "percent": 0.02
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 452,
+            "total": 229,
+            "median": 0.5,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 452,
+            "total": 2260,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 452,
+            "total": 1808,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 452,
+            "total": 1190.0,
+            "median": 2.6,
+            "p95": 3.6,
+            "p99": 4.6,
+            "max": 5.3
+          },
+          "valueGetterMs": {
+            "n": 452,
+            "total": 1105.2,
+            "median": 2.5,
+            "p95": 3.3,
+            "p99": 3.7,
+            "max": 4.2
+          },
+          "cursorFirstWait": {
+            "n": 452,
+            "total": 966.2,
+            "median": 1.6,
+            "p95": 3.0,
+            "p99": 20.5,
+            "max": 21.7
+          },
+          "cursorLaterWaits": {
+            "n": 452,
+            "total": 1852.5,
+            "median": 2.55,
+            "p95": 20.2,
+            "p99": 25.1,
+            "max": 45.2
+          },
+          "completionWait": {
+            "n": 452,
+            "total": 300.2,
+            "median": 0.3,
+            "p95": 1.1,
+            "p99": 7.6,
+            "max": 20.5
+          },
+          "longTaskOverlap": {
+            "n": 452,
+            "total": 0,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 3798.1,
+        "median": 2.6,
+        "p95": 22.4,
+        "p99": 49.9,
+        "max": 67.1
+      },
+      "frame": {
+        "n": 600,
+        "total": 9598.1,
+        "median": 15.3,
+        "p95": 18.8,
+        "p99": 23,
+        "max": 68.2
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 13396.2,
+        "median": 18.9,
+        "p95": 40.3,
+        "p99": 66.1,
+        "max": 82.3
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 17258.0,
+        "median": 22.5,
+        "p95": 63.1,
+        "p99": 82.2,
+        "max": 92.9
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 454.27,
+        "median": 0.65,
+        "p95": 2.3,
+        "p99": 2.47,
+        "max": 40.86
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 12222.25,
+        "median": 16.95,
+        "p95": 36.85,
+        "p99": 64.24,
+        "max": 80.27
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89848.4,
+        "median": 150,
+        "p95": 152.1,
+        "p99": 154.0,
+        "max": 191.0
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89827.8,
+        "median": 150.3,
+        "p95": 169.0,
+        "p99": 195.2,
+        "max": 208.2
+      },
+      "keys": 600,
+      "over50": 20,
+      "over100": 0,
+      "hostBrowserClockOffsetMs": 4.0,
+      "clockUncertaintyMs": 5.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840315038.5022,
+            "issueSince": null,
+            "lastSuccessAt": 1791840251026,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840316932.555,
+            "issueSince": null,
+            "lastSuccessAt": 1791840254340,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840409332.5254,
+            "issueSince": null,
+            "lastSuccessAt": 1791840347460,
+            "reason": null,
+            "receivedThrough": 648
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840348519,
+            "reason": null,
+            "acceptedThrough": 41
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840379658.3386,
+            "issueSince": null,
+            "lastSuccessAt": 1791840318674,
+            "reason": null,
+            "receivedThrough": 648
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840414621.8691,
+            "issueSince": null,
+            "lastSuccessAt": 1791840350118,
+            "reason": null,
+            "receivedThrough": 650
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840349671,
+            "reason": null,
+            "acceptedThrough": 43
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840379658.3386,
+            "issueSince": null,
+            "lastSuccessAt": 1791840318674,
+            "reason": null,
+            "receivedThrough": 650
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 3163.8,
+      "median": 5.2,
+      "p95": 6.3,
+      "p99": 7.4,
+      "max": 22.2
+    },
+    "requests": {
+      "typing": 193
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "candidate-active-2",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 871,
+      "completeInsideKeys": 870,
+      "boundaryOrIncomplete": 1,
+      "finalJobs": 44
+    },
+    "frames": {
+      "n": 600,
+      "total": 12416.2,
+      "median": 17.4,
+      "p95": 43.1,
+      "p99": 71.5,
+      "max": 122.8
+    },
+    "longTasks": {
+      "n": 112,
+      "total": 6852,
+      "median": 60.0,
+      "p95": 76,
+      "p99": 82,
+      "max": 82,
+      "blockingExcess": 1252
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 44,
+          "total": 980.3,
+          "median": 18.4,
+          "p95": 40.0,
+          "p99": 62.1,
+          "max": 62.1
+        },
+        "residual": {
+          "n": 44,
+          "total": 11.7,
+          "median": 0.1,
+          "p95": 0.8,
+          "p99": 1.6,
+          "max": 1.6,
+          "percent": 1.19
+        },
+        "parts": {
+          "yield": {
+            "n": 44,
+            "total": 10.6,
+            "median": 0.0,
+            "p95": 1.6,
+            "p99": 2.7,
+            "max": 2.7,
+            "percent": 1.08
+          },
+          "open": {
+            "n": 44,
+            "total": 364.7,
+            "median": 7.95,
+            "p95": 15.6,
+            "p99": 18.5,
+            "max": 18.5,
+            "percent": 37.2
+          },
+          "layoutCall": {
+            "n": 44,
+            "total": 7.9,
+            "median": 0.1,
+            "p95": 0.7,
+            "p99": 0.8,
+            "max": 0.8,
+            "percent": 0.81
+          },
+          "transaction": {
+            "n": 44,
+            "total": 585.4,
+            "median": 9.55,
+            "p95": 28.7,
+            "p99": 54.4,
+            "max": 54.4,
+            "percent": 59.72
+          },
+          "closeCall": {
+            "n": 44,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 44,
+            "total": 29,
+            "median": 1.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 44,
+            "total": 220,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 44,
+            "total": 176,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 44,
+            "total": 143.6,
+            "median": 3.3,
+            "p95": 4.0,
+            "p99": 4.3,
+            "max": 4.3
+          },
+          "valueGetterMs": {
+            "n": 44,
+            "total": 129.7,
+            "median": 3.0,
+            "p95": 3.6,
+            "p99": 3.7,
+            "max": 3.7
+          },
+          "cursorFirstWait": {
+            "n": 44,
+            "total": 158.5,
+            "median": 1.85,
+            "p95": 15.4,
+            "p99": 21.2,
+            "max": 21.2
+          },
+          "cursorLaterWaits": {
+            "n": 44,
+            "total": 222.4,
+            "median": 3.6,
+            "p95": 16.8,
+            "p99": 39.1,
+            "max": 39.1
+          },
+          "completionWait": {
+            "n": 44,
+            "total": 58.1,
+            "median": 0.5,
+            "p95": 7.0,
+            "p99": 17.5,
+            "max": 17.5
+          },
+          "longTaskOverlap": {
+            "n": 44,
+            "total": 0.1,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0.1,
+            "max": 0.1
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 44,
+            "total": 13.4,
+            "median": 0.1,
+            "p95": 1.0,
+            "p99": 1.0,
+            "max": 1.0
+          },
+          "authority": {
+            "n": 44,
+            "total": 1140.2,
+            "median": 22.05,
+            "p95": 43.6,
+            "p99": 66.1,
+            "max": 66.1
+          },
+          "apply": {
+            "n": 44,
+            "total": 258.8,
+            "median": 6.4,
+            "p95": 7.5,
+            "p99": 8.9,
+            "max": 8.9
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 826,
+          "total": 12797.4,
+          "median": 9.9,
+          "p95": 40.4,
+          "p99": 68.4,
+          "max": 86.1
+        },
+        "residual": {
+          "n": 826,
+          "total": 117.0,
+          "median": 0.0,
+          "p95": 0.7,
+          "p99": 1.0,
+          "max": 1.5,
+          "percent": 0.91
+        },
+        "parts": {
+          "yield": {
+            "n": 826,
+            "total": 676.8,
+            "median": 0.0,
+            "p95": 1.7,
+            "p99": 20.6,
+            "max": 28.2,
+            "percent": 5.29
+          },
+          "open": {
+            "n": 826,
+            "total": 2178.0,
+            "median": 0.9,
+            "p95": 13.6,
+            "p99": 49.1,
+            "max": 69.4,
+            "percent": 17.02
+          },
+          "layoutCall": {
+            "n": 826,
+            "total": 58.6,
+            "median": 0.0,
+            "p95": 0.3,
+            "p99": 0.7,
+            "max": 2.1,
+            "percent": 0.46
+          },
+          "transaction": {
+            "n": 826,
+            "total": 9765.2,
+            "median": 8.5,
+            "p95": 32.1,
+            "p99": 53.2,
+            "max": 73.9,
+            "percent": 76.31
+          },
+          "closeCall": {
+            "n": 826,
+            "total": 1.8,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.7,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 826,
+            "total": 303,
+            "median": 0.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 826,
+            "total": 4130,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 826,
+            "total": 3304,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 826,
+            "total": 2551.2,
+            "median": 3.0,
+            "p95": 4.0,
+            "p99": 4.7,
+            "max": 7.4
+          },
+          "valueGetterMs": {
+            "n": 826,
+            "total": 2346.0,
+            "median": 2.8,
+            "p95": 3.6,
+            "p99": 4.0,
+            "max": 7.2
+          },
+          "cursorFirstWait": {
+            "n": 826,
+            "total": 2016.2,
+            "median": 1.7,
+            "p95": 6.2,
+            "p99": 22.5,
+            "max": 56.1
+          },
+          "cursorLaterWaits": {
+            "n": 826,
+            "total": 4459.0,
+            "median": 3.1,
+            "p95": 24.0,
+            "p99": 36.1,
+            "max": 61.5
+          },
+          "completionWait": {
+            "n": 826,
+            "total": 685.0,
+            "median": 0.5,
+            "p95": 1.2,
+            "p99": 11.3,
+            "max": 26.6
+          },
+          "longTaskOverlap": {
+            "n": 826,
+            "total": 108.9,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0,
+            "max": 57.0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 4979.2,
+        "median": 3.6,
+        "p95": 36.4,
+        "p99": 54.8,
+        "max": 69.4
+      },
+      "frame": {
+        "n": 600,
+        "total": 12416.2,
+        "median": 17.4,
+        "p95": 43.1,
+        "p99": 71.5,
+        "max": 122.8
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 17395.4,
+        "median": 22.4,
+        "p95": 60.7,
+        "p99": 80.2,
+        "max": 132.5
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 22088.9,
+        "median": 28.8,
+        "p95": 77,
+        "p99": 100.9,
+        "max": 143.3
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 133.15,
+        "median": 0.26,
+        "p95": 1.27,
+        "p99": 1.46,
+        "max": 3.66
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 14862.86,
+        "median": 19.91,
+        "p95": 52.97,
+        "p99": 70.14,
+        "max": 84.97
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89850.1,
+        "median": 150.0,
+        "p95": 151.9,
+        "p99": 152.1,
+        "max": 153.9
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89849.5,
+        "median": 150.3,
+        "p95": 177.0,
+        "p99": 196.7,
+        "max": 215.8
+      },
+      "keys": 600,
+      "over50": 65,
+      "over100": 5,
+      "hostBrowserClockOffsetMs": 3.5,
+      "clockUncertaintyMs": 4.5
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840427596.06,
+            "issueSince": null,
+            "lastSuccessAt": 1791840363486,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840429806.7222,
+            "issueSince": null,
+            "lastSuccessAt": 1791840366772,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840460585,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840523768.7314,
+            "issueSince": null,
+            "lastSuccessAt": 1791840458915,
+            "reason": null,
+            "receivedThrough": 686
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840457933,
+            "reason": null,
+            "acceptedThrough": 34
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791840461418,
+            "issueSince": null,
+            "lastSuccessAt": 1791840461418,
+            "reason": null,
+            "receivedThrough": 684
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840460585,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840528341.4312,
+            "issueSince": null,
+            "lastSuccessAt": 1791840463945,
+            "reason": null,
+            "receivedThrough": 688
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840463164,
+            "reason": null,
+            "acceptedThrough": 36
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840526334.1147,
+            "issueSince": null,
+            "lastSuccessAt": 1791840463791,
+            "reason": null,
+            "receivedThrough": 688
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4098.0,
+      "median": 5.6,
+      "p95": 12.1,
+      "p99": 30.8,
+      "max": 40.4
+    },
+    "requests": {
+      "typing": 298
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "reference-active-2",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 852,
+      "completeInsideKeys": 852,
+      "boundaryOrIncomplete": 0,
+      "finalJobs": 43
+    },
+    "frames": {
+      "n": 600,
+      "total": 12973.4,
+      "median": 17.5,
+      "p95": 49.3,
+      "p99": 87.1,
+      "max": 121.6
+    },
+    "longTasks": {
+      "n": 113,
+      "total": 6768,
+      "median": 58,
+      "p95": 74,
+      "p99": 81,
+      "max": 87,
+      "blockingExcess": 1118
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 43,
+          "total": 1300.6,
+          "median": 25,
+          "p95": 52.1,
+          "p99": 86.6,
+          "max": 86.6
+        },
+        "residual": {
+          "n": 43,
+          "total": 10.7,
+          "median": 0.1,
+          "p95": 0.9,
+          "p99": 1.1,
+          "max": 1.1,
+          "percent": 0.82
+        },
+        "parts": {
+          "yield": {
+            "n": 43,
+            "total": 38.7,
+            "median": 0.6,
+            "p95": 2.9,
+            "p99": 7.9,
+            "max": 7.9,
+            "percent": 2.98
+          },
+          "open": {
+            "n": 43,
+            "total": 654.3,
+            "median": 13.9,
+            "p95": 26.1,
+            "p99": 28.8,
+            "max": 28.8,
+            "percent": 50.31
+          },
+          "layoutCall": {
+            "n": 43,
+            "total": 5.6,
+            "median": 0.1,
+            "p95": 0.6,
+            "p99": 0.8,
+            "max": 0.8,
+            "percent": 0.43
+          },
+          "transaction": {
+            "n": 43,
+            "total": 591.3,
+            "median": 9.2,
+            "p95": 35.2,
+            "p99": 70.3,
+            "max": 70.3,
+            "percent": 45.46
+          },
+          "closeCall": {
+            "n": 43,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 43,
+            "total": 42,
+            "median": 1,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 43,
+            "total": 215,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 43,
+            "total": 172,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 43,
+            "total": 139.8,
+            "median": 3.1,
+            "p95": 4.7,
+            "p99": 6.2,
+            "max": 6.2
+          },
+          "valueGetterMs": {
+            "n": 43,
+            "total": 126.4,
+            "median": 2.8,
+            "p95": 3.7,
+            "p99": 5.6,
+            "max": 5.6
+          },
+          "cursorFirstWait": {
+            "n": 43,
+            "total": 91.7,
+            "median": 1.7,
+            "p95": 5.7,
+            "p99": 8.2,
+            "max": 8.2
+          },
+          "cursorLaterWaits": {
+            "n": 43,
+            "total": 299.2,
+            "median": 3.3,
+            "p95": 21.5,
+            "p99": 49.5,
+            "max": 49.5
+          },
+          "completionWait": {
+            "n": 43,
+            "total": 53.9,
+            "median": 0.7,
+            "p95": 6.6,
+            "p99": 9.9,
+            "max": 9.9
+          },
+          "longTaskOverlap": {
+            "n": 43,
+            "total": 0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 43,
+            "total": 16.8,
+            "median": 0.4,
+            "p95": 0.9,
+            "p99": 1.1,
+            "max": 1.1
+          },
+          "authority": {
+            "n": 43,
+            "total": 1456.5,
+            "median": 28.8,
+            "p95": 55.9,
+            "p99": 90.6,
+            "max": 90.6
+          },
+          "apply": {
+            "n": 43,
+            "total": 279.5,
+            "median": 6.7,
+            "p95": 8.2,
+            "p99": 9.2,
+            "max": 9.2
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 809,
+          "total": 12334.1,
+          "median": 9.8,
+          "p95": 37.5,
+          "p99": 67.2,
+          "max": 95.3
+        },
+        "residual": {
+          "n": 809,
+          "total": 114.6,
+          "median": 0.1,
+          "p95": 0.7,
+          "p99": 1.0,
+          "max": 1.4,
+          "percent": 0.93
+        },
+        "parts": {
+          "yield": {
+            "n": 809,
+            "total": 689.8,
+            "median": 0,
+            "p95": 1.9,
+            "p99": 20.6,
+            "max": 23.1,
+            "percent": 5.59
+          },
+          "open": {
+            "n": 809,
+            "total": 2455.2,
+            "median": 0.9,
+            "p95": 14.5,
+            "p99": 29.3,
+            "max": 68,
+            "percent": 19.91
+          },
+          "layoutCall": {
+            "n": 809,
+            "total": 56.9,
+            "median": 0.0,
+            "p95": 0.3,
+            "p99": 0.8,
+            "max": 0.9,
+            "percent": 0.46
+          },
+          "transaction": {
+            "n": 809,
+            "total": 9015.8,
+            "median": 8.4,
+            "p95": 29.9,
+            "p99": 48.5,
+            "max": 75.0,
+            "percent": 73.1
+          },
+          "closeCall": {
+            "n": 809,
+            "total": 1.8,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 0.5,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 809,
+            "total": 328,
+            "median": 0,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 809,
+            "total": 4045,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 809,
+            "total": 3236,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 809,
+            "total": 2463.0,
+            "median": 3.0,
+            "p95": 4.0,
+            "p99": 4.7,
+            "max": 6.0
+          },
+          "valueGetterMs": {
+            "n": 809,
+            "total": 2279.3,
+            "median": 2.8,
+            "p95": 3.5,
+            "p99": 4.3,
+            "max": 5.9
+          },
+          "cursorFirstWait": {
+            "n": 809,
+            "total": 1961.2,
+            "median": 1.6,
+            "p95": 5.8,
+            "p99": 22.2,
+            "max": 63.2
+          },
+          "cursorLaterWaits": {
+            "n": 809,
+            "total": 4019.0,
+            "median": 3.0,
+            "p95": 22.5,
+            "p99": 32.4,
+            "max": 56.8
+          },
+          "completionWait": {
+            "n": 809,
+            "total": 519.8,
+            "median": 0.5,
+            "p95": 1.0,
+            "p99": 4.0,
+            "max": 19.3
+          },
+          "longTaskOverlap": {
+            "n": 809,
+            "total": 105.0,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 54
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 4741.0,
+        "median": 3.4,
+        "p95": 34.5,
+        "p99": 55.9,
+        "max": 73.2
+      },
+      "frame": {
+        "n": 600,
+        "total": 12973.4,
+        "median": 17.5,
+        "p95": 49.3,
+        "p99": 87.1,
+        "max": 121.6
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 17714.4,
+        "median": 22.5,
+        "p95": 71,
+        "p99": 94.5,
+        "max": 123.8
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 21888.1,
+        "median": 28.25,
+        "p95": 81,
+        "p99": 105.8,
+        "max": 134.5
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 139.42,
+        "median": 0.3,
+        "p95": 1.2,
+        "p99": 1.36,
+        "max": 11.31
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 14826.45,
+        "median": 19.96,
+        "p95": 53.72,
+        "p99": 71.78,
+        "max": 92.19
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89848.4,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 152.9,
+        "max": 160.0
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89848.6,
+        "median": 150.3,
+        "p95": 177.0,
+        "p99": 196.6,
+        "max": 213.0
+      },
+      "keys": 600,
+      "over50": 70,
+      "over100": 4,
+      "hostBrowserClockOffsetMs": 2.5,
+      "clockUncertaintyMs": 4.5
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840539579.706,
+            "issueSince": null,
+            "lastSuccessAt": 1791840474946,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 1
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840541422.5999,
+            "issueSince": null,
+            "lastSuccessAt": 1791840478219,
+            "reason": null,
+            "receivedThrough": 608
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840572005,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840632943.374,
+            "issueSince": null,
+            "lastSuccessAt": 1791840570650,
+            "reason": null,
+            "receivedThrough": 686
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791840570844,
+            "issueSince": null,
+            "lastSuccessAt": 1791840570472,
+            "reason": null,
+            "acceptedThrough": 34
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840568730,
+            "reason": null,
+            "receivedThrough": 682
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840572005,
+            "reason": null,
+            "acceptedThrough": 652
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840636829.24,
+            "issueSince": null,
+            "lastSuccessAt": 1791840574928,
+            "reason": null,
+            "receivedThrough": 687
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840574150,
+            "reason": null,
+            "acceptedThrough": 35
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840638921.801,
+            "issueSince": null,
+            "lastSuccessAt": 1791840574791,
+            "reason": null,
+            "receivedThrough": 687
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4118.4,
+      "median": 5.7,
+      "p95": 9.7,
+      "p99": 32.4,
+      "max": 41.3
+    },
+    "requests": {
+      "typing": 289
+    },
+    "actualGoalsChars": 12000
+  },
+  {
+    "session": "candidate-backlog-2",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 1111,
+      "completeInsideKeys": 1108,
+      "boundaryOrIncomplete": 3,
+      "finalJobs": 74
+    },
+    "frames": {
+      "n": 600,
+      "total": 12995.0,
+      "median": 16.8,
+      "p95": 48.1,
+      "p99": 90.1,
+      "max": 117.1
+    },
+    "longTasks": {
+      "n": 13,
+      "total": 719,
+      "median": 51,
+      "p95": 76,
+      "p99": 76,
+      "max": 76,
+      "blockingExcess": 69
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 74,
+          "total": 1693.3,
+          "median": 19.25,
+          "p95": 46.0,
+          "p99": 64.7,
+          "max": 64.7
+        },
+        "residual": {
+          "n": 74,
+          "total": 16.7,
+          "median": 0.1,
+          "p95": 0.8,
+          "p99": 1.2,
+          "max": 1.2,
+          "percent": 0.99
+        },
+        "parts": {
+          "yield": {
+            "n": 74,
+            "total": 17.2,
+            "median": 0.0,
+            "p95": 1.0,
+            "p99": 2.6,
+            "max": 2.6,
+            "percent": 1.02
+          },
+          "open": {
+            "n": 74,
+            "total": 709.9,
+            "median": 8.15,
+            "p95": 18.6,
+            "p99": 22.4,
+            "max": 22.4,
+            "percent": 41.92
+          },
+          "layoutCall": {
+            "n": 74,
+            "total": 9.5,
+            "median": 0.0,
+            "p95": 0.8,
+            "p99": 0.9,
+            "max": 0.9,
+            "percent": 0.56
+          },
+          "transaction": {
+            "n": 74,
+            "total": 939.8,
+            "median": 9.4,
+            "p95": 31.4,
+            "p99": 57.7,
+            "max": 57.7,
+            "percent": 55.5
+          },
+          "closeCall": {
+            "n": 74,
+            "total": 0.2,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 0.1,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 74,
+            "total": 59,
+            "median": 1.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 74,
+            "total": 370,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 74,
+            "total": 296,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 74,
+            "total": 237.7,
+            "median": 3.1,
+            "p95": 4.1,
+            "p99": 5.5,
+            "max": 5.5
+          },
+          "valueGetterMs": {
+            "n": 74,
+            "total": 215.8,
+            "median": 2.9,
+            "p95": 3.8,
+            "p99": 4.7,
+            "max": 4.7
+          },
+          "cursorFirstWait": {
+            "n": 74,
+            "total": 194.0,
+            "median": 1.9,
+            "p95": 8.5,
+            "p99": 12.9,
+            "max": 12.9
+          },
+          "cursorLaterWaits": {
+            "n": 74,
+            "total": 418.9,
+            "median": 3.3,
+            "p95": 21.3,
+            "p99": 44.9,
+            "max": 44.9
+          },
+          "completionWait": {
+            "n": 74,
+            "total": 78.9,
+            "median": 0.65,
+            "p95": 3.8,
+            "p99": 14.4,
+            "max": 14.4
+          },
+          "longTaskOverlap": {
+            "n": 74,
+            "total": 0.2,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0.1,
+            "max": 0.1
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 74,
+            "total": 25.2,
+            "median": 0.2,
+            "p95": 0.9,
+            "p99": 1.2,
+            "max": 1.2
+          },
+          "authority": {
+            "n": 74,
+            "total": 1954.5,
+            "median": 22.9,
+            "p95": 49.6,
+            "p99": 68.1,
+            "max": 68.1
+          },
+          "apply": {
+            "n": 74,
+            "total": 460.3,
+            "median": 6.2,
+            "p95": 7.4,
+            "p99": 8.5,
+            "max": 8.5
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 1034,
+          "total": 14411.3,
+          "median": 9.3,
+          "p95": 34.4,
+          "p99": 66.8,
+          "max": 83.2
+        },
+        "residual": {
+          "n": 1034,
+          "total": 127.6,
+          "median": 0.0,
+          "p95": 0.7,
+          "p99": 0.9,
+          "max": 1.6,
+          "percent": 0.89
+        },
+        "parts": {
+          "yield": {
+            "n": 1034,
+            "total": 417.6,
+            "median": 0.0,
+            "p95": 0.9,
+            "p99": 19.2,
+            "max": 23.4,
+            "percent": 2.9
+          },
+          "open": {
+            "n": 1034,
+            "total": 2612.9,
+            "median": 0.9,
+            "p95": 13.4,
+            "p99": 45.2,
+            "max": 60.9,
+            "percent": 18.13
+          },
+          "layoutCall": {
+            "n": 1034,
+            "total": 69.9,
+            "median": 0.0,
+            "p95": 0.3,
+            "p99": 0.7,
+            "max": 0.9,
+            "percent": 0.49
+          },
+          "transaction": {
+            "n": 1034,
+            "total": 11178.0,
+            "median": 8.15,
+            "p95": 29.5,
+            "p99": 54.0,
+            "max": 76.8,
+            "percent": 77.56
+          },
+          "closeCall": {
+            "n": 1034,
+            "total": 5.3,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 1.4,
+            "percent": 0.04
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1034,
+            "total": 299,
+            "median": 0.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 1034,
+            "total": 5170,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1034,
+            "total": 4136,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1034,
+            "total": 3093.6,
+            "median": 3.0,
+            "p95": 3.9,
+            "p99": 4.5,
+            "max": 5.6
+          },
+          "valueGetterMs": {
+            "n": 1034,
+            "total": 2863.2,
+            "median": 2.8,
+            "p95": 3.6,
+            "p99": 4.0,
+            "max": 5.2
+          },
+          "cursorFirstWait": {
+            "n": 1034,
+            "total": 2462.2,
+            "median": 1.6,
+            "p95": 7.1,
+            "p99": 21.4,
+            "max": 46.6
+          },
+          "cursorLaterWaits": {
+            "n": 1034,
+            "total": 4794.2,
+            "median": 3.0,
+            "p95": 20.4,
+            "p99": 35.4,
+            "max": 50.6
+          },
+          "completionWait": {
+            "n": 1034,
+            "total": 755.2,
+            "median": 0.5,
+            "p95": 1.0,
+            "p99": 8.0,
+            "max": 39.8
+          },
+          "longTaskOverlap": {
+            "n": 1034,
+            "total": 52.3,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0,
+            "max": 52.0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 3140.4,
+        "median": 2.6,
+        "p95": 21.1,
+        "p99": 32.7,
+        "max": 47.6
+      },
+      "frame": {
+        "n": 600,
+        "total": 12995.0,
+        "median": 16.8,
+        "p95": 48.1,
+        "p99": 90.1,
+        "max": 117.1
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 16135.4,
+        "median": 20.1,
+        "p95": 55.8,
+        "p99": 102.5,
+        "max": 128.5
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 19342.2,
+        "median": 24.6,
+        "p95": 67.6,
+        "p99": 109.1,
+        "max": 140.5
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 86.25,
+        "median": 0.18,
+        "p95": 1.17,
+        "p99": 1.33,
+        "max": 6.78
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 12982.5,
+        "median": 17.99,
+        "p95": 43.65,
+        "p99": 51.09,
+        "max": 69.88
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89855.4,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 153.0,
+        "max": 156.9
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89870.3,
+        "median": 150.0,
+        "p95": 166.5,
+        "p99": 178.9,
+        "max": 194.0
+      },
+      "keys": 600,
+      "over50": 39,
+      "over100": 7,
+      "hostBrowserClockOffsetMs": 3.0,
+      "clockUncertaintyMs": 5.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840585491,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840648382.2236,
+            "issueSince": null,
+            "lastSuccessAt": 1791840586145,
+            "reason": null,
+            "receivedThrough": 607
+          }
+        },
+        {
+          "send": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 0
+          },
+          "receive": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "receivedThrough": 0
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840585491,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840738750.7026,
+            "issueSince": null,
+            "lastSuccessAt": 1791840678127,
+            "reason": null,
+            "receivedThrough": 641
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791840678494,
+            "issueSince": null,
+            "lastSuccessAt": 1791840677575,
+            "reason": null,
+            "acceptedThrough": 34
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840678226,
+            "reason": null,
+            "receivedThrough": 333
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840585491,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840744951.7898,
+            "issueSince": null,
+            "lastSuccessAt": 1791840683344,
+            "reason": null,
+            "receivedThrough": 642
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840682571,
+            "reason": null,
+            "acceptedThrough": 35
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840773656.037,
+            "issueSince": null,
+            "lastSuccessAt": 1791840711448,
+            "reason": null,
+            "receivedThrough": 642
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4465.1,
+      "median": 5.7,
+      "p95": 26.9,
+      "p99": 31.2,
+      "max": 38.2
+    },
+    "requests": {
+      "typing": 513
+    },
+    "actualGoalsChars": 1000
+  },
+  {
+    "session": "reference-backlog-2",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 1101,
+      "completeInsideKeys": 1101,
+      "boundaryOrIncomplete": 0,
+      "finalJobs": 72
+    },
+    "frames": {
+      "n": 600,
+      "total": 13001.9,
+      "median": 16.8,
+      "p95": 60.5,
+      "p99": 77.2,
+      "max": 113
+    },
+    "longTasks": {
+      "n": 11,
+      "total": 619,
+      "median": 53,
+      "p95": 70,
+      "p99": 70,
+      "max": 70,
+      "blockingExcess": 69
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 72,
+          "total": 2008.4,
+          "median": 25.45,
+          "p95": 42.8,
+          "p99": 51.4,
+          "max": 51.4
+        },
+        "residual": {
+          "n": 72,
+          "total": 13.8,
+          "median": 0.1,
+          "p95": 0.9,
+          "p99": 1.1,
+          "max": 1.1,
+          "percent": 0.69
+        },
+        "parts": {
+          "yield": {
+            "n": 72,
+            "total": 24.4,
+            "median": 0.1,
+            "p95": 1.3,
+            "p99": 2.8,
+            "max": 2.8,
+            "percent": 1.21
+          },
+          "open": {
+            "n": 72,
+            "total": 1087.6,
+            "median": 13.5,
+            "p95": 23.4,
+            "p99": 33.8,
+            "max": 33.8,
+            "percent": 54.15
+          },
+          "layoutCall": {
+            "n": 72,
+            "total": 13.4,
+            "median": 0.1,
+            "p95": 0.9,
+            "p99": 1.0,
+            "max": 1.0,
+            "percent": 0.67
+          },
+          "transaction": {
+            "n": 72,
+            "total": 868.3,
+            "median": 9.5,
+            "p95": 28.1,
+            "p99": 33.0,
+            "max": 33.0,
+            "percent": 43.23
+          },
+          "closeCall": {
+            "n": 72,
+            "total": 0.9,
+            "median": 0.0,
+            "p95": 0.0,
+            "p99": 0.9,
+            "max": 0.9,
+            "percent": 0.04
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 72,
+            "total": 70,
+            "median": 1.0,
+            "p95": 1,
+            "p99": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 72,
+            "total": 360,
+            "median": 5.0,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 72,
+            "total": 288,
+            "median": 4.0,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 72,
+            "total": 227.3,
+            "median": 3.1,
+            "p95": 4.1,
+            "p99": 4.6,
+            "max": 4.6
+          },
+          "valueGetterMs": {
+            "n": 72,
+            "total": 206.7,
+            "median": 2.9,
+            "p95": 3.8,
+            "p99": 4.3,
+            "max": 4.3
+          },
+          "cursorFirstWait": {
+            "n": 72,
+            "total": 269.9,
+            "median": 2.1,
+            "p95": 14.7,
+            "p99": 24.5,
+            "max": 24.5
+          },
+          "cursorLaterWaits": {
+            "n": 72,
+            "total": 319.2,
+            "median": 3.4,
+            "p95": 18.9,
+            "p99": 27.2,
+            "max": 27.2
+          },
+          "completionWait": {
+            "n": 72,
+            "total": 44.0,
+            "median": 0.7,
+            "p95": 1.1,
+            "p99": 1.2,
+            "max": 1.2
+          },
+          "longTaskOverlap": {
+            "n": 72,
+            "total": 0.1,
+            "median": 0.0,
+            "p95": 0,
+            "p99": 0.1,
+            "max": 0.1
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 72,
+            "total": 22.3,
+            "median": 0.1,
+            "p95": 1,
+            "p99": 1.1,
+            "max": 1.1
+          },
+          "authority": {
+            "n": 72,
+            "total": 2269.6,
+            "median": 28.95,
+            "p95": 46.7,
+            "p99": 55.3,
+            "max": 55.3
+          },
+          "apply": {
+            "n": 72,
+            "total": 447.9,
+            "median": 6.15,
+            "p95": 7.6,
+            "p99": 10.9,
+            "max": 10.9
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 1029,
+          "total": 14609.5,
+          "median": 9.6,
+          "p95": 34.2,
+          "p99": 64.3,
+          "max": 108.1
+        },
+        "residual": {
+          "n": 1029,
+          "total": 119.6,
+          "median": 0.0,
+          "p95": 0.7,
+          "p99": 1.0,
+          "max": 1.6,
+          "percent": 0.82
+        },
+        "parts": {
+          "yield": {
+            "n": 1029,
+            "total": 359.0,
+            "median": 0,
+            "p95": 0.9,
+            "p99": 18.2,
+            "max": 24.5,
+            "percent": 2.46
+          },
+          "open": {
+            "n": 1029,
+            "total": 3013.3,
+            "median": 1.0,
+            "p95": 13.0,
+            "p99": 35.9,
+            "max": 85.1,
+            "percent": 20.63
+          },
+          "layoutCall": {
+            "n": 1029,
+            "total": 74.6,
+            "median": 0.0,
+            "p95": 0.4,
+            "p99": 0.9,
+            "max": 1.1,
+            "percent": 0.51
+          },
+          "transaction": {
+            "n": 1029,
+            "total": 11040.2,
+            "median": 8.3,
+            "p95": 28.3,
+            "p99": 43.9,
+            "max": 68.7,
+            "percent": 75.57
+          },
+          "closeCall": {
+            "n": 1029,
+            "total": 2.8,
+            "median": 0,
+            "p95": 0.0,
+            "p99": 0.1,
+            "max": 0.9,
+            "percent": 0.02
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 1029,
+            "total": 316,
+            "median": 0,
+            "p95": 1,
+            "p99": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 1029,
+            "total": 5145,
+            "median": 5,
+            "p95": 5,
+            "p99": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 1029,
+            "total": 4116,
+            "median": 4,
+            "p95": 4,
+            "p99": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 1029,
+            "total": 2957.9,
+            "median": 2.8,
+            "p95": 3.9,
+            "p99": 4.5,
+            "max": 5.6
+          },
+          "valueGetterMs": {
+            "n": 1029,
+            "total": 2741.9,
+            "median": 2.7,
+            "p95": 3.5,
+            "p99": 3.9,
+            "max": 5.4
+          },
+          "cursorFirstWait": {
+            "n": 1029,
+            "total": 2437.6,
+            "median": 1.8,
+            "p95": 6.1,
+            "p99": 19.4,
+            "max": 48.1
+          },
+          "cursorLaterWaits": {
+            "n": 1029,
+            "total": 4913.3,
+            "median": 3.0,
+            "p95": 21.5,
+            "p99": 28.7,
+            "max": 62.3
+          },
+          "completionWait": {
+            "n": 1029,
+            "total": 671.9,
+            "median": 0.5,
+            "p95": 1.1,
+            "p99": 5.9,
+            "max": 19.4
+          },
+          "longTaskOverlap": {
+            "n": 1029,
+            "total": 62.5,
+            "median": 0,
+            "p95": 0,
+            "p99": 0,
+            "max": 62.0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    },
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "total": 3115.9,
+        "median": 2.5,
+        "p95": 19.4,
+        "p99": 36.7,
+        "max": 51
+      },
+      "frame": {
+        "n": 600,
+        "total": 13001.9,
+        "median": 16.8,
+        "p95": 60.5,
+        "p99": 77.2,
+        "max": 113
+      },
+      "inputFrame": {
+        "n": 600,
+        "total": 16117.8,
+        "median": 20.1,
+        "p95": 64,
+        "p99": 85.2,
+        "max": 118.1
+      },
+      "afterFrame": {
+        "n": 600,
+        "total": 19767.5,
+        "median": 24.4,
+        "p95": 74.3,
+        "p99": 100.3,
+        "max": 128.4
+      }
+    },
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "total": 417.54,
+        "median": 0.67,
+        "p95": 2.12,
+        "p99": 2.25,
+        "max": 5.82
+      },
+      "commandCompletion": {
+        "n": 600,
+        "total": 13055.01,
+        "median": 18.05,
+        "p95": 42.55,
+        "p99": 57.53,
+        "max": 65.74
+      },
+      "eventGaps": {
+        "n": 599,
+        "total": 89848.5,
+        "median": 150.0,
+        "p95": 152.1,
+        "p99": 153.1,
+        "max": 154.1
+      },
+      "handlerGaps": {
+        "n": 599,
+        "total": 89844.6,
+        "median": 149.9,
+        "p95": 164.7,
+        "p99": 182.5,
+        "max": 194.0
+      },
+      "keys": 600,
+      "over50": 47,
+      "over100": 4,
+      "hostBrowserClockOffsetMs": 3.0,
+      "clockUncertaintyMs": 5.0
+    },
+    "sync": {
+      "syncBefore": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840721476,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840784160.1401,
+            "issueSince": null,
+            "lastSuccessAt": 1791840722128,
+            "reason": null,
+            "receivedThrough": 607
+          }
+        },
+        {
+          "send": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "acceptedThrough": 0
+          },
+          "receive": {
+            "phase": "offline",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": null,
+            "reason": null,
+            "receivedThrough": 0
+          }
+        }
+      ],
+      "syncAfter": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840721476,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840878448.8552,
+            "issueSince": null,
+            "lastSuccessAt": 1791840814063,
+            "reason": null,
+            "receivedThrough": 641
+          }
+        },
+        {
+          "send": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840813812,
+            "reason": null,
+            "acceptedThrough": 34
+          },
+          "receive": {
+            "phase": "working",
+            "failures": 0,
+            "nextAttemptAt": 1791840817249,
+            "issueSince": null,
+            "lastSuccessAt": 1791840817249,
+            "reason": null,
+            "receivedThrough": 329
+          }
+        }
+      ],
+      "syncConverged": [
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840721476,
+            "reason": null,
+            "acceptedThrough": 607
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840882936.4014,
+            "issueSince": null,
+            "lastSuccessAt": 1791840819254,
+            "reason": null,
+            "receivedThrough": 643
+          }
+        },
+        {
+          "send": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": null,
+            "issueSince": null,
+            "lastSuccessAt": 1791840818807,
+            "reason": null,
+            "acceptedThrough": 36
+          },
+          "receive": {
+            "phase": "idle",
+            "failures": 0,
+            "nextAttemptAt": 1791840908241.1606,
+            "issueSince": null,
+            "lastSuccessAt": 1791840847924,
+            "reason": null,
+            "receivedThrough": 643
+          }
+        }
+      ]
+    },
+    "handlers": {
+      "n": 600,
+      "total": 4313.2,
+      "median": 5.5,
+      "p95": 26.1,
+      "p99": 30.7,
+      "max": 49.3
+    },
+    "requests": {
+      "typing": 507
+    },
+    "actualGoalsChars": 1000
+  }
+]

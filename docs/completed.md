@@ -13616,5 +13616,52 @@ source and bundle identities. No runtime tests were broadened for this diagnosti
 Recommend isolating queue-status subscriptions from stable workspace content/actions, preserving
 pending/error visibility, blocked-state controls, live editors, all fresh checks and undo. Remeasure
 before deciding on custody connection reuse; its lifecycle and benefit remain unproven. No repair or
-release qualification is claimed. This packet is local, uncommitted and unpublished; the other seat's
-`docs/progress.md` is unchanged.
+release qualification is claimed. This investigation is committed **signed `e730ac57`** (signature
+verified `G`) and remains unpublished; the other seat's `docs/progress.md` is unchanged.
+
+### Queue-status subscription isolation and stronger input measurements — 2026-10-12
+
+**Boundary.** The preceding authority-read investigation is signed **`e730ac57`**. This repair and
+its [packet](./performance-experiments/2026-10-12-status-subscriptions/README.md) are local,
+uncommitted and unpublished. Release validation remains paused.
+
+**Change.** Workspace content/actions no longer subscribe to queue-status churn. A separate status
+component renders pending/blocked/error warnings and Retry/Discard; Goals subscribes only to the
+admission state for availability. Context identity remains stable for feedback-only changes. Owner
+replacement detaches subscriptions and guards delayed persistence replies. The complete fresh final
+authority check still runs inside the FIFO job. No custody, journal-before-apply, receive protocol,
+editor admission, undo, stored-format or deployment change.
+
+**Evidence.** Twelve restored CPU-4x sessions use an external 150 ms input cadence independent of
+renderer completion, 600 keys each, current reference in each block and reversed arm order. Known
+200 ms stalls verify that the recorder retains keys delayed before their handlers. Input-to-observed-
+text p95 improves **71.0→63.3 / 71.0→60.7 ms** with an active peer and **73.7→60.7 / 64.0→55.8 ms**
+during backlog receipt. Silent-peer results are mixed (**55.2→48.6 / 40.3→52.5 ms**); no everyday
+latency win is claimed. Extreme tails and long tasks remain mixed. This is descriptive session-level
+evidence, not independent-key statistical precision or physical screen latency. The 16 ms target
+and consistent 50 ms working p95 remain unmet.
+
+Final fresh-read medians under receive load fall **25–26→18–20 ms**, principally the measured opening
+span (**about 14→8 ms**); cursor transactions remain **9–10 ms**, and final apply about **6 ms**.
+A separate four-session exact historical comparison puts authority reuse `08a82089` against prepared
+handoff `02829405`: input p95 **184.5→79.0 / 195.8→72.9 ms**. This establishes the handoff benefit in
+one contemporaneous comparison, without claiming to explain earlier machine drift.
+
+**Checks/limits.** All 16 desktop sessions (9,600 keys) preserve exact writing, last-key undo/redo,
+peer convergence and cold offline replay, with no page errors and HTTP 200 for completed typing
+requests. Fifteen focused UI/sync-notice/editor tests, TypeScript, scoped lint/format, ordinary build
+and JS budget pass. Byte-identical executable assets confirm the two post-measurement lint comments
+did not alter the tested candidate. The evidence archive retains raw timings, checks and setup
+failures; fixtures/credentials are excluded.
+
+The connected Pixel 9a / Android 17 passes the recorder calibration, but **no account timing completes**:
+the desktop fixture's virtual passkey cannot satisfy the phone's real credential prompt. Adapter setup
+mistakes and the eventual credential boundary are recorded. The user chose to finish this phase and
+leave physical account comparison pending, with a separate disposable credential walkthrough needed.
+Bitwarden and real writing were untouched; test tabs/port forwards are closed/removed.
+
+**Next.** Keep the UI isolation and prepared handoff. Design an authority check immediately before
+final queue entry only with an explicit freshness/lifetime/invalidation contract; do not silently
+move or weaken the present check. Remaining content-render work, protocol work, extreme tails and
+physical account evidence remain open. Local retention stays design-only; `docs/progress.md` is
+unchanged.

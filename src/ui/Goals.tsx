@@ -22,7 +22,7 @@ import { EditorView, keymap } from '@codemirror/view';
 import { NEXT_CAP, type Section } from '../crdt/days';
 import { isFrozen } from '../crdt/freeze';
 import { masterLineBody } from '../lib/masterLineBody';
-import { useWorkspaceUi } from './workspaceUi';
+import { useWorkspaceAdmissionState, useWorkspaceUi } from './workspaceUi';
 import {
   documentHeadings,
   scrollAwareBreadcrumb,
@@ -75,7 +75,8 @@ export const Goals = ({
   onEditorReady,
   onClose,
 }: GoalsProps): React.ReactElement => {
-  const { execute, mountEditor, removeMasterLines, snapshot, status } = useWorkspaceUi();
+  const { execute, mountEditor, removeMasterLines, snapshot } = useWorkspaceUi();
+  const admissionState = useWorkspaceAdmissionState();
   const host = useRef<HTMLDivElement>(null);
   const editor = useRef<EditorView | null>(null);
   const outlineTrigger = useRef<HTMLButtonElement>(null);
@@ -92,7 +93,7 @@ export const Goals = ({
     0,
     NEXT_CAP - (snapshot.days.find((day) => day.date === date)?.next.length ?? 0),
   );
-  const unavailable = pending || status.state !== 'active';
+  const unavailable = pending || admissionState !== 'active';
   const removeDisabled = unavailable || !selection.text.some((line) => line.length > 0);
   const transferDisabled = (section: Section, selected = selection): boolean => {
     const items = selected.text.filter((line) => masterLineBody(line).length > 0).length;
