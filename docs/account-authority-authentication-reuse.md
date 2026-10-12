@@ -64,3 +64,7 @@ and [results](performance-experiments/2026-10-12-authority-reuse/README.md). Thi
 remote admission fence. The agreed decision threshold determines whether to proceed to the
 [prepared remote handoff](account-prepared-remote-handoff-design.md); it does not authorize a
 third general shrinking pass or a release-validation campaign.
+
+The next [prepared remote handoff](account-prepared-remote-handoff-design.md) uses this same fresh
+inventory check again at final editor application, after releasing the preparation storage task.
+Its captured authority context must still match; a changed or closed owner cannot apply the proposal.

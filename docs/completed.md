@@ -13443,3 +13443,38 @@ Both unprofiled repetitions exceed the predeclared escalation threshold: proceed
 [prepared remote handoff](./account-prepared-remote-handoff-design.md) with budgeted CPU yielding,
 not another general shrinking pass. That handoff and local retention remain design-only.
 `docs/progress.md` remains unchanged.
+
+## 2026-10-12 — Prepared remote content handoff and budgeted Account work
+
+**Boundary.** Unchanged-authority authentication reuse is committed **signed `08a82089`**.
+This next [implementation and measurement packet](./performance-experiments/2026-10-12-prepared-receive/README.md)
+remain local, uncommitted and unpublished. No release qualification was resumed.
+
+**Change.** One bounded remote content preparation verifies and durably commits on the exclusive
+storage owner while ordinary local edits keep synchronous encrypted journal-before-apply. After
+storage releases, only final promotion joins the editor FIFO: it freshly checks authority, checks
+its captured context/lifetime, and applies original frames to the live canonical document and undo
+history. A local refusal cannot be bypassed. Discard or failed final authority closes for cold replay
+of any durable undisplayed suffix. History installation stays fenced; no stored/wire format changes.
+Account tasks yield on an 8 ms cooperative budget, and large verification comparisons check it every
+64 KiB. This is scheduling cooperation, not a hard task limit or elimination of history growth.
+
+**Evidence.** Two repetitions of silent-peer, active-peer and 600-position-backlog typing at CPU-4x,
+with 75 ms request delay, use the same 120-card/12 KB Goals fixture. Active-peer frame p95 improves
+**147–179 → 60–85 ms**; backlog **133–165 → 98–102 ms**. Silent p95 is broadly unchanged
+(**28–32 → 28–33 ms**). Every final session preserves writing, undo/redo, convergence and offline
+replay, with HTTP 200 responses throughout typing. Backlog keys over 100 ms fall from 7/10 to 5/6
+of 120. Some candidate runs finish fewer receive jobs while typing; no catch-up throughput gain is
+claimed. Long tasks still reach **148 ms**. The >=25% relative improvement criterion is met in both
+active/backlog repetitions; the 50 ms working target and 16 ms TRD target remain unmet.
+
+**Checks/limits.** 277 units pass (one existing skip), seven focused native cases and two packaged
+lifecycle journeys pass. Native tests cover renderer death after receipt commit but before display,
+later journalled edits, pending Yjs structs/deletes, undo, changed custody, and write-permit retention
+through close. A pressure race discovered before final measurement now has a regression; the partial
+pilot is retained and excluded. Probe/test mistakes and their passing repeats remain recorded.
+TypeScript, ordinary build, JS budget, pinned Yjs, origin isolation and scoped lint/format pass.
+
+**Next.** Separate diagnostic profiles identify remaining protocol parsing/authentication bursts,
+synchronous read comparisons, and a still-fenced final apply/authority-check span. Isolate those spans
+before the next repair. Local retention remains design-only. `docs/progress.md` stays unchanged.

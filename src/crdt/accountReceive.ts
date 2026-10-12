@@ -1,3 +1,4 @@
+import { cpuCheckpoint } from './cpuBudget';
 import { createAuthorityAuthentication } from './accountAuthority';
 import { authenticateJoinedAccountRows } from './joinedAccount';
 import { authenticatePromotionRows } from './promotionRecord';
@@ -163,6 +164,7 @@ import {
   AdmissionError,
   MAX_PENDING_BYTES,
   type OwnedReceiveQueue,
+  type OwnedPreparedReceiveQueue,
 } from './admissionQueue';
 import { createAdmittedWorkspace } from './admittedWorkspace';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
@@ -401,8 +403,16 @@ async function openAccountReceiveOwner(
         const checking = (isolated ?? coverage).bind(records);
         // Cached crypto checks resolve in microtasks. A real maintenance budget is needed
         // between receipts so input can cancel before the next complete coverage proof.
+        const budget = cpuCheckpoint(task);
         const checkpoint =
-          audit && isMaintenanceTask(task) ? () => task.wait(() => Promise.resolve()) : undefined;
+          audit && isMaintenanceTask(task)
+            ? () => task.wait(() => Promise.resolve())
+            : budget
+              ? async () => {
+                  const pause = budget();
+                  if (pause) await pause;
+                }
+              : undefined;
         try {
           const census = checkpoint
               ? await inspectInboundCooperatively(records, route, base, checkpoint)
@@ -524,7 +534,18 @@ async function openAccountReceiveOwner(
                     records,
                     base,
                     lifetime(task),
-                    { memo, coverage: checking },
+                    {
+                      memo,
+                      coverage: checking,
+                      ...(cpuCheckpoint(task)
+                        ? {
+                            checkpoint: async () => {
+                              const pause = cpuCheckpoint(task)!();
+                              if (pause) await pause;
+                            },
+                          }
+                        : {}),
+                    },
                     { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
                   );
                   if (composed)
@@ -548,6 +569,7 @@ async function openAccountReceiveOwner(
                 }
               }
             : undefined,
+          cpuCheckpoint(task),
         );
         validationComplete = true;
         verifiedCounter = structuredClone(counter);
@@ -1147,6 +1169,21 @@ async function openAccountReceiveOwner(
     },
     compactContent: () => carrier.compactContent(),
   });
+  // Captured only by a just-authenticated durable receive. No task survives preparation.
+  // Reacquire the storage owner at the final editor head, then recheck authority and lifetime.
+  const preparedPromotion = () => {
+    const preparedBase = base,
+      preparedPayload = expectedPayload;
+    return (apply: () => void) =>
+      runCaptureTask(async (task) => {
+        await assertCurrent(task);
+        task.step(() => {
+          if (base !== preparedBase || expectedPayload !== preparedPayload)
+            throw new ReceiveAuthorityChanged();
+          apply();
+        });
+      });
+  };
   const receiveGroup = (
     inputs: readonly Bytes[],
     expected: readonly Bytes[],
@@ -2074,6 +2111,7 @@ async function openAccountReceiveOwner(
     fetchPage,
     prepareGroup,
     receiveGroup,
+    preparedPromotion,
     completedRead: (request: Bytes, kind: string) => {
       const publisher = decodeInboundRequest(request).publisher;
       receiveSelection.completed(
@@ -2135,6 +2173,7 @@ async function openReceivingWorkspace(
     listCaptures,
     fetchPage,
     receiveGroup,
+    preparedPromotion,
     fetchHistory,
     installHistory,
     createOutbound,
@@ -2151,7 +2190,8 @@ async function openReceivingWorkspace(
   );
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
-  let enqueue!: OwnedReceiveQueue;
+  let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
+  const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
     const workspace = await createAdmittedWorkspace(
@@ -2166,8 +2206,9 @@ async function openReceivingWorkspace(
               : {}),
             ...(batching.publication ? { publishReceivePage: true } : {}),
           },
-          (receive) => {
+          (receive, prepared) => {
             enqueue = receive;
+            prepare = prepared;
           },
         ),
       {
@@ -2213,7 +2254,11 @@ async function openReceivingWorkspace(
     };
     const receivePage = (bytes: Bytes, request?: Bytes) => {
       try {
-        return enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
+        return preparedRemote
+          ? prepare(bytes, (page, stage) =>
+              api.receivePage(page, (updates) => stage(updates, preparedPromotion()), request),
+            )
+          : enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
       } catch (cause) {
         return Promise.reject(cause);
       }
@@ -2269,9 +2314,21 @@ async function openReceivingWorkspace(
             if (pages.length > 1) {
               const packed = packReceivePages(pages);
               try {
-                const received = await enqueue(packed, (input, promote) =>
-                  receiveGroup(unpackReceivePages(input), requests.slice(0, pages.length), promote),
-                );
+                const received = preparedRemote
+                  ? await prepare(packed, (input, stage) =>
+                      receiveGroup(
+                        unpackReceivePages(input),
+                        requests.slice(0, pages.length),
+                        (updates) => stage(updates, preparedPromotion()),
+                      ),
+                    )
+                  : await enqueue(packed, (input, promote) =>
+                      receiveGroup(
+                        unpackReceivePages(input),
+                        requests.slice(0, pages.length),
+                        promote,
+                      ),
+                    );
                 for (let i = 0; i < received.kinds.length; i++)
                   completedRead(requests[i]!, received.kinds[i]!);
                 return received;

@@ -6,6 +6,7 @@ import {
   AdmissionError,
   MAX_PENDING_BYTES,
   type AdmissionOptions,
+  type OwnedPreparedReceiveQueue,
 } from '../src/crdt/admissionQueue';
 import type { JournalSession, JournalRecovery } from '../src/crdt/custody';
 import type { Bytes } from '../src/crdt/custodyCrypto';
@@ -120,12 +121,20 @@ const fixture = async (
       abort.abort();
     },
   } as unknown as JournalSession;
-  const owner = await createAdmissionOwner(carrier, {
-    prepare,
-    validateReceive: () => {},
-    ...options,
-  });
+  let prepared!: OwnedPreparedReceiveQueue;
+  const owner = await createAdmissionOwner(
+    carrier,
+    {
+      prepare,
+      validateReceive: () => {},
+      ...options,
+    },
+    (_receive, prepare) => {
+      prepared = prepare;
+    },
+  );
   return {
+    prepared,
     owner,
     disk,
     wal,
@@ -1126,5 +1135,197 @@ it('close drains the background copy and retains its newer journal suffix withou
     gate.resolve();
     await f.owner.close();
     vi.useRealTimers();
+  }
+});
+
+describe('prepared owned remote handoff', () => {
+  it('journals during preparation, then applies original frames to the current document after durable storage', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      begun = wait();
+    const update = remote();
+    const work = f.prepared(update, async (input, stage) => {
+      begun.resolve();
+      await gate.promise;
+      f.disk.push(input.slice());
+      stage([input], async (apply) => {
+        apply();
+      });
+      return 7;
+    });
+    await begun.promise;
+    expect(f.owner.status.durable).toBe(false);
+    await f.owner.submit(intent('LOCAL')).accepted;
+    expect(view(f.owner.snapshot())).toBe('LOCAL');
+    expect(f.wal).toHaveLength(1);
+    let durable = false;
+    const barrier = f.owner.whenDurable().then(() => {
+      durable = true;
+    });
+    await Promise.resolve();
+    expect(durable).toBe(false);
+    gate.resolve();
+    expect(await work).toBe(7);
+    await barrier;
+    expect(view(f.owner.snapshot())).toContain('LOCAL');
+    expect(view(f.owner.snapshot())).toContain('R');
+    const reopened = await fixture(append, {
+      records: f.disk.map((bytes, i) => ({
+        kind: 'update',
+        gen: 1,
+        seq: i + 1,
+        bytes: bytes.slice(),
+      })),
+      journal: [],
+    });
+    expect(view(reopened.owner.snapshot())).toBe(view(f.owner.snapshot()));
+    await reopened.owner.close();
+    await f.owner.close();
+  });
+  it.each(['retry', 'discard'] as const)(
+    'a durable proposal cannot bypass a refused local head: %s',
+    async (action) => {
+      const f = await fixture(),
+        gate = wait(),
+        staged = wait();
+      const work = f.prepared(remote(), async (input, stage) => {
+        await gate.promise;
+        f.disk.push(input.slice());
+        stage([input], async (apply) => {
+          apply();
+        });
+        staged.resolve();
+      });
+      void work.catch(() => {});
+      f.refuse();
+      f.failContent();
+      const local = f.owner.submit(intent('L'));
+      void local.accepted.catch(() => {});
+      await until(() => f.owner.status.state === 'blocked');
+      gate.resolve();
+      await staged.promise;
+      await until(() => f.owner.status.pendingItems === 2);
+      expect(view(f.owner.snapshot())).toBe('');
+      if (action === 'retry') {
+        f.owner.retry();
+        await local.accepted;
+        await work;
+        expect(view(f.owner.snapshot())).toContain('L');
+        expect(view(f.owner.snapshot())).toContain('R');
+      } else {
+        f.owner.discardPending();
+        await expect(work).rejects.toMatchObject({ code: 'inactive-session' });
+        await until(() => ['closed', 'failed'].includes(f.owner.status.state));
+        expect(f.disk).toHaveLength(1);
+      }
+      await f.owner.close();
+    },
+  );
+  it('releases preparation before a forced local write and final recheck, without deadlocking', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      write = f.gateContent();
+    const work = f.prepared(remote(), async (input, stage) => {
+      await gate.promise;
+      f.disk.push(input.slice());
+      stage([input], async (apply) => {
+        apply();
+      });
+      write.resolve();
+    });
+    f.refuse();
+    const local = f.owner.submit(intent('L'));
+    await until(() => f.calls.includes('content-start'));
+    gate.resolve();
+    await local.accepted;
+    await work;
+    expect(view(f.owner.snapshot()).length).toBe(2);
+    await f.owner.close();
+  });
+  it('refuses a stale final authority check and closes for cold replay', async () => {
+    const f = await fixture();
+    const work = f.prepared(remote(), async (input, stage) => {
+      f.disk.push(input.slice());
+      stage([input], async () => {
+        throw Error('authority changed');
+      });
+    });
+    await expect(work).rejects.toThrow();
+    await f.owner.close();
+    expect(f.disk).toHaveLength(1);
+  });
+  it('close drains pending preparation and never applies or retains late buffers', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      begun = wait();
+    let owned!: Bytes;
+    const work = f.prepared(remote(), async (input, stage) => {
+      owned = input;
+      begun.resolve();
+      await gate.promise;
+      stage([input], async (apply) => {
+        apply();
+      });
+    });
+    void work.catch(() => {});
+    await begun.promise;
+    let closed = false;
+    const closing = f.owner.close().then(() => {
+      closed = true;
+    });
+    await Promise.resolve();
+    expect(closed).toBe(false);
+    gate.resolve();
+    await closing;
+    await expect(work).rejects.toThrow();
+    expect(owned.every((b) => b === 0)).toBe(true);
+  });
+  it('bounds concurrent proposals and erases detached inputs on invalid verification', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      begun = wait();
+    let owned!: Bytes;
+    const bytes = remote();
+    const work = f.prepared(bytes, async (input) => {
+      owned = input;
+      begun.resolve();
+      await gate.promise;
+      throw new AdmissionError('receive-refused', 'bad signature');
+    });
+    bytes.fill(0);
+    await begun.promise;
+    expect(owned.some((b) => b !== 0)).toBe(true);
+    expect(() => f.prepared(remote(), async () => {})).toThrow(/pending/);
+    gate.resolve();
+    await expect(work).rejects.toMatchObject({ code: 'receive-refused' });
+    expect(owned.every((b) => b === 0)).toBe(true);
+    await f.owner.submit(intent('L')).accepted;
+    await f.owner.close();
+  });
+});
+
+it('a page arriving after local pressure is prepared but its final apply waits for that local head', async () => {
+  const f = await fixture();
+  try {
+    f.refuse();
+    f.failContent();
+    const local = f.owner.submit(intent('L'));
+    void local.accepted.catch(() => {});
+    await until(() => f.owner.status.state === 'blocked');
+    const received = f.prepared(remote(), async (input, stage) => {
+      f.disk.push(input.slice());
+      stage([input], async (apply) => {
+        apply();
+      });
+    });
+    await until(() => f.owner.status.pendingItems === 2);
+    expect(view(f.owner.snapshot())).toBe('');
+    f.owner.retry();
+    await local.accepted;
+    await received;
+    expect(view(f.owner.snapshot())).toContain('L');
+    expect(view(f.owner.snapshot())).toContain('R');
+  } finally {
+    await f.owner.close();
   }
 });

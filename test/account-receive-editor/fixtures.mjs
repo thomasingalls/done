@@ -8,6 +8,11 @@ export async function editorBundle(control) {
     configFile: false,
     logLevel: 'error',
     define: {
+      // The original ordered-fence suite remains the reference oracle; the prepared suite
+      // explicitly selects the product path and its different interleaving contract.
+      'import.meta.env.VITE_ACCOUNT_PREPARED_RECEIVE': JSON.stringify(
+        process.env.ACCOUNT_PREPARED_RECEIVE ?? '0',
+      ),
       ...(process.env.ACCOUNT_BATCH_MODE
         ? {
             'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(process.env.ACCOUNT_BATCH_MODE),

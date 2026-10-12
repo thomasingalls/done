@@ -1,3 +1,4 @@
+import { budgetedTask } from './cpuBudget';
 import { maintenanceTask } from './contentMaintenance';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
@@ -266,7 +267,11 @@ export async function openAccountCaptureOwner(
       measureLedgerWork('storageQueueWait', enqueued);
       const began = ledgerWorkStart();
       try {
-        return await operation(task);
+        return await operation(
+          extension?.version === 9 && import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
+            ? budgetedTask(task)
+            : task,
+        );
       } finally {
         measureLedgerWork('storageOperation', began);
         scheduleAudit();

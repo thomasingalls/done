@@ -8,7 +8,7 @@ import {
   type PreparationScope,
 } from '../src/crdt/workspacePreparation';
 import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/admittedWorkspace';
-import { createAdmissionOwner } from '../src/crdt/admissionQueue';
+import { createAdmissionOwner, type OwnedPreparedReceiveQueue } from '../src/crdt/admissionQueue';
 import type { JournalSession } from '../src/crdt/custody';
 import { Y, createDoc, applyUpdate, encodeState, newMap, newText, newArray } from '../src/crdt/yjs';
 import { targetText } from '../src/crdt/workspaceCommands';
@@ -113,56 +113,63 @@ const makeFixture = async (
       release?.();
     },
   } as unknown as JournalSession;
+  let prepareRemote!: OwnedPreparedReceiveQueue;
   const doc = await createAdmittedWorkspace(
     (options) => {
       const local = options[localWorkspacePreparation];
-      return createAdmissionOwner(carrier, {
-        ...options,
-        ...(options[accountTextPreparation]
-          ? {
-              [accountTextPreparation]: {
-                prepare(input, head) {
-                  const result = options[accountTextPreparation]!.prepare(input, head);
-                  if (result) {
-                    preparations.push(head.writer);
-                    direct.push(result.update);
-                  }
-                  return result;
+      return createAdmissionOwner(
+        carrier,
+        {
+          ...options,
+          ...(options[accountTextPreparation]
+            ? {
+                [accountTextPreparation]: {
+                  prepare(input, head) {
+                    const result = options[accountTextPreparation]!.prepare(input, head);
+                    if (result) {
+                      preparations.push(head.writer);
+                      direct.push(result.update);
+                    }
+                    return result;
+                  },
                 },
-              },
-            }
-          : {}),
-        prepare: (...args) => {
-          preparations.push(args[0].clientID);
-          return options.prepare(...args);
+              }
+            : {}),
+          prepare: (...args) => {
+            preparations.push(args[0].clientID);
+            return options.prepare(...args);
+          },
+          ...(local
+            ? {
+                [localWorkspacePreparation]: {
+                  ...local,
+                  accept(state, revision) {
+                    const previous = local.accept(state, revision);
+                    if (previous) retired.push(previous);
+                    return previous;
+                  },
+                  command(context, input, scope) {
+                    preparations.push(context.writer);
+                    let candidate: PreparedWorkspaceState | undefined;
+                    const result = local.command(context, input, {
+                      ...scope,
+                      ownState(state) {
+                        scope.ownState(state);
+                        owned.push({ state, scope });
+                        candidate = state;
+                      },
+                    });
+                    if (corrupt) candidate!.history.doc.getText('uncovered').insert(0, 'drift');
+                    return result;
+                  },
+                },
+              }
+            : {}),
         },
-        ...(local
-          ? {
-              [localWorkspacePreparation]: {
-                ...local,
-                accept(state, revision) {
-                  const previous = local.accept(state, revision);
-                  if (previous) retired.push(previous);
-                  return previous;
-                },
-                command(context, input, scope) {
-                  preparations.push(context.writer);
-                  let candidate: PreparedWorkspaceState | undefined;
-                  const result = local.command(context, input, {
-                    ...scope,
-                    ownState(state) {
-                      scope.ownState(state);
-                      owned.push({ state, scope });
-                      candidate = state;
-                    },
-                  });
-                  if (corrupt) candidate!.history.doc.getText('uncovered').insert(0, 'drift');
-                  return result;
-                },
-              },
-            }
-          : {}),
-      });
+        (_receive, prepare) => {
+          prepareRemote = prepare;
+        },
+      );
     },
     {
       identity,
@@ -176,6 +183,7 @@ const makeFixture = async (
   doc.outgoing((b) => emitted.push(b));
   return {
     doc,
+    prepareRemote,
     sources,
     direct,
     beforeAppend: (fn: () => void) => {
@@ -1851,4 +1859,57 @@ describe('direct Account text boundary', () => {
       await f.doc.close();
     }
   });
+});
+
+it('prepared remote frames preserve intervening direct text, structural commands and undo history', async () => {
+  const f = await makeFixture(undefined, 'account-text');
+  let release!: () => void, started!: () => void;
+  const gate = new Promise<void>((r) => {
+    release = r;
+  });
+  const ready = new Promise<void>((r) => {
+    started = r;
+  });
+  try {
+    const update = remote(f.doc, (d) => d.getText('master').insert(0, 'REMOTE'));
+    const receiving = f.prepareRemote(update, async (input, stage) => {
+      started();
+      await gate;
+      f.disk.push(input.slice());
+      stage([input], async (apply) => {
+        apply();
+      });
+    });
+    await ready;
+    await f.doc
+      .text({ kind: 'master' })
+      .input({ name: 'insert', text: 'LOCAL' }, { ranges: [{ anchor: 0, head: 0 }], main: 0 })
+      .accepted;
+    await create(f.doc, 'intervening card');
+    await f.doc.command({ kind: 'undo' }).accepted;
+    await f.doc.command({ kind: 'redo' }).accepted;
+    expect(f.doc.read().master).toBe('LOCAL');
+    release();
+    await receiving;
+    expect(f.doc.read().master).toContain('LOCAL');
+    expect(f.doc.read().master).toContain('REMOTE');
+    expect(f.doc.read().cards.map((c) => c.text)).toEqual(['intervening card']);
+    await f.doc.command({ kind: 'undo' }).accepted;
+    expect(f.doc.read().cards).toHaveLength(0);
+    await f.doc.command({ kind: 'undo' }).accepted;
+    expect(f.doc.read().master).toBe('REMOTE');
+    await f.doc.command({ kind: 'redo' }).accepted;
+    await f.doc.command({ kind: 'redo' }).accepted;
+    const snapshot = f.doc.snapshot();
+    const cold = createDoc();
+    for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
+    const reopened = createDoc();
+    applyUpdate(reopened, snapshot);
+    expect(historySeam.sameDocState(cold, reopened)).toBe(true);
+    reopened.destroy();
+    cold.destroy();
+  } finally {
+    release?.();
+    await f.doc.close();
+  }
 });

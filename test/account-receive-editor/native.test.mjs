@@ -361,7 +361,10 @@ test(
     assert.equal(await other.evaluate(() => acquired), false);
     await f.page.evaluate(() => window.release());
     await f.page.evaluate(() => closing);
-    assert.match(await f.page.evaluate(() => work), /closed|inactive/);
+    assert.match(
+      await f.page.evaluate(() => work),
+      /closed|inactive|write capability is no longer live/,
+    );
     await waitPredicate(other, () => acquired);
     await other.close();
     await cold(f);

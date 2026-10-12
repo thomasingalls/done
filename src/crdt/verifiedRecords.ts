@@ -1,3 +1,4 @@
+import type { CpuCheckpoint } from './cpuBudget';
 import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 import { eraseUnretained } from './verificationOwnership';
 import { selectionIdentity, type ContentSelection } from './contentSelection';
@@ -30,6 +31,37 @@ export const sameRecords = (a: readonly OpenedRecord[], b: readonly OpenedRecord
     const s = b[i]!;
     return r.kind === s.kind && r.gen === s.gen && r.seq === s.seq && sameBytes(r.bytes, s.bytes);
   });
+/** Private owner inputs are held on its serialized storage queue for this entire comparison. */
+export async function sameRecordsCooperatively(
+  a: readonly OpenedRecord[],
+  b: readonly OpenedRecord[],
+  checkpoint: CpuCheckpoint,
+): Promise<boolean> {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    const left = a[i]!,
+      right = b[i]!;
+    if (
+      left.kind !== right.kind ||
+      left.seq !== right.seq ||
+      left.gen !== right.gen ||
+      left.bytes.length !== right.bytes.length
+    )
+      return false;
+    if (!left.bytes.length) left.bytes.subarray(0, 0);
+    if (left.bytes !== right.bytes) {
+      for (let at = 0; at < left.bytes.length; at += 65536) {
+        const end = Math.min(at + 65536, left.bytes.length);
+        for (let j = at; j < end; j++) if (left.bytes[j] !== right.bytes[j]) return false;
+        const pause = checkpoint();
+        if (pause) await pause;
+      }
+    }
+    const pause = checkpoint();
+    if (pause) await pause;
+  }
+  return true;
+}
 /** Only detached plain verification data enters here: no keys, tasks or application objects. */
 export function eraseVerified(value: unknown): void {
   if (value instanceof Uint8Array) value.fill(0);
@@ -104,6 +136,7 @@ export function createVerifiedRecords<T>(
         before: readonly OpenedRecord[],
         candidate: OpenedRecord[],
       ) => Promise<T | undefined>,
+      checkpoint?: CpuCheckpoint,
     ): Promise<void> {
       // The Account storage owner serializes calls. Enforce that borrowing invariant here
       // too: a competing verification must never erase a predecessor another call uses.
@@ -116,7 +149,15 @@ export function createVerifiedRecords<T>(
           clear();
           throw e;
         }
-        if (retained && identity === token && sameRecords(retained, records)) return;
+        const initialRevision = revision;
+        if (retained && identity === token) {
+          const equal = checkpoint
+            ? await sameRecordsCooperatively(retained, records, checkpoint)
+            : sameRecords(retained, records);
+          current();
+          if (initialRevision !== revision) throw Error('Verification view was invalidated');
+          if (equal) return;
+        }
         const previous = value,
           before = retained;
         // Only byte-equal prefix rows can share internal ownership. Input remains caller-owned.
@@ -131,11 +172,15 @@ export function createVerifiedRecords<T>(
               a.kind !== b.kind ||
               a.gen !== b.gen ||
               a.seq !== b.seq ||
-              !sameBytes(a.bytes, b.bytes)
+              !(checkpoint
+                ? await sameRecordsCooperatively([a], [b], checkpoint)
+                : sameBytes(a.bytes, b.bytes))
             )
               break;
             prefix++;
           }
+        current();
+        if (at !== revision) throw Error('Verification view was invalidated');
         const candidate = ownResults
           ? [...(before?.slice(0, prefix) ?? []), ...copyRecords(records.slice(prefix))]
           : copyRecords(records);

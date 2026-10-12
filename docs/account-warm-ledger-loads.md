@@ -79,6 +79,8 @@ drains active native work and clears buffers. There is no worker or background k
 Private Account selections and owned verification now avoid copying whole histories for small
 answers, but `createVerifiedRecords` still byte-compares its detached history, and ordinary full
 loads retain caller-owned copies. Unchanged custody authentication now has separate [owner-local reuse](account-authority-authentication-reuse.md),
-with fresh complete inventory comparison on each check. Warm work is not all
+with fresh complete inventory comparison on each check. The [prepared receive handoff](account-prepared-remote-handoff-design.md)
+lets local journalling overlap content verification and splits private verification comparisons on
+a CPU budget; it does not remove their history-dependent work. Warm work is not all
 independent of ledger length. Further reuse needs its own lifetime/aliasing checks; physical local retention needs the separate
 [authenticated-baseline design](account-local-retention-design.md).
