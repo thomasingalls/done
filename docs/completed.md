@@ -13050,7 +13050,7 @@ temporary copies/builds and linked Docker cache. No deletion occurred. `docs/pro
 
 ### Account receiving — first repair after attribution
 
-**Date:** 2026-10-12 · **Commit:** working tree on signed `ee234d06` · **Stage:** bounded repair
+**Date:** 2026-10-12 · **Commit:** signed `534252e1` (measurement checkpoint `ee234d06`) · **Stage:** bounded repair
 
 **Exit.** The measurement packet is committed signed. This [repair and evidence](./performance-experiments/2026-10-12-receive-first-repair/README.md)
 remove whole-marker hex comparison and redundant own-stream polling during productive catch-up.
@@ -13067,4 +13067,24 @@ reproduces on pinned baseline source and is retained separately. Type/build/lint
 
 **Remaining.** Group current-format receipt processing to amortize authority and load work. Deep
 opening remains around seven seconds; current phone performance and isolated long tasks remain
-unresolved. The repair is uncommitted and unpublished; release validation remains paused.
+unresolved. The repair is committed signed and unpublished; release validation remains paused.
+
+### Account receiving — group current-format receipts
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `534252e1` · **Stage:** bounded repair
+
+**Exit.** The first repair is committed signed. This [grouping repair](./performance-experiments/2026-10-12-receive-groups/README.md)
+shares preparation, custody/load work, a native transaction and authenticated readback across up to
+four independently verified receipts. Collection is sequential outside admission; original v1
+receipt bytes and the existing publisher-turn, expiry, witness and size guards remain.
+
+**Evidence.** Fresh baseline 248.795 seconds versus grouped 79.125 seconds for 600 positions;
+added-75-ms candidate 193.074 seconds versus the earlier delayed baseline's 302.023 seconds.
+All three restored journeys pass full exports, both-way writing and offline reopen. Thirty-two
+focused unit checks and seventeen distinct native cases pass, including old-reader compatibility,
+atomic crashes/retries and grouped-HTTP loss/lock boundaries. Build/type/lint/format checks pass.
+
+**Remaining.** Repair/evidence are uncommitted and unpublished. Cold opening stays around seven
+seconds and an approximately 1.2-second delayed long task remains unattributed. Consider bounded
+prefetch against remaining network costs separately; no receipt migration or concurrent fetching
+was introduced. Release validation and `docs/progress.md` remain unchanged.

@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-12T07:38:00.710385+00:00",
+  "parent": "534252e1",
+  "unitPassed": 32,
+  "nativeDistinctPassed": 17,
+  "journeysPassed": 3,
+  "summariesReproduced": 3,
+  "runtimeMatchesMeasured": true,
+  "checks": [
+    "ordinary build",
+    "TypeScript",
+    "targeted lint and format",
+    "whitespace"
+  ],
+  "limits": [
+    "Individual serial desktop observations",
+    "No fresh delayed baseline",
+    "Existing self-binding mutation control not rerun or repaired",
+    "No release validation or publication"
+  ]
+}

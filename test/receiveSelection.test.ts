@@ -136,3 +136,14 @@ it('recognizes current unresolved submissions, including current-key retries wit
   state.conflict = true;
   expect(unresolvedSelfSubmission(state)).toBe(false);
 });
+
+it('caps a group by the remaining publisher turn, including a partial preceding group', () => {
+  const s = createReceiveSelection(),
+    publishers = ['a', 'b'];
+  expect(s.next(publishers)).toBe('a');
+  s.completed(publishers, 'a', true);
+  expect(s.capacity('a')).toBe(3);
+  for (let i = 0; i < 3; i++) s.completed(publishers, 'a', true);
+  expect(s.next(publishers)).toBe('b');
+  expect(s.capacity('b')).toBe(4);
+});

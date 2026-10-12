@@ -1,0 +1,11 @@
+
+Running 1 test using 1 worker
+
+(node:68924) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+caught 248795
+  ✓  1 docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts:94:1 › client receive matched fixture (5.5m)
+
+  Slow test file: docs/performance-experiments/2026-10-12-receive-attribution/probe/receive.spec.ts (5.5m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (5.5m)

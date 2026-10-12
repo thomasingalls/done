@@ -23,6 +23,9 @@ export function createReceiveSelection(now: () => number = Date.now) {
       productive = false;
       checkedOwn = undefined;
     },
+    capacity(publisher: string) {
+      return previous === publisher ? 4 - streak : 4;
+    },
     next(publishers: readonly string[], own?: { publisher: string; pending: boolean }) {
       if (!publishers.length) throw Error('No eligible receive publisher');
       const at = now();
@@ -53,8 +56,8 @@ export function createReceiveSelection(now: () => number = Date.now) {
       streak = progress ? (previous === publisher ? streak + 1 : 1) : 0;
       previous = publisher;
       productive = progress;
-      // Four useful pages, then let other publishers reconcile. The outer scheduler
-      // yields to the event loop and any due sender after EVERY page.
+      // Four useful pages, then let other publishers reconcile. Groups consume this
+      // same allowance; the outer scheduler yields to input and due sending between groups.
       if (progress && streak < 4) next = index;
       else {
         next = index + 1;

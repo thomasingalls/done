@@ -1,0 +1,38 @@
+[
+  {
+    "run": "baseline-local",
+    "path": "/tmp/done-receive-groups-20261012/baseline-local/result.json",
+    "bytes": 1070401,
+    "sha256": "a62c025914bd94a79d63f37d47d530cba1ed70f6ef629611a2c450259e9366a4"
+  },
+  {
+    "run": "baseline-local",
+    "path": "/tmp/done-receive-groups-20261012/baseline-local/deep-received-fixture.json",
+    "bytes": 6661182,
+    "sha256": "79d1dd8ea358ead6a2e7e595b3cc8a365abee123dd6a7fa0962bec94102f3fc7"
+  },
+  {
+    "run": "candidate-local",
+    "path": "/tmp/done-receive-groups-20261012/candidate-local/result.json",
+    "bytes": 641560,
+    "sha256": "68124c9599b95da5fe5ffc92febf024cc722ecd25a6045bca7eae37c4d616dfb"
+  },
+  {
+    "run": "candidate-local",
+    "path": "/tmp/done-receive-groups-20261012/candidate-local/deep-received-fixture.json",
+    "bytes": 6661175,
+    "sha256": "a34032499cec7e80e7d376f53b3e112627355cc315cb4a2028f2af18b7285bd8"
+  },
+  {
+    "run": "candidate-latency",
+    "path": "/tmp/done-receive-groups-20261012/candidate-latency/result.json",
+    "bytes": 802324,
+    "sha256": "7bfcf1186eb83a59f6e8f469e7524896ff5aa7173c723c6a274d42fdcaddd61f"
+  },
+  {
+    "run": "candidate-latency",
+    "path": "/tmp/done-receive-groups-20261012/candidate-latency/deep-received-fixture.json",
+    "bytes": 6654557,
+    "sha256": "9033557eda53e6eaf6dfafe07ddadf466818b35245a5f7ed11c72fcdfd6df38f"
+  }
+]

@@ -330,6 +330,7 @@ export const createContentOwner = (
     spool?: {
       before: SpoolWitness;
       after: SpoolWitness;
+      events?: number;
       beforeCommit?: (records: readonly StoredRecord[]) => Promise<void>;
       checkCommit?: () => void;
     },
@@ -342,7 +343,7 @@ export const createContentOwner = (
         (!crypt.allowSpoolCounter ||
           before.v !== 2 ||
           !sameSpoolWitness(before.spool, spool.before) ||
-          spool.after.events !== spool.before.events + 1)
+          spool.after.events !== spool.before.events + (spool.events ?? 1))
       )
         corrupt('Spool witness changed before reservation.');
       let next = reserveCounter(before, input.length, generation);
@@ -551,7 +552,7 @@ export const createContentOwner = (
     ) {
       await appendRecords(task, [input], transition);
     },
-    /** Internal multi-record receive commit. One evidence event and its original content share the witness. */
+    /** Internal receive commit. Original content/evidence pairs share one atomic witness transition. */
     async appendInbound(
       task: SessionTask,
       input: readonly ContentInput[],
@@ -564,9 +565,13 @@ export const createContentOwner = (
     ): Promise<ContentReceipt> {
       const copied = task.step(() => copyBatch(input));
       try {
-        if (copied.at(-1)?.kind !== 'heads' || copied.slice(0, -1).some((r) => r.kind !== 'update'))
+        if (
+          copied.at(-1)?.kind !== 'heads' ||
+          copied.some((r) => r.kind !== 'update' && r.kind !== 'heads')
+        )
           corrupt('Invalid receive batch shape');
-        const records = await appendRecords(task, copied, transition);
+        const events = copied.filter((r) => r.kind === 'heads').length;
+        const records = await appendRecords(task, copied, { ...transition, events });
         return Object.freeze({
           storeId: scope.storeId,
           generation,

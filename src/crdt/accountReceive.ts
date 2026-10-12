@@ -1,3 +1,10 @@
+import {
+  RECEIVE_GROUP_LIMIT,
+  RECEIVE_COLLECT_MS,
+  packReceivePages,
+  unpackReceivePages,
+  receiveGroupFits,
+} from './receiveGroup';
 import { createReceiveSelection, unresolvedSelfSubmission } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
@@ -198,6 +205,7 @@ async function openAccountReceiveOwner(
   let expectedPayload: Bytes = new Uint8Array(),
     expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
+  let outstandingGroup: Bytes[] = [];
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const assertCurrent = async (task: SessionTask) => {
@@ -486,6 +494,8 @@ async function openAccountReceiveOwner(
       signer = undefined;
       outstanding?.fill(0);
       outstanding = undefined;
+      for (const request of outstandingGroup) request.fill(0);
+      outstandingGroup = [];
     },
   };
   // The actor comes from the authenticated marker, not application identity. This read happens under
@@ -567,6 +577,7 @@ async function openAccountReceiveOwner(
     owner: ReturnType<typeof prepareAccountCustody>,
     _route: CaptureRoute,
     after?: number,
+    grouped = false,
   ) => {
     if (account.detached) throw Error('This local copy is detached from sync');
     // The scheduling hint comes from the same fresh, authenticated load as the prefix.
@@ -607,50 +618,106 @@ async function openAccountReceiveOwner(
       expires: Date.now() + 30000,
       signature: '00'.repeat(64),
     };
-    r.signature = hex(
-      new Uint8Array(
-        await task.wait(() => subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(r))),
-      ),
-    );
-    await assertCurrent(task);
-    return task.step(() => {
-      outstanding?.fill(0);
-      outstanding = encodeInboundRequest(r);
-      return outstanding.slice();
-    });
-  };
-  // Prepare in order, wait under the same lifetime outside the storage tail, then let the
-  // admission FIFO verify this exact request against fresh authority and prefix before commit.
-  const fetchPage = async (operatorToken: AccountAccess) => {
-    let request: Bytes | undefined,
-      page: Bytes | null = null;
-    let oversized = false;
+    const count =
+      grouped && (!composed || publisher !== base.publisher.id)
+        ? Math.min(
+            RECEIVE_GROUP_LIMIT,
+            receiveSelection.capacity(publisher),
+            Math.max(1, s.prefix.observedThrough - cursor),
+          )
+        : 1;
+    const requests: Bytes[] = [];
     try {
-      return await runNetworkTask(async (network) => {
-        const query = (request = await runCaptureTask((task, owner, route) =>
-          prepareRead(task, owner, route),
-        ));
-        await network.wait(async () => {
-          page = canReceive()
-            ? await privateDeliveryPost(
-                options.pin,
-                access ?? operatorToken,
-                'read-v2',
-                query,
-                MAX_PENDING_BYTES,
-                network.signal,
-                (event) => {
-                  recordPrivateTransportDiagnostic(event);
-                  if (event.code === 'response-too-large') oversized = true;
-                },
-              )
-            : null;
-        });
-        return network.step(() => ({ request: query, page, oversized }));
+      for (let i = 0; i < count; i++) {
+        const next = { ...r, after: cursor + i, nonce: hex(task.step(() => random(32))) };
+        next.signature = hex(
+          new Uint8Array(
+            await task.wait(() =>
+              subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+            ),
+          ),
+        );
+        requests.push(encodeInboundRequest(next));
+      }
+      await assertCurrent(task);
+      return task.step(() => {
+        outstanding?.fill(0);
+        for (const request of outstandingGroup) request.fill(0);
+        outstandingGroup = requests;
+        outstanding = requests[0]!;
+        return outstanding.slice();
       });
     } catch (cause) {
-      request?.fill(0);
-      (page as Bytes | null)?.fill(0);
+      for (const request of requests) request.fill(0);
+      throw cause;
+    }
+  };
+  const prepareGroup = () =>
+    runCaptureTask(async (task, owner, route) => {
+      const first = await prepareRead(task, owner, route, undefined, true);
+      first.fill(0);
+      return outstandingGroup.map((r) => r.slice());
+    });
+  // Future cursors are only scheduling predictions through an authenticated observed tip.
+  // The exact request set remains owned, and no prefix advances before ordered verification.
+  const fetchPage = async (operatorToken: AccountAccess) => {
+    let requests: Bytes[] = [];
+    const pages: Bytes[] = [];
+    let oversized = false,
+      pendingPage: Bytes | null = null;
+    try {
+      return await runNetworkTask(async (network) => {
+        requests = await prepareGroup();
+        const began = performance.now();
+        let bytes = 0;
+        for (const request of requests) {
+          let page: Bytes | null = null;
+          await network.wait(async () => {
+            page = pendingPage = canReceive()
+              ? await privateDeliveryPost(
+                  options.pin,
+                  access ?? operatorToken,
+                  'read-v2',
+                  request,
+                  MAX_PENDING_BYTES - 4,
+                  network.signal,
+                  (event) => {
+                    recordPrivateTransportDiagnostic(event);
+                    if (event.code === 'response-too-large') oversized = true;
+                  },
+                )
+              : null;
+          });
+          const received = page as Bytes | null;
+          pendingPage = null;
+          if (!received) break;
+          // Keep the fitting prefix. A large tail is refetched in the next operation.
+          if (bytes + received.length + 4 > MAX_PENDING_BYTES) {
+            received.fill(0);
+            break;
+          }
+          pages.push(received);
+          bytes += received.length + 4;
+          // Wire hints can only shorten collection, never grant progress or authority.
+          try {
+            if (!decodeInboundPage(received).entries.length) break;
+          } catch {
+            break;
+          }
+          if (performance.now() - began >= RECEIVE_COLLECT_MS) break;
+        }
+        return network.step(() => ({
+          request: requests[0]!,
+          page: pages[0] ?? null,
+          requests,
+          pages,
+          oversized: oversized && !pages.length,
+        }));
+      });
+    } catch (cause) {
+      (pendingPage as Bytes | null)?.fill(0);
+      for (const request of requests) request.fill(0);
+      for (const page of pages) page.fill(0);
       throw cause;
     }
   };
@@ -968,6 +1035,136 @@ async function openAccountReceiveOwner(
     },
     compactContent: () => carrier.compactContent(),
   });
+  const receiveGroup = (
+    inputs: readonly Bytes[],
+    expected: readonly Bytes[],
+    promote: (updates: readonly Bytes[]) => void = () => {},
+  ) => {
+    if (
+      account.detached ||
+      inputs.length < 2 ||
+      inputs.length > RECEIVE_GROUP_LIMIT ||
+      expected.length !== inputs.length ||
+      inputs.some((b) => !(b instanceof Uint8Array) || !b.length) ||
+      inputs.reduce((n, b) => n + 4 + b.length, 0) > MAX_PENDING_BYTES ||
+      expected.some((b) => !(b instanceof Uint8Array) || !b.length || b.length > 4096)
+    )
+      return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+    const pages = inputs.map((b) => b.slice()),
+      requests = expected.map((b) => b.slice());
+    return runCaptureTask(async (task, owner, route) => {
+      const s = await state(task, owner, route);
+      const first = decodeInboundRequest(requests[0]!);
+      if (first.epoch < base.authority.tip) throw new ReceiveAuthorityChanged();
+      if (composed && first.publisher === base.publisher.id)
+        throw new AdmissionError('receive-refused', 'Own reconciliation must remain single-entry');
+      const peer = publisherState(s, base, first.publisher);
+      if (s.conflict || peer.conflict || first.after !== peer.prefix.position)
+        throw new AdmissionError('receive-refused', 'Inbound group prefix changed');
+      for (let i = 0; i < requests.length; i++) {
+        if (!outstandingGroup[i] || !sameBytes(requests[i]!, outstandingGroup[i]!))
+          throw new AdmissionError('receive-refused', 'Receive request was superseded');
+        const r = decodeInboundRequest(requests[i]!);
+        if (
+          r.publisher !== first.publisher ||
+          r.epoch !== first.epoch ||
+          r.after !== first.after + i
+        )
+          throw new AdmissionError('receive-refused', 'Receive group is not contiguous');
+      }
+      const context = { ...publisherContext(base, first.publisher), prefix: { ...peer.prefix } };
+      const results: Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
+      const writes: import('./contentRecord').ContentInput[] = [];
+      const updates: Bytes[] = [];
+      let committed = false,
+        bytes = 0;
+      try {
+        for (let i = 0; i < pages.length; i++) {
+          let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
+          try {
+            await task.wait(async () => {
+              result = await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task));
+              // Retain ownership before the final lifetime check can reject.
+              results.push(result);
+            });
+          } catch (cause) {
+            task.step(() => {});
+            throw new AdmissionError('receive-refused', String(cause), { cause });
+          }
+          if (!result) throw Error('Missing inbound verification result');
+          if (result.kind === 'empty') break;
+          if (result.kind !== 'received')
+            throw new AdmissionError('receive-refused', 'Unexpected grouped receive result');
+          const size = result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
+          if (!receiveGroupFits(bytes + size, writes.length + result.updates.length + 1)) {
+            // The single-receipt verifier has already enforced its individual bounds.
+            // Keep only the fitting prefix; this valid tail is fetched again later.
+            result.record.fill(0);
+            for (const update of result.updates) update.fill(0);
+            results.pop();
+            break;
+          }
+          bytes += size;
+          writes.push(...result.updates.map((b) => ({ kind: 'update' as const, bytes: b })), {
+            kind: 'heads',
+            bytes: result.record,
+          });
+          updates.push(...result.updates);
+          context.prefix = {
+            position: result.position,
+            link: result.link,
+            observedThrough: result.through,
+          };
+        }
+        const kinds = results.map((r) => r.kind);
+        if (!writes.length)
+          return task.step(() => {
+            promote([]);
+            return { kind: 'empty' as const, recorded: false, status: describe(s), kinds };
+          });
+        const before = await owner.carrier.spoolWitness(task);
+        let after = before;
+        for (const result of results)
+          if ('record' in result)
+            after = await task.wait(() =>
+              extendSpoolWitness(after, result.record, subtleFor(task)),
+            );
+        await owner.carrier.appendInbound(task, writes, {
+          before,
+          after,
+          checkCommit: () => {
+            if (
+              requests
+                .slice(0, results.length)
+                .some((r) => decodeInboundRequest(r).expires <= Date.now())
+            )
+              throw new ReceiveRequestExpired();
+          },
+          beforeCommit: async () => {
+            const current = await state(task, owner, route);
+            if (JSON.stringify(describe(current)) !== JSON.stringify(describe(s)))
+              captureError('Inbound prefix changed before commit');
+          },
+        });
+        committed = true;
+        const saved = await state(task, owner, route);
+        return task.step(() => {
+          promote(updates);
+          return { kind: 'received' as const, recorded: true, status: describe(saved), kinds };
+        });
+      } catch (cause) {
+        if (committed) void carrier.close().catch(() => {});
+        throw cause;
+      } finally {
+        for (const result of results) {
+          if ('record' in result) result.record.fill(0);
+          if (result.kind === 'received') for (const b of result.updates) b.fill(0);
+        }
+      }
+    }).finally(() => {
+      for (const b of [...pages, ...requests]) b.fill(0);
+    });
+  };
   const adoptSuccessor = (input: unknown, checkCommit?: () => void) => {
     // Closed, bounded copy before enqueueing; no caller-owned data crosses crypto or storage awaits.
     const artifact = parseSuccessor(input);
@@ -1729,6 +1926,8 @@ async function openAccountReceiveOwner(
     carrier,
     listCaptures,
     fetchPage,
+    prepareGroup,
+    receiveGroup,
     completedRead: (request: Bytes, kind: string) => {
       const publisher = decodeInboundRequest(request).publisher;
       receiveSelection.completed(
@@ -1754,8 +1953,14 @@ async function openAccountReceiveOwner(
 
 /** Storage-only surface retained for independent conformance and preparation. */
 export async function openOwnedAccountReceiveStore(input: AccountStartupOptions) {
-  const { api } = await openAccountReceiveOwner(input);
-  return Object.freeze({ ...api, receivePage: (bytes: Bytes) => api.receivePage(bytes) });
+  const { api, prepareGroup, receiveGroup } = await openAccountReceiveOwner(input);
+  return Object.freeze({
+    ...api,
+    prepareGroup,
+    receiveGroup: (pages: readonly Bytes[], requests: readonly Bytes[]) =>
+      receiveGroup(pages, requests),
+    receivePage: (bytes: Bytes) => api.receivePage(bytes),
+  });
 }
 
 async function openReceivingWorkspace(
@@ -1783,6 +1988,7 @@ async function openReceivingWorkspace(
     carrier,
     listCaptures,
     fetchPage,
+    receiveGroup,
     fetchHistory,
     installHistory,
     createOutbound,
@@ -1872,7 +2078,7 @@ async function openReceivingWorkspace(
         return Promise.reject(new AdmissionError('inactive-session', 'Receive owner is closed'));
       if (flight) return Promise.resolve({ kind: 'busy' as const });
       const work = (async () => {
-        const { request, page, oversized } = await fetchPage(operatorToken);
+        const { request, page, requests, pages, oversized } = await fetchPage(operatorToken);
         try {
           if (carrier.signal.aborted)
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
@@ -1908,6 +2114,19 @@ async function openReceivingWorkspace(
               }
               completedRead(request, received.kind);
               return { kind: received.kind, recorded: false };
+            }
+            if (pages.length > 1) {
+              const packed = packReceivePages(pages);
+              try {
+                const received = await enqueue(packed, (input, promote) =>
+                  receiveGroup(unpackReceivePages(input), requests.slice(0, pages.length), promote),
+                );
+                for (let i = 0; i < received.kinds.length; i++)
+                  completedRead(requests[i]!, received.kinds[i]!);
+                return received;
+              } finally {
+                packed.fill(0);
+              }
             }
             const received = await receivePage(page, request);
             completedRead(request, received.kind);
@@ -1947,8 +2166,8 @@ async function openReceivingWorkspace(
             throw cause;
           }
         } finally {
-          request.fill(0);
-          page?.fill(0);
+          for (const r of requests) r.fill(0);
+          for (const p of pages) p.fill(0);
         }
       })();
       flight = work;

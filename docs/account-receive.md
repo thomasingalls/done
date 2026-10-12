@@ -1,5 +1,12 @@
 # Private native inbound storage
 
+**2026-10-12 update:** The composed receiver now groups up to four existing limit-one receipts
+under one checked commit and authenticated readback, through previously observed backlog. Exact
+v1 receipt bytes, per-entry verification, native bounds and the four-page publisher turn remain.
+The bounded owned request set and sequential HTTP collection are described in the
+[grouping checkpoint](./performance-experiments/2026-10-12-receive-groups/README.md).
+The older phase narrative below describes the original singleton implementation.
+
 Current capsule, ledger and witness bytes are pinned in the
 [Account ledger contract](./account-crypto/account-ledger.md); this phase narrative retains its original scope.
 

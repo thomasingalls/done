@@ -1668,5 +1668,26 @@ seven seconds. These are single serial desktop observations; no phone or release
 Sixteen focused unit and five native checks pass, plus type/build/targeted lint/format checks. One
 older fault-control expectation fails identically on pinned pre-repair source and is preserved as
 an existing fixture limitation, not changed to weaken a safeguard. The repair and evidence are
-uncommitted. Next: grouped owned processing of current-format receipts. No publication or resumed
+committed signed as `534252e1`. Next: grouped owned processing of current-format receipts. No publication or resumed
 release validation; `docs/progress.md` is unchanged.
+
+## 2026-10-12 — Group existing receive receipts
+
+The previous repair is signed as `534252e1`. The [grouped implementation](./performance-experiments/2026-10-12-receive-groups/README.md)
+collects up to four separate limit-one replies sequentially outside admission, then verifies and
+commits their original content/evidence pairs with one checked witness transition and readback.
+It preserves exact receipt bytes and allows the pre-group reader to cold-open the result.
+
+For the same 600-position fixture, fresh first-repair baseline catch-up takes 248.795 seconds;
+grouped catch-up takes 79.125 seconds (68.2% less time). Added-75-ms catch-up takes 193.074 seconds,
+against the prior delayed observation's 302.023 seconds (36.1% less; no fresh delayed baseline).
+All three journeys pass both-way export equality and offline reopen. Burst medians remain around
+2.34 seconds; cold opening remains around seven seconds. The delayed candidate has one unattributed
+1.189-second long task. No phone or public-service inference is made from these individual runs.
+
+A preparation-inclusive four-receipt count comparison reduces content loads 16→4, read-only
+transactions 220→47 and write transactions 8→2. Per-entry authentication is retained. Thirty-two
+focused unit and seventeen native cases pass, including group atomicity, stale/invalid evidence,
+expiry, authority change, both native size bounds, older-reader compatibility, lost HTTP tails and
+locking during collection. Build/type/targeted lint/format checks pass. New repair/evidence remain
+uncommitted and unpublished. No concurrent prefetch or release-validation resumption occurred.
