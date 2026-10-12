@@ -13513,3 +13513,35 @@ already verified result within one owned discovery/adoption operation. Fresh che
 expiry/rollback/competing-authority checks, live undo and synchronous final promotion must remain.
 Further queue restructuring must avoid holding storage while waiting behind a forced local write.
 This new evidence packet is local and unpublished; no additional repair was made in this investigation.
+
+### Bounded bulk custody inventory experiment — 2026-10-12
+
+**Boundary.** The preceding stall investigation is committed **signed `902806c9`**. This bounded
+implementation and evidence remain local, uncommitted and unpublished. Release validation stays paused.
+
+**Change.** An opt-in complete bulk reader uses one readonly snapshot, up to 32 values and a 33rd
+key as an overflow sentinel. The prefix interval includes unknown and nested-array suffixes while
+excluding neighboring slots. Fresh open/layout/read/close, exact inventory comparison and full
+authentication on change remain. No format, authority policy, connection cache, final-apply or undo
+change. `VITE_ACCOUNT_BULK_CUSTODY=1` selects the experiment; **the cursor stays default**.
+
+**Evidence and decision.** Two matched repetitions per arm of active-peer and 600-position-backlog
+typing, CPU-4x with 75 ms request delay, fail the predeclared >=20% median read-time improvement
+criterion. Active read medians are 31.0→35.7 / 31.0→30.3 ms; backlog 31.6→40.5 / 29.7→31.1 ms.
+Backlog typing p95 regresses in one repetition and improves in the other; no consistent typing gain
+is established. The follow-up rejects repeated result-getter deserialization as the cause on this
+Chromium. The exact measured source and post-measurement opt-in selector are separately recorded.
+
+**Checks.** All eight sessions preserve writing, undo/redo, convergence and cold replay; completed
+typing-window account requests are HTTP 200. 269 focused units pass (one existing skip), plus five
+native inventory cases and three prepared-receive cases. Checks cover changed/missing/extra records,
+caller isolation, concurrent writes, overflow, abort/drain, version change, crash recovery and final
+authority refusal. TypeScript, scoped lint/format, ordinary build and JS budget pass. Initial
+emulator/observer failures and their corrections are retained in the
+[packet](./performance-experiments/2026-10-12-bulk-custody/README.md).
+
+**Next.** Address the measured repeated membership-proof bursts with cooperative yielding and safe
+verified-result transfer within one owned discovery/adoption operation. Preserve fresh inventory,
+response signatures, expiry/rollback/competing-authority checks and live undo. Further IO work needs
+separate attribution of open/scheduling waits; this experiment does not identify their individual
+costs. Local retention remains design-only; `docs/progress.md` remains unchanged.

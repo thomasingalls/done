@@ -19,7 +19,7 @@ import {
   type Bytes,
 } from './custodyCrypto';
 import { cleanupFields } from './legacyCleanupEncoding';
-import { probeDatabase, checkLayout, readScopedRows } from './startupStorage';
+import { probeDatabase, checkLayout, readScopedRows, readScopedRowsBulk } from './startupStorage';
 import { assertNoLocalClear } from './localClearState';
 import { assertNoPreactiveImport } from './legacyImportState';
 import { stopStartup } from './startupState';
@@ -114,7 +114,10 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
 export const slotCustodyRows = (task: SessionTask, slotId: string) =>
   probeDatabase(task, CUSTODY_DB, async (db) => {
     checkLayout(db, { [CUSTODY_STORE]: null });
-    return readScopedRows(task, db, CUSTODY_STORE, [slotId]);
+    // The measured bulk experiment remains opt-in; it did not shorten fresh authority reads.
+    return import.meta.env?.['VITE_ACCOUNT_BULK_CUSTODY'] === '1'
+      ? readScopedRowsBulk(task, db, CUSTODY_STORE, [slotId])
+      : readScopedRows(task, db, CUSTODY_STORE, [slotId]);
   });
 export const readLocalClaim = async (
   task: SessionTask,

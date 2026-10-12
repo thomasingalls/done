@@ -22,7 +22,9 @@ and returns no record buffers to callers. Its memory grows with the bounded cust
 not with the number of calls; it is not a constant-size claim independent of checkpoint size.
 
 Every check still rereads the bounded slot inventory under the session task. The normal database
-layout, scope and 32-row cursor limit still apply. Exact key/value equality permits skipping only
+layout, scope and 32-row cursor limit still apply. An [opt-in bulk reader](account-bulk-custody-reads.md)
+retains the same complete inventory but failed its speed target; the cursor remains default. Exact
+key/value equality permits skipping only
 the repeated parsing, factor opening, MAC authentication and expected-payload encoding. Byte arrays
 are compared directly; no MAC-only shortcut or retained digest stands in for stored bytes. Plain
 structured objects/arrays are compared with exact own field sets. Unsupported structures and deep
