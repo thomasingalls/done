@@ -27,6 +27,146 @@ const sendPath = (f) => f.server.origin + '/account/delivery/submit';
 const parsed = (wire) =>
   decodeNetworkEnvelope(decodeSubmission(new Uint8Array(Buffer.from(wire, 'hex'))).envelope);
 
+for (const damage of ['custody', 'clear', 'import']) {
+  test(
+    `authority reuse authenticates on resume and refuses changed ${damage} inventory immediately`,
+    { timeout: 60000, skip: !process.env.ACCOUNT_AUTHORITY_REUSE },
+    async (t) => {
+      const f = await native(t),
+        item = await selected(f, 'authority-' + damage);
+      await f.page.evaluate(async (item) => {
+        window.opened = await Harness.openOwnedReceivingAccountWorkspace(optionsFor(item));
+        window.authoritySlot = optionsFor(item).slotId;
+        window.editor = opened.workspace;
+      }, args(item));
+      const checked = await f.page.evaluate(async () => {
+        const capture = async () => {
+          await opened.receiveStatus();
+        };
+        await capture();
+        const before = Harness.accountLedgerMetrics().work;
+        await capture();
+        const warm = Harness.accountLedgerMetrics().work;
+        const resumed = [];
+        for (const event of ['visibilitychange', 'resume', 'pageshow']) {
+          Object.defineProperty(document, 'visibilityState', {
+            configurable: true,
+            value: 'visible',
+          });
+          const before = Harness.accountLedgerMetrics().work.authorityAuthentications;
+          (event === 'pageshow' ? window : document).dispatchEvent(new Event(event));
+          await capture();
+          resumed.push(Harness.accountLedgerMetrics().work.authorityAuthentications - before);
+        }
+        delete document.visibilityState;
+        return {
+          authentications: warm.authorityAuthentications - before.authorityAuthentications,
+          reused: warm.authorityReuses - before.authorityReuses,
+          resumed,
+        };
+      });
+      assert.equal(checked.authentications, 0);
+      assert.ok(checked.reused > 0);
+      assert.deepEqual(checked.resumed, [1, 1, 1]);
+      const refusal = await f.page.evaluate(async (damage) => {
+        const db = await new Promise((resolve, reject) => {
+          const r = indexedDB.open('done.custody');
+          r.onsuccess = () => resolve(r.result);
+          r.onerror = () => reject(r.error);
+        });
+        try {
+          await new Promise((resolve, reject) => {
+            const tx = db.transaction('entries', 'readwrite'),
+              store = tx.objectStore('entries');
+            tx.oncomplete = resolve;
+            tx.onabort = () => reject(tx.error);
+            if (damage !== 'custody') {
+              store.put({}, [
+                authoritySlot,
+                damage === 'clear' ? 'local-clear-v1' : 'legacy-import-v1',
+              ]);
+              return;
+            }
+            const r = store.openCursor();
+            r.onsuccess = () => {
+              const cursor = r.result;
+              if (!cursor) return;
+              const value = cursor.value;
+              if (cursor.key[0] === authoritySlot && value.state === 'protected') {
+                value.seal_reserved++;
+                cursor.update(value);
+              }
+              cursor.continue();
+            };
+          });
+        } finally {
+          db.close();
+        }
+        try {
+          await opened.receiveStatus();
+          return null;
+        } catch (e) {
+          return e.message;
+        }
+      }, damage);
+      assert.ok(refusal, 'changed inventory must not reuse authentication');
+      if (damage === 'clear') assert.match(refusal, /invalid-local-clear-record/);
+      if (damage === 'import') assert.match(refusal, /pre-active-import-needs-owner/);
+      await close(f.page);
+    },
+  );
+}
+
+test(
+  'exclusive warm loads avoid censuses but visibility, resume and pageshow require full reads',
+  { timeout: 60000, skip: process.env.ACCOUNT_LEDGER_MODE === 'reference' },
+  async (t) => {
+    const f = await native(t),
+      item = await selected(f, 'warm-resume');
+    await syncing(f.page, item);
+    await settled(f.page);
+    const result = await f.page.evaluate(async () => {
+      const original = IDBObjectStore.prototype.getAll;
+      let reads = 0;
+      IDBObjectStore.prototype.getAll = function (...args) {
+        if (['content', 'heads', 'outbound'].includes(this.name)) reads++;
+        return original.apply(this, args);
+      };
+      const capture = async () => {
+        const values = await opened.listCaptures();
+        for (const value of values) Harness.eraseCapsule(value);
+      };
+      try {
+        await capture();
+        const warm = reads;
+        const resumed = [];
+        for (const event of ['visibilitychange', 'resume', 'pageshow']) {
+          reads = 0;
+          if (event === 'visibilitychange') {
+            Object.defineProperty(document, 'visibilityState', {
+              configurable: true,
+              value: 'visible',
+            });
+          }
+          (event === 'pageshow' ? window : document).dispatchEvent(new Event(event));
+          await capture();
+          resumed.push(reads);
+          reads = 0;
+          await capture();
+          resumed.push(reads);
+        }
+        return { warm, resumed };
+      } finally {
+        delete document.visibilityState;
+        IDBObjectStore.prototype.getAll = original;
+      }
+    });
+    assert.equal(result.warm, 0);
+    assert.deepEqual(result.resumed, [3, 0, 3, 0, 3, 0]);
+    await close(f.page);
+  },
+);
+
 test(
   'hidden-page batch close sends promptly; death before the next batch recovers journalled writing',
   {
@@ -928,3 +1068,64 @@ test(
     await close(f.page);
   },
 );
+
+for (const boundary of ['before-commit', 'after-commit']) {
+  for (const die of [false, true]) {
+    test(
+      `timed Account flush ${boundary}, crash ${die}: later journal admission survives exact cleanup`,
+      { timeout: 60000, skip: process.env.ACCOUNT_BACKGROUND_FLUSH === '0' },
+      async (t) => {
+        const { syncBundle } = await import('./fixtures.mjs');
+        const f = await native(t),
+          item = await selected(f, 'background-journal');
+        await f.page.evaluate(await syncBundle('flush-copy-boundary'));
+        await f.page.evaluate(async (item) => {
+          window.opened = await Harness.openOwnedReceivingAccountWorkspace(optionsFor(item));
+          window.editor = opened.workspace;
+          window.surface = editor.text({ kind: 'master' });
+        }, args(item));
+        const initial = await view(f.page);
+        const original = await captures(f.page);
+        await f.page.evaluate((boundary) => {
+          window.copyPaused = false;
+          window.flushCopyProbe = async (stage) => {
+            if (stage !== boundary || window.copyPaused) return;
+            window.copyPaused = true;
+            await new Promise((resolve) => {
+              window.resumeCopy = resolve;
+            });
+          };
+        }, boundary);
+        await edit(f.page, initial.length, 0, ' FIRST');
+        await waitPredicate(f.page, () => window.copyPaused);
+        // This must complete while persistence is deliberately stalled, with actual custody,
+        // source capsule capture and synchronous encrypted localStorage journal writes.
+        await edit(f.page, initial.length + 6, 0, ' SECOND');
+        assert.equal(await view(f.page), initial + ' FIRST SECOND');
+        const before = await f.page.evaluate(() => editor.status);
+        assert.equal(before.durable, false);
+        if (die) {
+          await crash(f);
+          await cold(f);
+          await f.page.evaluate(async (item) => {
+            window.opened = await Harness.openOwnedReceivingAccountWorkspace(optionsFor(item));
+            window.editor = opened.workspace;
+            window.surface = editor.text({ kind: 'master' });
+          }, args(item));
+        } else {
+          await f.page.evaluate(() => window.resumeCopy());
+        }
+        await f.page.evaluate(() => editor.whenDurable());
+        assert.equal(await view(f.page), initial + ' FIRST SECOND');
+        const after = await captures(f.page);
+        assert.equal(
+          after.length,
+          original.length + 2,
+          'no lost or duplicate capsule after replay/cleanup',
+        );
+        assert.equal(new Set(after.map((c) => c.id)).size, after.length);
+        await close(f.page);
+      },
+    );
+  }
+}

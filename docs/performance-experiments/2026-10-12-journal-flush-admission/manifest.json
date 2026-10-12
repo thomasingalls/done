@@ -1,0 +1,199 @@
+{
+  "members": [
+    {
+      "path": "admission-tests.log",
+      "size": 235,
+      "sha256": "fb432b1b53b75c4bcee787683af277c0ac87ff1f1129400dcdf0d964f917fcb8"
+    },
+    {
+      "path": "background-1.log",
+      "size": 404,
+      "sha256": "26ab809ab17bbd6ac83c90feca0a209bd999e0ce2a094650c4fd17842b8b6829"
+    },
+    {
+      "path": "background-2.log",
+      "size": 404,
+      "sha256": "1967e9c6c94546bd5c53cfa6c1ee89158d5c39b942cfda64fbb887819264cd64"
+    },
+    {
+      "path": "background-3.log",
+      "size": 404,
+      "sha256": "b5cfa0fba10137e63acb41a57d9d34aace5c2ed8371176765661a88e564458bb"
+    },
+    {
+      "path": "background-build-compared.log",
+      "size": 5022,
+      "sha256": "29753c518e2cd183f98f2903bc5e8c121c1f11fa87c637e2b2b2ba066cf09fae"
+    },
+    {
+      "path": "baseline-build.log",
+      "size": 4964,
+      "sha256": "788ead5a578ad1f8f7c384411f3ebe67f1b4c2439684f93f6dbe0c404d16d258"
+    },
+    {
+      "path": "diagnostic.log",
+      "size": 404,
+      "sha256": "983300f66d4d98aa52fa1fe0d647ba55d2366ef6bf05acfbb0fdf0e374206b01"
+    },
+    {
+      "path": "format.log",
+      "size": 46,
+      "sha256": "9113cafb4967439ffc9b454a5394cb9aeedd26a1fddcc63ee82c3643e6683d85"
+    },
+    {
+      "path": "lint.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-boundaries.log",
+      "size": 1009,
+      "sha256": "55e96ad5d3ca713944970fad286e8034dec23962370ec5e3b6dcd6cee8a07b84"
+    },
+    {
+      "path": "native-final-default.log",
+      "size": 1132,
+      "sha256": "484e818355b48bd761ef5b90e62f0ef72b3de488bb6d7b3c917659d889a7ae9a"
+    },
+    {
+      "path": "packaged-check.log",
+      "size": 361,
+      "sha256": "b0c30f704ae746457bfbd64712aca189a5c5d7cee3fe928bc3e30a67021d225e"
+    },
+    {
+      "path": "production-build.log",
+      "size": 4045,
+      "sha256": "3dd73d70df1caffe4d3569a058f05d220a325b3e41e9a162e909ca012faeccce"
+    },
+    {
+      "path": "reference-1.log",
+      "size": 404,
+      "sha256": "5a27f8db0c6cb934da975043bffca64e92f70f39ef28cf41b6de6ac9f98d7677"
+    },
+    {
+      "path": "reference-2.log",
+      "size": 404,
+      "sha256": "5cc72fedec8cb448e4b8d9600e57898db829461cb32e83829a14a5bc8ac37b7f"
+    },
+    {
+      "path": "reference-3.log",
+      "size": 404,
+      "sha256": "29c392790227555dd89d7b2f9c9fb9b07d4f7d6702277021a554fd5656accded"
+    },
+    {
+      "path": "reference-build-compared.log",
+      "size": 4993,
+      "sha256": "0bd78e3f86c0bd563ba132acb4fa308c7be9faf80c09751b9850810f365e84f0"
+    },
+    {
+      "path": "typecheck.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "unit-checks.log",
+      "size": 252,
+      "sha256": "b74f0b96d34d046c7fb2255a4a64fc23334aa1618e62c3e8188271d489bacee4"
+    },
+    {
+      "path": "summary.json",
+      "size": 6412,
+      "sha256": "373bf06172896a03901c059692a6a7d13c34ca3171f7840e37d088f0672507b5"
+    },
+    {
+      "path": "diagnosis.json",
+      "size": 559,
+      "sha256": "840aa7a8266f07d4584159aea594001f5c232d43f7118834df3627657edecbc0"
+    },
+    {
+      "path": "comparison.patch",
+      "size": 25990,
+      "sha256": "b6ffecfff357720bafb6e2d383bd5a52166747a3c3bc1164a4c15733b20fbad5"
+    },
+    {
+      "path": "final.patch",
+      "size": 25990,
+      "sha256": "395dd168f17f0885145e744853295d1632d92d45a156ad1bc85b49081db4a67a"
+    },
+    {
+      "path": "diagnostic/typing.json",
+      "size": 145745,
+      "sha256": "01c57cb8b869d050ef1a6870ce8b7acf30b6c776ba573e99d091ddc6503cced3"
+    },
+    {
+      "path": "diagnostic/typing-0-before-replay.json",
+      "size": 132655,
+      "sha256": "ec1094e4c10d2f1e9c20f1fc3a2e2da7f6ea6bdd1c5cb517291906dc1e372246"
+    },
+    {
+      "path": "reference-1/typing.json",
+      "size": 134983,
+      "sha256": "b3619ddaae8f05d6886548a9e0f719eacaa9391275fbcf02f23edd811d18b8ce"
+    },
+    {
+      "path": "reference-1/typing-0-before-replay.json",
+      "size": 122087,
+      "sha256": "830560139ea6bfef027c964e9977cd1c4c7513b7ef30767e8d409d74ab0d5fec"
+    },
+    {
+      "path": "background-1/typing.json",
+      "size": 132837,
+      "sha256": "01832f976f443cc59b0502c66c7afc51f6f7baa3e7ff4cbd31f5ed32b2dbb34b"
+    },
+    {
+      "path": "background-1/typing-0-before-replay.json",
+      "size": 120121,
+      "sha256": "6eb7f2f747cce8a751db22c0edb2661f982a7e7d456560b0ae04aca65314cb6c"
+    },
+    {
+      "path": "background-2/typing.json",
+      "size": 132950,
+      "sha256": "40b81f304bcae70514a1af0aed947d59d22f7cdd38c1e00182dd4aba2cef98ef"
+    },
+    {
+      "path": "background-2/typing-0-before-replay.json",
+      "size": 120194,
+      "sha256": "1c448fb27cf36dc7cf3da5381063c51782f3287de2ffb84043a2ee871a1afe53"
+    },
+    {
+      "path": "reference-2/typing.json",
+      "size": 134771,
+      "sha256": "1cedfd0bb9fbac757008685a7974f446a05802e0600fc2cff0bf143ab99c1928"
+    },
+    {
+      "path": "reference-2/typing-0-before-replay.json",
+      "size": 121855,
+      "sha256": "5c65ff0d12d5039faf741b5a92f42f9622bcd5ff402977feccea04e3b0b7d3f8"
+    },
+    {
+      "path": "reference-3/typing.json",
+      "size": 134440,
+      "sha256": "8e0fa0b4fa719f8be720e0a52168815e4916296c4bb0212444fa80fb5ee46a0a"
+    },
+    {
+      "path": "reference-3/typing-0-before-replay.json",
+      "size": 121564,
+      "sha256": "c68fba92b0a3bd77bda067c2a8acf63e9378ed37ce80c860548c882f9f5c9b68"
+    },
+    {
+      "path": "background-3/typing.json",
+      "size": 134147,
+      "sha256": "98738779320fc7b18952248f4c0e3d2f39cc5d57b81f44765bebdd69e6b70dfc"
+    },
+    {
+      "path": "background-3/typing-0-before-replay.json",
+      "size": 121311,
+      "sha256": "e283c4a8f26972748f6411098626b686f7faaeed2d0263c4efe302456b778b73"
+    },
+    {
+      "path": "diagnostic/typing-0.cpuprofile",
+      "size": 545045,
+      "sha256": "ae498a3432f025a30a7005419d7fc81e20ed1ac366b5c4411d50782e4746e9f7"
+    }
+  ],
+  "archive": {
+    "path": "evidence.tar.gz",
+    "size": 195428,
+    "sha256": "526bb25ffc924fd946abf3ac8ca0c21fedcaa485b7f60f57e8956b296432c860"
+  }
+}

@@ -1,0 +1,745 @@
+[
+  {
+    "session": "phone-reference-1",
+    "phase": "failed",
+    "error": "Error: EvalError: Evaluating a string as JavaScript violates the following Content Security Policy directive because 'unsafe-eval' is not an allowed source of script: script-src 'self' 'wasm-unsafe-eval'\".\n\n    at new Function (<anonymous>)\n    at <anonymous>:14:27"
+  },
+  {
+    "session": "phone-reference-1b",
+    "phase": "failed",
+    "error": "Error: SyntaxError: Identifier 'StorageScript' has already been declared"
+  },
+  {
+    "session": "phone-reference-1c",
+    "phase": "failed",
+    "error": "Error: TypeError: SavedStorageCodec is not a constructor\n    at <anonymous>:433:11"
+  },
+  {
+    "session": "phone-reference-1d",
+    "phase": "failed",
+    "error": "Error: 'WebAuthn.enable' wasn't found"
+  },
+  {
+    "session": "phone-reference-1e",
+    "phase": "failed",
+    "error": "Error: Phone condition timed out"
+  },
+  {
+    "session": "phone-reference-1f",
+    "phase": "failed",
+    "error": "Error: Phone condition timed out"
+  },
+  {
+    "session": "phone-reference-1g",
+    "phase": "failed",
+    "error": "Error: Phone condition timed out"
+  },
+  {
+    "session": "history-authority-1",
+    "phase": "passed",
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "median": 6.35,
+        "p95": 73.4,
+        "p99": 95.7,
+        "max": 150.2
+      },
+      "frame": {
+        "n": 600,
+        "median": 18.05,
+        "p95": 170.2,
+        "p99": 237.2,
+        "max": 320.7
+      },
+      "inputFrame": {
+        "n": 600,
+        "median": 30.4,
+        "p95": 184.5,
+        "p99": 271.3,
+        "max": 332.1
+      },
+      "afterFrame": {
+        "n": 600,
+        "median": 35.1,
+        "p95": 188.7,
+        "p99": 282.7,
+        "max": 339
+      }
+    },
+    "handlers": {
+      "n": 600,
+      "median": 5.7,
+      "p95": 8,
+      "p99": 9.2,
+      "max": 32.4
+    },
+    "longTasks": {
+      "n": 322,
+      "median": 79.0,
+      "p95": 110,
+      "p99": 159,
+      "max": 169,
+      "blockingExcess": 10136
+    },
+    "above100": 62,
+    "clock": {
+      "timeOrigin": 1791841375602.9,
+      "now": 1791841382858
+    },
+    "clockAfter": 1791841382859,
+    "metadata": null,
+    "device": null,
+    "visibility": "visible",
+    "visibilityChanges": null,
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "median": 0.25,
+        "p95": 1.2,
+        "p99": 1.3,
+        "max": 5.54
+      },
+      "commandCompletion": {
+        "n": 600,
+        "median": 22.68,
+        "p95": 90.05,
+        "p99": 111.84,
+        "max": 168.33
+      },
+      "eventGaps": {
+        "n": 599,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 152.1,
+        "max": 156.0
+      }
+    },
+    "requests": [
+      200
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841438173.6077,
+          "issueSince": null,
+          "lastSuccessAt": 1791841376891,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841441058.1216,
+          "issueSince": null,
+          "lastSuccessAt": 1791841380535,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841472416,
+          "reason": null,
+          "acceptedThrough": 651
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841532849.915,
+          "issueSince": null,
+          "lastSuccessAt": 1791841471575,
+          "reason": null,
+          "receivedThrough": 683
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841471425,
+          "reason": null,
+          "acceptedThrough": 32
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791841472850,
+          "issueSince": null,
+          "lastSuccessAt": 1791841472850,
+          "reason": null,
+          "receivedThrough": 681
+        }
+      }
+    ],
+    "batteryBefore": null,
+    "batteryAfter": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": []
+    }
+  },
+  {
+    "session": "history-authority-2",
+    "phase": "passed",
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "median": 6.75,
+        "p95": 72.6,
+        "p99": 96.6,
+        "max": 180.2
+      },
+      "frame": {
+        "n": 600,
+        "median": 18.6,
+        "p95": 177.2,
+        "p99": 251.4,
+        "max": 337.2
+      },
+      "inputFrame": {
+        "n": 600,
+        "median": 31.3,
+        "p95": 195.8,
+        "p99": 255.9,
+        "max": 347.2
+      },
+      "afterFrame": {
+        "n": 600,
+        "median": 35.5,
+        "p95": 200.8,
+        "p99": 262.2,
+        "max": 352.6
+      }
+    },
+    "handlers": {
+      "n": 600,
+      "median": 5.9,
+      "p95": 8.8,
+      "p99": 11.7,
+      "max": 28.4
+    },
+    "longTasks": {
+      "n": 319,
+      "median": 78,
+      "p95": 118,
+      "p99": 164,
+      "max": 182,
+      "blockingExcess": 10128
+    },
+    "above100": 66,
+    "clock": {
+      "timeOrigin": 1791841716179.3,
+      "now": 1791841723399
+    },
+    "clockAfter": 1791841723400,
+    "metadata": null,
+    "device": null,
+    "visibility": "visible",
+    "visibilityChanges": null,
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "median": 0.3,
+        "p95": 1.27,
+        "p99": 3.74,
+        "max": 41.47
+      },
+      "commandCompletion": {
+        "n": 600,
+        "median": 24.42,
+        "p95": 91.85,
+        "p99": 113.08,
+        "max": 197.47
+      },
+      "eventGaps": {
+        "n": 599,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 153.0,
+        "max": 192.0
+      }
+    },
+    "requests": [
+      200
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841778791.1406,
+          "issueSince": null,
+          "lastSuccessAt": 1791841717447,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841781930.0237,
+          "issueSince": null,
+          "lastSuccessAt": 1791841721231,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841812881,
+          "reason": null,
+          "acceptedThrough": 651
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841877072.6018,
+          "issueSince": null,
+          "lastSuccessAt": 1791841813200,
+          "reason": null,
+          "receivedThrough": 682
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841812652,
+          "reason": null,
+          "acceptedThrough": 31
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791841814610,
+          "issueSince": null,
+          "lastSuccessAt": 1791841814610,
+          "reason": null,
+          "receivedThrough": 680
+        }
+      }
+    ],
+    "batteryBefore": null,
+    "batteryAfter": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": []
+    }
+  },
+  {
+    "session": "history-handoff-1",
+    "phase": "passed",
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "median": 4.2,
+        "p95": 41.6,
+        "p99": 68.7,
+        "max": 99.8
+      },
+      "frame": {
+        "n": 600,
+        "median": 18.5,
+        "p95": 51.7,
+        "p99": 87.9,
+        "max": 116
+      },
+      "inputFrame": {
+        "n": 600,
+        "median": 24.65,
+        "p95": 79,
+        "p99": 104.4,
+        "max": 124.5
+      },
+      "afterFrame": {
+        "n": 600,
+        "median": 31.75,
+        "p95": 91.2,
+        "p99": 117.3,
+        "max": 189.9
+      }
+    },
+    "handlers": {
+      "n": 600,
+      "median": 5.9,
+      "p95": 9,
+      "p99": 31.6,
+      "max": 36.5
+    },
+    "longTasks": {
+      "n": 145,
+      "median": 63,
+      "p95": 95,
+      "p99": 107,
+      "max": 110,
+      "blockingExcess": 2442
+    },
+    "above100": 9,
+    "clock": {
+      "timeOrigin": 1791841486896.7,
+      "now": 1791841494070
+    },
+    "clockAfter": 1791841494071,
+    "metadata": null,
+    "device": null,
+    "visibility": "visible",
+    "visibilityChanges": null,
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "median": 0.18,
+        "p95": 1.52,
+        "p99": 2.07,
+        "max": 27.88
+      },
+      "commandCompletion": {
+        "n": 600,
+        "median": 22.06,
+        "p95": 58.62,
+        "p99": 92.21,
+        "max": 122.48
+      },
+      "eventGaps": {
+        "n": 599,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 153.0,
+        "max": 178
+      }
+    },
+    "requests": [
+      200
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841551574.3047,
+          "issueSince": null,
+          "lastSuccessAt": 1791841488130,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841555342.633,
+          "issueSince": null,
+          "lastSuccessAt": 1791841491747,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841583408,
+          "reason": null,
+          "acceptedThrough": 651
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841642418.822,
+          "issueSince": null,
+          "lastSuccessAt": 1791841582028,
+          "reason": null,
+          "receivedThrough": 682
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841581876,
+          "reason": null,
+          "acceptedThrough": 31
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791841583429,
+          "issueSince": null,
+          "lastSuccessAt": 1791841583429,
+          "reason": null,
+          "receivedThrough": 680
+        }
+      }
+    ],
+    "batteryBefore": null,
+    "batteryAfter": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": []
+    }
+  },
+  {
+    "session": "history-handoff-2",
+    "phase": "passed",
+    "input": {
+      "dispatchMs": {
+        "n": 600,
+        "median": 4.3,
+        "p95": 42.7,
+        "p99": 60.3,
+        "max": 115.8
+      },
+      "frame": {
+        "n": 600,
+        "median": 18.7,
+        "p95": 51.2,
+        "p99": 93.9,
+        "max": 215.2
+      },
+      "inputFrame": {
+        "n": 600,
+        "median": 24.2,
+        "p95": 72.9,
+        "p99": 125.3,
+        "max": 249.7
+      },
+      "afterFrame": {
+        "n": 600,
+        "median": 31.7,
+        "p95": 90.7,
+        "p99": 146.2,
+        "max": 263.5
+      }
+    },
+    "handlers": {
+      "n": 600,
+      "median": 6.1,
+      "p95": 10,
+      "p99": 32.8,
+      "max": 36.5
+    },
+    "longTasks": {
+      "n": 139,
+      "median": 65,
+      "p95": 105,
+      "p99": 121,
+      "max": 124,
+      "blockingExcess": 2772
+    },
+    "above100": 10,
+    "clock": {
+      "timeOrigin": 1791841598041.2,
+      "now": 1791841605300
+    },
+    "clockAfter": 1791841605301,
+    "metadata": null,
+    "device": null,
+    "visibility": "visible",
+    "visibilityChanges": null,
+    "cadence": {
+      "hostLateness": {
+        "n": 600,
+        "median": 0.16,
+        "p95": 1.48,
+        "p99": 1.61,
+        "max": 11.52
+      },
+      "commandCompletion": {
+        "n": 600,
+        "median": 21.49,
+        "p95": 59.96,
+        "p99": 81.41,
+        "max": 136.79
+      },
+      "eventGaps": {
+        "n": 599,
+        "median": 150.0,
+        "p95": 152.0,
+        "p99": 152.1,
+        "max": 159.0
+      }
+    },
+    "requests": [
+      200
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841664284.7832,
+          "issueSince": null,
+          "lastSuccessAt": 1791841599442,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841665308.8123,
+          "issueSince": null,
+          "lastSuccessAt": 1791841603048,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841694659,
+          "reason": null,
+          "acceptedThrough": 651
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791841756858.8027,
+          "issueSince": null,
+          "lastSuccessAt": 1791841695650,
+          "reason": null,
+          "receivedThrough": 682
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791841694833,
+          "reason": null,
+          "acceptedThrough": 31
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791841696567,
+          "issueSince": null,
+          "lastSuccessAt": 1791841696567,
+          "reason": null,
+          "receivedThrough": 679
+        }
+      }
+    ],
+    "batteryBefore": null,
+    "batteryAfter": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": []
+    }
+  }
+]

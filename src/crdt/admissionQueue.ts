@@ -1,3 +1,4 @@
+import type { ImmediateReceiveAttempt } from './finalApplyGate';
 import {
   accountTextPreparation,
   type AccountTextPreparation,
@@ -62,6 +63,8 @@ export class AdmissionError extends Error {
 export interface AdmissionOptions {
   /** Internal Account flush policy. Journal acknowledgment and forced barriers are unchanged. */
   readonly flushBatch?: BatchTiming;
+  /** Private Account composition: timed snapshot copies may overlap synchronous journal admission. */
+  readonly backgroundFlush?: true;
   /** Private owned receives retain/apply frames in order, then publish the verified page once. */
   readonly publishReceivePage?: boolean;
   readonly [accountTextPreparation]?: AccountTextPreparation;
@@ -76,6 +79,21 @@ export type OwnedReceiveQueue = <T>(
   bytes: Bytes,
   commit: (bytes: Bytes, promote: (updates: readonly Bytes[]) => void) => Promise<T>,
 ) => Promise<T>;
+/** Internal only: a complete early check may attempt one synchronous application, never queue it. */
+export interface PreparedReceiveFinish {
+  (apply: () => void): Promise<void>;
+  immediate?: (attempt: ImmediateReceiveAttempt) => Promise<boolean>;
+}
+/** Private content-only preparation. stage transfers copies after durable readback; finish
+ * rechecks owned authority inside the final FIFO job. It must not retain a storage task. */
+export type OwnedPreparedReceiveQueue = <T>(
+  bytes: Bytes,
+  prepare: (
+    bytes: Bytes,
+    stage: (updates: readonly Bytes[], finish: PreparedReceiveFinish) => void,
+  ) => Promise<T>,
+) => Promise<T>;
+
 export interface AdmissionReceipt {
   readonly id: number;
   readonly source: 'local' | 'remote';
@@ -169,7 +187,7 @@ const erase = (job: Job) => {
 export const createAdmissionOwner = async (
   carrier: JournalSession,
   options: AdmissionOptions,
-  bindOwnedReceive?: (enqueue: OwnedReceiveQueue) => void,
+  bindOwnedReceive?: (enqueue: OwnedReceiveQueue, prepare: OwnedPreparedReceiveQueue) => void,
 ): Promise<AdmissionSession> => {
   const local = options[localWorkspacePreparation];
   const text = options[accountTextPreparation];
@@ -205,6 +223,8 @@ export const createAdmissionOwner = async (
     journalDirty = false,
     busy = false;
   let timer: ReturnType<typeof setTimeout> | undefined, inFlight: Promise<void> | undefined;
+  let backgroundFlush: Promise<void> | undefined;
+  let journalRevision = 0;
   let closing: Promise<void> | undefined;
   let maintenanceTimer: ReturnType<typeof setTimeout> | undefined;
   let maintenanceStop: AbortController | undefined;
@@ -220,6 +240,7 @@ export const createAdmissionOwner = async (
     if (maintenanceTimer !== undefined) clearTimeout(maintenanceTimer);
     maintenanceTimer = undefined;
   };
+  let preparedReceive: Promise<unknown> | undefined;
   let disposed = false;
   const dispose = () => {
     if (disposed) return;
@@ -229,7 +250,7 @@ export const createAdmissionOwner = async (
   };
   try {
     carrier.beforeRelease?.(async () => {
-      await inFlight;
+      await Promise.all([inFlight, backgroundFlush, preparedReceive?.catch(() => {})]);
       await preparation?.close();
       dispose();
     });
@@ -262,7 +283,13 @@ export const createAdmissionOwner = async (
         0,
       ),
       reservedBytes: queue.reduce((n, j) => n + (j.kind === 'flush' ? 0 : j.reservation), 0),
-      durable: state === 'active' && !queue.length && !journalDirty && pressure === null,
+      durable:
+        state === 'active' &&
+        !queue.length &&
+        !journalDirty &&
+        !backgroundFlush &&
+        !preparedReceive &&
+        pressure === null,
       pressure,
       ...(maintenance ? { maintenance } : {}),
     });
@@ -320,7 +347,13 @@ export const createAdmissionOwner = async (
     queue.length = 0;
     notify();
     const stopped = carrier.close();
-    void Promise.allSettled([inFlight, stopped, preparationStopped]).then((results) => {
+    void Promise.allSettled([
+      inFlight,
+      backgroundFlush,
+      preparedReceive?.catch(() => {}),
+      stopped,
+      preparationStopped,
+    ]).then((results) => {
       dispose();
       const failure = results.find((r) => r.status === 'rejected');
       state = failure ? 'failed' : 'closed';
@@ -479,8 +512,13 @@ export const createAdmissionOwner = async (
     pressure = null;
     notify();
   };
-  const flush = async () => {
+  const flush = async (background = false) => {
     live();
+    const startedRevision = journalRevision,
+      startedBytes = journalBytes;
+    // New journal admissions own the next window even if this snapshot is captured later
+    // on the serialized storage tail. A redundant follow-up flush is safe; lost suffixes aren't.
+    if (background) flushBatch?.clear();
     countLedgerWork('journalFlushes');
     if (journalDirty) countLedgerWork('dirtyJournalFlushes');
     const receipt = await carrier.flushJournal();
@@ -494,12 +532,18 @@ export const createAdmissionOwner = async (
         'Content committed, but journal cleanup still needs retry.',
       );
     }
-    changedContent(receipt.removed ?? 0, journalBytes);
-    journalBytes = 0;
-    journalDirty = false;
-    flushBatch?.clear();
+    changedContent(receipt.removed ?? 0, startedBytes);
+    journalBytes -= startedBytes;
+    journalDirty = journalRevision !== startedRevision;
+    if (!journalDirty) flushBatch?.clear();
   };
   const forceLocal = async (job: InputJob) => {
+    if (backgroundFlush) {
+      await backgroundFlush;
+      // A failed background copy blocks the queue; it cannot authorize a forced write.
+      if (state !== 'active')
+        throw new AdmissionError('storage-failed', 'Journal flush did not complete.');
+    }
     await flush();
     live();
     const lease = job.preparation ? preparation!.borrow(job.preparation) : undefined;
@@ -705,6 +749,7 @@ export const createAdmissionOwner = async (
     }
     if (attempt.status === 'journalled') {
       journalDirty = true;
+      journalRevision++;
       flushBatch?.note();
       journalBytes += (job.prepared.carrierBytes ?? job.prepared.update).length;
       promote(job, job.prepared.update);
@@ -723,6 +768,8 @@ export const createAdmissionOwner = async (
       !carrier.compactContent ||
       state !== 'active' ||
       busy ||
+      backgroundFlush ||
+      preparedReceive ||
       queue.length ||
       journalDirty
     )
@@ -731,7 +778,15 @@ export const createAdmissionOwner = async (
       return;
     maintenanceTimer = setTimeout(() => {
       maintenanceTimer = undefined;
-      if (state !== 'active' || busy || queue.length || journalDirty) return;
+      if (
+        state !== 'active' ||
+        busy ||
+        backgroundFlush ||
+        preparedReceive ||
+        queue.length ||
+        journalDirty
+      )
+        return;
       // Preserve FIFO and native settlement. Foreground work interrupts this discretionary
       // flight at its next safe boundary; it never overtakes an active storage transaction.
       const stop = new AbortController();
@@ -778,6 +833,7 @@ export const createAdmissionOwner = async (
   const schedule = () => {
     scheduleMaintenance();
     if (state !== 'active' || !journalDirty) return;
+    if (options.backgroundFlush && (busy || backgroundFlush || queue.length)) return;
     if (timer !== undefined) {
       if (!flushBatch) return;
       clearTimeout(timer);
@@ -785,7 +841,24 @@ export const createAdmissionOwner = async (
     timer = setTimeout(
       () => {
         timer = undefined;
-        if (state === 'active') void barrier().catch(() => {});
+        if (state !== 'active') return;
+        if (!options.backgroundFlush) {
+          void barrier().catch(() => {});
+          return;
+        }
+        if (busy || backgroundFlush || queue.length) return;
+        const started = ledgerWorkStart();
+        // Register before calling the carrier; close must drain this flight too. No canonical
+        // mutation happens here. Foreground jobs keep their FIFO; only journal writes overlap.
+        backgroundFlush = Promise.resolve()
+          .then(() => flush(true))
+          .catch(block)
+          .finally(() => {
+            measureLedgerWork('admissionBackgroundFlush', started);
+            backgroundFlush = undefined;
+            notify();
+            pump();
+          });
       },
       flushBatch ? Math.max(0, flushBatch.due! - performance.now()) : FLUSH_DELAY_MS,
     );
@@ -827,6 +900,8 @@ export const createAdmissionOwner = async (
     busy = true;
     try {
       while (queue.length && state === 'active') {
+        // A remote handoff or explicit barrier fences later inputs while the snapshot settles.
+        if (backgroundFlush && queue[0]!.kind !== 'local') break;
         const result = processMeasured(queue[0]!);
         if (result) {
           inFlight = result.then(undefined, block).finally(() => {
@@ -842,7 +917,7 @@ export const createAdmissionOwner = async (
       block(error);
     }
     busy = false;
-    if (state === 'active' && queue.length) queueMicrotask(pump);
+    if (state === 'active' && queue.length && !backgroundFlush) queueMicrotask(pump);
     schedule();
   };
   const enqueue = (
@@ -887,13 +962,141 @@ export const createAdmissionOwner = async (
     notify();
     return Object.freeze({ id: job.id, accepted: completion.promise });
   };
-  bindOwnedReceive?.(<T>(bytes: Bytes, commit: Parameters<OwnedReceiveQueue>[1]) => {
+  const receiveOwned: OwnedReceiveQueue = <T>(
+    bytes: Bytes,
+    commit: Parameters<OwnedReceiveQueue>[1],
+  ) => {
     let value: T;
     const ticket = enqueue('remote', bytes, async (input, promote) => {
       value = (await commit(input, promote)) as T;
     });
     return ticket.accepted.then(() => value);
-  });
+  };
+  const prepareOwned: OwnedPreparedReceiveQueue = <T>(
+    bytes: Bytes,
+    prepare: Parameters<OwnedPreparedReceiveQueue>[1],
+  ) => {
+    live();
+    if (preparedReceive)
+      throw new AdmissionError('receive-refused', 'Remote preparation is already pending.');
+    if (!(bytes instanceof Uint8Array) || !bytes.length || bytes.length > MAX_PENDING_BYTES)
+      throw new AdmissionError('receive-refused', 'Invalid remote preparation input.');
+    if (repairRequired)
+      throw new AdmissionError('repair-required', 'Workspace repair requires reopening.');
+    const input = bytes.slice();
+    let updates: Bytes[] | undefined;
+    let finish: PreparedReceiveFinish | undefined;
+    clearMaintenanceTimer();
+    maintenanceStop?.abort();
+    // Register before executing preparation. No storage task may await final FIFO promotion.
+    const work = Promise.resolve().then(async () => {
+      try {
+        live();
+        const value = await prepare(input, (frames, promote) => {
+          live();
+          if (updates) throw Error('Remote preparation staged twice');
+          if (frames.reduce((n, b) => n + b.length, 0) > MAX_PENDING_BYTES)
+            throw Error('Remote preparation exceeded its bound');
+          updates = frames.map((b) => b.slice());
+          finish = promote;
+        });
+        live();
+        if (!updates || !finish) throw Error('Remote preparation omitted its durable handoff');
+        const eligible = () =>
+          state === 'active' &&
+          !repairRequired &&
+          !busy &&
+          !backgroundFlush &&
+          !queue.length &&
+          preparedReceive === work;
+        if (finish.immediate && eligible()) {
+          countLedgerWork('finalApplyEarlyChecks');
+          const early = ledgerWorkStart();
+          const applied = await finish.immediate((authorize) => {
+            live();
+            if (!eligible()) {
+              countLedgerWork('finalApplyQueueMisses');
+              return false;
+            }
+            // Reserve the pump before any effect or notification can reenter admission.
+            busy = true;
+            const job: InputJob = {
+              kind: 'remote',
+              id: ++nextId,
+              input: new Uint8Array([1]),
+              reservation: 1,
+              slices: 0,
+              sliced: false,
+              completion: deferred<AdmissionReceipt>(),
+            };
+            try {
+              const accepted = authorize(() => {
+                queue.push(job);
+                const began = ledgerWorkStart();
+                try {
+                  changedContent(
+                    updates!.length,
+                    updates!.reduce((n, b) => n + b.length, 0),
+                  );
+                  for (let i = 0; i < updates!.length; i++)
+                    promote(
+                      job,
+                      updates![i]!,
+                      !options.publishReceivePage || i === updates!.length - 1,
+                    );
+                  completeInput(job);
+                } finally {
+                  measureLedgerWork('finalApplySynchronous', began);
+                }
+              });
+              countLedgerWork(accepted ? 'finalApplyImmediate' : 'finalApplyActivityMisses');
+              return accepted;
+            } catch (error) {
+              // A partial durable page must never be retried in place.
+              void close().catch(() => {});
+              throw error;
+            } finally {
+              erase(job);
+              busy = false;
+              pump();
+            }
+          });
+          measureLedgerWork('finalApplyEarly', early);
+          if (applied) return value as T;
+          countLedgerWork('finalApplyFallbacks');
+        } else if (finish.immediate) countLedgerWork('finalApplySkipped');
+        // Original frames apply to the current document/undo state, never to a prepared snapshot.
+        await receiveOwned(new Uint8Array([1]), async (_input, promote) => {
+          try {
+            await finish!(() => promote(updates!));
+          } catch (error) {
+            void close().catch(() => {});
+            throw error;
+          }
+        });
+        return value as T;
+      } catch (error) {
+        // A durable, unpromoted suffix must cold-replay if its handoff is discarded or stale.
+        // Closing is intentionally not awaited by this flight (close drains it).
+        if (updates) void close().catch(() => {});
+        else if (codeOf(error) !== 'receive-refused') block(error);
+        throw error;
+      } finally {
+        input.fill(0);
+        for (const b of updates ?? []) b.fill(0);
+      }
+    });
+    preparedReceive = work;
+    const settled = () => {
+      if (preparedReceive === work) preparedReceive = undefined;
+      notify();
+      schedule();
+    };
+    void work.then(settled, settled);
+    notify();
+    return work;
+  };
+  bindOwnedReceive?.(receiveOwned, prepareOwned);
   const barrier = (): Promise<void> => {
     try {
       live();
@@ -902,6 +1105,9 @@ export const createAdmissionOwner = async (
           'storage-failed',
           'Retry or discard blocked pending input before requesting durability.',
         );
+      // A caller's durability barrier includes a previously started remote handoff, but
+      // waits outside the FIFO so a forced local write ahead of promotion can still finish.
+      if (preparedReceive) return preparedReceive.then(() => barrier());
       clearTimer();
       const last = queue.at(-1);
       if (last?.kind === 'flush') return last.completion.promise;
@@ -984,8 +1190,14 @@ export const createAdmissionOwner = async (
           'repair-required',
           'Pending discard cannot repair persisted carriers.',
         );
-      if (state !== 'blocked' || busy)
+      if (state !== 'blocked' || busy || backgroundFlush)
         throw new AdmissionError('invalid-input', 'Discard requires a blocked, settled queue.');
+      if (preparedReceive) {
+        // Preparation may already have committed. Dropping its apply would leave the live
+        // document behind a durable receipt; reopen must replay it before any further edit.
+        void close().catch(() => {});
+        return;
+      }
       const error = new AdmissionError('discarded', 'The unaccepted pending suffix was discarded.');
       for (const job of queue) {
         job.completion.reject(error);

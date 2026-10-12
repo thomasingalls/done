@@ -1,0 +1,4300 @@
+{
+  "candidate-active-1": {
+    "phase": "passed",
+    "arm": "candidate",
+    "mode": "active",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 22642,
+    "keydownGapsMs": [174.4, 237.0, 316.2],
+    "handler": [5.8, 7.5, 24.7],
+    "dispatchMs": [0.5, 1.8, 9.8],
+    "over100ms": 11,
+    "frame": [17.4, 403.2, 600],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 134,
+    "longTaskTotalMs": 9707,
+    "longTaskMaxMs": 154,
+    "waitLocalMs": 3923.3,
+    "waitLocalMaxMs": 530,
+    "waitOverlapMs": {
+      "admissionFlush": 0,
+      "admissionBackgroundFlush": 0.1,
+      "admissionRemote": 3621.4,
+      "admissionLocal": 298.7
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 88.8,
+        "perKeyMs": 0.74,
+        "quantilesMs": [0.8, 1.2, 2]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 80.6,
+        "perKeyMs": 0.672,
+        "quantilesMs": [0.7, 1, 1.2]
+      },
+      "project": {
+        "count": 248,
+        "totalMs": 204.8,
+        "perKeyMs": 1.707,
+        "quantilesMs": [0.8, 2.5, 4.5]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 4.4,
+        "perKeyMs": 0.037,
+        "quantilesMs": [0, 0.2, 0.7]
+      },
+      "projectRead": {
+        "count": 248,
+        "totalMs": 22.4,
+        "perKeyMs": 0.187,
+        "quantilesMs": [0, 0.6, 0.8]
+      },
+      "projectString": {
+        "count": 248,
+        "totalMs": 6.0,
+        "perKeyMs": 0.05,
+        "quantilesMs": [0, 0.1, 0.8]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 8,
+        "totalMs": 1714.0,
+        "maxMs": 432.9
+      },
+      "admissionFlush": {
+        "count": 5,
+        "totalMs": 198.7,
+        "maxMs": 43.4
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 805.0,
+        "maxMs": 43.6
+      },
+      "admissionRemote": {
+        "count": 4,
+        "totalMs": 2463.3,
+        "maxMs": 661.9
+      },
+      "copyRecords": {
+        "count": 89,
+        "totalMs": 97.7,
+        "maxMs": 5.1
+      },
+      "envelopeSelection": {
+        "count": 5,
+        "totalMs": 54.1,
+        "maxMs": 14.5
+      },
+      "installOwned": {
+        "count": 40,
+        "totalMs": 226.1,
+        "maxMs": 8.6
+      },
+      "loadElapsed": {
+        "count": 116,
+        "totalMs": 4087.8,
+        "maxMs": 88
+      },
+      "readProjection": {
+        "count": 46,
+        "totalMs": 316.1,
+        "maxMs": 28.2
+      },
+      "sourceParse": {
+        "count": 1164,
+        "totalMs": 157.4,
+        "maxMs": 1.1
+      },
+      "storageOperation": {
+        "count": 70,
+        "totalMs": 18276.9,
+        "maxMs": 986.9
+      },
+      "storageQueueWait": {
+        "count": 71,
+        "totalMs": 1795.2,
+        "maxMs": 394
+      },
+      "validateUpdates": {
+        "count": 1284,
+        "totalMs": 126.6,
+        "maxMs": 1.2
+      },
+      "waitFlush": {
+        "count": 5,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 3923.3,
+        "maxMs": 530
+      },
+      "waitRemote": {
+        "count": 4,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "warmShapeCheck": {
+        "count": 116,
+        "totalMs": 755.9,
+        "maxMs": 33.8
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 48,
+      "inboundVerifications": 40,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 18,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 116,
+      "warmLoads": 116,
+      "selectedLoads": 84,
+      "warmAuditRows": 1691,
+      "warmAuditBytes": 8627832,
+      "loadedRows": 0,
+      "loadedBytes": 0,
+      "authorityChecks": 93,
+      "positions": 5,
+      "sourceParses": 1164,
+      "sourceParseBytes": 420686,
+      "recordCopies": 24702,
+      "recordCopyBytes": 115214295,
+      "journalFlushes": 13,
+      "dirtyJournalFlushes": 13,
+      "projectionChecks": 8,
+      "directTextPreparations": 116
+    },
+    "requests": [
+      {
+        "device": "A",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 10
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 13
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 2
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 2
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 8
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822947106.394,
+          "issueSince": null,
+          "lastSuccessAt": 1791822884757,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822950923.5776,
+          "issueSince": null,
+          "lastSuccessAt": 1791822888688,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822910421,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822971559.1287,
+          "issueSince": null,
+          "lastSuccessAt": 1791822909681,
+          "reason": null,
+          "receivedThrough": 622
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822908550,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791822910780,
+          "issueSince": null,
+          "lastSuccessAt": 1791822910780,
+          "reason": null,
+          "receivedThrough": 619
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822910421,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822979650.551,
+          "issueSince": null,
+          "lastSuccessAt": 1791822915305,
+          "reason": null,
+          "receivedThrough": 624
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822914227,
+          "reason": null,
+          "acceptedThrough": 7
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822980179.469,
+          "issueSince": null,
+          "lastSuccessAt": 1791822915621,
+          "reason": null,
+          "receivedThrough": 624
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "candidate-active-2": {
+    "phase": "passed",
+    "arm": "candidate",
+    "mode": "active",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 22767,
+    "keydownGapsMs": [177.8, 240.8, 279.9],
+    "handler": [5.7, 7.7, 27.2],
+    "dispatchMs": [0.5, 5.1, 73.3],
+    "over100ms": 10,
+    "frame": [17.5, 408.3, 660.9],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 132,
+    "longTaskTotalMs": 9629,
+    "longTaskMaxMs": 143,
+    "waitLocalMs": 3705.2,
+    "waitLocalMaxMs": 591.1,
+    "waitOverlapMs": {
+      "admissionFlush": 24.6,
+      "admissionBackgroundFlush": 0,
+      "admissionRemote": 3412.9,
+      "admissionLocal": 262.0
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 85.5,
+        "perKeyMs": 0.713,
+        "quantilesMs": [0.7, 1.2, 2.1]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 67.6,
+        "perKeyMs": 0.563,
+        "quantilesMs": [0.6, 1.1, 1.3]
+      },
+      "project": {
+        "count": 248,
+        "totalMs": 203.7,
+        "perKeyMs": 1.697,
+        "quantilesMs": [0.7, 3, 4.7]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 4.3,
+        "perKeyMs": 0.036,
+        "quantilesMs": [0, 0.4, 0.7]
+      },
+      "projectRead": {
+        "count": 248,
+        "totalMs": 22.3,
+        "perKeyMs": 0.186,
+        "quantilesMs": [0, 0.5, 0.9]
+      },
+      "projectString": {
+        "count": 248,
+        "totalMs": 8.2,
+        "perKeyMs": 0.068,
+        "quantilesMs": [0, 0.1, 0.7]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 8,
+        "totalMs": 1826.8,
+        "maxMs": 488.2
+      },
+      "admissionFlush": {
+        "count": 5,
+        "totalMs": 220.6,
+        "maxMs": 65.1
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 828.9,
+        "maxMs": 45.3
+      },
+      "admissionRemote": {
+        "count": 4,
+        "totalMs": 2409.3,
+        "maxMs": 723.7
+      },
+      "copyRecords": {
+        "count": 89,
+        "totalMs": 105.2,
+        "maxMs": 4.3
+      },
+      "envelopeSelection": {
+        "count": 5,
+        "totalMs": 56.8,
+        "maxMs": 16.2
+      },
+      "installOwned": {
+        "count": 40,
+        "totalMs": 244.3,
+        "maxMs": 12.6
+      },
+      "loadElapsed": {
+        "count": 116,
+        "totalMs": 4352.7,
+        "maxMs": 74.4
+      },
+      "readProjection": {
+        "count": 46,
+        "totalMs": 349.4,
+        "maxMs": 24.5
+      },
+      "sourceParse": {
+        "count": 1157,
+        "totalMs": 158.4,
+        "maxMs": 3.1
+      },
+      "storageOperation": {
+        "count": 70,
+        "totalMs": 18457.7,
+        "maxMs": 1030.4
+      },
+      "storageQueueWait": {
+        "count": 71,
+        "totalMs": 1906.3,
+        "maxMs": 430.4
+      },
+      "validateUpdates": {
+        "count": 1277,
+        "totalMs": 129.8,
+        "maxMs": 3.1
+      },
+      "waitFlush": {
+        "count": 5,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 3705.2,
+        "maxMs": 591.1
+      },
+      "waitRemote": {
+        "count": 4,
+        "totalMs": 55.5,
+        "maxMs": 55.5
+      },
+      "warmShapeCheck": {
+        "count": 116,
+        "totalMs": 1006.6,
+        "maxMs": 32.3
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 48,
+      "inboundVerifications": 40,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 18,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 116,
+      "warmLoads": 116,
+      "selectedLoads": 84,
+      "warmAuditRows": 1691,
+      "warmAuditBytes": 8627832,
+      "loadedRows": 0,
+      "loadedBytes": 0,
+      "authorityChecks": 92,
+      "positions": 5,
+      "sourceParses": 1157,
+      "sourceParseBytes": 418880,
+      "recordCopies": 24691,
+      "recordCopyBytes": 115212341,
+      "journalFlushes": 13,
+      "dirtyJournalFlushes": 13,
+      "projectionChecks": 8,
+      "directTextPreparations": 116
+    },
+    "requests": [
+      {
+        "device": "A",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 10
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 13
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 2
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 2
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 8
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823319212.336,
+          "issueSince": null,
+          "lastSuccessAt": 1791823257714,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823324601.778,
+          "issueSince": null,
+          "lastSuccessAt": 1791823261780,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823285429,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823345241.2944,
+          "issueSince": null,
+          "lastSuccessAt": 1791823284651,
+          "reason": null,
+          "receivedThrough": 622
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823283621,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791823285864,
+          "issueSince": null,
+          "lastSuccessAt": 1791823285864,
+          "reason": null,
+          "receivedThrough": 619
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823285429,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823354043.0635,
+          "issueSince": null,
+          "lastSuccessAt": 1791823290632,
+          "reason": null,
+          "receivedThrough": 624
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823289524,
+          "reason": null,
+          "acceptedThrough": 7
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823354134.9883,
+          "issueSince": null,
+          "lastSuccessAt": 1791823290894,
+          "reason": null,
+          "receivedThrough": 624
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "candidate-backlog-1": {
+    "phase": "passed",
+    "arm": "candidate",
+    "mode": "backlog",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 22597,
+    "keydownGapsMs": [171.8, 231.8, 293.0],
+    "handler": [5.5, 7.7, 22.6],
+    "dispatchMs": [0.6, 4.4, 7],
+    "over100ms": 12,
+    "frame": [17.3, 334.2, 497.4],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 140,
+    "longTaskTotalMs": 10012,
+    "longTaskMaxMs": 172,
+    "waitLocalMs": 3048.5,
+    "waitLocalMaxMs": 434.6,
+    "waitOverlapMs": {
+      "admissionFlush": 56.7,
+      "admissionBackgroundFlush": 0,
+      "admissionRemote": 2768.3,
+      "admissionLocal": 220.0
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 87.4,
+        "perKeyMs": 0.728,
+        "quantilesMs": [0.8, 1.4, 1.6]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 76.3,
+        "perKeyMs": 0.636,
+        "quantilesMs": [0.6, 1.2, 1.6]
+      },
+      "project": {
+        "count": 252,
+        "totalMs": 194.8,
+        "perKeyMs": 1.623,
+        "quantilesMs": [0.6, 2.9, 4.9]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 3.7,
+        "perKeyMs": 0.031,
+        "quantilesMs": [0, 0.1, 1]
+      },
+      "projectRead": {
+        "count": 252,
+        "totalMs": 23.2,
+        "perKeyMs": 0.193,
+        "quantilesMs": [0, 0.6, 1]
+      },
+      "projectString": {
+        "count": 252,
+        "totalMs": 2.9,
+        "perKeyMs": 0.024,
+        "quantilesMs": [0, 0.1, 0.9]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 7,
+        "totalMs": 544.3,
+        "maxMs": 209.7
+      },
+      "admissionFlush": {
+        "count": 5,
+        "totalMs": 122.3,
+        "maxMs": 49.2
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 837.3,
+        "maxMs": 40.4
+      },
+      "admissionRemote": {
+        "count": 6,
+        "totalMs": 2771.3,
+        "maxMs": 558.2
+      },
+      "copyRecords": {
+        "count": 92,
+        "totalMs": 29.2,
+        "maxMs": 1.8
+      },
+      "envelopeSelection": {
+        "count": 5,
+        "totalMs": 36.2,
+        "maxMs": 9.9
+      },
+      "installOwned": {
+        "count": 41,
+        "totalMs": 45.4,
+        "maxMs": 2.2
+      },
+      "loadElapsed": {
+        "count": 136,
+        "totalMs": 2168.9,
+        "maxMs": 50.7
+      },
+      "readProjection": {
+        "count": 50,
+        "totalMs": 91.7,
+        "maxMs": 5.4
+      },
+      "sourceParse": {
+        "count": 1032,
+        "totalMs": 130.0,
+        "maxMs": 1.3
+      },
+      "storageOperation": {
+        "count": 89,
+        "totalMs": 18819.5,
+        "maxMs": 638.9
+      },
+      "storageQueueWait": {
+        "count": 90,
+        "totalMs": 636.2,
+        "maxMs": 149.8
+      },
+      "validateUpdates": {
+        "count": 1152,
+        "totalMs": 109.2,
+        "maxMs": 1.2
+      },
+      "waitFlush": {
+        "count": 5,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 3048.5,
+        "maxMs": 434.6
+      },
+      "waitRemote": {
+        "count": 6,
+        "totalMs": 0.2,
+        "maxMs": 0.1
+      },
+      "warmShapeCheck": {
+        "count": 136,
+        "totalMs": 865.1,
+        "maxMs": 30.2
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 51,
+      "inboundVerifications": 41,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 20,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 136,
+      "warmLoads": 136,
+      "selectedLoads": 101,
+      "warmAuditRows": 2095,
+      "warmAuditBytes": 6296127,
+      "loadedRows": 0,
+      "loadedBytes": 0,
+      "authorityChecks": 123,
+      "positions": 5,
+      "sourceParses": 1032,
+      "sourceParseBytes": 266280,
+      "recordCopies": 10066,
+      "recordCopyBytes": 24538719,
+      "journalFlushes": 12,
+      "dirtyJournalFlushes": 11,
+      "projectionChecks": 12,
+      "directTextPreparations": 114
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/session/v1/acknowledge",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/session/v1/renew",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/begin",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/finish",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/notifications/v1/subscribe",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 22
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 5
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 16
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823049953,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823111696.1323,
+          "issueSince": null,
+          "lastSuccessAt": 1791823050914,
+          "reason": null,
+          "receivedThrough": 607
+        }
+      },
+      {
+        "send": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 0
+        },
+        "receive": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "receivedThrough": 0
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823049953,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823136475.1921,
+          "issueSince": null,
+          "lastSuccessAt": 1791823074691,
+          "reason": null,
+          "receivedThrough": 612
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791823074080,
+          "issueSince": null,
+          "lastSuccessAt": 1791823073799,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823072027,
+          "reason": null,
+          "receivedThrough": 28
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823049953,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823199991.9175,
+          "issueSince": null,
+          "lastSuccessAt": 1791823138740,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823076699,
+          "reason": null,
+          "acceptedThrough": 6
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823221504.5374,
+          "issueSince": null,
+          "lastSuccessAt": 1791823158383,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "candidate-backlog-2": {
+    "phase": "passed",
+    "arm": "candidate",
+    "mode": "backlog",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 21956,
+    "keydownGapsMs": [170.3, 230.8, 242.7],
+    "handler": [5.3, 8.5, 29.9],
+    "dispatchMs": [0.5, 5.8, 7.8],
+    "over100ms": 12,
+    "frame": [17.2, 366.5, 716.1],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 133,
+    "longTaskTotalMs": 9678,
+    "longTaskMaxMs": 182,
+    "waitLocalMs": 3811.0,
+    "waitLocalMaxMs": 640.7,
+    "waitOverlapMs": {
+      "admissionFlush": 73.2,
+      "admissionBackgroundFlush": 0.1,
+      "admissionRemote": 3437.9,
+      "admissionLocal": 294.8
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 92.4,
+        "perKeyMs": 0.77,
+        "quantilesMs": [0.8, 1.3, 3.4]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 80.8,
+        "perKeyMs": 0.673,
+        "quantilesMs": [0.7, 1.2, 3.2]
+      },
+      "project": {
+        "count": 250,
+        "totalMs": 207.3,
+        "perKeyMs": 1.728,
+        "quantilesMs": [0.6, 3.4, 4.7]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 4.1,
+        "perKeyMs": 0.034,
+        "quantilesMs": [0, 0.2, 0.8]
+      },
+      "projectRead": {
+        "count": 250,
+        "totalMs": 19.4,
+        "perKeyMs": 0.162,
+        "quantilesMs": [0, 0.6, 0.7]
+      },
+      "projectString": {
+        "count": 250,
+        "totalMs": 5.0,
+        "perKeyMs": 0.042,
+        "quantilesMs": [0, 0.1, 0.8]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 8,
+        "totalMs": 272.5,
+        "maxMs": 56.4
+      },
+      "admissionFlush": {
+        "count": 5,
+        "totalMs": 136.5,
+        "maxMs": 53.3
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 850.6,
+        "maxMs": 42.4
+      },
+      "admissionRemote": {
+        "count": 5,
+        "totalMs": 2527.6,
+        "maxMs": 674.5
+      },
+      "copyRecords": {
+        "count": 90,
+        "totalMs": 28.4,
+        "maxMs": 1.5
+      },
+      "envelopeSelection": {
+        "count": 5,
+        "totalMs": 44.1,
+        "maxMs": 15.7
+      },
+      "installOwned": {
+        "count": 40,
+        "totalMs": 38.8,
+        "maxMs": 1.5
+      },
+      "loadElapsed": {
+        "count": 132,
+        "totalMs": 1931.8,
+        "maxMs": 41.2
+      },
+      "readProjection": {
+        "count": 50,
+        "totalMs": 90.3,
+        "maxMs": 5.8
+      },
+      "sourceParse": {
+        "count": 1081,
+        "totalMs": 149.1,
+        "maxMs": 1.6
+      },
+      "storageOperation": {
+        "count": 86,
+        "totalMs": 18158.8,
+        "maxMs": 673.9
+      },
+      "storageQueueWait": {
+        "count": 87,
+        "totalMs": 292.0,
+        "maxMs": 66.1
+      },
+      "validateUpdates": {
+        "count": 1201,
+        "totalMs": 131.8,
+        "maxMs": 1.5
+      },
+      "waitFlush": {
+        "count": 5,
+        "totalMs": 58.9,
+        "maxMs": 30.8
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 3811.0,
+        "maxMs": 640.7
+      },
+      "waitRemote": {
+        "count": 5,
+        "totalMs": 35.6,
+        "maxMs": 35.4
+      },
+      "warmShapeCheck": {
+        "count": 132,
+        "totalMs": 678.5,
+        "maxMs": 30.8
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 50,
+      "inboundVerifications": 40,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 20,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 132,
+      "warmLoads": 132,
+      "selectedLoads": 97,
+      "warmAuditRows": 2048,
+      "warmAuditBytes": 5924432,
+      "loadedRows": 0,
+      "loadedBytes": 0,
+      "authorityChecks": 116,
+      "positions": 5,
+      "sourceParses": 1081,
+      "sourceParseBytes": 278922,
+      "recordCopies": 10361,
+      "recordCopyBytes": 24592007,
+      "journalFlushes": 13,
+      "dirtyJournalFlushes": 11,
+      "projectionChecks": 10,
+      "directTextPreparations": 115
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/session/v1/acknowledge",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/session/v1/renew",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/begin",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/finish",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/notifications/v1/subscribe",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 18
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 5
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 16
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823347025,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823409894.2769,
+          "issueSince": null,
+          "lastSuccessAt": 1791823347968,
+          "reason": null,
+          "receivedThrough": 607
+        }
+      },
+      {
+        "send": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 0
+        },
+        "receive": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "receivedThrough": 0
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823347025,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823436626.2253,
+          "issueSince": null,
+          "lastSuccessAt": 1791823372312,
+          "reason": null,
+          "receivedThrough": 612
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791823371805,
+          "issueSince": null,
+          "lastSuccessAt": 1791823371402,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823369553,
+          "reason": null,
+          "receivedThrough": 28
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823347025,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823496665.1938,
+          "issueSince": null,
+          "lastSuccessAt": 1791823435471,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823373517,
+          "reason": null,
+          "acceptedThrough": 6
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823519042.5312,
+          "issueSince": null,
+          "lastSuccessAt": 1791823456889,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "candidate-silent-1": {
+    "phase": "passed",
+    "arm": "candidate",
+    "mode": "silent",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 22818,
+    "keydownGapsMs": [182.1, 230, 236.6],
+    "handler": [5.6, 7.6, 25.8],
+    "dispatchMs": [0.4, 2, 5.4],
+    "over100ms": 0,
+    "frame": [17, 21.5, 46.9],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 145,
+    "longTaskTotalMs": 10140,
+    "longTaskMaxMs": 108,
+    "waitLocalMs": 33.1,
+    "waitLocalMaxMs": 29.7,
+    "waitOverlapMs": {
+      "admissionFlush": 29.7,
+      "admissionBackgroundFlush": 0.8,
+      "admissionRemote": 0,
+      "admissionLocal": 0
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 78.8,
+        "perKeyMs": 0.657,
+        "quantilesMs": [0.6, 1.3, 2.5]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 67.5,
+        "perKeyMs": 0.562,
+        "quantilesMs": [0.6, 1.1, 1.3]
+      },
+      "project": {
+        "count": 240,
+        "totalMs": 183.8,
+        "perKeyMs": 1.532,
+        "quantilesMs": [0.8, 1.6, 4.9]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 1.7,
+        "perKeyMs": 0.014,
+        "quantilesMs": [0, 0.1, 0.5]
+      },
+      "projectRead": {
+        "count": 240,
+        "totalMs": 23.1,
+        "perKeyMs": 0.193,
+        "quantilesMs": [0, 0.6, 3.1]
+      },
+      "projectString": {
+        "count": 240,
+        "totalMs": 4.8,
+        "perKeyMs": 0.04,
+        "quantilesMs": [0, 0.1, 0.7]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 9,
+        "totalMs": 2173.7,
+        "maxMs": 369.1
+      },
+      "admissionFlush": {
+        "count": 9,
+        "totalMs": 430.7,
+        "maxMs": 85.8
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 652.5,
+        "maxMs": 24.3
+      },
+      "copyRecords": {
+        "count": 133,
+        "totalMs": 192.8,
+        "maxMs": 5.5
+      },
+      "envelopeSelection": {
+        "count": 8,
+        "totalMs": 84.1,
+        "maxMs": 14.5
+      },
+      "installOwned": {
+        "count": 58,
+        "totalMs": 327.0,
+        "maxMs": 12.9
+      },
+      "loadElapsed": {
+        "count": 149,
+        "totalMs": 5149.2,
+        "maxMs": 67.4
+      },
+      "readProjection": {
+        "count": 81,
+        "totalMs": 633.1,
+        "maxMs": 30.7
+      },
+      "sourceParse": {
+        "count": 1361,
+        "totalMs": 182.6,
+        "maxMs": 1.2
+      },
+      "storageOperation": {
+        "count": 76,
+        "totalMs": 19414.1,
+        "maxMs": 944
+      },
+      "storageQueueWait": {
+        "count": 77,
+        "totalMs": 2178.3,
+        "maxMs": 326.6
+      },
+      "validateUpdates": {
+        "count": 1481,
+        "totalMs": 140.3,
+        "maxMs": 1
+      },
+      "waitFlush": {
+        "count": 9,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 33.1,
+        "maxMs": 29.7
+      },
+      "warmShapeCheck": {
+        "count": 149,
+        "totalMs": 789.5,
+        "maxMs": 27.2
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 74,
+      "inboundVerifications": 58,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 52,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 149,
+      "warmLoads": 149,
+      "selectedLoads": 92,
+      "warmAuditRows": 2171,
+      "warmAuditBytes": 11288143,
+      "loadedRows": 0,
+      "loadedBytes": 0,
+      "authorityChecks": 89,
+      "positions": 8,
+      "sourceParses": 1361,
+      "sourceParseBytes": 543728,
+      "recordCopies": 44163,
+      "recordCopyBytes": 204880320,
+      "journalFlushes": 18,
+      "dirtyJournalFlushes": 18,
+      "projectionChecks": 0,
+      "directTextPreparations": 120
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 8
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 24
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822861482.9565,
+          "issueSince": null,
+          "lastSuccessAt": 1791822798096,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822863521.113,
+          "issueSince": null,
+          "lastSuccessAt": 1791822802042,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822826075,
+          "reason": null,
+          "receivedThrough": 616
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822826323,
+          "reason": null,
+          "acceptedThrough": 9
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822863521.113,
+          "issueSince": null,
+          "lastSuccessAt": 1791822802042,
+          "reason": null,
+          "receivedThrough": 616
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822890828.9976,
+          "issueSince": null,
+          "lastSuccessAt": 1791822828872,
+          "reason": null,
+          "receivedThrough": 618
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822828189,
+          "reason": null,
+          "acceptedThrough": 11
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822863521.113,
+          "issueSince": null,
+          "lastSuccessAt": 1791822802042,
+          "reason": null,
+          "receivedThrough": 618
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "candidate-silent-2": {
+    "phase": "passed",
+    "arm": "candidate",
+    "mode": "silent",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 22496,
+    "keydownGapsMs": [175.1, 234.4, 240.5],
+    "handler": [6.2, 8.1, 25.2],
+    "dispatchMs": [0.5, 1.4, 70.1],
+    "over100ms": 0,
+    "frame": [18, 24.2, 76],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 138,
+    "longTaskTotalMs": 9796,
+    "longTaskMaxMs": 114,
+    "waitLocalMs": 113.2,
+    "waitLocalMaxMs": 54.7,
+    "waitOverlapMs": {
+      "admissionFlush": 108.0,
+      "admissionBackgroundFlush": 0.4,
+      "admissionRemote": 0,
+      "admissionLocal": 0
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 82.7,
+        "perKeyMs": 0.689,
+        "quantilesMs": [0.8, 1.2, 1.9]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 69.0,
+        "perKeyMs": 0.575,
+        "quantilesMs": [0.6, 1.1, 1.2]
+      },
+      "project": {
+        "count": 240,
+        "totalMs": 197.7,
+        "perKeyMs": 1.647,
+        "quantilesMs": [0.8, 2.1, 3.5]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 5.8,
+        "perKeyMs": 0.048,
+        "quantilesMs": [0, 0.5, 0.8]
+      },
+      "projectRead": {
+        "count": 240,
+        "totalMs": 26.5,
+        "perKeyMs": 0.221,
+        "quantilesMs": [0, 0.7, 0.9]
+      },
+      "projectString": {
+        "count": 240,
+        "totalMs": 12.1,
+        "perKeyMs": 0.101,
+        "quantilesMs": [0, 0.5, 0.9]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 8,
+        "totalMs": 2553.5,
+        "maxMs": 508.9
+      },
+      "admissionFlush": {
+        "count": 8,
+        "totalMs": 376.6,
+        "maxMs": 60
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 704.4,
+        "maxMs": 24.4
+      },
+      "copyRecords": {
+        "count": 125,
+        "totalMs": 173.3,
+        "maxMs": 5.8
+      },
+      "envelopeSelection": {
+        "count": 8,
+        "totalMs": 94.2,
+        "maxMs": 18
+      },
+      "installOwned": {
+        "count": 55,
+        "totalMs": 316.1,
+        "maxMs": 8.8
+      },
+      "loadElapsed": {
+        "count": 140,
+        "totalMs": 5055.5,
+        "maxMs": 73.4
+      },
+      "readProjection": {
+        "count": 77,
+        "totalMs": 609.6,
+        "maxMs": 27.2
+      },
+      "sourceParse": {
+        "count": 1349,
+        "totalMs": 200.9,
+        "maxMs": 1.3
+      },
+      "storageOperation": {
+        "count": 69,
+        "totalMs": 19182.4,
+        "maxMs": 1046.1
+      },
+      "storageQueueWait": {
+        "count": 70,
+        "totalMs": 2568.7,
+        "maxMs": 446.9
+      },
+      "validateUpdates": {
+        "count": 1469,
+        "totalMs": 152.4,
+        "maxMs": 1
+      },
+      "waitFlush": {
+        "count": 8,
+        "totalMs": 0.1,
+        "maxMs": 0.1
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 113.2,
+        "maxMs": 54.7
+      },
+      "warmShapeCheck": {
+        "count": 140,
+        "totalMs": 1005.4,
+        "maxMs": 31.3
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 70,
+      "inboundVerifications": 55,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 44,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 140,
+      "warmLoads": 140,
+      "selectedLoads": 86,
+      "warmAuditRows": 2025,
+      "warmAuditBytes": 10582379,
+      "loadedRows": 0,
+      "loadedBytes": 0,
+      "authorityChecks": 86,
+      "positions": 8,
+      "sourceParses": 1349,
+      "sourceParseBytes": 540632,
+      "recordCopies": 41543,
+      "recordCopyBytes": 194004123,
+      "journalFlushes": 16,
+      "dirtyJournalFlushes": 16,
+      "projectionChecks": 0,
+      "directTextPreparations": 120
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 8
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 22
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823232022.7805,
+          "issueSince": null,
+          "lastSuccessAt": 1791823170692,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823238468.153,
+          "issueSince": null,
+          "lastSuccessAt": 1791823174653,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823259775.4573,
+          "issueSince": null,
+          "lastSuccessAt": 1791823196962,
+          "reason": null,
+          "receivedThrough": 615
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823196805,
+          "reason": null,
+          "acceptedThrough": 8
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823238468.153,
+          "issueSince": null,
+          "lastSuccessAt": 1791823174653,
+          "reason": null,
+          "receivedThrough": 615
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823261926.1653,
+          "issueSince": null,
+          "lastSuccessAt": 1791823200825,
+          "reason": null,
+          "receivedThrough": 617
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823200118,
+          "reason": null,
+          "acceptedThrough": 10
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823238468.153,
+          "issueSince": null,
+          "lastSuccessAt": 1791823174653,
+          "reason": null,
+          "receivedThrough": 617
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "reference-active-1": {
+    "phase": "passed",
+    "arm": "reference",
+    "mode": "active",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 23693,
+    "keydownGapsMs": [177.7, 279.2, 311.3],
+    "handler": [5.6, 7.6, 27.6],
+    "dispatchMs": [0.5, 2.1, 59.1],
+    "over100ms": 11,
+    "frame": [17.9, 504.7, 747.3],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 139,
+    "longTaskTotalMs": 10918,
+    "longTaskMaxMs": 161,
+    "waitLocalMs": 4701.7,
+    "waitLocalMaxMs": 670.9,
+    "waitOverlapMs": {
+      "admissionFlush": 55.5,
+      "admissionBackgroundFlush": 0.1,
+      "admissionRemote": 4287.8,
+      "admissionLocal": 354.5
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 83.9,
+        "perKeyMs": 0.699,
+        "quantilesMs": [0.7, 1.3, 2.7]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 69.9,
+        "perKeyMs": 0.583,
+        "quantilesMs": [0.6, 1, 2.6]
+      },
+      "project": {
+        "count": 246,
+        "totalMs": 198.1,
+        "perKeyMs": 1.651,
+        "quantilesMs": [0.7, 2.2, 4.9]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 5.1,
+        "perKeyMs": 0.042,
+        "quantilesMs": [0, 0.4, 0.7]
+      },
+      "projectRead": {
+        "count": 246,
+        "totalMs": 20.7,
+        "perKeyMs": 0.172,
+        "quantilesMs": [0, 0.6, 1.2]
+      },
+      "projectString": {
+        "count": 246,
+        "totalMs": 7.8,
+        "perKeyMs": 0.065,
+        "quantilesMs": [0, 0.1, 0.8]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 9,
+        "totalMs": 1306.4,
+        "maxMs": 289.3
+      },
+      "admissionFlush": {
+        "count": 4,
+        "totalMs": 224.0,
+        "maxMs": 84.2
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 782.5,
+        "maxMs": 41
+      },
+      "admissionRemote": {
+        "count": 3,
+        "totalMs": 2268.3,
+        "maxMs": 806.5
+      },
+      "copyRecords": {
+        "count": 114,
+        "totalMs": 156.3,
+        "maxMs": 8.7
+      },
+      "envelopeSelection": {
+        "count": 4,
+        "totalMs": 44.2,
+        "maxMs": 15.9
+      },
+      "installOwned": {
+        "count": 55,
+        "totalMs": 315.7,
+        "maxMs": 9.7
+      },
+      "loadElapsed": {
+        "count": 101,
+        "totalMs": 5890.0,
+        "maxMs": 172.8
+      },
+      "physicalRead": {
+        "count": 23,
+        "totalMs": 695.4,
+        "maxMs": 76.7
+      },
+      "readProjection": {
+        "count": 40,
+        "totalMs": 335.2,
+        "maxMs": 40.3
+      },
+      "sourceParse": {
+        "count": 991,
+        "totalMs": 145.0,
+        "maxMs": 3.1
+      },
+      "storageOperation": {
+        "count": 65,
+        "totalMs": 19599.4,
+        "maxMs": 1340.2
+      },
+      "storageQueueWait": {
+        "count": 66,
+        "totalMs": 1092.2,
+        "maxMs": 233.3
+      },
+      "validateUpdates": {
+        "count": 1111,
+        "totalMs": 121.8,
+        "maxMs": 3.1
+      },
+      "waitFlush": {
+        "count": 4,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 4701.7,
+        "maxMs": 670.9
+      },
+      "waitRemote": {
+        "count": 3,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "warmShapeCheck": {
+        "count": 101,
+        "totalMs": 781.1,
+        "maxMs": 42.3
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 63,
+      "inboundVerifications": 55,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 18,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 101,
+      "warmLoads": 78,
+      "selectedLoads": 73,
+      "warmAuditRows": 534,
+      "warmAuditBytes": 8161187,
+      "loadedRows": 17199,
+      "loadedBytes": 82552637,
+      "authorityChecks": 84,
+      "positions": 4,
+      "sourceParses": 991,
+      "sourceParseBytes": 351980,
+      "recordCopies": 32539,
+      "recordCopyBytes": 154439149,
+      "journalFlushes": 13,
+      "dirtyJournalFlushes": 13,
+      "projectionChecks": 6,
+      "directTextPreparations": 117
+    },
+    "requests": [
+      {
+        "device": "A",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 10
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 13
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 5
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822901653.4363,
+          "issueSince": null,
+          "lastSuccessAt": 1791822840486,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822907646.6467,
+          "issueSince": null,
+          "lastSuccessAt": 1791822844335,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822867315,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822929984.238,
+          "issueSince": null,
+          "lastSuccessAt": 1791822868656,
+          "reason": null,
+          "receivedThrough": 622
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791822867814,
+          "issueSince": null,
+          "lastSuccessAt": 1791822867764,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822864545,
+          "reason": null,
+          "receivedThrough": 616
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822867315,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822933636.6277,
+          "issueSince": null,
+          "lastSuccessAt": 1791822872084,
+          "reason": null,
+          "receivedThrough": 623
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822871350,
+          "reason": null,
+          "acceptedThrough": 6
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822932885.744,
+          "issueSince": null,
+          "lastSuccessAt": 1791822872557,
+          "reason": null,
+          "receivedThrough": 623
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "reference-active-2": {
+    "phase": "passed",
+    "arm": "reference",
+    "mode": "active",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 23758,
+    "keydownGapsMs": [182.4, 268.9, 392.1],
+    "handler": [6.3, 10.6, 26],
+    "dispatchMs": [0.5, 5.3, 144.7],
+    "over100ms": 10,
+    "frame": [20.4, 523.4, 772.2],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 131,
+    "longTaskTotalMs": 10895,
+    "longTaskMaxMs": 213,
+    "waitLocalMs": 4673.5,
+    "waitLocalMaxMs": 702.8,
+    "waitOverlapMs": {
+      "admissionFlush": 0,
+      "admissionBackgroundFlush": 0.3,
+      "admissionRemote": 4336.0,
+      "admissionLocal": 335.7
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 91.1,
+        "perKeyMs": 0.759,
+        "quantilesMs": [0.7, 1.3, 2.4]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 80.7,
+        "perKeyMs": 0.672,
+        "quantilesMs": [0.7, 1.2, 1.6]
+      },
+      "project": {
+        "count": 246,
+        "totalMs": 221.0,
+        "perKeyMs": 1.842,
+        "quantilesMs": [0.8, 2.8, 4.6]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 5.4,
+        "perKeyMs": 0.045,
+        "quantilesMs": [0, 0.4, 0.9]
+      },
+      "projectRead": {
+        "count": 246,
+        "totalMs": 26.6,
+        "perKeyMs": 0.222,
+        "quantilesMs": [0, 0.6, 1]
+      },
+      "projectString": {
+        "count": 246,
+        "totalMs": 7.1,
+        "perKeyMs": 0.059,
+        "quantilesMs": [0, 0.1, 0.7]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 11,
+        "totalMs": 2291.3,
+        "maxMs": 898.7
+      },
+      "admissionFlush": {
+        "count": 4,
+        "totalMs": 176.1,
+        "maxMs": 53.8
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 875.4,
+        "maxMs": 47.6
+      },
+      "admissionRemote": {
+        "count": 3,
+        "totalMs": 2289.0,
+        "maxMs": 770.4
+      },
+      "copyRecords": {
+        "count": 112,
+        "totalMs": 171.3,
+        "maxMs": 6.4
+      },
+      "envelopeSelection": {
+        "count": 4,
+        "totalMs": 50.8,
+        "maxMs": 17.6
+      },
+      "installOwned": {
+        "count": 54,
+        "totalMs": 322.9,
+        "maxMs": 13.7
+      },
+      "loadElapsed": {
+        "count": 96,
+        "totalMs": 6022.4,
+        "maxMs": 393.6
+      },
+      "physicalRead": {
+        "count": 22,
+        "totalMs": 781.7,
+        "maxMs": 126.5
+      },
+      "readProjection": {
+        "count": 37,
+        "totalMs": 313.7,
+        "maxMs": 31.7
+      },
+      "sourceParse": {
+        "count": 1049,
+        "totalMs": 163.0,
+        "maxMs": 3.4
+      },
+      "storageOperation": {
+        "count": 62,
+        "totalMs": 19748.4,
+        "maxMs": 1686.9
+      },
+      "storageQueueWait": {
+        "count": 62,
+        "totalMs": 2090.8,
+        "maxMs": 812.5
+      },
+      "validateUpdates": {
+        "count": 1169,
+        "totalMs": 136.7,
+        "maxMs": 3.3
+      },
+      "waitFlush": {
+        "count": 4,
+        "totalMs": 0.5,
+        "maxMs": 0.4
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 4673.5,
+        "maxMs": 702.8
+      },
+      "waitRemote": {
+        "count": 3,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "warmShapeCheck": {
+        "count": 96,
+        "totalMs": 725.3,
+        "maxMs": 54.5
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 61,
+      "inboundVerifications": 54,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 14,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 96,
+      "warmLoads": 74,
+      "selectedLoads": 70,
+      "warmAuditRows": 512,
+      "warmAuditBytes": 7676959,
+      "loadedRows": 16821,
+      "loadedBytes": 79043083,
+      "authorityChecks": 77,
+      "positions": 4,
+      "sourceParses": 1049,
+      "sourceParseBytes": 366944,
+      "recordCopies": 31670,
+      "recordCopyBytes": 147399267,
+      "journalFlushes": 15,
+      "dirtyJournalFlushes": 15,
+      "projectionChecks": 6,
+      "directTextPreparations": 117
+    },
+    "requests": [
+      {
+        "device": "A",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 10
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 10
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 4
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823363799.7869,
+          "issueSince": null,
+          "lastSuccessAt": 1791823303780,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823371984.4937,
+          "issueSince": null,
+          "lastSuccessAt": 1791823307746,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823330991,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823329467,
+          "reason": null,
+          "receivedThrough": 621
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823327959,
+          "reason": null,
+          "acceptedThrough": 4
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791823330903,
+          "issueSince": null,
+          "lastSuccessAt": 1791823330903,
+          "reason": null,
+          "receivedThrough": 615
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823330991,
+          "reason": null,
+          "acceptedThrough": 617
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823399760.696,
+          "issueSince": null,
+          "lastSuccessAt": 1791823335898,
+          "reason": null,
+          "receivedThrough": 623
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823335194,
+          "reason": null,
+          "acceptedThrough": 6
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823398248.9758,
+          "issueSince": null,
+          "lastSuccessAt": 1791823336839,
+          "reason": null,
+          "receivedThrough": 623
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "reference-backlog-1": {
+    "phase": "passed",
+    "arm": "reference",
+    "mode": "backlog",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 22574,
+    "keydownGapsMs": [177.7, 234.1, 313.8],
+    "handler": [5.5, 7.6, 25.6],
+    "dispatchMs": [0.6, 4.9, 19.1],
+    "over100ms": 14,
+    "frame": [17.4, 399, 605.5],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 132,
+    "longTaskTotalMs": 9539,
+    "longTaskMaxMs": 163,
+    "waitLocalMs": 4495.5,
+    "waitLocalMaxMs": 521.9,
+    "waitOverlapMs": {
+      "admissionFlush": 52.7,
+      "admissionBackgroundFlush": 0.1,
+      "admissionRemote": 4076.4,
+      "admissionLocal": 362.7
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 87.0,
+        "perKeyMs": 0.725,
+        "quantilesMs": [0.7, 1.4, 1.9]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 72.6,
+        "perKeyMs": 0.605,
+        "quantilesMs": [0.7, 1.2, 1.4]
+      },
+      "project": {
+        "count": 250,
+        "totalMs": 201.2,
+        "perKeyMs": 1.677,
+        "quantilesMs": [0.6, 3.2, 4.6]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 2.1,
+        "perKeyMs": 0.018,
+        "quantilesMs": [0, 0.1, 0.4]
+      },
+      "projectRead": {
+        "count": 250,
+        "totalMs": 16.6,
+        "perKeyMs": 0.138,
+        "quantilesMs": [0, 0.5, 0.9]
+      },
+      "projectString": {
+        "count": 250,
+        "totalMs": 2.5,
+        "perKeyMs": 0.021,
+        "quantilesMs": [0, 0.1, 0.8]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 9,
+        "totalMs": 1442.6,
+        "maxMs": 243.2
+      },
+      "admissionFlush": {
+        "count": 5,
+        "totalMs": 147.5,
+        "maxMs": 54.6
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 825.1,
+        "maxMs": 44.4
+      },
+      "admissionRemote": {
+        "count": 5,
+        "totalMs": 2656.3,
+        "maxMs": 640
+      },
+      "copyRecords": {
+        "count": 139,
+        "totalMs": 43.1,
+        "maxMs": 1.5
+      },
+      "envelopeSelection": {
+        "count": 5,
+        "totalMs": 36.1,
+        "maxMs": 10.1
+      },
+      "installOwned": {
+        "count": 67,
+        "totalMs": 68.6,
+        "maxMs": 1.9
+      },
+      "loadElapsed": {
+        "count": 134,
+        "totalMs": 2876.3,
+        "maxMs": 75
+      },
+      "physicalRead": {
+        "count": 30,
+        "totalMs": 336.9,
+        "maxMs": 56.3
+      },
+      "readProjection": {
+        "count": 50,
+        "totalMs": 88.5,
+        "maxMs": 5.2
+      },
+      "sourceParse": {
+        "count": 1086,
+        "totalMs": 134.0,
+        "maxMs": 1.2
+      },
+      "storageOperation": {
+        "count": 87,
+        "totalMs": 19058.5,
+        "maxMs": 754
+      },
+      "storageQueueWait": {
+        "count": 88,
+        "totalMs": 1415.6,
+        "maxMs": 193.1
+      },
+      "validateUpdates": {
+        "count": 1206,
+        "totalMs": 106.1,
+        "maxMs": 1.1
+      },
+      "waitFlush": {
+        "count": 5,
+        "totalMs": 0.1,
+        "maxMs": 0.1
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 4495.5,
+        "maxMs": 521.9
+      },
+      "waitRemote": {
+        "count": 5,
+        "totalMs": 0.8,
+        "maxMs": 0.8
+      },
+      "warmShapeCheck": {
+        "count": 134,
+        "totalMs": 887.3,
+        "maxMs": 35
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 77,
+      "inboundVerifications": 67,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 20,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 134,
+      "warmLoads": 104,
+      "selectedLoads": 99,
+      "warmAuditRows": 1664,
+      "warmAuditBytes": 7359658,
+      "loadedRows": 8368,
+      "loadedBytes": 20816090,
+      "authorityChecks": 116,
+      "positions": 5,
+      "sourceParses": 1086,
+      "sourceParseBytes": 280212,
+      "recordCopies": 15875,
+      "recordCopyBytes": 38410650,
+      "journalFlushes": 14,
+      "dirtyJournalFlushes": 13,
+      "projectionChecks": 10,
+      "directTextPreparations": 115
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/session/v1/acknowledge",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/session/v1/renew",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/begin",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/finish",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/notifications/v1/subscribe",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 18
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 5
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 16
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822925756,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822991004.1924,
+          "issueSince": null,
+          "lastSuccessAt": 1791822926684,
+          "reason": null,
+          "receivedThrough": 607
+        }
+      },
+      {
+        "send": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 0
+        },
+        "receive": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "receivedThrough": 0
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822925756,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822951224,
+          "reason": null,
+          "receivedThrough": 612
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791822951004,
+          "issueSince": null,
+          "lastSuccessAt": 1791822950743,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822948761,
+          "reason": null,
+          "receivedThrough": 28
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822925756,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823083205.298,
+          "issueSince": null,
+          "lastSuccessAt": 1791823019049,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822952760,
+          "reason": null,
+          "acceptedThrough": 6
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823103847.058,
+          "issueSince": null,
+          "lastSuccessAt": 1791823039526,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "reference-backlog-2": {
+    "phase": "passed",
+    "arm": "reference",
+    "mode": "backlog",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 23090,
+    "keydownGapsMs": [179.2, 237.8, 302.8],
+    "handler": [5.5, 7.2, 24.5],
+    "dispatchMs": [0.5, 5.6, 20.8],
+    "over100ms": 11,
+    "frame": [17.7, 351.6, 516.2],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 136,
+    "longTaskTotalMs": 9917,
+    "longTaskMaxMs": 146,
+    "waitLocalMs": 3246.6,
+    "waitLocalMaxMs": 454.6,
+    "waitOverlapMs": {
+      "admissionFlush": 41.3,
+      "admissionBackgroundFlush": 0,
+      "admissionRemote": 2984.5,
+      "admissionLocal": 218.3
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 89.9,
+        "perKeyMs": 0.749,
+        "quantilesMs": [0.8, 1.3, 1.8]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 79.9,
+        "perKeyMs": 0.666,
+        "quantilesMs": [0.7, 1.2, 1.3]
+      },
+      "project": {
+        "count": 250,
+        "totalMs": 196.7,
+        "perKeyMs": 1.639,
+        "quantilesMs": [0.7, 2.7, 4.5]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 3.5,
+        "perKeyMs": 0.029,
+        "quantilesMs": [0, 0.2, 0.7]
+      },
+      "projectRead": {
+        "count": 250,
+        "totalMs": 22.0,
+        "perKeyMs": 0.183,
+        "quantilesMs": [0, 0.6, 0.8]
+      },
+      "projectString": {
+        "count": 250,
+        "totalMs": 3.0,
+        "perKeyMs": 0.025,
+        "quantilesMs": [0, 0, 0.8]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 8,
+        "totalMs": 882.2,
+        "maxMs": 210.1
+      },
+      "admissionFlush": {
+        "count": 5,
+        "totalMs": 166.5,
+        "maxMs": 46.1
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 816.8,
+        "maxMs": 38.8
+      },
+      "admissionRemote": {
+        "count": 5,
+        "totalMs": 2502.2,
+        "maxMs": 571.4
+      },
+      "copyRecords": {
+        "count": 141,
+        "totalMs": 43.1,
+        "maxMs": 1.4
+      },
+      "envelopeSelection": {
+        "count": 5,
+        "totalMs": 35.2,
+        "maxMs": 10.2
+      },
+      "installOwned": {
+        "count": 68,
+        "totalMs": 70.3,
+        "maxMs": 1.7
+      },
+      "loadElapsed": {
+        "count": 136,
+        "totalMs": 2944.3,
+        "maxMs": 95.7
+      },
+      "physicalRead": {
+        "count": 30,
+        "totalMs": 359.1,
+        "maxMs": 68.8
+      },
+      "readProjection": {
+        "count": 50,
+        "totalMs": 90.9,
+        "maxMs": 5.2
+      },
+      "sourceParse": {
+        "count": 1061,
+        "totalMs": 133.8,
+        "maxMs": 1
+      },
+      "storageOperation": {
+        "count": 89,
+        "totalMs": 19450.1,
+        "maxMs": 750.4
+      },
+      "storageQueueWait": {
+        "count": 89,
+        "totalMs": 869.9,
+        "maxMs": 108.3
+      },
+      "validateUpdates": {
+        "count": 1181,
+        "totalMs": 111.4,
+        "maxMs": 0.9
+      },
+      "waitFlush": {
+        "count": 5,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 3246.6,
+        "maxMs": 454.6
+      },
+      "waitRemote": {
+        "count": 5,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "warmShapeCheck": {
+        "count": 136,
+        "totalMs": 878.9,
+        "maxMs": 34.3
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 78,
+      "inboundVerifications": 68,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 20,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 136,
+      "warmLoads": 106,
+      "selectedLoads": 101,
+      "warmAuditRows": 1696,
+      "warmAuditBytes": 7492798,
+      "loadedRows": 8226,
+      "loadedBytes": 20784958,
+      "authorityChecks": 119,
+      "positions": 5,
+      "sourceParses": 1061,
+      "sourceParseBytes": 273762,
+      "recordCopies": 15634,
+      "recordCopyBytes": 38354080,
+      "journalFlushes": 13,
+      "dirtyJournalFlushes": 13,
+      "projectionChecks": 10,
+      "directTextPreparations": 115
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/session/v1/acknowledge",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/session/v1/renew",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/begin",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/grant/v1/finish",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/notifications/v1/subscribe",
+        "status": "200",
+        "count": 1
+      },
+      {
+        "device": "B",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "B",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 22
+      },
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 5
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 16
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823467448,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823529005.382,
+          "issueSince": null,
+          "lastSuccessAt": 1791823468412,
+          "reason": null,
+          "receivedThrough": 607
+        }
+      },
+      {
+        "send": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 0
+        },
+        "receive": {
+          "phase": "offline",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "receivedThrough": 0
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823467448,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823557949.0825,
+          "issueSince": null,
+          "lastSuccessAt": 1791823493161,
+          "reason": null,
+          "receivedThrough": 612
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1791823492450,
+          "issueSince": null,
+          "lastSuccessAt": 1791823492214,
+          "reason": null,
+          "acceptedThrough": 5
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823490201,
+          "reason": null,
+          "receivedThrough": 28
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823467448,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823622939.5176,
+          "issueSince": null,
+          "lastSuccessAt": 1791823558835,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823494702,
+          "reason": null,
+          "acceptedThrough": 6
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823642616.453,
+          "issueSince": null,
+          "lastSuccessAt": 1791823579650,
+          "reason": null,
+          "receivedThrough": 613
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "reference-silent-1": {
+    "phase": "passed",
+    "arm": "reference",
+    "mode": "silent",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 22677,
+    "keydownGapsMs": [171.1, 245.0, 294.7],
+    "handler": [5.9, 7.6, 26.6],
+    "dispatchMs": [0.5, 2.1, 123.1],
+    "over100ms": 0,
+    "frame": [17.3, 21, 69.3],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 143,
+    "longTaskTotalMs": 11282,
+    "longTaskMaxMs": 140,
+    "waitLocalMs": 145.7,
+    "waitLocalMaxMs": 47.9,
+    "waitOverlapMs": {
+      "admissionFlush": 142.7,
+      "admissionBackgroundFlush": 0.6,
+      "admissionRemote": 0,
+      "admissionLocal": 0
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 82.8,
+        "perKeyMs": 0.69,
+        "quantilesMs": [0.7, 1.2, 1.8]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 70.2,
+        "perKeyMs": 0.585,
+        "quantilesMs": [0.6, 1, 1.3]
+      },
+      "project": {
+        "count": 240,
+        "totalMs": 186.4,
+        "perKeyMs": 1.553,
+        "quantilesMs": [0.8, 1.7, 3.7]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 4.1,
+        "perKeyMs": 0.034,
+        "quantilesMs": [0, 0.3, 0.7]
+      },
+      "projectRead": {
+        "count": 240,
+        "totalMs": 18.9,
+        "perKeyMs": 0.158,
+        "quantilesMs": [0, 0.5, 0.8]
+      },
+      "projectString": {
+        "count": 240,
+        "totalMs": 7.1,
+        "perKeyMs": 0.059,
+        "quantilesMs": [0, 0.2, 0.7]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 8,
+        "totalMs": 762.3,
+        "maxMs": 188.7
+      },
+      "admissionFlush": {
+        "count": 7,
+        "totalMs": 356.4,
+        "maxMs": 60.9
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 680.4,
+        "maxMs": 24.5
+      },
+      "copyRecords": {
+        "count": 160,
+        "totalMs": 243.6,
+        "maxMs": 5.2
+      },
+      "envelopeSelection": {
+        "count": 7,
+        "totalMs": 80.1,
+        "maxMs": 18.7
+      },
+      "installOwned": {
+        "count": 76,
+        "totalMs": 415.3,
+        "maxMs": 9.1
+      },
+      "loadElapsed": {
+        "count": 124,
+        "totalMs": 7356.2,
+        "maxMs": 158.7
+      },
+      "physicalRead": {
+        "count": 34,
+        "totalMs": 1146.1,
+        "maxMs": 68.8
+      },
+      "readProjection": {
+        "count": 69,
+        "totalMs": 544.4,
+        "maxMs": 32.9
+      },
+      "sourceParse": {
+        "count": 1286,
+        "totalMs": 172.3,
+        "maxMs": 1.2
+      },
+      "storageOperation": {
+        "count": 62,
+        "totalMs": 19748.4,
+        "maxMs": 1227.7
+      },
+      "storageQueueWait": {
+        "count": 63,
+        "totalMs": 465.4,
+        "maxMs": 128.1
+      },
+      "validateUpdates": {
+        "count": 1406,
+        "totalMs": 140.6,
+        "maxMs": 1
+      },
+      "waitFlush": {
+        "count": 7,
+        "totalMs": 0.8,
+        "maxMs": 0.7
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 145.7,
+        "maxMs": 47.9
+      },
+      "warmShapeCheck": {
+        "count": 124,
+        "totalMs": 764.2,
+        "maxMs": 28.8
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 89,
+      "inboundVerifications": 76,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 35,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 124,
+      "warmLoads": 90,
+      "selectedLoads": 76,
+      "warmAuditRows": 503,
+      "warmAuditBytes": 9713554,
+      "loadedRows": 25973,
+      "loadedBytes": 122040404,
+      "authorityChecks": 76,
+      "positions": 7,
+      "sourceParses": 1286,
+      "sourceParseBytes": 500306,
+      "recordCopies": 53241,
+      "recordCopyBytes": 247797592,
+      "journalFlushes": 15,
+      "dirtyJournalFlushes": 15,
+      "projectionChecks": 0,
+      "directTextPreparations": 120
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 7
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 4
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 19
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822818516.7747,
+          "issueSince": null,
+          "lastSuccessAt": 1791822755640,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822823170.453,
+          "issueSince": null,
+          "lastSuccessAt": 1791822759793,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822781903,
+          "reason": null,
+          "receivedThrough": 614
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822781724,
+          "reason": null,
+          "acceptedThrough": 7
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822823170.453,
+          "issueSince": null,
+          "lastSuccessAt": 1791822759793,
+          "reason": null,
+          "receivedThrough": 614
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822847679.6702,
+          "issueSince": null,
+          "lastSuccessAt": 1791822786254,
+          "reason": null,
+          "receivedThrough": 616
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791822785495,
+          "reason": null,
+          "acceptedThrough": 9
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791822823170.453,
+          "issueSince": null,
+          "lastSuccessAt": 1791822759793,
+          "reason": null,
+          "receivedThrough": 616
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  },
+  "reference-silent-2": {
+    "phase": "passed",
+    "arm": "reference",
+    "mode": "silent",
+    "kind": "card",
+    "goals": 12000,
+    "initialChars": 430,
+    "online": true,
+    "elapsedMs": 23888,
+    "keydownGapsMs": [179.1, 291.4, 408.3],
+    "handler": [7.3, 9.8, 24.2],
+    "dispatchMs": [0.5, 2.2, 159.1],
+    "over100ms": 0,
+    "frame": [20.9, 26.8, 42.7],
+    "sampleCount": 120,
+    "unresolvedFrames": 0,
+    "longTasks": 133,
+    "longTaskTotalMs": 11288,
+    "longTaskMaxMs": 165,
+    "waitLocalMs": 3.6,
+    "waitLocalMaxMs": 0.8,
+    "waitOverlapMs": {
+      "admissionFlush": 0,
+      "admissionBackgroundFlush": 0,
+      "admissionRemote": 0,
+      "admissionLocal": 0
+    },
+    "textCosts": {
+      "plan": {
+        "count": 120,
+        "totalMs": 97.5,
+        "perKeyMs": 0.813,
+        "quantilesMs": [0.8, 1.4, 1.7]
+      },
+      "planState": {
+        "count": 120,
+        "totalMs": 83.5,
+        "perKeyMs": 0.696,
+        "quantilesMs": [0.7, 1.2, 1.6]
+      },
+      "project": {
+        "count": 240,
+        "totalMs": 229.7,
+        "perKeyMs": 1.914,
+        "quantilesMs": [0.8, 2.2, 4.2]
+      },
+      "projectDiff": {
+        "count": 120,
+        "totalMs": 2.9,
+        "perKeyMs": 0.024,
+        "quantilesMs": [0, 0.1, 0.6]
+      },
+      "projectRead": {
+        "count": 240,
+        "totalMs": 38.2,
+        "perKeyMs": 0.318,
+        "quantilesMs": [0.1, 0.8, 1]
+      },
+      "projectString": {
+        "count": 240,
+        "totalMs": 11.0,
+        "perKeyMs": 0.092,
+        "quantilesMs": [0, 0.5, 1]
+      }
+    },
+    "costs": {
+      "admissionBackgroundFlush": {
+        "count": 7,
+        "totalMs": 1164.8,
+        "maxMs": 300.3
+      },
+      "admissionFlush": {
+        "count": 7,
+        "totalMs": 329.3,
+        "maxMs": 58.5
+      },
+      "admissionLocal": {
+        "count": 120,
+        "totalMs": 814.7,
+        "maxMs": 22.5
+      },
+      "copyRecords": {
+        "count": 149,
+        "totalMs": 274.7,
+        "maxMs": 7.5
+      },
+      "envelopeSelection": {
+        "count": 7,
+        "totalMs": 94.9,
+        "maxMs": 18.5
+      },
+      "installOwned": {
+        "count": 71,
+        "totalMs": 476.0,
+        "maxMs": 11.5
+      },
+      "loadElapsed": {
+        "count": 116,
+        "totalMs": 7683.4,
+        "maxMs": 200.2
+      },
+      "physicalRead": {
+        "count": 32,
+        "totalMs": 1169.2,
+        "maxMs": 92.6
+      },
+      "readProjection": {
+        "count": 63,
+        "totalMs": 560.4,
+        "maxMs": 29.1
+      },
+      "sourceParse": {
+        "count": 1304,
+        "totalMs": 215.1,
+        "maxMs": 3.2
+      },
+      "storageOperation": {
+        "count": 58,
+        "totalMs": 20067.5,
+        "maxMs": 1410.8
+      },
+      "storageQueueWait": {
+        "count": 59,
+        "totalMs": 971.4,
+        "maxMs": 239.3
+      },
+      "validateUpdates": {
+        "count": 1424,
+        "totalMs": 186.2,
+        "maxMs": 14.1
+      },
+      "waitFlush": {
+        "count": 7,
+        "totalMs": 1.0,
+        "maxMs": 0.9
+      },
+      "waitLocal": {
+        "count": 120,
+        "totalMs": 3.6,
+        "maxMs": 0.8
+      },
+      "warmShapeCheck": {
+        "count": 116,
+        "totalMs": 771.2,
+        "maxMs": 47.2
+      }
+    },
+    "work": {
+      "startupValidations": 0,
+      "joinedStartupValidations": 0,
+      "deliveryVerifications": 83,
+      "inboundVerifications": 71,
+      "inboundCensuses": 0,
+      "deliveryPrefixLinks": 33,
+      "coverageBaselines": 0,
+      "coverageDirectProofs": 0,
+      "loads": 116,
+      "warmLoads": 84,
+      "selectedLoads": 72,
+      "warmAuditRows": 485,
+      "warmAuditBytes": 9027561,
+      "loadedRows": 24354,
+      "loadedBytes": 114823786,
+      "authorityChecks": 69,
+      "positions": 7,
+      "sourceParses": 1304,
+      "sourceParseBytes": 504950,
+      "recordCopies": 49093,
+      "recordCopyBytes": 229731489,
+      "journalFlushes": 14,
+      "dirtyJournalFlushes": 14,
+      "projectionChecks": 0,
+      "directTextPreparations": 120
+    },
+    "requests": [
+      {
+        "device": "B",
+        "path": "/account/delivery/submit",
+        "status": "200",
+        "count": 6
+      },
+      {
+        "device": "A",
+        "path": "/account/membership/v2/discover",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/history/v1/checkpoint",
+        "status": "200",
+        "count": 3
+      },
+      {
+        "device": "A",
+        "path": "/account/delivery/read-v2",
+        "status": "200",
+        "count": 19
+      }
+    ],
+    "syncBefore": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823274162.5906,
+          "issueSince": null,
+          "lastSuccessAt": 1791823213106,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 1
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823280005.156,
+          "issueSince": null,
+          "lastSuccessAt": 1791823217177,
+          "reason": null,
+          "receivedThrough": 608
+        }
+      }
+    ],
+    "syncAfter": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823307528.5037,
+          "issueSince": null,
+          "lastSuccessAt": 1791823242630,
+          "reason": null,
+          "receivedThrough": 614
+        }
+      },
+      {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823242411,
+          "reason": null,
+          "acceptedThrough": 7
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823280005.156,
+          "issueSince": null,
+          "lastSuccessAt": 1791823217177,
+          "reason": null,
+          "receivedThrough": 614
+        }
+      }
+    ],
+    "syncConverged": [
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 607
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823307039.5725,
+          "issueSince": null,
+          "lastSuccessAt": 1791823246122,
+          "reason": null,
+          "receivedThrough": 616
+        }
+      },
+      {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": 1791823245398,
+          "reason": null,
+          "acceptedThrough": 9
+        },
+        "receive": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": 1791823280005.156,
+          "issueSince": null,
+          "lastSuccessAt": 1791823217177,
+          "reason": null,
+          "receivedThrough": 616
+        }
+      }
+    ],
+    "undoRedo": true,
+    "coldReplay": true,
+    "converged": true
+  }
+}

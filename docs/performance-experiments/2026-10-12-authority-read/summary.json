@@ -1,0 +1,1287 @@
+[
+  {
+    "session": "active-timing",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 209,
+      "completeInsideKeys": 206,
+      "boundaryOrIncomplete": 3,
+      "finalJobs": 12
+    },
+    "frames": {
+      "n": 120,
+      "total": 2609.4,
+      "median": 17.5,
+      "p95": 60.4,
+      "max": 87.6
+    },
+    "longTasks": {
+      "n": 13,
+      "total": 693,
+      "median": 53,
+      "p95": 57,
+      "max": 57
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 12,
+          "total": 478.9,
+          "median": 31.2,
+          "p95": 94.7,
+          "max": 94.7
+        },
+        "residual": {
+          "n": 12,
+          "total": 2.7,
+          "median": 0.1,
+          "p95": 0.8,
+          "max": 0.8,
+          "percent": 0.56
+        },
+        "parts": {
+          "yield": {
+            "n": 12,
+            "total": 14.5,
+            "median": 0.7,
+            "p95": 3.3,
+            "max": 3.3,
+            "percent": 3.03
+          },
+          "open": {
+            "n": 12,
+            "total": 205.9,
+            "median": 15.6,
+            "p95": 26.6,
+            "max": 26.6,
+            "percent": 42.99
+          },
+          "layoutCall": {
+            "n": 12,
+            "total": 0.2,
+            "median": 0.0,
+            "p95": 0.1,
+            "max": 0.1,
+            "percent": 0.04
+          },
+          "transaction": {
+            "n": 12,
+            "total": 255.6,
+            "median": 10.95,
+            "p95": 80.9,
+            "max": 80.9,
+            "percent": 53.37
+          },
+          "closeCall": {
+            "n": 12,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 12,
+            "total": 12,
+            "median": 1.0,
+            "p95": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 12,
+            "total": 60,
+            "median": 5.0,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 12,
+            "total": 48,
+            "median": 4.0,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 12,
+            "total": 39.6,
+            "median": 3.35,
+            "p95": 4.3,
+            "max": 4.3
+          },
+          "valueGetterMs": {
+            "n": 12,
+            "total": 38.2,
+            "median": 3.25,
+            "p95": 4.1,
+            "max": 4.1
+          },
+          "cursorFirstWait": {
+            "n": 12,
+            "total": 83.3,
+            "median": 2.55,
+            "p95": 33.0,
+            "max": 33.0
+          },
+          "cursorLaterWaits": {
+            "n": 12,
+            "total": 123.7,
+            "median": 3.9,
+            "p95": 43.6,
+            "max": 43.6
+          },
+          "completionWait": {
+            "n": 12,
+            "total": 7.2,
+            "median": 0.6,
+            "p95": 1.5,
+            "max": 1.5
+          },
+          "longTaskOverlap": {
+            "n": 12,
+            "total": 0,
+            "median": 0.0,
+            "p95": 0,
+            "max": 0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 12,
+            "total": 2.9,
+            "median": 0.1,
+            "p95": 0.7,
+            "max": 0.7
+          },
+          "authority": {
+            "n": 12,
+            "total": 521.5,
+            "median": 35.0,
+            "p95": 98.3,
+            "max": 98.3
+          },
+          "apply": {
+            "n": 12,
+            "total": 64.6,
+            "median": 6.7,
+            "p95": 9.2,
+            "max": 9.2
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 194,
+          "total": 2863.6,
+          "median": 9.6,
+          "p95": 36.5,
+          "max": 80.4
+        },
+        "residual": {
+          "n": 194,
+          "total": 24.2,
+          "median": 0.0,
+          "p95": 0.7,
+          "max": 1.2,
+          "percent": 0.85
+        },
+        "parts": {
+          "yield": {
+            "n": 194,
+            "total": 120.2,
+            "median": 0.0,
+            "p95": 1.3,
+            "max": 48.2,
+            "percent": 4.2
+          },
+          "open": {
+            "n": 194,
+            "total": 622.4,
+            "median": 0.9,
+            "p95": 19.2,
+            "max": 28.6,
+            "percent": 21.73
+          },
+          "layoutCall": {
+            "n": 194,
+            "total": 12.2,
+            "median": 0.0,
+            "p95": 0.4,
+            "max": 0.9,
+            "percent": 0.43
+          },
+          "transaction": {
+            "n": 194,
+            "total": 2083.1,
+            "median": 8.2,
+            "p95": 29.9,
+            "max": 76.9,
+            "percent": 72.74
+          },
+          "closeCall": {
+            "n": 194,
+            "total": 1.5,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0.6,
+            "percent": 0.05
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 194,
+            "total": 79,
+            "median": 0.0,
+            "p95": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 194,
+            "total": 970,
+            "median": 5.0,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 194,
+            "total": 776,
+            "median": 4.0,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 194,
+            "total": 575.8,
+            "median": 3.0,
+            "p95": 4.0,
+            "max": 4.7
+          },
+          "valueGetterMs": {
+            "n": 194,
+            "total": 532.1,
+            "median": 2.8,
+            "p95": 3.4,
+            "max": 3.9
+          },
+          "cursorFirstWait": {
+            "n": 194,
+            "total": 485.4,
+            "median": 1.7,
+            "p95": 5.8,
+            "max": 30.2
+          },
+          "cursorLaterWaits": {
+            "n": 194,
+            "total": 877.2,
+            "median": 3.0,
+            "p95": 20.5,
+            "max": 53.7
+          },
+          "completionWait": {
+            "n": 194,
+            "total": 131.7,
+            "median": 0.5,
+            "p95": 1.1,
+            "max": 22.1
+          },
+          "longTaskOverlap": {
+            "n": 194,
+            "total": 0.3,
+            "median": 0.0,
+            "p95": 0,
+            "max": 0.2
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    }
+  },
+  {
+    "session": "backlog-timing",
+    "sampled": false,
+    "phase": "passed",
+    "checks": {
+      "recorded": 290,
+      "completeInsideKeys": 288,
+      "boundaryOrIncomplete": 2,
+      "finalJobs": 21
+    },
+    "frames": {
+      "n": 120,
+      "total": 2886.2,
+      "median": 17.75,
+      "p95": 64.2,
+      "max": 99.1
+    },
+    "longTasks": {
+      "n": 3,
+      "total": 170,
+      "median": 58,
+      "p95": 61,
+      "max": 61
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 21,
+          "total": 662.6,
+          "median": 24.9,
+          "p95": 63.7,
+          "max": 70.4
+        },
+        "residual": {
+          "n": 21,
+          "total": 3.5,
+          "median": 0.1,
+          "p95": 0.5,
+          "max": 0.7,
+          "percent": 0.53
+        },
+        "parts": {
+          "yield": {
+            "n": 21,
+            "total": 36.1,
+            "median": 0.7,
+            "p95": 2.8,
+            "max": 16.8,
+            "percent": 5.45
+          },
+          "open": {
+            "n": 21,
+            "total": 312.8,
+            "median": 13.5,
+            "p95": 19.8,
+            "max": 32.1,
+            "percent": 47.21
+          },
+          "layoutCall": {
+            "n": 21,
+            "total": 3.9,
+            "median": 0.1,
+            "p95": 0.8,
+            "max": 0.9,
+            "percent": 0.59
+          },
+          "transaction": {
+            "n": 21,
+            "total": 306.3,
+            "median": 9.0,
+            "p95": 48.0,
+            "max": 54.1,
+            "percent": 46.23
+          },
+          "closeCall": {
+            "n": 21,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 21,
+            "total": 21,
+            "median": 1,
+            "p95": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 21,
+            "total": 105,
+            "median": 5,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 21,
+            "total": 84,
+            "median": 4,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 21,
+            "total": 65.3,
+            "median": 3.1,
+            "p95": 3.8,
+            "max": 3.9
+          },
+          "valueGetterMs": {
+            "n": 21,
+            "total": 62.0,
+            "median": 3.0,
+            "p95": 3.6,
+            "max": 3.7
+          },
+          "cursorFirstWait": {
+            "n": 21,
+            "total": 53.9,
+            "median": 1.7,
+            "p95": 6.2,
+            "max": 7.6
+          },
+          "cursorLaterWaits": {
+            "n": 21,
+            "total": 161.1,
+            "median": 3.2,
+            "p95": 40.0,
+            "max": 40.6
+          },
+          "completionWait": {
+            "n": 21,
+            "total": 21.1,
+            "median": 0.8,
+            "p95": 2.7,
+            "max": 5.2
+          },
+          "longTaskOverlap": {
+            "n": 21,
+            "total": 0.3,
+            "median": 0,
+            "p95": 0,
+            "max": 0.3
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 21,
+            "total": 9.3,
+            "median": 0.5,
+            "p95": 0.9,
+            "max": 1
+          },
+          "authority": {
+            "n": 21,
+            "total": 738.1,
+            "median": 28.6,
+            "p95": 67.3,
+            "max": 74.2
+          },
+          "apply": {
+            "n": 21,
+            "total": 139.9,
+            "median": 6.5,
+            "p95": 8.0,
+            "max": 10.3
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 267,
+          "total": 4009.6,
+          "median": 9.3,
+          "p95": 51.2,
+          "max": 96.3
+        },
+        "residual": {
+          "n": 267,
+          "total": 38.0,
+          "median": 0.1,
+          "p95": 0.7,
+          "max": 1.8,
+          "percent": 0.95
+        },
+        "parts": {
+          "yield": {
+            "n": 267,
+            "total": 29.6,
+            "median": 0,
+            "p95": 0.9,
+            "max": 2.8,
+            "percent": 0.74
+          },
+          "open": {
+            "n": 267,
+            "total": 938.1,
+            "median": 0.9,
+            "p95": 13.9,
+            "max": 66.5,
+            "percent": 23.4
+          },
+          "layoutCall": {
+            "n": 267,
+            "total": 15.9,
+            "median": 0.0,
+            "p95": 0.3,
+            "max": 0.8,
+            "percent": 0.4
+          },
+          "transaction": {
+            "n": 267,
+            "total": 2987.7,
+            "median": 8.0,
+            "p95": 30.3,
+            "max": 79.1,
+            "percent": 74.51
+          },
+          "closeCall": {
+            "n": 267,
+            "total": 0.3,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0.1,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 267,
+            "total": 67,
+            "median": 0,
+            "p95": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 267,
+            "total": 1335,
+            "median": 5,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 267,
+            "total": 1068,
+            "median": 4,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 267,
+            "total": 784.5,
+            "median": 2.9,
+            "p95": 3.8,
+            "max": 4.5
+          },
+          "valueGetterMs": {
+            "n": 267,
+            "total": 728.2,
+            "median": 2.7,
+            "p95": 3.4,
+            "max": 4.2
+          },
+          "cursorFirstWait": {
+            "n": 267,
+            "total": 740.5,
+            "median": 1.6,
+            "p95": 6.9,
+            "max": 56.0
+          },
+          "cursorLaterWaits": {
+            "n": 267,
+            "total": 1262.6,
+            "median": 2.9,
+            "p95": 20.2,
+            "max": 51.2
+          },
+          "completionWait": {
+            "n": 267,
+            "total": 183.5,
+            "median": 0.6,
+            "p95": 1.0,
+            "max": 21.2
+          },
+          "longTaskOverlap": {
+            "n": 267,
+            "total": 61.9,
+            "median": 0,
+            "p95": 0,
+            "max": 61.0
+          }
+        }
+      }
+    },
+    "profile": null,
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    }
+  },
+  {
+    "session": "active-sampled",
+    "sampled": true,
+    "phase": "passed",
+    "checks": {
+      "recorded": 210,
+      "completeInsideKeys": 208,
+      "boundaryOrIncomplete": 2,
+      "finalJobs": 12
+    },
+    "frames": {
+      "n": 120,
+      "total": 2734.1,
+      "median": 18.1,
+      "p95": 50.8,
+      "max": 97.3
+    },
+    "longTasks": {
+      "n": 13,
+      "total": 760,
+      "median": 56,
+      "p95": 73,
+      "max": 73
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 12,
+          "total": 332.6,
+          "median": 25.2,
+          "p95": 42.6,
+          "max": 42.6
+        },
+        "residual": {
+          "n": 12,
+          "total": 5.2,
+          "median": 0.15,
+          "p95": 1.6,
+          "max": 1.6,
+          "percent": 1.56
+        },
+        "parts": {
+          "yield": {
+            "n": 12,
+            "total": 9.1,
+            "median": 0.35,
+            "p95": 2.4,
+            "max": 2.4,
+            "percent": 2.74
+          },
+          "open": {
+            "n": 12,
+            "total": 188.8,
+            "median": 14.55,
+            "p95": 23.8,
+            "max": 23.8,
+            "percent": 56.76
+          },
+          "layoutCall": {
+            "n": 12,
+            "total": 1.5,
+            "median": 0.0,
+            "p95": 0.7,
+            "max": 0.7,
+            "percent": 0.45
+          },
+          "transaction": {
+            "n": 12,
+            "total": 128.0,
+            "median": 9.65,
+            "p95": 21.4,
+            "max": 21.4,
+            "percent": 38.48
+          },
+          "closeCall": {
+            "n": 12,
+            "total": 0.0,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0.0,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 12,
+            "total": 12,
+            "median": 1.0,
+            "p95": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 12,
+            "total": 60,
+            "median": 5.0,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 12,
+            "total": 48,
+            "median": 4.0,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 12,
+            "total": 36.0,
+            "median": 3.05,
+            "p95": 3.8,
+            "max": 3.8
+          },
+          "valueGetterMs": {
+            "n": 12,
+            "total": 33.5,
+            "median": 2.9,
+            "p95": 3.6,
+            "max": 3.6
+          },
+          "cursorFirstWait": {
+            "n": 12,
+            "total": 24.4,
+            "median": 2.05,
+            "p95": 3.7,
+            "max": 3.7
+          },
+          "cursorLaterWaits": {
+            "n": 12,
+            "total": 57.6,
+            "median": 3.55,
+            "p95": 14.3,
+            "max": 14.3
+          },
+          "completionWait": {
+            "n": 12,
+            "total": 8.9,
+            "median": 0.6,
+            "p95": 2.3,
+            "max": 2.3
+          },
+          "longTaskOverlap": {
+            "n": 12,
+            "total": 0,
+            "median": 0.0,
+            "p95": 0,
+            "max": 0
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 12,
+            "total": 2.9,
+            "median": 0.15,
+            "p95": 0.7,
+            "max": 0.7
+          },
+          "authority": {
+            "n": 12,
+            "total": 372.7,
+            "median": 29.0,
+            "p95": 43.5,
+            "max": 43.5
+          },
+          "apply": {
+            "n": 12,
+            "total": 70.2,
+            "median": 7.3,
+            "p95": 12.1,
+            "max": 12.1
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 196,
+          "total": 2994.7,
+          "median": 9.75,
+          "p95": 47.6,
+          "max": 113.4
+        },
+        "residual": {
+          "n": 196,
+          "total": 32.0,
+          "median": 0.1,
+          "p95": 0.8,
+          "max": 1.5,
+          "percent": 1.07
+        },
+        "parts": {
+          "yield": {
+            "n": 196,
+            "total": 98.7,
+            "median": 0.0,
+            "p95": 1.6,
+            "max": 29,
+            "percent": 3.3
+          },
+          "open": {
+            "n": 196,
+            "total": 887.1,
+            "median": 0.9,
+            "p95": 20.1,
+            "max": 88.1,
+            "percent": 29.62
+          },
+          "layoutCall": {
+            "n": 196,
+            "total": 13.3,
+            "median": 0.0,
+            "p95": 0.4,
+            "max": 1.0,
+            "percent": 0.44
+          },
+          "transaction": {
+            "n": 196,
+            "total": 1963.5,
+            "median": 8.2,
+            "p95": 24.8,
+            "max": 57.3,
+            "percent": 65.57
+          },
+          "closeCall": {
+            "n": 196,
+            "total": 0.1,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0.1,
+            "percent": 0.0
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 196,
+            "total": 82,
+            "median": 0.0,
+            "p95": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 196,
+            "total": 980,
+            "median": 5.0,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 196,
+            "total": 784,
+            "median": 4.0,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 196,
+            "total": 600.1,
+            "median": 3.0,
+            "p95": 3.9,
+            "max": 4.5
+          },
+          "valueGetterMs": {
+            "n": 196,
+            "total": 546.1,
+            "median": 2.8,
+            "p95": 3.4,
+            "max": 3.9
+          },
+          "cursorFirstWait": {
+            "n": 196,
+            "total": 435.4,
+            "median": 1.6,
+            "p95": 6.2,
+            "max": 32.5
+          },
+          "cursorLaterWaits": {
+            "n": 196,
+            "total": 783.8,
+            "median": 2.9,
+            "p95": 8.3,
+            "max": 52.2
+          },
+          "completionWait": {
+            "n": 196,
+            "total": 129.1,
+            "median": 0.5,
+            "p95": 1.1,
+            "max": 21.5
+          },
+          "longTaskOverlap": {
+            "n": 196,
+            "total": 134.0,
+            "median": 0.0,
+            "p95": 0,
+            "max": 73.0
+          }
+        }
+      }
+    },
+    "profile": {
+      "samplesByFinalComponent": {
+        "open": {
+          "(program)": 70,
+          "JavaScript/native function": 76,
+          "(anonymous)": 4,
+          "(idle)": 1
+        },
+        "transaction": {
+          "(idle)": 33,
+          "(anonymous)": 28,
+          "(program)": 19,
+          "(garbage collector)": 1,
+          "JavaScript/native function": 4
+        },
+        "layoutCall": {
+          "(program)": 1
+        },
+        "yield": {
+          "(program)": 4,
+          "JavaScript/native function": 2
+        }
+      },
+      "clockErrorMs": 1.3999996185302734,
+      "warning": "Samples locate activity/idle overlap; counts are dependent and intervals are wall time, not disk or CPU benchmarks."
+    },
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    }
+  },
+  {
+    "session": "backlog-sampled",
+    "sampled": true,
+    "phase": "passed",
+    "checks": {
+      "recorded": 270,
+      "completeInsideKeys": 266,
+      "boundaryOrIncomplete": 4,
+      "finalJobs": 18
+    },
+    "frames": {
+      "n": 120,
+      "total": 3236.2,
+      "median": 19.8,
+      "p95": 72.2,
+      "max": 101.8
+    },
+    "longTasks": {
+      "n": 5,
+      "total": 275,
+      "median": 56,
+      "p95": 62,
+      "max": 62
+    },
+    "groups": {
+      "final": {
+        "read": {
+          "n": 18,
+          "total": 540.0,
+          "median": 26.5,
+          "p95": 48.8,
+          "max": 48.8
+        },
+        "residual": {
+          "n": 18,
+          "total": 4.4,
+          "median": 0.15,
+          "p95": 0.8,
+          "max": 0.8,
+          "percent": 0.81
+        },
+        "parts": {
+          "yield": {
+            "n": 18,
+            "total": 23.6,
+            "median": 0.75,
+            "p95": 3.9,
+            "max": 3.9,
+            "percent": 4.37
+          },
+          "open": {
+            "n": 18,
+            "total": 328.5,
+            "median": 15.1,
+            "p95": 36.0,
+            "max": 36.0,
+            "percent": 60.83
+          },
+          "layoutCall": {
+            "n": 18,
+            "total": 1.1,
+            "median": 0.0,
+            "p95": 0.3,
+            "max": 0.3,
+            "percent": 0.2
+          },
+          "transaction": {
+            "n": 18,
+            "total": 182.3,
+            "median": 9.05,
+            "p95": 25.4,
+            "max": 25.4,
+            "percent": 33.76
+          },
+          "closeCall": {
+            "n": 18,
+            "total": 0.1,
+            "median": 0.0,
+            "p95": 0.1,
+            "max": 0.1,
+            "percent": 0.02
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 18,
+            "total": 18,
+            "median": 1.0,
+            "p95": 1,
+            "max": 1
+          },
+          "cursorCallbacks": {
+            "n": 18,
+            "total": 90,
+            "median": 5.0,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 18,
+            "total": 72,
+            "median": 4.0,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 18,
+            "total": 59.1,
+            "median": 3.25,
+            "p95": 4.1,
+            "max": 4.1
+          },
+          "valueGetterMs": {
+            "n": 18,
+            "total": 55.2,
+            "median": 3.1,
+            "p95": 3.7,
+            "max": 3.7
+          },
+          "cursorFirstWait": {
+            "n": 18,
+            "total": 49.0,
+            "median": 1.8,
+            "p95": 18.0,
+            "max": 18.0
+          },
+          "cursorLaterWaits": {
+            "n": 18,
+            "total": 60.6,
+            "median": 3.35,
+            "p95": 5.2,
+            "max": 5.2
+          },
+          "completionWait": {
+            "n": 18,
+            "total": 10.7,
+            "median": 0.5,
+            "p95": 1.9,
+            "max": 1.9
+          },
+          "longTaskOverlap": {
+            "n": 18,
+            "total": 0.1,
+            "median": 0.0,
+            "p95": 0.1,
+            "max": 0.1
+          }
+        },
+        "finalStages": {
+          "queue": {
+            "n": 18,
+            "total": 7.2,
+            "median": 0.4,
+            "p95": 0.9,
+            "max": 0.9
+          },
+          "authority": {
+            "n": 18,
+            "total": 604.6,
+            "median": 29.95,
+            "p95": 52.5,
+            "max": 52.5
+          },
+          "apply": {
+            "n": 18,
+            "total": 129.2,
+            "median": 6.7,
+            "p95": 12.8,
+            "max": 12.8
+          }
+        }
+      },
+      "other": {
+        "read": {
+          "n": 248,
+          "total": 3917.9,
+          "median": 10.5,
+          "p95": 42.5,
+          "max": 99.7
+        },
+        "residual": {
+          "n": 248,
+          "total": 36.1,
+          "median": 0.1,
+          "p95": 0.7,
+          "max": 0.9,
+          "percent": 0.92
+        },
+        "parts": {
+          "yield": {
+            "n": 248,
+            "total": 142.1,
+            "median": 0.0,
+            "p95": 1.2,
+            "max": 56.1,
+            "percent": 3.63
+          },
+          "open": {
+            "n": 248,
+            "total": 1020.5,
+            "median": 0.9,
+            "p95": 21.5,
+            "max": 68.4,
+            "percent": 26.05
+          },
+          "layoutCall": {
+            "n": 248,
+            "total": 18.5,
+            "median": 0.0,
+            "p95": 0.4,
+            "max": 1.2,
+            "percent": 0.47
+          },
+          "transaction": {
+            "n": 248,
+            "total": 2700.2,
+            "median": 8.8,
+            "p95": 30.5,
+            "max": 54.1,
+            "percent": 68.92
+          },
+          "closeCall": {
+            "n": 248,
+            "total": 0.5,
+            "median": 0.0,
+            "p95": 0.0,
+            "max": 0.3,
+            "percent": 0.01
+          }
+        },
+        "details": {
+          "yields": {
+            "n": 248,
+            "total": 83,
+            "median": 0.0,
+            "p95": 1,
+            "max": 2
+          },
+          "cursorCallbacks": {
+            "n": 248,
+            "total": 1240,
+            "median": 5.0,
+            "p95": 5,
+            "max": 5
+          },
+          "rows": {
+            "n": 248,
+            "total": 992,
+            "median": 4.0,
+            "p95": 4,
+            "max": 4
+          },
+          "cursorCallbackMs": {
+            "n": 248,
+            "total": 792.6,
+            "median": 3.1,
+            "p95": 4.3,
+            "max": 5.8
+          },
+          "valueGetterMs": {
+            "n": 248,
+            "total": 729.6,
+            "median": 2.9,
+            "p95": 3.8,
+            "max": 5.7
+          },
+          "cursorFirstWait": {
+            "n": 248,
+            "total": 533.5,
+            "median": 1.7,
+            "p95": 5.1,
+            "max": 23.0
+          },
+          "cursorLaterWaits": {
+            "n": 248,
+            "total": 1180.7,
+            "median": 3.3,
+            "p95": 18.9,
+            "max": 48.2
+          },
+          "completionWait": {
+            "n": 248,
+            "total": 176.8,
+            "median": 0.6,
+            "p95": 1.1,
+            "max": 7.4
+          },
+          "longTaskOverlap": {
+            "n": 248,
+            "total": 50.5,
+            "median": 0.0,
+            "p95": 0,
+            "max": 50
+          }
+        }
+      }
+    },
+    "profile": {
+      "samplesByFinalComponent": {
+        "open": {
+          "(program)": 141,
+          "JavaScript/native function": 131,
+          "(anonymous)": 4,
+          "(idle)": 1
+        },
+        "yield": {
+          "(program)": 18,
+          "JavaScript/native function": 3,
+          "(idle)": 1
+        },
+        "transaction": {
+          "(idle)": 39,
+          "(anonymous)": 53,
+          "(program)": 45,
+          "JavaScript/native function": 11
+        },
+        "closeCall": {
+          "JavaScript/native function": 1
+        },
+        "layoutCall": {
+          "JavaScript/native function": 1
+        }
+      },
+      "clockErrorMs": 2,
+      "warning": "Samples locate activity/idle overlap; counts are dependent and intervals are wall time, not disk or CPU benchmarks."
+    },
+    "guardrails": {
+      "undoRedo": true,
+      "converged": true,
+      "coldReplay": true,
+      "errors": [],
+      "typingHttp": [
+        200
+      ]
+    }
+  }
+]

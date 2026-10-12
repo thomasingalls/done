@@ -1,0 +1,108 @@
+{
+  "base": "9ba0ae637cae9fad04bd5ed9a4b5a1453ceee376",
+  "runtimeDiff": [],
+  "probeBuild": {
+    "assets/AccountDevices-DKEVW3v8.js": "04618637bf5828765270c94035bc85616bd61fa665f23eaadc9aded2edafbf66",
+    "assets/AccountDevices-DKEVW3v8.js.map": "73ed642cdc01452a31a59b8d0f59573776d792ce5cdce66f1239a6e2d054c833",
+    "assets/AccountEnrollmentApp-Dvuelkq1.js": "bfbac309e85aa1fcfb7c408f10da33d31a0b0370c4e279b340e8a683e5cd01a4",
+    "assets/AccountEnrollmentApp-Dvuelkq1.js.map": "cf3357944b82f78927dc0ae876a986bd72615fb108e116c1dd2518e8f82fd299",
+    "assets/AccountRecoveryApp-BEN-y9uQ.js": "f064d24a9c18a094162c81c73a03e405ca7d59b8871a2698663dfe5afe4dd193",
+    "assets/AccountRecoveryApp-BEN-y9uQ.js.map": "990fe6555e0036841eb2b222182e059c1ec7a635c9fa48e474113b651dc19159",
+    "assets/AccountSetupApp-DBjqjSMr.js": "0ce96025a223c6d859a6b12bc67cf868e115f5d7d765429d31b3bc325dd7e8f6",
+    "assets/AccountSetupApp-DBjqjSMr.js.map": "eed679bb4a7ecbfbc42ed1b8187941da6398bbe888d51035ef95fc4b1862bda8",
+    "assets/LocalApp-DzlkyiTS.js": "c8b6bd76598a41788ec07903732eee40dfe220bf31c433c83048c8f03c941b37",
+    "assets/LocalApp-DzlkyiTS.js.map": "fbf657f435bb7a93af4d83fff6f8f9b682159b85c7a85201514ace8de70018f4",
+    "assets/accountAccess-CaACqe5r.js": "bbda8697a23fd902b02bccc6dec72f1f24a9c18bc363277b851d5c377ddea557",
+    "assets/accountAccess-CaACqe5r.js.map": "feef4cc3bab54e17af73915b12beb49b51c8c1957269fadf9d7b9b42fa2f05ac",
+    "assets/accountProgressCustody-D_uUmuzv.js": "2e83f64569d72a17fbba31dcf306dc608f4284db1493b50cbc8188bb94314e2e",
+    "assets/accountProgressCustody-D_uUmuzv.js.map": "512395bf0523336a78def3353ecc37327c92dc8d740f73d03830a5496a0e292a",
+    "assets/accountRotation-VYKn2PIX.js": "8a8e91fd9d39e5aceccdda6d07de833be387f208b2d4fd2d677b99613bd661b2",
+    "assets/accountRotation-VYKn2PIX.js.map": "76bd809c621ad853df954fbabecd69c22b52d3a0987fcc3be21378f985751c67",
+    "assets/admissionDocument-BgqEXo7o.js": "019aa058138388e8e553a6e80a96d23d0477ae601f3090ac389239f9c4864863",
+    "assets/admissionDocument-BgqEXo7o.js.map": "95a08e6f9d3f2ba57bd1cdce4d969247b145bfefd92044b540c9717cdfe5e925",
+    "assets/admissionHistory-Co1JuEtq.js": "9854a78d931492b5991fede3dd13e6687b4137cc7962d652d93a61c4f5d9c250",
+    "assets/admissionHistory-Co1JuEtq.js.map": "d86dcdcd780ae957fcdf0ff876fcdbad53b83a916db71409734b76e9a0d8b513",
+    "assets/ceremonyNavigation-qkjCodn1.js": "b7513c68d023aecc7e3a6a461c58f51eaad2ff059fdf4fd70e8c30f8f3196bfb",
+    "assets/ceremonyNavigation-qkjCodn1.js.map": "32ca7af91c1748bd21f7e68b42bad797697e3651ccc911f45b3c8da70e517866",
+    "assets/ceremonyVault-DRyyGz79.js": "14e568d59a9295e9f171ce60be8e0e7e07277ddc06eaafe77693bfc1a2fe9e96",
+    "assets/ceremonyVault-DRyyGz79.js.map": "122802982ef33e32dbe5b3dd3130c23092d57e33b4610a08f9c53af10790a10f",
+    "assets/checkpointTimeline-gol_R3LA.js": "ff00ac1daa3ddd9f4f6fc46a033c58ad0cc5d06b950d9bf7ffc246a5ef567eb2",
+    "assets/checkpointTimeline-gol_R3LA.js.map": "a897f3b6c9a505f7246587949acac1d3e85e8c5179a47340806102c4fbf59cfb",
+    "assets/custodyCrypto-C44ppXTm.js": "06c03e084a5222d1677dc6030c072846241d15573e540c8461e6c9892703d280",
+    "assets/custodyCrypto-C44ppXTm.js.map": "73a1b078b1a7e3f8f4c487d71d9511163c6e38dd3bfccb51f332e9677ac32e68",
+    "assets/deviceRemovalVault-CxkOioE0.js": "10b85a681437f968192c55fc646a136cade5530488fb2b6b995b5a7313fdf354",
+    "assets/deviceRemovalVault-CxkOioE0.js.map": "052389f54c34595ab80d457ee8ff4e62586dafbd7c5559b838fa9d859bb73c4f",
+    "assets/historyOwner-cdqQ_bIX.js": "53a3b86546c12c3cff895af7822a1c258b1d834f89ede3b41b1f479c3a37db46",
+    "assets/historyOwner-cdqQ_bIX.js.map": "4bbefd6874567e32d3f41cd494a4ac07216aeb7e7bb2144a0ec1d15f29285746",
+    "assets/joinedAccount-CctDG0SI.js": "a72954ed9a6e7fdbd790297481d92e496f690285d79f50007b8e0421a8e35e35",
+    "assets/joinedAccount-CctDG0SI.js.map": "1e47effd02bd11b4d5d3bf559ac663269905079aa1ff1ef5fce0095e331154ec",
+    "assets/localGenesis-Ce7TOYr_.js": "a8c4c68589ec6fd0a46ffa02bfd4d88f7dcfa9e5c0d03e124f1d87b48c4d81b8",
+    "assets/localGenesis-Ce7TOYr_.js.map": "7b35f60786bfa4849b9ec324cdb8067c09eb04df3a373de62e1f7609446bd2c5",
+    "assets/localGenesisStorage-CJy8votw.js": "bb2a1a86a6f88c57c38ba996da69c21013e745cf69b472b6e0af93ce780c848f",
+    "assets/localGenesisStorage-CJy8votw.js.map": "03463a5faedcd9653916c68256ec670faa8f104b44dd7728a3d8759fdbbbf723",
+    "assets/main-B0BNPjp4.js": "c0b57ab0554486446ace5a8fdda4dd87e825baed7e7808d09500d682f6466146",
+    "assets/main-B0BNPjp4.js.map": "3ed9276ce7f33970f9ad4c0e3a6825f7e783f1fcfd42ddb097c645276133caff",
+    "assets/main-XV5ccYkD.css": "f05f67da8b357a5f715eb6e080c1fd213deb68ee724565b1c37081fb343383e7",
+    "assets/membershipLocator-CpKtwrZa.js": "4c1a565c4970ab8d9e950862317864f1a3969db327f34261e37ba5ef14b66009",
+    "assets/membershipLocator-CpKtwrZa.js.map": "6ed4f41bcf087465e03f4aebfb91d4780706f34ae44c1e49e656c4fab5f63bde",
+    "assets/membershipSource-DlPSxOVt.js": "365603c7e341fd6705dbf1244871ec4c41a08e1501d3c2f2b77952e92e7df526",
+    "assets/membershipSource-DlPSxOVt.js.map": "ce4c6b953e994671c2ec15c833dd9c78c4e42884e28171a8dca727aca53c1e7c",
+    "assets/preload-helper-DfKBSWen.js": "78e8e313939e920a55fbe27eb6e49e0ed5cd5c3e3fe5381b4286f188b13cee91",
+    "assets/preload-helper-DfKBSWen.js.map": "be5c2cf7d794fe4ae650f1bf418dd1e3f065b79414fbd4e1790025c59232ca4d",
+    "assets/promotionRecord-BDtGJi3_.js": "bd4dd4d5f9c5f1c8d7e65b837e34e9a5ded4131e5a68089b747a90ea42956049",
+    "assets/promotionRecord-BDtGJi3_.js.map": "7721bb7d2cfbf0e83e2778c63d2ece3cabb4f15aa627cb7ce0fdcacbe837f536",
+    "assets/rotationObservation-rOBIQnMp.js": "1100ad2b446d5ec9b191b01784a96a6261aa5cf9e1c6d99fae56a1784a6b4d3f",
+    "assets/rotationObservation-rOBIQnMp.js.map": "178301ba08b2041f7ba599c95737c5e5140622b26e232a1b63b60e89972a9484",
+    "favicon.svg": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+    "icon-192.png": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+    "icon-512.png": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+    "icon-maskable-512.png": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+    "index.html": "52fcfd0df63d43a778d161285fe8252d4cf19bffd8f023ffff6407d282b0a55b",
+    "local.html": "16af96376265e130a630b2157d7e178595c151b3cee4317aefa43a0cc2bf4eff",
+    "manifest.webmanifest": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+    "sw.js": "c83a04d4a0c07da7f95c455e671352e948c2def97293665d04aae3c382c2a1c9"
+  },
+  "fixtures": [
+    {
+      "path": "/tmp/done-client-receive/fixture.json",
+      "bytes": 7707006,
+      "sha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985"
+    },
+    {
+      "path": "/tmp/done-online-typing-20261012/seed-matched-12000/fixture.json",
+      "bytes": 11824955,
+      "sha256": "e404cce611ca4a6db27a13bce4dfdcdad94534a2d2d99d7c4dac4afb295373e8"
+    },
+    {
+      "path": "/tmp/done-online-typing-20261012/seed-3000/fixture.json",
+      "bytes": 11890008,
+      "sha256": "ce8df3507be66a319ba8174bccd3a9dc8e7836c7d16f5399f3ca0c33d4c088a9"
+    },
+    {
+      "path": "/tmp/done-online-typing-20261012/seed-64000/fixture.json",
+      "bytes": 12973980,
+      "sha256": "57573e4e9e29daed3daed7419e5cc69bd5b517a4417d05a742aca7b419e29829"
+    }
+  ],
+  "retainedProbeFiles": {
+    "probe/attribute.mjs": "4e76259a57fd770dbc56513921c54500f2df601bb89b6fb74053ef76e145757e",
+    "probe/build.config.ts": "5f5bfcf5d3e350a68e0157fc9829fe8e110746a72520b564256e3405ba92251e",
+    "probe/profile.mjs": "04c036347fcc4abb2ed75d7dddf62d24bf4b5917e6dbd3a8fd7696be0179ba92",
+    "probe/run.py": "850e9a2ff136408948d69a94a77f7165f550510bc3a4feb1e54c57ccd8f7d0a7",
+    "probe/summarize.py": "75350f294314fcb74018b0d3bfa6537dbd032e1e38eaae25c1b1dfde12e5c55b",
+    "probe/typing.config.ts": "bdc281bc24094e9f70d513d1dd31c5547776f0516d9d01f9a8fd7d85ee1c5677",
+    "probe/typing.spec.ts": "56b42bfad101d61ab923cac202fedcadb203dad76843a61cb130c5616c8c94fb"
+  },
+  "executedProbeFiles": {
+    "build.config.ts": "195dbef5e3076fa6d21cb2a6e32732e0bdd43dbebfdfa5b6ec9e91eb747bf866",
+    "typing.config.ts": "e7b552edb1edf93fda3c0bab43fca8ff29d2e7e2fdf8ebe415a6babaf3fb9ced",
+    "typing.spec.ts": "46f0d04e54dc0a0f34e7c0fa2a01a3759c12b8545d8c5356d8a8e04e0286219a"
+  },
+  "sharedHelpers": {
+    "docs/performance-experiments/2026-10-12-owned-verification/probe/build.config.ts": "e4bafb87750f79b99596280561d609127e8170ff705d0abf00d2f12098cafb17",
+    "docs/performance-experiments/2026-10-12-warm-ledger/probe/build.config.ts": "554019225bcd9736d79f499d8a9c420895b3c3999de436dcee80a8f34bf1ef09",
+    "docs/performance-experiments/2026-10-12-text-admission/probe/build.config.ts": "a9c0211de0003591faad00bf56fc4db1e31ad5b02936123bf3e0818414ce8cb4",
+    "docs/performance-experiments/2026-10-12-receive-attribution/probe/runtime.mjs": "5d9989f22659312395398c76ae12f371463f62a0e1ecde09587e494863037144",
+    "test/packaged-account/devices.ts": "9bc406ad56f7f064f8d11091a438fb5e79cca987a34055b15f99af3e7cbc0df3"
+  }
+}

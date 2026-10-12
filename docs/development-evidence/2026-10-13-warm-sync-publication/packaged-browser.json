@@ -1,0 +1,12 @@
+[
+  {
+    "test": "original and joined native custody preserve prior setup, interrupted progress and installed keys",
+    "status": "passed",
+    "durationMs": 18902
+  },
+  {
+    "test": "Account text undo spans received edits and journal-only offline reopening",
+    "status": "passed",
+    "durationMs": 24410
+  }
+]

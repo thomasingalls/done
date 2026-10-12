@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Bounded private continuation: one approved epoch-2 child, generation 1, certification at 3. */
 import { closed } from './preparation.ts';
 import { json, same, domainMessage, verifySignature } from './admission.ts';
@@ -164,20 +165,34 @@ export async function verifyContentDelivery(
   v: unknown,
   base: SuccessorBase,
   admission: AdmissionSuccessor,
+  checkpoint?: ProofCheckpoint,
 ) {
   const d = parseContentDelivery(v),
     c = d.existing.context;
-  await verifySuccessor(admission, base, { epoch: 2, head: admission.head });
-  const authority = await verifyCeremonyContext(
-    c,
-    base,
-    admission,
-    { epoch: 2, head: admission.head },
-    { role: 'existing', ...c.existing },
-    c.createdAt,
+  await proofWork(
+    checkpoint,
+    verifySuccessor(admission, base, { epoch: 2, head: admission.head }, checkpoint),
   );
-  const pair = await verifyCeremonyPair(authority, d.existing, d.candidate, c.createdAt);
-  const opening = await deriveCeremonyExchange(pair, d.existingReveal, d.newReveal, c.createdAt);
+  const authority = await proofWork(
+    checkpoint,
+    verifyCeremonyContext(
+      c,
+      base,
+      admission,
+      { epoch: 2, head: admission.head },
+      { role: 'existing', ...c.existing },
+      c.createdAt,
+      checkpoint,
+    ),
+  );
+  const pair = await proofWork(
+    checkpoint,
+    verifyCeremonyPair(authority, d.existing, d.candidate, c.createdAt, undefined, checkpoint),
+  );
+  const opening = await proofWork(
+    checkpoint,
+    deriveCeremonyExchange(pair, d.existingReveal, d.newReveal, c.createdAt, undefined, checkpoint),
+  );
   const expectedMembers = [c.existing, c.candidate].sort((a, b) => (a.id < b.id ? -1 : 1));
   if (
     d.parent !== admission.head ||
@@ -195,22 +210,38 @@ export async function verifyContentDelivery(
     d.certificate.approver !== c.existing.id ||
     d.certificate.recoveryStateDigest !== c.recoveryStateDigest ||
     !same(d.recovery, base.request.recovery) ||
-    (await recoveryStateDigest(d.recovery)) !== c.recoveryStateDigest
+    (await proofWork(checkpoint, recoveryStateDigest(d.recovery))) !== c.recoveryStateDigest
   )
     throw Error('Delivery differs from approved ceremony');
   // Resolve the approver from the parent certified set, never a service-supplied key table.
   const approver = admission.epoch.certified.value.members[0];
-  await verifySignature(
-    approver.sPub,
-    d.decision.signature,
-    await ceremonyRequestMessage(d.decision),
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      approver.sPub,
+      d.decision.signature,
+      await proofWork(checkpoint, ceremonyRequestMessage(d.decision)),
+    ),
   );
-  await verifySignature(
-    approver.sPub,
-    d.certificate.signature,
-    await recipientCertificateMessage(d.certificate, c.workspaceId, c.lineageId),
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      approver.sPub,
+      d.certificate.signature,
+      await proofWork(
+        checkpoint,
+        recipientCertificateMessage(d.certificate, c.workspaceId, c.lineageId),
+      ),
+    ),
   );
-  await verifySignature(approver.sPub, d.signature, await contentDeliveryMessage(d));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      approver.sPub,
+      d.signature,
+      await proofWork(checkpoint, contentDeliveryMessage(d)),
+    ),
+  );
   return { delivery: d, opening };
 }
 export function parseContentInstallation(v: unknown): ContentInstallation {
@@ -228,12 +259,26 @@ export const contentInstallationMessage = (v: unknown) => {
   const { signature: _signature, ...body } = parseContentInstallation(v);
   return domainMessage('done/content-key-installed/v1', body);
 };
-export async function verifyContentInstallation(v: unknown, d: ContentDelivery) {
+export async function verifyContentInstallation(
+  v: unknown,
+  d: ContentDelivery,
+  checkpoint?: ProofCheckpoint,
+) {
   const i = parseContentInstallation(v),
     member = d.existing.context.candidate;
-  if (i.credentialId !== member.id || i.deliveryHash !== (await contentDeliveryHash(d)))
+  if (
+    i.credentialId !== member.id ||
+    i.deliveryHash !== (await proofWork(checkpoint, contentDeliveryHash(d)))
+  )
     throw Error('Installation target changed');
-  await verifySignature(member.sPub, i.signature, await contentInstallationMessage(i));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      member.sPub,
+      i.signature,
+      await proofWork(checkpoint, contentInstallationMessage(i)),
+    ),
+  );
   return i;
 }
 export function parseCertificationEpoch(v: unknown): CertificationEpoch {
@@ -319,11 +364,15 @@ export async function verifyCertificationSuccessor(
   base: SuccessorBase,
   admission: AdmissionSuccessor,
   expectedDelivery?: ContentDelivery,
+  checkpoint?: ProofCheckpoint,
 ) {
   const s = parseCertificationSuccessor(v),
     e = s.epoch;
-  const { delivery: d } = await verifyContentDelivery(e.delivery, base, admission);
-  await verifyContentInstallation(e.installation, d);
+  const { delivery: d } = await proofWork(
+    checkpoint,
+    verifyContentDelivery(e.delivery, base, admission, checkpoint),
+  );
+  await proofWork(checkpoint, verifyContentInstallation(e.installation, d, checkpoint));
   if (e.parent !== admission.head || (expectedDelivery && !same(d, expectedDelivery)))
     throw Error('Competing certification');
   if (
@@ -347,9 +396,10 @@ export async function verifyCertificationSuccessor(
     )
       throw Error('Certification history changed');
   }
-  const message = await certificationEpochMessage(e);
-  if (s.head !== (await digest(message))) throw Error('Certification head changed');
-  await verifySignature(base.pin.authRoot, s.signature, message);
+  const message = await proofWork(checkpoint, certificationEpochMessage(e));
+  if (s.head !== (await proofWork(checkpoint, digest(message))))
+    throw Error('Certification head changed');
+  await proofWork(checkpoint, verifySignature(base.pin.authRoot, s.signature, message));
   return s;
 }
 export interface ContentTransferRequest {

@@ -6,6 +6,12 @@ export * from '../account-receive-driver/fixtures.mjs';
 export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE) {
   let hits = 0;
   const targets = {
+    'flush-copy-boundary': [
+      '/src/crdt/journalStore.ts',
+      'const batch = entries.slice(offset, offset + 256);',
+      `const batch = entries.slice(offset, offset + 256);
+        await globalThis.flushCopyProbe?.('before-commit');`,
+    ],
     'audit-disagreement': [
       '/src/crdt/accountReceive.ts',
       'if (!sameAccountLedger(result, oracle)) {',
@@ -53,6 +59,35 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     configFile: false,
     logLevel: 'error',
     define: {
+      ...(process.env.ACCOUNT_AUTHORITY_REUSE
+        ? {
+            'import.meta.env.VITE_ACCOUNT_AUTHORITY_REUSE': JSON.stringify(
+              process.env.ACCOUNT_AUTHORITY_REUSE,
+            ),
+            'import.meta.env.VITE_ACCOUNT_LEDGER_PROFILE': JSON.stringify('1'),
+          }
+        : {}),
+      ...(process.env.ACCOUNT_BACKGROUND_FLUSH
+        ? {
+            'import.meta.env.VITE_ACCOUNT_BACKGROUND_FLUSH': JSON.stringify(
+              process.env.ACCOUNT_BACKGROUND_FLUSH,
+            ),
+          }
+        : {}),
+      ...(process.env.ACCOUNT_SELECTIVE_LOADS
+        ? {
+            'import.meta.env.VITE_ACCOUNT_SELECTIVE_LOADS': JSON.stringify(
+              process.env.ACCOUNT_SELECTIVE_LOADS,
+            ),
+          }
+        : {}),
+      ...(process.env.ACCOUNT_RECORD_OWNERSHIP
+        ? {
+            'import.meta.env.VITE_ACCOUNT_RECORD_OWNERSHIP': JSON.stringify(
+              process.env.ACCOUNT_RECORD_OWNERSHIP,
+            ),
+          }
+        : {}),
       ...(process.env.ACCOUNT_BATCH_MODE
         ? {
             'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(process.env.ACCOUNT_BATCH_MODE),
@@ -117,6 +152,14 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
               if (code.split(target[1]).length !== 2)
                 throw Error('Missing mutation anchor ' + control);
               hits++;
+              if (control === 'flush-copy-boundary') {
+                const after = 'task.step(() => {\n          for (const entry of batch)';
+                if (code.split(after).length !== 2) throw Error('Missing flush cleanup boundary');
+                code = code.replace(
+                  after,
+                  `await globalThis.flushCopyProbe?.('after-commit');\n        ${after}`,
+                );
+              }
               return code.replace(target[1], target[2]);
             },
           },

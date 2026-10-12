@@ -1782,3 +1782,147 @@ One CPU-4x observation per arm improves handler median **27.1→6.2 ms** and vis
 This is not physical-phone acceptance. The isolated direct profile leaves UI/CodeMirror work and
 background storage verification/copying as measured residual costs. Large target texts, structural
 commands, long-session history growth and public-device measurements remain separate work.
+
+
+## 2026-10-12 — Exclusive Account warm ledger loads
+
+On merged main `24481b82` (deployed source `9465fb04`), the
+[warm-load packet](./performance-experiments/2026-10-12-warm-ledger/README.md) first attributes
+CPU-4x flush stalls to full old-row comparison/cloning. Three final matched pairs on the retained
+120-card/600+ received-position fixture reduce aggregate long-task duration **39.4%** and maximum
+task **170→131 ms**. Median of handler medians is **6.0→5.8 ms**. All six sessions preserve
+120-key undo/redo and offline replay. Frame p95 improves in each pair, but worst frame samples
+increase to **156.9–166.5 ms**; dispatch-based measurement omits blocking before event delivery,
+and input still waits behind an active flush. This is not a claim that every keystroke is faster.
+
+Nine full row reads (33.14 MB measured plaintext payload) become nine counter/shape checks plus
+126 rolling old-row checks (0.78 MB ciphertext). Approximately **92.07 MB of detached record copies
+remain**. IndexedDB count/key-bound guards are not constant time: synthetic CPU-4x median
+1.2 ms at 600 rows versus 4.4 ms at 10,000. Warm reuse defaults on for exclusive v9 owners after
+focused correctness and timing checks; explicit warm/reference overrides retain full reads.
+The accepted detection window, bounded rolling audits and resume invalidation are documented in
+[the contract](./account-warm-ledger-loads.md). No format change or deployment.
+
+[Local retention remains design-only](./account-local-retention-design.md). The separate approved
+cleanup removes 16.08 GB of allocated duplicate/temp material, retaining fixtures, evidence and
+11.19 MB of nonidentical document variants. See [the cleanup record](./performance-experiments/2026-10-12-warm-ledger/cleanup.md).
+Release validation remains paused.
+
+
+## 2026-10-12 — Private Account verifier ownership
+
+The warm-ledger slice is signed as **`e88c19a5`**. The next working-tree
+[ownership packet](./performance-experiments/2026-10-12-owned-verification/README.md) attributes
+approximately 33 MB of record copies to caller-detached storage loads and two additional 29.5 MB
+copies to verifier input/retention. The verifier also deep-clones its semantic result, outside the
+record-byte counter. It now reuses exact private prefixes and owns the result/candidate directly,
+with backing-buffer-aware cleanup and unchanged caller isolation.
+
+Three serial CPU-4x matched pairs on the retained 120-card/600+ received-position fixture reduce
+record-copy bytes **64.0% (92.07→33.16 MB/120 keys)**. Aggregate long-task duration falls
+**61.3% (2,111→818 ms across three sessions)** and maximum **104→60 ms**. Median of session
+handler medians is **5.9→5.6 ms**; median of frame p95s **39.0→23.8 ms**. All sessions retain
+nine flushes, nine warm loads and the same 126 physical-audit rows, and pass complete block
+undo/redo and offline replay. Timings, baseline attribution profile and pilot remain separate.
+
+Tails remain mixed: pair 1's maximum frame worsens **46.0→101.2 ms**, pair 3's p95 worsens
+**39.0→45.8 ms**, and candidate worst frame is **117.6 ms**. Dispatch timing omits pre-dispatch
+blocking. CPU-4x is not a physical-phone measurement; the 16 ms p95 budget remains unmet.
+The branch enables the private ownership mode after meeting predeclared criteria and focused
+native/unit/packaged checks. `VITE_ACCOUNT_RECORD_OWNERSHIP=0` or the full reference ledger
+restores the cloned verifier. No publication. About 33 MB/session of caller-detached copies,
+history-dependent equality/graph work and local retention remain; release validation stays paused.
+
+
+## 2026-10-12 — Account storage selection without outward history copies
+
+The verifier-ownership slice is signed as **`f4f01228`**. The next working-tree
+[storage-selection packet](./performance-experiments/2026-10-12-storage-selection/README.md)
+compares three fresh CPU-4x sessions per arm on the retained 120-card/600+ received-position fixture.
+Small verified selections replace journal source-presence full loads and selected sync/status reads;
+ordinary full-record callers keep detached bytes. Per 120 keys, recorded copies fall
+**33.16 MB→29,404 bytes (99.91%)** with nine dirty flushes, nine warm loads and the same
+126 physical-audit rows / 781,609 ciphertext bytes in every session. Each passes full undo/redo
+and offline replay.
+
+Reference sessions have 13 tasks totaling 739 ms at/above 50 ms; no such tasks appear in the three
+candidate sessions. This does not mean total CPU work fell by 739 ms: it is a thresholded metric.
+Median of session handler medians increases **5.8→6.1 ms**, and median frame p95 increases
+**36.2→38.8 ms**. Frame medians worsen in every pair; candidate worst frame **115.7 ms**.
+The predeclared 10% regression limits are met, but the 16 ms p95 budget remains unmet and this
+is not a typical-input-speed improvement. Aggregate admission-flush elapsed time falls
+**2,558.5→2,055.9 ms (19.6%)**, while per-key admission waits sum **773.7→812.4 ms**.
+Those dependent elapsed spans are not additive CPU attribution.
+
+Selections are the incremental v9 Account default after focused correctness checks; explicit
+`VITE_ACCOUNT_SELECTIVE_LOADS=0`, disabling warm loads or the full reference ledger retains full
+copies. The private lease expires synchronously and selected results stay isolated from retained
+state. No stored-format change, publication or phone evidence. Async-flush queueing, full-record
+consumers and history-dependent verification/container work remain. Release validation is paused.
+
+## 2026-10-12 — Remove journal-flush waits from ordinary Account typing
+
+Storage selection is signed as **`7b088f80`**. The next
+[packet](./performance-experiments/2026-10-12-journal-flush-admission/README.md) profiles the
+remaining queue wait: three inputs wait 35.6–65.1 ms, wholly within timed flushes, contributing
+161.8 of 163.7 ms of admission waiting. These are elapsed spans, not synchronous CPU.
+
+The candidate runs timed Account snapshot copies separately from synchronous journal admission.
+Every input still journals before application. Foreground FIFO, explicit durability/remote
+barriers, forced content acknowledgement, exact snapshot cleanup and guarded close remain.
+The next batch's revision/deadline survives completion of an older copy. No format/audit change.
+
+Three fresh CPU-4x pairs (120 cards, 600+ received positions, 120 offline keys, single undo history)
+reduce aggregate local queue wait **630.9→7.9 ms (98.7%)**, worst key-to-visible frame
+**100.2→40.3 ms**, and median session frame p95 **22.6→20.3 ms**. Handler median stays near
+unchanged (**5.7→5.6 ms**). Frame medians remain near one display frame; pair two worsens
+16.0→16.5 ms. Both arms have zero >=50 ms tasks. All sessions retain nine dirty flushes,
+nine warm selective loads and 126 audited rows / 781,609 ciphertext bytes. Source boundaries
+vary slightly; record copies remain 28.8–29.7 KB. Do not describe elapsed flush/wait spans
+as additive CPU savings.
+
+Every comparison passes undo/redo and cold replay. Controlled queue tests and native renderer
+crashes cover admission during the copy; packaged two-device delivery/undo/offline recovery passes.
+The background path is now the local default, with `VITE_ACCOUNT_BACKGROUND_FLUSH=0` restoring
+timed FIFO barriers. This slice is uncommitted/unpublished. The **16 ms p95 budget is not met**;
+explicit barriers and receives can still delay typing. Online latency and physical-phone gains
+are unmeasured. History-dependent verification/containers and local retention remain. Release
+validation stays paused.
+
+
+## 2026-10-12 — Online typing reveals verification stalls; Goals size adds smaller synchronous cost
+
+Measured signed **`9ba0ae63`**, the timed-flush repair, with build-only numeric instrumentation.
+[Packet, all sessions and profiles](./performance-experiments/2026-10-12-online-typing/README.md).
+Two fresh sessions per offline/online condition for a 615-character card and Goals 3 / 12 / 64 KB,
+120 keys each, CPU-4x on the joined device, roughly 120 cards / 600+ received positions.
+Online uses a 75 ms per-request proxy plus ten peer edits to another card. Profiled diagnostics
+are separate from comparison numbers. Initial mismatched setup is retained and excluded before
+any timing; all matched seeds and all 19 timing/diagnostic observations pass correctness checks.
+
+| Target | Offline frame p95, both sessions ms | Online frame p95, both sessions ms |
+| --- | --- | --- |
+| Card, 615 characters | 20.1 / 20.1 | 431.4 / 510.4 |
+| Goals 3 KB | 22.9 / 21.7 | 491.2 / 488.0 |
+| Goals 12 KB | 22.2 / 23.6 | 496.0 / 432.2 |
+| Goals 64 KB stress case | 29.8 / 28.2 | 493.1 / 431.8 |
+
+Online input waits sum **3.81–4.91 s per 120 keys**, versus **1.8–5.8 ms offline**;
+**90–94%** overlaps owned remote admission. Multiple inputs can wait behind one job, and async
+spans are not additive CPU costs. There are **129–145 online long tasks**, maxima **138–180 ms**,
+and worst visible frame **833.4 ms**. All timing requests return 200; lanes progress and converge.
+The card profile attributes **3.66 s** to non-custody byte comparison (predominantly ledger)
+and **3.35 s** to custody payload encoding. Repeated same-history checks and owned-reservation
+fallbacks remain despite warm/selective loading. Detailed counters and source trace are retained.
+
+Offline Goals planning averages **2.32 / 2.31 / 2.68 ms per key** at 3 / 12 / 64 KB; whole
+projection averages **1.88 / 2.74 / 6.98 ms**. String/read/diff substeps account for only
+**0.21 / 0.39 / 1.65 ms** of that projection, so persistent planning and string comparison
+alone cannot be credited with eliminating the entire measured cost. Different size seeds have
+different source-row counts; within-size comparisons restore the identical seed.
+
+This is a descriptive measurement, not a new repair or qualification. Two repeats, CPU emulation,
+synthetic Markdown, fixed delay and omitted browser pre-dispatch time limit generality. The
+16 ms p95 budget remains unmet. Next recommendation is verified-view/reservation reuse on the
+online path, then unchanged-authority authentication reuse, then Goals planning/projection.
+No runtime changes or publication. Release validation remains paused.

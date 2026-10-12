@@ -1,4 +1,7 @@
+import type { CpuCheckpoint } from './cpuBudget';
 import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+import { eraseUnretained } from './verificationOwnership';
+import { selectionIdentity, type ContentSelection } from './contentSelection';
 /** Owner-local verification reuse. Identity includes every opened record, never only ledger events. */
 import type { OpenedRecord } from './contentRecord';
 export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean => {
@@ -8,6 +11,7 @@ export const sameBytes = (a: Uint8Array, b: Uint8Array): boolean => {
     a.subarray(0, 0);
     return true;
   }
+  if (a === b) return true;
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
   return true;
 };
@@ -27,6 +31,37 @@ export const sameRecords = (a: readonly OpenedRecord[], b: readonly OpenedRecord
     const s = b[i]!;
     return r.kind === s.kind && r.gen === s.gen && r.seq === s.seq && sameBytes(r.bytes, s.bytes);
   });
+/** Private owner inputs are held on its serialized storage queue for this entire comparison. */
+export async function sameRecordsCooperatively(
+  a: readonly OpenedRecord[],
+  b: readonly OpenedRecord[],
+  checkpoint: CpuCheckpoint,
+): Promise<boolean> {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    const left = a[i]!,
+      right = b[i]!;
+    if (
+      left.kind !== right.kind ||
+      left.seq !== right.seq ||
+      left.gen !== right.gen ||
+      left.bytes.length !== right.bytes.length
+    )
+      return false;
+    if (!left.bytes.length) left.bytes.subarray(0, 0);
+    if (left.bytes !== right.bytes) {
+      for (let at = 0; at < left.bytes.length; at += 65536) {
+        const end = Math.min(at + 65536, left.bytes.length);
+        for (let j = at; j < end; j++) if (left.bytes[j] !== right.bytes[j]) return false;
+        const pause = checkpoint();
+        if (pause) await pause;
+      }
+    }
+    const pause = checkpoint();
+    if (pause) await pause;
+  }
+  return true;
+}
 /** Only detached plain verification data enters here: no keys, tasks or application objects. */
 export function eraseVerified(value: unknown): void {
   if (value instanceof Uint8Array) value.fill(0);
@@ -34,7 +69,13 @@ export function eraseVerified(value: unknown): void {
   else if (value && typeof value === 'object')
     for (const v of Object.values(value)) eraseVerified(v);
 }
-export function createVerifiedRecords<T>() {
+export function createVerifiedRecords<T>(
+  options: {
+    /** Private Account verifiers only: callbacks transfer their result and never mutate prior data. */
+    ownResults?: true;
+  } = {},
+) {
+  const ownResults = options.ownResults === true;
   let retained: OpenedRecord[] | undefined,
     value: T | undefined,
     identity: unknown,
@@ -42,14 +83,25 @@ export function createVerifiedRecords<T>() {
     verifying = false;
   const clear = () => {
     revision++;
-    eraseVerified(retained);
-    eraseVerified(value);
+    if (ownResults) eraseUnretained([retained, value]);
+    else {
+      eraseVerified(retained);
+      eraseVerified(value);
+    }
     retained = undefined;
     value = undefined;
     identity = undefined;
   };
   return {
     clear,
+    /** Only a live carrier lease over the exact completely validated view can select by identity. */
+    select<R>(lease: ContentSelection, project: (value: Readonly<T>) => R): R {
+      if (!retained || identity !== selectionIdentity(lease))
+        throw Error('No verified view for this selection');
+      const result = structuredClone(project(value!));
+      selectionIdentity(lease);
+      return result;
+    },
     matches: (records: readonly OpenedRecord[]) => !!retained && sameRecords(retained, records),
     /** A single exact-match pass; the projection is detached before leaving this call. */
     readIfMatches<R>(
@@ -84,6 +136,7 @@ export function createVerifiedRecords<T>() {
         before: readonly OpenedRecord[],
         candidate: OpenedRecord[],
       ) => Promise<T | undefined>,
+      checkpoint?: CpuCheckpoint,
     ): Promise<void> {
       // The Account storage owner serializes calls. Enforce that borrowing invariant here
       // too: a competing verification must never erase a predecessor another call uses.
@@ -96,14 +149,43 @@ export function createVerifiedRecords<T>() {
           clear();
           throw e;
         }
-        if (retained && identity === token && sameRecords(retained, records)) return;
+        const initialRevision = revision;
+        if (retained && identity === token) {
+          const equal = checkpoint
+            ? await sameRecordsCooperatively(retained, records, checkpoint)
+            : sameRecords(retained, records);
+          current();
+          if (initialRevision !== revision) throw Error('Verification view was invalidated');
+          if (equal) return;
+        }
         const previous = value,
           before = retained;
-        // A candidate may borrow the previous result only until it has been detached below.
-        // Neither a speculative append nor a late verification may publish into this view.
-        const at = ++revision,
-          candidate = copyRecords(records);
+        // Only byte-equal prefix rows can share internal ownership. Input remains caller-owned.
+        // A failed or late candidate never publishes, and reads still return detached projections.
+        const at = ++revision;
+        let prefix = 0;
+        if (ownResults && before)
+          while (prefix < Math.min(before.length, records.length)) {
+            const a = before[prefix]!,
+              b = records[prefix]!;
+            if (
+              a.kind !== b.kind ||
+              a.gen !== b.gen ||
+              a.seq !== b.seq ||
+              !(checkpoint
+                ? await sameRecordsCooperatively([a], [b], checkpoint)
+                : sameBytes(a.bytes, b.bytes))
+            )
+              break;
+            prefix++;
+          }
+        current();
+        if (at !== revision) throw Error('Verification view was invalidated');
+        const candidate = ownResults
+          ? [...(before?.slice(0, prefix) ?? []), ...copyRecords(records.slice(prefix))]
+          : copyRecords(records);
         let result: T | undefined;
+        let adopted = false;
         try {
           result =
             previous !== undefined && before && extend
@@ -112,23 +194,35 @@ export function createVerifiedRecords<T>() {
           result ??= await check(candidate);
           current();
           if (at !== revision) throw Error('Verification view was invalidated');
-          // Results may reference candidate input buffers. Own both before exposing any readback.
+          // Results may reference candidate or predecessor buffers. Public projections remain copies.
           const atClone = ledgerWorkStart();
-          const nextValue = structuredClone(result);
-          measureLedgerWork('installClone', atClone);
-          const nextRecords = copyRecords(candidate);
-          eraseVerified(value);
-          eraseVerified(retained);
-          value = nextValue;
-          retained = nextRecords;
+          if (ownResults) {
+            eraseUnretained([value, retained], [result, candidate]);
+            value = result;
+            retained = candidate;
+            adopted = true;
+            measureLedgerWork('installOwned', atClone);
+          } else {
+            const nextValue = structuredClone(result);
+            measureLedgerWork('installClone', atClone);
+            const nextRecords = copyRecords(candidate);
+            eraseVerified(value);
+            eraseVerified(retained);
+            value = nextValue;
+            retained = nextRecords;
+          }
           identity = token;
         } catch (e) {
-          eraseVerified(candidate);
           if (at === revision) clear();
           throw e;
         } finally {
-          eraseVerified(result);
-          eraseVerified(candidate);
+          if (!adopted) {
+            if (ownResults) eraseUnretained([result, candidate], [value, retained]);
+            else {
+              eraseVerified(result);
+              eraseVerified(candidate);
+            }
+          }
         }
       } finally {
         verifying = false;

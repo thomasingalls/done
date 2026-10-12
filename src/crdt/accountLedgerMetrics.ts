@@ -20,9 +20,16 @@ const workNames = [
   'coverageBaselines',
   'coverageDirectProofs',
   'loads',
+  'warmLoads',
+  'selectedLoads',
+  'warmAuditRows',
+  'warmAuditBytes',
   'loadedRows',
   'loadedBytes',
   'authorityChecks',
+  'authorityAuthentications',
+  'authorityReuses',
+  'membershipProofTransfers',
   'positions',
   'sourceParses',
   'sourceParseBytes',
@@ -32,16 +39,26 @@ const workNames = [
   'dirtyJournalFlushes',
   'projectionChecks',
   'directTextPreparations',
+  'finalApplyEarlyChecks',
+  'finalApplyImmediate',
+  'finalApplyQueueMisses',
+  'finalApplyActivityMisses',
+  'finalApplyFallbacks',
+  'finalApplySkipped',
 ] as const;
 const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   (typeof workNames)[number],
   number
 >;
 type WorkTiming =
+  | 'finalApplyEarly'
+  | 'finalApplySynchronous'
   | 'copyRecords'
   | 'readProjection'
   | 'installClone'
+  | 'installOwned'
   | 'physicalRead'
+  | 'warmShapeCheck'
   | 'loadElapsed'
   | 'storageQueueWait'
   | 'storageOperation'
@@ -51,6 +68,7 @@ type WorkTiming =
   | 'admissionLocal'
   | 'admissionRemote'
   | 'admissionFlush'
+  | 'admissionBackgroundFlush'
   | 'waitLocal'
   | 'waitRemote'
   | 'waitFlush';

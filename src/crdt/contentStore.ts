@@ -1,4 +1,6 @@
+import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
 import { MaintenanceInterrupted } from './contentMaintenance';
+import { withContentSelection, type ContentSelection } from './contentSelection';
 import {
   countLedgerWork,
   ledgerProfiling,
@@ -46,6 +48,10 @@ import type { SessionTask } from './writeSession';
 export interface ContentCrypto {
   /** Account owners opt into lifetime-local plaintext reuse. The validation callback still runs. */
   reuseOpened?: true;
+  /** Private exclusive Account lifetime only; generic/shared Local owners must not opt in. */
+  warmLoads?: true;
+  /** Private v9 validator: reads retained input immutably and owns any bytes it retains. */
+  selectiveLoads?: true;
   /** Optional private carrier payload validation, including every compaction audit. */
   allowSpoolCounter?: true;
   validate?(
@@ -91,7 +97,16 @@ export const createContentOwner = (
   let openedView:
     | { counter: ContentCounter; sealed: StoredRecord[]; opened: OpenedRecord[]; id: object }
     | undefined;
+  let warm: ReturnType<typeof createWarmContent> | undefined;
+  let forceFullRead = false;
+  const canSelect = !!(
+    crypt.selectiveLoads &&
+    crypt.warmLoads &&
+    crypt.reuseOpened &&
+    crypt.validate
+  );
   const clearView = () => {
+    warm = undefined;
     eraseVerified(openedView);
     openedView = undefined;
   };
@@ -296,19 +311,69 @@ export const createContentOwner = (
             opened: copyRecords(opened),
           };
         });
+      if (crypt.warmLoads && openedView)
+        warm = createWarmContent(scope, witness.intent, openedView.sealed);
       return task.step(() => opened.sort((a, b) => a.seq - b.seq));
     } catch (cause) {
       // Interruption is not failed authentication. Retain only the previous detached view;
-      // every subsequent reuse still compares the counter and exact sealed row bytes.
+      // Reference loads compare every sealed row; exclusive warm loads use the authenticated
+      // counter/shape guard and bounded rolling audit.
       if (!(cause instanceof MaintenanceInterrupted)) clearView();
       for (const r of opened) r.bytes.fill(0);
       throw cause;
     }
   };
-  const load = async (task: SessionTask): Promise<OpenedRecord[]> => {
+  function load(task: SessionTask): Promise<OpenedRecord[]>;
+  function load<T>(task: SessionTask, select: (lease: ContentSelection) => T): Promise<T>;
+  async function load<T>(
+    task: SessionTask,
+    select?: (lease: ContentSelection) => T,
+  ): Promise<OpenedRecord[] | T> {
+    if (select && !canSelect) throw Error('Content selection requires the private Account owner');
+    const selected = () => {
+      const view = openedView;
+      if (!view) throw Error('No retained content view');
+      const result = withContentSelection(
+        task,
+        view.id,
+        () => openedView === view && !forceFullRead,
+        select!,
+      );
+      countLedgerWork('selectedLoads');
+      return result;
+    };
     countLedgerWork('loads');
     const began = ledgerWorkStart();
     try {
+      if (crypt.warmLoads && openedView && warm && !forceFullRead) {
+        const at = ledgerWorkStart();
+        const checked = await warm.check(db!, task);
+        measureLedgerWork('warmShapeCheck', at);
+        await verify(task, counterPayload(scope, checked.counter), checked.counter.mac);
+        if (equalCounter(scope, checked.counter, openedView.counter) && !forceFullRead) {
+          if (!checked.shapeMatches) corrupt('Warm content shape changed.');
+          await warm.audit(db!, task);
+          // Only the opted-in private validator borrows retained input. Selection callers receive
+          // an opaque lease, never these rows. Ordinary load callers keep independent copies.
+          const borrowed = !!select;
+          const result = borrowed ? openedView.opened : copyRecords(openedView.opened);
+          try {
+            if (crypt.validate)
+              await task.wait(() => crypt.validate!(result, task, checked.counter, openedView!.id));
+            if (forceFullRead) {
+              if (!borrowed) for (const row of result) row.bytes.fill(0);
+              return select ? await load(task, select) : await load(task);
+            }
+            countLedgerWork('warmLoads');
+            if (select) return selected();
+            return task.step(() => result);
+          } catch (cause) {
+            if (!borrowed) for (const row of result) row.bytes.fill(0);
+            throw cause;
+          }
+        }
+      }
+      forceFullRead = false;
       const at = ledgerWorkStart();
       const snapshot = await read(task, true);
       measureLedgerWork('physicalRead', at);
@@ -319,16 +384,28 @@ export const createContentOwner = (
           'loadedBytes',
           result.reduce((n, r) => n + r.bytes.length, 0),
         );
+      if (forceFullRead) {
+        for (const row of result) row.bytes.fill(0);
+        return select ? await load(task, select) : await load(task);
+      }
+      if (select) {
+        try {
+          return selected();
+        } finally {
+          for (const row of result) row.bytes.fill(0);
+        }
+      }
       return result;
     } catch (cause) {
       // Interruption is not failed authentication. Retain only the previous detached view;
-      // every subsequent reuse still compares the counter and exact sealed row bytes.
+      // Reference loads compare every sealed row; exclusive warm loads use the authenticated
+      // counter/shape guard and bounded rolling audit.
       if (!(cause instanceof MaintenanceInterrupted)) clearView();
       throw cause;
     } finally {
       measureLedgerWork('loadElapsed', began);
     }
-  };
+  }
   const appendRecords = async (
     task: SessionTask,
     input: ContentInput[],
@@ -340,50 +417,103 @@ export const createContentOwner = (
       checkCommit?: () => void;
     },
   ): Promise<StoredRecord[]> => {
-    let before!: ContentCounter;
-    while (true) {
-      before = await currentCounter(task);
-      if (
-        spool &&
-        (!crypt.allowSpoolCounter ||
-          before.v !== 2 ||
-          !sameSpoolWitness(before.spool, spool.before) ||
-          spool.after.events !== spool.before.events + (spool.events ?? 1))
-      )
-        corrupt('Spool witness changed before reservation.');
-      let next = reserveCounter(before, input.length, generation);
-      next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
-      if (await compareAndWrite(task, before, next)) break;
-    }
-    // This range has completed durably. Every attempt consumes exactly one
-    // invocation per record; a failure/retry abandons it and reserves a new range.
-    const records: StoredRecord[] = [];
-    for (const [i, value] of input.entries())
-      records.push(
-        await crypt.seal(
-          task,
-          { v: 1, gen: generation, seq: before.next_seq + i, kind: value.kind },
-          value.bytes,
-        ),
-      );
-    while (true) {
-      if (spool?.beforeCommit) await task.wait(() => spool.beforeCommit!(records));
-      const current = await currentCounter(task);
-      if (
-        current.next_seq < before.next_seq + input.length ||
-        current.reserved[String(generation)]! < before.reserved[String(generation)]! + input.length
-      )
-        corrupt('A content reservation was rewound.');
-      let next: ContentCounter | null = null;
-      if (spool) {
-        if (current.v !== 2 || !sameSpoolWitness(current.spool, spool.before))
-          corrupt('Spool witness changed before commit.');
-        next = { ...current, v: 2, spool: { ...spool.after } };
+    let before!: ContentCounter, reserved!: ContentCounter;
+    const plaintexts = crypt.warmLoads ? input.map((row) => row.bytes.slice()) : [];
+    try {
+      while (true) {
+        before = await currentCounter(task);
+        if (
+          spool &&
+          (!crypt.allowSpoolCounter ||
+            before.v !== 2 ||
+            !sameSpoolWitness(before.spool, spool.before) ||
+            spool.after.events !== spool.before.events + (spool.events ?? 1))
+        )
+          corrupt('Spool witness changed before reservation.');
+        let next = reserveCounter(before, input.length, generation);
         next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+        if (await compareAndWrite(task, before, next)) {
+          reserved = next;
+          // Reservation changes authenticated metadata, not the committed rows. Retain
+          // only an exact owned predecessor so pre-commit loads can still authenticate
+          // the counter, check shape and audit without rereading all old rows. Never
+          // advance the semantic identity or clear a pending full-read invalidation.
+          if (
+            crypt.warmLoads &&
+            warm &&
+            openedView &&
+            equalCounter(scope, openedView.counter, before)
+          )
+            task.step(() => {
+              openedView!.counter = structuredClone(reserved);
+            });
+          break;
+        }
       }
-      if (await compareAndWrite(task, current, next, records, spool?.checkCommit)) break;
+      // This range has completed durably. Every attempt consumes exactly one
+      // invocation per record; a failure/retry abandons it and reserves a new range.
+      const records: StoredRecord[] = [];
+      for (const [i, value] of input.entries())
+        records.push(
+          await crypt.seal(
+            task,
+            { v: 1, gen: generation, seq: before.next_seq + i, kind: value.kind },
+            plaintexts[i] ?? value.bytes,
+          ),
+        );
+      while (true) {
+        if (spool?.beforeCommit) await task.wait(() => spool.beforeCommit!(records));
+        const current = await currentCounter(task);
+        if (
+          current.next_seq < before.next_seq + input.length ||
+          current.reserved[String(generation)]! <
+            before.reserved[String(generation)]! + input.length
+        )
+          corrupt('A content reservation was rewound.');
+        let next: ContentCounter | null = null;
+        if (spool) {
+          if (current.v !== 2 || !sameSpoolWitness(current.spool, spool.before))
+            corrupt('Spool witness changed before commit.');
+          next = { ...current, v: 2, spool: { ...spool.after } };
+          next = { ...next, mac: await crypt.sign(task, counterPayload(scope, next)) };
+        }
+        if (await compareAndWrite(task, current, next, records, spool?.checkCommit)) {
+          // Only an owned, completed commit extends this private view. A reservation is not a row.
+          if (
+            crypt.warmLoads &&
+            warm &&
+            openedView &&
+            records.every((row) => row.seq > (openedView!.sealed.at(-1)?.seq ?? 0)) &&
+            (equalCounter(scope, openedView.counter, current) ||
+              (equalCounter(scope, openedView.counter, before) &&
+                equalCounter(scope, current, reserved)))
+          ) {
+            task.step(() => {
+              const added = structuredClone(records);
+              warm!.appended(added);
+              openedView!.sealed.push(...added);
+              openedView!.opened.push(
+                ...records.map((r, i) => ({
+                  kind: r.kind,
+                  gen: r.gen,
+                  seq: r.seq,
+                  bytes: plaintexts[i]!.slice(),
+                })),
+              );
+              openedView!.counter = structuredClone(next ?? current);
+              openedView!.id = {};
+            });
+          } else if (crypt.warmLoads) clearView();
+          break;
+        }
+      }
+      return records;
+    } catch (cause) {
+      clearView();
+      throw cause;
+    } finally {
+      for (const bytes of plaintexts) bytes.fill(0);
     }
-    return records;
   };
   return {
     dispose() {
@@ -507,7 +637,38 @@ export const createContentOwner = (
       custodyDb!.close();
       custodyDb = undefined;
     },
-    load,
+    load: (task: SessionTask) => load(task),
+    canSelect,
+    select: <T>(task: SessionTask, select: (lease: ContentSelection) => T) => load(task, select),
+    invalidateWarm() {
+      forceFullRead = true;
+    },
+    warmAuditDue: () => Boolean(warm?.due()),
+    warmAuditDelay: () => warm?.delay() ?? WARM_AUDIT_MS,
+    /** One background slice. Caller serializes slices with ordinary storage jobs. */
+    async auditWarm(task: SessionTask): Promise<boolean> {
+      try {
+        if (!warm || !openedView) return true;
+        if (forceFullRead) {
+          const rows = await load(task);
+          for (const row of rows) row.bytes.fill(0);
+          return true;
+        }
+        const checked = await warm.check(db!, task);
+        await verify(task, counterPayload(scope, checked.counter), checked.counter.mac);
+        if (!equalCounter(scope, checked.counter, openedView.counter)) {
+          forceFullRead = true;
+          const rows = await load(task);
+          for (const row of rows) row.bytes.fill(0);
+          return true;
+        }
+        if (!checked.shapeMatches) corrupt('Warm content shape changed.');
+        return await warm.audit(db!, task);
+      } catch (cause) {
+        clearView();
+        throw cause;
+      }
+    },
     /** Internal applying-owner boundary. This predecessor instance must be disposed after success. */
     async rotate(task: SessionTask, next: ContentRotation) {
       try {
@@ -597,6 +758,8 @@ export const createContentOwner = (
     compact: async (task: SessionTask, checkJournal: () => void) => {
       const began = performance.now();
       try {
+        // Compaction owns an independent exact census; its row deletions invalidate warm shapes.
+        warm = undefined;
         return await compactContent(task, {
           scope,
           generation,
@@ -608,6 +771,7 @@ export const createContentOwner = (
           checkJournal,
         });
       } finally {
+        warm = undefined;
         measureLedger('compaction', began);
       }
     },

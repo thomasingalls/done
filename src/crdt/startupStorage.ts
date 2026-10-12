@@ -112,6 +112,53 @@ export const readScopedRows = (
     ),
   );
 
+/** Same complete scoped inventory as the cursor, bounded before values reach JavaScript. */
+export const readScopedRowsBulk = (
+  task: SessionTask,
+  db: IDBDatabase,
+  store: string,
+  prefix: readonly string[],
+) => {
+  const scope = [...prefix];
+  // An empty array prefix means all array keys; retain the cursor for that uncommon probe.
+  if (!scope.length) return readScopedRows(task, db, store, scope);
+  return task.wait(() =>
+    contentTransaction<{ key: IDBValidKey; value: unknown }[]>(
+      db,
+      task,
+      [store],
+      'readonly',
+      (tx, result, guard) => {
+        // Advance the last STRING, not an appended suffix sentinel: every extension of
+        // scope sorts below this bound, including arbitrarily nested array-valued suffixes.
+        const upper = [...scope];
+        upper[upper.length - 1] += '\0';
+        const range = IDBKeyRange.bound(scope, upper, false, true),
+          entries = tx.objectStore(store),
+          keys = entries.getAllKeys(range, 33),
+          values = entries.getAll(range, 32);
+        let remaining = 2;
+        const read = () =>
+          guard(() => {
+            if (--remaining) return;
+            if (keys.result.length > 32)
+              stopStartup('repair-required', 'too-many-scoped-control-records');
+            if (
+              keys.result.length !== values.result.length ||
+              keys.result.some((key) => !Array.isArray(key) || scope.some((v, i) => key[i] !== v))
+            )
+              stopStartup('repair-required', 'scoped-control-read-mismatch');
+            result(keys.result.map((key, i) => ({ key, value: values.result[i] })));
+          });
+        // Both requests share a native snapshot and settle through contentTransaction.
+        // Never yield, authenticate, or release task ownership inside these callbacks.
+        keys.onsuccess = read;
+        values.onsuccess = read;
+      },
+    ),
+  );
+};
+
 export const journalCount = (
   task: SessionTask,
   prefix: string,

@@ -32,7 +32,8 @@ test('original and joined native custody preserve prior setup, interrupted progr
   const chunk = built.output.find((o) => o.type === 'chunk');
   if (!chunk || chunk.type !== 'chunk') throw Error('Missing custody probe bundle');
   const script = chunk.code;
-  const service = await startService(info.outputPath('service'), undefined, true);
+  // The current activation reader requires the history endpoint supplied by continuation mode.
+  const service = await startService(info.outputPath('service'), undefined, true, true);
   try {
     pair = await pairedEditors(page, browser, true);
     for (const p of [page, pair.second]) {

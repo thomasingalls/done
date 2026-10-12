@@ -1,3 +1,4 @@
+import { authorityClaim, type AccountAuthorityRows } from './accountAuthorityInventory';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import {
   captureHandoffHistory,
@@ -266,10 +267,33 @@ function laterCertification(marker: Extract<JoinedRecord, { v: 2 }>) {
 }
 export async function readJoinedAccount(task: SessionTask, slotId: string, code: string) {
   const claim = await readLocalClaim(task, slotId);
+  return authenticateJoinedAccountInventory(
+    task,
+    slotId,
+    code,
+    claim,
+    (await slotCustodyRows(task, slotId)) ?? [],
+  );
+}
+/** Internal owner check: authenticate the exact snapshot retained for unchanged-authority reuse. */
+export function authenticateJoinedAccountRows(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  rows: AccountAuthorityRows,
+) {
+  return authenticateJoinedAccountInventory(task, slotId, code, authorityClaim(rows, slotId), rows);
+}
+async function authenticateJoinedAccountInventory(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  claim: Awaited<ReturnType<typeof readLocalClaim>>,
+  rows: AccountAuthorityRows,
+) {
   if (!claim || claim.stage !== 'ready') throw Error('Certified device needs ready custody');
   await verifyLocalClaim(task, claim, code);
-  const scope = claimScope(claim),
-    rows = (await slotCustodyRows(task, slotId)) ?? [];
+  const scope = claimScope(claim);
   const record = parseRecord(
     rows.find((r) => indexedDB.cmp(r.key, recordKey(scope)) === 0)?.value,
     scope,

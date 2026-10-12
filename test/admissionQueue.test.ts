@@ -6,6 +6,8 @@ import {
   AdmissionError,
   MAX_PENDING_BYTES,
   type AdmissionOptions,
+  type OwnedPreparedReceiveQueue,
+  type PreparedReceiveFinish,
 } from '../src/crdt/admissionQueue';
 import type { JournalSession, JournalRecovery } from '../src/crdt/custody';
 import type { Bytes } from '../src/crdt/custodyCrypto';
@@ -59,7 +61,7 @@ const remote = (
 const fixture = async (
   prepare: PrepareIntent = append,
   recovery?: JournalRecovery,
-  options: Pick<AdmissionOptions, 'flushBatch'> = {},
+  options: Pick<AdmissionOptions, 'flushBatch' | 'backgroundFlush' | 'publishReceivePage'> = {},
 ) => {
   const abort = new AbortController(),
     disk: Bytes[] = [],
@@ -120,12 +122,20 @@ const fixture = async (
       abort.abort();
     },
   } as unknown as JournalSession;
-  const owner = await createAdmissionOwner(carrier, {
-    prepare,
-    validateReceive: () => {},
-    ...options,
-  });
+  let prepared!: OwnedPreparedReceiveQueue;
+  const owner = await createAdmissionOwner(
+    carrier,
+    {
+      prepare,
+      validateReceive: () => {},
+      ...options,
+    },
+    (_receive, prepare) => {
+      prepared = prepare;
+    },
+  );
   return {
+    prepared,
     owner,
     disk,
     wal,
@@ -695,56 +705,59 @@ describe('automatic owned content maintenance', () => {
   );
 });
 
-it('generated flush/idle schedules preserve every admitted input and bound maintenance attempts', async () => {
-  vi.useFakeTimers();
-  try {
-    await fc.assert(
-      fc.asyncProperty(
-        fc.array(
-          fc.record({
-            count: fc.integer({ min: 1, max: 70 }),
-            idle: fc.integer({ min: 0, max: 1100 }),
-            flush: fc.boolean(),
-          }),
-          { minLength: 1, maxLength: 5 },
-        ),
-        async (groups) => {
-          const f = await fixture();
-          const compact = vi.fn(async () => ({
-            status: 'compacted' as const,
-            removed: [],
-            storeId: 'store',
-            generation: 1,
-            stateSequence: 129,
-          }));
-          f.carrier.compactContent = compact as JournalSession['compactContent'];
-          let count = 0;
-          try {
-            for (const group of groups) {
-              for (let i = 0; i < group.count; i++) {
-                await f.owner.submit(intent('x')).accepted;
-                count++;
+it.each([false, true])(
+  'generated flush/idle schedules preserve every admitted input and bound maintenance attempts, background %s',
+  async (background) => {
+    vi.useFakeTimers();
+    try {
+      await fc.assert(
+        fc.asyncProperty(
+          fc.array(
+            fc.record({
+              count: fc.integer({ min: 1, max: 70 }),
+              idle: fc.integer({ min: 0, max: 1100 }),
+              flush: fc.boolean(),
+            }),
+            { minLength: 1, maxLength: 5 },
+          ),
+          async (groups) => {
+            const f = await fixture(append, undefined, background ? { backgroundFlush: true } : {});
+            const compact = vi.fn(async () => ({
+              status: 'compacted' as const,
+              removed: [],
+              storeId: 'store',
+              generation: 1,
+              stateSequence: 129,
+            }));
+            f.carrier.compactContent = compact as JournalSession['compactContent'];
+            let count = 0;
+            try {
+              for (const group of groups) {
+                for (let i = 0; i < group.count; i++) {
+                  await f.owner.submit(intent('x')).accepted;
+                  count++;
+                }
+                if (group.flush) await f.owner.whenDurable();
+                await vi.advanceTimersByTimeAsync(group.idle);
+                expect(view(f.owner.snapshot())).toBe('x'.repeat(count));
+                expect(compact.mock.calls.length).toBeLessThanOrEqual(Math.floor(count / 128));
               }
-              if (group.flush) await f.owner.whenDurable();
-              await vi.advanceTimersByTimeAsync(group.idle);
-              expect(view(f.owner.snapshot())).toBe('x'.repeat(count));
-              expect(compact.mock.calls.length).toBeLessThanOrEqual(Math.floor(count / 128));
+              await f.owner.whenDurable();
+              await vi.advanceTimersByTimeAsync(1000);
+              if (count >= 128) expect(compact).toHaveBeenCalled();
+              expect(f.owner.status.state).toBe('active');
+            } finally {
+              await f.owner.close();
             }
-            await f.owner.whenDurable();
-            await vi.advanceTimersByTimeAsync(1000);
-            if (count >= 128) expect(compact).toHaveBeenCalled();
-            expect(f.owner.status.state).toBe('active');
-          } finally {
-            await f.owner.close();
-          }
-        },
-      ),
-      { seed: 120916, numRuns: 24 },
-    );
-  } finally {
-    vi.useRealTimers();
-  }
-});
+          },
+        ),
+        { seed: 120916, numRuns: 24 },
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  },
+);
 
 it('80 generated preparation traces preserve the accepted basis through retry discard and remote delivery', async () => {
   await fc.assert(
@@ -928,4 +941,570 @@ it('locking before a batched flush retains the journal for cold recovery and can
     await f.owner.close();
     vi.useRealTimers();
   }
+});
+
+it.each([false, true])(
+  'timed flush overlap %s preserves immediate journal admission and its suffix',
+  async (background) => {
+    vi.useFakeTimers();
+    const f = await fixture(append, undefined, background ? { backgroundFlush: true } : {});
+    const gate = f.gateFlush();
+    try {
+      await f.owner.submit(intent('A')).accepted;
+      await vi.advanceTimersByTimeAsync(250);
+      const b = f.owner.submit(intent('B'));
+      expect(view(f.owner.snapshot())).toBe(background ? 'AB' : 'A');
+      expect(f.wal.length).toBe(background ? 2 : 1);
+      expect(f.owner.status.durable).toBe(false);
+      gate.resolve();
+      await vi.advanceTimersByTimeAsync(0);
+      await b.accepted;
+      expect(f.disk).toHaveLength(1);
+      expect(f.wal).toHaveLength(1);
+      expect(f.owner.status.durable).toBe(false);
+      await f.owner.whenDurable();
+      expect(f.disk).toHaveLength(2);
+      expect(f.wal).toHaveLength(0);
+      expect(f.owner.status.durable).toBe(true);
+    } finally {
+      gate.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  },
+);
+
+it.each(['barrier', 'remote'] as const)(
+  'a %s behind a timed flush fences later local inputs',
+  async (kind) => {
+    vi.useFakeTimers();
+    const prepared: string[] = [];
+    const f = await fixture(
+      (d, i) => {
+        prepared.push(text(i));
+        append(d, i, 16384);
+      },
+      undefined,
+      { backgroundFlush: true },
+    );
+    const gate = f.gateFlush();
+    try {
+      await f.owner.submit(intent('A')).accepted;
+      await vi.advanceTimersByTimeAsync(250);
+      await f.owner.submit(intent('B')).accepted;
+      const fence =
+        kind === 'barrier'
+          ? f.owner.whenDurable()
+          : f.owner.receive(remote(f.owner.snapshot())).accepted;
+      const c = f.owner.submit(intent('C'));
+      expect(prepared).toEqual(['A', 'B']);
+      expect(view(f.owner.snapshot())).toBe('AB');
+      gate.resolve();
+      await Promise.all([fence, c.accepted]);
+      expect(view(f.owner.snapshot())).toBe(kind === 'barrier' ? 'ABC' : 'RABC');
+      expect(f.calls.indexOf('flush-complete')).toBeLessThan(f.calls.lastIndexOf('journal'));
+    } finally {
+      gate.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  },
+);
+
+it.each([false, true])(
+  'journal refusal behind a timed flush waits for storage; failure %s retains the suffix',
+  async (fail) => {
+    vi.useFakeTimers();
+    const f = await fixture(append, undefined, { backgroundFlush: true });
+    const gate = f.gateFlush(),
+      content = f.gateContent();
+    try {
+      await f.owner.submit(intent('A')).accepted;
+      await vi.advanceTimersByTimeAsync(250);
+      await f.owner.submit(intent('B')).accepted;
+      f.refuse();
+      const c = f.owner.submit(intent('C'));
+      f.allow();
+      const d = f.owner.submit(intent('D'));
+      expect(view(f.owner.snapshot())).toBe('AB');
+      expect(f.calls).not.toContain('content-start');
+      if (fail) f.failFlush();
+      gate.resolve();
+      await vi.advanceTimersByTimeAsync(0);
+      if (fail) {
+        expect(f.owner.status.state).toBe('blocked');
+        expect(f.wal).toHaveLength(2);
+        expect(f.calls).not.toContain('content-start');
+        f.owner.retry();
+        await vi.advanceTimersByTimeAsync(0);
+      }
+      expect(f.calls).toContain('content-start');
+      expect(view(f.owner.snapshot())).toBe('AB');
+      content.resolve();
+      await Promise.all([c.accepted, d.accepted]);
+      expect(view(f.owner.snapshot())).toBe('ABCD');
+      expect(f.wal).toHaveLength(1);
+      await f.owner.whenDurable();
+      expect(f.disk).toHaveLength(4);
+    } finally {
+      gate.resolve();
+      content.resolve();
+      await f.owner.close();
+      vi.useRealTimers();
+    }
+  },
+);
+
+it('a failed background flush blocks pending barriers and retains acknowledged journal inputs for recovery', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, { backgroundFlush: true });
+  const gate = f.gateFlush();
+  try {
+    await f.owner.submit(intent('A')).accepted;
+    await vi.advanceTimersByTimeAsync(250);
+    await f.owner.submit(intent('B')).accepted;
+    const refusal = expect(f.owner.whenDurable()).rejects.toThrow('flush failure');
+    f.failFlush();
+    gate.resolve();
+    await vi.advanceTimersByTimeAsync(0);
+    await refusal;
+    expect(f.owner.status.state).toBe('blocked');
+    expect(f.wal).toHaveLength(2);
+    expect(view(f.owner.snapshot())).toBe('AB');
+    const recovered = await fixture(append, await f.carrier.loadRecovery());
+    expect(view(recovered.owner.snapshot())).toBe('AB');
+    await recovered.owner.close();
+    f.owner.retry();
+    await f.owner.whenDurable();
+    expect(f.owner.status.durable).toBe(true);
+  } finally {
+    gate.resolve();
+    await f.owner.close();
+    vi.useRealTimers();
+  }
+});
+
+it('a background flush preserves the next batch deadline without overlapping copies', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, {
+    backgroundFlush: true,
+    flushBatch: { quietMs: 300, maxMs: 1000 },
+  });
+  const gate = f.gateFlush();
+  try {
+    await f.owner.submit(intent('A')).accepted;
+    await vi.advanceTimersByTimeAsync(300);
+    await f.owner.submit(intent('B')).accepted;
+    await vi.advanceTimersByTimeAsync(100);
+    gate.resolve();
+    await vi.advanceTimersByTimeAsync(0);
+    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(1);
+    await vi.advanceTimersByTimeAsync(199);
+    expect(f.wal).toHaveLength(1);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(f.calls.filter((c) => c === 'flush-start')).toHaveLength(2);
+    expect(f.owner.status.durable).toBe(true);
+  } finally {
+    gate.resolve();
+    await f.owner.close();
+    vi.useRealTimers();
+  }
+});
+
+it('close drains the background copy and retains its newer journal suffix without late publication', async () => {
+  vi.useFakeTimers();
+  const f = await fixture(append, undefined, { backgroundFlush: true });
+  const gate = f.gateFlush();
+  try {
+    await f.owner.submit(intent('A')).accepted;
+    await vi.advanceTimersByTimeAsync(250);
+    await f.owner.submit(intent('B')).accepted;
+    let closed = false;
+    const closing = f.owner.close().then(() => {
+      closed = true;
+    });
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(closed).toBe(false);
+    expect(f.owner.status.state).toBe('closing');
+    gate.resolve();
+    await closing;
+    expect(f.wal).toHaveLength(1);
+    const recovered = await fixture(append, await f.carrier.loadRecovery());
+    expect(view(recovered.owner.snapshot())).toBe('AB');
+    await recovered.owner.close();
+  } finally {
+    gate.resolve();
+    await f.owner.close();
+    vi.useRealTimers();
+  }
+});
+
+describe('prepared owned remote handoff', () => {
+  it('journals during preparation, then applies original frames to the current document after durable storage', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      begun = wait();
+    const update = remote();
+    const work = f.prepared(update, async (input, stage) => {
+      begun.resolve();
+      await gate.promise;
+      f.disk.push(input.slice());
+      stage([input], async (apply) => {
+        apply();
+      });
+      return 7;
+    });
+    await begun.promise;
+    expect(f.owner.status.durable).toBe(false);
+    await f.owner.submit(intent('LOCAL')).accepted;
+    expect(view(f.owner.snapshot())).toBe('LOCAL');
+    expect(f.wal).toHaveLength(1);
+    let durable = false;
+    const barrier = f.owner.whenDurable().then(() => {
+      durable = true;
+    });
+    await Promise.resolve();
+    expect(durable).toBe(false);
+    gate.resolve();
+    expect(await work).toBe(7);
+    await barrier;
+    expect(view(f.owner.snapshot())).toContain('LOCAL');
+    expect(view(f.owner.snapshot())).toContain('R');
+    const reopened = await fixture(append, {
+      records: f.disk.map((bytes, i) => ({
+        kind: 'update',
+        gen: 1,
+        seq: i + 1,
+        bytes: bytes.slice(),
+      })),
+      journal: [],
+    });
+    expect(view(reopened.owner.snapshot())).toBe(view(f.owner.snapshot()));
+    await reopened.owner.close();
+    await f.owner.close();
+  });
+  it.each(['retry', 'discard'] as const)(
+    'a durable proposal cannot bypass a refused local head: %s',
+    async (action) => {
+      const f = await fixture(),
+        gate = wait(),
+        staged = wait();
+      const work = f.prepared(remote(), async (input, stage) => {
+        await gate.promise;
+        f.disk.push(input.slice());
+        stage([input], async (apply) => {
+          apply();
+        });
+        staged.resolve();
+      });
+      void work.catch(() => {});
+      f.refuse();
+      f.failContent();
+      const local = f.owner.submit(intent('L'));
+      void local.accepted.catch(() => {});
+      await until(() => f.owner.status.state === 'blocked');
+      gate.resolve();
+      await staged.promise;
+      await until(() => f.owner.status.pendingItems === 2);
+      expect(view(f.owner.snapshot())).toBe('');
+      if (action === 'retry') {
+        f.owner.retry();
+        await local.accepted;
+        await work;
+        expect(view(f.owner.snapshot())).toContain('L');
+        expect(view(f.owner.snapshot())).toContain('R');
+      } else {
+        f.owner.discardPending();
+        await expect(work).rejects.toMatchObject({ code: 'inactive-session' });
+        await until(() => ['closed', 'failed'].includes(f.owner.status.state));
+        expect(f.disk).toHaveLength(1);
+      }
+      await f.owner.close();
+    },
+  );
+  it('releases preparation before a forced local write and final recheck, without deadlocking', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      write = f.gateContent();
+    const work = f.prepared(remote(), async (input, stage) => {
+      await gate.promise;
+      f.disk.push(input.slice());
+      stage([input], async (apply) => {
+        apply();
+      });
+      write.resolve();
+    });
+    f.refuse();
+    const local = f.owner.submit(intent('L'));
+    await until(() => f.calls.includes('content-start'));
+    gate.resolve();
+    await local.accepted;
+    await work;
+    expect(view(f.owner.snapshot()).length).toBe(2);
+    await f.owner.close();
+  });
+  it('refuses a stale final authority check and closes for cold replay', async () => {
+    const f = await fixture();
+    const work = f.prepared(remote(), async (input, stage) => {
+      f.disk.push(input.slice());
+      stage([input], async () => {
+        throw Error('authority changed');
+      });
+    });
+    await expect(work).rejects.toThrow();
+    await f.owner.close();
+    expect(f.disk).toHaveLength(1);
+  });
+  it('close drains pending preparation and never applies or retains late buffers', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      begun = wait();
+    let owned!: Bytes;
+    const work = f.prepared(remote(), async (input, stage) => {
+      owned = input;
+      begun.resolve();
+      await gate.promise;
+      stage([input], async (apply) => {
+        apply();
+      });
+    });
+    void work.catch(() => {});
+    await begun.promise;
+    let closed = false;
+    const closing = f.owner.close().then(() => {
+      closed = true;
+    });
+    await Promise.resolve();
+    expect(closed).toBe(false);
+    gate.resolve();
+    await closing;
+    await expect(work).rejects.toThrow();
+    expect(owned.every((b) => b === 0)).toBe(true);
+  });
+  it('bounds concurrent proposals and erases detached inputs on invalid verification', async () => {
+    const f = await fixture(),
+      gate = wait(),
+      begun = wait();
+    let owned!: Bytes;
+    const bytes = remote();
+    const work = f.prepared(bytes, async (input) => {
+      owned = input;
+      begun.resolve();
+      await gate.promise;
+      throw new AdmissionError('receive-refused', 'bad signature');
+    });
+    bytes.fill(0);
+    await begun.promise;
+    expect(owned.some((b) => b !== 0)).toBe(true);
+    expect(() => f.prepared(remote(), async () => {})).toThrow(/pending/);
+    gate.resolve();
+    await expect(work).rejects.toMatchObject({ code: 'receive-refused' });
+    expect(owned.every((b) => b === 0)).toBe(true);
+    await f.owner.submit(intent('L')).accepted;
+    await f.owner.close();
+  });
+});
+
+it('a page arriving after local pressure is prepared but its final apply waits for that local head', async () => {
+  const f = await fixture();
+  try {
+    f.refuse();
+    f.failContent();
+    const local = f.owner.submit(intent('L'));
+    void local.accepted.catch(() => {});
+    await until(() => f.owner.status.state === 'blocked');
+    const received = f.prepared(remote(), async (input, stage) => {
+      f.disk.push(input.slice());
+      stage([input], async (apply) => {
+        apply();
+      });
+    });
+    await until(() => f.owner.status.pendingItems === 2);
+    expect(view(f.owner.snapshot())).toBe('');
+    f.owner.retry();
+    await local.accepted;
+    await received;
+    expect(view(f.owner.snapshot())).toContain('L');
+    expect(view(f.owner.snapshot())).toContain('R');
+  } finally {
+    await f.owner.close();
+  }
+});
+
+describe('immediate prepared final application', () => {
+  const handoff = (
+    queued: (apply: () => void) => Promise<void>,
+    immediate: NonNullable<PreparedReceiveFinish['immediate']>,
+  ) => Object.assign(queued, { immediate });
+  it('lets keys journal during the full check, then applies synchronously without a second check', async () => {
+    const f = await fixture(),
+      read = wait(),
+      begun = wait();
+    const fallback = vi.fn(async (apply: () => void) => {
+      apply();
+    });
+    const work = f.prepared(remote(), async (input, stage) => {
+      f.disk.push(input.slice());
+      stage(
+        [input],
+        handoff(fallback, async (attempt) => {
+          begun.resolve();
+          await read.promise;
+          return attempt((apply) => {
+            apply();
+            expect(view(f.owner.snapshot())).toContain('R');
+            return true;
+          });
+        }),
+      );
+    });
+    await begun.promise;
+    await f.owner.submit(intent('LOCAL')).accepted;
+    expect(f.wal).toHaveLength(1);
+    expect(view(f.owner.snapshot())).toBe('LOCAL');
+    read.resolve();
+    await work;
+    expect(view(f.owner.snapshot())).toContain('LOCAL');
+    expect(fallback).not.toHaveBeenCalled();
+    await f.owner.close();
+  });
+  it.each(['activity', 'forced-local'] as const)(
+    'uses one FIFO fallback after an early-check %s miss',
+    async (reason) => {
+      const f = await fixture(),
+        read = wait(),
+        begun = wait();
+      const fallback = vi.fn(async (apply: () => void) => {
+        apply();
+      });
+      const early = vi.fn(
+        async (attempt: Parameters<NonNullable<PreparedReceiveFinish['immediate']>>[0]) => {
+          begun.resolve();
+          await read.promise;
+          return attempt((apply) => {
+            if (reason === 'activity') return false;
+            apply();
+            return true;
+          });
+        },
+      );
+      const work = f.prepared(remote(), async (input, stage) => {
+        f.disk.push(input.slice());
+        stage([input], handoff(fallback, early));
+      });
+      await begun.promise;
+      const content = reason === 'forced-local' ? f.gateContent() : undefined;
+      if (content) f.refuse();
+      const local = f.owner.submit(intent('L'));
+      read.resolve();
+      if (content) {
+        await until(() => f.owner.status.pendingItems === 2);
+        expect(view(f.owner.snapshot())).toBe('');
+        content.resolve();
+      }
+      await local.accepted;
+      await work;
+      expect(early).toHaveBeenCalledOnce();
+      expect(fallback).toHaveBeenCalledOnce();
+      expect(view(f.owner.snapshot())).toContain('L');
+      expect(view(f.owner.snapshot())).toContain('R');
+      await f.owner.close();
+    },
+  );
+  it.each(['input', 'close'] as const)(
+    'protects grouped frames from reentrant %s',
+    async (action) => {
+      const f = await fixture();
+      const first = remote(),
+        second = remote(first, (d) => d.getText('text').insert(1, 'S'));
+      let local: ReturnType<typeof f.owner.submit> | undefined;
+      const seen: string[] = [];
+      f.owner.subscribe((event) => {
+        seen.push(event.source);
+        if (event.source === 'remote' && seen.length === 1) {
+          if (action === 'input') local = f.owner.submit(intent('L'));
+          else void f.owner.close();
+        }
+      });
+      const fallback = vi.fn(async (apply: () => void) => {
+        apply();
+      });
+      const work = f.prepared(first, async (_input, stage) => {
+        f.disk.push(first.slice(), second.slice());
+        stage(
+          [first, second],
+          handoff(fallback, async (attempt) =>
+            attempt((apply) => {
+              apply();
+              return true;
+            }),
+          ),
+        );
+      });
+      if (action === 'input') {
+        await work;
+        await local!.accepted;
+        expect(seen).toEqual(['remote', 'remote', 'local']);
+        expect(view(f.owner.snapshot())).toContain('RS');
+      } else {
+        await expect(work).rejects.toThrow();
+        expect(seen).toEqual(['remote']);
+      }
+      expect(fallback).not.toHaveBeenCalled();
+      await f.owner.close();
+    },
+  );
+  it('retains pending dependencies in original frame order and publishes a grouped page once', async () => {
+    const f = await fixture(append, undefined, { publishReceivePage: true });
+    const first = remote(),
+      second = remote(first, (d) => d.getText('text').insert(1, 'S'));
+    const events: { complete: boolean; text: string }[] = [];
+    f.owner.subscribe((e) =>
+      events.push({ complete: e.publicationComplete !== false, text: view(f.owner.snapshot()) }),
+    );
+    await f.prepared(second, async (_input, stage) => {
+      f.disk.push(second.slice(), first.slice());
+      stage(
+        [second, first],
+        handoff(
+          async () => {
+            throw Error('unexpected fallback');
+          },
+          async (attempt) =>
+            attempt((apply) => {
+              apply();
+              return true;
+            }),
+        ),
+      );
+    });
+    expect(events).toEqual([
+      { complete: false, text: '' },
+      { complete: true, text: 'RS' },
+    ]);
+    const reopened = await fixture(append, await f.carrier.loadRecovery());
+    expect(view(reopened.owner.snapshot())).toBe('RS');
+    await reopened.owner.close();
+    await f.owner.close();
+  });
+  it('an early verifier failure closes for replay without the fallback', async () => {
+    const f = await fixture();
+    const fallback = vi.fn(async (apply: () => void) => {
+      apply();
+    });
+    await expect(
+      f.prepared(remote(), async (input, stage) => {
+        f.disk.push(input.slice());
+        stage(
+          [input],
+          handoff(fallback, async () => {
+            throw Error('bad inventory');
+          }),
+        );
+      }),
+    ).rejects.toThrow('bad inventory');
+    expect(fallback).not.toHaveBeenCalled();
+    await f.owner.close();
+    expect(f.disk).toHaveLength(1);
+  });
 });

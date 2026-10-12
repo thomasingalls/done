@@ -13222,3 +13222,549 @@ then prepare/merge the ol-infra pin PR and verify rollout plus actual devices. N
 the registry or deployed at this checkpoint. CPU-4x input and cold-open budgets remain unmet;
 physical-phone performance, local history retention and remaining background/UI work stay open.
 Release validation remains paused and `docs/progress.md` is unchanged.
+
+
+### Account performance — exclusive warm loads and bounded rolling integrity checks
+
+**Date:** 2026-10-12 · **Commit:** working tree on merged `24481b82` · **Stage:** bounded repair
+
+**Exit.** The exclusive v9 Account owner reuses authenticated rows after a counter/count/first/last
+key check and extends them only after owned commits. Each load checks a bounded old-row slice;
+256 appended rows or five minutes schedules completion even during activity. Visibility/resume/
+reacquisition require full reads. Generic Local/shared owners keep full reads. The operator's
+accepted old-row corruption detection window is recorded; there is no stored-format change.
+The reference override remains available.
+
+**Evidence.** [Three CPU-4x matched pairs](./performance-experiments/2026-10-12-warm-ledger/README.md)
+reduce aggregate long-task duration 39.4%, maximum 170→131 ms. Each passes full block undo/redo
+and offline replay. Worst frame samples do not improve, and about 92 MB of detached copies remain
+per 120-key session. Counts/bounds grow with row count. Forty-two focused units, native warm/resume,
+compaction/replay, audit-refusal and reader-serialization checks, and the packaged two-device
+text/undo/offline journey pass. Build/type, pinned Yjs, bundle/origin and scoped lint/format pass.
+The [checks record](./performance-experiments/2026-10-12-warm-ledger/checks.md) gives exact commands.
+
+**Remaining.** Changes are uncommitted and unpublished. Remaining copies/queueing, accepted local
+history growth, current-phone evidence and latency budgets are unresolved. The
+[retention note](./account-local-retention-design.md) is design only, identifying baseline, journal,
+reader fence and crash-safe installation decisions before any deletion. Approved duplicate-docs,
+source-archive and synthetic-profile cleanup is complete with fixtures/evidence retained. No
+release campaign was resumed; `docs/progress.md` is unchanged.
+
+
+### Account performance — private verification ownership
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `e88c19a5` · **Stage:** bounded repair
+
+**Exit.** The warm-ledger repair and its evidence are committed signed as **`e88c19a5`**.
+The next slice transfers verified candidates/results into private ownership, reusing only byte-equal
+prefix rows and erasing only buffers no longer retained. Storage load callers and outward projections
+still receive detached bytes. Failure, invalidation and overlapping-proof guards remain; the generic
+verifier keeps its cloning default. There is no format, authority, journal or audit-policy change.
+
+**Evidence.** [Three CPU-4x matched pairs](./performance-experiments/2026-10-12-owned-verification/README.md)
+on the retained 120-card/600+ received-position fixture reduce recorded copies **92.07→33.16 MB**
+per 120-key session (**64.0%**) and aggregate long-task time **2,111→818 ms** (**61.3%**).
+Maximum long task falls **104→60 ms**. Every run passes full undo/redo and offline reopening.
+Frame tails remain mixed, with candidate frame p95 **19.8–45.8 ms** and maximum **117.6 ms**;
+this is not a phone or latency-budget acceptance. Thirty-four focused units, four existing native
+checks and the ordinary packaged two-device text/undo/offline journey pass. Production build/type,
+pinned Yjs, budget/origin and scoped lint/format pass. Ownership transfer is now the incremental
+Account default with an explicit cloned-reference override.
+
+**Remaining.** This new slice is uncommitted and unpublished. The caller-detached storage load copy
+still accounts for approximately 33 MB/session; equality scans and graph/container traversal also
+remain history-dependent. The [ownership contract](./account-verification-ownership.md) records
+that boundary. Local retention remains design-only; online catch-up, physical-phone performance,
+remaining input tails and arbitrary history sizes were not requalified. Release validation remains
+paused and `docs/progress.md` is unchanged.
+
+
+### Account performance — detached storage selections
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `f4f01228` · **Stage:** bounded repair
+
+**Exit.** The previous verifier-ownership slice is committed signed as **`f4f01228`**. Journal
+source-presence and selected sync/status operations now obtain detached answers through a private,
+synchronous, expiring carrier lease. The lease exposes no rows or buffers. Counter/shape/audit and
+semantic checks still precede every selection; the verifier must match that exact live identity.
+Ordinary full loads, cold recovery, compaction and speculative record consumers retain caller-owned
+bytes. No format, journal, authority-check placement or audit-window change.
+
+**Evidence.** [Three CPU-4x matched pairs](./performance-experiments/2026-10-12-storage-selection/README.md)
+reduce recorded copies **33.16 MB→29.4 KB per 120 keys (99.91%)**. All sessions retain nine flushes
+and the same physical audit work, and pass full undo/redo plus offline replay. The reference has
+13 tasks at/above 50 ms; none occur in the three candidate sessions. This threshold result is not
+zero CPU work. Typical input does not improve: median handler **5.8→6.1 ms**, median frame p95
+**36.2→38.8 ms**, within the predeclared 10% limits; worst candidate frame **115.7 ms**. Forty-one
+focused units, four final native checks and the ordinary packaged two-device text/undo/offline
+journey pass, as do build/type/pinned-Yjs/budget/origin and scoped lint/format checks.
+
+**Remaining.** The new selection path is the branch default with explicit full-load rollback,
+but this slice is uncommitted/unpublished. Input queueing behind async flushes, genuine full-record
+consumers, semantic/container history growth and physical-phone evidence remain. The
+[selection contract](./account-storage-selection.md) records isolation and scope. Local retention
+remains design-only. Release validation stays paused and `docs/progress.md` is unchanged.
+
+## 2026-10-12 — Timed Account flushes no longer fence ordinary journal admission
+
+**Request/boundary.** The storage-selection repair is signed as **`7b088f80`**. The next
+slice profiles and removes input queue waits behind asynchronous timed journal copies, preserving
+journal-before-apply, undo, explicit durability barriers and recovery. Local retention stays
+design-only and release validation remains paused.
+
+**Implementation.** Account timer flushes own a separate tracked flight; only synchronous journal
+admission overlaps it. Foreground jobs remain FIFO. Remote receipt handoffs, explicit barriers and
+journal-refused forced writes wait for the copy; later inputs remain behind them. Revision/byte
+accounting preserves newer journal entries and their next batch deadline. Failure blocks/retries
+normally and close drains both flights. Generic Local timer behavior and all stored formats stay
+unchanged. `VITE_ACCOUNT_BACKGROUND_FLUSH=0` retains the reference barrier path.
+
+**Evidence.** [The packet](./performance-experiments/2026-10-12-journal-flush-admission/README.md)
+first captures 161.8 of 163.7 ms of meaningful baseline input waiting inside flush spans. Three
+serial matched CPU-4x pairs then reduce total local queue wait **630.9→7.9 ms (98.7%)** on the
+120-card/600+ received-position fixture. Worst visible frame falls **100.2→40.3 ms**, median
+session frame p95 **22.6→20.3 ms**, handler median **5.7→5.6 ms**. Nine flushes and the same
+126 physical-audit rows remain in every run. No >=50 ms task occurs in either comparison arm;
+this is elapsed-wait removal, not elimination of storage CPU. Every run passes full undo/redo
+and cold replay.
+
+**Checks/status.** 264 focused unit tests pass (one existing skip), including 24 generated
+flush/idle histories in each mode. Four native gates prove concurrent journal suffix recovery
+before commit and after commit/before cleanup, with and without renderer death. The final default
+passes those four plus the existing own-submit/compaction/replay check, and the packaged two-device
+text/undo/offline-recovery journey. Production build, TypeScript, pinned Yjs, JS budget and origin
+isolation pass. The repair is enabled locally, uncommitted and unpublished. Explicit durability
+and receive jobs still fence input, the 16 ms p95 budget remains unmet, and current-path phone
+and online performance are unmeasured. [Contract](./account-background-journal-flush.md).
+`docs/progress.md` remains unchanged.
+
+
+## 2026-10-12 — Online Account typing and individual Goals measurement
+
+**Commit/boundary.** The timed journal-flush repair is committed signed as **`9ba0ae63`**.
+The next [measurement packet](./performance-experiments/2026-10-12-online-typing/README.md)
+adds no runtime changes. Release validation remains paused; nothing is pushed or published.
+
+**Exit.** Sixteen fresh unprofiled sessions compare offline with two-way online typing at
+CPU-4x, using 120 cards / 600+ received positions, 120 keys, 75 ms per-request proxy delay
+and ten peer edits. Targets are a 615-character card and synthetic Goals of 3 / 12 / 64 KB;
+3 KB reflects the user's reported current size. All sessions pass full-text admission,
+last-key undo/redo, peer preservation, export convergence and cold offline replay. Three
+separate diagnostic profiles also pass. One mismatched seed fails before timing and is retained;
+the replacement contemporaneous pair and its derived seeds all pass. No timing run is discarded.
+
+**Findings.** Frame p95 is **20–30 ms offline, 431–510 ms online**. Handler medians change
+only slightly within each size. Online input waiting sums **3.81–4.91 s per session**;
+**90–94%** overlaps remote-admission jobs. Those are dependent elapsed waits, not CPU totals.
+Every online timing request returns HTTP 200. The card diagnostic samples **3.66 s** in
+non-custody byte comparison (mostly ledger checks) and **3.35 s** in custody authentication
+payload encoding. The longest tasks contain those operations. Unprofiled online card sessions
+materialize **82.6–86.2 MB** through full loads and record **154.4–158.1 MB** of instrumented
+record copies despite selective/warm loading. These are not total allocation or physical-I/O counts.
+
+**Goals/next.** Offline Goals planning costs about **2.3 ms/key at both 3 and 12 KB**, rising
+to **2.7 ms at 64 KB**; whole projection rises **1.9→2.7→7.0 ms/key**, only part of which is
+string/diff work. Next recommendation: keep verified sync loads warm through owned reservations
+and private-view reuse, then remove redundant custody re-authentication at unchanged authority
+boundaries, then target Goals planning and projection. Preserve received-dependency durability,
+caller isolation, audits and foreground ordering. This is a proposed sequence, not a new proof
+or implementation. The 16 ms p95 budget remains unmet; real-phone and same-text concurrent editing
+are not measured. These records accompany the measurement commit; local retention remains design-only and
+`docs/progress.md` is unchanged.
+
+## 2026-10-12 — Keep verified sync loads warm through owned reservations
+
+**Boundary.** The preceding online/Goals measurements are committed signed as **`008b2fa9`**.
+This bounded [owned-reservation repair](./performance-experiments/2026-10-12-owned-reservations/README.md)
+changes only `contentStore` at runtime. After its exact reservation transaction completes, the
+exclusive warm owner advances its retained counter without adding rows or changing semantic identity.
+Pre-commit sync loads retain counter authentication, count/end-key checks, rolling audit and semantic
+validation. Caller results remain detached; unknown transitions and resume/reacquisition force full
+reads. Failure clears reuse. No wire, stored format, nonce accounting or admission-order change.
+The earlier incidental full read disappears within the already accepted old-row audit window.
+
+**Checks.** The directed before/after control reproduces three full-store reads on the reference
+and none after repair. Six unit files pass **46 tests**, including 20 small generated reservation /
+abort / erasure histories; four native owner checks pass, including reference-audit refusal,
+serialized readers, compaction and cold continuation. TypeScript, pinned Yjs, ordinary production
+build, JS budget (136.7 kB gzip / 350 kB) and origin isolation pass. Twelve unprofiled paired sessions
+and two separate profiles all preserve text, last-key undo/redo, peer writing, export convergence
+and cold offline replay. The initial missing-metrics setup and test-scaffolding error are retained
+separately; no failed timing run is discarded.
+
+**Measured result.** At CPU-4x / 75 ms request delay / 120 keys, every candidate typing load stays
+warm: full-load plaintext drops to **zero** from 79–122 MB in settled online cases. Active-peer frame
+p95 improves **505–523 → 403–408 ms**. Silent-peer p95 is **21–27 → 22–24 ms**, while background long
+tasks remain. Backlog p95 is mixed: **352–399 → 334–367 ms**; each candidate still has 12/120 keys above
+100 ms. Backlog remains pending during typing, with sending progressing too. Receive status is an
+aggregate and initializes on first online work; its 0→28 value is not 28 new peer positions.
+Candidate long tasks remain **108–182 ms**, and detached record copies remain substantial.
+
+**Next.** Separate profiles identify custody payload encoding (3.71 s active-peer / 4.86 s backlog)
+and ledger byte comparisons (3.45 / 1.02 s) across their typing windows. Proceed to the planned
+unchanged-authority reuse slice with explicit lifetime/invalidation rules. The prospective escalation
+rule is recorded: after those two slices, online/backlog p95 above 50 ms or backlog >5% of keys above
+100 ms triggers prepared remote handoff instead of a third general shrinking pass. The
+[handoff design](./account-prepared-remote-handoff-design.md) accepts the committed-undisplayed-suffix
+argument while preserving final-apply ordering, local refusal, undo, durability and fenced authority
+transitions. Residual splittable receive CPU work needs budgeted yielding. Handoff and local retention
+remain design-only. Nothing is published; release validation stays paused and `docs/progress.md`
+remains unchanged.
+
+## 2026-10-12 — Reuse unchanged Account authority authentication
+
+**Boundary.** The preceding owned-reservation repair is committed signed as **`9bf9f3c6`**.
+The [new repair and evidence](./performance-experiments/2026-10-12-authority-reuse/README.md)
+are local, uncommitted and unpublished. Release validation remains paused.
+
+**Change.** The exclusive v9 owner retains a private positive authentication snapshot of its
+complete scoped custody inventory. Each check still freshly reads and exactly compares the keys
+and values; changed bytes, clear/import interlocks and unexpected authority take the full verifier.
+Only an exact unchanged snapshot skips duplicate inventory reads, factor opening, MAC checks and
+payload encoding. No decrypted keys or caller-owned buffers are retained. Resume, adoption, allowed
+history custody refresh, failure and close invalidate reuse; late verification cannot reinstall it.
+Network logins/grants and their expiration/revocation checks are independent. No format change.
+The [contract](./account-authority-authentication-reuse.md) records those limits and the reference switch.
+
+**Evidence.** Twelve matched CPU-4x sessions preserve text, last-key undo/redo, peer writing, export
+convergence and cold offline replay; every typing response is HTTP 200. Frame p95 is **21 ms** with
+a silent peer (reference **22–23 ms**), **207–211 ms** with active peer edits (reference **390–398 ms**),
+and **137–162 ms** during backlog catch-up (reference **315–324 ms**). Every warmed authority check
+reuses authentication; backlog needs one first authentication. Long tasks are fewer but still reach
+**169 ms**. Candidate copies and completed sync work both increase; totals are not fixed-work costs.
+Two separate diagnostics pass and identify ledger byte equality as the largest remaining sampled
+client category. These are desktop emulation results, not physical-phone or release qualification.
+
+**Checks/next.** 54 focused units, eight native owner checks and three targeted packaged lifecycle
+journeys pass. Initial unit/native probe mistakes are retained. The extra custody fixture's disabled
+history endpoint fails with reuse off too; enabling the current endpoint makes its assertions pass.
+TypeScript, production build, JS budget, pinned Yjs, origin isolation and scoped lint pass.
+Both unprofiled repetitions exceed the predeclared escalation threshold: proceed to
+[prepared remote handoff](./account-prepared-remote-handoff-design.md) with budgeted CPU yielding,
+not another general shrinking pass. That handoff and local retention remain design-only.
+`docs/progress.md` remains unchanged.
+
+## 2026-10-12 — Prepared remote content handoff and budgeted Account work
+
+**Boundary.** Unchanged-authority authentication reuse is committed **signed `08a82089`**.
+This next [implementation and measurement packet](./performance-experiments/2026-10-12-prepared-receive/README.md)
+remain local, uncommitted and unpublished. No release qualification was resumed.
+
+**Change.** One bounded remote content preparation verifies and durably commits on the exclusive
+storage owner while ordinary local edits keep synchronous encrypted journal-before-apply. After
+storage releases, only final promotion joins the editor FIFO: it freshly checks authority, checks
+its captured context/lifetime, and applies original frames to the live canonical document and undo
+history. A local refusal cannot be bypassed. Discard or failed final authority closes for cold replay
+of any durable undisplayed suffix. History installation stays fenced; no stored/wire format changes.
+Account tasks yield on an 8 ms cooperative budget, and large verification comparisons check it every
+64 KiB. This is scheduling cooperation, not a hard task limit or elimination of history growth.
+
+**Evidence.** Two repetitions of silent-peer, active-peer and 600-position-backlog typing at CPU-4x,
+with 75 ms request delay, use the same 120-card/12 KB Goals fixture. Active-peer frame p95 improves
+**147–179 → 60–85 ms**; backlog **133–165 → 98–102 ms**. Silent p95 is broadly unchanged
+(**28–32 → 28–33 ms**). Every final session preserves writing, undo/redo, convergence and offline
+replay, with HTTP 200 responses throughout typing. Backlog keys over 100 ms fall from 7/10 to 5/6
+of 120. Some candidate runs finish fewer receive jobs while typing; no catch-up throughput gain is
+claimed. Long tasks still reach **148 ms**. The >=25% relative improvement criterion is met in both
+active/backlog repetitions; the 50 ms working target and 16 ms TRD target remain unmet.
+
+**Checks/limits.** 277 units pass (one existing skip), seven focused native cases and two packaged
+lifecycle journeys pass. Native tests cover renderer death after receipt commit but before display,
+later journalled edits, pending Yjs structs/deletes, undo, changed custody, and write-permit retention
+through close. A pressure race discovered before final measurement now has a regression; the partial
+pilot is retained and excluded. Probe/test mistakes and their passing repeats remain recorded.
+TypeScript, ordinary build, JS budget, pinned Yjs, origin isolation and scoped lint/format pass.
+
+**Next.** Separate diagnostic profiles identify remaining protocol parsing/authentication bursts,
+synchronous read comparisons, and a still-fenced final apply/authority-check span. Isolate those spans
+before the next repair. Local retention remains design-only. `docs/progress.md` stays unchanged.
+
+### Final-apply and protocol-verification stall attribution — 2026-10-12
+
+**Boundary.** Prepared remote handoff and cooperative Account work are committed **signed
+`02829405`** (signature verified `G`). The initial signer refusal left the index staged; the user's
+approved retry succeeded. This follow-up is investigation only. Runtime, authority, stored formats,
+undo and deployment remain unchanged; release validation remains paused.
+
+Four restored CPU-4x diagnostic sessions separate final handoff's storage-queue acquisition, fresh
+authority inventory read/comparison, canonical apply, live projection check and publication. The two
+sessions without CPU sampling spend 369.8 / 584.5 ms checking authority across 7 / 14 final jobs
+(active peer / backlog), versus 65.2 / 119.7 ms applying/publishing. Fresh read dominates the authority
+span; acquiring the storage queue is at most 1 ms. These are elapsed-time attribution results, not
+CPU costs or an intervention's speedup. Separate sampled sessions corroborate the split.
+
+The longest unsampled tasks are 115–138 ms and overlap repeated admission/certification verification.
+Both sessions make eight full joined-custody reads, from discovery preparation and membership adoption,
+even while ordinary authority checks reuse the positive exact-inventory memo. Each records 80 receipt
+verifications and 16 certification-successor verifications. Instrumented individual parses top out
+at 9.3 / 10.2 ms. The remaining bursts include many parses, canonical encodings and crypto calls inside
+a full proof chain; a single parser or Yjs undo handling is not established as their cause.
+
+All four sessions preserve exact text, undo/redo, peer writing, export convergence and cold offline
+replay, with typing-window completed account requests all HTTP 200. The probe's initial build failed
+on the installed TypeScript version-only API; using the already-installed Babel parser corrected the
+instrumentation before any browser run. Failure and successful build logs are retained. No general
+validation campaign was run. The profiles show the instrumentation itself doing work; its absolute overhead is unmeasured.
+These desktop sessions do not qualify phone latency or release performance.
+
+[Investigation and evidence](./performance-experiments/2026-10-12-final-apply/README.md) recommend
+bounded bulk fresh inventory reads, then cooperative membership proof work and safe transfer of an
+already verified result within one owned discovery/adoption operation. Fresh checks, response signatures,
+expiry/rollback/competing-authority checks, live undo and synchronous final promotion must remain.
+Further queue restructuring must avoid holding storage while waiting behind a forced local write.
+This new evidence packet is local and unpublished; no additional repair was made in this investigation.
+
+### Bounded bulk custody inventory experiment — 2026-10-12
+
+**Boundary.** The preceding stall investigation is committed **signed `902806c9`**. This bounded
+implementation and evidence remain local, uncommitted and unpublished. Release validation stays paused.
+
+**Change.** An opt-in complete bulk reader uses one readonly snapshot, up to 32 values and a 33rd
+key as an overflow sentinel. The prefix interval includes unknown and nested-array suffixes while
+excluding neighboring slots. Fresh open/layout/read/close, exact inventory comparison and full
+authentication on change remain. No format, authority policy, connection cache, final-apply or undo
+change. `VITE_ACCOUNT_BULK_CUSTODY=1` selects the experiment; **the cursor stays default**.
+
+**Evidence and decision.** Two matched repetitions per arm of active-peer and 600-position-backlog
+typing, CPU-4x with 75 ms request delay, fail the predeclared >=20% median read-time improvement
+criterion. Active read medians are 31.0→35.7 / 31.0→30.3 ms; backlog 31.6→40.5 / 29.7→31.1 ms.
+Backlog typing p95 regresses in one repetition and improves in the other; no consistent typing gain
+is established. The follow-up rejects repeated result-getter deserialization as the cause on this
+Chromium. The exact measured source and post-measurement opt-in selector are separately recorded.
+
+**Checks.** All eight sessions preserve writing, undo/redo, convergence and cold replay; completed
+typing-window account requests are HTTP 200. 269 focused units pass (one existing skip), plus five
+native inventory cases and three prepared-receive cases. Checks cover changed/missing/extra records,
+caller isolation, concurrent writes, overflow, abort/drain, version change, crash recovery and final
+authority refusal. TypeScript, scoped lint/format, ordinary build and JS budget pass. Initial
+emulator/observer failures and their corrections are retained in the
+[packet](./performance-experiments/2026-10-12-bulk-custody/README.md).
+
+**Next.** Address the measured repeated membership-proof bursts with cooperative yielding and safe
+verified-result transfer within one owned discovery/adoption operation. Preserve fresh inventory,
+response signatures, expiry/rollback/competing-authority checks and live undo. Further IO work needs
+separate attribution of open/scheduling waits; this experiment does not identify their individual
+costs. Local retention remains design-only; `docs/progress.md` remains unchanged.
+
+### Budgeted membership proofs and private discovery/adoption reuse — 2026-10-12
+
+**Boundary.** The preceding bulk custody experiment is committed **signed `b656553a`** (signature
+verified `G`). This implementation and its [packet](./performance-experiments/2026-10-12-membership-work/README.md)
+remain local, uncommitted and unpublished. Release validation remains paused.
+
+**Change.** Client membership verification uses optional checkpoints with the existing 8 ms cooperative
+budget and owner/context/lifetime checks. Service callers retain normal verification without a
+checkpoint. One private discovery/adoption operation may transfer its verified history after the
+complete fresh custody check, matching captured context/payload, held-authority validation and
+expiry checks. It uses an authenticated startup anchor instead of two extra full custody
+authentications. Public adoption remains independently verified; actual transitions preserve their
+full authenticated custody reads, ledger checks and CAS/readback. No cross-request proof memo,
+stored/wire format, editor, undo or journal-before-apply change.
+
+**Evidence/decision.** One complete unchanged discovery reduces generic signature checks **214→108**,
+receipt checks **20→10**, and extra full joined-custody authentications **2→0** while keeping **three
+fresh authority checks**. Eight matched CPU-4x sessions reduce maximum long tasks **30–53%** in all
+four comparisons. Active-peer typing p95 is **59→47 / 50→52 ms**; backlog **49→75 / 90→87 ms**.
+The first backlog regression does not repeat with reversed run order. The predeclared mechanism,
+maximum-task and no-repeated-p95-regression conditions are met, so the change stays enabled;
+`VITE_ACCOUNT_MEMBERSHIP_WORK=0` retains the reference. Neither the 50 ms working target nor 16 ms TRD
+target is met across conditions. No catch-up throughput or physical-phone gain is claimed.
+
+**Checks.** All eight sessions preserve exact writing, undo/redo, peer text, convergence and cold
+replay, with HTTP 200 throughout completed typing requests. 230 units pass (one existing skip),
+37 focused protocol tests, three native prepared-receive tests, six packaged fault controls and two
+complete-operation diagnostics pass. Changed context/payload/custody, expiry and close refuse private
+reuse; cancellation rejects the full chain and fresh retries work. TypeScript, scoped lint/format,
+ordinary build and JS budgets pass. Harness mistakes and an accidentally broad legacy run are retained;
+the narrowed legacy comparison has the same 15 failures in 20 tests on both baseline and candidate.
+
+**Next.** Fresh final-authority read medians remain **30–46 ms**, apply/publication **7–8 ms**.
+Attribute open/read/close and scheduling waits before another IO or final-fence repair. Keep fresh
+checks and avoid holding storage while waiting behind a forced local write. Local retention remains
+design-only; the other seat's `docs/progress.md` is unchanged.
+
+
+### Fresh final-authority read attribution — 2026-10-12
+
+**Boundary.** Membership-proof yielding and one-operation reuse are committed **signed `b60d535d`**
+(signature verified `G`). This follow-up is investigation only; runtime, complete authority checks,
+undo and deployment are unchanged. Release validation remains paused.
+
+**Evidence.** Four restored diagnostic sessions separate opening, layout/cursor transactions, value
+retrieval, budget yields, close calls and continuation time inside each fresh check. Unsampled active
+peer/backlog final-read medians are **31.2 / 24.9 ms**: opening **15.6 / 13.5 ms**, cursor transaction
+**11.0 / 9.0 ms**, yields **0.7 / 0.7 ms**. Opening accounts for **43% / 47%** of total read elapsed
+and cursor transactions **53% / 46%**; neither meets the prospective >50%-in-both dominance rule.
+Yields account for only **3.0% / 5.5%**; accounting residual is below 2% in every session. Each read
+returns four rows; median value-getter time is **3.3 / 3.0 ms**, nested inside the transaction.
+
+**Interpretation.** Other authority checks in all four sessions open the same database in **0.9 ms**
+median. Both sampled runs show React/UI work during final opening spans: **66/151 and 112/277**
+samples, with only one idle sample in each; `(program)` remains unclassified. The UI overlap survives
+excluding interval edges by the clock-alignment uncertainty. Source inspection identifies a matching
+path: admission queue status changes call `setStatus`, replace the workspace-wide context, and rerender
+cards/Goals/collections/menu while the final read is outstanding. This is a testable contention
+hypothesis, not proof that the entire opening delay is UI work or removable by connection reuse.
+
+**Checks/next.** All four sessions preserve exact writing, undo/redo, peer text, export convergence and
+cold offline replay; completed typing account requests are HTTP 200 and no page errors occur. The
+initial instrumentation build's ambiguous abort anchor was fixed before running; both build logs are
+retained. Every final job matches exactly one timed check, and disjoint elapsed accounting is checked.
+The [packet](./performance-experiments/2026-10-12-authority-read/README.md) pins numeric evidence, profiles,
+source and bundle identities. No runtime tests were broadened for this diagnostic-only phase.
+
+Recommend isolating queue-status subscriptions from stable workspace content/actions, preserving
+pending/error visibility, blocked-state controls, live editors, all fresh checks and undo. Remeasure
+before deciding on custody connection reuse; its lifecycle and benefit remain unproven. No repair or
+release qualification is claimed. This investigation is committed **signed `e730ac57`** (signature
+verified `G`) and remains unpublished; the other seat's `docs/progress.md` is unchanged.
+
+### Queue-status subscription isolation and stronger input measurements — 2026-10-12
+
+**Boundary.** The preceding authority-read investigation is signed **`e730ac57`**. This repair and
+its [packet](./performance-experiments/2026-10-12-status-subscriptions/README.md) are local,
+uncommitted and unpublished. Release validation remains paused.
+
+**Change.** Workspace content/actions no longer subscribe to queue-status churn. A separate status
+component renders pending/blocked/error warnings and Retry/Discard; Goals subscribes only to the
+admission state for availability. Context identity remains stable for feedback-only changes. Owner
+replacement detaches subscriptions and guards delayed persistence replies. The complete fresh final
+authority check still runs inside the FIFO job. No custody, journal-before-apply, receive protocol,
+editor admission, undo, stored-format or deployment change.
+
+**Evidence.** Twelve restored CPU-4x sessions use an external 150 ms input cadence independent of
+renderer completion, 600 keys each, current reference in each block and reversed arm order. Known
+200 ms stalls verify that the recorder retains keys delayed before their handlers. Input-to-observed-
+text p95 improves **71.0→63.3 / 71.0→60.7 ms** with an active peer and **73.7→60.7 / 64.0→55.8 ms**
+during backlog receipt. Silent-peer results are mixed (**55.2→48.6 / 40.3→52.5 ms**); no everyday
+latency win is claimed. Extreme tails and long tasks remain mixed. This is descriptive session-level
+evidence, not independent-key statistical precision or physical screen latency. The 16 ms target
+and consistent 50 ms working p95 remain unmet.
+
+Final fresh-read medians under receive load fall **25–26→18–20 ms**, principally the measured opening
+span (**about 14→8 ms**); cursor transactions remain **9–10 ms**, and final apply about **6 ms**.
+A separate four-session exact historical comparison puts authority reuse `08a82089` against prepared
+handoff `02829405`: input p95 **184.5→79.0 / 195.8→72.9 ms**. This establishes the handoff benefit in
+one contemporaneous comparison, without claiming to explain earlier machine drift.
+
+**Checks/limits.** All 16 desktop sessions (9,600 keys) preserve exact writing, last-key undo/redo,
+peer convergence and cold offline replay, with no page errors and HTTP 200 for completed typing
+requests. Fifteen focused UI/sync-notice/editor tests, TypeScript, scoped lint/format, ordinary build
+and JS budget pass. Byte-identical executable assets confirm the two post-measurement lint comments
+did not alter the tested candidate. The evidence archive retains raw timings, checks and setup
+failures; fixtures/credentials are excluded.
+
+The connected Pixel 9a / Android 17 passes the recorder calibration, but **no account timing completes**:
+the desktop fixture's virtual passkey cannot satisfy the phone's real credential prompt. Adapter setup
+mistakes and the eventual credential boundary are recorded. The user chose to finish this phase and
+leave physical account comparison pending, with a separate disposable credential walkthrough needed.
+Bitwarden and real writing were untouched; test tabs/port forwards are closed/removed.
+
+**Next.** Keep the UI isolation and prepared handoff. Design an authority check immediately before
+final queue entry only with an explicit freshness/lifetime/invalidation contract; do not silently
+move or weaken the present check. Remaining content-render work, protocol work, extreme tails and
+physical account evidence remain open. Local retention stays design-only; `docs/progress.md` is
+unchanged.
+
+### Immediate-use final receive authority contract — 2026-10-13
+
+**Boundary.** Status-subscription isolation, stronger measurements and their evidence are committed
+**signed `5c7ba18a`** (signature verified `G`), unpublished. This follow-up is documentation/design
+only; the complete final authority read still executes at the FIFO head. Release validation remains
+paused and the physical account comparison remains pending by the operator's choice.
+
+**Contract.** The [design](./account-final-apply-authority-design.md) recommends one complete fresh
+check outside the editor queue, followed by immediate synchronous application only when both owner
+and queue guards permit it. A ticket never waits in the queue. Conservatively invalidate on every
+other storage-task request, explicit authority change and lifecycle boundary, before possible effects;
+never revive old versions after abort or owner replacement. Preserve the exact inventory verifier,
+expected authority, interlocks, native settlement and buffer ownership. A task's expired `step`
+closure cannot serve as the final capability.
+
+A scheduling miss after successful verification uses the original full queue-head check, with at
+most one speculative check and no retry loop. Actual verification failure or changed proposal
+authority closes for cold replay. Application still uses original ordered frames and current undo;
+local edits journal before application and remote dependencies commit before exposure. The design
+names reentrant close/input, forced local writes, background flush, blocked/discarded input, lifecycle
+resumption and crash boundaries, plus the bounded focused tests and matched measurement needed next.
+It explicitly retains the exclusive-writer assumption and does not claim atomic detection of an
+arbitrary external write after a native read.
+
+**Checks/next.** Reconciled with the current owner, verifier, lifecycle, queue and projection code;
+linked from the existing handoff/authentication documents and the decision log. No runtime or test
+code changed and no campaign ran for this documentation phase. Implement the private owner gate and
+immediate admission attempt next, keeping the current full-check path as fallback/reference. Measure
+eligibility/fallback rates and extra-read cost rather than assuming the measured 18–20 ms read wait
+translates directly into the same input-latency gain. `docs/progress.md` is unchanged.
+
+### Immediate final receive application — 2026-10-13
+
+**Boundary.** Committed the design signed as **`742e1c14`**, signature verified `G`. Implemented the
+private owner invalidation gate and synchronous final receive application afterward. This work and
+its [measurement packet](./performance-experiments/2026-10-13-immediate-authority/README.md) remain
+uncommitted/unpublished. Release qualification and the physical account comparison remain paused/pending.
+
+**Change.** The complete fresh final authority check moves before editor queue entry only for an
+immediately consumable permission. Another storage request invalidates before enqueue; native work
+must settle before eligibility. Authority changes, route/suspension, lifecycle events and close
+revoke it; actual verifier failures retain refusal/close. The queue reserves its pump before applying
+original frames to current document/undo and cannot bypass older/blocked input. Scheduling misses
+use one original queue-head full check; no retry loop or authority ticket waits in the FIFO. Remote
+content is durably committed/read back before staging, and local edits still journal before apply.
+No format, custody verifier, transport authority, undo grouping or account policy changed.
+
+**Evidence.** 292 focused Vitest tests pass (one existing skip), plus seven native Chromium cases:
+held commit/early-check boundary, live local edit/undo/redo, pending/grouped frames, reentrant input/
+close, abort/native settlement, pre-read custody refusal, queued post-check read/clear, crash and
+cold replay. TypeScript, changed-source lint/format, ordinary build, size and origin checks pass.
+All twelve fixed-order CPU-4x desktop sessions (7,200 independently scheduled keys) pass text,
+undo/redo, export convergence and cold offline replay. No failed or discarded measurement sessions.
+
+**Result/limits.** 157/161 speculative checks apply immediately, four fall back and 18 busy cases
+skip speculation. Successful synchronous application averages 7.5–10.5 ms under receive load versus
+35.1–46.0 ms for reference queued final jobs including the unchanged read. Input p95 is mixed:
+active peer 78.2→89.1 / 82.9→70.2 ms, backlog 59.7→60.8 / 63.1→57.0 ms. Silent peer improves
+79.6→77.5 / 64.3→56.0 ms but has only one trivial final receive per session. Retain the candidate's
+shorter critical section; do not claim a repeatable receiving-latency or throughput win. There is
+no consistent silent-peer regression, excessive speculative-read overhead, stalled lane or failed
+correctness guard in this sample. Next useful attribution is synchronous handler/render and remaining
+main-thread stalls. Physical phone results, publication and release qualification are not established.
+`docs/progress.md` remains unchanged for the other seat.
+
+### Publication preparation requested; timing evidence qualified — 2026-10-13
+
+The operator reported heavy VM use during the recent tests and requested committing the immediate
+final-apply work and preparing the accumulated improvements for release. The overlap and resource
+load were not recorded. The [measurement packet](./performance-experiments/2026-10-13-immediate-authority/README.md)
+now records this as a possible, unquantified timing confound; no run or unfavorable result is removed.
+Correctness outcomes and mechanism counts remain recorded, while timing comparisons cannot establish
+an isolated effect. The earlier mixed-p95 conclusion is not upgraded to a performance win.
+Publication preparation will use the normal bounded packaged/container checks. The general release
+campaign stays paused and physical account performance stays pending.
+
+### Warm Account storage and foreground-sync publication prepared — 2026-10-13
+
+**Boundary.** Immediate final application and its qualified evidence committed **signed `f516a958`**,
+verified `G`. All fifteen source/design/evidence commits since application main `24481b82` are signed.
+The [publication handoff](./account-warm-sync-publication.md) collects warm ledger reuse, private
+ownership/selections, journalled input during flush/receive, unchanged-authority authentication,
+budgeted membership work, isolated status subscriptions and the immediate final-apply gate. The
+unsuccessful bulk custody experiment remains opt-in. No schema, stored receipt or wire format changes.
+
+**Checks.** A clean signed-source archive built immutable ARM64 image `done-public:f516a958`, index
+`sha256:5bb003b0a49cb61f0a2734beceabf86799d8f5dc841db9cdd391e93d5af58b1e`.
+Build/Yjs/TypeScript/origin checks and 137.1 kB initial JS budget pass; 349 focused unit tests pass
+(one existing skip). All 31 container runtime/gateway/backup/restore/maintenance tests and the
+non-root two-process restart smoke pass. The exact extracted frontend passes both packaged custody/
+text journeys and the retained 600-position journey: two-way edits, undo/redo, converged full exports
+and cold offline replay. [Evidence](./development-evidence/2026-10-13-warm-sync-publication/evidence.json)
+records hashes, commands, immutable image identity and sanitized outputs.
+
+**Limits/next.** Heavy VM use was reported after the recent measurements; its overlap/effect is unknown.
+Keep the timing qualifications, all earlier observations and the mixed input-p95 conclusion. The
+publication journey is a functional check, not a new comparative speedup claim. Physical account-phone
+performance remains pending and release qualification paused. Warm old-row reuse retains the accepted
+rolling-audit detection window; custody authority checks remain complete and fresh. Prepare the
+application PR for the operator's merge, then publish this exact tested image and prepare the ol-infra
+pin PR. No registry push, infrastructure change or deployment has occurred in this preparation.
+`docs/progress.md` remains untouched.

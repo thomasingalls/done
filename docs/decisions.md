@@ -4468,3 +4468,62 @@ records these limits. The [implemented service slice and focused evidence](./per
 retain the full reference for exceptional lifecycle/retry paths and audit public authority in a
 separate read-only worker. This is not a release-qualification result or a deployment receipt;
 release validation remains paused.
+
+## 2026-10-12 — Exclusive Account warm-load verification window
+
+The operator accepts replacing per-task old-row rereads in the exclusive Account owner with an
+owner-local authenticated view. Check the authenticated counter and per-store count plus first/last
+key on each warm load; an unexpected counter requires a full read. Do not describe IndexedDB count
+as constant time without measurement. Only completed owned commits extend the view.
+
+Old same-count interior corruption can be detected at a later audit/open; the live owner continues
+using previously verified memory. Roll through bounded old-row checks and, after a row/time trigger,
+complete audit slices even during activity. Full verification remains mandatory at acquisition and
+before reuse after hidden/frozen-page resumption. Counts/bounds cannot prove all interior bytes.
+Refuse detected damage without repair. Workers may be considered later; no worker is required by
+this decision. See [the bounded implementation contract](account-warm-ledger-loads.md) and
+[the local-retention design](account-local-retention-design.md), which changes no stored format yet.
+
+## 2026-10-13 — Define immediate-use final receive authority; runtime unchanged
+
+The operator requested a freshness/invalidation contract before moving the final authority read
+out of the editor queue. The [bounded design](account-final-apply-authority-design.md) recommends a
+complete fresh check on the serialized storage owner, followed by a single-use permission consumed
+immediately only if the editor can apply synchronously without overtaking older input. It must not
+wait in the FIFO. Any later storage-task request invalidates it conservatively, as do authority and
+lifecycle changes; revocation begins before effects/awaits, not only after successful writes.
+
+A scheduling miss after successful verification discards the permission and takes the existing
+full queue-head check once. Verifier failure, changed proposal authority, close or repair keeps the
+existing refusal/cold-replay disposition. Keep journal-before-apply, current undo history, complete
+projection verification and all receive-commit/readback checks. No task/transaction survives the
+handoff, and no new online freshness or protection against bypassing the exclusive writer is claimed.
+
+This records design work, not implementation or authorization for a general reusable authority
+cache. No new seconds/minutes custody-corruption window, format change, release campaign or deployment
+is selected. The current runtime still checks authority at the final FIFO head; physical account
+performance remains pending its separate disposable-credential fixture.
+
+## 2026-10-13 — Implement immediate final authority; retain the measured limits
+
+After signed design `742e1c14`, the operator requested implementation. The private gate preserves the
+complete fresh inventory check, native settlement, current authority/lifetime, FIFO predecessor order,
+journal-before-apply and undo. It allows one synchronous application only in the immediate successful
+continuation; every other storage request invalidates at enqueue. A miss uses the old queue-head
+check once; a failed verifier closes/refuses. No format or longer-lived authority cache is introduced.
+
+The [bounded comparison](performance-experiments/2026-10-13-immediate-authority/README.md) passes all
+correctness guards and establishes shorter final queue-held work with few extra checks, but receiving
+input-p95 contrasts are mixed. Retain the implementation in the working candidate on that bounded
+mechanism/progress evidence, without claiming a repeatable typing-latency gain or authorizing
+publication. The measured rejection conditions did not occur. Keep the reference switch, preserve
+all runs, and investigate remaining synchronous costs separately. Physical account performance and
+release qualification remain pending/paused.
+
+## 2026-10-13 — Prepare the accumulated performance work with host-load uncertainty explicit
+
+The operator reported heavy VM use during recent testing and requested release preparation. Preserve
+the timing packets and all observations, adding the unknown external-load overlap as a limitation.
+No measured slowdown is explained away, and no unobserved speedup is claimed. Proceed with bounded
+publication checks on an immutable signed candidate; do not restart the paused release-validation
+campaign or treat the pending physical-phone comparison as completed.

@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** A removed credential may learn its own terminal proof, never current content authority. */
 import { closed } from './preparation.ts';
 import { same, json, domainMessage, verifySignature } from './admission.ts';
@@ -61,6 +62,7 @@ export async function verifyRemovalDiscoveryRequest(
   base: SuccessorBase,
   chainInput: unknown,
   now: number,
+  checkpoint?: ProofCheckpoint,
 ) {
   const r = parseRemovalDiscoveryRequest(input),
     proofs = parseMembershipChain(chainInput);
@@ -75,14 +77,26 @@ export async function verifyRemovalDiscoveryRequest(
     throw Error('Not this device removal');
   const before =
     !proofs.certification && proofs.continuations.length === 1
-      ? { history: await verifyEarlyHistory(base, proofs.successor) }
-      : await verifyMembershipChain(
-          { ...proofs, continuations: proofs.continuations.slice(0, -1) },
-          base,
+      ? {
+          history: await proofWork(
+            checkpoint,
+            verifyEarlyHistory(base, proofs.successor, checkpoint),
+          ),
+        }
+      : await proofWork(
+          checkpoint,
+          verifyMembershipChain(
+            { ...proofs, continuations: proofs.continuations.slice(0, -1) },
+            base,
+            checkpoint,
+          ),
         );
   const parent = membershipState(historyMembership(before.history)),
     member = parent.roster.find((m) => m.id === r.credentialId);
-  const history = await extendMembershipHistory(final, before.history);
+  const history = await proofWork(
+    checkpoint,
+    extendMembershipHistory(final, before.history, checkpoint),
+  );
   if (
     !member ||
     !same(r.pin, pin) ||
@@ -95,7 +109,14 @@ export async function verifyRemovalDiscoveryRequest(
     r.expiresAt - now > MEMBERSHIP_DISCOVERY_LIFETIME_MS
   )
     throw Error('Removal discovery scope or lifetime changed');
-  await verifySignature(member.sPub, r.signature, await removalDiscoveryRequestMessage(r));
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      member.sPub,
+      r.signature,
+      await proofWork(checkpoint, removalDiscoveryRequestMessage(r)),
+    ),
+  );
   return { request: r, proofs, history, member };
 }
 export function parseRemovalDiscoveryResponse(input: unknown) {
@@ -121,23 +142,31 @@ export async function verifyRemovalDiscoveryResponse(
   requestInput: unknown,
   base: SuccessorBase,
   now: number,
+  checkpoint?: ProofCheckpoint,
 ) {
   const response = parseRemovalDiscoveryResponse(input),
     request = parseRemovalDiscoveryRequest(requestInput),
     capturedBase = structuredClone(base);
-  if (response.requestHash !== (await digest(json(request))))
+  if (response.requestHash !== (await proofWork(checkpoint, digest(json(request)))))
     throw Error('Removal discovery request changed');
-  await verifySignature(
-    capturedBase.pin.authRoot,
-    response.signature,
-    await removalDiscoveryResponseMessage(response),
+  await proofWork(
+    checkpoint,
+    verifySignature(
+      capturedBase.pin.authRoot,
+      response.signature,
+      await proofWork(checkpoint, removalDiscoveryResponseMessage(response)),
+    ),
   );
-  const checked = await verifyRemovalDiscoveryRequest(
-    request,
-    capturedBase.pin,
-    capturedBase,
-    response.proofs,
-    now,
+  const checked = await proofWork(
+    checkpoint,
+    verifyRemovalDiscoveryRequest(
+      request,
+      capturedBase.pin,
+      capturedBase,
+      response.proofs,
+      now,
+      checkpoint,
+    ),
   );
   return { response, ...checked };
 }

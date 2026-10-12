@@ -1,3 +1,4 @@
+import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Authenticated exchange bytes for one admitted child. No persistence, comparison or key release. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { membershipState, type VerifiedMembership } from './membership.ts';
@@ -166,6 +167,7 @@ export async function verifyCeremonyContext(
   heldInput: AuthorityAnchor,
   localInput: CeremonyParticipant & { role: CeremonyRole },
   now: number,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedCeremonyContext> {
   const c = parseCeremonyContext(input),
     l = closed(localInput, ['role', 'id', 'wPub', 'sPub']),
@@ -175,7 +177,10 @@ export async function verifyCeremonyContext(
   live(c, now);
   if (held['epoch'] !== 2 || held['head'] !== c.head) throw Error('Ceremony needs held admission');
   // verifySuccessor captures all source objects before its first await.
-  const s = await verifySuccessor(successor, base, { epoch: 2, head: c.head }),
+  const s = await proofWork(
+      checkpoint,
+      verifySuccessor(successor, base, { epoch: 2, head: c.head }, checkpoint),
+    ),
     e = s.epoch,
     admitted = e.preparation.context.candidate;
   const expected: CeremonyContext = {
@@ -316,21 +321,25 @@ export async function verifyCeremonyPair(
   newInput: unknown,
   now: number,
   subtle = crypto.subtle,
+  checkpoint?: ProofCheckpoint,
 ): Promise<VerifiedCeremonyPair> {
   const context = requireContext(authority, now),
     existing = parseCeremonyCommit(existingInput),
     candidate = parseCeremonyCommit(newInput);
-  await Promise.all([
-    verifyCeremonyCommit(authority, existing, 'existing', now, subtle),
-    verifyCeremonyCommit(authority, candidate, 'new', now, subtle),
-  ]);
+  await proofWork(
+    checkpoint,
+    Promise.all([
+      verifyCeremonyCommit(authority, existing, 'existing', now, subtle),
+      verifyCeremonyCommit(authority, candidate, 'new', now, subtle),
+    ]),
+  );
   const pair = freeze({
     authority,
     existing,
     candidate,
-    contextHash: await ceremonyContextHash(context),
-    existingCommitHash: await digest(json(existing)),
-    newCommitHash: await digest(json(candidate)),
+    contextHash: await proofWork(checkpoint, ceremonyContextHash(context)),
+    existingCommitHash: await proofWork(checkpoint, digest(json(existing))),
+    newCommitHash: await proofWork(checkpoint, digest(json(candidate))),
   });
   pairs.add(pair);
   return pair;
@@ -392,14 +401,18 @@ export async function deriveCeremonyExchange(
   newInput: unknown,
   now: number,
   subtle = crypto.subtle,
+  checkpoint?: ProofCheckpoint,
 ) {
   const c = requirePair(pair, now),
     existing = parseCeremonyReveal(existingInput),
     candidate = parseCeremonyReveal(newInput);
-  await Promise.all([
-    verifyCeremonyReveal(pair, existing, 'existing', now, subtle),
-    verifyCeremonyReveal(pair, candidate, 'new', now, subtle),
-  ]);
+  await proofWork(
+    checkpoint,
+    Promise.all([
+      verifyCeremonyReveal(pair, existing, 'existing', now, subtle),
+      verifyCeremonyReveal(pair, candidate, 'new', now, subtle),
+    ]),
+  );
   return deriveCeremonyOpening(
     {
       workspaceId: c.workspaceId,
