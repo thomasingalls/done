@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-10-12T08:11:40.267081+00:00",
+  "parent": "54811c936f99f2c6b99b08205480753f7c07d8d7",
+  "baselineDist": "/tmp/done-receive-groups-20261012/candidate-dist",
+  "verifiedBaselineFiles": 59,
+  "fixture": {
+    "path": "/tmp/done-client-receive/fixture.json",
+    "sha256": "b02e7d7167ab2655f10281801be988c2ee0821b69e379a39315f044b71cea985"
+  },
+  "runtime": [
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "c23835d9c8ca27dfedf02d5ea6067995d6d1a45aa74287fff49b9855666e1b07"
+    },
+    {
+      "path": "src/crdt/receivePrefetch.ts",
+      "sha256": "bb89aa9ae1ad800d52ad896279ad9a95d8fb02269702f18865dd0c461e4b0499"
+    }
+  ]
+}

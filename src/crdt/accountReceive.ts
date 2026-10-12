@@ -1,6 +1,7 @@
+import { collectReceivePages } from './receivePrefetch';
+import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
   RECEIVE_GROUP_LIMIT,
-  RECEIVE_COLLECT_MS,
   packReceivePages,
   unpackReceivePages,
   receiveGroupFits,
@@ -661,61 +662,56 @@ async function openAccountReceiveOwner(
   // Future cursors are only scheduling predictions through an authenticated observed tip.
   // The exact request set remains owned, and no prefix advances before ordered verification.
   const fetchPage = async (operatorToken: AccountAccess) => {
-    let requests: Bytes[] = [];
-    const pages: Bytes[] = [];
-    let oversized = false,
-      pendingPage: Bytes | null = null;
+    let requests: Bytes[] = [],
+      pages: Bytes[] = [];
     try {
       return await runNetworkTask(async (network) => {
         requests = await prepareGroup();
-        const began = performance.now();
-        let bytes = 0;
-        for (const request of requests) {
-          let page: Bytes | null = null;
-          await network.wait(async () => {
-            page = pendingPage = canReceive()
-              ? await privateDeliveryPost(
-                  options.pin,
-                  access ?? operatorToken,
-                  'read-v2',
-                  request,
-                  MAX_PENDING_BYTES - 4,
-                  network.signal,
-                  (event) => {
-                    recordPrivateTransportDiagnostic(event);
-                    if (event.code === 'response-too-large') oversized = true;
-                  },
-                )
-              : null;
-          });
-          const received = page as Bytes | null;
-          pendingPage = null;
-          if (!received) break;
-          // Keep the fitting prefix. A large tail is refetched in the next operation.
-          if (bytes + received.length + 4 > MAX_PENDING_BYTES) {
-            received.fill(0);
-            break;
-          }
-          pages.push(received);
-          bytes += received.length + 4;
-          // Wire hints can only shorten collection, never grant progress or authority.
-          try {
-            if (!decodeInboundPage(received).entries.length) break;
-          } catch {
-            break;
-          }
-          if (performance.now() - began >= RECEIVE_COLLECT_MS) break;
-        }
+        const events: Diagnostic[][] = requests.map(() => []);
+        let attempted = 0;
+        await network.wait(async () => {
+          const collected = await collectReceivePages(
+            requests.length,
+            network.signal,
+            (index, signal, limit) =>
+              canReceive()
+                ? privateDeliveryPost(
+                    options.pin,
+                    access ?? operatorToken,
+                    'read-v2',
+                    requests[index]!,
+                    limit,
+                    signal,
+                    (event) => {
+                      events[index]!.push(event);
+                    },
+                  )
+                : Promise.resolve(null),
+            (page) => {
+              // Unverified hints may shorten collection, never grant progress or authority.
+              try {
+                return decodeInboundPage(page).entries.length > 0;
+              } catch {
+                return false;
+              }
+            },
+          );
+          pages = collected.pages;
+          attempted = collected.attempted;
+        });
+        // A speculative tail cannot overwrite the diagnostic for the attempted prefix.
+        for (const observations of events.slice(0, attempted))
+          for (const event of observations) recordPrivateTransportDiagnostic(event);
         return network.step(() => ({
           request: requests[0]!,
           page: pages[0] ?? null,
           requests,
           pages,
-          oversized: oversized && !pages.length,
+          oversized:
+            !pages.length && events[0]!.some((event) => event.code === 'response-too-large'),
         }));
       });
     } catch (cause) {
-      (pendingPage as Bytes | null)?.fill(0);
       for (const request of requests) request.fill(0);
       for (const page of pages) page.fill(0);
       throw cause;

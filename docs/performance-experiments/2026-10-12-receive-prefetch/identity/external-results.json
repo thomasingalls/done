@@ -1,0 +1,35 @@
+{
+  "note": "Raw results and credential-bearing synthetic replay snapshots remain external; only numeric/content-redacted results are in samples. Do not publish replay snapshots.",
+  "files": [
+    {
+      "path": "/tmp/done-receive-prefetch-20261012/baseline-latency/result.json",
+      "bytes": 799999,
+      "sha256": "05338e5b9eb405b741f5afbadd1e5760433d7fe30155162fa9baa5da9bc1a536"
+    },
+    {
+      "path": "/tmp/done-receive-prefetch-20261012/baseline-latency/deep-received-fixture.json",
+      "bytes": 6654556,
+      "sha256": "0100e1976c413d14f1cf7b0b46d9fac0489f329de9f15bbc7b5a98b139aa0ccb"
+    },
+    {
+      "path": "/tmp/done-receive-prefetch-20261012/candidate-latency/result.json",
+      "bytes": 642081,
+      "sha256": "86d0deb2516c9adc841a3a089ed8cd13c1410bb73fa2512dd9b0cbb9a3a4bf94"
+    },
+    {
+      "path": "/tmp/done-receive-prefetch-20261012/candidate-latency/deep-received-fixture.json",
+      "bytes": 6652969,
+      "sha256": "5098b434401fbe4749fa1f8f7853ee17d76db757a5145bce40f9f40944e83285"
+    },
+    {
+      "path": "/tmp/done-receive-prefetch-20261012/candidate-local/result.json",
+      "bytes": 638307,
+      "sha256": "4037bbcadd78c50f40606b96c36564d022880bc90b13cd44caa4ca0035a51e15"
+    },
+    {
+      "path": "/tmp/done-receive-prefetch-20261012/candidate-local/deep-received-fixture.json",
+      "bytes": 6661181,
+      "sha256": "64ec24f327219adc0216dc06b791dae15c3ad618d5e9d1bcfb4159cac13db22e"
+    }
+  ]
+}

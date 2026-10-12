@@ -13071,7 +13071,7 @@ unresolved. The repair is committed signed and unpublished; release validation r
 
 ### Account receiving — group current-format receipts
 
-**Date:** 2026-10-12 · **Commit:** working tree on signed `534252e1` · **Stage:** bounded repair
+**Date:** 2026-10-12 · **Commit:** signed `54811c93` · **Stage:** bounded repair
 
 **Exit.** The first repair is committed signed. This [grouping repair](./performance-experiments/2026-10-12-receive-groups/README.md)
 shares preparation, custody/load work, a native transaction and authenticated readback across up to
@@ -13084,7 +13084,32 @@ All three restored journeys pass full exports, both-way writing and offline reop
 focused unit checks and seventeen distinct native cases pass, including old-reader compatibility,
 atomic crashes/retries and grouped-HTTP loss/lock boundaries. Build/type/lint/format checks pass.
 
-**Remaining.** Repair/evidence are uncommitted and unpublished. Cold opening stays around seven
+**Remaining.** Repair/evidence are committed signed and unpublished. Cold opening stays around seven
 seconds and an approximately 1.2-second delayed long task remains unattributed. Consider bounded
 prefetch against remaining network costs separately; no receipt migration or concurrent fetching
 was introduced. Release validation and `docs/progress.md` remain unchanged.
+
+### Account receiving — bounded prefetch of current-format receipts
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `54811c93` · **Stage:** bounded repair
+
+**Exit.** Grouping is committed signed. The [prefetch follow-up](./performance-experiments/2026-10-12-receive-prefetch/README.md)
+overlaps at most two exact limit-one reads, retaining four-receipt turns and the existing format.
+Full-page reservations plus retained buffers fit the 4 MiB collection bound. Replies are consumed
+in cursor order; missing/terminal replies cancel and drain speculative tails, which cannot supply
+progress or overwrite attempted-prefix diagnostics. Ordered verification and atomic commit stay
+unchanged; due sending and local input retain their turns.
+
+**Evidence.** Fresh delayed baseline 194.602 seconds versus prefetch 100.978 seconds for 600
+positions (48.1% shorter). Local prefetch 68.961 seconds versus retained grouped 79.125 seconds
+(12.8% shorter; no fresh local baseline). Three restored journeys pass complete both-way exports
+and offline reopen. Fifty-two focused unit and twenty-one native cases pass, including reversed
+arrivals, missing replies, close/drain, wrong binding, bounds, concurrent input and existing
+atomicity/authority/old-reader regressions. Build/type/targeted lint/format pass; all six numeric
+summaries reproduce from content-redacted retained evidence.
+
+**Remaining.** New repair/evidence are uncommitted and unpublished. Delayed live-burst median is
+2.352 seconds; cold open is 6.804–6.907 seconds; one 1.238-second delayed foreground task remains
+unattributed. No primary-window non-200 response/429 occurs, but HTTP-200 browser abort events are
+retained. These are desktop observations, not phone/public-service evidence. Release validation
+remains paused; `docs/progress.md` is unchanged.

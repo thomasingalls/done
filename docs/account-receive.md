@@ -3,8 +3,16 @@
 **2026-10-12 update:** The composed receiver now groups up to four existing limit-one receipts
 under one checked commit and authenticated readback, through previously observed backlog. Exact
 v1 receipt bytes, per-entry verification, native bounds and the four-page publisher turn remain.
-The bounded owned request set and sequential HTTP collection are described in the
+The bounded owned request set and commit path are described in the
 [grouping checkpoint](./performance-experiments/2026-10-12-receive-groups/README.md).
+The [prefetch follow-up](./performance-experiments/2026-10-12-receive-prefetch/README.md)
+collects those exact replies with at most two simultaneous reads. It reserves full supported-page
+space before each launch, keeping retained pages plus in-flight reservations within 4 MiB.
+A page is capped at 1,057,280 bytes: two hex characters per byte of the existing 512 KiB envelope
+and 4 KiB proof, plus 512 bytes of canonical framing allowance. This changes the HTTP allocation
+ceiling, not the supported envelope/receipt format. Collection stops launching after 250 ms;
+ordered verification/commit still follows. Missing/terminal replies cancel and drain speculative
+tails, and their diagnostics cannot overwrite the attempted prefix. Self reads remain singleton.
 The older phase narrative below describes the original singleton implementation.
 
 Current capsule, ledger and witness bytes are pinned in the

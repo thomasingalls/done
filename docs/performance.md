@@ -1689,5 +1689,28 @@ A preparation-inclusive four-receipt count comparison reduces content loads 16�
 transactions 220→47 and write transactions 8→2. Per-entry authentication is retained. Thirty-two
 focused unit and seventeen native cases pass, including group atomicity, stale/invalid evidence,
 expiry, authority change, both native size bounds, older-reader compatibility, lost HTTP tails and
-locking during collection. Build/type/targeted lint/format checks pass. New repair/evidence remain
-uncommitted and unpublished. No concurrent prefetch or release-validation resumption occurred.
+locking during collection. Build/type/targeted lint/format checks pass. This repair/evidence is committed signed as
+`54811c93` and unpublished. This phase introduced no concurrent prefetch or release-validation resumption.
+
+## 2026-10-12 — Prefetch current-format receive replies
+
+Receipt grouping is signed as `54811c93`. The [bounded prefetch follow-up](./performance-experiments/2026-10-12-receive-prefetch/README.md)
+uses at most two concurrent reads within the unchanged four-receipt turn and 250 ms launch window.
+Full supported-page reservations and retained bytes share the existing 4 MiB collection ceiling.
+Out-of-order replies still enter authentication and commit in prefix order; gaps never advance,
+and cancellation drains/erases speculation. Self reads remain singleton. No receipt/service schema
+change, migration or relaxed verification was introduced.
+
+With 75 ms added per request, a fresh grouped baseline takes 194.602 seconds for the same 600-position
+fixture; prefetch takes 100.978 seconds, 48.1% less. Local prefetch takes 68.961 seconds versus the
+prior grouped observation's 79.125 seconds (12.8% less; no fresh local baseline). All three journeys
+pass complete export equality and offline reopening, with receiver sending during catch-up and
+similar writer submit-response intervals. The delayed candidate reads four concurrent-writer
+positions beyond the original backlog before the catch-up observation; no peer cursor repeats.
+
+Delayed burst median remains 2.352 seconds, cold open 6.804–6.907 seconds across candidates, and a
+1.238-second delayed long task remains unattributed. No primary HTTP response is non-200 or 429;
+HTTP-200 `ERR_ABORTED` browser events remain and are retained. Fifty-two focused units, twenty-one
+native cases and build/type/targeted lint/format checks pass. Content-redacted samples reproduce
+all three primary and three supplementary summaries. New repair/evidence remain uncommitted and
+unpublished. No phone campaign or resumed release validation occurred.

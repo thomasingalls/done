@@ -1,0 +1,190 @@
+{
+  "note": "SHA-256 of retained files, excluding this manifest. Credential-bearing synthetic replay fixtures remain external.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 9213,
+      "sha256": "8c39d589a0c4f2358b85c33ec53406c151d9846d619c2873f14ba6b9e589659e"
+    },
+    {
+      "path": "identity/candidate-dist.json",
+      "bytes": 8190,
+      "sha256": "ce77f47ae671f43534a8dc313ef68bc3f693e047d755679dc552dd1026038908"
+    },
+    {
+      "path": "identity/external-results.json",
+      "bytes": 1453,
+      "sha256": "2b34fdef5b20a53e4e96358f1ba6519e1ae77de0df3c5fd20d25b8222bf2c362"
+    },
+    {
+      "path": "identity/identity.json",
+      "bytes": 666,
+      "sha256": "633dfb5c7e631d82aa994ddd7f4ab024ddaed3b91abbcf3bfde84e7a6686677f"
+    },
+    {
+      "path": "identity/new-receivePrefetch.ts",
+      "bytes": 3590,
+      "sha256": "bb89aa9ae1ad800d52ad896279ad9a95d8fb02269702f18865dd0c461e4b0499"
+    },
+    {
+      "path": "identity/runtime.patch",
+      "bytes": 3851,
+      "sha256": "d9001a2057037c2fc7fe3c2ab616d8c681808750228ea68d668085d87b0282f2"
+    },
+    {
+      "path": "logs/baseline-latency.log",
+      "bytes": 367,
+      "sha256": "3cd52fa57334ab0601a44c7eea2dc3e14a003f3e732677ad071c55d4fecc9d82"
+    },
+    {
+      "path": "logs/baseline-observations.log",
+      "bytes": 798,
+      "sha256": "2c092976cbd26adf7262781135b52b1a77f1ac25bdd57aee73bf5fb21d958ba2"
+    },
+    {
+      "path": "logs/baseline-summary.log",
+      "bytes": 8101,
+      "sha256": "0ac3a0714b9d0152783d1fa00bba4570a257efe66c377b9a3e418f2c94a61a38"
+    },
+    {
+      "path": "logs/build.log",
+      "bytes": 4790,
+      "sha256": "95a51b2e615991bfe2deb5426d1793ee160311889a03def2a0cab0f05c94516b"
+    },
+    {
+      "path": "logs/candidate-latency-observations.log",
+      "bytes": 815,
+      "sha256": "238796d8ab19364a1bcf78322dbe47887d0ec1fa3d5d86f8bf92cd016c32162e"
+    },
+    {
+      "path": "logs/candidate-latency-summary.log",
+      "bytes": 8102,
+      "sha256": "d0127665136a9a3e02db841d5e6edea6741426cb65896be27257a59dac2a2586"
+    },
+    {
+      "path": "logs/candidate-latency.log",
+      "bytes": 367,
+      "sha256": "248b57f84a230a8a9d7f23012d69a799ca0f7ea9065215dedf849c0f6fb15943"
+    },
+    {
+      "path": "logs/candidate-local-observations.log",
+      "bytes": 831,
+      "sha256": "0e442f67dcd7d11f5fd515456778218a31850cd6881b3dc3dad1a70f55fce849"
+    },
+    {
+      "path": "logs/candidate-local-summary.log",
+      "bytes": 8003,
+      "sha256": "b288c557026a0af4ce4ec0050a4d80cb3b01039ff6a1d555bed71db47153a413"
+    },
+    {
+      "path": "logs/candidate-local.log",
+      "bytes": 366,
+      "sha256": "21f43404aae1b07acbd26223d836fd65db272207037dc36369acd7db3ef41695"
+    },
+    {
+      "path": "logs/format-final.log",
+      "bytes": 112,
+      "sha256": "7029302c0b8e93b30bbdcc1c3f65e666955e0b65631b6178008c544ed2f95400"
+    },
+    {
+      "path": "logs/format.log",
+      "bytes": 112,
+      "sha256": "df585f04b80d78458bd672f915ea099f6d74895d339b92186c51f2d4135e87c8"
+    },
+    {
+      "path": "logs/lint-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/native-groups.log",
+      "bytes": 2578,
+      "sha256": "51085b80c3d3732f92160551a239b4b525837c7544cd4a64f196f0c1f515788a"
+    },
+    {
+      "path": "logs/native-regressions.log",
+      "bytes": 1758,
+      "sha256": "5d9e8259006bda6305f2c48969340d83d3749b38fc10d17d111b3dc6ae32993d"
+    },
+    {
+      "path": "logs/typecheck-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/unit.log",
+      "bytes": 237,
+      "sha256": "eac10564e9910aa29a963b56f11e333eed7e824fe2a4f1d2b4c6fdfd14a02ff7"
+    },
+    {
+      "path": "probe/observations.mjs",
+      "bytes": 2442,
+      "sha256": "0c90532f452885f53cc18a5227e2413945eb55f43f39db453bc6b7c9895fd5e3"
+    },
+    {
+      "path": "protocol.md",
+      "bytes": 3298,
+      "sha256": "f083ff4f51d2cd58e4bed8c8055f3969f9efa53fdda4305a06918aecd2eb39a1"
+    },
+    {
+      "path": "samples/baseline-latency-observations.json",
+      "bytes": 798,
+      "sha256": "2c092976cbd26adf7262781135b52b1a77f1ac25bdd57aee73bf5fb21d958ba2"
+    },
+    {
+      "path": "samples/baseline-latency-summary.json",
+      "bytes": 8101,
+      "sha256": "0ac3a0714b9d0152783d1fa00bba4570a257efe66c377b9a3e418f2c94a61a38"
+    },
+    {
+      "path": "samples/baseline-latency.json.gz",
+      "bytes": 31399,
+      "sha256": "e011a950bfd1c5d3c3afdb5a29bc595480da0addb8c2150ba23c3835d111d04f"
+    },
+    {
+      "path": "samples/candidate-latency-observations.json",
+      "bytes": 815,
+      "sha256": "238796d8ab19364a1bcf78322dbe47887d0ec1fa3d5d86f8bf92cd016c32162e"
+    },
+    {
+      "path": "samples/candidate-latency-summary.json",
+      "bytes": 8102,
+      "sha256": "d0127665136a9a3e02db841d5e6edea6741426cb65896be27257a59dac2a2586"
+    },
+    {
+      "path": "samples/candidate-latency.json.gz",
+      "bytes": 25667,
+      "sha256": "bd24107fd07ae5cd92d8a29ecbba3cf64e1393ab9ecfc3007fcf335a7cc9d7b5"
+    },
+    {
+      "path": "samples/candidate-local-observations.json",
+      "bytes": 831,
+      "sha256": "0e442f67dcd7d11f5fd515456778218a31850cd6881b3dc3dad1a70f55fce849"
+    },
+    {
+      "path": "samples/candidate-local-summary.json",
+      "bytes": 8003,
+      "sha256": "b288c557026a0af4ce4ec0050a4d80cb3b01039ff6a1d555bed71db47153a413"
+    },
+    {
+      "path": "samples/candidate-local.json.gz",
+      "bytes": 23890,
+      "sha256": "834e54bfa73f7bbe0b0953d079dd8494abf7a0ce1b173821b1a415eaab048b1a"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 715,
+      "sha256": "08b7f3077198fd9d499751cedcb64debb19dcc55de5ae828403889ed31bd5d74"
+    }
+  ]
+}
