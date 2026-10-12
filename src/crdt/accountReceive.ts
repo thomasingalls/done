@@ -1,3 +1,4 @@
+import { accountTextMode } from './accountTextMode';
 import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
 import { collectReceivePages } from './receivePrefetch';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
@@ -2079,7 +2080,9 @@ async function openReceivingWorkspace(
         ...(options.today ? { today: options.today } : {}),
         ...(options.signal ? { signal: options.signal } : {}),
       },
-      ledgerMode === 'incremental' ? 'account-snapshots' : 'reference',
+      ledgerMode === 'incremental'
+        ? accountTextMode(import.meta.env?.['VITE_ACCOUNT_TEXT_ADMISSION'])
+        : 'reference',
     );
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();

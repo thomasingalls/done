@@ -1,3 +1,8 @@
+import {
+  accountTextPreparation,
+  type AccountTextPreparation,
+  type AccountTextCandidate,
+} from './accountTextPreparation';
 import { MaintenanceInterrupted } from './contentMaintenance';
 import {
   ledgerProfiling,
@@ -59,6 +64,7 @@ export interface AdmissionOptions {
   readonly flushBatch?: BatchTiming;
   /** Private owned receives retain/apply frames in order, then publish the verified page once. */
   readonly publishReceivePage?: boolean;
+  readonly [accountTextPreparation]?: AccountTextPreparation;
   readonly [localWorkspacePreparation]?: LocalWorkspacePreparation;
   readonly prepare: PrepareIntent;
   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
@@ -130,7 +136,7 @@ const deferred = <T>() => {
   void promise.catch(() => {});
   return { promise, resolve, reject };
 };
-type Prepared = PreparationBytes & { carrierBytes?: Bytes };
+type Prepared = PreparationBytes & { carrierBytes?: Bytes; text?: AccountTextCandidate };
 type InputJob = {
   kind: 'local' | 'remote';
   id: number;
@@ -166,6 +172,9 @@ export const createAdmissionOwner = async (
   bindOwnedReceive?: (enqueue: OwnedReceiveQueue) => void,
 ): Promise<AdmissionSession> => {
   const local = options[localWorkspacePreparation];
+  const text = options[accountTextPreparation];
+  if (text && (local || !carrier.captureLocal))
+    throw Error('Direct text requires an Account carrier');
   if (local && carrier.captureLocal)
     throw Error('Local preparation is not authorized for Account source capture');
   const canonical = createDoc(),
@@ -386,6 +395,17 @@ export const createAdmissionOwner = async (
       if (job.kind === 'remote' && writerClock(canonical, writer) !== before)
         writer = newWriterId();
       revision++;
+      if (job.prepared?.text) {
+        try {
+          job.prepared.text.accept(publication, revision);
+        } catch (cause) {
+          // Already durable: close, never re-admit this command or publish a divergent projection.
+          void close().catch(() => {});
+          throw new AdmissionError('projection-mismatch', 'Direct text promotion failed.', {
+            cause,
+          });
+        }
+      }
       if (job.preparation) {
         try {
           const candidate = preparation!.adopt(job.preparation, (prepared) =>
@@ -584,13 +604,34 @@ export const createAdmissionOwner = async (
             lease.release();
           }
         } else {
-          job.prepared = prepareIntent(
-            canonical,
-            writer,
+          const candidate = text?.prepare(
             job.input,
-            MAX_JOURNAL_UPDATE,
-            options.prepare,
+            Object.freeze({ writer, clock: writerClock(canonical, writer), revision }),
           );
+          if (candidate) {
+            // One exact human frame: source validation is equality, never a second speculative apply.
+            if (
+              candidate.sources.length !== 1 ||
+              candidate.sources[0]!.kind !== 'human' ||
+              candidate.sources[0]!.bytes !== candidate.update
+            ) {
+              candidate.update.fill(0);
+              for (const source of candidate.sources) source.bytes.fill(0);
+              throw Error('Direct text source must be its exact update');
+            }
+            job.prepared = {
+              update: candidate.update,
+              sources: candidate.sources,
+              text: candidate,
+            };
+          } else
+            job.prepared = prepareIntent(
+              canonical,
+              writer,
+              job.input,
+              MAX_JOURNAL_UPDATE,
+              options.prepare,
+            );
         }
         if (carrier.captureLocal && job.prepared.sources?.length !== 0)
           job.prepared.carrierBytes = carrier.captureLocal(

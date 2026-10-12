@@ -1759,3 +1759,26 @@ baseline document reconstruction separately cost about 1,289 ms. Hex/unhex remai
 self time. Profiles are separate from timing samples; one overlapping-test profile is marked confounded.
 A packaged two-device functional regression also passes complete exports, both-way later edits and
 offline replay. No generalized release validation was resumed; per-key admission remains the next slice.
+
+## 2026-10-12 — Account text admission without workspace forks
+
+The received-open repair is now signed as **`68ca241d`**. The
+[text-admission packet](./performance-experiments/2026-10-12-text-admission/README.md) measures the
+next working-tree slice on the same synthetic 120-card / 600+ received-position fixture. Three
+interleaved observations per arm (120 keys each): handler median-of-medians **7.6→2.1 ms**;
+run-level handler p95 **11.2–11.8→3.1–3.5 ms**. Key-to-visible-frame median-of-medians
+**11.4→6.2 ms**, p95 **15.5–16.4→12.9–13.9 ms**. Every candidate key avoids workspace forks and
+full projection comparison. Every run undoes/redoes the whole block and reopens offline correctly.
+
+Direct text is the branch default after meeting the predeclared improvement/correctness criteria;
+`VITE_ACCOUNT_TEXT_ADMISSION=reference` retains the full native Account preparation path.
+[The contract](./account-text-admission.md) preserves journal-before-apply, exact human source
+bytes and workspace undo, with conservative fallback and a full projection audit on ordinary close.
+No format change or deployment. Type/build, 244 focused tests and the real two-device text/undo/
+offline-reopen regression pass. Release validation remains paused.
+
+One CPU-4x observation per arm improves handler median **27.1→6.2 ms** and visible-text p95
+**128.2→57.1 ms**, still above the 16 ms budget; the largest background task is 170/176 ms.
+This is not physical-phone acceptance. The isolated direct profile leaves UI/CodeMirror work and
+background storage verification/copying as measured residual costs. Large target texts, structural
+commands, long-session history growth and public-device measurements remain separate work.

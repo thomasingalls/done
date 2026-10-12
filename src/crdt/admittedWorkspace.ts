@@ -1,3 +1,4 @@
+import { accountTextPreparation } from './accountTextPreparation';
 /** One admission owner and one human undo history for every workspace mutation surface. */
 import { EditorSelection } from '@codemirror/state';
 import {
@@ -7,6 +8,7 @@ import {
   forkWorkspaceHistory,
   createSelectionHistory,
   isTextBufferBasis,
+  preparePlainTextUpdate,
   type YUndoManager,
 } from './yjs';
 import {
@@ -42,6 +44,7 @@ import { currentDate, plainDate, type ISODate } from '../lib/date';
 import { exportArchive, exportEntries } from './export';
 import {
   createWorkspaceCommandRunner,
+  planWorkspaceText,
   relativeSelection,
   resolveSelection,
   targetText,
@@ -148,19 +151,33 @@ export const createAdmittedWorkspace = async (
     | 'reference'
     | 'local-handoff'
     | 'local-snapshots'
-    | 'account-snapshots' = 'reference',
+    | 'account-snapshots'
+    | 'account-text' = 'reference',
 ): Promise<AdmittedWorkspace> => {
-  if (!['reference', 'local-handoff', 'local-snapshots', 'account-snapshots'].includes(preparation))
+  if (
+    ![
+      'reference',
+      'local-handoff',
+      'local-snapshots',
+      'account-snapshots',
+      'account-text',
+    ].includes(preparation)
+  )
     throw Error('Unknown workspace preparation');
   const localHandoff = preparation === 'local-handoff' || preparation === 'local-snapshots';
   if (localHandoff && options.captureSources)
     throw Error('Local preparation cannot capture Account sources');
-  if (preparation === 'account-snapshots' && !options.captureSources)
+  if (
+    (preparation === 'account-snapshots' || preparation === 'account-text') &&
+    !options.captureSources
+  )
     throw Error('Account selection snapshots require source capture');
-  // Account reuses only immutable selection metadata. It keeps the reference document fork,
-  // source capture and ordinary post-admission verification; no Local handoff/buffer reuse.
+  // Account snapshots retain reference preparation; account-text adds a separate bounded
+  // text encoder. Neither uses the Local handoff/buffer reuse capability.
   const selectionHistory =
-    preparation === 'local-snapshots' || preparation === 'account-snapshots'
+    preparation === 'local-snapshots' ||
+    preparation === 'account-snapshots' ||
+    preparation === 'account-text'
       ? createSelectionHistory(localHandoff)
       : undefined;
   // Private experiment: one retired predecessor, never more than two workspace histories.
@@ -435,10 +452,121 @@ export const createAdmittedWorkspace = async (
     outcomes.set(state.group, state.value);
     return retired;
   };
+  // Full equality establishes the basis. Text promotion extends it with the same update on
+  // both private documents. All other transitions continue to establish full equality anew.
+  let directRevision = -1;
+  let projectionTransactions = 0,
+    verifiedTransactions = 0;
+  let auditProjection: (() => void) | undefined;
+  const projectionChanged = () => {
+    projectionTransactions++;
+  };
+  const watchProjection = (history: YUndoManager) =>
+    history.doc.on('beforeTransaction', projectionChanged);
+  const prepareText: import('./accountTextPreparation').AccountTextPreparation['prepare'] = (
+    input,
+    head,
+  ) => {
+    if (!accepted || verifiedRevision !== head.revision || !commands.eligible(accepted.history))
+      return undefined;
+    if (projectionTransactions !== verifiedTransactions)
+      throw Error('Verified text projection changed outside admission');
+    let clean = stable.get(accepted.history);
+    if (clean === undefined) {
+      clean = isTextBufferBasis(accepted.history.doc, true);
+      stable.set(accepted.history, clean);
+    }
+    if (!clean) return undefined;
+    const intent = JSON.parse(
+      new TextDecoder('utf-8', { fatal: true }).decode(input),
+    ) as WorkspaceIntent;
+    const command = intent.command;
+    if (command.kind !== 'text' || !editableTarget(accepted.history.doc, command.target, today()))
+      return undefined;
+    const plan = planWorkspaceText(accepted.history.doc, command, accepted.selections);
+    if (!plan.transaction || plan.rest || plan.transaction.changes.empty) return undefined;
+    const edits: { from: number; to: number; insert: string }[] = [];
+    plan.transaction.changes.iterChanges((from, to, _a, _b, insert) =>
+      edits.push({ from, to, insert: insert.toString() }),
+    );
+    if (edits.length !== 1) return undefined;
+    const edit = edits[0]!;
+    const update = preparePlainTextUpdate(
+      plan.text,
+      head.writer,
+      head.clock,
+      edit.from,
+      edit.to,
+      edit.insert,
+    );
+    if (!update) return undefined;
+    countLedgerWork('directTextPreparations');
+    const basis = accepted,
+      transactions = projectionTransactions;
+    const selection = plan.transaction.newSelection.toJSON();
+    const expectedText = plan.transaction.newDoc.toString();
+    return {
+      update,
+      sources: [{ actor: identity.id, kind: 'human', bytes: update }],
+      accept(bytes, revision) {
+        if (
+          closed ||
+          accepted !== basis ||
+          verifiedRevision !== head.revision ||
+          revision !== head.revision + 1 ||
+          projectionTransactions !== transactions ||
+          bytes.length !== update.length ||
+          bytes.some((v, i) => v !== update[i])
+        )
+          throw Error('Direct text basis changed before promotion');
+        const history = basis.history,
+          doc = history.doc;
+        let item: (typeof history.undoStack)[number] | undefined;
+        const capture = (e: { origin: unknown; stackItem: (typeof history.undoStack)[number] }) => {
+          if (e.origin === human) item = e.stackItem;
+        };
+        history.on('stack-item-added', capture);
+        history.on('stack-item-updated', capture);
+        try {
+          if (intent.group !== basis.group) history.stopCapturing();
+          doc.clientID = head.writer;
+          // Keep the enclosing transaction local: UndoManager tracks human changes and Yjs
+          // must not rotate the writer as though it had received a colliding remote update.
+          doc.transact(() => applyUpdate(doc, bytes, human), human);
+          if (
+            doc.store.pendingStructs ||
+            doc.store.pendingDs ||
+            Y.getState(doc.store, head.writer) !== head.clock + edit.insert.length ||
+            plan.text.toString() !== expectedText
+          )
+            throw Error('Text update did not produce its prepared result');
+          const before = basis.selections;
+          const selections = new Map(before);
+          selections.set(plan.key, relativeSelection(plan.text, selection));
+          if (!item) throw Error('Text promotion did not record human undo');
+          if (!item.meta.has('before'))
+            item.meta.set('before', selectionHistory!.capture(history, before));
+          item.meta.set('after', selectionHistory!.capture(history, selections));
+          basis.selections = selections;
+          basis.group = intent.group;
+          basis.value = true;
+          outcomes.set(intent.group, true);
+          directRevision = verifiedRevision = revision;
+          verifiedTransactions = projectionTransactions;
+        } finally {
+          history.off('stack-item-added', capture);
+          history.off('stack-item-updated', capture);
+        }
+      },
+    };
+  };
   let session: AdmissionSession;
   try {
     session = await open({
       validateReceive: options.validateReceive,
+      ...(preparation === 'account-text'
+        ? { [accountTextPreparation]: { prepare: prepareText } }
+        : {}),
       ...(localHandoff
         ? ({
             [localWorkspacePreparation]: {
@@ -514,12 +642,25 @@ export const createAdmittedWorkspace = async (
       resolve = yes;
       reject = no;
     });
+    let auditFailure: unknown;
+    if (
+      preparation === 'account-text' &&
+      !failure &&
+      ['active', 'blocked'].includes(session.status.state)
+    ) {
+      try {
+        auditProjection?.();
+      } catch (error) {
+        auditFailure = failure = error;
+      }
+    }
     closed = true;
     emit();
     void session.close().then(
       () => {
         teardown();
-        resolve();
+        if (auditFailure) reject(auditFailure);
+        else resolve();
       },
       (e) => {
         teardown();
@@ -588,7 +729,10 @@ export const createAdmittedWorkspace = async (
           'Workspace projection differs from accepted canonical state.',
         );
     };
+    auditProjection = verifyProjection;
+    watchProjection(accepted.history);
     verifyProjection();
+    verifiedTransactions = projectionTransactions;
     verifiedRevision = session.status.revision;
     session.subscribe((event) => {
       try {
@@ -598,7 +742,11 @@ export const createAdmittedWorkspace = async (
             'projection-mismatch',
             'Prepared Local publication has the wrong source.',
           );
-        if (event.source === 'local' && localHandoff) {
+        const direct = event.source === 'local' && directRevision === event.revision;
+        if (direct) {
+          if (verifiedRevision !== event.revision)
+            throw Error('Unverified direct text publication');
+        } else if (event.source === 'local' && localHandoff) {
           if (adoptedRevision !== event.revision || verifiedRevision !== event.revision)
             throw new AdmissionError(
               'projection-mismatch',
@@ -608,6 +756,7 @@ export const createAdmittedWorkspace = async (
           if (!pending) throw Error('Accepted workspace command has no prepared history.');
           const previous = accepted;
           accepted = pending;
+          watchProjection(accepted.history);
           pending = undefined;
           dispose(previous);
           outcomes.set(accepted.group, accepted.value);
@@ -627,8 +776,9 @@ export const createAdmittedWorkspace = async (
           return;
         }
         // Check the complete accepted transition/page, including pending dependencies, before exposure.
-        if (!localHandoff || event.source === 'remote') verifyProjection();
+        if (!direct && (!localHandoff || event.source === 'remote')) verifyProjection();
         verifiedRevision = event.revision;
+        verifiedTransactions = projectionTransactions;
         emit();
         if (
           event.source === 'local' &&

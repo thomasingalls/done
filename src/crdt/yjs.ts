@@ -826,10 +826,14 @@ const copyHistoryStacks = (
 };
 
 /** Conservative once-per-basis guard for delta catch-up to equal a fresh normalized fork.
- * Reject every surrogate, including complete pairs; extending that domain is separate work. */
-export const isTextBufferBasis = (doc: YDoc): boolean => {
+ * Buffer catch-up rejects every surrogate. Direct text permits paired surrogates but separately
+ * rejects splits that would repair them in place. All other normalization guards are shared. */
+export const isTextBufferBasis = (doc: YDoc, allowPairs = false): boolean => {
   if (hasPendingUpdates(doc) || doc.isDestroyed || doc.gc) return false;
-  const cleanString = (s: string) => !/[\uD800-\uDFFF]/.test(s);
+  const cleanString = (s: string) =>
+    allowPairs
+      ? !/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(s)
+      : !/[\uD800-\uDFFF]/.test(s);
   const seen = new Set<object>();
   const value = (v: unknown): boolean => {
     if (typeof v === 'string') return cleanString(v);
@@ -941,3 +945,113 @@ export const genesisCoverageParts = (doc: YDoc) => {
     ds: new Uint8Array(Y.encodeSnapshot(Y.createSnapshot(Y.snapshot(doc).ds, new Map()))),
   };
 };
+
+/** Pinned v13 plain-text V1 update encoder. Read-only: no transaction, split, clone or undo mutation.
+ * A conservative miss returns to native Y.Text preparation. Only one replacement range is supported.
+ */
+export function preparePlainTextUpdate(
+  text: YText,
+  writer: number,
+  clock: number,
+  from: number,
+  to: number,
+  insert: string,
+): Uint8Array<ArrayBuffer> | undefined {
+  const doc = text.doc;
+  if (
+    !doc ||
+    hasPendingUpdates(doc) ||
+    !Number.isSafeInteger(writer) ||
+    writer < 0 ||
+    writer > 0xffffffff ||
+    !Number.isSafeInteger(clock) ||
+    clock < 0 ||
+    Y.getState(doc.store, writer) !== clock ||
+    !Number.isSafeInteger(from) ||
+    !Number.isSafeInteger(to) ||
+    from < 0 ||
+    to < from ||
+    to > text.length ||
+    !Number.isSafeInteger(clock + insert.length) ||
+    /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(insert)
+  )
+    return undefined;
+  for (let parent: Y.AbstractType<any> | null = text; parent; parent = parent.parent)
+    if (parent._item?.deleted) return undefined;
+  const deletions = new Map<number, { clock: number; len: number }[]>();
+  let position = 0,
+    left: Y.ID | null = null,
+    right: Y.ID | null = null;
+  let found = false;
+  for (let item = text._start; item; item = item.right) {
+    if (
+      !(item.content instanceof Y.ContentString) &&
+      !(item.deleted && item.content instanceof Y.ContentDeleted)
+    )
+      return undefined;
+    if (!item.deleted) {
+      const value = (item.content as Y.ContentString).str;
+      // Native splitting repairs broken UTF-16 in place. Such edits must use the reference.
+      for (const boundary of [from, to]) {
+        const offset = boundary - position;
+        if (offset > 0 && offset < item.length && /[\uD800-\uDBFF]/u.test(value[offset - 1]!))
+          return undefined;
+      }
+      if (/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value))
+        return undefined;
+      const start = Math.max(from, position),
+        end = Math.min(to, position + item.length);
+      if (end > start) {
+        const ranges = deletions.get(item.id.client) ?? [];
+        ranges.push({ clock: item.id.clock + start - position, len: end - start });
+        deletions.set(item.id.client, ranges);
+      }
+    }
+    if (!found) {
+      if (item.deleted || position + item.length <= to) left = item.lastId;
+      else {
+        const offset = to - position;
+        if (offset > 0) left = Y.createID(item.id.client, item.id.clock + offset - 1);
+        right = Y.createID(item.id.client, item.id.clock + Math.max(0, offset));
+        found = true;
+      }
+    }
+    if (!item.deleted) position += item.length;
+  }
+  if (position !== text.length) return undefined;
+  const encoder = new Y.UpdateEncoderV1();
+  encoding.writeVarUint(encoder.restEncoder, insert ? 1 : 0);
+  if (insert) {
+    encoding.writeVarUint(encoder.restEncoder, 1);
+    encoder.writeClient(writer);
+    encoding.writeVarUint(encoder.restEncoder, clock);
+    new Y.Item(
+      Y.createID(writer, clock),
+      null,
+      left,
+      null,
+      right,
+      text,
+      null,
+      new Y.ContentString(insert),
+    ).write(encoder, 0);
+  }
+  encoding.writeVarUint(encoder.restEncoder, deletions.size);
+  for (const [client, ranges] of [...deletions].sort((a, b) => b[0] - a[0])) {
+    ranges.sort((a, b) => a.clock - b.clock);
+    const merged: typeof ranges = [];
+    for (const range of ranges) {
+      const last = merged.at(-1);
+      if (last && last.clock + last.len === range.clock) last.len += range.len;
+      else merged.push({ ...range });
+    }
+    encoder.resetDsCurVal();
+    encoding.writeVarUint(encoder.restEncoder, client);
+    encoding.writeVarUint(encoder.restEncoder, merged.length);
+    for (const range of merged) {
+      encoder.writeDsClock(range.clock);
+      encoder.writeDsLen(range.len);
+    }
+  }
+  return new Uint8Array(encoder.toUint8Array());
+}

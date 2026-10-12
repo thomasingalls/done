@@ -72,3 +72,13 @@ channel handoff with the exact-version Yjs wake-up repair. The existing snapshot
 channel API are unchanged. Initial and hello-response snapshots retain pending structs/deletions through
 receive admission; later missing originals complete without the donor. This does not authorize partial
 compaction, migration or a default-application switch.
+
+## 2026-10-12 — Owned Account text specialization
+
+The current Account editor can use [direct text admission](./account-text-admission.md) for a
+single plain-text replacement. It computes the update without a workspace fork and persists
+before changing canonical, projection or undo. Full equality is established at opening, reference
+transitions, received pages and ordinary close; eligible text preserves it through identical-byte
+application to unchanged verified private bases. Unsupported or pending cases retain the native
+fork/source/replay/full-comparison path described above. Source format and human undo semantics
+are unchanged; the full reference remains a build-time oracle and rollback.

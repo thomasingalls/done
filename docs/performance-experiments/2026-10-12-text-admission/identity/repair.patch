@@ -1,0 +1,1530 @@
+diff --git a/src/crdt/accountLedgerMetrics.ts b/src/crdt/accountLedgerMetrics.ts
+index 158ebd78..f272c94d 100644
+--- a/src/crdt/accountLedgerMetrics.ts
++++ b/src/crdt/accountLedgerMetrics.ts
+@@ -31,6 +31,7 @@ const workNames = [
+   'journalFlushes',
+   'dirtyJournalFlushes',
+   'projectionChecks',
++  'directTextPreparations',
+ ] as const;
+ const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
+   (typeof workNames)[number],
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index db3970c5..1eec6206 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1,3 +1,4 @@
++import { accountTextMode } from './accountTextMode';
+ import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
+ import { collectReceivePages } from './receivePrefetch';
+ import type { Diagnostic } from '../../account-protocol/diagnostics';
+@@ -2079,7 +2080,9 @@ async function openReceivingWorkspace(
+         ...(options.today ? { today: options.today } : {}),
+         ...(options.signal ? { signal: options.signal } : {}),
+       },
+-      ledgerMode === 'incremental' ? 'account-snapshots' : 'reference',
++      ledgerMode === 'incremental'
++        ? accountTextMode(import.meta.env?.['VITE_ACCOUNT_TEXT_ADMISSION'])
++        : 'reference',
+     );
+     if (options.signal?.aborted || workspace.status.state !== 'active') {
+       await workspace.close();
+diff --git a/src/crdt/admissionQueue.ts b/src/crdt/admissionQueue.ts
+index 3ba4fc9e..585a2304 100644
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -1,3 +1,8 @@
++import {
++  accountTextPreparation,
++  type AccountTextPreparation,
++  type AccountTextCandidate,
++} from './accountTextPreparation';
+ import { MaintenanceInterrupted } from './contentMaintenance';
+ import {
+   ledgerProfiling,
+@@ -59,6 +64,7 @@ export interface AdmissionOptions {
+   readonly flushBatch?: BatchTiming;
+   /** Private owned receives retain/apply frames in order, then publish the verified page once. */
+   readonly publishReceivePage?: boolean;
++  readonly [accountTextPreparation]?: AccountTextPreparation;
+   readonly [localWorkspacePreparation]?: LocalWorkspacePreparation;
+   readonly prepare: PrepareIntent;
+   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
+@@ -130,7 +136,7 @@ const deferred = <T>() => {
+   void promise.catch(() => {});
+   return { promise, resolve, reject };
+ };
+-type Prepared = PreparationBytes & { carrierBytes?: Bytes };
++type Prepared = PreparationBytes & { carrierBytes?: Bytes; text?: AccountTextCandidate };
+ type InputJob = {
+   kind: 'local' | 'remote';
+   id: number;
+@@ -166,6 +172,9 @@ export const createAdmissionOwner = async (
+   bindOwnedReceive?: (enqueue: OwnedReceiveQueue) => void,
+ ): Promise<AdmissionSession> => {
+   const local = options[localWorkspacePreparation];
++  const text = options[accountTextPreparation];
++  if (text && (local || !carrier.captureLocal))
++    throw Error('Direct text requires an Account carrier');
+   if (local && carrier.captureLocal)
+     throw Error('Local preparation is not authorized for Account source capture');
+   const canonical = createDoc(),
+@@ -386,6 +395,17 @@ export const createAdmissionOwner = async (
+       if (job.kind === 'remote' && writerClock(canonical, writer) !== before)
+         writer = newWriterId();
+       revision++;
++      if (job.prepared?.text) {
++        try {
++          job.prepared.text.accept(publication, revision);
++        } catch (cause) {
++          // Already durable: close, never re-admit this command or publish a divergent projection.
++          void close().catch(() => {});
++          throw new AdmissionError('projection-mismatch', 'Direct text promotion failed.', {
++            cause,
++          });
++        }
++      }
+       if (job.preparation) {
+         try {
+           const candidate = preparation!.adopt(job.preparation, (prepared) =>
+@@ -584,13 +604,34 @@ export const createAdmissionOwner = async (
+             lease.release();
+           }
+         } else {
+-          job.prepared = prepareIntent(
+-            canonical,
+-            writer,
++          const candidate = text?.prepare(
+             job.input,
+-            MAX_JOURNAL_UPDATE,
+-            options.prepare,
++            Object.freeze({ writer, clock: writerClock(canonical, writer), revision }),
+           );
++          if (candidate) {
++            // One exact human frame: source validation is equality, never a second speculative apply.
++            if (
++              candidate.sources.length !== 1 ||
++              candidate.sources[0]!.kind !== 'human' ||
++              candidate.sources[0]!.bytes !== candidate.update
++            ) {
++              candidate.update.fill(0);
++              for (const source of candidate.sources) source.bytes.fill(0);
++              throw Error('Direct text source must be its exact update');
++            }
++            job.prepared = {
++              update: candidate.update,
++              sources: candidate.sources,
++              text: candidate,
++            };
++          } else
++            job.prepared = prepareIntent(
++              canonical,
++              writer,
++              job.input,
++              MAX_JOURNAL_UPDATE,
++              options.prepare,
++            );
+         }
+         if (carrier.captureLocal && job.prepared.sources?.length !== 0)
+           job.prepared.carrierBytes = carrier.captureLocal(
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index b0dc230e..6d33d0ab 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -1,3 +1,4 @@
++import { accountTextPreparation } from './accountTextPreparation';
+ /** One admission owner and one human undo history for every workspace mutation surface. */
+ import { EditorSelection } from '@codemirror/state';
+ import {
+@@ -7,6 +8,7 @@ import {
+   forkWorkspaceHistory,
+   createSelectionHistory,
+   isTextBufferBasis,
++  preparePlainTextUpdate,
+   type YUndoManager,
+ } from './yjs';
+ import {
+@@ -42,6 +44,7 @@ import { currentDate, plainDate, type ISODate } from '../lib/date';
+ import { exportArchive, exportEntries } from './export';
+ import {
+   createWorkspaceCommandRunner,
++  planWorkspaceText,
+   relativeSelection,
+   resolveSelection,
+   targetText,
+@@ -148,19 +151,33 @@ export const createAdmittedWorkspace = async (
+     | 'reference'
+     | 'local-handoff'
+     | 'local-snapshots'
+-    | 'account-snapshots' = 'reference',
++    | 'account-snapshots'
++    | 'account-text' = 'reference',
+ ): Promise<AdmittedWorkspace> => {
+-  if (!['reference', 'local-handoff', 'local-snapshots', 'account-snapshots'].includes(preparation))
++  if (
++    ![
++      'reference',
++      'local-handoff',
++      'local-snapshots',
++      'account-snapshots',
++      'account-text',
++    ].includes(preparation)
++  )
+     throw Error('Unknown workspace preparation');
+   const localHandoff = preparation === 'local-handoff' || preparation === 'local-snapshots';
+   if (localHandoff && options.captureSources)
+     throw Error('Local preparation cannot capture Account sources');
+-  if (preparation === 'account-snapshots' && !options.captureSources)
++  if (
++    (preparation === 'account-snapshots' || preparation === 'account-text') &&
++    !options.captureSources
++  )
+     throw Error('Account selection snapshots require source capture');
+-  // Account reuses only immutable selection metadata. It keeps the reference document fork,
+-  // source capture and ordinary post-admission verification; no Local handoff/buffer reuse.
++  // Account snapshots retain reference preparation; account-text adds a separate bounded
++  // text encoder. Neither uses the Local handoff/buffer reuse capability.
+   const selectionHistory =
+-    preparation === 'local-snapshots' || preparation === 'account-snapshots'
++    preparation === 'local-snapshots' ||
++    preparation === 'account-snapshots' ||
++    preparation === 'account-text'
+       ? createSelectionHistory(localHandoff)
+       : undefined;
+   // Private experiment: one retired predecessor, never more than two workspace histories.
+@@ -435,10 +452,121 @@ export const createAdmittedWorkspace = async (
+     outcomes.set(state.group, state.value);
+     return retired;
+   };
++  // Full equality establishes the basis. Text promotion extends it with the same update on
++  // both private documents. All other transitions continue to establish full equality anew.
++  let directRevision = -1;
++  let projectionTransactions = 0,
++    verifiedTransactions = 0;
++  let auditProjection: (() => void) | undefined;
++  const projectionChanged = () => {
++    projectionTransactions++;
++  };
++  const watchProjection = (history: YUndoManager) =>
++    history.doc.on('beforeTransaction', projectionChanged);
++  const prepareText: import('./accountTextPreparation').AccountTextPreparation['prepare'] = (
++    input,
++    head,
++  ) => {
++    if (!accepted || verifiedRevision !== head.revision || !commands.eligible(accepted.history))
++      return undefined;
++    if (projectionTransactions !== verifiedTransactions)
++      throw Error('Verified text projection changed outside admission');
++    let clean = stable.get(accepted.history);
++    if (clean === undefined) {
++      clean = isTextBufferBasis(accepted.history.doc, true);
++      stable.set(accepted.history, clean);
++    }
++    if (!clean) return undefined;
++    const intent = JSON.parse(
++      new TextDecoder('utf-8', { fatal: true }).decode(input),
++    ) as WorkspaceIntent;
++    const command = intent.command;
++    if (command.kind !== 'text' || !editableTarget(accepted.history.doc, command.target, today()))
++      return undefined;
++    const plan = planWorkspaceText(accepted.history.doc, command, accepted.selections);
++    if (!plan.transaction || plan.rest || plan.transaction.changes.empty) return undefined;
++    const edits: { from: number; to: number; insert: string }[] = [];
++    plan.transaction.changes.iterChanges((from, to, _a, _b, insert) =>
++      edits.push({ from, to, insert: insert.toString() }),
++    );
++    if (edits.length !== 1) return undefined;
++    const edit = edits[0]!;
++    const update = preparePlainTextUpdate(
++      plan.text,
++      head.writer,
++      head.clock,
++      edit.from,
++      edit.to,
++      edit.insert,
++    );
++    if (!update) return undefined;
++    countLedgerWork('directTextPreparations');
++    const basis = accepted,
++      transactions = projectionTransactions;
++    const selection = plan.transaction.newSelection.toJSON();
++    const expectedText = plan.transaction.newDoc.toString();
++    return {
++      update,
++      sources: [{ actor: identity.id, kind: 'human', bytes: update }],
++      accept(bytes, revision) {
++        if (
++          closed ||
++          accepted !== basis ||
++          verifiedRevision !== head.revision ||
++          revision !== head.revision + 1 ||
++          projectionTransactions !== transactions ||
++          bytes.length !== update.length ||
++          bytes.some((v, i) => v !== update[i])
++        )
++          throw Error('Direct text basis changed before promotion');
++        const history = basis.history,
++          doc = history.doc;
++        let item: (typeof history.undoStack)[number] | undefined;
++        const capture = (e: { origin: unknown; stackItem: (typeof history.undoStack)[number] }) => {
++          if (e.origin === human) item = e.stackItem;
++        };
++        history.on('stack-item-added', capture);
++        history.on('stack-item-updated', capture);
++        try {
++          if (intent.group !== basis.group) history.stopCapturing();
++          doc.clientID = head.writer;
++          // Keep the enclosing transaction local: UndoManager tracks human changes and Yjs
++          // must not rotate the writer as though it had received a colliding remote update.
++          doc.transact(() => applyUpdate(doc, bytes, human), human);
++          if (
++            doc.store.pendingStructs ||
++            doc.store.pendingDs ||
++            Y.getState(doc.store, head.writer) !== head.clock + edit.insert.length ||
++            plan.text.toString() !== expectedText
++          )
++            throw Error('Text update did not produce its prepared result');
++          const before = basis.selections;
++          const selections = new Map(before);
++          selections.set(plan.key, relativeSelection(plan.text, selection));
++          if (!item) throw Error('Text promotion did not record human undo');
++          if (!item.meta.has('before'))
++            item.meta.set('before', selectionHistory!.capture(history, before));
++          item.meta.set('after', selectionHistory!.capture(history, selections));
++          basis.selections = selections;
++          basis.group = intent.group;
++          basis.value = true;
++          outcomes.set(intent.group, true);
++          directRevision = verifiedRevision = revision;
++          verifiedTransactions = projectionTransactions;
++        } finally {
++          history.off('stack-item-added', capture);
++          history.off('stack-item-updated', capture);
++        }
++      },
++    };
++  };
+   let session: AdmissionSession;
+   try {
+     session = await open({
+       validateReceive: options.validateReceive,
++      ...(preparation === 'account-text'
++        ? { [accountTextPreparation]: { prepare: prepareText } }
++        : {}),
+       ...(localHandoff
+         ? ({
+             [localWorkspacePreparation]: {
+@@ -514,12 +642,25 @@ export const createAdmittedWorkspace = async (
+       resolve = yes;
+       reject = no;
+     });
++    let auditFailure: unknown;
++    if (
++      preparation === 'account-text' &&
++      !failure &&
++      ['active', 'blocked'].includes(session.status.state)
++    ) {
++      try {
++        auditProjection?.();
++      } catch (error) {
++        auditFailure = failure = error;
++      }
++    }
+     closed = true;
+     emit();
+     void session.close().then(
+       () => {
+         teardown();
+-        resolve();
++        if (auditFailure) reject(auditFailure);
++        else resolve();
+       },
+       (e) => {
+         teardown();
+@@ -588,7 +729,10 @@ export const createAdmittedWorkspace = async (
+           'Workspace projection differs from accepted canonical state.',
+         );
+     };
++    auditProjection = verifyProjection;
++    watchProjection(accepted.history);
+     verifyProjection();
++    verifiedTransactions = projectionTransactions;
+     verifiedRevision = session.status.revision;
+     session.subscribe((event) => {
+       try {
+@@ -598,7 +742,11 @@ export const createAdmittedWorkspace = async (
+             'projection-mismatch',
+             'Prepared Local publication has the wrong source.',
+           );
+-        if (event.source === 'local' && localHandoff) {
++        const direct = event.source === 'local' && directRevision === event.revision;
++        if (direct) {
++          if (verifiedRevision !== event.revision)
++            throw Error('Unverified direct text publication');
++        } else if (event.source === 'local' && localHandoff) {
+           if (adoptedRevision !== event.revision || verifiedRevision !== event.revision)
+             throw new AdmissionError(
+               'projection-mismatch',
+@@ -608,6 +756,7 @@ export const createAdmittedWorkspace = async (
+           if (!pending) throw Error('Accepted workspace command has no prepared history.');
+           const previous = accepted;
+           accepted = pending;
++          watchProjection(accepted.history);
+           pending = undefined;
+           dispose(previous);
+           outcomes.set(accepted.group, accepted.value);
+@@ -627,8 +776,9 @@ export const createAdmittedWorkspace = async (
+           return;
+         }
+         // Check the complete accepted transition/page, including pending dependencies, before exposure.
+-        if (!localHandoff || event.source === 'remote') verifyProjection();
++        if (!direct && (!localHandoff || event.source === 'remote')) verifyProjection();
+         verifiedRevision = event.revision;
++        verifiedTransactions = projectionTransactions;
+         emit();
+         if (
+           event.source === 'local' &&
+diff --git a/src/crdt/workspaceCommands.ts b/src/crdt/workspaceCommands.ts
+index ae30ee31..0bdf98be 100644
+--- a/src/crdt/workspaceCommands.ts
++++ b/src/crdt/workspaceCommands.ts
+@@ -132,6 +132,9 @@ export const runWorkspaceCommand: CommandRunner = (...args) =>
+ export const createWorkspaceCommandRunner = () => {
+   const repaired = new WeakSet<YUndoManager>();
+   return Object.freeze({
++    eligible(history: YUndoManager) {
++      return repaired.has(history);
++    },
+     inherit(source: YUndoManager, fork: YUndoManager) {
+       if (source === fork) throw Error('Repair eligibility requires a detached history.');
+       if (repaired.has(source)) repaired.add(fork);
+@@ -153,6 +156,45 @@ export const createWorkspaceCommandRunner = () => {
+   });
+ };
+ 
++/** Pure editor-command planning shared by native and direct preparation. */
++export function planWorkspaceText(
++  doc: YDoc,
++  command: Extract<WorkspaceIntent['command'], { kind: 'text' }>,
++  selections: Map<string, RelativeSelection>,
++) {
++  const text = targetText(doc, command.target),
++    key = targetKey(command.target);
++  const selection = resolveSelection(doc, text, command.selection ?? selections.get(key));
++  const state = EditorState.create({
++    doc: text.toString(),
++    selection,
++    extensions: [
++      markdown({ base: markdownLanguage, addKeymap: false }),
++      indentUnit.of('  '),
++      EditorState.allowMultipleSelections.of(true),
++    ],
++  });
++  let transaction: Transaction | undefined,
++    rest = '';
++  if (command.action.name === 'insert') {
++    let end = Math.min(1000, command.action.text.length);
++    if (end < command.action.text.length && /[\uD800-\uDBFF]/u.test(command.action.text[end - 1]!))
++      end--;
++    rest = command.action.text.slice(end);
++    transaction = state.update(state.replaceSelection(command.action.text.slice(0, end)));
++  } else {
++    if (command.action.name === 'undo' || command.action.name === 'redo')
++      throw Error('Undo is workspace-scoped.');
++    textCommands[command.action.name]({
++      state,
++      dispatch: (tr) => {
++        transaction = tr;
++      },
++    });
++  }
++  return { text, key, transaction, rest };
++}
++
+ const executeWorkspaceCommand = (
+   history: YUndoManager,
+   intent: WorkspaceIntent,
+@@ -184,39 +226,7 @@ const executeWorkspaceCommand = (
+   switch (command.kind) {
+     case 'text': {
+       if (!editableTarget(doc, command.target, context.today)) return { value: false };
+-      const text = targetText(doc, command.target),
+-        key = targetKey(command.target);
+-      const selection = resolveSelection(doc, text, command.selection ?? selections.get(key));
+-      const state = EditorState.create({
+-        doc: text.toString(),
+-        selection,
+-        extensions: [
+-          markdown({ base: markdownLanguage, addKeymap: false }),
+-          indentUnit.of('  '),
+-          EditorState.allowMultipleSelections.of(true),
+-        ],
+-      });
+-      let transaction: Transaction | undefined,
+-        rest = '';
+-      if (command.action.name === 'insert') {
+-        let end = Math.min(1000, command.action.text.length);
+-        if (
+-          end < command.action.text.length &&
+-          /[\uD800-\uDBFF]/u.test(command.action.text[end - 1]!)
+-        )
+-          end--;
+-        rest = command.action.text.slice(end);
+-        transaction = state.update(state.replaceSelection(command.action.text.slice(0, end)));
+-      } else {
+-        if (command.action.name === 'undo' || command.action.name === 'redo')
+-          throw Error('Undo is workspace-scoped.');
+-        textCommands[command.action.name]({
+-          state,
+-          dispatch: (tr) => {
+-            transaction = tr;
+-          },
+-        });
+-      }
++      const { text, key, transaction, rest } = planWorkspaceText(doc, command, selections);
+       if (transaction) {
+         const edits: { from: number; to: number; insert: string }[] = [];
+         transaction.changes.iterChanges((from, to, _a, _b, inserted) =>
+diff --git a/src/crdt/yjs.ts b/src/crdt/yjs.ts
+index c5a59376..a08d759e 100644
+--- a/src/crdt/yjs.ts
++++ b/src/crdt/yjs.ts
+@@ -826,10 +826,14 @@ const copyHistoryStacks = (
+ };
+ 
+ /** Conservative once-per-basis guard for delta catch-up to equal a fresh normalized fork.
+- * Reject every surrogate, including complete pairs; extending that domain is separate work. */
+-export const isTextBufferBasis = (doc: YDoc): boolean => {
++ * Buffer catch-up rejects every surrogate. Direct text permits paired surrogates but separately
++ * rejects splits that would repair them in place. All other normalization guards are shared. */
++export const isTextBufferBasis = (doc: YDoc, allowPairs = false): boolean => {
+   if (hasPendingUpdates(doc) || doc.isDestroyed || doc.gc) return false;
+-  const cleanString = (s: string) => !/[\uD800-\uDFFF]/.test(s);
++  const cleanString = (s: string) =>
++    allowPairs
++      ? !/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(s)
++      : !/[\uD800-\uDFFF]/.test(s);
+   const seen = new Set<object>();
+   const value = (v: unknown): boolean => {
+     if (typeof v === 'string') return cleanString(v);
+@@ -941,3 +945,113 @@ export const genesisCoverageParts = (doc: YDoc) => {
+     ds: new Uint8Array(Y.encodeSnapshot(Y.createSnapshot(Y.snapshot(doc).ds, new Map()))),
+   };
+ };
++
++/** Pinned v13 plain-text V1 update encoder. Read-only: no transaction, split, clone or undo mutation.
++ * A conservative miss returns to native Y.Text preparation. Only one replacement range is supported.
++ */
++export function preparePlainTextUpdate(
++  text: YText,
++  writer: number,
++  clock: number,
++  from: number,
++  to: number,
++  insert: string,
++): Uint8Array<ArrayBuffer> | undefined {
++  const doc = text.doc;
++  if (
++    !doc ||
++    hasPendingUpdates(doc) ||
++    !Number.isSafeInteger(writer) ||
++    writer < 0 ||
++    writer > 0xffffffff ||
++    !Number.isSafeInteger(clock) ||
++    clock < 0 ||
++    Y.getState(doc.store, writer) !== clock ||
++    !Number.isSafeInteger(from) ||
++    !Number.isSafeInteger(to) ||
++    from < 0 ||
++    to < from ||
++    to > text.length ||
++    !Number.isSafeInteger(clock + insert.length) ||
++    /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(insert)
++  )
++    return undefined;
++  for (let parent: Y.AbstractType<any> | null = text; parent; parent = parent.parent)
++    if (parent._item?.deleted) return undefined;
++  const deletions = new Map<number, { clock: number; len: number }[]>();
++  let position = 0,
++    left: Y.ID | null = null,
++    right: Y.ID | null = null;
++  let found = false;
++  for (let item = text._start; item; item = item.right) {
++    if (
++      !(item.content instanceof Y.ContentString) &&
++      !(item.deleted && item.content instanceof Y.ContentDeleted)
++    )
++      return undefined;
++    if (!item.deleted) {
++      const value = (item.content as Y.ContentString).str;
++      // Native splitting repairs broken UTF-16 in place. Such edits must use the reference.
++      for (const boundary of [from, to]) {
++        const offset = boundary - position;
++        if (offset > 0 && offset < item.length && /[\uD800-\uDBFF]/u.test(value[offset - 1]!))
++          return undefined;
++      }
++      if (/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/u.test(value))
++        return undefined;
++      const start = Math.max(from, position),
++        end = Math.min(to, position + item.length);
++      if (end > start) {
++        const ranges = deletions.get(item.id.client) ?? [];
++        ranges.push({ clock: item.id.clock + start - position, len: end - start });
++        deletions.set(item.id.client, ranges);
++      }
++    }
++    if (!found) {
++      if (item.deleted || position + item.length <= to) left = item.lastId;
++      else {
++        const offset = to - position;
++        if (offset > 0) left = Y.createID(item.id.client, item.id.clock + offset - 1);
++        right = Y.createID(item.id.client, item.id.clock + Math.max(0, offset));
++        found = true;
++      }
++    }
++    if (!item.deleted) position += item.length;
++  }
++  if (position !== text.length) return undefined;
++  const encoder = new Y.UpdateEncoderV1();
++  encoding.writeVarUint(encoder.restEncoder, insert ? 1 : 0);
++  if (insert) {
++    encoding.writeVarUint(encoder.restEncoder, 1);
++    encoder.writeClient(writer);
++    encoding.writeVarUint(encoder.restEncoder, clock);
++    new Y.Item(
++      Y.createID(writer, clock),
++      null,
++      left,
++      null,
++      right,
++      text,
++      null,
++      new Y.ContentString(insert),
++    ).write(encoder, 0);
++  }
++  encoding.writeVarUint(encoder.restEncoder, deletions.size);
++  for (const [client, ranges] of [...deletions].sort((a, b) => b[0] - a[0])) {
++    ranges.sort((a, b) => a.clock - b.clock);
++    const merged: typeof ranges = [];
++    for (const range of ranges) {
++      const last = merged.at(-1);
++      if (last && last.clock + last.len === range.clock) last.len += range.len;
++      else merged.push({ ...range });
++    }
++    encoder.resetDsCurVal();
++    encoding.writeVarUint(encoder.restEncoder, client);
++    encoding.writeVarUint(encoder.restEncoder, merged.length);
++    for (const range of merged) {
++      encoder.writeDsClock(range.clock);
++      encoder.writeDsLen(range.len);
++    }
++  }
++  return new Uint8Array(encoder.toUint8Array());
++}
+diff --git a/test/workspaceAdmission.test.ts b/test/workspaceAdmission.test.ts
+index e79c1b29..937cd3aa 100644
+--- a/test/workspaceAdmission.test.ts
++++ b/test/workspaceAdmission.test.ts
+@@ -1,4 +1,5 @@
+ // @vitest-environment node
++import { accountTextPreparation } from '../src/crdt/accountTextPreparation';
+ import { describe, it, expect, vi } from 'vitest';
+ import * as fc from 'fast-check';
+ import {
+@@ -46,13 +47,22 @@ const until = async (condition: () => boolean) => {
+ };
+ const makeFixture = async (
+   seed?: Uint8Array,
+-  preparation: 'reference' | 'local-handoff' | 'local-snapshots' = 'reference',
++  preparation:
++    | 'reference'
++    | 'local-handoff'
++    | 'local-snapshots'
++    | 'account-snapshots'
++    | 'account-text' = 'reference',
+ ) => {
+   let date = '2026-09-08';
+   let refuse = false,
+     fail = false,
+     release: (() => void) | undefined,
+     gate: Promise<void> | undefined;
++  const account = preparation.startsWith('account-');
++  const sources: import('../src/crdt/sourceCapture').SourceUpdate[][] = [];
++  const direct: Uint8Array[] = [];
++  let beforeAppend: (() => void) | undefined;
+   const owned: { state: PreparedWorkspaceState; scope: PreparationScope }[] = [],
+     retired: PreparedWorkspaceState[] = [];
+   const preparations: number[] = [],
+@@ -62,6 +72,17 @@ const makeFixture = async (
+     disk: Uint8Array[] = seed ? [seed] : [],
+     wal: Uint8Array[] = [];
+   const carrier = {
++    ...(account
++      ? {
++          captureLocal(
++            update: Uint8Array,
++            captured: import('../src/crdt/sourceCapture').SourceUpdate[],
++          ) {
++            sources.push(captured.map((s) => ({ ...s, bytes: s.bytes.slice() })));
++            return update.slice();
++          },
++        }
++      : {}),
+     state: 'active',
+     signal: abort.signal,
+     loadRecovery: async () => ({
+@@ -69,6 +90,7 @@ const makeFixture = async (
+       journal: wal.map((bytes) => ({ bytes: bytes.slice() })),
+     }),
+     appendLocal(bytes: Uint8Array) {
++      beforeAppend?.();
+       if (refuse) return { status: 'refused', reason: 'quota' };
+       wal.push(bytes.slice());
+       return { status: 'journalled' };
+@@ -96,6 +118,20 @@ const makeFixture = async (
+       const local = options[localWorkspacePreparation];
+       return createAdmissionOwner(carrier, {
+         ...options,
++        ...(options[accountTextPreparation]
++          ? {
++              [accountTextPreparation]: {
++                prepare(input, head) {
++                  const result = options[accountTextPreparation]!.prepare(input, head);
++                  if (result) {
++                    preparations.push(head.writer);
++                    direct.push(result.update);
++                  }
++                  return result;
++                },
++              },
++            }
++          : {}),
+         prepare: (...args) => {
+           preparations.push(args[0].clientID);
+           return options.prepare(...args);
+@@ -130,6 +166,7 @@ const makeFixture = async (
+     },
+     {
+       identity,
++      ...(account ? { captureSources: true, suppressEmptySources: true } : {}),
+       validateReceive: () => {},
+       today: () => date,
+     },
+@@ -139,6 +176,11 @@ const makeFixture = async (
+   doc.outgoing((b) => emitted.push(b));
+   return {
+     doc,
++    sources,
++    direct,
++    beforeAppend: (fn: () => void) => {
++      beforeAppend = fn;
++    },
+     owned,
+     retired,
+     preparations,
+@@ -169,7 +211,14 @@ const makeFixture = async (
+     },
+   };
+ };
+-describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
++const referenceAndOptimizedWorkspacePreparations = [
++  'reference',
++  'local-handoff',
++  'local-snapshots',
++  'account-snapshots',
++  'account-text',
++] as const;
++describe.each(referenceAndOptimizedWorkspacePreparations)(
+   'workspace preparation %s',
+   (preparation) => {
+     const fixture = (seed?: Uint8Array) => makeFixture(seed, preparation);
+@@ -820,64 +869,67 @@ describe.each(['reference', 'local-handoff', 'local-snapshots'] as const)(
+       });
+     });
+ 
+-    it('private prepared histories remain unpublished under pressure and are disposed on discard and drained close', async () => {
+-      const histories = new Set<Y.Doc>(),
+-        original = Y.Doc.prototype.transact;
+-      const spy = vi.spyOn(Y.Doc.prototype, 'transact').mockImplementation(function <T>(
+-        this: Y.Doc,
+-        fn: (tr: Y.Transaction) => T,
+-        origin?: unknown,
+-      ): T {
+-        if (
+-          !this.gc &&
+-          origin &&
+-          typeof origin === 'object' &&
+-          'kind' in origin &&
+-          origin.kind === 'human'
+-        )
+-          histories.add(this);
+-        return original.call(this, fn, origin) as T;
+-      });
+-      let f: Awaited<ReturnType<typeof fixture>> | undefined;
+-      try {
+-        f = await fixture();
+-        await master(f.doc).input(insert('kept')).accepted;
+-        const accepted = [...histories].at(-1)!;
+-        expect(accepted).toBeDefined();
+-        f.refuse();
+-        f.fail();
+-        const refused = master(f.doc).input(insert('refused'));
+-        await until(() => f!.doc.status.state === 'blocked');
+-        const abandoned = [...histories].at(-1)!;
+-        expect(abandoned).not.toBe(accepted);
+-        expect(abandoned.isDestroyed).toBe(false);
+-        expect(f.doc.read().master, 'refused history must not be published').toBe('kept');
+-        expect(f.emitted).toHaveLength(1);
+-        f.doc.discardPending();
+-        await expect(refused.accepted).rejects.toHaveProperty('code', 'discarded');
+-        expect(abandoned.isDestroyed, 'discard must dispose its private history').toBe(true);
+-        expect(accepted.isDestroyed).toBe(false);
+-        f.pause();
+-        const late = master(f.doc).input(insert('late'));
+-        await until(() => [...histories].at(-1) !== abandoned);
+-        const closingHistory = [...histories].at(-1)!;
+-        expect(closingHistory.isDestroyed).toBe(false);
+-        expect(f.doc.read().master).toBe('kept');
+-        const closing = f.doc.close();
+-        f.resume();
+-        await closing;
+-        await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
+-        expect(f.emitted, 'close must not publish a late preparation').toHaveLength(1);
+-        expect(
+-          [...histories].every((d) => d.isDestroyed),
+-          'close must dispose every owned history',
+-        ).toBe(true);
+-      } finally {
+-        await f?.doc.close();
+-        for (const history of histories) history.destroy();
+-        spy.mockRestore();
+-      }
+-    });
++    it.skipIf(preparation === 'account-text')(
++      'private prepared histories remain unpublished under pressure and are disposed on discard and drained close',
++      async () => {
++        const histories = new Set<Y.Doc>(),
++          original = Y.Doc.prototype.transact;
++        const spy = vi.spyOn(Y.Doc.prototype, 'transact').mockImplementation(function <T>(
++          this: Y.Doc,
++          fn: (tr: Y.Transaction) => T,
++          origin?: unknown,
++        ): T {
++          if (
++            !this.gc &&
++            origin &&
++            typeof origin === 'object' &&
++            'kind' in origin &&
++            origin.kind === 'human'
++          )
++            histories.add(this);
++          return original.call(this, fn, origin) as T;
++        });
++        let f: Awaited<ReturnType<typeof fixture>> | undefined;
++        try {
++          f = await fixture();
++          await master(f.doc).input(insert('kept')).accepted;
++          const accepted = [...histories].at(-1)!;
++          expect(accepted).toBeDefined();
++          f.refuse();
++          f.fail();
++          const refused = master(f.doc).input(insert('refused'));
++          await until(() => f!.doc.status.state === 'blocked');
++          const abandoned = [...histories].at(-1)!;
++          expect(abandoned).not.toBe(accepted);
++          expect(abandoned.isDestroyed).toBe(false);
++          expect(f.doc.read().master, 'refused history must not be published').toBe('kept');
++          expect(f.emitted).toHaveLength(1);
++          f.doc.discardPending();
++          await expect(refused.accepted).rejects.toHaveProperty('code', 'discarded');
++          expect(abandoned.isDestroyed, 'discard must dispose its private history').toBe(true);
++          expect(accepted.isDestroyed).toBe(false);
++          f.pause();
++          const late = master(f.doc).input(insert('late'));
++          await until(() => [...histories].at(-1) !== abandoned);
++          const closingHistory = [...histories].at(-1)!;
++          expect(closingHistory.isDestroyed).toBe(false);
++          expect(f.doc.read().master).toBe('kept');
++          const closing = f.doc.close();
++          f.resume();
++          await closing;
++          await expect(late.accepted).rejects.toHaveProperty('code', 'inactive-session');
++          expect(f.emitted, 'close must not publish a late preparation').toHaveLength(1);
++          expect(
++            [...histories].every((d) => d.isDestroyed),
++            'close must dispose every owned history',
++          ).toBe(true);
++        } finally {
++          await f?.doc.close();
++          for (const history of histories) history.destroy();
++          spy.mockRestore();
++        }
++      },
++    );
+     it('no-op and remote writer collisions renew the verified preparation basis', async () => {
+       const f = await fixture();
+       try {
+@@ -1543,118 +1595,260 @@ describe('persistent text buffers', () => {
+     }
+   });
+ 
+-  it('generated buffer histories match fresh forks through deletion, grouping, reset and refusal', async () => {
+-    const actions = fc.array(
+-      fc.record({
+-        kind: fc.constantFrom(
+-          'insert',
+-          'delete',
+-          'undo',
+-          'redo',
+-          'remote',
+-          'metadata',
+-          'retry',
+-          'discard',
+-          'noop',
+-          'unicode',
+-          'sliced',
+-        ),
+-        n: fc.integer({ min: 0, max: 20 }),
+-      }),
+-      { minLength: 15, maxLength: 35 },
+-    );
+-    await fc.assert(
+-      fc.asyncProperty(actions, async (generated) => {
+-        const a = await makeFixture(undefined, 'local-handoff'),
+-          b = await makeFixture(undefined, 'local-snapshots');
+-        const prefix = [
+-          'insert',
+-          'insert',
+-          'delete',
+-          'undo',
+-          'redo',
+-          'retry',
+-          'discard',
+-          'remote',
+-          'metadata',
+-          'noop',
+-        ];
+-        try {
+-          for (const step of [...prefix.map((kind) => ({ kind, n: 1 })), ...generated]) {
+-            const outputs = [];
+-            for (const f of [a, b]) {
+-              const text = f.doc.read().master,
+-                at = Math.min(step.n, text.length);
+-              if (
+-                ['insert', 'delete', 'retry', 'discard', 'noop', 'unicode', 'sliced'].includes(
+-                  step.kind,
+-                )
+-              ) {
+-                if (step.kind === 'retry' || step.kind === 'discard') {
+-                  f.refuse();
+-                  f.fail();
+-                }
+-                const inserted =
+-                  step.kind === 'unicode'
+-                    ? '\u{1f600}'
+-                    : step.kind === 'sliced'
+-                      ? 'q'.repeat(1001)
+-                      : step.kind === 'noop'
+-                        ? ''
+-                        : 'x';
+-                const action =
+-                  step.kind === 'delete' ? { name: 'backspace' as const } : insert(inserted);
+-                const ticket = master(f.doc).input(action, selection(at));
+-                if (step.kind === 'retry' || step.kind === 'discard') {
+-                  await until(() => f.doc.status.state === 'blocked');
+-                  expect(f.doc.read().master).toBe(text);
+-                  if (step.kind === 'discard') {
+-                    f.doc.discardPending();
+-                    await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
+-                    outputs.push('discarded');
+-                    continue;
+-                  }
+-                  const calls = f.preparations.length;
+-                  f.doc.retry();
+-                  await ticket.accepted;
+-                  expect(f.preparations).toHaveLength(calls);
+-                }
+-                outputs.push((await ticket.accepted).revision);
+-              } else if (step.kind === 'remote') {
+-                await f.doc.receive(
+-                  remote(f.doc, (d) => d.getText('master').insert(d.getText('master').length, 'R')),
+-                ).accepted;
+-                outputs.push('remote');
+-              } else
+-                outputs.push(
+-                  (
+-                    await f.doc.command(
+-                      step.kind === 'metadata'
+-                        ? { kind: 'device-label', name: 'device' + step.n }
+-                        : { kind: step.kind as 'undo' | 'redo' },
+-                    ).accepted
+-                  ).value,
+-                );
+-            }
+-            expect(outputs[1]).toEqual(outputs[0]);
+-            expect(b.doc.read()).toEqual(a.doc.read());
+-            expect(master(b.doc).read()).toEqual(master(a.doc).read());
+-            expect(b.doc.status.revision).toBe(a.doc.status.revision);
+-          }
+-          const replay = createDoc();
++  it.each(['local-snapshots', 'account-text'] as const)(
++    'generated %s histories match fresh forks through deletion, grouping, reset and refusal',
++    async (mode) => {
++      const actions = fc.array(
++        fc.record({
++          kind: fc.constantFrom(
++            'insert',
++            'delete',
++            'undo',
++            'redo',
++            'remote',
++            'metadata',
++            'retry',
++            'discard',
++            'noop',
++            'unicode',
++            'sliced',
++          ),
++          n: fc.integer({ min: 0, max: 20 }),
++        }),
++        { minLength: 15, maxLength: 35 },
++      );
++      await fc.assert(
++        fc.asyncProperty(actions, async (generated) => {
++          const a = await makeFixture(
++              undefined,
++              mode === 'account-text' ? 'account-snapshots' : 'local-handoff',
++            ),
++            b = await makeFixture(undefined, mode);
++          const prefix = [
++            'insert',
++            'insert',
++            'delete',
++            'undo',
++            'redo',
++            'retry',
++            'discard',
++            'remote',
++            'metadata',
++            'noop',
++          ];
+           try {
+-            for (const bytes of [...b.disk, ...b.wal]) applyUpdate(replay, bytes);
+-            expect(replay.getText('master').toString()).toBe(b.doc.read().master);
++            for (const step of [...prefix.map((kind) => ({ kind, n: 1 })), ...generated]) {
++              const outputs = [];
++              for (const f of [a, b]) {
++                const text = f.doc.read().master,
++                  at = Math.min(step.n, text.length);
++                if (
++                  ['insert', 'delete', 'retry', 'discard', 'noop', 'unicode', 'sliced'].includes(
++                    step.kind,
++                  )
++                ) {
++                  if (step.kind === 'retry' || step.kind === 'discard') {
++                    f.refuse();
++                    f.fail();
++                  }
++                  const inserted =
++                    step.kind === 'unicode'
++                      ? '\u{1f600}'
++                      : step.kind === 'sliced'
++                        ? 'q'.repeat(1001)
++                        : step.kind === 'noop'
++                          ? ''
++                          : 'x';
++                  const action =
++                    step.kind === 'delete' ? { name: 'backspace' as const } : insert(inserted);
++                  const ticket = master(f.doc).input(action, selection(at));
++                  if (step.kind === 'retry' || step.kind === 'discard') {
++                    await until(() => f.doc.status.state === 'blocked');
++                    expect(f.doc.read().master).toBe(text);
++                    if (step.kind === 'discard') {
++                      f.doc.discardPending();
++                      await expect(ticket.accepted).rejects.toHaveProperty('code', 'discarded');
++                      outputs.push('discarded');
++                      continue;
++                    }
++                    const calls = f.preparations.length;
++                    f.doc.retry();
++                    await ticket.accepted;
++                    expect(f.preparations).toHaveLength(calls);
++                  }
++                  outputs.push((await ticket.accepted).revision);
++                } else if (step.kind === 'remote') {
++                  await f.doc.receive(
++                    remote(f.doc, (d) =>
++                      d.getText('master').insert(d.getText('master').length, 'R'),
++                    ),
++                  ).accepted;
++                  outputs.push('remote');
++                } else
++                  outputs.push(
++                    (
++                      await f.doc.command(
++                        step.kind === 'metadata'
++                          ? { kind: 'device-label', name: 'device' + step.n }
++                          : { kind: step.kind as 'undo' | 'redo' },
++                      ).accepted
++                    ).value,
++                  );
++              }
++              expect(outputs[1]).toEqual(outputs[0]);
++              expect(b.doc.read()).toEqual(a.doc.read());
++              expect(master(b.doc).read()).toEqual(master(a.doc).read());
++              expect(b.doc.status.revision).toBe(a.doc.status.revision);
++            }
++            const replay = createDoc();
++            try {
++              for (const bytes of [...b.disk, ...b.wal]) applyUpdate(replay, bytes);
++              expect(replay.getText('master').toString()).toBe(b.doc.read().master);
++            } finally {
++              replay.destroy();
++            }
+           } finally {
+-            replay.destroy();
++            await a.doc.close();
++            await b.doc.close();
+           }
+-        } finally {
+-          await a.doc.close();
+-          await b.doc.close();
+-        }
+-        expect(b.owned.every((x) => x.state.history.doc.isDestroyed)).toBe(true);
+-      }),
+-      { seed: 171510, numRuns: 60 },
+-    );
+-  }, 30000);
++          expect(b.owned.every((x) => x.state.history.doc.isDestroyed)).toBe(true);
++        }),
++        { seed: 171510, numRuns: 60 },
++      );
++    },
++    30000,
++  );
++});
++
++describe('direct Account text boundary', () => {
++  it('journals before changing the visible document or its undo history', async () => {
++    const f = await makeFixture(undefined, 'account-text');
++    try {
++      const before = master(f.doc).read();
++      let observed = false;
++      f.beforeAppend(() => {
++        observed = true;
++        expect(master(f.doc).read()).toEqual(before);
++        expect(f.emitted).toHaveLength(0);
++      });
++      await master(f.doc).input({ name: 'insert', text: 'durable first' }).accepted;
++      expect(observed).toBe(true);
++      expect(f.direct).toHaveLength(1);
++      expect(f.wal.at(-1)).toEqual(f.emitted.at(-1));
++    } finally {
++      await f.doc.close();
++    }
++  });
++  it('drains a forced write on close without applying it late and clears retained plaintext', async () => {
++    const f = await makeFixture(undefined, 'account-text');
++    await master(f.doc).input({ name: 'insert', text: 'kept' }).accepted;
++    f.refuse();
++    f.pause();
++    const ticket = master(f.doc).input({ name: 'insert', text: 'late' });
++    await until(() => f.direct.length === 2 && f.writeReferences.length > 0);
++    const bytes = f.direct.at(-1)!;
++    expect(bytes.some((v) => v !== 0)).toBe(true);
++    const closing = f.doc.close();
++    // Account carriers copy their input synchronously; unlike Local buffer leases,
++    // the ordinary byte preparation can be erased as soon as the owner closes.
++    expect(bytes.every((v) => v === 0)).toBe(true);
++    f.resume();
++    await closing;
++    await expect(ticket.accepted).rejects.toHaveProperty('code', 'inactive-session');
++    expect(bytes.every((v) => v === 0)).toBe(true);
++    expect(f.emitted).toHaveLength(1);
++  });
++  it('refuses changed projection state between preparation and durable promotion', async () => {
++    const original = historySeam.createSelectionHistory;
++    let projection: Y.Doc | undefined;
++    const spy = vi.spyOn(historySeam, 'createSelectionHistory').mockImplementation((reuse) => {
++      const owner = original(reuse);
++      return {
++        ...owner,
++        create(doc, origin) {
++          projection = doc;
++          return owner.create(doc, origin);
++        },
++        fork(history, origin) {
++          const next = owner.fork(history, origin);
++          projection = next.doc;
++          return next;
++        },
++      };
++    });
++    const f = await makeFixture(undefined, 'account-text');
++    try {
++      f.beforeAppend(() => {
++        projection!.getText('master').insert(0, 'unowned');
++      });
++      const ticket = master(f.doc).input({ name: 'insert', text: 'journalled' });
++      await expect(ticket.accepted).rejects.toThrow();
++      expect(f.emitted).toHaveLength(0);
++      expect(() => f.doc.read()).toThrow();
++      const cold = createDoc();
++      for (const bytes of [...f.disk, ...f.wal]) applyUpdate(cold, bytes);
++      expect(cold.getText('master').toString()).toBe('journalled');
++      cold.destroy();
++    } finally {
++      spy.mockRestore();
++      await f.doc.close();
++    }
++  });
++
++  it('does not fork or compare on eligible text; refused text leaves undo and outgoing unchanged', async () => {
++    const f = await makeFixture(undefined, 'account-text');
++    const fork = vi.spyOn(historySeam, 'forkDoc');
++    const compare = vi.spyOn(historySeam, 'sameDocState');
++    try {
++      const before = master(f.doc).read();
++      f.refuse();
++      f.pause();
++      const pending = master(f.doc).input({ name: 'insert', text: 'private until durable' });
++      expect(f.direct).toHaveLength(1);
++      expect(master(f.doc).read()).toEqual(before);
++      expect(f.emitted).toHaveLength(0);
++      expect(fork).not.toHaveBeenCalled();
++      expect(compare).not.toHaveBeenCalled();
++      f.resume();
++      await pending.accepted;
++      expect(master(f.doc).read().text).toBe('private until durable');
++      expect(f.sources.at(-1)).toHaveLength(1);
++      expect(f.sources.at(-1)![0]!.actor).toBe(identity.id);
++      expect(f.sources.at(-1)![0]!.bytes).toEqual(f.emitted.at(-1));
++      expect(f.direct[0]!.every((v) => v === 0)).toBe(true);
++      expect(fork).not.toHaveBeenCalled();
++      expect(compare).not.toHaveBeenCalled();
++      await f.doc.command({ kind: 'undo' }).accepted;
++      expect(master(f.doc).read().text).toBe('');
++      await f.doc.command({ kind: 'redo' }).accepted;
++      expect(master(f.doc).read().text).toBe('private until durable');
++    } finally {
++      fork.mockRestore();
++      compare.mockRestore();
++      await f.doc.close();
++    }
++  });
++  it('erases a discarded failed candidate without consuming undo or writer clocks', async () => {
++    const f = await makeFixture(undefined, 'account-text');
++    try {
++      await master(f.doc).input({ name: 'insert', text: 'accepted' }).accepted;
++      const before = master(f.doc).read();
++      f.refuse();
++      f.fail();
++      const ticket = master(f.doc).input({ name: 'insert', text: ' discard' });
++      await until(() => f.doc.status.state === 'blocked');
++      const retained = f.direct.at(-1)!;
++      expect(retained.some((v) => v !== 0)).toBe(true);
++      f.doc.discardPending();
++      await expect(ticket.accepted).rejects.toThrow();
++      expect(retained.every((v) => v === 0)).toBe(true);
++      expect(master(f.doc).read()).toEqual(before);
++      await master(f.doc).input({ name: 'insert', text: ' retry' }).accepted;
++      expect(master(f.doc).read().text).toBe('accepted retry');
++      await f.doc.command({ kind: 'undo' }).accepted;
++      expect(master(f.doc).read().text).toBe('accepted');
++    } finally {
++      await f.doc.close();
++    }
++  });
+ });
+diff --git a/tsconfig.node.json b/tsconfig.node.json
+index a417275b..c7257ceb 100644
+--- a/tsconfig.node.json
++++ b/tsconfig.node.json
+@@ -15,6 +15,7 @@
+     "account-service",
+     "vite.config.ts",
+     "src/crdt/accountLedgerMode.ts",
++    "src/crdt/accountTextMode.ts",
+     "src/crdt/accountBatchPolicy.ts",
+     "src/crdt/batchWindow.ts",
+     "vite",
+diff --git a/vite.config.ts b/vite.config.ts
+index 98501ed0..b545af9b 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
+ import { readFileSync } from 'node:fs';
+ import { defineConfig } from 'vitest/config';
+ import { loadEnv } from 'vite';
++import { accountTextMode } from './src/crdt/accountTextMode.ts';
+ import { accountLedgerMode } from './src/crdt/accountLedgerMode.ts';
+ import { accountBatchPolicy } from './src/crdt/accountBatchPolicy.ts';
+ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+@@ -81,6 +82,15 @@ const relayProxy = () => {
+ export default defineConfig(({ mode }) => ({
+   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
+   define: {
++    'import.meta.env.VITE_ACCOUNT_TEXT_ADMISSION': JSON.stringify(
++      (() => {
++        const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_TEXT_ADMISSION')[
++          'VITE_ACCOUNT_TEXT_ADMISSION'
++        ];
++        accountTextMode(value);
++        return value || 'direct';
++      })(),
++    ),
+     'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(
+       (() => {
+         const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_BATCH')['VITE_ACCOUNT_BATCH'];
+diff --git a/src/crdt/accountTextMode.ts b/src/crdt/accountTextMode.ts
+new file mode 100644
+index 00000000..3e7428a0
+--- /dev/null
++++ b/src/crdt/accountTextMode.ts
+@@ -0,0 +1,6 @@
++/** Reference remains a format-compatible rollback and differential oracle. */
++export function accountTextMode(value: string | undefined): 'account-text' | 'account-snapshots' {
++  if (value === undefined || value === '' || value === 'direct') return 'account-text';
++  if (value === 'reference') return 'account-snapshots';
++  throw Error('VITE_ACCOUNT_TEXT_ADMISSION must be direct or reference');
++}
+diff --git a/src/crdt/accountTextPreparation.ts b/src/crdt/accountTextPreparation.ts
+new file mode 100644
+index 00000000..31d46e7d
+--- /dev/null
++++ b/src/crdt/accountTextPreparation.ts
+@@ -0,0 +1,16 @@
++/** Private Account-only ordered text adapter. Never exported from an application workspace. */
++import type { Bytes } from './custodyCrypto';
++import type { SourceUpdate } from './sourceCapture';
++export const accountTextPreparation = Symbol('account-text-preparation');
++export interface AccountTextCandidate {
++  readonly update: Bytes;
++  readonly sources: SourceUpdate[];
++  /** Called only after durability and canonical promotion; must apply these exact bytes. */
++  accept(update: Bytes, revision: number): void;
++}
++export interface AccountTextPreparation {
++  prepare(
++    input: Bytes,
++    head: Readonly<{ writer: number; clock: number; revision: number }>,
++  ): AccountTextCandidate | undefined;
++}
+diff --git a/test/packaged-account/text-admission.spec.ts b/test/packaged-account/text-admission.spec.ts
+new file mode 100644
+index 00000000..97856a33
+--- /dev/null
++++ b/test/packaged-account/text-admission.spec.ts
+@@ -0,0 +1,63 @@
++import { test, expect, type Page } from '@playwright/test';
++import { pairedEditors, openSaved } from './devices';
++import { startService, stopService } from './server';
++
++const goals = (page: Page) => page.locator('.goals .cm-content');
++const append = async (page: Page, text: string) => {
++  await goals(page).click();
++  await page.keyboard.press('ControlOrMeta+End');
++  await page.keyboard.insertText(text);
++  await expect(goals(page)).toContainText(text.trim());
++};
++
++test('Account text undo spans received edits and journal-only offline reopening', async ({
++  page,
++  browser,
++}, info) => {
++  const service = await startService(info.outputPath('service'), undefined, true, true);
++  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
++  try {
++    pair = await pairedEditors(page, browser, true);
++    const second = pair.second;
++    await append(page, '\nFirst text transaction');
++    await expect(goals(second)).toContainText('First text transaction', { timeout: 15000 });
++    await append(second, '\nSecond text transaction');
++    await expect(goals(page)).toContainText('Second text transaction', { timeout: 15000 });
++    await goals(page).click();
++    await page.keyboard.press('ControlOrMeta+z');
++    await expect(goals(page)).not.toContainText('First text transaction');
++    await expect(goals(page)).toContainText('Second text transaction');
++    await expect(goals(second)).not.toContainText('First text transaction', { timeout: 15000 });
++    await page.keyboard.press('ControlOrMeta+Shift+z');
++    await expect(goals(second)).toContainText('First text transaction', { timeout: 15000 });
++    await pair.other.setOffline(true);
++    await append(second, '\nRetained offline text');
++    await append(page, '\nWriting while peer away');
++    await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
++    await second.goto('/');
++    await openSaved(second, pair.next.code, true);
++    await expect(goals(second)).toContainText('Retained offline text');
++    await pair.other.setOffline(false);
++    await expect(goals(second)).toContainText('Writing while peer away', { timeout: 20000 });
++    await expect(goals(page)).toContainText('Retained offline text', { timeout: 20000 });
++    await goals(page).click();
++    await page.keyboard.press('ControlOrMeta+z');
++    await expect(goals(page)).not.toContainText('Writing while peer away');
++    await expect(goals(page)).toContainText('Retained offline text');
++    await expect(goals(second)).not.toContainText('Writing while peer away', { timeout: 15000 });
++    for (const [p, code, joined] of [
++      [page, pair.first.code, false],
++      [second, pair.next.code, true],
++    ] as const) {
++      await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
++      await p.context().setOffline(true);
++      await p.goto('/');
++      await openSaved(p, code, joined);
++      await expect(goals(p)).toContainText('Retained offline text');
++      await expect(goals(p)).not.toContainText('Writing while peer away');
++    }
++  } finally {
++    await pair?.other.close();
++    await stopService(service);
++  }
++});
+diff --git a/test/plainTextUpdate.test.ts b/test/plainTextUpdate.test.ts
+new file mode 100644
+index 00000000..ea5664b2
+--- /dev/null
++++ b/test/plainTextUpdate.test.ts
+@@ -0,0 +1,142 @@
++// @vitest-environment node
++import { it, expect } from 'vitest';
++import { accountTextMode } from '../src/crdt/accountTextMode';
++import * as fc from 'fast-check';
++import {
++  Y,
++  createDoc,
++  forkDoc,
++  applyUpdate,
++  encodeState,
++  sameDocState,
++  preparePlainTextUpdate,
++} from '../src/crdt/yjs';
++
++it('matches native Y.Text replacement across concurrent/deleted items without mutating its basis', () => {
++  fc.assert(
++    fc.property(
++      fc.array(fc.tuple(fc.nat(100), fc.nat(20), fc.string({ maxLength: 12 })), {
++        minLength: 1,
++        maxLength: 40,
++      }),
++      (edits) => {
++        const doc = createDoc();
++        doc.gc = false;
++        const text = doc.getText('master');
++        text.insert(0, 'initial text');
++        for (const [at, remove, inserted] of edits) {
++          const from = at % (text.length + 1),
++            to = Math.min(text.length, from + remove);
++          const before = encodeState(doc),
++            reference = forkDoc(doc);
++          const writer = doc.clientID,
++            clock = Y.getState(doc.store, writer);
++          const update = preparePlainTextUpdate(text, writer, clock, from, to, inserted);
++          expect(update).toBeDefined();
++          expect(encodeState(doc)).toEqual(before);
++          reference.clientID = writer;
++          reference.transact(() => {
++            reference.getText('master').delete(from, to - from);
++            reference.getText('master').insert(from, inserted);
++          });
++          applyUpdate(doc, update!);
++          expect(sameDocState(doc, reference)).toBe(true);
++          reference.destroy();
++          // Interleave another writer, retaining deleted links and concurrent origins.
++          const peer = forkDoc(doc);
++          peer.getText('master').insert(0, 'p');
++          applyUpdate(doc, encodeState(peer));
++          peer.destroy();
++        }
++        doc.destroy();
++      },
++    ),
++    { numRuns: 160, seed: 12102026 },
++  );
++});
++
++it('supports nested text and safe emoji boundaries; refuses formatting and unsafe splits', () => {
++  const doc = createDoc();
++  doc.gc = false;
++  const text = new Y.Text();
++  doc.getMap('cards').set('text', text);
++  text.insert(0, 'a😀b');
++  const writer = doc.clientID,
++    clock = Y.getState(doc.store, writer);
++  expect(preparePlainTextUpdate(text, writer, clock, 2, 2, 'x')).toBeUndefined();
++  expect(preparePlainTextUpdate(text, writer, clock, 1, 1, '\ud800')).toBeUndefined();
++  const update = preparePlainTextUpdate(text, writer, clock, 1, 3, '✅');
++  expect(update).toBeDefined();
++  applyUpdate(doc, update!);
++  expect(text.toString()).toBe('a✅b');
++  text.format(0, 1, { bold: true });
++  expect(
++    preparePlainTextUpdate(text, writer, Y.getState(doc.store, writer), 0, 0, 'x'),
++  ).toBeUndefined();
++  doc.destroy();
++});
++
++it('matches native edits after concurrent insert/delete delivery in either order', () => {
++  for (const reverse of [false, true]) {
++    const seed = createDoc();
++    seed.getText('master').insert(0, 'abcdefgh');
++    const a = forkDoc(seed),
++      b = forkDoc(seed);
++    a.gc = b.gc = false;
++    a.getText('master').delete(2, 3);
++    a.getText('master').insert(2, 'left');
++    b.getText('master').insert(3, 'right');
++    b.getText('master').delete(0, 1);
++    const doc = forkDoc(seed);
++    doc.gc = false;
++    for (const peer of reverse ? [b, a] : [a, b]) applyUpdate(doc, encodeState(peer));
++    for (let at = 0; at <= doc.getText('master').length; at++) {
++      const native = forkDoc(doc),
++        candidate = forkDoc(doc);
++      const text = native.getText('master');
++      native.clientID = doc.clientID;
++      const end = Math.min(at + 3, text.length);
++      const update = preparePlainTextUpdate(
++        doc.getText('master'),
++        doc.clientID,
++        Y.getState(doc.store, doc.clientID),
++        at,
++        end,
++        '🙂',
++      );
++      expect(update).toBeDefined();
++      native.transact(() => {
++        text.delete(at, end - at);
++        text.insert(at, '🙂');
++      });
++      applyUpdate(candidate, update!);
++      expect(sameDocState(candidate, native)).toBe(true);
++      native.destroy();
++      candidate.destroy();
++    }
++    for (const d of [seed, a, b, doc]) d.destroy();
++  }
++});
++it('refuses unresolved dependencies rather than deriving writer clocks from visible text', () => {
++  const source = createDoc(),
++    destination = createDoc();
++  const updates: Uint8Array[] = [];
++  source.on('update', (u) => updates.push(u));
++  source.getText('master').insert(0, 'parent');
++  source.getText('master').insert(6, 'dependent');
++  applyUpdate(destination, updates[1]!);
++  expect(destination.store.pendingStructs).not.toBeNull();
++  expect(
++    preparePlainTextUpdate(destination.getText('master'), destination.clientID, 0, 0, 0, 'x'),
++  ).toBeUndefined();
++  source.destroy();
++  destination.destroy();
++});
++
++it('selects direct Account text by default with an explicit reference rollback', () => {
++  expect(accountTextMode(undefined)).toBe('account-text');
++  expect(accountTextMode('')).toBe('account-text');
++  expect(accountTextMode('direct')).toBe('account-text');
++  expect(accountTextMode('reference')).toBe('account-snapshots');
++  expect(() => accountTextMode('unknown')).toThrow();
++});

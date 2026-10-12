@@ -1,0 +1,18 @@
+{
+  "base": "68ca241d47a905104d5b5fa769d0c800ccbb2380",
+  "files": {
+    "src/crdt/accountLedgerMetrics.ts": "dcee965da5abbf74f7a08613c13d8a77c9dd52004a65236c6c6be318a9c4be89",
+    "src/crdt/accountReceive.ts": "480d9c28a9e425a428d35b4d284027093c34e8ff4fb136417f24a0417d342d6c",
+    "src/crdt/accountTextMode.ts": "016ccbc236bd44f938ad1032eb547f3e59f1f2c24c2978f5a4a14c99b2ab8c8e",
+    "src/crdt/accountTextPreparation.ts": "cd1cf6580cbf08b29d1cbfb22136975f957cc6856a4bf59fec69734626834c44",
+    "src/crdt/admissionQueue.ts": "2321b991c7e39d19bf300d3c3c29a6b1c61b100d9e7e93678c43162ef6264a32",
+    "src/crdt/admittedWorkspace.ts": "ba182e1de15bb3b66d9b552630e8510156021d8cee14a40f3467b4aa2a0187c7",
+    "src/crdt/workspaceCommands.ts": "b5a3f0599d55922f0e7579f292bf36f64ac5a033a603b4929690eece6d6941ab",
+    "src/crdt/yjs.ts": "be4bb25ed3e7a6d34ca92c4499e25b47941f84b24136ed848d8c5978e8abc88d",
+    "test/packaged-account/text-admission.spec.ts": "11cb3b1ed24605a18fcaf6e27f1ec15a19a9c10bd561d96d5927055fe24cd232",
+    "test/plainTextUpdate.test.ts": "82882fd08da8ef5d6181f8e7111f72ba525f0636e7741bc9cc28edde620e40fd",
+    "test/workspaceAdmission.test.ts": "b3c3af900b36b5a6d03055a9243bb277ba7475920890dd34cc13bb5633ce39e1",
+    "tsconfig.node.json": "1e9fe4859bda1baf20d17744016d98ef7fee91230e3b3579b55f0464cc9fa9bb",
+    "vite.config.ts": "b4434771687b25b9a84869311ebe9be232c2cf299daef7501a2de987e1b03abc"
+  }
+}

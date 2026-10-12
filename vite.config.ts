@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { defineConfig } from 'vitest/config';
 import { loadEnv } from 'vite';
+import { accountTextMode } from './src/crdt/accountTextMode.ts';
 import { accountLedgerMode } from './src/crdt/accountLedgerMode.ts';
 import { accountBatchPolicy } from './src/crdt/accountBatchPolicy.ts';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
@@ -81,6 +82,15 @@ const relayProxy = () => {
 export default defineConfig(({ mode }) => ({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
   define: {
+    'import.meta.env.VITE_ACCOUNT_TEXT_ADMISSION': JSON.stringify(
+      (() => {
+        const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_TEXT_ADMISSION')[
+          'VITE_ACCOUNT_TEXT_ADMISSION'
+        ];
+        accountTextMode(value);
+        return value || 'direct';
+      })(),
+    ),
     'import.meta.env.VITE_ACCOUNT_BATCH': JSON.stringify(
       (() => {
         const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_BATCH')['VITE_ACCOUNT_BATCH'];

@@ -31,6 +31,7 @@ const workNames = [
   'journalFlushes',
   'dirtyJournalFlushes',
   'projectionChecks',
+  'directTextPreparations',
 ] as const;
 const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   (typeof workNames)[number],

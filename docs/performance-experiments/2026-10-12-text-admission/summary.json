@@ -1,0 +1,182 @@
+[
+  {
+    "run": "reference-2",
+    "cpu": 1,
+    "handlers": {
+      "median": 7.5,
+      "p95": 11.8,
+      "max": 28.8
+    },
+    "frames": {
+      "median": 11.4,
+      "p95": 16.4,
+      "max": 32.6
+    },
+    "direct": 0,
+    "comparisons": 120,
+    "longTasks": 0,
+    "maxTask": 0,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "direct-1",
+    "cpu": 1,
+    "handlers": {
+      "median": 2.2,
+      "p95": 3.5,
+      "max": 5.9
+    },
+    "frames": {
+      "median": 6.6,
+      "p95": 13.9,
+      "max": 23.9
+    },
+    "direct": 120,
+    "comparisons": 0,
+    "longTasks": 0,
+    "maxTask": 0,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "reference-3",
+    "cpu": 1,
+    "handlers": {
+      "median": 8.2,
+      "p95": 11.2,
+      "max": 12.8
+    },
+    "frames": {
+      "median": 11.9,
+      "p95": 16.3,
+      "max": 71.3
+    },
+    "direct": 0,
+    "comparisons": 120,
+    "longTasks": 0,
+    "maxTask": 0,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "direct-2",
+    "cpu": 1,
+    "handlers": {
+      "median": 1.8,
+      "p95": 3.1,
+      "max": 4.9
+    },
+    "frames": {
+      "median": 5.7,
+      "p95": 13.7,
+      "max": 24
+    },
+    "direct": 120,
+    "comparisons": 0,
+    "longTasks": 0,
+    "maxTask": 0,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "reference-4",
+    "cpu": 1,
+    "handlers": {
+      "median": 7.6,
+      "p95": 11.2,
+      "max": 13
+    },
+    "frames": {
+      "median": 11.1,
+      "p95": 15.5,
+      "max": 19.3
+    },
+    "direct": 0,
+    "comparisons": 120,
+    "longTasks": 0,
+    "maxTask": 0,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "direct-3",
+    "cpu": 1,
+    "handlers": {
+      "median": 2.1,
+      "p95": 3.5,
+      "max": 5.2
+    },
+    "frames": {
+      "median": 6.2,
+      "p95": 12.9,
+      "max": 19.2
+    },
+    "direct": 120,
+    "comparisons": 0,
+    "longTasks": 0,
+    "maxTask": 0,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "reference-cpu4",
+    "cpu": 4,
+    "handlers": {
+      "median": 27.1,
+      "p95": 30.9,
+      "max": 52.9
+    },
+    "frames": {
+      "median": 39.4,
+      "p95": 128.2,
+      "max": 348.7
+    },
+    "direct": 0,
+    "comparisons": 120,
+    "longTasks": 16,
+    "maxTask": 170,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "direct-cpu4",
+    "cpu": 4,
+    "handlers": {
+      "median": 6.2,
+      "p95": 8.2,
+      "max": 25.2
+    },
+    "frames": {
+      "median": 18,
+      "p95": 57.1,
+      "max": 76.1
+    },
+    "direct": 120,
+    "comparisons": 0,
+    "longTasks": 9,
+    "maxTask": 176,
+    "undoRedo": true,
+    "replay": true
+  },
+  {
+    "run": "profile",
+    "cpu": 1,
+    "handlers": {
+      "median": 2,
+      "p95": 3.1,
+      "max": 6.2
+    },
+    "frames": {
+      "median": 6.1,
+      "p95": 14.1,
+      "max": 21.8
+    },
+    "direct": 120,
+    "comparisons": 0,
+    "longTasks": 0,
+    "maxTask": 0,
+    "undoRedo": true,
+    "replay": true
+  }
+]

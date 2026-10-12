@@ -13166,3 +13166,32 @@ bounded phase is per-keystroke text admission without whole-workspace forks, pre
 apply, source attribution and undo; the old path must remain the comparison oracle. No typing speedup
 is claimed by this checkpoint. Publication waits for that phase. Release validation remains paused;
 `docs/progress.md` is unchanged.
+
+### Account editing — direct text preparation with durable admission and native undo
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `68ca241d` · **Stage:** bounded repair
+
+**Exit.** The received-history cold-open repair is committed signed as **`68ca241d`**. The new
+[Account text adapter](./account-text-admission.md) computes one plain-text replacement update
+without a workspace fork, captures that exact human frame and journals/commits before applying it
+to canonical and the private undo projection. Unchanged verified bases, expected text/clock and
+pending-state checks guard promotion. Structural commands, undo/redo, sliced paste, multiple edits
+and uncertain normalization/dependency cases retain the reference path. Ordinary close audits full
+projection equality. No stored-format or journal-acknowledgement change.
+
+**Evidence.** [Three matched desktop typing observations per arm](./performance-experiments/2026-10-12-text-admission/README.md)
+on the 120-card, 600+ received-position fixture: median handler **7.6→2.1 ms**, visible-frame
+median **11.4→6.2 ms**; candidate handler p95 **3.1–3.5 ms**, frame p95 **12.9–13.9 ms**. All
+candidate keys use direct admission without full projection comparisons. Each run undoes/redoes
+120 edits and cold-recovers offline. The default packaged build also passes a two-device text,
+remote-preserving undo and offline-recovery journey. The final focused run passes 244 tests
+(one inapplicable fork-lifecycle case replaced by direct lifecycle controls), including generated
+native-encoder comparison and 60 mixed direct/reference histories. These tests identified the
+malformed-Unicode normalization guard now included. Type/build, pinned Yjs, bundle/origin and
+targeted lint/format checks pass.
+
+**Remaining.** The repair is uncommitted/unpublished; direct is now the branch default with explicit
+reference rollback. CPU-4x visible-frame p95 improves **128.2→57.1 ms** but still misses 16 ms;
+background tasks, UI/Markdown projection, large target texts, structural/undo cost, local history
+retention and physical-phone evidence remain. No generalized validation or deployment campaign
+was resumed. `docs/progress.md` is unchanged; publication preparation follows review/commit of this phase.
