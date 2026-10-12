@@ -13139,3 +13139,30 @@ audit disagreement.
 verification cost. Cold opening remains 7.497 seconds in the ordinary run; total audit CPU, large
 individual proofs and local retained-history growth remain. No phone/public-service claim, release
 campaign or deployment change was made. Release validation stays paused; `docs/progress.md` is unchanged.
+
+### Account receiving — deep received-history cold opening
+
+**Date:** 2026-10-12 · **Commit:** working tree on signed `d1e5e5ea` · **Stage:** bounded repair
+
+**Exit.** The preceding foreground audit repair is committed signed as **`d1e5e5ea`**. The
+[received-open repair and evidence](./performance-experiments/2026-10-12-received-open/README.md)
+retain one coverage document within each cold verification pass, add a conservative struct/deletion/
+dependency positive proof and remove redundant nested receipt re-encoding. Uncertain/pending cases
+fall back to the prior full proof; periodic audits remain independent. No stored-format change.
+
+**Evidence.** Three matched opens per arm on the retained 120-card, 600+ received-position fixture:
+first completed editor frame median **7.054→2.622 seconds** (62.8% shorter), range **2.502–2.909 seconds**.
+Polling-observer median **7.422→2.972 seconds**. The unchanged baseline confirmation is within 1.2%.
+All complete archive digests and native crypto-call counts match; each timing run recovers a new edit
+offline. Seventy-two focused unit cases, six native cases and the relevant contract control pass.
+One packaged two-device journey passes complete exports, both-way edits and offline recovery. Its
+109.017-second catch-up is a functional check, not an isolated throughput comparison. Type/build,
+initial bundle/origin, pinned-Yjs and targeted lint/format checks pass. An older ordering mutation's
+expectation is corrected to acknowledge its existing second refusal boundary; no delivery code changed.
+
+**Remaining.** This cold-open repair is uncommitted/unpublished and still exceeds the 2.5-second
+budget. Repeated receipt parsing/crypto, phone evidence and local ledger retention remain. The next
+bounded phase is per-keystroke text admission without whole-workspace forks, preserving journal-before-
+apply, source attribution and undo; the old path must remain the comparison oracle. No typing speedup
+is claimed by this checkpoint. Publication waits for that phase. Release validation remains paused;
+`docs/progress.md` is unchanged.

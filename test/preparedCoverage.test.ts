@@ -1,7 +1,15 @@
+import * as encoding from 'lib0/encoding';
 // @vitest-environment node
 import { expect, it } from 'vitest';
 import fc from 'fast-check';
-import { Y, forkDoc, sameDocState, hasPendingUpdates, prepareDocCoverage } from '../src/crdt/yjs';
+import {
+  Y,
+  forkDoc,
+  sameDocState,
+  hasPendingUpdates,
+  prepareDocCoverage,
+  provesIntegratedCoverage,
+} from '../src/crdt/yjs';
 import { createInboundCoverage, verifyInboundCoverage } from '../src/crdt/inboundLedger';
 import type { OpenedRecord } from '../src/crdt/contentRecord';
 
@@ -64,7 +72,7 @@ it('retains exact pending structs and deletes, and does not cache a negative acr
   Y.applyUpdate(target, updates[2]!);
   expect(hasPendingUpdates(target)).toBe(true);
   const probe = prepareDocCoverage(target),
-    coverage = createInboundCoverage({ incremental: true });
+    coverage = createInboundCoverage({ incremental: true, direct: true });
   try {
     for (const u of updates) expect(probe.check(u)).toBe(reference(target, u));
     const initial = [row(new Uint8Array(Y.encodeStateAsUpdate(target)))];
@@ -155,6 +163,8 @@ it('matches independent full checks through 120 generated mixed-type, GC and par
             for (const u of candidates) {
               const saved = u.slice(),
                 expected = verdict(() => reference(content, u));
+              const proved = verdict(() => provesIntegratedCoverage(content, u));
+              if (proved) expect(expected).toBe(true);
               expect(verdict(() => probe.check(u))).toBe(expected);
               expect(u).toEqual(saved);
               if (expected) accepted++;
@@ -232,4 +242,60 @@ it('keeps simultaneous baselines isolated, including legacy JSON, binary and lon
     a.destroy();
     b.destroy();
   }
+});
+
+it('proves integrated text/GC/deletions, but defers pending state, missing dependencies and surrogate splits', () => {
+  const doc = new Y.Doc({ gc: false });
+  doc.clientID = 7;
+  doc.getText('t').insert(0, 'a😀b');
+  const known = Y.encodeStateAsUpdate(doc);
+  expect(provesIntegratedCoverage(doc, known)).toBe(true);
+  const duplicate = (origin: Y.ID | null, right: Y.ID | null, parent: Y.ID | string | null) => {
+    const item = new Y.Item(
+      Y.createID(7, 0),
+      null,
+      origin,
+      null,
+      right,
+      parent as Y.ID,
+      null,
+      new Y.ContentString('x'),
+    );
+    const encoder = new Y.UpdateEncoderV1();
+    // One client section, one already-known ID. Helpers use the seam's exported lib0-free wire.
+    encoding.writeVarUint(encoder.restEncoder, 1);
+    encoding.writeVarUint(encoder.restEncoder, 1);
+    encoder.writeClient(7);
+    encoding.writeVarUint(encoder.restEncoder, 0);
+    item.write(encoder, 0);
+    encoding.writeVarUint(encoder.restEncoder, 0);
+    return encoder.toUint8Array();
+  };
+  for (const bytes of [
+    duplicate(Y.createID(99, 0), null, null),
+    duplicate(null, Y.createID(99, 0), null),
+    duplicate(null, null, Y.createID(99, 0)),
+    duplicate(Y.createID(7, 1), null, null), // Split after the high surrogate.
+    duplicate(null, Y.createID(7, 2), null), // Split before the low surrogate.
+  ]) {
+    expect(provesIntegratedCoverage(doc, bytes)).toBe(false);
+    expect(verdict(() => reference(doc, bytes))).toBe(false);
+  }
+  doc.getText('t').delete(0, 1);
+  expect(provesIntegratedCoverage(doc, Y.encodeStateAsUpdate(doc))).toBe(true);
+  // Duplicate DS sections: lazy decode retains only the last; apply processes both.
+  // First deletes still-visible clock 3, second re-deletes clock 0.
+  const duplicateDeletes = new Uint8Array([0, 2, 7, 1, 3, 1, 7, 1, 0, 1]);
+  expect(provesIntegratedCoverage(doc, duplicateDeletes)).toBe(false);
+  expect(reference(doc, duplicateDeletes)).toBe(false);
+  const after = new Y.Doc({ gc: false });
+  Y.applyUpdate(after, known);
+  const updates: Uint8Array[] = [];
+  after.on('update', (u) => updates.push(u));
+  after.getText('t').insert(4, 'next');
+  const pending = new Y.Doc({ gc: false });
+  Y.applyUpdate(pending, updates[0]!);
+  expect(hasPendingUpdates(pending)).toBe(true);
+  expect(provesIntegratedCoverage(pending, new Uint8Array([0, 0]))).toBe(false);
+  for (const d of [doc, after, pending]) d.destroy();
 });

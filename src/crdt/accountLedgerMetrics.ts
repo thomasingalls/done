@@ -18,6 +18,7 @@ const workNames = [
   'inboundCensuses',
   'deliveryPrefixLinks',
   'coverageBaselines',
+  'coverageDirectProofs',
   'loads',
   'loadedRows',
   'loadedBytes',

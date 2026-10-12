@@ -1738,3 +1738,24 @@ primary non-200 responses/429s; 73 HTTP-200 browser abort events remain recorded
 observations, 72 focused units, three native cases and type/build/targeted lint/format checks pass.
 Work is uncommitted/unpublished; release validation remains paused. Total history/audit cost,
 individual large synchronous proofs, deep opening and phone evidence remain separate work.
+
+## 2026-10-12 — Received-history cold opening
+
+Working tree on signed **`d1e5e5ea`**, bound to exact runtime hashes and patch in the
+[received-open packet](./performance-experiments/2026-10-12-received-open/README.md). That signed base
+is the completed foreground-audit responsiveness repair, not a deployed release.
+
+On the same synthetic 120-card / 600+ received-position fixture (54,211 exported Markdown bytes),
+three unprofiled offline opens per arm: first completed editor frame median **7.054→2.622 s**, final
+range **2.502–2.909 s**; polling-observer median **7.422→2.972 s**. Reusing one coverage document per
+verification pass and proving integrated struct/deletion coverage accounts for most of the improvement;
+omitting redundant outer/nested receipt re-encoding adds a smaller gain. Native crypto counts and the
+complete archive digest are unchanged; every timing observation also accepts and cold-recovers an edit.
+Heap stays about 17.4 MB. Baseline confirmation differs by under 1.2%. The **2.5-second budget remains
+unmet**, and no phone or arbitrary-history-size claim follows.
+
+The final isolated CPU profile reduces inclusive coverage checks from about 2,931 to 37 ms;
+baseline document reconstruction separately cost about 1,289 ms. Hex/unhex remain about 371/373 ms
+self time. Profiles are separate from timing samples; one overlapping-test profile is marked confounded.
+A packaged two-device functional regression also passes complete exports, both-way later edits and
+offline replay. No generalized release validation was resumed; per-key admission remains the next slice.

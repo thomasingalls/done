@@ -374,6 +374,80 @@ export const sameDocState = (a: YDoc, b: YDoc): boolean => {
   }
 };
 
+/** Conservative positive proof for the pinned v13 V1 apply semantics. False means use the
+ * independent fork/apply/comparison, not "missing". No mutation, vector-only inference, or
+ * retained decoded plaintext. The caller owns the document for this synchronous call. */
+export const provesIntegratedCoverage = (doc: YDoc, update: Uint8Array): boolean => {
+  if (hasPendingUpdates(doc)) return false;
+  try {
+    // The lazy decoder's delete-set map overwrites duplicate client sections, while apply reads
+    // every section. Restrict the proof to canonical framing; unusual framing keeps the oracle.
+    const canonical = Y.diffUpdate(update, new Uint8Array([0]));
+    try {
+      if (!equalBytes(canonical, update)) return false;
+    } finally {
+      canonical.fill(0);
+    }
+    const { structs, ds } = Y.decodeUpdate(update);
+    const range = (client: number, clock: number, length: number) =>
+      Number.isSafeInteger(client) &&
+      client >= 0 &&
+      Number.isSafeInteger(clock) &&
+      clock >= 0 &&
+      Number.isSafeInteger(length) &&
+      length > 0 &&
+      Number.isSafeInteger(clock + length) &&
+      clock + length <= Y.getState(doc.store, client);
+    const dependency = (id: Y.ID | null, splitAfter?: boolean): boolean => {
+      if (!id) return true;
+      if (!range(id.client, id.clock, 1)) return false;
+      if (splitAfter === undefined) return true;
+      const item = Y.getItem(doc.store, id);
+      const split = id.clock + (splitAfter ? 1 : 0) - item.id.clock;
+      // getMissing resolves/splits origins even when the incoming struct's IDs already exist.
+      // ContentString.splice replaces a high surrogate and its successor when split there.
+      if (
+        item instanceof Y.Item &&
+        item.content instanceof Y.ContentString &&
+        split > 0 &&
+        split < item.length
+      ) {
+        const code = item.content.str.charCodeAt(split - 1);
+        if (code >= 0xd800 && code <= 0xdbff) return false;
+      }
+      return true;
+    };
+    for (const struct of structs) {
+      if (struct instanceof Y.Skip) return false;
+      if (!range(struct.id.client, struct.id.clock, struct.length)) return false;
+      if (
+        struct instanceof Y.Item &&
+        (!dependency(struct.origin, true) ||
+          !dependency(struct.rightOrigin, false) ||
+          (struct.parent instanceof Y.ID && !dependency(struct.parent)))
+      )
+        return false;
+    }
+    // Clocks do not prove deletions. Every touched stored struct must already be deleted,
+    // including GC structs; otherwise applying the update changes visible or pending state.
+    for (const [client, intervals] of ds.clients) {
+      for (const { clock, len } of intervals) {
+        if (!range(client, clock, len)) return false;
+        const stored = doc.store.clients.get(client)!;
+        for (let i = Y.findIndexSS(stored, clock); ; i++) {
+          const struct = stored[i]!;
+          if (!struct.deleted) return false;
+          if (struct.id.clock + struct.length >= clock + len) break;
+        }
+      }
+    }
+    return true;
+  } catch {
+    // Unsupported/malformed encodings are interpreted solely by the reference path.
+    return false;
+  }
+};
+
 /**
  * Synchronous coverage baseline. Each check gets an independent gc:false fork and the same full
  * comparison as fork/apply/sameDocState; only encoding the immutable starting state is shared.

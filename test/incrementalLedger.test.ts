@@ -85,7 +85,7 @@ it('incremental coverage agrees with full replay through inserts, deletes, pendi
       const a = new Y.Doc({ gc: false }),
         b = new Y.Doc({ gc: false });
       const updates: Uint8Array<ArrayBuffer>[] = [];
-      const coverage = createInboundCoverage({ incremental: true });
+      const coverage = createInboundCoverage({ incremental: true, direct: true });
       let records: OpenedRecord[] = [],
         seq = 0;
       const capture = (u: Uint8Array) => updates.push(new Uint8Array(u));
@@ -138,7 +138,7 @@ it('incremental coverage agrees with full replay through inserts, deletes, pendi
 });
 it('a failed coverage check is reconsidered after its content arrives; stale bound checkers fail', () => {
   const d = new Y.Doc(),
-    coverage = createInboundCoverage({ incremental: true });
+    coverage = createInboundCoverage({ incremental: true, direct: true });
   try {
     d.getText('t').insert(0, 'dependency');
     const u = new Uint8Array(Y.encodeStateAsUpdate(d));
@@ -157,7 +157,7 @@ it('a failed coverage check is reconsidered after its content arrives; stale bou
 
 it('rechecks positives across actual out-of-order dependencies and pending deletes', () => {
   const doc = new Y.Doc({ gc: false }),
-    coverage = createInboundCoverage({ incremental: true });
+    coverage = createInboundCoverage({ incremental: true, direct: true });
   const frames: Uint8Array<ArrayBuffer>[] = [];
   doc.on('update', (u: Uint8Array) => frames.push(new Uint8Array(u)));
   try {

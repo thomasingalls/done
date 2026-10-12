@@ -190,7 +190,10 @@ async function openAccountReceiveOwner(
     auditDeferred = false;
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
-    coverage = createInboundCoverage({ incremental });
+    coverage = createInboundCoverage({
+      incremental,
+      direct: import.meta.env?.['VITE_ACCOUNT_DIRECT_COVERAGE'] !== '0',
+    });
   const inspectCensus = <R>(
     records: Parameters<typeof inspectInbound>[0],
     route: CaptureRoute,
