@@ -88,3 +88,10 @@ next optimization. It keeps the complete fresh inventory check, permits synchron
 only when the queue is immediately available after that check, and falls back to this document's
 queue-head check if scheduling invalidates the permission. A permission never waits in the FIFO.
 This refinement is **design-only**; the runtime ordering described above is still in force.
+
+## Implementation follow-up — 2026-10-13
+
+The [immediate authority handoff](performance-experiments/2026-10-13-immediate-authority/README.md)
+implements the scheduling refinement after signed design `742e1c14`. It retains the complete fresh
+check and uses the original FIFO check after a scheduling miss. Ordinary prepared content alone can
+apply synchronously; authority-changing operations retain their existing fences.

@@ -1,3 +1,4 @@
+import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApplyGate';
 import { budgetedTask } from './cpuBudget';
 import { maintenanceTask } from './contentMaintenance';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
@@ -98,6 +99,7 @@ export async function openAccountCaptureOwner(
     import.meta.env?.['VITE_ACCOUNT_LEDGER'] !== 'reference'
       ? true
       : undefined;
+  const finalApply = createFinalApplyGate();
   let suspended = false;
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
@@ -260,23 +262,26 @@ export async function openAccountCaptureOwner(
   options.networkLogin?.activate(live);
   let scheduleAudit = () => {};
   const run = <T>(operation: (task: SessionTask) => Promise<T>): Promise<T> => {
+    const activity = finalApply.request();
     const previous = tail;
     const enqueued = ledgerWorkStart();
-    const result = live.run(async (task) => {
-      await task.wait(() => previous);
-      measureLedgerWork('storageQueueWait', enqueued);
-      const began = ledgerWorkStart();
-      try {
-        return await operation(
-          extension?.version === 9 && import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
-            ? budgetedTask(task)
-            : task,
-        );
-      } finally {
-        measureLedgerWork('storageOperation', began);
-        scheduleAudit();
-      }
-    });
+    const result = live
+      .run(async (task) => {
+        await task.wait(() => previous);
+        measureLedgerWork('storageQueueWait', enqueued);
+        const began = ledgerWorkStart();
+        try {
+          return await operation(
+            extension?.version === 9 && import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
+              ? budgetedTask(activity.wrap(task))
+              : activity.wrap(task),
+          );
+        } finally {
+          measureLedgerWork('storageOperation', began);
+          scheduleAudit();
+        }
+      })
+      .finally(() => activity.settle());
     tail = result.then(
       () => {},
       () => {},
@@ -333,18 +338,23 @@ export async function openAccountCaptureOwner(
   }
   if (warmLoads || extension?.invalidateAuthority) {
     const invalidate = () => {
+      finalApply.invalidate();
       owner!.carrier.invalidateWarm();
       extension?.invalidateAuthority?.();
     };
     const visible = () => {
+      finalApply.invalidate();
       if (document.visibilityState === 'visible') invalidate();
     };
     document.addEventListener('visibilitychange', visible);
+    document.addEventListener('freeze', finalApply.invalidate);
     document.addEventListener('resume', invalidate);
     window.addEventListener('pageshow', invalidate);
     const stop = () => {
+      finalApply.invalidate();
       extension?.invalidateAuthority?.();
       document.removeEventListener('visibilitychange', visible);
+      document.removeEventListener('freeze', finalApply.invalidate);
       document.removeEventListener('resume', invalidate);
       window.removeEventListener('pageshow', invalidate);
     };
@@ -539,10 +549,12 @@ export async function openAccountCaptureOwner(
     carrier,
     // Synchronous admission barrier. Retention still owns the permit and serialized storage tail.
     suspendCapture() {
+      finalApply.invalidate();
       suspended = true;
     },
     // Internal composition only: caller persists and verifies authority before this synchronous swap.
     installRoute(task: SessionTask, next: CaptureRoute) {
+      finalApply.invalidate();
       task.step(() => {
         if (
           extension?.version !== 9 ||
@@ -559,6 +571,23 @@ export async function openAccountCaptureOwner(
         if (route.history) historyAuthority(next.history, route.history.current);
         route = next;
       });
+    },
+    // Private immediate-use capability; no SessionTask escapes the checking operation.
+    invalidateFinalApply: finalApply.invalidate,
+    checkFinalApply(
+      check: (task: SessionTask) => Promise<void>,
+      assertContext: () => void,
+      attempt: ImmediateReceiveAttempt,
+    ) {
+      return finalApply.check(
+        () => run(check),
+        attempt,
+        () =>
+          live.write(() => {
+            if (suspended) throw Error('Account generation is changing');
+            assertContext();
+          }),
+      );
     },
     // HTTP work keeps the same lifetime/permit without holding the serialized storage tail.
     runNetworkTask: <T>(operation: (task: SessionTask) => Promise<T>) => live.run(operation),

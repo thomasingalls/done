@@ -7,6 +7,7 @@ import {
   MAX_PENDING_BYTES,
   type AdmissionOptions,
   type OwnedPreparedReceiveQueue,
+  type PreparedReceiveFinish,
 } from '../src/crdt/admissionQueue';
 import type { JournalSession, JournalRecovery } from '../src/crdt/custody';
 import type { Bytes } from '../src/crdt/custodyCrypto';
@@ -60,7 +61,7 @@ const remote = (
 const fixture = async (
   prepare: PrepareIntent = append,
   recovery?: JournalRecovery,
-  options: Pick<AdmissionOptions, 'flushBatch' | 'backgroundFlush'> = {},
+  options: Pick<AdmissionOptions, 'flushBatch' | 'backgroundFlush' | 'publishReceivePage'> = {},
 ) => {
   const abort = new AbortController(),
     disk: Bytes[] = [],
@@ -1328,4 +1329,182 @@ it('a page arriving after local pressure is prepared but its final apply waits f
   } finally {
     await f.owner.close();
   }
+});
+
+describe('immediate prepared final application', () => {
+  const handoff = (
+    queued: (apply: () => void) => Promise<void>,
+    immediate: NonNullable<PreparedReceiveFinish['immediate']>,
+  ) => Object.assign(queued, { immediate });
+  it('lets keys journal during the full check, then applies synchronously without a second check', async () => {
+    const f = await fixture(),
+      read = wait(),
+      begun = wait();
+    const fallback = vi.fn(async (apply: () => void) => {
+      apply();
+    });
+    const work = f.prepared(remote(), async (input, stage) => {
+      f.disk.push(input.slice());
+      stage(
+        [input],
+        handoff(fallback, async (attempt) => {
+          begun.resolve();
+          await read.promise;
+          return attempt((apply) => {
+            apply();
+            expect(view(f.owner.snapshot())).toContain('R');
+            return true;
+          });
+        }),
+      );
+    });
+    await begun.promise;
+    await f.owner.submit(intent('LOCAL')).accepted;
+    expect(f.wal).toHaveLength(1);
+    expect(view(f.owner.snapshot())).toBe('LOCAL');
+    read.resolve();
+    await work;
+    expect(view(f.owner.snapshot())).toContain('LOCAL');
+    expect(fallback).not.toHaveBeenCalled();
+    await f.owner.close();
+  });
+  it.each(['activity', 'forced-local'] as const)(
+    'uses one FIFO fallback after an early-check %s miss',
+    async (reason) => {
+      const f = await fixture(),
+        read = wait(),
+        begun = wait();
+      const fallback = vi.fn(async (apply: () => void) => {
+        apply();
+      });
+      const early = vi.fn(
+        async (attempt: Parameters<NonNullable<PreparedReceiveFinish['immediate']>>[0]) => {
+          begun.resolve();
+          await read.promise;
+          return attempt((apply) => {
+            if (reason === 'activity') return false;
+            apply();
+            return true;
+          });
+        },
+      );
+      const work = f.prepared(remote(), async (input, stage) => {
+        f.disk.push(input.slice());
+        stage([input], handoff(fallback, early));
+      });
+      await begun.promise;
+      const content = reason === 'forced-local' ? f.gateContent() : undefined;
+      if (content) f.refuse();
+      const local = f.owner.submit(intent('L'));
+      read.resolve();
+      if (content) {
+        await until(() => f.owner.status.pendingItems === 2);
+        expect(view(f.owner.snapshot())).toBe('');
+        content.resolve();
+      }
+      await local.accepted;
+      await work;
+      expect(early).toHaveBeenCalledOnce();
+      expect(fallback).toHaveBeenCalledOnce();
+      expect(view(f.owner.snapshot())).toContain('L');
+      expect(view(f.owner.snapshot())).toContain('R');
+      await f.owner.close();
+    },
+  );
+  it.each(['input', 'close'] as const)(
+    'protects grouped frames from reentrant %s',
+    async (action) => {
+      const f = await fixture();
+      const first = remote(),
+        second = remote(first, (d) => d.getText('text').insert(1, 'S'));
+      let local: ReturnType<typeof f.owner.submit> | undefined;
+      const seen: string[] = [];
+      f.owner.subscribe((event) => {
+        seen.push(event.source);
+        if (event.source === 'remote' && seen.length === 1) {
+          if (action === 'input') local = f.owner.submit(intent('L'));
+          else void f.owner.close();
+        }
+      });
+      const fallback = vi.fn(async (apply: () => void) => {
+        apply();
+      });
+      const work = f.prepared(first, async (_input, stage) => {
+        f.disk.push(first.slice(), second.slice());
+        stage(
+          [first, second],
+          handoff(fallback, async (attempt) =>
+            attempt((apply) => {
+              apply();
+              return true;
+            }),
+          ),
+        );
+      });
+      if (action === 'input') {
+        await work;
+        await local!.accepted;
+        expect(seen).toEqual(['remote', 'remote', 'local']);
+        expect(view(f.owner.snapshot())).toContain('RS');
+      } else {
+        await expect(work).rejects.toThrow();
+        expect(seen).toEqual(['remote']);
+      }
+      expect(fallback).not.toHaveBeenCalled();
+      await f.owner.close();
+    },
+  );
+  it('retains pending dependencies in original frame order and publishes a grouped page once', async () => {
+    const f = await fixture(append, undefined, { publishReceivePage: true });
+    const first = remote(),
+      second = remote(first, (d) => d.getText('text').insert(1, 'S'));
+    const events: { complete: boolean; text: string }[] = [];
+    f.owner.subscribe((e) =>
+      events.push({ complete: e.publicationComplete !== false, text: view(f.owner.snapshot()) }),
+    );
+    await f.prepared(second, async (_input, stage) => {
+      f.disk.push(second.slice(), first.slice());
+      stage(
+        [second, first],
+        handoff(
+          async () => {
+            throw Error('unexpected fallback');
+          },
+          async (attempt) =>
+            attempt((apply) => {
+              apply();
+              return true;
+            }),
+        ),
+      );
+    });
+    expect(events).toEqual([
+      { complete: false, text: '' },
+      { complete: true, text: 'RS' },
+    ]);
+    const reopened = await fixture(append, await f.carrier.loadRecovery());
+    expect(view(reopened.owner.snapshot())).toBe('RS');
+    await reopened.owner.close();
+    await f.owner.close();
+  });
+  it('an early verifier failure closes for replay without the fallback', async () => {
+    const f = await fixture();
+    const fallback = vi.fn(async (apply: () => void) => {
+      apply();
+    });
+    await expect(
+      f.prepared(remote(), async (input, stage) => {
+        f.disk.push(input.slice());
+        stage(
+          [input],
+          handoff(fallback, async () => {
+            throw Error('bad inventory');
+          }),
+        );
+      }),
+    ).rejects.toThrow('bad inventory');
+    expect(fallback).not.toHaveBeenCalled();
+    await f.owner.close();
+    expect(f.disk).toHaveLength(1);
+  });
 });

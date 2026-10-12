@@ -8,6 +8,7 @@ export async function editorBundle(control) {
     configFile: false,
     logLevel: 'error',
     define: {
+      'import.meta.env.VITE_ACCOUNT_LEDGER_PROFILE': JSON.stringify('1'),
       // The original ordered-fence suite remains the reference oracle; the prepared suite
       // explicitly selects the product path and its different interleaving contract.
       'import.meta.env.VITE_ACCOUNT_PREPARED_RECEIVE': JSON.stringify(
@@ -27,6 +28,24 @@ export async function editorBundle(control) {
             enforce: 'pre',
             transform(code, id) {
               if (!id.endsWith('/src/crdt/accountReceive.ts')) return;
+              if (control === 'final-check') {
+                const anchor = '      await assertCurrent(task);\n      task.step(assertContext);';
+                if (code.split(anchor).length !== 2) throw Error('Missing final check control');
+                hits++;
+                return code.replace(
+                  anchor,
+                  `
+                  await task.wait(() => (globalThis as any).__beforeFinalCheck?.());
+                  await assertCurrent(task);
+                  task.step(assertContext);
+                  if ((globalThis as any).__afterFinalCheck) {
+                    const action = (globalThis as any).__afterFinalCheck;
+                    (globalThis as any).__afterFinalCheck = undefined;
+                    void runCaptureTask(t => t.wait(action)).catch(() => {});
+                  }
+                `,
+                );
+              }
               if (control === 'early') {
                 const anchor = '          await owner.carrier.appendInbound(';
                 if (code.split(anchor).length !== 2) throw Error('Missing early promotion control');

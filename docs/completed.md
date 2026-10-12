@@ -13696,3 +13696,48 @@ code changed and no campaign ran for this documentation phase. Implement the pri
 immediate admission attempt next, keeping the current full-check path as fallback/reference. Measure
 eligibility/fallback rates and extra-read cost rather than assuming the measured 18–20 ms read wait
 translates directly into the same input-latency gain. `docs/progress.md` is unchanged.
+
+### Immediate final receive application — 2026-10-13
+
+**Boundary.** Committed the design signed as **`742e1c14`**, signature verified `G`. Implemented the
+private owner invalidation gate and synchronous final receive application afterward. This work and
+its [measurement packet](./performance-experiments/2026-10-13-immediate-authority/README.md) remain
+uncommitted/unpublished. Release qualification and the physical account comparison remain paused/pending.
+
+**Change.** The complete fresh final authority check moves before editor queue entry only for an
+immediately consumable permission. Another storage request invalidates before enqueue; native work
+must settle before eligibility. Authority changes, route/suspension, lifecycle events and close
+revoke it; actual verifier failures retain refusal/close. The queue reserves its pump before applying
+original frames to current document/undo and cannot bypass older/blocked input. Scheduling misses
+use one original queue-head full check; no retry loop or authority ticket waits in the FIFO. Remote
+content is durably committed/read back before staging, and local edits still journal before apply.
+No format, custody verifier, transport authority, undo grouping or account policy changed.
+
+**Evidence.** 292 focused Vitest tests pass (one existing skip), plus seven native Chromium cases:
+held commit/early-check boundary, live local edit/undo/redo, pending/grouped frames, reentrant input/
+close, abort/native settlement, pre-read custody refusal, queued post-check read/clear, crash and
+cold replay. TypeScript, changed-source lint/format, ordinary build, size and origin checks pass.
+All twelve fixed-order CPU-4x desktop sessions (7,200 independently scheduled keys) pass text,
+undo/redo, export convergence and cold offline replay. No failed or discarded measurement sessions.
+
+**Result/limits.** 157/161 speculative checks apply immediately, four fall back and 18 busy cases
+skip speculation. Successful synchronous application averages 7.5–10.5 ms under receive load versus
+35.1–46.0 ms for reference queued final jobs including the unchanged read. Input p95 is mixed:
+active peer 78.2→89.1 / 82.9→70.2 ms, backlog 59.7→60.8 / 63.1→57.0 ms. Silent peer improves
+79.6→77.5 / 64.3→56.0 ms but has only one trivial final receive per session. Retain the candidate's
+shorter critical section; do not claim a repeatable receiving-latency or throughput win. There is
+no consistent silent-peer regression, excessive speculative-read overhead, stalled lane or failed
+correctness guard in this sample. Next useful attribution is synchronous handler/render and remaining
+main-thread stalls. Physical phone results, publication and release qualification are not established.
+`docs/progress.md` remains unchanged for the other seat.
+
+### Publication preparation requested; timing evidence qualified — 2026-10-13
+
+The operator reported heavy VM use during the recent tests and requested committing the immediate
+final-apply work and preparing the accumulated improvements for release. The overlap and resource
+load were not recorded. The [measurement packet](./performance-experiments/2026-10-13-immediate-authority/README.md)
+now records this as a possible, unquantified timing confound; no run or unfavorable result is removed.
+Correctness outcomes and mechanism counts remain recorded, while timing comparisons cannot establish
+an isolated effect. The earlier mixed-p95 conclusion is not upgraded to a performance win.
+Publication preparation will use the normal bounded packaged/container checks. The general release
+campaign stays paused and physical account performance stays pending.

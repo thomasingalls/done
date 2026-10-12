@@ -1,6 +1,7 @@
 # Fresh authority before final receive application
 
-2026-10-13. **Design only, not implemented.** Source baseline: signed `5c7ba18a`.
+2026-10-13. Contract committed signed as `742e1c14`; source baseline: signed `5c7ba18a`.
+Implementation and focused evidence: [immediate authority handoff](performance-experiments/2026-10-13-immediate-authority/README.md).
 The operator requested this contract after the [status-isolation comparison](performance-experiments/2026-10-12-status-subscriptions/README.md).
 Release validation remains paused. No stored/wire format, deployment, account policy or undo change.
 
@@ -170,7 +171,7 @@ No millisecond freshness threshold is invented here. Immediate consumption plus 
 storage and lifecycle guards define validity. Browser/OS scheduling is not a real-time guarantee.
 The normal session/lifecycle rules still govern suspension and resumption.
 
-## Next bounded implementation and checks
+## Bounded implementation and check requirements
 
 1. Add the private invalidation gate at the existing owner/storage boundaries and a single-use
    permission after the unchanged full verifier. Cover both first-device and joined owners; keep
@@ -199,6 +200,7 @@ The normal session/lifecycle rules still govern suspension and resumption.
    and no lost/stalled receive progress. Claim latency gains only where both contrasts support them;
    a low hit rate or extra-read cost can reject the optimization. Do not launch a generalized campaign.
 
-Physical account evidence remains pending until a disposable phone credential fixture exists. No
-runtime implementation, new performance result, release qualification or publication follows merely
-from recording this contract. A wider-lived ticket would require revisiting this decision explicitly.
+Physical account evidence remains pending until a disposable phone credential fixture exists.
+The linked implementation packet records which checks and measurements have completed; this contract
+alone is not release qualification or publication. A wider-lived ticket would require revisiting
+this decision explicitly.

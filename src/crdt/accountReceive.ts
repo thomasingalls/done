@@ -1,3 +1,4 @@
+import type { PreparedReceiveFinish } from './admissionQueue';
 import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
 import { createAuthorityAuthentication } from './accountAuthority';
 import { authenticateJoinedAccountRows } from './joinedAccount';
@@ -309,9 +310,15 @@ async function openAccountReceiveOwner(
       captureError('Inbound authority changed before commit');
     task.step(() => {});
   };
+  // Initialization can invalidate before the capture owner has finished constructing.
+  let invalidateFinalPermission = () => {};
+  const invalidateAuthority = () => {
+    invalidateFinalPermission();
+    authority.invalidate();
+  };
   const extension: CaptureExtension = {
     version: 9,
-    invalidateAuthority: authority.invalidate,
+    invalidateAuthority,
     ...(incremental && import.meta.env?.['VITE_ACCOUNT_SELECTIVE_LOADS'] !== '0'
       ? {
           selectiveLoads: true as const,
@@ -336,7 +343,7 @@ async function openAccountReceiveOwner(
         }
       : {}),
     async initialize(task, v) {
-      authority.invalidate();
+      invalidateAuthority();
       expectedPayload = promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' });
       expectedRecord = v.record;
       membershipAnchor = v.marker.admission?.receipt
@@ -382,7 +389,7 @@ async function openAccountReceiveOwner(
       });
     },
     async initializeJoined(task, v) {
-      authority.invalidate();
+      invalidateAuthority();
       expectedPayload = joinedPayload(v.marker!);
       expectedRecord = v.record;
       membershipAnchor = structuredClone(v.marker!.authority.base);
@@ -668,7 +675,10 @@ async function openAccountReceiveOwner(
     listCaptures,
     installRoute,
     suspendCapture,
+    invalidateFinalApply,
+    checkFinalApply,
   } = await openAccountCaptureOwner(options, principalId, extension, joined);
+  invalidateFinalPermission = invalidateFinalApply;
   const scopedOwner =
     options.networkLogin && !account.detached
       ? new ScopedTransport(options.pin, carrier.signal)
@@ -1199,20 +1209,32 @@ async function openAccountReceiveOwner(
     },
     compactContent: () => carrier.compactContent(),
   });
-  // Captured only by a just-authenticated durable receive. No task survives preparation.
-  // Reacquire the storage owner at the final editor head, then recheck authority and lifetime.
-  const preparedPromotion = () => {
+  // Captured only after authenticated durable readback; never lends a task or snapshot.
+  const preparedPromotion = (): PreparedReceiveFinish => {
     const preparedBase = base,
-      preparedPayload = expectedPayload;
-    return (apply: () => void) =>
+      preparedPayload = expectedPayload,
+      preparedRecord = expectedRecord;
+    const assertContext = () => {
+      if (
+        handoff ||
+        base !== preparedBase ||
+        expectedPayload !== preparedPayload ||
+        expectedRecord !== preparedRecord
+      )
+        throw new ReceiveAuthorityChanged();
+    };
+    const check = async (task: SessionTask) => {
+      await assertCurrent(task);
+      task.step(assertContext);
+    };
+    const finish: PreparedReceiveFinish = (apply) =>
       runCaptureTask(async (task) => {
-        await assertCurrent(task);
-        task.step(() => {
-          if (base !== preparedBase || expectedPayload !== preparedPayload)
-            throw new ReceiveAuthorityChanged();
-          apply();
-        });
+        await check(task);
+        task.step(apply);
       });
+    if (import.meta.env?.['VITE_ACCOUNT_IMMEDIATE_RECEIVE'] !== '0')
+      finish.immediate = (attempt) => checkFinalApply(check, assertContext, attempt);
+    return finish;
   };
   const receiveGroup = (
     inputs: readonly Bytes[],
@@ -1434,7 +1456,7 @@ async function openAccountReceiveOwner(
               base = nextBase;
               installed = successor;
               receiveSelection.reset();
-              authority.invalidate();
+              invalidateAuthority();
               expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
               sinceAudit = 0;
@@ -1585,7 +1607,7 @@ async function openAccountReceiveOwner(
             checkCommit,
           );
           committed = true;
-          authority.invalidate();
+          invalidateAuthority();
           expectedPayload = joinedPayload(next);
         } else {
           const state = current as Awaited<ReturnType<typeof readPromotion>>;
@@ -1610,7 +1632,7 @@ async function openAccountReceiveOwner(
                 checkCommit,
               );
               committed = true;
-              authority.invalidate();
+              invalidateAuthority();
               expectedPayload = promotionPayload(next);
             },
           );
@@ -2100,7 +2122,7 @@ async function openAccountReceiveOwner(
                       throw Error('Account custody changed during history maintenance');
                     }
                     expectedRecord = record;
-                    authority.invalidate();
+                    invalidateAuthority();
                     expectedPayload = joined
                       ? joinedPayload(
                           (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,

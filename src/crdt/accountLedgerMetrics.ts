@@ -39,12 +39,20 @@ const workNames = [
   'dirtyJournalFlushes',
   'projectionChecks',
   'directTextPreparations',
+  'finalApplyEarlyChecks',
+  'finalApplyImmediate',
+  'finalApplyQueueMisses',
+  'finalApplyActivityMisses',
+  'finalApplyFallbacks',
+  'finalApplySkipped',
 ] as const;
 const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   (typeof workNames)[number],
   number
 >;
 type WorkTiming =
+  | 'finalApplyEarly'
+  | 'finalApplySynchronous'
   | 'copyRecords'
   | 'readProjection'
   | 'installClone'

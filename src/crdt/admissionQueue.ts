@@ -1,3 +1,4 @@
+import type { ImmediateReceiveAttempt } from './finalApplyGate';
 import {
   accountTextPreparation,
   type AccountTextPreparation,
@@ -78,13 +79,18 @@ export type OwnedReceiveQueue = <T>(
   bytes: Bytes,
   commit: (bytes: Bytes, promote: (updates: readonly Bytes[]) => void) => Promise<T>,
 ) => Promise<T>;
+/** Internal only: a complete early check may attempt one synchronous application, never queue it. */
+export interface PreparedReceiveFinish {
+  (apply: () => void): Promise<void>;
+  immediate?: (attempt: ImmediateReceiveAttempt) => Promise<boolean>;
+}
 /** Private content-only preparation. stage transfers copies after durable readback; finish
  * rechecks owned authority inside the final FIFO job. It must not retain a storage task. */
 export type OwnedPreparedReceiveQueue = <T>(
   bytes: Bytes,
   prepare: (
     bytes: Bytes,
-    stage: (updates: readonly Bytes[], finish: (apply: () => void) => Promise<void>) => void,
+    stage: (updates: readonly Bytes[], finish: PreparedReceiveFinish) => void,
   ) => Promise<T>,
 ) => Promise<T>;
 
@@ -979,7 +985,7 @@ export const createAdmissionOwner = async (
       throw new AdmissionError('repair-required', 'Workspace repair requires reopening.');
     const input = bytes.slice();
     let updates: Bytes[] | undefined;
-    let finish: ((apply: () => void) => Promise<void>) | undefined;
+    let finish: PreparedReceiveFinish | undefined;
     clearMaintenanceTimer();
     maintenanceStop?.abort();
     // Register before executing preparation. No storage task may await final FIFO promotion.
@@ -996,6 +1002,69 @@ export const createAdmissionOwner = async (
         });
         live();
         if (!updates || !finish) throw Error('Remote preparation omitted its durable handoff');
+        const eligible = () =>
+          state === 'active' &&
+          !repairRequired &&
+          !busy &&
+          !backgroundFlush &&
+          !queue.length &&
+          preparedReceive === work;
+        if (finish.immediate && eligible()) {
+          countLedgerWork('finalApplyEarlyChecks');
+          const early = ledgerWorkStart();
+          const applied = await finish.immediate((authorize) => {
+            live();
+            if (!eligible()) {
+              countLedgerWork('finalApplyQueueMisses');
+              return false;
+            }
+            // Reserve the pump before any effect or notification can reenter admission.
+            busy = true;
+            const job: InputJob = {
+              kind: 'remote',
+              id: ++nextId,
+              input: new Uint8Array([1]),
+              reservation: 1,
+              slices: 0,
+              sliced: false,
+              completion: deferred<AdmissionReceipt>(),
+            };
+            try {
+              const accepted = authorize(() => {
+                queue.push(job);
+                const began = ledgerWorkStart();
+                try {
+                  changedContent(
+                    updates!.length,
+                    updates!.reduce((n, b) => n + b.length, 0),
+                  );
+                  for (let i = 0; i < updates!.length; i++)
+                    promote(
+                      job,
+                      updates![i]!,
+                      !options.publishReceivePage || i === updates!.length - 1,
+                    );
+                  completeInput(job);
+                } finally {
+                  measureLedgerWork('finalApplySynchronous', began);
+                }
+              });
+              countLedgerWork(accepted ? 'finalApplyImmediate' : 'finalApplyActivityMisses');
+              return accepted;
+            } catch (error) {
+              // A partial durable page must never be retried in place.
+              void close().catch(() => {});
+              throw error;
+            } finally {
+              erase(job);
+              busy = false;
+              pump();
+            }
+          });
+          measureLedgerWork('finalApplyEarly', early);
+          if (applied) return value as T;
+          countLedgerWork('finalApplyFallbacks');
+        } else if (finish.immediate) countLedgerWork('finalApplySkipped');
         // Original frames apply to the current document/undo state, never to a prepared snapshot.
         await receiveOwned(new Uint8Array([1]), async (_input, promote) => {
           try {

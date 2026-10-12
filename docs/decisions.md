@@ -4503,3 +4503,27 @@ This records design work, not implementation or authorization for a general reus
 cache. No new seconds/minutes custody-corruption window, format change, release campaign or deployment
 is selected. The current runtime still checks authority at the final FIFO head; physical account
 performance remains pending its separate disposable-credential fixture.
+
+## 2026-10-13 — Implement immediate final authority; retain the measured limits
+
+After signed design `742e1c14`, the operator requested implementation. The private gate preserves the
+complete fresh inventory check, native settlement, current authority/lifetime, FIFO predecessor order,
+journal-before-apply and undo. It allows one synchronous application only in the immediate successful
+continuation; every other storage request invalidates at enqueue. A miss uses the old queue-head
+check once; a failed verifier closes/refuses. No format or longer-lived authority cache is introduced.
+
+The [bounded comparison](performance-experiments/2026-10-13-immediate-authority/README.md) passes all
+correctness guards and establishes shorter final queue-held work with few extra checks, but receiving
+input-p95 contrasts are mixed. Retain the implementation in the working candidate on that bounded
+mechanism/progress evidence, without claiming a repeatable typing-latency gain or authorizing
+publication. The measured rejection conditions did not occur. Keep the reference switch, preserve
+all runs, and investigate remaining synchronous costs separately. Physical account performance and
+release qualification remain pending/paused.
+
+## 2026-10-13 — Prepare the accumulated performance work with host-load uncertainty explicit
+
+The operator reported heavy VM use during recent testing and requested release preparation. Preserve
+the timing packets and all observations, adding the unknown external-load overlap as a limitation.
+No measured slowdown is explained away, and no unobserved speedup is claimed. Proceed with bounded
+publication checks on an immutable signed candidate; do not restart the paused release-validation
+campaign or treat the pending physical-phone comparison as completed.

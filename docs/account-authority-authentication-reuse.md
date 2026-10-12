@@ -78,3 +78,10 @@ complete read before queue entry only for an immediately consumable, owner-priva
 It retains this verifier and its refusal behavior, with conservative storage/lifecycle invalidation
 and the current queue-head check as fallback. It is not a longer-lived custody authentication cache
 and has not been implemented.
+
+## Implementation follow-up — 2026-10-13
+
+The [immediate authority handoff](performance-experiments/2026-10-13-immediate-authority/README.md)
+implements the scheduling refinement after signed design `742e1c14`. It retains the complete fresh
+check and uses the original FIFO check after a scheduling miss. Ordinary prepared content alone can
+apply synchronously; authority-changing operations retain their existing fences.
