@@ -236,6 +236,32 @@ it('default/older readers reject v5; history mode, carrier and era are closed an
   await expect(readEncryptedBaseline(task, f.owner)).rejects.toThrow();
 });
 
+it('the reserved-counter overlay still compares every old encrypted baseline chunk', async () => {
+  const f = await fixture();
+  await f.remove(await f.plan());
+  const before = await f.read(),
+    p = await f.plan(),
+    seal = f.owner.crypt.seal;
+  const oldChunk = before.metadata.find((m) => Array.isArray(m.key))!;
+  const damaged = structuredClone(oldChunk.value) as StoredRecord;
+  damaged.ct[0]! ^= 1;
+  let once = true;
+  f.owner.crypt.seal = async (t, h, b) => {
+    if (once) {
+      once = false;
+      await write(f.owner.db, 'meta', oldChunk.key, damaged);
+    }
+    return seal(t, h, b);
+  };
+  const clear = vi.spyOn(IDBObjectStore.prototype, 'clear');
+  await expect(f.remove(p)).rejects.toThrow('inventory changed');
+  expect(clear).not.toHaveBeenCalled();
+  const after = await f.read();
+  expect(raw(after).baseline).toEqual(raw(before).baseline);
+  expect(raw(after).next_seq).toBeGreaterThan(raw(before).next_seq);
+  expect(after.metadata.find((m) => Array.isArray(m.key))!.value).toEqual(damaged);
+});
+
 it('abort after a proved-complete store clear rolls back the whole exchange and burns only the predecessor reservation', async () => {
   const f = await fixture(),
     before = await f.read(),
@@ -265,7 +291,14 @@ it('abort after a proved-complete store clear rolls back the whole exchange and 
   expect(raw(await f.read()).baseline.firstSequence).toBe(burned);
 });
 
-for (const fault of ['late-key', 'changed-row', 'journal', 'authority', 'seal-failure'])
+for (const fault of [
+  'late-key',
+  'changed-row',
+  'journal',
+  'authority',
+  'seal-failure',
+  'disposed-plan',
+])
   it(`refuses ${fault} after reservation with no partial deletion`, async () => {
     const f = await fixture(),
       before = await f.read(),
@@ -284,6 +317,7 @@ for (const fault of ['late-key', 'changed-row', 'journal', 'authority', 'seal-fa
         once = false;
         if (fault === 'seal-failure') throw Error('injected encryption failure');
         faultActive = true;
+        if (fault === 'disposed-plan') disposeRetentionPlan(p);
         if (fault === 'late-key')
           await write(f.owner.db, 'content', f.counter.next_seq - 1, {
             ...(before.rows.find((r) => r.store === 'content')!.value as StoredRecord),
@@ -312,9 +346,9 @@ for (const fault of ['omitted', 'duplicate', 'foreign-store', 'substituted-key',
     const f = await fixture(),
       before = await f.read(),
       p = await f.plan();
-    const inspect = retentionPlans.inspectRetentionPlan;
-    vi.spyOn(retentionPlans, 'inspectRetentionPlan').mockImplementation((plan) => {
-      const copy = inspect(plan);
+    const inspect = retentionPlans.copyRetentionMaterial;
+    vi.spyOn(retentionPlans, 'copyRetentionMaterial').mockImplementation((plan, binding) => {
+      const copy = inspect(plan, binding);
       if (fault === 'omitted') copy.deleteRows.pop();
       if (fault === 'duplicate') copy.deleteRows[1] = structuredClone(copy.deleteRows[0]!);
       if (fault === 'foreign-store') copy.deleteRows[0]!.store = 'foreign';

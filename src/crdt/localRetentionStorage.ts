@@ -24,8 +24,8 @@ import {
 import { decodeLocalBaseline } from './localBaselineRecord';
 import { type BaselineStorageOwner } from './localBaselineStorage';
 import {
-  assertRetentionInventory,
-  inspectRetentionPlan,
+  copyRetentionMaterial,
+  reservedRetentionVerifier,
   verifyRetentionPlan,
   type LocalRetentionPlan,
   type RetentionBinding,
@@ -68,9 +68,8 @@ function completeRemovalStores(
 function exchange(
   task: SessionTask,
   owner: BaselineStorageOwner,
-  expected: RetentionInventory,
   counter: ContentCounter | BaselineCounter,
-  checkPlan: () => void,
+  checkPlan: (actual: RetentionInventory) => void,
   replacement?: { chunks: StoredRecord[]; deleteRows: { store: string; key: number }[] },
 ) {
   const elapsed = ledgerWorkStart();
@@ -103,8 +102,7 @@ function exchange(
                   elapsed,
                 );
                 const compare = ledgerWorkStart();
-                assertRetentionInventory(expected, actual);
-                checkPlan();
+                checkPlan(actual);
                 owner.checkCommit();
                 measureLedgerWork(
                   replacement ? 'retentionReplaceCompare' : 'retentionReserveCompare',
@@ -119,7 +117,7 @@ function exchange(
                     tx.objectStore('meta').put(row, baselineChunkKey(i)),
                   );
                   // Exact old metadata keys were compared above. Only obsolete chunk keys are removed.
-                  for (const m of expected.metadata)
+                  for (const m of actual.metadata)
                     if (Array.isArray(m.key) && Number(m.key[1]) >= replacement.chunks.length)
                       tx.objectStore('meta').delete(m.key);
                   // The complete physical census still matches the exact verified plan in this
@@ -165,15 +163,13 @@ export async function removePlannedLocalHistory(
   binding = { ...binding };
   if (!owner.allowReduced) corrupt('Reduced retention writer is disabled.');
   let phase = ledgerWorkStart();
-  const evidence = inspectRetentionPlan(plan);
+  const evidence = copyRetentionMaterial(plan, binding);
   measureLedgerWork('retentionEvidenceCopy', phase);
   phase = ledgerWorkStart();
   let packed: Bytes | undefined;
   let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
   const chunks: StoredRecord[] = [];
   try {
-    const check = () => verifyRetentionPlan(plan, evidence.inventory, binding);
-    check();
     owner.checkCommit();
     const b = (decoded = decodeLocalBaseline(evidence.candidate.baseline.payload));
     const era = b.journalEra ?? corrupt('Retention requires a journal era.');
@@ -190,7 +186,7 @@ export async function removePlannedLocalHistory(
       b.journalEra.revision !== b.revision
     )
       corrupt('Retention generation, intent or era differs.');
-    const raw = evidence.inventory.metadata.find((m) => m.key === 'counter')!.value;
+    const raw = evidence.rawCounter;
     const prior =
       Number((raw as { v: number }).v) >= 3
         ? parseBaselineCounter(raw, owner.identity, owner.intent, true)
@@ -232,15 +228,14 @@ export async function removePlannedLocalHistory(
     await task.wait(owner.assertCurrent);
     measureLedgerWork('retentionReserveAuthority', phase);
     phase = ledgerWorkStart();
-    await exchange(task, owner, evidence.inventory, reserved, check);
+    await exchange(task, owner, reserved, (actual) => verifyRetentionPlan(plan, actual, binding));
     measureLedgerWork('retentionReserveExchange', phase);
     phase = ledgerWorkStart();
     // Old representation and era remain usable on interruption; this range is now burned.
-    const expected = structuredClone(evidence.inventory);
+    const expected = reservedRetentionVerifier(plan, reserved, binding);
     measureLedgerWork('retentionExpectedCopy', phase);
     phase = ledgerWorkStart();
     try {
-      expected.metadata.find((m) => m.key === 'counter')!.value = reserved;
       for (let i = 0; i < pointer.chunks; i++) {
         const plain = concat(
           baselineChunkPrefix(owner.identity, pointer, i),
@@ -283,7 +278,7 @@ export async function removePlannedLocalHistory(
       await task.wait(owner.assertCurrent);
       measureLedgerWork('retentionReplaceAuthority', phase);
       phase = ledgerWorkStart();
-      await exchange(task, owner, expected, next, check, {
+      await exchange(task, owner, next, expected.verify, {
         chunks,
         deleteRows: evidence.deleteRows,
       });
@@ -297,7 +292,7 @@ export async function removePlannedLocalHistory(
         ],
       });
     } finally {
-      eraseVerified(expected);
+      expected.dispose();
     }
   } finally {
     const cleanup = ledgerWorkStart();

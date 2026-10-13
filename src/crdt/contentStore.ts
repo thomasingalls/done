@@ -739,9 +739,8 @@ export const createContentOwner = (
       retentionPlanReport,
       disposeRetentionPlan,
       assertRetentionInventory,
-      inspectRetentionPlan,
-      verifyRetentionPlan,
-      sameRetentionInventory,
+      copyRetentionCandidate,
+      matchesRetentionPlan,
     } = await task.wait(() => import('./localRetentionPlan'));
     const inventory = await retentionInventory(task);
     let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
@@ -810,7 +809,7 @@ export const createContentOwner = (
         let expected: RetentionInventory | undefined;
         let actual: RetentionInventory | undefined;
         let opened: OpenedRecord[] | undefined;
-        let candidate: ReturnType<typeof inspectRetentionPlan> | undefined;
+        let candidate: ReturnType<typeof copyRetentionCandidate> | undefined;
         try {
           check();
           let phase = ledgerWorkStart();
@@ -818,7 +817,7 @@ export const createContentOwner = (
           check();
           measureLedgerWork('retentionFinalAuthority', phase);
           phase = ledgerWorkStart();
-          candidate = inspectRetentionPlan(prepared);
+          candidate = copyRetentionCandidate(prepared, binding);
           measureLedgerWork('retentionPlanCopy', phase);
           phase = ledgerWorkStart();
           actual = await retentionInventory(currentTask);
@@ -826,9 +825,7 @@ export const createContentOwner = (
           phase = ledgerWorkStart();
           // Another owned storage job may have run between preparation and final FIFO entry.
           // Abandon rather than broadening/reusing the cut; no nonce has been reserved yet.
-          if (!sameRetentionInventory(candidate.inventory, actual))
-            throw new MaintenanceInterrupted();
-          verifyRetentionPlan(prepared, actual, binding);
+          if (!matchesRetentionPlan(prepared, actual, binding)) throw new MaintenanceInterrupted();
           measureLedgerWork('retentionPreflightCompare', phase);
           check();
           const { removePlannedLocalHistory } = await currentTask.wait(
@@ -864,7 +861,7 @@ export const createContentOwner = (
             { records: opened, counter: current },
             await crypt.baseline!(currentTask, { ...scope }, current),
             baselineAuth(currentTask),
-            candidate.candidate,
+            candidate,
             true,
             true,
           );

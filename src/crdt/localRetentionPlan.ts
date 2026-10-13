@@ -142,7 +142,7 @@ const held = (plan: LocalRetentionPlan): HeldPlan =>
 export function retentionPlanReport(plan: LocalRetentionPlan): RetentionPlanReport {
   return structuredClone(held(plan).report);
 }
-/** Detached evidence for focused tests and the private transaction adapter; never write authority. */
+/** Detached full evidence for focused inspection; runtime consumers use the narrow accessors below. */
 export function inspectRetentionPlan(plan: LocalRetentionPlan) {
   const p = held(plan);
   return structuredClone({
@@ -153,11 +153,7 @@ export function inspectRetentionPlan(plan: LocalRetentionPlan) {
     counter: p.counter,
   });
 }
-export function verifyRetentionPlan(
-  plan: LocalRetentionPlan,
-  current: RetentionInventory,
-  binding: RetentionBinding,
-) {
+function checkedPlan(plan: LocalRetentionPlan, binding: RetentionBinding) {
   const p = held(plan);
   p.assertCurrent();
   if (
@@ -166,7 +162,68 @@ export function verifyRetentionPlan(
     binding.allowReduced !== p.binding.allowReduced
   )
     corrupt('Retention owner or authority identity changed.');
-  assertRetentionInventory(p.inventory, current);
+  return p;
+}
+/** Only detached candidate bytes cross the final replay boundary. */
+export function copyRetentionCandidate(plan: LocalRetentionPlan, binding: RetentionBinding) {
+  return structuredClone(checkedPlan(plan, binding).candidate);
+}
+/** The adapter needs a candidate, counters and keys, not a second copy of every old sealed row. */
+export function copyRetentionMaterial(plan: LocalRetentionPlan, binding: RetentionBinding) {
+  const p = checkedPlan(plan, binding);
+  return structuredClone({
+    candidate: p.candidate,
+    counter: p.counter,
+    rawCounter: p.inventory.metadata.find((m) => m.key === 'counter')!.value,
+    deleteRows: p.deleteRows.map(({ store, key }) => ({ store, key })),
+  });
+}
+export function matchesRetentionPlan(
+  plan: LocalRetentionPlan,
+  current: RetentionInventory,
+  binding: RetentionBinding,
+) {
+  return sameRetentionInventory(checkedPlan(plan, binding).inventory, current);
+}
+export function verifyRetentionPlan(
+  plan: LocalRetentionPlan,
+  current: RetentionInventory,
+  binding: RetentionBinding,
+) {
+  if (!matchesRetentionPlan(plan, current, binding))
+    corrupt('Retention inventory changed; replan required.');
+}
+/** Capture only the adapter's reserved counter. Every later comparison rechecks the live plan
+ * and borrows its old rows/chunks synchronously; no private evidence escapes or survives in a
+ * caller-owned cleanup graph. This verifier confers no write authority or deletion permission. */
+export function reservedRetentionVerifier(
+  plan: LocalRetentionPlan,
+  counter: ContentCounter | BaselineCounter,
+  binding: RetentionBinding,
+) {
+  binding = { ...binding };
+  checkedPlan(plan, binding);
+  const reserved = structuredClone(counter);
+  let disposed = false;
+  return Object.freeze({
+    verify(current: RetentionInventory) {
+      if (disposed) corrupt('Retention reservation verifier expired.');
+      const p = checkedPlan(plan, binding);
+      assertRetentionInventory(
+        {
+          ...p.inventory,
+          metadata: p.inventory.metadata.map((m) =>
+            m.key === 'counter' ? { key: m.key, value: reserved } : m,
+          ),
+        },
+        current,
+      );
+    },
+    dispose() {
+      disposed = true;
+      eraseVerified(reserved);
+    },
+  });
 }
 export function disposeRetentionPlan(plan: LocalRetentionPlan) {
   const p = plans.get(plan);

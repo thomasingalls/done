@@ -9,11 +9,20 @@ import { applyHistoryReceiveCuts } from '../src/crdt/inboundLedger';
 import { expect, it, vi } from 'vitest';
 import type { SessionTask } from '../src/crdt/writeSession';
 import { cryptFor } from './local-baseline/anchor-fixture';
-import { counterPayload, recordStore, type StoredRecord } from '../src/crdt/contentRecord';
+import {
+  counterPayload,
+  recordStore,
+  reserveCounter,
+  type StoredRecord,
+} from '../src/crdt/contentRecord';
 import {
   planLocalRetention,
   sameRetentionInventory,
   inspectRetentionPlan,
+  copyRetentionCandidate,
+  copyRetentionMaterial,
+  matchesRetentionPlan,
+  reservedRetentionVerifier,
   retentionPlanReport,
   verifyRetentionPlan,
   disposeRetentionPlan,
@@ -1637,6 +1646,90 @@ it('dry run enumerates exact interleaved sealed keys, preserves partial capsules
   expect(() => retentionPlanReport(plan)).toThrow('expired');
 });
 
+it('narrow plan copies isolate replay and adapter callers without exporting old rows', async () => {
+  const f = await fixture(),
+    g = await retentionFixture(f, f.rows),
+    plan = await g.plan();
+  if (plan.kind !== 'local-retention-dry-run') throw Error(plan.reason);
+  try {
+    const before = inspectRetentionPlan(plan);
+    const candidate = copyRetentionCandidate(plan, g.binding);
+    const material = copyRetentionMaterial(plan, g.binding);
+    expect(candidate).toEqual(before.candidate);
+    expect(material).not.toHaveProperty('inventory');
+    expect(material.deleteRows).toEqual(
+      before.deleteRows.map(({ store, key }) => ({ store, key })),
+    );
+    candidate.baseline.payload.fill(0);
+    candidate.baseline.mac.fill(0);
+    material.candidate.baseline.payload.fill(0);
+    material.counter.mac.fill(0);
+    material.counter.next_seq++;
+    (material.rawCounter as ContentCounter).mac.fill(0);
+    material.deleteRows[0]!.key++;
+    material.deleteRows.pop();
+    g.inventory.rows[0]!.value = null;
+    expect(inspectRetentionPlan(plan)).toEqual(before);
+    expect(matchesRetentionPlan(plan, before.inventory, g.binding)).toBe(true);
+    for (const copy of [copyRetentionCandidate, copyRetentionMaterial]) {
+      expect(() => copy(plan, { ...g.binding, lifetime: {} })).toThrow('identity');
+      expect(() => copy(plan, { ...g.binding, allowReduced: true })).toThrow('identity');
+    }
+    g.retire();
+    expect(() => copyRetentionCandidate(plan, g.binding)).toThrow('retired');
+    expect(() => copyRetentionMaterial(plan, g.binding)).toThrow('retired');
+  } finally {
+    disposeRetentionPlan(plan);
+  }
+});
+
+it('reservation comparison snapshots its counter and binding and erases only its own bytes', async () => {
+  const f = await fixture(),
+    g = await retentionFixture(f, f.rows),
+    plan = await g.plan();
+  if (plan.kind !== 'local-retention-dry-run') throw Error(plan.reason);
+  const counter = structuredClone(reserveCounter(g.input.counter, 2, g.input.counter.active_gen));
+  const binding = { ...g.binding };
+  const current = structuredClone(g.inventory);
+  current.metadata.find((m) => m.key === 'counter')!.value = structuredClone(counter);
+  const check = reservedRetentionVerifier(plan, counter, binding);
+  try {
+    binding.lifetime = {};
+    counter.mac.fill(0);
+    counter.next_seq++;
+    check.verify(current);
+    expect(() => check.verify(g.inventory)).toThrow('inventory changed');
+    check.dispose();
+    expect(() => check.verify(current)).toThrow('expired');
+    verifyRetentionPlan(plan, g.inventory, g.binding);
+    const another = reservedRetentionVerifier(plan, g.input.counter, g.binding);
+    try {
+      g.retire();
+      expect(() => another.verify(g.inventory)).toThrow('retired');
+    } finally {
+      another.dispose();
+    }
+  } finally {
+    check.dispose();
+    disposeRetentionPlan(plan);
+  }
+});
+
+it('disposing the plan invalidates a previously captured reservation verifier', async () => {
+  const f = await fixture(),
+    g = await retentionFixture(f, f.rows),
+    plan = await g.plan();
+  if (plan.kind !== 'local-retention-dry-run') throw Error(plan.reason);
+  const check = reservedRetentionVerifier(plan, g.input.counter, g.binding);
+  disposeRetentionPlan(plan);
+  try {
+    expect(() => check.verify(g.inventory)).toThrow('expired');
+    expect(() => copyRetentionMaterial(plan, g.binding)).toThrow('expired');
+  } finally {
+    check.dispose();
+  }
+});
+
 it('exact plan rejects changed, extra, missing and late lower-key rows and raw metadata changes', async () => {
   const f = await fixture();
   const g = await retentionFixture(
@@ -1686,16 +1779,26 @@ it('exact plan rejects changed, extra, missing and late lower-key rows and raw m
       (i.rows[0]!.value as unknown as Record<string, unknown>)['unknown'] = true;
     },
   ];
+  const reserved = reserveCounter(g.input.counter, 2, g.input.counter.active_gen);
+  const check = reservedRetentionVerifier(plan, reserved, g.binding);
+  const afterReservation = structuredClone(g.inventory);
+  afterReservation.metadata.find((m) => m.key === 'counter')!.value = reserved;
   try {
+    check.verify(afterReservation);
     for (const change of changes) {
       const changed = structuredClone(g.inventory);
       change(changed);
       expect(() => verifyRetentionPlan(plan, changed, g.binding)).toThrow('inventory changed');
+      expect(matchesRetentionPlan(plan, changed, g.binding)).toBe(false);
+      const changedReserved = structuredClone(afterReservation);
+      change(changedReserved);
+      expect(() => check.verify(changedReserved)).toThrow('inventory changed');
     }
     const reordered = structuredClone(g.inventory);
     reordered.rows.reverse();
     verifyRetentionPlan(plan, reordered, g.binding);
   } finally {
+    check.dispose();
     disposeRetentionPlan(plan);
   }
 });

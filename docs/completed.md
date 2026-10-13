@@ -14352,3 +14352,42 @@ comparisons and preparation still grow with history. Next address duplicate evid
 retaining private ownership and exact transaction checks. Public conversion/reader-first rollout,
 rollback, product capacity/trigger/cadence and release validation remain gated. No deployment or
 personal storage changed; `docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Keep private retention evidence owned; copy only material needed by each caller
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `eb2a3374` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** The grouped atomic transaction is signed as **`eb2a3374`**. The new
+[evidence-reuse repair](./account-local-retention-evidence-reuse.md) retains the planner's full private
+capture, exposes detached candidate/counter material and deletion keys, and compares each fresh
+census directly against that capture once. The post-reservation verifier snapshots only the reserved
+counter and binding and rechecks the live plan on every use. No old byte buffers escape. Complete
+fresh authority, exact transaction/deletion checks, reservation burns, journal/activity fences,
+authenticated readback/independent replay and the live document/UndoManager remain unchanged.
+
+**Evidence.** The [packet](./performance-experiments/2026-10-13-retention-evidence/README.md) includes
+the prospective protocol, frozen bundles, source identities, raw observations, profiles/traces and
+focused logs. Three matched pairs at 1,201 accepted own positions / 8,439 rows give median final fence
+**500 → 265 ms (47%)**, total **5.713 → 5.511 s**, maximum task **105 → 103 ms**. One profiled CPU-4x
+pair gives fence **1.331 → 0.697 s**, three copy spans **372 → 11 ms**, comparison spans **327 → 153 ms**.
+All eight conversions and three preparation-time input interventions cold-recover exactly. The six
+unprofiled runs have identical native crypto counts; all eight retain **14** scoped authority checks
+and equal scoped verification/replay work. The packet records an extra native verify in the profiled
+reference and post-conversion audit work in the profiled candidate instead of claiming exact total
+work equality across those whole collection windows.
+
+**Checks.** **134** unique unit tests, **18** native crash/abort/retry/journal/input/undo controls and
+**three** packaged lifecycle/checkpoint journeys pass, plus TypeScript, focused lint/format, ordinary
+build, Yjs runtime/patch, origin isolation and **138.3 kB / 350 kB** initial-JS budget. New controls
+cover detached caller mutations, reserved counter/binding snapshots, verifier/plan disposal, disposal
+during sealing, and mutation of an old encrypted chunk after reservation. Malformed deletion sets
+continue to refuse before any clear.
+
+**Remaining.** Initial full-history preparation remains the dominant work. CPU-4x total is **23.220 →
+23.896 s**, with unchanged preparation varying by 1.31 s; maximum tasks **431 → 449 ms**. This phase
+does not establish an overall throttled conversion or foreground-task improvement. Next investigate
+those remaining preparation tasks; further fenced reductions need a separate design for full physical
+censuses/comparisons. Public trigger/cadence, capacity behavior, reader-first publication/rollback and
+release validation remain separate. New work is uncommitted. No deployment or personal storage changed;
+`docs/progress.md` and unrelated root notes remain untouched.
