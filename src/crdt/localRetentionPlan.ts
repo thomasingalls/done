@@ -27,7 +27,8 @@ import {
   type BaselineAuthentication,
 } from './localBaselineReplay';
 import { compareBaselineReplay } from './localBaselineShadow';
-import { verifyInboundCoverage } from './inboundLedger';
+import { createCpuBudget } from './cpuBudget';
+import { createInboundCoverage } from './inboundLedger';
 import { isHistoryInstallTag } from './historyInstall';
 import { eraseVerified, sameBytes } from './verifiedRecords';
 import { hex, type Bytes } from './custodyCrypto';
@@ -190,6 +191,11 @@ export async function planLocalRetention(
     scope = { ...context.identity };
   binding = { ...binding };
   context.assertCurrent();
+  const checkpoint = createCpuBudget(() => {
+    task.step(() => {});
+    context.assertCurrent();
+  });
+  const coverage = createInboundCoverage();
   const records: OpenedRecord[] = [];
   let previous: Awaited<ReturnType<typeof openEncryptedBaselineSnapshot>> | undefined;
   let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
@@ -252,6 +258,8 @@ export async function planLocalRetention(
     } else counter = stored;
     const seen = new Set<number>();
     for (const row of inventory.rows) {
+      const pause = checkpoint();
+      if (pause) await pause;
       const r = parseStoredRecord(row.value);
       if (
         row.key !== r.seq ||
@@ -337,14 +345,20 @@ export async function planLocalRetention(
       gen: decoded.generation,
       bytes: decoded.snapshot,
     };
+    // The candidate snapshot is private and immutable throughout this exact plan.
+    const content = [state],
+      checking = coverage.bind(content);
+    const bySequence = new Map(records.map((r) => [r.seq, r]));
     const deleteRows: DeleteRow[] = [];
     const dispositions: RetentionPlanReport['dispositions'] = {};
     for (const row of inventory.rows) {
+      const pause = checkpoint();
+      if (pause) await pause;
       const value = parseStoredRecord(row.value),
-        opened = records.find((r) => r.seq === value.seq)!;
+        opened = bySequence.get(value.seq)!;
       let disposition: RetentionDisposition;
       if (value.kind === 'update' || value.kind === 'state') {
-        verifyInboundCoverage([state], [opened.bytes]);
+        checking.check(content, [opened.bytes]);
         disposition = 'content-covered';
       } else {
         const tag: unknown = JSON.parse(
@@ -373,7 +387,7 @@ export async function planLocalRetention(
     projected = await replayLocalBaseline(
       candidate.baseline,
       candidate.anchor,
-      { records: survivors.map((row) => records.find((r) => r.seq === row.key)!), counter },
+      { records: survivors.map((row) => bySequence.get(Number(row.key))!), counter },
       context,
       crypt.auth,
     );
@@ -403,6 +417,7 @@ export async function planLocalRetention(
     delivered = true;
     return plan;
   } finally {
+    coverage.clear();
     eraseVerified(records);
     eraseVerified(decoded);
     eraseVerified(reference);

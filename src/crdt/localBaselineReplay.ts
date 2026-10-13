@@ -15,7 +15,8 @@ import {
   verifyBaselineAuthority,
 } from './localBaselineAuthority';
 import { RetiredHistoryRequired } from './retainedHistory';
-import { advanceSelfReceive } from './accountSyncState';
+import { advanceSelfReceive, advanceSelfReceiveCooperatively } from './accountSyncState';
+import { createCpuBudget } from './cpuBudget';
 import {
   parseCounter,
   sameSpoolWitness,
@@ -34,6 +35,7 @@ import { generationKey } from './generationKeys';
 import { verifyHistoryInstall } from './historyInstall';
 import {
   emptyInbound,
+  createInboundCoverage,
   inspectInbound,
   publisherContext,
   verifyInboundCoverage,
@@ -188,8 +190,22 @@ function documentState(records: readonly OpenedRecord[], complete: boolean): Byt
   }
 }
 async function full(input: ReturnType<typeof captureInput>, c: LocalBaselineContext) {
-  const subtle = guardedSubtle(c.assertCurrent),
-    { route, inbound: base } = c;
+  const checkpoint = createCpuBudget(c.assertCurrent);
+  // The guarded primitive still rechecks the captured owner after a budget yield.
+  // No authentication result is memoised here.
+  const subtle = new Proxy(guardedSubtle(c.assertCurrent), {
+    get(target, property) {
+      const value: unknown = Reflect.get(target, property, target);
+      if (typeof value !== 'function') return value;
+      return (...args: unknown[]) => {
+        const pause = checkpoint();
+        return pause
+          ? pause.then(() => Reflect.apply(value, target, args))
+          : Reflect.apply(value, target, args);
+      };
+    },
+  });
+  const { route, inbound: base } = c;
   const census = inspectInbound(input.records, route, base);
   await verifySpoolWitness(census.delivery.spool, input.counter, subtle);
   if (c.installation.kind === 'original')
@@ -221,23 +237,43 @@ async function full(input: ReturnType<typeof captureInput>, c: LocalBaselineCont
   await verifySpool(census.delivery.spool, route, keys(c), c.signer, subtle);
   const delivery = await verifyDelivery(census.delivery, route, base.authority, c.signer, subtle);
   const inbound = await verifyInboundLedger(census, input.records, base, c);
-  advanceSelfReceive(census.delivery, delivery, inbound, route, (u) =>
-    verifyInboundCoverage(input.records, u),
-  );
-  // Every original is durable even if it has not been allocated to a network position yet.
-  for (const bytes of census.delivery.spool.sources.values()) {
-    const capsule = decodeSourceCapsule(bytes, route);
-    try {
-      verifyInboundCoverage(
-        input.records,
-        capsule.sources.map((s) => s.bytes),
-      );
-    } finally {
-      eraseCapsule(capsule);
+  // These captured rows are private and immutable for this pass. Rebuild once,
+  // retaining the pending-aware fork/apply/compare proof for each distinct original.
+  const coverage = createInboundCoverage();
+  try {
+    const checking = coverage.bind(input.records);
+    const check = (updates: readonly Bytes[]) => checking.check(input.records, updates);
+    await advanceSelfReceiveCooperatively(
+      census.delivery,
+      delivery,
+      inbound,
+      route,
+      check,
+      async () => {
+        const pause = checkpoint();
+        if (pause) await pause;
+      },
+    );
+    // Originals remain durable even before allocation to a network position.
+    for (const bytes of census.delivery.spool.sources.values()) {
+      const pause = checkpoint();
+      if (pause) await pause;
+      const capsule = decodeSourceCapsule(bytes, route);
+      try {
+        for (const source of capsule.sources) {
+          const pause = checkpoint();
+          if (pause) await pause;
+          check([source.bytes]);
+        }
+      } finally {
+        eraseCapsule(capsule);
+      }
     }
+    c.assertCurrent();
+    return { census, delivery, inbound, snapshot: documentState(input.records, false) };
+  } finally {
+    coverage.clear();
   }
-  c.assertCurrent();
-  return { census, delivery, inbound, snapshot: documentState(input.records, false) };
 }
 export async function replayFullLocalHistory(
   input: LocalReplayInput,

@@ -6,7 +6,7 @@ import { verifyDetachedPrefix } from '../src/crdt/rotationObservation';
 import { verifySpoolWitness } from '../src/crdt/spoolRecord';
 import { verifyHistoryInstall } from '../src/crdt/historyInstall';
 import { applyHistoryReceiveCuts } from '../src/crdt/inboundLedger';
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import type { SessionTask } from '../src/crdt/writeSession';
 import { cryptFor } from './local-baseline/anchor-fixture';
 import { counterPayload, recordStore, type StoredRecord } from '../src/crdt/contentRecord';
@@ -1841,4 +1841,35 @@ it('generated exact plans cover every physical key across holes and varying sett
     ),
     { numRuns: 12, seed: 131027 },
   );
+});
+
+it('full baseline replay rechecks its owner after a CPU yield before invoking cryptography', async () => {
+  const f = await fixture(),
+    input = await f.input(f.rows);
+  let retired = false,
+    clock = 0;
+  const verify = vi.spyOn(crypto.subtle, 'verify');
+  const now = vi.spyOn(performance, 'now').mockImplementation(() => (clock += 9));
+  vi.useFakeTimers({ toFake: ['setTimeout'] });
+  try {
+    const work = replayFullLocalHistory(input, {
+      ...f.ctx,
+      assertCurrent() {
+        if (retired) throw Error('retired at CPU yield');
+      },
+    });
+    const rejected = expect(work).rejects.toThrow('retired at CPU yield');
+    expect(vi.getTimerCount()).toBe(1);
+    retired = true;
+    await vi.runAllTimersAsync();
+    await rejected;
+    expect(verify).not.toHaveBeenCalled();
+  } finally {
+    vi.useRealTimers();
+    now.mockRestore();
+    verify.mockRestore();
+  }
+  // A new operation must build and authenticate its own complete view after interruption.
+  const retried = await replayFullLocalHistory(input, f.ctx);
+  expect(retried.delivery.acceptedThrough).toBe(f.positions.length);
 });

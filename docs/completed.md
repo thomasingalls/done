@@ -14254,3 +14254,33 @@ source-size inference are retained. Three repeats, one synthetic desktop host; n
 open, large tombstone/pending growth or typing during novel backlog catch-up. General release validation
 stays paused. No personal storage, service configuration, public format activation or deployment changed.
 `docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Initial local-retention conversion responsiveness — 2026-10-13
+
+**Boundary.** The depth measurements are committed signed as **`77e54ada`** (`G`). This continuation
+profiles the deep own-history first cut, then repairs its dominant repeated work. [Implementation](./account-local-retention-preparation.md)
+and [protocol/evidence](./performance-experiments/2026-10-13-retention-preparation/README.md).
+
+**Repair.** One private immutable reference coverage view per full replay and one per deletion plan
+replace repeated content reconstruction; source and candidate coverage retain pending-aware proofs.
+The existing CPU budget yields between independent checks and before guarded replay crypto. Validated
+unique sequences index the opened rows. All full replay passes, complete custody/authority checks,
+exact reservation/exchange inventory, journal-era/network-flight fences and post-commit readback remain.
+The live document and UndoManager are unchanged; queued input still waits and journals before apply.
+
+**Measured exit.** Three matched CPU-1x pairs at 1,201 accepted own positions reduce median conversion
+from 14.069 s to 5.796 s and median maximum foreground task from 11.836 s to 431 ms. Native crypto
+and scoped authority/verification counts match exactly. All seven observations, including the 4x
+control, preserve queued input, undo/redo and exact cold-recovered state. Existing 110 focused unit
+tests pass; the 44-test focused rerun includes two new coverage/lifetime controls. All 14 native
+abort/crash/retry/journal/undo cases and three packaged original/joined lifecycle/checkpoint journeys
+pass. TypeScript, lint/format, disposable ordinary build, Yjs, origin and bundle-budget checks pass.
+
+**Remaining.** The first repair removes the measured multi-second CPU-1x freeze, not the admission
+wait or all long tasks. One CPU-4x observation still takes 22.051 s with a 1.704 s task. Next profile
+the remaining candidate census/inventory/comparison work and design preparation outside admission
+while keeping the final fresh check and atomic journal-era exchange. No phone or release claim.
+Public conversion/trigger/cadence, compatible reader-first rollout/rollback and capacity/history-required
+UX remain gated. Release validation stays paused; personal profiles, services, `docs/progress.md`
+and unrelated root notes are untouched. The repair and new evidence remain uncommitted.

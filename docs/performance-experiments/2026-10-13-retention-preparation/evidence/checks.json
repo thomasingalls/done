@@ -1,0 +1,17 @@
+{
+  "focusedLint": "passed after unused probe helper removal",
+  "typescript": "passed",
+  "format": "passed",
+  "unitExisting": 110,
+  "focusedUnitRerunIncludingTwoNewControls": 44,
+  "nativeRetention": 14,
+  "packagedLifecycle": 3,
+  "profiledDiagnostic": 1,
+  "pairedObservations": 6,
+  "cpu4xCandidateObservations": 1,
+  "ordinaryBuild": "passed",
+  "yjs": "passed",
+  "originIsolation": "passed",
+  "initialBundleBudget": "passed",
+  "releaseValidation": "paused"
+}
