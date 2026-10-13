@@ -3,7 +3,9 @@
 The preceding [owned shadow phase](./account-local-baseline-shadow.md) is committed signed as
 **`962329a3`** (`G`). This phase extends the **explicit, opt-in, in-memory experiment**. The live
 reader, startup, journal and stored formats remain unchanged. No baseline is installed, no history
-is deleted, no release-validation campaign or deployment is started. This work is uncommitted.
+is deleted, no release-validation campaign or deployment is started. This work is committed signed
+as `43fe12aa`. The next [durable anchoring phase](./account-local-baseline-anchoring.md) implements
+a private carrier and compatibility fences without enabling a product installer.
 
 ## Authority continuation
 

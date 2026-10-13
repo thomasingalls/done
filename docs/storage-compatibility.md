@@ -101,3 +101,13 @@ how the author's other pre-encryption device adopts it with fresh device custody
 merging that device's old writing**. Its old-data cleanup remains separate. Relay stays off until the
 authenticated encrypted transport path is ready; the plaintext relay is not that path. L-2's separate
 checkpoint remains untouched and must be reconciled before overlapping its account work.
+
+
+## Private local-baseline fence — 2026-10-13
+
+The [durable anchoring phase](./account-local-baseline-anchoring.md) defines a private counter-v3
+carrier without activating it in the application. Ordinary `parseCounter` now returns
+`app-update-required` for v3; predecessor readers already refused that version. No marker
+bypass, database upgrade, automatic conversion, or downgrade is added. The active pointer and
+all encrypted chunks commit together; the tested private carrier retains complete history.
+Its baseline-aware application reader/installer and later deletion policy remain future work.

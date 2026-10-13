@@ -1,0 +1,111 @@
+{
+  "date": "2026-10-13T08:20:43.711003+00:00",
+  "baseCommit": "43fe12aa0c39785f270b2ee00133b6baa0b75b41",
+  "baseSignature": "G",
+  "state": "uncommitted private carrier phase; no product installer/deletion or publication",
+  "sources": {
+    "src/crdt/contentRecord.ts": "81f0bdc475928d8d2c69bde229e07ced2d6f44ef6f8378839def7342990083c8",
+    "src/crdt/localBaselineAnchor.ts": "1281967fdc9fda101ffd0bc0197311da1e737c424b49eb5c6e164d9db99165c1",
+    "src/crdt/localBaselineStorage.ts": "9a3d9f6bc3947e3fdf0d24f6c222cb9c0cfb980fee7e408ab04d9777e340e837",
+    "test/localBaselineAnchor.test.ts": "e96b685cb707f31c56fc2736010df59d37e95359982c0fbda17a14bd3dd15390",
+    "test/local-baseline/anchor-fixture.ts": "ce2a909feeaef996900d9d2a3ed28dc13c5cbc70e742df181a21c37a634f01ff",
+    "test/local-baseline/anchor-browser.ts": "8c3d9fecf0afcb9e1ef541070fb7a4b70844b4dfa0242ff5ec99150cdab4fac0",
+    "test/local-baseline/anchor.native.mjs": "4d893b0fa8e383dd8869a976446c85dcdc36878528ed1b85bae3f244f8603ebf",
+    "docs/account-local-baseline-anchoring.md": "09faa556a176d546c6a45989d8b121d5fa8b01bba0abc69399547180c24c684e",
+    "docs/account-local-retention-design.md": "4810753a07c06b7a03a086b1fd5223e04095c344a81f3dbf9d54568b7fc2a007",
+    "docs/account-local-baseline-transitions.md": "f08f5916b60fe5c8df645f4f276e99d31d45a2f85ae84529026542e8c82faee9",
+    "docs/storage-compatibility.md": "43bfed0f39ee44355e58040fdcf9b1d698559e0ce35ea53d5e72f1fe210d4f25",
+    "docs/completed.md": "cee3b83e30c36451ac0c41e0f84e9cc942a2c24e22587b27143284bb0fb22500"
+  },
+  "predecessorCounterSourceSha256": "2f52e2a7bffd18a4e7e7d16200c3ed484fe7691705faab85787ec6c573096427",
+  "commands": {
+    "focused": "node node_modules/vitest/vitest.mjs run test/localBaselineAnchor.test.ts test/localBaseline.test.ts test/warmContent.test.ts test/storageCompatibility.test.ts test/contentRecord.test.ts test/writeSession.test.ts",
+    "native": "node --test --test-timeout=60000 test/local-baseline/anchor.native.mjs",
+    "typecheck": "node node_modules/typescript/bin/tsc -b --noEmit",
+    "lint": "node node_modules/oxlint/bin/oxlint --react-plugin src/crdt/contentRecord.ts src/crdt/localBaselineAnchor.ts src/crdt/localBaselineStorage.ts test/localBaselineAnchor.test.ts test/local-baseline/anchor-fixture.ts test/local-baseline/anchor-browser.ts test/local-baseline/anchor.native.mjs",
+    "format": "node node_modules/oxfmt/bin/oxfmt --check src/crdt/contentRecord.ts src/crdt/localBaselineAnchor.ts src/crdt/localBaselineStorage.ts test/localBaselineAnchor.test.ts test/local-baseline/anchor-fixture.ts test/local-baseline/anchor-browser.ts test/local-baseline/anchor.native.mjs",
+    "build": "node scripts/check-yjs-patch.mjs && node node_modules/vite/bin/vite.js build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs",
+    "whitespace": "git diff --check",
+    "bundleBoundary": "Scan all ordinary dist/**/*.js for private carrier domains and disposable fixture-key DB name; require absence"
+  },
+  "counts": {
+    "vitest": 108,
+    "vitestFiles": 6,
+    "newCarrierCases": 31,
+    "native": 4
+  },
+  "logs": {
+    "focused": {
+      "file": "focused.log.gz",
+      "bytes": 239,
+      "sha256": "14bda4b876ea6af4cface43769182bdbbd68d73c2b6013dd255657c135da09fc",
+      "gzipSha256": "7306650f11dffe14ccaea608e9b1997ee3d376e251b7706667235d48761a08c4",
+      "result": "passed"
+    },
+    "native": {
+      "file": "native.log.gz",
+      "bytes": 578,
+      "sha256": "79cf96834f051d2b1a9c8927a70f902374e52d5a8c85a464d6d03689d8609035",
+      "gzipSha256": "32f2f0b00dfa13716f1c99593de93f4b03c82d44eeccdc9b548d516e6f1423cf",
+      "result": "passed"
+    },
+    "native-initial": {
+      "file": "native-initial.log.gz",
+      "bytes": 1003,
+      "sha256": "5cf19a4514e3489dc6cf5174e7939308a72a685cf793b0c524329d6267cb17c8",
+      "gzipSha256": "43540428c09b06e376052c44dcfa46b5e8cc0ad583e290b4fa18d93b947f33b3",
+      "result": "initial harness: two pass, two timeouts; corrected in final native log"
+    },
+    "typecheck": {
+      "file": "typecheck.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "result": "passed"
+    },
+    "lint": {
+      "file": "lint.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "result": "passed"
+    },
+    "format": {
+      "file": "format.log.gz",
+      "bytes": 112,
+      "sha256": "5d61e2a81051bb1ff678330ebfbbc1732fa0ab71996828e164c3230b26558ea3",
+      "gzipSha256": "a36a11efe80bbed4f0e3b719ec54e56c849c75b2470538a509187dcfede01f76",
+      "result": "passed"
+    },
+    "build": {
+      "file": "build.log.gz",
+      "bytes": 4865,
+      "sha256": "f18f8a6e71fe841bd71dd632fd8b1ac3f8b803258323970eb9c23858df451f97",
+      "gzipSha256": "273ca899a1c6fd6aff736bce4fcba276df93807a6df32547f7710f2f6aa5f732",
+      "result": "passed"
+    },
+    "whitespace": {
+      "file": "whitespace.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "result": "passed"
+    },
+    "bundle-boundary": {
+      "file": "bundle-boundary.log.gz",
+      "bytes": 95,
+      "sha256": "2ee3b059899de3e501e6b438f89d645685cb12119b43346568c74e0861a7b516",
+      "gzipSha256": "3581fef220c2d90f03bf48f5fd03b9f58f37208cd06beabad90e457da6dfd45f",
+      "result": "passed"
+    }
+  },
+  "limits": [
+    "Real application owner installer, cold baseline replay integration and rotation/replacement remain future work.",
+    "Fixture keys/content only; no personal data or real service.",
+    "Native test holds real exclusive slot locks but does not implement actual Account journal/admission fencing.",
+    "Private parser supports only first anchor, same generation and complete physical history.",
+    "No anti-rollback claim for restoring a whole matching old profile.",
+    "No comparative timing evidence on this busy machine; renderer death is not power loss.",
+    "Release validation paused."
+  ]
+}

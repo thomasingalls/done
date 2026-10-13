@@ -5,8 +5,9 @@ experimental in-memory codec, authenticated candidate builder and pure reader. T
 [shadow integration](./account-local-baseline-shadow.md) adds an explicit opt-in owner comparison;
 the [transition/reader phase](./account-local-baseline-transitions.md) extends authority/checkpoint
 continuation and fences consumers that still require full history. The ordinary application reader
-still uses full history. No persistent baseline, reader fence,
-migration, installer or deletion is enabled. The separate warm-load repair changes owner-local reuse
+still uses full history. The [durable anchoring phase](./account-local-baseline-anchoring.md) adds
+a private encrypted carrier and counter-v3 refusal fence, tested only in disposable stores. No
+product baseline installation, migration or deletion is enabled. The separate warm-load repair changes owner-local reuse
 only. General release validation remains paused.
 
 ## Target and limits
@@ -84,15 +85,16 @@ trimmed. Prove undo/redo and subsequent publication across the retention boundar
 
 ## Format and rollout decisions still needed
 
-- A new baseline payload and readers that begin from it are required. The sealed-record envelope
-  may stay v1; whether counter-v2 can anchor the new baseline without additional authenticated
-  metadata remains to be decided. Do not choose version numbers prematurely.
+- The private first-anchor carrier uses sealed-record envelope v1 and independently authenticated
+  counter v3; the ordinary reader refuses it. Connect its real installer/cold reader, and define
+  replacement/rotation/trim transitions, before enabling any product writer.
 - Install an authenticated reader/writer fence before any deletion. An old cached application
   must refuse the new store cleanly, not replay a suffix as a whole history.
 - Ship reader capability before enabling writers, or explicitly require the application update
   that owns the migration. After conversion, an image rollback to an older reader is insufficient.
-- Define bounds/chunking rather than assume the existing 4 MiB per-record limit covers months of
-  writing. Bound the pending tail independently; retention cannot discard unaccepted work.
+- The first private carrier uses 256 KiB encrypted chunks while retaining the 4 MiB encoded
+  baseline limit. Larger snapshots and pending-tail bounds still need work; retention cannot
+  discard unaccepted work.
 - Determine which authority/membership chains can be summarized. If those remain unbounded,
   describe the remaining growth instead of claiming full history independence.
 

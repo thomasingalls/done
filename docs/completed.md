@@ -13857,3 +13857,31 @@ No comparative timing or installer/undo claim is made.
 installer/cold reader and adapters for the currently fenced consumers. Old-operation/checkpoint proof
 retention, exact journal/restore handling and atomic removal remain later prerequisites. Release
 validation stays paused; `docs/progress.md` remains untouched.
+
+
+### Private durable encrypted baseline anchor and compatibility fence — 2026-10-13
+
+**Boundary.** The previous authority/checkpoint and reader phase is committed signed as **`43fe12aa`**,
+verified `G`. This phase is uncommitted. The carrier is tested only on disposable stores and is not
+called by the product. Full-history startup/editing remains authoritative; no history deletion, live
+installer, deployment or release-validation campaign. [Contract](./account-local-baseline-anchoring.md).
+
+**Change.** Counter v3 independently authenticates a first baseline's revision/keyed commitment, chunk
+allocation, identity, reservations and witness. The existing content nonce budget is durably reserved
+before sealing 256 KiB chunks; the complete pointer/chunk set commits atomically after fresh authority
+and exact census checks. Failures preserve full history and burn reservations instead of reusing them.
+The private cold carrier reader authenticates the pointer and encrypted payload; full protocol replay
+remains its caller's obligation. Current ordinary readers refuse v3 as update-required; the tested
+predecessor refuses it as repair-required. No general downgrade or deletion API exists.
+
+**Evidence.** [108 focused Vitest checks and four native Chromium checks](./development-evidence/2026-10-13-local-baseline-anchoring/README.md)
+pass, including 31 new carrier checks, real renderer death after reservation/commit, native abort,
+cold reopening and current/predecessor refusal without mutations. Native fixture keys/content are
+disposable. TypeScript, lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass.
+The crash harness needed to wait for a crash event instead of a reply from the dead renderer. No
+comparative performance or whole-profile anti-rollback claim is made.
+
+**Next.** Connect the real owner's non-deleting installer and baseline-aware cold reader, retain full
+reference comparison, and prove actual journal/activity fencing and undo continuity. Then finish the
+remaining readers and replacement/rotation/old-flight/checkpoint/restore rules before deletion. The
+4 MiB encoded baseline bound remains; chunking alone does not enlarge it. `docs/progress.md` is untouched.
