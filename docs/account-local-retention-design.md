@@ -6,7 +6,12 @@ experimental in-memory codec, authenticated candidate builder and pure reader. T
 the [transition/reader phase](./account-local-baseline-transitions.md) extends authority/checkpoint
 continuation and fences consumers that still require full history. The ordinary application reader
 still uses full history. The [durable anchoring phase](./account-local-baseline-anchoring.md) adds
-a private encrypted carrier and counter-v3 refusal fence, tested only in disposable stores. No
+a private encrypted carrier and counter-v3 refusal fence, tested only in disposable stores. Subsequent
+[lifecycle integration](./account-local-baseline-lifecycle.md) and signed `bcca1aa1`
+[private fences](./account-local-retention-fences.md) add replacement/rotation and counter-v4
+journal-era, old-read and checkpoint enforcement, still with an empty logical deletion set. The
+[reader inventory](./account-local-retention-readers.md) and [exact deletion plan](./account-local-retention-deletion.md)
+now define the remaining adapters and atomic transition. No
 product baseline installation, migration or deletion is enabled. The separate warm-load repair changes owner-local reuse
 only. General release validation remains paused.
 
@@ -51,7 +56,9 @@ The baseline must bind, with bounded representations and exact coverage:
    authenticated baseline instead of recomputing removed events from zero.
 5. The exact retained suffix and deletion set, including any source capsule referenced by a
    surviving position, envelope, refused attempt or journal entry. Partial-capsule acceptance
-   cannot permit deleting a capsule whose other original updates remain unaccepted.
+   cannot permit losing a capsule whose other original updates remain unaccepted. Its redundant
+   physical row can eventually be removed only when its exact bytes and consumed indexes survive
+   inside the authenticated encrypted baseline; this is distinct from retiring the original itself.
 
 Local authentication can attest to a state obtained by a completed full verification. It does
 not manufacture a new service acceptance, grant authority to another device or eliminate the
@@ -74,7 +81,8 @@ be an explicit refusal/recovery case, not silently treated as a new edit. The
 [retirement evidence contract](./account-local-retention-evidence.md) selects an authenticated
 journal-era wrapper before any source retirement, old-flight invalidation/refetch, bounded exact
 checkpoint-cut evidence, and refusal/preservation for unsupported partial restores. Matching eras
-do not prove complete profile freshness or nonce safety. These new fences are not implemented yet.
+do not prove complete profile freshness or nonce safety. The private empty-deletion implementation
+now enforces these fences; reduced-reader integration and physical deletion remain unimplemented.
 
 Prepare and independently verify the baseline and candidate suffix before deletion. At the final
 IndexedDB transaction, recheck the counter, authority, exact physical deletion set and baseline
@@ -89,10 +97,11 @@ trimmed. Prove undo/redo and subsequent publication across the retention boundar
 
 ## Format and rollout decisions still needed
 
-- The private carrier uses sealed-record envelope v1 and independently authenticated counter v3;
+- The private carrier uses sealed-record envelope v1 and independently authenticated counter v3/v4;
   the ordinary reader refuses it. Real installer/cold readers and non-deleting replacement/rotation
-  now exist privately. The selected journal-era wrapper and trimmed representation need explicit
-  new format fences; do not reinterpret the current `history: complete` pointer.
+  now exist privately. The journal-era wrapper is implemented with counter v4. The proposed reduced
+  representation has a separate closed counter/carrier in the exact plan; do not reinterpret the
+  current `history: complete` pointer.
 - Install an authenticated reader/writer fence before any deletion. An old cached application
   must refuse the new store cleanly, not replay a suffix as a whole history.
 - Ship reader capability before enabling writers, or explicitly require the application update
@@ -114,9 +123,10 @@ subsequent owner/lifecycle integration below.
 
 The [owned shadow integration](./account-local-baseline-shadow.md) now runs explicitly under the real
 Account lifetime with all history retained. Before deletion, resolve
-the remaining fenced consumers, authenticated durable pointer, journal and old-read/checkpoint fencing,
-and the exact atomic installer with crash/restart checks. Measure equal-workspace fixtures at multiple
-prefix lengths when controlled timing is available. No deletion or format rollout is authorized solely
+the remaining fenced consumers and exact atomic installer with crash/restart checks. Durable pointer,
+journal and old-read/checkpoint fences are now implemented privately with full history retained.
+Measure equal-workspace fixtures at multiple prefix lengths when controlled timing is available.
+No deletion or format rollout is authorized solely
 by this design note.
 
 
@@ -126,9 +136,8 @@ The [real owner phase](./account-local-baseline-owner.md) now connects first-anc
 baseline-aware original/joined cold opening, and the separate native history source under an explicit
 development switch. It preserves the admission/journal fence and live undo, retains all history, and
 checks durable baseline replay against the full reference. No product activation or deletion.
-Generation/replacement lifecycle is now covered by the subsequent phase below; remaining reduced
-readers and enforcement of the selected old-flight/checkpoint/restored-journal rules still precede
-an exact removal phase.
+Generation/replacement lifecycle and the selected old-flight/checkpoint/restored-journal fences are
+now covered by the subsequent phases. Remaining reduced readers still precede an exact removal phase.
 
 
 The [non-deleting lifecycle integration](./account-local-baseline-lifecycle.md), signed `cf16e61a`
@@ -136,5 +145,8 @@ after owner integration `bb9c7e82`, now exercises durable encrypted anchors, exa
 rotation with retained openers, initial handoff and detached original/joined readers. Full history
 remains the reference and no logical rows are removed. The
 [retirement evidence contract](./account-local-retention-evidence.md) now selects the retained evidence
-and refusal rules. Next implement these fences without deleting history, then adapt reduced readers
-and implement/test exact deletion separately.
+and refusal rules. Their non-deleting implementation is signed as `bcca1aa1`. The next bounded step is
+the physical/logical reader seam and owned reduced replay while retaining all rows, followed by
+lifecycle/rebase adapters and an exact-plan dry run. Implement/test actual deletion separately, as
+specified in the reader inventory and exact deletion plan. Full-history comparison is still mandatory
+in the current private owner; it is not yet a reduced-history reader.

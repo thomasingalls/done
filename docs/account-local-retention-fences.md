@@ -1,7 +1,7 @@
 # Private retirement fences with no history deletion — 2026-10-13
 
 The [evidence policy](./account-local-retention-evidence.md) is signed as **`8c694d55`**.
-This implementation applies it to the private Account owner behind
+This implementation, committed signed as **`bcca1aa1`**, applies it to the private Account owner behind
 `VITE_ACCOUNT_BASELINE_INSTALL=1`. The ordinary application exposes no installer. Every logical
 content, source and receipt row remains stored and full/reference replay remains mandatory.
 `advanceLocalRetention(expectedRevision)` exercises the prospective retirement boundary with an
@@ -89,7 +89,9 @@ Focused parser, carrier, real-owner, renderer-crash and packaged lifecycle evide
 use disposable data. There is no new performance claim, product activation, publication or release
 qualification. `docs/progress.md` remains untouched.
 
-Next, finish the reduced-history reader inventory and exact deletion plan. Establish which readers
-can consume only baseline plus suffix, then exercise a bounded atomic deletion against the full
-reference before allowing any real history to be removed. Cold/open and per-task growth targets,
-capacity limits, public reader-first compatibility and rollback procedure remain separate gates.
+The subsequent [reader inventory](./account-local-retention-readers.md) and
+[exact deletion plan](./account-local-retention-deletion.md) are now recorded. Next implement the
+owned reduced-reader seam with all physical predecessors retained, then lifecycle/rebase adapters and
+a non-mutating exact-plan dry run. Atomic logical deletion is a separate phase. Cold/open and per-task
+growth targets, capacity limits, public reader-first compatibility and rollback procedure remain
+separate gates.

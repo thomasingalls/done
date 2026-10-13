@@ -13982,7 +13982,7 @@ later gates. `docs/progress.md` is untouched.
 
 ### Private retention fences — authenticated journal eras, old flights and checkpoint cuts
 
-**Date:** 2026-10-13 · **Commit:** design signed `8c694d55` (`G`); implementation uncommitted ·
+**Date:** 2026-10-13 · **Commit:** design signed `8c694d55` (`G`); implementation signed `bcca1aa1` (`G`) ·
 **Stage:** Local Account retention preparation; empty logical deletion set
 
 **Exit.** The [private owner](./account-local-retention-fences.md) can explicitly advance its
@@ -14012,3 +14012,38 @@ public format activation, publication or release-validation campaign. `docs/prog
 bounded atomic logical-history deletion/replay phase. Public reader-first deployment, compatible
 rollback, capacity behavior and reduced-reader `history-required` UX remain later work. Era equality
 still cannot prove arbitrary partial/whole-profile restore safety or freshness.
+
+### Local retention reader inventory and exact deletion plan — 2026-10-13
+
+**Boundary.** The private journal-era, old-read and checkpoint fences are committed signed as
+**`bcca1aa1`**, verified `G`. This phase is documentation/source analysis only and remains uncommitted.
+No runtime code, browser profile, logical history or key changed; publication and release validation
+remain paused. [Reader inventory](./account-local-retention-readers.md) and
+[exact deletion plan](./account-local-retention-deletion.md).
+
+**Exit.** The inventory distinguishes authenticated baseline replay from the current carrier's
+full-history output, and names the adapters for cold/live owners, source recovery/publication,
+receive/audit/index consumers, prospective authority, detached copies, rotation and lifecycle source
+readers. Independent service replay and unsupported Local/old-Account paths keep their boundaries.
+The four full-spool guards stay until each consumer has an origin-aware proof. Repeated retention
+needs a rebase builder: inherited source consumption, history/cuts, epoch/witness and logical sequence
+cannot be recovered by treating the suffix as a zero-origin history.
+
+The first deletion plan uses a settled current cut and exact store/key/sealed-row inventory, with
+every covered row class assigned a retained-evidence disposition. Unaccepted originals survive as
+exact baseline-carried capsules. Reservations burn before the atomic pointer/era/chunk/deletion
+exchange; late or changed rows abort it. The proposed reduced carrier is closed separately from
+`history: complete`. No partial deletion batches, custody/key retirement or full-history fallback
+after actual removal. Native retry/crash and reader-compatibility controls are specified, not claimed
+as already executed. Live document/undo identity and journal-before-apply remain requirements.
+
+**Checks.** Traced carrier constructors, recovery/load/census consumers, full-spool guards and direct
+counter/store readers against the signed source boundary. Checked changed-document links and source
+references and `git diff --check`; no runtime suite rerun for documentation-only changes. Earlier
+fence evidence remains in its signed packet; no new correctness or timing result is inferred.
+
+**Next.** Owned baseline-plus-suffix read model and original/joined cold/live adapters, still with
+every physical row retained and the full replay as oracle. Then lifecycle/rebase adapters, a pure
+exact-plan dry run, and a separately authorized private atomic-removal phase. Public reader-first
+rollout, compatible rollback, capacity/unavailable-history behavior and performance measurements
+remain later gates. `docs/progress.md` is untouched.
