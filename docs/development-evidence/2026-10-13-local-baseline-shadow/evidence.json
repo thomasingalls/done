@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-13",
+  "parentCommit": "c50e37411819d4e3b2f50ce8aa6177aeba8bda40",
+  "parentSignatureStatus": "G",
+  "node": "v26.11.1",
+  "scope": "Opt-in original-device Account owner shadow integration. No persistent baseline, history or journal deletion by the experiment, live-reader replacement, deployment or performance qualification.",
+  "checks": {
+    "focused": {
+      "command": "node node_modules/vitest/vitest.mjs run test/localBaseline.test.ts test/warmContent.test.ts test/writeSession.test.ts test/spoolRecord.test.ts test/spoolBatch.test.ts test/incrementalLedger.test.ts test/accountReceiveLedger.test.ts test/accountSelfReceive.test.ts test/accountConsumerPrimitives.test.ts test/accountDelivery.test.ts",
+      "exitCode": 0,
+      "output": "focused.log.gz"
+    },
+    "native": {
+      "command": "ACCOUNT_BASELINE_SHADOW=1 node --test --test-timeout=60000 test/local-baseline/shadow.native.mjs",
+      "exitCode": 0,
+      "output": "native.log.gz"
+    },
+    "disabled": {
+      "command": "ACCOUNT_BASELINE_SHADOW=0 node --test --test-name-pattern='ordinary composed workspace' --test-timeout=60000 test/local-baseline/shadow.native.mjs",
+      "exitCode": 0,
+      "output": "disabled.log.gz"
+    },
+    "typecheck": {
+      "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+      "exitCode": 0,
+      "output": "typecheck.log.gz"
+    },
+    "lint": {
+      "command": "node node_modules/oxlint/bin/oxlint --react-plugin src/crdt/accountCapture.ts src/crdt/accountReceive.ts src/crdt/contentStore.ts src/crdt/localBaselineRecord.ts src/crdt/localBaselineShadow.ts test/warmContent.test.ts test/account-sync/fixtures.mjs test/local-baseline/shadow.native.mjs",
+      "exitCode": 0,
+      "output": "lint.log.gz"
+    },
+    "format": {
+      "command": "node node_modules/oxfmt/bin/oxfmt --check src/crdt/accountCapture.ts src/crdt/accountReceive.ts src/crdt/contentStore.ts src/crdt/localBaselineRecord.ts src/crdt/localBaselineShadow.ts test/warmContent.test.ts test/account-sync/fixtures.mjs test/local-baseline/shadow.native.mjs",
+      "exitCode": 0,
+      "output": "format.log.gz"
+    },
+    "build": {
+      "command": "node scripts/check-yjs-patch.mjs && node node_modules/vite/bin/vite.js build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs",
+      "exitCode": 0,
+      "output": "build.log.gz"
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "output": "whitespace.log.gz"
+    }
+  },
+  "tests": {
+    "vitestFiles": 10,
+    "vitestPass": 89,
+    "nativeShadowPass": 6,
+    "nativeShadowSkippedOrdinaryMode": 1,
+    "nativeOrdinaryModePass": 1
+  },
+  "notes": [
+    "Native tests use disposable accounts, actual encrypted IndexedDB and synchronous journal, Web Locks and a local signed service. Personal data was not accessed.",
+    "Named slots exposed an incorrect hexadecimal-only assumption in the pure draft codec; the native regression is retained. Exploratory red logs were not retained.",
+    "Opt-in tests run first, followed by the ordinary-mode boundary. TypeScript, lint/format and ordinary build passed on the final source.",
+    "No native joined-device/rotation/checkpoint installation case was added. Earlier pure replay evidence remains available in the parent packet.",
+    "Final ordinary build: 137.4 kB gzipped initial JS, within the existing 350 kB budget. Busy-host times are not performance evidence."
+  ],
+  "files": {
+    "src/crdt/accountCapture.ts": {
+      "bytes": 27343,
+      "sha256": "dd095e6ded7fadf590df851a1b52751ef041f2cba6730868f2e5701182950552"
+    },
+    "src/crdt/accountReceive.ts": {
+      "bytes": 110294,
+      "sha256": "1bb7c7752198f2a99b25b935a0434f8f270b5c15a9f43e1f5904766e85e82e22"
+    },
+    "src/crdt/contentStore.ts": {
+      "bytes": 31365,
+      "sha256": "6a216c31fdecf46a673153d94e72b2d4ea5ff8c43df53f3e795e5110a2430de8"
+    },
+    "src/crdt/localBaselineRecord.ts": {
+      "bytes": 8183,
+      "sha256": "482cbc28f597409cf984b3c64c0315dadaefa644e0bc7adad230383585077751"
+    },
+    "src/crdt/localBaselineReplay.ts": {
+      "bytes": 22633,
+      "sha256": "cb8751111808211e563d0119cbf5dd0249a832fa4ae86ac4e728ffd8378aef3c"
+    },
+    "src/crdt/localBaselineShadow.ts": {
+      "bytes": 5853,
+      "sha256": "00d3bf911187725c23854b1bd74afcfbcf0bdcf5e1aea50b202e5a4f066fd187"
+    },
+    "test/localBaseline.test.ts": {
+      "bytes": 27276,
+      "sha256": "4918413c778cf7b3616fecf8163aea90d5559d9a3dd13871b6ed05211e251364"
+    },
+    "test/local-baseline/fixtures.mjs": {
+      "bytes": 13606,
+      "sha256": "31d1ecaae6aa8bee232258cf5ed0d33cc2388fd790301dade6b0f662b8ec364e"
+    },
+    "test/local-baseline/shadow.native.mjs": {
+      "bytes": 11720,
+      "sha256": "3cfaf708c1b03ed50cb777f75811bc456e57837d68023cc3e8dcd4c82cb270c6"
+    },
+    "test/account-sync/fixtures.mjs": {
+      "bytes": 9766,
+      "sha256": "38d1ec490d2d0e8fafdba5fafd59cb6345aea9446c8296ab94eedec99ed0e9ac"
+    },
+    "test/warmContent.test.ts": {
+      "bytes": 27626,
+      "sha256": "8538e21e512e520b2e3226527fc55e618c370890564b54b70302100b9a25b602"
+    }
+  },
+  "logs": {
+    "focused.log.gz": {
+      "bytes": 199,
+      "sha256": "871cb9b8c5d4f78119ab16b80b5dba9d30de8fb3a9159b5b0625eac19a9cba3b",
+      "uncompressedBytes": 238,
+      "uncompressedSha256": "2c84682a707da6377430c10d9ec09016e4c84c65971f014ea21c5a6c7491932d"
+    },
+    "native.log.gz": {
+      "bytes": 769,
+      "sha256": "0a5fbb2ccdf32667de4194185a9f58ee581cf38a424d7cde96e5228b5a97d5f8",
+      "uncompressedBytes": 1401,
+      "uncompressedSha256": "9d04e163d89950c9ebef6129a70a98eb69806e50a221ee28582775c0dd7fe0ce"
+    },
+    "disabled.log.gz": {
+      "bytes": 365,
+      "sha256": "e97de9898fb8240f2c35f0c01c307f6cfa71df6b1a5d60cc0492bed06ad0262a",
+      "uncompressedBytes": 638,
+      "uncompressedSha256": "73105bb0efa3d63becf1624ba996521ac6aafd0dc0585066ccfd7b36a99bbba1"
+    },
+    "typecheck.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "format.log.gz": {
+      "bytes": 109,
+      "sha256": "6dd461e032c0434a137ba2b1d37851073471182dd98b44dfaab0f8e689749c12",
+      "uncompressedBytes": 112,
+      "uncompressedSha256": "e1cf18ca330273037c8d560ec67ea445928b1a205d196e67710a90c51d5253a1"
+    },
+    "build.log.gz": {
+      "bytes": 1581,
+      "sha256": "de0f2b10c62b4b02bdea52883cfe13408fcef0f33d4dedecc0e50a53af5f5fb8",
+      "uncompressedBytes": 4634,
+      "uncompressedSha256": "9720e7ab463a8b750eade6242c7470b5c33dee46a5263c3ed9322158e5f4b319"
+    },
+    "whitespace.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

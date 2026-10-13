@@ -14,6 +14,7 @@ import {
   type SpoolWitness,
 } from './contentRecord';
 import { sameBytes } from './verifiedRecords';
+import { identity } from './custodyRecord';
 
 export const LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-1';
 export const LOCAL_BASELINE_LIMIT = MAX_BATCH_BYTES;
@@ -124,7 +125,7 @@ const parseRecord = (v: unknown, kind: 'outbound' | 'heads', max: number): Opene
 function parse(v: unknown[]): LocalBaseline {
   tuple(v, 13);
   if (v[0] !== LOCAL_BASELINE_TAG || v[1] !== 1) fail();
-  const ids = tuple(v[2], 5).map((s) => inboundHex(s, 16));
+  const ids = tuple(v[2], 5).map((s, i) => (i < 3 ? identity(s) : inboundHex(s, 16)));
   const generation = integer(v[3], 1, 0xffffffff),
     revision = integer(v[4], 1);
   const predecessor = inboundHex(v[5], 32);
@@ -226,11 +227,17 @@ export function decodeLocalBaseline(bytes: Bytes): LocalBaseline {
   return b;
 }
 /** Reuses the owner's metadata authenticator under a distinct domain; plaintext must stay private. */
+const authenticationDomain = utf8('done/account-local-baseline-auth/draft-1\0');
 export const baselineAuthenticationPayload = (payload: Bytes): Bytes => {
   if (payload.length > LOCAL_BASELINE_LIMIT) fail();
-  const domain = utf8('done/account-local-baseline-auth/draft-1\0');
+  const domain = authenticationDomain;
   const bytes = new Uint8Array(domain.length + payload.length);
   bytes.set(domain);
   bytes.set(payload, domain.length);
   return bytes;
 };
+/** The carrier exposes only this domain, never an arbitrary metadata-MAC signing oracle. */
+export function assertBaselineAuthenticationMessage(message: Bytes): void {
+  if (!sameBytes(message.subarray(0, authenticationDomain.length), authenticationDomain)) fail();
+  decodeLocalBaseline(message.subarray(authenticationDomain.length));
+}

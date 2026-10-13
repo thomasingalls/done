@@ -1,7 +1,11 @@
 # Local Account baseline format and replay — 2026-10-13
 
-**Implemented as an experimental, pure codec/builder/reader. No history is deleted.** The application
-does not import the new baseline modules, recognize their record tag, create a baseline, or open one.
+First-slice record, committed signed as `c50e3741`. The subsequent
+[owned shadow integration](./account-local-baseline-shadow.md) adds an explicit opt-in caller and
+corrects identity parsing to match the real custody contract; no persisted baseline or deletion.
+
+**First implemented as an experimental, pure codec/builder/reader. No history is deleted.** At that
+boundary the application did not import the new modules, recognize their tag, create or open one.
 No IndexedDB schema, sealed-record format, network receipt, service API, journal or custody record
 changes. General release validation remains paused. This phase makes no latency or storage-saving
 claim about the running application; host load precludes reliable comparative timing for now.
@@ -49,7 +53,7 @@ fields, versions, noncanonical bytes and malformed bounds refuse. It is delibera
 
 | Field | Meaning |
 | --- | --- |
-| Identity | Slot, principal, workspace, content store and local root IDs |
+| Identity | Bounded custody identity strings for slot/principal/workspace; hexadecimal content store/root IDs (corrected during native shadow integration) |
 | Generation/revision/predecessor | Local content generation, positive baseline revision, predecessor payload hash; revision one has the zero predecessor |
 | Authority digest | Canonical digest of owner-supplied public route, service, original baseline/cuts, current authority, reader/publisher, verified history and installed membership boundaries; no secret key bytes |
 | Cut | Creation intent, greatest retained physical sequence, next reserved sequence, all per-generation reservation counts and spool event-count/hash anchor |

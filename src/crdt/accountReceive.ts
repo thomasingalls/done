@@ -1,4 +1,5 @@
 import type { PreparedReceiveFinish } from './admissionQueue';
+import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
 import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
 import { createAuthorityAuthentication } from './accountAuthority';
 import { authenticateJoinedAccountRows } from './joinedAccount';
@@ -199,6 +200,7 @@ async function openAccountReceiveOwner(
       : {}),
   });
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
+  let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
     auditDue = false,
     auditDeferred = false;
@@ -313,6 +315,7 @@ async function openAccountReceiveOwner(
   // Initialization can invalidate before the capture owner has finished constructing.
   let invalidateFinalPermission = () => {};
   const invalidateAuthority = () => {
+    baselineShadow?.invalidate();
     invalidateFinalPermission();
     authority.invalidate();
   };
@@ -649,6 +652,8 @@ async function openAccountReceiveOwner(
       }
     },
     dispose() {
+      baselineShadow?.invalidate();
+      baselineShadow = undefined;
       authority.dispose();
       membershipAnchor = undefined;
       expectedPayload.fill(0);
@@ -677,8 +682,56 @@ async function openAccountReceiveOwner(
     suspendCapture,
     invalidateFinalApply,
     checkFinalApply,
+    runBaselineShadow,
   } = await openAccountCaptureOwner(options, principalId, extension, joined);
   invalidateFinalPermission = invalidateFinalApply;
+  const checkLocalBaseline: (() => Promise<BaselineShadowResult>) | undefined =
+    composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1'
+      ? async () => {
+          try {
+            return await runBaselineShadow(async (task, owner, route, checkJournal) => {
+              await assertCurrent(task);
+              checkJournal();
+              const { createLocalBaselineShadow } = await task.wait(
+                () => import('./localBaselineShadow'),
+              );
+              baselineShadow ??= createLocalBaselineShadow();
+              return owner.carrier.withBaselineCensus(task, (input, identity, auth) =>
+                baselineShadow!.run(
+                  input,
+                  {
+                    identity,
+                    route,
+                    inbound: base,
+                    signer: publicKey,
+                    installation: joined
+                      ? { kind: 'joined', initialEpoch, ...(membership ? { membership } : {}) }
+                      : {
+                          kind: 'original',
+                          ...(installed ? { successor: installed } : {}),
+                          ...(membership ? { membership } : {}),
+                        },
+                    assertCurrent: () => {
+                      task.step(() => {});
+                      if (handoff) throw new ReceiveAuthorityChanged();
+                    },
+                  },
+                  auth,
+                  async () => {
+                    await assertCurrent(task);
+                    checkJournal();
+                  },
+                ),
+              );
+            });
+          } catch (e) {
+            baselineShadow?.invalidate();
+            if (e instanceof MaintenanceInterrupted)
+              return Object.freeze({ kind: 'skipped', reason: 'activity-or-journal' });
+            throw e;
+          }
+        }
+      : undefined;
   const scopedOwner =
     options.networkLogin && !account.detached
       ? new ScopedTransport(options.pin, carrier.signal)
@@ -2222,6 +2275,7 @@ async function openAccountReceiveOwner(
     carrier,
     listCaptures,
     fetchPage,
+    checkLocalBaseline,
     prepareGroup,
     receiveGroup,
     preparedPromotion,
@@ -2294,6 +2348,7 @@ async function openReceivingWorkspace(
     adoptMembership,
     refreshAuthority,
     resetDiscovery,
+    checkLocalBaseline,
   } = await openAccountReceiveOwner(
     options,
     options.identity.id,
@@ -2512,6 +2567,7 @@ async function openReceivingWorkspace(
         return carrier.compactContent();
       },
       listCaptures,
+      ...(checkLocalBaseline ? { checkLocalBaseline } : {}),
     });
     if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;

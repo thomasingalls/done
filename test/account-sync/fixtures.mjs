@@ -59,6 +59,13 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     configFile: false,
     logLevel: 'error',
     define: {
+      ...(process.env.ACCOUNT_BASELINE_SHADOW
+        ? {
+            'import.meta.env.VITE_ACCOUNT_BASELINE_SHADOW': JSON.stringify(
+              process.env.ACCOUNT_BASELINE_SHADOW,
+            ),
+          }
+        : {}),
       ...(process.env.ACCOUNT_AUTHORITY_REUSE
         ? {
             'import.meta.env.VITE_ACCOUNT_AUTHORITY_REUSE': JSON.stringify(

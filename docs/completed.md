@@ -13799,3 +13799,32 @@ and comparison without deletion. Retention-aware transitions/consumers, durable 
 reader/writer fences, exact journal handling and atomic crash-safe installation remain prerequisites
 to physical removal. No installer or preservation of its live undo stack is claimed. `docs/progress.md`
 remains untouched for the other seat.
+
+### Local baseline shadow integration under the real Account owner — 2026-10-13
+
+**Boundary.** Baseline format/replay committed signed as **`c50e3741`**, verified `G`. Added
+[explicit owned shadow comparison](./account-local-baseline-shadow.md), gated by
+`VITE_ACCOUNT_BASELINE_SHADOW=1`. The ordinary app does not expose the method or schedule the work.
+No baseline installation, history/journal deletion, schema change, live-reader replacement, undo
+swap, deployment or release campaign. This next phase remains uncommitted.
+
+**Change.** The shadow task joins the real storage queue under the exclusive Web Lock, requires an
+empty scoped journal, and obtains a complete fresh authenticated disk census. Baseline authentication
+uses the retained metadata key only in the closed draft domain. It compares full replay and baseline
+plus suffix, including next-source/position behavior; fresh custody and synchronous journal/input
+checks precede publication. Input during preparation abandons the cut, while close holds exclusion
+until owned work settles. Results contain fixed diagnostics/counts and never enter the live reader.
+
+**Evidence.** [89 focused Vitest tests and seven native Chromium checks pass](./development-evidence/2026-10-13-local-baseline-shadow/README.md),
+including the ordinary-build boundary where the method is absent.
+Native checks include unchanged disk/journal, offline/accepted suffixes, input and undo, retained
+journal cleanup, held native completion, fresh final custody, cancellation, resume and cold reopening.
+Carrier checks cover full physical reads, corruption/abort, caller isolation and scoped authenticator
+expiry. TypeScript, lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass.
+Native integration exposed the draft's hexadecimal-slot assumption; the parser now follows
+the existing bounded custody identity contract. No comparative timing claim is made on the busy host.
+
+**Next.** Complete retention-aware authority/checkpoint transitions and old-read consumers, including
+native joined-device evidence, before durable encrypted anchoring, compatibility fences and an atomic
+installer. Intact-history fallback remains safe only while that history is retained. No actual
+deletion or installer undo continuity is established. `docs/progress.md` remains untouched.

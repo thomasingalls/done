@@ -44,6 +44,7 @@ import {
   type OpenedRecord,
 } from './contentRecord';
 import type { SessionTask } from './writeSession';
+import type { BaselineAuthentication, LocalReplayInput } from './localBaselineReplay';
 
 export interface ContentCrypto {
   /** Account owners opt into lifetime-local plaintext reuse. The validation callback still runs. */
@@ -638,6 +639,58 @@ export const createContentOwner = (
       custodyDb = undefined;
     },
     load: (task: SessionTask) => load(task),
+    /** Private shadow experiment: a complete physical read, never a warm selection or a write.
+     * The composed owner supplies exclusion, journal eligibility and fresh custody checks. */
+    async withBaselineCensus<T>(
+      task: SessionTask,
+      operation: (
+        input: LocalReplayInput,
+        identity: ContentIdentity,
+        auth: BaselineAuthentication,
+      ) => Promise<T>,
+    ): Promise<T> {
+      if (!crypt.allowSpoolCounter || !crypt.validate) throw Error('Account owner required');
+      const { assertBaselineAuthenticationMessage } = await task.wait(
+        () => import('./localBaselineRecord'),
+      );
+      const snapshot = await read(task, true);
+      const records = await openSnapshot(task, snapshot);
+      let active = true;
+      const checked = (message: Bytes) =>
+        task.step(() => {
+          if (!active) throw Error('Baseline census expired');
+          assertBaselineAuthenticationMessage(message);
+          return message.slice();
+        });
+      const auth: BaselineAuthentication = {
+        async sign(message) {
+          const copy = checked(message);
+          try {
+            return await crypt.sign(task, copy);
+          } finally {
+            copy.fill(0);
+          }
+        },
+        async verify(message, mac) {
+          const copy = checked(message),
+            seal = mac.slice();
+          try {
+            return await crypt.verify(task, copy, seal);
+          } finally {
+            copy.fill(0);
+            seal.fill(0);
+          }
+        },
+      };
+      try {
+        return await task.wait(() =>
+          operation({ records, counter: structuredClone(snapshot.counter!) }, { ...scope }, auth),
+        );
+      } finally {
+        active = false;
+        for (const row of records) row.bytes.fill(0);
+      }
+    },
     canSelect,
     select: <T>(task: SessionTask, select: (lease: ContentSelection) => T) => load(task, select),
     invalidateWarm() {

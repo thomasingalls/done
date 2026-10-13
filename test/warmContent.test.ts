@@ -10,6 +10,11 @@ import { createVerifiedRecords } from '../src/crdt/verifiedRecords';
 import type { OpenedRecord } from '../src/crdt/contentRecord';
 import type { ContentSelection } from '../src/crdt/contentSelection';
 import fc from 'fast-check';
+import {
+  encodeLocalBaseline,
+  baselineAuthenticationPayload,
+} from '../src/crdt/localBaselineRecord';
+import type { BaselineAuthentication } from '../src/crdt/localBaselineReplay';
 
 const cleanups: (() => void)[] = [];
 afterEach(() => {
@@ -133,6 +138,91 @@ it('unchanged loads and owned committed appends avoid full row reads and preserv
   expect(after).toHaveLength(41);
   expect(after.at(-1)!.bytes).toEqual(new Uint8Array([1, 2, 3]));
   expect(read).not.toHaveBeenCalled();
+});
+
+it('shadow census reads every physical store, keeps rows/counters isolated and expires its domain-limited authentication', async () => {
+  const f = await fixture();
+  f.crypt.allowSpoolCounter = true;
+  await f.owner.enableSpool(f.task);
+  const before = await f.owner.load(f.task);
+  const read = vi.spyOn(IDBObjectStore.prototype, 'getAll'),
+    write = vi.spyOn(IDBObjectStore.prototype, 'put'),
+    remove = vi.spyOn(IDBObjectStore.prototype, 'delete');
+  let escaped!: BaselineAuthentication,
+    rows!: readonly OpenedRecord[],
+    message!: Uint8Array<ArrayBuffer>;
+  await f.owner.withBaselineCensus(f.task, async (input, identity, auth) => {
+    expect(input.records).toEqual(before);
+    if (input.counter.v !== 2) throw Error('Expected authenticated spool counter');
+    message = baselineAuthenticationPayload(
+      encodeLocalBaseline({
+        identity,
+        generation: 1,
+        revision: 1,
+        predecessor: '0'.repeat(64),
+        authority: '0'.repeat(64),
+        cut: {
+          intent: input.counter.intent,
+          sequence: before.at(-1)!.seq,
+          nextSequence: input.counter.next_seq,
+          reserved: [[1, input.counter.reserved[1]!]],
+          witness: input.counter.spool,
+        },
+        snapshot: new Uint8Array([0, 0]),
+        own: { position: 0, link: '0'.repeat(64), attempts: 0, receipt: null },
+        sources: [],
+        streams: [],
+        history: null,
+      }),
+    );
+    const seal = await auth.sign(message);
+    expect(await auth.verify(message, seal)).toBe(true);
+    await expect(auth.sign(new TextEncoder().encode('metadata-counter'))).rejects.toThrow();
+    escaped = auth;
+    rows = input.records;
+    input.records[0]!.bytes.fill(8);
+    input.counter.next_seq++;
+    identity.storeId = 'ef'.repeat(16);
+  });
+  expect(read).toHaveBeenCalledTimes(3);
+  expect(write).not.toHaveBeenCalled();
+  expect(remove).not.toHaveBeenCalled();
+  expect(rows.every((r) => r.bytes.every((b) => b === 0))).toBe(true);
+  await expect(escaped.sign(message)).rejects.toThrow('expired');
+  expect(await f.owner.load(f.task)).toEqual(before);
+});
+
+it('shadow census refuses old-row or metadata corruption before invoking any comparison', async () => {
+  const f = await fixture();
+  f.crypt.allowSpoolCounter = true;
+  await f.damage(25);
+  const compare = vi.fn(async () => {});
+  await expect(f.owner.withBaselineCensus(f.task, compare)).rejects.toThrow();
+  expect(compare).not.toHaveBeenCalled();
+  const g = await fixture();
+  g.crypt.allowSpoolCounter = true;
+  g.crypt.verify = async () => false;
+  await expect(g.owner.withBaselineCensus(g.task, compare)).rejects.toThrow('authentication');
+  expect(compare).not.toHaveBeenCalled();
+});
+
+it('an aborted shadow census never calls its consumer; the next read still sees intact full history', async () => {
+  const f = await fixture();
+  f.crypt.allowSpoolCounter = true;
+  const original = IDBObjectStore.prototype.getAll;
+  const spy = vi.spyOn(IDBObjectStore.prototype, 'getAll').mockImplementation(function (
+    this: IDBObjectStore,
+    ...args
+  ) {
+    const request = original.apply(this, args);
+    request.addEventListener('success', () => this.transaction.abort(), { once: true });
+    return request;
+  });
+  const compare = vi.fn(async () => {});
+  await expect(f.owner.withBaselineCensus(f.task, compare)).rejects.toThrow('transaction');
+  expect(compare).not.toHaveBeenCalled();
+  spy.mockRestore();
+  expect(await f.owner.load(f.task)).toHaveLength(40);
 });
 it('counts detect deletion immediately; bounds detect a delete/add with the same count', async () => {
   const f = await fixture();

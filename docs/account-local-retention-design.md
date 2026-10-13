@@ -1,9 +1,11 @@
 # Local Account retention — design and experimental replay
 
 The [2026-10-13 baseline format/replay phase](./account-local-baseline-replay.md) implements an
-experimental in-memory codec, authenticated candidate builder and pure reader. No application path
-uses it; no persistent record, reader fence, migration, installer or deletion is enabled. The separate
-warm-load repair changes owner-local reuse only. General release validation remains paused.
+experimental in-memory codec, authenticated candidate builder and pure reader. The subsequent
+[shadow integration](./account-local-baseline-shadow.md) adds an explicit opt-in owner comparison;
+the ordinary application reader still uses full history. No persistent baseline, reader fence,
+migration, installer or deletion is enabled. The separate warm-load repair changes owner-local reuse
+only. General release validation remains paused.
 
 ## Target and limits
 
@@ -99,7 +101,8 @@ limitations recorded in the [phase contract](./account-local-baseline-replay.md)
 compare full history with baseline plus suffix and the next source/position selection. An unresolved
 cut, new authority after the cut, or unsupported historical detail requires intact full history.
 
-Next, integrate owned shadow construction/replay with all history retained. Before deletion, resolve
+The [owned shadow integration](./account-local-baseline-shadow.md) now runs explicitly under the real
+Account lifetime with all history retained. Before deletion, resolve
 retention-aware transitions/consumers, the authenticated durable pointer, journal and old-read fencing,
 and the exact atomic installer with crash/restart checks. Measure equal-workspace fixtures at multiple
 prefix lengths when controlled timing is available. No deletion or format rollout is authorized solely

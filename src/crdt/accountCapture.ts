@@ -1,6 +1,6 @@
 import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApplyGate';
 import { budgetedTask } from './cpuBudget';
-import { maintenanceTask } from './contentMaintenance';
+import { maintenanceTask, MaintenanceInterrupted } from './contentMaintenance';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
@@ -101,6 +101,11 @@ export async function openAccountCaptureOwner(
       : undefined;
   const finalApply = createFinalApplyGate();
   let suspended = false;
+  // Private shadow cuts are abandoned by synchronous input or lifecycle/route changes.
+  let shadowActivity = {};
+  const invalidateShadow = () => {
+    if (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1') shadowActivity = {};
+  };
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
     extension ? extension.sourceRecords(records, route) : records;
@@ -338,23 +343,29 @@ export async function openAccountCaptureOwner(
   }
   if (warmLoads || extension?.invalidateAuthority) {
     const invalidate = () => {
+      invalidateShadow();
       finalApply.invalidate();
       owner!.carrier.invalidateWarm();
       extension?.invalidateAuthority?.();
     };
     const visible = () => {
+      invalidateShadow();
       finalApply.invalidate();
       if (document.visibilityState === 'visible') invalidate();
     };
     document.addEventListener('visibilitychange', visible);
-    document.addEventListener('freeze', finalApply.invalidate);
+    const freeze = () => {
+      invalidateShadow();
+      finalApply.invalidate();
+    };
+    document.addEventListener('freeze', freeze);
     document.addEventListener('resume', invalidate);
     window.addEventListener('pageshow', invalidate);
     const stop = () => {
       finalApply.invalidate();
       extension?.invalidateAuthority?.();
       document.removeEventListener('visibilitychange', visible);
-      document.removeEventListener('freeze', finalApply.invalidate);
+      document.removeEventListener('freeze', freeze);
       document.removeEventListener('resume', invalidate);
       window.removeEventListener('pageshow', invalidate);
     };
@@ -453,6 +464,7 @@ export async function openAccountCaptureOwner(
       }),
     appendLocal: (bytes: Bytes) =>
       live.write(() => {
+        invalidateShadow();
         if (suspended) throw Error('Account generation is changing');
         const c = decodeSourceCapsule(bytes, route);
         eraseCapsule(c);
@@ -549,11 +561,13 @@ export async function openAccountCaptureOwner(
     carrier,
     // Synchronous admission barrier. Retention still owns the permit and serialized storage tail.
     suspendCapture() {
+      invalidateShadow();
       finalApply.invalidate();
       suspended = true;
     },
     // Internal composition only: caller persists and verifies authority before this synchronous swap.
     installRoute(task: SessionTask, next: CaptureRoute) {
+      invalidateShadow();
       finalApply.invalidate();
       task.step(() => {
         if (
@@ -599,6 +613,48 @@ export async function openAccountCaptureOwner(
         route: CaptureRoute,
       ) => Promise<T>,
     ) => run((task) => operation(task, owner!, route)),
+    /** No admission barrier or journal flush is installed for this experiment. Native work stays
+     * on the owned storage tail; input during an await invalidates before publication. */
+    runBaselineShadow: <T>(
+      operation: (
+        task: SessionTask,
+        owner: ReturnType<typeof prepareAccountCustody>,
+        route: CaptureRoute,
+        checkJournal: () => void,
+      ) => Promise<T>,
+    ) =>
+      run(async (parent) => {
+        if (extension?.version !== 9 || import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] !== '1')
+          throw Error('Account baseline shadow experiment is disabled');
+        const activity = shadowActivity;
+        const check = () => {
+          if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+        };
+        const task: SessionTask = {
+          signal: parent.signal,
+          step: (effect) =>
+            parent.step(() => {
+              check();
+              return effect();
+            }),
+          wait: (start) =>
+            parent.wait(() => {
+              check();
+              return start();
+            }),
+        };
+        const checkJournal = () =>
+          task.step(() => {
+            const entries = owner!.journal.snapshot();
+            try {
+              if (entries.length) throw new MaintenanceInterrupted();
+            } finally {
+              eraseJournalSnapshot(entries);
+            }
+          });
+        checkJournal();
+        return operation(task, owner!, route, checkJournal);
+      }),
     listCaptures: () =>
       run((task) =>
         withSnapshot(task, async (journal) => {
