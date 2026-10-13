@@ -14476,7 +14476,7 @@ validation remain separate. No deployment or personal storage changed.
 
 ### Separate local-retention readers from conversion authority
 
-**Date:** 2026-10-13 · **Commit:** pending, after signed `e2e5337a` · **Stage:** reader-first local retention preparation; release validation paused.
+**Date:** 2026-10-13 · **Commit:** signed `47466b84` · **Stage:** reader-first local retention preparation; release validation paused.
 
 **Exit.** The checkpoint/receive ordering repair is signed as **`e2e5337a`**. The new
 [reader-first contract](./account-local-retention-reader-rollout.md) makes the packaged default
@@ -14501,10 +14501,42 @@ budget pass. Initial harness assumptions and diagnostic failures are retained al
 reply. The existing service permits eight live access tokens per login with five-minute lifetimes.
 Its final continuation includes a real backend restart, preserving SQLite/custody and discarding
 volatile tokens; no service limit or assertion timeout is raised. This is not evidence of uninterrupted
-recovery from token-capacity exhaustion. That session-liveness issue remains explicitly open.
+recovery from token-capacity exhaustion. That session-liveness issue was left open by this phase;
+the following checkpoint records its bounded repair.
 
-**Remaining.** Commit/publish the reader-only build and retain its exact compatible rollback image
+**Remaining.** Publish the reader-only build and retain its exact compatible rollback image
 before a writer release. Product conversion trigger/cadence, capacity/refusal behavior, remaining
 initial-conversion wait and current-phone measurements remain separate. No conversion is enabled
-for ordinary users; no personal storage or deployment changed. This work is uncommitted and makes
+for ordinary users; no personal storage or deployment changed. This work makes
 no performance or release-qualification claim. `docs/progress.md` remains untouched.
+
+
+### Keep rapid Account reopens within a bounded access window
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `47466b84` · **Stage:** session-liveness repair; release validation paused.
+
+**Exit.** Reader-first compatibility is signed as **`47466b84`**. The
+[renewal-window contract](./account-session-renewal-window.md) replaces capacity refusal at eight
+live access tokens with retirement of the oldest token from that same authenticated login, after
+successful validation. The bound stays eight; other logins, absolute deadlines, credential binding,
+revocation, device grants and complete current authority checks remain. There is no new wire/storage
+format, client renewal algorithm or user prompt. New local-history conversions remain disabled;
+reader capability stays enabled. Journal fencing, final authority checks and live undo are unchanged.
+
+**Evidence.** The [packet](./development-evidence/2026-10-13-session-reopen/README.md) retains a
+before-control with four capacity failures and the passing repair: **92 focused Node tests** and
+**two packaged reader-only lifecycle journeys**. New controls cover 32 same-clock renewals with only
+the newest eight usable, failed transactions, lost installed-token replies, cross-login isolation,
+current account/credential/key/expiry checks, 20 cold client owners using one remembered session and
+transparent scoped reauthorization before/during device proof. Existing tests retain revocation,
+actual process restart, membership and request-boundary refusals. The previously stuck lifecycle
+journey now resumes the lost-reply removal without the backend-restart workaround, observing
+**20 successful renewal requests and no renewal 429**. No allowance or assertion timeout increased.
+TypeScript, focused lint/format, ordinary build, Yjs, origin isolation and **138.4 kB / 350 kB** initial-JS
+budget pass. Original reader-first diagnostic evidence is retained unchanged.
+
+**Remaining.** Commit the repair, prepare/test the reader-only container and record its compatible
+rollback digest before publication. This repair is local and uncommitted; no deployed service or
+personal profile changed. Public conversion trigger/cadence, capacity/refusal presentation, remaining
+initial-conversion wait and current-phone measurements remain separate. No performance gain or
+release qualification is claimed; `docs/progress.md` and unrelated root notes remain untouched.

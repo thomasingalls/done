@@ -79,6 +79,11 @@ server record references the live session; it is not a self-contained JWT that b
 Access records may be ephemeral: an API restart can invalidate them and cause one background renewal
 without expiring the durable login. Each request checks session eligibility again. Starting values
 such as five minutes are engineering limits, not a change to the operator's 30-day product policy.
+At most eight access tokens remain live per remembered login. A successful renewal at that bound
+retires its oldest-issued token after the current session/account/credential checks commit; it does
+not refuse a legitimate rapid reopen or retire another login. Retired access gets `access-required`;
+the existing scoped client renews once and reacquires its device grant. See the
+[renewal-window contract](./account-session-renewal-window.md) for failure and compatibility rules.
 
 For the first increment, the sealed renewal secret is stable within one session and expires or is
 revoked with it. Access renewal does not rotate it or slide expiry. This avoids a lost-rotation-reply

@@ -81,5 +81,7 @@ The service retains at most eight live access tokens per remembered login, each 
 minutes. A succession of short-lived owners/reopens can consume that allowance. The final fixture
 restarts the disposable backend at the lost-reply boundary, retaining the same SQLite/custody and
 checking actual restart recovery; it does not claim uninterrupted recovery from that capacity limit.
-No service limit or timeout was raised. Session token retirement/reuse and its recoverable UI remain
-an explicit liveness follow-up, separate from local representation compatibility.
+No service limit or timeout was raised. That evidence remains historical. The subsequent
+[session-liveness repair](./account-session-renewal-window.md) removes the restart workaround and
+rotates the oldest token within the same authenticated login. It keeps all reader/conversion defaults
+and local representation checks unchanged.

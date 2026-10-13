@@ -205,6 +205,28 @@ for (const alg of [-8, -7])
     assert.equal(x.f.rows('network_sessions')[0].expires_at, session.expires_at);
   });
 
+test('twenty rapid cold owners resume one remembered login without restarting the service', async (t) => {
+  const x = await setup(t);
+  let session;
+  const tokens = new Set();
+  for (let n = 0; n < 20; n++) {
+    const c = await x.open();
+    const access = await c.login.access();
+    assert(access, `cold owner ${n + 1}: ${c.login.getSnapshot()}`);
+    tokens.add(access);
+    assert.equal(c.login.getSnapshot(), 'remembered');
+    const rows = x.f.rows('network_sessions');
+    assert.equal(rows.length, 1);
+    session ??= rows[0];
+    assert.equal(rows[0].id, session.id);
+    assert.equal(rows[0].expires_at, session.expires_at);
+    assert.equal(x.prompts, n + 1); // Only the existing local unlock; no extra online ceremony.
+    c.live.close();
+    c.login.close();
+  }
+  assert.equal(tokens.size, 20);
+});
+
 test('slow challenge falls back immediately to the offline verifier, with no surprise later prompt', async (t) => {
   const x = await setup(t),
     pending = defer();

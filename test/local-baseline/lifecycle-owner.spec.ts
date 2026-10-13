@@ -3,7 +3,7 @@ import { build } from 'vite';
 import { resolve } from 'node:path';
 import { pairedEditors, openSaved, add } from '../packaged-account/devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
-import { startService, stopService, startBackend, stopProcess } from '../packaged-account/server';
+import { startService, stopService } from '../packaged-account/server';
 import { baselineLifecycleProbe } from './lifecycle-probe';
 import { rolloutBuild, switchApplication, noConversion } from './reader-rollout';
 
@@ -137,8 +137,10 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     third = await thirdContext.newPage();
   third.setDefaultTimeout(15000);
   const observed = new Set<string>();
+  const renewals: number[] = [];
   const observe = (p: Page) => {
     p.on('response', async (r) => {
+      if (new URL(r.url()).pathname === '/account/session/v1/renew') renewals.push(r.status());
       if (r.url().includes('/account/') && r.status() !== 200) {
         const body = await r.json().catch(() => ({}));
         console.log('Removal response', new URL(r.url()).pathname, r.status(), body.refusal);
@@ -346,13 +348,6 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     expect(later.result).toBe('pending');
     expect(later.after.previous).toHaveLength(1);
     expect(later.after.previous![0]!.generation).toBe(2);
-    if (readerFirst) {
-      // The reader update adds another cold login to this already reload-heavy fixture.
-      // Exercise a real backend restart after the lost reply: preserve SQLite/custody and
-      // discard only volatile access tokens, without lifting the eight-token session limit.
-      await stopProcess(service.backend);
-      service.backend = await startBackend(info.outputPath('service'), true, true);
-    }
     await page.reload();
     await page.evaluate(chunk.code);
     await expect
@@ -449,6 +444,9 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
       ).toBe('active');
     }
     expect(networkWrites).toEqual([]);
+    expect(renewals.filter((status) => status === 200).length).toBeGreaterThan(8);
+    expect(renewals).not.toContain(429);
+    console.log('Session renewals without a backend restart', renewals);
     await expect(page.locator('.shell')).not.toContainText(
       'Writing retained only in this detached copy',
     );
