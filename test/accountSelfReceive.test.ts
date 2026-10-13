@@ -1,11 +1,12 @@
 // @vitest-environment node
 import { createHash } from 'node:crypto';
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
 import fc from 'fast-check';
 import { advanceSelfReceive, advanceSelfReceiveCooperatively } from '../src/crdt/accountSyncState';
 import { emptyInbound, verifyInboundCoverage } from '../src/crdt/inboundLedger';
 import { applyDecision, emptyDelivery, type DeliveryCensus } from '../src/crdt/deliveryRecord';
 import { makeSourceCapsule } from '../src/crdt/sourceCapture';
+import * as captures from '../src/crdt/sourceCapture';
 import { verifyPositionResponse } from '../account-protocol/positionDecision';
 import { verifyInboundPage } from '../src/crdt/accountInbound';
 import type { OpenedRecord } from '../src/crdt/contentRecord';
@@ -197,7 +198,6 @@ it('cooperative self coverage matches the reference and erases owned originals o
   expect(actual).toEqual(expected);
   expect(checked).toBe(3);
   for (const failure of ['interrupt', 'coverage']) {
-    let checkpoints = 0;
     const borrowed: Uint8Array[] = [];
     await expect(
       advanceSelfReceiveCooperatively(
@@ -210,7 +210,7 @@ it('cooperative self coverage matches the reference and erases owned originals o
           verifyInboundCoverage(failure === 'coverage' ? [] : f.rows, u);
         },
         async () => {
-          if (failure === 'interrupt' && ++checkpoints === 3) throw Error('cancelled');
+          if (failure === 'interrupt' && borrowed.length) throw Error('cancelled');
         },
       ),
     ).rejects.toThrow(failure === 'interrupt' ? 'cancelled' : 'coverage');
@@ -227,4 +227,42 @@ it('cooperative self coverage matches the reference and erases owned originals o
     async () => {},
   );
   expect(reopened).toEqual(expected);
+});
+
+it('can retire during self projection before coverage and erases its suspended decoded capsules', async () => {
+  const f = await fixture(),
+    before = structuredClone(f),
+    actual = emptyInbound();
+  const capsules: captures.SourceCapsule[] = [];
+  const decode = captures.decodeSourceCapsule;
+  const spy = vi.spyOn(captures, 'decodeSourceCapsule').mockImplementation((...args) => {
+    const capsule = decode(...args);
+    capsules.push(capsule);
+    return capsule;
+  });
+  const check = vi.fn();
+  try {
+    await expect(
+      advanceSelfReceiveCooperatively(f.census, f.delivery, actual, f.route, check, async () => {
+        if (capsules.length === 1) throw Error('retired during projection');
+      }),
+    ).rejects.toThrow('retired during projection');
+    expect(capsules).toHaveLength(1);
+    expect(check).not.toHaveBeenCalled();
+    expect(actual.prefix.position).toBe(0);
+    expect(capsules[0]!.sources.every((s) => s.bytes.every((b) => b === 0))).toBe(true);
+    expect(f).toEqual(before);
+  } finally {
+    spy.mockRestore();
+  }
+  const retried = emptyInbound();
+  await advanceSelfReceiveCooperatively(
+    f.census,
+    f.delivery,
+    retried,
+    f.route,
+    (u) => verifyInboundCoverage(f.rows, u),
+    async () => {},
+  );
+  expect(retried.prefix.position).toBe(3);
 });

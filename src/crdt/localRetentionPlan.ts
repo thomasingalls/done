@@ -361,7 +361,14 @@ export async function planLocalRetention(
             corrupt('Retired physical prefix reappeared.');
           reference = projected;
           projected = undefined;
-        } else await compareBaselineReplay(reference!, projected, old.own.position, context.route);
+        } else
+          await compareBaselineReplay(
+            reference!,
+            projected,
+            old.own.position,
+            context.route,
+            context.assertCurrent,
+          );
       } finally {
         eraseVerified(old);
         eraseVerified(projected);
@@ -457,7 +464,13 @@ export async function planLocalRetention(
       context,
       crypt.auth,
     );
-    await compareBaselineReplay(reference!, projected, decoded.own.position, context.route);
+    await compareBaselineReplay(
+      reference!,
+      projected,
+      decoded.own.position,
+      context.route,
+      context.assertCurrent,
+    );
     context.assertCurrent();
     task.step(() => {});
     const plan: LocalRetentionPlan = Object.freeze({ kind: 'local-retention-dry-run' });

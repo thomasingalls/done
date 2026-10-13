@@ -14391,3 +14391,44 @@ those remaining preparation tasks; further fenced reductions need a separate des
 censuses/comparisons. Public trigger/cadence, capacity behavior, reader-first publication/rollback and
 release validation remain separate. New work is uncommitted. No deployment or personal storage changed;
 `docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Budget the remaining private retention preparation loops
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `127fcf2a` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** Private evidence reuse is signed as **`127fcf2a`**. The new
+[preparation scheduling repair](./account-local-retention-preparation-tasks.md) begins with aligned
+foreground-task attribution. Synchronous/cooperative self projection now share one algorithm;
+cooperative callers yield between positions and erase owned decoded buffers on interruption. Baseline
+summarization, source selection and complete outstanding-obligation comparison also use guarded budget
+points. Full authority checks, all verification, exact inventory/deletion proofs, reservation burns,
+journal/activity fences, atomic exchange and authenticated readback remain. No yield enters the native
+transaction; caller buffers, journal-before-apply and the live document/UndoManager are preserved.
+
+**Evidence.** The [packet](./performance-experiments/2026-10-13-retention-tasks/README.md) contains the
+prospective protocol, frozen builds, source identities, aligned task profiles/traces and focused logs.
+At 1,201 accepted own positions / 8,439 rows, three matched CPU-1x pairs show reference maximum tasks
+**100–103 ms**, with **no candidate task reported at the 50 ms floor**. Median total rises **5.434 →
+5.562 s (2.4%)**. The profiled CPU-4x maximum falls **483 → 97 ms (79.9%)**, while total rises
+**24.704 → 25.417 s**. Its remaining largest preparation task is an inventory clone. All eight cuts
+and three preparation-time input interventions cold-recover exactly and retain journal/undo behavior.
+All six unprofiled runs have identical work/native crypto counts; all eight retain 14 scoped authority
+checks. The packet records one extra native verify in the profiled reference and post-cut audit work
+in the candidate rather than claiming identical whole-window counters.
+
+**Checks and caveat.** The initial 154-case focused unit set has 153 passes and one five-second large-
+anchor timeout; its unchanged isolated 32-test file passes. All 18 native controls and two packaged
+lifecycle journeys pass. The checkpoint/repeated-cut/cold-open journey initially closes the joined
+owner during a history check; three diagnostic and two unchanged-application repetitions pass without
+a repair or timeout increase. The original cause remains **unresolved**, with logs/context and the
+diagnostic patch retained. This is not a completely clean lifecycle result and remains an activation
+hold. TypeScript, focused lint/format, ordinary build, Yjs, origin scan and 138.4 kB / 350 kB budget pass.
+
+**Remaining.** Budgeting removes the measured 200–483 ms preparation loops, not total-history work,
+all native/GC stalls or the final admission wait (752 ms in the CPU-4x candidate). Preparation still
+takes 24.65 s under throttling and can be cancelled by input. Resolve/reproduce the recorded lifecycle
+closure before activation. Product trigger/cadence, capacity behavior, compatible reader-first
+publication/rollback, phone evidence and general release validation remain separate. New work is
+uncommitted; no deployment or personal storage changed. `docs/progress.md` and unrelated root notes
+remain untouched.

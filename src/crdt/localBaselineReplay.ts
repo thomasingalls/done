@@ -361,6 +361,7 @@ async function summarizeBaseline(
   journalEra?: import('./journalEra').JournalEra,
   inherited?: LocalBaseline,
 ) {
+  const checkpoint = createCpuBudget(c.assertCurrent);
   const spool = verified.census.delivery.spool;
   if (
     publicationState(verified.delivery) !== 'ready' ||
@@ -375,12 +376,16 @@ async function summarizeBaseline(
     ...(spool.origin?.consumed ?? []),
     ...spool.positions.flatMap(positionSources),
   ]) {
+    const pause = checkpoint();
+    if (pause) await pause;
     const indices = used.get(ref.id) ?? [];
     indices.push(ref.index);
     used.set(ref.id, indices);
   }
   const sources: LocalBaseline['sources'] = [];
   for (const [id, bytes] of spool.sources) {
+    const pause = checkpoint();
+    if (pause) await pause;
     const capsule = decodeSourceCapsule(bytes, c.route);
     try {
       const consumed = (used.get(id) ?? []).sort((a, b) => a - b);

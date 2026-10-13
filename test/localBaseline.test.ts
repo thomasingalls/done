@@ -76,6 +76,7 @@ import { indexVerifiedLedger, extendAccountLedger } from '../src/crdt/incrementa
 import { createVerificationMemo } from '../src/crdt/verificationMemo';
 import {
   createLocalBaselineShadow,
+  compareBaselineReplay,
   verifyCompleteLocalBaseline,
 } from '../src/crdt/localBaselineShadow';
 import { selectEnvelopeSources } from '../src/crdt/accountEnvelopePreparation';
@@ -472,6 +473,56 @@ it('the next source selection excludes accepted indexes of a retained partial ca
     nextSpoolPosition(reference.census.delivery.spool),
   );
   expect(nextSpoolPosition(actual.census.delivery.spool)).toBe(2);
+});
+
+it('budgeted replay comparison retains obligations beyond the first publication batch and cancels on retirement', async () => {
+  const f = await fixture(Array.from({ length: 40 }, () => false));
+  const input = await f.input(
+    f.rows.filter(
+      (r) =>
+        r.kind === 'update' ||
+        (r.kind === 'outbound' &&
+          JSON.parse(new TextDecoder().decode(r.bytes))[0] === 'done/source-capture/v1'),
+    ),
+  );
+  const reference = await replayFullLocalHistory(input, f.ctx);
+  const p = await prepareLocalBaseline(input, f.ctx, auth);
+  const replayed = await replayLocalBaseline(
+    p.baseline,
+    p.anchor,
+    { ...input, records: [] },
+    f.ctx,
+    auth,
+  );
+  await compareBaselineReplay(reference, replayed, 0, f.ctx.route);
+  const bad = structuredClone(replayed);
+  bad.census.delivery.spool.sources.delete([...bad.census.delivery.spool.sources.keys()].at(-1)!);
+  expect(
+    await selectEnvelopeSources(bad.census.delivery.spool, f.ctx.route, true, crypto.subtle),
+  ).toEqual(
+    await selectEnvelopeSources(reference.census.delivery.spool, f.ctx.route, true, crypto.subtle),
+  );
+  await expect(compareBaselineReplay(reference, bad, 0, f.ctx.route)).rejects.toThrow('integrity');
+  const before = structuredClone({ reference, replayed });
+  let retired = false,
+    clock = 0;
+  const now = vi.spyOn(performance, 'now').mockImplementation(() => (clock += 9));
+  vi.useFakeTimers({ toFake: ['setTimeout'] });
+  try {
+    const work = compareBaselineReplay(reference, replayed, 0, f.ctx.route, () => {
+      if (retired) throw Error('comparison retired');
+    });
+    const rejected = expect(work).rejects.toThrow('comparison retired');
+    expect(vi.getTimerCount()).toBe(1);
+    retired = true;
+    await vi.runAllTimersAsync();
+    await rejected;
+  } finally {
+    vi.useRealTimers();
+    now.mockRestore();
+  }
+  expect({ reference, replayed }).toEqual(before);
+  await compareBaselineReplay(reference, replayed, 0, f.ctx.route);
 });
 
 it('rejects pending snapshot dependencies and missing content before signing a baseline', async () => {

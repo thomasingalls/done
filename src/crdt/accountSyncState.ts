@@ -36,14 +36,14 @@ export function verifySyncState(
  * Coverage must be checked against actual content (including pending deletions), not a state vector.
  * Legacy self-inbound events are verified independently before this projection is applied.
  */
-export function advanceSelfReceive(
+function* selfReceiveSteps(
   census: DeliveryCensus,
   delivery: DeliveryState,
   inbound: InboundState,
   route: CaptureRoute,
   checkCoverage: (updates: readonly Bytes[]) => void,
   after = 0,
-): void {
+): Generator<void> {
   verifySyncState(census, delivery, inbound, after);
   if (after > delivery.acceptedThrough || after < (census.spool.origin?.position ?? 0))
     captureError('Accepted self prefix regressed');
@@ -65,6 +65,7 @@ export function advanceSelfReceive(
     for (const entry of census.spool.positions.slice(
       after - (census.spool.origin?.position ?? 0),
     )) {
+      yield;
       if (entry.position > delivery.acceptedThrough) break;
       if (entry.position !== position + 1 || !entry.wire)
         return captureError('Accepted self stream has a gap');
@@ -115,9 +116,16 @@ export function advanceSelfReceive(
   }
 }
 
+export function advanceSelfReceive(...args: Parameters<typeof selfReceiveSteps>): void {
+  for (const _ of selfReceiveSteps(...args)) {
+    /* Synchronous callers drain the same checks. */
+  }
+}
+
 /** Audit-only projection. The caller keeps this state private until all originals are checked.
- * Copy originals before the synchronous projector erases its decoded capsules. No vector-only
- * check or incremental coverage cache substitutes for the reference proof. */
+ * The generator owns decoded capsules across budget points and erases them on completion or close.
+ * Copy originals before that cleanup. No vector-only check or incremental coverage cache substitutes
+ * for the reference proof; a rejected checkpoint closes the generator before any result escapes. */
 export async function advanceSelfReceiveCooperatively(
   census: DeliveryCensus,
   delivery: DeliveryState,
@@ -129,9 +137,10 @@ export async function advanceSelfReceiveCooperatively(
   const originals: Bytes[] = [];
   try {
     await checkpoint();
-    advanceSelfReceive(census, delivery, inbound, route, (updates) => {
+    const steps = selfReceiveSteps(census, delivery, inbound, route, (updates) => {
       for (const update of updates) originals.push(update.slice());
     });
+    for (const _ of steps) await checkpoint();
     for (const update of originals) {
       await checkpoint();
       checkCoverage([update]);

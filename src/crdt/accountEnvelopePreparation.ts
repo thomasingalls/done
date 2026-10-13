@@ -24,6 +24,7 @@ import { assertAdmittedEnvelope, sealNetworkEnvelope } from '../../account-proto
 import { ContentError } from './contentRecord';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
+import type { CpuCheckpoint } from './cpuBudget';
 export interface PersistedEnvelope {
   position: number;
   bytes: Bytes;
@@ -51,19 +52,24 @@ export async function selectEnvelopeSources(
   route: CaptureRoute,
   batch: boolean,
   subtle: SubtleCrypto,
+  checkpoint?: CpuCheckpoint,
 ): Promise<SourceRef[]> {
   const began = ledgerWorkStart();
   try {
-    const used = new Set([
-      ...(state.origin?.consumed ?? []).map((s) => s.id + ':' + s.index),
-      ...state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
-    ]);
+    const used = new Set((state.origin?.consumed ?? []).map((s) => s.id + ':' + s.index));
+    for (const position of state.positions) {
+      const pause = checkpoint?.();
+      if (pause) await pause;
+      for (const source of positionSources(position)) used.add(source.id + ':' + source.index);
+    }
     const selected: SourceRef[] = [];
     let actor = '',
       kind = '',
       epoch = 0,
       total = 0;
     for (const [id, bytes] of state.sources) {
+      const pause = checkpoint?.();
+      if (pause) await pause;
       const c = decodeSourceCapsule(bytes, route);
       let hash: string | undefined;
       try {
@@ -90,6 +96,8 @@ export async function selectEnvelopeSources(
         eraseCapsule(c);
       }
     }
+    const pause = checkpoint?.();
+    if (pause) await pause;
     return selected;
   } finally {
     measureLedgerWork('envelopeSelection', began);

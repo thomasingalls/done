@@ -15,6 +15,7 @@ import { nextSpoolPosition, positionSources, type SpoolState } from './spoolReco
 import { decodeSourceCapsule, eraseCapsule, type CaptureRoute } from './sourceCapture';
 import { copyRecords, eraseVerified, sameBytes } from './verifiedRecords';
 import { MaintenanceInterrupted } from './contentMaintenance';
+import { createCpuBudget, type CpuCheckpoint } from './cpuBudget';
 
 export type BaselineShadowResult =
   | {
@@ -54,18 +55,22 @@ const ordered = (v: unknown): unknown => {
 };
 const stream = (s: Replay['inbound']) => [s.prefix, s.startingPoint ?? null, s.conflict];
 // Compare the entire remaining catalogue, not only the next bounded publication batch.
-const outstanding = (spool: SpoolState, route: CaptureRoute) => {
+const outstanding = async (spool: SpoolState, route: CaptureRoute, checkpoint: CpuCheckpoint) => {
   const consumed = new Map<string, Set<number>>();
   for (const ref of [
     ...(spool.origin?.consumed ?? []),
     ...spool.positions.flatMap(positionSources),
   ]) {
+    const pause = checkpoint();
+    if (pause) await pause;
     const indexes = consumed.get(ref.id) ?? new Set<number>();
     indexes.add(ref.index);
     consumed.set(ref.id, indexes);
   }
   const result = new Map<string, { bytes: Uint8Array; consumed: number[] }>();
   for (const [id, bytes] of spool.sources) {
+    const pause = checkpoint();
+    if (pause) await pause;
     const capsule = decodeSourceCapsule(bytes, route);
     try {
       const indexes = [...(consumed.get(id) ?? [])].sort((a, b) => a - b);
@@ -76,8 +81,13 @@ const outstanding = (spool: SpoolState, route: CaptureRoute) => {
   }
   return result;
 };
-const projection = (r: Replay, after: number, route: CaptureRoute) => ({
-  outstanding: outstanding(r.census.delivery.spool, route),
+const projection = async (
+  r: Replay,
+  after: number,
+  route: CaptureRoute,
+  checkpoint: CpuCheckpoint,
+) => ({
+  outstanding: await outstanding(r.census.delivery.spool, route, checkpoint),
   delivery: [
     r.delivery.acceptedThrough,
     r.delivery.finalThrough,
@@ -95,24 +105,45 @@ const projection = (r: Replay, after: number, route: CaptureRoute) => ({
 });
 
 /** Compare all retained obligations and next selection, not just visible text or one send batch. */
-export async function compareBaselineReplay(
+async function matchesBaselineReplay(
   reference: Replay,
   replayed: Replay,
   after: number,
   route: CaptureRoute,
+  assertCurrent: () => void,
 ) {
+  const checkpoint = createCpuBudget(assertCurrent);
   const a = await selectEnvelopeSources(
       reference.census.delivery.spool,
       route,
       true,
       crypto.subtle,
+      checkpoint,
     ),
-    b = await selectEnvelopeSources(replayed.census.delivery.spool, route, true, crypto.subtle);
-  if (
-    !sameBytes(reference.snapshot, replayed.snapshot) ||
-    JSON.stringify(ordered([projection(reference, after, route), a])) !==
-      JSON.stringify(ordered([projection(replayed, after, route), b]))
-  )
+    b = await selectEnvelopeSources(
+      replayed.census.delivery.spool,
+      route,
+      true,
+      crypto.subtle,
+      checkpoint,
+    );
+  const first = await projection(reference, after, route, checkpoint);
+  const second = await projection(replayed, after, route, checkpoint);
+  assertCurrent();
+  return (
+    sameBytes(reference.snapshot, replayed.snapshot) &&
+    JSON.stringify(ordered([first, a])) === JSON.stringify(ordered([second, b]))
+  );
+}
+
+export async function compareBaselineReplay(
+  reference: Replay,
+  replayed: Replay,
+  after: number,
+  route: CaptureRoute,
+  assertCurrent: () => void = () => {},
+) {
+  if (!(await matchesBaselineReplay(reference, replayed, after, route, assertCurrent)))
     throw new LocalBaselineError('integrity');
 }
 
@@ -147,7 +178,13 @@ export async function verifyCompleteLocalBaseline(
       auth,
     );
     if (reference)
-      await compareBaselineReplay(reference, replayed, baseline.own.position, context.route);
+      await compareBaselineReplay(
+        reference,
+        replayed,
+        baseline.own.position,
+        context.route,
+        context.assertCurrent,
+      );
     context.assertCurrent();
     if (read && baseline.journalEra)
       return {
@@ -220,19 +257,14 @@ export function createLocalBaselineShadow() {
               held,
               auth,
             );
-            const select = (r: Replay) =>
-              selectEnvelopeSources(r.census.delivery.spool, held.route, true, crypto.subtle);
-            const a = await select(reference),
-              b = await select(replayed);
+            const matches = await matchesBaselineReplay(
+              reference,
+              replayed,
+              baseline.own.position,
+              held.route,
+              current,
+            );
             current();
-            const matches =
-              sameBytes(reference.snapshot, replayed.snapshot) &&
-              JSON.stringify(
-                ordered([projection(reference, baseline.own.position, context.route), a]),
-              ) ===
-                JSON.stringify(
-                  ordered([projection(replayed, baseline.own.position, context.route), b]),
-                );
             report = matches
               ? {
                   kind: 'matched',

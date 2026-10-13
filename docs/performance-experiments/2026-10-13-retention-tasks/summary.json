@@ -1,0 +1,603 @@
+{
+  "taskReporting": "Long Tasks observer: 0 means no task reported at the 50 ms floor, not zero work",
+  "depth": 1201,
+  "bundles": {
+    "reference": "9a86d1bf20888dfcdd6967fe0365b61138c10b202773aba647805b6a07515719",
+    "candidate": "b8e7c1ddb5d41b77fd42712d300a6456553e8a12ffa3aede4842a0cabaf90293"
+  },
+  "quiet": {
+    "reference": {
+      "samples": 3,
+      "totalMs": {
+        "min": 5388,
+        "median": 5434,
+        "max": 5551
+      },
+      "maxTaskMs": {
+        "min": 100,
+        "median": 101,
+        "max": 103
+      },
+      "maxGapMs": {
+        "min": 103.0999984741211,
+        "median": 106.30000114440918,
+        "max": 107.69999885559082
+      },
+      "longTaskCounts": [
+        3,
+        4,
+        4
+      ],
+      "preparationMs": [
+        5168.5,
+        5116.200000762939,
+        5265.39999961853
+      ],
+      "replaceExchangeMs": [
+        64.39999961853027,
+        68,
+        81.5999984741211
+      ],
+      "readbackMs": [
+        74.0,
+        74.10000038146973,
+        75.89999961853027
+      ],
+      "fencedMs": [
+        261.6000003814697,
+        268.5,
+        281.1000003814697
+      ],
+      "passed": true
+    },
+    "candidate": {
+      "samples": 3,
+      "totalMs": {
+        "min": 5561,
+        "median": 5562,
+        "max": 5584
+      },
+      "maxTaskMs": {
+        "min": 0,
+        "median": 0,
+        "max": 0
+      },
+      "maxGapMs": {
+        "min": 36.60000038146973,
+        "median": 41.79999923706055,
+        "max": 42.89999961853027
+      },
+      "longTaskCounts": [
+        0,
+        0,
+        0
+      ],
+      "preparationMs": [
+        5324.5,
+        5302.199998855591,
+        5216.800001144409
+      ],
+      "replaceExchangeMs": [
+        75.5,
+        68.5,
+        63.19999885559082
+      ],
+      "readbackMs": [
+        64.60000038146973,
+        62.69999885559082,
+        124.29999923706055
+      ],
+      "fencedMs": [
+        255.80000114440918,
+        255.10000038146973,
+        342
+      ],
+      "passed": true
+    },
+    "reference-4x": {
+      "samples": 1,
+      "totalMs": {
+        "min": 24704,
+        "median": 24704,
+        "max": 24704
+      },
+      "maxTaskMs": {
+        "min": 483,
+        "median": 483,
+        "max": 483
+      },
+      "maxGapMs": {
+        "min": 918,
+        "median": 918,
+        "max": 918
+      },
+      "longTaskCounts": [
+        11
+      ],
+      "preparationMs": [
+        23992
+      ],
+      "replaceExchangeMs": [
+        156.60000038146973
+      ],
+      "readbackMs": [
+        175.10000228881836
+      ],
+      "fencedMs": [
+        700.1000003814697
+      ],
+      "passed": true
+    },
+    "candidate-4x": {
+      "samples": 1,
+      "totalMs": {
+        "min": 25417,
+        "median": 25417,
+        "max": 25417
+      },
+      "maxTaskMs": {
+        "min": 97,
+        "median": 97,
+        "max": 97
+      },
+      "maxGapMs": {
+        "min": 844.0999984741211,
+        "median": 844.0999984741211,
+        "max": 844.0999984741211
+      },
+      "longTaskCounts": [
+        8
+      ],
+      "preparationMs": [
+        24654.39999961853
+      ],
+      "replaceExchangeMs": [
+        176
+      ],
+      "readbackMs": [
+        159.20000076293945
+      ],
+      "fencedMs": [
+        752.4000015258789
+      ],
+      "passed": true
+    }
+  },
+  "interrupted": [
+    {
+      "arm": "reference-input",
+      "ms": 83,
+      "result": {
+        "kind": "skipped",
+        "reason": "activity-or-journal"
+      },
+      "inputLatency": 10,
+      "journalBeforeApply": true,
+      "undoRedo": true,
+      "recovered": true,
+      "phase": "passed"
+    },
+    {
+      "arm": "candidate-input",
+      "ms": 88,
+      "result": {
+        "kind": "skipped",
+        "reason": "activity-or-journal"
+      },
+      "inputLatency": 10.700000762939453,
+      "journalBeforeApply": true,
+      "undoRedo": true,
+      "recovered": true,
+      "phase": "passed"
+    },
+    {
+      "arm": "candidate-input-4x",
+      "ms": 130,
+      "result": {
+        "kind": "skipped",
+        "reason": "activity-or-journal"
+      },
+      "inputLatency": 41.39999961853027,
+      "journalBeforeApply": true,
+      "undoRedo": true,
+      "recovered": true,
+      "phase": "passed"
+    }
+  ],
+  "nativeCrypto": {
+    "reference": [
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      }
+    ],
+    "candidate": [
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      }
+    ],
+    "reference-4x": [
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9639,
+        "digest": 26485,
+        "sign": 3
+      }
+    ],
+    "candidate-4x": [
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      }
+    ]
+  },
+  "work": {
+    "reference": [
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 0,
+        "warmAuditBytes": 0,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      },
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 0,
+        "warmAuditBytes": 0,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      },
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 0,
+        "warmAuditBytes": 0,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      }
+    ],
+    "candidate": [
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 0,
+        "warmAuditBytes": 0,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      },
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 0,
+        "warmAuditBytes": 0,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      },
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 0,
+        "warmAuditBytes": 0,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      }
+    ],
+    "reference-4x": [
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 0,
+        "warmAuditBytes": 0,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      }
+    ],
+    "candidate-4x": [
+      {
+        "startupValidations": 0,
+        "joinedStartupValidations": 0,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "inboundCensuses": 6,
+        "deliveryPrefixLinks": 2402,
+        "coverageBaselines": 0,
+        "coverageDirectProofs": 0,
+        "loads": 2,
+        "warmLoads": 0,
+        "baselineFullReplays": 1,
+        "baselineWarmReuses": 0,
+        "baselineIncrementalReuses": 0,
+        "selectedLoads": 0,
+        "warmAuditRows": 16,
+        "warmAuditBytes": 63079,
+        "loadedRows": 0,
+        "loadedBytes": 0,
+        "authorityChecks": 14,
+        "authorityAuthentications": 1,
+        "authorityReuses": 13,
+        "membershipProofTransfers": 0,
+        "positions": 0,
+        "sourceParses": 13376,
+        "sourceParseBytes": 4175710,
+        "recordCopies": 19319,
+        "recordCopyBytes": 9876269,
+        "journalFlushes": 1,
+        "dirtyJournalFlushes": 0,
+        "projectionChecks": 0,
+        "directTextPreparations": 0,
+        "finalApplyEarlyChecks": 0,
+        "finalApplyImmediate": 0,
+        "finalApplyQueueMisses": 0,
+        "finalApplyActivityMisses": 0,
+        "finalApplyFallbacks": 0,
+        "finalApplySkipped": 0
+      }
+    ]
+  }
+}
