@@ -716,6 +716,167 @@ export const createContentOwner = (
       for (const bytes of plaintexts) bytes.fill(0);
     }
   };
+  /** Read-only preparation may finish before final FIFO entry. No task/crypto callback escapes. */
+  const prepareHistoryRemoval = async (
+    task: SessionTask,
+    assertCurrent: () => Promise<void>,
+    checkCommit: () => void,
+    expectedRevision: number,
+    checkRetained: () => void,
+  ) => {
+    if (
+      !allowReduced ||
+      !crypt.baseline ||
+      !metadata ||
+      !crypt.validate ||
+      !crypt.allowSpoolCounter
+    )
+      throw new StorageCompatibilityError('Private retention writer disabled.');
+    if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0)
+      corrupt('Invalid retention predecessor revision.');
+    const {
+      planLocalRetention,
+      retentionPlanReport,
+      disposeRetentionPlan,
+      assertRetentionInventory,
+      inspectRetentionPlan,
+      verifyRetentionPlan,
+      sameRetentionInventory,
+    } = await task.wait(() => import('./localRetentionPlan'));
+    const inventory = await retentionInventory(task);
+    let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
+    let delivered = false;
+    try {
+      const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
+      const counter = parseCounter(raw, scope, witness.intent);
+      const pointer = (raw as import('./localBaselineAnchor').BaselineCounter).baseline;
+      const revision = pointer?.revision ?? 0;
+      if (
+        revision === expectedRevision + 1 &&
+        metadata.reduced() &&
+        pointer?.journalEra?.revision === revision
+      ) {
+        const opened = await load(task);
+        try {
+          await assertCurrent();
+          checkCommit();
+          return { kind: 'already-removed' as const };
+        } finally {
+          eraseVerified(opened);
+        }
+      }
+      if (revision !== expectedRevision) corrupt('Retention predecessor changed.');
+      const context = await crypt.baseline(task, { ...scope }, counter);
+      const binding = { lifetime: {}, intent: witness.intent, allowReduced };
+      plan = await planLocalRetention(
+        task,
+        inventory,
+        {
+          ...context,
+          assertCurrent: () => {
+            context.assertCurrent();
+            checkCommit();
+          },
+        },
+        {
+          open: (r) => crypt.open(task, r),
+          verify: (b, mac) => crypt.verify(task, b, mac),
+          auth: baselineAuth(task),
+        },
+        binding,
+        checkRetained,
+      );
+      if (plan.kind === 'skipped') return plan;
+      const prepared = plan;
+      const report = retentionPlanReport(prepared);
+      let used = false;
+      const dispose = () => {
+        used = true;
+        disposeRetentionPlan(prepared);
+      };
+      const commit = async (
+        currentTask: SessionTask,
+        fresh: () => Promise<void>,
+        checkJournal: () => void,
+        beforeMutation: () => void,
+      ) => {
+        if (used) throw new MaintenanceInterrupted();
+        used = true;
+        const check = () =>
+          currentTask.step(() => {
+            checkRetained();
+            checkJournal();
+          });
+        let expected: RetentionInventory | undefined;
+        let actual: RetentionInventory | undefined;
+        let opened: OpenedRecord[] | undefined;
+        let candidate: ReturnType<typeof inspectRetentionPlan> | undefined;
+        try {
+          check();
+          await fresh();
+          check();
+          candidate = inspectRetentionPlan(prepared);
+          actual = await retentionInventory(currentTask);
+          // Another owned storage job may have run between preparation and final FIFO entry.
+          // Abandon rather than broadening/reusing the cut; no nonce has been reserved yet.
+          if (!sameRetentionInventory(candidate.inventory, actual))
+            throw new MaintenanceInterrupted();
+          verifyRetentionPlan(prepared, actual, binding);
+          check();
+          const { removePlannedLocalHistory } = await currentTask.wait(
+            () => import('./localRetentionStorage'),
+          );
+          beforeMutation();
+          expected = await removePlannedLocalHistory(
+            currentTask,
+            baselineOwner(fresh, check),
+            prepared,
+            binding,
+          );
+          clearView();
+          metadata.replaced();
+          eraseVerified(actual);
+          actual = await retentionInventory(currentTask);
+          assertRetentionInventory(expected, actual);
+          opened = await load(currentTask);
+          const { verifyCompleteLocalBaseline } = await currentTask.wait(
+            () => import('./localBaselineShadow'),
+          );
+          const current = await currentCounter(currentTask);
+          const verified = await verifyCompleteLocalBaseline(
+            { records: opened, counter: current },
+            await crypt.baseline!(currentTask, { ...scope }, current),
+            baselineAuth(currentTask),
+            candidate.candidate,
+            true,
+            true,
+          );
+          eraseVerified(verified);
+          await fresh();
+          check();
+          return { kind: 'removed' as const, revision: report.revision, removed: report.rows };
+        } finally {
+          dispose();
+          eraseVerified(expected);
+          eraseVerified(actual);
+          eraseVerified(opened);
+          eraseVerified(candidate);
+          clearView();
+        }
+      };
+      checkRetained();
+      delivered = true;
+      return Object.freeze({
+        kind: 'prepared-removal' as const,
+        commit,
+        dispose,
+        check: checkRetained,
+      });
+    } finally {
+      if (!delivered && plan?.kind === 'local-retention-dry-run') disposeRetentionPlan(plan);
+      eraseVerified(inventory);
+    }
+  };
   return {
     dispose() {
       clearView();
@@ -1025,114 +1186,26 @@ export const createContentOwner = (
         eraseVerified(counter);
       }
     },
-    /** Private reduced-format transition. The caller holds admission/journal/old-read fences. */
+    prepareHistoryRemoval,
+    /** Same-task adapter for private carrier fixtures. Composition uses the split handoff. */
     async removeHistory(
       task: SessionTask,
       assertCurrent: () => Promise<void>,
       checkCommit: () => void,
       expectedRevision: number,
     ) {
-      if (
-        !allowReduced ||
-        !crypt.baseline ||
-        !metadata ||
-        !crypt.validate ||
-        !crypt.allowSpoolCounter
-      )
-        throw new StorageCompatibilityError('Private retention writer disabled.');
-      if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0)
-        corrupt('Invalid retention predecessor revision.');
-      const {
-        planLocalRetention,
-        retentionPlanReport,
-        disposeRetentionPlan,
-        assertRetentionInventory,
-        inspectRetentionPlan,
-      } = await task.wait(() => import('./localRetentionPlan'));
-      const inventory = await retentionInventory(task);
-      let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
-      let expected: RetentionInventory | undefined;
-      let actual: RetentionInventory | undefined;
-      let opened: OpenedRecord[] | undefined;
-      let candidate: ReturnType<typeof inspectRetentionPlan> | undefined;
+      const prepared = await prepareHistoryRemoval(
+        task,
+        assertCurrent,
+        checkCommit,
+        expectedRevision,
+        () => task.step(checkCommit),
+      );
+      if (prepared.kind !== 'prepared-removal') return prepared;
       try {
-        const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
-        const counter = parseCounter(raw, scope, witness.intent);
-        const pointer = (raw as import('./localBaselineAnchor').BaselineCounter).baseline;
-        const revision = pointer?.revision ?? 0;
-        if (
-          revision === expectedRevision + 1 &&
-          metadata.reduced() &&
-          pointer?.journalEra?.revision === revision
-        ) {
-          // Cold/full authenticated read, including any new suffix. Never infer success from a number alone.
-          opened = await load(task);
-          await assertCurrent();
-          checkCommit();
-          return { kind: 'already-removed' as const };
-        }
-        if (revision !== expectedRevision) corrupt('Retention predecessor changed.');
-        const context = await crypt.baseline(task, { ...scope }, counter);
-        const binding = { lifetime: {}, intent: witness.intent, allowReduced };
-        plan = await planLocalRetention(
-          task,
-          inventory,
-          {
-            ...context,
-            assertCurrent: () => {
-              context.assertCurrent();
-              checkCommit();
-            },
-          },
-          {
-            open: (r) => crypt.open(task, r),
-            verify: (b, mac) => crypt.verify(task, b, mac),
-            auth: baselineAuth(task),
-          },
-          binding,
-        );
-        if (plan.kind === 'skipped') return plan;
-        const report = retentionPlanReport(plan);
-        candidate = inspectRetentionPlan(plan);
-        const { removePlannedLocalHistory } = await task.wait(
-          () => import('./localRetentionStorage'),
-        );
-        expected = await removePlannedLocalHistory(
-          task,
-          baselineOwner(assertCurrent, checkCommit),
-          plan,
-          binding,
-        );
-        clearView();
-        metadata.replaced();
-        // Compare exact committed bytes, then independently open/authenticate reduced replay.
-        actual = await retentionInventory(task);
-        assertRetentionInventory(expected, actual);
-        opened = await load(task);
-        const { verifyCompleteLocalBaseline } = await task.wait(
-          () => import('./localBaselineShadow'),
-        );
-        const current = await currentCounter(task);
-        const verified = await verifyCompleteLocalBaseline(
-          { records: opened, counter: current },
-          await crypt.baseline(task, { ...scope }, current),
-          baselineAuth(task),
-          candidate.candidate,
-          true,
-          true,
-        );
-        eraseVerified(verified);
-        await assertCurrent();
-        checkCommit();
-        return { kind: 'removed' as const, revision: report.revision, removed: report.rows };
+        return await prepared.commit(task, assertCurrent, checkCommit, () => {});
       } finally {
-        if (plan?.kind === 'local-retention-dry-run') disposeRetentionPlan(plan);
-        eraseVerified(inventory);
-        eraseVerified(expected);
-        eraseVerified(actual);
-        eraseVerified(opened);
-        eraseVerified(candidate);
-        clearView();
+        prepared.dispose();
       }
     },
     /** Called only while the composed admission queue fences input; never deletes or swaps the live doc. */

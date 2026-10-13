@@ -37,6 +37,7 @@ import {
   emptyInbound,
   createInboundCoverage,
   inspectInbound,
+  inspectInboundCooperatively,
   publisherContext,
   verifyInboundCoverage,
   verifyInboundLedger,
@@ -206,7 +207,7 @@ async function full(input: ReturnType<typeof captureInput>, c: LocalBaselineCont
     },
   });
   const { route, inbound: base } = c;
-  const census = inspectInbound(input.records, route, base);
+  const census = await inspectInboundCooperatively(input.records, route, base, checkpoint);
   await verifySpoolWitness(census.delivery.spool, input.counter, subtle);
   if (c.installation.kind === 'original')
     await verifyInstalledSuccessor(

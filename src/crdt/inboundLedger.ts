@@ -21,7 +21,7 @@ import { hex, utf8, type Bytes } from './custodyCrypto';
 import type { PromotionRecord } from './promotionRecord';
 import type { OpenedRecord } from './contentRecord';
 import { captureError, type CaptureRoute } from './sourceCapture';
-import { inspectDelivery, expectedPosition } from './deliveryRecord';
+import { inspectDelivery, inspectDeliverySteps, expectedPosition } from './deliveryRecord';
 import { acceptanceLink, decodePositionResponse } from '../../account-protocol/positionDecision';
 import type { HistoryHead } from '../../account-protocol/historyCheckpoint';
 import { decodeInboundRecord } from './inboundRecord';
@@ -122,7 +122,7 @@ function* inspectInboundSteps(
       entries.push({ record, event: decodeInboundRecord(record.bytes) });
     } else prior.push(record);
   }
-  const delivery = inspectDelivery(prior, route, context.authority, start);
+  const delivery = yield* inspectDeliverySteps(prior, route, context.authority, start);
   // Delivery's own transition order remains separate; the one completeness witness covers the union.
   const ledger = [
     ...delivery.ledger,
@@ -156,13 +156,15 @@ export async function inspectInboundCooperatively(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   context: InboundContext,
-  checkpoint: () => Promise<void>,
+  checkpoint: () => Promise<void> | undefined,
+  start?: SpoolReplayStart,
 ) {
-  const steps = inspectInboundSteps(records, route, context);
+  const steps = inspectInboundSteps(records, route, context, start);
   try {
     let next = steps.next();
     while (!next.done) {
-      await checkpoint();
+      const pause = checkpoint();
+      if (pause) await pause;
       next = steps.next();
     }
     return next.value;

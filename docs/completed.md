@@ -14284,3 +14284,36 @@ while keeping the final fresh check and atomic journal-era exchange. No phone or
 Public conversion/trigger/cadence, compatible reader-first rollout/rollback and capacity/history-required
 UX remain gated. Release validation stays paused; personal profiles, services, `docs/progress.md`
 and unrelated root notes are untouched. The repair and new evidence remain uncommitted.
+
+### Private retention preparation outside admission, with budgeted nested census
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `75a3e94b` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** [The handoff](./account-local-retention-handoff.md) prepares on the exclusive storage tail
+without holding input admission. Input journals/applies and invalidates the plan. Completed evidence
+uses an owner/activity guard across task settlement; final entry uses a fresh task, complete authority
+and attempt checks, empty journal, exact inventory and retired-read fencing. Strict exchange, full
+readback and reduced replay stay fenced; the live document and UndoManager remain in place. Nested
+protocol censuses yield between records, and exact comparisons borrow bytes synchronously without
+whole-inventory copies. No format/check/deletion rule or public switch is weakened.
+
+**Evidence.** The [retained packet](./performance-experiments/2026-10-13-retention-handoff/README.md)
+contains profiles, frozen bundles, logs and source identities. At 1,201 own positions, three matched
+pairs give median maximum task **436 → 97 ms** and total conversion **5.706 → 6.029 s**. One input
+intervention changes admission wait **5,567 → 9.4 ms**, with a skipped cut and journal/undo/cold-replay
+checks. A CPU-4x candidate takes **25.008 s**, maximum task **533 ms**, final FIFO **1.860 s**;
+CPU-1x final FIFO remains **0.966–1.041 s**. All seven quiet cuts and three input interventions pass.
+Observed crypto work is identical; the scoped authority-check count increases **11 → 14**.
+
+**Checks.** **191** unique unit tests, **17** native atomic/crash/retry/input controls and **three**
+packaged lifecycle/checkpoint journeys pass, plus TypeScript, focused format/lint, ordinary build,
+Yjs runtime, origin isolation and **138.3 kB / 350 kB** initial-JS budget. The first lifecycle run
+exposed a retired read rejecting the initial durability wait; the private request now skips that
+pre-mutation attempt, with a repaired lifecycle run and deterministic retired-read control. The
+measurement bundle precedes only that error-path catch and a comment edit; the packet says so.
+
+**Remaining.** Initial conversion is still not transparent background maintenance: atomic exchange,
+evidence handling and full readback retain a material FIFO wait, with longer CPU-4x tasks. Public
+activation, retention cadence, reader-first publication/rollback and general release validation remain
+separate. No deployment or personal storage was changed; `docs/progress.md` stays with its other
+workstream.

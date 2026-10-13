@@ -32,7 +32,7 @@ async function fixture() {
   const f = await memberFixture();
   clean.push(f.clear);
   const context: LocalBaselineContext = f.ctx;
-  const auth = vi.fn(async () => ({
+  const auth = vi.fn(async (_task?: SessionTask) => ({
     ...context,
     identity: { ...context.identity },
     route: { ...context.route },
@@ -228,3 +228,122 @@ it('a due oracle first extends a committed but not yet consumed suffix, then com
   expect(logical.ledger.delivery.acceptedThrough).toBe(2);
   expect(read).not.toHaveBeenCalled();
 });
+
+it('prepared removal crosses task settlement using its owner guard and a fresh complete authority check', async () => {
+  const x = await fixture();
+  // Match the real composition: baseline contexts bind their checking SessionTask.
+  const baseline = x.crypt.baseline;
+  x.crypt.baseline = vi.fn(async (checkedTask?: SessionTask) => {
+    const context = await baseline();
+    return { ...context, assertCurrent: () => checkedTask!.step(() => context.assertCurrent()) };
+  });
+
+  let expired = false,
+    invalid = false;
+  const check = () => {
+    if (expired) throw Error('expired preparation task');
+  };
+  const preparationTask: SessionTask = {
+    signal: task.signal,
+    step(f) {
+      check();
+      return f();
+    },
+    async wait(f) {
+      check();
+      const value = await f();
+      check();
+      return value;
+    },
+  };
+  const prepared = await x.owner.prepareHistoryRemoval(
+    preparationTask,
+    async () => {},
+    () => {},
+    1,
+    () => {
+      if (invalid) throw new MaintenanceInterrupted();
+    },
+  );
+  if (prepared.kind !== 'prepared-removal') throw Error(prepared.kind);
+  expired = true;
+  const fresh = vi.fn(async () => {}),
+    mutating = vi.fn();
+  const result = await prepared.commit(task, fresh, () => {}, mutating);
+  expect(result.kind).toBe('removed');
+  expect(fresh.mock.calls.length).toBeGreaterThanOrEqual(4);
+  expect(mutating).toHaveBeenCalledOnce();
+  await expect(prepared.commit(task, fresh, () => {}, mutating)).rejects.toThrow(
+    MaintenanceInterrupted,
+  );
+  invalid = true;
+  prepared.dispose();
+});
+
+it('intervening owned append invalidates an exact prepared cut before any reservation or deletion', async () => {
+  const x = await fixture();
+  const prepared = await x.owner.prepareHistoryRemoval(
+    task,
+    async () => {},
+    () => {},
+    1,
+    () => {},
+  );
+  if (prepared.kind !== 'prepared-removal') throw Error(prepared.kind);
+  await x.f.appendOwn();
+  await x.append();
+  const before = await x.owner.loadAccount(task),
+    write = vi.spyOn(IDBObjectStore.prototype, 'put'),
+    del = vi.spyOn(IDBObjectStore.prototype, 'delete'),
+    mutating = vi.fn();
+  await expect(
+    prepared.commit(
+      task,
+      async () => {},
+      () => {},
+      mutating,
+    ),
+  ).rejects.toThrow(MaintenanceInterrupted);
+  expect(mutating).not.toHaveBeenCalled();
+  expect(write).not.toHaveBeenCalled();
+  expect(del).not.toHaveBeenCalled();
+  expect(await x.owner.loadAccount(task)).toEqual(before);
+});
+
+for (const boundary of ['activity', 'authority', 'journal'])
+  it(`prepared removal refuses changed ${boundary} before mutation`, async () => {
+    const x = await fixture();
+    let invalid = false;
+    const prepared = await x.owner.prepareHistoryRemoval(
+      task,
+      async () => {},
+      () => {},
+      1,
+      () => {
+        if (invalid) throw new MaintenanceInterrupted();
+      },
+    );
+    if (prepared.kind !== 'prepared-removal') throw Error(prepared.kind);
+    invalid = boundary === 'activity';
+    const fail = () => {
+      throw Error('changed ' + boundary);
+    };
+    const write = vi.spyOn(IDBObjectStore.prototype, 'put'),
+      del = vi.spyOn(IDBObjectStore.prototype, 'delete'),
+      mutating = vi.fn();
+    await expect(
+      prepared.commit(
+        task,
+        async () => {
+          if (boundary === 'authority') fail();
+        },
+        () => {
+          if (boundary === 'journal') fail();
+        },
+        mutating,
+      ),
+    ).rejects.toThrow();
+    expect(mutating).not.toHaveBeenCalled();
+    expect(write).not.toHaveBeenCalled();
+    expect(del).not.toHaveBeenCalled();
+  });

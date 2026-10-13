@@ -1,0 +1,17 @@
+{
+  "uniqueUnitTests": 191,
+  "nativeControls": 17,
+  "lifecycleJourneys": 3,
+  "deepQuietCuts": 7,
+  "deepInputInterventions": 3,
+  "typecheck": "passed",
+  "lint": "passed",
+  "format": "passed",
+  "ordinaryBuild": "passed",
+  "yjsRuntime": "passed",
+  "originIsolation": "passed",
+  "initialGzipKb": 138.3,
+  "budgetKb": 350,
+  "releaseValidation": "paused",
+  "initialLifecycleFailure": "retired read during initial durability barrier; repaired and deterministic control passed"
+}

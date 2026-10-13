@@ -688,6 +688,7 @@ export async function openAccountCaptureOwner(
         owner: ReturnType<typeof prepareAccountCustody>,
         route: CaptureRoute,
         checkJournal: () => void,
+        checkRetained: () => void,
       ) => Promise<T>,
     ) =>
       run(async (parent) => {
@@ -698,9 +699,12 @@ export async function openAccountCaptureOwner(
         )
           throw Error('Account baseline experiment is disabled');
         const activity = shadowActivity;
-        const check = () => {
-          if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
-        };
+        // This guard belongs to the owner, not the expiring storage task. Only isolated,
+        // read-only preparation evidence may retain it across task settlement.
+        const check = () =>
+          live.write(() => {
+            if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+          });
         const task: SessionTask = {
           signal: parent.signal,
           step: (effect) =>
@@ -724,7 +728,7 @@ export async function openAccountCaptureOwner(
             }
           });
         checkJournal();
-        return operation(task, owner!, route, checkJournal);
+        return operation(task, owner!, route, checkJournal, check);
       }),
     listCaptures: () =>
       run((task) =>

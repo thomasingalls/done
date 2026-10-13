@@ -6,7 +6,7 @@ import type { VerificationMemo } from './verificationMemo';
 import { MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
 import { captureError, captureRouteAt, type CaptureRoute } from './sourceCapture';
 import {
-  inspectSpool,
+  inspectSpoolSteps,
   decodeSpoolEntry,
   networkRoute,
   type SpoolState,
@@ -149,16 +149,23 @@ export function decodeDeliveryEntry(
     captureError('Noncanonical delivery record');
   return e;
 }
-export function inspectDelivery(
+export function inspectDelivery(...args: Parameters<typeof inspectDeliverySteps>): DeliveryCensus {
+  const steps = inspectDeliverySteps(...args);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
+}
+export function* inspectDeliverySteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   authority: DecisionAuthority,
   start?: SpoolReplayStart,
-): DeliveryCensus {
+): Generator<void, DeliveryCensus> {
   const prior: OpenedRecord[] = [],
     entries: DeliveryCensus['entries'] = [],
     ledger: OpenedRecord[] = [];
   for (const r of records) {
+    yield;
     let tag;
     if (r.kind === 'heads' || r.kind === 'outbound') {
       try {
@@ -182,7 +189,7 @@ export function inspectDelivery(
       if (tag === 'done/account-spool/v1') ledger.push(r);
     }
   }
-  const spool = inspectSpool(prior, route, start);
+  const spool = yield* inspectSpoolSteps(prior, route, start);
   ledger.sort((a, b) => a.seq - b.seq);
   spool.events = ledger.map((r) => r.bytes);
   return { spool, entries: entries.sort((a, b) => a.record.seq - b.record.seq), ledger };

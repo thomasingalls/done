@@ -54,6 +54,8 @@ const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   number
 >;
 type WorkTiming =
+  | 'retentionPreparation'
+  | 'retentionFenced'
   | 'finalApplyEarly'
   | 'finalApplySynchronous'
   | 'copyRecords'

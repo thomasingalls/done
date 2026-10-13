@@ -202,18 +202,21 @@ export function captureCatalog(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
 ): Map<string, Bytes> {
-  return scanCapturedSources(records, route);
+  const steps = scanCapturedSourceSteps(records, route);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
 }
 
-/** Scalar metadata used only during a synchronous census, with no decoded update buffers. */
+/** Scalar census metadata, with no decoded update buffers retained across a yield. */
 interface CapturedSourceDescription {
   sequence: number;
   epoch: number;
   sources: { actor: string; kind: SourceUpdate['kind']; length: number }[];
 }
-export function inspectCapturedSources(records: readonly OpenedRecord[], route: CaptureRoute) {
+export function* inspectCapturedSourceSteps(records: readonly OpenedRecord[], route: CaptureRoute) {
   const descriptions = new Map<string, CapturedSourceDescription>();
-  const sources = scanCapturedSources(records, route, (c, record) => {
+  const sources = yield* scanCapturedSourceSteps(records, route, (c, record) => {
     const prior = descriptions.get(c.id);
     if (prior) prior.sequence = Math.min(prior.sequence, record.seq);
     else
@@ -226,13 +229,21 @@ export function inspectCapturedSources(records: readonly OpenedRecord[], route: 
   return { sources, descriptions };
 }
 
-function scanCapturedSources(
+export function inspectCapturedSources(records: readonly OpenedRecord[], route: CaptureRoute) {
+  const steps = inspectCapturedSourceSteps(records, route);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
+}
+
+function* scanCapturedSourceSteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   describe?: (capsule: SourceCapsule, record: OpenedRecord) => void,
-): Map<string, Bytes> {
+): Generator<void, Map<string, Bytes>> {
   const catalog = new Map<string, Bytes>();
   for (const r of records) {
+    yield;
     if (r.kind === 'heads') captureError('Unexpected acceptance head before relay integration');
     if (r.kind !== 'outbound') continue;
     const c = decodeSourceCapsule(r.bytes, route);

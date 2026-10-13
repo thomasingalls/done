@@ -20,7 +20,7 @@ import {
 import { createReceiveSelection, unresolvedSelfSubmission } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
-import { countLedgerWork } from './accountLedgerMetrics';
+import { ledgerWorkStart, measureLedgerWork, countLedgerWork } from './accountLedgerMetrics';
 import { accountLedgerMode } from './accountLedgerMode';
 import { accountBatchPolicy } from './accountBatchPolicy';
 import { originalMembershipBoundaries } from './accountSuccessor';
@@ -322,7 +322,9 @@ async function openAccountReceiveOwner(
   };
   // Initialization can invalidate before the capture owner has finished constructing.
   let invalidateFinalPermission = () => {};
+  let retentionAuthority = {};
   const invalidateAuthority = (checkedTransition = false) => {
+    retentionAuthority = {};
     if (checkedTransition) baselineShadow?.authorityChanged();
     else baselineShadow?.invalidate();
     invalidateFinalPermission();
@@ -805,12 +807,88 @@ async function openAccountReceiveOwner(
           }
         }
       : undefined;
+  const retentionReady = async (task: SessionTask) => {
+    await assertCurrent(task);
+    if (pendingPromotions) return { kind: 'skipped' as const, reason: 'pending-promotion' };
+    const { retentionAttemptsSettled } = await task.wait(() => import('./retentionAttempts'));
+    if (
+      account.detached ||
+      !(await retentionAttemptsSettled(
+        task,
+        joined ? 'joined' : 'promotion',
+        options.slotId,
+        options.code,
+        expectedRecord,
+      ))
+    )
+      return { kind: 'skipped' as const, reason: 'durable-attempt' };
+    await assertCurrent(task);
+    return undefined;
+  };
+  const prepareLocalRemoval = async (expectedRevision: number) => {
+    await carrier.flushJournal();
+    const prepared = await runBaselineShadow(
+      async (task, owner, _route, checkJournal, checkActivity) => {
+        const refused = await retentionReady(task);
+        if (refused) return refused;
+        const stamp = retentionAuthority;
+        const checkRetained = () => {
+          checkActivity();
+          if (handoff || stamp !== retentionAuthority) throw new MaintenanceInterrupted();
+        };
+        return owner.carrier.prepareHistoryRemoval(
+          task,
+          () => assertCurrent(task),
+          checkJournal,
+          expectedRevision,
+          checkRetained,
+        );
+      },
+    );
+    if (prepared.kind !== 'prepared-removal') return prepared;
+    return Object.freeze({
+      kind: 'prepared-removal' as const,
+      dispose: prepared.dispose,
+      commit: () =>
+        runBaselineShadow(async (task, _owner, _route, checkJournal) => {
+          prepared.check();
+          const refused = await retentionReady(task);
+          if (refused) return refused;
+          prepared.check();
+          checkJournal();
+          const release = retentionReads.begin();
+          outstanding?.fill(0);
+          outstanding = undefined;
+          for (const r of outstandingGroup) r.fill(0);
+          outstandingGroup = [];
+          outstandingStamp = undefined;
+          invalidateFinalApply();
+          skippedHistory = undefined;
+          let mutating = false;
+          try {
+            return await prepared.commit(
+              task,
+              () => assertCurrent(task),
+              checkJournal,
+              () => {
+                mutating = true;
+              },
+            );
+          } catch (cause) {
+            if (mutating) void carrier.close().catch(() => {});
+            throw cause;
+          } finally {
+            release();
+          }
+        }),
+    });
+  };
   const installLocalBaseline =
     composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
       ? async (
           expectedRevision?: number,
           advanceEra = false,
-          operation: 'install' | 'dry-run' | 'remove' = 'install',
+          operation: 'install' | 'dry-run' = 'install',
         ) => {
           await carrier.flushJournal();
           try {
@@ -844,13 +922,6 @@ async function openAccountReceiveOwner(
               invalidateFinalApply();
               skippedHistory = undefined;
               try {
-                if (operation === 'remove')
-                  return await owner.carrier.removeHistory(
-                    task,
-                    () => assertCurrent(task),
-                    checkJournal,
-                    expectedRevision!,
-                  );
                 if (operation === 'dry-run')
                   return await owner.carrier.dryRunRetention(
                     task,
@@ -866,10 +937,7 @@ async function openAccountReceiveOwner(
                 );
               } catch (cause) {
                 // An uncertain transition must never lend a stale synchronous journal writer.
-                if (
-                  operation === 'remove' ||
-                  (advanceEra && !(cause instanceof MaintenanceInterrupted))
-                )
+                if (advanceEra && !(cause instanceof MaintenanceInterrupted))
                   void carrier.close().catch(() => {});
                 throw cause;
               } finally {
@@ -2590,6 +2658,7 @@ async function openAccountReceiveOwner(
     fetchPage,
     checkLocalBaseline,
     installLocalBaseline,
+    prepareLocalRemoval,
     prepareGroup,
     receiveGroup,
     preparedPromotion,
@@ -2664,6 +2733,7 @@ async function openReceivingWorkspace(
     resetDiscovery,
     checkLocalBaseline,
     installLocalBaseline,
+    prepareLocalRemoval,
   } = await openAccountReceiveOwner(
     options,
     options.identity.id,
@@ -2674,6 +2744,7 @@ async function openReceivingWorkspace(
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
   let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
+  let removingLocalHistory = false;
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
@@ -2898,16 +2969,53 @@ async function openReceivingWorkspace(
                   ...(import.meta.env?.['VITE_ACCOUNT_RETENTION'] === '1'
                     ? {
                         removeLocalHistory: async (expectedRevision: number) => {
-                          await workspace.whenDurable();
-                          return enqueue(new Uint8Array([1]), async (_input, promote) => {
-                            const result = await installLocalBaseline(
-                              expectedRevision,
-                              false,
-                              'remove',
+                          if (removingLocalHistory)
+                            return { kind: 'skipped' as const, reason: 'already-preparing' };
+                          removingLocalHistory = true;
+                          try {
+                            await workspace.whenDurable();
+                            // Settle the preparation storage task BEFORE joining admission. Input
+                            // may journal/apply during preparation and invalidates its private guard.
+                            const preparing = ledgerWorkStart();
+                            const prepared = await prepareLocalRemoval(expectedRevision).finally(
+                              () => measureLedgerWork('retentionPreparation', preparing),
                             );
-                            promote([]);
-                            return result;
-                          });
+                            if (prepared.kind !== 'prepared-removal') return prepared;
+                            try {
+                              return await enqueue(new Uint8Array([1]), async (_input, promote) => {
+                                const fenced = ledgerWorkStart();
+                                try {
+                                  const result = await prepared.commit();
+                                  promote([]);
+                                  return result;
+                                } catch (cause) {
+                                  if (!(cause instanceof MaintenanceInterrupted)) throw cause;
+                                  promote([]);
+                                  return {
+                                    kind: 'skipped' as const,
+                                    reason: 'activity-or-journal',
+                                  };
+                                } finally {
+                                  measureLedgerWork('retentionFenced', fenced);
+                                }
+                              });
+                            } finally {
+                              prepared.dispose();
+                            }
+                          } catch (cause) {
+                            // Retiring an old read can reject the initial durability barrier
+                            // before it has any durable handoff. This private maintenance request
+                            // yields; an uncertain mutation has already closed the carrier.
+                            if (
+                              !carrier.signal.aborted &&
+                              (cause instanceof MaintenanceInterrupted ||
+                                cause instanceof ReceiveAuthorityChanged)
+                            )
+                              return { kind: 'skipped' as const, reason: 'activity-or-journal' };
+                            throw cause;
+                          } finally {
+                            removingLocalHistory = false;
+                          }
                         },
                       }
                     : {}),

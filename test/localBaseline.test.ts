@@ -12,6 +12,7 @@ import { cryptFor } from './local-baseline/anchor-fixture';
 import { counterPayload, recordStore, type StoredRecord } from '../src/crdt/contentRecord';
 import {
   planLocalRetention,
+  sameRetentionInventory,
   inspectRetentionPlan,
   retentionPlanReport,
   verifyRetentionPlan,
@@ -44,6 +45,7 @@ import {
   publisherState,
   contextAt,
   inspectInbound,
+  inspectInboundCooperatively,
 } from '../src/crdt/inboundLedger';
 import {
   encodeSpoolEntry,
@@ -1872,4 +1874,46 @@ it('full baseline replay rechecks its owner after a CPU yield before invoking cr
   // A new operation must build and authenticate its own complete view after interruption.
   const retried = await replayFullLocalHistory(input, f.ctx);
   expect(retried.delivery.acceptedThrough).toBe(f.positions.length);
+});
+
+it('budgeted nested census retains the full result and can cancel inside delivery/spool/source work', async () => {
+  const f = await fixture([false, true, false], true);
+  const expected = inspectInbound(f.rows, f.ctx.route, f.ctx.inbound);
+  const points: number[] = [];
+  const result = await inspectInboundCooperatively(f.rows, f.ctx.route, f.ctx.inbound, async () => {
+    points.push(points.length);
+  });
+  expect(result).toEqual(expected);
+  expect(points.length).toBeGreaterThan(f.rows.length * 2);
+  for (const stop of [f.rows.length + 1, points.length - 1]) {
+    let n = 0;
+    await expect(
+      inspectInboundCooperatively(f.rows, f.ctx.route, f.ctx.inbound, async () => {
+        if (++n === stop) throw Error('retired during nested census');
+      }),
+    ).rejects.toThrow('retired during nested census');
+    expect(inspectInbound(f.rows, f.ctx.route, f.ctx.inbound)).toEqual(expected);
+  }
+});
+
+it('borrowed exact inventory comparison preserves both callers and rejects added fields and changed bytes', async () => {
+  const f = await fixture([false]),
+    g = await retentionFixture(f);
+  const first = structuredClone(g.inventory),
+    second = structuredClone(first);
+  second.rows.reverse();
+  second.metadata.reverse();
+  const saved = structuredClone(second);
+  expect(sameRetentionInventory(first, second)).toBe(true);
+  expect(second).toEqual(saved);
+  expect(first).toEqual(g.inventory);
+  (second.rows[0]!.value as StoredRecord).ct[0]! ^= 1;
+  expect(sameRetentionInventory(first, second)).toBe(false);
+  expect(first).toEqual(g.inventory);
+  const extra = structuredClone(first);
+  extra.metadata.push({ key: 'unknown', value: 'unexpected' });
+  expect(sameRetentionInventory(first, extra)).toBe(false);
+  expect(sameRetentionInventory(first, { ...first, unknown: true } as RetentionInventory)).toBe(
+    false,
+  );
 });

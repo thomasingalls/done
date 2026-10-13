@@ -22,7 +22,8 @@ async function anchor(page: Page, revision?: number) {
           () =>
             page.evaluate(async (revision) => {
               const owner = (globalThis as unknown as { __baselineOwner: Owner }).__baselineOwner;
-              await owner.workspace.whenDurable();
+              // The split owner settles admission itself and reports a retired read as a
+              // skipped attempt. An extra external barrier bypasses that retry contract.
               return owner.removeLocalHistory(revision);
             }, r),
           { timeout: 20000 },

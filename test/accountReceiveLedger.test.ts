@@ -243,7 +243,7 @@ it('cooperative and synchronous receipt censuses agree, and cancellation exposes
   expect(await inspectInboundCooperatively(rows, route, c, checkpoint)).toEqual(
     inspectInbound(rows, route, c),
   );
-  expect(checkpoint).toHaveBeenCalledTimes(rows.length);
+  expect(checkpoint.mock.calls.length).toBeGreaterThan(rows.length);
   await expect(
     inspectInboundCooperatively(rows, route, c, async () => {
       throw new MaintenanceInterrupted();

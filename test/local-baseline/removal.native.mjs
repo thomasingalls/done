@@ -262,14 +262,18 @@ test(
   },
 );
 
-const holdCrypto = (p) =>
-  p.evaluate(() => {
+const holdCrypto = (p, final = false) =>
+  p.evaluate((final) => {
     const sign = crypto.subtle.sign.bind(crypto.subtle);
     let once = true;
     crypto.subtle.sign = async (...args) => {
       if (
         once &&
-        new TextDecoder().decode(args[2]).startsWith('done/account-local-baseline-auth/draft-3\0')
+        (final
+          ? new TextDecoder().decode(args[2]).startsWith('["done/content-counter/')
+          : new TextDecoder()
+              .decode(args[2])
+              .startsWith('done/account-local-baseline-auth/draft-3\0'))
       ) {
         once = false;
         window.cryptoHeld = true;
@@ -279,7 +283,7 @@ const holdCrypto = (p) =>
       }
       return sign(...args);
     };
-  });
+  }, final);
 
 test(
   'queued input waits for removal/readback, journals before apply and preserves undo',
@@ -287,7 +291,7 @@ test(
   async (t) => {
     const { f } = await setup(t, 'remove-input'),
       original = await f.page.evaluate(() => editor.read().master);
-    await holdCrypto(f.page);
+    await holdCrypto(f.page, true);
     await begin(f.page);
     await waitPredicate(f.page, () => window.cryptoHeld);
     await f.page.evaluate(() => {
@@ -315,6 +319,85 @@ test(
     await close(f.page);
   },
 );
+
+test(
+  'input during preparation admits before held crypto settles, skips without reserving, and preserves undo/reopen',
+  { timeout: 90000 },
+  async (t) => {
+    const { f, item } = await setup(t, 'remove-preparation-input');
+    const before = await inventory(f.page),
+      original = await f.page.evaluate(() => editor.read().master);
+    await holdCrypto(f.page);
+    await begin(f.page);
+    await waitPredicate(f.page, () => window.cryptoHeld);
+    assert.deepEqual(await remove(f.page), { kind: 'skipped', reason: 'already-preparing' });
+    await f.page.evaluate(async () => {
+      const original = editor.read().master,
+        set = Storage.prototype.setItem;
+      window.journalFirst = false;
+      Storage.prototype.setItem = function (k, v) {
+        if (k.startsWith('done.pending-update.'))
+          journalFirst ||= editor.read().master === original;
+        return set.call(this, k, v);
+      };
+      await surface.input(
+        { name: 'insert', text: 'DURING PREPARATION ' },
+        { ranges: [{ anchor: 0, head: 0 }], main: 0 },
+      ).accepted;
+    });
+    assert.equal(
+      await f.page.evaluate(() => editor.read().master),
+      'DURING PREPARATION ' + original,
+    );
+    assert.equal(await f.page.evaluate(() => journalFirst), true);
+    assert.deepEqual(await inventory(f.page), before);
+    assert.ok((await journal(f.page)).length);
+    await f.page.evaluate(() => releaseCrypto());
+    assert.deepEqual(await f.page.evaluate(() => removal), {
+      kind: 'skipped',
+      reason: 'activity-or-journal',
+    });
+    assert.equal(await f.page.evaluate(() => editor.status.state), 'active');
+    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await f.page.evaluate(() => editor.command({ kind: 'redo' }).accepted);
+    await durable(f.page);
+    assert.equal(counter(await inventory(f.page)).v, 2);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await online(f.page, false);
+    assert.equal(
+      await f.page.evaluate(() => editor.read().master),
+      'DURING PREPARATION ' + original,
+    );
+    await close(f.page);
+  },
+);
+
+for (const event of ['resume', 'freeze'])
+  test(
+    `lifecycle ${event} invalidates preparation without mutation and a new attempt works`,
+    { timeout: 90000 },
+    async (t) => {
+      const { f } = await setup(t, 'remove-prepare-' + event),
+        before = await inventory(f.page);
+      await holdCrypto(f.page);
+      await begin(f.page);
+      await waitPredicate(f.page, () => window.cryptoHeld);
+      await f.page.evaluate((event) => {
+        document.dispatchEvent(new Event(event));
+        releaseCrypto();
+      }, event);
+      assert.deepEqual(await f.page.evaluate(() => removal), {
+        kind: 'skipped',
+        reason: 'activity-or-journal',
+      });
+      assert.deepEqual(await inventory(f.page), before);
+      assert.equal((await remove(f.page)).kind, 'removed');
+      await close(f.page);
+    },
+  );
 
 test(
   'closing during preparation keeps exclusion until crypto settles, with no late deletion',
@@ -422,6 +505,22 @@ test(
       f.page.evaluate((b) => retentionTestOwner.receivePage(new Uint8Array(b)), [...late]),
       /authority|changed|superseded/i,
     );
+    assert.deepEqual(await inventory(f.page), after);
+    // A composed stale read can still be registered when maintenance asks for durability.
+    // Its pre-persistence rejection must skip that attempt, without blocking local storage.
+    const interrupted = await f.page.evaluate(
+      async (bytes) => {
+        const late = retentionTestOwner.receivePage(new Uint8Array(bytes)).catch((e) => e.message);
+        const retry = opened.removeLocalHistory(1);
+        await late;
+        return { result: await retry, state: editor.status.state };
+      },
+      [...late],
+    );
+    assert.deepEqual(interrupted, {
+      result: { kind: 'skipped', reason: 'activity-or-journal' },
+      state: 'active',
+    });
     assert.deepEqual(await inventory(f.page), after);
     const fresh = await f.page.evaluate(async () => [...(await retentionTestOwner.prepareRead())]);
     const ok = answer(f, item, fresh).bytes;

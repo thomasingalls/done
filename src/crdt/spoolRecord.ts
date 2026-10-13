@@ -22,7 +22,7 @@ import {
   type OpenedRecord,
 } from './contentRecord';
 import {
-  inspectCapturedSources,
+  inspectCapturedSourceSteps,
   captureRouteAt,
   decodeSourceCapsule,
   eraseCapsule,
@@ -236,14 +236,21 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
     return captureError('Unreadable spool entry: ' + String(cause));
   }
 }
-export function inspectSpool(
+export function inspectSpool(...args: Parameters<typeof inspectSpoolSteps>): SpoolState {
+  const steps = inspectSpoolSteps(...args);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
+}
+export function* inspectSpoolSteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   start?: SpoolReplayStart,
-): SpoolState {
+): Generator<void, SpoolState> {
   const sourceRecords: OpenedRecord[] = [],
     events: { record: OpenedRecord; entry: SpoolEntry; epoch: number }[] = [];
   for (const record of records) {
+    yield;
     if (record.kind !== 'heads' && record.kind !== 'outbound') {
       sourceRecords.push(record);
       continue;
@@ -267,12 +274,13 @@ export function inspectSpool(
     }
   }
   sourceRecords.sort((a, b) => a.seq - b.seq);
-  const { sources, descriptions } = inspectCapturedSources(sourceRecords, route),
+  const { sources, descriptions } = yield* inspectCapturedSourceSteps(sourceRecords, route),
     positions: SpoolPosition[] = [],
     used = new Set((start?.consumed ?? []).map((s) => s.id + ':' + s.index));
   let attempts = start?.attempts ?? 0,
     previousEpoch = 1;
   for (const { record, entry: e, epoch } of events.sort((a, b) => a.record.seq - b.record.seq)) {
+    yield;
     if (epoch < previousEpoch) captureError('Spool authority regressed');
     previousEpoch = epoch;
     const last = positions.at(-1);

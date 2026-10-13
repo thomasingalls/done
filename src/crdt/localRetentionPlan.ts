@@ -76,7 +76,7 @@ type Candidate = Awaited<ReturnType<typeof prepareLocalBaseline>>;
 interface HeldPlan {
   inventory: RetentionInventory;
   binding: RetentionBinding;
-  context: LocalBaselineContext;
+  assertCurrent: () => void;
   counter: ContentCounter;
   candidate: Candidate;
   deleteRows: DeleteRow[];
@@ -118,18 +118,24 @@ function exact(a: unknown, b: unknown): boolean {
     ak.every((k) => exact((a as Record<string, unknown>)[k], (b as Record<string, unknown>)[k]))
   );
 }
+export function sameRetentionInventory(expected: RetentionInventory, current: RetentionInventory) {
+  // Synchronous comparison borrows bytes; only the ordering arrays are copied. No await,
+  // mutation or erasure is allowed here. The retained plan still owns a deep captured copy.
+  const ordered = (value: RetentionInventory) => ({
+    ...value,
+    rows: value.rows
+      .slice()
+      .sort((a, b) => a.store.localeCompare(b.store) || Number(a.key) - Number(b.key)),
+    metadata: value.metadata.slice().sort((a, b) => key(a.key).localeCompare(key(b.key))),
+  });
+  return exact(ordered(expected), ordered(current));
+}
 export function assertRetentionInventory(
   expected: RetentionInventory,
   current: RetentionInventory,
 ) {
-  const actual = clone(current),
-    before = clone(expected);
-  try {
-    if (!exact(before, actual)) corrupt('Retention inventory changed; replan required.');
-  } finally {
-    eraseVerified(actual);
-    eraseVerified(before);
-  }
+  if (!sameRetentionInventory(expected, current))
+    corrupt('Retention inventory changed; replan required.');
 }
 const held = (plan: LocalRetentionPlan): HeldPlan =>
   plans.get(plan) ?? corrupt('Retention plan expired or unknown.');
@@ -153,7 +159,7 @@ export function verifyRetentionPlan(
   binding: RetentionBinding,
 ) {
   const p = held(plan);
-  p.context.assertCurrent();
+  p.assertCurrent();
   if (
     binding.lifetime !== p.binding.lifetime ||
     binding.intent !== p.binding.intent ||
@@ -165,7 +171,7 @@ export function verifyRetentionPlan(
 export function disposeRetentionPlan(plan: LocalRetentionPlan) {
   const p = plans.get(plan);
   if (p) {
-    // Context contains owner-held key capabilities; it is never part of the erased owned buffers.
+    // The guard may close over owner capabilities; erase only the plan-owned data buffers.
     eraseVerified(p.inventory);
     eraseVerified(p.counter);
     eraseVerified(p.candidate);
@@ -184,6 +190,9 @@ export async function planLocalRetention(
   context: LocalBaselineContext,
   crypt: ReadCrypto,
   binding: RetentionBinding,
+  // The composed owner can bind completed evidence to a lifetime/activity guard instead of an
+  // expiring preparation task. Context/task checks still govern every preparation effect.
+  retainCurrent: () => void = () => context.assertCurrent(),
 ): Promise<
   LocalRetentionPlan | { kind: 'skipped'; reason: 'capacity' | 'ineligible' | 'history-required' }
 > {
@@ -395,10 +404,11 @@ export async function planLocalRetention(
     context.assertCurrent();
     task.step(() => {});
     const plan: LocalRetentionPlan = Object.freeze({ kind: 'local-retention-dry-run' });
+    retainCurrent();
     plans.set(plan, {
       inventory,
       binding,
-      context,
+      assertCurrent: retainCurrent,
       counter,
       candidate,
       deleteRows,

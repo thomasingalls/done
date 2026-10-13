@@ -1,0 +1,203 @@
+{
+  "depth": 1201,
+  "bundles": {
+    "reference": "fbb13571caf8448904766293a4d140773844d0492dc95f50a0e2a32736d7fbdf",
+    "candidate": "55bb244cddff751e0a3f4a878684614cb343fb69606795a7f1dc216f649962ee"
+  },
+  "quiet": {
+    "reference": {
+      "samples": 3,
+      "totalMs": {
+        "min": 5617,
+        "median": 5706,
+        "max": 5808
+      },
+      "maxTaskMs": {
+        "min": 436,
+        "median": 436,
+        "max": 450
+      },
+      "maxGapMs": {
+        "min": 436.1000003814697,
+        "median": 442.8999996185303,
+        "max": 451.20000076293945
+      },
+      "longTaskCounts": [
+        9,
+        9,
+        9
+      ],
+      "preparationMs": [],
+      "fencedMs": [],
+      "passed": true
+    },
+    "candidate": {
+      "samples": 3,
+      "totalMs": {
+        "min": 5926,
+        "median": 6029,
+        "max": 6050
+      },
+      "maxTaskMs": {
+        "min": 96,
+        "median": 97,
+        "max": 100
+      },
+      "maxGapMs": {
+        "min": 99.60000038146973,
+        "median": 100.89999961853027,
+        "max": 103.70000076293945
+      },
+      "longTaskCounts": [
+        6,
+        5,
+        6
+      ],
+      "preparationMs": [
+        4996.700000762939,
+        4956.400001525879,
+        5006.10000038147
+      ],
+      "fencedMs": [
+        1029.5,
+        965.8000011444092,
+        1040.7000007629395
+      ],
+      "passed": true
+    },
+    "candidate-4x": {
+      "samples": 1,
+      "totalMs": {
+        "min": 25008,
+        "median": 25008,
+        "max": 25008
+      },
+      "maxTaskMs": {
+        "min": 533,
+        "median": 533,
+        "max": 533
+      },
+      "maxGapMs": {
+        "min": 722.5,
+        "median": 722.5,
+        "max": 722.5
+      },
+      "longTaskCounts": [
+        15
+      ],
+      "preparationMs": [
+        23134.10000038147
+      ],
+      "fencedMs": [
+        1860.2000007629395
+      ],
+      "passed": true
+    }
+  },
+  "interrupted": [
+    {
+      "arm": "reference-input",
+      "ms": 5625,
+      "result": {
+        "kind": "removed",
+        "revision": 1,
+        "removed": 8439
+      },
+      "inputLatency": 5567.10000038147,
+      "journalBeforeApply": true,
+      "undoRedo": true,
+      "recovered": true,
+      "phase": "passed"
+    },
+    {
+      "arm": "candidate-input",
+      "ms": 84,
+      "result": {
+        "kind": "skipped",
+        "reason": "activity-or-journal"
+      },
+      "inputLatency": 9.399999618530273,
+      "journalBeforeApply": true,
+      "undoRedo": true,
+      "recovered": true,
+      "phase": "passed"
+    },
+    {
+      "arm": "candidate-input-4x",
+      "ms": 125,
+      "result": {
+        "kind": "skipped",
+        "reason": "activity-or-journal"
+      },
+      "inputLatency": 39.5,
+      "journalBeforeApply": true,
+      "undoRedo": true,
+      "recovered": true,
+      "phase": "passed"
+    }
+  ],
+  "nativeCrypto": {
+    "reference": [
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      }
+    ],
+    "candidate": [
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      }
+    ],
+    "candidate-4x": [
+      {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      }
+    ]
+  }
+}
