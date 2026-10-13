@@ -3,7 +3,9 @@
 The [2026-10-13 baseline format/replay phase](./account-local-baseline-replay.md) implements an
 experimental in-memory codec, authenticated candidate builder and pure reader. The subsequent
 [shadow integration](./account-local-baseline-shadow.md) adds an explicit opt-in owner comparison;
-the ordinary application reader still uses full history. No persistent baseline, reader fence,
+the [transition/reader phase](./account-local-baseline-transitions.md) extends authority/checkpoint
+continuation and fences consumers that still require full history. The ordinary application reader
+still uses full history. No persistent baseline, reader fence,
 migration, installer or deletion is enabled. The separate warm-load repair changes owner-local reuse
 only. General release validation remains paused.
 
@@ -99,11 +101,12 @@ trimmed. Prove undo/redo and subsequent publication across the retention boundar
 The first codec and pure replay experiment is implemented with the narrower eligibility and
 limitations recorded in the [phase contract](./account-local-baseline-replay.md). Differential tests
 compare full history with baseline plus suffix and the next source/position selection. An unresolved
-cut, new authority after the cut, or unsupported historical detail requires intact full history.
+cut or unavailable historical detail still requires intact full history. Draft 2 verifies supported
+authority/checkpoint changes from the retained origin and suffix; it does not persist that origin.
 
 The [owned shadow integration](./account-local-baseline-shadow.md) now runs explicitly under the real
 Account lifetime with all history retained. Before deletion, resolve
-retention-aware transitions/consumers, the authenticated durable pointer, journal and old-read fencing,
+the remaining fenced consumers, authenticated durable pointer, journal and old-read/checkpoint fencing,
 and the exact atomic installer with crash/restart checks. Measure equal-workspace fixtures at multiple
 prefix lengths when controlled timing is available. No deletion or format rollout is authorized solely
 by this design note.

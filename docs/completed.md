@@ -13828,3 +13828,32 @@ the existing bounded custody identity contract. No comparative timing claim is m
 native joined-device evidence, before durable encrypted anchoring, compatibility fences and an atomic
 installer. Intact-history fallback remains safe only while that history is retained. No actual
 deletion or installer undo continuity is established. `docs/progress.md` remains untouched.
+
+
+### Local baseline authority/checkpoint transitions and reader boundaries — 2026-10-13
+
+**Boundary.** The prior owned shadow phase is signed as **`962329a3`**, verified `G`. This phase remains
+uncommitted and opt-in. No baseline installation, history deletion, stored/wire format migration,
+live-reader replacement, deployment or release campaign. [Contract and reader dispositions](./account-local-baseline-transitions.md).
+
+**Change.** Draft 2 binds immutable custody/account scopes separately from the verified authority
+and local installation-cut digest. Replay extends exact witness/epoch and accepted-envelope boundaries,
+then authenticates later checkpoint installations through the existing verifier. Retained self receipts,
+absolute position offsets and consumed indexes survive into self receive/warm indexes. Old reads and
+checkpoint heads without retained proof require history; remaining full-history consumers explicitly
+reject a reduced spool. A completed shadow candidate can continue across a checked authority change;
+in-flight work still invalidates, and resume/close erase it.
+
+**Evidence.** 99 focused Vitest tests, 26 protocol/checkpoint Node checks, the original native shadow
+checks and a new packaged original/joined-owner journey. The latter covers checkpoint sequence 1,
+continued original-owner replay through admission/cancellation epochs 4/5, and cold reopening both
+owners using full history. Native testing fixed the draft's assumption that joining local custody IDs
+must equal account writing IDs. The existing resume test also caught and fixed candidate retention
+across generic lifecycle invalidation. Two pre-existing stale protocol control anchors were repaired.
+[Logs and source hashes](./development-evidence/2026-10-13-local-baseline-transitions/README.md).
+No comparative timing or installer/undo claim is made.
+
+**Next.** Durable encrypted baseline/active-pointer and compatibility-fence design, then a non-deleting
+installer/cold reader and adapters for the currently fenced consumers. Old-operation/checkpoint proof
+retention, exact journal/restore handling and atomic removal remain later prerequisites. Release
+validation stays paused; `docs/progress.md` remains untouched.

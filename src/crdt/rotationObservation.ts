@@ -1,3 +1,4 @@
+import { requireFullSpool } from './retainedHistory';
 import { withAccountProgressCustody } from './accountProgressCustody';
 import {
   isRecoveryDetachment,
@@ -329,6 +330,7 @@ export async function verifyDetachedPrefix(
   spool: import('./spoolRecord').SpoolState,
   subtle: SubtleCrypto,
 ) {
+  requireFullSpool(spool);
   const verifier = (
     await import('../../account-protocol/admissionHistory')
   ).createAdmissionPrefixVerifier(history, subtle);

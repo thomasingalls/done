@@ -1,0 +1,229 @@
+{
+  "phase": "Local baseline authority/checkpoint transitions and reader boundaries",
+  "parent": "962329a36827027f97dc1e8241f02d42f800160a",
+  "parentSignature": "G",
+  "node": "v26.11.1",
+  "commands": {
+    "focused": "node node_modules/vitest/vitest.mjs run test/localBaseline.test.ts test/warmContent.test.ts test/writeSession.test.ts test/spoolRecord.test.ts test/spoolBatch.test.ts test/incrementalLedger.test.ts test/accountReceiveLedger.test.ts test/accountSelfReceive.test.ts test/accountConsumerPrimitives.test.ts test/accountDelivery.test.ts test/historyReplay.test.ts",
+    "protocol": "node --test --test-timeout=30000 test/account-successor/history.test.mjs test/account-successor/history-controls.test.mjs test/account-membership/adoption.test.mjs test/account-membership/rotation-history.test.mjs test/account-history/install.test.mjs",
+    "native": "node node_modules/@playwright/test/cli.js test --config playwright.local-baseline.config.ts",
+    "shadow-native": "ACCOUNT_BASELINE_SHADOW=1 node --test --test-timeout=60000 test/local-baseline/shadow.native.mjs",
+    "disabled": "ACCOUNT_BASELINE_SHADOW=0 node --test --test-name-pattern='ordinary composed workspace' --test-timeout=60000 test/local-baseline/shadow.native.mjs",
+    "build": "node scripts/check-yjs-patch.mjs && node node_modules/vite/bin/vite.js build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs",
+    "typecheck": "node node_modules/typescript/bin/tsc -b --noEmit",
+    "whitespace": "git diff --check",
+    "lint": "node node_modules/oxlint/bin/oxlint --react-plugin account-protocol/admissionHistory.ts playwright.local-baseline.config.ts src/crdt/accountMembership.ts src/crdt/accountReceive.ts src/crdt/accountSuccessor.ts src/crdt/accountSyncState.ts src/crdt/inboundLedger.ts src/crdt/incrementalAccountLedger.ts src/crdt/localBaselineAuthority.ts src/crdt/localBaselineRecord.ts src/crdt/localBaselineReplay.ts src/crdt/localBaselineShadow.ts src/crdt/retainedHistory.ts src/crdt/rotationObservation.ts src/crdt/spoolRecord.ts test/account-successor/history-controls.test.mjs test/local-baseline/fixtures.mjs test/local-baseline/shadow.native.mjs test/local-baseline/transition-owner.spec.ts test/localBaseline.test.ts test/warmContent.test.ts",
+    "format": "node node_modules/oxfmt/bin/oxfmt --check account-protocol/admissionHistory.ts playwright.local-baseline.config.ts src/crdt/accountMembership.ts src/crdt/accountReceive.ts src/crdt/accountSuccessor.ts src/crdt/accountSyncState.ts src/crdt/inboundLedger.ts src/crdt/incrementalAccountLedger.ts src/crdt/localBaselineAuthority.ts src/crdt/localBaselineRecord.ts src/crdt/localBaselineReplay.ts src/crdt/localBaselineShadow.ts src/crdt/retainedHistory.ts src/crdt/rotationObservation.ts src/crdt/spoolRecord.ts test/account-successor/history-controls.test.mjs test/local-baseline/fixtures.mjs test/local-baseline/shadow.native.mjs test/local-baseline/transition-owner.spec.ts test/localBaseline.test.ts test/warmContent.test.ts"
+  },
+  "changedSourceFiles": [
+    "account-protocol/admissionHistory.ts",
+    "playwright.local-baseline.config.ts",
+    "src/crdt/accountMembership.ts",
+    "src/crdt/accountReceive.ts",
+    "src/crdt/accountSuccessor.ts",
+    "src/crdt/accountSyncState.ts",
+    "src/crdt/inboundLedger.ts",
+    "src/crdt/incrementalAccountLedger.ts",
+    "src/crdt/localBaselineAuthority.ts",
+    "src/crdt/localBaselineRecord.ts",
+    "src/crdt/localBaselineReplay.ts",
+    "src/crdt/localBaselineShadow.ts",
+    "src/crdt/retainedHistory.ts",
+    "src/crdt/rotationObservation.ts",
+    "src/crdt/spoolRecord.ts",
+    "test/account-successor/history-controls.test.mjs",
+    "test/local-baseline/fixtures.mjs",
+    "test/local-baseline/shadow.native.mjs",
+    "test/local-baseline/transition-owner.spec.ts",
+    "test/localBaseline.test.ts",
+    "test/warmContent.test.ts"
+  ],
+  "sources": [
+    {
+      "path": "account-protocol/admissionHistory.ts",
+      "sha256": "37d2961c41be794a834399a7b5878d5066f952930dcc0e69592a4f8e1bb15d19"
+    },
+    {
+      "path": "playwright.local-baseline.config.ts",
+      "sha256": "2c3f46b7685d7a34610172efeeb163dc399577f88eea57d6c86966794ae4f80a"
+    },
+    {
+      "path": "src/crdt/accountMembership.ts",
+      "sha256": "238c3a4a5e02144cfdaa2f7c1347132f501d13ea278e2e658acb52da07578808"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "814ccb3b0a76bb3c87a51012a12932d070674116f91ba4f0f698dba18850eb9a"
+    },
+    {
+      "path": "src/crdt/accountSuccessor.ts",
+      "sha256": "ec1645a73beaaa0f0b359e8640d2155db5a0fbdc14ec8d9c3754f5de4d7af5cb"
+    },
+    {
+      "path": "src/crdt/accountSyncState.ts",
+      "sha256": "ebdef78b0f4c0ebbab286f277d4da806c0ebe96fadfce794edef4e46bb9ce22b"
+    },
+    {
+      "path": "src/crdt/inboundLedger.ts",
+      "sha256": "4d1db672f94bd11ed89a084c126654a5037bda746b6bb1511d7c3f281881dc8a"
+    },
+    {
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "bb093fdc30ccbe4a0483229d9b60d1763157fafee8b5a92df1889137cc73aaf3"
+    },
+    {
+      "path": "src/crdt/localBaselineAuthority.ts",
+      "sha256": "42ae6387576ca27838cbb1f6b8029ba08d4a17268859eca67e588193a3dba1a5"
+    },
+    {
+      "path": "src/crdt/localBaselineRecord.ts",
+      "sha256": "8114ee5d83f2cdcf369a7c9868bb0406ba15d0109494e713d18030db5274ab8f"
+    },
+    {
+      "path": "src/crdt/localBaselineReplay.ts",
+      "sha256": "cee9341289311e8a7717547216cbbbc2367f6465d6d713ba23caddf1b72a2202"
+    },
+    {
+      "path": "src/crdt/localBaselineShadow.ts",
+      "sha256": "cb60a10f6e14c85ec7325b8a6cf0ef27a6bb995839bbcdd7ace33db292dfc89f"
+    },
+    {
+      "path": "src/crdt/retainedHistory.ts",
+      "sha256": "aca36538cfe4865d45d29665556f81a9a02bfe49d439d3f960e5d5f5902e73ae"
+    },
+    {
+      "path": "src/crdt/rotationObservation.ts",
+      "sha256": "1da1257a0f2e8fa15a7db62b75ec868c7f9057d0d7c337647760d179a71f471a"
+    },
+    {
+      "path": "src/crdt/spoolRecord.ts",
+      "sha256": "438cca8267ed608d6fa0387e80f3a057fec196462b070c00e2ab5ea01f3a47e6"
+    },
+    {
+      "path": "test/account-successor/history-controls.test.mjs",
+      "sha256": "adb7c00222633a7745ae9ec2c74144afa65717b13e25f4421bc54a0d5eef3144"
+    },
+    {
+      "path": "test/account-sync/fixtures.mjs",
+      "sha256": "38d1ec490d2d0e8fafdba5fafd59cb6345aea9446c8296ab94eedec99ed0e9ac"
+    },
+    {
+      "path": "test/local-baseline/fixtures.mjs",
+      "sha256": "2c44c0732fdbe7b302f222ef61bf7b65fd586b9fe1c43f63b089938e6974b3a9"
+    },
+    {
+      "path": "test/local-baseline/shadow.native.mjs",
+      "sha256": "6807bc59f422578948703e20570d17cda39f5c1f651db686e81b1dbeb41fab7f"
+    },
+    {
+      "path": "test/local-baseline/transition-owner.spec.ts",
+      "sha256": "4bee70a811394657f69f049196d7d0c83f25f466a131f2d30a92e0225f37b7fc"
+    },
+    {
+      "path": "test/localBaseline.test.ts",
+      "sha256": "7ff9f20ece9d34d9caf643eca968f176c8b17782c23cb124d48ce5cde2a70721"
+    },
+    {
+      "path": "test/warmContent.test.ts",
+      "sha256": "8d59c0dc236e8bc8fea0bc426ad287643e33b8f4037dd88f3389b8eea0bb6dab"
+    }
+  ],
+  "logs": [
+    {
+      "file": "focused.log.gz",
+      "uncompressedBytes": 239,
+      "sha256": "45f82c9a8519baaf815d719eb53d3b922bc17edc1f2c3d680601402332948311",
+      "uncompressedSha256": "474e0ec0ca790ff99b63d96aee71671974b1842133f254ae6e8c95fe93f9d8f5"
+    },
+    {
+      "file": "protocol.log.gz",
+      "uncompressedBytes": 3310,
+      "sha256": "f813fa59ee531bb515ae3508c2aa8c0904b5ba6b14b49f9d79f9d5e0cbd50874",
+      "uncompressedSha256": "bec12547b617d29a95df6b9cef4446462d863bf52658c5db2d956f56bb854f5d"
+    },
+    {
+      "file": "native.log.gz",
+      "uncompressedBytes": 666,
+      "sha256": "2b0baa35f5000deef419888fe39bde28fd2e4f5e05697e56253be00e99e0c28a",
+      "uncompressedSha256": "d846039f75f5ade590e5143989b4cdb84a84bd995e0216ade1e2f40e621b352d"
+    },
+    {
+      "file": "shadow-native.log.gz",
+      "uncompressedBytes": 1396,
+      "sha256": "5207e54d2213182ffa6366eed62714e2c0288d64eb7b4d5a44abfd98617ae123",
+      "uncompressedSha256": "8a955c29e7400511470d5684d0f9b9ed08507eba93b2ab0c58b18eea647edf0d"
+    },
+    {
+      "file": "disabled.log.gz",
+      "uncompressedBytes": 635,
+      "sha256": "d4ae571c7f97a46524834a172ec23923c32f1d8a4655a89e8ac40a9a86cef7eb",
+      "uncompressedSha256": "3d8444950408035a1bccc8529d7493c168f5c15b54b7d46f7927075b319cf741"
+    },
+    {
+      "file": "typecheck.log.gz",
+      "uncompressedBytes": 0,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "lint.log.gz",
+      "uncompressedBytes": 0,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "format.log.gz",
+      "uncompressedBytes": 113,
+      "sha256": "45ca9271632172805589a341ec66c02d5a1b4986aa8b7b829f95a6afd50ba24e",
+      "uncompressedSha256": "c2062a1d3801d21fccc6a6780105a9497220c6a6d3b88501353fe566190f40af"
+    },
+    {
+      "file": "build.log.gz",
+      "uncompressedBytes": 4634,
+      "sha256": "5fdccf5332c7be15cd43f109f95595c4424d6ce6ea0018cbda9b2530016920ec",
+      "uncompressedSha256": "c0627559ea05d167995700f2d26a538c65670cccad197bfca0866ea5de45f6ac"
+    },
+    {
+      "file": "whitespace.log.gz",
+      "uncompressedBytes": 0,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "outcomes": {
+    "vitest": {
+      "files": 11,
+      "passed": 99,
+      "baselineCases": 22,
+      "generatedCutHistories": 30
+    },
+    "protocol": {
+      "passed": 26
+    },
+    "packagedNative": {
+      "passed": 1
+    },
+    "shadowNative": {
+      "passed": 6,
+      "intentionalSkipped": 1
+    },
+    "ordinaryNative": {
+      "passed": 1
+    },
+    "typecheck": 0,
+    "lint": 0,
+    "format": 0,
+    "build": 0,
+    "whitespace": 0,
+    "initialGzipJsKB": 137.4
+  },
+  "limits": [
+    "Shadow-only, opt-in; no persistent baseline or deletion.",
+    "Full-history readers remain authoritative and explicitly reject a reduced spool where unsupported.",
+    "No timing or release-qualification claim on the busy host.",
+    "Native original/joined checkpoint and admission/cancellation continuity; rotation/retry continuity is pure signed-fixture evidence.",
+    "Native undo tests exercise editing during shadow work, not installation of a baseline.",
+    "Only final passing logs retained; exploratory red logs were overwritten.",
+    "Disposable generated service state/builds/browser artifacts stay ignored and are not evidence payloads."
+  ]
+}

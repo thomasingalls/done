@@ -1,3 +1,4 @@
+import { requireFullSpool } from './retainedHistory';
 /** Private v7 append-only allocation ledger. Outer StoredRecord authenticates these bytes. */
 import {
   verifyHistoryDecision,
@@ -59,7 +60,7 @@ export interface SpoolPosition {
 }
 export interface SpoolState {
   /** Experimental local-baseline reader only; ordinary replay always starts at zero. */
-  origin?: { position: number; link: string; consumed: readonly { id: string; index: number }[] };
+  origin?: SpoolReplayStart;
   sources: Map<string, Bytes>;
   positions: SpoolPosition[];
   attempts: number;
@@ -67,6 +68,8 @@ export interface SpoolState {
   events: Bytes[];
 }
 export interface SpoolReplayStart {
+  /** Authenticated baseline frontier; never obtained from an unverified cursor. */
+  receipt?: { previous: string; envelope: Bytes; proof: Bytes };
   position: number;
   link: string;
   attempts: number;
@@ -364,7 +367,17 @@ export function inspectSpool(
       ? {
           origin: {
             position: start.position,
+            attempts: start.attempts,
             link: start.link,
+            ...(start.receipt
+              ? {
+                  receipt: {
+                    previous: start.receipt.previous,
+                    envelope: start.receipt.envelope.slice(),
+                    proof: start.receipt.proof.slice(),
+                  },
+                }
+              : {}),
             consumed: start.consumed.map((s) => ({ ...s })),
           },
         }
@@ -499,6 +512,7 @@ export async function verifySpoolWitness(
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
 ): Promise<void> {
+  requireFullSpool(state);
   if (counter.v === 1) {
     if (state.events.length) captureError('Spool records without activated metadata');
     return; // Interrupted v7 activation, before any ledger grants.

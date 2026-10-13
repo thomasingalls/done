@@ -7,7 +7,10 @@ import { decodePositionResponse, ZERO_REFUSAL } from '../../account-protocol/pos
 import { decodeSourceCapsule, eraseCapsule, type CaptureRoute } from './sourceCapture';
 import { positionSources } from './spoolRecord';
 export function requireSelfEnvelope(census: DeliveryCensus, position: number, envelope: Bytes) {
-  const local = census.spool.positions.find((p) => p.position === position)?.wire;
+  const local =
+    position === census.spool.origin?.position
+      ? census.spool.origin.receipt?.envelope
+      : census.spool.positions.find((p) => p.position === position)?.wire;
   if (!local || hex(local) !== hex(envelope))
     captureError('Unsupported branched or missing self-stream history');
 }

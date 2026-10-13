@@ -1,6 +1,5 @@
 /** Experimental pure reader/builder. No IndexedDB, journal, install, deletion or live-owner wiring. */
 import { decodeNetworkEnvelope, openNetworkEnvelope } from '../../account-protocol/envelope';
-import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
 import { decodePositionResponse, ZERO_REFUSAL } from '../../account-protocol/positionDecision';
 import { unhex } from '../../account-protocol/recovery';
 import { type InboundContext, type InboundLifetime } from './accountInbound';
@@ -10,6 +9,12 @@ import {
   type InstalledMembership,
 } from './accountMembership';
 import { verifyInstalledSuccessor, type InstalledSuccessor } from './accountSuccessor';
+import {
+  baselineAuthorityState,
+  baselineScope,
+  verifyBaselineAuthority,
+} from './localBaselineAuthority';
+import { RetiredHistoryRequired } from './retainedHistory';
 import { advanceSelfReceive } from './accountSyncState';
 import {
   parseCounter,
@@ -18,7 +23,7 @@ import {
   type ContentIdentity,
   type OpenedRecord,
 } from './contentRecord';
-import { guardedSubtle, hex, utf8, type Bytes } from './custodyCrypto';
+import { guardedSubtle, hex, type Bytes } from './custodyCrypto';
 import {
   emptyDelivery,
   verifyDelivery,
@@ -31,7 +36,6 @@ import {
   emptyInbound,
   inspectInbound,
   publisherContext,
-  publisherState,
   verifyInboundCoverage,
   verifyInboundLedger,
 } from './inboundLedger';
@@ -48,7 +52,6 @@ import {
   positionSources,
   verifySpool,
   verifySpoolWitness,
-  extendSpoolWitness,
   networkRoute,
   type SpoolReplayStart,
 } from './spoolRecord';
@@ -101,9 +104,12 @@ const canonical = (value: unknown): unknown =>
 function captureContext(c: LocalBaselineContext): LocalBaselineContext {
   c.assertCurrent();
   const b = c.inbound;
+  // Joined custody keeps local IDs; its authenticated installation bridges them to the account.
+  // Both scopes are bound in baselineScope, rather than assuming the IDs are equal.
   if (
-    c.identity.workspaceId !== c.route.workspace ||
-    c.identity.principalId !== c.route.principal ||
+    (c.installation.kind === 'original' &&
+      (c.identity.workspaceId !== c.route.workspace ||
+        c.identity.principalId !== c.route.principal)) ||
     b.authority.workspace !== c.route.workspace ||
     b.publisher.id !== c.route.credential ||
     b.publisher.principal !== c.route.principal ||
@@ -143,30 +149,6 @@ function captureContext(c: LocalBaselineContext): LocalBaselineContext {
 function clearContext(c: LocalBaselineContext) {
   c.inbound.generationKey.fill(0);
   for (const k of c.inbound.retainedGenerationKeys?.values() ?? []) k.fill(0);
-}
-async function authorityHash(c: LocalBaselineContext) {
-  const b = c.inbound;
-  return hash(
-    utf8(
-      JSON.stringify(
-        canonical([
-          'done/local-baseline-authority/draft-1',
-          c.identity,
-          c.route,
-          b.baseline,
-          b.baselineHeads ?? [],
-          b.service,
-          b.authority,
-          b.creatingCredential,
-          b.reader,
-          b.publisher,
-          b.generation,
-          b.history ?? null,
-          c.installation,
-        ]),
-      ),
-    ),
-  );
 }
 const keys = (c: LocalBaselineContext) =>
   new Map([
@@ -329,7 +311,8 @@ export async function prepareLocalBaseline(
       generation: captured.counter.active_gen,
       revision: (previous?.revision ?? 0) + 1,
       predecessor: previous?.hash ?? ZERO_REFUSAL,
-      authority: await authorityHash(c),
+      authority: await baselineScope(c),
+      authorityState: await baselineAuthorityState(c),
       cut: {
         intent: captured.counter.intent,
         sequence: captured.records.at(-1)?.seq ?? 0,
@@ -482,7 +465,7 @@ export async function replayLocalBaseline(
       refuse('integrity');
     if (
       JSON.stringify(canonical(c.identity)) !== JSON.stringify(canonical(b.identity)) ||
-      b.authority !== (await authorityHash(c)) ||
+      b.authority !== (await baselineScope(c)) ||
       b.cut.intent !== tail.counter.intent ||
       b.generation !== tail.counter.active_gen ||
       tail.counter.next_seq < b.cut.nextSequence ||
@@ -522,15 +505,10 @@ export async function replayLocalBaseline(
       link: b.own.link,
       attempts: b.own.attempts,
       consumed,
+      ...(b.own.receipt ? { receipt: b.own.receipt } : {}),
     };
     const census = inspectInbound(records, c.route, c.inbound, start);
-    // Same authority only. New membership/checkpoint installations need the full-history reader in this slice.
-    if (census.installations.length) refuse('history-required');
-    let witness = { ...b.cut.witness };
-    for (const event of census.delivery.spool.events) {
-      if (membershipEventEpoch(event) !== c.route.epoch) refuse('history-required');
-      witness = await extendSpoolWitness(witness, event, guardedSubtle(c.assertCurrent));
-    }
+    const witness = await verifyBaselineAuthority(b, census.delivery.spool, c);
     if (!sameSpoolWitness(witness, tail.counter.spool)) refuse('integrity');
     const own = emptyInbound();
     own.peers = new Map();
@@ -555,6 +533,7 @@ export async function replayLocalBaseline(
         if (!cut) refuse('integrity');
       }
       const state = s.publisher === c.route.credential ? own : emptyInbound();
+      state.retiredThrough = s.position;
       state.prefix = { position: s.position, link: s.link, observedThrough: s.observedThrough };
       if (s.startingPoint) state.startingPoint = { ...s.startingPoint };
       if (s.receipt) state.retained.set(s.position, s.receipt);
@@ -581,12 +560,6 @@ export async function replayLocalBaseline(
         c,
       );
       deliveryStart.responses.set(b.own.position, [b.own.receipt.proof]);
-    }
-    for (const e of census.entries) {
-      const request = decodeInboundRequest(e.event.request),
-        state = publisherState(own, c.inbound, request.publisher);
-      // An old in-flight answer cannot be justified with discarded receipt evidence.
-      if (request.after < state.prefix.position) refuse('history-required');
     }
     await verifySpool(
       census.delivery.spool,
@@ -634,6 +607,9 @@ export async function replayLocalBaseline(
     }
     c.assertCurrent();
     return { census, delivery, inbound, snapshot: documentState(records, false) };
+  } catch (e) {
+    if (e instanceof RetiredHistoryRequired) refuse('history-required');
+    throw e;
   } finally {
     payload?.fill(0);
     mac?.fill(0);

@@ -1,3 +1,4 @@
+import { requireFullSpool } from './retainedHistory';
 import {
   parseCertificationSuccessor,
   type CertificationSuccessor,
@@ -140,6 +141,7 @@ export async function verifyInstalledSuccessor(
   reuse?: { memo: VerificationMemo; current(): void },
   membership?: InstalledMembership,
 ): Promise<void> {
+  requireFullSpool(spool);
   if (membership) {
     if (!installed?.certification || !route.history)
       throw Error('Membership adoption requires original certification');

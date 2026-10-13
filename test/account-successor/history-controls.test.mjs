@@ -19,7 +19,7 @@ for (const control of ['proof-issuance-boundary', 'prefix-link'])
       if (file === 'admissionHistory.ts') {
         const expression =
           control === 'proof-issuance-boundary'
-            ? /response\.head\.epoch !== \(response\.head\.position <= h\.boundary\.position \? 1 : 2\) \|\|/
+            ? /response\.head\.epoch !== expected\.tip \|\|/
             : / \|\|\s*link !== h\.boundary\.link/;
         assert.equal(
           [...code.matchAll(new RegExp(expression.source, 'g'))].length,
@@ -27,6 +27,22 @@ for (const control of ['proof-issuance-boundary', 'prefix-link'])
           'unique omission anchor',
         );
         code = code.replace(expression, '');
+        if (control === 'proof-issuance-boundary') {
+          // Both the exact epoch check and selected verification authority enforce issuance.
+          // Model the old unsafe policy of trusting the proof's signed epoch instead.
+          const issuance = 'issuance = expected;';
+          assert.equal(code.split(issuance).length, 2);
+          code = code.replace(
+            issuance,
+            'issuance = h.authorities.find((a) => a.tip === response.head.epoch) ?? expected;',
+          );
+        }
+        if (control === 'prefix-link') {
+          const appendGuard =
+            /if \(h\.boundaries\.some\(\(b\) => position === b\.position && link !== b\.link\)\)\s*throw Error\('Admission prefix boundary changed'\);/;
+          assert.equal([...code.matchAll(new RegExp(appendGuard.source, 'g'))].length, 1);
+          code = code.replace(appendGuard, '');
+        }
       }
       writeFileSync(join(dir, file), code);
     }
@@ -60,7 +76,8 @@ for (const control of ['proof-issuance-boundary', 'prefix-link'])
       const different = wire(f, 1, 1, 'different accepted history'),
         good = production.createAdmissionPrefixVerifier(normal),
         bad = mutant.createAdmissionPrefixVerifier(changed);
-      await good.append(different.bytes); // Production verifies the real signature, digest and route.
+      // The current verifier rejects at append, before finish; the historical check was stale.
+      await assert.rejects(good.append(different.bytes), /prefix boundary changed/);
       assert.throws(() => good.finish());
       await bad.append(different.bytes);
       const forbidden = bad.finish();

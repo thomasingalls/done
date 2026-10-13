@@ -15,7 +15,14 @@ import { eraseVerified, sameBytes } from './verifiedRecords';
 import { MaintenanceInterrupted } from './contentMaintenance';
 
 export type BaselineShadowResult =
-  | { kind: 'matched'; mode: 'created' | 'continued'; baselineBytes: number; suffixRows: number }
+  | {
+      kind: 'matched';
+      mode: 'created' | 'continued';
+      baselineBytes: number;
+      suffixRows: number;
+      authorityEpoch: number;
+      historySequence: number;
+    }
   | { kind: 'skipped'; reason: 'activity-or-journal' | 'ineligible' | 'history-required' | 'scope' }
   | { kind: 'refused'; reason: 'draft-replay' | 'comparison-mismatch' };
 type Replay = Awaited<ReturnType<typeof replayFullLocalHistory>>;
@@ -61,6 +68,11 @@ export function createLocalBaselineShadow() {
   };
   return {
     invalidate,
+    // A completed candidate remains independently authenticated. A new current context must
+    // prove ancestry/cuts before it can continue it. Never let an in-flight old check publish.
+    authorityChanged() {
+      revision = {};
+    },
     async run(
       input: LocalReplayInput,
       context: LocalBaselineContext,
@@ -106,6 +118,8 @@ export function createLocalBaselineShadow() {
                   mode: retained ? 'continued' : 'created',
                   baselineBytes: using.baseline.payload.length,
                   suffixRows: suffix.length,
+                  authorityEpoch: context.route.epoch,
+                  historySequence: replayed.inbound.installedHistory?.sequence ?? 0,
                 }
               : { kind: 'refused', reason: 'comparison-mismatch' };
           } finally {

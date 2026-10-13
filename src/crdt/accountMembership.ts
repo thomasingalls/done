@@ -1,3 +1,4 @@
+import { requireFullSpool } from './retainedHistory';
 /** Current membership is separate from the immutable installation/key/checkpoint binding. */
 import { closed } from '../../account-protocol/preparation';
 import { unhex } from '../../account-protocol/recovery';
@@ -89,6 +90,7 @@ export async function verifyInstalledMembership(
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
 ) {
+  requireFullSpool(spool);
   const cuts = [...(typeof initialEpoch === 'number' ? [] : initialEpoch.cuts), ...installed.cuts];
   if (
     cuts.some(

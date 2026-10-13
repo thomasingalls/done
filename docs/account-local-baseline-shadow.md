@@ -1,5 +1,9 @@
 # Local Account baseline shadow integration — 2026-10-13
 
+Historical phase record, committed signed as `962329a3`. The subsequent
+[transition/reader phase](./account-local-baseline-transitions.md) extends the private draft and its
+authority/checkpoint support; its updated boundaries supersede the first-slice restrictions below.
+
 The [format/replay phase](./account-local-baseline-replay.md) is committed **signed `c50e3741`**.
 This next slice connects that experiment to the real exclusive Account storage owner. It remains
 **read-only shadow work**: no baseline is persisted, no history or journal entry is deleted by the

@@ -36,6 +36,7 @@ import {
 } from './yjs';
 import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
 import type { VerificationMemo } from './verificationMemo';
+import { canVerifyRetainedRead, RetiredHistoryRequired } from './retainedHistory';
 import type { SpoolReplayStart } from './spoolRecord';
 
 export async function heldInboundContext(
@@ -170,6 +171,8 @@ export async function inspectInboundCooperatively(
   }
 }
 export interface InboundState {
+  /** Private authenticated local-baseline replay only; no raw cursor can establish this fence. */
+  retiredThrough?: number;
   prefix: InboundContext['prefix'];
   startingPoint?: { position: number; link: string };
   installedHistory?: InstalledHistory;
@@ -222,6 +225,8 @@ export function contextAt(
   state: InboundState,
   after: number,
 ): InboundContext {
+  if (state.retiredThrough !== undefined && !canVerifyRetainedRead(state, after))
+    throw new RetiredHistoryRequired();
   const retained = state.retained.get(after + 1);
   return { ...base, prefix: { ...state.prefix }, ...(retained ? { retained } : {}) };
 }
@@ -245,21 +250,28 @@ export async function applyHistoryReceiveCuts(
     const state = publisherState(own, base, cut.credentialId);
     if (state.conflict) captureError('History cut crosses a stream conflict');
     if (cut.credentialId === base.publisher.id && cut.position > 0) {
-      // Reconstruct the actual attempt at installation, never a later retired-generation retry.
-      const prior = inspectDelivery(
-        [
-          ...census.delivery.spool.sourceRecords,
-          ...census.delivery.ledger.filter((r) => r.seq < beforeSequence),
-        ],
-        route,
-        base.authority,
-      );
-      const expected = await expectedPosition(prior.spool, cut.position, crypto.subtle);
-      if (
-        !expected ||
-        (await acceptanceLink(expected, expected.previous, crypto.subtle)) !== cut.link
-      )
-        captureError('History cut differs from retained self stream');
+      const origin = census.delivery.spool.origin;
+      if (origin && cut.position < origin.position) throw new RetiredHistoryRequired();
+      if (origin && cut.position === origin.position) {
+        if (cut.link !== origin.link) captureError('History cut differs from retained self stream');
+      } else {
+        // Reconstruct the actual attempt at installation, never a later retired-generation retry.
+        const prior = inspectDelivery(
+          [
+            ...census.delivery.spool.sourceRecords,
+            ...census.delivery.ledger.filter((r) => r.seq < beforeSequence),
+          ],
+          route,
+          base.authority,
+          census.delivery.spool.origin,
+        );
+        const expected = await expectedPosition(prior.spool, cut.position, crypto.subtle);
+        if (
+          !expected ||
+          (await acceptanceLink(expected, expected.previous, crypto.subtle)) !== cut.link
+        )
+          captureError('History cut differs from retained self stream');
+      }
     }
     const known =
       cut.position === state.prefix.position
@@ -272,6 +284,13 @@ export async function applyHistoryReceiveCuts(
                 return proof.kind === 'accepted' ? proof.head.link : undefined;
               })()
             : undefined;
+    if (
+      state.retiredThrough !== undefined &&
+      cut.position > 0 &&
+      cut.position <= state.retiredThrough &&
+      known === undefined
+    )
+      throw new RetiredHistoryRequired();
     if (known !== undefined && known !== cut.link)
       captureError('History cut conflicts with received history');
     if (cut.position > (state.startingPoint?.position ?? 0))

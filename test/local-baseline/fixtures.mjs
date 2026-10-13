@@ -5,6 +5,7 @@ import { head, response, refusal, hash } from '../account-decisions/oracle.mjs';
 import { verifyMembershipChain } from '../../account-protocol/membershipLocator.ts';
 import { historyPublisher, historyMembership } from '../../account-protocol/admissionHistory.ts';
 import { sealNetworkEnvelope, decodeNetworkEnvelope } from '../../account-protocol/envelope.ts';
+import { decodePositionResponse } from '../../account-protocol/positionDecision.ts';
 import { signSubmission } from '../../account-protocol/submission.ts';
 import { encodeSpoolEntry, networkRoute, extendSpoolWitness } from '../../src/crdt/spoolRecord.ts';
 import { encodeDeliveryEntry } from '../../src/crdt/deliveryRecord.ts';
@@ -27,7 +28,7 @@ export async function memberFixture() {
   const { history: h } = await verifyMembershipChain(proofs, f.f.base);
   const existing = f.context.existing,
     peer = f.context.candidate;
-  const history = historyPublisher(h, existing.id);
+  let history = historyPublisher(h, existing.id);
   const kg = new Uint8Array(32).fill(41);
   const signer = await crypto.subtle.importKey('raw', bytes(existing.sPub), 'Ed25519', false, [
     'verify',
@@ -40,7 +41,7 @@ export async function memberFixture() {
       false,
       ['sign'],
     );
-  const base = {
+  let base = {
     baseline: { kind: 'promotion-genesis', id: hash(JSON.stringify(f.f.receipt)) },
     service: { id: f.f.pin.serviceId, origin: f.f.pin.origin },
     authority: history.current,
@@ -58,7 +59,7 @@ export async function memberFixture() {
     generationKey: kg,
     prefix: { position: 0, link: zero, observedThrough: 0 },
   };
-  const route = {
+  let route = {
     workspace: h.current.workspace,
     credential: existing.id,
     principal: history.principal,
@@ -92,7 +93,10 @@ export async function memberFixture() {
     peerDoc = new Y.Doc({ gc: false });
   let position = 0,
     previous = zero,
-    attempts = 0;
+    attempts = 0,
+    ownPosition = 0,
+    ownPrevious = zero,
+    lastCheckpoint = null;
   const add = (kind, data) => rows.push({ seq: rows.length + 1, gen: 1, kind, bytes: data });
   const appendPeer = async (remove = false) => {
     let update;
@@ -117,14 +121,14 @@ export async function memberFixture() {
         workspace: route.workspace,
         credential: peer.id,
         position,
-        epoch: 3,
+        epoch: route.epoch,
         digest: hex(e.digest),
       };
-    const accepted = head(subject, previous, 3, f.f.keys.acceptance),
+    const accepted = head(subject, previous, route.epoch, f.f.keys.acceptance),
       proof = response({
         kind: 'accepted',
         head: accepted,
-        leaf: { epoch: 3, digest: subject.digest },
+        leaf: { epoch: route.epoch, digest: subject.digest },
       });
     const signed = (v, key) => json([...v, sign(null, json(v), key).toString('hex')]);
     const request = signed(
@@ -138,7 +142,7 @@ export async function memberFixture() {
         peer.id,
         base.authority.lineage,
         base.authority.head,
-        3,
+        route.epoch,
         position - 1,
         1,
         '95'.repeat(32),
@@ -178,6 +182,7 @@ export async function memberFixture() {
     return { update, record, envelope, proof };
   };
   const appendOwn = async (kind = 'accepted') => {
+    const own = ++ownPosition;
     const d = new Y.Doc({ gc: false });
     d.getText('own').insert(0, 'unaccepted local writing');
     const update = new Uint8Array(Y.encodeStateAsUpdate(d));
@@ -190,22 +195,22 @@ export async function memberFixture() {
     add('outbound', capsule);
     const event = (e) =>
       add(e.type === 'envelope' ? 'outbound' : 'heads', encodeSpoolEntry(e, route));
-    event({ type: 'position', position: 1, source: { id, index: 0, hash: hash(capsule) } });
-    event({ type: 'attempt', position: 1, attempt: ++attempts });
+    event({ type: 'position', position: own, source: { id, index: 0, hash: hash(capsule) } });
+    event({ type: 'attempt', position: own, attempt: ++attempts });
     const envelope = await sealNetworkEnvelope(
-      { ...networkRoute(route), seq: 1 },
+      { ...networkRoute(route), seq: own },
       { actor_id: route.principal, actor_kind: 'human', updates: [update] },
       kg,
       await signing(f.keys.existing),
       crypto.getRandomValues(new Uint8Array(12)),
     );
-    event({ type: 'envelope', position: 1, attempt: attempts, wire: envelope });
+    event({ type: 'envelope', position: own, attempt: attempts, wire: envelope });
     const e = decodeNetworkEnvelope(envelope),
       subject = {
         workspace: route.workspace,
         credential: route.credential,
-        position: 1,
-        epoch: 3,
+        position: own,
+        epoch: route.epoch,
         digest: hex(e.digest),
       };
     const submission = await signSubmission(
@@ -215,7 +220,7 @@ export async function memberFixture() {
     add(
       'outbound',
       encodeDeliveryEntry(
-        { type: 'submission', position: 1, wire: submission },
+        { type: 'submission', position: own, wire: submission },
         route,
         base.authority,
       ),
@@ -224,14 +229,15 @@ export async function memberFixture() {
       kind === 'accepted'
         ? response({
             kind,
-            head: head(subject, zero, 3, f.f.keys.acceptance),
-            leaf: { epoch: 3, digest: subject.digest },
+            head: head(subject, ownPrevious, route.epoch, f.f.keys.acceptance),
+            leaf: { epoch: route.epoch, digest: subject.digest },
           })
         : response({ kind: 'refused', refusal: refusal(subject, f.f.keys.acceptance) });
     add(
       'heads',
-      encodeDeliveryEntry({ type: 'response', position: 1, wire: proof }, route, base.authority),
+      encodeDeliveryEntry({ type: 'response', position: own, wire: proof }, route, base.authority),
     );
+    if (kind === 'accepted') ownPrevious = decodePositionResponse(proof).head.link;
     return { update, proof };
   };
   const appendHistory = async () => {
@@ -244,7 +250,7 @@ export async function memberFixture() {
         .set('actor:' + route.principal, { kind: 'human', name: 'Fixture', color: 'blue' });
       const authority = historyMembership(history);
       const heads = [
-        { credentialId: existing.id, position: 0, link: zero },
+        { credentialId: existing.id, position: ownPosition, link: ownPrevious },
         { credentialId: peer.id, position, link: previous },
       ].sort((a, b) => a.credentialId.localeCompare(b.credentialId));
       const cp = await createHistoryCheckpoint(
@@ -254,7 +260,7 @@ export async function memberFixture() {
         authority,
         existing.id,
         heads,
-        null,
+        lastCheckpoint,
         async (bytes) => sign(null, bytes, f.keys.existing).toString('hex'),
       );
       const admission = await admitHistoryCheckpoint(
@@ -270,7 +276,7 @@ export async function memberFixture() {
         baseline: base.baseline.id,
         workspace: route.workspace,
         lineage: base.authority.lineage,
-        epoch: 3,
+        epoch: route.epoch,
         head: base.authority.head,
         reader: existing.id,
         checkpoint: cp,
@@ -278,14 +284,57 @@ export async function memberFixture() {
       });
       add('state', new Uint8Array(Y.encodeStateAsUpdate(doc)));
       add('heads', record);
+      lastCheckpoint = cp;
       return record;
     } finally {
       doc.destroy();
     }
   };
+  const adopt = async (change = () => {}) => {
+    let before = { events: 0, hash: zero };
+    for (const row of rows)
+      if (
+        row.kind === 'heads' ||
+        (row.kind === 'outbound' &&
+          JSON.parse(Buffer.from(row.bytes).toString())[0] !== 'done/source-capture/v1')
+      )
+        before = await extendSpoolWitness(before, row.bytes, crypto.subtle);
+    const state = structuredClone(membershipState(historyMembership(history)));
+    for (const head of state.heads) {
+      if (head.credentialId === existing.id) {
+        head.position = ownPosition;
+        head.link = ownPrevious;
+      }
+      if (head.credentialId === peer.id) {
+        head.position = position;
+        head.link = previous;
+      }
+    }
+    change(state);
+    const admission = f.admit(state, (160 + state.epoch).toString(16).repeat(16));
+    const nextProofs = {
+      ...proofs,
+      continuations: [...(ctx.installation.membership?.proofs.continuations ?? []), admission],
+    };
+    const verified = await verifyMembershipChain(nextProofs, f.f.base);
+    history = historyPublisher(verified.history, existing.id);
+    route = { ...route, epoch: history.current.tip, history };
+    base = { ...base, authority: history.current, history };
+    ctx.route = route;
+    ctx.inbound = base;
+    ctx.installation.membership = {
+      v: 1,
+      proofs: nextProofs,
+      cuts: [
+        ...(ctx.installation.membership?.cuts ?? []),
+        { epoch: route.epoch, head: history.current.head, before },
+      ],
+    };
+  };
   return {
     ctx,
     rows,
+    adopt,
     appendPeer,
     appendOwn,
     appendHistory,

@@ -1,4 +1,11 @@
 // @vitest-environment node
+import { verifyMembershipChain } from '../account-protocol/membershipLocator';
+import { verifyInstalledSuccessor } from '../src/crdt/accountSuccessor';
+import { verifyInstalledMembership } from '../src/crdt/accountMembership';
+import { verifyDetachedPrefix } from '../src/crdt/rotationObservation';
+import { verifySpoolWitness } from '../src/crdt/spoolRecord';
+import { verifyHistoryInstall } from '../src/crdt/historyInstall';
+import { applyHistoryReceiveCuts } from '../src/crdt/inboundLedger';
 import { expect, it } from 'vitest';
 import fc from 'fast-check';
 import { createHash } from 'node:crypto';
@@ -16,7 +23,15 @@ import {
   LOCAL_BASELINE_LIMIT,
   baselineAuthenticationPayload,
 } from '../src/crdt/localBaselineRecord';
-import { inspectInbound } from '../src/crdt/inboundLedger';
+import { verifyInboundPage } from '../src/crdt/accountInbound';
+import { decodeInboundRecord } from '../src/crdt/inboundRecord';
+import { decodeInboundRequest } from '../account-protocol/inboundTransport';
+import {
+  publisherContext,
+  publisherState,
+  contextAt,
+  inspectInbound,
+} from '../src/crdt/inboundLedger';
 import {
   encodeSpoolEntry,
   extendSpoolWitness,
@@ -33,6 +48,9 @@ import {
 import { type Bytes } from '../src/crdt/custodyCrypto';
 import { entry, A, ZERO, type FixtureEntry } from './account-inbound/fixtures';
 import { context, eventWire } from './account-inbound-codecs/oracle';
+import { indexVerifiedLedger, extendAccountLedger } from '../src/crdt/incrementalAccountLedger';
+import { createVerificationMemo } from '../src/crdt/verificationMemo';
+import { createLocalBaselineShadow } from '../src/crdt/localBaselineShadow';
 import { selectEnvelopeSources } from '../src/crdt/accountEnvelopePreparation';
 // @ts-expect-error Existing independent Node fixtures are JavaScript.
 import { memberFixture, retriedFixture } from './local-baseline/fixtures.mjs';
@@ -545,7 +563,7 @@ it('continues a certified peer after its retained frontier and preserves a signe
         altered,
         auth,
       ),
-    ).rejects.toThrow('scope');
+    ).rejects.toThrow('boundary changed');
   } finally {
     f.clear();
   }
@@ -610,7 +628,7 @@ it('retained replay agrees after exact content compaction and subsequent actor-s
   }
 });
 
-it('rechecks retained checkpoint authority and receive cuts; later installations explicitly require full history', async () => {
+it('rechecks checkpoint authority and receive cuts both before and after a retained baseline', async () => {
   const f = await memberFixture(),
     c: LocalBaselineContext = f.ctx;
   try {
@@ -622,15 +640,14 @@ it('rechecks retained checkpoint authority and receive cuts; later installations
     await f.appendHistory();
     const cut = f.rows.length,
       prefix = await memberInput(f.rows, c);
-    await expect(
-      replayLocalBaseline(
-        old.baseline,
-        old.anchor,
-        { ...prefix, records: f.rows.slice(beforeHistory) },
-        c,
-        auth,
-      ),
-    ).rejects.toThrow('history-required');
+    const transitioned = await replayLocalBaseline(
+      old.baseline,
+      old.anchor,
+      { ...prefix, records: f.rows.slice(beforeHistory) },
+      c,
+      auth,
+    );
+    expect(observation(transitioned)).toEqual(observation(await replayFullLocalHistory(prefix, c)));
     const p = await prepareLocalBaseline(prefix, c, auth);
     expect(decodeLocalBaseline(p.baseline.payload).history).not.toBeNull();
     await f.appendPeer(true);
@@ -726,6 +743,347 @@ it('summarizes an accepted current-key retry only after full historical refusal 
     fields[9] = Buffer.from(JSON.stringify(refusal)).toString('hex');
     retry.bytes = new TextEncoder().encode(JSON.stringify(fields));
     await expect(prepareLocalBaseline(await memberInput(changed, c), c, auth)).rejects.toThrow();
+  } finally {
+    f.clear();
+  }
+});
+
+it('extends original and joined authority cuts across a settled baseline and verifies accepted suffix boundaries', async () => {
+  for (const joined of [false, true]) {
+    const f = await memberFixture();
+    const c: LocalBaselineContext = f.ctx;
+    if (joined) {
+      c.installation = { kind: 'joined', initialEpoch: 3 };
+      c.identity = {
+        ...c.identity,
+        principalId: 'joining-local-principal',
+        workspaceId: 'joining-local-workspace',
+      };
+    }
+    try {
+      await f.appendOwn();
+      await f.appendPeer();
+      const prefix = await memberInput(f.rows, c),
+        cut = f.rows.length;
+      const p = await prepareLocalBaseline(prefix, c, auth);
+      const shadow = createLocalBaselineShadow();
+      expect((await shadow.run(prefix, c, auth, async () => {})).kind).toBe('matched');
+      // A second accepted position arrives after the cut but before membership installs.
+      await f.appendOwn();
+      await f.adopt();
+      shadow.authorityChanged();
+      await f.appendOwn();
+      await f.appendPeer();
+      const all = await memberInput(f.rows, c);
+      const reduced = await replayLocalBaseline(
+        p.baseline,
+        p.anchor,
+        { ...all, records: f.rows.slice(cut) },
+        c,
+        auth,
+      );
+      const full = await replayFullLocalHistory(all, c);
+      expect(observation(reduced)).toEqual(observation(full));
+      stateEqual(reduced.snapshot, full.snapshot);
+      expect(await shadow.run(all, c, auth, async () => {})).toMatchObject({
+        kind: 'matched',
+        mode: 'continued',
+      });
+      // Changing an already authenticated cut, lying about its offset, and issuing under the
+      // predecessor after installation must each fail without consulting retired rows.
+      const bad = { ...c, installation: structuredClone(c.installation) };
+      bad.installation.membership!.cuts[0]!.before.hash = 'ef'.repeat(32);
+      await expect(
+        replayLocalBaseline(
+          p.baseline,
+          p.anchor,
+          { ...all, records: f.rows.slice(cut) },
+          bad,
+          auth,
+        ),
+      ).rejects.toThrow();
+      bad.installation.membership!.cuts[0]!.before =
+        prefix.counter.v === 2 ? prefix.counter.spool : emptySpoolWitness();
+      await expect(
+        replayLocalBaseline(
+          p.baseline,
+          p.anchor,
+          { ...all, records: f.rows.slice(cut) },
+          bad,
+          auth,
+        ),
+      ).rejects.toThrow();
+      shadow.invalidate();
+    } finally {
+      f.clear();
+    }
+  }
+});
+
+it('continues repeated checkpoints and exact own cuts at and after the retained frontier', async () => {
+  const f = await memberFixture(),
+    c: LocalBaselineContext = f.ctx;
+  try {
+    await f.appendPeer();
+    await f.appendOwn();
+    const prefix = await memberInput(f.rows, c),
+      cut = f.rows.length;
+    const p = await prepareLocalBaseline(prefix, c, auth);
+    await f.appendHistory();
+    await f.appendOwn();
+    await f.appendPeer();
+    await f.appendHistory();
+    const all = await memberInput(f.rows, c);
+    const reduced = await replayLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...all, records: f.rows.slice(cut) },
+      c,
+      auth,
+    );
+    const full = await replayFullLocalHistory(all, c);
+    expect(observation(reduced)).toEqual(observation(full));
+    stateEqual(reduced.snapshot, full.snapshot);
+  } finally {
+    f.clear();
+  }
+});
+
+it('verifies a late terminal duplicate from retained evidence and fences older missing receipts', async () => {
+  const f = await memberFixture(),
+    c: LocalBaselineContext = f.ctx;
+  try {
+    await f.appendPeer();
+    const first = structuredClone(f.rows.at(-1));
+    await f.appendPeer();
+    const terminal = structuredClone(f.rows.at(-1));
+    const prefix = await memberInput(f.rows, c);
+    const p = await prepareLocalBaseline(prefix, c, auth);
+    const reduced = await replayLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...prefix, records: [] },
+      c,
+      auth,
+    );
+    for (const [row, permitted] of [
+      [terminal, true],
+      [first, false],
+    ] as const) {
+      const e = decodeInboundRecord(row.bytes),
+        q = decodeInboundRequest(e.request);
+      const resolve = () =>
+        contextAt(
+          publisherContext(c.inbound, q.publisher),
+          publisherState(reduced.inbound, c.inbound, q.publisher),
+          q.after,
+        );
+      if (!permitted) expect(resolve).toThrow('retired history');
+      else
+        expect(
+          await verifyInboundPage(resolve(), e.request, e.page, {
+            assertCurrent() {},
+            now: () => 1,
+          }),
+        ).toMatchObject({ kind: 'duplicate' });
+      // Duplicates are never persisted, even if their signed bytes are correct.
+      row.seq = prefix.counter.next_seq;
+      const all = await memberInput([...f.rows, row], c);
+      await expect(
+        replayLocalBaseline(p.baseline, p.anchor, { ...all, records: [row] }, c, auth),
+      ).rejects.toThrow();
+    }
+  } finally {
+    f.clear();
+  }
+});
+
+it('warm indexes extend a retained origin without reusing consumed sources or resetting links and positions', async () => {
+  const f = await fixture(),
+    cut = f.cuts[0]!,
+    prefix = await f.input(f.rows.slice(0, cut));
+  const p = await prepareLocalBaseline(prefix, f.ctx, auth);
+  const view = await replayLocalBaseline(
+    p.baseline,
+    p.anchor,
+    { ...prefix, records: [] },
+    f.ctx,
+    auth,
+  );
+  const all = await f.input(),
+    suffix = f.rows.slice(cut);
+  const before = view.census.delivery.spool.sourceRecords;
+  const records = [...before, ...suffix];
+  const indexes = await indexVerifiedLedger(
+    view,
+    before,
+    f.ctx.route,
+    prefix.counter,
+    crypto.subtle,
+  );
+  expect(indexes).toBeDefined();
+  const next = await extendAccountLedger(
+    { ...view, indexes: indexes! },
+    before,
+    records,
+    f.ctx.route,
+    all.counter,
+    f.ctx.inbound,
+    f.ctx.signer,
+    crypto.subtle,
+    { memo: createVerificationMemo(), current() {} },
+  );
+  expect(next).toBeDefined();
+  const reference = await replayLocalBaseline(
+    p.baseline,
+    p.anchor,
+    { ...all, records: suffix },
+    f.ctx,
+    auth,
+  );
+  expect(next!.delivery.acceptedThrough).toBe(reference.delivery.acceptedThrough);
+  expect(next!.census.delivery.spool.positions).toEqual(reference.census.delivery.spool.positions);
+  expect(
+    await selectEnvelopeSources(next!.census.delivery.spool, f.ctx.route, true, crypto.subtle),
+  ).toEqual(
+    await selectEnvelopeSources(reference.census.delivery.spool, f.ctx.route, true, crypto.subtle),
+  );
+});
+
+it('extends an earlier baseline through rotation, a burned retry and current-key acceptance without losing offline originals', async () => {
+  const f = await retriedFixture(),
+    c: LocalBaselineContext = f.ctx;
+  try {
+    const initial = (await verifyMembershipChain(f.proofs, f.f.f.base)).history;
+    const old: LocalBaselineContext = {
+      ...c,
+      route: { ...c.route, epoch: 3, generation: 1, history: initial },
+      inbound: {
+        ...c.inbound,
+        authority: initial.current,
+        history: initial,
+        generation: 1,
+        generationKey: c.inbound.retainedGenerationKeys!.get(1)!,
+      },
+      installation: {
+        kind: 'original',
+        ...(c.installation.kind === 'original' && c.installation.successor
+          ? { successor: c.installation.successor }
+          : {}),
+      },
+    };
+    const prefix = await memberInput([], old);
+    const p = await prepareLocalBaseline(prefix, old, auth);
+    const all = await memberInput(f.rows, c);
+    const replayed = await replayLocalBaseline(p.baseline, p.anchor, all, c, auth);
+    expect(observation(replayed)).toEqual(observation(await replayFullLocalHistory(all, c)));
+    expect(replayed.census.delivery.spool.positions[0]!.retries).toHaveLength(1);
+    expect(replayed.census.delivery.spool.attempts).toBe(3);
+    const wrongKey = { ...c, inbound: { ...c.inbound, generationKey: new Uint8Array(32) } };
+    await expect(replayLocalBaseline(p.baseline, p.anchor, all, wrongKey, auth)).rejects.toThrow();
+  } finally {
+    f.clear();
+  }
+});
+
+it('never trusts a checkpoint cut at a retired unknown link, for either self or peer', async () => {
+  const f = await memberFixture(),
+    c: LocalBaselineContext = f.ctx;
+  try {
+    await f.appendOwn();
+    await f.appendPeer();
+    const historical = await f.appendHistory();
+    const oldInstall = await verifyHistoryInstall(c.inbound, historical, undefined, c);
+    oldInstall.update.fill(0);
+    await f.appendOwn();
+    await f.appendPeer();
+    const prefix = await memberInput(f.rows, c),
+      p = await prepareLocalBaseline(prefix, c, auth);
+    const replay = await replayLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...prefix, records: [] },
+      c,
+      auth,
+    );
+    // A starting point retained from a verified checkpoint still proves its exact old peer link.
+    const heads = oldInstall.heads!;
+    await expect(
+      applyHistoryReceiveCuts(
+        replay.inbound,
+        c.inbound,
+        replay.census,
+        heads.filter((h) => h.credentialId === c.route.credential),
+      ),
+    ).rejects.toThrow('retired history');
+    // No starting point or receipt for a different old peer position: require retained evidence.
+    for (const s of replay.inbound.peers!.values()) delete s.startingPoint;
+    await expect(
+      applyHistoryReceiveCuts(
+        replay.inbound,
+        c.inbound,
+        replay.census,
+        heads.filter((h) => h.credentialId !== c.route.credential),
+      ),
+    ).rejects.toThrow('retired history');
+  } finally {
+    f.clear();
+  }
+});
+
+it('rejects a service-signed new boundary that forks or extends beyond the available retained acceptance', async () => {
+  for (const missing of [false, true]) {
+    const f = await memberFixture(),
+      c: LocalBaselineContext = f.ctx;
+    try {
+      await f.appendOwn();
+      const prefix = await memberInput(f.rows, c),
+        cut = f.rows.length;
+      const p = await prepareLocalBaseline(prefix, c, auth);
+      await f.adopt(
+        (state: { heads: { credentialId: string; position: number; link: string }[] }) => {
+          const own = state.heads.find((h) => h.credentialId === c.route.credential)!;
+          if (missing) own.position++;
+          own.link = 'ef'.repeat(32);
+        },
+      );
+      const all = await memberInput(f.rows, c);
+      await expect(replayFullLocalHistory(all, c)).rejects.toThrow();
+      await expect(
+        replayLocalBaseline(p.baseline, p.anchor, { ...all, records: f.rows.slice(cut) }, c, auth),
+      ).rejects.toThrow();
+    } finally {
+      f.clear();
+    }
+  }
+});
+
+it('full-history consumers explicitly refuse a reduced spool instead of interpreting suffix offsets as absolute history', async () => {
+  const f = await memberFixture(),
+    c: LocalBaselineContext = f.ctx;
+  try {
+    const input = await memberInput(f.rows, c),
+      p = await prepareLocalBaseline(input, c, auth);
+    const r = await replayLocalBaseline(p.baseline, p.anchor, input, c, auth),
+      spool = r.census.delivery.spool;
+    await expect(verifySpoolWitness(spool, input.counter, crypto.subtle)).rejects.toThrow(
+      'retired history',
+    );
+    await expect(
+      verifyInstalledSuccessor(spool, c.route, undefined, crypto.subtle),
+    ).rejects.toThrow('retired history');
+    await expect(
+      verifyInstalledMembership(
+        spool,
+        c.route.history!,
+        { v: 1, proofs: f.proofs, cuts: [] },
+        3,
+        crypto.subtle,
+      ),
+    ).rejects.toThrow('retired history');
+    await expect(verifyDetachedPrefix(c.route.history!, spool, crypto.subtle)).rejects.toThrow(
+      'retired history',
+    );
   } finally {
     f.clear();
   }

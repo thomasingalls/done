@@ -16,7 +16,7 @@ import {
 import { sameBytes } from './verifiedRecords';
 import { identity } from './custodyRecord';
 
-export const LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-1';
+export const LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-2';
 export const LOCAL_BASELINE_LIMIT = MAX_BATCH_BYTES;
 const MAX_SOURCES = 4096,
   MAX_PUBLISHERS = 128;
@@ -44,6 +44,7 @@ export interface LocalBaseline {
   predecessor: string;
   /** Hash of owner-authenticated public context, never of secret key bytes. */
   authority: string;
+  authorityState: { epoch: number; head: string; generation: number; cutsHash: string };
   cut: {
     intent: string;
     sequence: number;
@@ -111,6 +112,12 @@ const values = (b: LocalBaseline) => [
     receiptTuple(s.receipt),
   ]),
   recordTuple(b.history),
+  [
+    b.authorityState.epoch,
+    b.authorityState.head,
+    b.authorityState.generation,
+    b.authorityState.cutsHash,
+  ],
 ];
 const parseReceipt = (v: unknown): BaselineReceipt | null => {
   if (v === null) return null;
@@ -123,7 +130,8 @@ const parseRecord = (v: unknown, kind: 'outbound' | 'heads', max: number): Opene
   return { seq: integer(r[0], 1, max), gen: integer(r[1], 1, 0xffffffff), kind, bytes: data(r[3]) };
 };
 function parse(v: unknown[]): LocalBaseline {
-  tuple(v, 13);
+  tuple(v, 14);
+  const authorityState = tuple(v[13], 4);
   if (v[0] !== LOCAL_BASELINE_TAG || v[1] !== 1) fail();
   const ids = tuple(v[2], 5).map((s, i) => (i < 3 ? identity(s) : inboundHex(s, 16)));
   const generation = integer(v[3], 1, 0xffffffff),
@@ -201,6 +209,12 @@ function parse(v: unknown[]): LocalBaseline {
     revision,
     predecessor,
     authority: inboundHex(v[6], 32),
+    authorityState: {
+      epoch: integer(authorityState[0], 1),
+      head: inboundHex(authorityState[1], 32),
+      generation: integer(authorityState[2], 1, 0xffffffff),
+      cutsHash: inboundHex(authorityState[3], 32),
+    },
     cut: {
       intent: inboundHex(cut[4], 16),
       sequence,
@@ -227,7 +241,7 @@ export function decodeLocalBaseline(bytes: Bytes): LocalBaseline {
   return b;
 }
 /** Reuses the owner's metadata authenticator under a distinct domain; plaintext must stay private. */
-const authenticationDomain = utf8('done/account-local-baseline-auth/draft-1\0');
+const authenticationDomain = utf8('done/account-local-baseline-auth/draft-2\0');
 export const baselineAuthenticationPayload = (payload: Bytes): Bytes => {
   if (payload.length > LOCAL_BASELINE_LIMIT) fail();
   const domain = authenticationDomain;

@@ -19,6 +19,7 @@ import {
   positionSources,
   MAX_POSITION_BYTES,
   NET_SEAL_LIMIT,
+  nextSpoolPosition,
   type SpoolState,
 } from './spoolRecord';
 import {
@@ -175,7 +176,7 @@ export async function indexVerifiedLedger(
       else if (e.type === 'retry') envelopes.delete(e.position);
     }
   }
-  let previous = ZERO_REFUSAL;
+  let previous = spool.origin?.link ?? ZERO_REFUSAL;
   for (const p of spool.positions) {
     if (!p.wire) break;
     const e = decodeNetworkEnvelope(p.wire),
@@ -210,9 +211,10 @@ export async function indexVerifiedLedger(
   return {
     sources,
     sourceCount,
-    used: new Set(
-      spool.positions.flatMap((p) => positionSources(p).map((r) => r.id + ':' + r.index)),
-    ),
+    used: new Set([
+      ...(spool.origin?.consumed ?? []).map((r) => r.id + ':' + r.index),
+      ...spool.positions.flatMap((p) => positionSources(p).map((r) => r.id + ':' + r.index)),
+    ]),
     expected,
     envelopes,
     witness: { ...counter.spool },
@@ -349,7 +351,7 @@ export async function extendAccountLedger(
     if ((e.type === 'envelope') !== (row.kind === 'outbound'))
       captureError('Spool record misplaced');
     if (e.type === 'position' || e.type === 'position-batch') {
-      if (e.position !== spool.positions.length + 1 || spool.positions.some((p) => !p.wire))
+      if (e.position !== nextSpoolPosition(spool) || spool.positions.some((p) => !p.wire))
         captureError('Position sequence or unresolved predecessor');
       const refs = e.type === 'position' ? [e.source] : e.sources;
       let sequence = -1,
@@ -387,7 +389,7 @@ export async function extendAccountLedger(
         attempts: [],
       });
     } else if (e.type === 'retry') {
-      const p = spool.positions[e.position - 1];
+      const p = spool.positions[e.position - (spool.origin?.position ?? 0) - 1];
       if (!p?.wire || !route.history) return captureError('Retry without retained envelope');
       const envelope = decodeNetworkEnvelope(p.wire),
         proof = decodePositionResponse(e.refusal);
@@ -407,7 +409,7 @@ export async function extendAccountLedger(
       delete p.wire;
       p.attempts = [];
     } else {
-      const p = spool.positions[e.position - 1];
+      const p = spool.positions[e.position - (spool.origin?.position ?? 0) - 1];
       if (!p || p.wire || (p !== spool.positions.at(-1) && !p.retries?.length))
         return captureError('Spool transition without open position');
       if (e.type === 'attempt') {

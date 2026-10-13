@@ -1,6 +1,7 @@
 # Local Account baseline format and replay — 2026-10-13
 
-First-slice record, committed signed as `c50e3741`. The subsequent
+First-slice record describing draft 1, committed signed as `c50e3741`.
+The [transition/reader phase](./account-local-baseline-transitions.md) documents current draft 2. The subsequent
 [owned shadow integration](./account-local-baseline-shadow.md) adds an explicit opt-in caller and
 corrects identity parsing to match the real custody contract; no persisted baseline or deletion.
 

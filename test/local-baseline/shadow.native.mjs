@@ -68,7 +68,7 @@ const holdAuthentication = (p) =>
       const bytes = args[2];
       if (
         once &&
-        new TextDecoder().decode(bytes).startsWith('done/account-local-baseline-auth/draft-1\0')
+        new TextDecoder().decode(bytes).startsWith('done/account-local-baseline-auth/draft-2\0')
       ) {
         once = false;
         shadowHeld = true;

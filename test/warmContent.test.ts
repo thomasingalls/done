@@ -161,6 +161,7 @@ it('shadow census reads every physical store, keeps rows/counters isolated and e
         revision: 1,
         predecessor: '0'.repeat(64),
         authority: '0'.repeat(64),
+        authorityState: { epoch: 1, head: '0'.repeat(64), generation: 1, cutsHash: '0'.repeat(64) },
         cut: {
           intent: input.counter.intent,
           sequence: before.at(-1)!.seq,

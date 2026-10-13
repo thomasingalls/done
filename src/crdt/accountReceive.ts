@@ -314,8 +314,9 @@ async function openAccountReceiveOwner(
   };
   // Initialization can invalidate before the capture owner has finished constructing.
   let invalidateFinalPermission = () => {};
-  const invalidateAuthority = () => {
-    baselineShadow?.invalidate();
+  const invalidateAuthority = (checkedTransition = false) => {
+    if (checkedTransition) baselineShadow?.authorityChanged();
+    else baselineShadow?.invalidate();
     invalidateFinalPermission();
     authority.invalidate();
   };
@@ -1509,7 +1510,7 @@ async function openAccountReceiveOwner(
               base = nextBase;
               installed = successor;
               receiveSelection.reset();
-              invalidateAuthority();
+              invalidateAuthority(true);
               expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
               sinceAudit = 0;
@@ -1660,7 +1661,7 @@ async function openAccountReceiveOwner(
             checkCommit,
           );
           committed = true;
-          invalidateAuthority();
+          invalidateAuthority(true);
           expectedPayload = joinedPayload(next);
         } else {
           const state = current as Awaited<ReturnType<typeof readPromotion>>;
@@ -1685,7 +1686,7 @@ async function openAccountReceiveOwner(
                 checkCommit,
               );
               committed = true;
-              invalidateAuthority();
+              invalidateAuthority(true);
               expectedPayload = promotionPayload(next);
             },
           );
@@ -2175,7 +2176,7 @@ async function openAccountReceiveOwner(
                       throw Error('Account custody changed during history maintenance');
                     }
                     expectedRecord = record;
-                    invalidateAuthority();
+                    invalidateAuthority(true);
                     expectedPayload = joined
                       ? joinedPayload(
                           (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
