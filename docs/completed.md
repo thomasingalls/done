@@ -14016,7 +14016,7 @@ still cannot prove arbitrary partial/whole-profile restore safety or freshness.
 ### Local retention reader inventory and exact deletion plan — 2026-10-13
 
 **Boundary.** The private journal-era, old-read and checkpoint fences are committed signed as
-**`bcca1aa1`**, verified `G`. This phase is documentation/source analysis only and remains uncommitted.
+**`bcca1aa1`**, verified `G`. The documentation/source-analysis phase is committed signed as **`bce612c3`** (`G`).
 No runtime code, browser profile, logical history or key changed; publication and release validation
 remain paused. [Reader inventory](./account-local-retention-readers.md) and
 [exact deletion plan](./account-local-retention-deletion.md).
@@ -14047,3 +14047,32 @@ every physical row retained and the full replay as oracle. Then lifecycle/rebase
 exact-plan dry run, and a separately authorized private atomic-removal phase. Public reader-first
 rollout, compatible rollback, capacity/unavailable-history behavior and performance measurements
 remain later gates. `docs/progress.md` is untouched.
+
+
+### Original/joined baseline-plus-suffix owner reads — 2026-10-13
+
+**Boundary.** Reader inventory/deletion plan committed signed as **`bce612c3`** (`G`). This new
+implementation is uncommitted. [Contract](./account-local-baseline-readers.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-baseline-readers/README.md).
+
+**Exit.** An explicit private read switch connects era-bearing anchors to original/joined cold
+classification and live recovery, source selection, send/receive and status. Physical inventory stays
+separate from authenticated logical snapshot/carried originals/suffix. Full history remains stored
+and compared on every anchored load; all remaining originals/consumption are compared, including
+beyond the next bounded send batch. Logical reads fail closed and do not enter zero-origin incremental
+indexes. Counters, receipts and baseline formats are unchanged. Live undo and journal-before-apply
+remain intact; era pairing precedes reduced-catalogue recovery.
+
+**Evidence.** 107 unit checks in seven files; 23 enabled native owner cases; three reference-mode
+owner/crash controls; one ordinary-owner control; seven prepared-receive regressions; the packaged
+original/joined journey with bidirectional edits, joined undo/redo, checkpoints/membership and both
+cold reopenings. Test-only observation confirms the actual logical recovery seam, and exact stored
+rows remain unchanged on both devices. TypeScript, changed-file lint/format and ordinary build,
+Yjs patch, bundle budget and origin checks pass. The packet records an initial helper's zero-origin
+assumption and the pre-existing intermittent history-inspection lock symptom; no guard or timeout
+was weakened. No performance comparison on this busy host.
+
+**Next.** Prospective authority/detached-prefix, rotation, handoff and membership local-source
+adapters plus baseline rebase, still without deletion. Then pure exact-plan dry run and separately
+authorized private atomic removal. Full-spool guards remain on unadapted readers. No publication,
+public reader activation or release campaign; `docs/progress.md` untouched.

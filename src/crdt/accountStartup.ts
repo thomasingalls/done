@@ -176,12 +176,13 @@ export async function verifyAccountUnderPermit(
           task,
           { ...scope, resolvePrincipal: () => scope.principalId },
           options.code,
-          async (recovered) => {
+          async (recovered, baseline) => {
             const doc = new Y.Doc({ gc: false }),
               checkpoint = new Y.Doc({ gc: false });
             try {
-              const spool =
-                marker.v === 9
+              const spool = baseline
+                ? baseline.ledger.census.delivery.spool
+                : marker.v === 9
                   ? inspectInbound(recovered.records, route, inbound!).delivery.spool
                   : marker.v === 8
                     ? inspectDelivery(recovered.records, route, authority).spool
@@ -239,6 +240,9 @@ export async function verifyAccountUnderPermit(
                 allowSpoolCounter: true,
                 ...(marker.v === 9 && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
                   ? {
+                      ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
+                        ? { readBaseline: true as const }
+                        : {}),
                       baseline: async (
                         _task: SessionTask,
                         identity: import('./contentRecord').ContentIdentity,
@@ -262,7 +266,8 @@ export async function verifyAccountUnderPermit(
                     }
                   : {}),
                 ...(marker.v === 9 ? { reuseOpened: true as const } : {}),
-                validate: async (records, _task, counter) => {
+                validate: async (records, _task, counter, _view, baseline) => {
+                  if (baseline && !detached) return;
                   countLedgerWork('startupValidations');
                   // These reducers inspect the same authenticated immutable snapshot.
                   // Build its nested census once; each verifier still checks its own contract.

@@ -1,3 +1,4 @@
+import type { AccountBaselineRead } from './localBaselineShadow';
 import { BASELINE_MAX_CHUNKS } from './localBaselineAnchor';
 import { createBaselineMetadata } from './localBaselineMetadata';
 import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
@@ -53,6 +54,8 @@ import type {
 } from './localBaselineReplay';
 
 export interface ContentCrypto {
+  /** Non-deleting experiment: logical reads require an authenticated journal era. */
+  readBaseline?: true;
   /** Explicit non-deleting v9 experiment only. Builds a context after a fresh authority check. */
   baseline?(
     task: SessionTask,
@@ -72,6 +75,7 @@ export interface ContentCrypto {
     task: SessionTask,
     counter: ContentCounter,
     view?: object,
+    baseline?: AccountBaselineRead,
   ): void | Promise<void>;
   open(task: SessionTask, record: StoredRecord): Promise<Bytes>;
   seal(
@@ -105,6 +109,11 @@ export const createContentOwner = (
   generation: number,
   crypt: ContentCrypto,
 ) => {
+  if (
+    crypt.readBaseline &&
+    !(crypt.baseline && crypt.reuseOpened && crypt.validate && crypt.allowSpoolCounter)
+  )
+    throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
   let witness!: ContentWitness;
   const metadata = crypt.baseline ? createBaselineMetadata(scope) : undefined;
@@ -126,7 +135,13 @@ export const createContentOwner = (
     checkCommit,
   });
   let openedView:
-    | { counter: ContentCounter; sealed: StoredRecord[]; opened: OpenedRecord[]; id: object }
+    | {
+        counter: ContentCounter;
+        sealed: StoredRecord[];
+        opened: OpenedRecord[];
+        id: object;
+        baseline?: AccountBaselineRead;
+      }
     | undefined;
   let warm: ReturnType<typeof createWarmContent> | undefined;
   let forceFullRead = false;
@@ -331,51 +346,59 @@ export const createContentOwner = (
           });
         }
       }
-      const id = reuse ? openedView!.id : {};
-      if (crypt.validate) await task.wait(() => crypt.validate!(opened, task, counter, id));
-      if (metadata?.active()) {
-        const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
-        const { verifyCompleteLocalBaseline } = await task.wait(
-          () => import('./localBaselineShadow'),
-        );
-        let context = await crypt.baseline!(task, { ...scope }, counter);
-        const held = await readEncryptedBaseline(
-          task,
-          baselineOwner(
-            async () => {
-              context = await crypt.baseline!(task, { ...scope }, counter);
-            },
-            () => context.assertCurrent(),
-          ),
-        );
-        try {
-          const allocation = metadata.parse(held.counter, witness.intent);
-          if (!equalCounter(scope, allocation, counter))
-            corrupt('Baseline census changed during read.');
-          await verifyCompleteLocalBaseline(
-            { records: opened, counter },
-            context,
-            baselineAuth(task),
-            held,
+      const id = metadata?.active() ? {} : reuse ? openedView!.id : {};
+      let logical: AccountBaselineRead | undefined;
+      try {
+        if (metadata?.active()) {
+          const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
+          const { verifyCompleteLocalBaseline } = await task.wait(
+            () => import('./localBaselineShadow'),
           );
-          await crypt.baseline!(task, { ...scope }, counter);
-        } finally {
-          eraseVerified(held);
+          let context = await crypt.baseline!(task, { ...scope }, counter);
+          const held = await readEncryptedBaseline(
+            task,
+            baselineOwner(
+              async () => {
+                context = await crypt.baseline!(task, { ...scope }, counter);
+              },
+              () => context.assertCurrent(),
+            ),
+          );
+          try {
+            const allocation = metadata.parse(held.counter, witness.intent);
+            if (!equalCounter(scope, allocation, counter))
+              corrupt('Baseline census changed during read.');
+            logical = await verifyCompleteLocalBaseline(
+              { records: opened, counter },
+              context,
+              baselineAuth(task),
+              held,
+              crypt.readBaseline === true,
+            );
+            await crypt.baseline!(task, { ...scope }, counter);
+          } finally {
+            eraseVerified(held);
+          }
         }
+        if (crypt.validate)
+          await task.wait(() => crypt.validate!(opened, task, counter, id, logical));
+        if (crypt.reuseOpened && (!reuse || metadata?.active()))
+          task.step(() => {
+            clearView();
+            openedView = {
+              id,
+              counter: structuredClone(counter),
+              sealed: structuredClone(sealed),
+              opened: copyRecords(opened),
+              ...(logical ? { baseline: structuredClone(logical) } : {}),
+            };
+          });
+        if (crypt.warmLoads && openedView && !metadata?.active())
+          warm = createWarmContent(scope, witness.intent, openedView.sealed);
+        return task.step(() => opened.sort((a, b) => a.seq - b.seq));
+      } finally {
+        eraseVerified(logical);
       }
-      if (crypt.reuseOpened && !reuse)
-        task.step(() => {
-          clearView();
-          openedView = {
-            id,
-            counter: structuredClone(counter),
-            sealed: structuredClone(sealed),
-            opened: copyRecords(opened),
-          };
-        });
-      if (crypt.warmLoads && openedView && !metadata?.active())
-        warm = createWarmContent(scope, witness.intent, openedView.sealed);
-      return task.step(() => opened.sort((a, b) => a.seq - b.seq));
     } catch (cause) {
       // Interruption is not failed authentication. Retain only the previous detached view;
       // Reference loads compare every sealed row; exclusive warm loads use the authenticated
@@ -700,6 +723,23 @@ export const createContentOwner = (
       custodyDb = undefined;
     },
     load: (task: SessionTask) => load(task),
+    /** Explicit logical recovery seam; physical load/rotation/census semantics stay unchanged. */
+    async loadAccount(
+      task: SessionTask,
+    ): Promise<AccountBaselineRead | { kind: 'complete'; records: OpenedRecord[] }> {
+      const records = await load(task);
+      try {
+        if (openedView?.baseline) {
+          const result = task.step(() => structuredClone(openedView!.baseline!));
+          eraseVerified(records);
+          return result;
+        }
+        return task.step(() => ({ kind: 'complete' as const, records }));
+      } catch (cause) {
+        eraseVerified(records);
+        throw cause;
+      }
+    },
     journalBinding: () => {
       const era = metadata?.era();
       return era ? { identity: { ...scope }, intent: witness.intent, era } : undefined;

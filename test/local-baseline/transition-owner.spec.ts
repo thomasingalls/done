@@ -1,9 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 import { build } from 'vite';
+// @ts-expect-error Shared native test instrumentation is JavaScript.
+import { baselineReadProbe } from './read-probe.mjs';
 import { resolve } from 'node:path';
 import { pairedEditors, openSaved, add } from '../packaged-account/devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
 import { startService, stopService } from '../packaged-account/server';
+import type { AdmittedWorkspace } from '../../src/crdt/admittedWorkspace';
 import type { BaselineShadowResult } from '../../src/crdt/localBaselineShadow';
 
 type Probe = {
@@ -11,7 +14,8 @@ type Probe = {
   installLocalBaseline?(): Promise<{ kind: string }>;
   advanceLocalRetention?(expectedRevision: number): Promise<{ kind: string }>;
   replaceLocalBaseline?(expectedRevision: number): Promise<{ kind: string }>;
-  workspace: { whenDurable(): Promise<void> };
+  workspace: Pick<AdmittedWorkspace, 'whenDurable' | 'command'>;
+  dbName: string;
 };
 const check = (page: Page) =>
   page.evaluate(() =>
@@ -21,6 +25,41 @@ const durable = (page: Page) =>
   page.evaluate(() =>
     (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner.workspace.whenDurable(),
   );
+// Exact physical prefix evidence; the test never removes a row to manufacture a reduced read.
+const physicalHistory = (page: Page) =>
+  page.evaluate(async () => {
+    const name = (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner.dbName;
+    const db = await new Promise<IDBDatabase>((yes, no) => {
+      const r = indexedDB.open(name);
+      r.onsuccess = () => yes(r.result);
+      r.onerror = () => no(r.error);
+    });
+    try {
+      return await new Promise<[string, string][]>((yes, no) => {
+        const stores = ['content', 'outbound', 'heads'],
+          tx = db.transaction(stores, 'readonly');
+        const rows: [string, string][] = [];
+        for (const name of stores) {
+          const store = tx.objectStore(name),
+            keys = store.getAllKeys(),
+            values = store.getAll();
+          values.onsuccess = () =>
+            values.result.forEach((v, i) =>
+              rows.push([
+                name + ':' + keys.result[i],
+                JSON.stringify(v, (_k, value) =>
+                  value instanceof Uint8Array ? [...value] : value,
+                ),
+              ]),
+            );
+        }
+        tx.oncomplete = () => yes(rows);
+        tx.onabort = () => no(tx.error);
+      });
+    } finally {
+      db.close();
+    }
+  });
 const panel = (p: Page) => p.getByRole('region', { name: 'History maintenance', exact: true });
 async function inspect(p: Page) {
   await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
@@ -39,12 +78,16 @@ test(
       logLevel: 'error',
       build: { outDir },
       define: {
+        ...(process.env['ACCOUNT_BASELINE_READ'] === '1'
+          ? { 'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify('1') }
+          : {}),
         'import.meta.env.VITE_ACCOUNT_BASELINE_SHADOW': JSON.stringify('1'),
         ...(process.env['ACCOUNT_BASELINE_INSTALL'] === '1'
           ? { 'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1') }
           : {}),
       },
       plugins: [
+        ...(process.env['ACCOUNT_BASELINE_READ'] === '1' ? [baselineReadProbe()] : []),
         {
           name: 'private-baseline-test-handle',
           enforce: 'pre',
@@ -66,6 +109,7 @@ test(
     try {
       pair = await pairedEditors(page, browser, true);
       const second = pair.second;
+      const retained = await Promise.all([page, second].map(physicalHistory));
       for (const p of [page, second]) {
         await durable(p);
         await expect
@@ -98,6 +142,19 @@ test(
       await expect(second.locator('.shell')).toContainText('Retained baseline original writing');
       await add(second, 'Retained baseline joined writing');
       await expect(page.locator('.shell')).toContainText('Retained baseline joined writing');
+      await second.evaluate(async () => {
+        await (
+          globalThis as unknown as { __baselineOwner: Probe }
+        ).__baselineOwner.workspace.command({ kind: 'undo' }).accepted;
+      });
+      await expect(second.locator('.shell')).not.toContainText('Retained baseline joined writing');
+      await expect(second.locator('.shell')).toContainText('Retained baseline original writing');
+      await second.evaluate(async () => {
+        await (
+          globalThis as unknown as { __baselineOwner: Probe }
+        ).__baselineOwner.workspace.command({ kind: 'redo' }).accepted;
+      });
+      await expect(second.locator('.shell')).toContainText('Retained baseline joined writing');
       for (const p of [page, second]) {
         await durable(p);
         expect(await check(p)).toMatchObject({ kind: 'matched', mode: 'continued' });
@@ -173,6 +230,24 @@ test(
       await openSaved(second, pair.next.code, true);
       await expect(second.locator('.shell')).toContainText('Retained baseline original writing');
       await expect.poll(async () => (await check(second)).kind).toBe('matched');
+      for (const [index, p] of [page, second].entries()) {
+        const after = new Map(await physicalHistory(p));
+        for (const [key, value] of retained[index]!) expect(after.get(key)).toBe(value);
+      }
+      if (process.env['ACCOUNT_BASELINE_READ'] === '1') {
+        for (const p of [page, second]) {
+          const reads = await p.evaluate(
+            () =>
+              (
+                globalThis as unknown as {
+                  baselineReadSamples: { physical: number; logical: number; firstSuffix: number }[];
+                }
+              ).baselineReadSamples,
+          );
+          expect(reads.length).toBeGreaterThanOrEqual(2); // cold classification and live recovery
+          expect(reads.every((r) => r.logical < r.physical && r.firstSuffix > 1)).toBe(true);
+        }
+      }
     } catch (e) {
       console.log('Native shadow journey failed:', e instanceof Error ? e.message : 'unknown');
       throw e;

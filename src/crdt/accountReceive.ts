@@ -156,7 +156,7 @@ import {
   publisherState,
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
-import { verifyDelivery } from './deliveryRecord';
+import { verifyDelivery, emptyDelivery } from './deliveryRecord';
 import {
   captureError,
   capturedSourcePresence,
@@ -201,6 +201,7 @@ async function openAccountReceiveOwner(
       ? { ownResults: true as const }
       : {}),
   });
+  let baselineReading = false;
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
   let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
@@ -217,6 +218,7 @@ async function openAccountReceiveOwner(
     route: CaptureRoute,
     select: (census: AccountLedgerView['census']) => R,
   ): R => {
+    if (baselineReading) return verified.read(records, (v) => select(v.census));
     if (!incremental)
       return select(
         verified.matches(records)
@@ -328,6 +330,10 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
+    ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1' &&
+    import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+      ? { readBaseline: true as const }
+      : {}),
     ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
       ? ({
           baseline: async (task, identity, route) => {
@@ -462,7 +468,41 @@ async function openAccountReceiveOwner(
       });
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
-    async validate(task, records, route, counter, view) {
+    async validate(task, records, route, counter, view, baseline) {
+      if (baseline) {
+        // Every private baseline load has just authenticated/replayed the suffix and compared
+        // against intact history. Install only that detached result; do not seed zero-origin indexes.
+        try {
+          await verified.verify(
+            records,
+            view ?? {},
+            async () => ({
+              ...structuredClone(baseline.ledger),
+              baseline: structuredClone({
+                anchor: baseline.anchor,
+                firstSuffix: baseline.firstSuffix,
+                records: baseline.records,
+              }),
+            }),
+            () => task.step(() => {}),
+          );
+          baselineReading = true;
+          verifiedCounter = structuredClone(counter);
+          sinceAudit = 0;
+          auditDue = auditDeferred = false;
+          memo.clear();
+          coverage.clear();
+          return;
+        } catch (cause) {
+          baselineReading = false;
+          verifiedCounter = undefined;
+          verified.clear();
+          memo.clear();
+          coverage.clear();
+          throw cause;
+        }
+      }
+      baselineReading = false;
       const checkFull = async (
         records: import('./contentRecord').OpenedRecord[],
         audit = false,
@@ -683,6 +723,7 @@ async function openAccountReceiveOwner(
       }
     },
     dispose() {
+      baselineReading = false;
       baselineShadow?.invalidate();
       baselineShadow = undefined;
       retentionReads.close();
@@ -1205,7 +1246,7 @@ async function openAccountReceiveOwner(
             );
             const rows = await owner.carrier.load(task);
             try {
-              const census = inspectInbound(rows, route, base);
+              const census = inspectCensus(rows, route, (c) => c);
               await applyHistoryReceiveCuts(current, base, census, result!.heads);
               verifySyncState(
                 census.delivery,
@@ -1333,7 +1374,7 @@ async function openAccountReceiveOwner(
           if (composed && r.publisher === base.publisher.id && result.kind === 'received') {
             const rows = await owner.carrier.load(task);
             try {
-              const census = inspectInbound(rows, route, base).delivery;
+              const census = inspectCensus(rows, route, (c) => c.delivery);
               const delivery = verified.read(rows, (v) => v.delivery);
               try {
                 requireSelfEnvelope(
@@ -2210,43 +2251,81 @@ async function openAccountReceiveOwner(
                 if (inbound.conflict) throw Error('Publication halted by inbound conflict');
                 return select(delivery);
               }),
-            verifyProposed: async (
-              rows: readonly import('./contentRecord').OpenedRecord[],
-              proposed: import('./contentRecord').OpenedRecord[],
-              route: CaptureRoute,
-              task: SessionTask,
-              after: import('./contentRecord').SpoolWitness,
-            ) => {
-              if (!verifiedCounter) return false;
-              const prior = verified.read(rows);
-              let candidate;
-              const existing = new Set(rows),
-                added = proposed
-                  .filter((r) => !existing.has(r))
-                  .map((r) => ({ ...r, bytes: r.bytes.slice() }));
-              const owned = proposed.map((r) => (existing.has(r) ? r : added.shift()!));
-              try {
-                candidate = await extendAccountLedger(
-                  prior,
-                  rows,
-                  owned,
-                  route,
-                  { ...verifiedCounter, v: 2, spool: after },
-                  base,
-                  publicKey,
-                  subtleFor(task),
-                  { memo, current: () => task.step(() => {}) },
-                );
-                return !!candidate;
-              } finally {
-                eraseVerified(prior);
-                eraseVerified(candidate);
-                // Erase copied proposals even when extension throws before returning a candidate.
-                for (const row of owned) if (!existing.has(row)) row.bytes.fill(0);
-              }
-            },
           }
         : {}),
+      verifyProposed: async (
+        rows: readonly import('./contentRecord').OpenedRecord[],
+        proposed: import('./contentRecord').OpenedRecord[],
+        route: CaptureRoute,
+        task: SessionTask,
+        after: import('./contentRecord').SpoolWitness,
+      ) => {
+        if (!verifiedCounter || (!incremental && !baselineReading)) return false;
+        const prior = verified.read(rows);
+        if (prior.baseline) {
+          // Proposal is never installed. Retained prefix evidence comes from the just-loaded
+          // authenticated view; new suffix bytes still traverse the delivery verifier.
+          const logical = [
+            ...prior.baseline.records.filter((r) => r.seq < prior.baseline!.firstSuffix),
+            ...proposed.filter((r) => r.seq >= prior.baseline!.firstSuffix),
+          ];
+          try {
+            const census = inspectInbound(logical, route, base, prior.census.delivery.spool.origin);
+            const origin = census.delivery.spool.origin!;
+            const state = emptyDelivery();
+            state.acceptedThrough = origin.position;
+            if (origin.receipt) state.responses.set(origin.position, [origin.receipt.proof]);
+            const checked = await verifyDelivery(
+              census.delivery,
+              route,
+              base.authority,
+              publicKey,
+              subtleFor(task),
+              undefined,
+              {
+                state,
+                spool: { ...census.delivery.spool, positions: [] },
+                envelopes: new Map(),
+                expected: new Map(),
+              },
+            );
+            eraseVerified(checked);
+            task.step(() => {});
+            return true;
+          } finally {
+            eraseVerified(prior);
+          }
+        }
+        if (!incremental) {
+          eraseVerified(prior);
+          return false;
+        }
+        let candidate;
+        const existing = new Set(rows),
+          added = proposed
+            .filter((r) => !existing.has(r))
+            .map((r) => ({ ...r, bytes: r.bytes.slice() }));
+        const owned = proposed.map((r) => (existing.has(r) ? r : added.shift()!));
+        try {
+          candidate = await extendAccountLedger(
+            prior,
+            rows,
+            owned,
+            route,
+            { ...verifiedCounter, v: 2, spool: after },
+            base,
+            publicKey,
+            subtleFor(task),
+            { memo, current: () => task.step(() => {}) },
+          );
+          return !!candidate;
+        } finally {
+          eraseVerified(prior);
+          eraseVerified(candidate);
+          // Erase copied proposals even when extension throws before returning a candidate.
+          for (const row of owned) if (!existing.has(row)) row.bytes.fill(0);
+        }
+      },
       reuse: (task) => ({ memo, current: () => task.step(() => {}) }),
       network: runNetworkTask,
       canSubmit: canReceive,

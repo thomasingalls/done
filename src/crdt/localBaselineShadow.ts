@@ -1,4 +1,4 @@
-/** Explicit development experiment. Results never replace the live reader or authorize deletion. */
+/** Private non-deleting experiment: shadow comparison and explicitly opted-in logical reads. */
 import {
   LocalBaselineError,
   prepareLocalBaseline,
@@ -11,8 +11,9 @@ import {
 } from './localBaselineReplay';
 import { decodeLocalBaseline, type BaselineAnchor } from './localBaselineRecord';
 import { selectEnvelopeSources } from './accountEnvelopePreparation';
-import { nextSpoolPosition } from './spoolRecord';
-import { eraseVerified, sameBytes } from './verifiedRecords';
+import { nextSpoolPosition, positionSources, type SpoolState } from './spoolRecord';
+import { decodeSourceCapsule, eraseCapsule, type CaptureRoute } from './sourceCapture';
+import { copyRecords, eraseVerified, sameBytes } from './verifiedRecords';
 import { MaintenanceInterrupted } from './contentMaintenance';
 
 export type BaselineShadowResult =
@@ -27,6 +28,15 @@ export type BaselineShadowResult =
   | { kind: 'skipped'; reason: 'activity-or-journal' | 'ineligible' | 'history-required' | 'scope' }
   | { kind: 'refused'; reason: 'draft-replay' | 'comparison-mismatch' };
 type Replay = Awaited<ReturnType<typeof replayFullLocalHistory>>;
+/** Detached logical data returned only after the carrier authenticates and compares both readers.
+ * No physical placement/allocation or write authority; never pass records to a storage mutation. */
+export interface AccountBaselineRead {
+  kind: 'baseline-plus-suffix';
+  anchor: BaselineAnchor;
+  firstSuffix: number;
+  records: import('./contentRecord').OpenedRecord[];
+  ledger: Pick<Replay, 'census' | 'delivery' | 'inbound'>;
+}
 const ordered = (v: unknown): unknown => {
   if (v instanceof Uint8Array) return [...v];
   if (v instanceof Map)
@@ -41,7 +51,31 @@ const ordered = (v: unknown): unknown => {
   return v;
 };
 const stream = (s: Replay['inbound']) => [s.prefix, s.startingPoint ?? null, s.conflict];
-const projection = (r: Replay, after: number) => ({
+// Compare the entire remaining catalogue, not only the next bounded publication batch.
+const outstanding = (spool: SpoolState, route: CaptureRoute) => {
+  const consumed = new Map<string, Set<number>>();
+  for (const ref of [
+    ...(spool.origin?.consumed ?? []),
+    ...spool.positions.flatMap(positionSources),
+  ]) {
+    const indexes = consumed.get(ref.id) ?? new Set<number>();
+    indexes.add(ref.index);
+    consumed.set(ref.id, indexes);
+  }
+  const result = new Map<string, { bytes: Uint8Array; consumed: number[] }>();
+  for (const [id, bytes] of spool.sources) {
+    const capsule = decodeSourceCapsule(bytes, route);
+    try {
+      const indexes = [...(consumed.get(id) ?? [])].sort((a, b) => a - b);
+      if (indexes.length < capsule.sources.length) result.set(id, { bytes, consumed: indexes });
+    } finally {
+      eraseCapsule(capsule);
+    }
+  }
+  return result;
+};
+const projection = (r: Replay, after: number, route: CaptureRoute) => ({
+  outstanding: outstanding(r.census.delivery.spool, route),
   delivery: [
     r.delivery.acceptedThrough,
     r.delivery.finalThrough,
@@ -64,7 +98,8 @@ export async function verifyCompleteLocalBaseline(
   context: LocalBaselineContext,
   auth: BaselineAuthentication,
   stored: { baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor },
-): Promise<void> {
+  read = false,
+): Promise<AccountBaselineRead | undefined> {
   let reference: Replay | undefined, replayed: Replay | undefined;
   const baseline = decodeLocalBaseline(stored.baseline.payload);
   try {
@@ -86,10 +121,27 @@ export async function verifyCompleteLocalBaseline(
     context.assertCurrent();
     if (
       !sameBytes(reference.snapshot, replayed.snapshot) ||
-      JSON.stringify(ordered([projection(reference, baseline.own.position), a])) !==
-        JSON.stringify(ordered([projection(replayed, baseline.own.position), b]))
+      JSON.stringify(ordered([projection(reference, baseline.own.position, context.route), a])) !==
+        JSON.stringify(ordered([projection(replayed, baseline.own.position, context.route), b]))
     )
       throw new LocalBaselineError('integrity');
+    if (read && baseline.journalEra)
+      return {
+        kind: 'baseline-plus-suffix',
+        anchor: { ...stored.anchor },
+        firstSuffix: baseline.cut.nextSequence,
+        records: copyRecords([
+          { kind: 'state', seq: 0, gen: baseline.generation, bytes: baseline.snapshot },
+          ...baseline.sources.map((s) => s.record),
+          ...input.records.filter((r) => r.seq >= baseline.cut.nextSequence),
+        ]),
+        ledger: structuredClone({
+          census: replayed.census,
+          delivery: replayed.delivery,
+          inbound: replayed.inbound,
+        }),
+      };
+    return undefined;
   } finally {
     eraseVerified(reference);
     eraseVerified(replayed);
@@ -150,8 +202,12 @@ export function createLocalBaselineShadow() {
             current();
             const matches =
               sameBytes(reference.snapshot, replayed.snapshot) &&
-              JSON.stringify(ordered([projection(reference, baseline.own.position), a])) ===
-                JSON.stringify(ordered([projection(replayed, baseline.own.position), b]));
+              JSON.stringify(
+                ordered([projection(reference, baseline.own.position, context.route), a]),
+              ) ===
+                JSON.stringify(
+                  ordered([projection(replayed, baseline.own.position, context.route), b]),
+                );
             report = matches
               ? {
                   kind: 'matched',

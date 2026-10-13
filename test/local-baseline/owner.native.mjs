@@ -552,16 +552,22 @@ test(
     const { f, item } = await setup(t, 'baseline-receive-reader');
     await install(f.page);
     await f.page.evaluate(() => opened.replaceLocalBaseline(1));
+    if (process.env.ACCOUNT_BASELINE_READ === '1') await advance(f.page, 2);
     const before = await history(f.page, item);
+    const accepted = await f.page.evaluate(
+      async () => (await opened.deliveryStatus()).acceptedThrough,
+    );
     await close(f.page);
-    await f.page.evaluate(async (item) => {
+    const receiving = await f.page.evaluate(async (item) => {
       const receiver = await Harness.openOwnedAccountReceiveStore(optionsFor(item));
       try {
         await receiver.prepareRead();
+        return (await receiver.status()).receivedThrough;
       } finally {
         await receiver.close();
       }
     }, args(item));
+    if (process.env.ACCOUNT_BASELINE_READ === '1') assert.equal(receiving, accepted);
     assert.deepEqual(await history(f.page, item), before);
   },
 );
@@ -853,3 +859,70 @@ for (const boundary of ['journal-only', 'committed-before-cleanup'])
       await close(f.page);
     },
   );
+
+test(
+  'private reduced cold/live owners hide accepted originals, continue absolute positions, and preserve undo and journal-before-apply',
+  { timeout: 90000, skip: process.env.ACCOUNT_BASELINE_READ !== '1' },
+  async (t) => {
+    const { f, item } = await setup(t, 'logical-owner');
+    const prefix = await f.page.evaluate(async () => ({
+      captures: (await opened.listCaptures()).length,
+      positions: (await opened.spoolStatus()).positions.length,
+      accepted: (await opened.deliveryStatus()).acceptedThrough,
+    }));
+    assert.ok(prefix.captures > 0 && prefix.positions > 0);
+    await install(f.page);
+    await advance(f.page, 1);
+    const before = await history(f.page, item);
+    assert.equal(await f.page.evaluate(async () => (await opened.listCaptures()).length), 0);
+    assert.deepEqual(await f.page.evaluate(async () => (await opened.spoolStatus()).positions), []);
+    assert.equal(
+      await f.page.evaluate(async () => (await opened.deliveryStatus()).acceptedThrough),
+      prefix.accepted,
+    );
+    const original = await f.page.evaluate(() => editor.read().master);
+    await f.page.evaluate(() => {
+      const text = editor.read().master,
+        set = Storage.prototype.setItem;
+      window.logicalJournalBeforeApply = false;
+      Storage.prototype.setItem = function (key, value) {
+        if (key.startsWith('done.pending-update.'))
+          logicalJournalBeforeApply ||= editor.read().master === text;
+        return set.call(this, key, value);
+      };
+    });
+    await edit(f.page, 0, 0, 'LOGICAL SUFFIX ');
+    assert.equal(await f.page.evaluate(() => logicalJournalBeforeApply), true);
+    await f.page.evaluate(async () => {
+      await editor.command({ kind: 'undo' }).accepted;
+    });
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await f.page.evaluate(async () => {
+      await editor.command({ kind: 'redo' }).accepted;
+    });
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'LOGICAL SUFFIX ' + original);
+    await durable(f.page);
+    await online(f.page, true);
+    await settled(f.page);
+    await online(f.page, false);
+    const positions = await f.page.evaluate(async () => (await opened.spoolStatus()).positions);
+    assert.equal(positions[0].position, prefix.accepted + 1);
+    noDeletion(before, await history(f.page, item));
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'LOGICAL SUFFIX ' + original);
+    const reads = await f.page.evaluate(() => baselineReadSamples);
+    assert.ok(
+      reads.length >= 2,
+      'cold classification and live recovery both used the logical reader',
+    );
+    assert.ok(reads.every((r) => r.logical < r.physical && r.firstSuffix > 1));
+    assert.ok(
+      (await f.page.evaluate(async () => (await opened.spoolStatus()).positions)).every(
+        (p) => p.position > prefix.accepted,
+      ),
+    );
+    await close(f.page);
+  },
+);

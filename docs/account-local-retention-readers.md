@@ -5,10 +5,15 @@ This is a source audit and implementation plan. No reader is activated here, no 
 deleted, and no performance improvement is claimed. The [exact deletion plan](./account-local-retention-deletion.md)
 depends on closing the adapter gaps below. Public activation and release validation are separate.
 
+**Implementation update:** this inventory is signed as `bce612c3`. The subsequent
+[owned-reader phase](./account-local-baseline-readers.md) connects era-bearing original/joined
+cold/live logical reads while retaining the physical oracle. The table below records the audit at
+`bcca1aa1`; lifecycle/rebase adapters and the exact-plan dry run remain next. No row is deleted.
+
 ## The distinction that governs the inventory
 
 The pure `replayLocalBaseline` reader can reconstruct and verify a retained origin plus suffix.
-The real carrier does something different today: `contentStore.openSnapshot` opens **every physical
+At the audited boundary, the real carrier did something different: `contentStore.openSnapshot` opens **every physical
 row**, invokes the ordinary validator, and then calls `verifyCompleteLocalBaseline`. That helper
 compares a full replay with a baseline replay and returns no replacement read model. Callers still
 receive the full rows. A successful anchored lifecycle test therefore does not establish that its
@@ -110,7 +115,7 @@ These are source-derived gaps, not observed defects in the currently non-deletin
    closed representation and transaction, then focused native crash/retry checks. Public reader-first
    rollout, compatible rollback, capacity and unavailable-history UX remain explicit later gates.
 
-The next implementation phase is **step 1**, not deletion. This inventory closes the source audit;
+The owned-reader phase implements **step 1** behind its private switch; **step 2** is next, not deletion. This inventory closes the source audit;
 it does not close any of those implementation exits. No general release inventory/campaign is resumed.
 `docs/progress.md` is reserved for the other workstream and remains untouched; this phase's checkpoint
 is in [completed.md](./completed.md).

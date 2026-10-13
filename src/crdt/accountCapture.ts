@@ -1,3 +1,5 @@
+import { eraseVerified } from './verifiedRecords';
+import type { AccountBaselineRead } from './localBaselineShadow';
 import type { ContentCrypto } from './contentStore';
 import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApplyGate';
 import { budgetedTask } from './cpuBudget';
@@ -52,6 +54,7 @@ import type { ContentSelection } from './contentSelection';
 /** Internal composition hook; never supplied by application or transport callers. */
 export interface CaptureExtension {
   version: 7 | 8 | 9;
+  readBaseline?: true;
   /** Private verifier may borrow retained carrier rows immutably during selection validation. */
   selectiveLoads?: true;
   baseline?(
@@ -84,6 +87,7 @@ export interface CaptureExtension {
     route: CaptureRoute,
     counter: ContentCounter,
     view?: object,
+    baseline?: AccountBaselineRead,
   ): Promise<void>;
   invalidateAuthority?(): void;
   dispose(): void;
@@ -119,8 +123,20 @@ export async function openAccountCaptureOwner(
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
     extension ? extension.sourceRecords(records, route) : records;
-  const recovery = (records: OpenedRecord[], journal: ObservedEntry[]) => ({
-    ...capturedRecovery({ records: [...sourceRecords(records)], journal }, route),
+  const recovery = (
+    records: OpenedRecord[],
+    journal: ObservedEntry[],
+    baseline?: AccountBaselineRead,
+  ) => ({
+    ...capturedRecovery(
+      {
+        records: [
+          ...(baseline?.ledger.census.delivery.spool.sourceRecords ?? sourceRecords(records)),
+        ],
+        journal,
+      },
+      route,
+    ),
     records,
   });
   const live = await (joined ? openJoinedWriteSession : openAccountWriteSession)(
@@ -142,8 +158,8 @@ export async function openAccountCaptureOwner(
           owner = prepareAccountCustody(
             { ...scope, resolvePrincipal: () => scope.principalId },
             options.code,
-            (records, task, counter, view) =>
-              extension.validate(task, records, route, counter, view),
+            (records, task, counter, view, baseline) =>
+              extension.validate(task, records, route, counter, view, baseline),
             true,
             true,
             warmLoads,
@@ -151,6 +167,7 @@ export async function openAccountCaptureOwner(
             extension.baseline
               ? (task, identity) => extension.baseline!(task, identity, route)
               : undefined,
+            extension.readBaseline,
           );
           await extension.initializeJoined(task, v);
           await owner.initialize(task);
@@ -201,9 +218,9 @@ export async function openAccountCaptureOwner(
             resolvePrincipal: () => route.principal,
           },
           options.code,
-          (records, task, counter, view) => {
+          (records, task, counter, view, baseline) => {
             if (extension?.version !== 9) captureCatalog(sourceRecords(records), route);
-            return extension?.validate(task, records, route, counter, view);
+            return extension?.validate(task, records, route, counter, view, baseline);
           },
           extension ? true : undefined,
           extension?.version === 9 ? true : undefined,
@@ -212,6 +229,7 @@ export async function openAccountCaptureOwner(
           extension?.baseline
             ? (task, identity) => extension.baseline!(task, identity, route)
             : undefined,
+          extension?.readBaseline,
         );
         await extension?.initialize(task, v);
         await owner.initialize(task);
@@ -525,12 +543,18 @@ export async function openAccountCaptureOwner(
     loadRecovery: () =>
       run((task) =>
         withSnapshot(task, async (journal) => {
-          const records = await owner!.carrier.load(task);
+          const logical = await owner!.carrier.loadAccount(task);
           try {
-            return recovery(records, journal);
+            return recovery(
+              logical.records,
+              journal,
+              logical.kind === 'baseline-plus-suffix' ? logical : undefined,
+            );
           } catch (e) {
-            for (const r of records) r.bytes.fill(0);
+            for (const r of logical.records) r.bytes.fill(0);
             throw e;
+          } finally {
+            if (logical.kind === 'baseline-plus-suffix') eraseVerified(logical.ledger);
           }
         }),
       ),

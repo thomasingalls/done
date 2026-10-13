@@ -90,8 +90,8 @@ use disposable data. There is no new performance claim, product activation, publ
 qualification. `docs/progress.md` remains untouched.
 
 The subsequent [reader inventory](./account-local-retention-readers.md) and
-[exact deletion plan](./account-local-retention-deletion.md) are now recorded. Next implement the
-owned reduced-reader seam with all physical predecessors retained, then lifecycle/rebase adapters and
-a non-mutating exact-plan dry run. Atomic logical deletion is a separate phase. Cold/open and per-task
+[exact deletion plan](./account-local-retention-deletion.md) are now recorded. The
+[owned reduced-reader seam](./account-local-baseline-readers.md) is now connected with all physical
+predecessors retained. Next are lifecycle/rebase adapters and a non-mutating exact-plan dry run. Atomic logical deletion is a separate phase. Cold/open and per-task
 growth targets, capacity limits, public reader-first compatibility and rollback procedure remain
 separate gates.

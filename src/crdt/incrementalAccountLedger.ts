@@ -62,6 +62,10 @@ export interface AccountLedgerIndexes {
   epoch: number;
 }
 export interface AccountLedgerView {
+  baseline?: Pick<
+    import('./localBaselineShadow').AccountBaselineRead,
+    'anchor' | 'firstSuffix' | 'records'
+  >;
   census: ReturnType<typeof inspectInbound>;
   delivery: DeliveryState;
   inbound: InboundState;

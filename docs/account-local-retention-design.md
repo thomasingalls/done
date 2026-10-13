@@ -11,7 +11,9 @@ a private encrypted carrier and counter-v3 refusal fence, tested only in disposa
 [private fences](./account-local-retention-fences.md) add replacement/rotation and counter-v4
 journal-era, old-read and checkpoint enforcement, still with an empty logical deletion set. The
 [reader inventory](./account-local-retention-readers.md) and [exact deletion plan](./account-local-retention-deletion.md)
-now define the remaining adapters and atomic transition. No
+define the remaining adapters and atomic transition. The subsequent
+[owned-reader phase](./account-local-baseline-readers.md) connects private era-bearing original/joined
+logical reads, retaining all physical rows and the full oracle. No
 product baseline installation, migration or deletion is enabled. The separate warm-load repair changes owner-local reuse
 only. General release validation remains paused.
 
@@ -82,7 +84,8 @@ be an explicit refusal/recovery case, not silently treated as a new edit. The
 journal-era wrapper before any source retirement, old-flight invalidation/refetch, bounded exact
 checkpoint-cut evidence, and refusal/preservation for unsupported partial restores. Matching eras
 do not prove complete profile freshness or nonce safety. The private empty-deletion implementation
-now enforces these fences; reduced-reader integration and physical deletion remain unimplemented.
+now enforces these fences. Private original/joined logical readers are connected; the remaining
+lifecycle/rebase adapters and physical deletion are still unimplemented.
 
 Prepare and independently verify the baseline and candidate suffix before deletion. At the final
 IndexedDB transaction, recheck the counter, authority, exact physical deletion set and baseline
@@ -145,8 +148,7 @@ after owner integration `bb9c7e82`, now exercises durable encrypted anchors, exa
 rotation with retained openers, initial handoff and detached original/joined readers. Full history
 remains the reference and no logical rows are removed. The
 [retirement evidence contract](./account-local-retention-evidence.md) now selects the retained evidence
-and refusal rules. Their non-deleting implementation is signed as `bcca1aa1`. The next bounded step is
-the physical/logical reader seam and owned reduced replay while retaining all rows, followed by
-lifecycle/rebase adapters and an exact-plan dry run. Implement/test actual deletion separately, as
+and refusal rules. Their non-deleting implementation is signed as `bcca1aa1`. The physical/logical reader seam and owned reduced replay are now connected privately while retaining
+all rows. Next are lifecycle/rebase adapters and an exact-plan dry run. Implement/test actual deletion separately, as
 specified in the reader inventory and exact deletion plan. Full-history comparison is still mandatory
-in the current private owner; it is not yet a reduced-history reader.
+in the current private owner; it cannot yet operate after physical history removal.

@@ -50,7 +50,10 @@ import { entry, A, ZERO, type FixtureEntry } from './account-inbound/fixtures';
 import { context, eventWire } from './account-inbound-codecs/oracle';
 import { indexVerifiedLedger, extendAccountLedger } from '../src/crdt/incrementalAccountLedger';
 import { createVerificationMemo } from '../src/crdt/verificationMemo';
-import { createLocalBaselineShadow } from '../src/crdt/localBaselineShadow';
+import {
+  createLocalBaselineShadow,
+  verifyCompleteLocalBaseline,
+} from '../src/crdt/localBaselineShadow';
 import { selectEnvelopeSources } from '../src/crdt/accountEnvelopePreparation';
 // @ts-expect-error Existing independent Node fixtures are JavaScript.
 import { memberFixture, retriedFixture } from './local-baseline/fixtures.mjs';
@@ -1167,4 +1170,101 @@ it('full-history consumers explicitly refuse a reduced spool instead of interpre
   } finally {
     f.clear();
   }
+});
+
+it('logical reads require an era, carry exact partial originals and isolate every returned buffer', async () => {
+  const f = await fixture(),
+    cut = f.cuts[0]!,
+    prefix = await f.input(f.rows.slice(0, cut));
+  const before = structuredClone(prefix);
+  const ordinary = await prepareLocalBaseline(prefix, f.ctx, auth);
+  expect(await verifyCompleteLocalBaseline(prefix, f.ctx, auth, ordinary, true)).toBeUndefined();
+  const retained = await prepareLocalBaseline(prefix, f.ctx, auth, null, {
+    current: 'ab'.repeat(32),
+    previous: null,
+    revision: 1,
+  });
+  expect(await verifyCompleteLocalBaseline(prefix, f.ctx, auth, retained)).toBeUndefined();
+  const read = await verifyCompleteLocalBaseline(prefix, f.ctx, auth, retained, true);
+  expect(read?.kind).toBe('baseline-plus-suffix');
+  expect(read!.records.length).toBeLessThan(prefix.records.length);
+  expect(read!.records[0]!.seq).toBe(0);
+  expect(read!.ledger.census.delivery.spool.origin?.position).toBe(1);
+  expect(read!.ledger.census.delivery.spool.origin?.consumed).toEqual([
+    { id: '1'.padStart(32, '0'), index: 0 },
+  ]);
+  expect(read!.ledger.census.delivery.spool.positions).toEqual([]);
+  const selected = await selectEnvelopeSources(
+    read!.ledger.census.delivery.spool,
+    f.ctx.route,
+    true,
+    crypto.subtle,
+  );
+  expect(selected.map(({ id, index }) => ({ id, index }))).toEqual([
+    { id: '1'.padStart(32, '0'), index: 1 },
+  ]);
+  for (const r of read!.records) r.bytes.fill(0);
+  for (const b of read!.ledger.census.delivery.spool.sources.values()) b.fill(0);
+  read!.ledger.delivery.acceptedThrough = 999;
+  expect(prefix).toEqual(before);
+  const reread = await verifyCompleteLocalBaseline(await f.input(), f.ctx, auth, retained, true);
+  expect(reread!.ledger.delivery.acceptedThrough).toBe(4);
+  expect(reread!.ledger.census.delivery.spool.positions.map((p) => p.position)).toEqual([2, 3, 4]);
+  expect(nextSpoolPosition(reread!.ledger.census.delivery.spool)).toBe(5);
+});
+it('non-deleting logical reads still refuse changed physical prefix evidence', async () => {
+  const f = await fixture(),
+    prefix = await f.input(f.rows.slice(0, f.cuts[1]!));
+  const retained = await prepareLocalBaseline(prefix, f.ctx, auth, null, {
+    current: 'ab'.repeat(32),
+    previous: null,
+    revision: 1,
+  });
+  const damaged = structuredClone(await f.input());
+  const bytes = damaged.records.find((r) => r.kind === 'heads')!.bytes;
+  bytes[0] = bytes[0]! ^ 1;
+  await expect(verifyCompleteLocalBaseline(damaged, f.ctx, auth, retained, true)).rejects.toThrow();
+});
+
+it('the full oracle detects a missing original beyond the next 32-source publication batch', async () => {
+  const f = await fixture(Array.from({ length: 70 }, () => false));
+  const catalogue = new Set(
+    inspectInbound(f.rows, f.ctx.route, f.ctx.inbound).delivery.spool.sourceRecords.map(
+      (r) => r.seq,
+    ),
+  );
+  const input = await f.input(
+    f.rows.filter((r) => r.seq <= f.rows[f.cuts[0]! - 1]!.seq || catalogue.has(r.seq)),
+  );
+  const retained = await prepareLocalBaseline(input, f.ctx, auth, null, {
+    current: 'ab'.repeat(32),
+    previous: null,
+    revision: 1,
+  });
+  const good = await verifyCompleteLocalBaseline(input, f.ctx, auth, retained, true);
+  const decoded = decodeLocalBaseline(retained.baseline.payload);
+  expect(decoded.sources.length).toBe(35);
+  decoded.sources.pop(); // Simulates a candidate-builder omission, not an unauthenticated disk edit.
+  const payload = encodeLocalBaseline(decoded),
+    mac = await auth.sign(baselineAuthenticationPayload(payload));
+  const bad = {
+    baseline: { payload, mac },
+    anchor: { revision: decoded.revision, hash: digest(payload) },
+  };
+  const replay = await replayLocalBaseline(
+    bad.baseline,
+    bad.anchor,
+    { ...input, records: [] },
+    f.ctx,
+    auth,
+  );
+  const select = (spool: typeof replay.census.delivery.spool) =>
+    selectEnvelopeSources(spool, f.ctx.route, true, crypto.subtle);
+  expect(await select(replay.census.delivery.spool)).toEqual(
+    await select(good!.ledger.census.delivery.spool),
+  );
+  expect((await select(replay.census.delivery.spool)).length).toBe(32);
+  await expect(verifyCompleteLocalBaseline(input, f.ctx, auth, bad, true)).rejects.toThrow(
+    'integrity',
+  );
 });

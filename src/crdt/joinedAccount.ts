@@ -1019,8 +1019,9 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         task,
         { ...scope, resolvePrincipal: () => scope.principalId },
         options.code,
-        async (recovered) => {
-          const census = inspectInbound(recovered.records, b.route, b.base);
+        async (recovered, baseline) => {
+          const census =
+            baseline?.ledger.census ?? inspectInbound(recovered.records, b.route, b.base);
           const recovery = capturedRecovery(
               { ...recovered, records: census.delivery.spool.sourceRecords },
               b.route,
@@ -1039,6 +1040,9 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
           reuseOpened: true,
           ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
             ? {
+                ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
+                  ? { readBaseline: true as const }
+                  : {}),
                 baseline: async (
                   _task: SessionTask,
                   identity: import('./contentRecord').ContentIdentity,
@@ -1061,7 +1065,8 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
                 },
               }
             : {}),
-          validate: async (records, _task, counter) => {
+          validate: async (records, _task, counter, _view, baseline) => {
+            if (baseline && !detached) return;
             countLedgerWork('joinedStartupValidations');
             const census = inspectInbound(records, b.route, b.base);
             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);
