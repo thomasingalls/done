@@ -1,4 +1,4 @@
-/** Private durable framing. Ordinary Account readers deliberately do not accept counter v3. */
+/** Private durable framing. Ordinary Account readers deliberately do not accept counters v3/v4. */
 import { fields, hex, utf8, type Bytes } from './custodyCrypto';
 import {
   counterPayload,
@@ -8,9 +8,11 @@ import {
   type ContentIdentity,
 } from './contentRecord';
 import { LOCAL_BASELINE_LIMIT, type BaselineAnchor } from './localBaselineRecord';
+import { parseJournalEra, type JournalEra } from './journalEra';
 import { StorageCompatibilityError } from './storageCompatibility';
 
 export const BASELINE_CARRIER = 'done/local-baseline-carrier/draft-1';
+export const ERA_BASELINE_CARRIER = 'done/local-baseline-carrier/draft-2';
 export const BASELINE_CHUNK_BYTES = 256 * 1024;
 export const BASELINE_MAX_BYTES = LOCAL_BASELINE_LIMIT + 32;
 export const BASELINE_MAX_CHUNKS = Math.ceil(BASELINE_MAX_BYTES / BASELINE_CHUNK_BYTES);
@@ -18,7 +20,8 @@ export const baselineChunkKey = (index: number): IDBValidKey => ['local-baseline
 export interface BaselinePointer extends Pick<BaselineAnchor, 'revision'> {
   /** Keyed plaintext commitment; never persist an unkeyed hash of writing. */
   commitment: string;
-  format: typeof BASELINE_CARRIER;
+  format: typeof BASELINE_CARRIER | typeof ERA_BASELINE_CARRIER;
+  journalEra?: JournalEra;
   /** This phase retains the complete physical history. Never infer deletion permission. */
   history: 'complete';
   generation: number;
@@ -27,7 +30,7 @@ export interface BaselinePointer extends Pick<BaselineAnchor, 'revision'> {
   bytes: number;
 }
 export type BaselineCounter = Omit<Extract<ContentCounter, { v: 2 }>, 'v'> & {
-  v: 3;
+  v: 3 | 4;
   baseline: BaselinePointer;
 };
 const exact = (input: unknown, keys: string[]): Record<string, unknown> => {
@@ -61,7 +64,7 @@ export function parseBaselineCounter(
     'spool',
     'baseline',
   ]);
-  if (value['v'] !== 3) return corrupt('Expected baseline counter.');
+  if (value['v'] !== 3 && value['v'] !== 4) return corrupt('Expected baseline counter.');
   const p = exact(value['baseline'], [
     'format',
     'history',
@@ -71,18 +74,24 @@ export function parseBaselineCounter(
     'firstSequence',
     'chunks',
     'bytes',
+    ...(value['v'] === 4 ? ['journalEra'] : []),
   ]);
-  if (p['format'] !== BASELINE_CARRIER || p['history'] !== 'complete')
+  if (
+    p['format'] !== (value['v'] === 4 ? ERA_BASELINE_CARRIER : BASELINE_CARRIER) ||
+    p['history'] !== 'complete'
+  )
     throw new StorageCompatibilityError('Unsupported local baseline carrier.');
   const { baseline: _pointer, ...allocation } = value;
   const base = parseCounter({ ...allocation, v: 2 }, scope, intent);
   if (base.v !== 2) return corrupt();
+  const era = value['v'] === 4 ? parseJournalEra(p['journalEra']) : undefined;
   const bytes = integer(p['bytes'], BASELINE_MAX_BYTES),
     chunks = integer(p['chunks'], BASELINE_MAX_CHUNKS),
     firstSequence = integer(p['firstSequence']),
     generation = integer(p['generation'], base.active_gen),
     revision = integer(p['revision']);
   if (
+    (era && era.revision > revision) ||
     bytes <= 32 ||
     chunks !== Math.ceil(bytes / BASELINE_CHUNK_BYTES) ||
     !Number.isSafeInteger(firstSequence + chunks) ||
@@ -94,9 +103,10 @@ export function parseBaselineCounter(
     return corrupt();
   return {
     ...base,
-    v: 3,
+    v: value['v'] as 3 | 4,
     baseline: {
-      format: BASELINE_CARRIER,
+      format: value['v'] === 4 ? ERA_BASELINE_CARRIER : BASELINE_CARRIER,
+      ...(era ? { journalEra: era } : {}),
       history: 'complete',
       revision,
       commitment: p['commitment'],
@@ -112,7 +122,9 @@ export function baselineCounterPayload(scope: ContentIdentity, c: BaselineCounte
   const { baseline: p, ...allocation } = c;
   return utf8(
     JSON.stringify([
-      'done/content-counter/local-baseline-draft-1',
+      c.v === 4
+        ? 'done/content-counter/local-baseline-draft-2'
+        : 'done/content-counter/local-baseline-draft-1',
       hex(counterPayload(scope, { ...allocation, v: 2 })),
       [
         p.format,
@@ -123,6 +135,9 @@ export function baselineCounterPayload(scope: ContentIdentity, c: BaselineCounte
         p.firstSequence,
         p.chunks,
         p.bytes,
+        ...(p.journalEra
+          ? [[p.journalEra.current, p.journalEra.previous, p.journalEra.revision]]
+          : []),
       ],
     ]),
   );
@@ -134,7 +149,7 @@ export const baselineChunkPrefix = (
   index: number,
 ): Bytes =>
   fields(
-    BASELINE_CARRIER,
+    p.format,
     scope.slotId,
     scope.principalId,
     scope.workspaceId,
@@ -147,4 +162,9 @@ export const baselineChunkPrefix = (
     String(p.chunks),
     String(p.bytes),
     String(index),
+    ...(p.journalEra
+      ? [p.journalEra.current, p.journalEra.previous ?? '', String(p.journalEra.revision)]
+      : []),
   );
+
+export const baselineVersion = (p: BaselinePointer): 3 | 4 => (p.journalEra ? 4 : 3);

@@ -1059,6 +1059,20 @@ it('never trusts a checkpoint cut at a retired unknown link, for either self or 
     const historical = await f.appendHistory();
     const oldInstall = await verifyHistoryInstall(c.inbound, historical, undefined, c);
     oldInstall.update.fill(0);
+    // Online duplicate is authenticated and returns no new installation; cold ledger replay
+    // still refuses a second durable event for the same checkpoint.
+    const duplicate = await verifyHistoryInstall(
+      c.inbound,
+      historical,
+      oldInstall.installed,
+      c,
+      true,
+    );
+    expect(duplicate.duplicate).toBe(true);
+    duplicate.update.fill(0);
+    await expect(
+      verifyHistoryInstall(c.inbound, historical, oldInstall.installed, c),
+    ).rejects.toThrow('regressed or forked');
     await f.appendOwn();
     await f.appendPeer();
     const prefix = await memberInput(f.rows, c),
@@ -1072,6 +1086,8 @@ it('never trusts a checkpoint cut at a retired unknown link, for either self or 
     );
     // A starting point retained from a verified checkpoint still proves its exact old peer link.
     const heads = oldInstall.heads!;
+    await applyHistoryReceiveCuts(replay.inbound, c.inbound, replay.census, heads);
+    delete replay.inbound.checkpointCuts;
     await expect(
       applyHistoryReceiveCuts(
         replay.inbound,

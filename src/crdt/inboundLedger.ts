@@ -173,6 +173,8 @@ export async function inspectInboundCooperatively(
 export interface InboundState {
   /** Private authenticated local-baseline replay only; no raw cursor can establish this fence. */
   retiredThrough?: number;
+  /** Exact cuts authenticated by the retained installed checkpoint. Not wire hints. */
+  checkpointCuts?: Map<string, { position: number; link: string }>;
   prefix: InboundContext['prefix'];
   startingPoint?: { position: number; link: string };
   installedHistory?: InstalledHistory;
@@ -251,8 +253,11 @@ export async function applyHistoryReceiveCuts(
     if (state.conflict) captureError('History cut crosses a stream conflict');
     if (cut.credentialId === base.publisher.id && cut.position > 0) {
       const origin = census.delivery.spool.origin;
-      if (origin && cut.position < origin.position) throw new RetiredHistoryRequired();
-      if (origin && cut.position === origin.position) {
+      if (origin && cut.position < origin.position) {
+        const pin = own.checkpointCuts?.get(cut.credentialId);
+        if (!pin || pin.position !== cut.position) throw new RetiredHistoryRequired();
+        if (pin.link !== cut.link) captureError('History cut differs from retained checkpoint');
+      } else if (origin && cut.position === origin.position) {
         if (cut.link !== origin.link) captureError('History cut differs from retained self stream');
       } else {
         // Reconstruct the actual attempt at installation, never a later retired-generation retry.
@@ -283,7 +288,9 @@ export async function applyHistoryReceiveCuts(
                 const proof = decodePositionResponse(state.retained.get(cut.position)!.proof);
                 return proof.kind === 'accepted' ? proof.head.link : undefined;
               })()
-            : undefined;
+            : own.checkpointCuts?.get(cut.credentialId)?.position === cut.position
+              ? own.checkpointCuts.get(cut.credentialId)!.link
+              : undefined;
     if (
       state.retiredThrough !== undefined &&
       cut.position > 0 &&
@@ -303,6 +310,9 @@ export async function applyHistoryReceiveCuts(
       };
     if (cut.credentialId !== base.publisher.id) own.peers!.set(cut.credentialId, state);
   }
+  own.checkpointCuts = new Map(
+    heads.map((h) => [h.credentialId, { position: h.position, link: h.link }]),
+  );
 }
 /** Exact collision-checked byte index; positive cache has a fixed byte/entry budget. */
 function updateIndex(bounded: boolean) {

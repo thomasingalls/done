@@ -1,0 +1,27 @@
+[
+  {
+    "check": "format",
+    "exitCode": 0
+  },
+  {
+    "check": "lint",
+    "exitCode": 0
+  },
+  {
+    "check": "types",
+    "exitCode": 0
+  },
+  {
+    "check": "whitespace",
+    "exitCode": 0
+  },
+  {
+    "check": "direct build (Yjs patch, tsc, Vite, budget, origin)",
+    "exitCode": 0
+  },
+  {
+    "check": "pnpm build launcher",
+    "exitCode": 1,
+    "reason": "package-manager identity verification could not contact registry; project script not started"
+  }
+]

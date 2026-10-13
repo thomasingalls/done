@@ -23,7 +23,7 @@ export async function withAccountProgressCustody<T>(
   kind: Kind,
   slotId: string,
   code: string,
-  channel: 'rotation' | 'history',
+  channel: 'approval' | 'rotation' | 'history',
   work: (v: {
     vault: Awaited<ReturnType<typeof createApprovalVault>>;
     state:

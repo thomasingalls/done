@@ -25,6 +25,8 @@ import {
 } from './localBaselineRecord';
 import {
   BASELINE_CARRIER,
+  ERA_BASELINE_CARRIER,
+  baselineVersion,
   BASELINE_CHUNK_BYTES,
   baselineChunkKey,
   baselineChunkPrefix,
@@ -242,6 +244,21 @@ export async function anchorLocalBaseline(
         )
     )
       return corrupt('Baseline is not the verified current cut.');
+    const oldEra = previous?.counter.baseline.journalEra;
+    if (
+      oldEra &&
+      (!b.journalEra ||
+        (b.journalEra.current === oldEra.current
+          ? b.journalEra.previous !== oldEra.previous || b.journalEra.revision !== oldEra.revision
+          : b.journalEra.previous !== oldEra.current || b.journalEra.revision !== b.revision))
+    )
+      return corrupt('Journal era predecessor differs.');
+    if (
+      !oldEra &&
+      b.journalEra &&
+      (b.journalEra.previous !== null || b.journalEra.revision !== b.revision)
+    )
+      return corrupt('First journal era has a predecessor.');
     // A detached authenticated census is required, including physical placement and exact cut.
     const seen = new Set<number>();
     let last = 0;
@@ -262,7 +279,8 @@ export async function anchorLocalBaseline(
     if (last !== b.cut.sequence) return corrupt('Baseline census cut differs.');
     packed = concat(baseline.mac, baseline.payload);
     const p: BaselinePointer = {
-      format: BASELINE_CARRIER,
+      format: b.journalEra ? ERA_BASELINE_CARRIER : BASELINE_CARRIER,
+      ...(b.journalEra ? { journalEra: b.journalEra } : {}),
       history: 'complete',
       revision: anchor.revision,
       commitment: hex(baseline.mac),
@@ -272,10 +290,16 @@ export async function anchorLocalBaseline(
       bytes: packed.length,
     };
     const stored = (c: ContentCounter): ContentCounter | BaselineCounter =>
-      previous ? ({ ...c, v: 3, baseline: previous.counter.baseline } as BaselineCounter) : c;
+      previous
+        ? ({
+            ...c,
+            v: baselineVersion(previous.counter.baseline),
+            baseline: previous.counter.baseline,
+          } as BaselineCounter)
+        : c;
     const payload = (c: ContentCounter) => {
       const value = stored(c);
-      return value.v === 3
+      return 'baseline' in value
         ? baselineCounterPayload(owner.identity, value)
         : counterPayload(owner.identity, value);
     };
@@ -316,7 +340,7 @@ export async function anchorLocalBaseline(
       }
     }
     let next = parseBaselineCounter(
-      { ...reserved, v: 3, baseline: p },
+      { ...reserved, v: baselineVersion(p), baseline: p },
       owner.identity,
       owner.intent,
     );
@@ -432,6 +456,7 @@ export async function readEncryptedBaseline(
     const anchor = { revision: p.revision, hash: await hash(task, baseline.payload) };
     const b = (decoded = await authenticateCandidate(task, owner, baseline, anchor, p.generation));
     if (
+      JSON.stringify(b.journalEra ?? null) !== JSON.stringify(p.journalEra ?? null) ||
       b.cut.nextSequence !== p.firstSequence ||
       b.cut.witness.events > counter.spool.events ||
       (b.cut.witness.events === counter.spool.events &&

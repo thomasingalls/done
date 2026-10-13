@@ -13953,7 +13953,7 @@ public rollout/rollback obligations remain. `docs/progress.md` is untouched.
 ### Local retention evidence rules — old reads, checkpoint cuts and restored journal pairs
 
 **Date:** 2026-10-13 · **Commit:** prior lifecycle phase signed `cf16e61a` (`G`); this contract and
-characterization uncommitted · **Stage:** Local Account retention preparation; no deletion
+characterization signed `8c694d55` (`G`) · **Stage:** Local Account retention preparation; no deletion
 
 **Exit.** The [evidence-retention contract](./account-local-retention-evidence.md) gives explicit
 retention/refetch/refusal dispositions for the three previously unresolved boundaries. Volatile reads
@@ -13978,3 +13978,37 @@ performance or release-validation campaign resumed. Live undo and journal-before
 empty deletion set and focused crash/retry controls. Then adapt remaining reduced-history readers
 and separately implement/test exact deletion. Public reader rollout and compatible rollback remain
 later gates. `docs/progress.md` is untouched.
+
+
+### Private retention fences — authenticated journal eras, old flights and checkpoint cuts
+
+**Date:** 2026-10-13 · **Commit:** design signed `8c694d55` (`G`); implementation uncommitted ·
+**Stage:** Local Account retention preparation; empty logical deletion set
+
+**Exit.** The [private owner](./account-local-retention-fences.md) can explicitly advance its
+retirement era under ordered admission and an empty scoped journal. Counter v4, carrier draft-2 and
+baseline draft-3 authenticate its random era, predecessor and creation revision. The journal's AEAD
+wraps exact original capsules with that era and store identity/intent. Both ordinary custody and the
+separate rotation reader check the pairing. Cross-era restored pairs are preserved/refused; matching
+journal-only and committed-before-cleanup crashes recover. No logical history or required opener is
+removed, and a baseline operation never replaces the live document or undo stack.
+
+Old single/group/history flights carry an invalidation token checked through commit/final apply;
+transport cancellation alone is insufficient. Durable receive promotions drain or postpone the cut.
+Exact retained checkpoint links remain comparable; unknown old cuts require history and do not persist
+or repeatedly fetch the same candidate body. Duplicate private checkpoint installation is a verified
+no-op; duplicate durable ledger events still refuse. Unfinished encrypted history, connection and
+rotation attempts postpone the boundary, without being cleared or rewritten.
+
+**Evidence.** The [focused evidence packet](./development-evidence/2026-10-13-local-retention-fences/README.md)
+records 104 unit checks, 22 distinct enabled owner cases across the recorded runs, one ordinary
+owner check, seven prepared-receive regressions and three packaged lifecycle/checkpoint journeys.
+TypeScript, lint/format and the ordinary build/budget/origin checks pass via installed Node tools;
+the pnpm launcher itself could not verify its distribution against the registry. The two-rotation journey exposed a missed
+journal binding in the separate rotation reader; it is repaired and covered. No performance claim,
+public format activation, publication or release-validation campaign. `docs/progress.md` is untouched.
+
+**Next.** Complete the baseline-plus-suffix reader inventory and exact deletion plan, then a separate
+bounded atomic logical-history deletion/replay phase. Public reader-first deployment, compatible
+rollback, capacity behavior and reduced-reader `history-required` UX remain later work. Era equality
+still cannot prove arbitrary partial/whole-profile restore safety or freshness.

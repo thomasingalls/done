@@ -165,7 +165,8 @@ export const parseCounter = (
   const version = (input as { v?: unknown } | null)?.v;
   // Refusal only. Baseline-aware metadata has a separate authenticated parser;
   // no ordinary full-history reader may discard its active pointer.
-  if (version === 3) throw new StorageCompatibilityError('Local baseline reader required.');
+  if (version === 3 || version === 4)
+    throw new StorageCompatibilityError('Local baseline reader required.');
   const v = object(input, [
     'v',
     'store_id',

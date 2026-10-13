@@ -1,5 +1,5 @@
 /** Private adapter for the non-deleting Account experiment. Never persist the semantic v2 view:
- * allocation consumers use it, but every disk write/MAC retains the authenticated v3 pointer. */
+ * allocation consumers use it, but every disk write/MAC retains the authenticated v3/v4 pointer. */
 import {
   corrupt,
   parseCounter,
@@ -9,6 +9,7 @@ import {
 } from './contentRecord';
 import {
   parseBaselineCounter,
+  baselineVersion,
   baselineCounterPayload,
   type BaselinePointer,
 } from './localBaselineAnchor';
@@ -18,16 +19,17 @@ export function createBaselineMetadata(scope: ContentIdentity) {
   const stored = (counter: ContentCounter) => {
     if (!pointer) return counter;
     if (counter.v !== 2) return corrupt('Baseline requires Account allocation metadata.');
-    return { ...counter, v: 3 as const, baseline: structuredClone(pointer) };
+    return { ...counter, v: baselineVersion(pointer), baseline: structuredClone(pointer) };
   };
   return {
     active: () => !!pointer,
+    era: () => pointer?.journalEra && { ...pointer.journalEra },
     /** Only after our atomic replacement succeeds. The next full load authenticates the new pin. */
     replaced() {
       pointer = undefined;
     },
     parse(value: unknown, intent: string): ContentCounter {
-      if ((value as { v?: unknown } | null)?.v !== 3) {
+      if (![3, 4].includes(Number((value as { v?: unknown } | null)?.v))) {
         if (pointer) return corrupt('Baseline metadata was downgraded.');
         return parseCounter(value, scope, intent);
       }
@@ -41,7 +43,9 @@ export function createBaselineMetadata(scope: ContentIdentity) {
     stored,
     payload(counter: ContentCounter) {
       const value = stored(counter);
-      return value.v === 3 ? baselineCounterPayload(scope, value) : counterPayload(scope, value);
+      return 'baseline' in value
+        ? baselineCounterPayload(scope, value)
+        : counterPayload(scope, value);
     },
     metadataKeys(keys: IDBValidKey[]) {
       const expected: IDBValidKey[] = ['counter'];

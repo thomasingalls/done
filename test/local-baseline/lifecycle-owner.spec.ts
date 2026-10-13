@@ -7,6 +7,7 @@ import { startService, stopService } from '../packaged-account/server';
 
 type Owner = {
   installLocalBaseline(): Promise<{ kind: string }>;
+  advanceLocalRetention(expectedRevision: number): Promise<{ kind: string }>;
   replaceLocalBaseline(expectedRevision: number): Promise<{ kind: string }>;
   workspace: { whenDurable(): Promise<void>; status: { state: string } };
 };
@@ -24,6 +25,14 @@ async function anchor(page: Page, revision?: number) {
       { timeout: 20000 },
     )
     .toEqual({ kind: revision === undefined ? 'installed' : 'replaced' });
+  if (revision === undefined)
+    expect(
+      await page.evaluate(() =>
+        (globalThis as unknown as { __baselineOwner: Owner }).__baselineOwner.advanceLocalRetention(
+          1,
+        ),
+      ),
+    ).toEqual({ kind: 'replaced' });
 }
 declare global {
   interface Window {
@@ -198,12 +207,12 @@ test('anchored owners survive initial handoff, two rotations, replacement, resta
       await expect(p.locator('.workspace-status')).toHaveCount(0);
     }
     for (const p of [page, third]) {
-      await anchor(p, 1);
+      await anchor(p, 2);
       expect(
         await p.evaluate(() =>
           (
             globalThis as unknown as { __baselineOwner: Owner }
-          ).__baselineOwner.replaceLocalBaseline(1),
+          ).__baselineOwner.replaceLocalBaseline(2),
         ),
       ).toEqual({ kind: 'already-installed' });
     }
@@ -388,7 +397,7 @@ test('an anchored original device becomes an editable detached copy while its jo
     await expect(page.locator('.shell')).toHaveCount(0, { timeout: 25000 });
     await second.goto('/');
     await openSaved(second, pair.next.code, true);
-    await anchor(second, 1);
+    await anchor(second, 2);
     await add(second, 'Surviving joined owner writes after rotation');
     await page.goto('/');
     await openSaved(page, pair.first.code);

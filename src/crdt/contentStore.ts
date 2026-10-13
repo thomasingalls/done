@@ -700,6 +700,10 @@ export const createContentOwner = (
       custodyDb = undefined;
     },
     load: (task: SessionTask) => load(task),
+    journalBinding: () => {
+      const era = metadata?.era();
+      return era ? { identity: { ...scope }, intent: witness.intent, era } : undefined;
+    },
     /** Private shadow experiment: a complete physical read, never a warm selection or a write.
      * The composed owner supplies exclusion, journal eligibility and fresh custody checks. */
     async withBaselineCensus<T>(
@@ -758,6 +762,7 @@ export const createContentOwner = (
       assertCurrent: () => Promise<void>,
       checkCommit: () => void,
       expectedRevision?: number,
+      advanceEra = false,
     ) {
       if (!metadata || !crypt.baseline || !crypt.allowSpoolCounter || !crypt.validate)
         throw Error('Private Account baseline installer disabled');
@@ -789,8 +794,14 @@ export const createContentOwner = (
           )
             corrupt('Replacement census changed.');
           // An explicit expected revision makes a retry after a lost reply idempotent.
-          if (previous.anchor.revision === expectedRevision + 1)
+          if (previous.anchor.revision === expectedRevision + 1) {
+            if (
+              advanceEra &&
+              previous.counter.baseline.journalEra?.revision !== previous.anchor.revision
+            )
+              corrupt('Retry is not an era transition');
             return { kind: 'already-installed' as const };
+          }
           if (previous.anchor.revision !== expectedRevision)
             corrupt('Replacement revision changed.');
         } else if (expectedRevision !== undefined)
@@ -804,8 +815,16 @@ export const createContentOwner = (
         const input = { records, counter: snapshot.counter! };
         const context = await crypt.baseline(task, { ...scope }, input.counter);
         const auth = baselineAuth(task);
+        const oldEra = previous?.counter.baseline.journalEra;
+        const era = advanceEra
+          ? {
+              current: hex(crypto.getRandomValues(new Uint8Array(32))),
+              previous: oldEra?.current ?? null,
+              revision: (previous?.anchor.revision ?? 0) + 1,
+            }
+          : oldEra;
         try {
-          candidate = await prepareLocalBaseline(input, context, auth, previous?.anchor);
+          candidate = await prepareLocalBaseline(input, context, auth, previous?.anchor, era);
         } catch (error) {
           // Only a new candidate can be ineligible. A persisted anchor's failure above is fatal.
           if (error instanceof LocalBaselineError && error.reason !== 'integrity')
@@ -834,6 +853,31 @@ export const createContentOwner = (
         eraseVerified(records);
         eraseVerified(candidate);
         eraseVerified(previous);
+      }
+    },
+    async checkRetainedCheckpoint(
+      task: SessionTask,
+      heads: readonly import('../../account-protocol/historyCheckpoint').HistoryHead[],
+      assertCurrent: () => Promise<void>,
+      installed?: ReadonlyMap<string, { position: number; link: string }>,
+    ) {
+      if (!metadata?.era()) return;
+      const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
+      const { decodeLocalBaseline } = await task.wait(() => import('./localBaselineRecord'));
+      const { checkRetainedCheckpointCuts } = await task.wait(
+        () => import('./retentionCheckpoint'),
+      );
+      const held = await readEncryptedBaseline(
+        task,
+        baselineOwner(assertCurrent, () => task.step(() => {})),
+      );
+      let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
+      try {
+        decoded = decodeLocalBaseline(held.baseline.payload);
+        checkRetainedCheckpointCuts(decoded, heads, installed);
+      } finally {
+        eraseVerified(decoded);
+        eraseVerified(held);
       }
     },
     canSelect,

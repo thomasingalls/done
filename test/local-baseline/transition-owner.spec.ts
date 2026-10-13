@@ -9,6 +9,7 @@ import type { BaselineShadowResult } from '../../src/crdt/localBaselineShadow';
 type Probe = {
   checkLocalBaseline(): Promise<BaselineShadowResult>;
   installLocalBaseline?(): Promise<{ kind: string }>;
+  advanceLocalRetention?(expectedRevision: number): Promise<{ kind: string }>;
   replaceLocalBaseline?(expectedRevision: number): Promise<{ kind: string }>;
   workspace: { whenDurable(): Promise<void> };
 };
@@ -85,6 +86,12 @@ test(
                 .installLocalBaseline!(),
             ),
           ).toEqual({ kind: 'installed' });
+          expect(
+            await p.evaluate(() =>
+              (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner
+                .advanceLocalRetention!(1),
+            ),
+          ).toEqual({ kind: 'replaced' });
         }
       }
       await add(page, 'Retained baseline original writing');
@@ -100,9 +107,24 @@ test(
       await expect(panel(page)).toContainText(
         'Snapshot saved. Verify it from another approved device.',
       );
+      if (process.env['ACCOUNT_BASELINE_INSTALL'] === '1') {
+        expect(
+          await page.evaluate(() =>
+            (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner
+              .advanceLocalRetention!(2),
+          ),
+        ).toEqual({ kind: 'skipped', reason: 'durable-attempt' });
+      }
       await inspect(second);
       await panel(second).getByRole('button', { name: 'Verify history snapshot' }).click();
       await expect(panel(second)).toContainText('Verified snapshot 1 is saved.');
+      // The producer still retains its exact attempt after the other device admitted it.
+      // Finish through the existing authenticated retry; retention must never clear it itself.
+      await panel(page).getByRole('button', { name: 'Check history', exact: true }).click();
+      await panel(page)
+        .getByRole('button', { name: 'Resume history snapshot', exact: true })
+        .click();
+      await expect(panel(page)).toContainText('Verified snapshot 1 is saved.');
       for (const p of [page, second]) {
         await expect
           .poll(async () => await check(p), { timeout: 20000 })
@@ -113,7 +135,7 @@ test(
           expect(
             await p.evaluate(() =>
               (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner
-                .replaceLocalBaseline!(1),
+                .advanceLocalRetention!(2),
             ),
           ).toEqual({ kind: 'replaced' });
         }

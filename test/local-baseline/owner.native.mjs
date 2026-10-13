@@ -14,6 +14,7 @@ import {
   online,
   waitPredicate,
 } from '../account-sync/fixtures.mjs';
+import { answer } from '../account-receive/fixtures.mjs';
 
 async function setup(t, id) {
   const f = await native(t),
@@ -397,6 +398,7 @@ test(
     const { f } = await setup(t, 'baseline-disabled');
     assert.equal(await f.page.evaluate(() => 'installLocalBaseline' in opened), false);
     assert.equal(await f.page.evaluate(() => 'replaceLocalBaseline' in opened), false);
+    assert.equal(await f.page.evaluate(() => 'advanceLocalRetention' in opened), false);
     await edit(f.page, 0, 0, 'ORDINARY INPUT ');
     await durable(f.page);
     assert.ok((await f.page.evaluate(() => editor.read().master)).startsWith('ORDINARY INPUT '));
@@ -404,32 +406,34 @@ test(
   },
 );
 
-test(
-  'ordinary Account opener refuses an anchored profile without mutations; the private reader can reopen it',
-  { timeout: 90000 },
-  async (t) => {
-    const enabled = process.env.ACCOUNT_BASELINE_INSTALL;
-    let ordinary;
-    try {
-      delete process.env.ACCOUNT_BASELINE_INSTALL;
-      ordinary = await syncBundle();
-    } finally {
-      process.env.ACCOUNT_BASELINE_INSTALL = enabled;
-    }
-    const { f, item } = await setup(t, 'baseline-reader-fence');
-    assert.deepEqual(await install(f.page), { kind: 'installed' });
-    const before = await history(f.page, item);
-    await close(f.page);
-    await f.page.evaluate(ordinary);
-    await configure(f.page, f.testOperatorToken);
-    await assert.rejects(syncing(f.page, item), /unknown-content-metadata|reader|required/i);
-    assert.deepEqual(await history(f.page, item), before);
-    await cold(f);
-    await syncing(f.page, item);
-    assert.deepEqual(await install(f.page), { kind: 'already-installed' });
-    await close(f.page);
-  },
-);
+for (const era of [false, true])
+  test(
+    `ordinary Account opener refuses an anchored ${era ? 'v4 era' : 'v3'} profile without mutations; the private reader can reopen it`,
+    { timeout: 90000 },
+    async (t) => {
+      const enabled = process.env.ACCOUNT_BASELINE_INSTALL;
+      let ordinary;
+      try {
+        delete process.env.ACCOUNT_BASELINE_INSTALL;
+        ordinary = await syncBundle();
+      } finally {
+        process.env.ACCOUNT_BASELINE_INSTALL = enabled;
+      }
+      const { f, item } = await setup(t, 'baseline-reader-fence-' + era);
+      assert.deepEqual(await install(f.page), { kind: 'installed' });
+      if (era) assert.deepEqual(await advance(f.page, 1), { kind: 'replaced' });
+      const before = await history(f.page, item);
+      await close(f.page);
+      await f.page.evaluate(ordinary);
+      await configure(f.page, f.testOperatorToken);
+      await assert.rejects(syncing(f.page, item), /unknown-content-metadata|reader|required/i);
+      assert.deepEqual(await history(f.page, item), before);
+      await cold(f);
+      await syncing(f.page, item);
+      assert.deepEqual(await install(f.page), { kind: 'already-installed' });
+      await close(f.page);
+    },
+  );
 
 test(
   'replacement fences input, preserves undo and retries its expected revision without allocating again',
@@ -561,3 +565,291 @@ test(
     assert.deepEqual(await history(f.page, item), before);
   },
 );
+
+const advance = (p, revision) => p.evaluate((r) => opened.advanceLocalRetention(r), revision);
+const journalEntries = (p) =>
+  p.evaluate(() =>
+    Object.entries(localStorage).filter(([k]) => k.startsWith('done.pending-update.')),
+  );
+
+test(
+  'era boundary rejects late signed reads, retains all rows and preserves journal-before-apply and undo',
+  { timeout: 90000 },
+  async (t) => {
+    const { f, item } = await setup(t, 'era-owner');
+    await close(f.page);
+    await f.page.evaluate(await syncBundle('retention-owner'));
+    await configure(f.page, f.testOperatorToken);
+    await syncing(f.page, item);
+    await online(f.page, false);
+    await install(f.page);
+    const query = await f.page.evaluate(async () => [...(await retentionTestOwner.prepareRead())]);
+    const late = answer(f, item, query).bytes;
+    const before = await history(f.page, item),
+      text = await f.page.evaluate(() => editor.read().master);
+    assert.deepEqual(await advance(f.page, 1), { kind: 'replaced' });
+    const anchored = await history(f.page, item),
+      era = counter(anchored).baseline.journalEra;
+    assert.equal(counter(anchored).v, 4);
+    assert.equal(era.revision, 2);
+    assert.equal(era.previous, null);
+    noDeletion(before, anchored);
+    await assert.rejects(
+      f.page.evaluate((b) => retentionTestOwner.receivePage(new Uint8Array(b)), [...late]),
+      /authority|changed|superseded/i,
+    );
+    assert.deepEqual(await history(f.page, item), anchored);
+    const fresh = await f.page.evaluate(async () => [...(await retentionTestOwner.prepareRead())]);
+    const ok = answer(f, item, fresh).bytes;
+    assert.equal(
+      (await f.page.evaluate((b) => retentionTestOwner.receivePage(new Uint8Array(b)), [...ok]))
+        .kind,
+      'empty',
+    );
+    await f.page.evaluate(() => {
+      const set = Storage.prototype.setItem,
+        initial = editor.read().master;
+      window.eraJournalBeforeApply = false;
+      Storage.prototype.setItem = function (k, v) {
+        if (k.startsWith('done.pending-update.'))
+          window.eraJournalBeforeApply ||= editor.read().master === initial;
+        return set.call(this, k, v);
+      };
+    });
+    await edit(f.page, 0, 0, 'ERA JOURNAL ');
+    assert.equal(await f.page.evaluate(() => eraJournalBeforeApply), true);
+    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
+    assert.equal(await f.page.evaluate(() => editor.read().master), text);
+    await f.page.evaluate(() => editor.command({ kind: 'redo' }).accepted);
+    await durable(f.page);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await settled(f.page);
+    await online(f.page, false);
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'ERA JOURNAL ' + text);
+    const reopened = await history(f.page, item);
+    assert.deepEqual(await advance(f.page, 1), { kind: 'already-installed' });
+    assert.deepEqual(await history(f.page, item), reopened);
+    assert.deepEqual(await f.page.evaluate(() => opened.replaceLocalBaseline(2)), {
+      kind: 'replaced',
+    });
+    assert.deepEqual(counter(await history(f.page, item)).baseline.journalEra, era);
+    const unchanged = await history(f.page, item);
+    await assert.rejects(advance(f.page, 2), /not an era transition|Admission closed/);
+    assert.deepEqual(await history(f.page, item), unchanged);
+    await close(f.page);
+  },
+);
+
+for (const boundary of ['reserved', 'committed'])
+  test(
+    `era renderer death after ${boundary} has an exact, idempotent retry`,
+    { timeout: 90000 },
+    async (t) => {
+      const { f, item } = await setup(t, 'era-crash-' + boundary);
+      await install(f.page);
+      const before = await history(f.page, item);
+      await f.page.evaluate((boundary) => {
+        const put = IDBObjectStore.prototype.put,
+          marked = new WeakSet();
+        IDBObjectStore.prototype.put = function (value, ...args) {
+          if (
+            this.name === 'meta' &&
+            args[0] === 'counter' &&
+            value.baseline?.revision === (boundary === 'reserved' ? 1 : 2)
+          )
+            marked.add(this.transaction);
+          return put.call(this, value, ...args);
+        };
+        const d = Object.getOwnPropertyDescriptor(IDBTransaction.prototype, 'oncomplete');
+        Object.defineProperty(IDBTransaction.prototype, 'oncomplete', {
+          ...d,
+          set(fn) {
+            d.set.call(this, function (e) {
+              if (marked.has(this)) window.eraCommitHeld = true;
+              else fn.call(this, e);
+            });
+          },
+        });
+        window.eraWork = opened.advanceLocalRetention(1).catch((e) => ({ error: e.message }));
+      }, boundary);
+      await waitPredicate(f.page, () => window.eraCommitHeld);
+      const cdp = await f.context.newCDPSession(f.page),
+        crashed = f.page.waitForEvent('crash');
+      void cdp.send('Page.crash').catch(() => {});
+      await crashed;
+      await cold(f);
+      await syncing(f.page, item);
+      await settled(f.page);
+      await online(f.page, false);
+      const reopened = await history(f.page, item);
+      noDeletion(before, reopened);
+      assert.equal(counter(reopened).v, boundary === 'reserved' ? 3 : 4);
+      assert.deepEqual(await advance(f.page, 1), {
+        kind: boundary === 'reserved' ? 'replaced' : 'already-installed',
+      });
+      if (boundary === 'committed') assert.deepEqual(await history(f.page, item), reopened);
+      await close(f.page);
+    },
+  );
+
+for (const direction of ['old-journal', 'old-database'])
+  test(
+    `restored ${direction} across an era is refused with every byte preserved`,
+    { timeout: 90000 },
+    async (t) => {
+      const { f, item } = await setup(t, 'era-pair-' + direction);
+      await install(f.page);
+      await advance(f.page, 1);
+      const saveJournal = async (text) => {
+        await f.page.evaluate(() => {
+          window.savedRemove = Storage.prototype.removeItem;
+          Storage.prototype.removeItem = function (k) {
+            if (k.startsWith('done.pending-update.')) throw Error('retain fixture journal');
+            return savedRemove.call(this, k);
+          };
+        });
+        await edit(f.page, 0, 0, text);
+        await assert.rejects(durable(f.page), /cleanup/);
+        const pairs = await journalEntries(f.page);
+        assert.ok(pairs.length);
+        await f.page.evaluate(() => {
+          Storage.prototype.removeItem = savedRemove;
+        });
+        await f.page.evaluate(() => editor.retry());
+        await durable(f.page);
+        await online(f.page, true);
+        await settled(f.page);
+        await online(f.page, false);
+        return pairs;
+      };
+      const oldJournal = await saveJournal('OLD ERA ');
+      const name = await f.page.evaluate(() => opened.dbName);
+      const oldDisk = await f.page.evaluate(async (name) => {
+        const db = await new Promise((yes, no) => {
+          const r = indexedDB.open(name);
+          r.onsuccess = () => yes(r.result);
+          r.onerror = () => no(r.error);
+        });
+        try {
+          return await new Promise((yes, no) => {
+            const tx = db.transaction(['meta', 'content', 'heads', 'outbound'], 'readonly'),
+              rows = {};
+            for (const n of ['meta', 'content', 'heads', 'outbound']) {
+              const s = tx.objectStore(n),
+                k = s.getAllKeys(),
+                v = s.getAll();
+              v.onsuccess = () => {
+                rows[n] = [k.result, v.result];
+              };
+            }
+            tx.oncomplete = () =>
+              yes(
+                JSON.stringify(rows, (_k, v) => (v instanceof Uint8Array ? { $bytes: [...v] } : v)),
+              );
+            tx.onabort = () => no(tx.error);
+          });
+        } finally {
+          db.close();
+        }
+      }, name);
+      assert.deepEqual(await advance(f.page, 2), { kind: 'replaced' });
+      const newJournal = await saveJournal('NEW ERA ');
+      await close(f.page);
+      await f.page.evaluate(
+        async ({ name, disk, journal }) => {
+          if (disk) {
+            const rows = JSON.parse(disk, (_k, v) => (v?.$bytes ? new Uint8Array(v.$bytes) : v));
+            const db = await new Promise((yes, no) => {
+              const r = indexedDB.open(name);
+              r.onsuccess = () => yes(r.result);
+              r.onerror = () => no(r.error);
+            });
+            try {
+              await new Promise((yes, no) => {
+                const tx = db.transaction(['meta', 'content', 'heads', 'outbound'], 'readwrite');
+                for (const [n, [keys, values]] of Object.entries(rows)) {
+                  const s = tx.objectStore(n);
+                  s.clear();
+                  keys.forEach((k, i) => s.put(values[i], k));
+                }
+                tx.oncomplete = yes;
+                tx.onabort = () => no(tx.error);
+              });
+            } finally {
+              db.close();
+            }
+          }
+          for (const [k, v] of journal) localStorage.setItem(k, v);
+        },
+        {
+          name,
+          disk: direction === 'old-database' ? oldDisk : null,
+          journal: direction === 'old-database' ? newJournal : oldJournal,
+        },
+      );
+      const diskBefore = await history(f.page, item),
+        journalsBefore = await journalEntries(f.page);
+      await cold(f);
+      await assert.rejects(syncing(f.page, item), /pairing/);
+      // history helper uses the previous owner's name; failed open deliberately never publishes a new owner.
+      await f.page.evaluate((name) => {
+        window.opened = { dbName: name };
+      }, name);
+      assert.deepEqual(await history(f.page, item), diskBefore);
+      assert.deepEqual(await journalEntries(f.page), journalsBefore);
+    },
+  );
+
+for (const boundary of ['journal-only', 'committed-before-cleanup'])
+  test(
+    `era journal renderer death at ${boundary} replays exact originals once`,
+    { timeout: 90000 },
+    async (t) => {
+      const { f, item } = await setup(t, 'era-journal-death-' + boundary);
+      await install(f.page);
+      await advance(f.page, 1);
+      const original = await f.page.evaluate(() => editor.read().master);
+      await f.page.evaluate((boundary) => {
+        if (boundary === 'journal-only') {
+          crypto.subtle.encrypt = async () => {
+            window.eraFlushHeld = true;
+            return new Promise(() => {});
+          };
+        } else {
+          const remove = Storage.prototype.removeItem;
+          Storage.prototype.removeItem = function (k) {
+            if (k.startsWith('done.pending-update.')) {
+              window.eraFlushHeld = true;
+              throw Error('retained after commit');
+            }
+            return remove.call(this, k);
+          };
+        }
+      }, boundary);
+      await edit(f.page, 0, 0, 'ERA CRASH ');
+      if (boundary === 'committed-before-cleanup') await assert.rejects(durable(f.page), /cleanup/);
+      else
+        await f.page.evaluate(() => {
+          void editor.whenDurable().catch(() => {});
+        });
+      await waitPredicate(f.page, () => window.eraFlushHeld);
+      assert.ok((await journalEntries(f.page)).length);
+      const before = await history(f.page, item);
+      const cdp = await f.context.newCDPSession(f.page),
+        crashed = f.page.waitForEvent('crash');
+      void cdp.send('Page.crash').catch(() => {});
+      await crashed;
+      await cold(f);
+      await online(f.page, false);
+      await syncing(f.page, item);
+      assert.equal(await f.page.evaluate(() => editor.read().master), 'ERA CRASH ' + original);
+      const after = await history(f.page, item);
+      noDeletion(before, after);
+      if (boundary === 'committed-before-cleanup')
+        assert.deepEqual(after.outbound, before.outbound);
+      assert.deepEqual(await journalEntries(f.page), []);
+      await close(f.page);
+    },
+  );

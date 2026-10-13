@@ -126,7 +126,10 @@ function capture(input: unknown): MembershipConnection {
 }
 
 /** Only verified certification, cancellation or exclusion can finish an old connection. */
-async function completedConnection(p: MembershipConnection, owner: MembershipVault) {
+async function completedConnection(
+  p: MembershipConnection,
+  owner: Pick<MembershipVault, 'source' | 'participant'>,
+) {
   if (!p.comparison || !p.base || !p.latest) return false;
   const held = await heldMembershipSource(owner);
   if (!same(p.base, held.base)) throw Error('Saved connection belongs to another account');
@@ -460,3 +463,9 @@ export async function advanceMembershipConnection(
   guard();
   return { kind: 'installed' };
 }
+
+/** Read-only retirement eligibility under the same authenticated slot permit. */
+export const completedRetainedConnection = (
+  raw: unknown,
+  owner: Pick<MembershipVault, 'source' | 'participant'>,
+) => completedConnection(capture(raw), owner);

@@ -6,6 +6,11 @@ export * from '../account-receive-driver/fixtures.mjs';
 export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE) {
   let hits = 0;
   const targets = {
+    'retention-owner': [
+      '/src/crdt/accountReceive.ts',
+      '  clearAccountTransition(result.accountId);',
+      '  clearAccountTransition(result.accountId); globalThis.retentionTestOwner = result;',
+    ],
     'flush-copy-boundary': [
       '/src/crdt/journalStore.ts',
       'const batch = entries.slice(offset, offset + 256);',

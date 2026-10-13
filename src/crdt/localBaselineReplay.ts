@@ -256,9 +256,11 @@ export async function prepareLocalBaseline(
   context: LocalBaselineContext,
   auth: BaselineAuthentication,
   previous: BaselineAnchor | null = null,
+  journalEra?: import('./journalEra').JournalEra,
 ): Promise<{ baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor }> {
   const c = captureContext(context);
   previous = previous && { ...previous };
+  journalEra = journalEra && { ...journalEra };
   try {
     const captured = captureInput(input, c);
     const verified = await full(captured, c),
@@ -308,6 +310,7 @@ export async function prepareLocalBaseline(
       }))
       .sort((a, b) => a.publisher.localeCompare(b.publisher));
     const b: LocalBaseline = {
+      ...(journalEra ? { journalEra } : {}),
       identity: c.identity,
       generation: captured.counter.active_gen,
       revision: (previous?.revision ?? 0) + 1,
@@ -522,6 +525,9 @@ export async function replayLocalBaseline(
         verifyInboundCoverage(records, [installed.update]);
         own.installedHistory = installed.installed;
         historyHeads = installed.heads ?? [];
+        own.checkpointCuts = new Map(
+          historyHeads.map((h) => [h.credentialId, { position: h.position, link: h.link }]),
+        );
       } finally {
         installed.update.fill(0);
       }

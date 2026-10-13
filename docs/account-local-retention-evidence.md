@@ -6,6 +6,8 @@ It is a design contract, not a claim that the current private carrier enforces t
 All logical history remains stored. No new format writer, deletion, key retirement, product control,
 publication or release-validation campaign is enabled here.
 
+Implementation follow-up: [private journal-era, old-read and checkpoint fences](./account-local-retention-fences.md) now exercise these rules with an empty logical deletion set. The design text below records the decision as made; implementation evidence and remaining limits are in that follow-up.
+
 ## Decisions
 
 1. **Retire volatile network work at the boundary.** Invalidate and refetch old requests rather than

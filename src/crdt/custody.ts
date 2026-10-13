@@ -951,6 +951,7 @@ const prepareCustody = (
             keys.generation ?? 1,
             keys.journal!,
             keys.previousJournals,
+            () => carrier?.journalBinding(),
           ),
         );
         // Erasure is cleanup and must also run if cancellation follows the successful read.

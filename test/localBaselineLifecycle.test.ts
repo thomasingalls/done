@@ -186,11 +186,12 @@ it('refuses an old chunk changed after reservation, without overwriting the dama
   await expect(r.run()).rejects.toThrow('chunks changed');
   await expect(f.read()).rejects.toThrow();
 });
-it.each(['complete', 'journal', 'abort', 'authority'] as const)(
+it.each(['complete', 'complete-era', 'journal', 'abort', 'authority'] as const)(
   'rotation %s preserves the old encrypted baseline and exact history keys',
   async (fault) => {
-    const f = await fixture(),
-      before = await census(f),
+    const f = await fixture();
+    if (fault === 'complete-era') await (await withEra(f, '12'.repeat(32), null)).run();
+    const before = await census(f),
       old = await f.read();
     let reserved = 0;
     const checkJournal = () => {
@@ -241,7 +242,7 @@ it.each(['complete', 'journal', 'abort', 'authority'] as const)(
           checkJournal,
         },
       );
-    if (fault !== 'complete') {
+    if (fault !== 'complete' && fault !== 'complete-era') {
       await expect(rotate()).rejects.toThrow();
       expect((await f.read()).counter).toEqual(old.counter);
       expect((await census(f)).rows).toEqual(before.rows);
@@ -311,3 +312,83 @@ it('copies the expected predecessor before awaiting fresh authentication', async
   expect(await pending).toEqual(expected);
   expect((await f.read()).anchor).toEqual(expected);
 });
+
+async function withEra(
+  f: Awaited<ReturnType<typeof fixture>>,
+  current: string,
+  previous: string | null,
+) {
+  const r = await replacement(f),
+    b = decodeLocalBaseline(r.input.baseline.payload);
+  b.journalEra = { current, previous, revision: b.revision };
+  r.input.baseline.payload = encodeLocalBaseline(b);
+  r.input.baseline.mac = await f.owner.crypt.sign(
+    task,
+    baselineAuthenticationPayload(r.input.baseline.payload),
+  );
+  r.input.anchor.hash = hex(
+    new Uint8Array(await crypto.subtle.digest('SHA-256', r.input.baseline.payload)),
+  );
+  return r;
+}
+it('era transitions bind predecessor, carrier and payload while retaining every history byte', async () => {
+  const f = await fixture(),
+    first = await withEra(f, '12'.repeat(32), null);
+  await first.run();
+  const a = await f.read();
+  expect(a.counter.v).toBe(4);
+  expect(decodeLocalBaseline(a.baseline.payload).journalEra).toEqual(a.counter.baseline.journalEra);
+  expect((await census(f)).rows).toEqual(first.disk.rows);
+  const bad = await withEra(f, '23'.repeat(32), '34'.repeat(32));
+  const seal = vi.spyOn(f.owner.crypt, 'seal');
+  await expect(bad.run()).rejects.toThrow('predecessor');
+  expect(seal).not.toHaveBeenCalled();
+  expect((await f.read()).counter).toEqual(a.counter);
+  await (await withEra(f, '23'.repeat(32), '12'.repeat(32))).run();
+  const next = await f.read();
+  expect(next.counter.baseline.journalEra).toEqual({
+    current: '23'.repeat(32),
+    previous: '12'.repeat(32),
+    revision: 3,
+  });
+  await (await replacement(f)).run();
+  expect((await f.read()).counter.baseline.journalEra).toEqual(next.counter.baseline.journalEra);
+  expect((await census(f)).rows).toEqual(first.disk.rows);
+});
+it.each(['seal', 'abort', 'journal'] as const)(
+  'era %s failure preserves old era and burns reservations before retry',
+  async (fault) => {
+    const f = await fixture();
+    await (await withEra(f, '12'.repeat(32), null)).run();
+    const r = await withEra(f, '23'.repeat(32), '12'.repeat(32)),
+      original = f.owner.crypt.seal;
+    f.owner.crypt.seal = async (...args) => {
+      if (fault === 'seal') throw Error('seal fault');
+      return original(...args);
+    };
+    const put = IDBObjectStore.prototype.put;
+    vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementation(
+      function (this: IDBObjectStore, value, key) {
+        const result = put.call(this, value, key);
+        if (fault === 'abort' && value?.baseline?.revision === 3) this.transaction.abort();
+        return result;
+      },
+    );
+    let checks = 0;
+    f.owner.checkCommit = () => {
+      if (fault === 'journal' && ++checks >= 3) throw Error('journal appeared');
+    };
+    await expect(r.run()).rejects.toThrow();
+    f.owner.checkCommit = () => {};
+    vi.restoreAllMocks();
+    f.owner.crypt.seal = original;
+    const after = await f.read();
+    expect(after.counter.baseline).toEqual(r.previous.counter.baseline);
+    expect((await census(f)).rows).toEqual(r.disk.rows);
+    const retry = await withEra(f, '45'.repeat(32), '12'.repeat(32));
+    await retry.run();
+    expect((await f.read()).counter.baseline.firstSequence).toBeGreaterThan(
+      r.disk.counter!.next_seq,
+    );
+  },
+);

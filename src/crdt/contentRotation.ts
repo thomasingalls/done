@@ -4,6 +4,7 @@ import { equalStoredRecord, type DiskState } from './contentCompaction';
 import { contentTransaction } from './contentDatabase';
 import {
   baselineCounterPayload,
+  baselineVersion,
   baselineChunkKey,
   parseBaselineCounter,
   type BaselineCounter,
@@ -160,11 +161,15 @@ export async function rotateContent(
     }
     const stored = (c: ContentCounter) =>
       baseline
-        ? ({ ...c, v: 3 as const, baseline: baseline.counter.baseline } as BaselineCounter)
+        ? ({
+            ...c,
+            v: baselineVersion(baseline.counter.baseline),
+            baseline: baseline.counter.baseline,
+          } as BaselineCounter)
         : c;
     const payload = (c: ContentCounter) => {
       const value = stored(c);
-      return value.v === 3
+      return 'baseline' in value
         ? baselineCounterPayload(owner.scope, value)
         : counterPayload(owner.scope, value);
     };

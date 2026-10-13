@@ -425,6 +425,7 @@ export async function activateAccountRotation(
           predecessorGeneration,
           journalKeys.get(predecessorGeneration)!,
           new Map([...journalKeys].filter(([g]) => g !== predecessorGeneration)),
+          () => carrier?.journalBinding(),
         );
         const checkJournal = () => {
           const entries = journal!.snapshot();

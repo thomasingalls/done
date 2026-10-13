@@ -1,4 +1,4 @@
-/** Experimental plaintext codec. No store reader/writer recognizes this tag yet. */
+/** Private baseline plaintext codec; ordinary Account readers remain fenced. */
 import {
   parseInboundArray,
   inboundInteger,
@@ -13,10 +13,12 @@ import {
   type OpenedRecord,
   type SpoolWitness,
 } from './contentRecord';
-import { sameBytes } from './verifiedRecords';
+import { sameBytes, eraseVerified } from './verifiedRecords';
+import { parseJournalEra, type JournalEra } from './journalEra';
 import { identity } from './custodyRecord';
 
 export const LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-2';
+export const ERA_LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-3';
 export const LOCAL_BASELINE_LIMIT = MAX_BATCH_BYTES;
 const MAX_SOURCES = 4096,
   MAX_PUBLISHERS = 128;
@@ -38,6 +40,7 @@ export interface BaselineStream {
   receipt: BaselineReceipt | null;
 }
 export interface LocalBaseline {
+  journalEra?: JournalEra;
   identity: ContentIdentity;
   generation: number;
   revision: number;
@@ -86,7 +89,7 @@ const recordTuple = (r: OpenedRecord | null) => r && [r.seq, r.gen, r.kind, byte
 const receiptTuple = (r: BaselineReceipt | null) =>
   r && [r.previous, bytes(r.envelope), bytes(r.proof)];
 const values = (b: LocalBaseline) => [
-  LOCAL_BASELINE_TAG,
+  b.journalEra ? ERA_LOCAL_BASELINE_TAG : LOCAL_BASELINE_TAG,
   1,
   identityTuple(b.identity),
   b.generation,
@@ -118,6 +121,7 @@ const values = (b: LocalBaseline) => [
     b.authorityState.generation,
     b.authorityState.cutsHash,
   ],
+  ...(b.journalEra ? [[b.journalEra.current, b.journalEra.previous, b.journalEra.revision]] : []),
 ];
 const parseReceipt = (v: unknown): BaselineReceipt | null => {
   if (v === null) return null;
@@ -130,9 +134,10 @@ const parseRecord = (v: unknown, kind: 'outbound' | 'heads', max: number): Opene
   return { seq: integer(r[0], 1, max), gen: integer(r[1], 1, 0xffffffff), kind, bytes: data(r[3]) };
 };
 function parse(v: unknown[]): LocalBaseline {
-  tuple(v, 14);
+  const era = v[0] === ERA_LOCAL_BASELINE_TAG;
+  tuple(v, era ? 15 : 14);
   const authorityState = tuple(v[13], 4);
-  if (v[0] !== LOCAL_BASELINE_TAG || v[1] !== 1) fail();
+  if ((!era && v[0] !== LOCAL_BASELINE_TAG) || v[1] !== 1) fail();
   const ids = tuple(v[2], 5).map((s, i) => (i < 3 ? identity(s) : inboundHex(s, 16)));
   const generation = integer(v[3], 1, 0xffffffff),
     revision = integer(v[4], 1);
@@ -198,6 +203,15 @@ function parse(v: unknown[]): LocalBaseline {
   const history = v[12] === null ? null : parseRecord(v[12], 'heads', sequence);
   if (history && history.gen > generation) fail();
   return {
+    ...(era
+      ? {
+          journalEra: parseJournalEra({
+            current: tuple(v[14], 3)[0],
+            previous: tuple(v[14], 3)[1],
+            revision: integer(tuple(v[14], 3)[2], 1, revision),
+          }),
+        }
+      : {}),
     identity: {
       slotId: ids[0]!,
       principalId: ids[1]!,
@@ -242,9 +256,12 @@ export function decodeLocalBaseline(bytes: Bytes): LocalBaseline {
 }
 /** Reuses the owner's metadata authenticator under a distinct domain; plaintext must stay private. */
 const authenticationDomain = utf8('done/account-local-baseline-auth/draft-2\0');
+const eraAuthenticationDomain = utf8('done/account-local-baseline-auth/draft-3\0');
 export const baselineAuthenticationPayload = (payload: Bytes): Bytes => {
   if (payload.length > LOCAL_BASELINE_LIMIT) fail();
-  const domain = authenticationDomain;
+  const decoded = decodeLocalBaseline(payload);
+  const domain = decoded.journalEra ? eraAuthenticationDomain : authenticationDomain;
+  eraseVerified(decoded);
   const bytes = new Uint8Array(domain.length + payload.length);
   bytes.set(domain);
   bytes.set(payload, domain.length);
@@ -252,6 +269,10 @@ export const baselineAuthenticationPayload = (payload: Bytes): Bytes => {
 };
 /** The carrier exposes only this domain, never an arbitrary metadata-MAC signing oracle. */
 export function assertBaselineAuthenticationMessage(message: Bytes): void {
-  if (!sameBytes(message.subarray(0, authenticationDomain.length), authenticationDomain)) fail();
-  decodeLocalBaseline(message.subarray(authenticationDomain.length));
+  const domain = [authenticationDomain, eraAuthenticationDomain].find((d) =>
+    sameBytes(message.subarray(0, d.length), d),
+  );
+  if (!domain) return fail();
+  const payload = message.subarray(domain.length);
+  if (!sameBytes(baselineAuthenticationPayload(payload), message)) fail();
 }
