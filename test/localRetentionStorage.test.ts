@@ -22,6 +22,7 @@ import {
   type RetentionInventory,
   type LocalRetentionPlan,
 } from '../src/crdt/localRetentionPlan';
+import * as retentionPlans from '../src/crdt/localRetentionPlan';
 import { removePlannedLocalHistory } from '../src/crdt/localRetentionStorage';
 import { readEncryptedBaseline } from '../src/crdt/localBaselineStorage';
 import {
@@ -235,16 +236,16 @@ it('default/older readers reject v5; history mode, carrier and era are closed an
   await expect(readEncryptedBaseline(task, f.owner)).rejects.toThrow();
 });
 
-it('abort after an enumerated delete rolls back the whole exchange and burns only the predecessor reservation', async () => {
+it('abort after a proved-complete store clear rolls back the whole exchange and burns only the predecessor reservation', async () => {
   const f = await fixture(),
     before = await f.read(),
     p = await f.plan();
   let hit = false;
-  const original = IDBObjectStore.prototype.delete;
+  const original = IDBObjectStore.prototype.clear;
   const spy = vi
-    .spyOn(IDBObjectStore.prototype, 'delete')
-    .mockImplementation(function (this: IDBObjectStore, key) {
-      const r = original.call(this, key);
+    .spyOn(IDBObjectStore.prototype, 'clear')
+    .mockImplementation(function (this: IDBObjectStore) {
+      const r = original.call(this);
       if (this.name !== 'meta' && !hit) {
         hit = true;
         this.transaction.abort();
@@ -304,6 +305,30 @@ for (const fault of ['late-key', 'changed-row', 'journal', 'authority', 'seal-fa
     for (const row of before.rows)
       expect(after.rows.some((r) => r.store === row.store && r.key === row.key)).toBe(true);
     if (fault !== 'late-key' && fault !== 'changed-row') expect(after.rows).toEqual(before.rows);
+  });
+
+for (const fault of ['omitted', 'duplicate', 'foreign-store', 'substituted-key', 'metadata-store'])
+  it(`refuses an ${fault} deletion set before clearing any store`, async () => {
+    const f = await fixture(),
+      before = await f.read(),
+      p = await f.plan();
+    const inspect = retentionPlans.inspectRetentionPlan;
+    vi.spyOn(retentionPlans, 'inspectRetentionPlan').mockImplementation((plan) => {
+      const copy = inspect(plan);
+      if (fault === 'omitted') copy.deleteRows.pop();
+      if (fault === 'duplicate') copy.deleteRows[1] = structuredClone(copy.deleteRows[0]!);
+      if (fault === 'foreign-store') copy.deleteRows[0]!.store = 'foreign';
+      if (fault === 'metadata-store') copy.deleteRows[0]!.store = 'meta';
+      if (fault === 'substituted-key') copy.deleteRows[0]!.key = 999999;
+      return copy;
+    });
+    const clear = vi.spyOn(IDBObjectStore.prototype, 'clear');
+    await expect(f.remove(p)).rejects.toThrow('Retention deletion set');
+    expect(clear).not.toHaveBeenCalled();
+    const after = await f.read();
+    expect(after.rows).toEqual(before.rows);
+    expect(raw(after).v).toBe(2);
+    expect(raw(after).next_seq).toBeGreaterThan(raw(before).next_seq);
   });
 
 it('a fabricated or disposed plan cannot reserve or delete', async () => {

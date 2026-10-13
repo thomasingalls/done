@@ -813,32 +813,49 @@ export const createContentOwner = (
         let candidate: ReturnType<typeof inspectRetentionPlan> | undefined;
         try {
           check();
+          let phase = ledgerWorkStart();
           await fresh();
           check();
+          measureLedgerWork('retentionFinalAuthority', phase);
+          phase = ledgerWorkStart();
           candidate = inspectRetentionPlan(prepared);
+          measureLedgerWork('retentionPlanCopy', phase);
+          phase = ledgerWorkStart();
           actual = await retentionInventory(currentTask);
+          measureLedgerWork('retentionPreflightRead', phase);
+          phase = ledgerWorkStart();
           // Another owned storage job may have run between preparation and final FIFO entry.
           // Abandon rather than broadening/reusing the cut; no nonce has been reserved yet.
           if (!sameRetentionInventory(candidate.inventory, actual))
             throw new MaintenanceInterrupted();
           verifyRetentionPlan(prepared, actual, binding);
+          measureLedgerWork('retentionPreflightCompare', phase);
           check();
           const { removePlannedLocalHistory } = await currentTask.wait(
             () => import('./localRetentionStorage'),
           );
           beforeMutation();
+          phase = ledgerWorkStart();
           expected = await removePlannedLocalHistory(
             currentTask,
             baselineOwner(fresh, check),
             prepared,
             binding,
           );
+          measureLedgerWork('retentionAdapter', phase);
           clearView();
           metadata.replaced();
           eraseVerified(actual);
+          phase = ledgerWorkStart();
           actual = await retentionInventory(currentTask);
+          measureLedgerWork('retentionReadback', phase);
+          phase = ledgerWorkStart();
           assertRetentionInventory(expected, actual);
+          measureLedgerWork('retentionReadbackCompare', phase);
+          phase = ledgerWorkStart();
           opened = await load(currentTask);
+          measureLedgerWork('retentionReload', phase);
+          phase = ledgerWorkStart();
           const { verifyCompleteLocalBaseline } = await currentTask.wait(
             () => import('./localBaselineShadow'),
           );
@@ -852,16 +869,21 @@ export const createContentOwner = (
             true,
           );
           eraseVerified(verified);
+          measureLedgerWork('retentionReplay', phase);
+          phase = ledgerWorkStart();
           await fresh();
           check();
+          measureLedgerWork('retentionEndAuthority', phase);
           return { kind: 'removed' as const, revision: report.revision, removed: report.rows };
         } finally {
+          const cleanup = ledgerWorkStart();
           dispose();
           eraseVerified(expected);
           eraseVerified(actual);
           eraseVerified(opened);
           eraseVerified(candidate);
           clearView();
+          measureLedgerWork('retentionCleanup', cleanup);
         }
       };
       checkRetained();

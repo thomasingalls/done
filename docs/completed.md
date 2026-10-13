@@ -14317,3 +14317,38 @@ evidence handling and full readback retain a material FIFO wait, with longer CPU
 activation, retention cadence, reader-first publication/rollback and general release validation remain
 separate. No deployment or personal storage was changed; `docs/progress.md` stays with its other
 workstream.
+
+
+### Profile and shorten the private final retention transaction
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `f89ee3f9` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** The preceding preparation handoff is signed as **`f89ee3f9`**. The new
+[final-transaction repair](./account-local-retention-fenced.md) starts from an aligned atomic-exchange/
+readback profile. Replacement occupied 645 ms of a 1,022 ms fence. An explicit-commit candidate
+improved paired median fence only 2.6% and was discarded. The selected repair groups physical removal
+only after a strict, complete byte-for-byte inventory comparison and an independent exact deletion-set
+completeness proof. Missing/extra/duplicate/foreign keys or a partial cut refuse before logical-store
+clear. Metadata is not cleared. Complete fresh authority, reservation burns, journal-era fencing,
+atomic settlement, authenticated readback/independent replay, caller isolation and live undo remain.
+This explicitly revises the old per-key database-operation rule, retaining its enumerated coverage.
+
+**Evidence.** The [packet](./performance-experiments/2026-10-13-retention-fenced/README.md) retains the
+prospective protocol, both candidates, compressed bundles/profiles/traces/logs, raw observations and
+source hashes. At 1,201 own positions / 8,439 rows, three matched pairs give median final fence
+**1,030 → 473 ms (54%)**, replacement **621 → 99 ms**, total **6.251 → 5.458 s**. Unchanged preparation
+also drifted; not all total-time difference is attributed to the repair. Maximum tasks remain about
+**104 → 102 ms**. One profiled CPU-4x pair gives final fence **1.898 → 1.564 s**, total **25.961 →
+24.742 s**, maximum task **475 → 423 ms**. All eight quiet cuts and three input interventions preserve
+exact cold recovery; crypto work and **14** scoped authority checks match. No phone/release claim.
+
+**Checks.** **129** unit tests, **18** native atomic/crash/retry/journal/input controls and **three**
+packaged lifecycle/checkpoint journeys pass, plus TypeScript, lint/format, ordinary build, Yjs,
+origin isolation and **138.4 kB / 350 kB** initial-JS budget. New controls refuse malformed deletion
+sets and a low foreign row before any clear; abort after the first clear rolls back all stores.
+
+**Remaining.** Final private evidence copies consume 436 ms in the profiled CPU-4x candidate;
+comparisons and preparation still grow with history. Next address duplicate evidence handling while
+retaining private ownership and exact transaction checks. Public conversion/reader-first rollout,
+rollback, product capacity/trigger/cadence and release validation remain gated. No deployment or
+personal storage changed; `docs/progress.md` and unrelated root notes remain untouched.

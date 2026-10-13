@@ -230,15 +230,15 @@ for (const boundary of ['reserved', 'committed'])
   );
 
 test(
-  'native abort after first deletion rolls back every store; a new owner retries past burned reservation',
+  'native abort after first proved-complete store clear rolls back every store; a new owner retries past burned reservation',
   { timeout: 90000 },
   async (t) => {
     const { f, item } = await setup(t, 'remove-abort'),
       before = await inventory(f.page);
     await f.page.evaluate(() => {
-      const del = IDBObjectStore.prototype.delete;
-      IDBObjectStore.prototype.delete = function (...a) {
-        const result = del.apply(this, a);
+      const clear = IDBObjectStore.prototype.clear;
+      IDBObjectStore.prototype.clear = function () {
+        const result = clear.call(this);
         if (this.name !== 'meta' && !window.removalAborted) {
           window.removalAborted = true;
           this.transaction.abort();
@@ -259,6 +259,61 @@ test(
     assert.equal((await remove(f.page)).kind, 'removed');
     assert.equal(counter(await inventory(f.page)).baseline.firstSequence, counter(after).next_seq);
     await close(f.page);
+  },
+);
+
+test(
+  'a foreign low row after reservation refuses before any logical store clear',
+  { timeout: 90000 },
+  async (t) => {
+    const { f } = await setup(t, 'remove-extra-before-clear'),
+      before = await inventory(f.page);
+    await f.page.evaluate(() => {
+      const put = IDBObjectStore.prototype.put,
+        clear = IDBObjectStore.prototype.clear,
+        encrypt = crypto.subtle.encrypt.bind(crypto.subtle);
+      let reserved = false,
+        injected = false;
+      window.logicalClears = 0;
+      IDBObjectStore.prototype.put = function (value, ...rest) {
+        if (this.name === 'meta' && rest[0] === 'counter' && value.v === 2) reserved = true;
+        return put.call(this, value, ...rest);
+      };
+      IDBObjectStore.prototype.clear = function () {
+        logicalClears++;
+        return clear.call(this);
+      };
+      crypto.subtle.encrypt = async (...args) => {
+        if (reserved && !injected) {
+          injected = true;
+          const db = await new Promise((yes, no) => {
+            const q = indexedDB.open(opened.dbName);
+            q.onsuccess = () => yes(q.result);
+            q.onerror = () => no(q.error);
+          });
+          try {
+            await new Promise((yes, no) => {
+              const tx = db.transaction('content', 'readwrite');
+              tx.objectStore('content').put({ late: true }, 0);
+              tx.oncomplete = () => yes();
+              tx.onabort = () => no(tx.error);
+            });
+          } finally {
+            db.close();
+          }
+        }
+        return encrypt(...args);
+      };
+    });
+    await assert.rejects(remove(f.page));
+    assert.equal(await f.page.evaluate(() => logicalClears), 0);
+    assert.equal(await f.page.evaluate(() => editor.status.state), 'closed');
+    const after = await inventory(f.page);
+    assert.equal(counter(after).v, 2);
+    assert.ok(counter(after).next_seq > counter(before).next_seq);
+    for (const s of ['heads', 'outbound']) assert.deepEqual(after[s], before[s]);
+    assert.deepEqual(after.content[0], [0, ...before.content[0]]);
+    assert.deepEqual(after.content[1], [{ late: true }, ...before.content[1]]);
   },
 );
 

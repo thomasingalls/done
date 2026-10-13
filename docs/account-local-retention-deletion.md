@@ -6,6 +6,9 @@ Design boundary: signed **`bcca1aa1`**. Read with the [reader inventory](./accou
 The subsequent [non-writing planner](./account-local-retention-dry-run.md) implements the exact
 inventory/projection checks below. The later [private atomic-removal phase](./account-local-retention-removal.md)
 implements reservation and physical removal behind a separate opt-in; this document records its design.
+The later [final-transaction repair](./account-local-retention-fenced.md) replaces per-key physical
+delete requests with logical-store clears only after independently proving exact complete coverage
+inside the same strict transaction. Its extra completeness check refuses partial cuts or survivors.
 
 ## Selected first cut
 

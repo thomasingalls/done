@@ -1,4 +1,5 @@
-/** Private atomic reclamation. A verified ephemeral plan is required; never accepts a range. */
+/** Private atomic reclamation. Only an exact, complete verified cut can clear logical stores. */
+import { ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 import { contentTransaction } from './contentDatabase';
 import {
   CONTENT_STORES,
@@ -34,6 +35,35 @@ import { concat, hex, type Bytes } from './custodyCrypto';
 import { eraseVerified } from './verifiedRecords';
 import type { SessionTask } from './writeSession';
 
+/** Group only a complete enumerated deletion set, after the transaction census matches.
+ * No range/max-sequence inference: omissions, duplicates and foreign stores refuse before writes.
+ * This proof must remain even if the planner later supports partial cuts or surviving rows. */
+function completeRemovalStores(
+  inventory: RetentionInventory,
+  deletion: { store: string; key: number }[],
+) {
+  const selected = new Map<string, Set<number>>();
+  for (const row of deletion) {
+    if (
+      !['content', 'heads', 'outbound'].includes(row.store) ||
+      !Number.isSafeInteger(row.key) ||
+      row.key < 1
+    )
+      corrupt('Retention deletion set is not complete.');
+    let keys = selected.get(row.store);
+    if (!keys) selected.set(row.store, (keys = new Set()));
+    if (keys.has(row.key)) corrupt('Retention deletion set repeats a key.');
+    keys.add(row.key);
+  }
+  if (deletion.length !== inventory.rows.length) corrupt('Retention deletion set is not complete.');
+  for (const row of inventory.rows)
+    if (typeof row.key !== 'number' || !selected.get(row.store)?.delete(row.key))
+      corrupt('Retention deletion set differs from its inventory.');
+  for (const keys of selected.values())
+    if (keys.size) corrupt('Retention deletion set exceeds its inventory.');
+  return [...selected.keys()];
+}
+
 /** Crypto has completed before entry. All comparisons and writes share one strict transaction. */
 function exchange(
   task: SessionTask,
@@ -43,6 +73,7 @@ function exchange(
   checkPlan: () => void,
   replacement?: { chunks: StoredRecord[]; deleteRows: { store: string; key: number }[] },
 ) {
+  const elapsed = ledgerWorkStart();
   return task.wait(() =>
     contentTransaction<void>(
       owner.db,
@@ -67,9 +98,22 @@ function exchange(
               });
               if (--remaining) return;
               try {
+                measureLedgerWork(
+                  replacement ? 'retentionReplaceCensus' : 'retentionReserveCensus',
+                  elapsed,
+                );
+                const compare = ledgerWorkStart();
                 assertRetentionInventory(expected, actual);
                 checkPlan();
                 owner.checkCommit();
+                measureLedgerWork(
+                  replacement ? 'retentionReplaceCompare' : 'retentionReserveCompare',
+                  compare,
+                );
+                const writes = ledgerWorkStart();
+                const stores = replacement
+                  ? completeRemovalStores(actual, replacement.deleteRows)
+                  : [];
                 if (replacement) {
                   replacement.chunks.forEach((row, i) =>
                     tx.objectStore('meta').put(row, baselineChunkKey(i)),
@@ -78,10 +122,16 @@ function exchange(
                   for (const m of expected.metadata)
                     if (Array.isArray(m.key) && Number(m.key[1]) >= replacement.chunks.length)
                       tx.objectStore('meta').delete(m.key);
-                  for (const row of replacement.deleteRows)
-                    tx.objectStore(row.store).delete(row.key);
+                  // The complete physical census still matches the exact verified plan in this
+                  // transaction. Every key in these stores was individually covered above;
+                  // transaction serialization excludes a row appearing between proof and clear.
+                  for (const name of stores) tx.objectStore(name).clear();
                 }
                 tx.objectStore('meta').put(counter, 'counter');
+                measureLedgerWork(
+                  replacement ? 'retentionReplaceWrites' : 'retentionReserveWrites',
+                  writes,
+                );
               } finally {
                 eraseVerified(actual);
               }
@@ -114,7 +164,10 @@ export async function removePlannedLocalHistory(
   };
   binding = { ...binding };
   if (!owner.allowReduced) corrupt('Reduced retention writer is disabled.');
+  let phase = ledgerWorkStart();
   const evidence = inspectRetentionPlan(plan);
+  measureLedgerWork('retentionEvidenceCopy', phase);
+  phase = ledgerWorkStart();
   let packed: Bytes | undefined;
   let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
   const chunks: StoredRecord[] = [];
@@ -174,10 +227,18 @@ export async function removePlannedLocalHistory(
           : counterPayload(owner.identity, reserved),
       ),
     };
+    measureLedgerWork('retentionReservePrepare', phase);
+    phase = ledgerWorkStart();
     await task.wait(owner.assertCurrent);
+    measureLedgerWork('retentionReserveAuthority', phase);
+    phase = ledgerWorkStart();
     await exchange(task, owner, evidence.inventory, reserved, check);
+    measureLedgerWork('retentionReserveExchange', phase);
+    phase = ledgerWorkStart();
     // Old representation and era remain usable on interruption; this range is now burned.
     const expected = structuredClone(evidence.inventory);
+    measureLedgerWork('retentionExpectedCopy', phase);
+    phase = ledgerWorkStart();
     try {
       expected.metadata.find((m) => m.key === 'counter')!.value = reserved;
       for (let i = 0; i < pointer.chunks; i++) {
@@ -217,11 +278,16 @@ export async function removePlannedLocalHistory(
         ...next,
         mac: await owner.crypt.sign(task, baselineCounterPayload(owner.identity, next)),
       };
+      measureLedgerWork('retentionSeal', phase);
+      phase = ledgerWorkStart();
       await task.wait(owner.assertCurrent);
+      measureLedgerWork('retentionReplaceAuthority', phase);
+      phase = ledgerWorkStart();
       await exchange(task, owner, expected, next, check, {
         chunks,
         deleteRows: evidence.deleteRows,
       });
+      measureLedgerWork('retentionReplaceExchange', phase);
       // Caller must authenticate/read back this exact successor before releasing admission.
       return structuredClone({
         rows: [],
@@ -234,9 +300,11 @@ export async function removePlannedLocalHistory(
       eraseVerified(expected);
     }
   } finally {
+    const cleanup = ledgerWorkStart();
     packed?.fill(0);
     eraseVerified(decoded);
     eraseVerified(chunks);
     eraseVerified(evidence);
+    measureLedgerWork('retentionAdapterCleanup', cleanup);
   }
 }
