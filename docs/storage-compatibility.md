@@ -123,3 +123,9 @@ history retained. The [non-deleting lifecycle adapter](./account-local-baseline-
 replacement, earlier-generation anchors, rotation, initial handoff and detached local-copy readers under
 the same flag. Its v3 pointer retains `history: complete`; ordinary readers and earlier private readers
 remain fenced where unsupported. Public rollout, compatible rollback and deletion remain separate work.
+
+The [retirement evidence decision](./account-local-retention-evidence.md) now requires an authenticated
+Account journal-era wrapper and explicit metadata/journal reader fences before source-identity
+retirement. These are not implemented or added implicitly to counter v3. Current private profiles
+still retain complete history. A mismatched/legacy journal after conversion must be preserved and
+refused; matching eras alone cannot establish safety of an arbitrary browser-profile restore.

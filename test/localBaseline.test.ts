@@ -39,7 +39,7 @@ import {
   type SpoolEntry,
 } from '../src/crdt/spoolRecord';
 import { encodeDeliveryEntry } from '../src/crdt/deliveryRecord';
-import { encodeSourceCapsule } from '../src/crdt/sourceCapture';
+import { capturedRecovery, encodeSourceCapsule } from '../src/crdt/sourceCapture';
 import {
   emptySpoolWitness,
   type ContentCounter,
@@ -895,6 +895,44 @@ it('verifies a late terminal duplicate from retained evidence and fences older m
     }
   } finally {
     f.clear();
+  }
+});
+
+it('characterizes why a restored legacy journal cannot use a retired source catalogue', async () => {
+  const f = await fixture([false, false]),
+    input = await f.input(),
+    full = await replayFullLocalHistory(input, f.ctx),
+    p = await prepareLocalBaseline(input, f.ctx, auth),
+    reduced = await replayLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...input, records: [] },
+      f.ctx,
+      auth,
+    );
+  const original = [...full.census.delivery.spool.sources.values()][0]!;
+  const journal = [{ key: 'restored-exact-capsule', generation: 1, bytes: original.slice() }];
+  const recover = (records: OpenedRecord[]) => capturedRecovery({ records, journal }, f.ctx.route);
+  const intact = recover([...full.census.delivery.spool.sourceRecords]),
+    retired = recover([...reduced.census.delivery.spool.sourceRecords]);
+  const doc = new Y.Doc({ gc: false });
+  try {
+    expect(full.delivery.acceptedThrough).toBe(2);
+    expect(reduced.delivery.acceptedThrough).toBe(2);
+    expect(intact.journal).toHaveLength(0);
+    // This is an unsupported composition, not a newly supported recovery path. The private owner
+    // still passes the complete catalogue. Keep the counterexample until a pairing fence exists.
+    expect(reduced.census.delivery.spool.sources.size).toBe(0);
+    expect(retired.journal).toHaveLength(2);
+    Y.applyUpdate(doc, reduced.snapshot);
+    const before = new Uint8Array(Y.encodeStateAsUpdate(doc));
+    for (const row of retired.journal) Y.applyUpdate(doc, row.bytes);
+    stateEqual(before, new Uint8Array(Y.encodeStateAsUpdate(doc)));
+    // Unchanged Yjs state does not establish exact source identity or permission to publish again.
+  } finally {
+    doc.destroy();
+    journal[0]!.bytes.fill(0);
+    for (const row of [...intact.journal, ...retired.journal]) row.bytes.fill(0);
   }
 });
 

@@ -65,12 +65,16 @@ Removing capsule bytes while a crash-retained journal copy can reappear would br
 deduplication and could republish already accepted work. An unbounded set of retired capsule IDs
 would simply move the growth elsewhere.
 
-Recommended first scope: under the exclusive Account owner, settle/flush the journal, remove only
+Selected first scope: under the exclusive Account owner, settle/flush the journal, remove only
 exact covered entries, and confirm the scoped journal is empty before preparing a retention cut.
 If removal fails or input arrives, abandon the attempt without deleting source evidence. If a
 future design admits concurrent journalling, it needs an authenticated finite journal frontier;
 a largest sequence number is not enough. Restoring a mismatched old journal/database pair must
-be an explicit refusal/recovery case, not silently treated as a new edit.
+be an explicit refusal/recovery case, not silently treated as a new edit. The
+[retirement evidence contract](./account-local-retention-evidence.md) selects an authenticated
+journal-era wrapper before any source retirement, old-flight invalidation/refetch, bounded exact
+checkpoint-cut evidence, and refusal/preservation for unsupported partial restores. Matching eras
+do not prove complete profile freshness or nonce safety. These new fences are not implemented yet.
 
 Prepare and independently verify the baseline and candidate suffix before deletion. At the final
 IndexedDB transaction, recheck the counter, authority, exact physical deletion set and baseline
@@ -85,9 +89,10 @@ trimmed. Prove undo/redo and subsequent publication across the retention boundar
 
 ## Format and rollout decisions still needed
 
-- The private first-anchor carrier uses sealed-record envelope v1 and independently authenticated
-  counter v3; the ordinary reader refuses it. Connect its real installer/cold reader, and define
-  replacement/rotation/trim transitions, before enabling any product writer.
+- The private carrier uses sealed-record envelope v1 and independently authenticated counter v3;
+  the ordinary reader refuses it. Real installer/cold readers and non-deleting replacement/rotation
+  now exist privately. The selected journal-era wrapper and trimmed representation need explicit
+  new format fences; do not reinterpret the current `history: complete` pointer.
 - Install an authenticated reader/writer fence before any deletion. An old cached application
   must refuse the new store cleanly, not replay a suffix as a whole history.
 - Ship reader capability before enabling writers, or explicitly require the application update
@@ -121,12 +126,15 @@ The [real owner phase](./account-local-baseline-owner.md) now connects first-anc
 baseline-aware original/joined cold opening, and the separate native history source under an explicit
 development switch. It preserves the admission/journal fence and live undo, retains all history, and
 checks durable baseline replay against the full reference. No product activation or deletion.
-Generation/replacement lifecycle, remaining fenced readers, old-flight/checkpoint and restored-journal
-rules still precede an exact removal phase.
+Generation/replacement lifecycle is now covered by the subsequent phase below; remaining reduced
+readers and enforcement of the selected old-flight/checkpoint/restored-journal rules still precede
+an exact removal phase.
 
 
-The [non-deleting lifecycle integration](./account-local-baseline-lifecycle.md), following signed
-owner integration `bb9c7e82`, now exercises durable encrypted anchors, exact-predecessor replacement,
+The [non-deleting lifecycle integration](./account-local-baseline-lifecycle.md), signed `cf16e61a`
+after owner integration `bb9c7e82`, now exercises durable encrypted anchors, exact-predecessor replacement,
 rotation with retained openers, initial handoff and detached original/joined readers. Full history
-remains the reference and no logical rows are removed. The next bounded contract is retained evidence
-for old network flights/checkpoint cuts and restored journal/database pairing, before exact deletion.
+remains the reference and no logical rows are removed. The
+[retirement evidence contract](./account-local-retention-evidence.md) now selects the retained evidence
+and refusal rules. Next implement these fences without deleting history, then adapt reduced readers
+and implement/test exact deletion separately.

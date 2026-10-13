@@ -3,7 +3,7 @@
 The [real Account owner integration](./account-local-baseline-owner.md) is committed signed as
 **`bb9c7e82`** (`G`). This phase extends the same private `VITE_ACCOUNT_BASELINE_INSTALL=1`
 experiment to generation rotation, baseline replacement, initial content handoff and detached copies.
-This phase is uncommitted. No personal profile is converted, no product control or automatic installer
+This phase is committed signed as **`cf16e61a`** (`G`). No personal profile is converted, no product control or automatic installer
 is enabled, and publication/general release validation remain paused.
 
 All logical rows in `content`, `heads` and `outbound` remain present. Live readers still consume the
@@ -107,9 +107,10 @@ covered, but this is not a claim of complete recovery/restore qualification.
 logs, source hashes and scope. Tests use generated credentials/content in disposable profiles. A busy
 machine is suitable for these correctness checks; no timing improvement is inferred.
 
-The next bounded work is the **retirement evidence contract**: settle what must survive for outstanding
-old network reads, old checkpoint cuts, and restoration of a journal paired with an older database.
-Then implement/test an exact atomic deletion transition and all resulting reduced-reader paths.
+The subsequent [retirement evidence contract](./account-local-retention-evidence.md) settles what
+must survive for outstanding old network reads, old checkpoint cuts, and restored journal/database
+pairs. Its next bounded implementation is non-deleting enforcement of the journal-era and operation
+fences. Exact atomic deletion and the resulting reduced-reader paths follow separately.
 The current 4 MiB payload bound, full/reference replay, disabled anchored warm fast path/compaction,
 and lack of an external whole-profile monotonic witness remain explicit limits. Public activation
 still requires reader-before-writer rollout and a compatible rollback plan; an older image or disabling

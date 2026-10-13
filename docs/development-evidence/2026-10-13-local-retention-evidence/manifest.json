@@ -1,0 +1,18 @@
+{
+  "base": "cf16e61a",
+  "runtimeChanged": false,
+  "phaseCommitted": false,
+  "files": [
+    {
+      "file": "unit.log",
+      "bytes": 236,
+      "sha256": "de7e2a5ca70b14feea4ff820bab7779a947a7b7e6addba377fa27822f2a25479"
+    },
+    {
+      "file": "../../../test/localBaseline.test.ts",
+      "repositoryPath": "test/localBaseline.test.ts",
+      "bytes": 42781,
+      "sha256": "eb03bc3d026b6f9a69df71a88e372176b4bf97f417268e8e539203d836d8a836"
+    }
+  ]
+}

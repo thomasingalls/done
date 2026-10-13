@@ -54,6 +54,8 @@ cut whose old link is no longer known, returns `history-required`. A signed chec
 prove that an unknown old link agrees with the retired local history. Before deletion, the installer
 must retain the needed evidence or ensure future maintenance uses a sufficiently recent cut. The
 current experiment falls back to intact history; this is **not yet a complete post-deletion policy**.
+The later [retirement evidence decision](./account-local-retention-evidence.md) selects bounded exact
+checkpoint pins and refetch/refusal behavior; its live enforcement remains a separate implementation.
 
 An outstanding old read also cannot silently learn its previous link from its response. The reduced
 state marks its retired frontier. A late response at the terminal retained receipt can be authenticated

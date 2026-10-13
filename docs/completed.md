@@ -13949,3 +13949,32 @@ carrier test assumptions were corrected without weakening guards or timeouts. No
 journal/database pairing rule before an exact atomic logical-history deletion transition and reduced
 reader activation. Full/reference comparison, the 4 MiB baseline limit, retained keys and compatible
 public rollout/rollback obligations remain. `docs/progress.md` is untouched.
+
+### Local retention evidence rules — old reads, checkpoint cuts and restored journal pairs
+
+**Date:** 2026-10-13 · **Commit:** prior lifecycle phase signed `cf16e61a` (`G`); this contract and
+characterization uncommitted · **Stage:** Local Account retention preparation; no deletion
+
+**Exit.** The [evidence-retention contract](./account-local-retention-evidence.md) gives explicit
+retention/refetch/refusal dispositions for the three previously unresolved boundaries. Volatile reads
+are invalidated/refetched; committed receive promotion must settle or make retention skip. Terminal
+proofs and the exact latest installed checkpoint/cuts survive, while unknown older links require
+history. Durable maintenance/lifecycle attempts postpone retention rather than lose their evidence.
+
+The selected journal wrapper binds exact capsule bytes to an authenticated random retirement era and
+database identity/intent. Its atomic transition keeps the empty-journal/admission fence and burned
+invocations. Mismatched restored journals are preserved/refused; equal eras are not a dependency,
+nonce or whole-profile freshness guarantee. Known raw partial restore needs explicit recovery, and
+undetectable coordinated rollback remains outside local guarantees. No server restore policy changed.
+
+**Evidence.** [41 unit checks in three files](./development-evidence/2026-10-13-local-retention-evidence/README.md)
+pass, including a new real baseline/recovery counterexample: an accepted capsule whose identity is
+retired becomes pending in the legacy helper even though reapplying it leaves Yjs unchanged. The live
+owner still supplies full history. TypeScript, changed-test lint/format and whitespace checks pass.
+No runtime code or browser data changed, no new format was written, no history/key deleted, and no
+performance or release-validation campaign resumed. Live undo and journal-before-apply are unchanged.
+
+**Next.** Implement the selected journal-era/operation/checkpoint fences in the private owner with an
+empty deletion set and focused crash/retry controls. Then adapt remaining reduced-history readers
+and separately implement/test exact deletion. Public reader rollout and compatible rollback remain
+later gates. `docs/progress.md` is untouched.

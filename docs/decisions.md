@@ -4527,3 +4527,29 @@ the timing packets and all observations, adding the unknown external-load overla
 No measured slowdown is explained away, and no unobserved speedup is claimed. Proceed with bounded
 publication checks on an immutable signed candidate; do not restart the paused release-validation
 campaign or treat the pending physical-phone comparison as completed.
+
+## 2026-10-13 — Select local retirement evidence rules before deleting history
+
+After signed non-deleting lifecycle work `cf16e61a`, the operator requested that old network reads,
+checkpoint cuts and restored journal/database pairs have explicit dispositions. The
+[retirement evidence contract](account-local-retention-evidence.md) selects:
+
+- Invalidate/refetch volatile reads at the retention boundary. Drain already committed receive
+  promotion or skip the cut; preserve all unresolved publication/retry evidence.
+- Keep terminal receipts/frontiers and the exact latest installed checkpoint with its cuts and
+  historical verification material. Unknown older links require history, never trust learned from
+  the incoming response. Durable maintenance/lifecycle attempts postpone retention.
+- Introduce a versioned Account journal wrapper binding exact capsule bytes to an authenticated
+  random retirement era and local database identity/intent. Change the era atomically with source
+  retirement under the existing empty-journal/admission fence. First enforce it without deletion.
+- Preserve/refuse cross-era or otherwise incompatible journals. Matching eras do not establish
+  complete dependency or nonce continuity for a partial restore. Known raw rollback is quarantined
+  for explicit recovery; coherent whole-profile rollback remains undetectable without an external
+  witness. This does not change the separate operator-required server restore policy.
+
+A focused executable counterexample confirms why this is necessary: legacy source recovery treats
+an accepted capsule as new once its exact identity has been retired, despite unchanged Yjs state.
+The real owner continues using full history. This is a design selection plus characterization,
+not implementation of the new guards, permission to erase acknowledged work, product activation,
+or authorization to delete history. Preserve live undo, journal-before-apply and complete fresh
+authority checks; old/private readers need explicit format fences before new writers activate.
