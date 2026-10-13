@@ -13885,3 +13885,34 @@ comparative performance or whole-profile anti-rollback claim is made.
 reference comparison, and prove actual journal/activity fencing and undo continuity. Then finish the
 remaining readers and replacement/rotation/old-flight/checkpoint/restore rules before deletion. The
 4 MiB encoded baseline bound remains; chunking alone does not enlarge it. `docs/progress.md` is untouched.
+
+
+### Non-deleting baseline installation and actual Account cold readers — 2026-10-13
+
+**Boundary.** The carrier/compatibility phase is committed signed as **`13b265a3`**, verified `G`.
+This phase is uncommitted and explicitly gated by `VITE_ACCOUNT_BASELINE_INSTALL=1`. No personal
+account conversion, history deletion, deployment or release-validation campaign.
+[Contract](./account-local-baseline-owner.md).
+
+**Change.** The real composed Account owner now installs a verified first anchor while holding its
+admission queue, flushing and checking the scoped journal, preserving the Web Lock through native
+settlement, and rechecking complete authority. Empty promotion leaves the live Yjs document and undo
+stack intact. Later allocations/witness writes preserve the authenticated v3 pointer and MAC domain.
+Original/joined cold readers and the separate native history source authenticate/replay the anchor
+and compare it with full history. Existing-anchor failure refuses; only new candidate ineligibility
+can skip. Warm fast-path use and content compaction are disabled for anchored experimental stores.
+
+**Evidence.** [171 focused unit checks, 10 distinct enabled native owner cases, one ordinary-build
+case and one packaged two-device journey](./development-evidence/2026-10-13-local-baseline-owner/README.md).
+Input waits during held installation crypto and is journalled before apply; undo/redo and later
+publication survive. Retained cleanup blocks installation; custody changes and damaged baseline/history
+refuse; lost committed replies cold-recover without another allocation; close holds exclusion through
+settlement. The packaged journey includes checkpoint 1, epochs 4/5 and both cold owners. Default Account
+opening refuses the anchored profile unchanged; the compatible reader can reopen it. TypeScript,
+lint/format, build/Yjs patch, size/origin and whitespace checks pass. One concurrent unit timeout was
+rerun serially without weakening the test. No timing improvement is claimed.
+
+**Next.** Baseline-preserving generation/replacement lifecycle and remaining reader adapters, still
+without deletion; then old-flight/checkpoint evidence and restored journal/database pairing before
+exact atomic removal. Public reader/writer rollout and rollback remain separate. `docs/progress.md`
+is untouched.

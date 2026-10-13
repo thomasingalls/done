@@ -1,3 +1,4 @@
+import { recordEqual } from './custodyRecord';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import type { NetworkLogin } from '../account/networkLogin';
 import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
@@ -236,6 +237,34 @@ export async function verifyAccountUnderPermit(
           marker.v >= 7
             ? {
                 allowSpoolCounter: true,
+                ...(marker.v === 9 && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+                  ? {
+                      baseline: async (
+                        _task: SessionTask,
+                        identity: import('./contentRecord').ContentIdentity,
+                      ) => {
+                        const current = await readPromotion(_task, options.slotId, options.code);
+                        if (
+                          detached ||
+                          !same(current.marker, marker) ||
+                          !recordEqual(current.record, record)
+                        )
+                          throw Error('Baseline opening authority changed');
+                        return {
+                          identity,
+                          route,
+                          inbound: inbound!,
+                          signer: signer!,
+                          installation: {
+                            kind: 'original' as const,
+                            ...(marker.successor ? { successor: marker.successor } : {}),
+                            ...(marker.membership ? { membership: marker.membership } : {}),
+                          },
+                          assertCurrent: () => _task.step(() => {}),
+                        };
+                      },
+                    }
+                  : {}),
                 ...(marker.v === 9 ? { reuseOpened: true as const } : {}),
                 validate: async (records, _task, counter) => {
                   countLedgerWork('startupValidations');

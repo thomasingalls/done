@@ -1037,6 +1037,34 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         {
           allowSpoolCounter: true,
           reuseOpened: true,
+          ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+            ? {
+                baseline: async (
+                  _task: SessionTask,
+                  identity: import('./contentRecord').ContentIdentity,
+                ) => {
+                  const current = await readJoinedAccount(_task, options.slotId, options.code);
+                  if (
+                    detached ||
+                    !same(current.marker, marker) ||
+                    !recordEqual(current.record, state.record)
+                  )
+                    throw Error('Baseline opening authority changed');
+                  return {
+                    identity,
+                    route: b.route,
+                    inbound: b.base,
+                    signer: publicKey,
+                    installation: {
+                      kind: 'joined' as const,
+                      initialEpoch,
+                      ...(marker.membership ? { membership: marker.membership } : {}),
+                    },
+                    assertCurrent: () => _task.step(() => {}),
+                  };
+                },
+              }
+            : {}),
           validate: async (records, _task, counter) => {
             countLedgerWork('joinedStartupValidations');
             const census = inspectInbound(records, b.route, b.base);

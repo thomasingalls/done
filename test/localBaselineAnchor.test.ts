@@ -419,3 +419,30 @@ it('requires the payload MAC to match the independently retained keyed commitmen
   };
   await expect(f.read()).rejects.toThrow('commitment differs');
 });
+
+it('private allocation adapter keeps the anchor in every MAC/write and isolates returned metadata', async () => {
+  const { createBaselineMetadata } = await import('../src/crdt/localBaselineMetadata');
+  const { reserveCounter } = await import('../src/crdt/contentRecord');
+  const f = await fixture(40);
+  await f.anchor();
+  const c = (await f.read()).counter,
+    adapter = createBaselineMetadata(f.owner.identity);
+  const allocation = adapter.parse(c, f.owner.intent);
+  const next = reserveCounter(allocation, 3, c.active_gen),
+    stored = adapter.stored(next);
+  expect(stored.v).toBe(3);
+  expect(adapter.payload(next)).toEqual(
+    baselineCounterPayload(f.owner.identity, stored as typeof c),
+  );
+  expect(adapter.payload(next)).not.toEqual(counterPayload(f.owner.identity, next));
+  (stored as typeof c).baseline.commitment = 'ef'.repeat(32);
+  c.baseline.commitment = 'ab'.repeat(32);
+  expect((adapter.stored(next) as typeof c).baseline.commitment).not.toBe(c.baseline.commitment);
+  expect(() => adapter.parse(allocation, f.owner.intent)).toThrow('downgraded');
+  expect(() => adapter.parse(c, f.owner.intent)).toThrow('changed');
+  expect(() => adapter.metadataKeys(['counter'])).toThrow();
+  expect(() => adapter.metadataKeys(['counter', baselineChunkKey(0)])).not.toThrow();
+  expect(() => adapter.metadataKeys(['counter', baselineChunkKey(1)])).toThrow();
+  expect(adapter.reservedSequence(c.baseline.firstSequence)).toBe(true);
+  expect(adapter.reservedSequence(c.baseline.firstSequence - 1)).toBe(false);
+});

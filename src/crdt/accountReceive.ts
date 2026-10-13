@@ -322,6 +322,30 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
+    ...(composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+      ? ({
+          baseline: async (task, identity, route) => {
+            await assertCurrent(task);
+            return {
+              identity,
+              route,
+              inbound: base,
+              signer: publicKey,
+              installation: joined
+                ? { kind: 'joined' as const, initialEpoch, ...(membership ? { membership } : {}) }
+                : {
+                    kind: 'original' as const,
+                    ...(installed ? { successor: installed } : {}),
+                    ...(membership ? { membership } : {}),
+                  },
+              assertCurrent: () => {
+                task.step(() => {});
+                if (handoff) throw new ReceiveAuthorityChanged();
+              },
+            };
+          },
+        } satisfies Partial<CaptureExtension>)
+      : {}),
     invalidateAuthority,
     ...(incremental && import.meta.env?.['VITE_ACCOUNT_SELECTIVE_LOADS'] !== '0'
       ? {
@@ -729,6 +753,23 @@ async function openAccountReceiveOwner(
             baselineShadow?.invalidate();
             if (e instanceof MaintenanceInterrupted)
               return Object.freeze({ kind: 'skipped', reason: 'activity-or-journal' });
+            throw e;
+          }
+        }
+      : undefined;
+  const installLocalBaseline =
+    composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+      ? async () => {
+          // The caller already holds the admission queue. Flush on the storage tail before taking
+          // the journal census; never nest a flush inside that same tail.
+          await carrier.flushJournal();
+          try {
+            return await runBaselineShadow((task, owner, _route, checkJournal) =>
+              owner.carrier.installBaseline(task, () => assertCurrent(task), checkJournal),
+            );
+          } catch (e) {
+            if (e instanceof MaintenanceInterrupted)
+              return { kind: 'skipped' as const, reason: 'activity-or-journal' };
             throw e;
           }
         }
@@ -2277,6 +2318,7 @@ async function openAccountReceiveOwner(
     listCaptures,
     fetchPage,
     checkLocalBaseline,
+    installLocalBaseline,
     prepareGroup,
     receiveGroup,
     preparedPromotion,
@@ -2350,6 +2392,7 @@ async function openReceivingWorkspace(
     refreshAuthority,
     resetDiscovery,
     checkLocalBaseline,
+    installLocalBaseline,
   } = await openAccountReceiveOwner(
     options,
     options.identity.id,
@@ -2569,6 +2612,17 @@ async function openReceivingWorkspace(
       },
       listCaptures,
       ...(checkLocalBaseline ? { checkLocalBaseline } : {}),
+      ...(installLocalBaseline
+        ? {
+            installLocalBaseline: () =>
+              enqueue(new Uint8Array([1]), async (_input, promote) => {
+                const result = await installLocalBaseline();
+                // Empty promotion settles the fence without touching the live document or UndoManager.
+                promote([]);
+                return result;
+              }),
+          }
+        : {}),
     });
     if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;

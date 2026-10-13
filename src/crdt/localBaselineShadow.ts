@@ -7,8 +7,9 @@ import {
   type LocalBaselineContext,
   type LocalReplayInput,
   type BaselineAuthentication,
+  type AuthenticatedLocalBaseline,
 } from './localBaselineReplay';
-import { decodeLocalBaseline } from './localBaselineRecord';
+import { decodeLocalBaseline, type BaselineAnchor } from './localBaselineRecord';
 import { selectEnvelopeSources } from './accountEnvelopePreparation';
 import { nextSpoolPosition } from './spoolRecord';
 import { eraseVerified, sameBytes } from './verifiedRecords';
@@ -56,6 +57,45 @@ const projection = (r: Replay, after: number) => ({
   peers: new Map([...(r.inbound.peers ?? [])].map(([id, s]) => [id, stream(s)])),
   history: r.inbound.installedHistory ?? null,
 });
+
+/** Persisted anchors are authoritative: any failed replay/comparison refuses this owner. */
+export async function verifyCompleteLocalBaseline(
+  input: LocalReplayInput,
+  context: LocalBaselineContext,
+  auth: BaselineAuthentication,
+  stored: { baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor },
+): Promise<void> {
+  let reference: Replay | undefined, replayed: Replay | undefined;
+  const baseline = decodeLocalBaseline(stored.baseline.payload);
+  try {
+    reference = await replayFullLocalHistory(input, context);
+    replayed = await replayLocalBaseline(
+      stored.baseline,
+      stored.anchor,
+      {
+        records: input.records.filter((r) => r.seq >= baseline.cut.nextSequence),
+        counter: input.counter,
+      },
+      context,
+      auth,
+    );
+    const select = (r: Replay) =>
+      selectEnvelopeSources(r.census.delivery.spool, context.route, true, crypto.subtle);
+    const a = await select(reference),
+      b = await select(replayed);
+    context.assertCurrent();
+    if (
+      !sameBytes(reference.snapshot, replayed.snapshot) ||
+      JSON.stringify(ordered([projection(reference, baseline.own.position), a])) !==
+        JSON.stringify(ordered([projection(replayed, baseline.own.position), b]))
+    )
+      throw new LocalBaselineError('integrity');
+  } finally {
+    eraseVerified(reference);
+    eraseVerified(replayed);
+    eraseVerified(baseline);
+  }
+}
 
 export function createLocalBaselineShadow() {
   let retained: Awaited<ReturnType<typeof prepareLocalBaseline>> | undefined;

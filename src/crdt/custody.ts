@@ -754,6 +754,7 @@ const prepareCustody = (
   recoveryJournal = false,
   warmLoads?: true,
   selectiveLoads?: true,
+  baseline?: ContentCrypto['baseline'],
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -898,6 +899,7 @@ const prepareCustody = (
             ...(reuseOpened ? { reuseOpened } : {}),
             ...(warmLoads ? { warmLoads } : {}),
             ...(selectiveLoads ? { selectiveLoads } : {}),
+            ...(baseline ? { baseline } : {}),
             open: openRecord,
             seal: (task, header, plaintext) =>
               task.wait(async () => {
@@ -1085,7 +1087,7 @@ export const withRecoveryUnderPermit = async <T>(
   authority: CustodyAuthority,
   code: string,
   operation: (recovery: JournalRecovery) => Promise<T>,
-  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter' | 'reuseOpened'>,
+  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter' | 'reuseOpened' | 'baseline'>,
 ): Promise<T> => {
   let validatedView: object | undefined;
   const validate = validation?.validate;
@@ -1110,6 +1112,10 @@ export const withRecoveryUnderPermit = async <T>(
       : validate,
     validation?.allowSpoolCounter,
     validation?.reuseOpened,
+    false,
+    undefined,
+    undefined,
+    validation?.baseline,
   );
   let journal: JournalUpdate[] | undefined, records: OpenedRecord[] | undefined;
   try {
@@ -1359,6 +1365,7 @@ export const prepareAccountCustody = (
   reuseOpened?: true,
   warmLoads?: true,
   selectiveLoads?: true,
+  baseline?: ContentCrypto['baseline'],
 ) =>
   prepareCustody(
     input,
@@ -1372,4 +1379,5 @@ export const prepareAccountCustody = (
     false,
     warmLoads,
     selectiveLoads,
+    baseline,
   );

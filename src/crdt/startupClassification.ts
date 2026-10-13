@@ -1,3 +1,4 @@
+import { BASELINE_MAX_CHUNKS } from './localBaselineAnchor';
 /** Cross-carrier preflight under an already granted slot permit. No authentication claim yet. */
 import {
   CUSTODY_DB,
@@ -99,29 +100,38 @@ export const parseSlot = (value: unknown, slotId: string): Slot | null => {
   }
   return structuredClone(v);
 };
-export const contentCensus = (task: SessionTask, name: string) =>
+export const contentCensus = (task: SessionTask, name: string, baseline = false) =>
   probeDatabase(task, name, async (db) => {
     if (db.objectStoreNames.contains('updates'))
       stopStartup('migration-required', 'legacy-content-layout');
     checkLayout(db, Object.fromEntries(CONTENT_STORES.map((name) => [name, null])));
     return task.wait(() =>
-      contentTransaction<{ counter: unknown; records: number }>(
+      contentTransaction<{ counter: unknown; records: number; metadataKeys: IDBValidKey[] }>(
         db,
         task,
         [...CONTENT_STORES],
         'readonly',
         (tx, result, guard) => {
-          const state = { counter: undefined as unknown, records: 0 };
+          const state = {
+            counter: undefined as unknown,
+            records: 0,
+            metadataKeys: [] as IDBValidKey[],
+          };
           result(state);
-          const meta = tx.objectStore('meta').openCursor();
+          // Inventory only: the Account owner authenticates the counter and bounded chunk values.
+          // Do not clone arbitrary chunk ciphertext merely to classify this carrier.
+          const store = tx.objectStore('meta'),
+            keys = store.getAllKeys(undefined, BASELINE_MAX_CHUNKS + 2),
+            meta = store.get('counter');
           meta.onsuccess = () =>
             guard(() => {
-              const cursor = meta.result;
-              if (!cursor) return;
-              if (cursor.key !== 'counter')
+              if (
+                keys.result.length > BASELINE_MAX_CHUNKS + 1 ||
+                (!baseline && keys.result.some((key) => key !== 'counter'))
+              )
                 stopStartup('repair-required', 'unknown-content-metadata');
-              state.counter = cursor.value;
-              cursor.continue();
+              state.metadataKeys = keys.result;
+              state.counter = meta.result;
             });
           for (const name of ['content', 'heads', 'outbound']) {
             const req = tx.objectStore(name).count();

@@ -1,3 +1,4 @@
+import { recordEqual } from './custodyRecord';
 /** Read the actual certified slot under its exclusive permit. No editor document or caller key. */
 import { readPromotion, withPromotionRoot } from './promotionRecord';
 import {
@@ -233,6 +234,41 @@ export async function withNativeHistorySource<T>(
             },
             {
               allowSpoolCounter: true,
+              ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+                ? {
+                    baseline: async (
+                      _task: SessionTask,
+                      identity: import('./contentRecord').ContentIdentity,
+                    ) => {
+                      const current = original
+                        ? await readPromotion(_task, slotId, code)
+                        : await readJoinedAccount(_task, slotId, code);
+                      if (
+                        !same(current.marker, state.marker) ||
+                        !recordEqual(current.record, state.record)
+                      )
+                        throw Error('Baseline history authority changed');
+                      return {
+                        identity,
+                        route,
+                        inbound: context,
+                        signer: publicKey,
+                        installation: original
+                          ? {
+                              kind: 'original' as const,
+                              ...(marker!.successor ? { successor: marker!.successor } : {}),
+                              ...(membership ? { membership } : {}),
+                            }
+                          : {
+                              kind: 'joined' as const,
+                              initialEpoch: initial!.route.epoch,
+                              ...(membership ? { membership } : {}),
+                            },
+                        assertCurrent: guard,
+                      };
+                    },
+                  }
+                : {}),
               validate: async (records, _task, counter) => {
                 const census = inspectInbound(records, route, context);
                 await verifySpoolWitness(census.delivery.spool, counter, subtle);

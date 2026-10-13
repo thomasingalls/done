@@ -111,3 +111,11 @@ carrier without activating it in the application. Ordinary `parseCounter` now re
 bypass, database upgrade, automatic conversion, or downgrade is added. The active pointer and
 all encrypted chunks commit together; the tested private carrier retains complete history.
 Its baseline-aware application reader/installer and later deletion policy remain future work.
+
+
+The subsequent [non-deleting owner integration](./account-local-baseline-owner.md) recognizes v3 only
+through `VITE_ACCOUNT_BASELINE_INSTALL=1` in supported Account contexts. Its private semantic allocation
+view does not change the stored version or MAC domain: every later write retains the authenticated v3
+pointer. Ordinary readers remain fenced; disabling the experiment is not a profile rollback. Actual
+original/joined cold opens and the native history source now authenticate/replay the anchor with all
+history retained. Rotation, replacement, public rollout and deletion remain separate work.

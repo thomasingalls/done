@@ -112,3 +112,13 @@ the remaining fenced consumers, authenticated durable pointer, journal and old-r
 and the exact atomic installer with crash/restart checks. Measure equal-workspace fixtures at multiple
 prefix lengths when controlled timing is available. No deletion or format rollout is authorized solely
 by this design note.
+
+
+## Non-deleting owner integration — 2026-10-13
+
+The [real owner phase](./account-local-baseline-owner.md) now connects first-anchor installation,
+baseline-aware original/joined cold opening, and the separate native history source under an explicit
+development switch. It preserves the admission/journal fence and live undo, retains all history, and
+checks durable baseline replay against the full reference. No product activation or deletion.
+Generation/replacement lifecycle, remaining fenced readers, old-flight/checkpoint and restored-journal
+rules still precede an exact removal phase.

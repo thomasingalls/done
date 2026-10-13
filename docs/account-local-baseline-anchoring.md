@@ -4,7 +4,9 @@ The [authority/checkpoint and reader phase](./account-local-baseline-transitions
 signed as **`43fe12aa`** (`G`). This phase implements a **private carrier primitive**, exercised only
 against disposable stores. It does not connect an installer to the application, select a baseline
 for an ordinary Account reader, or delete history. The full-history reader remains authoritative
-in the product. General release validation and publication remain paused. This phase is uncommitted.
+in the product. General release validation and publication remain paused. This phase is committed signed as **`13b265a3`**. The following
+[owner integration](./account-local-baseline-owner.md) adds an explicit development installer and
+baseline-aware cold reader; the ordinary product still does not install anchors.
 
 ## The durable representation
 

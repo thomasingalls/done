@@ -1,3 +1,4 @@
+import type { ContentCrypto } from './contentStore';
 import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApplyGate';
 import { budgetedTask } from './cpuBudget';
 import { maintenanceTask, MaintenanceInterrupted } from './contentMaintenance';
@@ -53,6 +54,11 @@ export interface CaptureExtension {
   version: 7 | 8 | 9;
   /** Private verifier may borrow retained carrier rows immutably during selection validation. */
   selectiveLoads?: true;
+  baseline?(
+    task: SessionTask,
+    identity: Parameters<NonNullable<ContentCrypto['baseline']>>[1],
+    route: CaptureRoute,
+  ): ReturnType<NonNullable<ContentCrypto['baseline']>>;
   selectedSourcePresence?(
     lease: ContentSelection,
     incoming: readonly CapturedSourceIdentity[],
@@ -104,7 +110,11 @@ export async function openAccountCaptureOwner(
   // Private shadow cuts are abandoned by synchronous input or lifecycle/route changes.
   let shadowActivity = {};
   const invalidateShadow = () => {
-    if (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1') shadowActivity = {};
+    if (
+      import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1' ||
+      import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+    )
+      shadowActivity = {};
   };
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
@@ -138,6 +148,9 @@ export async function openAccountCaptureOwner(
             true,
             warmLoads,
             warmLoads ? extension.selectiveLoads : undefined,
+            extension.baseline
+              ? (task, identity) => extension.baseline!(task, identity, route)
+              : undefined,
           );
           await extension.initializeJoined(task, v);
           await owner.initialize(task);
@@ -196,6 +209,9 @@ export async function openAccountCaptureOwner(
           extension?.version === 9 ? true : undefined,
           warmLoads,
           warmLoads ? extension?.selectiveLoads : undefined,
+          extension?.baseline
+            ? (task, identity) => extension.baseline!(task, identity, route)
+            : undefined,
         );
         await extension?.initialize(task, v);
         await owner.initialize(task);
@@ -613,8 +629,8 @@ export async function openAccountCaptureOwner(
         route: CaptureRoute,
       ) => Promise<T>,
     ) => run((task) => operation(task, owner!, route)),
-    /** No admission barrier or journal flush is installed for this experiment. Native work stays
-     * on the owned storage tail; input during an await invalidates before publication. */
+    /** Scoped baseline census on the owned storage tail. Shadow calls have no admission barrier;
+     * installers must already hold the input queue and flush first. Input/lifecycle changes invalidate. */
     runBaselineShadow: <T>(
       operation: (
         task: SessionTask,
@@ -624,8 +640,12 @@ export async function openAccountCaptureOwner(
       ) => Promise<T>,
     ) =>
       run(async (parent) => {
-        if (extension?.version !== 9 || import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] !== '1')
-          throw Error('Account baseline shadow experiment is disabled');
+        if (
+          extension?.version !== 9 ||
+          (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] !== '1' &&
+            import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] !== '1')
+        )
+          throw Error('Account baseline experiment is disabled');
         const activity = shadowActivity;
         const check = () => {
           if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();

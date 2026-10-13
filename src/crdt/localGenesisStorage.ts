@@ -1,3 +1,4 @@
+import { createBaselineMetadata } from './localBaselineMetadata';
 import { storageUpgradeKey } from './storageCompatibility';
 /** Only the Local genesis owner calls these operations, under a slot permit. */
 import { contentTransaction } from './contentDatabase';
@@ -114,7 +115,11 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
     stopStartup('repair-required', 'local-custody-progress-regressed');
   matchLocalCustody(claim, record);
   const name = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
-  const disk = await contentCensus(task, name),
+  const baseline =
+    promotion?.marker?.v === 9 && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+      ? createBaselineMetadata({ ...scope, storeId: intent.storeId, rootId: intent.rootId })
+      : undefined;
+  const disk = await contentCensus(task, name, !!baseline),
     journal = journalCount(task, journalPrefix(name));
   const content = witnessPresent ? parseWitness(witness) : null;
   if (claim.stage === 'custody' && content)
@@ -131,11 +136,14 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
   const counter =
     disk?.counter === undefined
       ? null
-      : parseCounter(
-          disk.counter,
-          { ...scope, storeId: intent.storeId, rootId: intent.rootId },
-          intent.id,
-        );
+      : baseline
+        ? baseline.parse(disk.counter, intent.id)
+        : parseCounter(
+            disk.counter,
+            { ...scope, storeId: intent.storeId, rootId: intent.rootId },
+            intent.id,
+          );
+  if (baseline && disk) baseline.metadataKeys(disk.metadataKeys);
   if (content?.state === 'ready' && (!disk || !counter))
     stopStartup('repair-required', 'initialized-content-missing');
   if (

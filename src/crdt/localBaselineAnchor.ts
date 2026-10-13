@@ -13,6 +13,7 @@ import { StorageCompatibilityError } from './storageCompatibility';
 export const BASELINE_CARRIER = 'done/local-baseline-carrier/draft-1';
 export const BASELINE_CHUNK_BYTES = 256 * 1024;
 export const BASELINE_MAX_BYTES = LOCAL_BASELINE_LIMIT + 32;
+export const BASELINE_MAX_CHUNKS = Math.ceil(BASELINE_MAX_BYTES / BASELINE_CHUNK_BYTES);
 export const baselineChunkKey = (index: number): IDBValidKey => ['local-baseline', index];
 export interface BaselinePointer extends Pick<BaselineAnchor, 'revision'> {
   /** Keyed plaintext commitment; never persist an unkeyed hash of writing. */
@@ -77,7 +78,7 @@ export function parseBaselineCounter(
   const base = parseCounter({ ...allocation, v: 2 }, scope, intent);
   if (base.v !== 2) return corrupt();
   const bytes = integer(p['bytes'], BASELINE_MAX_BYTES),
-    chunks = integer(p['chunks'], Math.ceil(BASELINE_MAX_BYTES / BASELINE_CHUNK_BYTES)),
+    chunks = integer(p['chunks'], BASELINE_MAX_CHUNKS),
     firstSequence = integer(p['firstSequence']),
     generation = integer(p['generation'], base.active_gen),
     revision = integer(p['revision']);

@@ -1,0 +1,171 @@
+{
+  "base": "13b265a3f5c8b8054adc8ab6dd2fb32165d0dbed",
+  "signature": "G",
+  "state": "uncommitted private owner integration",
+  "counts": {
+    "unit": 171,
+    "enabledNativeDistinct": 10,
+    "ordinaryNative": 1,
+    "packagedJourney": 1
+  },
+  "sources": [
+    {
+      "path": "docs/account-local-baseline-owner.md",
+      "sha256": "a8a26beb988d12a6a8c820f0c63ded025260c951993442096816a5e525479941"
+    },
+    {
+      "path": "src/crdt/accountCapture.ts",
+      "sha256": "22e14df2f758157b0407a5dcd55c9b6982442393dc0c0234b5904784367edbd3"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "a7ab4c7639ff611b789662fbdb4df55416a5f641bca8774dddad9fe8ba3634cf"
+    },
+    {
+      "path": "src/crdt/accountStartup.ts",
+      "sha256": "837dcd3dac2e0be6c7d92a6cf40b31dfe55835316300cad6fd4da74e5fd361ce"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "891d749c8c996a4250e8e5fc8e623276d69a65ab385716211c31e3bead726402"
+    },
+    {
+      "path": "src/crdt/custody.ts",
+      "sha256": "614aa6956b56e79367b527c2c47627e187692b100a7850c49e8be1242528ee7d"
+    },
+    {
+      "path": "src/crdt/joinedAccount.ts",
+      "sha256": "0dd9aa8ebd46a566930e6e78806b1df74937c3d72c1100b7130b54fa7b32d94b"
+    },
+    {
+      "path": "src/crdt/localBaselineAnchor.ts",
+      "sha256": "d36c39a3d6bbac9d79abfd4a6c80245344a1cffb4198b4fa92338ef4fbc1ac28"
+    },
+    {
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "ea0b8987f80a2a3aa5bd50c15b7e4a9d769ac46963519ad0802633adad9046eb"
+    },
+    {
+      "path": "src/crdt/localBaselineShadow.ts",
+      "sha256": "1b52f71edb51fbcad52976319e7303bb23f293fc6b4bacd02cb4ad728dd05f67"
+    },
+    {
+      "path": "src/crdt/localBaselineStorage.ts",
+      "sha256": "2be5023f5a395dad03b94ec7d42426b49157140208e1eea313c47d6db9f96c15"
+    },
+    {
+      "path": "src/crdt/localGenesisStorage.ts",
+      "sha256": "e8d1adddf0f17a70da61fcdbae105b25e1272d9092f304901813e095db218e98"
+    },
+    {
+      "path": "src/crdt/membershipSource.ts",
+      "sha256": "5a8aa1bb224799fa11e2d9bc6c4873618d1066d4a0a33ed9b1efe57bd2ff9cfd"
+    },
+    {
+      "path": "src/crdt/startupClassification.ts",
+      "sha256": "293b6406a7193ea1fd9dfea04e82441a8325dd237821909fbaa77c93bcbe40b3"
+    },
+    {
+      "path": "test/account-sync/fixtures.mjs",
+      "sha256": "4c3b3e59b45284dca806ccc72d3ff869b694d6c9acc1c39f71f789965ca18fac"
+    },
+    {
+      "path": "test/local-baseline/owner.native.mjs",
+      "sha256": "d0024a99991add870d1b1bceee935853ffdf553eddb81d182edc3417b555984b"
+    },
+    {
+      "path": "test/local-baseline/transition-owner.spec.ts",
+      "sha256": "985c9adba978ce8882c4964b0be468a823abe0729b177cc51227ec200ffb7ab5"
+    },
+    {
+      "path": "test/localBaselineAnchor.test.ts",
+      "sha256": "2e2b8c5a108e3c4ce43ab37ba5b4b4738126d96fe015657fbb97b72a0415bf87"
+    }
+  ],
+  "logs": [
+    {
+      "path": "unit.log.gz",
+      "bytes": 239,
+      "sha256": "dde52589521b40b9978735761c58ae30d675c7ee5f9d9f1c1db6efe3ba4b8312",
+      "gzipBytes": 196,
+      "gzipSha256": "fdcd93693d9ac8d66ccb4af08bda5f381183d46598b629203523b525dda4231d"
+    },
+    {
+      "path": "unit-concurrent-timeout.log.gz",
+      "bytes": 1156,
+      "sha256": "48b5bf9c34cd9b256cc3a8886c82c50bd239386d4b89e443ea9045acb87fac96",
+      "gzipBytes": 577,
+      "gzipSha256": "7b63927ea66e2ce7378ab6e75eb17362e07c4749557c0274a6809f951cc0d00f"
+    },
+    {
+      "path": "native.log.gz",
+      "bytes": 1624,
+      "sha256": "5354725df6debe85589a2f976f2a2c23c9192de82d3c72b6b037eae0ee0dadb2",
+      "gzipBytes": 800,
+      "gzipSha256": "81017d3c1af10ba9cf7da00a5fe8dbd41c5411f509835c1b8bdbf1b2894fc968"
+    },
+    {
+      "path": "close.log.gz",
+      "bytes": 664,
+      "sha256": "653a6d204be5277f9afbb11a3eb69d534158713d1752bc86626866a13f063613",
+      "gzipBytes": 376,
+      "gzipSha256": "fbf66d69d531217c55b7bd9f811cb7b8132d64d10152d1b3ec0fc0a43dba13eb"
+    },
+    {
+      "path": "fence.log.gz",
+      "bytes": 673,
+      "sha256": "63aaaceb5206d01750a8f4791ee704ca724b53b383e912a77ec175f17560a3b5",
+      "gzipBytes": 391,
+      "gzipSha256": "09e081cbd88325288f8292e700b584e4295f907ab6ac84b6801b20b333783abf"
+    },
+    {
+      "path": "disabled.log.gz",
+      "bytes": 615,
+      "sha256": "0238e0b52e744d0bd6f0b2720de8845fc07508443f0548f294be944399b0e6ff",
+      "gzipBytes": 355,
+      "gzipSha256": "f84d9bae0ea338759f4e943d36e579bf349208d251d4e0dbb1ee309c2dbe50bf"
+    },
+    {
+      "path": "journey.log.gz",
+      "bytes": 658,
+      "sha256": "ba104a3011a4781094b69ce9d8cc2b97c9408e41a56e2f84cd817cf8ba1cc53a",
+      "gzipBytes": 385,
+      "gzipSha256": "d894d7c1aa6b081fc3cf56eae48a5e87a4e70ba48ad3162ab9bc0311d942e961"
+    },
+    {
+      "path": "typescript.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzipBytes": 20,
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "path": "format.log.gz",
+      "bytes": 113,
+      "sha256": "eb1118953ae83143f87e69f87fd4749d6b07df85c9d51a8c39382d4ef3841e89",
+      "gzipBytes": 110,
+      "gzipSha256": "ace42340e0a4b7961f18871919c0f7743468a66fe9e989da7ea01d5c64dde56e"
+    },
+    {
+      "path": "lint.log.gz",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzipBytes": 20,
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "path": "build.log.gz",
+      "bytes": 5077,
+      "sha256": "320d258214c230a967a025d7b14c624e49d0916d56f6fbde45d74d589edd7c14",
+      "gzipBytes": 1658,
+      "gzipSha256": "2fba2d00dd7f2dab8418c17e13cdc61dc9099d996100722139b9c002a0eafe37"
+    }
+  ],
+  "limits": [
+    "no history deletion",
+    "no public writer activation",
+    "no timing evidence",
+    "no generation rotation or anchor replacement",
+    "no whole-profile anti-rollback guarantee"
+  ]
+}
