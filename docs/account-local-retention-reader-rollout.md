@@ -2,7 +2,9 @@
 
 2026-10-13. Base: signed `e2e5337a`. This phase prepares a compatible packaged reader;
 it does not enable conversions, publish an image or touch personal profiles. General release
-validation remains paused.
+validation remains paused. The [2026-10-14 publication handoff](./account-local-retention-publication.md)
+now records the tested reader image and its compatible local rollback alias; remote publication and
+pull verification remain pending.
 
 ## Capability boundary
 
@@ -32,8 +34,8 @@ refusal, prepared receive fencing, final authority checks and the live UndoManag
 
 1. Commit and publish the **reader-only** build with the defaults above. Record its exact image
    digest and source identity in the publication handoff. That compatible image must remain
-   available as the rollback target before any writer release. This phase has not produced or
-   published that container.
+   available as the rollback target before any writer release. The publication handoff records the
+   prepared container; it has not yet been published.
 2. Let the normal application-update flow install that reader. Updating the service does not
    prove that every cached client has updated. A future conversion must be initiated only by a
    capable, exclusively owned client, with its existing compatibility fences intact.

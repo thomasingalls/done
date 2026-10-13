@@ -14513,7 +14513,7 @@ no performance or release-qualification claim. `docs/progress.md` remains untouc
 
 ### Keep rapid Account reopens within a bounded access window
 
-**Date:** 2026-10-13 · **Commit:** pending, after signed `47466b84` · **Stage:** session-liveness repair; release validation paused.
+**Date:** 2026-10-13 · **Commit:** signed `890fc677` · **Stage:** session-liveness repair; release validation paused.
 
 **Exit.** Reader-first compatibility is signed as **`47466b84`**. The
 [renewal-window contract](./account-session-renewal-window.md) replaces capacity refusal at eight
@@ -14535,8 +14535,43 @@ journey now resumes the lost-reply removal without the backend-restart workaroun
 TypeScript, focused lint/format, ordinary build, Yjs, origin isolation and **138.4 kB / 350 kB** initial-JS
 budget pass. Original reader-first diagnostic evidence is retained unchanged.
 
-**Remaining.** Commit the repair, prepare/test the reader-only container and record its compatible
-rollback digest before publication. This repair is local and uncommitted; no deployed service or
+**Remaining.** Prepare/test the reader-only container and record its compatible
+rollback digest before publication. This repair is signed; no deployed service or
 personal profile changed. Public conversion trigger/cadence, capacity/refusal presentation, remaining
 initial-conversion wait and current-phone measurements remain separate. No performance gain or
 release qualification is claimed; `docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Prepare the reader-only image and retain its compatible rollback identity
+
+**Date:** 2026-10-14 · **Candidate:** signed `890fc677` · **Stage:** bounded publication preparation; conversions disabled; release validation paused.
+
+**Exit.** The session-liveness repair is signed as **`890fc677`**. The
+[publication handoff](./account-local-retention-publication.md) pins a locally tested ARM64 image from
+that exact commit: index **`sha256:fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb`**,
+runtime manifest **`sha256:1183e3cd2f4d62b250fc0cf5985ae1024dabfa2d445bdca9e867f621c875b361`**.
+`done-public:890fc677` and `done-reader-rollback:890fc677` name the same image. The latter is retained
+as the compatible local fallback; publication and authenticated remote pull remain necessary before
+any future writer release. Reader is **on**, installer/retention are **off**; no public conversion,
+new deletion, schema migration or protocol cutover is activated.
+
+**Evidence.** The [packet](./development-evidence/2026-10-14-reader-publication/README.md) records the
+signed build-context archive, image/provenance, 109 unchanged frontend files, logs and reproduction
+probe. All **31 existing container checks**, **92 Node 24 session/transport tests**, the two-process
+container smoke and **three exact-frontend browser journeys** pass. The rollback journey opens both
+privately reduced device roles, edits offline with undo/redo, reopens, syncs and continues a verified
+checkpoint without replacing baseline/chunks. The actual deployed predecessor refuses the same
+profiles without changing content/journal inventories; returning to the compatible reader reopens
+and syncs them. The initial Node 24 invocation lacked an excluded synthetic fixture: 57 tests passed,
+two suites failed to load it. The passing rerun mounts the committed fixture read-only; no production
+image or runtime was patched. TypeScript, Yjs, origin isolation and **138.4/350 kB** initial JS pass.
+Existing native authority, journal and lifecycle controls remain in the linked implementation packets.
+No new performance or phone measurement is claimed.
+
+**Remaining.** Merge the application PR while preserving signed commits; publish this tested image,
+verify its digest/private pull, then prepare the ol-infra pin PR and reconcile after operator merge.
+Before any conversion, the deployed `f516a958` remains an ordinary-profile rollback; after reduced
+history exists, use the retained compatible reader instead. Public conversion trigger/cadence,
+capacity/refusal UX, remaining preparation wait and current-phone checks are separate. No registry
+push, infrastructure or personal storage change occurred. `docs/progress.md` and unrelated notes
+remain untouched.
