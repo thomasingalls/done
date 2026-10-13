@@ -1,3 +1,4 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { eraseVerified } from './verifiedRecords';
 import { originalMembershipBoundaries } from './accountSuccessor';
 /** Resume a verified removal under the caller's exclusive slot permit. Old openers and the apply
@@ -351,12 +352,10 @@ export async function activateAccountRotation(
         };
         const crypt: ContentCrypto = {
           allowSpoolCounter: true,
-          ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+          ...(hasBaselineVerifier()
             ? {
                 reuseOpened: true as const,
-                ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
-                  ? { readBaseline: true as const }
-                  : {}),
+                ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
                 baseline: async (
                   _task: SessionTask,
                   identity: import('./contentRecord').ContentIdentity,

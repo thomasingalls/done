@@ -592,13 +592,13 @@ test(
   'v5 reader fence refuses an older private reader without writes; enabled reader reopens',
   { timeout: 90000 },
   async (t) => {
-    const enabled = process.env.ACCOUNT_RETENTION;
+    const enabled = process.env.ACCOUNT_BASELINE_READ;
     let old;
     try {
-      delete process.env.ACCOUNT_RETENTION;
+      process.env.ACCOUNT_BASELINE_READ = '0';
       old = await syncBundle();
     } finally {
-      process.env.ACCOUNT_RETENTION = enabled;
+      process.env.ACCOUNT_BASELINE_READ = enabled;
     }
     const { f, item } = await setup(t, 'remove-old-reader');
     await remove(f.page);

@@ -136,3 +136,13 @@ node --test --test-timeout=15000 test/account-core/core.test.mjs test/account-ap
 Next is phase 2: factor-owned client persistence and login generations, background renewal, Lock,
 Sign out/offline revocation, expiry presentation and a walkthrough of prompt placement. Scope grants,
 existing-route cutover, notifications and the real two-device trial follow. No release campaign resumed.
+
+## Rapid-reopen follow-up — 2026-10-13
+
+The [reader-first lifecycle check](./account-local-retention-reader-rollout.md) encountered
+`429 capacity` on session renewal during rapid lock/reopen/retry cycles. `renew()` retains at most
+eight access tokens per remembered login, expiring after up to five minutes; creating short-lived
+owners can consume that allowance. The removal intent remained durable and pending. The bounded
+retention fixture uses a real backend restart to continue its storage/lifecycle checks, not a raised
+limit. This is an open session-liveness issue: address token retirement/reuse and recovery visibility
+without relaxing account or device authority. The retained diagnostic logs are linked from that phase.

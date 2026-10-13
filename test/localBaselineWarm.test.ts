@@ -20,6 +20,27 @@ afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
 });
+
+for (const retention of ['0', '1'])
+  it(`reader capability cannot reserve or remove history with installation disabled (retention=${retention})`, async () => {
+    const x = await fixture();
+    vi.stubEnv('VITE_ACCOUNT_BASELINE_INSTALL', '0');
+    vi.stubEnv('VITE_ACCOUNT_RETENTION', retention);
+    const current = vi.fn(async () => {});
+    const boundary = vi.fn(() => {});
+    await expect(
+      x.owner.prepareHistoryRemoval(task, current, boundary, 1, boundary),
+    ).rejects.toThrow('Private retention writer disabled');
+    await expect(x.owner.installBaseline(task, current, boundary)).rejects.toThrow(
+      'Private Account baseline installer disabled',
+    );
+    expect(current).not.toHaveBeenCalled();
+    expect(boundary).not.toHaveBeenCalled();
+    // Disabling conversions does not disable authenticated reads of an existing reduced store.
+    const state = await x.owner.loadAccount(task);
+    expect(state.kind).toBe('baseline-plus-suffix');
+    for (const row of state.records) row.bytes.fill(0);
+  });
 const task: SessionTask = {
   signal: new AbortController().signal,
   step: (f) => f(),
@@ -29,6 +50,8 @@ async function fixture() {
   vi.stubGlobal('indexedDB', new IDBFactory());
   vi.stubGlobal('IDBKeyRange', IDBKeyRange);
   vi.stubEnv('VITE_ACCOUNT_RETENTION', '1');
+  vi.stubEnv('VITE_ACCOUNT_BASELINE_READ', '1');
+  vi.stubEnv('VITE_ACCOUNT_BASELINE_INSTALL', '1');
   const f = await memberFixture();
   clean.push(f.clear);
   const context: LocalBaselineContext = f.ctx;

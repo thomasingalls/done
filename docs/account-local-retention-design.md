@@ -1,5 +1,12 @@
 # Local Account retention — design and experimental replay
 
+**Current checkpoint (2026-10-13):** private atomic removal, baseline-aware warm reuse,
+history-depth measurements, conversion responsiveness and checkpoint/receive ordering are
+implemented. [Reader-first compatibility and rollback preparation](./account-local-retention-reader-rollout.md)
+now enable the packaged reader independently of the private writer. New conversions remain
+disabled; no reader image has been published in this phase. The design and intermediate milestones
+below retain their original phase boundaries; they are not the current implementation inventory.
+
 The [2026-10-13 baseline format/replay phase](./account-local-baseline-replay.md) implements an
 experimental in-memory codec, authenticated candidate builder and pure reader. The subsequent
 [shadow integration](./account-local-baseline-shadow.md) adds an explicit opt-in owner comparison;

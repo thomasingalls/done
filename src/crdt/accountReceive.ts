@@ -1,3 +1,9 @@
+import {
+  hasBaselineReader,
+  hasBaselineVerifier,
+  hasBaselineInstaller,
+  hasRetentionWriter,
+} from './localBaselineMode';
 import { createRetentionReads } from './retentionReads';
 import { RetiredHistoryRequired } from './retainedHistory';
 import type { PreparedReceiveFinish } from './admissionQueue';
@@ -333,11 +339,8 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
-    ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1' &&
-    import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
-      ? { readBaseline: true as const }
-      : {}),
-    ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+    ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
+    ...(hasBaselineVerifier()
       ? ({
           baseline: async (task, identity, route) => {
             await assertCurrent(task);
@@ -885,7 +888,7 @@ async function openAccountReceiveOwner(
     });
   };
   const installLocalBaseline =
-    composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+    composed && hasBaselineInstaller()
       ? async (
           expectedRevision?: number,
           advanceEra = false,
@@ -1318,7 +1321,7 @@ async function openAccountReceiveOwner(
               bytes,
               current.installedHistory,
               lifetime(task),
-              import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1',
+              hasBaselineVerifier(),
             );
           });
           if (result!.duplicate) {
@@ -2985,9 +2988,9 @@ async function openReceivingWorkspace(
       ...(checkLocalBaseline ? { checkLocalBaseline } : {}),
       ...(installLocalBaseline
         ? {
-            ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
+            ...(hasBaselineReader()
               ? {
-                  ...(import.meta.env?.['VITE_ACCOUNT_RETENTION'] === '1'
+                  ...(hasRetentionWriter()
                     ? {
                         removeLocalHistory: async (expectedRevision: number) => {
                           if (removingLocalHistory)

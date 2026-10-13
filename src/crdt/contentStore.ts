@@ -1,3 +1,4 @@
+import { hasBaselineInstaller, hasRetentionWriter } from './localBaselineMode';
 import type { AccountBaselineRead } from './localBaselineShadow';
 import type { createBaselineReuse } from './localBaselineReuse';
 import { StorageCompatibilityError } from './storageCompatibility';
@@ -119,9 +120,7 @@ export const createContentOwner = (
     throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
   let witness!: ContentWitness;
-  const allowReduced = !!(
-    crypt.readBaseline && import.meta.env?.['VITE_ACCOUNT_RETENTION'] === '1'
-  );
+  const allowReduced = crypt.readBaseline === true;
   const metadata = crypt.baseline ? createBaselineMetadata(scope, allowReduced) : undefined;
   const parseCounter = (value: unknown, identity: ContentIdentity, intent: string) =>
     metadata ? metadata.parse(value, intent) : parseOrdinaryCounter(value, identity, intent);
@@ -725,6 +724,7 @@ export const createContentOwner = (
     checkRetained: () => void,
   ) => {
     if (
+      !hasRetentionWriter() ||
       !allowReduced ||
       !crypt.baseline ||
       !metadata ||
@@ -1235,7 +1235,13 @@ export const createContentOwner = (
       expectedRevision?: number,
       advanceEra = false,
     ) {
-      if (!metadata || !crypt.baseline || !crypt.allowSpoolCounter || !crypt.validate)
+      if (
+        !hasBaselineInstaller() ||
+        !metadata ||
+        !crypt.baseline ||
+        !crypt.allowSpoolCounter ||
+        !crypt.validate
+      )
         throw Error('Private Account baseline installer disabled');
       const snapshot = await read(task, true);
       if (metadata.reduced())
@@ -1377,6 +1383,7 @@ export const createContentOwner = (
     invalidateWarm() {
       forceFullRead = true;
     },
+    hasReducedHistory: () => metadata?.reduced() === true,
     warmAuditDue: () => Boolean(warm?.due() || baselineReuse?.due()),
     warmAuditDelay: () =>
       Math.min(warm?.delay() ?? WARM_AUDIT_MS, baselineReuse?.delay() ?? WARM_AUDIT_MS),

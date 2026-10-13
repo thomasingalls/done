@@ -1,3 +1,4 @@
+import { hasBaselineVerifier } from './localBaselineMode';
 import { eraseVerified } from './verifiedRecords';
 import type { AccountBaselineRead } from './localBaselineShadow';
 import type { ContentCrypto } from './contentStore';
@@ -111,13 +112,10 @@ export async function openAccountCaptureOwner(
       : undefined;
   const finalApply = createFinalApplyGate();
   let suspended = false;
-  // Private shadow cuts are abandoned by synchronous input or lifecycle/route changes.
+  // Private preparation and reduced-history audits yield to input or lifecycle/route changes.
   let shadowActivity = {};
   const invalidateShadow = () => {
-    if (
-      import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1' ||
-      import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
-    )
+    if (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1' || hasBaselineVerifier())
       shadowActivity = {};
   };
   let tail: Promise<unknown> = Promise.resolve();
@@ -351,8 +349,7 @@ export async function openAccountCaptureOwner(
         auditing = true;
         // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
         void run((parent) => {
-          if (import.meta.env?.['VITE_ACCOUNT_RETENTION'] !== '1')
-            return owner!.carrier.auditWarm(parent);
+          if (!owner!.carrier.hasReducedHistory()) return owner!.carrier.auditWarm(parent);
           // Reduced baselines also have a full semantic oracle. Input still journals
           // synchronously, invalidating this discretionary pass before its next effect.
           const activity = shadowActivity;

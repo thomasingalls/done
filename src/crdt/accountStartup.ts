@@ -1,3 +1,4 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { recordEqual } from './custodyRecord';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import type { NetworkLogin } from '../account/networkLogin';
@@ -238,11 +239,9 @@ export async function verifyAccountUnderPermit(
           marker.v >= 7
             ? {
                 allowSpoolCounter: true,
-                ...(marker.v === 9 && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+                ...(marker.v === 9 && hasBaselineVerifier()
                   ? {
-                      ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
-                        ? { readBaseline: true as const }
-                        : {}),
+                      ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
                       baseline: async (
                         _task: SessionTask,
                         identity: import('./contentRecord').ContentIdentity,

@@ -1,3 +1,4 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import type { SessionTask } from './writeSession';
 import { verifyAccountUnderPermit, type AccountStartupOptions } from './accountStartup';
 import { withPromotionRoot, signPromotion, writePromotion, readPromotion } from './promotionRecord';
@@ -54,10 +55,10 @@ async function prepareUploadedCatchup(
                   subtle,
                 ),
           true,
-          import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1' ? true : undefined,
+          hasBaselineVerifier() ? true : undefined,
           undefined,
           undefined,
-          import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+          hasBaselineVerifier()
             ? async (_task, identity) => {
                 const fresh = await readPromotion(_task, options.slotId, options.code);
                 if (!same(fresh.marker, v.marker) || !recordEqual(fresh.record, v.record))
@@ -75,10 +76,7 @@ async function prepareUploadedCatchup(
                 };
               }
             : undefined,
-          import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1' &&
-            import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
-            ? true
-            : undefined,
+          hasBaselineVerifier() && hasBaselineReader() ? true : undefined,
         );
       try {
         await owner.initialize(task);

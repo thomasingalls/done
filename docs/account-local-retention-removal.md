@@ -8,6 +8,9 @@ General release validation remains paused.
 
 Subsequent [warm/incremental reuse](./account-local-retention-reuse.md) adapts live v5 owners;
 the performance discussion below records the atomic-removal phase's boundary.
+The later [reader-first phase](./account-local-retention-reader-rollout.md) enables compatible
+packaged reads while keeping installation and removal disabled. Statements below about default
+reader refusal describe this earlier private-removal checkpoint.
 
 ## Entry and representation
 

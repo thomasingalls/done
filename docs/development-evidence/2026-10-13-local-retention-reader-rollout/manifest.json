@@ -1,0 +1,221 @@
+{
+  "base": "e2e5337a2db04c98a81584be39ad5047182522c8",
+  "phase": "reader-first-local-retention",
+  "qualification": false,
+  "conversionsEnabledByDefault": false,
+  "publication": false,
+  "checks": {
+    "unit": 58,
+    "native": 18,
+    "packagedJourneys": 3,
+    "build": "passed",
+    "typecheck": "passed",
+    "lint": "passed",
+    "format": "passed"
+  },
+  "limitation": "Rapid-reopen session token capacity remains unresolved; the final lifecycle fixture restarts the real backend after the lost reply, preserving durable state.",
+  "sources": [
+    {
+      "path": "docs/account-local-retention-design.md",
+      "bytes": 11992,
+      "sha256": "e062bc770f672a0d861bbfd5f852ebd5e5d38daad697ef148e8c3b70e7cf561a"
+    },
+    {
+      "path": "docs/account-local-retention-reader-rollout.md",
+      "bytes": 5971,
+      "sha256": "053aa74861bc73f89f6ee9830f698c3253883584017fbe6669abc22425feac68"
+    },
+    {
+      "path": "docs/account-local-retention-removal.md",
+      "bytes": 8056,
+      "sha256": "a54890d7887194f4f99d0cf846dfd88ba65a068e7d2613d0c4bad43113ab48c8"
+    },
+    {
+      "path": "docs/account-session-core.md",
+      "bytes": 10897,
+      "sha256": "804aca79c4c69d5ee1d105b9a6587219edb6ed1fd061791515ca891b87efdff3"
+    },
+    {
+      "path": "docs/completed.md",
+      "bytes": 1220052,
+      "sha256": "985dcd0100c21dbe69465abc92fbf9996af83647c85e14dc4f11276e0cdab72e"
+    },
+    {
+      "path": "src/crdt/accountCapture.ts",
+      "bytes": 30019,
+      "sha256": "42fa48f9d19fea2cde1858c7bdea824a104cc15bf33d7e459af96b5386a83104"
+    },
+    {
+      "path": "src/crdt/accountCatchup.ts",
+      "bytes": 9562,
+      "sha256": "296645595a703053fcb63c21443e2f61eb1ae84cd39f84aceec15f0d6c7877e0"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "bytes": 129393,
+      "sha256": "3473918e57f1930c695189b9eb2d2f0f347bb8e224a43f1f5d38751df3e275dd"
+    },
+    {
+      "path": "src/crdt/accountRotation.ts",
+      "bytes": 21352,
+      "sha256": "214d84cbca37a63cbfbe66bc2b78d47e17d9a55b9434966fa93ec2e9c41b5628"
+    },
+    {
+      "path": "src/crdt/accountStartup.ts",
+      "bytes": 15135,
+      "sha256": "3316d6cb91058b7c703d88148e16aceec00cfb4cedba6127b7ed09be47507f8a"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "bytes": 61220,
+      "sha256": "b947bd73c46a2df1c7172dd7c2f6d4e1ca81846cab1f494d71a6d0b9c15bf0ec"
+    },
+    {
+      "path": "src/crdt/joinedAccount.ts",
+      "bytes": 42419,
+      "sha256": "dbd300dcde81e2538f31aa3783e2da57fdd37c70ab02713f64e316c1bcd819aa"
+    },
+    {
+      "path": "src/crdt/localBaselineMode.ts",
+      "bytes": 616,
+      "sha256": "54231bb0c402acdbe4e01c7a9eaed382ac016f236590ff6c549cf59dad32ff03"
+    },
+    {
+      "path": "src/crdt/localGenesisStorage.ts",
+      "bytes": 11482,
+      "sha256": "af33d4e871e44cb60572d5068feb05351429912dcf309f1aed96dcd90dd07a75"
+    },
+    {
+      "path": "src/crdt/membershipSource.ts",
+      "bytes": 17568,
+      "sha256": "f5db6a7172fa010fb75185f91acaa51e979feb7cda35883cce721a13edb8eb38"
+    },
+    {
+      "path": "test/local-baseline/lifecycle-owner.spec.ts",
+      "bytes": 23449,
+      "sha256": "6eeb851bec6d944b3f8af8317abe70e626b5e0ff3da1d10a0dd6fbd6e99f73d8"
+    },
+    {
+      "path": "test/local-baseline/reader-first.spec.ts",
+      "bytes": 7130,
+      "sha256": "65de021642e76638ec64921c519bc32e7841e76ddc2bca134c97d1da241a5452"
+    },
+    {
+      "path": "test/local-baseline/reader-rollout.ts",
+      "bytes": 8005,
+      "sha256": "84b5fb7ae4b81a92f298f31c10afeec676c74ca15af1639b787d744d6084af57"
+    },
+    {
+      "path": "test/local-baseline/removal.native.mjs",
+      "bytes": 28831,
+      "sha256": "9aa313eb078605347644b5e79da5693ae03ea1dd8d0fde5f9932e799db935614"
+    },
+    {
+      "path": "test/localBaselineWarm.test.ts",
+      "bytes": 14195,
+      "sha256": "64cd0408a31495fb61a0b51fbb9cb0cb1fca276e24ece06eed1d4832f1f078b7"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 5116,
+      "sha256": "bbdfe8c848ab5745a133c5561220bcbe9a7b51a4d0fce5d2ac266dac4781f269"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/README.md",
+      "bytes": 6704,
+      "sha256": "e6fdb6ec21238922d47ef969618eb125c38f4f55c6b4ebd15fb1e0a25471cc40"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/build.log.gz",
+      "bytes": 2315,
+      "sha256": "d4a46693bcc0c1c29d3fa6c2f137fd1f21e2b8cdb0e2a1bda27a2a42ecf30046"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/format.log.gz",
+      "bytes": 110,
+      "sha256": "3daa06c576f5b786883d3754d0e57a75b3e0a3f913e6f6495ddeefb3d2368645"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lifecycle-diagnostic-2.log.gz",
+      "bytes": 1034,
+      "sha256": "9d03c00b1c6a9673e7bcd96700cd393e9bdb649f34ee194543f14becfaebb321"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lifecycle-diagnostic-3.log.gz",
+      "bytes": 1223,
+      "sha256": "fc5a761800f51d96e52df950e5bc4ba148626918a01f5cece0111989124f18dd"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lifecycle-diagnostic.log.gz",
+      "bytes": 1001,
+      "sha256": "e897c3d29569f43c955409105d550f80b01af8be1fed75acead2ed5dab0f4933"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lifecycle-diagnostic.spec.ts.gz",
+      "bytes": 5231,
+      "sha256": "8148be888328a1da11fc6eacea94cd5e117d06e6406b99e0436aaa9e1b6ef49c"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lifecycle-initial-context.md.gz",
+      "bytes": 3614,
+      "sha256": "3f255167b316cf0aa9f458baa6607f302265b7ed3f57a1a8567e2f3ce4c3f685"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lifecycle-initial.log.gz",
+      "bytes": 986,
+      "sha256": "295e53f98d957e47e4363eaf6e2b56af46a47eb86849da877e5e5c2d3a5b95e0"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lifecycle.log.gz",
+      "bytes": 700,
+      "sha256": "b2620d1d39401ea681c75bb943d7f098ab517e08d0e246bf702c09e735e950cf"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/lint.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/native.log.gz",
+      "bytes": 1750,
+      "sha256": "f3df894e2bdd1e99de622cf0a54adfed0da766598d7eb2242dcd5e941e289c81"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/rollout-before-audit-dispatch.log.gz",
+      "bytes": 298,
+      "sha256": "f9d106b1aefd268ab3b3958be239c6ab34d94a9e758fb0800183e179d58cd17a"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/rollout-initial.log.gz",
+      "bytes": 1161,
+      "sha256": "8db21971841f3f31682a1bd26aeeca62b168bdb9c634476658fffea7647bc3c9"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/rollout-ui-assumption.log.gz",
+      "bytes": 1316,
+      "sha256": "75deb2405c0b8129eb2e29f14c1de436e434b4d0b0bb3e72e6a8a8a3da838c1d"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/rollout.log.gz",
+      "bytes": 300,
+      "sha256": "ecc2d3e389e364df9f7b53036e2e7f20f5f200c6256d0c2295ecc5b4b1174596"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/typecheck.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/unit.log.gz",
+      "bytes": 197,
+      "sha256": "26d4d304c5a997c33207a46b090579b4b05d5465e2c77b4121d037ae7668d541"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reader-rollout/whitespace.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    }
+  ]
+}

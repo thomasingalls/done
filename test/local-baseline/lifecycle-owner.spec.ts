@@ -3,10 +3,13 @@ import { build } from 'vite';
 import { resolve } from 'node:path';
 import { pairedEditors, openSaved, add } from '../packaged-account/devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
-import { startService, stopService } from '../packaged-account/server';
+import { startService, stopService, startBackend, stopProcess } from '../packaged-account/server';
 import { baselineLifecycleProbe } from './lifecycle-probe';
+import { rolloutBuild, switchApplication, noConversion } from './reader-rollout';
 
 const reduced = process.env['ACCOUNT_RETENTION'] === '1';
+const readerFirst = process.env['ACCOUNT_BASELINE_READER_FIRST'] === '1';
+let readerActive = false;
 type Owner = {
   removeLocalHistory(expectedRevision: number): Promise<{ kind: string; revision?: number }>;
   installLocalBaseline(): Promise<{ kind: string }>;
@@ -15,6 +18,10 @@ type Owner = {
   workspace: { whenDurable(): Promise<void>; status: { state: string } };
 };
 async function anchor(page: Page, revision?: number) {
+  if (readerActive) {
+    await noConversion(page);
+    return;
+  }
   if (reduced) {
     for (const r of revision === undefined ? [0, 1] : [revision]) {
       await expect
@@ -64,8 +71,10 @@ async function bundles(info: TestInfo) {
     configFile: false,
     logLevel: 'error',
     define: {
-      'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1'),
-      'import.meta.env.VITE_ACCOUNT_RETENTION': JSON.stringify(reduced ? '1' : '0'),
+      'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify(readerFirst ? '0' : '1'),
+      'import.meta.env.VITE_ACCOUNT_RETENTION': JSON.stringify(
+        readerFirst ? '0' : reduced ? '1' : '0',
+      ),
       'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify(
         process.env['ACCOUNT_BASELINE_READ'] ?? '0',
       ),
@@ -120,6 +129,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
   browser,
 }, info) => {
   test.setTimeout(180000);
+  readerActive = false;
   page.setDefaultTimeout(15000);
   const { chunk, outDir } = await bundles(info);
   const service = await startService(info.outputPath('service'), resolve(outDir), true, true);
@@ -127,11 +137,18 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     third = await thirdContext.newPage();
   third.setDefaultTimeout(15000);
   const observed = new Set<string>();
-  const observe = (p: Page) =>
+  const observe = (p: Page) => {
+    p.on('response', async (r) => {
+      if (r.url().includes('/account/') && r.status() !== 200) {
+        const body = await r.json().catch(() => ({}));
+        console.log('Removal response', new URL(r.url()).pathname, r.status(), body.refusal);
+      }
+    });
     p.on('console', (msg) => {
       if (msg.text().startsWith('baseline-lifecycle:'))
         observed.add(msg.text().slice('baseline-lifecycle:'.length));
     });
+  };
   observe(page);
   observe(third);
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
@@ -143,6 +160,26 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     pair = await pairedEditors(page, browser, true, { beforeInvite: () => anchor(page) });
     observe(pair.second);
     await anchor(pair.second);
+    if (readerFirst) {
+      const reader = info.outputPath('reader');
+      await rolloutBuild(reader, 'reader', [baselineLifecycleProbe()]);
+      const devices = [
+        { page, auth: pair.first.auth, code: pair.first.code, joined: false },
+        { page: pair.second, auth: pair.next.auth, code: pair.next.code, joined: true },
+      ];
+      await switchApplication(service, reader, devices, 'retention-reader');
+      page = devices[0]!.page;
+      pair.first.auth = devices[0]!.auth;
+      pair.second = devices[1]!.page;
+      pair.next.auth = devices[1]!.auth;
+      observe(page);
+      observe(pair.second);
+      for (const d of devices) {
+        await openSaved(d.page, d.code, d.joined);
+        await noConversion(d.page);
+      }
+      readerActive = true;
+    }
     pair.second.setDefaultTimeout(15000);
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
     await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
@@ -251,6 +288,7 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     }
     for (const p of [page, third]) {
       await anchor(p, 2);
+      if (readerActive) continue;
       await expect
         .poll(
           () =>
@@ -308,6 +346,13 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
     expect(later.result).toBe('pending');
     expect(later.after.previous).toHaveLength(1);
     expect(later.after.previous![0]!.generation).toBe(2);
+    if (readerFirst) {
+      // The reader update adds another cold login to this already reload-heavy fixture.
+      // Exercise a real backend restart after the lost reply: preserve SQLite/custody and
+      // discard only volatile access tokens, without lifting the eight-token session limit.
+      await stopProcess(service.backend);
+      service.backend = await startBackend(info.outputPath('service'), true, true);
+    }
     await page.reload();
     await page.evaluate(chunk.code);
     await expect
@@ -318,6 +363,12 @@ test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two ro
               window.MembershipCustody.removal('promotion', slot, code, target),
             laterArgs,
           );
+          if (later.result === 'pending')
+            console.log('Later removal pending', {
+              preparation: !!later.after.progress?.preparation,
+              rotation: !!later.after.progress?.rotation,
+              outcome: !!later.after.progress?.outcome,
+            });
           return later.result;
         },
         { timeout: 20000, intervals: [2000] },
@@ -429,13 +480,32 @@ test('an anchored original device becomes an editable detached copy while its jo
   browser,
 }, info) => {
   test.setTimeout(120000);
+  readerActive = false;
   const { chunk, outDir } = await bundles(info);
   const service = await startService(info.outputPath('service'), resolve(outDir), true, true);
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   try {
     pair = await pairedEditors(page, browser, true, { beforeInvite: () => anchor(page) });
-    const second = pair.second;
+    let second = pair.second;
     await anchor(second);
+    if (readerFirst) {
+      const reader = info.outputPath('reader');
+      await rolloutBuild(reader, 'reader');
+      const devices = [
+        { page, auth: pair.first.auth, code: pair.first.code, joined: false },
+        { page: second, auth: pair.next.auth, code: pair.next.code, joined: true },
+      ];
+      await switchApplication(service, reader, devices, 'retention-reader');
+      page = devices[0]!.page;
+      pair.first.auth = devices[0]!.auth;
+      pair.second = second = devices[1]!.page;
+      pair.next.auth = devices[1]!.auth;
+      for (const d of devices) {
+        await openSaved(d.page, d.code, d.joined);
+        await noConversion(d.page);
+      }
+      readerActive = true;
+    }
     await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.goto('/');
     await page.evaluate(chunk.code);

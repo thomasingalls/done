@@ -82,6 +82,18 @@ const relayProxy = () => {
 export default defineConfig(({ mode }) => ({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
   define: {
+    // First ship compatible readers. Conversions remain a separate, explicit private opt-in.
+    ...Object.fromEntries(
+      [
+        ['VITE_ACCOUNT_BASELINE_READ', '1'],
+        ['VITE_ACCOUNT_BASELINE_INSTALL', '0'],
+        ['VITE_ACCOUNT_RETENTION', '0'],
+      ].map(([key, fallback]) => {
+        const value = loadEnv(mode, process.cwd(), key!)[key!] || fallback;
+        if (value !== '0' && value !== '1') throw Error(key + ' must be 0 or 1');
+        return ['import.meta.env.' + key, JSON.stringify(value)];
+      }),
+    ),
     'import.meta.env.VITE_ACCOUNT_TEXT_ADMISSION': JSON.stringify(
       (() => {
         const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_TEXT_ADMISSION')[

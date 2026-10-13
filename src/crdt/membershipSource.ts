@@ -1,3 +1,4 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { recordEqual } from './custodyRecord';
 /** Read the actual certified slot under its exclusive permit. No editor document or caller key. */
 import { readPromotion, withPromotionRoot } from './promotionRecord';
@@ -235,12 +236,10 @@ export async function withNativeHistorySource<T>(
             },
             {
               allowSpoolCounter: true,
-              ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+              ...(hasBaselineVerifier()
                 ? {
                     reuseOpened: true as const,
-                    ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
-                      ? { readBaseline: true as const }
-                      : {}),
+                    ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
                     baseline: async (
                       _task: SessionTask,
                       identity: import('./contentRecord').ContentIdentity,

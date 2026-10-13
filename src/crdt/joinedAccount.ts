@@ -1,3 +1,4 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { authorityClaim, type AccountAuthorityRows } from './accountAuthorityInventory';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import {
@@ -1038,11 +1039,9 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         {
           allowSpoolCounter: true,
           reuseOpened: true,
-          ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+          ...(hasBaselineVerifier()
             ? {
-                ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
-                  ? { readBaseline: true as const }
-                  : {}),
+                ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
                 baseline: async (
                   _task: SessionTask,
                   identity: import('./contentRecord').ContentIdentity,

@@ -14436,7 +14436,7 @@ remain untouched.
 
 ### Order checkpoint maintenance after prepared receive handoffs
 
-**Date:** 2026-10-13 · **Commit:** pending, after signed `f75a19e7` · **Stage:** private authenticated local history retention; release validation paused.
+**Date:** 2026-10-13 · **Commit:** signed `e2e5337a` · **Stage:** private authenticated local history retention; release validation paused.
 
 **Exit.** The preparation scheduling phase is signed as **`f75a19e7`**. The new
 [investigation and repair](./account-history-receive-ordering.md) reproduces the joined-owner closure:
@@ -14470,5 +14470,41 @@ does not relax assertions or timeouts.
 remains historically uncertain, rather than retrospectively relabelled as proved. No performance
 improvement is claimed by this correctness phase. Public retention trigger/cadence, capacity behavior,
 compatible reader-first publication/rollback, current-device measurements and general release
-validation remain separate. New work is uncommitted; no deployment or personal storage changed.
+validation remain separate. No deployment or personal storage changed.
 `docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Separate local-retention readers from conversion authority
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `e2e5337a` · **Stage:** reader-first local retention preparation; release validation paused.
+
+**Exit.** The checkpoint/receive ordering repair is signed as **`e2e5337a`**. The new
+[reader-first contract](./account-local-retention-reader-rollout.md) makes the packaged default
+baseline-aware while leaving installation and retention disabled. Original/joined startup and live
+owners, checkpoint, membership, rotation and detached readers no longer require the installation
+switch. Both composed-owner and low-level storage boundaries deny conversion without separate
+writer authority. Reduced semantic audits remain interruptible; ordinary bounded audits keep their
+existing dispatch. Full authority/authentication, warm invalidation, journal fencing, final application
+and live undo remain. The existing v5 reduced format is unchanged.
+
+**Evidence.** The [packet](./development-evidence/2026-10-13-local-retention-reader-rollout/README.md)
+retains **58 unit tests**, **18 native controls**, a packaged waiting-service-worker update/private
+conversion/reader rollback journey and **two reader-only lifecycle journeys**. They cover ordinary
+creation/sync, reduced offline edit/reopen/undo, checkpoint continuation, two rotations, a new ordinary
+peer, detached editing, lost-reply/backend-restart continuation and incompatible predecessor refusal.
+The latter leaves exact content/journal inventories unchanged and a compatible reader reopens them.
+The predecessor's generic unlock message is recorded rather than described as a useful update prompt.
+TypeScript, focused lint/format, ordinary build, Yjs, origin isolation and **138.4 kB / 350 kB** initial-JS
+budget pass. Initial harness assumptions and diagnostic failures are retained alongside passing logs.
+
+**Separate finding.** The reload-heavy fixture exhausted session renewal capacity after the lost
+reply. The existing service permits eight live access tokens per login with five-minute lifetimes.
+Its final continuation includes a real backend restart, preserving SQLite/custody and discarding
+volatile tokens; no service limit or assertion timeout is raised. This is not evidence of uninterrupted
+recovery from token-capacity exhaustion. That session-liveness issue remains explicitly open.
+
+**Remaining.** Commit/publish the reader-only build and retain its exact compatible rollback image
+before a writer release. Product conversion trigger/cadence, capacity/refusal behavior, remaining
+initial-conversion wait and current-phone measurements remain separate. No conversion is enabled
+for ordinary users; no personal storage or deployment changed. This work is uncommitted and makes
+no performance or release-qualification claim. `docs/progress.md` remains untouched.
