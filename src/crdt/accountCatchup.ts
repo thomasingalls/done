@@ -1,9 +1,12 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import type { SessionTask } from './writeSession';
 import { verifyAccountUnderPermit, type AccountStartupOptions } from './accountStartup';
-import { withPromotionRoot, signPromotion, writePromotion } from './promotionRecord';
+import { withPromotionRoot, signPromotion, writePromotion, readPromotion } from './promotionRecord';
 import { prepareAccountCustody } from './custody';
 import { claimScope } from './localGenesisRecord';
 import { openEnvelope, openCredential, hex } from './custodyCrypto';
+import { recordEqual } from './custodyRecord';
+import { eraseVerified } from './verifiedRecords';
 import { emptySpoolWitness } from './contentRecord';
 import { eraseJournalSnapshot } from './journalStore';
 import { replayRecovery } from './admissionDocument';
@@ -33,26 +36,61 @@ async function prepareUploadedCatchup(
     try {
       const signing = await openCredential(scope, root, v.marker.credentials![1], subtle),
         base = await heldInboundContext(v.marker, key, subtle, v.route),
+        publicKey = await subtle.importKey(
+          'raw',
+          v.marker.credentials![1].publicKey,
+          'Ed25519',
+          false,
+          ['verify'],
+        ),
         owner = prepareAccountCustody(
           { ...scope, resolvePrincipal: () => scope.principalId },
           options.code,
-          (records, _task, counter) =>
-            verifySpoolWitness(
-              inspectInbound(records, v.route, base).delivery.spool,
-              counter,
-              subtle,
-            ),
+          (records, _task, counter, _view, baseline) =>
+            baseline
+              ? undefined
+              : verifySpoolWitness(
+                  inspectInbound(records, v.route, base).delivery.spool,
+                  counter,
+                  subtle,
+                ),
           true,
+          hasBaselineVerifier() ? true : undefined,
+          undefined,
+          undefined,
+          hasBaselineVerifier()
+            ? async (_task, identity) => {
+                const fresh = await readPromotion(_task, options.slotId, options.code);
+                if (!same(fresh.marker, v.marker) || !recordEqual(fresh.record, v.record))
+                  throw Error('Catch-up baseline authority changed');
+                return {
+                  identity,
+                  route: v.route,
+                  inbound: base,
+                  signer: publicKey,
+                  installation: {
+                    kind: 'original',
+                    ...(v.marker.successor ? { successor: v.marker.successor } : {}),
+                  },
+                  assertCurrent: () => _task.step(() => {}),
+                };
+              }
+            : undefined,
+          hasBaselineVerifier() && hasBaselineReader() ? true : undefined,
         );
       try {
         await owner.initialize(task);
-        const records = await owner.carrier.load(task),
+        const loaded = await owner.carrier.loadAccount(task),
+          records = loaded.records,
           doc = new Y.Doc({ gc: false });
         let journal: Awaited<ReturnType<typeof owner.journal.readSnapshot>> = [];
         let recovery: ReturnType<typeof capturedRecovery> | undefined;
         try {
           journal = await owner.journal.readSnapshot(task);
-          const census = inspectInbound(records, v.route, base);
+          const census =
+            loaded.kind === 'baseline-plus-suffix'
+              ? loaded.ledger.census
+              : inspectInbound(records, v.route, base);
           recovery = capturedRecovery(
             { records: [...census.delivery.spool.sourceRecords], journal },
             v.route,
@@ -67,7 +105,16 @@ async function prepareUploadedCatchup(
           };
           const route = await heldCaptureRoute({ ...v.marker, successor });
           // In particular, accepted heads cannot certify content missing from the local spool.
-          await verifyInstalledSuccessor(census.delivery.spool, route, successor, subtle);
+          const retained = await owner.carrier.verifyBaselineTransition(task, (identity) => ({
+            identity,
+            route,
+            inbound: { ...base, history: route.history!, authority: route.history!.current },
+            signer: publicKey,
+            installation: { kind: 'original', successor },
+            assertCurrent: () => task.step(() => {}),
+          }));
+          if (!retained)
+            await verifyInstalledSuccessor(census.delivery.spool, route, successor, subtle);
           const checkpoint = await createContentCheckpoint(
             doc,
             key,
@@ -84,7 +131,7 @@ async function prepareUploadedCatchup(
           return checkpoint;
         } finally {
           doc.destroy();
-          for (const r of records) r.bytes.fill(0);
+          eraseVerified(loaded);
           for (const r of recovery?.journal ?? []) r.bytes.fill(0);
           eraseJournalSnapshot(journal);
         }

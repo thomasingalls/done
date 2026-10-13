@@ -1,0 +1,45 @@
+{
+  "base": "bb9c7e82",
+  "baseSignature": "G",
+  "phaseCommitted": false,
+  "exitCodes": {
+    "unit.log": 0,
+    "native-owner.log": 0,
+    "ordinary-owner.log": 0,
+    "packaged-lifecycle.log": 0,
+    "ordinary-rotation.log": 0,
+    "build.log": 0,
+    "typescript.log": 0,
+    "lint.log": 0,
+    "format.log": 0,
+    "whitespace.log": 0
+  },
+  "unit": {
+    "files": 10,
+    "passed": 183
+  },
+  "nativeOwner": {
+    "passed": 14,
+    "ordinaryCaseSkipped": 1
+  },
+  "ordinaryOwner": {
+    "passed": 1
+  },
+  "packagedLifecycle": {
+    "passed": 3
+  },
+  "ordinaryRotation": {
+    "passed": 1,
+    "faultCases": [
+      "seal",
+      "commit",
+      "journal",
+      "opener"
+    ]
+  },
+  "initialJsGzipKB": 138.0,
+  "initialJsBudgetKB": 350.0,
+  "comparativePerformance": false,
+  "logicalHistoryDeleted": false,
+  "productActivated": false
+}

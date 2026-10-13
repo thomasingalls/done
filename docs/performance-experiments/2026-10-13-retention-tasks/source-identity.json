@@ -1,0 +1,38 @@
+{
+  "base": "127fcf2a82206f74c6f3cabdd92f99e4f8fd4052",
+  "uncommittedRuntime": true,
+  "files": {
+    "src/crdt/accountSyncState.ts": {
+      "bytes": 6952,
+      "sha256": "f4801b91b1bffa5f219d4cd6f2a20a6bff17a0ad31ebfb0440c0563effa2780e"
+    },
+    "src/crdt/accountEnvelopePreparation.ts": {
+      "bytes": 8783,
+      "sha256": "d81819cb32c7967ee9c2892fbf1a9d917b0bb382952c7b82217a6fda0bfe44c0"
+    },
+    "src/crdt/localBaselineReplay.ts": {
+      "bytes": 25990,
+      "sha256": "93a7817448ad2ee33b438629f06a6cbd3035a64bfdd4c25aadab8cf61826bd2a"
+    },
+    "src/crdt/localBaselineShadow.ts": {
+      "bytes": 11328,
+      "sha256": "ac75aeb50b1c7e1877ea36e09bb029079b645d095174de3e451c06d736a67729"
+    },
+    "src/crdt/localRetentionPlan.ts": {
+      "bytes": 19047,
+      "sha256": "de43d07d36daccf1a07e40b33c600bb4000000459377b7299e30f84704af4977"
+    },
+    "test/accountSelfReceive.test.ts": {
+      "bytes": 9594,
+      "sha256": "51182951faa12fcda7625625e0ab114f8aa8b990d3ddd0070a36ab389e0719fc"
+    },
+    "test/spoolBatch.test.ts": {
+      "bytes": 11679,
+      "sha256": "c274d20da605c7b9329c644414b7c6e638aa0e82c176dac10f80c3c54b62efa3"
+    },
+    "test/localBaseline.test.ts": {
+      "bytes": 76880,
+      "sha256": "effc8d5afdb6906356883c73a3bb32fd2281d3ac8f17894416d8bebe04f96ef8"
+    }
+  }
+}

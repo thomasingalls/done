@@ -1,0 +1,43 @@
+{
+  "scope": "Measurement probes and records only; application runtime remains signed 354c9c59.",
+  "native": {
+    "observations": 26,
+    "passed": 26,
+    "log": "native.log.gz"
+  },
+  "packaged": {
+    "observations": 6,
+    "passed": 6,
+    "log": "packaged.log.gz"
+  },
+  "boundaryControl": {
+    "passed": true,
+    "log": "boundary-final.log.gz"
+  },
+  "exploratoryFirstCutProfile": {
+    "passed": true,
+    "log": "cut-profile.log.gz"
+  },
+  "packagedBuild": {
+    "passed": true,
+    "log": "build.log.gz"
+  },
+  "format": {
+    "passed": true,
+    "command": "oxfmt --check docs/performance-experiments/2026-10-13-retention-depth/probe"
+  },
+  "lint": {
+    "passed": true,
+    "command": "oxlint --react-plugin docs/performance-experiments/2026-10-13-retention-depth/probe"
+  },
+  "probeSyntaxAndFocusedDocumentLinks": {
+    "passed": true
+  },
+  "notRun": [
+    "general release qualification",
+    "full test suite",
+    "physical phone",
+    "typing during novel remote backlog",
+    "CPU-4x cold open"
+  ]
+}

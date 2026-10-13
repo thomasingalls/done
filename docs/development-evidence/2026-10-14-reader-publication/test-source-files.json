@@ -1,0 +1,57 @@
+[
+  {
+    "path": "vite.config.ts",
+    "bytes": 5116,
+    "sha256": "bbdfe8c848ab5745a133c5561220bcbe9a7b51a4d0fce5d2ac266dac4781f269"
+  },
+  {
+    "path": "Dockerfile",
+    "bytes": 2654,
+    "sha256": "89742ac9b61e7c2dd538638f473f5ede96d9828625a4da02fa37cc9ba38b8eea"
+  },
+  {
+    "path": "test/local-baseline/reader-rollout.ts",
+    "bytes": 8005,
+    "sha256": "84b5fb7ae4b81a92f298f31c10afeec676c74ca15af1639b787d744d6084af57"
+  },
+  {
+    "path": "test/packaged-account/devices.ts",
+    "bytes": 4788,
+    "sha256": "9bc406ad56f7f064f8d11091a438fb5e79cca987a34055b15f99af3e7cbc0df3"
+  },
+  {
+    "path": "test/packaged-account/server.ts",
+    "bytes": 3186,
+    "sha256": "8d15970e91704eceb06bd2d3d985af7e3855f400e369f93ba578b62bb95d616b"
+  },
+  {
+    "path": "test/device-enrollment/helpers.ts",
+    "bytes": 5097,
+    "sha256": "ceff2dafb9f426ca9e5c79841352be4136522a2cd2ea0128294a74503ca8c26d"
+  },
+  {
+    "path": "test/packaged-account/text-admission.spec.ts",
+    "bytes": 3096,
+    "sha256": "11cb3b1ed24605a18fcaf6e27f1ec15a19a9c10bd561d96d5927055fe24cd232"
+  },
+  {
+    "path": "test/packaged-account/membership-custody.spec.ts",
+    "bytes": 4196,
+    "sha256": "8602f5c6988cf30a39ecf8eeb9d7cf8f13760a84e16a4069c2a73b8d0da3df44"
+  },
+  {
+    "path": "playwright.local-baseline.config.ts",
+    "bytes": 366,
+    "sha256": "2c3f46b7685d7a34610172efeeb163dc399577f88eea57d6c86966794ae4f80a"
+  },
+  {
+    "path": "playwright.packaged-account.config.ts",
+    "bytes": 545,
+    "sha256": "0906bf9cc220e4919f9faa56c8802243d75b3e2086f196926e318db14fa442c8"
+  },
+  {
+    "path": "account-crypto/first-authority.json",
+    "bytes": 5074,
+    "sha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d"
+  }
+]

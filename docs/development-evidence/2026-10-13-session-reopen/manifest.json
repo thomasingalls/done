@@ -1,0 +1,225 @@
+{
+  "base": "47466b847f6c8756c4f8827540a0887e463180ea",
+  "phase": "rapid-reopen-session-liveness",
+  "qualification": false,
+  "conversionsEnabledByDefault": false,
+  "publication": false,
+  "checks": {
+    "before": {
+      "passed": 5,
+      "failed": 4,
+      "expectedFailure": "ninth access renewal returns capacity"
+    },
+    "coreClient": 53,
+    "transport": 39,
+    "packagedJourneys": 2,
+    "lifecycleRenewals": {
+      "success": 20,
+      "capacity": 0,
+      "backendRestartWorkaround": false
+    },
+    "build": "passed",
+    "typecheck": "passed",
+    "lint": "passed",
+    "format": "passed"
+  },
+  "sources": [
+    {
+      "path": "account-service/sessions.ts",
+      "bytes": 35707,
+      "sha256": "95799a434d58d9a6b9b1842849990799fa40e5dc5191b22e57b11ecb7c3c28a3"
+    },
+    {
+      "path": "account-service/session-http.ts",
+      "bytes": 3606,
+      "sha256": "40b6df7987efafea34ccf3ab88c845ca195348a3dde8df25901cee80f35fb955"
+    },
+    {
+      "path": "account-service/grants.ts",
+      "bytes": 17591,
+      "sha256": "b13965acf05fa2b4f85bb26147316a6ef484ba891793d93d495af4b5e9d7ac36"
+    },
+    {
+      "path": "account-protocol/session.ts",
+      "bytes": 3402,
+      "sha256": "dec966a7116a614abab3f856af5d751b2a0e70c8117a3658aa4c9f6a8f04fe47"
+    },
+    {
+      "path": "src/account/networkLogin.ts",
+      "bytes": 25902,
+      "sha256": "c0942aeff133cf1c826d87cf111157188646790694b827cd54907c60c20b35c3"
+    },
+    {
+      "path": "src/account/scopedTransport.ts",
+      "bytes": 14819,
+      "sha256": "109c6952ba66f37081b6a2b339f905c9c727bd318ed4a7c2aa0f24a20b0030e9"
+    },
+    {
+      "path": "src/account/sessionVault.ts",
+      "bytes": 9175,
+      "sha256": "b3dd572235b741fd1c32e707fb28163cc810bda1a7d6a800eece97d66bd3ee55"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 5116,
+      "sha256": "bbdfe8c848ab5745a133c5561220bcbe9a7b51a4d0fce5d2ac266dac4781f269"
+    },
+    {
+      "path": "playwright.local-baseline.config.ts",
+      "bytes": 366,
+      "sha256": "2c3f46b7685d7a34610172efeeb163dc399577f88eea57d6c86966794ae4f80a"
+    },
+    {
+      "path": "test/account-sessions/renewal-window.test.mjs",
+      "bytes": 5459,
+      "sha256": "bb1c503dce0aff8bf4c6e0c1b135a8760aef900444c67b1c833c0fb8ac20ba6b"
+    },
+    {
+      "path": "test/account-sessions/core.test.mjs",
+      "bytes": 17682,
+      "sha256": "23f5949d317ce2ebc0ce22440d02510196db5ca0a7b766fd51d7c039030df8c3"
+    },
+    {
+      "path": "test/account-sessions/client.test.mjs",
+      "bytes": 20561,
+      "sha256": "b508a37eedc5e2105ce71952d579273b89513cf37a357f2a1cb7e82847cc507e"
+    },
+    {
+      "path": "test/account-sessions/ceremony-login.test.mjs",
+      "bytes": 5727,
+      "sha256": "9b30f7342a08c2fe29308568692e7b627d73ec7310638053aea32e8fd097896a"
+    },
+    {
+      "path": "test/account-sessions/scoped-client.test.mjs",
+      "bytes": 17353,
+      "sha256": "ebfe803f0b019239f31a76d97652e1e981193a88b116080e447a70eebe311442"
+    },
+    {
+      "path": "test/account-sessions/http.test.mjs",
+      "bytes": 4514,
+      "sha256": "7eaf931326a2383acbbfc9d2ef19e4df68dd7db6f07e80e7c0afa6db42df0cc1"
+    },
+    {
+      "path": "test/account-sessions/grants.test.mjs",
+      "bytes": 19577,
+      "sha256": "8ab10d85009a2ec237f5aad697486e114686823b88000f9c19e92d43ab6afbc3"
+    },
+    {
+      "path": "test/account-sessions/restart.test.mjs",
+      "bytes": 1787,
+      "sha256": "e4c5ffdfcd382c38066d65abf1e462de1b58bc7506577ed6370a1a7e5cc31da5"
+    },
+    {
+      "path": "test/account-sessions/fixtures.mjs",
+      "bytes": 1554,
+      "sha256": "3e43bea4561f1e3362cb41a7e3eabbc79fde99f5325271b78da658ad6c283820"
+    },
+    {
+      "path": "test/account-sessions/grant-fixtures.mjs",
+      "bytes": 3377,
+      "sha256": "4d0bf64afae2325bc84357cb36881bc3b23b6faa5ac7019ee867d6feffdb85cd"
+    },
+    {
+      "path": "test/account-sessions/browser-fixtures.mjs",
+      "bytes": 1470,
+      "sha256": "98f99bff978e36e2f3c0baae13bea73a7c856da1b1abc8c0b2ea2d08e5b6767f"
+    },
+    {
+      "path": "test/account-sessions/worker.mjs",
+      "bytes": 673,
+      "sha256": "7214c2e7dd5ef4646b0931a279f399dd272dd1965189963cb5fad39cb2e4e118"
+    },
+    {
+      "path": "test/account-core/fixtures.mjs",
+      "bytes": 5757,
+      "sha256": "cd1b12cb73e53c2cbd14f297484cb13a93f46e38447d36827bd0e32c5f106746"
+    },
+    {
+      "path": "test/local-baseline/lifecycle-owner.spec.ts",
+      "bytes": 23320,
+      "sha256": "b53b0eb3121195be7ae5a2c8f55b6b5e1d3f8d8645b91eb47e5a7de036402d83"
+    },
+    {
+      "path": "test/local-baseline/lifecycle-probe.ts",
+      "bytes": 2385,
+      "sha256": "82898866e5a76d12497df7db69478bcfcd0a31fe99933f4274f17055c95b5ea9"
+    },
+    {
+      "path": "test/local-baseline/reader-rollout.ts",
+      "bytes": 8005,
+      "sha256": "84b5fb7ae4b81a92f298f31c10afeec676c74ca15af1639b787d744d6084af57"
+    },
+    {
+      "path": "test/packaged-account/server.ts",
+      "bytes": 3186,
+      "sha256": "8d15970e91704eceb06bd2d3d985af7e3855f400e369f93ba578b62bb95d616b"
+    },
+    {
+      "path": "test/packaged-account/devices.ts",
+      "bytes": 4788,
+      "sha256": "9bc406ad56f7f064f8d11091a438fb5e79cca987a34055b15f99af3e7cbc0df3"
+    },
+    {
+      "path": "docs/account-session-renewal-window.md",
+      "bytes": 4737,
+      "sha256": "02afc49354d90a0664671a073b0228f36cf61ca9a68692e1b0de20c9791e150f"
+    },
+    {
+      "path": "docs/account-session-core.md",
+      "bytes": 11369,
+      "sha256": "7dbac6bec97dc4b103a140c0ce3ea1194b3f25dd9f1e87e67958d66ed67e2398"
+    },
+    {
+      "path": "docs/account-sessions-subscriptions.md",
+      "bytes": 31320,
+      "sha256": "3767dabcc442abd5e8942da304e1757b0d35527d9538b86517c35988ed26d530"
+    },
+    {
+      "path": "docs/account-local-retention-reader-rollout.md",
+      "bytes": 6120,
+      "sha256": "017e749e0775ee00646d32ba3e71baae843bfa795fb5573e4842167e3e18be3b"
+    },
+    {
+      "path": "docs/completed.md",
+      "bytes": 1222492,
+      "sha256": "d795faa7a930282e36030f06723708fd61f8e342a63101267b97dc97da294847"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/development-evidence/2026-10-13-session-reopen/README.md",
+      "bytes": 4902,
+      "sha256": "b7509417c93c2ef5263a553cb44ef266ec304301d3cc915d36493c414de25364"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-session-reopen/before.log.gz",
+      "bytes": 1019,
+      "sha256": "b63122c51116bda88868f47467ac0eee659c52c41e809d359b69ed79814dfed4"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-session-reopen/build.log.gz",
+      "bytes": 2169,
+      "sha256": "01ff67a4ea41c2c5d7cedd9a365e545b05355f4f8454e3ff0a9c8f536297860f"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-session-reopen/checks.log.gz",
+      "bytes": 109,
+      "sha256": "057a5e582dec4510dfb191f62d7f94d66bd45fc616dfc1b8f1914dca90444e4a"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-session-reopen/core-client.log.gz",
+      "bytes": 2327,
+      "sha256": "c146fe8478877bf49cf96594ce1f9fdecd79f6aeac425e6c02fcae291749528f"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-session-reopen/lifecycle.log.gz",
+      "bytes": 748,
+      "sha256": "df4490276ca46d1c61ab64fcebf3852eff0f512c98728f0cac8467d73dbf551e"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-session-reopen/transport.log.gz",
+      "bytes": 2033,
+      "sha256": "aba3575174ce443fffa5172bf0a0f0d332013e766053085558d9548f4e2ab5e5"
+    }
+  ]
+}

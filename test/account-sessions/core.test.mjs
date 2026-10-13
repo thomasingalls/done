@@ -7,7 +7,6 @@ import {
   SESSION_LIFETIME_MS,
   SESSION_RETRY_MS,
 } from '../../account-protocol/session.ts';
-import { SESSION_LIMITS } from '../../account-service/sessions.ts';
 import { fixture, finishRequest } from '../account-core/fixtures.mjs';
 import { ready, config, policy, fresh, registered, renewal, revocation } from './fixtures.mjs';
 
@@ -336,14 +335,10 @@ test('schema 12 requires explicit combined-challenge upgrade and keeps the origi
   x.f.restart();
 });
 
-test('bounded access issuance recovers capacity on expiry; counter exhaustion cannot write a seal', async (t) => {
+test('counter exhaustion cannot write a session seal', async (t) => {
   const x = await ready(t),
     a = x.begin(),
     r = await x.sessions.finish(a.proof);
-  for (let n = 0; n < SESSION_LIMITS.accessPerSession; n++)
-    assert.equal(x.sessions.renew(renewal(r)).stage, 'access');
-  assert.equal(x.sessions.renew(renewal(r)).refusal, 'capacity');
-  x.setTime(r.issuedAt + SESSION_ACCESS_MS);
   assert.equal(x.sessions.renew(renewal(r)).stage, 'access');
   x.mutate((db) => db.exec('UPDATE session_custody SET seal_counter=4294967295'));
   const b = x.begin();

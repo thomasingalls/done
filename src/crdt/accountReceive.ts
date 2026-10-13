@@ -1,4 +1,13 @@
+import {
+  hasBaselineReader,
+  hasBaselineVerifier,
+  hasBaselineInstaller,
+  hasRetentionWriter,
+} from './localBaselineMode';
+import { createRetentionReads } from './retentionReads';
+import { RetiredHistoryRequired } from './retainedHistory';
 import type { PreparedReceiveFinish } from './admissionQueue';
+import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
 import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
 import { createAuthorityAuthentication } from './accountAuthority';
 import { authenticateJoinedAccountRows } from './joinedAccount';
@@ -17,7 +26,7 @@ import {
 import { createReceiveSelection, unresolvedSelfSubmission } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
 import type { OpenedRecord } from './contentRecord';
-import { countLedgerWork } from './accountLedgerMetrics';
+import { ledgerWorkStart, measureLedgerWork, countLedgerWork } from './accountLedgerMetrics';
 import { accountLedgerMode } from './accountLedgerMode';
 import { accountBatchPolicy } from './accountBatchPolicy';
 import { originalMembershipBoundaries } from './accountSuccessor';
@@ -36,6 +45,7 @@ import {
   verifyHistoryInstall,
 } from './historyInstall';
 import { recordEqual, type CustodyRecord } from './custodyRecord';
+import { afterReceivedHandoffs, HistoryReceivePending } from './historyReceiveFence';
 import {
   rememberAccountTransition,
   clearAccountTransition,
@@ -153,7 +163,7 @@ import {
   publisherState,
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
-import { verifyDelivery } from './deliveryRecord';
+import { verifyDelivery, emptyDelivery } from './deliveryRecord';
 import {
   captureError,
   capturedSourcePresence,
@@ -198,7 +208,9 @@ async function openAccountReceiveOwner(
       ? { ownResults: true as const }
       : {}),
   });
+  let baselineReading = false;
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
+  let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
     auditDue = false,
     auditDeferred = false;
@@ -213,6 +225,7 @@ async function openAccountReceiveOwner(
     route: CaptureRoute,
     select: (census: AccountLedgerView['census']) => R,
   ): R => {
+    if (baselineReading) return verified.read(records, (v) => select(v.census));
     if (!incremental)
       return select(
         verified.matches(records)
@@ -252,6 +265,10 @@ async function openAccountReceiveOwner(
     expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
   let outstandingGroup: Bytes[] = [];
+  const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
+  let pendingPromotions = 0;
+  let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
+  let skippedHistory: string | undefined;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const authority = createAuthorityAuthentication({
@@ -312,12 +329,41 @@ async function openAccountReceiveOwner(
   };
   // Initialization can invalidate before the capture owner has finished constructing.
   let invalidateFinalPermission = () => {};
-  const invalidateAuthority = () => {
+  let retentionAuthority = {};
+  const invalidateAuthority = (checkedTransition = false) => {
+    retentionAuthority = {};
+    if (checkedTransition) baselineShadow?.authorityChanged();
+    else baselineShadow?.invalidate();
     invalidateFinalPermission();
     authority.invalidate();
   };
   const extension: CaptureExtension = {
     version: 9,
+    ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
+    ...(hasBaselineVerifier()
+      ? ({
+          baseline: async (task, identity, route) => {
+            await assertCurrent(task);
+            return {
+              identity,
+              route,
+              inbound: base,
+              signer: publicKey,
+              installation: joined
+                ? { kind: 'joined' as const, initialEpoch, ...(membership ? { membership } : {}) }
+                : {
+                    kind: 'original' as const,
+                    ...(installed ? { successor: installed } : {}),
+                    ...(membership ? { membership } : {}),
+                  },
+              assertCurrent: () => {
+                task.step(() => {});
+                if (handoff) throw new ReceiveAuthorityChanged();
+              },
+            };
+          },
+        } satisfies Partial<CaptureExtension>)
+      : {}),
     invalidateAuthority,
     ...(incremental && import.meta.env?.['VITE_ACCOUNT_SELECTIVE_LOADS'] !== '0'
       ? {
@@ -428,7 +474,41 @@ async function openAccountReceiveOwner(
       });
     },
     activate: (task, owner) => owner.carrier.enableSpool(task),
-    async validate(task, records, route, counter, view) {
+    async validate(task, records, route, counter, view, baseline) {
+      if (baseline) {
+        // The carrier has either fully replayed the authenticated origin or extended its private
+        // reduced view under fresh authority. Never send these physical suffix rows to zero-origin replay.
+        try {
+          await verified.verify(
+            records,
+            view ?? {},
+            async () => ({
+              ...structuredClone(baseline.ledger),
+              baseline: structuredClone({
+                anchor: baseline.anchor,
+                firstSuffix: baseline.firstSuffix,
+                records: baseline.records,
+              }),
+            }),
+            () => task.step(() => {}),
+          );
+          baselineReading = true;
+          verifiedCounter = structuredClone(counter);
+          sinceAudit = 0;
+          auditDue = auditDeferred = false;
+          memo.clear();
+          coverage.clear();
+          return;
+        } catch (cause) {
+          baselineReading = false;
+          verifiedCounter = undefined;
+          verified.clear();
+          memo.clear();
+          coverage.clear();
+          throw cause;
+        }
+      }
+      baselineReading = false;
       const checkFull = async (
         records: import('./contentRecord').OpenedRecord[],
         audit = false,
@@ -649,6 +729,10 @@ async function openAccountReceiveOwner(
       }
     },
     dispose() {
+      baselineReading = false;
+      baselineShadow?.invalidate();
+      baselineShadow = undefined;
+      retentionReads.close();
       authority.dispose();
       membershipAnchor = undefined;
       expectedPayload.fill(0);
@@ -677,8 +761,200 @@ async function openAccountReceiveOwner(
     suspendCapture,
     invalidateFinalApply,
     checkFinalApply,
+    runBaselineShadow,
   } = await openAccountCaptureOwner(options, principalId, extension, joined);
   invalidateFinalPermission = invalidateFinalApply;
+  const checkLocalBaseline: (() => Promise<BaselineShadowResult>) | undefined =
+    composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1'
+      ? async () => {
+          try {
+            return await runBaselineShadow(async (task, owner, route, checkJournal) => {
+              await assertCurrent(task);
+              checkJournal();
+              const { createLocalBaselineShadow } = await task.wait(
+                () => import('./localBaselineShadow'),
+              );
+              baselineShadow ??= createLocalBaselineShadow();
+              return owner.carrier.withBaselineCensus(task, (input, identity, auth) =>
+                baselineShadow!.run(
+                  input,
+                  {
+                    identity,
+                    route,
+                    inbound: base,
+                    signer: publicKey,
+                    installation: joined
+                      ? { kind: 'joined', initialEpoch, ...(membership ? { membership } : {}) }
+                      : {
+                          kind: 'original',
+                          ...(installed ? { successor: installed } : {}),
+                          ...(membership ? { membership } : {}),
+                        },
+                    assertCurrent: () => {
+                      task.step(() => {});
+                      if (handoff) throw new ReceiveAuthorityChanged();
+                    },
+                  },
+                  auth,
+                  async () => {
+                    await assertCurrent(task);
+                    checkJournal();
+                  },
+                ),
+              );
+            });
+          } catch (e) {
+            baselineShadow?.invalidate();
+            if (e instanceof MaintenanceInterrupted)
+              return Object.freeze({ kind: 'skipped', reason: 'activity-or-journal' });
+            throw e;
+          }
+        }
+      : undefined;
+  const retentionReady = async (task: SessionTask) => {
+    await assertCurrent(task);
+    if (pendingPromotions) return { kind: 'skipped' as const, reason: 'pending-promotion' };
+    const { retentionAttemptsSettled } = await task.wait(() => import('./retentionAttempts'));
+    if (
+      account.detached ||
+      !(await retentionAttemptsSettled(
+        task,
+        joined ? 'joined' : 'promotion',
+        options.slotId,
+        options.code,
+        expectedRecord,
+      ))
+    )
+      return { kind: 'skipped' as const, reason: 'durable-attempt' };
+    await assertCurrent(task);
+    return undefined;
+  };
+  const prepareLocalRemoval = async (expectedRevision: number) => {
+    await carrier.flushJournal();
+    const prepared = await runBaselineShadow(
+      async (task, owner, _route, checkJournal, checkActivity) => {
+        const refused = await retentionReady(task);
+        if (refused) return refused;
+        const stamp = retentionAuthority;
+        const checkRetained = () => {
+          checkActivity();
+          if (handoff || stamp !== retentionAuthority) throw new MaintenanceInterrupted();
+        };
+        return owner.carrier.prepareHistoryRemoval(
+          task,
+          () => assertCurrent(task),
+          checkJournal,
+          expectedRevision,
+          checkRetained,
+        );
+      },
+    );
+    if (prepared.kind !== 'prepared-removal') return prepared;
+    return Object.freeze({
+      kind: 'prepared-removal' as const,
+      dispose: prepared.dispose,
+      commit: () =>
+        runBaselineShadow(async (task, _owner, _route, checkJournal) => {
+          prepared.check();
+          const refused = await retentionReady(task);
+          if (refused) return refused;
+          prepared.check();
+          checkJournal();
+          const release = retentionReads.begin();
+          outstanding?.fill(0);
+          outstanding = undefined;
+          for (const r of outstandingGroup) r.fill(0);
+          outstandingGroup = [];
+          outstandingStamp = undefined;
+          invalidateFinalApply();
+          skippedHistory = undefined;
+          let mutating = false;
+          try {
+            return await prepared.commit(
+              task,
+              () => assertCurrent(task),
+              checkJournal,
+              () => {
+                mutating = true;
+              },
+            );
+          } catch (cause) {
+            if (mutating) void carrier.close().catch(() => {});
+            throw cause;
+          } finally {
+            release();
+          }
+        }),
+    });
+  };
+  const installLocalBaseline =
+    composed && hasBaselineInstaller()
+      ? async (
+          expectedRevision?: number,
+          advanceEra = false,
+          operation: 'install' | 'dry-run' = 'install',
+        ) => {
+          await carrier.flushJournal();
+          try {
+            return await runBaselineShadow(async (task, owner, _route, checkJournal) => {
+              await assertCurrent(task);
+              if (pendingPromotions)
+                return { kind: 'skipped' as const, reason: 'pending-promotion' };
+              if (advanceEra || operation !== 'install') {
+                const { retentionAttemptsSettled } = await task.wait(
+                  () => import('./retentionAttempts'),
+                );
+                if (
+                  account.detached ||
+                  !(await retentionAttemptsSettled(
+                    task,
+                    joined ? 'joined' : 'promotion',
+                    options.slotId,
+                    options.code,
+                    expectedRecord,
+                  ))
+                )
+                  return { kind: 'skipped' as const, reason: 'durable-attempt' };
+                await assertCurrent(task);
+              }
+              const release = retentionReads.begin();
+              outstanding?.fill(0);
+              outstanding = undefined;
+              for (const r of outstandingGroup) r.fill(0);
+              outstandingGroup = [];
+              outstandingStamp = undefined;
+              invalidateFinalApply();
+              skippedHistory = undefined;
+              try {
+                if (operation === 'dry-run')
+                  return await owner.carrier.dryRunRetention(
+                    task,
+                    () => assertCurrent(task),
+                    checkJournal,
+                  );
+                return await owner.carrier.installBaseline(
+                  task,
+                  () => assertCurrent(task),
+                  checkJournal,
+                  expectedRevision,
+                  advanceEra,
+                );
+              } catch (cause) {
+                // An uncertain transition must never lend a stale synchronous journal writer.
+                if (advanceEra && !(cause instanceof MaintenanceInterrupted))
+                  void carrier.close().catch(() => {});
+                throw cause;
+              } finally {
+                release();
+              }
+            });
+          } catch (e) {
+            if (e instanceof MaintenanceInterrupted)
+              return { kind: 'skipped' as const, reason: 'activity-or-journal' };
+            throw e;
+          }
+        }
+      : undefined;
   const scopedOwner =
     options.networkLogin && !account.detached
       ? new ScopedTransport(options.pin, carrier.signal)
@@ -759,6 +1035,7 @@ async function openAccountReceiveOwner(
     grouped = false,
   ) => {
     if (account.detached) throw Error('This local copy is detached from sync');
+    const stamp = retentionReads.capture();
     // The scheduling hint comes from the same fresh, authenticated load as the prefix.
     // A retained submission without a decision must still get its reconciliation read.
     const { inbound: all, pendingSelf } = await readState(task, owner, (v) => ({
@@ -822,6 +1099,8 @@ async function openAccountReceiveOwner(
       return task.step(() => {
         outstanding?.fill(0);
         for (const request of outstandingGroup) request.fill(0);
+        stamp.check();
+        outstandingStamp = stamp;
         outstandingGroup = requests;
         outstanding = requests[0]!;
         return outstanding.slice();
@@ -840,17 +1119,20 @@ async function openAccountReceiveOwner(
   // Future cursors are only scheduling predictions through an authenticated observed tip.
   // The exact request set remains owned, and no prefix advances before ordered verification.
   const fetchPage = async (operatorToken: AccountAccess) => {
+    const stamp = retentionReads.capture();
     let requests: Bytes[] = [],
       pages: Bytes[] = [];
     try {
       return await runNetworkTask(async (network) => {
         requests = await prepareGroup();
+        stamp.check();
+        const signal = AbortSignal.any([network.signal, stamp.signal]);
         const events: Diagnostic[][] = requests.map(() => []);
         let attempted = 0;
         await network.wait(async () => {
           const collected = await collectReceivePages(
             requests.length,
-            network.signal,
+            signal,
             (index, signal, limit) =>
               canReceive()
                 ? privateDeliveryPost(
@@ -877,6 +1159,7 @@ async function openAccountReceiveOwner(
           pages = collected.pages;
           attempted = collected.attempted;
         });
+        stamp.check();
         // A speculative tail cannot overwrite the diagnostic for the attempted prefix.
         for (const observations of events.slice(0, attempted))
           for (const event of observations) recordPrivateTransportDiagnostic(event);
@@ -892,6 +1175,7 @@ async function openAccountReceiveOwner(
     } catch (cause) {
       for (const request of requests) request.fill(0);
       for (const page of pages) page.fill(0);
+      stamp.check();
       throw cause;
     }
   };
@@ -901,7 +1185,9 @@ async function openAccountReceiveOwner(
   const fetchHistory = () =>
     runNetworkTask(async (network) => {
       if (!access || account.detached || !canReceive() || Date.now() < historyDue) return null;
+      const stamp = retentionReads.capture();
       const prepared = await runCaptureTask(async (task, owner, route) => {
+        stamp.check();
         const current = await state(task, owner, route);
         if (describe(current).state === 'conflict') throw Error('Inbound stream is conflicted');
         const authority = checkpointAuthority(base);
@@ -935,9 +1221,22 @@ async function openAccountReceiveOwner(
           installed: current.installedHistory,
         };
       });
-      const exchange = createHistoryTransport(prepared.authority, access, network.signal);
-      const catalog = (await network.wait(() => exchange(prepared.request))).catalog;
+      const exchange = createHistoryTransport(
+        prepared.authority,
+        access,
+        AbortSignal.any([network.signal, stamp.signal]),
+      );
+      const catalog = (
+        await network.wait(() =>
+          exchange(prepared.request).catch((cause) => {
+            stamp.check();
+            throw cause;
+          }),
+        )
+      ).catalog;
+      stamp.check();
       historyDue = Date.now() + 5000;
+      if (skippedHistory === base.authority.head + ':' + catalog.latest) return null;
       if (prepared.installed) {
         if (
           catalog.sequence < prepared.installed.sequence ||
@@ -951,6 +1250,7 @@ async function openAccountReceiveOwner(
       if (catalog.latest === EMPTY_HISTORY_CHECKPOINT || catalog.latest === inheritedHistoryHash)
         return null;
       const request = await runCaptureTask(async (task) => {
+        stamp.check();
         await assertCurrent(task);
         if (prepared.request.head !== base.authority.head) throw new ReceiveAuthorityChanged();
         const r = parseHistoryExchange({
@@ -968,7 +1268,13 @@ async function openAccountReceiveOwner(
         );
         return r;
       });
-      const page = await network.wait(() => exchange(request));
+      const page = await network.wait(() =>
+        exchange(request).catch((cause) => {
+          stamp.check();
+          throw cause;
+        }),
+      );
+      stamp.check();
       if (
         !page.checkpoint ||
         !page.admission ||
@@ -976,24 +1282,32 @@ async function openAccountReceiveOwner(
         (page.catalog.sequence === catalog.sequence && page.catalog.latest !== catalog.latest)
       )
         return captureError('Admitted history changed during reading');
-      return encodeHistoryInstall({
-        version: 2,
-        baseline: prepared.baseline,
-        workspace: request.workspaceId,
-        lineage: request.lineageId,
-        epoch: request.epoch,
-        head: request.head,
-        reader: request.credentialId,
-        checkpoint: page.checkpoint,
-        admission: page.admission,
-      });
+      return {
+        check: stamp.check,
+        bytes: encodeHistoryInstall({
+          version: 2,
+          baseline: prepared.baseline,
+          workspace: request.workspaceId,
+          lineage: request.lineageId,
+          epoch: request.epoch,
+          head: request.head,
+          reader: request.credentialId,
+          checkpoint: page.checkpoint,
+          admission: page.admission,
+        }),
+      };
     });
-  const installHistory = (input: Bytes, promote: (updates: readonly Bytes[]) => void) => {
+  const installHistory = (
+    input: Bytes,
+    promote: (updates: readonly Bytes[]) => void,
+    check: () => void = () => {},
+  ) => {
     const bytes = input.slice();
     return runCaptureTask(async (task, owner, route) => {
       let result: Awaited<ReturnType<typeof verifyHistoryInstall>> | undefined,
         committed = false;
       try {
+        check();
         const current = await state(task, owner, route);
         try {
           const event = decodeHistoryInstall(bytes);
@@ -1007,12 +1321,24 @@ async function openAccountReceiveOwner(
               bytes,
               current.installedHistory,
               lifetime(task),
+              hasBaselineVerifier(),
             );
           });
+          if (result!.duplicate) {
+            check();
+            promote([]);
+            return { kind: 'already-installed' as const };
+          }
           if (result!.heads) {
+            await owner.carrier.checkRetainedCheckpoint(
+              task,
+              result!.heads,
+              () => assertCurrent(task),
+              current.checkpointCuts,
+            );
             const rows = await owner.carrier.load(task);
             try {
-              const census = inspectInbound(rows, route, base);
+              const census = inspectCensus(rows, route, (c) => c);
               await applyHistoryReceiveCuts(current, base, census, result!.heads);
               verifySyncState(
                 census.delivery,
@@ -1024,6 +1350,16 @@ async function openAccountReceiveOwner(
             }
           }
         } catch (cause) {
+          if (cause instanceof RetiredHistoryRequired) {
+            const { historyCheckpointHash } =
+              await import('../../account-protocol/historyCheckpoint');
+            skippedHistory =
+              base.authority.head +
+              ':' +
+              (await historyCheckpointHash(decodeHistoryInstall(bytes).checkpoint));
+            promote([]);
+            return { kind: 'history-required' as const };
+          }
           throw new AdmissionError('receive-refused', 'History snapshot could not be installed', {
             cause,
           });
@@ -1040,6 +1376,7 @@ async function openAccountReceiveOwner(
             before,
             after,
             beforeCommit: async () => {
+              check();
               await assertCurrent(task);
               const next = await state(task, owner, route);
               if (!same(next.installedHistory ?? null, current.installedHistory ?? null))
@@ -1050,6 +1387,7 @@ async function openAccountReceiveOwner(
         committed = true;
         await state(task, owner, route);
         return task.step(() => {
+          check();
           promote([result!.update]);
           return { kind: 'installed' as const };
         });
@@ -1084,10 +1422,11 @@ async function openAccountReceiveOwner(
         if (s.conflict) throw new AdmissionError('receive-refused', 'Inbound stream is conflicted');
         if (expectedRequest && decodeInboundRequest(expectedRequest).epoch < base.authority.tip)
           throw new ReceiveAuthorityChanged();
-        if (!outstanding)
-          throw new AdmissionError('receive-refused', 'No outstanding receive request');
-        if (expectedRequest && hex(expectedRequest) !== hex(outstanding))
-          throw new AdmissionError('receive-refused', 'Receive request was superseded');
+        if (!outstanding || !outstandingStamp) throw new ReceiveAuthorityChanged();
+        const stamp = outstandingStamp;
+        stamp.check();
+        if (expectedRequest && !sameBytes(expectedRequest, outstanding))
+          throw new ReceiveAuthorityChanged();
         const request = outstanding.slice();
         let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
         let committed = false;
@@ -1127,7 +1466,7 @@ async function openAccountReceiveOwner(
           if (composed && r.publisher === base.publisher.id && result.kind === 'received') {
             const rows = await owner.carrier.load(task);
             try {
-              const census = inspectInbound(rows, route, base).delivery;
+              const census = inspectCensus(rows, route, (c) => c.delivery);
               const delivery = verified.read(rows, (v) => v.delivery);
               try {
                 requireSelfEnvelope(
@@ -1178,9 +1517,11 @@ async function openAccountReceiveOwner(
               before,
               after,
               checkCommit: () => {
+                stamp.check();
                 if (r.expires <= Date.now()) throw new ReceiveRequestExpired();
               },
               beforeCommit: async () => {
+                stamp.check();
                 await assertCurrent(task);
                 const current = await state(task, owner, route);
                 if (JSON.stringify(describe(current)) !== JSON.stringify(describe(s)))
@@ -1191,6 +1532,7 @@ async function openAccountReceiveOwner(
           committed = true;
           const saved = await state(task, owner, route);
           return task.step(() => {
+            stamp.check();
             // This is the sole content-to-editor handoff: after native commit AND authenticated readback.
             promote(updates);
             return { kind: result!.kind, recorded: true, status: describe(saved) };
@@ -1211,10 +1553,21 @@ async function openAccountReceiveOwner(
   });
   // Captured only after authenticated durable readback; never lends a task or snapshot.
   const preparedPromotion = (): PreparedReceiveFinish => {
+    const stamp = retentionReads.capture();
+    pendingPromotions++;
+    let pending = true;
+    const applied = (apply: () => void) => {
+      apply();
+      if (pending) {
+        pending = false;
+        pendingPromotions--;
+      }
+    };
     const preparedBase = base,
       preparedPayload = expectedPayload,
       preparedRecord = expectedRecord;
     const assertContext = () => {
+      stamp.check();
       if (
         handoff ||
         base !== preparedBase ||
@@ -1230,10 +1583,13 @@ async function openAccountReceiveOwner(
     const finish: PreparedReceiveFinish = (apply) =>
       runCaptureTask(async (task) => {
         await check(task);
-        task.step(apply);
+        task.step(() => applied(apply));
       });
     if (import.meta.env?.['VITE_ACCOUNT_IMMEDIATE_RECEIVE'] !== '0')
-      finish.immediate = (attempt) => checkFinalApply(check, assertContext, attempt);
+      finish.immediate = (attempt) =>
+        checkFinalApply(check, assertContext, (permission) =>
+          attempt((apply) => permission(() => applied(apply))),
+        );
     return finish;
   };
   const receiveGroup = (
@@ -1262,9 +1618,16 @@ async function openAccountReceiveOwner(
       const peer = publisherState(s, base, first.publisher);
       if (s.conflict || peer.conflict || first.after !== peer.prefix.position)
         throw new AdmissionError('receive-refused', 'Inbound group prefix changed');
+      const stamp = outstandingStamp;
+      if (!stamp) throw new ReceiveAuthorityChanged();
       for (let i = 0; i < requests.length; i++) {
-        if (!outstandingGroup[i] || !sameBytes(requests[i]!, outstandingGroup[i]!))
-          throw new AdmissionError('receive-refused', 'Receive request was superseded');
+        if (
+          !outstandingGroup[i] ||
+          !sameBytes(requests[i]!, outstandingGroup[i]!) ||
+          !outstandingStamp
+        )
+          throw new ReceiveAuthorityChanged();
+        stamp.check();
         const r = decodeInboundRequest(requests[i]!);
         if (
           r.publisher !== first.publisher ||
@@ -1334,6 +1697,7 @@ async function openAccountReceiveOwner(
           before,
           after,
           checkCommit: () => {
+            stamp.check();
             if (
               requests
                 .slice(0, results.length)
@@ -1342,6 +1706,8 @@ async function openAccountReceiveOwner(
               throw new ReceiveRequestExpired();
           },
           beforeCommit: async () => {
+            stamp.check();
+            await assertCurrent(task);
             const current = await state(task, owner, route);
             if (JSON.stringify(describe(current)) !== JSON.stringify(describe(s)))
               captureError('Inbound prefix changed before commit');
@@ -1350,6 +1716,7 @@ async function openAccountReceiveOwner(
         committed = true;
         const saved = await state(task, owner, route);
         return task.step(() => {
+          stamp.check();
           promote(updates);
           return { kind: 'received' as const, recorded: true, status: describe(saved), kinds };
         });
@@ -1403,35 +1770,49 @@ async function openAccountReceiveOwner(
           },
           before = await owner.carrier.spoolWitness(task),
           successor = { artifact, before };
-        // The existing view has already authenticated source coverage. Verify the proposed context
-        // against the same retained bytes too, including any lost accepted response at the boundary.
-        const census = inspectInbound(records, nextRoute, nextBase),
-          subtle = subtleFor(task);
-        try {
-          await verifyInstalledSuccessor(census.delivery.spool, nextRoute, successor, subtle);
-          await verifySpool(
-            census.delivery.spool,
-            nextRoute,
-            new Map([
-              ...(base.retainedGenerationKeys ?? []),
-              [base.generation, base.generationKey],
-            ]),
-            publicKey,
-            subtle,
-          );
-          const delivery = await verifyDelivery(
-            census.delivery,
-            nextRoute,
-            nextBase.authority,
-            publicKey,
-            subtle,
-          );
-          const inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
-          verifySyncState(census.delivery, delivery, inbound);
-        } catch (cause) {
-          throw new AdmissionError('receive-refused', 'Successor does not match retained history', {
-            cause,
-          });
+        const retained = await owner.carrier.verifyBaselineTransition(task, (identity) => ({
+          identity,
+          route: nextRoute,
+          inbound: nextBase,
+          signer: publicKey,
+          installation: { kind: 'original', successor },
+          ...lifetime(task),
+        }));
+        if (!retained) {
+          // The existing view has already authenticated source coverage. Verify the proposed context
+          // against the same retained bytes too, including any lost accepted response at the boundary.
+          const census = inspectInbound(records, nextRoute, nextBase),
+            subtle = subtleFor(task);
+          try {
+            await verifyInstalledSuccessor(census.delivery.spool, nextRoute, successor, subtle);
+            await verifySpool(
+              census.delivery.spool,
+              nextRoute,
+              new Map([
+                ...(base.retainedGenerationKeys ?? []),
+                [base.generation, base.generationKey],
+              ]),
+              publicKey,
+              subtle,
+            );
+            const delivery = await verifyDelivery(
+              census.delivery,
+              nextRoute,
+              nextBase.authority,
+              publicKey,
+              subtle,
+            );
+            const inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
+            verifySyncState(census.delivery, delivery, inbound);
+          } catch (cause) {
+            throw new AdmissionError(
+              'receive-refused',
+              'Successor does not match retained history',
+              {
+                cause,
+              },
+            );
+          }
         }
         await withPromotionRoot(
           task,
@@ -1456,7 +1837,7 @@ async function openAccountReceiveOwner(
               base = nextBase;
               installed = successor;
               receiveSelection.reset();
-              invalidateAuthority();
+              invalidateAuthority(true);
               expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
               sinceAudit = 0;
@@ -1572,31 +1953,50 @@ async function openAccountReceiveOwner(
           }),
           nextRoute = { ...route, epoch: history.current.tip, history },
           nextBase = { ...base, history, authority: history.current },
-          census = inspectInbound(records, nextRoute, nextBase),
           subtle = subtleFor(task);
-        await verifyInstalledMembership(
-          census.delivery.spool,
-          history,
-          nextMembership,
-          joined ? initialEpoch : originalMembershipBoundaries(installed),
-          subtle,
-        );
-        await verifySpool(
-          census.delivery.spool,
-          nextRoute,
-          new Map([...(base.retainedGenerationKeys ?? []), [base.generation, base.generationKey]]),
-          publicKey,
-          subtle,
-        );
-        const delivery = await verifyDelivery(
-            census.delivery,
+        const retained = await owner.carrier.verifyBaselineTransition(task, (identity) => ({
+          identity,
+          route: nextRoute,
+          inbound: nextBase,
+          signer: publicKey,
+          installation: joined
+            ? { kind: 'joined', initialEpoch, membership: nextMembership }
+            : {
+                kind: 'original',
+                ...(installed ? { successor: installed } : {}),
+                membership: nextMembership,
+              },
+          ...lifetime(task),
+        }));
+        if (!retained) {
+          const census = inspectInbound(records, nextRoute, nextBase);
+          await verifyInstalledMembership(
+            census.delivery.spool,
+            history,
+            nextMembership,
+            joined ? initialEpoch : originalMembershipBoundaries(installed),
+            subtle,
+          );
+          await verifySpool(
+            census.delivery.spool,
             nextRoute,
-            nextBase.authority,
+            new Map([
+              ...(base.retainedGenerationKeys ?? []),
+              [base.generation, base.generationKey],
+            ]),
             publicKey,
             subtle,
-          ),
-          inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
-        verifySyncState(census.delivery, delivery, inbound);
+          );
+          const delivery = await verifyDelivery(
+              census.delivery,
+              nextRoute,
+              nextBase.authority,
+              publicKey,
+              subtle,
+            ),
+            inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
+          verifySyncState(census.delivery, delivery, inbound);
+        }
         // Persist only the current-membership carrier. The installation, key, checkpoint and index stay bound.
         if (joined) {
           const next = await writeJoinedMembership(
@@ -1607,7 +2007,7 @@ async function openAccountReceiveOwner(
             checkCommit,
           );
           committed = true;
-          invalidateAuthority();
+          invalidateAuthority(true);
           expectedPayload = joinedPayload(next);
         } else {
           const state = current as Awaited<ReturnType<typeof readPromotion>>;
@@ -1632,7 +2032,7 @@ async function openAccountReceiveOwner(
                 checkCommit,
               );
               committed = true;
-              invalidateAuthority();
+              invalidateAuthority(true);
               expectedPayload = promotionPayload(next);
             },
           );
@@ -1976,43 +2376,81 @@ async function openAccountReceiveOwner(
                 if (inbound.conflict) throw Error('Publication halted by inbound conflict');
                 return select(delivery);
               }),
-            verifyProposed: async (
-              rows: readonly import('./contentRecord').OpenedRecord[],
-              proposed: import('./contentRecord').OpenedRecord[],
-              route: CaptureRoute,
-              task: SessionTask,
-              after: import('./contentRecord').SpoolWitness,
-            ) => {
-              if (!verifiedCounter) return false;
-              const prior = verified.read(rows);
-              let candidate;
-              const existing = new Set(rows),
-                added = proposed
-                  .filter((r) => !existing.has(r))
-                  .map((r) => ({ ...r, bytes: r.bytes.slice() }));
-              const owned = proposed.map((r) => (existing.has(r) ? r : added.shift()!));
-              try {
-                candidate = await extendAccountLedger(
-                  prior,
-                  rows,
-                  owned,
-                  route,
-                  { ...verifiedCounter, v: 2, spool: after },
-                  base,
-                  publicKey,
-                  subtleFor(task),
-                  { memo, current: () => task.step(() => {}) },
-                );
-                return !!candidate;
-              } finally {
-                eraseVerified(prior);
-                eraseVerified(candidate);
-                // Erase copied proposals even when extension throws before returning a candidate.
-                for (const row of owned) if (!existing.has(row)) row.bytes.fill(0);
-              }
-            },
           }
         : {}),
+      verifyProposed: async (
+        rows: readonly import('./contentRecord').OpenedRecord[],
+        proposed: import('./contentRecord').OpenedRecord[],
+        route: CaptureRoute,
+        task: SessionTask,
+        after: import('./contentRecord').SpoolWitness,
+      ) => {
+        if (!verifiedCounter || (!incremental && !baselineReading)) return false;
+        const prior = verified.read(rows);
+        if (prior.baseline) {
+          // Proposal is never installed. Retained prefix evidence comes from the just-loaded
+          // authenticated view; new suffix bytes still traverse the delivery verifier.
+          const logical = [
+            ...prior.baseline.records.filter((r) => r.seq < prior.baseline!.firstSuffix),
+            ...proposed.filter((r) => r.seq >= prior.baseline!.firstSuffix),
+          ];
+          try {
+            const census = inspectInbound(logical, route, base, prior.census.delivery.spool.origin);
+            const origin = census.delivery.spool.origin!;
+            const state = emptyDelivery();
+            state.acceptedThrough = origin.position;
+            if (origin.receipt) state.responses.set(origin.position, [origin.receipt.proof]);
+            const checked = await verifyDelivery(
+              census.delivery,
+              route,
+              base.authority,
+              publicKey,
+              subtleFor(task),
+              undefined,
+              {
+                state,
+                spool: { ...census.delivery.spool, positions: [] },
+                envelopes: new Map(),
+                expected: new Map(),
+              },
+            );
+            eraseVerified(checked);
+            task.step(() => {});
+            return true;
+          } finally {
+            eraseVerified(prior);
+          }
+        }
+        if (!incremental) {
+          eraseVerified(prior);
+          return false;
+        }
+        let candidate;
+        const existing = new Set(rows),
+          added = proposed
+            .filter((r) => !existing.has(r))
+            .map((r) => ({ ...r, bytes: r.bytes.slice() }));
+        const owned = proposed.map((r) => (existing.has(r) ? r : added.shift()!));
+        try {
+          candidate = await extendAccountLedger(
+            prior,
+            rows,
+            owned,
+            route,
+            { ...verifiedCounter, v: 2, spool: after },
+            base,
+            publicKey,
+            subtleFor(task),
+            { memo, current: () => task.step(() => {}) },
+          );
+          return !!candidate;
+        } finally {
+          eraseVerified(prior);
+          eraseVerified(candidate);
+          // Erase copied proposals even when extension throws before returning a candidate.
+          for (const row of owned) if (!existing.has(row)) row.bytes.fill(0);
+        }
+      },
       reuse: (task) => ({ memo, current: () => task.step(() => {}) }),
       network: runNetworkTask,
       canSubmit: canReceive,
@@ -2090,6 +2528,10 @@ async function openAccountReceiveOwner(
             history: (command: import('../account/historyMaintenance').HistoryMaintenanceCommand) =>
               runCaptureTask(async (task) => {
                 await assertCurrent(task);
+                // Even an empty prepared receipt retains a checked authority context until its
+                // final handoff. History refreshes that context; never invalidate a pending one.
+                // New receives cannot stage while this serialized storage task is running.
+                if (pendingPromotions) throw new HistoryReceivePending();
                 const refreshCustody = async () => {
                   try {
                     // History owns only its encrypted progress and shared seal reservations. Refresh
@@ -2122,7 +2564,7 @@ async function openAccountReceiveOwner(
                       throw Error('Account custody changed during history maintenance');
                     }
                     expectedRecord = record;
-                    invalidateAuthority();
+                    invalidateAuthority(true);
                     expectedPayload = joined
                       ? joinedPayload(
                           (current as Awaited<ReturnType<typeof readJoinedAccount>>).marker!,
@@ -2222,6 +2664,9 @@ async function openAccountReceiveOwner(
     carrier,
     listCaptures,
     fetchPage,
+    checkLocalBaseline,
+    installLocalBaseline,
+    prepareLocalRemoval,
     prepareGroup,
     receiveGroup,
     preparedPromotion,
@@ -2294,6 +2739,9 @@ async function openReceivingWorkspace(
     adoptMembership,
     refreshAuthority,
     resetDiscovery,
+    checkLocalBaseline,
+    installLocalBaseline,
+    prepareLocalRemoval,
   } = await openAccountReceiveOwner(
     options,
     options.identity.id,
@@ -2304,6 +2752,7 @@ async function openReceivingWorkspace(
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
   let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
+  let removingLocalHistory = false;
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
@@ -2357,10 +2806,14 @@ async function openReceivingWorkspace(
     const receiveHistory = async () => {
       let bytes: Bytes | null = null;
       try {
-        bytes = await fetchHistory();
-        if (!bytes) return false;
-        await enqueue(bytes, (evidence, promote) => installHistory(evidence, promote));
-        return true;
+        const fetched = await fetchHistory();
+        if (!fetched) return false;
+        bytes = fetched.bytes;
+        fetched.check();
+        const result = await enqueue(bytes, (evidence, promote) =>
+          installHistory(evidence, promote, fetched.check),
+        );
+        return result.kind === 'installed';
       } finally {
         bytes?.fill(0);
       }
@@ -2490,7 +2943,11 @@ async function openReceivingWorkspace(
           for (const r of requests) r.fill(0);
           for (const p of pages) p.fill(0);
         }
-      })();
+      })().catch((cause) => {
+        if (cause instanceof ReceiveAuthorityChanged)
+          return { kind: 'unknown' as const, recorded: false };
+        throw cause;
+      });
       flight = work;
       const settled = () => {
         if (flight === work) flight = undefined;
@@ -2501,7 +2958,23 @@ async function openReceivingWorkspace(
     const result = Object.freeze({
       ...account,
       kind: 'ready' as const,
-      devices,
+      devices: Object.freeze({
+        ...devices,
+        get transition() {
+          return devices.transition;
+        },
+        ...(devices.history
+          ? {
+              history: (
+                command: import('../account/historyMaintenance').HistoryMaintenanceCommand,
+              ) =>
+                afterReceivedHandoffs(
+                  () => workspace.whenDurable(),
+                  () => devices.history!(command),
+                ),
+            }
+          : {}),
+      }),
       workspace,
       receiveStatus: api.status,
       prepareRead: api.prepareRead,
@@ -2512,6 +2985,97 @@ async function openReceivingWorkspace(
         return carrier.compactContent();
       },
       listCaptures,
+      ...(checkLocalBaseline ? { checkLocalBaseline } : {}),
+      ...(installLocalBaseline
+        ? {
+            ...(hasBaselineReader()
+              ? {
+                  ...(hasRetentionWriter()
+                    ? {
+                        removeLocalHistory: async (expectedRevision: number) => {
+                          if (removingLocalHistory)
+                            return { kind: 'skipped' as const, reason: 'already-preparing' };
+                          removingLocalHistory = true;
+                          try {
+                            await workspace.whenDurable();
+                            // Settle the preparation storage task BEFORE joining admission. Input
+                            // may journal/apply during preparation and invalidates its private guard.
+                            const preparing = ledgerWorkStart();
+                            const prepared = await prepareLocalRemoval(expectedRevision).finally(
+                              () => measureLedgerWork('retentionPreparation', preparing),
+                            );
+                            if (prepared.kind !== 'prepared-removal') return prepared;
+                            try {
+                              return await enqueue(new Uint8Array([1]), async (_input, promote) => {
+                                const fenced = ledgerWorkStart();
+                                try {
+                                  const result = await prepared.commit();
+                                  promote([]);
+                                  return result;
+                                } catch (cause) {
+                                  if (!(cause instanceof MaintenanceInterrupted)) throw cause;
+                                  promote([]);
+                                  return {
+                                    kind: 'skipped' as const,
+                                    reason: 'activity-or-journal',
+                                  };
+                                } finally {
+                                  measureLedgerWork('retentionFenced', fenced);
+                                }
+                              });
+                            } finally {
+                              prepared.dispose();
+                            }
+                          } catch (cause) {
+                            // Retiring an old read can reject the initial durability barrier
+                            // before it has any durable handoff. This private maintenance request
+                            // yields; an uncertain mutation has already closed the carrier.
+                            if (
+                              !carrier.signal.aborted &&
+                              (cause instanceof MaintenanceInterrupted ||
+                                cause instanceof ReceiveAuthorityChanged)
+                            )
+                              return { kind: 'skipped' as const, reason: 'activity-or-journal' };
+                            throw cause;
+                          } finally {
+                            removingLocalHistory = false;
+                          }
+                        },
+                      }
+                    : {}),
+                  dryRunLocalRetention: async () => {
+                    await workspace.whenDurable();
+                    return enqueue(new Uint8Array([1]), async (_input, promote) => {
+                      const result = await installLocalBaseline(undefined, false, 'dry-run');
+                      promote([]);
+                      return result;
+                    });
+                  },
+                }
+              : {}),
+            advanceLocalRetention: async (expectedRevision: number) => {
+              await workspace.whenDurable();
+              return enqueue(new Uint8Array([1]), async (_input, promote) => {
+                const result = await installLocalBaseline(expectedRevision, true);
+                promote([]);
+                return result;
+              });
+            },
+            replaceLocalBaseline: (expectedRevision: number) =>
+              enqueue(new Uint8Array([1]), async (_input, promote) => {
+                const result = await installLocalBaseline(expectedRevision);
+                promote([]);
+                return result;
+              }),
+            installLocalBaseline: () =>
+              enqueue(new Uint8Array([1]), async (_input, promote) => {
+                const result = await installLocalBaseline();
+                // Empty promotion settles the fence without touching the live document or UndoManager.
+                promote([]);
+                return result;
+              }),
+          }
+        : {}),
     });
     if (outbound) {
       let notifications: ReturnType<typeof startNotifications> | undefined;

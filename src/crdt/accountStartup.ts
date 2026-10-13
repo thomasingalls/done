@@ -1,3 +1,5 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
+import { recordEqual } from './custodyRecord';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import type { NetworkLogin } from '../account/networkLogin';
 import { heldCaptureRoute, verifyInstalledSuccessor } from './accountSuccessor';
@@ -175,12 +177,13 @@ export async function verifyAccountUnderPermit(
           task,
           { ...scope, resolvePrincipal: () => scope.principalId },
           options.code,
-          async (recovered) => {
+          async (recovered, baseline) => {
             const doc = new Y.Doc({ gc: false }),
               checkpoint = new Y.Doc({ gc: false });
             try {
-              const spool =
-                marker.v === 9
+              const spool = baseline
+                ? baseline.ledger.census.delivery.spool
+                : marker.v === 9
                   ? inspectInbound(recovered.records, route, inbound!).delivery.spool
                   : marker.v === 8
                     ? inspectDelivery(recovered.records, route, authority).spool
@@ -236,8 +239,40 @@ export async function verifyAccountUnderPermit(
           marker.v >= 7
             ? {
                 allowSpoolCounter: true,
+                ...(marker.v === 9 && hasBaselineVerifier()
+                  ? {
+                      ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
+                      baseline: async (
+                        _task: SessionTask,
+                        identity: import('./contentRecord').ContentIdentity,
+                      ) => {
+                        const current = await readPromotion(_task, options.slotId, options.code);
+                        if (!same(current.marker, marker) || !recordEqual(current.record, record))
+                          throw Error('Baseline opening authority changed');
+                        return {
+                          identity,
+                          route,
+                          inbound: inbound!,
+                          signer: signer!,
+                          installation: {
+                            kind: 'original' as const,
+                            ...(marker.successor ? { successor: marker.successor } : {}),
+                            ...(marker.membership ? { membership: marker.membership } : {}),
+                          },
+                          assertCurrent: () => _task.step(() => {}),
+                        };
+                      },
+                    }
+                  : {}),
                 ...(marker.v === 9 ? { reuseOpened: true as const } : {}),
-                validate: async (records, _task, counter) => {
+                validate: async (records, _task, counter, _view, baseline) => {
+                  if (baseline) {
+                    if (detached)
+                      await (
+                        await import('./rotationObservation')
+                      ).verifyRetainedDetachedPrefix(detached, baseline, subtle);
+                    return;
+                  }
                   countLedgerWork('startupValidations');
                   // These reducers inspect the same authenticated immutable snapshot.
                   // Build its nested census once; each verifier still checks its own contract.

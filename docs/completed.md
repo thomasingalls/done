@@ -13768,3 +13768,810 @@ rolling-audit detection window; custody authority checks remain complete and fre
 application PR for the operator's merge, then publish this exact tested image and prepare the ol-infra
 pin PR. No registry push, infrastructure change or deployment has occurred in this preparation.
 `docs/progress.md` remains untouched.
+
+### Authenticated local baseline format and pure replay — 2026-10-13
+
+**Boundary.** Implemented the first [local retention](./account-local-retention-design.md) slice as
+an experimental private codec, builder and replay reader. [Contract and limitations](./account-local-baseline-replay.md).
+No baseline is persisted or consumed by the application, no history is deleted, and no schema,
+encrypted carrier, wire format or journal policy changes. This work is uncommitted; release validation
+remains paused. Busy-host timing is not used to claim a performance improvement.
+
+**Change.** A locally authenticated canonical baseline binds identity/authority, full Yjs state,
+accepted publisher heads, peer receive cuts, invocation burns, source consumption, physical reservation
+accounting and the event witness. Partially used capsules retain their full original bytes. Preparation
+runs the full verifier, then independently reopens and compares its candidate. Replay verifies retained
+terminal signatures/checkpoint evidence and the suffix under the existing grammar. An independent
+expected anchor binds the revision/hash; it does not yet have a durable owner metadata carrier.
+
+**Evidence.** [58 focused tests pass](./development-evidence/2026-10-13-local-baseline/README.md):
+54 Vitest cases across eight files, including 14 baseline cases and 30 generated histories, plus four
+existing signed current-key retry Node cases. Tests cover peer receipts, refusal/retry, checkpoint cuts,
+exact compaction, pending dependencies, burned reservations, tampering, lifetime/isolation, subsequent
+undo/redo and next-operation equivalence. A test exposed repeated selection of an accepted index in a
+partially consumed capsule; the retained-origin selector now preserves its consumed indexes. TypeScript,
+changed-source lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass.
+
+**Limits/next.** Draft cuts require settled accepted allocations; unfinished work can remain in a
+suffix after an earlier cut. Changed authority, a new checkpoint installation or a request for retired
+historical receipt details requires intact full history. The next phase is owned shadow construction
+and comparison without deletion. Retention-aware transitions/consumers, durable encrypted anchoring,
+reader/writer fences, exact journal handling and atomic crash-safe installation remain prerequisites
+to physical removal. No installer or preservation of its live undo stack is claimed. `docs/progress.md`
+remains untouched for the other seat.
+
+### Local baseline shadow integration under the real Account owner — 2026-10-13
+
+**Boundary.** Baseline format/replay committed signed as **`c50e3741`**, verified `G`. Added
+[explicit owned shadow comparison](./account-local-baseline-shadow.md), gated by
+`VITE_ACCOUNT_BASELINE_SHADOW=1`. The ordinary app does not expose the method or schedule the work.
+No baseline installation, history/journal deletion, schema change, live-reader replacement, undo
+swap, deployment or release campaign. This next phase remains uncommitted.
+
+**Change.** The shadow task joins the real storage queue under the exclusive Web Lock, requires an
+empty scoped journal, and obtains a complete fresh authenticated disk census. Baseline authentication
+uses the retained metadata key only in the closed draft domain. It compares full replay and baseline
+plus suffix, including next-source/position behavior; fresh custody and synchronous journal/input
+checks precede publication. Input during preparation abandons the cut, while close holds exclusion
+until owned work settles. Results contain fixed diagnostics/counts and never enter the live reader.
+
+**Evidence.** [89 focused Vitest tests and seven native Chromium checks pass](./development-evidence/2026-10-13-local-baseline-shadow/README.md),
+including the ordinary-build boundary where the method is absent.
+Native checks include unchanged disk/journal, offline/accepted suffixes, input and undo, retained
+journal cleanup, held native completion, fresh final custody, cancellation, resume and cold reopening.
+Carrier checks cover full physical reads, corruption/abort, caller isolation and scoped authenticator
+expiry. TypeScript, lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass.
+Native integration exposed the draft's hexadecimal-slot assumption; the parser now follows
+the existing bounded custody identity contract. No comparative timing claim is made on the busy host.
+
+**Next.** Complete retention-aware authority/checkpoint transitions and old-read consumers, including
+native joined-device evidence, before durable encrypted anchoring, compatibility fences and an atomic
+installer. Intact-history fallback remains safe only while that history is retained. No actual
+deletion or installer undo continuity is established. `docs/progress.md` remains untouched.
+
+
+### Local baseline authority/checkpoint transitions and reader boundaries — 2026-10-13
+
+**Boundary.** The prior owned shadow phase is signed as **`962329a3`**, verified `G`. This phase remains
+uncommitted and opt-in. No baseline installation, history deletion, stored/wire format migration,
+live-reader replacement, deployment or release campaign. [Contract and reader dispositions](./account-local-baseline-transitions.md).
+
+**Change.** Draft 2 binds immutable custody/account scopes separately from the verified authority
+and local installation-cut digest. Replay extends exact witness/epoch and accepted-envelope boundaries,
+then authenticates later checkpoint installations through the existing verifier. Retained self receipts,
+absolute position offsets and consumed indexes survive into self receive/warm indexes. Old reads and
+checkpoint heads without retained proof require history; remaining full-history consumers explicitly
+reject a reduced spool. A completed shadow candidate can continue across a checked authority change;
+in-flight work still invalidates, and resume/close erase it.
+
+**Evidence.** 99 focused Vitest tests, 26 protocol/checkpoint Node checks, the original native shadow
+checks and a new packaged original/joined-owner journey. The latter covers checkpoint sequence 1,
+continued original-owner replay through admission/cancellation epochs 4/5, and cold reopening both
+owners using full history. Native testing fixed the draft's assumption that joining local custody IDs
+must equal account writing IDs. The existing resume test also caught and fixed candidate retention
+across generic lifecycle invalidation. Two pre-existing stale protocol control anchors were repaired.
+[Logs and source hashes](./development-evidence/2026-10-13-local-baseline-transitions/README.md).
+No comparative timing or installer/undo claim is made.
+
+**Next.** Durable encrypted baseline/active-pointer and compatibility-fence design, then a non-deleting
+installer/cold reader and adapters for the currently fenced consumers. Old-operation/checkpoint proof
+retention, exact journal/restore handling and atomic removal remain later prerequisites. Release
+validation stays paused; `docs/progress.md` remains untouched.
+
+
+### Private durable encrypted baseline anchor and compatibility fence — 2026-10-13
+
+**Boundary.** The previous authority/checkpoint and reader phase is committed signed as **`43fe12aa`**,
+verified `G`. This phase is uncommitted. The carrier is tested only on disposable stores and is not
+called by the product. Full-history startup/editing remains authoritative; no history deletion, live
+installer, deployment or release-validation campaign. [Contract](./account-local-baseline-anchoring.md).
+
+**Change.** Counter v3 independently authenticates a first baseline's revision/keyed commitment, chunk
+allocation, identity, reservations and witness. The existing content nonce budget is durably reserved
+before sealing 256 KiB chunks; the complete pointer/chunk set commits atomically after fresh authority
+and exact census checks. Failures preserve full history and burn reservations instead of reusing them.
+The private cold carrier reader authenticates the pointer and encrypted payload; full protocol replay
+remains its caller's obligation. Current ordinary readers refuse v3 as update-required; the tested
+predecessor refuses it as repair-required. No general downgrade or deletion API exists.
+
+**Evidence.** [108 focused Vitest checks and four native Chromium checks](./development-evidence/2026-10-13-local-baseline-anchoring/README.md)
+pass, including 31 new carrier checks, real renderer death after reservation/commit, native abort,
+cold reopening and current/predecessor refusal without mutations. Native fixture keys/content are
+disposable. TypeScript, lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass.
+The crash harness needed to wait for a crash event instead of a reply from the dead renderer. No
+comparative performance or whole-profile anti-rollback claim is made.
+
+**Next.** Connect the real owner's non-deleting installer and baseline-aware cold reader, retain full
+reference comparison, and prove actual journal/activity fencing and undo continuity. Then finish the
+remaining readers and replacement/rotation/old-flight/checkpoint/restore rules before deletion. The
+4 MiB encoded baseline bound remains; chunking alone does not enlarge it. `docs/progress.md` is untouched.
+
+
+### Non-deleting baseline installation and actual Account cold readers — 2026-10-13
+
+**Boundary.** The carrier/compatibility phase is committed signed as **`13b265a3`**, verified `G`.
+This phase is uncommitted and explicitly gated by `VITE_ACCOUNT_BASELINE_INSTALL=1`. No personal
+account conversion, history deletion, deployment or release-validation campaign.
+[Contract](./account-local-baseline-owner.md).
+
+**Change.** The real composed Account owner now installs a verified first anchor while holding its
+admission queue, flushing and checking the scoped journal, preserving the Web Lock through native
+settlement, and rechecking complete authority. Empty promotion leaves the live Yjs document and undo
+stack intact. Later allocations/witness writes preserve the authenticated v3 pointer and MAC domain.
+Original/joined cold readers and the separate native history source authenticate/replay the anchor
+and compare it with full history. Existing-anchor failure refuses; only new candidate ineligibility
+can skip. Warm fast-path use and content compaction are disabled for anchored experimental stores.
+
+**Evidence.** [171 focused unit checks, 10 distinct enabled native owner cases, one ordinary-build
+case and one packaged two-device journey](./development-evidence/2026-10-13-local-baseline-owner/README.md).
+Input waits during held installation crypto and is journalled before apply; undo/redo and later
+publication survive. Retained cleanup blocks installation; custody changes and damaged baseline/history
+refuse; lost committed replies cold-recover without another allocation; close holds exclusion through
+settlement. The packaged journey includes checkpoint 1, epochs 4/5 and both cold owners. Default Account
+opening refuses the anchored profile unchanged; the compatible reader can reopen it. TypeScript,
+lint/format, build/Yjs patch, size/origin and whitespace checks pass. One concurrent unit timeout was
+rerun serially without weakening the test. No timing improvement is claimed.
+
+**Next.** Baseline-preserving generation/replacement lifecycle and remaining reader adapters, still
+without deletion; then old-flight/checkpoint evidence and restored journal/database pairing before
+exact atomic removal. Public reader/writer rollout and rollback remain separate. `docs/progress.md`
+is untouched.
+
+
+### Non-deleting baseline rotation, replacement and lifecycle readers — 2026-10-13
+
+**Boundary.** The preceding real-owner integration is committed signed as **`bb9c7e82`**, verified `G`.
+This phase is uncommitted and remains behind `VITE_ACCOUNT_BASELINE_INSTALL=1`. No logical history
+row is deleted, no personal profile is converted, and release validation/publication remain paused.
+[Contract and reader dispositions](./account-local-baseline-lifecycle.md).
+
+**Change.** Expected-revision replacement re-verifies the old baseline, builds/compares its successor,
+reserves while retaining the old v3 pointer, and atomically replaces bounded encrypted metadata.
+Only surplus obsolete metadata chunks may be removed; content/heads/outbound history stays intact.
+Lost committed replies retry without another allocation. The admission/journal fence and live undo
+stack remain intact. Rotation re-encrypts history at unchanged keys, preserves the older encrypted
+anchor and required openers, checks fresh authority immediately before the exact transaction, and
+resumes across a failed final custody activation. Initial catch-up, the separate v9 receive-store
+reader, and detached original/joined readers now use the authenticated carrier. Detached copies retain
+terminal-prefix verification and cannot resume network delivery. Local allocation cannot exceed the
+verified network generation.
+
+**Evidence.** [183 unit checks, 14 enabled native owner cases, one ordinary-build case, three packaged
+lifecycle/checkpoint journeys and one ordinary rotation journey](./development-evidence/2026-10-13-local-baseline-lifecycle/README.md)
+pass. Cases include wrong/stale predecessors, caller isolation, reservation/encryption/transaction and
+journal failures, changed old chunks, retained/missing openers, input/undo, renderer death after
+reservation/commit, two rotations with journal-only work, restart after content switched but custody
+commit aborted, original/joined detachment, checkpoint replacement, and subsequent cold opening.
+TypeScript, lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass. Two initial
+carrier test assumptions were corrected without weakening guards or timeouts. No performance claim.
+
+**Next.** Settle retained proof requirements for old network flights/checkpoint cuts and the restored
+journal/database pairing rule before an exact atomic logical-history deletion transition and reduced
+reader activation. Full/reference comparison, the 4 MiB baseline limit, retained keys and compatible
+public rollout/rollback obligations remain. `docs/progress.md` is untouched.
+
+### Local retention evidence rules — old reads, checkpoint cuts and restored journal pairs
+
+**Date:** 2026-10-13 · **Commit:** prior lifecycle phase signed `cf16e61a` (`G`); this contract and
+characterization signed `8c694d55` (`G`) · **Stage:** Local Account retention preparation; no deletion
+
+**Exit.** The [evidence-retention contract](./account-local-retention-evidence.md) gives explicit
+retention/refetch/refusal dispositions for the three previously unresolved boundaries. Volatile reads
+are invalidated/refetched; committed receive promotion must settle or make retention skip. Terminal
+proofs and the exact latest installed checkpoint/cuts survive, while unknown older links require
+history. Durable maintenance/lifecycle attempts postpone retention rather than lose their evidence.
+
+The selected journal wrapper binds exact capsule bytes to an authenticated random retirement era and
+database identity/intent. Its atomic transition keeps the empty-journal/admission fence and burned
+invocations. Mismatched restored journals are preserved/refused; equal eras are not a dependency,
+nonce or whole-profile freshness guarantee. Known raw partial restore needs explicit recovery, and
+undetectable coordinated rollback remains outside local guarantees. No server restore policy changed.
+
+**Evidence.** [41 unit checks in three files](./development-evidence/2026-10-13-local-retention-evidence/README.md)
+pass, including a new real baseline/recovery counterexample: an accepted capsule whose identity is
+retired becomes pending in the legacy helper even though reapplying it leaves Yjs unchanged. The live
+owner still supplies full history. TypeScript, changed-test lint/format and whitespace checks pass.
+No runtime code or browser data changed, no new format was written, no history/key deleted, and no
+performance or release-validation campaign resumed. Live undo and journal-before-apply are unchanged.
+
+**Next.** Implement the selected journal-era/operation/checkpoint fences in the private owner with an
+empty deletion set and focused crash/retry controls. Then adapt remaining reduced-history readers
+and separately implement/test exact deletion. Public reader rollout and compatible rollback remain
+later gates. `docs/progress.md` is untouched.
+
+
+### Private retention fences — authenticated journal eras, old flights and checkpoint cuts
+
+**Date:** 2026-10-13 · **Commit:** design signed `8c694d55` (`G`); implementation signed `bcca1aa1` (`G`) ·
+**Stage:** Local Account retention preparation; empty logical deletion set
+
+**Exit.** The [private owner](./account-local-retention-fences.md) can explicitly advance its
+retirement era under ordered admission and an empty scoped journal. Counter v4, carrier draft-2 and
+baseline draft-3 authenticate its random era, predecessor and creation revision. The journal's AEAD
+wraps exact original capsules with that era and store identity/intent. Both ordinary custody and the
+separate rotation reader check the pairing. Cross-era restored pairs are preserved/refused; matching
+journal-only and committed-before-cleanup crashes recover. No logical history or required opener is
+removed, and a baseline operation never replaces the live document or undo stack.
+
+Old single/group/history flights carry an invalidation token checked through commit/final apply;
+transport cancellation alone is insufficient. Durable receive promotions drain or postpone the cut.
+Exact retained checkpoint links remain comparable; unknown old cuts require history and do not persist
+or repeatedly fetch the same candidate body. Duplicate private checkpoint installation is a verified
+no-op; duplicate durable ledger events still refuse. Unfinished encrypted history, connection and
+rotation attempts postpone the boundary, without being cleared or rewritten.
+
+**Evidence.** The [focused evidence packet](./development-evidence/2026-10-13-local-retention-fences/README.md)
+records 104 unit checks, 22 distinct enabled owner cases across the recorded runs, one ordinary
+owner check, seven prepared-receive regressions and three packaged lifecycle/checkpoint journeys.
+TypeScript, lint/format and the ordinary build/budget/origin checks pass via installed Node tools;
+the pnpm launcher itself could not verify its distribution against the registry. The two-rotation journey exposed a missed
+journal binding in the separate rotation reader; it is repaired and covered. No performance claim,
+public format activation, publication or release-validation campaign. `docs/progress.md` is untouched.
+
+**Next.** Complete the baseline-plus-suffix reader inventory and exact deletion plan, then a separate
+bounded atomic logical-history deletion/replay phase. Public reader-first deployment, compatible
+rollback, capacity behavior and reduced-reader `history-required` UX remain later work. Era equality
+still cannot prove arbitrary partial/whole-profile restore safety or freshness.
+
+### Local retention reader inventory and exact deletion plan — 2026-10-13
+
+**Boundary.** The private journal-era, old-read and checkpoint fences are committed signed as
+**`bcca1aa1`**, verified `G`. The documentation/source-analysis phase is committed signed as **`bce612c3`** (`G`).
+No runtime code, browser profile, logical history or key changed; publication and release validation
+remain paused. [Reader inventory](./account-local-retention-readers.md) and
+[exact deletion plan](./account-local-retention-deletion.md).
+
+**Exit.** The inventory distinguishes authenticated baseline replay from the current carrier's
+full-history output, and names the adapters for cold/live owners, source recovery/publication,
+receive/audit/index consumers, prospective authority, detached copies, rotation and lifecycle source
+readers. Independent service replay and unsupported Local/old-Account paths keep their boundaries.
+The four full-spool guards stay until each consumer has an origin-aware proof. Repeated retention
+needs a rebase builder: inherited source consumption, history/cuts, epoch/witness and logical sequence
+cannot be recovered by treating the suffix as a zero-origin history.
+
+The first deletion plan uses a settled current cut and exact store/key/sealed-row inventory, with
+every covered row class assigned a retained-evidence disposition. Unaccepted originals survive as
+exact baseline-carried capsules. Reservations burn before the atomic pointer/era/chunk/deletion
+exchange; late or changed rows abort it. The proposed reduced carrier is closed separately from
+`history: complete`. No partial deletion batches, custody/key retirement or full-history fallback
+after actual removal. Native retry/crash and reader-compatibility controls are specified, not claimed
+as already executed. Live document/undo identity and journal-before-apply remain requirements.
+
+**Checks.** Traced carrier constructors, recovery/load/census consumers, full-spool guards and direct
+counter/store readers against the signed source boundary. Checked changed-document links and source
+references and `git diff --check`; no runtime suite rerun for documentation-only changes. Earlier
+fence evidence remains in its signed packet; no new correctness or timing result is inferred.
+
+**Next.** Owned baseline-plus-suffix read model and original/joined cold/live adapters, still with
+every physical row retained and the full replay as oracle. Then lifecycle/rebase adapters, a pure
+exact-plan dry run, and a separately authorized private atomic-removal phase. Public reader-first
+rollout, compatible rollback, capacity/unavailable-history behavior and performance measurements
+remain later gates. `docs/progress.md` is untouched.
+
+
+### Original/joined baseline-plus-suffix owner reads — 2026-10-13
+
+**Boundary.** Reader inventory/deletion plan committed signed as **`bce612c3`** (`G`). This new
+implementation is uncommitted. [Contract](./account-local-baseline-readers.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-baseline-readers/README.md).
+
+**Exit.** An explicit private read switch connects era-bearing anchors to original/joined cold
+classification and live recovery, source selection, send/receive and status. Physical inventory stays
+separate from authenticated logical snapshot/carried originals/suffix. Full history remains stored
+and compared on every anchored load; all remaining originals/consumption are compared, including
+beyond the next bounded send batch. Logical reads fail closed and do not enter zero-origin incremental
+indexes. Counters, receipts and baseline formats are unchanged. Live undo and journal-before-apply
+remain intact; era pairing precedes reduced-catalogue recovery.
+
+**Evidence.** 107 unit checks in seven files; 23 enabled native owner cases; three reference-mode
+owner/crash controls; one ordinary-owner control; seven prepared-receive regressions; the packaged
+original/joined journey with bidirectional edits, joined undo/redo, checkpoints/membership and both
+cold reopenings. Test-only observation confirms the actual logical recovery seam, and exact stored
+rows remain unchanged on both devices. TypeScript, changed-file lint/format and ordinary build,
+Yjs patch, bundle budget and origin checks pass. The packet records an initial helper's zero-origin
+assumption and the pre-existing intermittent history-inspection lock symptom; no guard or timeout
+was weakened. No performance comparison on this busy host.
+
+**Next.** Prospective authority/detached-prefix, rotation, handoff and membership local-source
+adapters plus baseline rebase, still without deletion. Then pure exact-plan dry run and separately
+authorized private atomic removal. Full-spool guards remain on unadapted readers. No publication,
+public reader activation or release campaign; `docs/progress.md` untouched.
+
+### Baseline-aware lifecycle readers and repeated cuts — 2026-10-13
+
+**Boundary.** The preceding owned-reader work is committed signed as **`3ba73cb3`** (`G`). This new
+implementation is uncommitted. [Contract](./account-local-baseline-lifecycle-readers.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-baseline-lifecycle-readers/README.md).
+
+**Exit.** Private era-bearing Account owners use authenticated baseline-plus-suffix state for
+prospective successor/membership checks, initial handoff, membership/history local source, rotation
+validation/journal capture and detached original/joined prefix checks. Fresh custody checks and
+post-commit readback remain; speculative authority is not installed by the reader. Rotation still
+uses actual physical rows and required old openers. Full-spool entry points retain all four guards.
+
+Replacement now authenticates and summarizes only its predecessor baseline plus supplied suffix,
+including inherited consumption, absolute positions/attempts, terminal proofs, checkpoint evidence,
+authority cuts, empty-suffix cut sequence, rotated generations and journal era. The real installer
+still requires the full-history oracle and exact physical census before its metadata exchange.
+No logical row deletion, stored-format change, live-document replacement or undo reset is added.
+
+**Evidence.** 111 unit checks in seven files, including 12 generated repeated-cut histories and
+fault/lifetime/caller-isolation controls; 23 enabled native owner cases including replacement/era
+renderer death, retries and mismatched journal/database pairs; one ordinary-owner control; two
+packaged lifecycle journeys (first handoff, later membership, two rotations, interrupted final
+custody activation and both kinds of detached copy); and one checkpoint/membership/undo/cold-reopen
+journey. The lifecycle probe requires actual execution of all seven adapter/rebase branches.
+The final lifecycle rerun passes after private scoping was tightened. TypeScript, changed-file
+lint/format, Yjs patch, ordinary build, bundle budget/origin and documentation-link checks pass.
+The evidence packet retains the test-hook build failures and their correction. No timing inference
+or renewed qualification campaign.
+
+**Next.** Pure exact deletion-plan dry run against detached projected inventories, still without
+removing history. Separately authorized private atomic removal, public reader-first compatibility
+and rollback, capacity/unavailable-history behavior and measured growth remain later gates.
+`docs/progress.md` remains untouched; unrelated root notes remain untracked.
+
+### Exact local Account deletion-plan dry run — 2026-10-13
+
+**Boundary.** Lifecycle-reader/rebase work is committed signed as **`af5f0d87`** (`G`). This new
+phase is uncommitted. [Contract](./account-local-retention-dry-run.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-retention-plan/README.md).
+
+**Exit.** A pure planner authenticates an exact sealed-row/raw-metadata census and predecessor,
+constructs the settled current candidate from full history or baseline plus suffix, assigns every
+physical row a coverage/evidence disposition, and compares the detached deletion projection with
+intact history and next behavior. It preserves whole partial capsules, consumption, attempts,
+frontiers/cuts/checkpoint evidence and reservation holes. Capacity/unsettled skips are separate from
+integrity refusal. Lifetime-bound plans own detached copies and reject any changed row/key/metadata.
+
+The real private composed owner connects that planner to existing admission, journal, durable-attempt,
+old-flight and final-apply fences. It performs complete fresh authority checks and a final exact
+readonly census, reports counts and disposes the plan. No reservation, new journal era, baseline
+installation, physical deletion, live-document swap or UndoManager reset is performed by the planner.
+Ordinary owners expose no new method. Existing stored codecs are unchanged.
+
+**Evidence.** 117 unit tests in seven files, including 12 newly generated exact-plan histories and
+existing repeated rebase controls. All 30 enabled native owner cases have passing evidence: 28 in
+the full run and two after correcting tests that expected blocked admission where integrity failure
+closes the owner. One ordinary-owner case and one packaged original/joined checkpoint/membership
+journey pass. Native planner cases assert zero settled storage writes, exact preserved bytes,
+journal-before-apply and undo, stale-read rejection, fresh authority changes, changed rows/chunks,
+renderer death and retry. The packaged journey checks plans on both devices before/after checkpoint
+installation and skips an unfinished producer attempt. TypeScript, lint/format, ordinary build,
+Yjs/budget/origin and documentation checks pass. The packet retains harness failures and corrections;
+no broad qualification or performance campaign was started.
+
+**Next.** Separately authorized private atomic removal: reduced-carrier compatibility fence,
+predecessor reservation, exact pointer/chunks/era/enumerated-row exchange, readback and native
+abort/crash/lost-reply/retry controls, including lifecycle readers of actually reduced stores. Public
+reader-first rollout/rollback, capacity/history-required UX and growth measurements remain later.
+All history is still present. `docs/progress.md` and unrelated root notes remain untouched.
+
+### Private atomic local Account history removal — 2026-10-13
+
+**Boundary.** The preceding exact-plan dry run is committed signed as **`7a48b86b`** (`G`). This new
+implementation is uncommitted. [Contract](./account-local-retention-removal.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-retention-removal/README.md).
+
+**Exit.** A separate private removal flag enables counter v5 / reduced carrier draft-3 with mandatory
+journal era. The composed owner establishes the existing admission, durable-attempt, fresh authority,
+old-flight and empty-journal fences, prepares an exact current-cut plan, reserves chunks in the old
+representation, then atomically exchanges encrypted chunks/pointer/counter/era and enumerated logical
+keys in one strict four-store transaction. Exact inventory comparison catches late/missing/changed
+rows; no range or partial deletion. Readback authenticates the reduced result before admission can
+resume. Uncertain failure closes the owner. Expected-revision retries authenticate the successor
+without reserving or deleting again. Actual physical history is removed only in disposable tests.
+
+Reduced replay uses the authenticated predecessor plus suffix, never a missing-prefix fallback.
+Unaccepted originals retain exact capsule identity/bytes and consumed indexes inside the baseline.
+Rotation preserves the pointer and old opener; non-deleting replacement cannot downgrade it. Old
+and ordinary readers refuse without writes. Live document/undo identity and journal-before-apply
+remain intact. No public control, personal-profile conversion, service change or publication.
+
+**Evidence.** 194 unit tests in ten files; 13 new native cases with passing evidence (12 in the final
+full-file run, plus the later unpublished-originals control separately); seven existing complete-
+history native regressions; one ordinary-owner control; and three packaged reduced lifecycle/
+checkpoint journeys. Controls cover atomic abort, reservation/commit renderer death, lost reply,
+readback failure, exact retries, queued input/undo, journal crash/deduplication, stale flights, reader
+fences, restored old-era journal refusal, original/joined handoff/rotation/detachment and checkpoints.
+A zero-physical-row rotation unit control preserves old encrypted chunks and invokes no sealing.
+The packet records the cold-classification repair and fixture corrections rather than hiding failures.
+TypeScript, lint/format, ordinary build, Yjs/budget/origin and documentation checks pass.
+
+**Performance and next.** Retiring physical history creates a path to cheaper history-dependent
+loads/opening, but no performance gain is measured. Private baseline owners still bypass the warm/
+incremental verification paths and the first atomic cut can hold admission for substantial work.
+Ordinary unconverted owners retain yesterday's performance paths. Adapt warm/incremental reuse to
+the retained origin and measure growth before everyday activation; public reader-first compatibility,
+rollback and capacity/unavailable-history behavior remain separate gates. General release validation
+stays paused. `docs/progress.md` and unrelated root notes remain untouched.
+
+### Private baseline-aware warm/incremental reuse — 2026-10-13
+
+**Boundary.** Atomic removal is committed signed as **`72d1b8bf`** (`G`). This new phase is
+uncommitted. [Contract](./account-local-retention-reuse.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-retention-reuse/README.md).
+
+**Exit.** Live reduced v5 owners now seed warm storage and incremental protocol views from full
+authenticated baseline-plus-suffix replay. Unchanged loads and owned reservations keep the view;
+completed appends extend it. Full fresh authority checks, exact pointer/era and bounded metadata
+keys, authenticated allocation/spool witness and logical-store count/bounds remain checked.
+Encrypted baseline chunks join rolling sealed-byte audits. Suffix continuation preserves absolute
+positions, consumed sources, burned attempts, signatures, exact epochs, delivery/receive proofs and
+unallocated-original coverage. Authority changes, resume, replacement, rotation, unsupported deltas
+and failed writes force full replay; late results cannot reinstall a cleared view. Caller projections
+remain detached, and no read swaps the live document, UndoManager or journal binding.
+
+An independent reference becomes due after 256 verified appended rows or five minutes; it compares
+the same logical view, including any committed but not yet consumed suffix. Private discretionary
+work yields to journalled input and remains due after interruption. Non-deleting v3/v4 and one-shot
+lifecycle readers keep full verification. Generic reduced compaction remains fenced. No formats,
+public controls, personal profiles, deployment or service configuration change.
+
+**Evidence.** 191 unit tests in ten files pass, including 20 new controls and eight generated
+own/peer histories compared after every action with full replay. All 14 reduced native cases pass;
+14 selected complete-history cases have passing evidence (12 initially, two after a transaction-scope
+correction); one ordinary-owner control and three packaged lifecycle/checkpoint journeys pass.
+The lifecycle run caught an overly broad identity guard on one-shot rotation readers; its narrowed
+scope and regression are recorded. Native observations show 45 warm loads, 39 unchanged reuses and
+six extensions during flush/publication, with zero full loads/replays and 110 fresh authority checks.
+Resume forces full replay. TypeScript, focused lint/format, ordinary build, Yjs/budget/origin checks pass.
+
+**Next.** Measure equal workspace/suffix at multiple retired-history depths on a suitable host:
+cold open, online/catch-up typing, memory and maintenance. No latency benefit is yet established.
+Reader-first publication/rollback, capacity/history-required UX and retention trigger/cadence remain
+separate gates. Release validation stays paused; `docs/progress.md` and root notes remain untouched.
+
+### Authenticated local retention history-depth measurements — 2026-10-13
+
+**Boundary.** Warm/incremental reuse is committed signed as **`354c9c59`** (`G`). This continuation
+adds only probes, measurements and records. [Protocol, results and limitations](./performance-experiments/2026-10-13-retention-depth/README.md).
+
+**Exit.** Twenty-six native observations compare complete and privately reduced owners at 1, 129,
+601 and 1,201 accepted own positions, plus final shallow drift anchors. At 1,201 positions, median
+owner cold open is 3.594 s complete versus 0.141 s reduced; post-GC heap is 26.21 versus 10.45 MB.
+Warm publication is 557 versus 68 ms. Reduced owners make no full baseline replays during the fixed
+status/edit/flush/publication interval. All pairs preserve exact snapshot state, journal-before-apply,
+undo/redo, later publication, repeated cuts and offline cold recovery. Across depths, visible text
+is equal but Yjs snapshots and terminal receipt size differ; the packet explicitly limits slope claims.
+
+Six packaged observations use the retained 120-card / 600+ received-position joined fixture.
+Offline unlock-to-editor-frame median is 2.340 s complete versus 0.902 s reduced; all exports match.
+Real online silent-peer typing at CPU-4x sees 16–18 long tasks per complete-history observation versus
+0–1 reduced, but the small next-frame metric does not materially improve and is not a visible-input
+latency gate. All six observations preserve undo/redo and offline reopening. No runtime check was
+disabled; existing authority, baseline authentication, journal and final-apply boundaries remain.
+
+**Finding and next.** First conversion takes 153 ms / 725 ms / 4.929 s / 14.090 s over the native
+depths, with a 12.007 s foreground task in the deepest complete-history observation. Replacement of
+an existing baseline after the fixed suffix takes 69–98 ms. The packaged first cut takes 3.105 s;
+a separate CPU profile localizes replay, parsing/hex and planner costs without attributing the own-
+history stall. Initial-cut responsiveness is the next bounded repair before everyday activation.
+Reader-first publication/rollback, trigger/cadence and capacity/history-required behavior remain open.
+
+**Limits.** Pilot setup failures and corrections, diagnostic-counter scope and the corrected shallow
+source-size inference are retained. Three repeats, one synthetic desktop host; no phone, CPU-4x cold
+open, large tombstone/pending growth or typing during novel backlog catch-up. General release validation
+stays paused. No personal storage, service configuration, public format activation or deployment changed.
+`docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Initial local-retention conversion responsiveness — 2026-10-13
+
+**Boundary.** The depth measurements are committed signed as **`77e54ada`** (`G`). This continuation
+profiles the deep own-history first cut, then repairs its dominant repeated work. [Implementation](./account-local-retention-preparation.md)
+and [protocol/evidence](./performance-experiments/2026-10-13-retention-preparation/README.md).
+
+**Repair.** One private immutable reference coverage view per full replay and one per deletion plan
+replace repeated content reconstruction; source and candidate coverage retain pending-aware proofs.
+The existing CPU budget yields between independent checks and before guarded replay crypto. Validated
+unique sequences index the opened rows. All full replay passes, complete custody/authority checks,
+exact reservation/exchange inventory, journal-era/network-flight fences and post-commit readback remain.
+The live document and UndoManager are unchanged; queued input still waits and journals before apply.
+
+**Measured exit.** Three matched CPU-1x pairs at 1,201 accepted own positions reduce median conversion
+from 14.069 s to 5.796 s and median maximum foreground task from 11.836 s to 431 ms. Native crypto
+and scoped authority/verification counts match exactly. All seven observations, including the 4x
+control, preserve queued input, undo/redo and exact cold-recovered state. Existing 110 focused unit
+tests pass; the 44-test focused rerun includes two new coverage/lifetime controls. All 14 native
+abort/crash/retry/journal/undo cases and three packaged original/joined lifecycle/checkpoint journeys
+pass. TypeScript, lint/format, disposable ordinary build, Yjs, origin and bundle-budget checks pass.
+
+**Remaining.** The first repair removes the measured multi-second CPU-1x freeze, not the admission
+wait or all long tasks. One CPU-4x observation still takes 22.051 s with a 1.704 s task. Next profile
+the remaining candidate census/inventory/comparison work and design preparation outside admission
+while keeping the final fresh check and atomic journal-era exchange. No phone or release claim.
+Public conversion/trigger/cadence, compatible reader-first rollout/rollback and capacity/history-required
+UX remain gated. Release validation stays paused; personal profiles, services, `docs/progress.md`
+and unrelated root notes are untouched. The repair and new evidence remain uncommitted.
+
+### Private retention preparation outside admission, with budgeted nested census
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `75a3e94b` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** [The handoff](./account-local-retention-handoff.md) prepares on the exclusive storage tail
+without holding input admission. Input journals/applies and invalidates the plan. Completed evidence
+uses an owner/activity guard across task settlement; final entry uses a fresh task, complete authority
+and attempt checks, empty journal, exact inventory and retired-read fencing. Strict exchange, full
+readback and reduced replay stay fenced; the live document and UndoManager remain in place. Nested
+protocol censuses yield between records, and exact comparisons borrow bytes synchronously without
+whole-inventory copies. No format/check/deletion rule or public switch is weakened.
+
+**Evidence.** The [retained packet](./performance-experiments/2026-10-13-retention-handoff/README.md)
+contains profiles, frozen bundles, logs and source identities. At 1,201 own positions, three matched
+pairs give median maximum task **436 → 97 ms** and total conversion **5.706 → 6.029 s**. One input
+intervention changes admission wait **5,567 → 9.4 ms**, with a skipped cut and journal/undo/cold-replay
+checks. A CPU-4x candidate takes **25.008 s**, maximum task **533 ms**, final FIFO **1.860 s**;
+CPU-1x final FIFO remains **0.966–1.041 s**. All seven quiet cuts and three input interventions pass.
+Observed crypto work is identical; the scoped authority-check count increases **11 → 14**.
+
+**Checks.** **191** unique unit tests, **17** native atomic/crash/retry/input controls and **three**
+packaged lifecycle/checkpoint journeys pass, plus TypeScript, focused format/lint, ordinary build,
+Yjs runtime, origin isolation and **138.3 kB / 350 kB** initial-JS budget. The first lifecycle run
+exposed a retired read rejecting the initial durability wait; the private request now skips that
+pre-mutation attempt, with a repaired lifecycle run and deterministic retired-read control. The
+measurement bundle precedes only that error-path catch and a comment edit; the packet says so.
+
+**Remaining.** Initial conversion is still not transparent background maintenance: atomic exchange,
+evidence handling and full readback retain a material FIFO wait, with longer CPU-4x tasks. Public
+activation, retention cadence, reader-first publication/rollback and general release validation remain
+separate. No deployment or personal storage was changed; `docs/progress.md` stays with its other
+workstream.
+
+
+### Profile and shorten the private final retention transaction
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `f89ee3f9` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** The preceding preparation handoff is signed as **`f89ee3f9`**. The new
+[final-transaction repair](./account-local-retention-fenced.md) starts from an aligned atomic-exchange/
+readback profile. Replacement occupied 645 ms of a 1,022 ms fence. An explicit-commit candidate
+improved paired median fence only 2.6% and was discarded. The selected repair groups physical removal
+only after a strict, complete byte-for-byte inventory comparison and an independent exact deletion-set
+completeness proof. Missing/extra/duplicate/foreign keys or a partial cut refuse before logical-store
+clear. Metadata is not cleared. Complete fresh authority, reservation burns, journal-era fencing,
+atomic settlement, authenticated readback/independent replay, caller isolation and live undo remain.
+This explicitly revises the old per-key database-operation rule, retaining its enumerated coverage.
+
+**Evidence.** The [packet](./performance-experiments/2026-10-13-retention-fenced/README.md) retains the
+prospective protocol, both candidates, compressed bundles/profiles/traces/logs, raw observations and
+source hashes. At 1,201 own positions / 8,439 rows, three matched pairs give median final fence
+**1,030 → 473 ms (54%)**, replacement **621 → 99 ms**, total **6.251 → 5.458 s**. Unchanged preparation
+also drifted; not all total-time difference is attributed to the repair. Maximum tasks remain about
+**104 → 102 ms**. One profiled CPU-4x pair gives final fence **1.898 → 1.564 s**, total **25.961 →
+24.742 s**, maximum task **475 → 423 ms**. All eight quiet cuts and three input interventions preserve
+exact cold recovery; crypto work and **14** scoped authority checks match. No phone/release claim.
+
+**Checks.** **129** unit tests, **18** native atomic/crash/retry/journal/input controls and **three**
+packaged lifecycle/checkpoint journeys pass, plus TypeScript, lint/format, ordinary build, Yjs,
+origin isolation and **138.4 kB / 350 kB** initial-JS budget. New controls refuse malformed deletion
+sets and a low foreign row before any clear; abort after the first clear rolls back all stores.
+
+**Remaining.** Final private evidence copies consume 436 ms in the profiled CPU-4x candidate;
+comparisons and preparation still grow with history. Next address duplicate evidence handling while
+retaining private ownership and exact transaction checks. Public conversion/reader-first rollout,
+rollback, product capacity/trigger/cadence and release validation remain gated. No deployment or
+personal storage changed; `docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Keep private retention evidence owned; copy only material needed by each caller
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `eb2a3374` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** The grouped atomic transaction is signed as **`eb2a3374`**. The new
+[evidence-reuse repair](./account-local-retention-evidence-reuse.md) retains the planner's full private
+capture, exposes detached candidate/counter material and deletion keys, and compares each fresh
+census directly against that capture once. The post-reservation verifier snapshots only the reserved
+counter and binding and rechecks the live plan on every use. No old byte buffers escape. Complete
+fresh authority, exact transaction/deletion checks, reservation burns, journal/activity fences,
+authenticated readback/independent replay and the live document/UndoManager remain unchanged.
+
+**Evidence.** The [packet](./performance-experiments/2026-10-13-retention-evidence/README.md) includes
+the prospective protocol, frozen bundles, source identities, raw observations, profiles/traces and
+focused logs. Three matched pairs at 1,201 accepted own positions / 8,439 rows give median final fence
+**500 → 265 ms (47%)**, total **5.713 → 5.511 s**, maximum task **105 → 103 ms**. One profiled CPU-4x
+pair gives fence **1.331 → 0.697 s**, three copy spans **372 → 11 ms**, comparison spans **327 → 153 ms**.
+All eight conversions and three preparation-time input interventions cold-recover exactly. The six
+unprofiled runs have identical native crypto counts; all eight retain **14** scoped authority checks
+and equal scoped verification/replay work. The packet records an extra native verify in the profiled
+reference and post-conversion audit work in the profiled candidate instead of claiming exact total
+work equality across those whole collection windows.
+
+**Checks.** **134** unique unit tests, **18** native crash/abort/retry/journal/input/undo controls and
+**three** packaged lifecycle/checkpoint journeys pass, plus TypeScript, focused lint/format, ordinary
+build, Yjs runtime/patch, origin isolation and **138.3 kB / 350 kB** initial-JS budget. New controls
+cover detached caller mutations, reserved counter/binding snapshots, verifier/plan disposal, disposal
+during sealing, and mutation of an old encrypted chunk after reservation. Malformed deletion sets
+continue to refuse before any clear.
+
+**Remaining.** Initial full-history preparation remains the dominant work. CPU-4x total is **23.220 →
+23.896 s**, with unchanged preparation varying by 1.31 s; maximum tasks **431 → 449 ms**. This phase
+does not establish an overall throttled conversion or foreground-task improvement. Next investigate
+those remaining preparation tasks; further fenced reductions need a separate design for full physical
+censuses/comparisons. Public trigger/cadence, capacity behavior, reader-first publication/rollback and
+release validation remain separate. New work is uncommitted. No deployment or personal storage changed;
+`docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Budget the remaining private retention preparation loops
+
+**Date:** 2026-10-13 · **Commit:** signed `f75a19e7` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** Private evidence reuse is signed as **`127fcf2a`**. The new
+[preparation scheduling repair](./account-local-retention-preparation-tasks.md) begins with aligned
+foreground-task attribution. Synchronous/cooperative self projection now share one algorithm;
+cooperative callers yield between positions and erase owned decoded buffers on interruption. Baseline
+summarization, source selection and complete outstanding-obligation comparison also use guarded budget
+points. Full authority checks, all verification, exact inventory/deletion proofs, reservation burns,
+journal/activity fences, atomic exchange and authenticated readback remain. No yield enters the native
+transaction; caller buffers, journal-before-apply and the live document/UndoManager are preserved.
+
+**Evidence.** The [packet](./performance-experiments/2026-10-13-retention-tasks/README.md) contains the
+prospective protocol, frozen builds, source identities, aligned task profiles/traces and focused logs.
+At 1,201 accepted own positions / 8,439 rows, three matched CPU-1x pairs show reference maximum tasks
+**100–103 ms**, with **no candidate task reported at the 50 ms floor**. Median total rises **5.434 →
+5.562 s (2.4%)**. The profiled CPU-4x maximum falls **483 → 97 ms (79.9%)**, while total rises
+**24.704 → 25.417 s**. Its remaining largest preparation task is an inventory clone. All eight cuts
+and three preparation-time input interventions cold-recover exactly and retain journal/undo behavior.
+All six unprofiled runs have identical work/native crypto counts; all eight retain 14 scoped authority
+checks. The packet records one extra native verify in the profiled reference and post-cut audit work
+in the candidate rather than claiming identical whole-window counters.
+
+**Checks and caveat.** The initial 154-case focused unit set has 153 passes and one five-second large-
+anchor timeout; its unchanged isolated 32-test file passes. All 18 native controls and two packaged
+lifecycle journeys pass. The checkpoint/repeated-cut/cold-open journey initially closes the joined
+owner during a history check; three diagnostic and two unchanged-application repetitions pass without
+a repair or timeout increase. The original cause remains **unresolved**, with logs/context and the
+diagnostic patch retained. This is not a completely clean lifecycle result and remains an activation
+hold. TypeScript, focused lint/format, ordinary build, Yjs, origin scan and 138.4 kB / 350 kB budget pass.
+
+**Remaining.** Budgeting removes the measured 200–483 ms preparation loops, not total-history work,
+all native/GC stalls or the final admission wait (752 ms in the CPU-4x candidate). Preparation still
+takes 24.65 s under throttling and can be cancelled by input. Resolve/reproduce the recorded lifecycle
+closure before activation. Product trigger/cadence, capacity behavior, compatible reader-first
+publication/rollback, phone evidence and general release validation remain separate. New work is
+uncommitted; no deployment or personal storage changed. `docs/progress.md` and unrelated root notes
+remain untouched.
+
+
+### Order checkpoint maintenance after prepared receive handoffs
+
+**Date:** 2026-10-13 · **Commit:** signed `e2e5337a` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** The preparation scheduling phase is signed as **`f75a19e7`**. The new
+[investigation and repair](./account-history-receive-ordering.md) reproduces the joined-owner closure:
+history inspection refreshes custody while an empty prepared receive still holds its final-apply
+context. The final check correctly refuses that superseded context, admission closes, and the UI
+returns to the chooser. Three natural diagnostic repetitions passed; a forced ordering failed with
+the refusal and closed owner recorded. This proves a mechanism matching the previous symptom, not
+the unrecorded cause of that original occurrence.
+
+**Repair.** Workspace history waits for existing receive handoffs outside admission and storage, then
+checks for a receive that won the gap under the storage tail, after the complete authority check and
+before any history effect/refresh. Only that private pre-effect refusal retries, at most three times.
+Generic authority/storage errors and ambiguous effects do not retry. Long history work stays outside
+the input FIFO. Complete final checks, invalidation, journal fencing, staged-suffix closure, native
+exchange/readback and the live document/UndoManager remain; no format changes.
+
+**Evidence.** The [packet](./development-evidence/2026-10-13-history-receive-ordering/README.md) retains
+before/after logs, diagnostic source/trace, source hashes and the deliberately failing omitted-guard
+control. The repaired checkpoint journey forces empty, content/local-edit/undo, and late-arrival
+interleavings after reduced-history cold opening. The omission fails the late-arrival check. All
+**71 unit tests**, **seven native receive controls**, and **three reduced-history lifecycle/checkpoint
+journeys** pass. **Two ordinary packaged history journeys** also pass, including lost publication
+replies, interrupted installation and repeated snapshots. The native controls retain real
+fresh-authority refusal, renderer-death replay,
+undisplayed suffix plus local journal, and undo/redo. TypeScript, focused lint/format, ordinary build,
+Yjs, origin isolation and **138.3 kB / 350 kB** initial-JS budget pass. The initial repaired test attempt
+failed at probe construction, before the browser ran; its log is retained, and the corrected anchor
+does not relax assertions or timeouts.
+
+**Remaining.** The demonstrated checkpoint/receive race is repaired. The original untraced occurrence
+remains historically uncertain, rather than retrospectively relabelled as proved. No performance
+improvement is claimed by this correctness phase. Public retention trigger/cadence, capacity behavior,
+compatible reader-first publication/rollback, current-device measurements and general release
+validation remain separate. No deployment or personal storage changed.
+`docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Separate local-retention readers from conversion authority
+
+**Date:** 2026-10-13 · **Commit:** signed `47466b84` · **Stage:** reader-first local retention preparation; release validation paused.
+
+**Exit.** The checkpoint/receive ordering repair is signed as **`e2e5337a`**. The new
+[reader-first contract](./account-local-retention-reader-rollout.md) makes the packaged default
+baseline-aware while leaving installation and retention disabled. Original/joined startup and live
+owners, checkpoint, membership, rotation and detached readers no longer require the installation
+switch. Both composed-owner and low-level storage boundaries deny conversion without separate
+writer authority. Reduced semantic audits remain interruptible; ordinary bounded audits keep their
+existing dispatch. Full authority/authentication, warm invalidation, journal fencing, final application
+and live undo remain. The existing v5 reduced format is unchanged.
+
+**Evidence.** The [packet](./development-evidence/2026-10-13-local-retention-reader-rollout/README.md)
+retains **58 unit tests**, **18 native controls**, a packaged waiting-service-worker update/private
+conversion/reader rollback journey and **two reader-only lifecycle journeys**. They cover ordinary
+creation/sync, reduced offline edit/reopen/undo, checkpoint continuation, two rotations, a new ordinary
+peer, detached editing, lost-reply/backend-restart continuation and incompatible predecessor refusal.
+The latter leaves exact content/journal inventories unchanged and a compatible reader reopens them.
+The predecessor's generic unlock message is recorded rather than described as a useful update prompt.
+TypeScript, focused lint/format, ordinary build, Yjs, origin isolation and **138.4 kB / 350 kB** initial-JS
+budget pass. Initial harness assumptions and diagnostic failures are retained alongside passing logs.
+
+**Separate finding.** The reload-heavy fixture exhausted session renewal capacity after the lost
+reply. The existing service permits eight live access tokens per login with five-minute lifetimes.
+Its final continuation includes a real backend restart, preserving SQLite/custody and discarding
+volatile tokens; no service limit or assertion timeout is raised. This is not evidence of uninterrupted
+recovery from token-capacity exhaustion. That session-liveness issue was left open by this phase;
+the following checkpoint records its bounded repair.
+
+**Remaining.** Publish the reader-only build and retain its exact compatible rollback image
+before a writer release. Product conversion trigger/cadence, capacity/refusal behavior, remaining
+initial-conversion wait and current-phone measurements remain separate. No conversion is enabled
+for ordinary users; no personal storage or deployment changed. This work makes
+no performance or release-qualification claim. `docs/progress.md` remains untouched.
+
+
+### Keep rapid Account reopens within a bounded access window
+
+**Date:** 2026-10-13 · **Commit:** signed `890fc677` · **Stage:** session-liveness repair; release validation paused.
+
+**Exit.** Reader-first compatibility is signed as **`47466b84`**. The
+[renewal-window contract](./account-session-renewal-window.md) replaces capacity refusal at eight
+live access tokens with retirement of the oldest token from that same authenticated login, after
+successful validation. The bound stays eight; other logins, absolute deadlines, credential binding,
+revocation, device grants and complete current authority checks remain. There is no new wire/storage
+format, client renewal algorithm or user prompt. New local-history conversions remain disabled;
+reader capability stays enabled. Journal fencing, final authority checks and live undo are unchanged.
+
+**Evidence.** The [packet](./development-evidence/2026-10-13-session-reopen/README.md) retains a
+before-control with four capacity failures and the passing repair: **92 focused Node tests** and
+**two packaged reader-only lifecycle journeys**. New controls cover 32 same-clock renewals with only
+the newest eight usable, failed transactions, lost installed-token replies, cross-login isolation,
+current account/credential/key/expiry checks, 20 cold client owners using one remembered session and
+transparent scoped reauthorization before/during device proof. Existing tests retain revocation,
+actual process restart, membership and request-boundary refusals. The previously stuck lifecycle
+journey now resumes the lost-reply removal without the backend-restart workaround, observing
+**20 successful renewal requests and no renewal 429**. No allowance or assertion timeout increased.
+TypeScript, focused lint/format, ordinary build, Yjs, origin isolation and **138.4 kB / 350 kB** initial-JS
+budget pass. Original reader-first diagnostic evidence is retained unchanged.
+
+**Remaining.** Prepare/test the reader-only container and record its compatible
+rollback digest before publication. This repair is signed; no deployed service or
+personal profile changed. Public conversion trigger/cadence, capacity/refusal presentation, remaining
+initial-conversion wait and current-phone measurements remain separate. No performance gain or
+release qualification is claimed; `docs/progress.md` and unrelated root notes remain untouched.
+
+
+### Prepare the reader-only image and retain its compatible rollback identity
+
+**Date:** 2026-10-14 · **Candidate:** signed `890fc677` · **Stage:** bounded publication preparation; conversions disabled; release validation paused.
+
+**Exit.** The session-liveness repair is signed as **`890fc677`**. The
+[publication handoff](./account-local-retention-publication.md) pins a locally tested ARM64 image from
+that exact commit: index **`sha256:fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb`**,
+runtime manifest **`sha256:1183e3cd2f4d62b250fc0cf5985ae1024dabfa2d445bdca9e867f621c875b361`**.
+`done-public:890fc677` and `done-reader-rollback:890fc677` name the same image. The latter is retained
+as the compatible local fallback; publication and authenticated remote pull remain necessary before
+any future writer release. Reader is **on**, installer/retention are **off**; no public conversion,
+new deletion, schema migration or protocol cutover is activated.
+
+**Evidence.** The [packet](./development-evidence/2026-10-14-reader-publication/README.md) records the
+signed build-context archive, image/provenance, 109 unchanged frontend files, logs and reproduction
+probe. All **31 existing container checks**, **92 Node 24 session/transport tests**, the two-process
+container smoke and **three exact-frontend browser journeys** pass. The rollback journey opens both
+privately reduced device roles, edits offline with undo/redo, reopens, syncs and continues a verified
+checkpoint without replacing baseline/chunks. The actual deployed predecessor refuses the same
+profiles without changing content/journal inventories; returning to the compatible reader reopens
+and syncs them. The initial Node 24 invocation lacked an excluded synthetic fixture: 57 tests passed,
+two suites failed to load it. The passing rerun mounts the committed fixture read-only; no production
+image or runtime was patched. TypeScript, Yjs, origin isolation and **138.4/350 kB** initial JS pass.
+Existing native authority, journal and lifecycle controls remain in the linked implementation packets.
+No new performance or phone measurement is claimed.
+
+**Remaining.** Merge the application PR while preserving signed commits; publish this tested image,
+verify its digest/private pull, then prepare the ol-infra pin PR and reconcile after operator merge.
+Before any conversion, the deployed `f516a958` remains an ordinary-profile rollback; after reduced
+history exists, use the retained compatible reader instead. Public conversion trigger/cadence,
+capacity/refusal UX, remaining preparation wait and current-phone checks are separate. No registry
+push, infrastructure or personal storage change occurred. `docs/progress.md` and unrelated notes
+remain untouched.

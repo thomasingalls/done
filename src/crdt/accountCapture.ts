@@ -1,6 +1,10 @@
+import { hasBaselineVerifier } from './localBaselineMode';
+import { eraseVerified } from './verifiedRecords';
+import type { AccountBaselineRead } from './localBaselineShadow';
+import type { ContentCrypto } from './contentStore';
 import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApplyGate';
 import { budgetedTask } from './cpuBudget';
-import { maintenanceTask } from './contentMaintenance';
+import { maintenanceTask, MaintenanceInterrupted } from './contentMaintenance';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import { verifyJoinedAccount } from './joinedAccount';
 import { historyAuthority } from '../../account-protocol/admissionHistory';
@@ -51,8 +55,14 @@ import type { ContentSelection } from './contentSelection';
 /** Internal composition hook; never supplied by application or transport callers. */
 export interface CaptureExtension {
   version: 7 | 8 | 9;
+  readBaseline?: true;
   /** Private verifier may borrow retained carrier rows immutably during selection validation. */
   selectiveLoads?: true;
+  baseline?(
+    task: SessionTask,
+    identity: Parameters<NonNullable<ContentCrypto['baseline']>>[1],
+    route: CaptureRoute,
+  ): ReturnType<NonNullable<ContentCrypto['baseline']>>;
   selectedSourcePresence?(
     lease: ContentSelection,
     incoming: readonly CapturedSourceIdentity[],
@@ -78,6 +88,7 @@ export interface CaptureExtension {
     route: CaptureRoute,
     counter: ContentCounter,
     view?: object,
+    baseline?: AccountBaselineRead,
   ): Promise<void>;
   invalidateAuthority?(): void;
   dispose(): void;
@@ -101,11 +112,29 @@ export async function openAccountCaptureOwner(
       : undefined;
   const finalApply = createFinalApplyGate();
   let suspended = false;
+  // Private preparation and reduced-history audits yield to input or lifecycle/route changes.
+  let shadowActivity = {};
+  const invalidateShadow = () => {
+    if (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1' || hasBaselineVerifier())
+      shadowActivity = {};
+  };
   let tail: Promise<unknown> = Promise.resolve();
   const sourceRecords = (records: readonly OpenedRecord[]) =>
     extension ? extension.sourceRecords(records, route) : records;
-  const recovery = (records: OpenedRecord[], journal: ObservedEntry[]) => ({
-    ...capturedRecovery({ records: [...sourceRecords(records)], journal }, route),
+  const recovery = (
+    records: OpenedRecord[],
+    journal: ObservedEntry[],
+    baseline?: AccountBaselineRead,
+  ) => ({
+    ...capturedRecovery(
+      {
+        records: [
+          ...(baseline?.ledger.census.delivery.spool.sourceRecords ?? sourceRecords(records)),
+        ],
+        journal,
+      },
+      route,
+    ),
     records,
   });
   const live = await (joined ? openJoinedWriteSession : openAccountWriteSession)(
@@ -127,12 +156,16 @@ export async function openAccountCaptureOwner(
           owner = prepareAccountCustody(
             { ...scope, resolvePrincipal: () => scope.principalId },
             options.code,
-            (records, task, counter, view) =>
-              extension.validate(task, records, route, counter, view),
+            (records, task, counter, view, baseline) =>
+              extension.validate(task, records, route, counter, view, baseline),
             true,
             true,
             warmLoads,
             warmLoads ? extension.selectiveLoads : undefined,
+            extension.baseline
+              ? (task, identity) => extension.baseline!(task, identity, route)
+              : undefined,
+            extension.readBaseline,
           );
           await extension.initializeJoined(task, v);
           await owner.initialize(task);
@@ -183,14 +216,18 @@ export async function openAccountCaptureOwner(
             resolvePrincipal: () => route.principal,
           },
           options.code,
-          (records, task, counter, view) => {
+          (records, task, counter, view, baseline) => {
             if (extension?.version !== 9) captureCatalog(sourceRecords(records), route);
-            return extension?.validate(task, records, route, counter, view);
+            return extension?.validate(task, records, route, counter, view, baseline);
           },
           extension ? true : undefined,
           extension?.version === 9 ? true : undefined,
           warmLoads,
           warmLoads ? extension?.selectiveLoads : undefined,
+          extension?.baseline
+            ? (task, identity) => extension.baseline!(task, identity, route)
+            : undefined,
+          extension?.readBaseline,
         );
         await extension?.initialize(task, v);
         await owner.initialize(task);
@@ -311,7 +348,33 @@ export async function openAccountCaptureOwner(
         }
         auditing = true;
         // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
-        void run((task) => owner!.carrier.auditWarm(task))
+        void run((parent) => {
+          if (!owner!.carrier.hasReducedHistory()) return owner!.carrier.auditWarm(parent);
+          // Reduced baselines also have a full semantic oracle. Input still journals
+          // synchronously, invalidating this discretionary pass before its next effect.
+          const activity = shadowActivity;
+          const check = () => {
+            if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+          };
+          const interruptible: SessionTask = {
+            signal: parent.signal,
+            step: (effect) =>
+              parent.step(() => {
+                check();
+                return effect();
+              }),
+            wait: (start) =>
+              parent.wait(() => {
+                check();
+                return start();
+              }),
+          };
+          return owner!.carrier.auditWarm(
+            import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
+              ? budgetedTask(interruptible)
+              : interruptible,
+          );
+        })
           .then((complete) => {
             auditing = !complete;
             schedule(complete ? owner!.carrier.warmAuditDelay() : 0);
@@ -338,23 +401,29 @@ export async function openAccountCaptureOwner(
   }
   if (warmLoads || extension?.invalidateAuthority) {
     const invalidate = () => {
+      invalidateShadow();
       finalApply.invalidate();
       owner!.carrier.invalidateWarm();
       extension?.invalidateAuthority?.();
     };
     const visible = () => {
+      invalidateShadow();
       finalApply.invalidate();
       if (document.visibilityState === 'visible') invalidate();
     };
     document.addEventListener('visibilitychange', visible);
-    document.addEventListener('freeze', finalApply.invalidate);
+    const freeze = () => {
+      invalidateShadow();
+      finalApply.invalidate();
+    };
+    document.addEventListener('freeze', freeze);
     document.addEventListener('resume', invalidate);
     window.addEventListener('pageshow', invalidate);
     const stop = () => {
       finalApply.invalidate();
       extension?.invalidateAuthority?.();
       document.removeEventListener('visibilitychange', visible);
-      document.removeEventListener('freeze', finalApply.invalidate);
+      document.removeEventListener('freeze', freeze);
       document.removeEventListener('resume', invalidate);
       window.removeEventListener('pageshow', invalidate);
     };
@@ -453,6 +522,7 @@ export async function openAccountCaptureOwner(
       }),
     appendLocal: (bytes: Bytes) =>
       live.write(() => {
+        invalidateShadow();
         if (suspended) throw Error('Account generation is changing');
         const c = decodeSourceCapsule(bytes, route);
         eraseCapsule(c);
@@ -497,12 +567,18 @@ export async function openAccountCaptureOwner(
     loadRecovery: () =>
       run((task) =>
         withSnapshot(task, async (journal) => {
-          const records = await owner!.carrier.load(task);
+          const logical = await owner!.carrier.loadAccount(task);
           try {
-            return recovery(records, journal);
+            return recovery(
+              logical.records,
+              journal,
+              logical.kind === 'baseline-plus-suffix' ? logical : undefined,
+            );
           } catch (e) {
-            for (const r of records) r.bytes.fill(0);
+            for (const r of logical.records) r.bytes.fill(0);
             throw e;
+          } finally {
+            if (logical.kind === 'baseline-plus-suffix') eraseVerified(logical.ledger);
           }
         }),
       ),
@@ -549,11 +625,13 @@ export async function openAccountCaptureOwner(
     carrier,
     // Synchronous admission barrier. Retention still owns the permit and serialized storage tail.
     suspendCapture() {
+      invalidateShadow();
       finalApply.invalidate();
       suspended = true;
     },
     // Internal composition only: caller persists and verifies authority before this synchronous swap.
     installRoute(task: SessionTask, next: CaptureRoute) {
+      invalidateShadow();
       finalApply.invalidate();
       task.step(() => {
         if (
@@ -599,6 +677,56 @@ export async function openAccountCaptureOwner(
         route: CaptureRoute,
       ) => Promise<T>,
     ) => run((task) => operation(task, owner!, route)),
+    /** Scoped baseline census on the owned storage tail. Shadow calls have no admission barrier;
+     * installers must already hold the input queue and flush first. Input/lifecycle changes invalidate. */
+    runBaselineShadow: <T>(
+      operation: (
+        task: SessionTask,
+        owner: ReturnType<typeof prepareAccountCustody>,
+        route: CaptureRoute,
+        checkJournal: () => void,
+        checkRetained: () => void,
+      ) => Promise<T>,
+    ) =>
+      run(async (parent) => {
+        if (
+          extension?.version !== 9 ||
+          (import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] !== '1' &&
+            import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] !== '1')
+        )
+          throw Error('Account baseline experiment is disabled');
+        const activity = shadowActivity;
+        // This guard belongs to the owner, not the expiring storage task. Only isolated,
+        // read-only preparation evidence may retain it across task settlement.
+        const check = () =>
+          live.write(() => {
+            if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+          });
+        const task: SessionTask = {
+          signal: parent.signal,
+          step: (effect) =>
+            parent.step(() => {
+              check();
+              return effect();
+            }),
+          wait: (start) =>
+            parent.wait(() => {
+              check();
+              return start();
+            }),
+        };
+        const checkJournal = () =>
+          task.step(() => {
+            const entries = owner!.journal.snapshot();
+            try {
+              if (entries.length) throw new MaintenanceInterrupted();
+            } finally {
+              eraseJournalSnapshot(entries);
+            }
+          });
+        checkJournal();
+        return operation(task, owner!, route, checkJournal, check);
+      }),
     listCaptures: () =>
       run((task) =>
         withSnapshot(task, async (journal) => {

@@ -1,7 +1,28 @@
-# Local Account retention — design only, 2026-10-12
+# Local Account retention — design and experimental replay
 
-No new record, reader fence, migration or deletion is implemented by this document. The separate
-warm-load repair changes owner-local reuse only. General release validation remains paused.
+**Current checkpoint (2026-10-13):** private atomic removal, baseline-aware warm reuse,
+history-depth measurements, conversion responsiveness and checkpoint/receive ordering are
+implemented. [Reader-first compatibility and rollback preparation](./account-local-retention-reader-rollout.md)
+now enable the packaged reader independently of the private writer. New conversions remain
+disabled; no reader image has been published in this phase. The design and intermediate milestones
+below retain their original phase boundaries; they are not the current implementation inventory.
+
+The [2026-10-13 baseline format/replay phase](./account-local-baseline-replay.md) implements an
+experimental in-memory codec, authenticated candidate builder and pure reader. The subsequent
+[shadow integration](./account-local-baseline-shadow.md) adds an explicit opt-in owner comparison;
+the [transition/reader phase](./account-local-baseline-transitions.md) extends authority/checkpoint
+continuation and fences consumers that still require full history. The ordinary application reader
+still uses full history. The [durable anchoring phase](./account-local-baseline-anchoring.md) adds
+a private encrypted carrier and counter-v3 refusal fence, tested only in disposable stores. Subsequent
+[lifecycle integration](./account-local-baseline-lifecycle.md) and signed `bcca1aa1`
+[private fences](./account-local-retention-fences.md) add replacement/rotation and counter-v4
+journal-era, old-read and checkpoint enforcement, still with an empty logical deletion set. The
+[reader inventory](./account-local-retention-readers.md) and [exact deletion plan](./account-local-retention-deletion.md)
+define the remaining adapters and atomic transition. The subsequent
+[owned-reader phase](./account-local-baseline-readers.md) connects private era-bearing original/joined
+logical reads, retaining all physical rows and the full oracle. No
+product baseline installation, migration or deletion is enabled. The separate warm-load repair changes owner-local reuse
+only. General release validation remains paused.
 
 ## Target and limits
 
@@ -44,7 +65,9 @@ The baseline must bind, with bounded representations and exact coverage:
    authenticated baseline instead of recomputing removed events from zero.
 5. The exact retained suffix and deletion set, including any source capsule referenced by a
    surviving position, envelope, refused attempt or journal entry. Partial-capsule acceptance
-   cannot permit deleting a capsule whose other original updates remain unaccepted.
+   cannot permit losing a capsule whose other original updates remain unaccepted. Its redundant
+   physical row can eventually be removed only when its exact bytes and consumed indexes survive
+   inside the authenticated encrypted baseline; this is distinct from retiring the original itself.
 
 Local authentication can attest to a state obtained by a completed full verification. It does
 not manufacture a new service acceptance, grant authority to another device or eliminate the
@@ -58,12 +81,18 @@ Removing capsule bytes while a crash-retained journal copy can reappear would br
 deduplication and could republish already accepted work. An unbounded set of retired capsule IDs
 would simply move the growth elsewhere.
 
-Recommended first scope: under the exclusive Account owner, settle/flush the journal, remove only
+Selected first scope: under the exclusive Account owner, settle/flush the journal, remove only
 exact covered entries, and confirm the scoped journal is empty before preparing a retention cut.
 If removal fails or input arrives, abandon the attempt without deleting source evidence. If a
 future design admits concurrent journalling, it needs an authenticated finite journal frontier;
 a largest sequence number is not enough. Restoring a mismatched old journal/database pair must
-be an explicit refusal/recovery case, not silently treated as a new edit.
+be an explicit refusal/recovery case, not silently treated as a new edit. The
+[retirement evidence contract](./account-local-retention-evidence.md) selects an authenticated
+journal-era wrapper before any source retirement, old-flight invalidation/refetch, bounded exact
+checkpoint-cut evidence, and refusal/preservation for unsupported partial restores. Matching eras
+do not prove complete profile freshness or nonce safety. The private empty-deletion implementation
+now enforces these fences. Private original/joined logical readers are connected; the remaining
+lifecycle/rebase adapters and physical deletion are still unimplemented.
 
 Prepare and independently verify the baseline and candidate suffix before deletion. At the final
 IndexedDB transaction, recheck the counter, authority, exact physical deletion set and baseline
@@ -78,23 +107,55 @@ trimmed. Prove undo/redo and subsequent publication across the retention boundar
 
 ## Format and rollout decisions still needed
 
-- A new baseline payload and readers that begin from it are required. The sealed-record envelope
-  may stay v1; whether counter-v2 can anchor the new baseline without additional authenticated
-  metadata remains to be decided. Do not choose version numbers prematurely.
+- The private carrier uses sealed-record envelope v1 and independently authenticated counter v3/v4;
+  the ordinary reader refuses it. Real installer/cold readers and non-deleting replacement/rotation
+  now exist privately. The journal-era wrapper is implemented with counter v4. The proposed reduced
+  representation has a separate closed counter/carrier in the exact plan; do not reinterpret the
+  current `history: complete` pointer.
 - Install an authenticated reader/writer fence before any deletion. An old cached application
   must refuse the new store cleanly, not replay a suffix as a whole history.
 - Ship reader capability before enabling writers, or explicitly require the application update
   that owns the migration. After conversion, an image rollback to an older reader is insufficient.
-- Define bounds/chunking rather than assume the existing 4 MiB per-record limit covers months of
-  writing. Bound the pending tail independently; retention cannot discard unaccepted work.
+- The first private carrier uses 256 KiB encrypted chunks while retaining the 4 MiB encoded
+  baseline limit. Larger snapshots and pending-tail bounds still need work; retention cannot
+  discard unaccepted work.
 - Determine which authority/membership chains can be summarized. If those remain unbounded,
   describe the remaining growth instead of claiming full history independence.
 
 ## First implementation-sized step after design approval
 
-Specify the baseline codec and pure replay-from-baseline contract. Differential tests compare
-full history with baseline plus suffix over accepted prefixes, pending sources, partial capsules,
-refusals/retries, received dependencies, membership changes and compaction. Only after that should
-an owned atomic installer and crash/restart checks remove physical rows. Measure equal-workspace
-fixtures at multiple prefix lengths, including a deep receiving device. No deletion or format
-rollout is authorized solely by this design note.
+The first codec and pure replay experiment is implemented with the narrower eligibility and
+limitations recorded in the [phase contract](./account-local-baseline-replay.md). Differential tests
+compare full history with baseline plus suffix and the next source/position selection. An unresolved
+cut or unavailable historical detail still requires intact full history. The pure draft-2 verifier checks supported
+authority/checkpoint changes from the retained origin and suffix; persistence is supplied by the
+subsequent owner/lifecycle integration below.
+
+The [owned shadow integration](./account-local-baseline-shadow.md) now runs explicitly under the real
+Account lifetime with all history retained. Before deletion, resolve
+the remaining fenced consumers and exact atomic installer with crash/restart checks. Durable pointer,
+journal and old-read/checkpoint fences are now implemented privately with full history retained.
+Measure equal-workspace fixtures at multiple prefix lengths when controlled timing is available.
+No deletion or format rollout is authorized solely
+by this design note.
+
+
+## Non-deleting owner integration — 2026-10-13
+
+The [real owner phase](./account-local-baseline-owner.md) now connects first-anchor installation,
+baseline-aware original/joined cold opening, and the separate native history source under an explicit
+development switch. It preserves the admission/journal fence and live undo, retains all history, and
+checks durable baseline replay against the full reference. No product activation or deletion.
+Generation/replacement lifecycle and the selected old-flight/checkpoint/restored-journal fences are
+now covered by the subsequent phases. Remaining reduced readers still precede an exact removal phase.
+
+
+The [non-deleting lifecycle integration](./account-local-baseline-lifecycle.md), signed `cf16e61a`
+after owner integration `bb9c7e82`, now exercises durable encrypted anchors, exact-predecessor replacement,
+rotation with retained openers, initial handoff and detached original/joined readers. Full history
+remains the reference and no logical rows are removed. The
+[retirement evidence contract](./account-local-retention-evidence.md) now selects the retained evidence
+and refusal rules. Their non-deleting implementation is signed as `bcca1aa1`. The physical/logical reader seam and owned reduced replay are now connected privately while retaining
+all rows. Next are lifecycle/rebase adapters and an exact-plan dry run. Implement/test actual deletion separately, as
+specified in the reader inventory and exact deletion plan. Full-history comparison is still mandatory
+in the current private owner; it cannot yet operate after physical history removal.

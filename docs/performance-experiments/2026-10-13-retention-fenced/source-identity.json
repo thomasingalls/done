@@ -1,0 +1,26 @@
+{
+  "base": "f89ee3f9d505f29fdfc29aad2260a19c053f312f",
+  "uncommittedRuntime": true,
+  "files": {
+    "src/crdt/accountLedgerMetrics.ts": {
+      "bytes": 5448,
+      "sha256": "c16099d66a863edc5cc60554bcb4270975f65974b33d41a5249d8608c1c9f0c7"
+    },
+    "src/crdt/contentStore.ts": {
+      "bytes": 61131,
+      "sha256": "9e21f078c1f60c1e7918f4009a73dc2c1dd6c6c84d1c879ee0fa367f61d1885d"
+    },
+    "src/crdt/localRetentionStorage.ts": {
+      "bytes": 11951,
+      "sha256": "2e022350f52550e18ae461ab1afcef672ba62bda3e6c9806ed71c0118d5e16d4"
+    },
+    "test/local-baseline/removal.native.mjs": {
+      "bytes": 28820,
+      "sha256": "185e69b2406883bfc97ddf1aa6aa106a6dae5e48ef88b7ba688b7f6ac9cef302"
+    },
+    "test/localRetentionStorage.test.ts": {
+      "bytes": 15084,
+      "sha256": "b3d90508513ebcd4ff98ff138a3d1661fc0600680272b37be63c077417de4861"
+    }
+  }
+}

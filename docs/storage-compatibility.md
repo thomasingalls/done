@@ -101,3 +101,31 @@ how the author's other pre-encryption device adopts it with fresh device custody
 merging that device's old writing**. Its old-data cleanup remains separate. Relay stays off until the
 authenticated encrypted transport path is ready; the plaintext relay is not that path. L-2's separate
 checkpoint remains untouched and must be reconciled before overlapping its account work.
+
+
+## Private local-baseline fence — 2026-10-13
+
+The [durable anchoring phase](./account-local-baseline-anchoring.md) defines a private counter-v3
+carrier without activating it in the application. Ordinary `parseCounter` now returns
+`app-update-required` for v3; predecessor readers already refused that version. No marker
+bypass, database upgrade, automatic conversion, or downgrade is added. The active pointer and
+all encrypted chunks commit together; the tested private carrier retains complete history.
+At that checkpoint, the application reader/installer was still future work; the integrations below
+add it privately. The deletion policy remains separate.
+
+
+The subsequent [non-deleting owner integration](./account-local-baseline-owner.md) recognizes v3 only
+through `VITE_ACCOUNT_BASELINE_INSTALL=1` in supported Account contexts. Its private semantic allocation
+view does not change the stored version or MAC domain: every later write retains the authenticated v3
+pointer. Ordinary readers remain fenced; disabling the experiment is not a profile rollback. Actual
+original/joined cold opens and the native history source now authenticate/replay the anchor with all
+history retained. The [non-deleting lifecycle adapter](./account-local-baseline-lifecycle.md) adds expected-revision
+replacement, earlier-generation anchors, rotation, initial handoff and detached local-copy readers under
+the same flag. Its v3 pointer retains `history: complete`; ordinary readers and earlier private readers
+remain fenced where unsupported. Public rollout, compatible rollback and deletion remain separate work.
+
+The [retirement evidence decision](./account-local-retention-evidence.md) now requires an authenticated
+Account journal-era wrapper and explicit metadata/journal reader fences before source-identity
+retirement. These are not implemented or added implicitly to counter v3. Current private profiles
+still retain complete history. A mismatched/legacy journal after conversion must be preserved and
+refused; matching eras alone cannot establish safety of an arbitrary browser-profile restore.

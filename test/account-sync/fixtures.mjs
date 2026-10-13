@@ -1,4 +1,5 @@
 import { build } from 'vite';
+import { baselineReadProbe } from '../local-baseline/read-probe.mjs';
 import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { native as base, args, waitPredicate } from '../account-receive-driver/fixtures.mjs';
@@ -6,6 +7,11 @@ export * from '../account-receive-driver/fixtures.mjs';
 export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE) {
   let hits = 0;
   const targets = {
+    'retention-owner': [
+      '/src/crdt/accountReceive.ts',
+      '  clearAccountTransition(result.accountId);',
+      '  clearAccountTransition(result.accountId); globalThis.retentionTestOwner = result;',
+    ],
     'flush-copy-boundary': [
       '/src/crdt/journalStore.ts',
       'const batch = entries.slice(offset, offset + 256);',
@@ -29,8 +35,8 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     ],
     'verification-order': [
       '/src/crdt/accountReceive.ts',
-      'async validate(task, records, route, counter, view) {',
-      `async validate(task, records, route, counter, view) {
+      'async validate(task, records, route, counter, view, baseline) {',
+      `async validate(task, records, route, counter, view, baseline) {
         await globalThis.verificationOrderProbe?.();`,
     ],
     classification: [
@@ -59,6 +65,30 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     configFile: false,
     logLevel: 'error',
     define: {
+      'import.meta.env.VITE_ACCOUNT_RETENTION': JSON.stringify(
+        process.env.ACCOUNT_RETENTION ?? '0',
+      ),
+      ...(process.env.ACCOUNT_BASELINE_READ
+        ? {
+            'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify(
+              process.env.ACCOUNT_BASELINE_READ,
+            ),
+          }
+        : {}),
+      ...(process.env.ACCOUNT_BASELINE_INSTALL
+        ? {
+            'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify(
+              process.env.ACCOUNT_BASELINE_INSTALL,
+            ),
+          }
+        : {}),
+      ...(process.env.ACCOUNT_BASELINE_SHADOW
+        ? {
+            'import.meta.env.VITE_ACCOUNT_BASELINE_SHADOW': JSON.stringify(
+              process.env.ACCOUNT_BASELINE_SHADOW,
+            ),
+          }
+        : {}),
       ...(process.env.ACCOUNT_AUTHORITY_REUSE
         ? {
             'import.meta.env.VITE_ACCOUNT_AUTHORITY_REUSE': JSON.stringify(
@@ -104,6 +134,7 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     },
     plugins: control
       ? [
+          ...(process.env.ACCOUNT_BASELINE_READ === '1' ? [baselineReadProbe()] : []),
           {
             name: 'sync-control',
             enforce: 'pre',
@@ -164,7 +195,9 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
             },
           },
         ]
-      : [],
+      : process.env.ACCOUNT_BASELINE_READ === '1'
+        ? [baselineReadProbe()]
+        : [],
     build: {
       write: false,
       minify: false,
@@ -229,8 +262,9 @@ export const settled = (page) =>
       return (
         opened.sync.status.send.phase === 'idle' &&
         JSON.stringify(refs) === JSON.stringify(expected) &&
-        opened.sync.status.send.acceptedThrough === spool.positions.length &&
-        opened.sync.status.receive.receivedThrough === spool.positions.length
+        (spool.positions.length === 0 ||
+          opened.sync.status.send.acceptedThrough === spool.positions.at(-1).position) &&
+        opened.sync.status.receive.receivedThrough === opened.sync.status.send.acceptedThrough
       );
     },
     30000,

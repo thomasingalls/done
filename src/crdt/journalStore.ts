@@ -1,3 +1,4 @@
+import { wrapAccountJournal, unwrapAccountJournal, type JournalBinding } from './journalEra';
 import { hex, random, type Bytes } from './custodyCrypto';
 import {
   createJournalCodec,
@@ -71,6 +72,7 @@ export const createJournalOwner = (
   generation: number,
   key: Bytes,
   retainedKeys: ReadonlyMap<number, Bytes> = new Map(),
+  binding: () => JournalBinding | undefined = () => undefined,
 ) => {
   const prefix = journalPrefix(dbName),
     writer = hex(random(16));
@@ -117,7 +119,15 @@ export const createJournalOwner = (
     const opener = openers.get(g);
     if (!opener)
       throw new JournalError('repair-required', 'No retained opener for this journal generation.');
-    return opener.codec.open(storageKey, value);
+    const opened = opener.codec.open(storageKey, value);
+    try {
+      return {
+        generation: opened.generation,
+        bytes: unwrapAccountJournal(opened.bytes, binding()),
+      };
+    } finally {
+      opened.bytes.fill(0);
+    }
   };
   let ordinal = 0,
     observedCharacters = 0,
@@ -229,36 +239,43 @@ export const createJournalOwner = (
       alive();
       if (!(update instanceof Uint8Array))
         throw new JournalError('invalid-input', 'A local update must be bytes.');
-      if (update.byteLength > MAX_JOURNAL_UPDATE) return { status: 'refused', reason: 'oversize' };
-      const next = ++ordinal;
-      if (!Number.isSafeInteger(next)) return { status: 'refused', reason: 'unavailable' };
-      const storageKey = `${prefix}${scope.storeId}.${writer}.${String(next).padStart(16, '0')}`;
-      const estimatedCharacters = storageKey.length + 2 + 4 * Math.ceil((44 + update.length) / 3);
-      if (observedCharacters + estimatedCharacters > JOURNAL_WATERMARK)
-        return { status: 'refused', reason: 'quota' };
+      const pair = binding();
+      const framed = pair ? wrapAccountJournal(update, pair) : update;
       try {
-        const s = storage();
-        if (s.getItem(storageKey) !== null)
-          throw new JournalError(
-            'repair-required',
-            'Journal identity collision; existing entry retained.',
-          );
-        const value = codec.seal(storageKey, random(24), update);
-        s.setItem(storageKey, value);
-        observedCharacters += size(storageKey, value);
-        return Object.freeze({ status: 'journalled', key: storageKey, generation });
-      } catch (cause) {
-        if (cause instanceof JournalError && cause.code === 'repair-required') {
-          damaged = cause;
-          throw cause;
+        if (framed.byteLength > MAX_JOURNAL_UPDATE)
+          return { status: 'refused', reason: 'oversize' };
+        const next = ++ordinal;
+        if (!Number.isSafeInteger(next)) return { status: 'refused', reason: 'unavailable' };
+        const storageKey = `${prefix}${scope.storeId}.${writer}.${String(next).padStart(16, '0')}`;
+        const estimatedCharacters = storageKey.length + 2 + 4 * Math.ceil((44 + framed.length) / 3);
+        if (observedCharacters + estimatedCharacters > JOURNAL_WATERMARK)
+          return { status: 'refused', reason: 'quota' };
+        try {
+          const s = storage();
+          if (s.getItem(storageKey) !== null)
+            throw new JournalError(
+              'repair-required',
+              'Journal identity collision; existing entry retained.',
+            );
+          const value = codec.seal(storageKey, random(24), framed);
+          s.setItem(storageKey, value);
+          observedCharacters += size(storageKey, value);
+          return Object.freeze({ status: 'journalled', key: storageKey, generation });
+        } catch (cause) {
+          if (cause instanceof JournalError && cause.code === 'repair-required') {
+            damaged = cause;
+            throw cause;
+          }
+          return {
+            status: 'refused',
+            reason:
+              cause instanceof DOMException && cause.name === 'QuotaExceededError'
+                ? 'quota'
+                : 'unavailable',
+          };
         }
-        return {
-          status: 'refused',
-          reason:
-            cause instanceof DOMException && cause.name === 'QuotaExceededError'
-              ? 'quota'
-              : 'unavailable',
-        };
+      } finally {
+        if (framed !== update) framed.fill(0);
       }
     },
     async flush(

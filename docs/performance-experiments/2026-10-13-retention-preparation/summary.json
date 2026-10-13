@@ -1,0 +1,159 @@
+{
+  "source": "77e54ada3e6647bcf5ac0740dd5f1cba25f973a5",
+  "host": {
+    "node": "v26.11.1",
+    "cpu": "Apple M1 Pro",
+    "memory": 34359738368,
+    "load": [
+      4.99365234375,
+      5.0849609375,
+      5.3671875
+    ],
+    "chromium": "151.0.7922.34"
+  },
+  "depth": 1201,
+  "expected": {
+    "bytes": 13506,
+    "hash": "5f85016f285a62b9db1a5a5a7a443e8490c4e9148c44efb86639d00e292f54d9",
+    "chars": 12559
+  },
+  "candidateBundleSha256": "fbb13571caf8448904766293a4d140773844d0492dc95f50a0e2a32736d7fbdf",
+  "referenceBundleSha256": "0a40c6009f58ef236bbd6e80c3df32e4f7cf65a02aee87abdccad09829cba61e",
+  "arms": [
+    {
+      "arm": "reference",
+      "n": 3,
+      "cutMs": {
+        "median": 14069,
+        "min": 13893,
+        "max": 14203
+      },
+      "maxTaskMs": {
+        "median": 11836,
+        "min": 11722,
+        "max": 11872
+      },
+      "taskCount": {
+        "median": 6,
+        "min": 6,
+        "max": 6
+      },
+      "totalLongTaskMs": {
+        "median": 12962,
+        "min": 12854,
+        "max": 13052
+      },
+      "maxTimerGapMs": {
+        "median": 11836.70000076294,
+        "min": 11727.10000038147,
+        "max": 11890
+      },
+      "nativeCrypto": {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      "work": {
+        "authorityChecks": 11,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "deliveryPrefixLinks": 2402,
+        "baselineFullReplays": 1,
+        "sourceParses": 13377
+      }
+    },
+    {
+      "arm": "candidate",
+      "n": 3,
+      "cutMs": {
+        "median": 5796,
+        "min": 5685,
+        "max": 5894
+      },
+      "maxTaskMs": {
+        "median": 431,
+        "min": 410,
+        "max": 445
+      },
+      "taskCount": {
+        "median": 9,
+        "min": 8,
+        "max": 9
+      },
+      "totalLongTaskMs": {
+        "median": 1550,
+        "min": 1504,
+        "max": 1582
+      },
+      "maxTimerGapMs": {
+        "median": 437.3000011444092,
+        "min": 410.5,
+        "max": 445.5
+      },
+      "nativeCrypto": {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      "work": {
+        "authorityChecks": 11,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "deliveryPrefixLinks": 2402,
+        "baselineFullReplays": 1,
+        "sourceParses": 13377
+      }
+    },
+    {
+      "arm": "candidate-4x",
+      "n": 1,
+      "cutMs": {
+        "median": 22051,
+        "min": 22051,
+        "max": 22051
+      },
+      "maxTaskMs": {
+        "median": 1704,
+        "min": 1704,
+        "max": 1704
+      },
+      "taskCount": {
+        "median": 15,
+        "min": 15,
+        "max": 15
+      },
+      "totalLongTaskMs": {
+        "median": 6658,
+        "min": 6658,
+        "max": 6658
+      },
+      "maxTimerGapMs": {
+        "median": 1709.2000007629395,
+        "min": 1709.2000007629395,
+        "max": 1709.2000007629395
+      },
+      "nativeCrypto": {
+        "importKey": 4834,
+        "deriveKey": 2416,
+        "decrypt": 10852,
+        "verify": 9638,
+        "digest": 26485,
+        "sign": 3
+      },
+      "work": {
+        "authorityChecks": 11,
+        "deliveryVerifications": 6,
+        "inboundVerifications": 6,
+        "deliveryPrefixLinks": 2402,
+        "baselineFullReplays": 1,
+        "sourceParses": 13377
+      }
+    }
+  ]
+}

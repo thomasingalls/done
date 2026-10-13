@@ -837,8 +837,6 @@ export class AccountSessions {
       const s = this.#session(value.id);
       if (!s || !sameHash(value.digest, s.renewal_hash) || !this.#live(s, now))
         return no('sign-in-required');
-      const count = [...this.#access.values()].filter((a) => a.sessionId === s.id).length;
-      if (count >= SESSION_LIMITS.accessPerSession) return no('capacity');
       return {
         ok: true as const,
         stage: 'access' as const,
@@ -848,12 +846,20 @@ export class AccountSessions {
         expiresAt: Math.min(now + SESSION_ACCESS_MS, s.expires_at),
       };
     });
-    // Do not install a token before its validation transaction has completed.
-    if (result.ok)
+    // Rotate only this login's oldest-issued access, and only after validation commits.
+    // A rapid reopen or a lost reply must not strand a valid remembered login at capacity.
+    // Map insertion order stays stable on use; identical expiry times cannot reorder it.
+    if (result.ok) {
+      const previous = [...this.#access]
+        .filter(([, access]) => access.sessionId === result.sessionId)
+        .map(([token]) => token);
+      while (previous.length >= SESSION_LIMITS.accessPerSession)
+        this.#access.delete(previous.shift()!);
       this.#access.set(retryHash(result.accessToken), {
         sessionId: result.sessionId,
         expires: result.expiresAt,
       });
+    }
     return result;
   }
   revoke(input: unknown): SessionResult {

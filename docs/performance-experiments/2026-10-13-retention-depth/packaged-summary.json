@@ -1,0 +1,449 @@
+{
+  "fixtureSha256": "71a7913843859fea80f6f2e5578fa9fdbe883bd8d5dc50f6df3409d52282323d",
+  "expectedArchive": {
+    "hash": "c0263df4e70124412d913f42b98161cc87d1bcd261ee39acc5d96d7626b2d994",
+    "bytes": 54211
+  },
+  "cut": {
+    "ms": 3104.7999992370605,
+    "result": {
+      "kind": "removed",
+      "revision": 1,
+      "removed": 937
+    }
+  },
+  "arms": [
+    {
+      "arm": "complete",
+      "n": 3,
+      "coldFrameMs": {
+        "median": 2339.5,
+        "min": 2327.800001144409,
+        "max": 2346.199998855591
+      },
+      "heapBytes": {
+        "median": 15851848,
+        "min": 15849488,
+        "max": 15856080
+      },
+      "typing": [
+        {
+          "rep": 0,
+          "keys": 120,
+          "frameMedianMs": 15.450000762939453,
+          "frameP95Ms": 19.200000762939453,
+          "longTasks": 16,
+          "maxLongTaskMs": 67,
+          "work": {
+            "startupValidations": 0,
+            "joinedStartupValidations": 0,
+            "deliveryVerifications": 79,
+            "inboundVerifications": 61,
+            "inboundCensuses": 0,
+            "deliveryPrefixLinks": 153,
+            "coverageBaselines": 0,
+            "coverageDirectProofs": 0,
+            "loads": 159,
+            "warmLoads": 158,
+            "baselineFullReplays": 0,
+            "baselineWarmReuses": 0,
+            "baselineIncrementalReuses": 0,
+            "selectedLoads": 96,
+            "warmAuditRows": 2379,
+            "warmAuditBytes": 10852541,
+            "loadedRows": 806,
+            "loadedBytes": 3672640,
+            "authorityChecks": 99,
+            "authorityAuthentications": 0,
+            "authorityReuses": 99,
+            "membershipProofTransfers": 0,
+            "positions": 9,
+            "sourceParses": 2470,
+            "sourceParseBytes": 639090,
+            "recordCopies": 61654,
+            "recordCopyBytes": 238202915,
+            "journalFlushes": 18,
+            "dirtyJournalFlushes": 15,
+            "projectionChecks": 0,
+            "directTextPreparations": 120,
+            "finalApplyEarlyChecks": 0,
+            "finalApplyImmediate": 0,
+            "finalApplyQueueMisses": 0,
+            "finalApplyActivityMisses": 0,
+            "finalApplyFallbacks": 0,
+            "finalApplySkipped": 0
+          }
+        },
+        {
+          "rep": 1,
+          "keys": 120,
+          "frameMedianMs": 15.5,
+          "frameP95Ms": 19.200000762939453,
+          "longTasks": 16,
+          "maxLongTaskMs": 62,
+          "work": {
+            "startupValidations": 0,
+            "joinedStartupValidations": 0,
+            "deliveryVerifications": 78,
+            "inboundVerifications": 60,
+            "inboundCensuses": 0,
+            "deliveryPrefixLinks": 153,
+            "coverageBaselines": 0,
+            "coverageDirectProofs": 0,
+            "loads": 158,
+            "warmLoads": 157,
+            "baselineFullReplays": 0,
+            "baselineWarmReuses": 0,
+            "baselineIncrementalReuses": 0,
+            "selectedLoads": 95,
+            "warmAuditRows": 2361,
+            "warmAuditBytes": 10764715,
+            "loadedRows": 806,
+            "loadedBytes": 3672640,
+            "authorityChecks": 99,
+            "authorityAuthentications": 0,
+            "authorityReuses": 99,
+            "membershipProofTransfers": 0,
+            "positions": 9,
+            "sourceParses": 2458,
+            "sourceParseBytes": 641486,
+            "recordCopies": 61567,
+            "recordCopyBytes": 238237844,
+            "journalFlushes": 18,
+            "dirtyJournalFlushes": 14,
+            "projectionChecks": 0,
+            "directTextPreparations": 120,
+            "finalApplyEarlyChecks": 0,
+            "finalApplyImmediate": 0,
+            "finalApplyQueueMisses": 0,
+            "finalApplyActivityMisses": 0,
+            "finalApplyFallbacks": 0,
+            "finalApplySkipped": 0
+          }
+        },
+        {
+          "rep": 2,
+          "keys": 120,
+          "frameMedianMs": 15.550000190734863,
+          "frameP95Ms": 18.799999237060547,
+          "longTasks": 18,
+          "maxLongTaskMs": 65,
+          "work": {
+            "startupValidations": 0,
+            "joinedStartupValidations": 0,
+            "deliveryVerifications": 79,
+            "inboundVerifications": 61,
+            "inboundCensuses": 0,
+            "deliveryPrefixLinks": 153,
+            "coverageBaselines": 0,
+            "coverageDirectProofs": 0,
+            "loads": 158,
+            "warmLoads": 157,
+            "baselineFullReplays": 0,
+            "baselineWarmReuses": 0,
+            "baselineIncrementalReuses": 0,
+            "selectedLoads": 95,
+            "warmAuditRows": 2363,
+            "warmAuditBytes": 10765217,
+            "loadedRows": 806,
+            "loadedBytes": 3672640,
+            "authorityChecks": 99,
+            "authorityAuthentications": 0,
+            "authorityReuses": 99,
+            "membershipProofTransfers": 0,
+            "positions": 9,
+            "sourceParses": 2468,
+            "sourceParseBytes": 644066,
+            "recordCopies": 61712,
+            "recordCopyBytes": 238269822,
+            "journalFlushes": 18,
+            "dirtyJournalFlushes": 16,
+            "projectionChecks": 0,
+            "directTextPreparations": 120,
+            "finalApplyEarlyChecks": 0,
+            "finalApplyImmediate": 0,
+            "finalApplyQueueMisses": 0,
+            "finalApplyActivityMisses": 0,
+            "finalApplyFallbacks": 0,
+            "finalApplySkipped": 0
+          }
+        }
+      ],
+      "coldWork": {
+        "loadedRows": {
+          "median": 2811,
+          "min": 2811,
+          "max": 2811
+        },
+        "loadedBytes": {
+          "median": 11021547,
+          "min": 11021547,
+          "max": 11021547
+        },
+        "recordCopyBytes": {
+          "median": 22150047,
+          "min": 22150047,
+          "max": 22150047
+        },
+        "authorityChecks": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "baselineFullReplays": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "nativeCrypto": {
+        "importKey": {
+          "median": 6694,
+          "min": 6694,
+          "max": 6694
+        },
+        "deriveKey": {
+          "median": 1355,
+          "min": 1355,
+          "max": 1355
+        },
+        "decrypt": {
+          "median": 3194,
+          "min": 3194,
+          "max": 3194
+        },
+        "verify": {
+          "median": 5428,
+          "min": 5428,
+          "max": 5428
+        },
+        "digest": {
+          "median": 6179,
+          "min": 6179,
+          "max": 6179
+        },
+        "sign": {
+          "median": 4,
+          "min": 4,
+          "max": 4
+        }
+      }
+    },
+    {
+      "arm": "reduced",
+      "n": 3,
+      "coldFrameMs": {
+        "median": 901.8999996185303,
+        "min": 892.6000003814697,
+        "max": 911.8999996185303
+      },
+      "heapBytes": {
+        "median": 11363768,
+        "min": 11363100,
+        "max": 11366292
+      },
+      "typing": [
+        {
+          "rep": 0,
+          "keys": 120,
+          "frameMedianMs": 16.149999618530273,
+          "frameP95Ms": 19.299999237060547,
+          "longTasks": 1,
+          "maxLongTaskMs": 55,
+          "work": {
+            "startupValidations": 0,
+            "joinedStartupValidations": 0,
+            "deliveryVerifications": 78,
+            "inboundVerifications": 61,
+            "inboundCensuses": 17,
+            "deliveryPrefixLinks": 118,
+            "coverageBaselines": 0,
+            "coverageDirectProofs": 0,
+            "loads": 156,
+            "warmLoads": 155,
+            "baselineFullReplays": 0,
+            "baselineWarmReuses": 95,
+            "baselineIncrementalReuses": 61,
+            "selectedLoads": 94,
+            "warmAuditRows": 2056,
+            "warmAuditBytes": 5069013,
+            "loadedRows": 0,
+            "loadedBytes": 0,
+            "authorityChecks": 407,
+            "authorityAuthentications": 0,
+            "authorityReuses": 406,
+            "membershipProofTransfers": 0,
+            "positions": 9,
+            "sourceParses": 2681,
+            "sourceParseBytes": 691768,
+            "recordCopies": 18806,
+            "recordCopyBytes": 11495785,
+            "journalFlushes": 18,
+            "dirtyJournalFlushes": 17,
+            "projectionChecks": 0,
+            "directTextPreparations": 120,
+            "finalApplyEarlyChecks": 0,
+            "finalApplyImmediate": 0,
+            "finalApplyQueueMisses": 0,
+            "finalApplyActivityMisses": 0,
+            "finalApplyFallbacks": 0,
+            "finalApplySkipped": 0
+          }
+        },
+        {
+          "rep": 1,
+          "keys": 120,
+          "frameMedianMs": 15.90000057220459,
+          "frameP95Ms": 20,
+          "longTasks": 1,
+          "maxLongTaskMs": 50,
+          "work": {
+            "startupValidations": 0,
+            "joinedStartupValidations": 0,
+            "deliveryVerifications": 78,
+            "inboundVerifications": 61,
+            "inboundCensuses": 17,
+            "deliveryPrefixLinks": 117,
+            "coverageBaselines": 0,
+            "coverageDirectProofs": 0,
+            "loads": 156,
+            "warmLoads": 156,
+            "baselineFullReplays": 0,
+            "baselineWarmReuses": 95,
+            "baselineIncrementalReuses": 61,
+            "selectedLoads": 95,
+            "warmAuditRows": 2072,
+            "warmAuditBytes": 5076789,
+            "loadedRows": 0,
+            "loadedBytes": 0,
+            "authorityChecks": 407,
+            "authorityAuthentications": 0,
+            "authorityReuses": 407,
+            "membershipProofTransfers": 0,
+            "positions": 9,
+            "sourceParses": 2681,
+            "sourceParseBytes": 691768,
+            "recordCopies": 18799,
+            "recordCopyBytes": 11488893,
+            "journalFlushes": 18,
+            "dirtyJournalFlushes": 18,
+            "projectionChecks": 0,
+            "directTextPreparations": 120,
+            "finalApplyEarlyChecks": 0,
+            "finalApplyImmediate": 0,
+            "finalApplyQueueMisses": 0,
+            "finalApplyActivityMisses": 0,
+            "finalApplyFallbacks": 0,
+            "finalApplySkipped": 0
+          }
+        },
+        {
+          "rep": 2,
+          "keys": 120,
+          "frameMedianMs": 15.850000381469727,
+          "frameP95Ms": 19.299999237060547,
+          "longTasks": 0,
+          "maxLongTaskMs": 0,
+          "work": {
+            "startupValidations": 0,
+            "joinedStartupValidations": 0,
+            "deliveryVerifications": 75,
+            "inboundVerifications": 59,
+            "inboundCensuses": 16,
+            "deliveryPrefixLinks": 108,
+            "coverageBaselines": 0,
+            "coverageDirectProofs": 0,
+            "loads": 154,
+            "warmLoads": 153,
+            "baselineFullReplays": 0,
+            "baselineWarmReuses": 95,
+            "baselineIncrementalReuses": 59,
+            "selectedLoads": 93,
+            "warmAuditRows": 2043,
+            "warmAuditBytes": 5068409,
+            "loadedRows": 0,
+            "loadedBytes": 0,
+            "authorityChecks": 403,
+            "authorityAuthentications": 0,
+            "authorityReuses": 402,
+            "membershipProofTransfers": 0,
+            "positions": 9,
+            "sourceParses": 2564,
+            "sourceParseBytes": 661580,
+            "recordCopies": 18100,
+            "recordCopyBytes": 11089398,
+            "journalFlushes": 18,
+            "dirtyJournalFlushes": 16,
+            "projectionChecks": 0,
+            "directTextPreparations": 120,
+            "finalApplyEarlyChecks": 0,
+            "finalApplyImmediate": 0,
+            "finalApplyQueueMisses": 0,
+            "finalApplyActivityMisses": 0,
+            "finalApplyFallbacks": 0,
+            "finalApplySkipped": 0
+          }
+        }
+      ],
+      "coldWork": {
+        "loadedRows": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "loadedBytes": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "recordCopyBytes": {
+          "median": 492135,
+          "min": 492135,
+          "max": 492135
+        },
+        "authorityChecks": {
+          "median": 8,
+          "min": 8,
+          "max": 8
+        },
+        "baselineFullReplays": {
+          "median": 3,
+          "min": 3,
+          "max": 3
+        }
+      },
+      "nativeCrypto": {
+        "importKey": {
+          "median": 441,
+          "min": 441,
+          "max": 441
+        },
+        "deriveKey": {
+          "median": 138,
+          "min": 138,
+          "max": 138
+        },
+        "decrypt": {
+          "median": 70,
+          "min": 70,
+          "max": 70
+        },
+        "verify": {
+          "median": 371,
+          "min": 371,
+          "max": 371
+        },
+        "digest": {
+          "median": 707,
+          "min": 707,
+          "max": 707
+        },
+        "sign": {
+          "median": 4,
+          "min": 4,
+          "max": 4
+        }
+      }
+    }
+  ]
+}

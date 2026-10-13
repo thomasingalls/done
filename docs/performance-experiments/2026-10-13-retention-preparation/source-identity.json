@@ -1,0 +1,28 @@
+{
+  "base": "77e54ada3e6647bcf5ac0740dd5f1cba25f973a5",
+  "files": {
+    "src/crdt/localBaselineReplay.ts": {
+      "bytes": 25753,
+      "sha256": "d2234289c18d6ccdf3bcd3c262e2542d68a07277404d27cf168596d22c8e9fef"
+    },
+    "src/crdt/localRetentionPlan.ts": {
+      "bytes": 15958,
+      "sha256": "adaca96058174c22d642eddd51f280ee64289ca1bcb96f823f7ca54529f628d9"
+    },
+    "test/localBaseline.test.ts": {
+      "bytes": 68805,
+      "sha256": "10614b426c50e0f08fcc7fbf83fbb570277576e21795e3f5c8203fa76b78ce8b"
+    },
+    "test/preparedCoverage.test.ts": {
+      "bytes": 12896,
+      "sha256": "66b4d1992fa9625f73c710e35532136f2890abb625c4b84d6296c314192549cd"
+    }
+  },
+  "flags": {
+    "ACCOUNT_BASELINE_INSTALL": "1",
+    "ACCOUNT_BASELINE_READ": "1",
+    "ACCOUNT_RETENTION": "1",
+    "ACCOUNT_AUTHORITY_REUSE": "1"
+  },
+  "uncommittedRuntime": true
+}

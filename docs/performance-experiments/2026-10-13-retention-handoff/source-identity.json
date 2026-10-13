@@ -1,0 +1,73 @@
+{
+  "base": "75a3e94bb3218fc934eb4b2563ef1b0db4586d56",
+  "uncommittedRuntime": true,
+  "files": {
+    "src/crdt/accountCapture.ts": {
+      "bytes": 30036,
+      "sha256": "54d43fadeb949a25c473798b8a45374bab80b6df7a45dffc8f9556bd8ce476f7"
+    },
+    "src/crdt/accountLedgerMetrics.ts": {
+      "bytes": 4580,
+      "sha256": "5bbe184fbaf20fca83345995569d5a85eeef5027bbd3c5893b4b4f3bb2561859"
+    },
+    "src/crdt/accountReceive.ts": {
+      "bytes": 128621,
+      "sha256": "8c0a9b4de4071941d5515193adf0717e3bf54e2660e14613b2736c26936a2e16"
+    },
+    "src/crdt/contentStore.ts": {
+      "bytes": 60059,
+      "sha256": "4ec607b4d358f9f8678f3f11c585d357bf641722c3f32058698e122fd2c8ecd1"
+    },
+    "src/crdt/deliveryRecord.ts": {
+      "bytes": 15225,
+      "sha256": "0c2f94c1449390b7ea124da60751fb351c04eaf504408324805a2615c56adfdc"
+    },
+    "src/crdt/inboundLedger.ts": {
+      "bytes": 24252,
+      "sha256": "4f93283731a100b07c3130c14f935b3ca03d55f64185c5604aa3abb47787001c"
+    },
+    "src/crdt/localBaselineReplay.ts": {
+      "bytes": 25815,
+      "sha256": "9f7a14126baba6317d0be59f331c60649571c9f876ee0fc117c654fb4f03d2c0"
+    },
+    "src/crdt/localRetentionPlan.ts": {
+      "bytes": 16732,
+      "sha256": "36bc78b50e7fb92164574fbea2ca477a7126b312f5ec56af1fe98b9633649047"
+    },
+    "src/crdt/sourceCapture.ts": {
+      "bytes": 10138,
+      "sha256": "8da959ec924d1914acc9ecf0f5d2ff4cdb6e144af276a436e07bef1994ce17a9"
+    },
+    "src/crdt/spoolRecord.ts": {
+      "bytes": 19585,
+      "sha256": "a32238b0e8795bf18e8085bd84937261ea2a37bba46226e0056b1b9ee995a3b1"
+    },
+    "test/accountReceiveLedger.test.ts": {
+      "bytes": 8764,
+      "sha256": "40dae9d2fc323e876d4a03f93e0ad687ab19722eb6c082f1fe645382feda2905"
+    },
+    "test/local-baseline/lifecycle-owner.spec.ts": {
+      "bytes": 20554,
+      "sha256": "b947318d96050be8071defa2fb8da7cb497a08cb057835cd47074a76c1158e37"
+    },
+    "test/local-baseline/removal.native.mjs": {
+      "bytes": 26656,
+      "sha256": "de6f73db715fbc1ea812eb53e8d7201b5f6fd5a970f4fef1fa9dd3d7e7293ab2"
+    },
+    "test/localBaseline.test.ts": {
+      "bytes": 70715,
+      "sha256": "abb48be2a9212ef4deb5dc8906dd2c823eeacbe614a7aece4a147b885f3ea95f"
+    },
+    "test/localBaselineWarm.test.ts": {
+      "bytes": 13065,
+      "sha256": "8f482785644363f45cba9101433f838f7789c8f607933912a3d6188d15ffb9a4"
+    }
+  },
+  "measurementNote": "The paired bundle was frozen before the final pre-mutation retired-read retry catch and source comment edits. Those do not execute on the offline quiet-cut or input-interruption path. Final checks include that repair; both exact bundles are retained.",
+  "flags": {
+    "ACCOUNT_BASELINE_INSTALL": "1",
+    "ACCOUNT_BASELINE_READ": "1",
+    "ACCOUNT_RETENTION": "1",
+    "ACCOUNT_AUTHORITY_REUSE": "1"
+  }
+}

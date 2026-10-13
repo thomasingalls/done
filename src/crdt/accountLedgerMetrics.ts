@@ -21,6 +21,9 @@ const workNames = [
   'coverageDirectProofs',
   'loads',
   'warmLoads',
+  'baselineFullReplays',
+  'baselineWarmReuses',
+  'baselineIncrementalReuses',
   'selectedLoads',
   'warmAuditRows',
   'warmAuditBytes',
@@ -51,6 +54,34 @@ const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   number
 >;
 type WorkTiming =
+  | 'retentionPreparation'
+  | 'retentionFenced'
+  | 'retentionFinalAuthority'
+  | 'retentionPlanCopy'
+  | 'retentionPreflightRead'
+  | 'retentionPreflightCompare'
+  | 'retentionAdapter'
+  | 'retentionEvidenceCopy'
+  | 'retentionReservePrepare'
+  | 'retentionReserveAuthority'
+  | 'retentionReserveExchange'
+  | 'retentionReserveCensus'
+  | 'retentionReserveCompare'
+  | 'retentionReserveWrites'
+  | 'retentionExpectedCopy'
+  | 'retentionSeal'
+  | 'retentionReplaceAuthority'
+  | 'retentionReplaceExchange'
+  | 'retentionReplaceCensus'
+  | 'retentionReplaceCompare'
+  | 'retentionReplaceWrites'
+  | 'retentionAdapterCleanup'
+  | 'retentionReadback'
+  | 'retentionReadbackCompare'
+  | 'retentionReload'
+  | 'retentionReplay'
+  | 'retentionEndAuthority'
+  | 'retentionCleanup'
   | 'finalApplyEarly'
   | 'finalApplySynchronous'
   | 'copyRecords'
@@ -85,6 +116,10 @@ export const measureLedgerWork = (name: WorkTiming, since: number) => {
   row.calls++;
   row.totalMs += ms;
   row.maxMs = Math.max(row.maxMs, ms);
+  if (name.startsWith('retention')) {
+    performance.measure(name, { start: since, duration: ms });
+    performance.clearMeasures(name);
+  }
 };
 const names = ['full', 'incremental', 'coverageCheck', 'coverageRebuild', 'compaction'] as const;
 const timings = Object.fromEntries(

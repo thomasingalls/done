@@ -299,3 +299,51 @@ it('proves integrated text/GC/deletions, but defers pending state, missing depen
   expect(provesIntegratedCoverage(pending, new Uint8Array([0, 0]))).toBe(false);
   for (const d of [doc, after, pending]) d.destroy();
 });
+
+it('operation-bound reference coverage agrees for originals, compacted state and pending deletes', () => {
+  const a = new Y.Doc({ gc: false }),
+    b = new Y.Doc({ gc: false });
+  const updates: Uint8Array<ArrayBuffer>[] = [];
+  a.on('update', (u: Uint8Array) => updates.push(new Uint8Array(u)));
+  a.getText('t').insert(0, 'parent');
+  a.getText('t').insert(6, ' child');
+  a.getText('t').delete(0, 2);
+  try {
+    // Include incomplete, complete and compacted representations, with repeated originals.
+    Y.applyUpdate(b, updates[1]!);
+    Y.applyUpdate(b, updates[2]!);
+    const inventories = [
+      [row(new Uint8Array(Y.encodeStateAsUpdate(b)))],
+      updates.map((u, i) => ({ ...row(u, i + 1), kind: 'update' as const })),
+      [row(new Uint8Array(Y.encodeStateAsUpdate(a)))],
+    ];
+    for (const records of inventories) {
+      // New binding after each refusal: negative coverage must invalidate the view.
+      const coverage = createInboundCoverage();
+      try {
+        for (const update of [...updates, ...updates, new Uint8Array([255])]) {
+          const bound = coverage.bind(records);
+          const expected = verdict(() => {
+            verifyInboundCoverage(records, [update]);
+            return true;
+          });
+          expect(
+            verdict(() => {
+              bound.check(records, [update]);
+              return true;
+            }),
+          ).toBe(expected);
+          if (!expected) expect(() => bound.check(records, [update])).toThrow('invalidated');
+        }
+        const bound = coverage.bind(records);
+        coverage.clear();
+        expect(() => bound.check(records, [updates[0]!])).toThrow('invalidated');
+      } finally {
+        coverage.clear();
+      }
+    }
+  } finally {
+    a.destroy();
+    b.destroy();
+  }
+});

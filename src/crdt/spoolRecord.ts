@@ -1,3 +1,4 @@
+import { requireFullSpool } from './retainedHistory';
 /** Private v7 append-only allocation ledger. Outer StoredRecord authenticates these bytes. */
 import {
   verifyHistoryDecision,
@@ -21,7 +22,7 @@ import {
   type OpenedRecord,
 } from './contentRecord';
 import {
-  inspectCapturedSources,
+  inspectCapturedSourceSteps,
   captureRouteAt,
   decodeSourceCapsule,
   eraseCapsule,
@@ -58,12 +59,25 @@ export interface SpoolPosition {
   retries?: { wire: Bytes; refusal: Bytes }[];
 }
 export interface SpoolState {
+  /** Experimental local-baseline reader only; ordinary replay always starts at zero. */
+  origin?: SpoolReplayStart;
   sources: Map<string, Bytes>;
   positions: SpoolPosition[];
   attempts: number;
   sourceRecords: OpenedRecord[];
   events: Bytes[];
 }
+export interface SpoolReplayStart {
+  /** Authenticated baseline frontier; never obtained from an unverified cursor. */
+  receipt?: { previous: string; envelope: Bytes; proof: Bytes };
+  position: number;
+  link: string;
+  attempts: number;
+  /** Consumed indexes of capsules whose other originals must remain available. */
+  consumed: readonly { id: string; index: number }[];
+}
+export const nextSpoolPosition = (s: SpoolState): number =>
+  (s.origin?.position ?? 0) + s.positions.length + 1;
 export const positionSources = (p: Pick<SpoolPosition, 'source' | 'additional'>): SourceRef[] => [
   p.source,
   ...(p.additional ?? []),
@@ -222,10 +236,21 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
     return captureError('Unreadable spool entry: ' + String(cause));
   }
 }
-export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRoute): SpoolState {
+export function inspectSpool(...args: Parameters<typeof inspectSpoolSteps>): SpoolState {
+  const steps = inspectSpoolSteps(...args);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
+}
+export function* inspectSpoolSteps(
+  records: readonly OpenedRecord[],
+  route: CaptureRoute,
+  start?: SpoolReplayStart,
+): Generator<void, SpoolState> {
   const sourceRecords: OpenedRecord[] = [],
     events: { record: OpenedRecord; entry: SpoolEntry; epoch: number }[] = [];
   for (const record of records) {
+    yield;
     if (record.kind !== 'heads' && record.kind !== 'outbound') {
       sourceRecords.push(record);
       continue;
@@ -249,17 +274,21 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
     }
   }
   sourceRecords.sort((a, b) => a.seq - b.seq);
-  const { sources, descriptions } = inspectCapturedSources(sourceRecords, route),
+  const { sources, descriptions } = yield* inspectCapturedSourceSteps(sourceRecords, route),
     positions: SpoolPosition[] = [],
-    used = new Set<string>();
-  let attempts = 0,
+    used = new Set((start?.consumed ?? []).map((s) => s.id + ':' + s.index));
+  let attempts = start?.attempts ?? 0,
     previousEpoch = 1;
   for (const { record, entry: e, epoch } of events.sort((a, b) => a.record.seq - b.record.seq)) {
+    yield;
     if (epoch < previousEpoch) captureError('Spool authority regressed');
     previousEpoch = epoch;
     const last = positions.at(-1);
     if (e.type === 'position' || e.type === 'position-batch') {
-      if (e.position !== positions.length + 1 || positions.some((p) => !p.wire))
+      if (
+        e.position !== (start?.position ?? 0) + positions.length + 1 ||
+        positions.some((p) => !p.wire)
+      )
         captureError('Position sequence or unresolved predecessor');
       const refs = e.type === 'position' ? [e.source] : e.sources;
       let previousSequence = -1,
@@ -341,7 +370,32 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
       }
     }
   }
-  return { sources, positions, attempts, sourceRecords, events: events.map((e) => e.record.bytes) };
+  return {
+    ...(start
+      ? {
+          origin: {
+            position: start.position,
+            attempts: start.attempts,
+            link: start.link,
+            ...(start.receipt
+              ? {
+                  receipt: {
+                    previous: start.receipt.previous,
+                    envelope: start.receipt.envelope.slice(),
+                    proof: start.receipt.proof.slice(),
+                  },
+                }
+              : {}),
+            consumed: start.consumed.map((s) => ({ ...s })),
+          },
+        }
+      : {}),
+    sources,
+    positions,
+    attempts,
+    sourceRecords,
+    events: events.map((e) => e.record.bytes),
+  };
 }
 export async function verifySpool(
   state: SpoolState,
@@ -466,6 +520,7 @@ export async function verifySpoolWitness(
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
 ): Promise<void> {
+  requireFullSpool(state);
   if (counter.v === 1) {
     if (state.events.length) captureError('Spool records without activated metadata');
     return; // Interrupted v7 activation, before any ledger grants.

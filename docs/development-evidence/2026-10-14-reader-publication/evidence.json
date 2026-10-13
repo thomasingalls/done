@@ -1,0 +1,194 @@
+{
+  "scope": "Reader-only image preparation; no registry push or deployment",
+  "sourceCommit": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+  "applicationMain": "0196c03e0450c7b1b6446f3d194f0e754fda1808",
+  "archiveSha256": "b06d4a27584bc6821ebdbbdd55c97d827d20f0290cf81cb8162802bd2ca71efb",
+  "image": "done-public:890fc677",
+  "compatibleRollbackAlias": "done-reader-rollback:890fc677",
+  "localIndexDigest": "sha256:fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb",
+  "runtimeManifestDigest": "sha256:1183e3cd2f4d62b250fc0cf5985ae1024dabfa2d445bdca9e867f621c875b361",
+  "buildDate": "2026-10-14",
+  "platform": "linux/arm64",
+  "containerNode": "24.18.0",
+  "hostNode": "v26.11.1",
+  "reader": true,
+  "installer": false,
+  "retention": false,
+  "published": false,
+  "rollbackRemotePullVerified": false,
+  "existingContainerTests": {
+    "runtimeGateway": 14,
+    "backup": 5,
+    "restore": 6,
+    "maintenance": 6
+  },
+  "containerSessions": {
+    "passed": 92,
+    "failed": 0,
+    "initialFixtureMissing": {
+      "passed": 57,
+      "suiteLoadFailures": 2,
+      "reason": "Excluded docs/account-crypto/first-authority.json; final run mounts committed fixture read-only"
+    }
+  },
+  "initialJsGzipKB": 138.4,
+  "smoke": {
+    "image": "done-public:890fc677",
+    "started": "2026-10-13T22:06:48.271Z",
+    "checks": [
+      "Non-root Node 24 runtime excludes repository, tests, development state and build tools",
+      "Explicit initialization publishes a pinned identity using external secret custody",
+      "Ordinary API startup refuses an uninitialized volume",
+      "A second container cannot take ownership of the same live store",
+      "Keyless app container serves the session API through exact-origin scoped boundaries",
+      "Every packaged service-worker precache response matches its recorded bytes",
+      "SIGKILL/restart reacquires ownership and preserves identity plus the accepted registration attempt",
+      "Graceful stop exits cleanly; explicit initialization retry retains the existing identity"
+    ],
+    "imageId": "sha256:fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb",
+    "platform": "linux/arm64",
+    "sourceRevision": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+    "nodeVersion": "v24.18.0",
+    "ageVersion": "1.1.1",
+    "precacheUrls": 59,
+    "ok": true,
+    "cleanupFailures": [],
+    "finished": "2026-10-13T22:06:56.498Z"
+  },
+  "browser": [
+    {
+      "test": "original and joined native custody preserve prior setup, interrupted progress and installed keys",
+      "status": "passed",
+      "durationMs": 18087
+    },
+    {
+      "test": "Account text undo spans received edits and journal-only offline reopening",
+      "status": "passed",
+      "durationMs": 23017
+    }
+  ],
+  "readerRollback": {
+    "passed": 1,
+    "frontendInstrumented": false,
+    "privateWriterInstrumented": true,
+    "offlineEditUndoReopenBothRoles": true,
+    "checkpointContinues": true,
+    "baselineChunksPreserved": true,
+    "deployedPredecessorRefuses": true,
+    "refusalLeavesInventoriesUnchanged": true,
+    "compatibleReaderReopensAndSyncs": true
+  },
+  "frontendFilesVerified": 109,
+  "compatibility": {
+    "accountSchema": 26,
+    "authoritySchema": 1,
+    "wireFormatsChanged": false,
+    "receiptFormatsChanged": false,
+    "ordinaryProfilesConverted": false,
+    "reducedProfileRollback": "This new reader, not deployed f516a958"
+  },
+  "browserScope": "Exact image frontends, disposable host API services from signed archive; container API checked separately",
+  "releaseValidation": "paused",
+  "publicationChecks": "bounded functional; no new performance or physical-device claim",
+  "artifacts": [
+    {
+      "path": "README.md",
+      "bytes": 6754,
+      "sha256": "77ed2a19924201d55e1545c2c26c1aeba7ac1b1231ad773b172e4dd241f1eec8"
+    },
+    {
+      "path": "build-metadata.json",
+      "bytes": 1826,
+      "sha256": "2a6e02854f889882d2453751d579b84cb38a6f52448dad903316cb52e256d348"
+    },
+    {
+      "path": "check-stage.log.gz",
+      "bytes": 6068,
+      "sha256": "d1e05ac1d6b8aea33f1345f9da18a0a74ead73528ec0c0155e3d46a82d4131a4",
+      "uncompressedBytes": 19339,
+      "uncompressedSha256": "70b4e1cf8e9f49b355afae015ed18b1b0a650c599a2302502456a739d3ccea0e"
+    },
+    {
+      "path": "container-build.log.gz",
+      "bytes": 6321,
+      "sha256": "d28d0c1bb6aa0d2564b45c4ea262d16d5e6438ca79e4b21c91b46b4dc6eb5da9",
+      "uncompressedBytes": 20130,
+      "uncompressedSha256": "d67fdb8506010815b38bf94ae4a014ba2337f5f649663f4f342500be27a5b037"
+    },
+    {
+      "path": "container-sessions-missing-fixture.log.gz",
+      "bytes": 2902,
+      "sha256": "0dac2b231c58073cef0b851ac984871417153bd82354f4e8e6bdb4b2b1a31dac",
+      "uncompressedBytes": 9319,
+      "uncompressedSha256": "b1d3a3b308183c11fd5c4a76cf555ad51950254d35aec25104c5481822cc5fd4"
+    },
+    {
+      "path": "container-sessions.log.gz",
+      "bytes": 3895,
+      "sha256": "f455bceed97515acb9d5d2c6a7b491c63a8b9875189153769c67b5a4a423c143",
+      "uncompressedBytes": 11934,
+      "uncompressedSha256": "d84ea57d53a349769635125a5984a1d0b12780692395eaee4dbf69cba9db0c79"
+    },
+    {
+      "path": "container-smoke.json",
+      "bytes": 1124,
+      "sha256": "427405bdd73d7d94e314236e9c3c79b3af558eea9c8fb368966d579e60d2e5b4"
+    },
+    {
+      "path": "container-smoke.log.gz",
+      "bytes": 479,
+      "sha256": "be7296df6c75d18aa8d3ad0364572fbd945bf43bb6a63e1d5908212666156977",
+      "uncompressedBytes": 745,
+      "uncompressedSha256": "4c2c88932bb0dabb98ebd394194c37f272bca134d9bb50c346c1b0852af0f224"
+    },
+    {
+      "path": "frontend-files.json",
+      "bytes": 17494,
+      "sha256": "b3b95edf59e6223661ea8330fdd21d6a9bb4e79f311bf4472b50dc74d948dc48"
+    },
+    {
+      "path": "image-identity.json",
+      "bytes": 240,
+      "sha256": "5c20cbb5d06f34a8edcc1b2d7ee683f9003661944ee405f8dcc35b48a168cca8"
+    },
+    {
+      "path": "packaged-browser.json",
+      "bytes": 318,
+      "sha256": "099e923cad506569754ffa20a11793df5965ee6ea34e03aa8e15672ff24f8178"
+    },
+    {
+      "path": "packaged-browser.log.gz",
+      "bytes": 369,
+      "sha256": "58fb51c23c5acf53b18c725656a9660ed520f4fb56ad2b3272126420b9277509",
+      "uncompressedBytes": 534,
+      "uncompressedSha256": "376aa1d1c70351456af7d8a1637695d4d4d41c701ca7a953f25fcf65a2e99c1c"
+    },
+    {
+      "path": "predecessor-frontend-files.json",
+      "bytes": 9368,
+      "sha256": "24283624cf2c0724866b88a0034c22cd084ae09e3580fc0e5d24195974973eb9"
+    },
+    {
+      "path": "probe/reader-image.spec.ts",
+      "bytes": 8174,
+      "sha256": "4dcb552db18f1ef9850790b3c8bea3a0cc6794de0031548f5717d0db2fc2a999"
+    },
+    {
+      "path": "reader-image.log.gz",
+      "bytes": 453,
+      "sha256": "816eab5507d556bfa213c044621bd4d280dbfc9f1314682a94eb8c7fe40f94f9",
+      "uncompressedBytes": 675,
+      "uncompressedSha256": "9dfbc8789083f8bed80fa68b8e2299547e2357cf9ace4476321cd6b9b0bc09bc"
+    },
+    {
+      "path": "source.json",
+      "bytes": 1345,
+      "sha256": "3af23e6c865d99cd388e0768ab959eca005d20a14c96c85b321f3ce362f5c581"
+    },
+    {
+      "path": "test-source-files.json",
+      "bytes": 1732,
+      "sha256": "6ef8dbbda0e591cc582589af19f98d7c3af4708a7f12ada61efaa00d8b4f64ff"
+    }
+  ]
+}

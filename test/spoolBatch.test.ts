@@ -227,6 +227,32 @@ it('batch count, bytes, actor boundary, duplicate, order and late-source control
   expect(() => inspectSpool(mixed.rows, route)).toThrow(/actor/);
 });
 
+it('budgeted selection scans consumed sources, preserves partial originals and cancels without changing the spool', async () => {
+  const { rows } = await sources(Array.from({ length: 8 }, () => ({ system: false, length: 4 })));
+  const all = await selectEnvelopeSources(inspectSpool(rows, route), route, true, crypto.subtle);
+  append(rows, allocation(all.slice(0, 5), 1));
+  const state = inspectSpool(rows, route),
+    before = structuredClone(state);
+  const expected = await selectEnvelopeSources(state, route, true, crypto.subtle);
+  let points = 0;
+  expect(
+    await selectEnvelopeSources(state, route, true, crypto.subtle, async () => {
+      points++;
+    }),
+  ).toEqual(expected);
+  expect(points).toBeGreaterThan(state.sources.size);
+  expect(expected.map((r) => r.index)).toEqual([1, 0, 1]);
+  for (const stop of [2, points - 1]) {
+    let n = 0;
+    await expect(
+      selectEnvelopeSources(state, route, true, crypto.subtle, async () => {
+        if (++n === stop) throw Error('selection retired');
+      }),
+    ).rejects.toThrow('selection retired');
+    expect(state).toEqual(before);
+  }
+});
+
 it('R-01 oversized sources cannot allocate a position or burn another attempt after restart', async () => {
   const { createEnvelopePreparation } = await import('../src/crdt/accountEnvelopePreparation');
   type Context = Parameters<typeof createEnvelopePreparation>[0];

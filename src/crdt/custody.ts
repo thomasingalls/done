@@ -1,3 +1,5 @@
+import { eraseVerified } from './verifiedRecords';
+import type { AccountBaselineRead } from './localBaselineShadow';
 import { maintenanceTask } from './contentMaintenance';
 import {
   captureCreationSeed,
@@ -754,6 +756,8 @@ const prepareCustody = (
   recoveryJournal = false,
   warmLoads?: true,
   selectiveLoads?: true,
+  baseline?: ContentCrypto['baseline'],
+  readBaseline?: true,
 ) => {
   const authority = captureAuthority(input),
     factor = codeBytes(code);
@@ -898,6 +902,8 @@ const prepareCustody = (
             ...(reuseOpened ? { reuseOpened } : {}),
             ...(warmLoads ? { warmLoads } : {}),
             ...(selectiveLoads ? { selectiveLoads } : {}),
+            ...(baseline ? { baseline } : {}),
+            ...(readBaseline ? { readBaseline } : {}),
             open: openRecord,
             seal: (task, header, plaintext) =>
               task.wait(async () => {
@@ -949,6 +955,7 @@ const prepareCustody = (
             keys.generation ?? 1,
             keys.journal!,
             keys.previousJournals,
+            () => carrier?.journalBinding(),
           ),
         );
         // Erasure is cleanup and must also run if cancellation follows the successful read.
@@ -1084,8 +1091,11 @@ export const withRecoveryUnderPermit = async <T>(
   task: SessionTask,
   authority: CustodyAuthority,
   code: string,
-  operation: (recovery: JournalRecovery) => Promise<T>,
-  validation?: Pick<ContentCrypto, 'validate' | 'allowSpoolCounter' | 'reuseOpened'>,
+  operation: (recovery: JournalRecovery, baseline?: AccountBaselineRead) => Promise<T>,
+  validation?: Pick<
+    ContentCrypto,
+    'validate' | 'allowSpoolCounter' | 'reuseOpened' | 'baseline' | 'readBaseline'
+  >,
 ): Promise<T> => {
   let validatedView: object | undefined;
   const validate = validation?.validate;
@@ -1096,13 +1106,13 @@ export const withRecoveryUnderPermit = async <T>(
     true,
     false,
     validate && validation?.reuseOpened
-      ? async (rows, scope, counter, view) => {
+      ? async (rows, scope, counter, view, baseline) => {
           scope.step(() => {});
           // The carrier supplies the same identity only after a fresh authenticated read
           // matches both its counter and every sealed row. Never share it across owners.
           if (view && view === validatedView) return;
           validatedView = undefined;
-          await scope.wait(() => validate(rows, scope, counter, view));
+          await scope.wait(() => validate(rows, scope, counter, view, baseline));
           scope.step(() => {
             validatedView = view;
           });
@@ -1110,17 +1120,28 @@ export const withRecoveryUnderPermit = async <T>(
       : validate,
     validation?.allowSpoolCounter,
     validation?.reuseOpened,
+    false,
+    undefined,
+    undefined,
+    validation?.baseline,
+    validation?.readBaseline,
   );
   let journal: JournalUpdate[] | undefined, records: OpenedRecord[] | undefined;
+  let logical: Awaited<ReturnType<typeof owner.carrier.loadAccount>> | undefined;
   try {
     await owner.initialize(task);
     journal = await owner.journal.readSnapshot(task);
-    records = await owner.carrier.load(task);
-    return await operation({ records, journal });
+    logical = await owner.carrier.loadAccount(task);
+    records = logical.records;
+    return await operation(
+      { records, journal },
+      logical.kind === 'baseline-plus-suffix' ? logical : undefined,
+    );
   } finally {
     validatedView = undefined;
     journal?.forEach((row) => row.bytes.fill(0));
     records?.forEach((row) => row.bytes.fill(0));
+    if (logical?.kind === 'baseline-plus-suffix') eraseVerified(logical);
     owner.dispose();
   }
 };
@@ -1359,6 +1380,8 @@ export const prepareAccountCustody = (
   reuseOpened?: true,
   warmLoads?: true,
   selectiveLoads?: true,
+  baseline?: ContentCrypto['baseline'],
+  readBaseline?: true,
 ) =>
   prepareCustody(
     input,
@@ -1372,4 +1395,6 @@ export const prepareAccountCustody = (
     false,
     warmLoads,
     selectiveLoads,
+    baseline,
+    readBaseline,
   );

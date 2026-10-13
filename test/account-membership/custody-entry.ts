@@ -12,6 +12,7 @@ import { NetworkLogin } from '../../src/account/networkLogin';
 import { ScopedTransport } from '../../src/account/scopedTransport';
 import { openEnvelope } from '../../src/crdt/custodyCrypto';
 import { deriveJournalKey } from '../../src/crdt/journalCodec';
+import { parseJournalEra } from '../../src/crdt/journalEra';
 import { createJournalOwner } from '../../src/crdt/journalStore';
 import { deriveStoreName } from '../../src/crdt/storeName';
 import { makeSourceCapsule } from '../../src/crdt/sourceCapture';
@@ -328,11 +329,39 @@ export async function journalOnly(kind: Kind, slot: string, code: string) {
         const local = await openEnvelope(scope, root, state.record.envelope!, subtle);
         const active = await openActiveRotation(scope, root, state.record, subtle, proofs);
         const key = await deriveJournalKey(active?.key ?? local, scope.workspaceId, subtle);
+        // Test-only injection of a crash-left journal entry into this disposable store. The
+        // production owner authenticates this pointer before exposing its journal callback.
+        const dbName = await deriveStoreName(scope.principalId, scope.workspaceId);
+        const db = await new Promise<IDBDatabase>((yes, no) => {
+          const r = indexedDB.open(dbName);
+          r.onsuccess = () => yes(r.result);
+          r.onerror = () => no(r.error);
+        });
+        const counter = await new Promise<any>((yes, no) => {
+          const tx = db.transaction('meta'),
+            r = tx.objectStore('meta').get('counter');
+          tx.oncomplete = () => yes(r.result);
+          tx.onabort = () => no(tx.error);
+        }).finally(() => db.close());
+        const binding =
+          counter.v === 4 || counter.v === 5
+            ? {
+                identity: {
+                  ...scope,
+                  storeId: state.record.store_id,
+                  rootId: state.record.root_id,
+                },
+                intent: counter.intent,
+                era: parseJournalEra(counter.baseline.journalEra),
+              }
+            : undefined;
         const journal = createJournalOwner(
           { ...scope, storeId: state.record.store_id, rootId: state.record.root_id },
-          await deriveStoreName(scope.principalId, scope.workspaceId),
+          dbName,
           active?.generation ?? 1,
           key,
+          new Map(),
+          () => binding,
         );
         try {
           const receipt = journal.append(capsule);

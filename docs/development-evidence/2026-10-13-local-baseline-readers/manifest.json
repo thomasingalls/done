@@ -1,0 +1,120 @@
+{
+  "base": "bce612c3aaadbb133a2917bf0393727bcb7246bb",
+  "createdAt": "2026-10-13T15:04:02.106011+00:00",
+  "logs": [
+    {
+      "path": "unit.log.gz",
+      "sha256": "f0f105ded3bb64a209ee2d77992304a6b8304e17168349dfada9d12365d50e3f",
+      "bytes": 196,
+      "uncompressedBytes": 240
+    },
+    {
+      "path": "native.log.gz",
+      "sha256": "c6f4dc72060ccd13405f3e88245dbd4ec4bf2ab94a98dcb15b85500a0e305d3b",
+      "bytes": 1282,
+      "uncompressedBytes": 3130
+    },
+    {
+      "path": "reference.log.gz",
+      "sha256": "a3a88e3a4f916777a8584038651dc9b48d41b01a687840c9902b6a4ea7ba0352",
+      "bytes": 484,
+      "uncompressedBytes": 899
+    },
+    {
+      "path": "receive-store.log.gz",
+      "sha256": "c11f6ce368e98bc138ab7517eeca00443909e5be4d6cea55d6bdbe8a9da63fd1",
+      "bytes": 379,
+      "uncompressedBytes": 658
+    },
+    {
+      "path": "ordinary.log.gz",
+      "sha256": "0307471399c7af0563296f0a6362db7d1defd16b66f14a823b2d338df2fe8a57",
+      "bytes": 358,
+      "uncompressedBytes": 618
+    },
+    {
+      "path": "prepared.log.gz",
+      "sha256": "900d5f13ac929e200297cf1cd5699197daa180e78b0b9445809887135d31bfe0",
+      "bytes": 653,
+      "uncompressedBytes": 1246
+    },
+    {
+      "path": "paired.log.gz",
+      "sha256": "e1001a386c16576c2643a4c2fd94dd6405364338e60b6cc4f2abcf276fb25652",
+      "bytes": 885,
+      "uncompressedBytes": 2975
+    },
+    {
+      "path": "paired-diagnostic.log.gz",
+      "sha256": "ad80aebb5d19f0ddedcb48fe7ba99b7751571560232cb56f62255677c4b8639e",
+      "bytes": 561,
+      "uncompressedBytes": 2453
+    },
+    {
+      "path": "paired-final.log.gz",
+      "sha256": "08f24be88c3766dde9bec067161daddabcf70051c0ca3401462d4eb9e6e7f729",
+      "bytes": 387,
+      "uncompressedBytes": 659
+    },
+    {
+      "path": "checks.log.gz",
+      "sha256": "b60499300e23df6afe66bb44c84d58ede4d150f9dbcc049a77b5f79d67019ba2",
+      "bytes": 542,
+      "uncompressedBytes": 1339
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/crdt/accountCapture.ts",
+      "sha256": "880118e838fafce114a67b3472b84602c627971a76186c620dc37bb497f18d1d"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "0a72db388b5c3a77acd0b68872195ede328995daa4ded5baf9bf6ef41c5a9db4"
+    },
+    {
+      "path": "src/crdt/accountStartup.ts",
+      "sha256": "2e6a0b8bd4022115bbcbfd1a52409f6b9ffbca6ca29a5b7f22e7e55282618173"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "3bf5c052f78597063a9d47d467671301aafb6b530b13d7440f7e64bfae6364c1"
+    },
+    {
+      "path": "src/crdt/custody.ts",
+      "sha256": "a708aeb75a6213a71f0ad1b9574705419f37d02839a706344fe8f1083f590416"
+    },
+    {
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "794d207fc9988cafa666556b1a84d0c44cf905b92473a5bf690d6cba7c92030d"
+    },
+    {
+      "path": "src/crdt/joinedAccount.ts",
+      "sha256": "235b7d952501893447356395c8ed8c173d2c7cc3aea0d8312f3446e8382b81f1"
+    },
+    {
+      "path": "src/crdt/localBaselineShadow.ts",
+      "sha256": "dc095e9b9b3397f4230bc9b8bc54cdd899da6bff2cd443ca4f08c82d4a8339e7"
+    },
+    {
+      "path": "test/account-sync/fixtures.mjs",
+      "sha256": "da7c119f2ae46b0ac6d8a380a66cfe67ed3a072528bf9a282aa9ca9611cf6236"
+    },
+    {
+      "path": "test/local-baseline/owner.native.mjs",
+      "sha256": "4cae55d83ff9728e6d12f5127dbcc8b253779825bb36c780d3fb091cc9d327c8"
+    },
+    {
+      "path": "test/local-baseline/transition-owner.spec.ts",
+      "sha256": "7d7265c71f6e0455aa935cbd23fa9b1e1fcbe9ce1419339224eb044abf686e4f"
+    },
+    {
+      "path": "test/localBaseline.test.ts",
+      "sha256": "91c725bb1995b2deb3f597331978acf5324ef6992cdefe11a508b02bdbe1a198"
+    },
+    {
+      "path": "test/local-baseline/read-probe.mjs",
+      "sha256": "58c16e3dbf236e75ddeacc354b9ef898765809ea9d6433521d1dc2198733f750"
+    }
+  ]
+}

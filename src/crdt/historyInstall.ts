@@ -103,6 +103,7 @@ export async function verifyHistoryInstall(
   input: Bytes,
   previous: InstalledHistory | undefined,
   lifetime: InboundLifetime,
+  allowDuplicate = false,
 ) {
   previous = previous ? { ...previous } : undefined;
   const event = decodeHistoryInstall(input),
@@ -133,11 +134,18 @@ export async function verifyHistoryInstall(
     await verifyHistoryCheckpointAdmission(event.admission, cp, authority);
     const hash = await historyCheckpointHash(cp),
       sequence = cp.manifest.sequence;
+    const duplicate =
+      !!previous &&
+      sequence === previous.sequence &&
+      hash === previous.hash &&
+      event.version === 2 &&
+      previous.receiveCuts === true;
     if (
       previous &&
       (sequence < previous.sequence ||
         (sequence === previous.sequence &&
-          !(event.version === 2 && !previous.receiveCuts && hash === previous.hash)) ||
+          !(event.version === 2 && !previous.receiveCuts && hash === previous.hash) &&
+          !(allowDuplicate && duplicate)) ||
         (sequence === previous.sequence + 1 && cp.manifest.parent !== previous.hash))
     )
       throw Error('History installation regressed or forked');
@@ -148,6 +156,7 @@ export async function verifyHistoryInstall(
     lifetime.assertCurrent();
     return {
       update,
+      duplicate,
       installed: { hash, sequence, ...(event.version === 2 ? { receiveCuts: true as const } : {}) },
       heads: event.version === 2 ? cp.heads : null,
     };

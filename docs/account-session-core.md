@@ -98,9 +98,13 @@ with this boundary is phase 3, not accomplished by adding the HTTP handler.
 ## Bounds and failures
 
 The initial development limits are 4,096 retained attempts, 1,024 retained sessions, 32 active sessions
-per account and eight live access credentials per session owner. Hitting a bound refuses rather than
-evicting somebody else's active login. Expired records return capacity through maintenance. These are
-single-process limits; a future multi-instance/public host needs its own shared admission policy.
+per account and eight live access credentials per session owner. Attempts/session bounds refuse
+rather than evicting somebody else's active login. Successful access renewal instead retires the
+oldest-issued token from that same authenticated session when its window is full. It retains the
+newest eight; using an old token does not promote it or extend its expiry. Other logins are untouched.
+Expired records also return capacity through maintenance. These are single-process limits; a future
+multi-instance/public host needs its own shared admission policy. See the
+[renewal-window contract](./account-session-renewal-window.md).
 
 The HTTP handler enforces exact Host/Origin, POST/JSON framing, a 64 KiB body limit, 16 in-flight
 requests, and a global 120-request burst replenished at two requests/second. Body/verification handling
@@ -136,3 +140,15 @@ node --test --test-timeout=15000 test/account-core/core.test.mjs test/account-ap
 Next is phase 2: factor-owned client persistence and login generations, background renewal, Lock,
 Sign out/offline revocation, expiry presentation and a walkthrough of prompt placement. Scope grants,
 existing-route cutover, notifications and the real two-device trial follow. No release campaign resumed.
+
+## Rapid-reopen follow-up — 2026-10-13
+
+The [reader-first lifecycle check](./account-local-retention-reader-rollout.md) encountered
+`429 capacity` on session renewal during rapid lock/reopen/retry cycles. `renew()` retains at most
+eight access tokens per remembered login, expiring after up to five minutes; creating short-lived
+owners can consume that allowance. The removal intent remained durable and pending. The original
+retention evidence used a real backend restart to continue its storage/lifecycle checks, not a raised
+limit. The [bounded repair](./account-session-renewal-window.md) now rotates the same login's oldest
+access token only after successful validation. Its follow-up evidence removes that restart and keeps
+account/device authority, absolute lifetime and the eight-token bound. The original diagnostic logs
+remain linked from the reader-first phase.

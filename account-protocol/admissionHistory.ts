@@ -540,10 +540,33 @@ export async function verifyHistoryDecision(
  * Each append verifies the creating signature and ciphertext digest. No decryption is needed here;
  * the custody owner must also establish source/content coverage before installing authority.
  */
-export function createAdmissionPrefixVerifier(history: AdmissionHistory, subtle = crypto.subtle) {
+export function createAdmissionPrefixVerifier(
+  history: AdmissionHistory,
+  subtle = crypto.subtle,
+  /** Private local replay only: a MAC-authenticated prefix, checked under this historical epoch.
+   * This is NOT wire evidence or an unchecked caller cursor. Ordinary callers start at zero. */
+  retained?: { position: number; link: string; verifiedThroughEpoch: number },
+) {
   const h = requireHistory(history);
-  let position = 0,
-    link = ZERO_REFUSAL,
+  const start = retained && { ...retained };
+  if (start) {
+    unhex(start.link, 32);
+    if (
+      !Number.isSafeInteger(start.position) ||
+      start.position < 0 ||
+      start.position > h.boundary.position ||
+      (!start.position && start.link !== ZERO_REFUSAL) ||
+      !h.authorities.some((a) => a.tip === start.verifiedThroughEpoch) ||
+      h.boundaries.some(
+        (b, i) =>
+          (h.authorities[i + 1]!.tip > start.verifiedThroughEpoch && b.position < start.position) ||
+          (b.position === start.position && b.link !== start.link),
+      )
+    )
+      throw Error('Invalid retained admission prefix');
+  }
+  let position = start?.position ?? 0,
+    link = start?.link ?? ZERO_REFUSAL,
     busy = false,
     failed = false,
     finished = false;

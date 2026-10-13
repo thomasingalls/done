@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-13",
+  "parentCommit": "466097f80852b2673e6b71c3aeff523b670d0101",
+  "node": "v26.11.1",
+  "scope": "Experimental pure baseline codec/build/replay. No persistence, deletion, live-owner integration, performance claim or release qualification.",
+  "checks": {
+    "focused": {
+      "command": "node node_modules/vitest/vitest.mjs run test/localBaseline.test.ts test/spoolRecord.test.ts test/spoolBatch.test.ts test/incrementalLedger.test.ts test/accountReceiveLedger.test.ts test/accountSelfReceive.test.ts test/accountConsumerPrimitives.test.ts test/accountDelivery.test.ts",
+      "exitCode": 0,
+      "output": "focused.log.gz"
+    },
+    "retry": {
+      "command": "node --test --test-timeout=60000 test/account-membership/retry.test.mjs",
+      "exitCode": 0,
+      "output": "retry.log.gz"
+    },
+    "typecheck": {
+      "command": "node node_modules/typescript/bin/tsc -b --noEmit",
+      "exitCode": 0,
+      "output": "typecheck.log.gz"
+    },
+    "lint": {
+      "command": "node node_modules/oxlint/bin/oxlint --react-plugin src/crdt/localBaselineRecord.ts src/crdt/localBaselineReplay.ts src/crdt/spoolRecord.ts src/crdt/deliveryRecord.ts src/crdt/inboundLedger.ts src/crdt/accountSyncState.ts src/crdt/accountEnvelopePreparation.ts test/localBaseline.test.ts test/local-baseline/fixtures.mjs",
+      "exitCode": 0,
+      "output": "lint.log.gz"
+    },
+    "format": {
+      "command": "node node_modules/oxfmt/bin/oxfmt --check src/crdt/localBaselineRecord.ts src/crdt/localBaselineReplay.ts src/crdt/spoolRecord.ts src/crdt/deliveryRecord.ts src/crdt/inboundLedger.ts src/crdt/accountSyncState.ts src/crdt/accountEnvelopePreparation.ts test/localBaseline.test.ts test/local-baseline/fixtures.mjs",
+      "exitCode": 0,
+      "output": "format.log.gz"
+    },
+    "build": {
+      "command": "node scripts/check-yjs-patch.mjs && node node_modules/vite/bin/vite.js build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs",
+      "exitCode": 0,
+      "output": "build.log.gz"
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "output": "whitespace.log.gz"
+    }
+  },
+  "tests": {
+    "vitestFiles": 8,
+    "vitestTests": 54,
+    "baselineTests": 14,
+    "generatedHistories": 30,
+    "generatedSeed": 13102026,
+    "nodeTests": 4
+  },
+  "notes": [
+    "Build log starts at module transformation completion. Initial Yjs patch check and transform startup were observed in a prior tool response.",
+    "The retained Node log precedes final baseline-only codec/test refinements; no shared-reader code changed after that Node check.",
+    "The initial partial-capsule selector counterexample was observed but its red log was not retained; the regression is retained in source.",
+    "All test fixtures are synthetic. Counter MAC authentication and settled journal/owner eligibility are adapter prerequisites, not established by this pure reader."
+  ],
+  "files": {
+    "src/crdt/localBaselineRecord.ts": {
+      "bytes": 7722,
+      "sha256": "c316343c53011db0ea534754639fce1880deba2e8308c48fa76ebd086b60f1cd"
+    },
+    "src/crdt/localBaselineReplay.ts": {
+      "bytes": 22633,
+      "sha256": "cb8751111808211e563d0119cbf5dd0249a832fa4ae86ac4e728ffd8378aef3c"
+    },
+    "src/crdt/spoolRecord.ts": {
+      "bytes": 18792,
+      "sha256": "6bdf51d55f58af63d1982462dd3034285d8da38c13c04cf99f3aea65ccedde31"
+    },
+    "src/crdt/deliveryRecord.ts": {
+      "bytes": 14935,
+      "sha256": "573e9c01a339223580f9edda573613e768c66b56ccc8d08c9119861e352776bc"
+    },
+    "src/crdt/inboundLedger.ts": {
+      "bytes": 22573,
+      "sha256": "4fcfba7a5d8723466d261d6856741cf1e037aa3b22d0db575d0aad489a148c83"
+    },
+    "src/crdt/accountSyncState.ts": {
+      "bytes": 6451,
+      "sha256": "7b6f173c96e03e65993f747f72f8d080ae9e3b996454a1dfd514923d3c7fc57d"
+    },
+    "src/crdt/accountEnvelopePreparation.ts": {
+      "bytes": 8473,
+      "sha256": "d977887b9927547ef3012dfbd61c3409ad922678555b0f8e110b8d1abea27252"
+    },
+    "test/localBaseline.test.ts": {
+      "bytes": 27276,
+      "sha256": "4918413c778cf7b3616fecf8163aea90d5559d9a3dd13871b6ed05211e251364"
+    },
+    "test/local-baseline/fixtures.mjs": {
+      "bytes": 13606,
+      "sha256": "31d1ecaae6aa8bee232258cf5ed0d33cc2388fd790301dade6b0f662b8ec364e"
+    }
+  },
+  "logs": {
+    "focused.log.gz": {
+      "bytes": 197,
+      "sha256": "02b0a3004c7c2b762ac74203373fdbbbc3229f5f2d5ad4e0cc37a9b466b6e7a0",
+      "uncompressedBytes": 236,
+      "uncompressedSha256": "7a418bba2131887c0b5337f96e7655273a03807c17bf212833227ffeda760570"
+    },
+    "retry.log.gz": {
+      "bytes": 485,
+      "sha256": "1e813f140c132dbdd8a51248334d2b1342734e5d047a3d2932e011a94bfe4468",
+      "uncompressedBytes": 769,
+      "uncompressedSha256": "e8289da3dc7a7d98455cc9b50f90095bf707762410764c8a75f5092d749f42a6"
+    },
+    "build.log.gz": {
+      "bytes": 1305,
+      "sha256": "62c04aa46f8d49d921b019bdff20c440b9640e3b92f4ef5086ade5b79fd46f23",
+      "uncompressedBytes": 3855,
+      "uncompressedSha256": "1313a164326e8239436939aa4195b9f0998495853fe6bf1934a554785dcee57e"
+    },
+    "typecheck.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lint.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "format.log.gz": {
+      "bytes": 109,
+      "sha256": "7284c528ba865cb4743a810ca11ca4c0f6cb7f2d98e3c1e85bde00966cf2e789",
+      "uncompressedBytes": 112,
+      "uncompressedSha256": "ed60e693ace1f9cac9cd758ea1b836bbf8edfed1b1a5c07ed71fe8c9003917b1"
+    },
+    "whitespace.log.gz": {
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0,
+      "uncompressedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

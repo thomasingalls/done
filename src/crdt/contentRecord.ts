@@ -1,6 +1,7 @@
 /** Selected v1 record bytes; v1 local allocator/witness framing. Internal module. */
 import { fields, hex, utf8, type Bytes } from './custodyCrypto';
 import type { CustodyScope } from './custodyRecord';
+import { StorageCompatibilityError } from './storageCompatibility';
 
 export type ContentRefusal =
   | 'invalid-input'
@@ -162,6 +163,10 @@ export const parseCounter = (
   intent: string,
 ): ContentCounter => {
   const version = (input as { v?: unknown } | null)?.v;
+  // Refusal only. Baseline-aware metadata has a separate authenticated parser;
+  // no ordinary full-history reader may discard its active pointer.
+  if (version === 3 || version === 4 || version === 5)
+    throw new StorageCompatibilityError('Local baseline reader required.');
   const v = object(input, [
     'v',
     'store_id',

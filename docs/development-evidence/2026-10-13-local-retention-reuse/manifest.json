@@ -1,0 +1,119 @@
+{
+  "base": "72d1b8bf",
+  "phase": "private-baseline-reuse",
+  "qualification": false,
+  "sources": [
+    {
+      "path": "src/crdt/accountCapture.ts",
+      "bytes": 29792,
+      "sha256": "0ae7db2b775da1c20c6af64a6007261de50be410a7eb5afb5f749c7ffc5366ba"
+    },
+    {
+      "path": "src/crdt/accountLedgerMetrics.ts",
+      "bytes": 4531,
+      "sha256": "bc734b7b851a48bbcbe0c305c200cf9fa24a5b16ae93f9807ce2c31bdc2cbdc5"
+    },
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "bytes": 123888,
+      "sha256": "7a945397707ba65cdea927b5c112620ba9298fab3c8379b5473bd1ecbd536478"
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "bytes": 57954,
+      "sha256": "7fa23e645cb2ace58f640c9bd97f734ad294b8aa2a598c42030bb1e24a094ca5"
+    },
+    {
+      "path": "src/crdt/warmContent.ts",
+      "bytes": 6203,
+      "sha256": "2fdef013d736fcbe409b1eb788b9e8e579329326b4de06a2f98e05d756f908ac"
+    },
+    {
+      "path": "src/crdt/localBaselineReuse.ts",
+      "bytes": 8985,
+      "sha256": "96ab0557a54235a8279a5d08658f33d0218aad67b459047c05432398af185707"
+    },
+    {
+      "path": "test/localBaselineReuse.test.ts",
+      "bytes": 8513,
+      "sha256": "04d226cd554866537a6eedb848fc451f285f9d8354222fb3d63323e121d3f1ef"
+    },
+    {
+      "path": "test/localBaselineWarm.test.ts",
+      "bytes": 9435,
+      "sha256": "ceddc609f379bc2d25501f8d728fcdaa2bb34b760c0fa2d019c8871aada2286f"
+    },
+    {
+      "path": "test/local-baseline/removal.native.mjs",
+      "bytes": 22725,
+      "sha256": "370962026fe5eb2eb0043f4a036e32ece917f85d614e300a3403f581d1bdc465"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/build.log.gz",
+      "bytes": 2129,
+      "sha256": "d14294bfd3615e649bdf365d54e0c437be1fe27fab5045e23503ccf56be4d95d"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/complete-initial.log.gz",
+      "bytes": 1445,
+      "sha256": "7699223c63218e923a95b5b2db968eee0f5a90c71de0bb596f6b90b665676d61"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/complete-repair.log.gz",
+      "bytes": 463,
+      "sha256": "0489e14401c3c35da67e5dd0c3f3eab22daacaaf46bab80638c44529d4801ed8"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/counts.log.gz",
+      "bytes": 957,
+      "sha256": "7bdd9ab4df9e581db5315343671cd5a379db594874510ba3fb5b39cc502fb4e9"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/format.log.gz",
+      "bytes": 109,
+      "sha256": "9d4b7f93069b17a98bd39643760b53474432d155d09d27450cc3be14614e873d"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/lifecycle-final.log.gz",
+      "bytes": 665,
+      "sha256": "f020c82287abcea31ae39c7999017d838ea2ffb019508a3288217cc2d4e48d5d"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/lifecycle-initial.log.gz",
+      "bytes": 1295,
+      "sha256": "2e76087514f0f8d1090521f4a8a06b89577081727e0b2031d5d121ce8996a182"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/lint.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/native-final.log.gz",
+      "bytes": 1589,
+      "sha256": "cd9d87dcbef189214c9b9049c8f4881335e6956b02f29f70d50c5a5a334cf6b5"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/ordinary.log.gz",
+      "bytes": 357,
+      "sha256": "85be9bb34277e514c8855c963df1fc43092f6c7ed40570ee420b74130ff871c4"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/typecheck.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/unit-final.log.gz",
+      "bytes": 197,
+      "sha256": "b40904114c82fb871a3951c0096e1746b095cdf5fc26f4805e53dfc8003f53ca"
+    },
+    {
+      "path": "docs/development-evidence/2026-10-13-local-retention-reuse/work-counts.json",
+      "bytes": 3263,
+      "sha256": "d1d106004b6ade998acde53be7e704d381042d72969f4275b420e88ff0457b68"
+    }
+  ]
+}

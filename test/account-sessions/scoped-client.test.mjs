@@ -6,6 +6,7 @@ import { fixture } from './grant-fixtures.mjs';
 import { fresh } from '../account-core/fixtures.mjs';
 import { query } from '../account-service-inbound/oracle.mjs';
 import { encodeSubmit } from '../../account-protocol/deliveryTransport.ts';
+import { SESSION_LIMITS } from '../../account-service/sessions.ts';
 import { createScopedAccountHandler } from '../../account-service/scoped-http.ts';
 import { browser } from './browser-fixtures.mjs';
 const { ScopedTransport, NetworkSignInRequired, privateDeliveryPost } = browser;
@@ -167,6 +168,31 @@ test('service restart renews access once, reacquires the lost grant and resends 
   assert.equal(x.renewals, 1);
   assert.equal(x.signatures, 2);
 });
+for (const duringProof of [false, true])
+  test(`retired access renews once and obtains a fresh scoped proof (${duringProof ? 'during proof' : 'before request'})`, async (t) => {
+    let rotate = true;
+    const x = await client(t, (path) => {
+      if (duringProof && rotate && path.endsWith('/grant/v1/finish')) {
+        rotate = false;
+        for (let n = 0; n < SESSION_LIMITS.accessPerSession; n++)
+          assert.equal(x.first.renew().stage, 'access');
+      }
+    });
+    if (!duringProof)
+      for (let n = 0; n < SESSION_LIMITS.accessPerSession; n++)
+        assert.equal(x.first.renew().stage, 'access');
+    assert.equal((await x.read()).status, 200);
+    assert.equal(x.renewals, 1);
+    assert.equal(x.signatures, duringProof ? 2 : 1);
+    assert.equal(x.calls.filter((c) => c.path === '/account/delivery/read-v2').length, 1);
+    assert.equal(
+      x.f.core.sessions.withAccess(x.first.access.accessToken, x.first.access.accountId, () =>
+        assert.fail('retired access authorized work'),
+      ).refusal,
+      'access-required',
+    );
+  });
+
 test('an explicit grant refusal retries the captured body once despite caller mutation', async (t) => {
   let first = true,
     release,

@@ -1,3 +1,4 @@
+import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { authorityClaim, type AccountAuthorityRows } from './accountAuthorityInventory';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
 import {
@@ -1019,8 +1020,9 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         task,
         { ...scope, resolvePrincipal: () => scope.principalId },
         options.code,
-        async (recovered) => {
-          const census = inspectInbound(recovered.records, b.route, b.base);
+        async (recovered, baseline) => {
+          const census =
+            baseline?.ledger.census ?? inspectInbound(recovered.records, b.route, b.base);
           const recovery = capturedRecovery(
               { ...recovered, records: census.delivery.spool.sourceRecords },
               b.route,
@@ -1037,7 +1039,39 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
         {
           allowSpoolCounter: true,
           reuseOpened: true,
-          validate: async (records, _task, counter) => {
+          ...(hasBaselineVerifier()
+            ? {
+                ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
+                baseline: async (
+                  _task: SessionTask,
+                  identity: import('./contentRecord').ContentIdentity,
+                ) => {
+                  const current = await readJoinedAccount(_task, options.slotId, options.code);
+                  if (!same(current.marker, marker) || !recordEqual(current.record, state.record))
+                    throw Error('Baseline opening authority changed');
+                  return {
+                    identity,
+                    route: b.route,
+                    inbound: b.base,
+                    signer: publicKey,
+                    installation: {
+                      kind: 'joined' as const,
+                      initialEpoch,
+                      ...(marker.membership ? { membership: marker.membership } : {}),
+                    },
+                    assertCurrent: () => _task.step(() => {}),
+                  };
+                },
+              }
+            : {}),
+          validate: async (records, _task, counter, _view, baseline) => {
+            if (baseline) {
+              if (detached)
+                await (
+                  await import('./rotationObservation')
+                ).verifyRetainedDetachedPrefix(detached, baseline, crypto.subtle);
+              return;
+            }
             countLedgerWork('joinedStartupValidations');
             const census = inspectInbound(records, b.route, b.base);
             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);

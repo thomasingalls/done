@@ -1,3 +1,4 @@
+import { requireFullSpool } from './retainedHistory';
 import { withAccountProgressCustody } from './accountProgressCustody';
 import {
   isRecoveryDetachment,
@@ -329,6 +330,7 @@ export async function verifyDetachedPrefix(
   spool: import('./spoolRecord').SpoolState,
   subtle: SubtleCrypto,
 ) {
+  requireFullSpool(spool);
   const verifier = (
     await import('../../account-protocol/admissionHistory')
   ).createAdmissionPrefixVerifier(history, subtle);
@@ -337,6 +339,37 @@ export async function verifyDetachedPrefix(
   for (const position of spool.positions.slice(0, history.boundary.position)) {
     if (!position.wire) throw Error('Missing detached accepted ciphertext');
     await verifier.append(position.wire);
+  }
+  verifier.finish();
+}
+
+/** Authenticated local-baseline origin, never a cursor from the network. The full verifier above
+ * remains fenced. A removed device can retain unaccepted local edits beyond its signed cutoff. */
+export async function verifyRetainedDetachedPrefix(
+  history: import('../../account-protocol/admissionHistory').AdmissionHistory,
+  baseline: import('./localBaselineShadow').AccountBaselineRead,
+  subtle: SubtleCrypto,
+) {
+  const spool = baseline.ledger.census.delivery.spool,
+    origin = spool.origin;
+  if (
+    !origin ||
+    !history.finalization ||
+    history.boundary.position < origin.position ||
+    history.boundary.position > origin.position + spool.positions.length
+  )
+    throw Error('Detached retained prefix is incomplete');
+  const verifier = (
+    await import('../../account-protocol/admissionHistory')
+  ).createAdmissionPrefixVerifier(history, subtle, {
+    position: origin.position,
+    link: origin.link,
+    verifiedThroughEpoch: baseline.authorityEpoch,
+  });
+  for (const p of spool.positions) {
+    if (p.position > history.boundary.position) break;
+    if (!p.wire) throw Error('Missing detached accepted ciphertext');
+    await verifier.append(p.wire);
   }
   verifier.finish();
 }

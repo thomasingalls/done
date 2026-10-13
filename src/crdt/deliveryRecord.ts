@@ -5,7 +5,13 @@ import { hex, utf8, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
 import { MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
 import { captureError, captureRouteAt, type CaptureRoute } from './sourceCapture';
-import { inspectSpool, decodeSpoolEntry, networkRoute, type SpoolState } from './spoolRecord';
+import {
+  inspectSpoolSteps,
+  decodeSpoolEntry,
+  networkRoute,
+  type SpoolState,
+  type SpoolReplayStart,
+} from './spoolRecord';
 import { decodeNetworkEnvelope } from '../../account-protocol/envelope';
 import { decodeSubmission, verifySubmission } from '../../account-protocol/submission';
 import {
@@ -143,15 +149,23 @@ export function decodeDeliveryEntry(
     captureError('Noncanonical delivery record');
   return e;
 }
-export function inspectDelivery(
+export function inspectDelivery(...args: Parameters<typeof inspectDeliverySteps>): DeliveryCensus {
+  const steps = inspectDeliverySteps(...args);
+  let next = steps.next();
+  while (!next.done) next = steps.next();
+  return next.value;
+}
+export function* inspectDeliverySteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   authority: DecisionAuthority,
-): DeliveryCensus {
+  start?: SpoolReplayStart,
+): Generator<void, DeliveryCensus> {
   const prior: OpenedRecord[] = [],
     entries: DeliveryCensus['entries'] = [],
     ledger: OpenedRecord[] = [];
   for (const r of records) {
+    yield;
     let tag;
     if (r.kind === 'heads' || r.kind === 'outbound') {
       try {
@@ -175,13 +189,13 @@ export function inspectDelivery(
       if (tag === 'done/account-spool/v1') ledger.push(r);
     }
   }
-  const spool = inspectSpool(prior, route);
+  const spool = yield* inspectSpoolSteps(prior, route, start);
   ledger.sort((a, b) => a.seq - b.seq);
   spool.events = ledger.map((r) => r.bytes);
   return { spool, entries: entries.sort((a, b) => a.record.seq - b.record.seq), ledger };
 }
 export async function expectedPosition(spool: SpoolState, position: number, subtle: SubtleCrypto) {
-  let previous = ZERO_REFUSAL;
+  let previous = spool.origin?.link ?? ZERO_REFUSAL;
   for (const p of spool.positions) {
     if (!p.wire) return null;
     const e = decodeNetworkEnvelope(p.wire),
@@ -253,8 +267,9 @@ export async function verifyDelivery(
     // A complete cold replay also advances this prefix once. Rebuilding it for each
     // submission/response is quadratic. Retry events below invalidate the affected suffix;
     // this cache never substitutes a later envelope for the attempt being replayed.
-    for (let n = expectedCache.size + 1; n <= position; n++) {
-      const p = active.positions[n - 1];
+    const offset = active.origin?.position ?? 0;
+    for (let n = offset + expectedCache.size + 1; n <= position; n++) {
+      const p = active.positions[n - offset - 1];
       if (!p?.wire) return null;
       countLedgerWork('deliveryPrefixLinks');
       const e = decodeNetworkEnvelope(p.wire),
@@ -265,7 +280,7 @@ export async function verifyDelivery(
           digest: hex(e.digest),
           epoch: e.epoch,
         },
-        previous = expectedCache.get(n - 1)?.next ?? ZERO_REFUSAL,
+        previous = expectedCache.get(n - 1)?.next ?? active.origin?.link ?? ZERO_REFUSAL,
         proof = p.retries?.at(-1)?.refusal,
         closed = proof ? decodePositionResponse(proof) : null,
         parent =
