@@ -1,0 +1,212 @@
+{
+  "base": "f75a19e7691891f7539953ab7788645257125337",
+  "createdAt": "2026-10-13T21:16:01.227451+00:00",
+  "node": "v26.11.1",
+  "qualification": false,
+  "sources": [
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "bytes": 129555,
+      "sha256": "81ae306955a46229335c3fe7ff80691f0c855728e659295eb54b68e979f49734"
+    },
+    {
+      "path": "test/local-baseline/removal-checkpoint.spec.ts",
+      "bytes": 5743,
+      "sha256": "65cc6617d80a3ef78fe9e0af5f7920aab5fe9ec3d1a9aa37c5a4a4996863cd67"
+    },
+    {
+      "path": "src/crdt/historyReceiveFence.ts",
+      "bytes": 887,
+      "sha256": "0c0607a4ddec58222484fbce0c60119be36f3362cfb59db76d6728067e560a14"
+    },
+    {
+      "path": "test/historyReceiveFence.test.ts",
+      "bytes": 2294,
+      "sha256": "b2992437f3e816b568394a03bbcdcb15d2ced44b27da8ad4d9c87f6e4cbd2adb"
+    },
+    {
+      "path": "test/local-baseline/history-handoff.ts",
+      "bytes": 6560,
+      "sha256": "c20bae82de309d6717007422dac399df59076b65d13db4e048fbf3781f2fcbd3"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "bytes": 107869,
+      "sha256": "734ac3c5e75fac6498ab11a394fb76c5228057abc52b238e585438abe1143aa8"
+    }
+  ],
+  "results": {
+    "unit": {
+      "pass": 71,
+      "fail": 0
+    },
+    "preparedNative": {
+      "pass": 7,
+      "fail": 0
+    },
+    "reducedLifecycle": {
+      "pass": 3,
+      "fail": 0
+    },
+    "ordinaryHistory": {
+      "pass": 2,
+      "fail": 0
+    },
+    "beforeHeldReceive": "expected failure: empty prepared receive superseded, owner closed",
+    "omittedPendingGuard": "expected failure: late receive did not cause second drain",
+    "initialRepairedAttempt": "test build anchor failed; no browser journey",
+    "initialJavaScriptBudgetKb": 138.3
+  },
+  "files": [
+    {
+      "path": "before-diagnostic.spec.ts.gz",
+      "bytes": 2953,
+      "sha256": "8ef0e8635003b24171b41719122424ba418ba042d639eedd043ac352be3ee51d",
+      "uncompressedBytes": 9341
+    },
+    {
+      "path": "before-error-context.md.gz",
+      "bytes": 5205,
+      "sha256": "9800362b286393da2251b239957aa4b626c03ffcd400dbf0c5c6739ede388300",
+      "uncompressedBytes": 18756
+    },
+    {
+      "path": "before-owner-events.json.gz",
+      "bytes": 1201,
+      "sha256": "fc7c031c76c62e88a5994232ef1ec11fbaa1ca706b350022b38e61e78f7e48ec",
+      "uncompressedBytes": 7359
+    },
+    {
+      "path": "budget.log.gz",
+      "bytes": 349,
+      "sha256": "fc00aac56061e495788fa4ff762515ba7e1c6e5315b8adba41303a1cf44c6b05",
+      "uncompressedBytes": 1016
+    },
+    {
+      "path": "build.log.gz",
+      "bytes": 1778,
+      "sha256": "0a1474318758a0c910f89a6b99495754bb58b92f512592e69341bb5f02ab0c26",
+      "uncompressedBytes": 5566
+    },
+    {
+      "path": "format.log.gz",
+      "bytes": 109,
+      "sha256": "814c344a41b67a34b9f1fe803b41be32f29204e4b4c61ee279f7c5611fe3496a",
+      "uncompressedBytes": 112
+    },
+    {
+      "path": "hold.log.gz",
+      "bytes": 749,
+      "sha256": "da1fba1a1d963daf9b87a50e8e6b2cac779c0fbe26e274cdcba9611736b76137",
+      "uncompressedBytes": 1899
+    },
+    {
+      "path": "lifecycle.log.gz",
+      "bytes": 700,
+      "sha256": "70ef2fd7756013bfd0f47594219acadf131dc730adcc954825c91ced8f9b0143",
+      "uncompressedBytes": 1409
+    },
+    {
+      "path": "lint.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0
+    },
+    {
+      "path": "natural-removal-diagnostic-reduced-cff9d-h-another-cut-and-cold-open-repeat1.json.gz",
+      "bytes": 751,
+      "sha256": "2944bbfcdd63836ab318a71f2ec66e10a7fe229fbd563f462ca3085908ce612f",
+      "uncompressedBytes": 3653
+    },
+    {
+      "path": "natural-removal-diagnostic-reduced-cff9d-h-another-cut-and-cold-open-repeat2.json.gz",
+      "bytes": 754,
+      "sha256": "f686efe44191837ef36f4cb6d486b1428541d5dfbf2bef32231d766018432171",
+      "uncompressedBytes": 3653
+    },
+    {
+      "path": "natural-removal-diagnostic-reduced-cff9d-h-another-cut-and-cold-open.json.gz",
+      "bytes": 760,
+      "sha256": "02305ee78f053e687f6aeb0aae5eecf2ea701362a99edc325b6f733e2a604baa",
+      "uncompressedBytes": 3653
+    },
+    {
+      "path": "natural.log.gz",
+      "bytes": 367,
+      "sha256": "a455eefe74c92768f510b4a1848f4d5343289cae76cec5ebfcdf8b380510fe2b",
+      "uncompressedBytes": 1237
+    },
+    {
+      "path": "omission-context.md.gz",
+      "bytes": 4638,
+      "sha256": "fb4c2ca0ed3bbe0d574f65cfd62318131d483cecdd501d0be8546540644fe927",
+      "uncompressedBytes": 18406
+    },
+    {
+      "path": "omission.log.gz",
+      "bytes": 752,
+      "sha256": "fa54a1e1cc6c7346d7e77cfc71eb1d4d84e9f9f7d755a276effe4253d371a841",
+      "uncompressedBytes": 1903
+    },
+    {
+      "path": "ordinary-history.log.gz",
+      "bytes": 338,
+      "sha256": "f31fb346d7f072b588b21db47e54a4a8ac9645e81e0e5cecc283ef6b5acf4e22",
+      "uncompressedBytes": 515
+    },
+    {
+      "path": "origin.log.gz",
+      "bytes": 174,
+      "sha256": "d780ebda65f67eb85847b3c6584af7950b3e30ef58883921b61cf5a1eac4d626",
+      "uncompressedBytes": 210
+    },
+    {
+      "path": "prepared-native.log.gz",
+      "bytes": 650,
+      "sha256": "116477d583f125acd0f477bfd1b23da2f8dbf18fc098ccf102086e46ce8eec16",
+      "uncompressedBytes": 1244
+    },
+    {
+      "path": "repair-2.log.gz",
+      "bytes": 369,
+      "sha256": "e7b231da6ce76554498899bdc67639f008d872ee473d93a5b82a34fc87771c9d",
+      "uncompressedBytes": 565
+    },
+    {
+      "path": "repair-repeat.log.gz",
+      "bytes": 368,
+      "sha256": "163bc301278cc38e1a200a5f4b47d739a5b662c5b699c6d005d008e9afdac63c",
+      "uncompressedBytes": 565
+    },
+    {
+      "path": "repair.log.gz",
+      "bytes": 1126,
+      "sha256": "133ccfb21666d26f78bbd7d20f25f2875e5c91dcd57c8a307bded77deed6b55f",
+      "uncompressedBytes": 5756
+    },
+    {
+      "path": "repair.patch.gz",
+      "bytes": 3986,
+      "sha256": "284426d87609beacd1a27c8e15e87184817e23ed30f7e0443227bfabcd1486a1",
+      "uncompressedBytes": 14078
+    },
+    {
+      "path": "typecheck.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0
+    },
+    {
+      "path": "unit.log.gz",
+      "bytes": 194,
+      "sha256": "e72bf56e33ba6f708874144b7e12f4a75181a974f06dfb44f7405c4b914daafa",
+      "uncompressedBytes": 236
+    },
+    {
+      "path": "yjs.log.gz",
+      "bytes": 117,
+      "sha256": "eb581cf882a4f6a008e597b7a472dd237049d1c232c5c6e9c1a6d35b9ba98d97",
+      "uncompressedBytes": 112
+    }
+  ]
+}

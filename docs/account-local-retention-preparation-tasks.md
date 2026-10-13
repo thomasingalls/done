@@ -51,3 +51,8 @@ of 97 ms versus 483 ms. Total time rises about 2–3%; verification work remains
 journey failed once and passed five follow-ups without a repair. The failure remains unexplained
 and prevents calling lifecycle validation completely clean. Public activation, compatible reader-first rollout/rollback, product trigger,
 cadence and capacity behavior remain separate.
+
+Follow-up: [history/receive ordering](./account-history-receive-ordering.md) reproduces a stale
+prepared-receive context when history inspection refreshes custody, and repairs that interleaving
+without weakening the final authority check. The original run has no causal trace; the follow-up
+records that limit and retains the earlier packet unchanged.

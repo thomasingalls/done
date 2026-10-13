@@ -39,6 +39,7 @@ import {
   verifyHistoryInstall,
 } from './historyInstall';
 import { recordEqual, type CustodyRecord } from './custodyRecord';
+import { afterReceivedHandoffs, HistoryReceivePending } from './historyReceiveFence';
 import {
   rememberAccountTransition,
   clearAccountTransition,
@@ -2524,6 +2525,10 @@ async function openAccountReceiveOwner(
             history: (command: import('../account/historyMaintenance').HistoryMaintenanceCommand) =>
               runCaptureTask(async (task) => {
                 await assertCurrent(task);
+                // Even an empty prepared receipt retains a checked authority context until its
+                // final handoff. History refreshes that context; never invalidate a pending one.
+                // New receives cannot stage while this serialized storage task is running.
+                if (pendingPromotions) throw new HistoryReceivePending();
                 const refreshCustody = async () => {
                   try {
                     // History owns only its encrypted progress and shared seal reservations. Refresh
@@ -2950,7 +2955,23 @@ async function openReceivingWorkspace(
     const result = Object.freeze({
       ...account,
       kind: 'ready' as const,
-      devices,
+      devices: Object.freeze({
+        ...devices,
+        get transition() {
+          return devices.transition;
+        },
+        ...(devices.history
+          ? {
+              history: (
+                command: import('../account/historyMaintenance').HistoryMaintenanceCommand,
+              ) =>
+                afterReceivedHandoffs(
+                  () => workspace.whenDurable(),
+                  () => devices.history!(command),
+                ),
+            }
+          : {}),
+      }),
       workspace,
       receiveStatus: api.status,
       prepareRead: api.prepareRead,

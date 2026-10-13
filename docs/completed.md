@@ -14395,7 +14395,7 @@ release validation remain separate. New work is uncommitted. No deployment or pe
 
 ### Budget the remaining private retention preparation loops
 
-**Date:** 2026-10-13 · **Commit:** pending, after signed `127fcf2a` · **Stage:** private authenticated local history retention; release validation paused.
+**Date:** 2026-10-13 · **Commit:** signed `f75a19e7` · **Stage:** private authenticated local history retention; release validation paused.
 
 **Exit.** Private evidence reuse is signed as **`127fcf2a`**. The new
 [preparation scheduling repair](./account-local-retention-preparation-tasks.md) begins with aligned
@@ -14432,3 +14432,43 @@ closure before activation. Product trigger/cadence, capacity behavior, compatibl
 publication/rollback, phone evidence and general release validation remain separate. New work is
 uncommitted; no deployment or personal storage changed. `docs/progress.md` and unrelated root notes
 remain untouched.
+
+
+### Order checkpoint maintenance after prepared receive handoffs
+
+**Date:** 2026-10-13 · **Commit:** pending, after signed `f75a19e7` · **Stage:** private authenticated local history retention; release validation paused.
+
+**Exit.** The preparation scheduling phase is signed as **`f75a19e7`**. The new
+[investigation and repair](./account-history-receive-ordering.md) reproduces the joined-owner closure:
+history inspection refreshes custody while an empty prepared receive still holds its final-apply
+context. The final check correctly refuses that superseded context, admission closes, and the UI
+returns to the chooser. Three natural diagnostic repetitions passed; a forced ordering failed with
+the refusal and closed owner recorded. This proves a mechanism matching the previous symptom, not
+the unrecorded cause of that original occurrence.
+
+**Repair.** Workspace history waits for existing receive handoffs outside admission and storage, then
+checks for a receive that won the gap under the storage tail, after the complete authority check and
+before any history effect/refresh. Only that private pre-effect refusal retries, at most three times.
+Generic authority/storage errors and ambiguous effects do not retry. Long history work stays outside
+the input FIFO. Complete final checks, invalidation, journal fencing, staged-suffix closure, native
+exchange/readback and the live document/UndoManager remain; no format changes.
+
+**Evidence.** The [packet](./development-evidence/2026-10-13-history-receive-ordering/README.md) retains
+before/after logs, diagnostic source/trace, source hashes and the deliberately failing omitted-guard
+control. The repaired checkpoint journey forces empty, content/local-edit/undo, and late-arrival
+interleavings after reduced-history cold opening. The omission fails the late-arrival check. All
+**71 unit tests**, **seven native receive controls**, and **three reduced-history lifecycle/checkpoint
+journeys** pass. **Two ordinary packaged history journeys** also pass, including lost publication
+replies, interrupted installation and repeated snapshots. The native controls retain real
+fresh-authority refusal, renderer-death replay,
+undisplayed suffix plus local journal, and undo/redo. TypeScript, focused lint/format, ordinary build,
+Yjs, origin isolation and **138.3 kB / 350 kB** initial-JS budget pass. The initial repaired test attempt
+failed at probe construction, before the browser ran; its log is retained, and the corrected anchor
+does not relax assertions or timeouts.
+
+**Remaining.** The demonstrated checkpoint/receive race is repaired. The original untraced occurrence
+remains historically uncertain, rather than retrospectively relabelled as proved. No performance
+improvement is claimed by this correctness phase. Public retention trigger/cadence, capacity behavior,
+compatible reader-first publication/rollback, current-device measurements and general release
+validation remain separate. New work is uncommitted; no deployment or personal storage changed.
+`docs/progress.md` and unrelated root notes remain untouched.

@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { build } from 'vite';
 import { resolve } from 'node:path';
+import { historyHandoffProbe, historyDuringReceive } from './history-handoff';
 import { pairedEditors, openSaved, add } from '../packaged-account/devices';
 import { startService, stopService } from '../packaged-account/server';
 import type { AdmittedWorkspace } from '../../src/crdt/admittedWorkspace';
@@ -46,6 +47,7 @@ test('reduced original and joined owners exchange/undo writing, refuse an unfini
       'import.meta.env.VITE_ACCOUNT_RETENTION': JSON.stringify('1'),
     },
     plugins: [
+      historyHandoffProbe(),
       {
         name: 'private-retention-checkpoint',
         enforce: 'pre',
@@ -115,6 +117,7 @@ test('reduced original and joined owners exchange/undo writing, refuse an unfini
         .poll(() => removal(p, 1), { timeout: 15000 })
         .toEqual({ kind: 'already-removed' });
     }
+    await historyDuringReceive(page, second);
     await add(second, 'Cold reduced checkpoint continues');
     await expect(page.locator('.shell')).toContainText('Cold reduced checkpoint continues');
   } finally {
