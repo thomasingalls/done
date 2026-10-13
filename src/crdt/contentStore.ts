@@ -54,7 +54,11 @@ import type {
 
 export interface ContentCrypto {
   /** Explicit non-deleting v9 experiment only. Builds a context after a fresh authority check. */
-  baseline?(task: SessionTask, identity: ContentIdentity): Promise<LocalBaselineContext>;
+  baseline?(
+    task: SessionTask,
+    identity: ContentIdentity,
+    counter: ContentCounter,
+  ): Promise<LocalBaselineContext>;
   /** Account owners opt into lifetime-local plaintext reuse. The validation callback still runs. */
   reuseOpened?: true;
   /** Private exclusive Account lifetime only; generic/shared Local owners must not opt in. */
@@ -334,12 +338,12 @@ export const createContentOwner = (
         const { verifyCompleteLocalBaseline } = await task.wait(
           () => import('./localBaselineShadow'),
         );
-        let context = await crypt.baseline!(task, { ...scope });
+        let context = await crypt.baseline!(task, { ...scope }, counter);
         const held = await readEncryptedBaseline(
           task,
           baselineOwner(
             async () => {
-              context = await crypt.baseline!(task, { ...scope });
+              context = await crypt.baseline!(task, { ...scope }, counter);
             },
             () => context.assertCurrent(),
           ),
@@ -354,7 +358,7 @@ export const createContentOwner = (
             baselineAuth(task),
             held,
           );
-          await crypt.baseline!(task, { ...scope });
+          await crypt.baseline!(task, { ...scope }, counter);
         } finally {
           eraseVerified(held);
         }
@@ -753,17 +757,44 @@ export const createContentOwner = (
       task: SessionTask,
       assertCurrent: () => Promise<void>,
       checkCommit: () => void,
+      expectedRevision?: number,
     ) {
       if (!metadata || !crypt.baseline || !crypt.allowSpoolCounter || !crypt.validate)
         throw Error('Private Account baseline installer disabled');
       const snapshot = await read(task, true);
       const records = await openSnapshot(task, snapshot);
+      let previous:
+        | Awaited<ReturnType<(typeof import('./localBaselineStorage'))['readEncryptedBaseline']>>
+        | undefined;
       let candidate:
         | Awaited<ReturnType<(typeof import('./localBaselineReplay'))['prepareLocalBaseline']>>
         | undefined;
       try {
         checkCommit();
-        if (metadata.active()) return { kind: 'already-installed' as const };
+        if (
+          expectedRevision !== undefined &&
+          (!Number.isSafeInteger(expectedRevision) || expectedRevision < 1)
+        )
+          throw Error('Invalid expected baseline revision');
+        if (metadata.active()) {
+          if (expectedRevision === undefined) return { kind: 'already-installed' as const };
+          const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
+          previous = await readEncryptedBaseline(task, baselineOwner(assertCurrent, checkCommit));
+          if (
+            !equalCounter(
+              scope,
+              metadata.parse(previous.counter, witness.intent),
+              snapshot.counter!,
+            )
+          )
+            corrupt('Replacement census changed.');
+          // An explicit expected revision makes a retry after a lost reply idempotent.
+          if (previous.anchor.revision === expectedRevision + 1)
+            return { kind: 'already-installed' as const };
+          if (previous.anchor.revision !== expectedRevision)
+            corrupt('Replacement revision changed.');
+        } else if (expectedRevision !== undefined)
+          corrupt('Replacement requires an installed baseline.');
         const { prepareLocalBaseline, LocalBaselineError } = await task.wait(
           () => import('./localBaselineReplay'),
         );
@@ -771,10 +802,10 @@ export const createContentOwner = (
           () => import('./localBaselineShadow'),
         );
         const input = { records, counter: snapshot.counter! };
-        const context = await crypt.baseline(task, { ...scope });
+        const context = await crypt.baseline(task, { ...scope }, input.counter);
         const auth = baselineAuth(task);
         try {
-          candidate = await prepareLocalBaseline(input, context, auth);
+          candidate = await prepareLocalBaseline(input, context, auth, previous?.anchor);
         } catch (error) {
           // Only a new candidate can be ineligible. A persisted anchor's failure above is fatal.
           if (error instanceof LocalBaselineError && error.reason !== 'integrity')
@@ -790,16 +821,19 @@ export const createContentOwner = (
           baselineOwner(assertCurrent, checkCommit),
           snapshot,
           candidate,
+          previous?.anchor,
         );
         // Re-read the committed pointer before any future allocation, including a lost-reply retry.
         clearView();
+        if (previous) metadata.replaced();
         const reopened = await load(task);
         eraseVerified(reopened);
-        return { kind: 'installed' as const };
+        return { kind: previous ? ('replaced' as const) : ('installed' as const) };
       } finally {
         clearView();
         eraseVerified(records);
         eraseVerified(candidate);
+        eraseVerified(previous);
       }
     },
     canSelect,
@@ -835,7 +869,6 @@ export const createContentOwner = (
     },
     /** Internal applying-owner boundary. This predecessor instance must be disposed after success. */
     async rotate(task: SessionTask, next: ContentRotation) {
-      if (metadata?.active()) corrupt('Baseline generation transition requires a later reader.');
       try {
         await rotateContent(
           task,
@@ -846,7 +879,33 @@ export const createContentOwner = (
             intent: witness.intent,
             read: () => read(task, true),
             authenticate: (snapshot) => openSnapshot(task, snapshot),
+            assertCurrent: async (counter) => {
+              if (metadata?.active()) await crypt.baseline!(task, { ...scope }, counter);
+            },
             crypt,
+            ...(metadata
+              ? {
+                  baseline: async (counter: ContentCounter) => {
+                    if (!metadata.active()) return undefined;
+                    const { readEncryptedBaseline } = await task.wait(
+                      () => import('./localBaselineStorage'),
+                    );
+                    let context = await crypt.baseline!(task, { ...scope }, counter);
+                    const held = await readEncryptedBaseline(
+                      task,
+                      baselineOwner(
+                        async () => {
+                          context = await crypt.baseline!(task, { ...scope }, counter);
+                        },
+                        () => context.assertCurrent(),
+                      ),
+                    );
+                    held.baseline.payload.fill(0);
+                    held.baseline.mac.fill(0);
+                    return { counter: held.counter, chunks: held.chunks };
+                  },
+                }
+              : {}),
           },
           next,
         );

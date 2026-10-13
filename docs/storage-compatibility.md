@@ -110,7 +110,8 @@ carrier without activating it in the application. Ordinary `parseCounter` now re
 `app-update-required` for v3; predecessor readers already refused that version. No marker
 bypass, database upgrade, automatic conversion, or downgrade is added. The active pointer and
 all encrypted chunks commit together; the tested private carrier retains complete history.
-Its baseline-aware application reader/installer and later deletion policy remain future work.
+At that checkpoint, the application reader/installer was still future work; the integrations below
+add it privately. The deletion policy remains separate.
 
 
 The subsequent [non-deleting owner integration](./account-local-baseline-owner.md) recognizes v3 only
@@ -118,4 +119,7 @@ through `VITE_ACCOUNT_BASELINE_INSTALL=1` in supported Account contexts. Its pri
 view does not change the stored version or MAC domain: every later write retains the authenticated v3
 pointer. Ordinary readers remain fenced; disabling the experiment is not a profile rollback. Actual
 original/joined cold opens and the native history source now authenticate/replay the anchor with all
-history retained. Rotation, replacement, public rollout and deletion remain separate work.
+history retained. The [non-deleting lifecycle adapter](./account-local-baseline-lifecycle.md) adds expected-revision
+replacement, earlier-generation anchors, rotation, initial handoff and detached local-copy readers under
+the same flag. Its v3 pointer retains `history: complete`; ordinary readers and earlier private readers
+remain fenced where unsupported. Public rollout, compatible rollback and deletion remain separate work.

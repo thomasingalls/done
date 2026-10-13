@@ -22,6 +22,10 @@ export function createBaselineMetadata(scope: ContentIdentity) {
   };
   return {
     active: () => !!pointer,
+    /** Only after our atomic replacement succeeds. The next full load authenticates the new pin. */
+    replaced() {
+      pointer = undefined;
+    },
     parse(value: unknown, intent: string): ContentCounter {
       if ((value as { v?: unknown } | null)?.v !== 3) {
         if (pointer) return corrupt('Baseline metadata was downgraded.');

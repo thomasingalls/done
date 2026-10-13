@@ -322,7 +322,7 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
-    ...(composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+    ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
       ? ({
           baseline: async (task, identity, route) => {
             await assertCurrent(task);
@@ -759,13 +759,18 @@ async function openAccountReceiveOwner(
       : undefined;
   const installLocalBaseline =
     composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
-      ? async () => {
+      ? async (expectedRevision?: number) => {
           // The caller already holds the admission queue. Flush on the storage tail before taking
           // the journal census; never nest a flush inside that same tail.
           await carrier.flushJournal();
           try {
             return await runBaselineShadow((task, owner, _route, checkJournal) =>
-              owner.carrier.installBaseline(task, () => assertCurrent(task), checkJournal),
+              owner.carrier.installBaseline(
+                task,
+                () => assertCurrent(task),
+                checkJournal,
+                expectedRevision,
+              ),
             );
           } catch (e) {
             if (e instanceof MaintenanceInterrupted)
@@ -2614,6 +2619,12 @@ async function openReceivingWorkspace(
       ...(checkLocalBaseline ? { checkLocalBaseline } : {}),
       ...(installLocalBaseline
         ? {
+            replaceLocalBaseline: (expectedRevision: number) =>
+              enqueue(new Uint8Array([1]), async (_input, promote) => {
+                const result = await installLocalBaseline(expectedRevision);
+                promote([]);
+                return result;
+              }),
             installLocalBaseline: () =>
               enqueue(new Uint8Array([1]), async (_input, promote) => {
                 const result = await installLocalBaseline();

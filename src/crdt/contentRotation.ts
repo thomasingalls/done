@@ -3,6 +3,13 @@
 import { equalStoredRecord, type DiskState } from './contentCompaction';
 import { contentTransaction } from './contentDatabase';
 import {
+  baselineCounterPayload,
+  baselineChunkKey,
+  parseBaselineCounter,
+  type BaselineCounter,
+} from './localBaselineAnchor';
+import { sameBytes } from './verifiedRecords';
+import {
   CONTENT_STORES,
   CONTENT_LIMIT,
   counterPayload,
@@ -119,6 +126,10 @@ export async function rotateContent(
     intent: string;
     read(): Promise<DiskState>;
     authenticate(snapshot: DiskState): Promise<OpenedRecord[]>;
+    assertCurrent?(counter: ContentCounter): Promise<void>;
+    baseline?(
+      counter: ContentCounter,
+    ): Promise<{ counter: BaselineCounter; chunks: StoredRecord[] } | undefined>;
     crypt: ContentCrypto;
   },
   next: ContentRotation,
@@ -141,6 +152,22 @@ export async function rotateContent(
   try {
     const before = snapshot.counter!;
     if (before.active_gen !== owner.generation) corrupt('Rotation predecessor changed.');
+    const baseline = await owner.baseline?.(before);
+    if (baseline) {
+      const { baseline: _pointer, ...allocation } = baseline.counter;
+      if (!equalCounter(owner.scope, { ...allocation, v: 2 }, before))
+        corrupt('Rotation baseline counter changed.');
+    }
+    const stored = (c: ContentCounter) =>
+      baseline
+        ? ({ ...c, v: 3 as const, baseline: baseline.counter.baseline } as BaselineCounter)
+        : c;
+    const payload = (c: ContentCounter) => {
+      const value = stored(c);
+      return value.v === 3
+        ? baselineCounterPayload(owner.scope, value)
+        : counterPayload(owner.scope, value);
+    };
     task.step(next.checkJournal);
     const reserved = await task.wait(() => next.reserve(opened.length));
     if (!Number.isSafeInteger(reserved) || reserved < opened.length || reserved >= CONTENT_LIMIT)
@@ -168,8 +195,9 @@ export async function rotateContent(
     };
     counter = {
       ...counter,
-      mac: await owner.crypt.sign(task, counterPayload(owner.scope, counter)),
+      mac: await owner.crypt.sign(task, payload(counter)),
     };
+    if (owner.assertCurrent) await task.wait(() => owner.assertCurrent!(before));
     await task.wait(() =>
       contentTransaction<void>(
         owner.db,
@@ -178,6 +206,7 @@ export async function rotateContent(
         'readwrite',
         (tx, _result, guard) => {
           const rows: DiskState['rows'] = [];
+          const metadata: { key: IDBValidKey; value: unknown }[] = [];
           let current: ContentCounter | null = null,
             complete = 0;
           const finish = () => {
@@ -198,12 +227,19 @@ export async function rotateContent(
               )
                 corrupt('Content census changed before generation activation.');
             }
+            if (metadata.length !== (baseline?.chunks.length ?? 0))
+              corrupt('Rotation baseline metadata changed.');
+            for (let i = 0; i < metadata.length; i++) {
+              const held = metadata.find((r) => indexedDB.cmp(r.key, baselineChunkKey(i)) === 0);
+              if (!held || !equalStoredRecord(parseStoredRecord(held.value), baseline!.chunks[i]!))
+                corrupt('Rotation baseline chunk changed.');
+            }
             // The same slot permit excludes all conforming writers; the synchronous check also catches
             // an unexpected journal append before this atomic disk replacement.
             next.checkJournal();
             for (const record of replacements)
               tx.objectStore(recordStore(record.kind)).put(record, record.seq);
-            tx.objectStore('meta').put(counter, 'counter');
+            tx.objectStore('meta').put(stored(counter), 'counter');
           };
           for (const name of CONTENT_STORES) {
             const request = tx.objectStore(name).openCursor();
@@ -215,9 +251,23 @@ export async function rotateContent(
                   return;
                 }
                 if (name === 'meta') {
-                  if (current || c.key !== 'counter')
-                    corrupt('Unknown metadata during generation activation.');
-                  current = parseCounter(c.value, owner.scope, owner.intent);
+                  if (c.key !== 'counter') metadata.push({ key: c.key, value: c.value });
+                  else {
+                    if (current) corrupt('Duplicate rotation counter');
+                    if (baseline) {
+                      const parsed = parseBaselineCounter(c.value, owner.scope, owner.intent);
+                      if (
+                        !sameBytes(
+                          baselineCounterPayload(owner.scope, parsed),
+                          baselineCounterPayload(owner.scope, baseline.counter),
+                        ) ||
+                        !sameBytes(parsed.mac, baseline.counter.mac)
+                      )
+                        corrupt('Rotation baseline changed.');
+                      const { baseline: _pointer, ...allocation } = parsed;
+                      current = { ...allocation, v: 2 };
+                    } else current = parseCounter(c.value, owner.scope, owner.intent);
+                  }
                 } else rows.push({ store: name, key: c.key, value: c.value });
                 c.continue();
               });

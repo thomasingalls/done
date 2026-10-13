@@ -82,8 +82,6 @@ export function parseBaselineCounter(
     firstSequence = integer(p['firstSequence']),
     generation = integer(p['generation'], base.active_gen),
     revision = integer(p['revision']);
-  // Only a first, non-deleting anchor is supported. Replacement needs its own owner transition.
-  if (revision !== 1) throw new StorageCompatibilityError('Baseline replacement reader required.');
   if (
     bytes <= 32 ||
     chunks !== Math.ceil(bytes / BASELINE_CHUNK_BYTES) ||

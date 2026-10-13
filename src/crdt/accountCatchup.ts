@@ -1,9 +1,10 @@
 import type { SessionTask } from './writeSession';
 import { verifyAccountUnderPermit, type AccountStartupOptions } from './accountStartup';
-import { withPromotionRoot, signPromotion, writePromotion } from './promotionRecord';
+import { withPromotionRoot, signPromotion, writePromotion, readPromotion } from './promotionRecord';
 import { prepareAccountCustody } from './custody';
 import { claimScope } from './localGenesisRecord';
 import { openEnvelope, openCredential, hex } from './custodyCrypto';
+import { recordEqual } from './custodyRecord';
 import { emptySpoolWitness } from './contentRecord';
 import { eraseJournalSnapshot } from './journalStore';
 import { replayRecovery } from './admissionDocument';
@@ -33,6 +34,13 @@ async function prepareUploadedCatchup(
     try {
       const signing = await openCredential(scope, root, v.marker.credentials![1], subtle),
         base = await heldInboundContext(v.marker, key, subtle, v.route),
+        publicKey = await subtle.importKey(
+          'raw',
+          v.marker.credentials![1].publicKey,
+          'Ed25519',
+          false,
+          ['verify'],
+        ),
         owner = prepareAccountCustody(
           { ...scope, resolvePrincipal: () => scope.principalId },
           options.code,
@@ -43,6 +51,27 @@ async function prepareUploadedCatchup(
               subtle,
             ),
           true,
+          undefined,
+          undefined,
+          undefined,
+          import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+            ? async (_task, identity) => {
+                const fresh = await readPromotion(_task, options.slotId, options.code);
+                if (!same(fresh.marker, v.marker) || !recordEqual(fresh.record, v.record))
+                  throw Error('Catch-up baseline authority changed');
+                return {
+                  identity,
+                  route: v.route,
+                  inbound: base,
+                  signer: publicKey,
+                  installation: {
+                    kind: 'original',
+                    ...(v.marker.successor ? { successor: v.marker.successor } : {}),
+                  },
+                  assertCurrent: () => _task.step(() => {}),
+                };
+              }
+            : undefined,
         );
       try {
         await owner.initialize(task);

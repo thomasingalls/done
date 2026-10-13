@@ -2,7 +2,7 @@
 
 The carrier/compatibility phase is committed signed as **`13b265a3`** (`G`). This phase connects its
 first-anchor installer and cold reader to real original and joined Account owners, behind
-**`VITE_ACCOUNT_BASELINE_INSTALL=1`**. The new work is uncommitted. No automatic installation or UI
+**`VITE_ACCOUNT_BASELINE_INSTALL=1`**. This work is committed signed as **`bb9c7e82`** (`G`). No automatic installation or UI
 control is added, no personal account is converted, and no history is deleted. Publication and general
 release validation remain paused.
 
@@ -103,6 +103,9 @@ five-second multi-chunk test timeout; a serial rerun is used for correctness evi
 relaxed and no latency claim is inferred. Renderer death is not proof of power-loss durability.
 
 ## Remaining boundaries and next slice
+
+The subsequent [non-deleting lifecycle phase](./account-local-baseline-lifecycle.md) extends the rotation,
+replacement and detached/handoff readers described below. These were the boundary at this checkpoint.
 
 Only a first, current-generation anchor with `history: complete` is supported. The 4 MiB encoded
 baseline and pending-source bounds remain. Whole-profile rollback still has no external monotonic

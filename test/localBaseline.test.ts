@@ -975,10 +975,36 @@ it('extends an earlier baseline through rotation, a burned retry and current-key
     const prefix = await memberInput([], old);
     const p = await prepareLocalBaseline(prefix, old, auth);
     const all = await memberInput(f.rows, c);
+    // Native rotation keeps the baseline encrypted under generation one and re-encrypts
+    // the physical suffix at the same sequences, reserving fresh generation-two invocations.
+    all.counter = {
+      ...all.counter,
+      active_gen: 2,
+      next_seq: all.counter.next_seq + all.records.length,
+      reserved: { ...all.counter.reserved, 2: all.records.length },
+    };
+    all.records = all.records.map((r) => ({ ...r, gen: 2 }));
     const replayed = await replayLocalBaseline(p.baseline, p.anchor, all, c, auth);
     expect(observation(replayed)).toEqual(observation(await replayFullLocalHistory(all, c)));
     expect(replayed.census.delivery.spool.positions[0]!.retries).toHaveLength(1);
     expect(replayed.census.delivery.spool.attempts).toBe(3);
+    await expect(
+      replayLocalBaseline(
+        p.baseline,
+        p.anchor,
+        {
+          ...all,
+          counter: {
+            ...all.counter,
+            active_gen: 3,
+            next_seq: all.counter.next_seq + 1,
+            reserved: { ...all.counter.reserved, 3: 1 },
+          },
+        },
+        c,
+        auth,
+      ),
+    ).rejects.toThrow('scope');
     const wrongKey = { ...c, inbound: { ...c.inbound, generationKey: new Uint8Array(32) } };
     await expect(replayLocalBaseline(p.baseline, p.anchor, all, wrongKey, auth)).rejects.toThrow();
   } finally {

@@ -47,9 +47,10 @@ public plaintext hash could otherwise provide an offline test for sufficiently p
 An initial implementation retained that hash; review tightened it to the keyed commitment before
 closing this phase.
 
-Only the first revision, one current-generation anchor, and complete physical history are supported
-here. Replacements, generation transitions and a trimmed representation are deliberately refused by
-this private parser until their owning transitions/readers are implemented. Nothing writes these draft
+At this checkpoint, only the first revision, one current-generation anchor, and complete physical history
+were supported. The subsequent [lifecycle phase](./account-local-baseline-lifecycle.md) adds non-deleting
+replacement and earlier-generation anchor readers. Replacement and generation transitions were deliberately refused until their owning readers were implemented;
+a trimmed representation remains refused. Nothing writes these draft
 bytes in the shipped app, so this is not a public stored-format migration.
 
 ## Reserve, then commit together

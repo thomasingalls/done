@@ -62,12 +62,13 @@ async function authenticateCandidate(
   owner: Owner,
   baseline: AuthenticatedLocalBaseline,
   anchor: BaselineAnchor,
+  generation = owner.generation,
 ) {
   const parsed = task.step(() => decodeLocalBaseline(baseline.payload));
   try {
     if (
       !scopeEqual(parsed.identity, owner.identity) ||
-      parsed.generation !== owner.generation ||
+      parsed.generation !== generation ||
       parsed.cut.intent !== owner.intent ||
       parsed.revision !== anchor.revision ||
       anchor.hash !== (await hash(task, baseline.payload)) ||
@@ -88,13 +89,14 @@ async function authenticateCandidate(
   }
 }
 /** Compare every key and sealed byte in the same transaction as the transition.
- * This phase accepts no extra metadata, no old baseline, and no deletion of any kind. */
+ * Replacement removes only superseded encrypted metadata chunks, never history rows. */
 function exchange(
   task: SessionTask,
   owner: Owner,
   expected: DiskState,
   next: ContentCounter | BaselineCounter,
   chunks: readonly StoredRecord[] = [],
+  previous?: { counter: BaselineCounter; chunks: readonly StoredRecord[] },
 ): Promise<void> {
   return task.wait(() =>
     contentTransaction<void>(
@@ -107,7 +109,11 @@ function exchange(
         const finish = () => {
           if (--remaining) return;
           owner.checkCommit();
-          chunks.forEach((row, i) => tx.objectStore('meta').add(row, baselineChunkKey(i)));
+          if (chunks.length) {
+            chunks.forEach((row, i) => tx.objectStore('meta').put(row, baselineChunkKey(i)));
+            for (let i = chunks.length; i < (previous?.chunks.length ?? 0); i++)
+              tx.objectStore('meta').delete(baselineChunkKey(i));
+          }
           tx.objectStore('meta').put(next, 'counter');
         };
         for (const name of CONTENT_STORES) {
@@ -118,11 +124,41 @@ function exchange(
             guard(() => {
               if (keys.result.length !== values.result.length) return corrupt();
               if (name === 'meta') {
-                if (keys.result.length !== 1 || keys.result[0] !== 'counter')
+                const at = keys.result.indexOf('counter');
+                if (at < 0 || keys.result.length !== 1 + (previous?.chunks.length ?? 0))
                   return corrupt('Baseline metadata changed.');
-                const current = parseCounter(values.result[0], owner.identity, owner.intent);
-                if (!expected.counter || !equalCounter(owner.identity, current, expected.counter))
-                  return corrupt('Baseline counter changed.');
+                if (previous) {
+                  const current = parseBaselineCounter(
+                    values.result[at],
+                    owner.identity,
+                    owner.intent,
+                  );
+                  if (
+                    !sameBytes(
+                      baselineCounterPayload(owner.identity, current),
+                      baselineCounterPayload(owner.identity, previous.counter),
+                    ) ||
+                    !sameBytes(current.mac, previous.counter.mac)
+                  )
+                    return corrupt('Baseline counter changed.');
+                  for (let i = 0; i < previous.chunks.length; i++) {
+                    const index = keys.result.findIndex(
+                      (k) => indexedDB.cmp(k, baselineChunkKey(i)) === 0,
+                    );
+                    if (
+                      index < 0 ||
+                      !equalStoredRecord(
+                        previous.chunks[i]!,
+                        parseStoredRecord(values.result[index]),
+                      )
+                    )
+                      return corrupt('Baseline chunks changed.');
+                  }
+                } else {
+                  const current = parseCounter(values.result[at], owner.identity, owner.intent);
+                  if (!expected.counter || !equalCounter(owner.identity, current, expected.counter))
+                    return corrupt('Baseline counter changed.');
+                }
               } else {
                 const retained = expected.rows
                   .filter((r) => r.store === name)
@@ -149,14 +185,16 @@ function exchange(
   );
 }
 
-/** First anchor only. Success fences ordinary readers; complete history stays byte-for-byte intact.
- * Reservation failure writes nothing; later failure leaves burned reservations in ordinary v2.
- * After a lost success reply, inspect via readEncryptedBaseline; never blindly repeat this call. */
+/** First anchor or exact-predecessor replacement. Complete history stays byte-for-byte intact.
+ * Reservations retain the old representation (v2 or v3); a later failure only burns invocations.
+ * A replacement requires the independently authenticated previous anchor. Lost replies must be
+ * inspected, never retried with a newly invented predecessor. */
 export async function anchorLocalBaseline(
   task: SessionTask,
   ownerInput: Owner,
   censusInput: DiskState,
   input: { baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor },
+  previousAnchor?: BaselineAnchor,
 ): Promise<BaselineAnchor> {
   const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
   const census = task.step(() => structuredClone(censusInput));
@@ -165,13 +203,26 @@ export async function anchorLocalBaseline(
     mac: input.baseline.mac.slice(),
   }));
   const anchor = { ...input.anchor };
+  previousAnchor = previousAnchor && { ...previousAnchor };
   let packed: Bytes | undefined;
   let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
+  let previous: Awaited<ReturnType<typeof readEncryptedBaseline>> | undefined;
   try {
     const counter = parseCounter(census.counter, owner.identity, owner.intent);
     if (counter.v !== 2 || counter.active_gen !== owner.generation)
       return corrupt('Account generation required.');
+    if (previousAnchor) {
+      previous = await readEncryptedBaseline(task, owner);
+      const { baseline: _pointer, ...allocation } = previous.counter;
+      if (
+        previous.anchor.revision !== previousAnchor.revision ||
+        previous.anchor.hash !== previousAnchor.hash ||
+        !equalCounter(owner.identity, { ...allocation, v: 2 }, counter)
+      )
+        return corrupt('Replacement predecessor changed.');
+    }
     if (
+      !previous &&
       !(await task.wait(() =>
         owner.crypt.verify(task, counterPayload(owner.identity, counter), counter.mac),
       ))
@@ -179,7 +230,8 @@ export async function anchorLocalBaseline(
       return corrupt('Counter authentication failed.');
     const b = (decoded = await authenticateCandidate(task, owner, baseline, anchor));
     if (
-      b.revision !== 1 ||
+      b.revision !== (previous?.anchor.revision ?? 0) + 1 ||
+      b.predecessor !== (previous?.anchor.hash ?? '0'.repeat(64)) ||
       b.cut.nextSequence !== counter.next_seq ||
       !sameSpoolWitness(b.cut.witness, counter.spool) ||
       JSON.stringify(b.cut.reserved) !==
@@ -219,13 +271,22 @@ export async function anchorLocalBaseline(
       chunks: Math.ceil(packed.length / BASELINE_CHUNK_BYTES),
       bytes: packed.length,
     };
+    const stored = (c: ContentCounter): ContentCounter | BaselineCounter =>
+      previous ? ({ ...c, v: 3, baseline: previous.counter.baseline } as BaselineCounter) : c;
+    const payload = (c: ContentCounter) => {
+      const value = stored(c);
+      return value.v === 3
+        ? baselineCounterPayload(owner.identity, value)
+        : counterPayload(owner.identity, value);
+    };
     let reserved = reserveCounter(counter, p.chunks, owner.generation);
     reserved = {
       ...reserved,
-      mac: await task.wait(() => owner.crypt.sign(task, counterPayload(owner.identity, reserved))),
+      mac: await task.wait(() => owner.crypt.sign(task, payload(reserved))),
     };
     await task.wait(owner.assertCurrent);
-    await exchange(task, owner, census, reserved);
+    await exchange(task, owner, census, stored(reserved), [], previous);
+    if (previous) previous.counter = stored(reserved) as BaselineCounter;
     const chunks: StoredRecord[] = [];
     for (let i = 0; i < p.chunks; i++) {
       const plain = concat(
@@ -266,13 +327,14 @@ export async function anchorLocalBaseline(
       ),
     };
     await task.wait(owner.assertCurrent);
-    await exchange(task, owner, { ...census, counter: reserved }, next, chunks);
+    await exchange(task, owner, { ...census, counter: reserved }, next, chunks, previous);
     return anchor;
   } finally {
     baseline.payload.fill(0);
     baseline.mac.fill(0);
     packed?.fill(0);
     eraseVerified(decoded);
+    eraseVerified(previous);
   }
 }
 
@@ -285,6 +347,7 @@ export async function readEncryptedBaseline(
   baseline: AuthenticatedLocalBaseline;
   anchor: BaselineAnchor;
   counter: BaselineCounter;
+  chunks: StoredRecord[];
 }> {
   const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
   await task.wait(owner.assertCurrent);
@@ -329,7 +392,6 @@ export async function readEncryptedBaseline(
     p = counter.baseline;
   if (
     counter.active_gen !== owner.generation ||
-    p.generation !== owner.generation ||
     !(await task.wait(() =>
       owner.crypt.verify(task, baselineCounterPayload(owner.identity, counter), counter.mac),
     ))
@@ -368,7 +430,7 @@ export async function readEncryptedBaseline(
     // Its keyed MAC pins the exact plaintext without publishing an unkeyed dictionary oracle.
     if (hex(baseline.mac) !== p.commitment) return corrupt('Baseline commitment differs.');
     const anchor = { revision: p.revision, hash: await hash(task, baseline.payload) };
-    const b = (decoded = await authenticateCandidate(task, owner, baseline, anchor));
+    const b = (decoded = await authenticateCandidate(task, owner, baseline, anchor, p.generation));
     if (
       b.cut.nextSequence !== p.firstSequence ||
       b.cut.witness.events > counter.spool.events ||
@@ -382,7 +444,7 @@ export async function readEncryptedBaseline(
     await task.wait(owner.assertCurrent);
     task.step(owner.checkCommit);
     delivered = true;
-    return { baseline, anchor, counter };
+    return { baseline, anchor, counter, chunks };
   } finally {
     packed.fill(0);
     eraseVerified(decoded);

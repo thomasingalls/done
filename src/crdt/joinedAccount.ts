@@ -1044,11 +1044,7 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
                   identity: import('./contentRecord').ContentIdentity,
                 ) => {
                   const current = await readJoinedAccount(_task, options.slotId, options.code);
-                  if (
-                    detached ||
-                    !same(current.marker, marker) ||
-                    !recordEqual(current.record, state.record)
-                  )
+                  if (!same(current.marker, marker) || !recordEqual(current.record, state.record))
                     throw Error('Baseline opening authority changed');
                   return {
                     identity,

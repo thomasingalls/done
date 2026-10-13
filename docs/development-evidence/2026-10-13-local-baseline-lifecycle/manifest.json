@@ -1,0 +1,64 @@
+{
+  "logs": [
+    {
+      "file": "unit.log.gz",
+      "bytes": 197,
+      "sha256": "d2fac087991919ac66388b8bcccc2882d04df7c11d4430f1fcc2d41da617ea11",
+      "uncompressedBytes": 241
+    },
+    {
+      "file": "native-owner.log.gz",
+      "bytes": 1002,
+      "sha256": "e24c3baf91583f25dbca2e7626adca77f4c95336818565e0d7bd677e62f50da6",
+      "uncompressedBytes": 2180
+    },
+    {
+      "file": "ordinary-owner.log.gz",
+      "bytes": 359,
+      "sha256": "ec5fb62c84dedd350e140b2f9df04c04ab5ff7228bdea54058e0ca0fa3546b28",
+      "uncompressedBytes": 619
+    },
+    {
+      "file": "packaged-lifecycle.log.gz",
+      "bytes": 705,
+      "sha256": "0fae9d7de1d6c482fcca470761025d1e7baede730ac1cdec40a1bce9b730ea7b",
+      "uncompressedBytes": 1570
+    },
+    {
+      "file": "ordinary-rotation.log.gz",
+      "bytes": 287,
+      "sha256": "a0ded845a36820320d46929bf8b345fa27dade899653177a5008ad7f8f9f3903",
+      "uncompressedBytes": 383
+    },
+    {
+      "file": "build.log.gz",
+      "bytes": 1830,
+      "sha256": "fb77deb58caef0bcd4dc7f94958966aabfe4e13a26fb5d6e1828bc8e4cd38a98",
+      "uncompressedBytes": 5308
+    },
+    {
+      "file": "typescript.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0
+    },
+    {
+      "file": "lint.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0
+    },
+    {
+      "file": "format.log.gz",
+      "bytes": 110,
+      "sha256": "ef4d666d0191608d855973232b609d3cb4c32de9073cd64430bcf3a13044a49b",
+      "uncompressedBytes": 113
+    },
+    {
+      "file": "whitespace.log.gz",
+      "bytes": 20,
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "uncompressedBytes": 0
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import type { BaselineShadowResult } from '../../src/crdt/localBaselineShadow';
 type Probe = {
   checkLocalBaseline(): Promise<BaselineShadowResult>;
   installLocalBaseline?(): Promise<{ kind: string }>;
+  replaceLocalBaseline?(expectedRevision: number): Promise<{ kind: string }>;
   workspace: { whenDurable(): Promise<void> };
 };
 const check = (page: Page) =>
@@ -106,6 +107,16 @@ test(
         await expect
           .poll(async () => await check(p), { timeout: 20000 })
           .toMatchObject({ kind: 'matched', mode: 'continued', historySequence: 1 });
+      }
+      if (process.env['ACCOUNT_BASELINE_INSTALL'] === '1') {
+        for (const p of [page, second]) {
+          expect(
+            await p.evaluate(() =>
+              (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner
+                .replaceLocalBaseline!(1),
+            ),
+          ).toEqual({ kind: 'replaced' });
+        }
       }
       // The joined owner starts another admission; the original owner remains open across it.
       await second.getByRole('button', { name: 'Devices', exact: true }).click();

@@ -103,8 +103,9 @@ trimmed. Prove undo/redo and subsequent publication across the retention boundar
 The first codec and pure replay experiment is implemented with the narrower eligibility and
 limitations recorded in the [phase contract](./account-local-baseline-replay.md). Differential tests
 compare full history with baseline plus suffix and the next source/position selection. An unresolved
-cut or unavailable historical detail still requires intact full history. Draft 2 verifies supported
-authority/checkpoint changes from the retained origin and suffix; it does not persist that origin.
+cut or unavailable historical detail still requires intact full history. The pure draft-2 verifier checks supported
+authority/checkpoint changes from the retained origin and suffix; persistence is supplied by the
+subsequent owner/lifecycle integration below.
 
 The [owned shadow integration](./account-local-baseline-shadow.md) now runs explicitly under the real
 Account lifetime with all history retained. Before deletion, resolve
@@ -122,3 +123,10 @@ development switch. It preserves the admission/journal fence and live undo, reta
 checks durable baseline replay against the full reference. No product activation or deletion.
 Generation/replacement lifecycle, remaining fenced readers, old-flight/checkpoint and restored-journal
 rules still precede an exact removal phase.
+
+
+The [non-deleting lifecycle integration](./account-local-baseline-lifecycle.md), following signed
+owner integration `bb9c7e82`, now exercises durable encrypted anchors, exact-predecessor replacement,
+rotation with retained openers, initial handoff and detached original/joined readers. Full history
+remains the reference and no logical rows are removed. The next bounded contract is retained evidence
+for old network flights/checkpoint cuts and restored journal/database pairing, before exact deletion.

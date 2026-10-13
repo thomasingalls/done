@@ -158,6 +158,7 @@ const keys = (c: LocalBaselineContext) =>
 function captureInput(input: LocalReplayInput, c: LocalBaselineContext) {
   const counter = parseCounter(input.counter, c.identity, input.counter.intent);
   if (counter.v !== 2) return refuse('ineligible');
+  if (counter.active_gen > c.route.generation) return refuse('scope');
   const records = copyRecords(input.records).sort((a, b) => a.seq - b.seq);
   let seq = 0;
   for (const r of records) {
@@ -467,7 +468,9 @@ export async function replayLocalBaseline(
       JSON.stringify(canonical(c.identity)) !== JSON.stringify(canonical(b.identity)) ||
       b.authority !== (await baselineScope(c)) ||
       b.cut.intent !== tail.counter.intent ||
-      b.generation !== tail.counter.active_gen ||
+      // Local re-encryption advances allocation metadata but preserves this authenticated
+      // prefix and its retained opener. Network generations/cuts are proved independently below.
+      b.generation > tail.counter.active_gen ||
       tail.counter.next_seq < b.cut.nextSequence ||
       b.cut.reserved.some(([g, n]) => (tail.counter.reserved[g] ?? -1) < n)
     )

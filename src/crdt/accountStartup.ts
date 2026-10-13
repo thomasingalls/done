@@ -244,11 +244,7 @@ export async function verifyAccountUnderPermit(
                         identity: import('./contentRecord').ContentIdentity,
                       ) => {
                         const current = await readPromotion(_task, options.slotId, options.code);
-                        if (
-                          detached ||
-                          !same(current.marker, marker) ||
-                          !recordEqual(current.record, record)
-                        )
+                        if (!same(current.marker, marker) || !recordEqual(current.record, record))
                           throw Error('Baseline opening authority changed');
                         return {
                           identity,

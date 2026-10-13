@@ -13916,3 +13916,36 @@ rerun serially without weakening the test. No timing improvement is claimed.
 without deletion; then old-flight/checkpoint evidence and restored journal/database pairing before
 exact atomic removal. Public reader/writer rollout and rollback remain separate. `docs/progress.md`
 is untouched.
+
+
+### Non-deleting baseline rotation, replacement and lifecycle readers — 2026-10-13
+
+**Boundary.** The preceding real-owner integration is committed signed as **`bb9c7e82`**, verified `G`.
+This phase is uncommitted and remains behind `VITE_ACCOUNT_BASELINE_INSTALL=1`. No logical history
+row is deleted, no personal profile is converted, and release validation/publication remain paused.
+[Contract and reader dispositions](./account-local-baseline-lifecycle.md).
+
+**Change.** Expected-revision replacement re-verifies the old baseline, builds/compares its successor,
+reserves while retaining the old v3 pointer, and atomically replaces bounded encrypted metadata.
+Only surplus obsolete metadata chunks may be removed; content/heads/outbound history stays intact.
+Lost committed replies retry without another allocation. The admission/journal fence and live undo
+stack remain intact. Rotation re-encrypts history at unchanged keys, preserves the older encrypted
+anchor and required openers, checks fresh authority immediately before the exact transaction, and
+resumes across a failed final custody activation. Initial catch-up, the separate v9 receive-store
+reader, and detached original/joined readers now use the authenticated carrier. Detached copies retain
+terminal-prefix verification and cannot resume network delivery. Local allocation cannot exceed the
+verified network generation.
+
+**Evidence.** [183 unit checks, 14 enabled native owner cases, one ordinary-build case, three packaged
+lifecycle/checkpoint journeys and one ordinary rotation journey](./development-evidence/2026-10-13-local-baseline-lifecycle/README.md)
+pass. Cases include wrong/stale predecessors, caller isolation, reservation/encryption/transaction and
+journal failures, changed old chunks, retained/missing openers, input/undo, renderer death after
+reservation/commit, two rotations with journal-only work, restart after content switched but custody
+commit aborted, original/joined detachment, checkpoint replacement, and subsequent cold opening.
+TypeScript, lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass. Two initial
+carrier test assumptions were corrected without weakening guards or timeouts. No performance claim.
+
+**Next.** Settle retained proof requirements for old network flights/checkpoint cuts and the restored
+journal/database pairing rule before an exact atomic logical-history deletion transition and reduced
+reader activation. Full/reference comparison, the 4 MiB baseline limit, retained keys and compatible
+public rollout/rollback obligations remain. `docs/progress.md` is untouched.

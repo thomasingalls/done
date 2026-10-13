@@ -396,6 +396,7 @@ test(
   async (t) => {
     const { f } = await setup(t, 'baseline-disabled');
     assert.equal(await f.page.evaluate(() => 'installLocalBaseline' in opened), false);
+    assert.equal(await f.page.evaluate(() => 'replaceLocalBaseline' in opened), false);
     await edit(f.page, 0, 0, 'ORDINARY INPUT ');
     await durable(f.page);
     assert.ok((await f.page.evaluate(() => editor.read().master)).startsWith('ORDINARY INPUT '));
@@ -427,5 +428,136 @@ test(
     await syncing(f.page, item);
     assert.deepEqual(await install(f.page), { kind: 'already-installed' });
     await close(f.page);
+  },
+);
+
+test(
+  'replacement fences input, preserves undo and retries its expected revision without allocating again',
+  { timeout: 90000 },
+  async (t) => {
+    const { f, item } = await setup(t, 'baseline-replacement');
+    assert.deepEqual(await install(f.page), { kind: 'installed' });
+    await edit(f.page, 0, 0, 'BEFORE REPLACEMENT ');
+    await durable(f.page);
+    await online(f.page, true);
+    await settled(f.page);
+    await online(f.page, false);
+    const before = await history(f.page, item),
+      original = await f.page.evaluate(() => editor.read().master);
+    await hold(f.page);
+    await f.page.evaluate(() => {
+      window.replaceWork = opened.replaceLocalBaseline(1);
+    });
+    await waitPredicate(f.page, () => window.baselineHeld);
+    await f.page.evaluate(() => {
+      window.inputWork = surface.input(
+        { name: 'insert', text: 'AFTER REPLACEMENT ' },
+        { ranges: [{ anchor: 0, head: 0 }], main: 0 },
+      ).accepted;
+    });
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await f.page.evaluate(() => releaseBaseline());
+    assert.deepEqual(await f.page.evaluate(() => replaceWork), { kind: 'replaced' });
+    await f.page.evaluate(() => inputWork);
+    assert.equal(
+      await f.page.evaluate(() => editor.read().master),
+      'AFTER REPLACEMENT ' + original,
+    );
+    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await f.page.evaluate(() => editor.command({ kind: 'redo' }).accepted);
+    await durable(f.page);
+    const after = await history(f.page, item);
+    noDeletion(before, after);
+    assert.equal(counter(after).baseline.revision, 2);
+    const expected = await f.page.evaluate(() => editor.read().master);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    await online(f.page, false);
+    assert.equal(await f.page.evaluate(() => editor.read().master), expected);
+    const reopened = await history(f.page, item);
+    assert.deepEqual(await f.page.evaluate(() => opened.replaceLocalBaseline(1)), {
+      kind: 'already-installed',
+    });
+    assert.deepEqual(await history(f.page, item), reopened);
+    await close(f.page);
+  },
+);
+
+for (const boundary of ['reserved', 'committed'])
+  test(
+    `replacement renderer death after ${boundary} preserves a usable authenticated anchor`,
+    { timeout: 90000 },
+    async (t) => {
+      const { f, item } = await setup(t, 'baseline-replacement-death-' + boundary);
+      await install(f.page);
+      const before = await history(f.page, item);
+      await f.page.evaluate((boundary) => {
+        const put = IDBObjectStore.prototype.put,
+          marked = new WeakSet();
+        IDBObjectStore.prototype.put = function (value, ...args) {
+          if (
+            this.name === 'meta' &&
+            args[0] === 'counter' &&
+            value.v === 3 &&
+            value.baseline.revision === (boundary === 'reserved' ? 1 : 2)
+          )
+            marked.add(this.transaction);
+          return put.call(this, value, ...args);
+        };
+        const descriptor = Object.getOwnPropertyDescriptor(IDBTransaction.prototype, 'oncomplete');
+        Object.defineProperty(IDBTransaction.prototype, 'oncomplete', {
+          ...descriptor,
+          set(fn) {
+            descriptor.set.call(this, function (event) {
+              if (marked.has(this)) window.replacementCommitHeld = true;
+              else fn.call(this, event);
+            });
+          },
+        });
+        window.replacementWork = opened
+          .replaceLocalBaseline(1)
+          .catch((e) => ({ error: e.message }));
+      }, boundary);
+      await waitPredicate(f.page, () => window.replacementCommitHeld);
+      const cdp = await f.context.newCDPSession(f.page),
+        crashed = f.page.waitForEvent('crash');
+      void cdp.send('Page.crash').catch(() => {});
+      await crashed;
+      await cold(f);
+      await syncing(f.page, item);
+      await settled(f.page);
+      await online(f.page, false);
+      const reopened = await history(f.page, item);
+      noDeletion(before, reopened);
+      assert.equal(counter(reopened).baseline.revision, boundary === 'committed' ? 2 : 1);
+      assert.ok(counter(reopened).next_seq > counter(before).next_seq);
+      assert.deepEqual(await f.page.evaluate(() => opened.replaceLocalBaseline(1)), {
+        kind: boundary === 'committed' ? 'already-installed' : 'replaced',
+      });
+      if (boundary === 'committed') assert.deepEqual(await history(f.page, item), reopened);
+      await close(f.page);
+    },
+  );
+
+test(
+  'the separate v9 receive-store reader opens a replaced anchor without changing history',
+  { timeout: 90000 },
+  async (t) => {
+    const { f, item } = await setup(t, 'baseline-receive-reader');
+    await install(f.page);
+    await f.page.evaluate(() => opened.replaceLocalBaseline(1));
+    const before = await history(f.page, item);
+    await close(f.page);
+    await f.page.evaluate(async (item) => {
+      const receiver = await Harness.openOwnedAccountReceiveStore(optionsFor(item));
+      try {
+        await receiver.prepareRead();
+      } finally {
+        await receiver.close();
+      }
+    }, args(item));
+    assert.deepEqual(await history(f.page, item), before);
   },
 );

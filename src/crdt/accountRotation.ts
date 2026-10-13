@@ -41,7 +41,8 @@ import { same } from '../../account-protocol/admission';
 import { digest } from '../../account-protocol/recovery';
 import { fields, hex, hkdf, random, openEnvelope, type Bytes } from './custodyCrypto';
 import { createContentOwner, type ContentCrypto } from './contentStore';
-import { recordAAD, type StoredRecord } from './contentRecord';
+import { recordAAD, type StoredRecord, type ContentCounter } from './contentRecord';
+import { recordEqual } from './custodyRecord';
 import { inspectInbound, verifyInboundLedger } from './inboundLedger';
 import { verifySpool, verifySpoolWitness } from './spoolRecord';
 import { verifyDelivery } from './deliveryRecord';
@@ -314,8 +315,70 @@ export async function activateAccountRotation(
             ),
           };
         };
+        const installedMembership = (counter: ContentCounter) => {
+          if (counter.v !== 2) throw Error('Rotation requires Account witness');
+          return parseInstalledMembership({
+            v: 1,
+            proofs,
+            cuts:
+              existingMembership?.proofs.continuations.at(-1)?.head === proof.head
+                ? existingMembership.cuts
+                : [
+                    ...(existingMembership?.cuts ?? []),
+                    {
+                      epoch: history.current.tip,
+                      head: history.current.head,
+                      before: counter.spool,
+                    },
+                  ],
+          });
+        };
+        const initialEpoch = joined
+          ? joined.marker!.v !== 1
+            ? joined.marker!.reading.epoch
+            : 3
+          : 1;
+        const fresh = async () => {
+          const current = original
+            ? await readPromotion(task, slotId, code)
+            : await readJoinedAccount(task, slotId, code);
+          if (
+            !recordEqual(current.record, record) ||
+            !same(current.marker, original ? marker : joined!.marker)
+          )
+            throw Error('Rotation custody changed');
+        };
         const crypt: ContentCrypto = {
           allowSpoolCounter: true,
+          ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
+            ? {
+                baseline: async (
+                  _task: SessionTask,
+                  identity: import('./contentRecord').ContentIdentity,
+                  counter: ContentCounter,
+                ) => {
+                  await fresh();
+                  return {
+                    identity,
+                    route,
+                    inbound: context,
+                    signer: publicKey,
+                    installation: original
+                      ? {
+                          kind: 'original' as const,
+                          ...(marker!.successor ? { successor: marker!.successor } : {}),
+                          membership: installedMembership(counter),
+                        }
+                      : {
+                          kind: 'joined' as const,
+                          initialEpoch,
+                          membership: installedMembership(counter),
+                        },
+                    assertCurrent: () => task.step(() => {}),
+                  };
+                },
+              }
+            : {}),
           open: (_t, r) => open(r),
           seal: (_t, h, b) => seal(h, b),
           sign: async (_t, b) => new Uint8Array(await subtle.sign('HMAC', metadata, b)),
