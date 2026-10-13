@@ -1,7 +1,7 @@
 # Private baseline-aware warm and incremental reuse — 2026-10-13
 
 Base: signed **`72d1b8bf`** (`G`), [private atomic removal](./account-local-retention-removal.md).
-This phase is uncommitted. [Focused evidence](./development-evidence/2026-10-13-local-retention-reuse/README.md).
+Implementation committed signed as **`354c9c59`** (`G`). [Focused evidence](./development-evidence/2026-10-13-local-retention-reuse/README.md).
 The public application, personal profiles, service and stored formats are unchanged. Release
 validation remains paused; this is a private implementation/correctness phase, not performance qualification.
 
@@ -88,3 +88,13 @@ before making latency comparisons. Whole logical projections still copy on chang
 retention/full oracle work can be substantial. Reader-first publication, compatible rollback,
 capacity/history-required UX and an explicit retention trigger/cadence remain separate gates before
 personal/public conversion. No automatic deletion or additional public capability is enabled here.
+
+## Measured continuation
+
+The [history-depth packet](./performance-experiments/2026-10-13-retention-depth/README.md) measures
+this signed runtime without changing it. Retired-depth cold/warm work and heap materially shrink,
+and the packaged received fixture opens in 0.90 s versus 2.34 s on the measured desktop. Initial
+conversion is expensive: 14.09 s at 1,201 own positions, with a 12.0 s foreground task in that
+complete-history observation. Existing-baseline replacement after a fixed suffix is much cheaper.
+Initial-cut responsiveness is the next bounded work; these measurements do not authorize public
+conversion or establish phone, pending-heavy or catch-up-typing performance.

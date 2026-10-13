@@ -14221,3 +14221,36 @@ Resume forces full replay. TypeScript, focused lint/format, ordinary build, Yjs/
 cold open, online/catch-up typing, memory and maintenance. No latency benefit is yet established.
 Reader-first publication/rollback, capacity/history-required UX and retention trigger/cadence remain
 separate gates. Release validation stays paused; `docs/progress.md` and root notes remain untouched.
+
+### Authenticated local retention history-depth measurements — 2026-10-13
+
+**Boundary.** Warm/incremental reuse is committed signed as **`354c9c59`** (`G`). This continuation
+adds only probes, measurements and records. [Protocol, results and limitations](./performance-experiments/2026-10-13-retention-depth/README.md).
+
+**Exit.** Twenty-six native observations compare complete and privately reduced owners at 1, 129,
+601 and 1,201 accepted own positions, plus final shallow drift anchors. At 1,201 positions, median
+owner cold open is 3.594 s complete versus 0.141 s reduced; post-GC heap is 26.21 versus 10.45 MB.
+Warm publication is 557 versus 68 ms. Reduced owners make no full baseline replays during the fixed
+status/edit/flush/publication interval. All pairs preserve exact snapshot state, journal-before-apply,
+undo/redo, later publication, repeated cuts and offline cold recovery. Across depths, visible text
+is equal but Yjs snapshots and terminal receipt size differ; the packet explicitly limits slope claims.
+
+Six packaged observations use the retained 120-card / 600+ received-position joined fixture.
+Offline unlock-to-editor-frame median is 2.340 s complete versus 0.902 s reduced; all exports match.
+Real online silent-peer typing at CPU-4x sees 16–18 long tasks per complete-history observation versus
+0–1 reduced, but the small next-frame metric does not materially improve and is not a visible-input
+latency gate. All six observations preserve undo/redo and offline reopening. No runtime check was
+disabled; existing authority, baseline authentication, journal and final-apply boundaries remain.
+
+**Finding and next.** First conversion takes 153 ms / 725 ms / 4.929 s / 14.090 s over the native
+depths, with a 12.007 s foreground task in the deepest complete-history observation. Replacement of
+an existing baseline after the fixed suffix takes 69–98 ms. The packaged first cut takes 3.105 s;
+a separate CPU profile localizes replay, parsing/hex and planner costs without attributing the own-
+history stall. Initial-cut responsiveness is the next bounded repair before everyday activation.
+Reader-first publication/rollback, trigger/cadence and capacity/history-required behavior remain open.
+
+**Limits.** Pilot setup failures and corrections, diagnostic-counter scope and the corrected shallow
+source-size inference are retained. Three repeats, one synthetic desktop host; no phone, CPU-4x cold
+open, large tombstone/pending growth or typing during novel backlog catch-up. General release validation
+stays paused. No personal storage, service configuration, public format activation or deployment changed.
+`docs/progress.md` and unrelated root notes remain untouched.
