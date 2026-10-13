@@ -215,8 +215,9 @@ export async function withNativeHistorySource<T>(
             task,
             { ...scope, resolvePrincipal: () => scope.principalId },
             code,
-            async (recovered) => {
-              const census = inspectInbound(recovered.records, route, context),
+            async (recovered, baseline) => {
+              const census =
+                  baseline?.ledger.census ?? inspectInbound(recovered.records, route, context),
                 recovery = capturedRecovery(
                   { ...recovered, records: census.delivery.spool.sourceRecords },
                   route,
@@ -236,6 +237,10 @@ export async function withNativeHistorySource<T>(
               allowSpoolCounter: true,
               ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
                 ? {
+                    reuseOpened: true as const,
+                    ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
+                      ? { readBaseline: true as const }
+                      : {}),
                     baseline: async (
                       _task: SessionTask,
                       identity: import('./contentRecord').ContentIdentity,
@@ -269,7 +274,8 @@ export async function withNativeHistorySource<T>(
                     },
                   }
                 : {}),
-              validate: async (records, _task, counter) => {
+              validate: async (records, _task, counter, _view, baseline) => {
+                if (baseline) return;
                 const census = inspectInbound(records, route, context);
                 await verifySpoolWitness(census.delivery.spool, counter, subtle);
                 await verifySpool(census.delivery.spool, route, keys, publicKey, subtle);

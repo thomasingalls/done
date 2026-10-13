@@ -8,6 +8,7 @@ import {
 import { hex, type Bytes } from './custodyCrypto';
 import type { SessionTask } from './writeSession';
 import type { createContentOwner } from './contentStore';
+import { eraseVerified } from './verifiedRecords';
 import type { OpenedRecord } from './contentRecord';
 export async function persistRotationJournal(
   task: SessionTask,
@@ -17,10 +18,16 @@ export async function persistRotationJournal(
   sourceRecords: (records: OpenedRecord[]) => OpenedRecord[],
   values: readonly Bytes[],
 ) {
-  const records = await owner.load(task);
+  const loaded = await owner.loadAccount(task),
+    records = loaded.records;
   const sequences: number[] = [];
   try {
-    const catalog = captureCatalog(sourceRecords(records), route);
+    const catalog = captureCatalog(
+      loaded.kind === 'baseline-plus-suffix'
+        ? loaded.ledger.census.delivery.spool.sourceRecords
+        : sourceRecords(records),
+      route,
+    );
     for (const bytes of values) {
       const capsule = decodeSourceCapsule(bytes, route);
       try {
@@ -39,6 +46,6 @@ export async function persistRotationJournal(
     }
     return { storeId, generation: 1, sequences };
   } finally {
-    for (const r of records) r.bytes.fill(0);
+    eraseVerified(loaded);
   }
 }

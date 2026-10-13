@@ -1,3 +1,4 @@
+import { eraseVerified } from './verifiedRecords';
 import { originalMembershipBoundaries } from './accountSuccessor';
 /** Resume a verified removal under the caller's exclusive slot permit. Old openers and the apply
  * record remain after local activation; checkpoint admission/retirement is a separate obligation. */
@@ -352,6 +353,10 @@ export async function activateAccountRotation(
           allowSpoolCounter: true,
           ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
             ? {
+                reuseOpened: true as const,
+                ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
+                  ? { readBaseline: true as const }
+                  : {}),
                 baseline: async (
                   _task: SessionTask,
                   identity: import('./contentRecord').ContentIdentity,
@@ -383,7 +388,8 @@ export async function activateAccountRotation(
           seal: (_t, h, b) => seal(h, b),
           sign: async (_t, b) => new Uint8Array(await subtle.sign('HMAC', metadata, b)),
           verify: (_t, b, mac) => subtle.verify('HMAC', metadata, mac, b),
-          validate: async (records, _t, counter) => {
+          validate: async (records, _t, counter, _view, baseline) => {
+            if (baseline) return;
             const census = inspectInbound(records, route, context);
             await verifySpoolWitness(census.delivery.spool, counter, subtle);
             await verifySpool(
@@ -465,21 +471,22 @@ export async function activateAccountRotation(
                   { epoch: history.current.tip, head: history.current.head, before },
                 ],
         });
-        const records = await carrier.load(task);
+        const loaded = await carrier.loadAccount(task);
         try {
-          await verifyInstalledMembership(
-            inspectInbound(records, route, context).delivery.spool,
-            history,
-            membership,
-            joined
-              ? joined.marker!.v !== 1
-                ? joined.marker!.reading.epoch
-                : 3
-              : originalMembershipBoundaries(original!.marker!.successor),
-            subtle,
-          );
+          if (loaded.kind === 'complete')
+            await verifyInstalledMembership(
+              inspectInbound(loaded.records, route, context).delivery.spool,
+              history,
+              membership,
+              joined
+                ? joined.marker!.v !== 1
+                  ? joined.marker!.reading.epoch
+                  : 3
+                : originalMembershipBoundaries(original!.marker!.successor),
+              subtle,
+            );
         } finally {
-          for (const r of records) r.bytes.fill(0);
+          eraseVerified(loaded);
         }
         if (diskGeneration === predecessorGeneration) {
           await carrier.rotate(task, {

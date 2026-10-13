@@ -55,7 +55,7 @@ import {
   networkRoute,
   type SpoolReplayStart,
 } from './spoolRecord';
-import { copyRecords, sameBytes } from './verifiedRecords';
+import { copyRecords, eraseVerified, sameBytes } from './verifiedRecords';
 import { Y, hasPendingUpdates } from './yjs';
 
 export interface LocalBaselineContext extends InboundLifetime {
@@ -263,120 +263,179 @@ export async function prepareLocalBaseline(
   journalEra = journalEra && { ...journalEra };
   try {
     const captured = captureInput(input, c);
-    const verified = await full(captured, c),
-      spool = verified.census.delivery.spool;
-    if (
-      publicationState(verified.delivery) !== 'ready' ||
-      verified.delivery.acceptedThrough !== spool.positions.length ||
-      verified.inbound.conflict ||
-      [...(verified.inbound.peers?.values() ?? [])].some((s) => s.conflict)
-    )
-      refuse('ineligible');
-    const snapshot = documentState(captured.records, true);
-    const used = new Map<string, number[]>();
-    for (const p of spool.positions)
-      for (const ref of positionSources(p)) {
-        const indices = used.get(ref.id) ?? [];
-        indices.push(ref.index);
-        used.set(ref.id, indices);
-      }
-    const sources: LocalBaseline['sources'] = [];
-    for (const [id, bytes] of spool.sources) {
-      const capsule = decodeSourceCapsule(bytes, c.route);
-      try {
-        const consumed = (used.get(id) ?? []).sort((a, b) => a - b);
-        if (consumed.length < capsule.sources.length) {
-          const record = spool.sourceRecords.find(
-            (r) => r.kind === 'outbound' && sameBytes(r.bytes, bytes),
-          )!;
-          sources.push({ record, consumed });
-        }
-      } finally {
-        eraseCapsule(capsule);
-      }
-    }
-    const n = verified.delivery.acceptedThrough;
-    const ownReceipt = verified.inbound.retained.get(n) ?? null;
-    if (n && !ownReceipt) refuse('integrity');
-    const streams: LocalBaseline['streams'] = [
-      [c.route.credential, verified.inbound] as const,
-      ...(verified.inbound.peers ?? []),
-    ]
-      .map(([publisher, s]) => ({
-        publisher,
-        ...s.prefix,
-        startingPoint: s.startingPoint ?? null,
-        receipt: s.retained.get(s.prefix.position) ?? null,
-      }))
-      .sort((a, b) => a.publisher.localeCompare(b.publisher));
-    const b: LocalBaseline = {
-      ...(journalEra ? { journalEra } : {}),
-      identity: c.identity,
-      generation: captured.counter.active_gen,
-      revision: (previous?.revision ?? 0) + 1,
-      predecessor: previous?.hash ?? ZERO_REFUSAL,
-      authority: await baselineScope(c),
-      authorityState: await baselineAuthorityState(c),
-      cut: {
-        intent: captured.counter.intent,
-        sequence: captured.records.at(-1)?.seq ?? 0,
-        nextSequence: captured.counter.next_seq,
-        reserved: Object.entries(captured.counter.reserved)
-          .map(([g, n]) => [Number(g), n])
-          .sort((a, b) => a[0]! - b[0]!) as [number, number][],
-        witness: captured.counter.spool,
-      },
-      snapshot,
-      own: { position: n, link: ZERO_REFUSAL, attempts: spool.attempts, receipt: ownReceipt },
-      sources: sources.sort((a, b) => a.record.seq - b.record.seq),
-      streams,
-      history: verified.census.installations.at(-1)?.record ?? null,
-    };
-    // Derive the own head from its signed acceptance, never from an incidental receive cursor.
-    if (ownReceipt) {
-      const decision = decodePositionResponse(ownReceipt.proof);
-      if (decision.kind !== 'accepted' || decision.head.position !== n) refuse('integrity');
-      b.own.link = decision.head.link;
-    }
-    const payload = encodeLocalBaseline(b),
-      message = baselineAuthenticationPayload(payload);
-    try {
-      const mac = (await auth.sign(message)).slice();
-      if (mac.length !== 32 || !(await auth.verify(message, mac))) refuse('integrity');
-      const anchor = { revision: b.revision, hash: await hash(payload) };
-      // A valid full history need not have a representable compact frontier (for example,
-      // several non-dominated checkpoint cuts). Never return a candidate that cannot reopen.
-      const checked = await replayLocalBaseline(
-        { payload, mac },
-        anchor,
-        { records: [], counter: captured.counter },
-        c,
-        auth,
-      );
-      const streams = (s: typeof verified.inbound) =>
-        JSON.stringify(
-          canonical([
-            [c.route.credential, s.prefix, s.startingPoint ?? null, s.conflict],
-            ...[...(s.peers ?? [])]
-              .sort(([a], [b]) => (a < b ? -1 : 1))
-              .map(([id, p]) => [id, p.prefix, p.startingPoint ?? null, p.conflict]),
-            s.installedHistory ?? null,
-          ]),
-        );
-      if (
-        !sameBytes(checked.snapshot, verified.snapshot) ||
-        checked.delivery.acceptedThrough !== verified.delivery.acceptedThrough ||
-        checked.census.delivery.spool.attempts !== spool.attempts ||
-        streams(checked.inbound) !== streams(verified.inbound)
-      )
-        refuse('integrity');
-      c.assertCurrent();
-      return { baseline: { payload, mac }, anchor };
-    } finally {
-      message.fill(0);
-    }
+    const verified = await full(captured, c);
+    return await summarizeBaseline(captured, verified, c, auth, previous, journalEra);
   } finally {
     clearContext(c);
+  }
+}
+/** Rebuild exclusively from an authenticated predecessor and its physical suffix. No prefix rows
+ * are accepted here; the non-deleting owner runs its full-history comparison separately. */
+export async function rebaseLocalBaseline(
+  stored: AuthenticatedLocalBaseline,
+  previous: BaselineAnchor,
+  suffix: LocalReplayInput,
+  context: LocalBaselineContext,
+  auth: BaselineAuthentication,
+  journalEra?: import('./journalEra').JournalEra,
+): Promise<{ baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor }> {
+  const c = captureContext(context),
+    held = { payload: stored.payload.slice(), mac: stored.mac.slice() },
+    anchor = { ...previous },
+    era = journalEra && { ...journalEra };
+  let decoded: LocalBaseline | undefined;
+  let verified: Awaited<ReturnType<typeof replayLocalBaseline>> | undefined;
+  let captured: ReturnType<typeof captureInput> | undefined;
+  try {
+    captured = captureInput(suffix, c);
+    verified = await replayLocalBaseline(held, anchor, captured, c, auth);
+    decoded = decodeLocalBaseline(held.payload);
+    const logical = {
+      counter: captured.counter,
+      records: [
+        { kind: 'state' as const, seq: 0, gen: decoded.generation, bytes: decoded.snapshot },
+        ...decoded.sources.map((s) => s.record),
+        ...captured.records,
+      ],
+    };
+    return await summarizeBaseline(
+      logical,
+      verified,
+      c,
+      auth,
+      anchor,
+      era ?? decoded.journalEra,
+      decoded,
+    );
+  } finally {
+    eraseVerified(held);
+    eraseVerified(decoded);
+    eraseVerified(verified);
+    eraseVerified(captured);
+    clearContext(c);
+  }
+}
+async function summarizeBaseline(
+  captured: ReturnType<typeof captureInput>,
+  verified: Awaited<ReturnType<typeof replayFullLocalHistory>>,
+  c: LocalBaselineContext,
+  auth: BaselineAuthentication,
+  previous: BaselineAnchor | null,
+  journalEra?: import('./journalEra').JournalEra,
+  inherited?: LocalBaseline,
+) {
+  const spool = verified.census.delivery.spool;
+  if (
+    publicationState(verified.delivery) !== 'ready' ||
+    verified.delivery.acceptedThrough !== (spool.origin?.position ?? 0) + spool.positions.length ||
+    verified.inbound.conflict ||
+    [...(verified.inbound.peers?.values() ?? [])].some((s) => s.conflict)
+  )
+    refuse('ineligible');
+  const snapshot = documentState(captured.records, true);
+  const used = new Map<string, number[]>();
+  for (const ref of [
+    ...(spool.origin?.consumed ?? []),
+    ...spool.positions.flatMap(positionSources),
+  ]) {
+    const indices = used.get(ref.id) ?? [];
+    indices.push(ref.index);
+    used.set(ref.id, indices);
+  }
+  const sources: LocalBaseline['sources'] = [];
+  for (const [id, bytes] of spool.sources) {
+    const capsule = decodeSourceCapsule(bytes, c.route);
+    try {
+      const consumed = (used.get(id) ?? []).sort((a, b) => a - b);
+      if (consumed.length < capsule.sources.length) {
+        const record = spool.sourceRecords.find(
+          (r) => r.kind === 'outbound' && sameBytes(r.bytes, bytes),
+        )!;
+        sources.push({ record, consumed });
+      }
+    } finally {
+      eraseCapsule(capsule);
+    }
+  }
+  const n = verified.delivery.acceptedThrough;
+  const ownReceipt = verified.inbound.retained.get(n) ?? null;
+  if (n && !ownReceipt) refuse('integrity');
+  const streams: LocalBaseline['streams'] = [
+    [c.route.credential, verified.inbound] as const,
+    ...(verified.inbound.peers ?? []),
+  ]
+    .map(([publisher, s]) => ({
+      publisher,
+      ...s.prefix,
+      startingPoint: s.startingPoint ?? null,
+      receipt: s.retained.get(s.prefix.position) ?? null,
+    }))
+    .sort((a, b) => a.publisher.localeCompare(b.publisher));
+  const b: LocalBaseline = {
+    ...(journalEra ? { journalEra } : {}),
+    identity: c.identity,
+    generation: captured.counter.active_gen,
+    revision: (previous?.revision ?? 0) + 1,
+    predecessor: previous?.hash ?? ZERO_REFUSAL,
+    authority: await baselineScope(c),
+    authorityState: await baselineAuthorityState(c),
+    cut: {
+      intent: captured.counter.intent,
+      sequence: Math.max(inherited?.cut.sequence ?? 0, captured.records.at(-1)?.seq ?? 0),
+      nextSequence: captured.counter.next_seq,
+      reserved: Object.entries(captured.counter.reserved)
+        .map(([g, n]) => [Number(g), n])
+        .sort((a, b) => a[0]! - b[0]!) as [number, number][],
+      witness: captured.counter.spool,
+    },
+    snapshot,
+    own: { position: n, link: ZERO_REFUSAL, attempts: spool.attempts, receipt: ownReceipt },
+    sources: sources.sort((a, b) => a.record.seq - b.record.seq),
+    streams,
+    history: verified.census.installations.at(-1)?.record ?? inherited?.history ?? null,
+  };
+  // Derive the own head from its signed acceptance, never from an incidental receive cursor.
+  if (ownReceipt) {
+    const decision = decodePositionResponse(ownReceipt.proof);
+    if (decision.kind !== 'accepted' || decision.head.position !== n) refuse('integrity');
+    b.own.link = decision.head.link;
+  }
+  const payload = encodeLocalBaseline(b),
+    message = baselineAuthenticationPayload(payload);
+  try {
+    const mac = (await auth.sign(message)).slice();
+    if (mac.length !== 32 || !(await auth.verify(message, mac))) refuse('integrity');
+    const anchor = { revision: b.revision, hash: await hash(payload) };
+    // A valid full history need not have a representable compact frontier (for example,
+    // several non-dominated checkpoint cuts). Never return a candidate that cannot reopen.
+    const checked = await replayLocalBaseline(
+      { payload, mac },
+      anchor,
+      { records: [], counter: captured.counter },
+      c,
+      auth,
+    );
+    const streams = (s: typeof verified.inbound) =>
+      JSON.stringify(
+        canonical([
+          [c.route.credential, s.prefix, s.startingPoint ?? null, s.conflict],
+          ...[...(s.peers ?? [])]
+            .sort(([a], [b]) => (a < b ? -1 : 1))
+            .map(([id, p]) => [id, p.prefix, p.startingPoint ?? null, p.conflict]),
+          s.installedHistory ?? null,
+        ]),
+      );
+    if (
+      !sameBytes(checked.snapshot, verified.snapshot) ||
+      checked.delivery.acceptedThrough !== verified.delivery.acceptedThrough ||
+      checked.census.delivery.spool.attempts !== spool.attempts ||
+      streams(checked.inbound) !== streams(verified.inbound)
+    )
+      refuse('integrity');
+    c.assertCurrent();
+    return { baseline: { payload, mac }, anchor };
+  } finally {
+    message.fill(0);
   }
 }
 async function verifyReceipt(

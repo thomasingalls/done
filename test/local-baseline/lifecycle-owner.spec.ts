@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 import { pairedEditors, openSaved, add } from '../packaged-account/devices';
 import { pending, compared, unlock } from '../device-enrollment/helpers';
 import { startService, stopService } from '../packaged-account/server';
+import { baselineLifecycleProbe } from './lifecycle-probe';
 
 type Owner = {
   installLocalBaseline(): Promise<{ kind: string }>;
@@ -43,7 +44,13 @@ async function bundles(info: TestInfo) {
   const built = await build({
     configFile: false,
     logLevel: 'error',
-    define: { 'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1') },
+    define: {
+      'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1'),
+      'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify(
+        process.env['ACCOUNT_BASELINE_READ'] ?? '0',
+      ),
+    },
+    plugins: [baselineLifecycleProbe()],
     build: {
       write: false,
       minify: false,
@@ -63,8 +70,14 @@ async function bundles(info: TestInfo) {
   await build({
     logLevel: 'error',
     build: { outDir },
-    define: { 'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1') },
+    define: {
+      'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1'),
+      'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify(
+        process.env['ACCOUNT_BASELINE_READ'] ?? '0',
+      ),
+    },
     plugins: [
+      baselineLifecycleProbe(),
       {
         name: 'private-baseline-lifecycle-handle',
         enforce: 'pre',
@@ -92,6 +105,14 @@ test('anchored owners survive initial handoff, two rotations, replacement, resta
   const thirdContext = await browser.newContext(),
     third = await thirdContext.newPage();
   third.setDefaultTimeout(15000);
+  const observed = new Set<string>();
+  const observe = (p: Page) =>
+    p.on('console', (msg) => {
+      if (msg.text().startsWith('baseline-lifecycle:'))
+        observed.add(msg.text().slice('baseline-lifecycle:'.length));
+    });
+  observe(page);
+  observe(third);
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   try {
     page.on('response', async (r) => {
@@ -99,6 +120,7 @@ test('anchored owners survive initial handoff, two rotations, replacement, resta
         console.log('Removal refusal', r.status(), await r.json().catch(() => ({})));
     });
     pair = await pairedEditors(page, browser, true, { beforeInvite: () => anchor(page) });
+    observe(pair.second);
     await anchor(pair.second);
     pair.second.setDefaultTimeout(15000);
     await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
@@ -341,6 +363,16 @@ test('anchored owners survive initial handoff, two rotations, replacement, resta
     await expect(page.locator('.shell')).not.toContainText(
       'Writing retained only in this detached copy',
     );
+    if (process.env['ACCOUNT_BASELINE_READ'] === '1')
+      expect([...observed].sort()).toEqual([
+        'catchup',
+        'detached',
+        'membership-source',
+        'prospective',
+        'rebase',
+        'rotation',
+        'rotation-journal',
+      ]);
   } finally {
     for (const p of [pair?.second, third])
       if (p && !p.isClosed())

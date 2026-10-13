@@ -12,6 +12,7 @@ import { createHash } from 'node:crypto';
 import { Y, sameDocState } from '../src/crdt/yjs';
 import {
   prepareLocalBaseline,
+  rebaseLocalBaseline,
   replayLocalBaseline,
   replayFullLocalHistory,
   type BaselineAuthentication,
@@ -1029,6 +1030,20 @@ it('extends an earlier baseline through rotation, a burned retry and current-key
     expect(observation(replayed)).toEqual(observation(await replayFullLocalHistory(all, c)));
     expect(replayed.census.delivery.spool.positions[0]!.retries).toHaveLength(1);
     expect(replayed.census.delivery.spool.attempts).toBe(3);
+    const rebased = await rebaseLocalBaseline(p.baseline, p.anchor, all, c, auth);
+    const empty = await rebaseLocalBaseline(
+      rebased.baseline,
+      rebased.anchor,
+      { ...all, records: [] },
+      c,
+      auth,
+    );
+    expect(decodeLocalBaseline(empty.baseline.payload).generation).toBe(2);
+    expect(
+      observation(
+        await replayLocalBaseline(empty.baseline, empty.anchor, { ...all, records: [] }, c, auth),
+      ),
+    ).toEqual(observation(replayed));
     await expect(
       replayLocalBaseline(
         p.baseline,
@@ -1267,4 +1282,210 @@ it('the full oracle detects a missing original beyond the next 32-source publica
   await expect(verifyCompleteLocalBaseline(input, f.ctx, auth, bad, true)).rejects.toThrow(
     'integrity',
   );
+});
+
+it('rebases successive partial cuts using only authenticated predecessors and suffixes, including an empty suffix', async () => {
+  await fc.assert(
+    fc.asyncProperty(fc.array(fc.boolean(), { minLength: 3, maxLength: 8 }), async (actions) => {
+      const f = await fixture(actions, true),
+        first = await f.input(f.rows.slice(0, f.cuts[0]));
+      let p = await prepareLocalBaseline(first, f.ctx, auth, null, {
+        current: 'ab'.repeat(32),
+        previous: null,
+        revision: 1,
+      });
+      let cut = f.cuts[0]!;
+      expect(decodeLocalBaseline(p.baseline.payload).sources[0]!.consumed).toEqual([0]);
+      for (const next of [cut, f.cuts[1]!, f.rows.length, f.rows.length]) {
+        const all = await f.input(f.rows.slice(0, next)),
+          previous = p;
+        p = await rebaseLocalBaseline(
+          previous.baseline,
+          previous.anchor,
+          { ...all, records: f.rows.slice(cut, next) },
+          f.ctx,
+          auth,
+        );
+        const b = decodeLocalBaseline(p.baseline.payload);
+        expect(b.revision).toBe(previous.anchor.revision + 1);
+        expect(b.predecessor).toBe(previous.anchor.hash);
+        expect(b.cut.sequence).toBe(f.rows[next - 1]!.seq);
+        expect(b.journalEra).toEqual(decodeLocalBaseline(previous.baseline.payload).journalEra);
+        const reduced = await replayLocalBaseline(
+          p.baseline,
+          p.anchor,
+          { ...all, records: [] },
+          f.ctx,
+          auth,
+        );
+        const full = await replayFullLocalHistory(all, f.ctx);
+        stateEqual(reduced.snapshot, full.snapshot);
+        expect(observation(reduced)).toEqual(observation(full));
+        expect(
+          await selectEnvelopeSources(
+            reduced.census.delivery.spool,
+            f.ctx.route,
+            true,
+            crypto.subtle,
+          ),
+        ).toEqual(
+          await selectEnvelopeSources(full.census.delivery.spool, f.ctx.route, true, crypto.subtle),
+        );
+        cut = next;
+      }
+    }),
+    { numRuns: 12, seed: 131026 },
+  );
+});
+
+it('rebase refuses tampered predecessors, missing suffix events, prefix replay and unsettled positions before signing', async () => {
+  const f = await fixture(),
+    first = await f.input(f.rows.slice(0, f.cuts[0])),
+    p = await prepareLocalBaseline(first, f.ctx, auth),
+    all = await f.input();
+  const suffix = { ...all, records: f.rows.slice(f.cuts[0]) };
+  let signs = 0;
+  const checked = {
+    ...auth,
+    sign: async (b: Bytes) => {
+      signs++;
+      return auth.sign(b);
+    },
+  };
+  const bad = structuredClone(p.baseline);
+  bad.mac[0]! ^= 1;
+  await expect(rebaseLocalBaseline(bad, p.anchor, suffix, f.ctx, checked)).rejects.toThrow();
+  await expect(
+    rebaseLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...suffix, records: suffix.records.slice(1) },
+      f.ctx,
+      checked,
+    ),
+  ).rejects.toThrow();
+  await expect(rebaseLocalBaseline(p.baseline, p.anchor, all, f.ctx, checked)).rejects.toThrow();
+  const lastResponse = all.records.at(-1)!;
+  const pending = await f.input(all.records.slice(0, -1));
+  expect(lastResponse.kind).toBe('heads');
+  await expect(
+    rebaseLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...pending, records: pending.records.slice(f.cuts[0]) },
+      f.ctx,
+      checked,
+    ),
+  ).rejects.toThrow('ineligible');
+  expect(signs).toBe(0);
+});
+
+it('rebase keeps inherited checkpoint evidence and current authority even when the next suffix has no events', async () => {
+  for (const joined of [false, true]) {
+    const f = await memberFixture(),
+      c: LocalBaselineContext = f.ctx;
+    if (joined) c.installation = { kind: 'joined', initialEpoch: 3 };
+    try {
+      await f.appendOwn();
+      await f.appendPeer();
+      await f.appendHistory();
+      const first = await memberInput(f.rows, c),
+        cut = f.rows.length;
+      const p = await prepareLocalBaseline(first, c, auth);
+      await f.adopt();
+      await f.appendOwn();
+      await f.appendPeer();
+      const all = await memberInput(f.rows, c);
+      const q = await rebaseLocalBaseline(
+        p.baseline,
+        p.anchor,
+        { ...all, records: f.rows.slice(cut) },
+        c,
+        auth,
+      );
+      const r = await rebaseLocalBaseline(q.baseline, q.anchor, { ...all, records: [] }, c, auth);
+      const a = decodeLocalBaseline(p.baseline.payload),
+        b = decodeLocalBaseline(r.baseline.payload);
+      expect(b.history).toEqual(a.history);
+      expect(b.authorityState.epoch).toBe(c.route.epoch);
+      expect(b.cut.sequence).toBe(f.rows.at(-1).seq);
+      expect(
+        observation(
+          await replayLocalBaseline(r.baseline, r.anchor, { ...all, records: [] }, c, auth),
+        ),
+      ).toEqual(observation(await replayFullLocalHistory(all, c)));
+    } finally {
+      f.clear();
+    }
+  }
+});
+
+it('rebase captures caller buffers before awaiting and never signs after its owner retires', async () => {
+  const f = await fixture(),
+    first = await f.input(f.rows.slice(0, f.cuts[0])),
+    p = await prepareLocalBaseline(first, f.ctx, auth),
+    all = await f.input();
+  for (const retired of [false, true]) {
+    const held = structuredClone(p),
+      tail = structuredClone({ ...all, records: f.rows.slice(f.cuts[0]) });
+    let release!: () => void,
+      arrived!: () => void,
+      current = true,
+      once = true,
+      signs = 0;
+    const blocked = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    const entered = new Promise<void>((resolve) => {
+      arrived = resolve;
+    });
+    const checked: BaselineAuthentication = {
+      sign: async (b) => {
+        signs++;
+        return auth.sign(b);
+      },
+      verify: async (b, mac) => {
+        if (once) {
+          once = false;
+          arrived();
+          await blocked;
+        }
+        return auth.verify(b, mac);
+      },
+    };
+    const work = rebaseLocalBaseline(
+      held.baseline,
+      held.anchor,
+      tail,
+      {
+        ...f.ctx,
+        assertCurrent: () => {
+          if (!current) throw Error('Retired rebase owner');
+        },
+      },
+      checked,
+    );
+    await entered;
+    held.baseline.payload.fill(0);
+    held.baseline.mac.fill(0);
+    held.anchor.hash = ZERO;
+    for (const r of tail.records) r.bytes.fill(0);
+    tail.counter.next_seq++;
+    current = !retired;
+    release();
+    if (retired) {
+      await expect(work).rejects.toThrow('Retired rebase owner');
+      expect(signs).toBe(0);
+    } else {
+      const q = await work;
+      const replayed = await replayLocalBaseline(
+        q.baseline,
+        q.anchor,
+        { ...all, records: [] },
+        f.ctx,
+        auth,
+      );
+      stateEqual(replayed.snapshot, (await replayFullLocalHistory(all, f.ctx)).snapshot);
+    }
+  }
 });

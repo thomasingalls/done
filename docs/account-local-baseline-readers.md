@@ -2,7 +2,7 @@
 
 The [reader inventory and deletion plan](./account-local-retention-readers.md) are signed as
 **`bce612c3`**. This phase connects the private logical reader to the original and joined cold/live
-Account owners. It remains an uncommitted development experiment, enabled only with both
+Account owners. It is committed signed as **`3ba73cb3`** (`G`), and enabled only with both
 `VITE_ACCOUNT_BASELINE_INSTALL=1` and **`VITE_ACCOUNT_BASELINE_READ=1`**. No public setting exposes it.
 Every physical history row remains; full-history comparison is mandatory. This is not a speedup or
 proof that an owner can operate after physical removal.
@@ -76,11 +76,11 @@ The test-only probe observes the real recovery seam; it does not supply a replac
 Ordinary reader refusal and prepared-receive regressions remain covered. One transient packaged
 history-inspection lock is recorded with its limits, not explained away as a fixed defect.
 
-**Next:** adapt prospective authority validation, detached prefixes, rotation, initial handoff and
-membership/history local-source readers to the retained origin; build baseline replacement from an
-old baseline plus suffix. They currently retain independent full-history prerequisites. Keep the
-four full-spool guards until those adapters have their own evidence. Then implement the pure exact
-physical deletion-plan dry run. Actual removal needs its separate closed carrier and atomic phase.
+**Continuation:** the [lifecycle-reader/rebase phase](./account-local-baseline-lifecycle-readers.md)
+adapts prospective authority, detached prefixes, rotation, initial handoff and membership/history
+local-source readers, and builds replacement from an old baseline plus suffix. It retains the full
+physical oracle and the four guarded full-history entry points. Next is the pure exact physical
+deletion-plan dry run; actual removal needs its separate closed carrier and atomic phase.
 
 Generic compaction still returns `retained` for anchored stores. Independent service checkpoint
 production/admission, service pruning and recovery do not gain trust from a local baseline. Public

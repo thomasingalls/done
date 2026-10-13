@@ -10,6 +10,11 @@ All logical rows in `content`, `heads` and `outbound` remain present. Live reade
 complete, verified history; the authenticated baseline and suffix are independently replayed and
 compared with it. This is lifecycle preparation, not a performance activation or deletion phase.
 
+**Later continuation:** [baseline-aware lifecycle readers and rebase](./account-local-baseline-lifecycle-readers.md)
+connect these owners to logical baseline-plus-suffix results and rebuild a replacement from that
+state. The physical full-history oracle remains mandatory. The description below records this
+phase's earlier full-reader implementation boundary.
+
 ## Replacement and lost replies
 
 The private composed workspace exposes `replaceLocalBaseline(expectedRevision)`. Like initial

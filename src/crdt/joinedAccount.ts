@@ -1066,7 +1066,13 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
               }
             : {}),
           validate: async (records, _task, counter, _view, baseline) => {
-            if (baseline && !detached) return;
+            if (baseline) {
+              if (detached)
+                await (
+                  await import('./rotationObservation')
+                ).verifyRetainedDetachedPrefix(detached, baseline, crypto.subtle);
+              return;
+            }
             countLedgerWork('joinedStartupValidations');
             const census = inspectInbound(records, b.route, b.base);
             await verifySpoolWitness(census.delivery.spool, counter, crypto.subtle);

@@ -740,6 +740,56 @@ export const createContentOwner = (
         throw cause;
       }
     },
+    /** Private prospective-authority adapter. Checks the retained origin under a proposed context
+     * without installing that context or publishing a view. The caller still commits custody and
+     * performs its normal authenticated readback. Complete-history owners keep their old path. */
+    async verifyBaselineTransition(
+      task: SessionTask,
+      proposed: (identity: ContentIdentity, counter: ContentCounter) => LocalBaselineContext,
+    ): Promise<boolean> {
+      if (!crypt.readBaseline || !metadata?.era() || !crypt.baseline) return false;
+      const snapshot = await read(task, true),
+        records = await openSnapshot(task, snapshot);
+      const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
+      const { verifyCompleteLocalBaseline } = await task.wait(
+        () => import('./localBaselineShadow'),
+      );
+      const { verifySyncState } = await task.wait(() => import('./accountSyncState'));
+      let held: Awaited<ReturnType<typeof readEncryptedBaseline>> | undefined;
+      let logical: AccountBaselineRead | undefined;
+      const fresh = async () => {
+        await crypt.baseline!(task, { ...scope }, snapshot.counter!);
+      };
+      try {
+        held = await readEncryptedBaseline(
+          task,
+          baselineOwner(fresh, () => task.step(() => {})),
+        );
+        if (!equalCounter(scope, metadata.parse(held.counter, witness.intent), snapshot.counter!))
+          corrupt('Transition census changed.');
+        const context = proposed({ ...scope }, structuredClone(snapshot.counter!));
+        logical = await verifyCompleteLocalBaseline(
+          { records, counter: snapshot.counter! },
+          context,
+          baselineAuth(task),
+          held,
+          true,
+        );
+        if (!logical) throw Error('Transition lost its retained origin.');
+        verifySyncState(
+          logical.ledger.census.delivery,
+          logical.ledger.delivery,
+          logical.ledger.inbound,
+        );
+        await fresh();
+        context.assertCurrent();
+        return true;
+      } finally {
+        eraseVerified(records);
+        eraseVerified(held);
+        eraseVerified(logical);
+      }
+    },
     journalBinding: () => {
       const era = metadata?.era();
       return era ? { identity: { ...scope }, intent: witness.intent, era } : undefined;
@@ -846,7 +896,7 @@ export const createContentOwner = (
             corrupt('Replacement revision changed.');
         } else if (expectedRevision !== undefined)
           corrupt('Replacement requires an installed baseline.');
-        const { prepareLocalBaseline, LocalBaselineError } = await task.wait(
+        const { prepareLocalBaseline, rebaseLocalBaseline, LocalBaselineError } = await task.wait(
           () => import('./localBaselineReplay'),
         );
         const { verifyCompleteLocalBaseline } = await task.wait(
@@ -864,7 +914,26 @@ export const createContentOwner = (
             }
           : oldEra;
         try {
-          candidate = await prepareLocalBaseline(input, context, auth, previous?.anchor, era);
+          if (previous && crypt.readBaseline) {
+            const { decodeLocalBaseline } = await task.wait(() => import('./localBaselineRecord'));
+            const old = decodeLocalBaseline(previous.baseline.payload);
+            try {
+              candidate = await rebaseLocalBaseline(
+                previous.baseline,
+                previous.anchor,
+                {
+                  records: records.filter((r) => r.seq >= old.cut.nextSequence),
+                  counter: input.counter,
+                },
+                context,
+                auth,
+                era,
+              );
+            } finally {
+              eraseVerified(old);
+            }
+          } else
+            candidate = await prepareLocalBaseline(input, context, auth, previous?.anchor, era);
         } catch (error) {
           // Only a new candidate can be ineligible. A persisted anchor's failure above is fatal.
           if (error instanceof LocalBaselineError && error.reason !== 'integrity')

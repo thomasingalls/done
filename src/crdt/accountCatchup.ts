@@ -5,6 +5,7 @@ import { prepareAccountCustody } from './custody';
 import { claimScope } from './localGenesisRecord';
 import { openEnvelope, openCredential, hex } from './custodyCrypto';
 import { recordEqual } from './custodyRecord';
+import { eraseVerified } from './verifiedRecords';
 import { emptySpoolWitness } from './contentRecord';
 import { eraseJournalSnapshot } from './journalStore';
 import { replayRecovery } from './admissionDocument';
@@ -44,14 +45,16 @@ async function prepareUploadedCatchup(
         owner = prepareAccountCustody(
           { ...scope, resolvePrincipal: () => scope.principalId },
           options.code,
-          (records, _task, counter) =>
-            verifySpoolWitness(
-              inspectInbound(records, v.route, base).delivery.spool,
-              counter,
-              subtle,
-            ),
+          (records, _task, counter, _view, baseline) =>
+            baseline
+              ? undefined
+              : verifySpoolWitness(
+                  inspectInbound(records, v.route, base).delivery.spool,
+                  counter,
+                  subtle,
+                ),
           true,
-          undefined,
+          import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1' ? true : undefined,
           undefined,
           undefined,
           import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
@@ -72,16 +75,24 @@ async function prepareUploadedCatchup(
                 };
               }
             : undefined,
+          import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1' &&
+            import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
+            ? true
+            : undefined,
         );
       try {
         await owner.initialize(task);
-        const records = await owner.carrier.load(task),
+        const loaded = await owner.carrier.loadAccount(task),
+          records = loaded.records,
           doc = new Y.Doc({ gc: false });
         let journal: Awaited<ReturnType<typeof owner.journal.readSnapshot>> = [];
         let recovery: ReturnType<typeof capturedRecovery> | undefined;
         try {
           journal = await owner.journal.readSnapshot(task);
-          const census = inspectInbound(records, v.route, base);
+          const census =
+            loaded.kind === 'baseline-plus-suffix'
+              ? loaded.ledger.census
+              : inspectInbound(records, v.route, base);
           recovery = capturedRecovery(
             { records: [...census.delivery.spool.sourceRecords], journal },
             v.route,
@@ -96,7 +107,16 @@ async function prepareUploadedCatchup(
           };
           const route = await heldCaptureRoute({ ...v.marker, successor });
           // In particular, accepted heads cannot certify content missing from the local spool.
-          await verifyInstalledSuccessor(census.delivery.spool, route, successor, subtle);
+          const retained = await owner.carrier.verifyBaselineTransition(task, (identity) => ({
+            identity,
+            route,
+            inbound: { ...base, history: route.history!, authority: route.history!.current },
+            signer: publicKey,
+            installation: { kind: 'original', successor },
+            assertCurrent: () => task.step(() => {}),
+          }));
+          if (!retained)
+            await verifyInstalledSuccessor(census.delivery.spool, route, successor, subtle);
           const checkpoint = await createContentCheckpoint(
             doc,
             key,
@@ -113,7 +133,7 @@ async function prepareUploadedCatchup(
           return checkpoint;
         } finally {
           doc.destroy();
-          for (const r of records) r.bytes.fill(0);
+          eraseVerified(loaded);
           for (const r of recovery?.journal ?? []) r.bytes.fill(0);
           eraseJournalSnapshot(journal);
         }

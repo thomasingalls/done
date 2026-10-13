@@ -267,7 +267,13 @@ export async function verifyAccountUnderPermit(
                   : {}),
                 ...(marker.v === 9 ? { reuseOpened: true as const } : {}),
                 validate: async (records, _task, counter, _view, baseline) => {
-                  if (baseline && !detached) return;
+                  if (baseline) {
+                    if (detached)
+                      await (
+                        await import('./rotationObservation')
+                      ).verifyRetainedDetachedPrefix(detached, baseline, subtle);
+                    return;
+                  }
                   countLedgerWork('startupValidations');
                   // These reducers inspect the same authenticated immutable snapshot.
                   // Build its nested census once; each verifier still checks its own contract.

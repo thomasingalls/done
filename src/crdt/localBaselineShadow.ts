@@ -34,6 +34,8 @@ export interface AccountBaselineRead {
   kind: 'baseline-plus-suffix';
   anchor: BaselineAnchor;
   firstSuffix: number;
+  /** Epoch through which the authenticated origin checked authority boundaries. */
+  authorityEpoch: number;
   records: import('./contentRecord').OpenedRecord[];
   ledger: Pick<Replay, 'census' | 'delivery' | 'inbound'>;
 }
@@ -130,6 +132,7 @@ export async function verifyCompleteLocalBaseline(
         kind: 'baseline-plus-suffix',
         anchor: { ...stored.anchor },
         firstSuffix: baseline.cut.nextSequence,
+        authorityEpoch: baseline.authorityState.epoch,
         records: copyRecords([
           { kind: 'state', seq: 0, gen: baseline.generation, bytes: baseline.snapshot },
           ...baseline.sources.map((s) => s.record),

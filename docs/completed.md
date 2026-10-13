@@ -14076,3 +14076,37 @@ was weakened. No performance comparison on this busy host.
 adapters plus baseline rebase, still without deletion. Then pure exact-plan dry run and separately
 authorized private atomic removal. Full-spool guards remain on unadapted readers. No publication,
 public reader activation or release campaign; `docs/progress.md` untouched.
+
+### Baseline-aware lifecycle readers and repeated cuts — 2026-10-13
+
+**Boundary.** The preceding owned-reader work is committed signed as **`3ba73cb3`** (`G`). This new
+implementation is uncommitted. [Contract](./account-local-baseline-lifecycle-readers.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-baseline-lifecycle-readers/README.md).
+
+**Exit.** Private era-bearing Account owners use authenticated baseline-plus-suffix state for
+prospective successor/membership checks, initial handoff, membership/history local source, rotation
+validation/journal capture and detached original/joined prefix checks. Fresh custody checks and
+post-commit readback remain; speculative authority is not installed by the reader. Rotation still
+uses actual physical rows and required old openers. Full-spool entry points retain all four guards.
+
+Replacement now authenticates and summarizes only its predecessor baseline plus supplied suffix,
+including inherited consumption, absolute positions/attempts, terminal proofs, checkpoint evidence,
+authority cuts, empty-suffix cut sequence, rotated generations and journal era. The real installer
+still requires the full-history oracle and exact physical census before its metadata exchange.
+No logical row deletion, stored-format change, live-document replacement or undo reset is added.
+
+**Evidence.** 111 unit checks in seven files, including 12 generated repeated-cut histories and
+fault/lifetime/caller-isolation controls; 23 enabled native owner cases including replacement/era
+renderer death, retries and mismatched journal/database pairs; one ordinary-owner control; two
+packaged lifecycle journeys (first handoff, later membership, two rotations, interrupted final
+custody activation and both kinds of detached copy); and one checkpoint/membership/undo/cold-reopen
+journey. The lifecycle probe requires actual execution of all seven adapter/rebase branches.
+The final lifecycle rerun passes after private scoping was tightened. TypeScript, changed-file
+lint/format, Yjs patch, ordinary build, bundle budget/origin and documentation-link checks pass.
+The evidence packet retains the test-hook build failures and their correction. No timing inference
+or renewed qualification campaign.
+
+**Next.** Pure exact deletion-plan dry run against detached projected inventories, still without
+removing history. Separately authorized private atomic removal, public reader-first compatibility
+and rollback, capacity/unavailable-history behavior and measured growth remain later gates.
+`docs/progress.md` remains untouched; unrelated root notes remain untracked.

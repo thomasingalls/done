@@ -1678,35 +1678,49 @@ async function openAccountReceiveOwner(
           },
           before = await owner.carrier.spoolWitness(task),
           successor = { artifact, before };
-        // The existing view has already authenticated source coverage. Verify the proposed context
-        // against the same retained bytes too, including any lost accepted response at the boundary.
-        const census = inspectInbound(records, nextRoute, nextBase),
-          subtle = subtleFor(task);
-        try {
-          await verifyInstalledSuccessor(census.delivery.spool, nextRoute, successor, subtle);
-          await verifySpool(
-            census.delivery.spool,
-            nextRoute,
-            new Map([
-              ...(base.retainedGenerationKeys ?? []),
-              [base.generation, base.generationKey],
-            ]),
-            publicKey,
-            subtle,
-          );
-          const delivery = await verifyDelivery(
-            census.delivery,
-            nextRoute,
-            nextBase.authority,
-            publicKey,
-            subtle,
-          );
-          const inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
-          verifySyncState(census.delivery, delivery, inbound);
-        } catch (cause) {
-          throw new AdmissionError('receive-refused', 'Successor does not match retained history', {
-            cause,
-          });
+        const retained = await owner.carrier.verifyBaselineTransition(task, (identity) => ({
+          identity,
+          route: nextRoute,
+          inbound: nextBase,
+          signer: publicKey,
+          installation: { kind: 'original', successor },
+          ...lifetime(task),
+        }));
+        if (!retained) {
+          // The existing view has already authenticated source coverage. Verify the proposed context
+          // against the same retained bytes too, including any lost accepted response at the boundary.
+          const census = inspectInbound(records, nextRoute, nextBase),
+            subtle = subtleFor(task);
+          try {
+            await verifyInstalledSuccessor(census.delivery.spool, nextRoute, successor, subtle);
+            await verifySpool(
+              census.delivery.spool,
+              nextRoute,
+              new Map([
+                ...(base.retainedGenerationKeys ?? []),
+                [base.generation, base.generationKey],
+              ]),
+              publicKey,
+              subtle,
+            );
+            const delivery = await verifyDelivery(
+              census.delivery,
+              nextRoute,
+              nextBase.authority,
+              publicKey,
+              subtle,
+            );
+            const inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
+            verifySyncState(census.delivery, delivery, inbound);
+          } catch (cause) {
+            throw new AdmissionError(
+              'receive-refused',
+              'Successor does not match retained history',
+              {
+                cause,
+              },
+            );
+          }
         }
         await withPromotionRoot(
           task,
@@ -1847,31 +1861,50 @@ async function openAccountReceiveOwner(
           }),
           nextRoute = { ...route, epoch: history.current.tip, history },
           nextBase = { ...base, history, authority: history.current },
-          census = inspectInbound(records, nextRoute, nextBase),
           subtle = subtleFor(task);
-        await verifyInstalledMembership(
-          census.delivery.spool,
-          history,
-          nextMembership,
-          joined ? initialEpoch : originalMembershipBoundaries(installed),
-          subtle,
-        );
-        await verifySpool(
-          census.delivery.spool,
-          nextRoute,
-          new Map([...(base.retainedGenerationKeys ?? []), [base.generation, base.generationKey]]),
-          publicKey,
-          subtle,
-        );
-        const delivery = await verifyDelivery(
-            census.delivery,
+        const retained = await owner.carrier.verifyBaselineTransition(task, (identity) => ({
+          identity,
+          route: nextRoute,
+          inbound: nextBase,
+          signer: publicKey,
+          installation: joined
+            ? { kind: 'joined', initialEpoch, membership: nextMembership }
+            : {
+                kind: 'original',
+                ...(installed ? { successor: installed } : {}),
+                membership: nextMembership,
+              },
+          ...lifetime(task),
+        }));
+        if (!retained) {
+          const census = inspectInbound(records, nextRoute, nextBase);
+          await verifyInstalledMembership(
+            census.delivery.spool,
+            history,
+            nextMembership,
+            joined ? initialEpoch : originalMembershipBoundaries(installed),
+            subtle,
+          );
+          await verifySpool(
+            census.delivery.spool,
             nextRoute,
-            nextBase.authority,
+            new Map([
+              ...(base.retainedGenerationKeys ?? []),
+              [base.generation, base.generationKey],
+            ]),
             publicKey,
             subtle,
-          ),
-          inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
-        verifySyncState(census.delivery, delivery, inbound);
+          );
+          const delivery = await verifyDelivery(
+              census.delivery,
+              nextRoute,
+              nextBase.authority,
+              publicKey,
+              subtle,
+            ),
+            inbound = await verifyInboundLedger(census, records, nextBase, lifetime(task));
+          verifySyncState(census.delivery, delivery, inbound);
+        }
         // Persist only the current-membership carrier. The installation, key, checkpoint and index stay bound.
         if (joined) {
           const next = await writeJoinedMembership(
