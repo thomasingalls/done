@@ -22,6 +22,12 @@ export const ERA_LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-3';
 export const LOCAL_BASELINE_LIMIT = MAX_BATCH_BYTES;
 const MAX_SOURCES = 4096,
   MAX_PUBLISHERS = 128;
+/** A new candidate cannot fit; decoding persisted oversized bytes remains an integrity refusal. */
+export class LocalBaselineCapacityError extends Error {
+  constructor() {
+    super('Local baseline exceeds supported capacity');
+  }
+}
 export interface BaselineAnchor {
   revision: number;
   hash: string;
@@ -245,7 +251,14 @@ function parse(v: unknown[]): LocalBaseline {
 }
 /** Bounds and closed framing are checked before any bytes can be authenticated. */
 export function encodeLocalBaseline(b: LocalBaseline): Bytes {
+  if (
+    b.snapshot.length > LOCAL_BASELINE_LIMIT ||
+    b.sources.length > MAX_SOURCES ||
+    b.streams.length > MAX_PUBLISHERS
+  )
+    throw new LocalBaselineCapacityError();
   const encoded = utf8(JSON.stringify(values(b)));
+  if (encoded.length > LOCAL_BASELINE_LIMIT) throw new LocalBaselineCapacityError();
   decodeLocalBaseline(encoded);
   return encoded;
 }

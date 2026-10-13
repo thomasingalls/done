@@ -14110,3 +14110,39 @@ or renewed qualification campaign.
 removing history. Separately authorized private atomic removal, public reader-first compatibility
 and rollback, capacity/unavailable-history behavior and measured growth remain later gates.
 `docs/progress.md` remains untouched; unrelated root notes remain untracked.
+
+### Exact local Account deletion-plan dry run — 2026-10-13
+
+**Boundary.** Lifecycle-reader/rebase work is committed signed as **`af5f0d87`** (`G`). This new
+phase is uncommitted. [Contract](./account-local-retention-dry-run.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-retention-plan/README.md).
+
+**Exit.** A pure planner authenticates an exact sealed-row/raw-metadata census and predecessor,
+constructs the settled current candidate from full history or baseline plus suffix, assigns every
+physical row a coverage/evidence disposition, and compares the detached deletion projection with
+intact history and next behavior. It preserves whole partial capsules, consumption, attempts,
+frontiers/cuts/checkpoint evidence and reservation holes. Capacity/unsettled skips are separate from
+integrity refusal. Lifetime-bound plans own detached copies and reject any changed row/key/metadata.
+
+The real private composed owner connects that planner to existing admission, journal, durable-attempt,
+old-flight and final-apply fences. It performs complete fresh authority checks and a final exact
+readonly census, reports counts and disposes the plan. No reservation, new journal era, baseline
+installation, physical deletion, live-document swap or UndoManager reset is performed by the planner.
+Ordinary owners expose no new method. Existing stored codecs are unchanged.
+
+**Evidence.** 117 unit tests in seven files, including 12 newly generated exact-plan histories and
+existing repeated rebase controls. All 30 enabled native owner cases have passing evidence: 28 in
+the full run and two after correcting tests that expected blocked admission where integrity failure
+closes the owner. One ordinary-owner case and one packaged original/joined checkpoint/membership
+journey pass. Native planner cases assert zero settled storage writes, exact preserved bytes,
+journal-before-apply and undo, stale-read rejection, fresh authority changes, changed rows/chunks,
+renderer death and retry. The packaged journey checks plans on both devices before/after checkpoint
+installation and skips an unfinished producer attempt. TypeScript, lint/format, ordinary build,
+Yjs/budget/origin and documentation checks pass. The packet retains harness failures and corrections;
+no broad qualification or performance campaign was started.
+
+**Next.** Separately authorized private atomic removal: reduced-carrier compatibility fence,
+predecessor reservation, exact pointer/chunks/era/enumerated-row exchange, readback and native
+abort/crash/lost-reply/retry controls, including lifecycle readers of actually reduced stores. Public
+reader-first rollout/rollback, capacity/history-required UX and growth measurements remain later.
+All history is still present. `docs/progress.md` and unrelated root notes remain untouched.

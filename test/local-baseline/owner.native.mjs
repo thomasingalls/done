@@ -65,14 +65,16 @@ const noDeletion = (before, after) => {
   }
 };
 const counter = (h) => h.meta[1][h.meta[0].indexOf('counter')];
-const hold = (p) =>
-  p.evaluate(() => {
+const hold = (p, draft = 2) =>
+  p.evaluate((draft) => {
     const sign = crypto.subtle.sign.bind(crypto.subtle);
     let once = true;
     crypto.subtle.sign = async (...args) => {
       if (
         once &&
-        new TextDecoder().decode(args[2]).startsWith('done/account-local-baseline-auth/draft-2\0')
+        new TextDecoder()
+          .decode(args[2])
+          .startsWith(`done/account-local-baseline-auth/draft-${draft}\0`)
       ) {
         once = false;
         window.baselineHeld = true;
@@ -82,7 +84,7 @@ const hold = (p) =>
       }
       return sign(...args);
     };
-  });
+  }, draft);
 const begin = (p) =>
   p.evaluate(() => {
     window.installWork = opened.installLocalBaseline().then(
@@ -399,6 +401,7 @@ test(
     assert.equal(await f.page.evaluate(() => 'installLocalBaseline' in opened), false);
     assert.equal(await f.page.evaluate(() => 'replaceLocalBaseline' in opened), false);
     assert.equal(await f.page.evaluate(() => 'advanceLocalRetention' in opened), false);
+    assert.equal(await f.page.evaluate(() => 'dryRunLocalRetention' in opened), false);
     await edit(f.page, 0, 0, 'ORDINARY INPUT ');
     await durable(f.page);
     assert.ok((await f.page.evaluate(() => editor.read().master)).startsWith('ORDINARY INPUT '));
@@ -926,3 +929,276 @@ test(
     await close(f.page);
   },
 );
+
+const dryPlan = (p) => p.evaluate(() => opened.dryRunLocalRetention());
+const beginPlan = (p) =>
+  p.evaluate(() => {
+    window.planWork = opened
+      .dryRunLocalRetention()
+      .catch((e) => ({ error: e.message }))
+      .then((r) => {
+        window.planOutcome = r;
+        return r;
+      });
+  });
+const dryOptions = { timeout: 90000, skip: process.env.ACCOUNT_BASELINE_READ !== '1' };
+test(
+  'exact dry run is read-only before/after anchoring and empty-suffix rebase; old reads retire and undo survives',
+  dryOptions,
+  async (t) => {
+    const { f, item } = await setup(t, 'plan-owner');
+    await close(f.page);
+    await f.page.evaluate(await syncBundle('retention-owner'));
+    await configure(f.page, f.testOperatorToken);
+    await syncing(f.page, item);
+    await online(f.page, false);
+    const original = await f.page.evaluate(() => editor.read().master);
+    await edit(f.page, 0, 0, 'PLAN UNDO ');
+    await durable(f.page);
+    await online(f.page, true);
+    await settled(f.page);
+    await online(f.page, false);
+    for (const revision of [0, 1, 2]) {
+      const before = await history(f.page, item),
+        text = await f.page.evaluate(() => editor.read().master);
+      const query = await f.page.evaluate(async () => [
+        ...(await retentionTestOwner.prepareRead()),
+      ]);
+      const late = answer(f, item, query).bytes;
+      // Throw before any product storage mutation, including reservations or chunk replacement.
+      await f.page.evaluate(() => {
+        const transaction = IDBDatabase.prototype.transaction;
+        window.restorePlanGuard = () => {
+          IDBDatabase.prototype.transaction = transaction;
+        };
+        IDBDatabase.prototype.transaction = function (names, mode, ...rest) {
+          if (this.name === opened.dbName && mode === 'readwrite')
+            throw Error('Dry run attempted a write');
+          return transaction.call(this, names, mode, ...rest);
+        };
+      });
+      let report;
+      try {
+        report = await dryPlan(f.page);
+      } finally {
+        await f.page.evaluate(() => restorePlanGuard());
+      }
+      assert.equal(report.kind, 'planned');
+      assert.equal(report.previousRevision, revision);
+      assert.equal(report.revision, revision + 1);
+      assert.equal(report.survivors, 0);
+      assert.equal(
+        report.rows,
+        ['content', 'heads', 'outbound'].reduce((n, s) => n + before[s][0].length, 0),
+      );
+      assert.deepEqual(await history(f.page, item), before);
+      assert.deepEqual(await journalEntries(f.page), []);
+      assert.equal(await f.page.evaluate(() => editor.read().master), text);
+      await assert.rejects(
+        f.page.evaluate((b) => retentionTestOwner.receivePage(new Uint8Array(b)), [...late]),
+        /authority|changed|superseded/i,
+      );
+      const fresh = await f.page.evaluate(async () => [
+        ...(await retentionTestOwner.prepareRead()),
+      ]);
+      const reply = answer(f, item, fresh).bytes;
+      assert.equal(
+        (
+          await f.page.evaluate(
+            (b) => retentionTestOwner.receivePage(new Uint8Array(b)),
+            [...reply],
+          )
+        ).kind,
+        'empty',
+      );
+      if (revision === 0) assert.equal((await install(f.page)).kind, 'installed');
+      if (revision === 1) assert.equal((await advance(f.page, 1)).kind, 'replaced');
+    }
+    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await f.page.evaluate(() => editor.command({ kind: 'redo' }).accepted);
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'PLAN UNDO ' + original);
+    await durable(f.page);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'PLAN UNDO ' + original);
+    await close(f.page);
+  },
+);
+
+test(
+  'dry-run admission fences later input, keeps journal-before-apply and undo, and makes no era change',
+  dryOptions,
+  async (t) => {
+    const { f, item } = await setup(t, 'plan-input');
+    const original = await f.page.evaluate(() => editor.read().master),
+      before = await history(f.page, item);
+    await hold(f.page, 3);
+    await beginPlan(f.page);
+    await waitPredicate(f.page, () => window.baselineHeld);
+    await f.page.evaluate(() => {
+      const original = editor.read().master,
+        set = Storage.prototype.setItem;
+      window.planJournalBeforeApply = false;
+      window.planInputApplied = false;
+      Storage.prototype.setItem = function (k, v) {
+        if (k.startsWith('done.pending-update.'))
+          planJournalBeforeApply ||= editor.read().master === original;
+        return set.call(this, k, v);
+      };
+      window.planInput = surface
+        .input(
+          { name: 'insert', text: 'AFTER PLAN ' },
+          { ranges: [{ anchor: 0, head: 0 }], main: 0 },
+        )
+        .accepted.then(() => {
+          planInputApplied = true;
+        });
+    });
+    assert.equal(await f.page.evaluate(() => planInputApplied), false);
+    assert.deepEqual(await history(f.page, item), before);
+    await f.page.evaluate(() => releaseBaseline());
+    assert.equal((await f.page.evaluate(() => planWork)).kind, 'planned');
+    await f.page.evaluate(() => planInput);
+    assert.equal(await f.page.evaluate(() => planJournalBeforeApply), true);
+    assert.equal(await f.page.evaluate(() => editor.read().master), 'AFTER PLAN ' + original);
+    await durable(f.page);
+    assert.equal(counter(await history(f.page, item)).v, 2);
+    await f.page.evaluate(() => editor.command({ kind: 'undo' }).accepted);
+    assert.equal(await f.page.evaluate(() => editor.read().master), original);
+    await close(f.page);
+  },
+);
+
+test(
+  'dry run with a retained journal refuses at durability barrier and preserves the original for cold recovery',
+  dryOptions,
+  async (t) => {
+    const { f, item } = await setup(t, 'plan-journal');
+    await f.page.evaluate(() => {
+      const remove = Storage.prototype.removeItem;
+      Storage.prototype.removeItem = function (k) {
+        if (k.startsWith('done.pending-update.')) throw Error('retained journal');
+        return remove.call(this, k);
+      };
+    });
+    await edit(f.page, 0, 0, 'PLAN JOURNAL ');
+    await assert.rejects(dryPlan(f.page), /journal cleanup/);
+    assert.ok((await journalEntries(f.page)).length);
+    assert.equal(counter(await history(f.page, item)).v, 2);
+    await close(f.page);
+    await cold(f);
+    await syncing(f.page, item);
+    assert.ok((await f.page.evaluate(() => editor.read().master)).startsWith('PLAN JOURNAL '));
+    await close(f.page);
+  },
+);
+
+test(
+  'dry run refuses a fresh authority change during crypto before reporting a plan',
+  dryOptions,
+  async (t) => {
+    const { f, item } = await setup(t, 'plan-authority'),
+      before = await history(f.page, item);
+    await hold(f.page, 3);
+    await beginPlan(f.page);
+    await waitPredicate(f.page, () => window.baselineHeld);
+    await f.page.evaluate(async (slot) => {
+      const db = await new Promise((yes, no) => {
+        const r = indexedDB.open('done.custody');
+        r.onsuccess = () => yes(r.result);
+        r.onerror = () => no(r.error);
+      });
+      try {
+        await new Promise((yes, no) => {
+          const tx = db.transaction('entries', 'readwrite');
+          tx.objectStore('entries').put({}, [slot, 'local-clear-v1']);
+          tx.oncomplete = yes;
+          tx.onabort = () => no(tx.error);
+        });
+      } finally {
+        db.close();
+      }
+      releaseBaseline();
+    }, item.slotId);
+    await waitPredicate(f.page, () => editor.status.state === 'blocked');
+    assert.deepEqual(await history(f.page, item), before);
+    await close(f.page);
+    assert.ok((await f.page.evaluate(() => planWork)).error);
+  },
+);
+
+test(
+  'renderer death during dry-run preparation leaves no reservation or cut and retries cleanly',
+  dryOptions,
+  async (t) => {
+    const { f, item } = await setup(t, 'plan-death'),
+      before = await history(f.page, item);
+    await hold(f.page, 3);
+    await beginPlan(f.page);
+    await waitPredicate(f.page, () => window.baselineHeld);
+    const cdp = await f.context.newCDPSession(f.page),
+      crashed = f.page.waitForEvent('crash');
+    void cdp.send('Page.crash').catch(() => {});
+    await crashed;
+    await cold(f);
+    await online(f.page, false);
+    await syncing(f.page, item);
+    assert.deepEqual(await history(f.page, item), before);
+    assert.equal((await dryPlan(f.page)).kind, 'planned');
+    assert.deepEqual(await history(f.page, item), before);
+    await close(f.page);
+  },
+);
+
+for (const damage of ['row', 'chunk'])
+  test(
+    `dry run refuses ${damage} changed after capture and cannot lend a stale plan`,
+    dryOptions,
+    async (t) => {
+      const { f, item } = await setup(t, 'plan-change-' + damage);
+      await install(f.page);
+      await advance(f.page, 1);
+      await hold(f.page, 3);
+      await beginPlan(f.page);
+      await waitPredicate(f.page, () => window.baselineHeld);
+      await f.page.evaluate(async (damage) => {
+        const db = await new Promise((yes, no) => {
+          const r = indexedDB.open(opened.dbName);
+          r.onsuccess = () => yes(r.result);
+          r.onerror = () => no(r.error);
+        });
+        try {
+          await new Promise((yes, no) => {
+            const tx = db.transaction(damage === 'row' ? 'content' : 'meta', 'readwrite'),
+              store = tx.objectStore(damage === 'row' ? 'content' : 'meta'),
+              r = damage === 'row' ? store.openCursor() : store.get(['local-baseline', 0]);
+            r.onsuccess = () => {
+              if (damage === 'row') {
+                const c = r.result,
+                  v = c.value;
+                v.ct[0] ^= 1;
+                c.update(v);
+              } else {
+                const v = r.result;
+                v.ct[0] ^= 1;
+                store.put(v, ['local-baseline', 0]);
+              }
+            };
+            tx.oncomplete = yes;
+            tx.onabort = () => no(tx.error);
+          });
+        } finally {
+          db.close();
+        }
+      }, damage);
+      const damaged = await history(f.page, item);
+      await f.page.evaluate(() => releaseBaseline());
+      // Carrier integrity failure closes this owner; it does not remain in blocked admission.
+      await waitPredicate(f.page, () => editor.status.state === 'closed');
+      assert.deepEqual(await history(f.page, item), damaged);
+      await close(f.page);
+      assert.ok((await f.page.evaluate(() => planWork)).error);
+    },
+  );

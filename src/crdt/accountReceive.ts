@@ -807,14 +807,14 @@ async function openAccountReceiveOwner(
       : undefined;
   const installLocalBaseline =
     composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
-      ? async (expectedRevision?: number, advanceEra = false) => {
+      ? async (expectedRevision?: number, advanceEra = false, dryRun = false) => {
           await carrier.flushJournal();
           try {
             return await runBaselineShadow(async (task, owner, _route, checkJournal) => {
               await assertCurrent(task);
               if (pendingPromotions)
                 return { kind: 'skipped' as const, reason: 'pending-promotion' };
-              if (advanceEra) {
+              if (advanceEra || dryRun) {
                 const { retentionAttemptsSettled } = await task.wait(
                   () => import('./retentionAttempts'),
                 );
@@ -840,6 +840,12 @@ async function openAccountReceiveOwner(
               invalidateFinalApply();
               skippedHistory = undefined;
               try {
+                if (dryRun)
+                  return await owner.carrier.dryRunRetention(
+                    task,
+                    () => assertCurrent(task),
+                    checkJournal,
+                  );
                 return await owner.carrier.installBaseline(
                   task,
                   () => assertCurrent(task),
@@ -2873,6 +2879,18 @@ async function openReceivingWorkspace(
       ...(checkLocalBaseline ? { checkLocalBaseline } : {}),
       ...(installLocalBaseline
         ? {
+            ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
+              ? {
+                  dryRunLocalRetention: async () => {
+                    await workspace.whenDurable();
+                    return enqueue(new Uint8Array([1]), async (_input, promote) => {
+                      const result = await installLocalBaseline(undefined, false, true);
+                      promote([]);
+                      return result;
+                    });
+                  },
+                }
+              : {}),
             advanceLocalRetention: async (expectedRevision: number) => {
               await workspace.whenDurable();
               return enqueue(new Uint8Array([1]), async (_input, promote) => {

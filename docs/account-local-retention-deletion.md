@@ -3,6 +3,8 @@
 Design boundary: signed **`bcca1aa1`**. Read with the [reader inventory](./account-local-retention-readers.md),
 [retained-evidence policy](./account-local-retention-evidence.md) and [implemented empty-deletion fences](./account-local-retention-fences.md).
 **No deletion implementation, format activation or migration is added by this document.**
+The subsequent [non-writing planner](./account-local-retention-dry-run.md) implements the exact
+inventory/projection checks below; reservation and physical removal remain future work.
 
 ## Selected first cut
 

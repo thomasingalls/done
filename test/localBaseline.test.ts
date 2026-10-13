@@ -7,6 +7,18 @@ import { verifySpoolWitness } from '../src/crdt/spoolRecord';
 import { verifyHistoryInstall } from '../src/crdt/historyInstall';
 import { applyHistoryReceiveCuts } from '../src/crdt/inboundLedger';
 import { expect, it } from 'vitest';
+import type { SessionTask } from '../src/crdt/writeSession';
+import { cryptFor } from './local-baseline/anchor-fixture';
+import { counterPayload, recordStore, type StoredRecord } from '../src/crdt/contentRecord';
+import {
+  planLocalRetention,
+  inspectRetentionPlan,
+  retentionPlanReport,
+  verifyRetentionPlan,
+  disposeRetentionPlan,
+  type RetentionInventory,
+} from '../src/crdt/localRetentionPlan';
+
 import fc from 'fast-check';
 import { createHash } from 'node:crypto';
 import { Y, sameDocState } from '../src/crdt/yjs';
@@ -1488,4 +1500,345 @@ it('rebase captures caller buffers before awaiting and never signs after its own
       stateEqual(replayed.snapshot, (await replayFullLocalHistory(all, f.ctx)).snapshot);
     }
   }
+});
+
+// This fixture seals actual protocol history. The planner receives no database/writer/allocator.
+async function retentionFixture(f: Awaited<ReturnType<typeof fixture>>, records = f.rows) {
+  let retired = false;
+  const check = () => {
+    if (retired) throw Error('retired fixture owner');
+  };
+  const task: SessionTask = {
+    signal: new AbortController().signal,
+    step: (fn) => {
+      check();
+      return fn();
+    },
+    wait: async (fn) => {
+      check();
+      const result = await fn();
+      check();
+      return result;
+    },
+  };
+  const crypt = cryptFor(f.ctx.identity, {
+    aes: await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, false, [
+      'encrypt',
+      'decrypt',
+    ]),
+    hmac: key,
+  });
+  const input = await f.input(records);
+  input.counter.mac = await crypt.sign(task, counterPayload(f.ctx.identity, input.counter));
+  const inventory: RetentionInventory = {
+    rows: [],
+    metadata: [{ key: 'counter', value: input.counter }],
+  };
+  for (const r of records)
+    inventory.rows.push({
+      store: recordStore(r.kind),
+      key: r.seq,
+      value: await crypt.seal(task, { v: 1, seq: r.seq, gen: r.gen, kind: r.kind }, r.bytes),
+    });
+  let signs = 0;
+  const read = {
+    open: (r: StoredRecord) => crypt.open(task, r),
+    verify: (b: Bytes, mac: Bytes) => crypt.verify(task, b, mac),
+    auth: {
+      ...auth,
+      sign: async (b: Bytes) => {
+        check();
+        signs++;
+        return auth.sign(b);
+      },
+    },
+  };
+  const binding = { lifetime: {}, intent: input.counter.intent };
+  const context = { ...f.ctx, assertCurrent: check };
+  return {
+    task,
+    inventory,
+    binding,
+    context,
+    read,
+    crypt,
+    input,
+    retire: () => {
+      retired = true;
+    },
+    signs: () => signs,
+    plan: () => planLocalRetention(task, inventory, context, read, binding),
+  };
+}
+
+it('dry run enumerates exact interleaved sealed keys, preserves partial capsules and burns, and isolates all callers', async () => {
+  const f = await fixture([false, true, false], true);
+  // Leave a low reserved hole and a partly consumed capsule; a maximum sequence is not the census.
+  const rows = f.rows.slice(0, f.cuts[0]).map((r) => ({ ...r, seq: r.seq + 3 }));
+  const g = await retentionFixture(f, rows),
+    before = structuredClone(g.inventory);
+  const plan = await g.plan();
+  if (plan.kind !== 'local-retention-dry-run') throw Error(plan.reason);
+  try {
+    expect(g.inventory).toEqual(before);
+    const report = retentionPlanReport(plan),
+      evidence = inspectRetentionPlan(plan);
+    expect(report).toMatchObject({
+      kind: 'planned',
+      rows: rows.length,
+      metadataChunks: 0,
+      previousRevision: 0,
+      revision: 1,
+      survivors: 0,
+      dispositions: { 'source-carried': 1, 'content-covered': 2, 'receive-frontier': 1 },
+    });
+    expect(evidence.deleteRows.map((r) => [r.store, r.key]).sort()).toEqual(
+      before.rows.map((r) => [r.store, r.key]).sort(),
+    );
+    const b = decodeLocalBaseline(evidence.candidate.baseline.payload);
+    expect(b.cut.nextSequence).toBe(g.input.counter.next_seq);
+    expect(b.cut.reserved).toEqual([[1, g.input.counter.next_seq - 1]]);
+    expect(b.sources[0]!.consumed).toEqual([0]);
+    expect(b.own.attempts).toBe(2);
+    expect(b.sources[0]!.record.bytes).toEqual(rows.find((r) => r.kind === 'outbound')!.bytes);
+    const reduced = await replayLocalBaseline(
+      evidence.candidate.baseline,
+      evidence.candidate.anchor,
+      { records: [], counter: evidence.counter },
+      f.ctx,
+      auth,
+    );
+    const full = await replayFullLocalHistory(g.input, f.ctx);
+    expect(
+      await selectEnvelopeSources(reduced.census.delivery.spool, f.ctx.route, true, crypto.subtle),
+    ).toEqual(
+      await selectEnvelopeSources(full.census.delivery.spool, f.ctx.route, true, crypto.subtle),
+    );
+    evidence.deleteRows[0]!.value.ct.fill(0);
+    evidence.candidate.baseline.payload.fill(0);
+    report.dispositions['source-carried'] = 999;
+    expect(retentionPlanReport(plan).dispositions['source-carried']).toBe(1);
+    verifyRetentionPlan(plan, before, g.binding);
+    g.inventory.rows[0]!.value = null;
+    verifyRetentionPlan(plan, before, g.binding);
+    expect(() => verifyRetentionPlan(plan, before, { ...g.binding, lifetime: {} })).toThrow(
+      'identity',
+    );
+    expect(() =>
+      verifyRetentionPlan(plan, before, { ...g.binding, intent: 'ee'.repeat(16) }),
+    ).toThrow('identity');
+    g.retire();
+    expect(() => verifyRetentionPlan(plan, before, g.binding)).toThrow('retired');
+  } finally {
+    disposeRetentionPlan(plan);
+  }
+  expect(() => retentionPlanReport(plan)).toThrow('expired');
+});
+
+it('exact plan rejects changed, extra, missing and late lower-key rows and raw metadata changes', async () => {
+  const f = await fixture();
+  const g = await retentionFixture(
+    f,
+    f.rows.map((r) => ({ ...r, seq: r.seq + 4 })),
+  );
+  const plan = await g.plan();
+  if (plan.kind !== 'local-retention-dry-run') throw Error(plan.reason);
+  const changes: ((i: RetentionInventory) => void)[] = [
+    (i) => {
+      (i.rows[0]!.value as StoredRecord).ct[0]! ^= 1;
+    },
+    (i) => {
+      (i.rows[0]!.value as StoredRecord).nonce[0]! ^= 1;
+    },
+    (i) => {
+      i.rows[0]!.key = 1;
+    },
+    (i) => {
+      i.rows[0]!.store = 'outbound';
+    },
+    (i) => {
+      (i.rows[0]!.value as StoredRecord).kind = 'state';
+    },
+    (i) => {
+      i.rows.pop();
+    },
+    (i) => {
+      i.rows.push({ ...structuredClone(i.rows[0]!), key: 1 });
+    },
+    (i) => {
+      i.rows.push(structuredClone(i.rows[0]!));
+    },
+    (i) => {
+      (i.metadata[0]!.value as ContentCounter).mac[0]! ^= 1;
+    },
+    (i) => {
+      (i.metadata[0]!.value as ContentCounter).next_seq++;
+    },
+    (i) => {
+      i.metadata.push({ key: ['local-baseline', 0], value: {} });
+    },
+    (i) => {
+      i.metadata.length = 0;
+    },
+    (i) => {
+      (i.rows[0]!.value as unknown as Record<string, unknown>)['unknown'] = true;
+    },
+  ];
+  try {
+    for (const change of changes) {
+      const changed = structuredClone(g.inventory);
+      change(changed);
+      expect(() => verifyRetentionPlan(plan, changed, g.binding)).toThrow('inventory changed');
+    }
+    const reordered = structuredClone(g.inventory);
+    reordered.rows.reverse();
+    verifyRetentionPlan(plan, reordered, g.binding);
+  } finally {
+    disposeRetentionPlan(plan);
+  }
+});
+
+it('dry-run projection remains equivalent through the next allocation and a second cut', async () => {
+  const f = await fixture([false, true, false, false], true),
+    first = await retentionFixture(f, f.rows.slice(0, f.cuts[0]));
+  const p = await first.plan();
+  if (p.kind !== 'local-retention-dry-run') throw Error(p.reason);
+  try {
+    let { candidate } = inspectRetentionPlan(p),
+      cut = f.cuts[0]!;
+    for (const next of [f.cuts[1]!, f.rows.length]) {
+      const all = await f.input(f.rows.slice(0, next)),
+        suffix = { ...all, records: f.rows.slice(cut, next) };
+      const projected = await replayLocalBaseline(
+        candidate.baseline,
+        candidate.anchor,
+        suffix,
+        f.ctx,
+        auth,
+      );
+      const reference = await replayFullLocalHistory(all, f.ctx);
+      stateEqual(projected.snapshot, reference.snapshot);
+      expect(observation(projected)).toEqual(observation(reference));
+      candidate = await rebaseLocalBaseline(
+        candidate.baseline,
+        candidate.anchor,
+        suffix,
+        f.ctx,
+        auth,
+      );
+      expect(decodeLocalBaseline(candidate.baseline.payload).sources).toEqual([]);
+      cut = next;
+    }
+  } finally {
+    disposeRetentionPlan(p);
+  }
+});
+
+it('dry run skips unsettled/pending/capacity cuts but refuses damaged evidence before signing', async () => {
+  const f = await fixture(),
+    unsettled = await retentionFixture(f, f.rows.slice(0, -1));
+  expect(await unsettled.plan()).toEqual({ kind: 'skipped', reason: 'ineligible' });
+  expect(unsettled.signs()).toBe(0);
+  const doc = new Y.Doc({ gc: false }),
+    updates: Bytes[] = [];
+  doc.on('update', (u: Uint8Array) => updates.push(new Uint8Array(u)));
+  doc.getText('pending').insert(0, 'parent');
+  doc.getText('pending').insert(6, 'child');
+  doc.destroy();
+  const seq = f.rows.at(-1)!.seq + 1;
+  const pending = await retentionFixture(f, [
+    ...f.rows,
+    { seq, kind: 'update', gen: 1, bytes: updates[1]! },
+  ]);
+  expect(await pending.plan()).toEqual({ kind: 'skipped', reason: 'ineligible' });
+  const large = new Y.Doc({ gc: false });
+  large.getText('large').insert(0, 'x'.repeat(LOCAL_BASELINE_LIMIT / 2));
+  const capacity = await retentionFixture(f, [
+    ...f.rows,
+    { seq, kind: 'state', gen: 1, bytes: new Uint8Array(Y.encodeStateAsUpdate(large)) },
+  ]);
+  large.destroy();
+  expect(await capacity.plan()).toEqual({ kind: 'skipped', reason: 'capacity' });
+  expect(capacity.signs()).toBe(0);
+  const changed = await retentionFixture(f);
+  (changed.inventory.rows[0]!.value as StoredRecord).ct[0]! ^= 1;
+  await expect(changed.plan()).rejects.toThrow();
+  expect(changed.signs()).toBe(0);
+  const unknown = await retentionFixture(f);
+  const at = unknown.inventory.rows.find((r) => r.store === 'heads')!;
+  const header = at.value as StoredRecord;
+  at.value = await unknown.crypt.seal(
+    unknown.task,
+    { v: 1, seq: header.seq, gen: header.gen, kind: header.kind },
+    new TextEncoder().encode('["unknown"]'),
+  );
+  await expect(unknown.plan()).rejects.toThrow();
+  expect(unknown.signs()).toBe(0);
+});
+
+it('dry-run inputs are captured before crypto, and a retired owner cannot finish a plan', async () => {
+  const f = await fixture(),
+    g = await retentionFixture(f);
+  const copy = structuredClone(g.inventory);
+  const planning = g.plan();
+  g.inventory.rows.length = 0;
+  (g.inventory.metadata[0]!.value as ContentCounter).mac.fill(0);
+  const plan = await planning;
+  if (plan.kind !== 'local-retention-dry-run') throw Error(plan.reason);
+  try {
+    verifyRetentionPlan(plan, copy, g.binding);
+  } finally {
+    disposeRetentionPlan(plan);
+  }
+  const retired = await retentionFixture(f),
+    work = retired.plan();
+  retired.retire();
+  await expect(work).rejects.toThrow('retired');
+  expect(retired.signs()).toBe(0);
+});
+
+it('generated exact plans cover every physical key across holes and varying settled cuts, and reject a changed old row', async () => {
+  await fc.assert(
+    fc.asyncProperty(
+      fc.array(fc.boolean(), { minLength: 2, maxLength: 8 }),
+      fc.nat(6),
+      fc.nat(7),
+      async (actions, hole, selector) => {
+        const f = await fixture(actions, true),
+          cut = f.cuts[selector % f.cuts.length]!;
+        const g = await retentionFixture(
+          f,
+          f.rows.slice(0, cut).map((r) => ({ ...r, seq: r.seq + hole })),
+        );
+        const before = structuredClone(g.inventory),
+          plan = await g.plan();
+        if (plan.kind !== 'local-retention-dry-run') throw Error(plan.reason);
+        try {
+          const evidence = inspectRetentionPlan(plan),
+            d = decodeLocalBaseline(evidence.candidate.baseline.payload);
+          expect(evidence.deleteRows.length).toBe(before.rows.length);
+          expect(new Set(evidence.deleteRows.map((r) => r.key)).size).toBe(before.rows.length);
+          expect(evidence.survivors).toEqual([]);
+          const projected = await replayLocalBaseline(
+            evidence.candidate.baseline,
+            evidence.candidate.anchor,
+            { records: [], counter: evidence.counter },
+            f.ctx,
+            auth,
+          );
+          const reference = await replayFullLocalHistory(g.input, f.ctx);
+          stateEqual(projected.snapshot, reference.snapshot);
+          expect(observation(projected)).toEqual(observation(reference));
+          expect(d.own.attempts).toBe(2 * ((selector % f.cuts.length) + 1));
+          const row = before.rows[(selector + hole) % before.rows.length]!;
+          (row.value as StoredRecord).ct[0]! ^= 1;
+          expect(() => verifyRetentionPlan(plan, before, g.binding)).toThrow('inventory changed');
+          expect(g.inventory).not.toEqual(before);
+        } finally {
+          disposeRetentionPlan(plan);
+        }
+      },
+    ),
+    { numRuns: 12, seed: 131027 },
+  );
 });

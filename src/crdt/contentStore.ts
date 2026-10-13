@@ -1,4 +1,5 @@
 import type { AccountBaselineRead } from './localBaselineShadow';
+import type { RetentionInventory } from './localRetentionPlan';
 import { BASELINE_MAX_CHUNKS } from './localBaselineAnchor';
 import { createBaselineMetadata } from './localBaselineMetadata';
 import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
@@ -244,6 +245,36 @@ export const createContentOwner = (
                     state.rows.push({ store: name, key: keys.result[i]!, value: values.result[i] });
                 });
             }
+        },
+      ),
+    );
+  // Capture raw metadata and exact physical keys in one snapshot. Unlike ordinary loads this
+  // intentionally retains the authenticated pointer/chunks rather than a semantic counter view.
+  const retentionInventory = (task: SessionTask) =>
+    task.wait(() =>
+      contentTransaction<RetentionInventory>(
+        db!,
+        task,
+        [...CONTENT_STORES],
+        'readonly',
+        (tx, result, guard) => {
+          const inventory: RetentionInventory = { rows: [], metadata: [] };
+          result(inventory);
+          for (const name of CONTENT_STORES) {
+            const store = tx.objectStore(name),
+              values = store.getAll(),
+              keys = store.getAllKeys();
+            keys.onsuccess = () =>
+              guard(() => {
+                if (keys.result.length !== values.result.length)
+                  corrupt('Retention census differs.');
+                keys.result.forEach((key, i) => {
+                  const value = values.result[i];
+                  if (name === 'meta') inventory.metadata.push({ key, value });
+                  else inventory.rows.push({ store: name, key, value });
+                });
+              });
+          }
         },
       ),
     );
@@ -844,6 +875,66 @@ export const createContentOwner = (
       } finally {
         active = false;
         for (const row of records) row.bytes.fill(0);
+      }
+    },
+    /** Exact projected deletion only: no reservation, chunk installation, era change or live mutation. */
+    async dryRunRetention(
+      task: SessionTask,
+      assertCurrent: () => Promise<void>,
+      checkCommit: () => void,
+    ) {
+      if (
+        !metadata ||
+        !crypt.baseline ||
+        !crypt.readBaseline ||
+        !crypt.allowSpoolCounter ||
+        !crypt.validate
+      )
+        throw Error('Private Account retention planner disabled');
+      const { planLocalRetention, verifyRetentionPlan, retentionPlanReport, disposeRetentionPlan } =
+        await task.wait(() => import('./localRetentionPlan'));
+      await assertCurrent();
+      checkCommit();
+      const inventory = await retentionInventory(task);
+      let finalInventory: RetentionInventory | undefined;
+      let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
+      let counter: ContentCounter | undefined;
+      try {
+        counter = parseCounter(
+          inventory.metadata.find((m) => m.key === 'counter')?.value,
+          scope,
+          witness.intent,
+        );
+        const context = await crypt.baseline(task, { ...scope }, counter);
+        const binding = { lifetime: {}, intent: witness.intent };
+        plan = await planLocalRetention(
+          task,
+          inventory,
+          {
+            ...context,
+            assertCurrent: () => {
+              context.assertCurrent();
+              checkCommit();
+            },
+          },
+          {
+            open: (r) => crypt.open(task, r),
+            verify: (b, mac) => crypt.verify(task, b, mac),
+            auth: baselineAuth(task),
+          },
+          binding,
+        );
+        if (plan.kind === 'skipped') return plan;
+        await assertCurrent();
+        finalInventory = await retentionInventory(task);
+        checkCommit();
+        verifyRetentionPlan(plan, finalInventory, binding);
+        return retentionPlanReport(plan);
+      } finally {
+        if (plan?.kind === 'local-retention-dry-run') disposeRetentionPlan(plan);
+        eraseVerified(inventory);
+        eraseVerified(finalInventory);
+        eraseVerified(counter);
       }
     },
     /** Called only while the composed admission queue fences input; never deletes or swaps the live doc. */

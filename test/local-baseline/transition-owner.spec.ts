@@ -14,12 +14,17 @@ type Probe = {
   installLocalBaseline?(): Promise<{ kind: string }>;
   advanceLocalRetention?(expectedRevision: number): Promise<{ kind: string }>;
   replaceLocalBaseline?(expectedRevision: number): Promise<{ kind: string }>;
+  dryRunLocalRetention?(): Promise<{ kind: string; previousRevision?: number; survivors?: number }>;
   workspace: Pick<AdmittedWorkspace, 'whenDurable' | 'command'>;
   dbName: string;
 };
 const check = (page: Page) =>
   page.evaluate(() =>
     (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner.checkLocalBaseline(),
+  );
+const plan = (page: Page) =>
+  page.evaluate(() =>
+    (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner.dryRunLocalRetention!(),
   );
 const durable = (page: Page) =>
   page.evaluate(() =>
@@ -124,12 +129,22 @@ test(
           .toBe('matched');
         expect(await check(p)).toMatchObject({ kind: 'matched', mode: 'continued' });
         if (process.env['ACCOUNT_BASELINE_INSTALL'] === '1') {
-          expect(
-            await p.evaluate(() =>
-              (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner
-                .installLocalBaseline!(),
-            ),
-          ).toEqual({ kind: 'installed' });
+          // A matched shadow does not drain a concurrently prepared receive promotion.
+          // Wait for this existing benign refusal rather than weakening the owner's fence.
+          await expect
+            .poll(
+              async () => {
+                const r = await p.evaluate(() =>
+                  (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner
+                    .installLocalBaseline!(),
+                );
+                if (r.kind === 'skipped')
+                  expect(r).toEqual({ kind: 'skipped', reason: 'pending-promotion' });
+                return r;
+              },
+              { timeout: 15000 },
+            )
+            .toEqual({ kind: 'installed' });
           expect(
             await p.evaluate(() =>
               (globalThis as unknown as { __baselineOwner: Probe }).__baselineOwner
@@ -138,6 +153,12 @@ test(
           ).toEqual({ kind: 'replaced' });
         }
       }
+      if (process.env['ACCOUNT_BASELINE_READ'] === '1')
+        for (const p of [page, second]) {
+          await expect
+            .poll(() => plan(p), { timeout: 15000 })
+            .toMatchObject({ kind: 'planned', previousRevision: 2, survivors: 0 });
+        }
       await add(page, 'Retained baseline original writing');
       await expect(second.locator('.shell')).toContainText('Retained baseline original writing');
       await add(second, 'Retained baseline joined writing');
@@ -172,6 +193,8 @@ test(
           ),
         ).toEqual({ kind: 'skipped', reason: 'durable-attempt' });
       }
+      if (process.env['ACCOUNT_BASELINE_READ'] === '1')
+        expect(await plan(page)).toEqual({ kind: 'skipped', reason: 'durable-attempt' });
       await inspect(second);
       await panel(second).getByRole('button', { name: 'Verify history snapshot' }).click();
       await expect(panel(second)).toContainText('Verified snapshot 1 is saved.');
@@ -197,6 +220,12 @@ test(
           ).toEqual({ kind: 'replaced' });
         }
       }
+      if (process.env['ACCOUNT_BASELINE_READ'] === '1')
+        for (const p of [page, second]) {
+          await expect
+            .poll(() => plan(p), { timeout: 15000 })
+            .toMatchObject({ kind: 'planned', previousRevision: 3, survivors: 0 });
+        }
       // The joined owner starts another admission; the original owner remains open across it.
       await second.getByRole('button', { name: 'Devices', exact: true }).click();
       await second.getByRole('button', { name: 'Connect another device', exact: true }).click();

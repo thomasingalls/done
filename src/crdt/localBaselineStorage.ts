@@ -61,7 +61,9 @@ const scopeEqual = (a: ContentIdentity, b: ContentIdentity) =>
   a.rootId === b.rootId;
 async function authenticateCandidate(
   task: SessionTask,
-  owner: Owner,
+  owner: Pick<Owner, 'identity' | 'generation' | 'intent'> & {
+    crypt: Pick<Owner['crypt'], 'verify'>;
+  },
   baseline: AuthenticatedLocalBaseline,
   anchor: BaselineAnchor,
   generation = owner.generation,
@@ -412,6 +414,21 @@ export async function readEncryptedBaseline(
       },
     ),
   );
+  return openEncryptedBaselineSnapshot(task, owner, snapshot);
+}
+/** Read-only authentication of detached metadata. Also used by the non-writing retention planner. */
+export async function openEncryptedBaselineSnapshot(
+  task: SessionTask,
+  ownerInput: Omit<Owner, 'db' | 'crypt'> & { crypt: Pick<Owner['crypt'], 'open' | 'verify'> },
+  input: { counter: BaselineCounter; chunks: StoredRecord[] },
+) {
+  const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
+  const snapshot = {
+    counter: parseBaselineCounter(input.counter, owner.identity, owner.intent),
+    chunks: input.chunks.map(parseStoredRecord),
+  };
+  if (snapshot.chunks.length !== snapshot.counter.baseline.chunks)
+    return corrupt('Baseline chunk inventory differs.');
   const { counter, chunks } = snapshot,
     p = counter.baseline;
   if (

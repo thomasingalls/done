@@ -4,7 +4,7 @@ The owned-reader phase is committed signed as **`3ba73cb3`** (`G`). This next pr
 `VITE_ACCOUNT_BASELINE_INSTALL=1` plus `VITE_ACCOUNT_BASELINE_READ=1`. It connects the remaining
 lifecycle consumers and builds replacement baselines from an authenticated predecessor plus suffix.
 It deletes **no physical history** and does not enable a product setting. The complete physical
-history remains the independent comparison oracle. This implementation is uncommitted; its source
+history remains the independent comparison oracle. This implementation is committed signed as **`af5f0d87`** (`G`); its source
 hashes and [focused evidence](./development-evidence/2026-10-13-local-baseline-lifecycle-readers/README.md)
 identify the tested tree.
 

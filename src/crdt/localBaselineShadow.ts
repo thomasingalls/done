@@ -94,6 +94,28 @@ const projection = (r: Replay, after: number, route: CaptureRoute) => ({
   history: r.inbound.installedHistory ?? null,
 });
 
+/** Compare all retained obligations and next selection, not just visible text or one send batch. */
+export async function compareBaselineReplay(
+  reference: Replay,
+  replayed: Replay,
+  after: number,
+  route: CaptureRoute,
+) {
+  const a = await selectEnvelopeSources(
+      reference.census.delivery.spool,
+      route,
+      true,
+      crypto.subtle,
+    ),
+    b = await selectEnvelopeSources(replayed.census.delivery.spool, route, true, crypto.subtle);
+  if (
+    !sameBytes(reference.snapshot, replayed.snapshot) ||
+    JSON.stringify(ordered([projection(reference, after, route), a])) !==
+      JSON.stringify(ordered([projection(replayed, after, route), b]))
+  )
+    throw new LocalBaselineError('integrity');
+}
+
 /** Persisted anchors are authoritative: any failed replay/comparison refuses this owner. */
 export async function verifyCompleteLocalBaseline(
   input: LocalReplayInput,
@@ -116,17 +138,8 @@ export async function verifyCompleteLocalBaseline(
       context,
       auth,
     );
-    const select = (r: Replay) =>
-      selectEnvelopeSources(r.census.delivery.spool, context.route, true, crypto.subtle);
-    const a = await select(reference),
-      b = await select(replayed);
+    await compareBaselineReplay(reference, replayed, baseline.own.position, context.route);
     context.assertCurrent();
-    if (
-      !sameBytes(reference.snapshot, replayed.snapshot) ||
-      JSON.stringify(ordered([projection(reference, baseline.own.position, context.route), a])) !==
-        JSON.stringify(ordered([projection(replayed, baseline.own.position, context.route), b]))
-    )
-      throw new LocalBaselineError('integrity');
     if (read && baseline.journalEra)
       return {
         kind: 'baseline-plus-suffix',

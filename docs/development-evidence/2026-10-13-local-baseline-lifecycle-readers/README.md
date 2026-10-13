@@ -1,6 +1,6 @@
 # Private lifecycle-reader and rebase evidence — 2026-10-13
 
-Base: signed **`3ba73cb3`** (`G`). The new implementation is uncommitted and identified by the
+Base: signed **`3ba73cb3`** (`G`). The implementation is committed signed as **`af5f0d87`** (`G`) and identified by the
 source hashes in `manifest.json`. [Contract](../../account-local-baseline-lifecycle-readers.md).
 All browser writing/accounts/credentials are disposable. No personal service or profile was changed.
 No logical history was deleted. This is focused implementation evidence; publication and general
