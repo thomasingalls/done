@@ -470,8 +470,8 @@ async function openAccountReceiveOwner(
     activate: (task, owner) => owner.carrier.enableSpool(task),
     async validate(task, records, route, counter, view, baseline) {
       if (baseline) {
-        // Every private baseline load has just authenticated/replayed the suffix and compared
-        // against intact history. Install only that detached result; do not seed zero-origin indexes.
+        // The carrier has either fully replayed the authenticated origin or extended its private
+        // reduced view under fresh authority. Never send these physical suffix rows to zero-origin replay.
         try {
           await verified.verify(
             records,

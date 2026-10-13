@@ -26,6 +26,34 @@ async function setup(t, id) {
   await online(f.page, false);
   return { f, item };
 }
+test(
+  'reduced owner reuses baseline through journal flush and publication; resume forces full replay',
+  { timeout: 90000, skip: process.env.ACCOUNT_AUTHORITY_REUSE !== '1' },
+  async (t) => {
+    const { f } = await setup(t, 'removal-warm');
+    await remove(f.page);
+    await f.page.evaluate(() => opened.deliveryStatus());
+    const before = await f.page.evaluate(() => __doneLedgerMetrics().work);
+    for (let i = 0; i < 3; i++) await f.page.evaluate(() => opened.deliveryStatus());
+    await edit(f.page, 0, 0, 'WARM JOURNAL ');
+    await durable(f.page);
+    await online(f.page, true);
+    await settled(f.page);
+    await online(f.page, false);
+    const after = await f.page.evaluate(() => __doneLedgerMetrics().work);
+    assert.ok(after.baselineWarmReuses > before.baselineWarmReuses);
+    assert.ok(after.baselineIncrementalReuses > before.baselineIncrementalReuses);
+    assert.ok(after.authorityChecks > before.authorityChecks);
+    assert.equal(after.baselineFullReplays, before.baselineFullReplays);
+    assert.equal(after.loadedRows, before.loadedRows);
+    await f.page.evaluate(() => document.dispatchEvent(new Event('resume')));
+    await f.page.evaluate(() => opened.deliveryStatus());
+    const resumed = await f.page.evaluate(() => __doneLedgerMetrics().work);
+    assert.ok(resumed.baselineFullReplays > after.baselineFullReplays);
+    t.diagnostic(JSON.stringify({ before, after, resumed }));
+    await close(f.page);
+  },
+);
 const inventory = (p) =>
   p.evaluate(async () => {
     const db = await new Promise((yes, no) => {

@@ -178,8 +178,10 @@ boundaries, without restarting general release validation:
 - Old reader, private flag disabled and unsupported generic Local readers refuse without mutation.
   Index loss/marker inconsistency must not make the reduced store look fresh.
 
-Initial reduced owners may use the baseline-aware full reference path with warm reuse/ordinary
-compaction still disabled. That is a correctness milestone, not the final performance result.
+Initial reduced owners used the baseline-aware full reference path with warm reuse/ordinary
+compaction disabled. The subsequent [reuse phase](./account-local-retention-reuse.md) extends only
+live v5 warm/incremental verification; ordinary compaction remains fenced. These are correctness
+milestones, not the final performance result.
 On a suitable machine, later measurements should compare equal workspace and pending suffix across
 different retired history depths. Reader-first publication, compatible rollback image and supported
 `history-required`/capacity behavior are separate gates before converting personal/public profiles.

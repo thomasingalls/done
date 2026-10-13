@@ -1,4 +1,5 @@
 import type { AccountBaselineRead } from './localBaselineShadow';
+import type { createBaselineReuse } from './localBaselineReuse';
 import { StorageCompatibilityError } from './storageCompatibility';
 import type { RetentionInventory } from './localRetentionPlan';
 import { BASELINE_MAX_CHUNKS } from './localBaselineAnchor';
@@ -147,9 +148,11 @@ export const createContentOwner = (
         opened: OpenedRecord[];
         id: object;
         baseline?: AccountBaselineRead;
+        baselineChunks?: StoredRecord[];
       }
     | undefined;
   let warm: ReturnType<typeof createWarmContent> | undefined;
+  let baselineReuse: Awaited<ReturnType<typeof createBaselineReuse>> | undefined;
   let forceFullRead = false;
   const canSelect = !!(
     crypt.selectiveLoads &&
@@ -158,6 +161,8 @@ export const createContentOwner = (
     crypt.validate
   );
   const clearView = () => {
+    baselineReuse?.clear();
+    baselineReuse = undefined;
     warm = undefined;
     eraseVerified(openedView);
     openedView = undefined;
@@ -384,6 +389,7 @@ export const createContentOwner = (
       }
       const id = metadata?.active() ? {} : reuse ? openedView!.id : {};
       let logical: AccountBaselineRead | undefined;
+      let chunks: StoredRecord[] | undefined, baselineContext: LocalBaselineContext | undefined;
       try {
         if (metadata?.active()) {
           const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
@@ -404,6 +410,9 @@ export const createContentOwner = (
             const allocation = metadata.parse(held.counter, witness.intent);
             if (!equalCounter(scope, allocation, counter))
               corrupt('Baseline census changed during read.');
+            const { baselineAuthorityPin } = await task.wait(() => import('./localBaselineReuse'));
+            const unchangedAuthority = baselineAuthorityPin(context);
+            countLedgerWork('baselineFullReplays');
             logical = await verifyCompleteLocalBaseline(
               { records: opened, counter },
               context,
@@ -412,7 +421,23 @@ export const createContentOwner = (
               crypt.readBaseline === true,
               held.counter.v === 5,
             );
-            await crypt.baseline!(task, { ...scope }, counter);
+            baselineContext = await crypt.baseline!(task, { ...scope }, counter);
+            // One-shot rotation/custody readers reconstruct equivalent evidence per call.
+            // Only live warm owners promise stable verifier-owned capability identities.
+            if (crypt.warmLoads && metadata.reduced() && !unchangedAuthority(baselineContext))
+              throw new ContentError(
+                'generation-changed',
+                'Baseline authority changed during replay.',
+              );
+            if (
+              logical &&
+              openedView?.baseline &&
+              reuse &&
+              baselineReuse?.hasIdentity(openedView.id) &&
+              baselineReuse.matches(baselineContext)
+            )
+              baselineReuse.compare(logical);
+            if (held.counter.v === 5) chunks = structuredClone(held.chunks);
           } finally {
             eraseVerified(held);
           }
@@ -428,13 +453,30 @@ export const createContentOwner = (
               sealed: structuredClone(sealed),
               opened: copyRecords(opened),
               ...(logical ? { baseline: structuredClone(logical) } : {}),
+              ...(chunks ? { baselineChunks: structuredClone(chunks) } : {}),
             };
           });
         if (crypt.warmLoads && openedView && !metadata?.active())
           warm = createWarmContent(scope, witness.intent, openedView.sealed);
+        else if (
+          crypt.warmLoads &&
+          openedView &&
+          metadata?.reduced() &&
+          logical &&
+          baselineContext
+        ) {
+          const { createBaselineReuse } = await task.wait(() => import('./localBaselineReuse'));
+          baselineReuse = await createBaselineReuse(task, logical, baselineContext, counter, id);
+          warm = createWarmContent(scope, witness.intent, openedView.sealed, {
+            chunks: openedView.baselineChunks!,
+            parse: metadata.parse,
+            metadataKeys: metadata.metadataKeys,
+          });
+        }
         return task.step(() => opened.sort((a, b) => a.seq - b.seq));
       } finally {
         eraseVerified(logical);
+        eraseVerified(chunks);
       }
     } catch (cause) {
       // Interruption is not failed authentication. Retain only the previous detached view;
@@ -475,13 +517,50 @@ export const createContentOwner = (
         if (equalCounter(scope, checked.counter, openedView.counter) && !forceFullRead) {
           if (!checked.shapeMatches) corrupt('Warm content shape changed.');
           await warm.audit(db!, task);
+          if (baselineReuse) {
+            const context = await crypt.baseline!(task, { ...scope }, checked.counter);
+            if (!baselineReuse.matches(context)) {
+              forceFullRead = true;
+              return select ? await load(task, select) : await load(task);
+            }
+            const logical = await baselineReuse.advance(
+              task,
+              openedView.opened,
+              context,
+              checked.counter,
+              openedView.id,
+            );
+            try {
+              const fresh = await crypt.baseline!(task, { ...scope }, checked.counter);
+              if (forceFullRead || !baselineReuse.matches(fresh)) {
+                eraseVerified(logical);
+                forceFullRead = true;
+                return select ? await load(task, select) : await load(task);
+              }
+              if (logical) {
+                eraseVerified(openedView.baseline);
+                openedView.baseline = logical;
+              }
+            } catch (e) {
+              eraseVerified(logical);
+              throw e;
+            }
+          }
           // Only the opted-in private validator borrows retained input. Selection callers receive
           // an opaque lease, never these rows. Ordinary load callers keep independent copies.
           const borrowed = !!select;
           const result = borrowed ? openedView.opened : copyRecords(openedView.opened);
           try {
             if (crypt.validate)
-              await task.wait(() => crypt.validate!(result, task, checked.counter, openedView!.id));
+              await task.wait(() =>
+                crypt.validate!(
+                  result,
+                  task,
+                  checked.counter,
+                  openedView!.id,
+                  openedView!.baseline,
+                ),
+              );
             if (forceFullRead) {
               if (!borrowed) for (const row of result) row.bytes.fill(0);
               return select ? await load(task, select) : await load(task);
@@ -1206,8 +1285,9 @@ export const createContentOwner = (
     invalidateWarm() {
       forceFullRead = true;
     },
-    warmAuditDue: () => Boolean(warm?.due()),
-    warmAuditDelay: () => warm?.delay() ?? WARM_AUDIT_MS,
+    warmAuditDue: () => Boolean(warm?.due() || baselineReuse?.due()),
+    warmAuditDelay: () =>
+      Math.min(warm?.delay() ?? WARM_AUDIT_MS, baselineReuse?.delay() ?? WARM_AUDIT_MS),
     /** One background slice. Caller serializes slices with ordinary storage jobs. */
     async auditWarm(task: SessionTask): Promise<boolean> {
       try {
@@ -1226,9 +1306,22 @@ export const createContentOwner = (
           return true;
         }
         if (!checked.shapeMatches) corrupt('Warm content shape changed.');
-        return await warm.audit(db!, task);
+        const completed = await warm.audit(db!, task);
+        if (completed && baselineReuse?.due()) {
+          // Compare like with like even when this maintenance job follows a commit whose
+          // suffix has not yet been requested by another consumer. Unsupported deltas take
+          // full replay here and reset the oracle deadline themselves.
+          if (!baselineReuse.hasIdentity(openedView.id)) eraseVerified(await load(task));
+        }
+        if (completed && baselineReuse?.due()) {
+          // Full semantic oracle stays in interruptible maintenance, never moved to a typing task.
+          forceFullRead = true;
+          const rows = await load(task);
+          eraseVerified(rows);
+        }
+        return completed;
       } catch (cause) {
-        clearView();
+        if (!(cause instanceof MaintenanceInterrupted)) clearView();
         throw cause;
       }
     },

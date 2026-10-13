@@ -2,9 +2,12 @@
 
 Base: signed **`7a48b86b`** (`G`), the [exact-plan dry run](./account-local-retention-dry-run.md).
 This phase implements the [atomic deletion plan](./account-local-retention-deletion.md) privately.
-The implementation is uncommitted; its [focused evidence packet](./development-evidence/2026-10-13-local-retention-removal/README.md)
-records source hashes. No personal/public profile was converted, service changed or image published.
+The implementation is committed signed as **`72d1b8bf`** (`G`); its [focused evidence packet](./development-evidence/2026-10-13-local-retention-removal/README.md)
+records source hashes at the pre-commit boundary. No personal/public profile was converted, service changed or image published.
 General release validation remains paused.
+
+Subsequent [warm/incremental reuse](./account-local-retention-reuse.md) adapts live v5 owners;
+the performance discussion below records the atomic-removal phase's boundary.
 
 ## Entry and representation
 

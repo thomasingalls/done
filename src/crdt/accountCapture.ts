@@ -350,7 +350,34 @@ export async function openAccountCaptureOwner(
         }
         auditing = true;
         // Each slice is a separate queue job. Appends cannot move this audit's captured finish line.
-        void run((task) => owner!.carrier.auditWarm(task))
+        void run((parent) => {
+          if (import.meta.env?.['VITE_ACCOUNT_RETENTION'] !== '1')
+            return owner!.carrier.auditWarm(parent);
+          // Reduced baselines also have a full semantic oracle. Input still journals
+          // synchronously, invalidating this discretionary pass before its next effect.
+          const activity = shadowActivity;
+          const check = () => {
+            if (suspended || activity !== shadowActivity) throw new MaintenanceInterrupted();
+          };
+          const interruptible: SessionTask = {
+            signal: parent.signal,
+            step: (effect) =>
+              parent.step(() => {
+                check();
+                return effect();
+              }),
+            wait: (start) =>
+              parent.wait(() => {
+                check();
+                return start();
+              }),
+          };
+          return owner!.carrier.auditWarm(
+            import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
+              ? budgetedTask(interruptible)
+              : interruptible,
+          );
+        })
           .then((complete) => {
             auditing = !complete;
             schedule(complete ? owner!.carrier.warmAuditDelay() : 0);

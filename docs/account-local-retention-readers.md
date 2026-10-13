@@ -12,7 +12,9 @@ cold/live logical reads while retaining the physical oracle. The table below rec
 close step 2 in the same non-deleting experiment. The subsequent [exact-plan dry run](./account-local-retention-dry-run.md)
 implements step 3 against detached inventories and the real private owner. The subsequent
 [atomic-removal phase](./account-local-retention-removal.md) implements step 4 in disposable, explicitly
-opted-in private owners. Public profiles and ordinary builds remain unconverted.
+opted-in private owners. Subsequent [warm/incremental reuse](./account-local-retention-reuse.md)
+adapts physical guards/chunk audits and logical continuation for live v5 owners. The table remains
+the audit at its recorded boundary. Public profiles and ordinary builds remain unconverted.
 
 ## The distinction that governs the inventory
 

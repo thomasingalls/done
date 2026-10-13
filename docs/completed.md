@@ -14185,3 +14185,39 @@ Ordinary unconverted owners retain yesterday's performance paths. Adapt warm/inc
 the retained origin and measure growth before everyday activation; public reader-first compatibility,
 rollback and capacity/unavailable-history behavior remain separate gates. General release validation
 stays paused. `docs/progress.md` and unrelated root notes remain untouched.
+
+### Private baseline-aware warm/incremental reuse — 2026-10-13
+
+**Boundary.** Atomic removal is committed signed as **`72d1b8bf`** (`G`). This new phase is
+uncommitted. [Contract](./account-local-retention-reuse.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-retention-reuse/README.md).
+
+**Exit.** Live reduced v5 owners now seed warm storage and incremental protocol views from full
+authenticated baseline-plus-suffix replay. Unchanged loads and owned reservations keep the view;
+completed appends extend it. Full fresh authority checks, exact pointer/era and bounded metadata
+keys, authenticated allocation/spool witness and logical-store count/bounds remain checked.
+Encrypted baseline chunks join rolling sealed-byte audits. Suffix continuation preserves absolute
+positions, consumed sources, burned attempts, signatures, exact epochs, delivery/receive proofs and
+unallocated-original coverage. Authority changes, resume, replacement, rotation, unsupported deltas
+and failed writes force full replay; late results cannot reinstall a cleared view. Caller projections
+remain detached, and no read swaps the live document, UndoManager or journal binding.
+
+An independent reference becomes due after 256 verified appended rows or five minutes; it compares
+the same logical view, including any committed but not yet consumed suffix. Private discretionary
+work yields to journalled input and remains due after interruption. Non-deleting v3/v4 and one-shot
+lifecycle readers keep full verification. Generic reduced compaction remains fenced. No formats,
+public controls, personal profiles, deployment or service configuration change.
+
+**Evidence.** 191 unit tests in ten files pass, including 20 new controls and eight generated
+own/peer histories compared after every action with full replay. All 14 reduced native cases pass;
+14 selected complete-history cases have passing evidence (12 initially, two after a transaction-scope
+correction); one ordinary-owner control and three packaged lifecycle/checkpoint journeys pass.
+The lifecycle run caught an overly broad identity guard on one-shot rotation readers; its narrowed
+scope and regression are recorded. Native observations show 45 warm loads, 39 unchanged reuses and
+six extensions during flush/publication, with zero full loads/replays and 110 fresh authority checks.
+Resume forces full replay. TypeScript, focused lint/format, ordinary build, Yjs/budget/origin checks pass.
+
+**Next.** Measure equal workspace/suffix at multiple retired-history depths on a suitable host:
+cold open, online/catch-up typing, memory and maintenance. No latency benefit is yet established.
+Reader-first publication/rollback, capacity/history-required UX and retention trigger/cadence remain
+separate gates. Release validation stays paused; `docs/progress.md` and root notes remain untouched.
