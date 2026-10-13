@@ -6,13 +6,31 @@ import { pending, compared, unlock } from '../device-enrollment/helpers';
 import { startService, stopService } from '../packaged-account/server';
 import { baselineLifecycleProbe } from './lifecycle-probe';
 
+const reduced = process.env['ACCOUNT_RETENTION'] === '1';
 type Owner = {
+  removeLocalHistory(expectedRevision: number): Promise<{ kind: string; revision?: number }>;
   installLocalBaseline(): Promise<{ kind: string }>;
   advanceLocalRetention(expectedRevision: number): Promise<{ kind: string }>;
   replaceLocalBaseline(expectedRevision: number): Promise<{ kind: string }>;
   workspace: { whenDurable(): Promise<void>; status: { state: string } };
 };
 async function anchor(page: Page, revision?: number) {
+  if (reduced) {
+    for (const r of revision === undefined ? [0, 1] : [revision]) {
+      await expect
+        .poll(
+          () =>
+            page.evaluate(async (revision) => {
+              const owner = (globalThis as unknown as { __baselineOwner: Owner }).__baselineOwner;
+              await owner.workspace.whenDurable();
+              return owner.removeLocalHistory(revision);
+            }, r),
+          { timeout: 20000 },
+        )
+        .toMatchObject({ kind: 'removed', revision: r + 1 });
+    }
+    return;
+  }
   await expect
     .poll(
       () =>
@@ -46,6 +64,7 @@ async function bundles(info: TestInfo) {
     logLevel: 'error',
     define: {
       'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1'),
+      'import.meta.env.VITE_ACCOUNT_RETENTION': JSON.stringify(reduced ? '1' : '0'),
       'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify(
         process.env['ACCOUNT_BASELINE_READ'] ?? '0',
       ),
@@ -72,6 +91,7 @@ async function bundles(info: TestInfo) {
     build: { outDir },
     define: {
       'import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL': JSON.stringify('1'),
+      'import.meta.env.VITE_ACCOUNT_RETENTION': JSON.stringify(reduced ? '1' : '0'),
       'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify(
         process.env['ACCOUNT_BASELINE_READ'] ?? '0',
       ),
@@ -94,7 +114,7 @@ async function bundles(info: TestInfo) {
   expect(hits).toBe(1);
   return { chunk, outDir };
 }
-test('anchored owners survive initial handoff, two rotations, replacement, restart and detached editing', async ({
+test(`${reduced ? 'Reduced' : 'Anchored'} owners survive initial handoff, two rotations, replacement, restart and detached editing`, async ({
   page,
   browser,
 }, info) => {
@@ -230,13 +250,30 @@ test('anchored owners survive initial handoff, two rotations, replacement, resta
     }
     for (const p of [page, third]) {
       await anchor(p, 2);
-      expect(
-        await p.evaluate(() =>
-          (
-            globalThis as unknown as { __baselineOwner: Owner }
-          ).__baselineOwner.replaceLocalBaseline(2),
-        ),
-      ).toEqual({ kind: 'already-installed' });
+      await expect
+        .poll(
+          () =>
+            p.evaluate(async (reduced) => {
+              const owner = (globalThis as unknown as { __baselineOwner: Owner }).__baselineOwner;
+              try {
+                return reduced
+                  ? await owner.removeLocalHistory(2)
+                  : await owner.replaceLocalBaseline(2);
+              } catch (error) {
+                // Retention retires old network flights. A durability barrier may observe that
+                // pre-commit refusal; only retry while admission is still active.
+                if (
+                  error instanceof Error &&
+                  error.message === 'Receive authority was superseded' &&
+                  owner.workspace.status.state === 'active'
+                )
+                  return { kind: 'retired-flight' };
+                throw error;
+              }
+            }, reduced),
+          { timeout: 15000 },
+        )
+        .toEqual({ kind: reduced ? 'already-removed' : 'already-installed' });
     }
     // A second removal keeps the generation-two opener while its replacement pointer is pending.
     await third.getByRole('button', { name: 'Lock workspace', exact: true }).click();

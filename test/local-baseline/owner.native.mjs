@@ -402,6 +402,7 @@ test(
     assert.equal(await f.page.evaluate(() => 'replaceLocalBaseline' in opened), false);
     assert.equal(await f.page.evaluate(() => 'advanceLocalRetention' in opened), false);
     assert.equal(await f.page.evaluate(() => 'dryRunLocalRetention' in opened), false);
+    assert.equal(await f.page.evaluate(() => 'removeLocalHistory' in opened), false);
     await edit(f.page, 0, 0, 'ORDINARY INPUT ');
     await durable(f.page);
     assert.ok((await f.page.evaluate(() => editor.read().master)).startsWith('ORDINARY INPUT '));

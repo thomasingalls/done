@@ -1,5 +1,5 @@
-/** Private adapter for the non-deleting Account experiment. Never persist the semantic v2 view:
- * allocation consumers use it, but every disk write/MAC retains the authenticated v3/v4 pointer. */
+/** Private adapter for the explicitly enabled Account baseline formats. Never persist the semantic v2 view:
+ * allocation consumers use it, but every disk write/MAC retains the authenticated v3/v4/v5 pointer. */
 import {
   corrupt,
   parseCounter,
@@ -14,7 +14,7 @@ import {
   type BaselinePointer,
 } from './localBaselineAnchor';
 
-export function createBaselineMetadata(scope: ContentIdentity) {
+export function createBaselineMetadata(scope: ContentIdentity, allowReduced = false) {
   let pointer: BaselinePointer | undefined;
   const stored = (counter: ContentCounter) => {
     if (!pointer) return counter;
@@ -23,17 +23,18 @@ export function createBaselineMetadata(scope: ContentIdentity) {
   };
   return {
     active: () => !!pointer,
+    reduced: () => pointer?.history === 'baseline-plus-suffix',
     era: () => pointer?.journalEra && { ...pointer.journalEra },
     /** Only after our atomic replacement succeeds. The next full load authenticates the new pin. */
     replaced() {
       pointer = undefined;
     },
     parse(value: unknown, intent: string): ContentCounter {
-      if (![3, 4].includes(Number((value as { v?: unknown } | null)?.v))) {
+      if (![3, 4, 5].includes(Number((value as { v?: unknown } | null)?.v))) {
         if (pointer) return corrupt('Baseline metadata was downgraded.');
         return parseCounter(value, scope, intent);
       }
-      const parsed = parseBaselineCounter(value, scope, intent);
+      const parsed = parseBaselineCounter(value, scope, intent, allowReduced);
       if (pointer && JSON.stringify(pointer) !== JSON.stringify(parsed.baseline))
         return corrupt('Baseline anchor changed during ownership.');
       pointer = structuredClone(parsed.baseline);

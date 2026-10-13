@@ -14146,3 +14146,42 @@ predecessor reservation, exact pointer/chunks/era/enumerated-row exchange, readb
 abort/crash/lost-reply/retry controls, including lifecycle readers of actually reduced stores. Public
 reader-first rollout/rollback, capacity/history-required UX and growth measurements remain later.
 All history is still present. `docs/progress.md` and unrelated root notes remain untouched.
+
+### Private atomic local Account history removal — 2026-10-13
+
+**Boundary.** The preceding exact-plan dry run is committed signed as **`7a48b86b`** (`G`). This new
+implementation is uncommitted. [Contract](./account-local-retention-removal.md) ·
+[focused evidence](./development-evidence/2026-10-13-local-retention-removal/README.md).
+
+**Exit.** A separate private removal flag enables counter v5 / reduced carrier draft-3 with mandatory
+journal era. The composed owner establishes the existing admission, durable-attempt, fresh authority,
+old-flight and empty-journal fences, prepares an exact current-cut plan, reserves chunks in the old
+representation, then atomically exchanges encrypted chunks/pointer/counter/era and enumerated logical
+keys in one strict four-store transaction. Exact inventory comparison catches late/missing/changed
+rows; no range or partial deletion. Readback authenticates the reduced result before admission can
+resume. Uncertain failure closes the owner. Expected-revision retries authenticate the successor
+without reserving or deleting again. Actual physical history is removed only in disposable tests.
+
+Reduced replay uses the authenticated predecessor plus suffix, never a missing-prefix fallback.
+Unaccepted originals retain exact capsule identity/bytes and consumed indexes inside the baseline.
+Rotation preserves the pointer and old opener; non-deleting replacement cannot downgrade it. Old
+and ordinary readers refuse without writes. Live document/undo identity and journal-before-apply
+remain intact. No public control, personal-profile conversion, service change or publication.
+
+**Evidence.** 194 unit tests in ten files; 13 new native cases with passing evidence (12 in the final
+full-file run, plus the later unpublished-originals control separately); seven existing complete-
+history native regressions; one ordinary-owner control; and three packaged reduced lifecycle/
+checkpoint journeys. Controls cover atomic abort, reservation/commit renderer death, lost reply,
+readback failure, exact retries, queued input/undo, journal crash/deduplication, stale flights, reader
+fences, restored old-era journal refusal, original/joined handoff/rotation/detachment and checkpoints.
+A zero-physical-row rotation unit control preserves old encrypted chunks and invokes no sealing.
+The packet records the cold-classification repair and fixture corrections rather than hiding failures.
+TypeScript, lint/format, ordinary build, Yjs/budget/origin and documentation checks pass.
+
+**Performance and next.** Retiring physical history creates a path to cheaper history-dependent
+loads/opening, but no performance gain is measured. Private baseline owners still bypass the warm/
+incremental verification paths and the first atomic cut can hold admission for substantial work.
+Ordinary unconverted owners retain yesterday's performance paths. Adapt warm/incremental reuse to
+the retained origin and measure growth before everyday activation; public reader-first compatibility,
+rollback and capacity/unavailable-history behavior remain separate gates. General release validation
+stays paused. `docs/progress.md` and unrelated root notes remain untouched.

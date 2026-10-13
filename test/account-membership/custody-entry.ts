@@ -344,7 +344,7 @@ export async function journalOnly(kind: Kind, slot: string, code: string) {
           tx.onabort = () => no(tx.error);
         }).finally(() => db.close());
         const binding =
-          counter.v === 4
+          counter.v === 4 || counter.v === 5
             ? {
                 identity: {
                   ...scope,

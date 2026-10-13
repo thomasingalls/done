@@ -10,7 +10,9 @@ depends on closing the adapter gaps below. Public activation and release validat
 cold/live logical reads while retaining the physical oracle. The table below records the audit at
 `bcca1aa1`. The subsequent [lifecycle/rebase adapters](./account-local-baseline-lifecycle-readers.md)
 close step 2 in the same non-deleting experiment. The subsequent [exact-plan dry run](./account-local-retention-dry-run.md)
-implements step 3 against detached inventories and the real private owner. No row is deleted.
+implements step 3 against detached inventories and the real private owner. The subsequent
+[atomic-removal phase](./account-local-retention-removal.md) implements step 4 in disposable, explicitly
+opted-in private owners. Public profiles and ordinary builds remain unconverted.
 
 ## The distinction that governs the inventory
 
@@ -119,7 +121,8 @@ These are source-derived gaps, not observed defects in the currently non-deletin
 
 The owned-reader phase implements **step 1**, and the lifecycle/rebase continuation implements
 **step 2**, behind private switches with intact physical history. The [dry-run continuation](./account-local-retention-dry-run.md)
-implements **step 3**; private atomic removal is next and remains separately authorized. This inventory
+implements **step 3**. The separately authorized [atomic-removal phase](./account-local-retention-removal.md)
+implements **step 4** behind its own reduced-format switch. This inventory
 records the source audit; follow those implementation contracts for their evidence and limits. No general release inventory/campaign is resumed.
 `docs/progress.md` is reserved for the other workstream and remains untouched; this phase's checkpoint
 is in [completed.md](./completed.md).

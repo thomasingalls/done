@@ -807,14 +807,18 @@ async function openAccountReceiveOwner(
       : undefined;
   const installLocalBaseline =
     composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
-      ? async (expectedRevision?: number, advanceEra = false, dryRun = false) => {
+      ? async (
+          expectedRevision?: number,
+          advanceEra = false,
+          operation: 'install' | 'dry-run' | 'remove' = 'install',
+        ) => {
           await carrier.flushJournal();
           try {
             return await runBaselineShadow(async (task, owner, _route, checkJournal) => {
               await assertCurrent(task);
               if (pendingPromotions)
                 return { kind: 'skipped' as const, reason: 'pending-promotion' };
-              if (advanceEra || dryRun) {
+              if (advanceEra || operation !== 'install') {
                 const { retentionAttemptsSettled } = await task.wait(
                   () => import('./retentionAttempts'),
                 );
@@ -840,7 +844,14 @@ async function openAccountReceiveOwner(
               invalidateFinalApply();
               skippedHistory = undefined;
               try {
-                if (dryRun)
+                if (operation === 'remove')
+                  return await owner.carrier.removeHistory(
+                    task,
+                    () => assertCurrent(task),
+                    checkJournal,
+                    expectedRevision!,
+                  );
+                if (operation === 'dry-run')
                   return await owner.carrier.dryRunRetention(
                     task,
                     () => assertCurrent(task),
@@ -855,7 +866,10 @@ async function openAccountReceiveOwner(
                 );
               } catch (cause) {
                 // An uncertain transition must never lend a stale synchronous journal writer.
-                if (advanceEra && !(cause instanceof MaintenanceInterrupted))
+                if (
+                  operation === 'remove' ||
+                  (advanceEra && !(cause instanceof MaintenanceInterrupted))
+                )
                   void carrier.close().catch(() => {});
                 throw cause;
               } finally {
@@ -2881,10 +2895,26 @@ async function openReceivingWorkspace(
         ? {
             ...(import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1'
               ? {
+                  ...(import.meta.env?.['VITE_ACCOUNT_RETENTION'] === '1'
+                    ? {
+                        removeLocalHistory: async (expectedRevision: number) => {
+                          await workspace.whenDurable();
+                          return enqueue(new Uint8Array([1]), async (_input, promote) => {
+                            const result = await installLocalBaseline(
+                              expectedRevision,
+                              false,
+                              'remove',
+                            );
+                            promote([]);
+                            return result;
+                          });
+                        },
+                      }
+                    : {}),
                   dryRunLocalRetention: async () => {
                     await workspace.whenDurable();
                     return enqueue(new Uint8Array([1]), async (_input, promote) => {
-                      const result = await installLocalBaseline(undefined, false, true);
+                      const result = await installLocalBaseline(undefined, false, 'dry-run');
                       promote([]);
                       return result;
                     });

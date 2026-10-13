@@ -4,7 +4,8 @@ Design boundary: signed **`bcca1aa1`**. Read with the [reader inventory](./accou
 [retained-evidence policy](./account-local-retention-evidence.md) and [implemented empty-deletion fences](./account-local-retention-fences.md).
 **No deletion implementation, format activation or migration is added by this document.**
 The subsequent [non-writing planner](./account-local-retention-dry-run.md) implements the exact
-inventory/projection checks below; reservation and physical removal remain future work.
+inventory/projection checks below. The later [private atomic-removal phase](./account-local-retention-removal.md)
+implements reservation and physical removal behind a separate opt-in; this document records its design.
 
 ## Selected first cut
 

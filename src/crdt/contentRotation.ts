@@ -121,6 +121,7 @@ export async function initializeEmptyAccountGeneration(
 export async function rotateContent(
   task: SessionTask,
   owner: {
+    allowReduced?: boolean;
     db: IDBDatabase;
     scope: ContentIdentity;
     generation: number;
@@ -260,7 +261,12 @@ export async function rotateContent(
                   else {
                     if (current) corrupt('Duplicate rotation counter');
                     if (baseline) {
-                      const parsed = parseBaselineCounter(c.value, owner.scope, owner.intent);
+                      const parsed = parseBaselineCounter(
+                        c.value,
+                        owner.scope,
+                        owner.intent,
+                        owner.allowReduced,
+                      );
                       if (
                         !sameBytes(
                           baselineCounterPayload(owner.scope, parsed),

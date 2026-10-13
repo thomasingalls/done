@@ -2,8 +2,8 @@
 
 Base: signed **`af5f0d87`** (`G`), the [lifecycle-reader/rebase phase](./account-local-baseline-lifecycle-readers.md).
 This phase implements step 3 of the [reader inventory](./account-local-retention-readers.md) and the
-non-writing portion of the [deletion plan](./account-local-retention-deletion.md). The new code is
-uncommitted; the [focused evidence packet](./development-evidence/2026-10-13-local-retention-plan/README.md)
+non-writing portion of the [deletion plan](./account-local-retention-deletion.md). It is committed
+signed as **`7a48b86b`** (`G`); the [focused evidence packet](./development-evidence/2026-10-13-local-retention-plan/README.md)
 identifies its source hashes. Nothing is enabled in the ordinary application.
 
 ## What a successful plan establishes
@@ -92,3 +92,6 @@ compare/exchange of pointer/chunks/era and enumerated keys, authenticated readba
 abort/crash/lost-reply/retry controls. Its actual reduced stores must exercise the original/joined and
 lifecycle readers. Public reader-first release and rollback, capacity/history-required product
 behavior and growth measurements follow separately. General release validation remains paused.
+
+The subsequent [private atomic-removal phase](./account-local-retention-removal.md) implements the
+separate v5 writer and actual reduced readers. The descriptions above record the non-deleting dry-run boundary.

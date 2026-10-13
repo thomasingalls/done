@@ -1,4 +1,4 @@
-/** Private non-deleting experiment: shadow comparison and explicitly opted-in logical reads. */
+/** Private baseline verification: full-history comparison or explicitly opted-in reduced replay. */
 import {
   LocalBaselineError,
   prepareLocalBaseline,
@@ -28,7 +28,7 @@ export type BaselineShadowResult =
   | { kind: 'skipped'; reason: 'activity-or-journal' | 'ineligible' | 'history-required' | 'scope' }
   | { kind: 'refused'; reason: 'draft-replay' | 'comparison-mismatch' };
 type Replay = Awaited<ReturnType<typeof replayFullLocalHistory>>;
-/** Detached logical data returned only after the carrier authenticates and compares both readers.
+/** Detached logical data returned only after the carrier authenticates replay (and compares full history when retained).
  * No physical placement/allocation or write authority; never pass records to a storage mutation. */
 export interface AccountBaselineRead {
   kind: 'baseline-plus-suffix';
@@ -123,11 +123,19 @@ export async function verifyCompleteLocalBaseline(
   auth: BaselineAuthentication,
   stored: { baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor },
   read = false,
+  reduced = false,
 ): Promise<AccountBaselineRead | undefined> {
   let reference: Replay | undefined, replayed: Replay | undefined;
   const baseline = decodeLocalBaseline(stored.baseline.payload);
   try {
-    reference = await replayFullLocalHistory(input, context);
+    if (
+      reduced &&
+      (!read ||
+        !baseline.journalEra ||
+        input.records.some((r) => r.seq < baseline.cut.nextSequence))
+    )
+      throw new LocalBaselineError('integrity');
+    if (!reduced) reference = await replayFullLocalHistory(input, context);
     replayed = await replayLocalBaseline(
       stored.baseline,
       stored.anchor,
@@ -138,7 +146,8 @@ export async function verifyCompleteLocalBaseline(
       context,
       auth,
     );
-    await compareBaselineReplay(reference, replayed, baseline.own.position, context.route);
+    if (reference)
+      await compareBaselineReplay(reference, replayed, baseline.own.position, context.route);
     context.assertCurrent();
     if (read && baseline.journalEra)
       return {

@@ -117,7 +117,11 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
   const name = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
   const baseline =
     promotion?.marker?.v === 9 && import.meta.env?.['VITE_ACCOUNT_BASELINE_INSTALL'] === '1'
-      ? createBaselineMetadata({ ...scope, storeId: intent.storeId, rootId: intent.rootId })
+      ? createBaselineMetadata(
+          { ...scope, storeId: intent.storeId, rootId: intent.rootId },
+          import.meta.env?.['VITE_ACCOUNT_BASELINE_READ'] === '1' &&
+            import.meta.env?.['VITE_ACCOUNT_RETENTION'] === '1',
+        )
       : undefined;
   const disk = await contentCensus(task, name, !!baseline),
     journal = journalCount(task, journalPrefix(name));

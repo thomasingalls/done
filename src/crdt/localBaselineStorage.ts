@@ -40,7 +40,8 @@ import type { AuthenticatedLocalBaseline } from './localBaselineReplay';
 import type { ContentCrypto } from './contentStore';
 import type { SessionTask } from './writeSession';
 
-interface Owner {
+export interface BaselineStorageOwner {
+  allowReduced?: boolean;
   db: IDBDatabase;
   identity: ContentIdentity;
   generation: number;
@@ -61,8 +62,8 @@ const scopeEqual = (a: ContentIdentity, b: ContentIdentity) =>
   a.rootId === b.rootId;
 async function authenticateCandidate(
   task: SessionTask,
-  owner: Pick<Owner, 'identity' | 'generation' | 'intent'> & {
-    crypt: Pick<Owner['crypt'], 'verify'>;
+  owner: Pick<BaselineStorageOwner, 'identity' | 'generation' | 'intent'> & {
+    crypt: Pick<BaselineStorageOwner['crypt'], 'verify'>;
   },
   baseline: AuthenticatedLocalBaseline,
   anchor: BaselineAnchor,
@@ -96,7 +97,7 @@ async function authenticateCandidate(
  * Replacement removes only superseded encrypted metadata chunks, never history rows. */
 function exchange(
   task: SessionTask,
-  owner: Owner,
+  owner: BaselineStorageOwner,
   expected: DiskState,
   next: ContentCounter | BaselineCounter,
   chunks: readonly StoredRecord[] = [],
@@ -195,7 +196,7 @@ function exchange(
  * inspected, never retried with a newly invented predecessor. */
 export async function anchorLocalBaseline(
   task: SessionTask,
-  ownerInput: Owner,
+  ownerInput: BaselineStorageOwner,
   censusInput: DiskState,
   input: { baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor },
   previousAnchor?: BaselineAnchor,
@@ -217,6 +218,8 @@ export async function anchorLocalBaseline(
       return corrupt('Account generation required.');
     if (previousAnchor) {
       previous = await readEncryptedBaseline(task, owner);
+      if (previous.counter.v === 5)
+        return corrupt('Reduced baseline requires the retention writer.');
       const { baseline: _pointer, ...allocation } = previous.counter;
       if (
         previous.anchor.revision !== previousAnchor.revision ||
@@ -368,7 +371,7 @@ export async function anchorLocalBaseline(
  * the carrier only; callers still must replay its protocol/content evidence before using its state. */
 export async function readEncryptedBaseline(
   task: SessionTask,
-  ownerInput: Owner,
+  ownerInput: BaselineStorageOwner,
 ): Promise<{
   baseline: AuthenticatedLocalBaseline;
   anchor: BaselineAnchor;
@@ -389,7 +392,12 @@ export async function readEncryptedBaseline(
           request = store.get('counter');
         request.onsuccess = () =>
           guard(() => {
-            const counter = parseBaselineCounter(request.result, owner.identity, owner.intent),
+            const counter = parseBaselineCounter(
+                request.result,
+                owner.identity,
+                owner.intent,
+                owner.allowReduced,
+              ),
               p = counter.baseline;
             if (count.result !== p.chunks + 1)
               return corrupt('Baseline chunks missing or unknown.');
@@ -419,12 +427,14 @@ export async function readEncryptedBaseline(
 /** Read-only authentication of detached metadata. Also used by the non-writing retention planner. */
 export async function openEncryptedBaselineSnapshot(
   task: SessionTask,
-  ownerInput: Omit<Owner, 'db' | 'crypt'> & { crypt: Pick<Owner['crypt'], 'open' | 'verify'> },
+  ownerInput: Omit<BaselineStorageOwner, 'db' | 'crypt'> & {
+    crypt: Pick<BaselineStorageOwner['crypt'], 'open' | 'verify'>;
+  },
   input: { counter: BaselineCounter; chunks: StoredRecord[] },
 ) {
   const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
   const snapshot = {
-    counter: parseBaselineCounter(input.counter, owner.identity, owner.intent),
+    counter: parseBaselineCounter(input.counter, owner.identity, owner.intent, owner.allowReduced),
     chunks: input.chunks.map(parseStoredRecord),
   };
   if (snapshot.chunks.length !== snapshot.counter.baseline.chunks)

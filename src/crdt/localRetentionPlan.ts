@@ -65,6 +65,7 @@ export interface RetentionPlanReport {
 /** An ephemeral capability; only the module's private map contains the inventory/candidate. */
 export interface RetentionBinding {
   lifetime: object;
+  allowReduced?: boolean;
   intent: string;
 }
 export interface LocalRetentionPlan {
@@ -120,11 +121,13 @@ export function assertRetentionInventory(
   expected: RetentionInventory,
   current: RetentionInventory,
 ) {
-  const actual = clone(current);
+  const actual = clone(current),
+    before = clone(expected);
   try {
-    if (!exact(expected, actual)) corrupt('Retention inventory changed; replan required.');
+    if (!exact(before, actual)) corrupt('Retention inventory changed; replan required.');
   } finally {
     eraseVerified(actual);
+    eraseVerified(before);
   }
 }
 const held = (plan: LocalRetentionPlan): HeldPlan =>
@@ -132,7 +135,7 @@ const held = (plan: LocalRetentionPlan): HeldPlan =>
 export function retentionPlanReport(plan: LocalRetentionPlan): RetentionPlanReport {
   return structuredClone(held(plan).report);
 }
-/** Detached evidence for focused tests and a future transaction adapter; never write authority. */
+/** Detached evidence for focused tests and the private transaction adapter; never write authority. */
 export function inspectRetentionPlan(plan: LocalRetentionPlan) {
   const p = held(plan);
   return structuredClone({
@@ -150,7 +153,11 @@ export function verifyRetentionPlan(
 ) {
   const p = held(plan);
   p.context.assertCurrent();
-  if (binding.lifetime !== p.binding.lifetime || binding.intent !== p.binding.intent)
+  if (
+    binding.lifetime !== p.binding.lifetime ||
+    binding.intent !== p.binding.intent ||
+    binding.allowReduced !== p.binding.allowReduced
+  )
     corrupt('Retention owner or authority identity changed.');
   assertRetentionInventory(p.inventory, current);
 }
@@ -195,8 +202,8 @@ export async function planLocalRetention(
     const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
     const version = (raw as { v?: number } | undefined)?.v;
     const stored =
-      version === 3 || version === 4
-        ? parseBaselineCounter(raw, scope, binding.intent)
+      version === 3 || version === 4 || version === 5
+        ? parseBaselineCounter(raw, scope, binding.intent, binding.allowReduced)
         : parseCounter(raw, scope, binding.intent);
     if (stored.v === 1 || stored.active_gen !== context.route.generation)
       corrupt('Retention requires current Account allocation.');
@@ -229,6 +236,7 @@ export async function planLocalRetention(
         task,
         {
           identity: scope,
+          allowReduced: binding.allowReduced === true,
           generation: stored.active_gen,
           intent: stored.intent,
           crypt: { open: (_t, r) => crypt.open(r), verify: (_t, b, mac) => crypt.verify(b, mac) },
@@ -263,7 +271,7 @@ export async function planLocalRetention(
     records.sort((a, b) => a.seq - b.seq);
     const replay = { records, counter };
     // Integrity failures in existing evidence must never be reported as capacity/ineligibility.
-    reference = await replayFullLocalHistory(replay, context);
+    if (stored.v !== 5) reference = await replayFullLocalHistory(replay, context);
     if (previous) {
       const old = decodeLocalBaseline(previous.baseline.payload);
       try {
@@ -274,7 +282,12 @@ export async function planLocalRetention(
           context,
           crypt.auth,
         );
-        await compareBaselineReplay(reference, projected, old.own.position, context.route);
+        if (stored.v === 5) {
+          if (records.some((r) => r.seq < old.cut.nextSequence))
+            corrupt('Retired physical prefix reappeared.');
+          reference = projected;
+          projected = undefined;
+        } else await compareBaselineReplay(reference!, projected, old.own.position, context.route);
       } finally {
         eraseVerified(old);
         eraseVerified(projected);
@@ -313,10 +326,10 @@ export async function planLocalRetention(
       throw error;
     }
     decoded = decodeLocalBaseline(candidate.baseline.payload);
-    if (
-      decoded.cut.nextSequence !== counter.next_seq ||
-      decoded.cut.sequence !== (records.at(-1)?.seq ?? 0)
-    )
+    const predecessorCut = previous ? decodeLocalBaseline(previous.baseline.payload) : undefined;
+    const expectedLast = Math.max(records.at(-1)?.seq ?? 0, predecessorCut?.cut.sequence ?? 0);
+    eraseVerified(predecessorCut);
+    if (decoded.cut.nextSequence !== counter.next_seq || decoded.cut.sequence !== expectedLast)
       corrupt('Retention plan is not the current cut.');
     const state: OpenedRecord = {
       seq: 0,
@@ -364,7 +377,7 @@ export async function planLocalRetention(
       context,
       crypt.auth,
     );
-    await compareBaselineReplay(reference, projected, decoded.own.position, context.route);
+    await compareBaselineReplay(reference!, projected, decoded.own.position, context.route);
     context.assertCurrent();
     task.step(() => {});
     const plan: LocalRetentionPlan = Object.freeze({ kind: 'local-retention-dry-run' });

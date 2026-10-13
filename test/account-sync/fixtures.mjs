@@ -65,6 +65,9 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     configFile: false,
     logLevel: 'error',
     define: {
+      'import.meta.env.VITE_ACCOUNT_RETENTION': JSON.stringify(
+        process.env.ACCOUNT_RETENTION ?? '0',
+      ),
       ...(process.env.ACCOUNT_BASELINE_READ
         ? {
             'import.meta.env.VITE_ACCOUNT_BASELINE_READ': JSON.stringify(

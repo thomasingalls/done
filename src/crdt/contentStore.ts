@@ -1,4 +1,5 @@
 import type { AccountBaselineRead } from './localBaselineShadow';
+import { StorageCompatibilityError } from './storageCompatibility';
 import type { RetentionInventory } from './localRetentionPlan';
 import { BASELINE_MAX_CHUNKS } from './localBaselineAnchor';
 import { createBaselineMetadata } from './localBaselineMetadata';
@@ -117,7 +118,10 @@ export const createContentOwner = (
     throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
   let witness!: ContentWitness;
-  const metadata = crypt.baseline ? createBaselineMetadata(scope) : undefined;
+  const allowReduced = !!(
+    crypt.readBaseline && import.meta.env?.['VITE_ACCOUNT_RETENTION'] === '1'
+  );
+  const metadata = crypt.baseline ? createBaselineMetadata(scope, allowReduced) : undefined;
   const parseCounter = (value: unknown, identity: ContentIdentity, intent: string) =>
     metadata ? metadata.parse(value, intent) : parseOrdinaryCounter(value, identity, intent);
   const counterPayload = (identity: ContentIdentity, counter: ContentCounter) =>
@@ -128,6 +132,7 @@ export const createContentOwner = (
   });
   const baselineOwner = (assertCurrent: () => Promise<void>, checkCommit: () => void) => ({
     db: db!,
+    allowReduced,
     identity: scope,
     generation,
     intent: witness.intent,
@@ -405,6 +410,7 @@ export const createContentOwner = (
               baselineAuth(task),
               held,
               crypt.readBaseline === true,
+              held.counter.v === 5,
             );
             await crypt.baseline!(task, { ...scope }, counter);
           } finally {
@@ -805,6 +811,7 @@ export const createContentOwner = (
           baselineAuth(task),
           held,
           true,
+          held.counter.v === 5,
         );
         if (!logical) throw Error('Transition lost its retained origin.');
         verifySyncState(
@@ -840,6 +847,8 @@ export const createContentOwner = (
         () => import('./localBaselineRecord'),
       );
       const snapshot = await read(task, true);
+      if (metadata?.reduced())
+        throw new StorageCompatibilityError('Full-history shadow unavailable after retention.');
       const records = await openSnapshot(task, snapshot);
       let active = true;
       const checked = (message: Bytes) =>
@@ -906,7 +915,7 @@ export const createContentOwner = (
           witness.intent,
         );
         const context = await crypt.baseline(task, { ...scope }, counter);
-        const binding = { lifetime: {}, intent: witness.intent };
+        const binding = { lifetime: {}, intent: witness.intent, allowReduced };
         plan = await planLocalRetention(
           task,
           inventory,
@@ -937,6 +946,116 @@ export const createContentOwner = (
         eraseVerified(counter);
       }
     },
+    /** Private reduced-format transition. The caller holds admission/journal/old-read fences. */
+    async removeHistory(
+      task: SessionTask,
+      assertCurrent: () => Promise<void>,
+      checkCommit: () => void,
+      expectedRevision: number,
+    ) {
+      if (
+        !allowReduced ||
+        !crypt.baseline ||
+        !metadata ||
+        !crypt.validate ||
+        !crypt.allowSpoolCounter
+      )
+        throw new StorageCompatibilityError('Private retention writer disabled.');
+      if (!Number.isSafeInteger(expectedRevision) || expectedRevision < 0)
+        corrupt('Invalid retention predecessor revision.');
+      const {
+        planLocalRetention,
+        retentionPlanReport,
+        disposeRetentionPlan,
+        assertRetentionInventory,
+        inspectRetentionPlan,
+      } = await task.wait(() => import('./localRetentionPlan'));
+      const inventory = await retentionInventory(task);
+      let plan: Awaited<ReturnType<typeof planLocalRetention>> | undefined;
+      let expected: RetentionInventory | undefined;
+      let actual: RetentionInventory | undefined;
+      let opened: OpenedRecord[] | undefined;
+      let candidate: ReturnType<typeof inspectRetentionPlan> | undefined;
+      try {
+        const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
+        const counter = parseCounter(raw, scope, witness.intent);
+        const pointer = (raw as import('./localBaselineAnchor').BaselineCounter).baseline;
+        const revision = pointer?.revision ?? 0;
+        if (
+          revision === expectedRevision + 1 &&
+          metadata.reduced() &&
+          pointer?.journalEra?.revision === revision
+        ) {
+          // Cold/full authenticated read, including any new suffix. Never infer success from a number alone.
+          opened = await load(task);
+          await assertCurrent();
+          checkCommit();
+          return { kind: 'already-removed' as const };
+        }
+        if (revision !== expectedRevision) corrupt('Retention predecessor changed.');
+        const context = await crypt.baseline(task, { ...scope }, counter);
+        const binding = { lifetime: {}, intent: witness.intent, allowReduced };
+        plan = await planLocalRetention(
+          task,
+          inventory,
+          {
+            ...context,
+            assertCurrent: () => {
+              context.assertCurrent();
+              checkCommit();
+            },
+          },
+          {
+            open: (r) => crypt.open(task, r),
+            verify: (b, mac) => crypt.verify(task, b, mac),
+            auth: baselineAuth(task),
+          },
+          binding,
+        );
+        if (plan.kind === 'skipped') return plan;
+        const report = retentionPlanReport(plan);
+        candidate = inspectRetentionPlan(plan);
+        const { removePlannedLocalHistory } = await task.wait(
+          () => import('./localRetentionStorage'),
+        );
+        expected = await removePlannedLocalHistory(
+          task,
+          baselineOwner(assertCurrent, checkCommit),
+          plan,
+          binding,
+        );
+        clearView();
+        metadata.replaced();
+        // Compare exact committed bytes, then independently open/authenticate reduced replay.
+        actual = await retentionInventory(task);
+        assertRetentionInventory(expected, actual);
+        opened = await load(task);
+        const { verifyCompleteLocalBaseline } = await task.wait(
+          () => import('./localBaselineShadow'),
+        );
+        const current = await currentCounter(task);
+        const verified = await verifyCompleteLocalBaseline(
+          { records: opened, counter: current },
+          await crypt.baseline(task, { ...scope }, current),
+          baselineAuth(task),
+          candidate.candidate,
+          true,
+          true,
+        );
+        eraseVerified(verified);
+        await assertCurrent();
+        checkCommit();
+        return { kind: 'removed' as const, revision: report.revision, removed: report.rows };
+      } finally {
+        if (plan?.kind === 'local-retention-dry-run') disposeRetentionPlan(plan);
+        eraseVerified(inventory);
+        eraseVerified(expected);
+        eraseVerified(actual);
+        eraseVerified(opened);
+        eraseVerified(candidate);
+        clearView();
+      }
+    },
     /** Called only while the composed admission queue fences input; never deletes or swaps the live doc. */
     async installBaseline(
       task: SessionTask,
@@ -948,6 +1067,8 @@ export const createContentOwner = (
       if (!metadata || !crypt.baseline || !crypt.allowSpoolCounter || !crypt.validate)
         throw Error('Private Account baseline installer disabled');
       const snapshot = await read(task, true);
+      if (metadata.reduced())
+        throw new StorageCompatibilityError('Reduced baseline requires atomic retention.');
       const records = await openSnapshot(task, snapshot);
       let previous:
         | Awaited<ReturnType<(typeof import('./localBaselineStorage'))['readEncryptedBaseline']>>
@@ -1118,6 +1239,7 @@ export const createContentOwner = (
           task,
           {
             db: db!,
+            allowReduced,
             scope,
             generation,
             intent: witness.intent,

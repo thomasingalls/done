@@ -1,0 +1,213 @@
+{
+  "base": "7a48b86b5b9fdbbeea31e23d921af97d6c06b772",
+  "createdAt": "2026-10-13T16:34:16.546877+00:00",
+  "node": "v26.11.1",
+  "logs": [
+    {
+      "path": "build.log.gz",
+      "sha256": "1adf886256ff988ec75f1173fcc4fb8f3510258eb403ff0eab43250e9809449e",
+      "bytes": 2154,
+      "uncompressedBytes": 6714
+    },
+    {
+      "path": "complete-regression.log.gz",
+      "sha256": "fcd06a200d0a638758a4960fc78ffe3d81bcfc8b3325d38bdca1f84d2347409e",
+      "bytes": 678,
+      "uncompressedBytes": 1325
+    },
+    {
+      "path": "empty-rotation.log.gz",
+      "sha256": "4f9f04c671d44966439eaaa07cd451a65fc2b8920f7c7d426a19e9c2558e5e50",
+      "bytes": 195,
+      "uncompressedBytes": 235
+    },
+    {
+      "path": "lifecycle-first.log.gz",
+      "sha256": "29fd26404eacbf822b0a9db17d9523c78bd881f8b43743e118120abdda913a5c",
+      "bytes": 900,
+      "uncompressedBytes": 2309
+    },
+    {
+      "path": "lifecycle-second.log.gz",
+      "sha256": "2e72469d20b09b4613e6c68a4c70e843c12a40c0d5afbeef633b67780a617066",
+      "bytes": 1049,
+      "uncompressedBytes": 3360
+    },
+    {
+      "path": "lifecycle-third.log.gz",
+      "sha256": "b125c26cc5a5c894251ca33e342bacfc64d9a5273787fbc342210dcea54c8230",
+      "bytes": 663,
+      "uncompressedBytes": 1291
+    },
+    {
+      "path": "native-final.log.gz",
+      "sha256": "a4eba946f07344acfabbebfca7517770150ec18534d1772ffb70d6a4b6255b03",
+      "bytes": 895,
+      "uncompressedBytes": 1837
+    },
+    {
+      "path": "native-first.log.gz",
+      "sha256": "559d642fb5c510d7e1c717a4f9b42f0189631782a6743bdd074c170c88ed4c0b",
+      "bytes": 801,
+      "uncompressedBytes": 1609
+    },
+    {
+      "path": "native-second.log.gz",
+      "sha256": "c7cecf484549d97834037935aee817e6ce3203a0bea7e69c83855a20cfc3575d",
+      "bytes": 1597,
+      "uncompressedBytes": 4919
+    },
+    {
+      "path": "ordinary.log.gz",
+      "sha256": "cdf3d8579232fb350530fa4673d1959b6ff04a783e4f37657c8e1af9d56ae90b",
+      "bytes": 356,
+      "uncompressedBytes": 616
+    },
+    {
+      "path": "smoke-second.log.gz",
+      "sha256": "40c243bb10095449d5cc442a3e0f26b4efadc5aa5e618cfc20986172264159d4",
+      "bytes": 398,
+      "uncompressedBytes": 680
+    },
+    {
+      "path": "smoke.log.gz",
+      "sha256": "0f5e25004866948085fceccdfc3d51ad269950da4c3f410060f20df91780ec9d",
+      "bytes": 737,
+      "uncompressedBytes": 1751
+    },
+    {
+      "path": "static.log.gz",
+      "sha256": "95985382476c7d9a16fbd7561d8837fbb23471e09a192ffa089554a336dffeb6",
+      "bytes": 131,
+      "uncompressedBytes": 154
+    },
+    {
+      "path": "unit-final-combined.log.gz",
+      "sha256": "8e1157ce75c0aac33e6f0dd56e4ab49d2773e3b690a64dec0c064e56c0439c45",
+      "bytes": 198,
+      "uncompressedBytes": 242
+    },
+    {
+      "path": "unit-final.log.gz",
+      "sha256": "9ead6a4837835c5e29077a41ce1e8d6f2757c7ec2fe1d235b8498791cb9aaa73",
+      "bytes": 197,
+      "uncompressedBytes": 242
+    },
+    {
+      "path": "unit-first.log.gz",
+      "sha256": "f1b27856e765832ca43e002b4fd174a9646d06c8ecebec37e38697d382954125",
+      "bytes": 1050,
+      "uncompressedBytes": 3254
+    },
+    {
+      "path": "unit-second.log.gz",
+      "sha256": "09a48ecd213d88511e426d7b03d16a9bdd9a2bdb95c95c78a6ddd53e1d50477a",
+      "bytes": 195,
+      "uncompressedBytes": 233
+    },
+    {
+      "path": "unit-third.log.gz",
+      "sha256": "a3db345d9205d8cbbc90b7c9324370d8bed1022a629ec91e218192184cb13431",
+      "bytes": 194,
+      "uncompressedBytes": 235
+    },
+    {
+      "path": "unsent.log.gz",
+      "sha256": "019f876fb825fa9cbb5783abecba745945232d14a186be41655113cc9f5180b2",
+      "bytes": 395,
+      "uncompressedBytes": 683
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "fb93250a381599721d5b22cde574d1c9552946a062341f173a4727627d812f05",
+      "bytes": 123880
+    },
+    {
+      "path": "src/crdt/contentRecord.ts",
+      "sha256": "84124d97e9194560c242482bd161c92c0b83ba91d5b5b0e98ffda700a720be2d",
+      "bytes": 8851
+    },
+    {
+      "path": "src/crdt/contentRotation.ts",
+      "sha256": "93392474b736d2f06e4c8455a37fc5f302df42b33cf6ae1ad2d1d5707fc27953",
+      "bytes": 11322
+    },
+    {
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "7243ce5149227c6cc750f804f4758773d352219f53b76281aad97b90aa125fc2",
+      "bytes": 53786
+    },
+    {
+      "path": "src/crdt/localBaselineAnchor.ts",
+      "sha256": "f5e33ae4892c76123db3187e7a903045e017e6ae2dbbb017bbea6101f95c7314",
+      "bytes": 6509
+    },
+    {
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "a6a4490fc0ac19bd5442f21001dbbec08662c2b6fc6b73d3e84ff389a06b6289",
+      "bytes": 2637
+    },
+    {
+      "path": "src/crdt/localBaselineShadow.ts",
+      "sha256": "ced9b23b513391ab2bba63072f57871a6a45fa5acb6575541d64c9bb24b6b05b",
+      "bytes": 10867
+    },
+    {
+      "path": "src/crdt/localBaselineStorage.ts",
+      "sha256": "f4a7b4c651ac8a25be95ad63ad7f0290f42ef6b9819ccee442965561e73371ea",
+      "bytes": 19896
+    },
+    {
+      "path": "src/crdt/localGenesisStorage.ts",
+      "sha256": "bb1f4db1508bd59641f15e89544db301890fd9ef213cfa58f081bfa5bc649522",
+      "bytes": 11544
+    },
+    {
+      "path": "src/crdt/localRetentionPlan.ts",
+      "sha256": "bacb4eba4cbf60ea74c80692110b5729acebc03109ad6f0c7568eab160481af2",
+      "bytes": 15424
+    },
+    {
+      "path": "src/crdt/localRetentionStorage.ts",
+      "sha256": "fb983f59d41543d7ce5b75342855f1d7e2ba32dc07c17e3ec6e004075263aadc",
+      "bytes": 8737
+    },
+    {
+      "path": "test/account-membership/custody-entry.ts",
+      "sha256": "c39da48cfb8676e8e6bd3916c8ee222ac868c1fbbbfa3183f9f3b946bed59dbb",
+      "bytes": 20847
+    },
+    {
+      "path": "test/account-sync/fixtures.mjs",
+      "sha256": "1aaf3aaaa284e513d44fd672cf6ec8fba31ca044524b9123abc77f0254d17d50",
+      "bytes": 10882
+    },
+    {
+      "path": "test/local-baseline/lifecycle-owner.spec.ts",
+      "sha256": "cd1e1c894f97813172a16112d4ea9ef15375d63d97e5c2226308cb183b1ebc71",
+      "bytes": 20425
+    },
+    {
+      "path": "test/local-baseline/owner.native.mjs",
+      "sha256": "b3b743fd89efc46cf8348d48eade9621e8b8ed2575bd59380ae4d5d9e231793f",
+      "bytes": 47693
+    },
+    {
+      "path": "test/local-baseline/removal-checkpoint.spec.ts",
+      "sha256": "aa6b6a9154e1233eb9901da9775dbd628732ce0fc4e70ed7850dca78a2af9a62",
+      "bytes": 5589
+    },
+    {
+      "path": "test/local-baseline/removal.native.mjs",
+      "sha256": "6a6bc1af5391f4f446170b4df00ca47a921acd3d7f7b61c022b4c6d0833c0f35",
+      "bytes": 21269
+    },
+    {
+      "path": "test/localRetentionStorage.test.ts",
+      "sha256": "27f43471a646904b9f534bebcc8789d55d043488667e97292c316d41407576f0",
+      "bytes": 13812
+    }
+  ]
+}

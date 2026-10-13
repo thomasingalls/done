@@ -1,4 +1,4 @@
-/** Private durable framing. Ordinary Account readers deliberately do not accept counters v3/v4. */
+/** Private durable framing. Ordinary Account readers deliberately do not accept counters v3/v4/v5. */
 import { fields, hex, utf8, type Bytes } from './custodyCrypto';
 import {
   counterPayload,
@@ -13,6 +13,7 @@ import { StorageCompatibilityError } from './storageCompatibility';
 
 export const BASELINE_CARRIER = 'done/local-baseline-carrier/draft-1';
 export const ERA_BASELINE_CARRIER = 'done/local-baseline-carrier/draft-2';
+export const REDUCED_BASELINE_CARRIER = 'done/local-baseline-carrier/draft-3';
 export const BASELINE_CHUNK_BYTES = 256 * 1024;
 export const BASELINE_MAX_BYTES = LOCAL_BASELINE_LIMIT + 32;
 export const BASELINE_MAX_CHUNKS = Math.ceil(BASELINE_MAX_BYTES / BASELINE_CHUNK_BYTES);
@@ -20,17 +21,17 @@ export const baselineChunkKey = (index: number): IDBValidKey => ['local-baseline
 export interface BaselinePointer extends Pick<BaselineAnchor, 'revision'> {
   /** Keyed plaintext commitment; never persist an unkeyed hash of writing. */
   commitment: string;
-  format: typeof BASELINE_CARRIER | typeof ERA_BASELINE_CARRIER;
+  format: typeof BASELINE_CARRIER | typeof ERA_BASELINE_CARRIER | typeof REDUCED_BASELINE_CARRIER;
   journalEra?: JournalEra;
-  /** This phase retains the complete physical history. Never infer deletion permission. */
-  history: 'complete';
+  /** Closed carrier mode: v3/v4 keep complete history; only the private v5 writer may reduce it. */
+  history: 'complete' | 'baseline-plus-suffix';
   generation: number;
   firstSequence: number;
   chunks: number;
   bytes: number;
 }
 export type BaselineCounter = Omit<Extract<ContentCounter, { v: 2 }>, 'v'> & {
-  v: 3 | 4;
+  v: 3 | 4 | 5;
   baseline: BaselinePointer;
 };
 const exact = (input: unknown, keys: string[]): Record<string, unknown> => {
@@ -52,6 +53,7 @@ export function parseBaselineCounter(
   input: unknown,
   scope: ContentIdentity,
   intent: string,
+  allowReduced = false,
 ): BaselineCounter {
   const value = exact(input, [
     'v',
@@ -64,7 +66,9 @@ export function parseBaselineCounter(
     'spool',
     'baseline',
   ]);
-  if (value['v'] !== 3 && value['v'] !== 4) return corrupt('Expected baseline counter.');
+  if (value['v'] === 5 && !allowReduced)
+    throw new StorageCompatibilityError('Reduced local baseline reader required.');
+  if (![3, 4, 5].includes(value['v'] as number)) return corrupt('Expected baseline counter.');
   const p = exact(value['baseline'], [
     'format',
     'history',
@@ -74,17 +78,22 @@ export function parseBaselineCounter(
     'firstSequence',
     'chunks',
     'bytes',
-    ...(value['v'] === 4 ? ['journalEra'] : []),
+    ...(value['v'] !== 3 ? ['journalEra'] : []),
   ]);
   if (
-    p['format'] !== (value['v'] === 4 ? ERA_BASELINE_CARRIER : BASELINE_CARRIER) ||
-    p['history'] !== 'complete'
+    p['format'] !==
+      (value['v'] === 5
+        ? REDUCED_BASELINE_CARRIER
+        : value['v'] === 4
+          ? ERA_BASELINE_CARRIER
+          : BASELINE_CARRIER) ||
+    p['history'] !== (value['v'] === 5 ? 'baseline-plus-suffix' : 'complete')
   )
     throw new StorageCompatibilityError('Unsupported local baseline carrier.');
   const { baseline: _pointer, ...allocation } = value;
   const base = parseCounter({ ...allocation, v: 2 }, scope, intent);
   if (base.v !== 2) return corrupt();
-  const era = value['v'] === 4 ? parseJournalEra(p['journalEra']) : undefined;
+  const era = value['v'] !== 3 ? parseJournalEra(p['journalEra']) : undefined;
   const bytes = integer(p['bytes'], BASELINE_MAX_BYTES),
     chunks = integer(p['chunks'], BASELINE_MAX_CHUNKS),
     firstSequence = integer(p['firstSequence']),
@@ -92,6 +101,7 @@ export function parseBaselineCounter(
     revision = integer(p['revision']);
   if (
     (era && era.revision > revision) ||
+    (value['v'] === 5 && era?.revision !== revision) ||
     bytes <= 32 ||
     chunks !== Math.ceil(bytes / BASELINE_CHUNK_BYTES) ||
     !Number.isSafeInteger(firstSequence + chunks) ||
@@ -103,11 +113,16 @@ export function parseBaselineCounter(
     return corrupt();
   return {
     ...base,
-    v: value['v'] as 3 | 4,
+    v: value['v'] as 3 | 4 | 5,
     baseline: {
-      format: value['v'] === 4 ? ERA_BASELINE_CARRIER : BASELINE_CARRIER,
+      format:
+        value['v'] === 5
+          ? REDUCED_BASELINE_CARRIER
+          : value['v'] === 4
+            ? ERA_BASELINE_CARRIER
+            : BASELINE_CARRIER,
       ...(era ? { journalEra: era } : {}),
-      history: 'complete',
+      history: value['v'] === 5 ? 'baseline-plus-suffix' : 'complete',
       revision,
       commitment: p['commitment'],
       generation,
@@ -117,14 +132,16 @@ export function parseBaselineCounter(
     },
   };
 }
-/** No implicit downgrade: this encoding is solely the allocation component of the v3 MAC. */
+/** No implicit downgrade: this encoding is solely the allocation component of the versioned baseline MAC. */
 export function baselineCounterPayload(scope: ContentIdentity, c: BaselineCounter): Bytes {
   const { baseline: p, ...allocation } = c;
   return utf8(
     JSON.stringify([
-      c.v === 4
-        ? 'done/content-counter/local-baseline-draft-2'
-        : 'done/content-counter/local-baseline-draft-1',
+      c.v === 5
+        ? 'done/content-counter/local-baseline-draft-3'
+        : c.v === 4
+          ? 'done/content-counter/local-baseline-draft-2'
+          : 'done/content-counter/local-baseline-draft-1',
       hex(counterPayload(scope, { ...allocation, v: 2 })),
       [
         p.format,
@@ -150,6 +167,7 @@ export const baselineChunkPrefix = (
 ): Bytes =>
   fields(
     p.format,
+    ...(p.format === REDUCED_BASELINE_CARRIER ? [p.history] : []),
     scope.slotId,
     scope.principalId,
     scope.workspaceId,
@@ -167,4 +185,5 @@ export const baselineChunkPrefix = (
       : []),
   );
 
-export const baselineVersion = (p: BaselinePointer): 3 | 4 => (p.journalEra ? 4 : 3);
+export const baselineVersion = (p: BaselinePointer): 3 | 4 | 5 =>
+  p.format === REDUCED_BASELINE_CARRIER ? 5 : p.journalEra ? 4 : 3;
