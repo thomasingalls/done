@@ -36,6 +36,7 @@ import {
 } from './yjs';
 import { copyRecords, sameRecords, sameBytes, eraseVerified } from './verifiedRecords';
 import type { VerificationMemo } from './verificationMemo';
+import type { SpoolReplayStart } from './spoolRecord';
 
 export async function heldInboundContext(
   marker: PromotionRecord,
@@ -96,6 +97,7 @@ function* inspectInboundSteps(
   records: readonly OpenedRecord[],
   route: CaptureRoute,
   context: InboundContext,
+  start?: SpoolReplayStart,
 ) {
   countLedgerWork('inboundCensuses');
   const prior: OpenedRecord[] = [],
@@ -119,7 +121,7 @@ function* inspectInboundSteps(
       entries.push({ record, event: decodeInboundRecord(record.bytes) });
     } else prior.push(record);
   }
-  const delivery = inspectDelivery(prior, route, context.authority);
+  const delivery = inspectDelivery(prior, route, context.authority, start);
   // Delivery's own transition order remains separate; the one completeness witness covers the union.
   const ledger = [
     ...delivery.ledger,

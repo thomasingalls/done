@@ -1,6 +1,8 @@
-# Local Account retention — design only, 2026-10-12
+# Local Account retention — design and experimental replay
 
-No new record, reader fence, migration or deletion is implemented by this document. The separate
+The [2026-10-13 baseline format/replay phase](./account-local-baseline-replay.md) implements an
+experimental in-memory codec, authenticated candidate builder and pure reader. No application path
+uses it; no persistent record, reader fence, migration, installer or deletion is enabled. The separate
 warm-load repair changes owner-local reuse only. General release validation remains paused.
 
 ## Target and limits
@@ -92,9 +94,13 @@ trimmed. Prove undo/redo and subsequent publication across the retention boundar
 
 ## First implementation-sized step after design approval
 
-Specify the baseline codec and pure replay-from-baseline contract. Differential tests compare
-full history with baseline plus suffix over accepted prefixes, pending sources, partial capsules,
-refusals/retries, received dependencies, membership changes and compaction. Only after that should
-an owned atomic installer and crash/restart checks remove physical rows. Measure equal-workspace
-fixtures at multiple prefix lengths, including a deep receiving device. No deletion or format
-rollout is authorized solely by this design note.
+The first codec and pure replay experiment is implemented with the narrower eligibility and
+limitations recorded in the [phase contract](./account-local-baseline-replay.md). Differential tests
+compare full history with baseline plus suffix and the next source/position selection. An unresolved
+cut, new authority after the cut, or unsupported historical detail requires intact full history.
+
+Next, integrate owned shadow construction/replay with all history retained. Before deletion, resolve
+retention-aware transitions/consumers, the authenticated durable pointer, journal and old-read fencing,
+and the exact atomic installer with crash/restart checks. Measure equal-workspace fixtures at multiple
+prefix lengths when controlled timing is available. No deletion or format rollout is authorized solely
+by this design note.

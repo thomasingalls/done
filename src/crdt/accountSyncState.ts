@@ -42,7 +42,8 @@ export function advanceSelfReceive(
   after = 0,
 ): void {
   verifySyncState(census, delivery, inbound, after);
-  if (after > delivery.acceptedThrough) captureError('Accepted self prefix regressed');
+  if (after > delivery.acceptedThrough || after < (census.spool.origin?.position ?? 0))
+    captureError('Accepted self prefix regressed');
   // A later conflict blocks use of the stream, but must not erase its already retained
   // accepted prefix (or make the scheduler observe progress going backwards).
   const conflict = delivery.conflict || inbound.conflict;
@@ -58,7 +59,9 @@ export function advanceSelfReceive(
   let previous = prior?.kind === 'accepted' ? prior.head.link : ZERO_REFUSAL,
     position = after;
   try {
-    for (const entry of census.spool.positions.slice(after)) {
+    for (const entry of census.spool.positions.slice(
+      after - (census.spool.origin?.position ?? 0),
+    )) {
       if (entry.position > delivery.acceptedThrough) break;
       if (entry.position !== position + 1 || !entry.wire)
         return captureError('Accepted self stream has a gap');

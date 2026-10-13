@@ -1,0 +1,732 @@
+// @vitest-environment node
+import { expect, it } from 'vitest';
+import fc from 'fast-check';
+import { createHash } from 'node:crypto';
+import { Y, sameDocState } from '../src/crdt/yjs';
+import {
+  prepareLocalBaseline,
+  replayLocalBaseline,
+  replayFullLocalHistory,
+  type BaselineAuthentication,
+  type LocalBaselineContext,
+} from '../src/crdt/localBaselineReplay';
+import {
+  decodeLocalBaseline,
+  encodeLocalBaseline,
+  LOCAL_BASELINE_LIMIT,
+  baselineAuthenticationPayload,
+} from '../src/crdt/localBaselineRecord';
+import { inspectInbound } from '../src/crdt/inboundLedger';
+import {
+  encodeSpoolEntry,
+  extendSpoolWitness,
+  nextSpoolPosition,
+  type SpoolEntry,
+} from '../src/crdt/spoolRecord';
+import { encodeDeliveryEntry } from '../src/crdt/deliveryRecord';
+import { encodeSourceCapsule } from '../src/crdt/sourceCapture';
+import {
+  emptySpoolWitness,
+  type ContentCounter,
+  type OpenedRecord,
+} from '../src/crdt/contentRecord';
+import { type Bytes } from '../src/crdt/custodyCrypto';
+import { entry, A, ZERO, type FixtureEntry } from './account-inbound/fixtures';
+import { context, eventWire } from './account-inbound-codecs/oracle';
+import { selectEnvelopeSources } from '../src/crdt/accountEnvelopePreparation';
+// @ts-expect-error Existing independent Node fixtures are JavaScript.
+import { memberFixture, retriedFixture } from './local-baseline/fixtures.mjs';
+
+const digest = (b: Uint8Array) => createHash('sha256').update(b).digest('hex');
+const key = await crypto.subtle.generateKey({ name: 'HMAC', hash: 'SHA-256' }, false, [
+  'sign',
+  'verify',
+]);
+const auth: BaselineAuthentication = {
+  sign: async (p) => new Uint8Array(await crypto.subtle.sign('HMAC', key, p)),
+  verify: (p, mac) => crypto.subtle.verify('HMAC', key, mac, p),
+};
+async function fixture(actions = [false, true, false, false], receipts = false) {
+  const base = context(),
+    route = {
+      workspace: base.authority.workspace,
+      credential: A,
+      principal: A,
+      epoch: 1,
+      generation: 1,
+    };
+  const signer = await crypto.subtle.importKey(
+    'raw',
+    Buffer.from(base.publisher.publicKey, 'hex'),
+    'Ed25519',
+    false,
+    ['verify'],
+  );
+  const ctx: LocalBaselineContext = {
+    identity: {
+      slotId: '01'.repeat(16),
+      principalId: A,
+      workspaceId: route.workspace,
+      storeId: '02'.repeat(16),
+      rootId: '03'.repeat(16),
+    },
+    route,
+    inbound: base,
+    signer,
+    installation: { kind: 'original' },
+    assertCurrent() {},
+  };
+  const rows: OpenedRecord[] = [],
+    positions: FixtureEntry[] = [],
+    cuts: number[] = [];
+  let seq = 0,
+    attempts = 0,
+    previous = ZERO;
+  const add = (kind: OpenedRecord['kind'], bytes: Bytes) =>
+    rows.push({ seq: ++seq, gen: 1, kind, bytes });
+  const spool = (e: SpoolEntry) =>
+    add(e.type === 'envelope' ? 'outbound' : 'heads', encodeSpoolEntry(e, route));
+  const doc = new Y.Doc({ gc: false });
+  // Two originals per capsule: the first cut deliberately leaves one unallocated index.
+  try {
+    for (let i = 0; i < actions.length; i += 2) {
+      const updates: Bytes[] = [];
+      for (const remove of actions.slice(i, i + 2)) {
+        const capture = (u: Uint8Array) => updates.push(new Uint8Array(u));
+        doc.on('update', capture);
+        const text = doc.getText('t');
+        if (remove && text.length) text.delete(0, 1);
+        else text.insert(text.length, 'é🙂x');
+        doc.off('update', capture);
+      }
+      const id = (i + 1).toString(16).padStart(32, '0');
+      const capsule = encodeSourceCapsule({
+        ...route,
+        v: 1,
+        id,
+        sources: updates.map((bytes) => ({ actor: A, kind: 'human', bytes })),
+      });
+      for (const u of updates) add('update', u);
+      add('outbound', capsule);
+      for (const [index, update] of updates.entries()) {
+        const position = positions.length + 1;
+        const e = entry({ publisher: A, updates: [update] }, position, previous);
+        spool({ type: 'position', position, source: { id, index, hash: digest(capsule) } });
+        // Preserve a burned encryption attempt, not merely the number of envelopes.
+        spool({ type: 'attempt', position, attempt: ++attempts });
+        spool({ type: 'attempt', position, attempt: ++attempts });
+        spool({ type: 'envelope', position, attempt: attempts, wire: e.envelope });
+        add(
+          'heads',
+          encodeDeliveryEntry({ type: 'response', position, wire: e.proof }, route, base.authority),
+        );
+        if (receipts) add('heads', eventWire(e));
+        cuts.push(rows.length);
+        positions.push(e);
+        previous = e.link;
+      }
+    }
+  } finally {
+    doc.destroy();
+  }
+  const input = async (records = rows, next = (records.at(-1)?.seq ?? 0) + 1) => {
+    const census = inspectInbound(records, route, base);
+    let witness = emptySpoolWitness();
+    for (const b of census.delivery.spool.events)
+      witness = await extendSpoolWitness(witness, b, crypto.subtle);
+    const counter: ContentCounter = {
+      v: 2,
+      spool: witness,
+      store_id: ctx.identity.storeId,
+      intent: '04'.repeat(16),
+      active_gen: 1,
+      next_seq: next,
+      reserved: { 1: next - 1 },
+      mac: new Uint8Array(32),
+    };
+    return { records, counter };
+  };
+  return { ctx, rows, positions, cuts, input };
+}
+const stateEqual = (a: Bytes, b: Bytes) => {
+  const x = new Y.Doc({ gc: false }),
+    y = new Y.Doc({ gc: false });
+  try {
+    Y.applyUpdate(x, a);
+    Y.applyUpdate(y, b);
+    expect(sameDocState(x, y)).toBe(true);
+  } finally {
+    x.destroy();
+    y.destroy();
+  }
+};
+function observation(r: Awaited<ReturnType<typeof replayFullLocalHistory>>) {
+  return {
+    accepted: r.delivery.acceptedThrough,
+    final: r.delivery.finalThrough,
+    conflict: r.delivery.conflict,
+    refusals: r.delivery.refusals,
+    attempts: r.census.delivery.spool.attempts,
+    own: r.inbound.prefix,
+    inboundConflict: r.inbound.conflict,
+    peers: [...(r.inbound.peers ?? [])].map(([id, s]) => [id, s.prefix, s.conflict]),
+    installedHistory: r.inbound.installedHistory,
+  };
+}
+async function memberInput(records: readonly OpenedRecord[], c: LocalBaselineContext) {
+  const census = inspectInbound(records, c.route, c.inbound);
+  let spool = emptySpoolWitness();
+  for (const e of census.delivery.spool.events)
+    spool = await extendSpoolWitness(spool, e, crypto.subtle);
+  const next = (records.at(-1)?.seq ?? 0) + 1;
+  const counter: ContentCounter = {
+    v: 2,
+    spool,
+    store_id: c.identity.storeId,
+    intent: '04'.repeat(16),
+    active_gen: 1,
+    next_seq: next,
+    reserved: { 1: next - 1 },
+    mac: new Uint8Array(32),
+  };
+  return { records, counter };
+}
+it('generated cuts preserve exact document/deletions, partial capsules, burned invocations and subsequent accepted positions', async () => {
+  await fc.assert(
+    fc.asyncProperty(
+      fc.array(fc.boolean(), { minLength: 2, maxLength: 8 }),
+      fc.nat(),
+      async (actions, pick) => {
+        const f = await fixture(actions, true),
+          all = await f.input();
+        const cut = f.cuts[pick % f.cuts.length]!,
+          prefix = await f.input(f.rows.slice(0, cut));
+        const original = structuredClone(all);
+        const prepared = await prepareLocalBaseline(prefix, f.ctx, auth);
+        const b = decodeLocalBaseline(prepared.baseline.payload);
+        const ref = await replayFullLocalHistory(all, f.ctx);
+        const actual = await replayLocalBaseline(
+          prepared.baseline,
+          prepared.anchor,
+          { ...all, records: f.rows.slice(cut) },
+          f.ctx,
+          auth,
+        );
+        stateEqual(actual.snapshot, ref.snapshot);
+        expect(observation(actual)).toEqual(observation(ref));
+        expect(actual.census.delivery.spool.positions.map((p) => p.position)).toEqual(
+          ref.census.delivery.spool.positions
+            .filter((p) => p.position > b.own.position)
+            .map((p) => p.position),
+        );
+        const used = new Set(
+          ref.census.delivery.spool.positions.flatMap((p) => [
+            p.source.id + ':' + p.source.index,
+            ...(p.additional ?? []).map((r) => r.id + ':' + r.index),
+          ]),
+        );
+        for (const s of b.sources) {
+          const v = JSON.parse(new TextDecoder().decode(s.record.bytes));
+          for (const i of s.consumed) expect(used.has(v[2] + ':' + i)).toBe(true);
+        }
+        expect(all).toEqual(original);
+      },
+    ),
+    { seed: 13102026, numRuns: 30 },
+  );
+}, 30000);
+
+it('replays an unfinished tail without treating an invocation grant as an acceptance', async () => {
+  const f = await fixture(),
+    cut = f.cuts[0]!,
+    prefix = await f.input(f.rows.slice(0, cut));
+  const prepared = await prepareLocalBaseline(prefix, f.ctx, auth);
+  // Position two has an allocation and one burned grant; no envelope yet.
+  const all = await f.input(f.rows.slice(0, cut + 2));
+  const actual = await replayLocalBaseline(
+    prepared.baseline,
+    prepared.anchor,
+    { ...all, records: all.records.slice(cut) },
+    f.ctx,
+    auth,
+  );
+  const expected = await replayFullLocalHistory(all, f.ctx);
+  expect(observation(actual)).toEqual(observation(expected));
+  expect(actual.census.delivery.spool.positions[0]?.wire).toBeUndefined();
+  expect(actual.census.delivery.spool.positions[0]?.attempts).toEqual([3]);
+  await expect(prepareLocalBaseline(all, f.ctx, auth)).rejects.toThrow('ineligible');
+});
+
+it('replays from an empty cut and preserves unresolved Yjs dependencies in the later suffix', async () => {
+  const f = await fixture(),
+    empty = await f.input([]),
+    p = await prepareLocalBaseline(empty, f.ctx, auth),
+    all = await f.input();
+  expect(decodeLocalBaseline(p.baseline.payload).own).toMatchObject({ position: 0, attempts: 0 });
+  const replayed = await replayLocalBaseline(p.baseline, p.anchor, all, f.ctx, auth);
+  expect(observation(replayed)).toEqual(observation(await replayFullLocalHistory(all, f.ctx)));
+  const d = new Y.Doc({ gc: false }),
+    updates: Bytes[] = [];
+  d.on('update', (u) => updates.push(new Uint8Array(u)));
+  d.getText('pending').insert(0, 'parent');
+  d.getText('pending').insert(6, 'child');
+  d.destroy();
+  const complete = await prepareLocalBaseline(all, f.ctx, auth),
+    row: OpenedRecord = {
+      seq: all.counter.next_seq,
+      gen: 1,
+      kind: 'update',
+      bytes: updates[1]!,
+    },
+    pending = await f.input([...f.rows, row]);
+  const reduced = await replayLocalBaseline(
+    complete.baseline,
+    complete.anchor,
+    { ...pending, records: [row] },
+    f.ctx,
+    auth,
+  );
+  const reference = await replayFullLocalHistory(pending, f.ctx);
+  stateEqual(reduced.snapshot, reference.snapshot);
+  for (const state of [reduced.snapshot, reference.snapshot]) {
+    const reopened = new Y.Doc({ gc: false });
+    try {
+      Y.applyUpdate(reopened, state);
+      expect(reopened.getText('pending').toString()).toBe('');
+      Y.applyUpdate(reopened, updates[0]!);
+      expect(reopened.getText('pending').toString()).toBe('parentchild');
+    } finally {
+      reopened.destroy();
+    }
+  }
+});
+
+it('refuses tampering, wrong binding/anchor, missing suffix events, replayed prefix rows and caller mutation', async () => {
+  const f = await fixture(),
+    cut = f.cuts[0]!,
+    prefix = await f.input(f.rows.slice(0, cut)),
+    all = await f.input();
+  const p = await prepareLocalBaseline(prefix, f.ctx, auth),
+    suffix = { ...all, records: f.rows.slice(cut) };
+  const run = (b = p.baseline, anchor = p.anchor, s = suffix, c = f.ctx) =>
+    replayLocalBaseline(b, anchor, s, c, auth);
+  const changed = structuredClone(p.baseline);
+  changed.mac[0]! ^= 1;
+  await expect(run(changed)).rejects.toThrow('integrity');
+  await expect(run(p.baseline, { ...p.anchor, revision: 2 })).rejects.toThrow('integrity');
+  await expect(run(p.baseline, { ...p.anchor, hash: ZERO })).rejects.toThrow('integrity');
+  await expect(
+    run(p.baseline, p.anchor, suffix, {
+      ...f.ctx,
+      identity: { ...f.ctx.identity, slotId: 'ef'.repeat(16) },
+    }),
+  ).rejects.toThrow('scope');
+  await expect(
+    run(p.baseline, p.anchor, { ...suffix, records: suffix.records.slice(1) }),
+  ).rejects.toThrow();
+  await expect(run(p.baseline, p.anchor, all)).rejects.toThrow('integrity');
+  const b = decodeLocalBaseline(p.baseline.payload);
+  b.cut.witness.hash = 'ff'.repeat(32);
+  await expect(run({ ...p.baseline, payload: encodeLocalBaseline(b) })).rejects.toThrow(
+    'integrity',
+  );
+  const detached = structuredClone(p),
+    mutable = structuredClone(suffix);
+  const pending = replayLocalBaseline(detached.baseline, detached.anchor, mutable, f.ctx, auth);
+  detached.baseline.payload.fill(0);
+  detached.baseline.mac.fill(0);
+  mutable.records.forEach((r) => r.bytes.fill(0));
+  mutable.counter.next_seq++;
+  expect(observation(await pending)).toEqual(observation(await run()));
+  let current = true;
+  const late = replayLocalBaseline(
+    p.baseline,
+    p.anchor,
+    suffix,
+    {
+      ...f.ctx,
+      assertCurrent() {
+        if (!current) throw Error('closed');
+      },
+    },
+    auth,
+  );
+  current = false;
+  await expect(late).rejects.toThrow('closed');
+});
+
+it('has closed canonical framing, explicit limits, predecessor binding and detached decoded buffers', async () => {
+  const f = await fixture(),
+    p = await prepareLocalBaseline(await f.input(), f.ctx, auth);
+  const b = decodeLocalBaseline(p.baseline.payload),
+    wire = JSON.parse(new TextDecoder().decode(p.baseline.payload));
+  expect(encodeLocalBaseline(b)).toEqual(p.baseline.payload);
+  const encoded = (v: unknown) => new TextEncoder().encode(JSON.stringify(v));
+  expect(() => decodeLocalBaseline(encoded([...wire, null]))).toThrow();
+  expect(() => decodeLocalBaseline(encoded(['other', ...wire.slice(1)]))).toThrow();
+  expect(() =>
+    decodeLocalBaseline(
+      new TextEncoder().encode(' ' + new TextDecoder().decode(p.baseline.payload)),
+    ),
+  ).toThrow();
+  expect(() => decodeLocalBaseline(new Uint8Array(LOCAL_BASELINE_LIMIT + 1))).toThrow();
+  expect(() => encodeLocalBaseline({ ...b, revision: 0 })).toThrow();
+  expect(() =>
+    encodeLocalBaseline({ ...b, own: { ...b.own, position: Number.MAX_SAFE_INTEGER + 1 } }),
+  ).toThrow();
+  b.snapshot.fill(0);
+  expect(decodeLocalBaseline(p.baseline.payload).snapshot).not.toEqual(b.snapshot);
+  const next = await prepareLocalBaseline(await f.input(), f.ctx, auth, p.anchor);
+  expect(decodeLocalBaseline(next.baseline.payload)).toMatchObject({
+    revision: 2,
+    predecessor: p.anchor.hash,
+  });
+  await expect(
+    replayLocalBaseline(
+      p.baseline,
+      next.anchor,
+      { ...(await f.input()), records: [] },
+      f.ctx,
+      auth,
+    ),
+  ).rejects.toThrow('integrity');
+});
+
+it('retains partial-capsule consumption and refuses allocating its accepted index twice, even with a fresh witness', async () => {
+  const f = await fixture(),
+    cut = f.cuts[0]!,
+    p = await prepareLocalBaseline(await f.input(f.rows.slice(0, cut)), f.ctx, auth);
+  expect(decodeLocalBaseline(p.baseline.payload).sources[0]?.consumed).toEqual([0]);
+  const all = await f.input(f.rows.slice(0, cut + 1));
+  const changed = structuredClone(all.records.at(-1)!);
+  const v = JSON.parse(new TextDecoder().decode(changed.bytes));
+  v[9][1] = 0;
+  changed.bytes = new TextEncoder().encode(JSON.stringify(v));
+  await expect(
+    replayLocalBaseline(p.baseline, p.anchor, { ...all, records: [changed] }, f.ctx, auth),
+  ).rejects.toThrow('repeated');
+});
+
+it('the next source selection excludes accepted indexes of a retained partial capsule', async () => {
+  const f = await fixture(),
+    prefix = await f.input(f.rows.slice(0, f.cuts[0]!));
+  const p = await prepareLocalBaseline(prefix, f.ctx, auth);
+  const actual = await replayLocalBaseline(
+    p.baseline,
+    p.anchor,
+    { ...prefix, records: [] },
+    f.ctx,
+    auth,
+  );
+  const reference = await replayFullLocalHistory(prefix, f.ctx);
+  const select = (r: typeof actual) =>
+    selectEnvelopeSources(r.census.delivery.spool, f.ctx.route, true, crypto.subtle);
+  expect(await select(actual)).toEqual(await select(reference));
+  expect((await select(actual)).map((r) => r.index)).toEqual([1]);
+  expect(nextSpoolPosition(actual.census.delivery.spool)).toBe(
+    nextSpoolPosition(reference.census.delivery.spool),
+  );
+  expect(nextSpoolPosition(actual.census.delivery.spool)).toBe(2);
+});
+
+it('rejects pending snapshot dependencies and missing content before signing a baseline', async () => {
+  const f = await fixture(),
+    all = await f.input();
+  await expect(
+    prepareLocalBaseline(
+      { ...all, records: all.records.filter((r) => r.kind !== 'update') },
+      f.ctx,
+      auth,
+    ),
+  ).rejects.toThrow('coverage');
+  const d = new Y.Doc({ gc: false }),
+    updates: Bytes[] = [];
+  d.on('update', (u) => updates.push(new Uint8Array(u)));
+  d.getText('pending').insert(0, 'parent');
+  d.getText('pending').insert(6, 'child');
+  d.destroy();
+  const records = [
+    ...f.rows,
+    { seq: f.rows.at(-1)!.seq + 1, gen: 1, kind: 'update' as const, bytes: updates[1]! },
+  ];
+  await expect(prepareLocalBaseline(await f.input(records), f.ctx, auth)).rejects.toThrow(
+    'ineligible',
+  );
+});
+
+it('independently rejects a false frontier even when its draft payload is locally authenticated', async () => {
+  const f = await fixture(),
+    all = await f.input(),
+    p = await prepareLocalBaseline(all, f.ctx, auth);
+  const b = decodeLocalBaseline(p.baseline.payload);
+  b.own.link = 'a0'.repeat(32);
+  const payload = encodeLocalBaseline(b),
+    mac = await auth.sign(baselineAuthenticationPayload(payload));
+  await expect(
+    replayLocalBaseline(
+      { payload, mac },
+      { revision: 1, hash: digest(payload) },
+      { ...all, records: [] },
+      f.ctx,
+      auth,
+    ),
+  ).rejects.toThrow('integrity');
+});
+
+it('continues a certified peer after its retained frontier and preserves a signed outbound refusal', async () => {
+  const f = await memberFixture();
+  const c: LocalBaselineContext = f.ctx;
+  try {
+    await f.appendPeer();
+    await f.appendPeer(true);
+    const cut = f.rows.length,
+      prefix = await memberInput(f.rows, c);
+    const p = await prepareLocalBaseline(prefix, c, auth);
+    const b = decodeLocalBaseline(p.baseline.payload);
+    expect(b.streams.filter((s) => s.position === 2)).toHaveLength(1);
+    await f.appendPeer();
+    await f.appendOwn('refused');
+    const all = await memberInput(f.rows, c);
+    const ref = await replayFullLocalHistory(all, c);
+    const actual = await replayLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...all, records: f.rows.slice(cut) },
+      c,
+      auth,
+    );
+    stateEqual(actual.snapshot, ref.snapshot);
+    expect(observation(actual)).toEqual(observation(ref));
+    expect(actual.delivery.refusals.size).toBe(1);
+    await expect(prepareLocalBaseline(all, c, auth)).rejects.toThrow('ineligible');
+    // A locally valid older receive answer needs its original retained evidence, not a cursor reset.
+    const old = structuredClone(f.rows[1]) as OpenedRecord;
+    old.seq = f.rows.at(-1).seq + 1;
+    await expect(
+      replayLocalBaseline(
+        p.baseline,
+        p.anchor,
+        {
+          records: [...f.rows.slice(cut), old],
+          counter: {
+            ...all.counter,
+            next_seq: old.seq + 1,
+            reserved: { 1: old.seq },
+            spool: await extendSpoolWitness(all.counter.spool, old.bytes, crypto.subtle),
+          },
+        },
+        c,
+        auth,
+      ),
+    ).rejects.toThrow('history-required');
+    const changed = {
+      ...c,
+      inbound: { ...c.inbound, baseline: { ...c.inbound.baseline, id: 'ef'.repeat(32) } },
+    };
+    await expect(
+      replayLocalBaseline(
+        p.baseline,
+        p.anchor,
+        { ...all, records: f.rows.slice(cut) },
+        changed,
+        auth,
+      ),
+    ).rejects.toThrow('scope');
+    // Installation cuts are part of the authority fingerprint, not an install-time boolean.
+    const altered = { ...c, installation: structuredClone(c.installation) };
+    if (altered.installation.kind === 'original')
+      altered.installation.successor!.before.hash = 'ef'.repeat(32);
+    await expect(prepareLocalBaseline(prefix, altered, auth)).rejects.toThrow();
+    await expect(
+      replayLocalBaseline(
+        p.baseline,
+        p.anchor,
+        { ...all, records: f.rows.slice(cut) },
+        altered,
+        auth,
+      ),
+    ).rejects.toThrow('scope');
+  } finally {
+    f.clear();
+  }
+});
+
+it('retained replay agrees after exact content compaction and subsequent actor-scoped undo/redo', async () => {
+  const f = await fixture(),
+    cut = f.cuts[1]!,
+    p = await prepareLocalBaseline(await f.input(f.rows.slice(0, cut)), f.ctx, auth);
+  const all = await f.input(),
+    expected = await replayFullLocalHistory(all, f.ctx);
+  const state: OpenedRecord = {
+    kind: 'state',
+    gen: 1,
+    seq: all.counter.next_seq,
+    bytes: expected.snapshot,
+  };
+  const compacted = {
+    records: [...f.rows.filter((r) => r.kind !== 'update'), state],
+    counter: { ...all.counter, next_seq: state.seq + 1, reserved: { 1: state.seq } },
+  };
+  const actual = await replayLocalBaseline(
+    p.baseline,
+    p.anchor,
+    { ...compacted, records: compacted.records.filter((r) => r.seq > f.rows[cut - 1]!.seq) },
+    f.ctx,
+    auth,
+  );
+  expect(observation(actual)).toEqual(observation(await replayFullLocalHistory(compacted, f.ctx)));
+  stateEqual(actual.snapshot, expected.snapshot);
+  const a = new Y.Doc({ gc: false }),
+    b = new Y.Doc({ gc: false }),
+    peer = new Y.Doc({ gc: false }),
+    human = {};
+  Y.applyUpdate(a, actual.snapshot);
+  Y.applyUpdate(b, expected.snapshot);
+  a.clientID = b.clientID = 910;
+  const ua = new Y.UndoManager(a.getText('t'), { trackedOrigins: new Set([human]) }),
+    ub = new Y.UndoManager(b.getText('t'), { trackedOrigins: new Set([human]) });
+  try {
+    for (const d of [a, b]) d.transact(() => d.getText('t').insert(0, 'local'), human);
+    Y.applyUpdate(peer, Y.encodeStateAsUpdate(a));
+    let remote!: Bytes;
+    peer.on('update', (u) => (remote = new Uint8Array(u)));
+    peer.getText('t').insert(peer.getText('t').length, 'remote');
+    Y.applyUpdate(a, remote);
+    Y.applyUpdate(b, remote);
+    expect(sameDocState(a, b)).toBe(true);
+    ua.undo();
+    ub.undo();
+    expect(sameDocState(a, b)).toBe(true);
+    expect(a.getText('t').toString()).toContain('remote');
+    ua.redo();
+    ub.redo();
+    expect(sameDocState(a, b)).toBe(true);
+  } finally {
+    ua.destroy();
+    ub.destroy();
+    a.destroy();
+    b.destroy();
+    peer.destroy();
+  }
+});
+
+it('rechecks retained checkpoint authority and receive cuts; later installations explicitly require full history', async () => {
+  const f = await memberFixture(),
+    c: LocalBaselineContext = f.ctx;
+  try {
+    await f.appendPeer();
+    await f.appendPeer();
+    const beforeHistory = f.rows.length,
+      before = await memberInput(f.rows, c);
+    const old = await prepareLocalBaseline(before, c, auth);
+    await f.appendHistory();
+    const cut = f.rows.length,
+      prefix = await memberInput(f.rows, c);
+    await expect(
+      replayLocalBaseline(
+        old.baseline,
+        old.anchor,
+        { ...prefix, records: f.rows.slice(beforeHistory) },
+        c,
+        auth,
+      ),
+    ).rejects.toThrow('history-required');
+    const p = await prepareLocalBaseline(prefix, c, auth);
+    expect(decodeLocalBaseline(p.baseline.payload).history).not.toBeNull();
+    await f.appendPeer(true);
+    const all = await memberInput(f.rows, c);
+    const actual = await replayLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...all, records: f.rows.slice(cut) },
+      c,
+      auth,
+    );
+    const reference = await replayFullLocalHistory(all, c);
+    expect(observation(actual)).toEqual(observation(reference));
+    stateEqual(actual.snapshot, reference.snapshot);
+    const b = decodeLocalBaseline(p.baseline.payload);
+    const installation = JSON.parse(new TextDecoder().decode(b.history!.bytes));
+    installation[9].signature = '00'.repeat(64);
+    b.history!.bytes = new TextEncoder().encode(JSON.stringify(installation));
+    const payload = encodeLocalBaseline(b),
+      mac = await auth.sign(baselineAuthenticationPayload(payload));
+    await expect(
+      replayLocalBaseline(
+        { payload, mac },
+        { revision: b.revision, hash: digest(payload) },
+        { ...all, records: f.rows.slice(cut) },
+        c,
+        auth,
+      ),
+    ).rejects.toThrow();
+  } finally {
+    f.clear();
+  }
+});
+
+it('preserves reservation holes and refuses an old reserved sequence arriving after a supposedly settled cut', async () => {
+  const f = await fixture(),
+    input = await f.input();
+  const burned = {
+    ...input,
+    counter: {
+      ...input.counter,
+      next_seq: input.counter.next_seq + 3,
+      reserved: { 1: input.counter.next_seq + 2 },
+    },
+  };
+  const p = await prepareLocalBaseline(burned, f.ctx, auth);
+  const decoded = decodeLocalBaseline(p.baseline.payload);
+  expect(decoded.cut.nextSequence).toBe(burned.counter.next_seq);
+  await replayLocalBaseline(p.baseline, p.anchor, { ...burned, records: [] }, f.ctx, auth);
+  const late: OpenedRecord = {
+    kind: 'update',
+    gen: 1,
+    seq: input.counter.next_seq + 1,
+    bytes: new Uint8Array([0, 0]),
+  };
+  await expect(
+    replayLocalBaseline(p.baseline, p.anchor, { ...burned, records: [late] }, f.ctx, auth),
+  ).rejects.toThrow('integrity');
+  await expect(
+    replayLocalBaseline(p.baseline, p.anchor, { records: [], counter: input.counter }, f.ctx, auth),
+  ).rejects.toThrow('scope');
+});
+
+it('summarizes an accepted current-key retry only after full historical refusal and membership verification', async () => {
+  const f = await retriedFixture(),
+    c: LocalBaselineContext = f.ctx;
+  try {
+    const all = await memberInput(f.rows, c);
+    const full = await replayFullLocalHistory(all, c);
+    expect(full.census.delivery.spool.positions[0]!.retries).toHaveLength(1);
+    const p = await prepareLocalBaseline(all, c, auth),
+      b = decodeLocalBaseline(p.baseline.payload);
+    expect(b.own.attempts).toBe(3);
+    expect(b.sources).toHaveLength(0);
+    const replayed = await replayLocalBaseline(
+      p.baseline,
+      p.anchor,
+      { ...all, records: [] },
+      c,
+      auth,
+    );
+    expect(observation(replayed)).toEqual(observation(full));
+    stateEqual(replayed.snapshot, full.snapshot);
+    const unresolved = await memberInput(f.rows.slice(0, -1), c);
+    await expect(prepareLocalBaseline(unresolved, c, auth)).rejects.toThrow('ineligible');
+    const changed = structuredClone(f.rows) as OpenedRecord[];
+    const retry = changed.find(
+      (r) => r.kind === 'heads' && JSON.parse(new TextDecoder().decode(r.bytes))[7] === 'retry',
+    )!;
+    const fields = JSON.parse(new TextDecoder().decode(retry.bytes));
+    const refusal = JSON.parse(Buffer.from(fields[9], 'hex').toString());
+    refusal[refusal.length - 1] = '00'.repeat(64);
+    fields[9] = Buffer.from(JSON.stringify(refusal)).toString('hex');
+    retry.bytes = new TextEncoder().encode(JSON.stringify(fields));
+    await expect(prepareLocalBaseline(await memberInput(changed, c), c, auth)).rejects.toThrow();
+  } finally {
+    f.clear();
+  }
+});

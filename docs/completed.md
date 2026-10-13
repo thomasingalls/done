@@ -13768,3 +13768,34 @@ rolling-audit detection window; custody authority checks remain complete and fre
 application PR for the operator's merge, then publish this exact tested image and prepare the ol-infra
 pin PR. No registry push, infrastructure change or deployment has occurred in this preparation.
 `docs/progress.md` remains untouched.
+
+### Authenticated local baseline format and pure replay — 2026-10-13
+
+**Boundary.** Implemented the first [local retention](./account-local-retention-design.md) slice as
+an experimental private codec, builder and replay reader. [Contract and limitations](./account-local-baseline-replay.md).
+No baseline is persisted or consumed by the application, no history is deleted, and no schema,
+encrypted carrier, wire format or journal policy changes. This work is uncommitted; release validation
+remains paused. Busy-host timing is not used to claim a performance improvement.
+
+**Change.** A locally authenticated canonical baseline binds identity/authority, full Yjs state,
+accepted publisher heads, peer receive cuts, invocation burns, source consumption, physical reservation
+accounting and the event witness. Partially used capsules retain their full original bytes. Preparation
+runs the full verifier, then independently reopens and compares its candidate. Replay verifies retained
+terminal signatures/checkpoint evidence and the suffix under the existing grammar. An independent
+expected anchor binds the revision/hash; it does not yet have a durable owner metadata carrier.
+
+**Evidence.** [58 focused tests pass](./development-evidence/2026-10-13-local-baseline/README.md):
+54 Vitest cases across eight files, including 14 baseline cases and 30 generated histories, plus four
+existing signed current-key retry Node cases. Tests cover peer receipts, refusal/retry, checkpoint cuts,
+exact compaction, pending dependencies, burned reservations, tampering, lifetime/isolation, subsequent
+undo/redo and next-operation equivalence. A test exposed repeated selection of an accepted index in a
+partially consumed capsule; the retained-origin selector now preserves its consumed indexes. TypeScript,
+changed-source lint/format, Yjs patch, ordinary build, size/origin and whitespace checks pass.
+
+**Limits/next.** Draft cuts require settled accepted allocations; unfinished work can remain in a
+suffix after an earlier cut. Changed authority, a new checkpoint installation or a request for retired
+historical receipt details requires intact full history. The next phase is owned shadow construction
+and comparison without deletion. Retention-aware transitions/consumers, durable encrypted anchoring,
+reader/writer fences, exact journal handling and atomic crash-safe installation remain prerequisites
+to physical removal. No installer or preservation of its live undo stack is claimed. `docs/progress.md`
+remains untouched for the other seat.

@@ -16,6 +16,7 @@ import {
   type SpoolState,
   type SourceRef,
   positionSources,
+  nextSpoolPosition,
   MAX_POSITION_SOURCES,
   MAX_POSITION_BYTES,
 } from './spoolRecord';
@@ -53,9 +54,10 @@ export async function selectEnvelopeSources(
 ): Promise<SourceRef[]> {
   const began = ledgerWorkStart();
   try {
-    const used = new Set(
-      state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
-    );
+    const used = new Set([
+      ...(state.origin?.consumed ?? []).map((s) => s.id + ':' + s.index),
+      ...state.positions.flatMap((p) => positionSources(p).map((s) => s.id + ':' + s.index)),
+    ]);
     const selected: SourceRef[] = [];
     let actor = '',
       kind = '',
@@ -147,7 +149,7 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
               )
             : positionSources(position!);
           if (!selected.length) return null;
-          const number = allocate ? state.positions.length + 1 : position!.position;
+          const number = allocate ? nextSpoolPosition(state) : position!.position;
           for (const ref of selected) {
             const capsule = decodeSourceCapsule(state.sources.get(ref.id)!, route);
             try {
@@ -172,12 +174,12 @@ export function createEnvelopePreparation(context: EnvelopePreparationContext) {
               selected.length === 1
                 ? {
                     type: 'position',
-                    position: state.positions.length + 1,
+                    position: number,
                     source: selected[0]!,
                   }
                 : {
                     type: 'position-batch',
-                    position: state.positions.length + 1,
+                    position: number,
                     sources: selected,
                   },
             );

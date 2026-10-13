@@ -58,12 +58,23 @@ export interface SpoolPosition {
   retries?: { wire: Bytes; refusal: Bytes }[];
 }
 export interface SpoolState {
+  /** Experimental local-baseline reader only; ordinary replay always starts at zero. */
+  origin?: { position: number; link: string; consumed: readonly { id: string; index: number }[] };
   sources: Map<string, Bytes>;
   positions: SpoolPosition[];
   attempts: number;
   sourceRecords: OpenedRecord[];
   events: Bytes[];
 }
+export interface SpoolReplayStart {
+  position: number;
+  link: string;
+  attempts: number;
+  /** Consumed indexes of capsules whose other originals must remain available. */
+  consumed: readonly { id: string; index: number }[];
+}
+export const nextSpoolPosition = (s: SpoolState): number =>
+  (s.origin?.position ?? 0) + s.positions.length + 1;
 export const positionSources = (p: Pick<SpoolPosition, 'source' | 'additional'>): SourceRef[] => [
   p.source,
   ...(p.additional ?? []),
@@ -222,7 +233,11 @@ export function decodeSpoolEntry(bytes: Bytes, route: CaptureRoute): SpoolEntry 
     return captureError('Unreadable spool entry: ' + String(cause));
   }
 }
-export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRoute): SpoolState {
+export function inspectSpool(
+  records: readonly OpenedRecord[],
+  route: CaptureRoute,
+  start?: SpoolReplayStart,
+): SpoolState {
   const sourceRecords: OpenedRecord[] = [],
     events: { record: OpenedRecord; entry: SpoolEntry; epoch: number }[] = [];
   for (const record of records) {
@@ -251,15 +266,18 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
   sourceRecords.sort((a, b) => a.seq - b.seq);
   const { sources, descriptions } = inspectCapturedSources(sourceRecords, route),
     positions: SpoolPosition[] = [],
-    used = new Set<string>();
-  let attempts = 0,
+    used = new Set((start?.consumed ?? []).map((s) => s.id + ':' + s.index));
+  let attempts = start?.attempts ?? 0,
     previousEpoch = 1;
   for (const { record, entry: e, epoch } of events.sort((a, b) => a.record.seq - b.record.seq)) {
     if (epoch < previousEpoch) captureError('Spool authority regressed');
     previousEpoch = epoch;
     const last = positions.at(-1);
     if (e.type === 'position' || e.type === 'position-batch') {
-      if (e.position !== positions.length + 1 || positions.some((p) => !p.wire))
+      if (
+        e.position !== (start?.position ?? 0) + positions.length + 1 ||
+        positions.some((p) => !p.wire)
+      )
         captureError('Position sequence or unresolved predecessor');
       const refs = e.type === 'position' ? [e.source] : e.sources;
       let previousSequence = -1,
@@ -341,7 +359,22 @@ export function inspectSpool(records: readonly OpenedRecord[], route: CaptureRou
       }
     }
   }
-  return { sources, positions, attempts, sourceRecords, events: events.map((e) => e.record.bytes) };
+  return {
+    ...(start
+      ? {
+          origin: {
+            position: start.position,
+            link: start.link,
+            consumed: start.consumed.map((s) => ({ ...s })),
+          },
+        }
+      : {}),
+    sources,
+    positions,
+    attempts,
+    sourceRecords,
+    events: events.map((e) => e.record.bytes),
+  };
 }
 export async function verifySpool(
   state: SpoolState,
