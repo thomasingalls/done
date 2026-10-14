@@ -126,7 +126,9 @@ test('schema-five account retains its original passkey, authority, name, code an
     await page.getByRole('button', { name: 'Finish account setup', exact: true }).click();
     await expect(page.locator('.shell')).toBeVisible();
     const id = (await page.getByLabel('Account ID', { exact: true }).textContent())!;
-    const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+    const compose = page.locator(
+      '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+    );
     await compose.fill('Writing saved before the service upgrade');
     await compose.press('Enter');
     await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(

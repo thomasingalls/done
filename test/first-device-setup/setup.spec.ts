@@ -10,7 +10,9 @@ async function local(page: Page, path = entry) {
   await page.getByLabel('Device-lock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Confirm and create' }).click();
   await expect(page.locator('.shell')).toBeVisible();
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill('Writing from before account setup');
   await compose.press('Enter');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
@@ -121,7 +123,9 @@ test('a locked local workspace keeps account creation and switching available fo
   await expect(page.locator('.shell')).toBeVisible();
   const id = (await page.getByLabel('Account ID', { exact: true }).textContent())!;
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(0);
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill('Only the other person’s writing');
   await compose.press('Enter');
   expect(await slot(page)).toEqual(beforeLocal);
@@ -349,7 +353,9 @@ test('create a second account on this device, resume it, and switch between isol
   expect(bId).not.toBe(a.id);
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(0);
   await expect(page.getByLabel('Actor name', { exact: true })).toHaveValue('Alex');
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill('Only in the second account');
   await compose.press('Enter');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
@@ -476,7 +482,9 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
     'Writing from before account setup',
   );
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill('Writing after account setup');
   await compose.press('Enter');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(2);

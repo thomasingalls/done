@@ -266,6 +266,9 @@ test.describe('Phase 2 workflow', () => {
     await expect(activeDay(page).getByText('kept after compaction')).toBeVisible();
     await expect(activeDay(page).locator('.card[data-frozen="true"]')).toHaveCount(1);
     await expect(activeDay(page).getByRole('textbox', { name: 'What got done?' })).toHaveCount(0);
+    await expect(activeDay(page).getByRole('textbox', { name: 'What’s scheduled?' })).toHaveCount(
+      0,
+    );
   });
 
   test('the device name is editable, since it is what the other device sees', async ({ page }) => {

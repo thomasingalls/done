@@ -118,7 +118,9 @@ export async function openSaved(page: Page, code: string, joining = false) {
   await expect(page.locator('.shell')).toBeVisible({ timeout: 15000 });
 }
 export async function add(page: Page, text: string) {
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill(text);
   await compose.press('Enter');
   await expect(page.locator('.shell')).toContainText(text);

@@ -35,7 +35,9 @@ const CARDS = [
 ];
 
 const compose = async (page: Page, text: string): Promise<void> => {
-  const field = page.locator('.day-panel[data-active="true"] .compose-field');
+  const field = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await field.click();
   // Enter submits, so a multi-line card is typed with Shift held.
   for (const [index, line] of text.split('\n').entries()) {
@@ -75,7 +77,11 @@ const lineBoxes = (
 test.describe('static render and mounted editor', () => {
   test('produce identical geometry for every supported construct', async ({ page }) => {
     await openApp(page);
-    await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
+    await expect(
+      page.locator(
+        '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+      ),
+    ).toBeVisible();
 
     for (const card of CARDS) await compose(page, card);
 

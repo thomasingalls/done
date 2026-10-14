@@ -29,6 +29,7 @@ export interface CardAction {
   hint: string;
   run: () => void;
   disabled?: boolean;
+  requiresUnlock?: boolean;
 }
 
 export interface CardReorder {
@@ -52,7 +53,7 @@ export interface CardProps {
   hooks: CardHooks;
   /** False for a neighbouring day, which renders content but never edits it. */
   editable: boolean;
-  /** Present only for live Done cards on the active, writable day. */
+  /** Present for live cards on the active, writable day. */
   reorder?: CardReorder;
   /** Set after a split/merge so editing resumes at the structural join. */
   autoFocusAt?: number;
@@ -121,7 +122,16 @@ export const Card = ({
 
     const handle = mountEditor(parent, { kind: 'card', id }, [
       cardKeymap(bridge),
-      blurToStatic(() => setEditing(false)),
+      blurToStatic((event) => {
+        // Keep the editor unlocked while focus moves to its own actions. Removing
+        // those buttons during blur would swallow the following click or Tab.
+        if (
+          event.relatedTarget instanceof Node &&
+          parent.closest('.card')?.contains(event.relatedTarget)
+        )
+          return;
+        setEditing(false);
+      }),
     ]);
     view.current = handle.view;
     handle.view.focus();
@@ -178,7 +188,8 @@ export const Card = ({
   );
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>): void => {
-    if (!guarded || editing || frozen || !editable || event.pointerType === 'mouse') return;
+    if ((!guarded && !reorder) || editing || frozen || !editable || event.pointerType === 'mouse')
+      return;
     const { clientX: x, clientY: y, pointerId } = event;
     clearHold();
     pointer.current = {
@@ -318,6 +329,15 @@ export const Card = ({
       data-guarded={guarded && !editing}
       data-frozen={frozen}
       data-card={id}
+      onBlurCapture={(event) => {
+        if (
+          editing &&
+          !(
+            event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)
+          )
+        )
+          setEditing(false);
+      }}
       data-reordering={reorder?.dragging === true}
       style={
         reorder?.dragging
@@ -384,19 +404,21 @@ export const Card = ({
               Unlock
             </button>
           )}
-          {actions.map((action) => (
-            <button
-              key={action.label}
-              type="button"
-              className="card-action"
-              title={action.hint}
-              aria-label={`${action.hint}: ${label}`}
-              disabled={action.disabled === true}
-              onClick={action.run}
-            >
-              {action.label}
-            </button>
-          ))}
+          {actions
+            .filter((action) => !action.requiresUnlock || !guarded || editing)
+            .map((action) => (
+              <button
+                key={action.label}
+                type="button"
+                className="card-action"
+                title={action.hint}
+                aria-label={`${action.hint}: ${label}`}
+                disabled={action.disabled === true}
+                onClick={action.run}
+              >
+                {action.label}
+              </button>
+            ))}
         </div>
       )}
     </article>

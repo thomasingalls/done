@@ -46,7 +46,9 @@ for (const entry of ['/', '/local.html']) {
     await page.getByRole('button', { name: 'I saved my code' }).click();
     await page.getByLabel('Device-lock code', { exact: true }).fill(code);
     await page.getByRole('button', { name: 'Confirm and create' }).click();
-    const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+    const compose = page.locator(
+      '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+    );
     await expect(compose).toBeVisible();
     await compose.fill('Offline encrypted writing');
     await compose.press('Enter');
@@ -72,9 +74,11 @@ for (const entry of ['/', '/local.html']) {
       'Offline encrypted writing',
     );
     await offline
-      .locator('.day-panel[data-active="true"] .compose-field')
+      .locator('.day-panel[data-active="true"] .collection[data-section="done"] .compose-field')
       .fill('Written while offline');
-    await offline.locator('.day-panel[data-active="true"] .compose-field').press('Enter');
+    await offline
+      .locator('.day-panel[data-active="true"] .collection[data-section="done"] .compose-field')
+      .press('Enter');
     await expect(
       offline.locator('.card').filter({ hasText: 'Written while offline' }),
     ).toBeVisible();

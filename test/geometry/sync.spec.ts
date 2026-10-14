@@ -14,7 +14,9 @@ test('Local editing and reload work with no relay or plaintext identity cache', 
     page.getByText('Off. This Local workspace is not connected to a relay.'),
   ).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Relay endpoint' })).toHaveCount(0);
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill('Local writing without a relay');
   await compose.press('Enter');
   await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(

@@ -40,7 +40,7 @@ test('compose keeps its draft through native refusal; retry admits it once and r
 }) => {
   await openApp(page);
   await faults(page);
-  const compose = day(page).locator('.compose-field');
+  const compose = day(page).getByRole('textbox', { name: 'What got done?' });
   await compose.fill('Retain this pending draft');
   await compose.press('Enter');
   await expect(page.locator('.workspace-status')).toContainText('Input is waiting for storage.');
@@ -350,8 +350,8 @@ test('generated compose and history sequences match a separate ledger before and
       for (const [index, action] of actions.entries()) {
         if (action === 'compose') {
           const text = `entry ${index} 🙂`;
-          await day(page).locator('.compose-field').fill(text);
-          await day(page).locator('.compose-field').press('Enter');
+          await day(page).getByRole('textbox', { name: 'What got done?' }).fill(text);
+          await day(page).getByRole('textbox', { name: 'What got done?' }).press('Enter');
           undo.push([...values]);
           redo.length = 0;
           values.unshift(text);

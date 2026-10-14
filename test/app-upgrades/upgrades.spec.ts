@@ -9,7 +9,9 @@ const unlock = async (page: Page, code: string) => {
   await expect(page.locator('.compose-field').first()).toBeVisible();
 };
 const write = async (page: Page, text: string) => {
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill(text);
   await compose.press('Enter');
   await expect(page.locator('.card').filter({ hasText: text })).toBeVisible();
@@ -169,6 +171,56 @@ test('two old tabs retain their release and writing until final close; new relea
   await again.goto('/local.html');
   await unlock(again, code);
   await expect(again.locator('.card').filter({ hasText: 'Offline after upgrade' })).toBeVisible();
+});
+
+test('the sidebar discovers an update on reconnect and reloads one tab without disrupting another', async ({
+  page,
+  context,
+  request,
+}) => {
+  const code = await create(page);
+  const second = await context.newPage();
+  await second.goto('/local.html');
+  await unlock(second, code);
+  const previousAsset = await second.evaluate(
+    () =>
+      [...document.querySelectorAll<HTMLScriptElement>('script[src]')].find((script) =>
+        script.src.includes('/assets/'),
+      )!.src,
+  );
+  const previousBytes = await second.evaluate(
+    async (url) => await (await fetch(url)).text(),
+    previousAsset,
+  );
+  const initialCaches = await second.evaluate(() => caches.keys());
+  await request.post('/__release', { data: { version: 'b' } });
+  // Exercise the app's event-driven check, without calling registration.update().
+  await page.bringToFront();
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await expect.poll(() => waiting(page)).toBe('installed');
+  await write(page, 'Saved through the update button');
+  await context.setOffline(true);
+  await page.getByRole('button', { name: 'Reload to update', exact: true }).click();
+  await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
+  await unlock(page, code);
+  await expect(page.locator('body')).toContainText('upgrade-b');
+  await expect(
+    page.locator('.card').filter({ hasText: 'Saved through the update button' }),
+  ).toBeVisible();
+  await expect(second.locator('body')).toContainText('upgrade-a');
+  await expect(second.getByRole('button', { name: 'Reload to update', exact: true })).toBeVisible();
+  expect(await second.evaluate(() => caches.keys())).toEqual(expect.arrayContaining(initialCaches));
+  expect(await second.evaluate(async (url) => await (await fetch(url)).text(), previousAsset)).toBe(
+    previousBytes,
+  );
+  await write(second, 'Still writing in the other tab');
+  await second.getByRole('button', { name: 'Reload to update', exact: true }).click();
+  await expect(second.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
+  await unlock(second, code);
+  await expect(second.locator('body')).toContainText('upgrade-b');
+  await expect(
+    second.locator('.card').filter({ hasText: 'Still writing in the other tab' }),
+  ).toBeVisible();
 });
 
 for (const fault of ['missing', 'wrong-bytes']) {

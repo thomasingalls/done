@@ -36,7 +36,9 @@ export async function createdAccount(page: Page) {
 }
 export async function account(page: Page, beforeInvite?: () => Promise<'invite' | void>) {
   const { code, auth, recovery } = await createdAccount(page);
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill('Keep the first device writing');
   await compose.press('Enter');
   const invitationStarted = await beforeInvite?.();

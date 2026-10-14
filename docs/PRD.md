@@ -370,7 +370,8 @@ at most three), membership that moves between them, per-item state, and per-item
 A day shows them in the order **Next, Done, Scheduled**: what you are doing, what you did, and the tail of
 intentions that have not come up yet. **Done reads newest-first** — whatever was completed most recently is
 on top, and a record you only ever add to is read from the top. Next and Scheduled are ordered by intent
-rather than by time and keep the order you put them in.
+rather than by time and keep the order you put them in. All three collections can be reordered on
+writable days, using the desktop grip, arrow keys on the grip, or a touch/pen hold followed by a drag.
 
 **The cap bounds what you can add, not what a day can hold.** Three is a rule about the act of putting
 something in Next, and it is enforced by refusing: at three, the app does not take a fourth. It is not a
@@ -411,12 +412,14 @@ purpose.
 | From → To                        | Difficulty                   | Flow                                                                                                    |
 | -------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
 | _nothing_ → Done                 | **Trivial. Non-negotiable.** | Persistent compose field at the foot of Done. Type, Enter, done.                                        |
+| _nothing_ → Scheduled            | Trivial                      | Persistent compose field at the foot of Scheduled, including when empty. Type, Enter, scheduled on the focused day. |
 | Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                            |
 | Next → Scheduled                 | Easy                         | One gesture on the card. Also the only way back under the cap once sync has expanded Next (§4.1).       |
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                            |
 | Master → Next / Scheduled / Done | Explicit Copy or Move       | **Copy** keeps the original; **Move** transfers the selected lines in one undoable action. **Remove** remains independent. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §4.3.                                                                |
-| Done → reordered                 | Deliberate                   | Long-press then drag on touch/pen; drag from the reorder grip on desktop. Writable days only.           |
+| Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
+| Any collection → reordered        | Deliberate                   | Long-press then drag on touch/pen; drag or arrow keys on the reorder grip on desktop. Writable days only. |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
@@ -440,6 +443,9 @@ card renders as static text and does not become editable by tapping it; unlockin
 (mobile) or explicit action (desktop). Moving after the hold reorders the card instead. Meanwhile the compose
 field is always live at the foot of the list, so recording something new is a single uninterrupted keystroke
 path.
+
+While unlocked, a Done card also offers Next and Later to correct its placement. Focus can move from the
+editor to those controls without relocking; leaving the card locks it again.
 
 **TRD.** TRD §4.4 (cards render static until focused), TRD §8.4 (gestures).
 
@@ -612,6 +618,9 @@ Consequently a scheduled item is simply a card living in a day's collection. **T
 date** — there is no separate date field, and therefore no reschedule history, no slip counter, and no
 distinction between cut-and-pasting an item forward and leaving it behind while re-adding it tomorrow. Both
 are ordinary card operations and the app has no opinion about which you use.
+
+One-off tasks can be entered directly in Scheduled on any writable day, independently of Goals. Enter
+adds a task, Shift-Enter adds a line, and Add offers the same submission on touch.
 
 For the same reason there is **no inline date syntax** (`📅2026-09-01`) and **no completion timestamps**
 (`✅2026-08-04`) in documents. Both are deadline-tracking scaffolding for a system this explicitly isn't.
@@ -940,10 +949,13 @@ time. The preference is always to solve the underlying thing invisibly: **if a t
 question was probably wrong.**
 
 Two candidate exceptions have been examined and neither survives. A PWA that cannot update because other
-tabs are open is not this app's behaviour — the service worker claims clients rather than waiting; the
-residual case is an old tab requesting an evicted lazy chunk, whose fix is cache retention or a reload
-prompt. And a search index holding an exclusive lock yields the useful sentence *"search is unavailable in
-this tab"*, which needs no count either — and does not currently arise at all, because the first search
+tabs are open is not this app's behaviour — a downloaded release waits until all current windows close or
+the user chooses **Reload to update** in the sidebar. That action saves pending writing and reloads this
+tab; other tabs keep writing and receive their own reload control. Their previous hashed assets remain
+cached for offline use.
+Checks run on foreground, reconnect and restored-page events, without polling. A search index holding an
+exclusive lock yields the useful sentence *"search is unavailable in this tab"*, which needs no count
+either — and does not currently arise at all, because the first search
 index is in memory (§10).
 
 **Failure and lifecycle.** Deduplicate **by device id** while that is all there is — awareness already

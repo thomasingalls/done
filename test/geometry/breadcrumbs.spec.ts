@@ -108,7 +108,9 @@ test('Escape closes the outline without closing the narrow Goals surface', async
   await page.setViewportSize({ width: 420, height: 900 });
   await openApp(page);
   const shell = page.locator('.shell');
-  await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
+  await expect(
+    page.locator('.day-panel[data-active="true"] .collection[data-section="done"] .compose-field'),
+  ).toBeVisible();
   await page.keyboard.press('Alt+ArrowRight');
   await expect(shell).toHaveAttribute('data-goals', 'open');
 

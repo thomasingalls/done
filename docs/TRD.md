@@ -108,7 +108,7 @@ the rest in and passing it to review remains the work between this draft and an 
 | Durable store              | **Content-blind: envelopes, checkpoints, manifests. Cannot merge (§7.6)**                            |
 | Doc partitioning           | Single root doc per workspace; destructive compaction is safety-paused (§4.5)                        |
 | Recovery                   | **Non-custodial: `R_pub` wraps generations, saved code seals `R_priv` 1-of-N (§13.8)**               |
-| PWA shell                  | Hand-rolled service worker, precache-only                                                            |
+| PWA shell                  | Hand-rolled service worker, precache-only; explicit update activation and reload                      |
 | Targets                    | Android Chrome (primary), Desktop Chrome/Edge                                                        |
 
 Four load-bearing decisions. Two survive from v7: **Yjs is the source of truth and the derived index is a

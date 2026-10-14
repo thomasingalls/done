@@ -87,7 +87,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   };
   return (
     <aside className="menu" id="menu" aria-label="Menu" ref={ref}>
-      <AppUpdateNotice />
+      <AppUpdateNotice beforeReload={workspace.whenDurable} />
       <section className="menu-section">
         <h2 className="menu-heading">Day</h2>
         <p className="menu-note">{formatDayLong(date)}</p>

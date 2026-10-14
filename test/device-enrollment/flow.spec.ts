@@ -25,7 +25,9 @@ test('both certified devices edit, exchange concurrent offline writing, and reop
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
     await expect(page.locator('.shell')).toBeVisible();
     const add = async (p: Page, text: string) => {
-      const compose = p.locator('.day-panel[data-active="true"] .compose-field');
+      const compose = p.locator(
+        '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+      );
       await compose.fill(text);
       await compose.press('Enter');
       await expect(p.locator('.shell')).toContainText(text);

@@ -13,7 +13,8 @@ import { expect, type Page } from '@playwright/test';
 import { recorder } from './recorder';
 
 /** Today is editable when the active day's compose field is on screen (PRD §4). */
-export const COMPOSE = '.day-panel[data-active="true"] .compose-field';
+export const COMPOSE =
+  '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field';
 export const CARD_EDITOR = '.card[data-editing="true"] .cm-content';
 export const TITLE = '.day-panel[data-active="true"] .panel-title';
 export const LOCAL_PROMPT =

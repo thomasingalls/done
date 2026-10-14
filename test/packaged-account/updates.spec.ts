@@ -30,18 +30,18 @@ async function sourceUnlock(p: Page, code: string) {
   await expect(p.locator('.shell')).toBeVisible();
 }
 
-test('a waiting update preserves both publishers and queued writing through offline activation', async ({
+test('a sidebar update preserves both publishers and queued writing through offline activation', async ({
   page,
   browser,
 }, info) => {
   const state = info.outputPath('service'),
     build = info.outputPath('next-build');
   buildNext(build);
-  let service = await startService(state);
+  let service = await startService(state, undefined, true, true);
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   const aContext = page.context();
   try {
-    pair = await pairedEditors(page, browser);
+    pair = await pairedEditors(page, browser, true);
     // First installation deliberately does not take over an existing page.
     await page.reload();
     await sourceUnlock(page, pair.first.code);
@@ -62,7 +62,7 @@ test('a waiting update preserves both publishers and queued writing through offl
     await add(page, 'Queued from A before app update');
     await add(pair.second, 'Queued from B before app update');
     await stopService(service);
-    service = await startService(state, build);
+    service = await startService(state, build, true, true);
     for (const p of [page, pair.second]) {
       await update(p);
       await expect.poll(() => waiting(p)).toBe('installed');
@@ -78,6 +78,16 @@ test('a waiting update preserves both publishers and queued writing through offl
     await add(page, 'Accepted while app update waits');
     const aKeys = await credentials(pair.first.auth),
       bKeys = await credentials(pair.next.auth);
+    await aContext.setOffline(true);
+    await pair.other.setOffline(true);
+    await page.getByRole('button', { name: 'Reload to update', exact: true }).click();
+    await sourceUnlock(page, pair.first.code);
+    await expect(page.locator('body')).toContainText(nextVersion);
+    await pair.second.getByRole('button', { name: 'Reload to update', exact: true }).click();
+    await pair.second.getByLabel('Device-lock code', { exact: true }).fill(pair.next.code);
+    await pair.second.getByRole('button', { name: 'Unlock enrollment', exact: true }).click();
+    await expect(pair.second.locator('.shell')).toBeVisible();
+    await expect(pair.second.locator('body')).toContainText(nextVersion);
     for (const p of [page, pair.second])
       await p.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await page.close();
