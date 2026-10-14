@@ -25,7 +25,7 @@ const update = (p: Page) =>
 const waiting = (p: Page) =>
   p.evaluate(async () => (await navigator.serviceWorker.getRegistration())?.waiting?.state ?? null);
 async function sourceUnlock(p: Page, code: string) {
-  await p.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await p.getByLabel('Unlock code', { exact: true }).fill(code);
   await p.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
   await expect(p.locator('.shell')).toBeVisible();
 }
@@ -46,7 +46,7 @@ test('a sidebar update preserves both publishers and queued writing through offl
     await page.reload();
     await sourceUnlock(page, pair.first.code);
     await pair.second.reload();
-    await pair.second.getByLabel('Device-lock code', { exact: true }).fill(pair.next.code);
+    await pair.second.getByLabel('Unlock code', { exact: true }).fill(pair.next.code);
     await pair.second.getByRole('button', { name: 'Unlock enrollment', exact: true }).click();
     await expect(pair.second.locator('.shell')).toBeVisible();
     for (const p of [page, pair.second])
@@ -84,7 +84,7 @@ test('a sidebar update preserves both publishers and queued writing through offl
     await sourceUnlock(page, pair.first.code);
     await expect(page.locator('body')).toContainText(nextVersion);
     await pair.second.getByRole('button', { name: 'Reload to update', exact: true }).click();
-    await pair.second.getByLabel('Device-lock code', { exact: true }).fill(pair.next.code);
+    await pair.second.getByLabel('Unlock code', { exact: true }).fill(pair.next.code);
     await pair.second.getByRole('button', { name: 'Unlock enrollment', exact: true }).click();
     await expect(pair.second.locator('.shell')).toBeVisible();
     await expect(pair.second.locator('body')).toContainText(nextVersion);
@@ -138,10 +138,10 @@ test('unfinished registration resumes after an update with the original saved pa
     await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
     await page.getByLabel('Your name', { exact: true }).fill('Resumable setup');
     await page.getByRole('button', { name: 'Create account', exact: true }).click();
-    const code = (await page.getByLabel('Generated device-lock code').textContent())!;
-    await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
-    await page.getByLabel('Device-lock code', { exact: true }).fill(code);
-    await page.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+    const code = (await page.getByLabel('Generated unlock code').textContent())!;
+    await page.getByRole('button', { name: 'I saved my unlock code' }).click();
+    await page.getByLabel('Unlock code', { exact: true }).fill(code);
+    await page.getByRole('button', { name: 'Confirm unlock code', exact: true }).click();
     const auth = await authenticator(page);
     await expect(page.getByRole('button', { name: 'Create passkey', exact: true })).toBeVisible();
     await context.setOffline(true);
@@ -160,7 +160,7 @@ test('unfinished registration resumes after an update with the original saved pa
     const resumed = await context.newPage();
     const nextAuth = await restoreAuthenticator(resumed, retained);
     await resumed.goto(route);
-    await resumed.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await resumed.getByLabel('Unlock code', { exact: true }).fill(code);
     await resumed.getByRole('button', { name: 'Continue', exact: true }).click();
     await resumed.getByRole('button', { name: 'Use my passkey', exact: true }).click();
     const recovery = (await resumed.getByLabel('Generated recovery code').textContent())!;

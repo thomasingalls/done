@@ -9,6 +9,54 @@ const LOCAL_ONLY_KEY = 'done.application.local-only';
 const LIMIT = 8192;
 const samePin = (a: AuthorityPin, b: AuthorityPin) => String(pinBytes(a)) === String(pinBytes(b));
 
+/** Presentation-only guard: never drop a known account into a newly created Local list. */
+export async function hasSavedAccountEntry(): Promise<boolean> {
+  if (localStorage.getItem(PIN_KEY) !== null) return true;
+  const inspect = (name: string, store: string, accountOnly: boolean) =>
+    new Promise<boolean>((resolve, reject) => {
+      let absent = false;
+      const request = indexedDB.open(name);
+      request.onupgradeneeded = () => {
+        absent = true;
+        request.transaction!.abort();
+      };
+      request.onerror = () => {
+        if (absent) resolve(false);
+        else reject(request.error);
+      };
+      request.onblocked = () => reject(Error('Saved workspace metadata is busy'));
+      request.onsuccess = () => {
+        const db = request.result;
+        try {
+          const tx = db.transaction(store),
+            read = tx.objectStore(store).getAll();
+          tx.oncomplete = () => {
+            db.close();
+            resolve(
+              accountOnly
+                ? read.result.some(
+                    (row) =>
+                      row?.unlockBinding || (typeof row?.id === 'string' && row.id !== 'local'),
+                  )
+                : read.result.length > 0,
+            );
+          };
+          tx.onabort = () => {
+            db.close();
+            reject(tx.error);
+          };
+        } catch (cause) {
+          db.close();
+          reject(cause);
+        }
+      };
+    });
+  return (
+    (await inspect('done.first-device-setup.v1', 'attempt', false)) ||
+    (await inspect('done.slots', 'slots', true))
+  );
+}
+
 async function readConfig(path: 'config' | 'access', signal: AbortSignal) {
   const response = await fetch('/__account-setup/' + path, {
     method: 'POST',

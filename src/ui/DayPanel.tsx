@@ -16,6 +16,7 @@ import { DISPLAY_SECTIONS } from '../crdt/days';
 import { isFrozen } from '../crdt/freeze';
 import { formatDay, relativeDay, type ISODate } from '../lib/date';
 import { Collection } from './Collection';
+import { useWorkspaceUi } from './workspaceUi';
 
 export interface DayPanelProps {
   date: ISODate;
@@ -53,6 +54,26 @@ export const DayPanel = ({
   onOpenUnfiled,
 }: DayPanelProps): React.ReactElement => {
   const active = offset === 0;
+  const { snapshot } = useWorkspaceUi();
+  const hasContent = snapshot.cards.length > 0 || snapshot.master.length > 0;
+  const [introDismissed, setIntroDismissed] = useState(() => {
+    try {
+      return localStorage.getItem('done.onboarding.intro-dismissed') === '1';
+    } catch {
+      return false;
+    }
+  });
+  const dismissIntro = () => {
+    setIntroDismissed(true);
+    try {
+      localStorage.setItem('done.onboarding.intro-dismissed', '1');
+    } catch {
+      /* optional hint */
+    }
+  };
+  useEffect(() => {
+    if (hasContent && !introDismissed) dismissIntro();
+  }, [hasContent, introDismissed]);
   const frozen = isFrozen(date, today);
   const body = useRef<HTMLDivElement>(null);
   const [touchScrollRoom, setTouchScrollRoom] = useState<TouchScrollRoom>('none');
@@ -169,6 +190,15 @@ export const DayPanel = ({
       </header>
 
       <div className="day-body" data-scroll="day" data-touch-scroll={touchScrollRoom} ref={body}>
+        {active && date === today && !introDismissed && !hasContent && (
+          <aside className="onboarding-note" aria-label="Getting started">
+            <p>Write everything in Goals. Choose three things for Next. Record what got done.</p>
+            <button onClick={onOpenGoals}>Open Goals</button>
+            <button aria-label="Dismiss introduction" onClick={dismissIntro}>
+              Dismiss
+            </button>
+          </aside>
+        )}
         {DISPLAY_SECTIONS.map((section) => (
           <Collection key={section} date={date} section={section} frozen={frozen} active={active} />
         ))}

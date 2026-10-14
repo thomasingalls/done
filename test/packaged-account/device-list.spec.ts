@@ -63,9 +63,9 @@ test('verified Devices is available on both account owners; Back preserves writi
     });
     await showDevices(page, 2);
     await page.reload();
-    await expect(page.getByLabel('Device-lock code', { exact: true })).toBeVisible();
+    await expect(page.getByLabel('Unlock code', { exact: true })).toBeVisible();
     await expect(page.locator('.account-device-list')).toHaveCount(0);
-    await page.getByLabel('Device-lock code', { exact: true }).fill(pair.first.code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(pair.first.code);
     await page
       .getByRole('button', { name: 'Confirm code and unlock with passkey', exact: true })
       .click();
@@ -122,7 +122,7 @@ test('device codes match across owners and custom names sync beside them, includ
     await expect(secondOnFirst).toContainText('Pixel phone', { timeout: 15000 });
     await page.getByRole('button', { name: 'Back to writing', exact: true }).click();
     await page.reload();
-    await page.getByLabel('Device-lock code', { exact: true }).fill(pair.first.code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(pair.first.code);
     await page
       .getByRole('button', { name: 'Confirm code and unlock with passkey', exact: true })
       .click();

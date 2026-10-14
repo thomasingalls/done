@@ -1,6 +1,7 @@
 import { NetworkLogin, prewarmSlotLogin } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
 import { WorkspaceUiProvider } from './workspaceUi';
+import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
@@ -294,6 +295,7 @@ export function AccountEnrollmentApp({
   if (state?.kind === 'editing' && state.editor && owner.current)
     return (
       <WorkspaceUiProvider
+        slotId={slot}
         workspace={state.editor.workspace}
         sync={state.editor.sync}
         actorId={state.editor.actorId}
@@ -427,8 +429,8 @@ export function AccountEnrollmentApp({
               </form>
               <h2>Invite another device</h2>
               <p>
-                Create an invitation from a connected account below. Enter its device-lock code to
-                get a link, or resume an invitation already in progress.
+                Create an invitation from a connected account below. Enter its unlock code to get a
+                link, or resume an invitation already in progress.
               </p>
               {accountsStatus === 'loading' && <p role="status">Loading connected accounts…</p>}
               {accountsStatus === 'failed' && (
@@ -476,10 +478,10 @@ export function AccountEnrollmentApp({
             <p>
               Save this code in a separate password-manager entry named for this device, such as
               “done — phone”. Keep your other device’s code; do not overwrite it. Both devices use
-              the same account, but have different device-lock codes.
+              the same account, but have different unlock codes.
             </p>
             <p>Keep this code to unlock this device again. The comparison code is temporary.</p>
-            <pre className="local-generated-code" aria-label="Generated device-lock code">
+            <pre className="local-generated-code" aria-label="Generated unlock code">
               {generated}
             </pre>
             <button
@@ -487,53 +489,56 @@ export function AccountEnrollmentApp({
                 setStage('unlock');
               }}
             >
-              I saved my device-lock code
+              I saved my unlock code
             </button>
           </>
         )}
         {stage === 'unlock' && (
-          <form
-            className="local-form"
-            onSubmit={(event) => {
-              event.preventDefault();
-              const entered = code;
-              setCode('');
-              void run(async () => {
-                if (genesis.current) {
-                  await genesis.current.confirm(entered);
-                  genesis.current = null;
-                  setGenerated('');
-                }
-                await owner.current?.close();
-                owner.current = await createAccountEnrollment(
-                  config,
-                  slot,
-                  entered,
-                  workspace ? 'new' : 'existing',
-                  workspace ?? undefined,
-                  workspace && invitation ? JSON.parse(atob(invitation)) : undefined,
-                  login.current,
-                  life.current.signal,
-                  begin ?? undefined,
-                );
-                publish(await owner.current.refresh());
-                if (!life.current.signal.aborted) setStage('open');
-              });
-            }}
-          >
-            <label htmlFor="device-code">Device-lock code</label>
-            <input
-              id="device-code"
-              type="password"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              autoComplete="off"
-              required
-            />
-            <button disabled={busy}>
-              {workspace ? 'Unlock enrollment' : 'Unlock and get invitation'}
-            </button>
-          </form>
+          <>
+            <form
+              className="local-form"
+              onSubmit={(event) => {
+                event.preventDefault();
+                const entered = code;
+                setCode('');
+                void run(async () => {
+                  if (genesis.current) {
+                    await genesis.current.confirm(entered);
+                    genesis.current = null;
+                    setGenerated('');
+                  }
+                  await owner.current?.close();
+                  owner.current = await createAccountEnrollment(
+                    config,
+                    slot,
+                    entered,
+                    workspace ? 'new' : 'existing',
+                    workspace ?? undefined,
+                    workspace && invitation ? JSON.parse(atob(invitation)) : undefined,
+                    login.current,
+                    life.current.signal,
+                    begin ?? undefined,
+                  );
+                  publish(await owner.current.refresh());
+                  if (!life.current.signal.aborted) setStage('open');
+                });
+              }}
+            >
+              <label htmlFor="device-code">Unlock code</label>
+              <input
+                id="device-code"
+                type="password"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                autoComplete="off"
+                required
+              />
+              <button disabled={busy}>
+                {workspace ? 'Unlock enrollment' : 'Unlock and get invitation'}
+              </button>
+            </form>
+            <RemoveFromDeviceButton slotId={slot} />
+          </>
         )}
         {stage === 'open' && state && (
           <>

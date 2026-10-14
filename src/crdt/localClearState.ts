@@ -1,9 +1,10 @@
 /** Durable Local clear metadata. A structural observation can refuse open; only authentication permits cleanup. */
 import { CUSTODY_DB, CUSTODY_STORE, identity } from './custodyRecord';
-import { probeDatabase, checkLayout, readScopedRows } from './startupStorage';
+import { probeDatabase, checkLayout, readRow } from './startupStorage';
 import { stopStartup } from './startupState';
 import type { Bytes } from './custodyCrypto';
 import type { SessionTask } from './writeSession';
+import { assertNoDeviceRemoval } from './deviceDataRemoval';
 
 export const localClearKey = (slotId: string): string[] => [slotId, 'local-clear-v1'];
 export const CLEAR_STAGES = ['content', 'journal', 'custody', 'index', 'cleared'] as const;
@@ -90,16 +91,15 @@ export const readLocalClear = async (
   task: SessionTask,
   slotId: string,
 ): Promise<LocalClearRecord | null> => {
-  const rows =
-    (await probeDatabase(task, CUSTODY_DB, async (db) => {
-      checkLayout(db, { [CUSTODY_STORE]: null });
-      return readScopedRows(task, db, CUSTODY_STORE, [slotId]);
-    })) ?? [];
-  const row = rows.find((r) => indexedDB.cmp(r.key, localClearKey(slotId)) === 0);
-  return row ? parseLocalClear(row.value, slotId) : null;
+  const result = await probeDatabase(task, CUSTODY_DB, async (db) => {
+    checkLayout(db, { [CUSTODY_STORE]: null });
+    return { value: await readRow(task, db, CUSTODY_STORE, localClearKey(slotId)) };
+  });
+  return !result || result.value === undefined ? null : parseLocalClear(result.value, slotId);
 };
 /** Every participating opener/creator calls this after its permit is granted and before key selection. */
 export const assertNoLocalClear = async (task: SessionTask, slotId: string): Promise<void> => {
+  await assertNoDeviceRemoval(task, slotId);
   const record = await readLocalClear(task, slotId);
   if (record)
     stopStartup(

@@ -1,5 +1,13 @@
 # Encrypted-store conformance matrix
 
+**Onboarding amendment 2026-10-14.** C12/C13 external-factor requirements apply to protected Local
+and Account modes. New automatic Local mode retains encrypted content without a copied-profile
+confidentiality claim. `test/onboardingStorage.test.ts` covers exact state preservation, six interrupted
+transition phases, replacement damage, old-opener rejection, protected-workspace preservation and scoped
+credential-free removal. `test/promotionOpening.test.ts` checks real signed assertions and single-use,
+exact-destination/lifetime restrictions. Packaged browser onboarding and paired-device suites exercise
+the public flows with virtual authenticators. These checks do not replace broader platform qualification.
+
 **Status:** current implementation acceptance plan · **Updated:** 2026-09-08.
 Requirements are [storage-contract.md](./storage-contract.md), PRD §§7.1–7.2/7.10 and TRD
 §§6.1/6.5/13.3/13.7. This matrix records **evidence classes**, not a claim that production conforms.

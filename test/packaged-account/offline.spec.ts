@@ -64,9 +64,9 @@ test('both devices retain offline edits across independent API and application r
     await restoreAuthenticator(reopenedB, savedB);
     await reopenedA.goto(deepA);
     await reopenedB.goto(deepB);
-    await reopenedA.getByLabel('Device-lock code', { exact: true }).fill(pair.first.code);
+    await reopenedA.getByLabel('Unlock code', { exact: true }).fill(pair.first.code);
     await reopenedA.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
-    await reopenedB.getByLabel('Device-lock code', { exact: true }).fill(pair.next.code);
+    await reopenedB.getByLabel('Unlock code', { exact: true }).fill(pair.next.code);
     await reopenedB.getByRole('button', { name: 'Unlock enrollment', exact: true }).click();
     await expect(reopenedA.locator('.shell')).toContainText('Offline after cold start on A');
     await expect(reopenedB.locator('.shell')).toContainText('Offline after cold start on B');

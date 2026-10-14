@@ -1,8 +1,10 @@
 # done — Product Requirements
 
-**Storage amendment 2026-09-08:** persistent workspaces require factor custody from genesis. The
-[storage contract](./storage-contract.md) and [conformance matrix](./storage-conformance.md) define the
-corrected recovery, coverage and failure boundaries.
+**Onboarding amendment 2026-10-14:** new Local lists open automatically with encrypted storage.
+Local protection is optional; sync requires it. Existing protected Local and Account lists retain
+their unlock requirements. Automatic opening makes no copied-profile confidentiality claim.
+The [storage contract](./storage-contract.md) defines the custody transition and removal boundaries.
+Goals and Next retain their names. Remembered unlocking and the mascot remain separate work.
 
 **Status:** v9 — current and normative. Supersedes v8 in full, consolidating it with the settled product and
 architecture decisions recorded in `docs/sessions.md`.
@@ -1768,14 +1770,18 @@ drafts:
 | Property                                               | Answer                        |
 | ------------------------------------------------------ | ----------------------------- |
 | Persisted user content is ciphertext                   | **Always, from first run**    |
-| Opening it requires a **user-held factor**             | Required at persistent genesis and cold start (§7.2) |
+| Opening it requires a **user-held factor**             | Optional for Local; required for protected Local and Account (§7.2) |
 | Plaintext exists in memory while the workspace is open | Yes, unavoidably              |
-| A copied profile without its external factor is resisted | Required; supported-browser custody tests gate the claim |
+| A copied profile without its external factor is resisted | Protected mode only; supported-browser custody tests gate the claim |
 
-**What the user sees.** Before the first persistent edit, Local confirms a generated device-lock code
-and installs factor-sealed custody. No account or network is required. Cold start asks for a local
-unlock; a supported authenticator can provide an additional convenience seal. Local no longer promises
-promptless launch. Explain that losing the last factor and independent readable copy can be final loss.
+**What the user sees.** First Local use opens Today and saves automatically, without names, credentials,
+installation requests or a tour. Empty Next reads “The three most important things to focus on next.”
+Done reads “Anything you finished counts, planned or unplanned.” Scheduled reads “Things planned for
+this day.” Goals reads “Your running list of tasks, projects, someday-maybes, notes to self, and ideas.”
+An in-place introduction is dismissible and retires after writing begins. The sidebar offers Install,
+Personalize, Protection and Sync independently. Adding protection explains loss consequences, saves
+and confirms a generated unlock code, then applies the durable transition before reporting completion.
+Existing protected lists never acquire an automatic opener.
 
 **The subject is every app-managed store**, not the main database alone — encrypting one of them is theatre:
 
@@ -1785,7 +1791,7 @@ promptless launch. Explain that losing the last factor and independent readable 
 | The synchronous crash journal | Each update, written synchronously so a page kill between transaction and commit cannot lose it | Encrypted too — see below, this is the sharp edge                              |
 | Any persistent derived index | The derived text of everything searchable                                     | May ship **only** when its on-disk representation is encrypted (§10 below)                             |
 
-**The copied-profile promise has a precise boundary.** A supported browser profile without its external
+**The protected-mode copied-profile promise has a precise boundary.** A supported browser profile without its external
 unlock factor or an already unlocked runtime cannot recover content through the application's persisted
 custody paths, including credentials that receive future keys. Complete-profile tests must substantiate
 that claim; ciphertext scans and non-extractable key flags alone cannot.
@@ -1836,21 +1842,21 @@ select it, and remove legacy carriers only after verification. Execute its kill 
 installation. Stage 2 performs the author’s real-data cutover after the carrier decision and review 3a;
 shipping before external users exist does not remove Stage 1’s obligation to build and test recovery.
 
-### 7.2 Required local unlock
+### 7.2 Optional Local protection; required protection for sync
 
-**Invariant.** Persistent Local and Account workspaces require factor custody at genesis and local
-unlock at cold start. The generated 125-bit device-lock code is always enrolled; supported PRF factors
+**Invariant.** Protected Local and Account workspaces require local unlock at cold start.
+The generated 125-bit unlock code is enrolled when protection is selected; supported PRF factors
 add seals of the same custody key. Code-only use works offline. A user-chosen password is not substituted.
 The factor must be held outside the copied-profile exposure domain. The app does not retain the code
 for redisplay or offer an ordinary disable-lock downgrade.
 
-**What the user sees.** Confirm the generated code before the first persistent edit; later cold starts
+**What the user sees.** Confirm the generated code before enabling protection; later cold starts
 ask for that code or a supported enrolled authenticator. The ceremony is local, not a network wait.
 Account login neither replaces it nor becomes a requirement for Local. Pending edits are not ordinary
 editor content until durable (SC-01–02); no interface labels provisional input saved.
 
 **Failure and lifecycle.** Losing the last Local factor, with no independent readable replica/archive,
-can mean final loss. State this at first run and require code confirmation. At Account, login alone
+can mean final loss. State this when adding protection and require code confirmation. At Account, login alone
 still cannot recover content: the separate recovery material or a surviving authorized device can
 re-enroll a new device. Recovery never bypasses this locked slot. Local unlock does not authenticate
 an account, sign mutations or implicitly become an account recovery factor.

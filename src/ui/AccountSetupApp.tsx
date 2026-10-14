@@ -7,6 +7,7 @@ import { AccountDevices } from './AccountDevices';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 
 import { useCeremonyNavigation } from './ceremonyNavigation';
+import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 
 function NameEntry({
   initialName = '',
@@ -38,8 +39,6 @@ function NameEntry({
         }}
         autoComplete="nickname"
         maxLength={80}
-        required
-        autoFocus
       />
       <p className="setup-note">
         Shown when you return to this device. You can change it in settings.
@@ -99,6 +98,7 @@ export function Setup({
   slotId,
   onName,
   onConnectDevice,
+  takeInitialCode,
 }: {
   config: SetupConfig;
   onBack: () => void;
@@ -108,8 +108,9 @@ export function Setup({
   slotId: string;
   onName?: (name: string) => void;
   onConnectDevice: () => void;
+  takeInitialCode?: () => string | undefined;
 }) {
-  const [owner] = useState(() => createFirstDeviceSetup(config, slotId));
+  const [owner] = useState(() => createFirstDeviceSetup(config, slotId, takeInitialCode));
   const state = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
   const heading = useRef<HTMLHeadingElement>(null);
   const [inspected, setInspected] = useState(false);
@@ -157,6 +158,7 @@ export function Setup({
   if (state.kind === 'ready')
     return (
       <WorkspaceUiProvider
+        slotId={slotId}
         workspace={state.workspace}
         sync={state.sync}
         actorId={state.actorId}
@@ -185,20 +187,22 @@ export function Setup({
       </WorkspaceUiProvider>
     );
   const stage =
-    state.kind === 'passkey' || state.kind === 'confirm-passkey'
-      ? 1
-      : state.kind === 'save-recovery' || state.kind === 'confirm-recovery'
-        ? 2
-        : 0;
+    state.kind === 'approve-passkey'
+      ? 3
+      : state.kind === 'passkey' || state.kind === 'confirm-passkey'
+        ? 1
+        : state.kind === 'save-recovery' || state.kind === 'confirm-recovery'
+          ? 2
+          : 0;
   const title =
     state.kind === 'intro'
       ? state.fresh
         ? 'Create a new account'
-        : 'Make this your account workspace'
+        : 'Set up sync for this list'
       : state.kind === 'save-device-code'
-        ? 'Save your device-lock code'
+        ? 'Save your unlock code'
         : state.kind === 'confirm-device-code'
-          ? 'Check your saved device-lock code'
+          ? 'Check your saved unlock code'
           : state.kind === 'unlock'
             ? state.accountName
               ? `Unlock ${state.accountName}’s account`
@@ -231,7 +235,7 @@ export function Setup({
         )}
         {state.kind !== 'unlock' && state.kind !== 'working' && state.kind !== 'name' && (
           <ol className="setup-steps" aria-label="Account setup progress">
-            {['Your workspace', 'Passkey', 'Recovery code'].map((name, i) => (
+            {['Your list', 'Passkey', 'Recovery code', 'Connect'].map((name, i) => (
               <li key={name} aria-current={stage === i ? 'step' : undefined}>
                 {name}
               </li>
@@ -246,7 +250,7 @@ export function Setup({
             <p>
               {state.fresh
                 ? 'Start with an empty list. Accounts already saved on this device stay separate.'
-                : 'Keep everything you’ve written and connect this workspace to your account.'}
+                : 'Keep your list and notes, and connect an encrypted copy to your account. You can keep working offline.'}
             </p>
             <div className="setup-explanation">
               <p>
@@ -259,9 +263,9 @@ export function Setup({
               </p>
             </div>
             <NameEntry
-              initialName={initialName || state.requestedName}
+              initialName={initialName || state.requestedName || 'You'}
               onChange={onName}
-              button={state.fresh ? 'Create account' : 'Get started'}
+              button={state.fresh ? 'Create account' : 'Continue to passkey setup'}
               onSubmit={owner.start}
             />
             <button
@@ -280,11 +284,11 @@ export function Setup({
               Save this code somewhere safe outside this browser. It unlocks this new account’s
               writing on this device.
             </p>
-            <code className="local-generated-code" aria-label="Generated device-lock code">
+            <code className="local-generated-code" aria-label="Generated unlock code">
               {state.code}
             </code>
             <button className="setup-primary" onClick={owner.savedDeviceCode}>
-              I saved my device-lock code
+              I saved my unlock code
             </button>
           </>
         )}
@@ -292,8 +296,8 @@ export function Setup({
           <>
             <p>Enter the code from your saved copy to create your empty workspace.</p>
             <CodeEntry
-              label="Device-lock code"
-              button="Confirm device-lock code"
+              label="Unlock code"
+              button="Confirm unlock code"
               onSubmit={(code) => {
                 void owner.confirmDeviceCode(code);
               }}
@@ -305,14 +309,14 @@ export function Setup({
             {state.accountId && <AccountIdentity id={state.accountId} />}
             <p>
               {state.returning
-                ? 'Enter your device-lock code, then use your passkey to open your saved writing.'
-                : 'Enter the device-lock code you saved for this workspace.'}
+                ? 'Enter your unlock code, then use your passkey to open your saved writing.'
+                : 'Enter the unlock code you saved for this workspace.'}
             </p>
             {state.returning && (
               <p className="setup-note">You can unlock on this device offline.</p>
             )}
             <CodeEntry
-              label="Device-lock code"
+              label="Unlock code"
               button={state.returning ? 'Confirm code and unlock with passkey' : 'Continue'}
               onSubmit={(code) => {
                 void owner.unlock(code);
@@ -365,6 +369,14 @@ export function Setup({
             </button>
           </>
         )}
+        {state.kind === 'approve-passkey' && (
+          <>
+            <p>{state.description}</p>
+            <button className="setup-primary" onClick={owner.approvePasskey}>
+              Approve with passkey
+            </button>
+          </>
+        )}
         {state.kind === 'save-recovery' && (
           <>
             <p>
@@ -387,11 +399,12 @@ export function Setup({
           <>
             <p>
               Enter the recovery code from the copy you saved. Your browser will also ask you to use
-              your passkey to finish connecting.
+              your passkey to confirm this recovery setup. You’ll review the connection approvals
+              next.
             </p>
             <CodeEntry
               label="Recovery code"
-              button={state.fresh ? 'Finish account setup' : 'Confirm and connect'}
+              button="Confirm recovery and use passkey"
               onSubmit={(code) => {
                 void owner.confirmRecovery(code);
               }}
@@ -411,6 +424,7 @@ export function Setup({
             {state.fresh ? 'Your accounts stay separate.' : 'Your writing stays in this workspace.'}
           </p>
         )}
+        {state.kind === 'unlock' && <RemoveFromDeviceButton slotId={slotId} />}
         {state.fresh && !['intro', 'unlock', 'working'].includes(state.kind) && (
           <button
             className="local-secondary"

@@ -15,22 +15,23 @@ export async function authenticator(page: Page) {
   return { cdp, authenticatorId };
 }
 export async function createdAccount(page: Page) {
-  await page.goto('/private/account-setup.html');
-  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+  await page.goto('/accounts');
   await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
   await page.getByLabel('Your name', { exact: true }).fill('Device owner');
   await page.getByRole('button', { name: 'Create account', exact: true }).click();
-  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
-  await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
-  await page.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+  const code = (await page.getByLabel('Generated unlock code').textContent())!;
+  await page.getByRole('button', { name: 'I saved my unlock code' }).click();
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
+  await page.getByRole('button', { name: 'Confirm unlock code', exact: true }).click();
   const auth = await authenticator(page);
   await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
   await page.getByRole('button', { name: 'Use my passkey', exact: true }).click();
   const recovery = (await page.getByLabel('Generated recovery code').textContent())!;
   await page.getByRole('button', { name: 'I saved my recovery code' }).click();
   await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
-  await page.getByRole('button', { name: 'Finish account setup' }).click();
+  await page.getByRole('button', { name: 'Confirm recovery and use passkey' }).click();
+  await page.getByRole('button', { name: 'Approve with passkey' }).click();
+  await page.getByRole('button', { name: 'Approve with passkey' }).click();
   await expect(page.locator('.shell')).toBeVisible();
   return { code, auth, recovery };
 }
@@ -60,7 +61,7 @@ export async function account(page: Page, beforeInvite?: () => Promise<'invite' 
   };
 }
 export async function unlock(page: Page, code: string) {
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page
     .getByRole('button', { name: /^(Unlock enrollment|Unlock and get invitation)$/ })
     .click();
@@ -70,9 +71,7 @@ export async function pending(
   link: string,
   auth: Awaited<ReturnType<typeof authenticator>>,
 ) {
-  await page.goto(new URL('/private/account-setup.html', link).href);
-  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
-  await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+  await page.goto(new URL('/connect/choose', link).href);
   await expect(
     page.getByText('No connected account is saved in this browser yet.', { exact: false }),
   ).toBeVisible();
@@ -92,8 +91,8 @@ export async function pending(
   await expect(
     page.getByText('Keep your other device’s code; do not overwrite it.', { exact: false }),
   ).toBeVisible();
-  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
-  await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
+  const code = (await page.getByLabel('Generated unlock code').textContent())!;
+  await page.getByRole('button', { name: 'I saved my unlock code' }).click();
   await unlock(page, code);
   await page.getByRole('button', { name: 'Use account passkey' }).click();
   return { code, auth: next };

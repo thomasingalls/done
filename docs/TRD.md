@@ -1,7 +1,9 @@
 # done — Technical Requirements
 
 **Status:** v8 — current and normative. Supersedes v7 in full.
-**Storage contract amended 2026-09-08:** mandatory factor custody, writer lifetime, offline causal recovery,
+**Storage contract amended 2026-10-14:** automatic Local opening, opt-in external-factor protection,
+credential-free scoped removal and a single-use initial sync opening amend the September custody policy.
+Writer lifetime, offline causal recovery,
 exact coverage and failure dispositions are consolidated here and in [storage-contract.md](./storage-contract.md).
 The [conformance matrix](./storage-conformance.md) separates current requirements from existing partial evidence.
 **Date:** 2026-08-17
@@ -2534,14 +2536,17 @@ violates it, and the narrow rule above follows from it.
 **Edit implies read.** Under one symmetric key per generation there is no cryptographic write-without-read. This is a
 capability limit, not a policy one, and the agent feature inherits it (§10.6).
 
-### 13.3 Mandatory factor custody and legacy migration
+### 13.3 Automatic Local custody, protection and legacy migration
 
-**Constraint.** Persistent Local and Account workspaces use factor custody from genesis and unlock at
-cold start. No promptless persisted handle or fallback independently opens content or receives future
-generation keys. This intentionally replaces the former optional-lock default (SC-08). Each custody root retains row 13’s
+**Constraint, amended 2026-10-14.** New Local lists use authenticated automatic opening by default.
+`LocalClaim.automatic` is covered by its metadata MAC; the bound automatic opener is sealed with a
+non-exportable browser CryptoKey and installed atomically with genesis. This mode makes no copied-profile
+confidentiality claim. Existing protected lists retain their original factor custody and byte formats.
+Protected Local and all Account workspaces require unlock at cold start. No automatic persisted handle
+or fallback independently opens their content or receives future generation keys. Each custody root retains row 13’s
 principal/workspace factor binding; the slot-wide writer barrier does not broaden that authority.
 
-**Construction, selected** (§15 row 13). A generated **125-bit device-lock code is always enrolled**;
+**Protected construction** (§15 row 13). A generated **125-bit unlock code is confirmed when protection is enabled**;
 WebAuthn PRF, where supported, adds an independent seal of the same random `L_lock`. A user-chosen
 password is rejected. Retain row 13's seal format, HKDF/AAD and role/slot-bound PRF inputs. The factor
 must be outside the copied-profile exposure domain; authenticator capability and user verification
@@ -2550,7 +2555,21 @@ assumptions require support-matrix evidence. Code-only unlock works offline with
 `L_lock` opens each retained `K_g` envelope. Persist only sealed root/credential bytes; import ordinary
 private credentials as non-extractable runtime keys after unlock. Plaintext factors, generation keys
 and raw journal subkeys stay in the coordinated live session, never in a persisted remember-unlocked
-cache. Confirm the factor and complete recoverable custody before acknowledging the first persistent edit.
+cache. Protected genesis confirms the external factor before the first persistent edit. Automatic genesis
+completes recoverable browser-held custody before acknowledgement.
+
+**Adding protection to the new automatic mode.** `localProtection` holds exclusive slot ownership,
+copies the complete authenticated Yjs state and journal basis into a fresh store with fresh keys, and
+cold-verifies an exact factor-authenticated snapshot digest before retiring source content. Progress
+is resumable through content, journal, index and custody retirement. The final custody transaction
+removes automatic opening and selects the protected claim. The principal, text hierarchy, card IDs,
+attribution and settings survive; the physical workspace/store identity changes. Pre-protection copies
+retain their old data and keys. The automatic receiving/signing credentials are not promoted into sync.
+
+**Initial sync opening.** One locally verified passkey approval can authorize the promotion handoff
+and its initial editor opening; online login uses the existing combined challenge. An opaque in-memory,
+single-use grant binds the complete verified binding proof, service pin, slot and live setup lifetime.
+It cannot survive reload, serialize, authorize a different destination or replace later unlocks.
 
 **Legacy promptless migration is explicit and resumable.** `L_local` and old non-extractable operational
 credentials cannot be exported for resealing. Generate `L_lock`, stage factor seals and resealed retained

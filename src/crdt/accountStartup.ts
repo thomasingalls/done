@@ -27,9 +27,11 @@ import { Y, genesisCoverageParts, sameDocState, genesisCoverage, coversGenesis }
 import { requireAccountAccess, type LocalPasskey } from './accountAccess';
 import { handoffResult } from './promotionHandoff';
 import type { Slot } from './slotIndex';
+import { consumePromotionOpening, type PromotionOpening } from '../account/promotionOpening';
 export interface AccountStartupOptions {
   /** A single fresh recovery ceremony may authorize its initial native opening only. */
   recoveryOpening?: import('../account/recoveryOpening').RecoveryOpening;
+  promotionOpening?: PromotionOpening;
   slotId: string;
   code: string;
   pin: AuthorityPin;
@@ -93,12 +95,17 @@ export async function verifyAccountUnderPermit(
   };
   if (!same(marker.handoff!.destination, destination)) throw Error('Account destination changed');
   await localCensus(task, claim, options.code);
+  const opening = options.promotionOpening;
+  if (opening) {
+    delete options.promotionOpening;
+    task.step(() => consumePromotionOpening(opening, options.slotId, options.pin, proof));
+  }
   if (options.networkLogin && !detached) {
     await withPromotionRoot(task, claim, record, options.code, (root) =>
       options.networkLogin!.initialize(task, root, record.root_id, proof),
     );
-    await options.networkLogin.unlock(task, proof, options.assertPasskey);
-  } else await requireAccountAccess(task, proof, options.pin, options.assertPasskey);
+    if (!opening) await options.networkLogin.unlock(task, proof, options.assertPasskey);
+  } else if (!opening) await requireAccountAccess(task, proof, options.pin, options.assertPasskey);
   markAccountOpen('authorized');
   const current = await readPromotion(task, options.slotId, options.code);
   if (!same(current.marker, marker)) throw Error('Account owner changed during assertion');

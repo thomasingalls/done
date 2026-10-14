@@ -191,7 +191,13 @@ export const Collection = ({
       </h2>
 
       {count === 0 ? (
-        <p className="collection-empty">{section === 'done' ? 'Nothing yet.' : 'Empty.'}</p>
+        <p className="collection-empty">
+          {section === 'next'
+            ? 'The three most important things to focus on next.'
+            : section === 'done'
+              ? 'Anything you finished counts, planned or unplanned.'
+              : 'Things planned for this day.'}
+        </p>
       ) : (
         <div className="card-list" ref={reorder.listRef} data-reordering={reorder.drag !== null}>
           {cards.map((card) => {

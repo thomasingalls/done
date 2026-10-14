@@ -27,6 +27,7 @@ import type { LocalPasskey } from '../crdt/accountAccess';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 import { withRecoveryOwner } from './recoveryOwner';
 import { verifyPendingProof } from '../../account-protocol/preparation';
+import type { PromotionOpening } from './promotionOpening';
 
 import {
   SETUP_DB,
@@ -51,7 +52,11 @@ export {
 } from './setupProgress';
 class SetupNotice extends Error {}
 
-export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
+export function createFirstDeviceSetup(
+  input: SetupConfig,
+  slotId = 'local',
+  takeInitialCode?: () => string | undefined,
+) {
   progressKey(slotId);
   const progress = (value?: Retained | null) => setupProgress(value, slotId);
   const pin = parseAuthorityPin(input.pin);
@@ -78,6 +83,22 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   let closing: Promise<void> | undefined;
   let unsubscribe: (() => void) | undefined;
   let ownsSetup = false;
+  let takeHandoffCode = takeInitialCode;
+  let promotionOpening: PromotionOpening | undefined;
+  let approval: { invoke: () => void; reject: (error: Error) => void } | undefined;
+  const approve = <T>(message: string, description: string, work: () => Promise<T>): Promise<T> =>
+    new Promise((resolve, reject) => {
+      guard();
+      approval = {
+        reject,
+        invoke: () => {
+          approval = undefined;
+          publish({ kind: 'working', message: 'Follow your browser’s passkey prompt…' });
+          void work().then(resolve, reject);
+        },
+      };
+      publish({ kind: 'approve-passkey', message, description });
+    });
   let releaseSetup: (() => void) | undefined;
   let lease: Promise<void> | undefined;
   const acquireSetup = () =>
@@ -296,7 +317,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     message: string,
     fallback: Exclude<
       SetupState,
-      { kind: 'ready' | 'working' | 'save-recovery' | 'save-device-code' }
+      { kind: 'ready' | 'working' | 'save-recovery' | 'save-device-code' | 'approve-passkey' }
     >['kind'],
     work: () => Promise<void>,
   ) => {
@@ -356,6 +377,8 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
     }
     publish({ kind: 'working', message: 'Opening your workspace…' });
+    const opening = promotionOpening;
+    promotionOpening = undefined;
     const opened = await openOwnedSyncingAccountWorkspace(
       {
         membershipContinuation: () => input.membershipContinuation === true,
@@ -369,6 +392,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         },
         signal: lifetime.signal,
         ...(networkLogin ? { networkLogin } : {}),
+        ...(opening ? { promotionOpening: opening } : {}),
         identity: {
           id: principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
@@ -378,6 +402,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       token,
     );
     workspace = opened.workspace;
+    promotionOpening = undefined;
     sync = opened.sync;
     devices = opened.devices;
     openedPrincipal = principalId;
@@ -542,6 +567,10 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       /* A retired workspace has no readable name. */
     }
     lifetime.abort();
+    approval?.reject(new DOMException('Setup closed', 'AbortError'));
+    approval = undefined;
+    takeHandoffCode = undefined;
+    promotionOpening = undefined;
     networkLogin?.close();
     recoveryDisplay = undefined;
     deviceEnrollment?.cancel();
@@ -580,6 +609,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       return networkLogin;
     },
     getSnapshot: () => state,
+    approvePasskey: () => approval?.invoke(),
     hasRecoveryDisplay: () => recoveryDisplay !== undefined,
     visit(step: string): boolean {
       if (lifetime.signal.aborted || operation) return false;
@@ -639,9 +669,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         publish({ kind: saved ? 'unlock' : 'intro' });
       }),
     start: (name: string) => {
-      draftName = displayName(name);
-      if (!draftName)
-        return publish({ kind: 'intro', error: 'Enter a name of up to 80 characters.' });
+      draftName = displayName(name) ?? 'You';
       if (saved?.fresh) {
         void run('Preparing your new account…', 'intro', async () => {
           saved = { ...saved!, requestedName: draftName! };
@@ -653,6 +681,28 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           const generated = deviceEnrollment.displayCode;
           if (!generated) throw Error('Device-lock code could not be generated');
           publish({ kind: 'save-device-code', code: generated });
+        });
+        return;
+      }
+      const transferred = takeHandoffCode?.();
+      takeHandoffCode = undefined;
+      if (transferred) {
+        void run('Preparing encrypted sync…', 'unlock', async () => {
+          code = transferred;
+          saved = checkedSaved(await progress());
+          if (!saved) {
+            saved = {
+              v: 1,
+              pin,
+              slotId,
+              retryKey: randomCapability(),
+              view: null,
+              proof: null,
+              requestedName: draftName!,
+            };
+            await progress(saved);
+          }
+          await continueRegistration();
         });
         return;
       }
@@ -801,7 +851,12 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           ) {
             await admitLocalPromotion({
               ...options,
-              assertActivation: assert,
+              assertActivation: (options) =>
+                approve(
+                  'Enable encrypted sync',
+                  'Your passkey approves connecting this exact list and its recovery setup to your account.',
+                  () => assert(options),
+                ),
               admissionTransport: {
                 begin: (body) => request('promotion/begin', body),
                 challenge: (body) => request('promotion/challenge', body),
@@ -811,12 +866,23 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           }
           const selected = await finishPromotionHandoff({
             ...options,
-            assertPasskey,
+            assertPasskey: (request) =>
+              approve(
+                'Open your list and connect sync',
+                'Your passkey approves opening this protected list and, when the service is reachable, signing in to sync. This approval also finishes setup on this device.',
+                () => assertPasskey(request),
+              ),
+            opening: {
+              signal: lifetime.signal,
+              ...(networkLogin ? { login: networkLogin } : {}),
+              receive: (opening) => {
+                promotionOpening = opening;
+              },
+            },
             bindingTransport: (body) => request('promotion/binding', body),
           });
           // The slot binding did not exist when setup began. Prepare its combined challenge
           // now so the first editor-opening assertion also establishes the network login.
-          if (networkLogin) await prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
           await openAccount(selected.principalId);
         } finally {
           recoveryCode = '';

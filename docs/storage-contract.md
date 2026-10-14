@@ -141,8 +141,10 @@ account binding. Account slots still require their selected verified binding; ne
 the other's authority.
 
 Classify open as **fresh**, **complete**, **resumable creation/migration**, **clearing/cleared**, or
-**repair-required** before content initialization. Fresh persistent creation confirms a factor and
-atomically installs custody and identity-bearing metadata where they share a database. Across databases,
+**repair-required** before content initialization. Protected creation confirms an external factor;
+automatic Local creation installs its authenticated mode and sealed automatic opener atomically with
+the identity/custody claim. Both paths
+atomically install custody and identity-bearing metadata where they share a database. Across databases,
 a durable creation intent binds one immutable identity set and its expected stages. Resume only when
 surviving authenticated material matches that intent. A mismatch or insufficient recovery material
 refuses; missing custody beside ciphertext never authorizes reminting or an empty workspace.
@@ -155,7 +157,9 @@ keeps its selected carrier until the explicit verified cutover commits.
 
 ## SC-07 — resumable, journal-inclusive clear
 
-The existing product/retention authorization gates apply before destructive action. Acquire the slot's
+Explicit, multi-step confirmation authorizes removal of one local slot while locked or unlocked.
+Decryption credentials are not required for this local erasure; account deletion and remote revocation
+remain separately authorized. Acquire the slot's
 exclusive permit, quiesce writers, and persist an authorized `ClearIntent` outside the content database
 being removed. It binds the target identity/carriers and records progress. Normal open and new writes
 refuse while it is clearing. A refused or blocked content deletion preserves the journal, required keys
@@ -174,10 +178,16 @@ Once the first destructive step commits, resume authorized cleanup rather than p
 restore deleted content. Success means no target content, journal or index residue and no unnecessary
 target capability; the terminal marker itself is allowed diagnostic metadata.
 
-## SC-08 — mandatory factor custody and honest copied-profile protection
+## SC-08 — automatic Local custody and opt-in copied-profile protection
 
-Persistent Local and Account workspaces enroll factor custody **at genesis** and require unlock at
-cold start. The generated **125-bit device-lock code** is always enrolled; supported PRF factors add
+New Local workspaces may open automatically. Their authenticated Local claim explicitly names this
+mode; a scoped, non-exportable browser CryptoKey seals a random internal opener in the custody database.
+User content remains ciphertext, but this mode makes no confidentiality claim against a copied or
+executable profile. Missing or mismatched automatic custody refuses opening; it never remints keys.
+The inner custody record's completed `protected` state alone does not establish external-factor protection.
+
+Protected Local and Account workspaces require external-factor unlock at cold start. Their generated
+**125-bit unlock code** is confirmed before protection becomes active; supported PRF factors add
 independent seals of the same random `L_lock` for the scoped principal/workspace custody entry, with
 row 13's role/slot binding. The local-user-slot-wide coordination permit does not broaden factor
 authority; slot metadata can contain multiple scoped custody entries. New custody lifecycle metadata
@@ -186,7 +196,7 @@ are not substituted. Hold the factor outside the copied-profile exposure domain.
 the attacker lacks the enrolled authenticator capability; capability/activation/verification behavior
 must be validated on the supported platform matrix. Code-only offline access needs no account or network.
 
-Persist only sealed openers and credentials: no promptless handle, fallback, worker/session cache,
+In protected mode, persist only sealed openers and credentials: no promptless handle, fallback, worker/session cache,
 factor redisplay copy or derived journal key may independently recover retained content or receive future
 generation keys. Inventory indirect signing/bootstrap/receiving paths too. Runtime non-extractability is
 useful but does not prove disk confidentiality. Opening a coordinated runtime creates live usable keys;
@@ -201,7 +211,15 @@ and arbitrary OS forensic artifacts are not covered.
 
 Existing v1 custody without a complete seal-reservation history must migrate to a fresh custody root;
 do not infer a zero count from surviving envelopes, even when that v1 entry already required a factor.
-Existing promptless installs are migration input, never a new default tier. Confirm a factor, stage
+Older promptless formats remain migration input. The new authenticated automatic Local mode is the
+first-run default. Its opt-in protection owner confirms a generated code, creates a fresh workspace
+store and fresh custody/content/receiving keys while retaining the principal, and copies the complete
+Yjs state plus acknowledged journal basis under exclusive ownership. The exact snapshot digest is
+factor-authenticated; cold verification precedes source deletion, including on resume. Content, journal,
+index and custody retirement have durable phases. Final selection removes the automatic opener and
+installs the protected claim. No sync admission is permitted while automatic opening remains.
+
+For older legacy custody migration, confirm a factor, stage
 sealed custody, replace every promptless future-content receiver, settle the required certified-set and
 generation transition, and retire predecessors through SC-03/SC-04. Non-extractable old credentials
 must be replaced because they cannot be exported for resealing. Report **protection pending** until
@@ -211,7 +229,7 @@ devices can continue using an old generation until they observe its successor.
 Factor loss cannot be repaired by account login or support identity verification. A lost last Local
 factor, with no independent readable copy/archive, can be final loss. Account recovery may re-enroll a
 new device through its separate user-held recovery material or surviving authorized device; it does not
-bypass a locked slot. Confirm and explain the code at first run. Replacing factors leaves at least one
+bypass a locked slot. Confirm and explain the code when adding protection. Replacing factors leaves at least one
 valid enrolled factor. There is no ordinary “disable lock” downgrade. Session-sharing/auto-lock UX must
 not persist an unlock capability or claim every slot key is cleared while a live holder retains one.
 

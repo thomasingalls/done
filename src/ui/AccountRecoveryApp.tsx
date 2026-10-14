@@ -14,6 +14,7 @@ import { useCeremonyNavigation } from './ceremonyNavigation';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 import { AccountIdentity } from './AccountIdentity';
 import { WorkspaceUiProvider } from './workspaceUi';
+import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 import { AccountDevices } from './AccountDevices';
 import { App } from './App';
 
@@ -193,6 +194,7 @@ export function AccountRecoveryApp({
   if (opened && (step === 'editing' || step === 'devices'))
     return (
       <WorkspaceUiProvider
+        slotId={slotId}
         workspace={opened.editor.workspace}
         sync={opened.editor.sync}
         actorId={opened.actorId}
@@ -296,6 +298,7 @@ export function AccountRecoveryApp({
             <button disabled={!!busy}>Continue with recovery code</button>
           </form>
         )}
+        {step === 'unlock' && <RemoveFromDeviceButton slotId={slotId} />}
         {step === 'save-code' && (
           <>
             <h2>Save this device’s lock code</h2>
@@ -303,10 +306,10 @@ export function AccountRecoveryApp({
               Save this in a new password-manager entry for this device. Keep your existing account
               passkey and recovery code; they are unchanged.
             </p>
-            <pre className="local-generated-code" aria-label="Generated device-lock code">
+            <pre className="local-generated-code" aria-label="Generated unlock code">
               {generated}
             </pre>
-            <button onClick={() => setStep('confirm-code')}>I saved my device-lock code</button>
+            <button onClick={() => setStep('confirm-code')}>I saved my unlock code</button>
           </>
         )}
         {(step === 'confirm-code' || step === 'unlock') && (
@@ -343,7 +346,7 @@ export function AccountRecoveryApp({
             <h2>
               {step === 'confirm-code' ? 'Enter the code you saved' : 'Resume on this device'}
             </h2>
-            <label htmlFor="device-lock-code">Device-lock code</label>
+            <label htmlFor="device-lock-code">Unlock code</label>
             <input
               id="device-lock-code"
               type="password"
@@ -354,7 +357,7 @@ export function AccountRecoveryApp({
               disabled={!!busy}
             />
             <button disabled={!!busy}>
-              {step === 'confirm-code' ? 'Confirm device-lock code' : 'Unlock saved recovery'}
+              {step === 'confirm-code' ? 'Confirm unlock code' : 'Unlock saved recovery'}
             </button>
           </form>
         )}

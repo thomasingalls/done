@@ -10,6 +10,7 @@ import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
 import type { RememberedAccount } from '../account/accountIdentity';
 import { AccountIdentity } from './AccountIdentity';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
+import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 import {
   rememberedDeviceConnections,
   deviceConnectionUrl,
@@ -101,6 +102,7 @@ export function AccountSignIn({
                   {account.connected ? 'Unlock →' : 'Continue →'}
                 </span>
               </button>
+              <RemoveFromDeviceButton slotId={account.slotId} />
             </li>
           ))}
           {connections.map((connection) => (
@@ -126,6 +128,7 @@ export function AccountSignIn({
                   Continue →
                 </span>
               </button>
+              <RemoveFromDeviceButton slotId={connection.slotId} />
             </li>
           ))}
           {recoveries.map((recovery) => (
@@ -148,6 +151,7 @@ export function AccountSignIn({
                   Open or resume →
                 </span>
               </button>
+              <RemoveFromDeviceButton slotId={recovery.slotId} />
             </li>
           ))}
         </ul>

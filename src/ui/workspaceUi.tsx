@@ -51,6 +51,9 @@ export interface WorkspaceUi {
   networkLogin?: NetworkLogin;
   devices?: import('../account/deviceRoster').DeviceRoster;
   showDevices?: () => void;
+  protection: 'automatic' | 'protected';
+  protect?: () => void;
+  slotId: string;
 }
 const Context = createContext<WorkspaceUi | null>(null);
 export const useWorkspaceUi = (): WorkspaceUi => {
@@ -73,6 +76,9 @@ export const WorkspaceUiProvider = ({
   devices,
   onShowDevices,
   children,
+  protection = 'protected',
+  onProtect,
+  slotId = 'local',
 }: {
   workspace: AdmittedWorkspace;
   sync?: SyncRuntime | undefined;
@@ -87,6 +93,9 @@ export const WorkspaceUiProvider = ({
   devices?: import('../account/deviceRoster').DeviceRoster;
   onShowDevices?: () => void;
   children: React.ReactNode;
+  protection?: 'automatic' | 'protected';
+  onProtect?: () => void;
+  slotId?: string;
 }) => {
   const [snapshot, setSnapshot] = useState(() => workspace.read());
   const [error, setError] = useState('');
@@ -184,6 +193,9 @@ export const WorkspaceUiProvider = ({
       ...actions,
       lock: onLock,
       accountWorkspace,
+      protection,
+      slotId,
+      ...(onProtect ? { protect: onProtect } : {}),
       ...(networkLogin ? { networkLogin } : {}),
       ...(devices ? { devices } : {}),
       ...(onShowDevices ? { showDevices: onShowDevices } : {}),
@@ -206,6 +218,9 @@ export const WorkspaceUiProvider = ({
       accountId,
       onSwitchAccount,
       onConnectAccount,
+      protection,
+      slotId,
+      onProtect,
     ],
   );
   return (

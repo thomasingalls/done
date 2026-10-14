@@ -207,7 +207,7 @@ export const Goals = ({
           },
         ]),
       ],
-      'Everything. Tasks, projects, someday-maybes, notes to self.',
+      'Your running list of tasks, projects, someday-maybes, notes to self, and ideas.',
     );
     editor.current = handle.view;
     setSelection(selectedLines(handle.view.state));

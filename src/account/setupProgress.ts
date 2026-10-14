@@ -60,6 +60,7 @@ export type SetupState = (
     }
   | { kind: 'save-recovery' | 'save-device-code'; code: string }
   | { kind: 'working'; message: string }
+  | { kind: 'approve-passkey'; message: string; description: string }
   | {
       kind: 'ready';
       workspace: AdmittedWorkspace;

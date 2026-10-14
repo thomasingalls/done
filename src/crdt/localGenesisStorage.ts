@@ -28,6 +28,7 @@ import {
 import { stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 import type { Slot } from './slotIndex';
+import { automaticOpeningKey, parseAutomaticOpening } from './automaticOpening';
 
 export const readLocalSlot = (task: SessionTask, slotId: string) =>
   probeDatabase(task, 'done.slots', async (db) => {
@@ -100,8 +101,14 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
   let custody: unknown,
     witness: unknown,
     witnessPresent = false;
+  let automaticPresent = false;
   for (const row of rows) {
     if (indexedDB.cmp(row.key, localClaimKey(scope.slotId)) === 0) continue;
+    if (indexedDB.cmp(row.key, automaticOpeningKey(scope.slotId)) === 0) {
+      parseAutomaticOpening(row.value, claim);
+      automaticPresent = true;
+      continue;
+    }
     if (promotion?.marker && indexedDB.cmp(row.key, storageUpgradeKey(scope.slotId)) === 0)
       continue;
     if (indexedDB.cmp(row.key, key) === 0) custody = row.value;
@@ -110,6 +117,8 @@ export const localCensus = async (task: SessionTask, claim: LocalClaim, promotio
       witnessPresent = true;
     } else stopStartup('repair-required', 'unknown-local-creation-carrier');
   }
+  if (claim.automatic && !automaticPresent)
+    stopStartup('repair-required', 'automatic-opener-missing');
   if (custody === undefined) stopStartup('repair-required', 'claimed-custody-missing');
   const record = parseRecord(custody, scope);
   if (claim.stage !== 'custody' && record.state !== 'protected')
@@ -190,6 +199,7 @@ export const installLocalClaim = async (
   task: SessionTask,
   db: IDBDatabase,
   claim: LocalClaim,
+  automatic?: unknown,
 ): Promise<void> => {
   const scope = claimScope(claim);
   await task.wait(() =>
@@ -203,6 +213,7 @@ export const installLocalClaim = async (
             stopStartup('repair-required', 'local-claim-already-exists');
           store.add(claim, localClaimKey(scope.slotId));
           store.add(claim.initial, recordKey(scope));
+          if (automatic) store.add(automatic, automaticOpeningKey(scope.slotId));
         });
     }),
   );
