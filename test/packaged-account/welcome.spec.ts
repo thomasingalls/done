@@ -1,5 +1,46 @@
 import { test, expect } from '@playwright/test';
+import { openApp } from '../geometry/openApp';
 import { startService, stopService } from './server';
+
+test('welcome keeps the primary action readable on hover and opens the one existing Local workspace', async ({
+  page,
+}, info) => {
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  try {
+    await page.goto('/');
+    const primary = page.getByRole('button', { name: 'Create a workspace', exact: true });
+    for (const colorScheme of ['light', 'dark'] as const) {
+      await page.emulateMedia({ colorScheme });
+      await primary.hover();
+      const contrast = await primary.evaluate((button) => {
+        const style = getComputedStyle(button);
+        const luminance = (color: string) => {
+          const rgb = color
+            .match(/\d+(?:\.\d+)?/g)!
+            .slice(0, 3)
+            .map((n) => Number(n) / 255);
+          const linear = rgb.map((n) => (n <= 0.04045 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4));
+          return linear[0]! * 0.2126 + linear[1]! * 0.7152 + linear[2]! * 0.0722;
+        };
+        const a = luminance(style.color),
+          b = luminance(style.backgroundColor);
+        return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+      });
+      expect(contrast).toBeGreaterThanOrEqual(4.5);
+    }
+    await openApp(page);
+    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await expect(page.getByLabel('Device-lock code', { exact: true })).toBeVisible();
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Open local-only workspace', exact: true }).click();
+    await expect(page.getByLabel('Device-lock code', { exact: true })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Create a local-only workspace', exact: true }),
+    ).toHaveCount(0);
+  } finally {
+    await stopService(service);
+  }
+});
 
 test('the mobile welcome action starts and resumes the existing account ceremony', async ({
   page,

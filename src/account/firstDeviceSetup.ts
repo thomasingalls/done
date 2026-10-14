@@ -1,3 +1,4 @@
+import { defaultDeviceName } from '../lib/browser';
 import { RemovalPending } from './accountTransitionNotice';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import { NetworkLogin, prewarmSlotLogin } from './networkLogin';
@@ -371,7 +372,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         identity: {
           id: principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: `local:${principalId}`, name: 'This device' },
+          device: { id: `local:${principalId}`, name: defaultDeviceName() },
         },
       },
       token,
@@ -511,7 +512,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         identity: {
           id: principal,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: `local:${principal}`, name: 'This device' },
+          device: { id: `local:${principal}`, name: defaultDeviceName() },
         },
         validateReceive: () => {
           throw Error('Account setup does not accept network writing');

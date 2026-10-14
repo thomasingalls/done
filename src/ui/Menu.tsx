@@ -2,13 +2,14 @@ import { SyncNotice } from './SyncNotice';
 import { AccountHistory } from './AccountHistory';
 import { NetworkLoginNotice } from './NetworkLoginNotice';
 /** Local navigation, explicit preferences, recovery export and lock. */
-import { useState, useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import { exportFilename } from '../crdt/export';
 import { addDays, formatDayLong, relativeDay, type ISODate } from '../lib/date';
-import { installHelp, readInstallState, requestInstall, subscribeToInstallState } from '../pwa';
 import { useWorkspaceUi } from './workspaceUi';
 import { AppUpdateNotice } from './AppUpdateNotice';
 import { AccountIdentity } from './AccountIdentity';
+import { deviceCode } from '../account/deviceRoster';
+import { InstallPanel } from './InstallPanel';
 
 export interface MenuProps {
   today: ISODate;
@@ -35,11 +36,6 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
     devices,
     sync,
   } = useWorkspaceUi();
-  const installState = useSyncExternalStore(
-    subscribeToInstallState,
-    readInstallState,
-    readInstallState,
-  );
   const actor = snapshot.actors.find((value) => value.id === actorId)!;
   const [name, setName] = useState(actor.name);
   const [deviceName, setDeviceName] = useState(snapshot.deviceName);
@@ -235,6 +231,14 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
               onChange={(e) => setDeviceName(e.target.value)}
             />
           </label>
+          {accountWorkspace && (
+            <div className="menu-row">
+              <span>Device code</span>
+              <code className="menu-value" aria-label="Device code" title={snapshot.deviceId}>
+                {deviceCode(snapshot.deviceId)}
+              </code>
+            </div>
+          )}
           <label className="menu-row">
             <span>Name</span>
             <input
@@ -282,17 +286,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           )}
         </form>
       </section>
-      {installState !== 'installed' && (
-        <section className="menu-section">
-          <h2 className="menu-heading">Install</h2>
-          <p className="menu-note">{installHelp()}</p>
-          {installState === 'available' && (
-            <button className="menu-button" onClick={() => void requestInstall()}>
-              Install app
-            </button>
-          )}
-        </section>
-      )}
+      <InstallPanel />
     </aside>
   );
 };

@@ -214,7 +214,7 @@ test.describe('Phase 2 workflow', () => {
       window.dispatchEvent(event);
     });
 
-    const install = page.getByRole('button', { name: 'Install app' });
+    const install = page.getByRole('button', { name: 'Install', exact: true });
     await expect(install).toBeVisible();
     await install.click();
     await expect(page.locator('html')).toHaveAttribute('data-install-prompted', 'true');

@@ -14,7 +14,8 @@ import { newId } from '../lib/id';
 import { IndexeddbPersistence, Y, type YDoc } from './yjs';
 import type { Origin } from './actors';
 
-export type StoragePersistence = 'granted' | 'denied' | 'unsupported' | 'unknown';
+import { requestPersistentStorage, type StoragePersistence } from '../lib/storagePersistence';
+export { requestPersistentStorage, type StoragePersistence } from '../lib/storagePersistence';
 
 export interface LocalStore {
   provider: IndexeddbPersistence;
@@ -309,20 +310,6 @@ export const openLocalStore = (
       void provider.destroy();
     },
   };
-};
-
-/**
- * A local-first app that can be silently evicted should say so, so the result
- * is reported rather than swallowed (TRD §6.1, §10.5).
- */
-export const requestPersistentStorage = async (): Promise<StoragePersistence> => {
-  if (typeof navigator === 'undefined' || !navigator.storage?.persist) return 'unsupported';
-  try {
-    if (await navigator.storage.persisted()) return 'granted';
-    return (await navigator.storage.persist()) ? 'granted' : 'denied';
-  } catch {
-    return 'unsupported';
-  }
 };
 
 /**

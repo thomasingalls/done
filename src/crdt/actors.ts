@@ -14,6 +14,7 @@
  */
 
 import { newId } from '../lib/id';
+import { defaultDeviceName } from '../lib/browser';
 import { readLocal, readLocalJson, writeLocal, writeLocalJson } from '../lib/localStore';
 import { Y, transact, type YDoc, type YMap } from './yjs';
 
@@ -47,16 +48,6 @@ const COLORS = ['#e0662f', '#3f8fd6', '#5aab63', '#b45cc4', '#c9a227', '#3fa9a3'
 /** The system actor is a constant: it is the app, and it is the same app everywhere. */
 export const SYSTEM_ACTOR_ID: ActorId = 'system';
 
-const guessDeviceName = (): string => {
-  const ua = typeof navigator === 'undefined' ? '' : navigator.userAgent;
-  if (/Android/i.test(ua)) return 'Android';
-  if (/iPhone|iPad/i.test(ua)) return 'iOS';
-  if (/Mac OS X/i.test(ua)) return 'Mac';
-  if (/Windows/i.test(ua)) return 'Windows';
-  if (/Linux/i.test(ua)) return 'Linux';
-  return 'this device';
-};
-
 export interface Device {
   id: string;
   name: string;
@@ -67,7 +58,7 @@ export const localDevice = (): Device => {
   if (typeof stored?.['id'] === 'string' && typeof stored['name'] === 'string') {
     return { id: stored['id'], name: stored['name'] };
   }
-  const device: Device = { id: newId(), name: guessDeviceName() };
+  const device: Device = { id: newId(), name: defaultDeviceName() };
   writeLocalJson(DEVICE_KEY, device);
   return device;
 };

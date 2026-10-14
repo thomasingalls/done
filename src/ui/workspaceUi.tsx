@@ -15,6 +15,7 @@ import {
 import type { Extension } from '@codemirror/state';
 import { createAdmittedEditor } from '../editor/admittedEditor';
 import { masterLineSelection } from '../editor/masterLineSelection';
+import { requestPersistentStorage, type StoragePersistence } from '../lib/storagePersistence';
 import type {
   AdmittedWorkspace,
   TextTarget,
@@ -42,6 +43,7 @@ export interface WorkspaceUi {
     placeholder?: string,
   ): ReturnType<typeof createAdmittedEditor>;
   lock(): void;
+  requestStoragePersistence(): Promise<StoragePersistence>;
   connectAccount?: () => void;
   accountWorkspace: boolean;
   accountId?: string;
@@ -105,6 +107,11 @@ export const WorkspaceUiProvider = ({
   }, [workspace]);
   const actions = useMemo(
     () => ({
+      async requestStoragePersistence() {
+        const result = await requestPersistentStorage();
+        setStorage(result === 'granted' ? 'Persistent' : 'Best-effort');
+        return result;
+      },
       async removeMasterLines(lines: readonly number[], options?: CommandFeedback) {
         try {
           if (options?.feedback !== 'local') setError('');

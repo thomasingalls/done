@@ -1,3 +1,4 @@
+import { defaultDeviceName } from '../lib/browser';
 /** Application lifetime for one Local slot. Dispositions never authorize creation or replacement. */
 import {
   beginLocalGenesis,
@@ -92,7 +93,7 @@ export const createLocalStartup = () => {
       identity: {
         id: principal,
         actor: { kind: 'human', name: 'You', color: '#e0662f' },
-        device: { id: `local:${principal}`, name: 'This device' },
+        device: { id: `local:${principal}`, name: defaultDeviceName() },
       },
       validateReceive: () => {
         throw Error('Network delivery is not enabled for this Local session.');

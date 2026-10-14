@@ -53,6 +53,7 @@ const makeFixture = async (
     | 'local-snapshots'
     | 'account-snapshots'
     | 'account-text' = 'reference',
+  deviceLabelId?: string,
 ) => {
   let date = '2026-09-08';
   let refuse = false,
@@ -173,6 +174,7 @@ const makeFixture = async (
     },
     {
       identity,
+      ...(deviceLabelId ? { deviceLabelId } : {}),
       ...(account ? { captureSources: true, suppressEmptySources: true } : {}),
       validateReceive: () => {},
       today: () => date,
@@ -465,6 +467,62 @@ describe.each(referenceAndOptimizedWorkspacePreparations)(
           expect(f.doc.read().deviceName).toBe('Kitchen laptop');
         } finally {
           await f.doc.close();
+          await reopened?.doc.close();
+        }
+      });
+      it('associates legacy names with verified device IDs and projects synced labels without changing provenance', async () => {
+        const legacy = await fixture();
+        let current: Awaited<ReturnType<typeof makeFixture>> | undefined;
+        let reopened: Awaited<ReturnType<typeof makeFixture>> | undefined;
+        try {
+          await legacy.doc.command({ kind: 'device-label', name: 'Kitchen laptop' }).accepted;
+          current = await makeFixture(legacy.doc.snapshot(), preparation, 'certified-device-one');
+          expect(current.doc.read().deviceId).toBe('certified-device-one');
+          expect(current.doc.read().deviceName).toBe('Kitchen laptop');
+          expect(current.doc.read().deviceLabels['certified-device-one']).toBe('Kitchen laptop');
+          await current.doc.receive(
+            remote(current.doc, (doc) => {
+              doc.getMap('meta').set('device-label:certified-device-two', 'Phone');
+            }),
+          ).accepted;
+          await current.doc.command({ kind: 'device-label', name: 'Renamed laptop' }).accepted;
+          expect(current.doc.read().deviceLabels).toMatchObject({
+            'device-one': 'Renamed laptop',
+            'certified-device-one': 'Renamed laptop',
+            'certified-device-two': 'Phone',
+          });
+          await current.doc.receive(
+            remote(current.doc, (doc) => {
+              doc.getMap('meta').set('device-label:certified-device-one', 'Synced laptop');
+            }),
+          ).accepted;
+          reopened = await makeFixture(current.doc.snapshot(), preparation, 'certified-device-one');
+          expect(reopened.doc.read().deviceName).toBe('Synced laptop');
+          expect(reopened.doc.read().deviceLabels['certified-device-two']).toBe('Phone');
+          expect(reopened.doc.read().actors.find((actor) => actor.id === identity.id)?.name).toBe(
+            'Alice',
+          );
+        } finally {
+          await legacy.doc.close();
+          await current?.doc.close();
+          await reopened?.doc.close();
+        }
+      });
+      it('publishes the current default device name and upgrades the old placeholder', async () => {
+        const current = await makeFixture(undefined, preparation, 'certified-device-one');
+        let reopened: Awaited<ReturnType<typeof makeFixture>> | undefined;
+        try {
+          expect(current.doc.read().deviceLabels['certified-device-one']).toBe('test device');
+          await current.doc.receive(
+            remote(current.doc, (doc) => {
+              doc.getMap('meta').set('device-label:certified-device-one', 'This device');
+            }),
+          ).accepted;
+          reopened = await makeFixture(current.doc.snapshot(), preparation, 'certified-device-one');
+          expect(reopened.doc.read().deviceName).toBe('test device');
+          expect(reopened.doc.read().deviceLabels['certified-device-one']).toBe('test device');
+        } finally {
+          await current.doc.close();
           await reopened?.doc.close();
         }
       });

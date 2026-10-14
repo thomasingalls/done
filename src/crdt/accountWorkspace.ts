@@ -17,7 +17,7 @@ export async function openOwnedAccountWorkspace(input: AccountWorkspaceOptions) 
   const refuseReceive = () => {
     throw Error('Account relay receiver is not configured');
   };
-  const { account, carrier, devices } = await openAccountJournalSession(
+  const { account, carrier, devices, deviceId } = await openAccountJournalSession(
     options,
     options.identity.id,
   );
@@ -26,6 +26,7 @@ export async function openOwnedAccountWorkspace(input: AccountWorkspaceOptions) 
       (config) => createAdmissionOwner(carrier, config),
       {
         identity: options.identity,
+        deviceLabelId: deviceId,
         validateReceive: refuseReceive,
         ...(options.today ? { today: options.today } : {}),
         ...(options.signal ? { signal: options.signal } : {}),

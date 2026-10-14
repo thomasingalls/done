@@ -1,3 +1,4 @@
+import { defaultDeviceName } from '../lib/browser';
 /** Browser/session composition for the retained additional-device coordinator. */
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import type { SuccessorBase } from '../../account-protocol/successor';
@@ -298,7 +299,7 @@ export function createMembershipEnrollment(
         identity: {
           id: joined.principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: 'joined:' + slotId, name: 'This device' },
+          device: { id: 'joined:' + slotId, name: defaultDeviceName() },
         },
       },
       legacyAccess(config),

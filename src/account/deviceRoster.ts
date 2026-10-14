@@ -1,4 +1,6 @@
 /** Presentation port. Its producer is the held account owner, never the CRDT or chooser hints. */
+export const deviceCode = (id: string): string => id.slice(0, 8);
+
 export interface DeviceRosterSnapshot {
   readonly epoch: number;
   readonly generation?: number;

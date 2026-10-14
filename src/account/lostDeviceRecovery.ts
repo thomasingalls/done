@@ -1,3 +1,4 @@
+import { defaultDeviceName } from '../lib/browser';
 import {
   RECOVERY_HISTORY_PAGE_LIMIT,
   parseRecoveryRead,
@@ -435,7 +436,7 @@ export async function openRecoveredWorkspace(
         identity: {
           id: installed.principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: 'recovered:' + slotId, name: 'This device' },
+          device: { id: 'recovered:' + slotId, name: defaultDeviceName() },
         },
       },
       legacyAccess(config),

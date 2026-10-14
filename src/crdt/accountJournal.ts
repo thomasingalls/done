@@ -93,6 +93,7 @@ export const openAccountJournalSession = async (
     });
   return {
     account,
+    deviceId: devices.currentDevice,
     devices: Object.freeze({
       read: () => live.run(async (task) => task.step(() => devices)),
     }) satisfies DeviceRoster,

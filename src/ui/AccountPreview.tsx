@@ -211,12 +211,29 @@ export async function createAccountPreview(config: SetupConfig) {
     );
   }
   function Splash() {
+    const [localState, setLocalState] = useState<'checking' | 'fresh' | 'existing'>('checking');
+    useEffect(() => {
+      const lifetime = new AbortController();
+      // Keep storage ownership and crypto out of the initial welcome bundle.
+      void import('../crdt/localGenesis')
+        .then((module) => module.inspectLocalStartup('local', { signal: lifetime.signal }))
+        .then((state) => {
+          if (!lifetime.signal.aborted)
+            setLocalState(state.kind === 'fresh' ? 'fresh' : 'existing');
+        })
+        .catch(() => {
+          if (!lifetime.signal.aborted) setLocalState('existing');
+        });
+      return () => lifetime.abort();
+    }, []);
     return (
       <Welcome
+        checkingLocalWorkspace={localState === 'checking'}
+        hasLocalWorkspace={localState === 'existing'}
         onCreateWorkspace={createAccount}
         onChooseAccount={choose}
         onCreateLocal={() => {
-          beginLocal = true;
+          beginLocal = localState === 'fresh';
           openLocal();
         }}
       />

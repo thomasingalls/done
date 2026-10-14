@@ -2518,6 +2518,7 @@ async function openAccountReceiveOwner(
   };
   return {
     access,
+    deviceId: base.reader.id,
     devices: Object.freeze({
       detached: account.detached,
       get transition() {
@@ -2722,6 +2723,7 @@ async function openReceivingWorkspace(
   const {
     access,
     devices,
+    deviceId,
     publisherCount,
     completedRead,
     isSelfRequest,
@@ -2775,6 +2777,7 @@ async function openReceivingWorkspace(
         ),
       {
         identity: options.identity,
+        deviceLabelId: deviceId,
         captureSources: true,
         suppressEmptySources: true,
         validateReceive: () => {

@@ -8,6 +8,7 @@
  */
 
 import { observeAppUpdate } from './appUpdate';
+import { browserEnvironment } from './lib/browser';
 
 export type InstallState = 'installed' | 'available' | 'unavailable';
 
@@ -81,27 +82,33 @@ export const readInstallState = (): InstallState => installState;
 
 export const installHelp = (): string => {
   if (typeof window === 'undefined') return '';
-  if (!window.isSecureContext) {
-    return 'A standalone install needs HTTPS (or localhost). This address can only create a browser shortcut.';
+  if (!window.isSecureContext) return '';
+  const { browser, os, version } = browserEnvironment();
+  if (os === 'iOS' || os === 'iPadOS') return 'Use Share, then Add to Home Screen to install done.';
+  if (browser === 'Safari' && os === 'macOS' && version >= 17)
+    return 'If File → Add to Dock is available, use it to install done.';
+  if (browser === 'Firefox') {
+    if (os === 'Android') return 'Use Install in Firefox’s menu to install done.';
+    if (os === 'Windows' && version >= 143)
+      return 'Use Firefox’s web app button in the address bar, if available.';
+    return '';
   }
-
-  if (/iPad|iPhone|iPod/u.test(navigator.userAgent)) {
-    return 'In Safari, use Share, then Add to Home Screen.';
-  }
-
-  return 'If the install button does not appear, use Install app in your browser menu.';
+  if (browser === 'Chrome' || browser === 'Edge' || browser === 'Samsung Internet')
+    return 'You can also install done from your browser’s menu.';
+  return '';
 };
 
 /** Must be called from a click: browsers require a user gesture for the prompt. */
-export const requestInstall = async (): Promise<void> => {
+export const requestInstall = async (): Promise<'accepted' | 'dismissed' | 'unavailable'> => {
   const prompt = installPrompt;
-  if (!prompt) return;
+  if (!prompt) return 'unavailable';
 
   installPrompt = null;
   publish('unavailable');
   await prompt.prompt();
   const choice = await prompt.userChoice;
   if (choice.outcome === 'accepted') publish('installed');
+  return choice.outcome;
 };
 
 export const registerServiceWorker = (): void => {

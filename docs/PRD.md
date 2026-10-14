@@ -1204,13 +1204,18 @@ identically to an enrolled one is not honest, and it is the screen a person woul
 do not recognise. The distinction is the same one §6.3 draws — admitted is not enrolled — carried onto the
 surface where someone can act on it.
 
-Device names are currently user-agent guesses (`Mac`, `Android`), **renameable from this list and local to
-the device that holds them**, and two of the same kind collide. They are worth improving, and the mechanism
-is open with one guardrail: **not by fingerprinting.** Deriving a stable
-identifier from device characteristics is the thing browser vendors are actively closing off and would be a
-poor look in an app whose pitch is that your data stays yours. A stable random device id already exists and
-carries no information about the machine; a suffix taken from it — four characters, or a deterministic word,
-`Mac (violet)` — disambiguates two Macs without deriving anything (§11).
+The sidebar's **Identity and preferences** shows this device's public **Device code**, matching the code
+on every connected device's list. It is the first eight characters of the verified device ID, independent
+of the editable name. Defaults use ordinary browser and OS hints, for example **Firefox - macOS** or
+**Chrome - Android**, falling back to **This device** when those hints are unavailable. Browser profile
+names, client hostnames and exact hardware models are not available to a normal tab. Custom names complement the code rather
+than replace it, and sync through encrypted workspace content so each device shows the same names.
+Existing names are associated with the verified ID when that device next opens its workspace.
+
+Names do not establish membership. The code comes from the held account owner's verified device ID,
+never from a name or machine characteristics. **No fingerprinting:** naming and disambiguation do not
+derive identifiers from hardware or browser attributes. Browser and OS hints only suggest an editable
+display name; the verified code remains independent (§11).
 
 **Not promised.** A stale device is never **hidden**. Omitting a device because the app inferred it was gone
 is exactly the dishonesty this list exists to avoid. The staleness interval is an open parameter (§11).
@@ -2338,6 +2343,11 @@ account-acquisition surface.**
 **Not promised.** The grant interaction is not ours to design — one browser shows a permission prompt in a
 location we do not choose, another decides silently on engagement heuristics, and an installed PWA may simply
 be persistent without ever asking. Re-check on every launch rather than trusting a past grant.
+
+The sidebar's **Install** button explicitly checks and requests persistent local storage. It also opens
+the native app installation prompt when the browser makes one available. On browsers with manual-only
+installation, show applicable instructions; on combinations without installation, offer the storage
+check alone. In particular, desktop Firefox on macOS has no browser-menu installation instruction.
 
 **The second row is a description, not a deficiency.** A single local device holding the only copy is what a
 local application on one computer *is* — the same kind of statement as a text editor saving to one disk. It

@@ -1,3 +1,4 @@
+import { defaultDeviceName } from '../lib/browser';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import {
   ScopedTransport,
@@ -933,7 +934,7 @@ export function createDeviceEnrollment(
         identity: {
           id: joined.principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: 'joined:' + slotId, name: 'This device' },
+          device: { id: 'joined:' + slotId, name: defaultDeviceName() },
         },
       },
       legacyAccess(config),
