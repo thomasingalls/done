@@ -95,6 +95,7 @@ const tree = (path) =>
   );
 const paths = [
   ...tree('src'),
+  ...tree('account-protocol'),
   'wasm/journal-seal/seal.generated.ts',
   'pnpm-lock.yaml',
   'package.json',

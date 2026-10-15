@@ -304,6 +304,7 @@ export function createFirstDeviceSetup(
         pin,
         local: { slotId, code },
         ...(slotId !== 'local' ? { perSlotProgress: true as const } : {}),
+        isolateSetupProgress: true,
         accountId: accountId(),
         retryKey: saved!.retryKey,
         signal: lifetime.signal,
@@ -456,24 +457,44 @@ export function createFirstDeviceSetup(
     }
   };
   const afterRegistration = async () => {
+    publish({
+      kind: 'working',
+      message: 'Checking your workspace…',
+      detail: 'If this waits, close other tabs using this list. Your writing will stay here.',
+    });
     const retained = await marker();
     if (retained && (retained.stage === 'handoff-selected' || retained.v >= 5))
       return openAccount(retained.source.principalId);
-    context = retained
-      ? {
-          principalId: retained.source.principalId,
-          workspaceId: retained.source.workspaceId,
-          lineageId: await promotionLineage(pin, accountId(), retained.source),
-          authRoot: pin.authRoot,
-        }
-      : (await inspectLocalPromotion(baseOptions())).context;
-    const status = await recovery((owner) => owner.status());
-    if (status === 'empty') {
-      const generated = await recovery((owner) => owner.generate());
-      guard();
-      recoveryDisplay = generated.code;
-      publish({ kind: 'save-recovery', code: generated.code });
-    } else publish({ kind: 'confirm-recovery' });
+    try {
+      context = retained
+        ? {
+            principalId: retained.source.principalId,
+            workspaceId: retained.source.workspaceId,
+            lineageId: await promotionLineage(pin, accountId(), retained.source),
+            authRoot: pin.authRoot,
+          }
+        : (await inspectLocalPromotion(baseOptions())).context;
+      const status = await recovery((owner) => owner.status());
+      if (status === 'empty') {
+        const generated = await recovery((owner) => owner.generate());
+        guard();
+        recoveryDisplay = generated.code;
+        publish({ kind: 'save-recovery', code: generated.code });
+      } else publish({ kind: 'confirm-recovery' });
+    } catch (cause) {
+      if (
+        cause instanceof SetupRetired ||
+        cause instanceof RemovalPending ||
+        lifetime.signal.aborted
+      )
+        throw cause;
+      throw new SetupContinuationNotice(
+        'Your unlock code was accepted, but account setup could not continue. ' +
+          (cause instanceof SetupNotice || cause instanceof PrivateServiceUnavailable
+            ? cause.message
+            : 'Try setup again, or return to your local workspace. Your writing has been kept.'),
+      );
+    }
   };
   const registrationView = (input: unknown): Result => {
     if (!input || typeof input !== 'object' || Array.isArray(input))

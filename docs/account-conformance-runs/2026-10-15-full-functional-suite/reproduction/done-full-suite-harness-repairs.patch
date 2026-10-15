@@ -1,0 +1,95 @@
+--- a/scripts/custody/catalog.mjs
++++ b/scripts/custody/catalog.mjs
+@@ -43,8 +43,8 @@
+     file: 'custody.ts',
+     case: 'C12.metadata-authentication',
+     assertion: 'modified-count-refuses',
+-    from: '          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),',
+-    to: '          record,\n          guardedSubtle(() => task.step(() => {})),\n        ).catch(() => {}),',
++    from: "        authenticateRecord(\n          root!,\n          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),",
++    to: "        authenticateRecord(\n          root!,\n          record,\n          guardedSubtle(() => task.step(() => {})),\n        ).catch(() => {}),",
+   },
+   {
+     id: 'request-success-as-commit',
+--- a/scripts/content/catalog.mjs
++++ b/scripts/content/catalog.mjs
+@@ -30,8 +30,8 @@
+     file: 'contentStore.ts',
+     case: 'C15.abandoned-seals',
+     assertion: 'abandoned-encryption-remains-counted',
+-    from: 'if (await compareAndWrite(task, before, next)) break;',
+-    to: 'if (next) break;',
++    from: "if (await compareAndWrite(task, before, next)) {",
++    to: "if (next) {",
+   },
+   {
+     id: 'omit-generation-fence',
+--- a/scripts/journal/catalog.mjs
++++ b/scripts/journal/catalog.mjs
+@@ -61,8 +61,8 @@
+     file: 'journalStore.ts',
+     case: 'C03.refusals',
+     assertion: 'unavailable-does-not-acknowledge',
+-    from: "        return {\n          status: 'refused',\n          reason:\n            cause instanceof DOMException && cause.name === 'QuotaExceededError'\n              ? 'quota'\n              : 'unavailable',\n        };",
+-    to: "        return Object.freeze({status:'journalled',key:storageKey,generation});",
++    from: "          return {\n            status: 'refused',\n            reason:\n              cause instanceof DOMException && cause.name === 'QuotaExceededError'\n                ? 'quota'\n                : 'unavailable',\n          };",
++    to: "          return Object.freeze({status:'journalled',key:storageKey,generation});",
+   },
+   {
+     id: 'remove-changed-entry',
+--- a/scripts/admission/catalog.mjs
++++ b/scripts/admission/catalog.mjs
+@@ -47,8 +47,8 @@
+     file: 'admissionQueue.ts',
+     case: 'C03.ordered-refusal',
+     assertion: 'only-head-prepared',
+-    from: 'queue.push(job);',
+-    to: 'queue.push(job); if (busy && kind === "local") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);',
++    from: "    queue.push(job);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });",
++    to: "    queue.push(job); if (busy && kind === \"local\") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });",
+   },
+   {
+     id: 'publish-receive-before-commit',
+--- a/scripts/content-trim/catalog.mjs
++++ b/scripts/content-trim/catalog.mjs
+@@ -49,8 +49,8 @@
+     file: 'contentCompaction.ts',
+     case: 'T06.changed',
+     assertion: 'changed-record-refuses',
+-    from: 'equalBytes(a.nonce, b.nonce) &&\n  equalBytes(a.ct, b.ct)',
+-    to: 'true',
++    from: "sameBytes(a.nonce, b.nonce) &&\n  sameBytes(a.ct, b.ct)",
++    to: "true",
+   },
+   {
+     id: 'skip-delete-census',
+--- a/scripts/journal-contention/run.mjs
++++ b/scripts/journal-contention/run.mjs
+@@ -60,6 +60,7 @@
+   );
+ const paths = [
+   ...tree('src'),
++  ...tree('account-protocol'),
+   'wasm/journal-seal/seal.generated.ts',
+   'pnpm-lock.yaml',
+   'package.json',
+--- a/scripts/pending-projection/run.mjs
++++ b/scripts/pending-projection/run.mjs
+@@ -95,6 +95,7 @@
+   );
+ const paths = [
+   ...tree('src'),
++  ...tree('account-protocol'),
+   'wasm/journal-seal/seal.generated.ts',
+   'pnpm-lock.yaml',
+   'package.json',
+--- a/scripts/yjs-delivery/run.mjs
++++ b/scripts/yjs-delivery/run.mjs
+@@ -75,6 +75,7 @@
+   );
+ const paths = [
+   ...tree('src'),
++  ...tree('account-protocol'),
+   'pnpm-workspace.yaml',
+   'scripts/check-yjs-patch.mjs',
+   'vendor-patches/yjs-13.6.31.json',

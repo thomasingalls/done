@@ -1,4 +1,9 @@
 import { withPromotionSlot } from '../crdt/writeSession';
+import {
+  RECOVERY_PREPARATION_DB,
+  retainedRecoveryKey,
+  withSelectedSetupRecovery,
+} from './setupRecoveryMetadata';
 import { readPromotion } from '../crdt/promotionRecord';
 import { promotionLineage } from '../crdt/promotionPreparation';
 import { type AuthorityPin, parseAuthorityPin } from '../../account-protocol/authority';
@@ -14,7 +19,7 @@ import {
 } from '../../account-protocol/recovery.ts';
 import { generateRecovery, confirmRecovery } from './recovery.ts';
 
-export const RECOVERY_PREPARATION_DB = 'done.account-recovery-preparation.v1';
+export { RECOVERY_PREPARATION_DB } from './setupRecoveryMetadata';
 export interface RecoveryTransport {
   begin(input: { retryKey: string; draft: RecoveryDraft }): Promise<unknown>;
   finish(input: Finalization): Promise<unknown>;
@@ -53,6 +58,8 @@ export async function withRecoveryOwner<T>(
     local?: { slotId: string; code: string };
     /** Opt in for newly allocated slots; existing callers keep their retained `pending` record. */
     perSlotProgress?: true;
+    /** Preserve other attempts and fence every metadata operation against selected setup/removal. */
+    isolateSetupProgress?: true;
     accountId: string;
     retryKey: string;
     transport: RecoveryTransport;
@@ -75,7 +82,10 @@ export async function withRecoveryOwner<T>(
   identifier(retryKey);
   const local = options.local ? { ...options.local } : undefined;
   if (options.perSlotProgress && !local) throw Error('Local recovery slot required');
-  const progressKey = options.perSlotProgress ? `slot:${local!.slotId}` : 'pending';
+  if (options.isolateSetupProgress && (!local || !pin))
+    throw Error('Selected setup recovery requires a Local slot and service pin');
+  let progressKey: IDBValidKey = options.perSlotProgress ? `slot:${local!.slotId}` : 'pending';
+  const currentRetainedKey = retainedRecoveryKey(accountId, retryKey);
   const transport = options.transport,
     signal = options.signal;
   return navigator.locks.request(
@@ -99,43 +109,73 @@ export async function withRecoveryOwner<T>(
         alive = false;
         db.close();
       };
-      const access = (value?: Retained | null) =>
-        new Promise<unknown>((resolve, reject) => {
-          guard();
-          const tx = db.transaction('progress', value !== undefined ? 'readwrite' : 'readonly', {
-            durability: 'strict',
+      let displaced: { value: unknown; key: IDBValidKey } | undefined;
+      const access = (value?: Retained | null, key = progressKey): Promise<unknown> => {
+        const work = () =>
+          new Promise<unknown>((resolve, reject) => {
+            guard();
+            const tx = db.transaction('progress', value !== undefined ? 'readwrite' : 'readonly', {
+              durability: 'strict',
+            });
+            const store = tx.objectStore('progress');
+            let result: unknown, failure: unknown;
+            if (value && displaced) {
+              const before = displaced;
+              const source = store.get(key),
+                retained = store.get(before.key);
+              let remaining = 2;
+              const check = () => {
+                if (--remaining) return;
+                try {
+                  if (JSON.stringify(source.result) !== JSON.stringify(before.value))
+                    throw Error('Recovery progress changed before preservation');
+                  if (retained.result !== undefined)
+                    throw Error('Retained recovery progress already exists; nothing was replaced');
+                  store.add(before.value, before.key);
+                  store.put(value, key);
+                } catch (cause) {
+                  failure = cause;
+                  tx.abort();
+                }
+              };
+              source.onsuccess = check;
+              retained.onsuccess = check;
+            } else {
+              const request =
+                value === null ? store.delete(key) : value ? store.put(value, key) : store.get(key);
+              request.onsuccess = () => {
+                result = request.result;
+              };
+            }
+            tx.oncomplete = () => {
+              if (value !== undefined) displaced = undefined;
+              resolve(result);
+            };
+            tx.onabort = () =>
+              reject(failure ?? tx.error ?? Error('Recovery progress write aborted'));
+            tx.onerror = () => {};
           });
-          const store = tx.objectStore('progress'),
-            request =
-              value === null
-                ? store.delete(progressKey)
-                : value
-                  ? store.put(value, progressKey)
-                  : store.get(progressKey);
-          tx.oncomplete = () => resolve(request.result);
-          tx.onabort = () => reject(tx.error ?? Error('Recovery progress write aborted'));
-          tx.onerror = () => {};
-        });
-      const load = async (): Promise<Retained | undefined> => {
-        const input = await access();
-        guard();
-        if (input === undefined) return;
+        return options.isolateSetupProgress
+          ? withSelectedSetupRecovery(local!.slotId, pin!, accountId, retryKey, work)
+          : work();
+      };
+      const checked = (input: unknown): Retained => {
         const saved = record(input);
         if (
           Object.keys(saved).sort().join() !== 'accountId,draft,finalization,retryKey,v' ||
           saved['v'] !== 1 ||
-          saved['accountId'] !== accountId ||
-          saved['retryKey'] !== retryKey
+          typeof saved['accountId'] !== 'string' ||
+          typeof saved['retryKey'] !== 'string'
         )
           throw Error('Recovery owner mismatch');
+        identifier(saved['accountId']);
+        identifier(saved['retryKey']);
         const draft = parseDraft(saved['draft']);
-        for (const key of ['principalId', 'workspaceId', 'lineageId', 'authRoot'] as const)
-          if (draft[key] !== scope[key]) throw Error('Recovery target changed');
         if (saved['finalization'] !== null) {
           const proof = record(saved['finalization']);
           if (
             Object.keys(proof).sort().join() !== 'recoveryId,recoveryProof,response,retryKey' ||
-            proof['retryKey'] !== retryKey ||
+            proof['retryKey'] !== saved['retryKey'] ||
             typeof proof['recoveryId'] !== 'string' ||
             typeof proof['recoveryProof'] !== 'string' ||
             !/^[0-9a-f]{128}$/.test(proof['recoveryProof'])
@@ -145,11 +185,47 @@ export async function withRecoveryOwner<T>(
         }
         return {
           v: 1,
-          accountId,
-          retryKey,
+          accountId: saved['accountId'],
+          retryKey: saved['retryKey'],
           draft,
           finalization: saved['finalization'] as Finalization | null,
         };
+      };
+      const load = async (): Promise<Retained | undefined> => {
+        let input = await access();
+        guard();
+        displaced = undefined;
+        if (options.isolateSetupProgress) {
+          if (input === undefined) {
+            input = await access(undefined, currentRetainedKey);
+            if (input !== undefined) progressKey = currentRetainedKey;
+          } else {
+            const existing = checked(input);
+            if (existing.accountId !== accountId || existing.retryKey !== retryKey) {
+              const own = await access(undefined, currentRetainedKey);
+              if (own !== undefined) {
+                input = own;
+                progressKey = currentRetainedKey;
+              } else {
+                // Status is read-only. Only generation atomically preserves the old row and
+                // installs the new draft at the old-reader-compatible current key.
+                displaced = {
+                  value: input,
+                  key: retainedRecoveryKey(existing.accountId, existing.retryKey),
+                };
+                return;
+              }
+            }
+          }
+        }
+        if (input === undefined) return;
+        const saved = checked(input);
+        if (saved.accountId !== accountId || saved.retryKey !== retryKey)
+          throw Error('Recovery owner mismatch');
+        for (const key of ['principalId', 'workspaceId', 'lineageId', 'authRoot'] as const)
+          if (saved.draft[key] !== scope[key]) throw Error('Recovery target changed');
+        guard();
+        return saved;
       };
       // Hold the lock until the in-flight work settles, even if a caller forgets to await it.
       let pending: Promise<unknown> = Promise.resolve();

@@ -1,0 +1,40 @@
+{
+  "catalogs": 12,
+  "failures": [
+    {
+      "catalog": "admission/catalog.mjs",
+      "id": "prepare-queued-input-early",
+      "file": "admissionQueue.ts",
+      "matches": 3,
+      "from": "queue.push(job);"
+    },
+    {
+      "catalog": "content/catalog.mjs",
+      "id": "skip-reservation",
+      "file": "contentStore.ts",
+      "matches": 0,
+      "from": "if (await compareAndWrite(task, before, next)) break;"
+    },
+    {
+      "catalog": "content-trim/catalog.mjs",
+      "id": "ignore-record-bytes",
+      "file": "contentCompaction.ts",
+      "matches": 0,
+      "from": "equalBytes(a.nonce, b.nonce) &&\n  equalBytes(a.ct, b.ct)"
+    },
+    {
+      "catalog": "custody/catalog.mjs",
+      "id": "trust-unverified-metadata",
+      "file": "custody.ts",
+      "matches": 2,
+      "from": "          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),"
+    },
+    {
+      "catalog": "journal/catalog.mjs",
+      "id": "acknowledge-refusal",
+      "file": "journalStore.ts",
+      "matches": 0,
+      "from": "        return {\n          status: 'refused',\n          reason:\n            cause instanceof DOMException && cause.name === 'QuotaExceededError'\n              ? 'quota'\n              : 'unavailable',\n        };"
+    }
+  ]
+}

@@ -14602,3 +14602,65 @@ this commit, an updated local 8443 preview and a full functional suite while ret
 The full suite and user walkthrough are subsequent evidence, not established by these focused checks.
 Removal/migration and unissued-code routing remain open. General release qualification, merge and
 production deployment remain paused. The other workstream's `docs/progress.md` is untouched.
+
+### Full functional baseline after signed passkey/Local-access repair
+
+**Date:** 2026-10-15 · **Source:** signed `5afdd0ad3d478e19c86f28e4db042a2d77d70c13`.
+
+The requested 8443 preview update and full functional run are complete. The immutable frontend
+matches its served bytes; the separately running account backend and public service configuration
+were preserved. The continuation attempted all 85 listed commands beyond the initial custody
+failure: 36 passed and 49 failed. Repeated wrapper failures are not independent defects. The unit
+population passes 1,763 cases with one existing named skip. The full suite is red, not release-ready.
+
+Original failures and isolated rechecks are retained in the
+[functional packet](account-conformance-runs/2026-10-15-full-functional-suite/README.md), with 637
+hashed artifacts. The explicitly approved five catalogue/three snapshot repairs pass all eight
+native harness commands. The approved census/module-copy follow-up passes all 289 release-runner
+regression tests. No old test was removed or weakened. The proposed unrelated test formatting remains
+unapplied and preserved; the construction-registry formatting proposal was reverted as requested.
+
+Remaining functional disagreements include blocked-open metadata mutation, session receive failure,
+successor behavior, generated-history/control failures, stale entry fixtures and historical dependency
+closures. The isolated genesis run passes its 17 baseline cases but still has three errored mutation
+controls. The original Firefox report remained open at this boundary. A subsequent read-only summary
+and a disposable real-provider reproduction identify stale recovery ownership; its bounded repair is
+tracked separately in the [two-tab/setup packet](account-conformance-runs/2026-10-15-multi-tab-setup/README.md).
+General release qualification, merge, push and production deployment remain paused. The other seat's
+`docs/progress.md` was not replaced.
+
+### Repair stale recovery ownership after passkey confirmation
+
+**Date:** 2026-10-15 · **Source:** bounded follow-up to signed `5afdd0ad`; signing follows this record.
+
+**Problem and result.** A retained recovery draft from another account/retry and Local workspace
+blocked already-confirmed passkey setup. Resuming setup then mislabelled the valid Local factor as
+an invalid code. The independent Local verifier still opened the writing. The repair preserves the
+foreign v1 draft atomically under its identity before saving the current draft at the existing
+reader-compatible key. Matching legacy drafts resume in place. Selected setup/pin/removal checks
+fence metadata operations; explicit removal cleans only scoped or identified records. Continuation
+errors distinguish a verified factor from a later setup failure. Writer waits explain other tabs.
+
+**Evidence.** A packaged regression reproduces both exact messages before the repair. Initial unit
+counterexamples include a staged recovery write crossing removal. The updated source passes all
+1,769 unit cases with the same existing skip, 18 affected browser cases plus two existing removal
+regressions, all 25 unchanged recovery campaign cases, type/build/size/origin checks and focused lint.
+The broad runner recheck passed 288/289; its sole stale runtime census was reviewed and refreshed
+without changing any of 195 domains. All 87 affected gate/registry rerun cases pass. The independent
+patch-boundary comparison proves all 12 changed existing test/harness files match explicitly approved
+patches. No unrelated old formatting was applied.
+
+**Actual provider.** Disposable Firefox-private + Bitwarden reproduces the same two baseline errors
+after removing an earlier Local list. On the independently observed repair module, the same failing
+attempt resumes with its original code, completes real recovery/connection/opening assertions, and
+retains writing through lock plus code-and-Bitwarden cold reopening. The temporary 8445 route and
+both disposable services were removed; original route hashes match. The test credential remains
+in the vault as explicitly approved; no real credential was replaced. The
+[bounded packet](account-conformance-runs/2026-10-15-multi-tab-setup/README.md) retains source/build pins,
+failed results, new regressions, actual-provider observations and limitations.
+
+**Limits and handoff.** The broader functional baseline remains red. The planning manifest retains
+843 obligations and 303 unresolved obligations; no aggregate qualification, push, merge or production
+deployment was authorized or performed. Existing protected custody, verifier rules and crypto byte
+formats remain unchanged. Signed commit and local preview refresh are the following publication
+checkpoint; the operator's actual original workspace retry remains their observation to establish.

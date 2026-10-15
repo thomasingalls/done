@@ -11,6 +11,7 @@ import { localClaimKey, parseLocalClaim } from './localGenesisRecord';
 import { importClaimKey } from './legacyImportState';
 import { cleanupComplete } from './legacyCleanupRecord';
 import { assertLegacySourceAbsent } from './legacyCleanupStorage';
+import { RECOVERY_PREPARATION_DB, retainedRecoveryKey } from '../account/setupRecoveryMetadata';
 
 /** Refuse before erasure; the older plaintext source needs its verified exclusion/cleanup owner. */
 export class LegacyRemovalRequired extends Error {
@@ -182,6 +183,40 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
         }
         if (r.phase === 'metadata') {
           // Keep the intent until every independent metadata carrier has completed.
+          const selected = (await probeDatabase(task, 'done.first-device-setup.v1', async (db) =>
+            readRow(task, db, 'attempt', slotId === 'local' ? 'current' : slotId),
+          )) as
+            | { slotId?: unknown; retryKey?: unknown; view?: { accountId?: unknown } }
+            | null
+            | undefined;
+          const accountId = selected?.slotId === slotId ? selected.view?.accountId : undefined;
+          const retryKey = selected?.slotId === slotId ? selected.retryKey : undefined;
+          const hasOwner = typeof accountId === 'string' && typeof retryKey === 'string';
+          await probeDatabase(task, RECOVERY_PREPARATION_DB, (db) =>
+            contentTransaction<void>(db, task, ['progress'], 'readwrite', (tx, _result, guard) => {
+              const cursor = tx.objectStore('progress').openCursor();
+              cursor.onsuccess = () =>
+                guard(() => {
+                  const row = cursor.result;
+                  if (!row) return;
+                  const ownCurrent =
+                    row.key === `slot:${slotId}` ||
+                    (slotId === 'local' &&
+                      row.key === 'pending' &&
+                      hasOwner &&
+                      row.value?.accountId === accountId &&
+                      row.value?.retryKey === retryKey);
+                  const ownRetained =
+                    hasOwner &&
+                    indexedDB.cmp(
+                      row.key,
+                      retainedRecoveryKey(accountId as string, retryKey as string),
+                    ) === 0;
+                  if (ownCurrent || ownRetained) row.delete();
+                  row.continue();
+                });
+            }),
+          );
           await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
             contentTransaction<void>(db, task, ['attempt'], 'readwrite', (tx) => {
               tx.objectStore('attempt').delete(slotId === 'local' ? 'current' : slotId);

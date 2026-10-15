@@ -1,0 +1,22 @@
+import fs from 'node:fs';import path from 'node:path';import assert from 'node:assert/strict';import {createHash} from 'node:crypto';
+const source='<dependency-source>/node_modules';
+const checkout='<test-checkout>';
+const target=path.join(checkout,'node_modules');
+fs.renameSync(target,'/private/tmp/done-full-suite-symlink-deps-first-attempt');
+fs.cpSync(source,target,{recursive:true,dereference:false,verbatimSymlinks:true,filter:file=>{
+ const rel=path.relative(source,file).split(path.sep)[0];return !rel.startsWith('.vite')&&!['.cache','.tmp','.pnpm-store'].includes(rel);
+}});
+const materialized=[];
+for(const name of ['.package-map.json','.pnpm-workspace-state-v1.json']){
+ const original=path.join(source,name),dest=path.join(target,name);const bytes=fs.readFileSync(original);fs.unlinkSync(dest);fs.writeFileSync(dest,bytes);materialized.push({path:name,sha256:createHash('sha256').update(bytes).digest('hex')});
+}
+const links=[];
+function visit(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
+ const file=path.join(dir,entry.name);
+ if(entry.isSymbolicLink()){
+  const real=fs.realpathSync(file);assert(real===target||real.startsWith(target+path.sep),'External dependency link remains: '+path.relative(target,file));links.push(path.relative(target,file));
+ }else if(entry.isDirectory())visit(file);
+}}
+visit(target);
+fs.writeFileSync('<execution-evidence>/dependency-materialization.json',JSON.stringify({source,target,metadata:materialized,internalSymlinks:links.length,externalSymlinks:0,excluded:'Generated Vite/cache/tmp/store directories; no dependency package source excluded.'},null,2)+'\n');
+console.log('Materialized installed dependencies, '+links.length+' internal symlinks, no external symlink; two metadata files copied byte-for-byte.');

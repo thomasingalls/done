@@ -1,0 +1,106 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { gzipSync } from 'node:zlib';
+import { execFileSync } from 'node:child_process';
+
+const root = '<workspace>';
+const target = path.join(root, 'docs/account-conformance-runs/2026-10-15-multi-tab-setup');
+const baseline = '5afdd0ad3d478e19c86f28e4db042a2d77d70c13';
+const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+const normalize = text => text.replaceAll(root, '<workspace>')
+  .replaceAll('<saved-candidate-build>', '<saved-candidate-build>')
+  .replaceAll(process.env.HOME, '<home>');
+const redact = text => text.replace(/\b[A-Z0-9]{5}(?:-[A-Z0-9]{5}){4}\b/g, '<disposable-factor-redacted>');
+const files = [];
+function retain(source, name, compress = true, redactFactors = true) {
+  const original = fs.readFileSync(source);
+  let value = normalize(original.toString());
+  if (redactFactors) value = redact(value);
+  const normalized = Buffer.from(value);
+  const bytes = compress ? gzipSync(normalized, { level: 9 }) : normalized;
+  files.push({ path: name, source: path.basename(source), originalSha256: hash(original), normalizedSha256: hash(normalized), retainedSha256: hash(bytes), originalBytes: original.length, retainedBytes: bytes.length, bytes });
+}
+const logs = [
+  'done-multi-tab-baseline.log', 'done-multi-tab-lock-observation.log',
+  'done-recovery-progress-baseline.log', 'done-recovery-isolation-unit-before.log',
+  'done-recovery-isolation-unit-after.log', 'done-recovery-isolation-unit-after-2.log',
+  'done-recovery-isolation-types.log', 'done-recovery-isolation-types-2.log',
+  'done-recovery-isolation-all-unit.log', 'done-recovery-isolation-build.log',
+  'done-recovery-isolation-browser-v1.json', 'done-recovery-isolation-browser-v1.stderr.log',
+  'done-recovery-isolation-browser-v1-clean.json', 'done-recovery-isolation-removal.json',
+  'done-recovery-isolation-removal.stderr.log', 'done-recovery-isolation-native.log',
+  'done-recovery-isolation-native-pinned.log', 'done-recovery-isolation-lint.log',
+  'done-recovery-isolation-inventory.log', 'done-recovery-isolation-graph-2.log',
+  'done-recovery-isolation-graph-3.log', 'done-recovery-isolation-plan-2.log',
+  'done-recovery-isolation-adapters.log', 'done-recovery-isolation-final-gate-recheck.log',
+  'done-recovery-isolation-crypto-census-record.log',
+  'done-recovery-isolation-final-inventory.log', 'done-recovery-isolation-final-plan.log',
+];
+for (const name of logs) retain('/private/tmp/' + name, 'logs/' + name + '.gz');
+for (const name of ['done-adapter-closure-census.patch', 'done-recovery-isolation-census-source.patch'])
+  retain('/private/tmp/' + name, 'reproduction/' + name, false, false);
+retain('/private/tmp/done-collect-recovery-isolation.mjs', 'reproduction/collect.mjs.txt', false, false);
+retain('/private/tmp/done-recovery-isolation-old-test-boundary.json', 'receipts/approved-old-test-boundary.json', false, false);
+
+const testResult = path.join(root, 'test-results/recovery-progress-baseline');
+for (const file of fs.readdirSync(testResult, { recursive: true }))
+  if (file.endsWith('/retained-state-failure.json')) retain(path.join(testResult, file), 'receipts/baseline-errors.json', false);
+
+const sourceFiles = execFileSync('rg', ['--files', 'src', 'account-protocol', 'account-service', 'test/packaged-account', 'test/account-recovery'], { cwd: root, encoding: 'utf8' }).trim().split('\n');
+sourceFiles.push('package.json', 'pnpm-lock.yaml', 'vite.config.ts', 'tsconfig.app.json', 'tsconfig.node.json', 'scripts/serve-account.mjs', 'scripts/serve-account-service.mjs', 'scripts/account-recovery/run.mjs', 'test/recoveryProgressIsolation.test.ts');
+const pins = [...new Set(sourceFiles)].sort().map(file => ({ path: file, sha256: hash(fs.readFileSync(path.join(root, file))) }));
+const candidate = '<saved-candidate-build>';
+const buildFiles = fs.readdirSync(candidate, { recursive: true }).filter(file => fs.statSync(path.join(candidate, file)).isFile()).sort();
+const buildPins = buildFiles.map(file => ({ path: file, sha256: hash(fs.readFileSync(path.join(candidate, file))) }));
+function json(name, value) {
+  const bytes = Buffer.from(JSON.stringify(value, null, 2) + '\n');
+  files.push({ path: name, originalSha256: hash(bytes), normalizedSha256: hash(bytes), retainedSha256: hash(bytes), originalBytes: bytes.length, retainedBytes: bytes.length, bytes });
+}
+json('source-pins.json', { baseline, node: process.version, platform: process.platform, architecture: process.arch, sourceFiles: pins, buildFiles: buildPins, candidate: { versionBase: baseline, setupAsset: 'assets/AccountSetupApp-D5oNpqnO.js', sourceWasUncommittedDuringVerification: true } });
+const before = fs.readFileSync('/private/tmp/done-multi-tab-tailscale-before.json');
+const after = fs.readFileSync('/private/tmp/done-multi-tab-tailscale-after.json');
+if (JSON.stringify(JSON.parse(before)) !== JSON.stringify(JSON.parse(after))) throw Error('Routes changed');
+json('real-provider.json', {
+  kind: 'Operator-assisted actual Firefox UI; no virtual authenticator',
+  origin: 'https://mbp.tail0e0d4.ts.net:8445',
+  browser: 'Firefox Developer Edition; installed CFBundleShortVersionString 158.0',
+  provider: 'Installed Bitwarden extension; prior same-session record 2026.9.3, version not independently re-read here',
+  mode: 'private browsing',
+  credential: 'done — disposable two-tab repair test 2026-10-15',
+  replacement: 'Performed directly by the operator for the abandoned first disposable setup',
+  baseline: {
+    source: baseline, freshTwoTabsWithOtherRetired: 'passed creation and confirmation',
+    retainedState: 'Older disposable Local removed through UI; its legacy recovery record survives in baseline',
+    passkeyCreation: 'passed through Bitwarden', passkeyConfirmation: 'verified; generic post-confirmation error reproduced',
+    error: 'The passkey step could not finish. Try again. Your setup progress has been kept.',
+    independentLocal: 'Same generated code opens original writing in second tab',
+    closeOtherAndHardReload: 'Same code then mislabelled as invalid by original setup',
+  },
+  repair: {
+    setupAssetObservedInFirefox: '/assets/AccountSetupApp-D5oNpqnO.js',
+    setupAssetSha256: buildPins.find(p => p.path === 'assets/AccountSetupApp-D5oNpqnO.js').sha256,
+    serviceWorkerControlled: false,
+    retainedAttemptResume: 'Original unchanged Local code reaches new recovery display',
+    recoveryConfirmation: 'passed through Bitwarden', syncApproval: 'passed through Bitwarden',
+    openingApproval: 'passed through Bitwarden; original second Local writing visible',
+    lockReloadAndReopen: 'Requires original code plus real Bitwarden assertion; writing visible',
+  },
+  cleanup: { workspaceLocked: true, computerUseBindingsReset: true, route8445Removed: true, disposableServicesStopped: true, allOriginalRoutesRestored: true, beforeSha256: hash(before), afterSha256: hash(after), credentialRetained: true },
+  limits: ['The operator original 8443 workspace was only inspected using non-secret read-only comparisons and has not yet retried this candidate.', 'This is functional repair evidence, not release qualification.'],
+});
+
+const touched = ['src/account/firstDeviceSetup.ts', 'src/account/recoveryOwner.ts', 'src/account/setupProgress.ts', 'src/crdt/deviceDataRemoval.ts', 'src/ui/AccountSetupApp.tsx'];
+let patch = execFileSync('git', ['diff', baseline, '--', ...touched], { cwd: root, encoding: 'utf8' });
+for (const file of ['src/account/setupRecoveryMetadata.ts', 'test/recoveryProgressIsolation.test.ts', 'test/packaged-account/multi-tab-protection.spec.ts', 'test/packaged-account/recovery-progress-isolation.spec.ts']) {
+  try { patch += execFileSync('git', ['diff', '--no-index', '--', '/dev/null', file], { cwd: root, encoding: 'utf8' }); }
+  catch (error) { if (error.status !== 1) throw error; patch += error.stdout; }
+}
+const patchPath = '/private/tmp/done-recovery-isolation-runtime.patch';
+fs.writeFileSync(patchPath, patch);
+retain(patchPath, 'reproduction/runtime-and-regressions.patch', false, false);
+const total = files.reduce((n, f) => n + f.bytes.length, 0);
+if (total > 4 * 1024 * 1024) throw Error('Repair evidence exceeds 4 MiB budget');
+for (const file of files) { const destination = path.join(target, file.path); fs.mkdirSync(path.dirname(destination), { recursive: true }); fs.writeFileSync(destination, file.bytes); }
+fs.writeFileSync(path.join(target, 'artifact-index.json'), JSON.stringify({ schema: 1, baseline, collectedAt: new Date().toISOString(), artifactBytes: total, factorRedaction: 'Generated disposable code patterns redacted from retained logs; original hashes preserved. No raw UI/vault dumps, private service files or browser profiles copied.', artifacts: files.map(({ bytes, ...entry }) => entry) }, null, 2) + '\n');
+console.log(JSON.stringify({ files: files.length, artifactBytes: total, sourceFiles: pins.length, buildFiles: buildPins.length }));

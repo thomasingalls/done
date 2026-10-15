@@ -1,0 +1,21 @@
+{
+  "revision": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+  "command": "pnpm --dir relay test",
+  "runtime": "v26.11.1",
+  "result": "passed",
+  "cases": 7,
+  "firstAttempt": "Interrupted after approximately 3 minutes without a test socket under restricted loopback access; log retained. Unchanged command passed with loopback permission.",
+  "lock": {
+    "package.json": "f02d4f1afc1adcaff93983b16ccab81aa439c5ff5ce0a5f40b6f387dad214101",
+    "pnpm-lock.yaml": "09142080cb4c0978365b88448ce8be55218b15bf07e6975bb99533674c05d22b"
+  },
+  "install": {
+    "packageManager": "pnpm 11.20.0",
+    "frozenLockfile": true,
+    "ignoreScripts": true,
+    "strictPeerDependencies": true,
+    "location": "/private/tmp/done-relay-bootstrap-5afdd0ad"
+  },
+  "log": "relay-tests-loopback.log",
+  "logSha256": "6471ace0377964c7a7d1322e2cbf1fd021e1e253c420a0e8e29fa352a7631b20"
+}

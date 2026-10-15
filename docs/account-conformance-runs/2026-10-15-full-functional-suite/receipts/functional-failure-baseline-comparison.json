@@ -1,0 +1,64 @@
+{
+  "baseline": "42ebdd12de0edcae7a5cd51bd44c3266e914bfcf",
+  "candidate": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+  "files": [
+    {
+      "file": "src/crdt/localGenesis.ts",
+      "baselineSha256": "32133fb2fe0302bddc0fdaaea56cff5e268021ad4f4d9489802d79788cb68eae",
+      "candidateSha256": "32133fb2fe0302bddc0fdaaea56cff5e268021ad4f4d9489802d79788cb68eae",
+      "identical": true
+    },
+    {
+      "file": "src/crdt/localGenesisStorage.ts",
+      "baselineSha256": "964dedafff546ea3e38f68c5d308d25e721cd90b058b0a4e1527563e444a3eb4",
+      "candidateSha256": "964dedafff546ea3e38f68c5d308d25e721cd90b058b0a4e1527563e444a3eb4",
+      "identical": true
+    },
+    {
+      "file": "scripts/local-genesis/scenarios.mjs",
+      "baselineSha256": "da23e89e991dbeb5e239f41cc5ab187e2a1eac5e0a076335c6b591f1e01a3f46",
+      "candidateSha256": "da23e89e991dbeb5e239f41cc5ab187e2a1eac5e0a076335c6b591f1e01a3f46",
+      "identical": true
+    },
+    {
+      "file": "test/local-genesis/browser.ts",
+      "error": "Unavailable at the requested path"
+    },
+    {
+      "file": "src/crdt/accountSuccessor.ts",
+      "baselineSha256": "ec1645a73beaaa0f0b359e8640d2155db5a0fbdc14ec8d9c3754f5de4d7af5cb",
+      "candidateSha256": "ec1645a73beaaa0f0b359e8640d2155db5a0fbdc14ec8d9c3754f5de4d7af5cb",
+      "identical": true
+    },
+    {
+      "file": "src/account/privateAccess.ts",
+      "baselineSha256": "1ddd65636ca4ec93f1eace398967228c9ba27f17b1d0830cebf5819291826e00",
+      "candidateSha256": "1ddd65636ca4ec93f1eace398967228c9ba27f17b1d0830cebf5819291826e00",
+      "identical": true
+    },
+    {
+      "file": "test/account-successor/owner-controls.test.mjs",
+      "baselineSha256": "250256f776350d5c6c8c7ccda5e68ba5975fa5d3fd32213f31d93af5c1536483",
+      "candidateSha256": "250256f776350d5c6c8c7ccda5e68ba5975fa5d3fd32213f31d93af5c1536483",
+      "identical": true
+    },
+    {
+      "file": "test/account-successor/reconnect.test.mjs",
+      "baselineSha256": "85cfe0d3ce99a7090b9c15b6af398ed108812dcdaa51657572c7cb6334634abb",
+      "candidateSha256": "85cfe0d3ce99a7090b9c15b6af398ed108812dcdaa51657572c7cb6334634abb",
+      "identical": true
+    },
+    {
+      "file": "test/account-successor/client-fixtures.mjs",
+      "baselineSha256": "394797867aafebbc36cab45b713a27de20a73888c77858b5ab0dc9c5991a5df1",
+      "candidateSha256": "394797867aafebbc36cab45b713a27de20a73888c77858b5ab0dc9c5991a5df1",
+      "identical": true
+    },
+    {
+      "file": "account-service/discovery.ts",
+      "baselineSha256": "8261c3194034a5275bce6e91aebbec5c1b70989cf8c898429d0dcf7fd0a09631",
+      "candidateSha256": "8261c3194034a5275bce6e91aebbec5c1b70989cf8c898429d0dcf7fd0a09631",
+      "identical": true
+    }
+  ]
+}

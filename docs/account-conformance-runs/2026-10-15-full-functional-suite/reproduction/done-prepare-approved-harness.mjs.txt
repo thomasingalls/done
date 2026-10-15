@@ -1,0 +1,29 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
+const source = '<test-checkout>/node_modules';
+const root = '<approved-harness-checkout>';
+const target = path.join(root, 'node_modules');
+assert(!fs.existsSync(target), 'Dependency destination already exists');
+fs.cpSync(source, target, { recursive: true, dereference: false, verbatimSymlinks: true,
+  filter: file => !['.vite', '.vite-temp', '.cache', '.tmp'].some(prefix => path.relative(source, file).split(path.sep)[0].startsWith(prefix)) });
+const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
+const launchers = [];
+for (const entry of fs.readdirSync(path.join(target, '.bin'), { withFileTypes: true })) {
+  if (!entry.isFile()) continue;
+  const file = path.join(target, '.bin', entry.name);
+  const before = fs.readFileSync(file);
+  const after = Buffer.from(before.toString().replaceAll(path.dirname(source), root));
+  if (!before.equals(after)) { fs.writeFileSync(file, after); launchers.push({ path: '.bin/' + entry.name, before: hash(before), after: hash(after) }); }
+}
+let links = 0;
+function visit(dir) { for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+  const file = path.join(dir, entry.name);
+  if (entry.isSymbolicLink()) { const real = fs.realpathSync(file); assert(real.startsWith(target + path.sep), 'External dependency link: ' + file); links++; }
+  else if (entry.isDirectory()) visit(file);
+} }
+visit(target);
+fs.copyFileSync('<workspace>/scripts/release-validation/general-tests.json', path.join(root, 'scripts/release-validation/general-tests.json'));
+fs.writeFileSync('<execution-evidence>/approved-harness-dependency-materialization.json', JSON.stringify({ source, root, internalLinks: links, externalLinks: 0, launchers }, null, 2) + '\n');
+console.log(JSON.stringify({ internalLinks: links, externalLinks: 0, launchers: launchers.length }));

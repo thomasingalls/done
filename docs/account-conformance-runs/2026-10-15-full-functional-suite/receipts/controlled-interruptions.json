@@ -1,0 +1,15 @@
+[
+  {
+    "command": "pnpm storage:legacy-cleanup",
+    "supervisorPid": 86717,
+    "signal": "SIGINT",
+    "at": "2026-10-15T10:03:14.138Z",
+    "reason": "Repeated fixture:fresh page-load timeouts after Vite reports missing account-protocol snapshot imports. Remaining cases cannot load this same application graph.",
+    "preservedBeforeStop": [
+      "legacy-cleanup-before-stop-report.json",
+      "legacy-cleanup-before-stop-events.jsonl"
+    ],
+    "credit": "failed / incomplete; no case credit inferred for unexecuted cases",
+    "sourceOrTestsChanged": false
+  }
+]

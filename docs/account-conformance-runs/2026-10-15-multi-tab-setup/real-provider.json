@@ -1,0 +1,43 @@
+{
+  "kind": "Operator-assisted actual Firefox UI; no virtual authenticator",
+  "origin": "https://mbp.tail0e0d4.ts.net:8445",
+  "browser": "Firefox Developer Edition; installed CFBundleShortVersionString 158.0",
+  "provider": "Installed Bitwarden extension; prior same-session record 2026.9.3, version not independently re-read here",
+  "mode": "private browsing",
+  "credential": "done — disposable two-tab repair test 2026-10-15",
+  "replacement": "Performed directly by the operator for the abandoned first disposable setup",
+  "baseline": {
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "freshTwoTabsWithOtherRetired": "passed creation and confirmation",
+    "retainedState": "Older disposable Local removed through UI; its legacy recovery record survives in baseline",
+    "passkeyCreation": "passed through Bitwarden",
+    "passkeyConfirmation": "verified; generic post-confirmation error reproduced",
+    "error": "The passkey step could not finish. Try again. Your setup progress has been kept.",
+    "independentLocal": "Same generated code opens original writing in second tab",
+    "closeOtherAndHardReload": "Same code then mislabelled as invalid by original setup"
+  },
+  "repair": {
+    "setupAssetObservedInFirefox": "/assets/AccountSetupApp-D5oNpqnO.js",
+    "setupAssetSha256": "c6aa3f141950db7a4ffe2e513e5a67ace043ef1e130b9a418f798e5892ab99a6",
+    "serviceWorkerControlled": false,
+    "retainedAttemptResume": "Original unchanged Local code reaches new recovery display",
+    "recoveryConfirmation": "passed through Bitwarden",
+    "syncApproval": "passed through Bitwarden",
+    "openingApproval": "passed through Bitwarden; original second Local writing visible",
+    "lockReloadAndReopen": "Requires original code plus real Bitwarden assertion; writing visible"
+  },
+  "cleanup": {
+    "workspaceLocked": true,
+    "computerUseBindingsReset": true,
+    "route8445Removed": true,
+    "disposableServicesStopped": true,
+    "allOriginalRoutesRestored": true,
+    "beforeSha256": "e89f043c46877917f1698f0f235c5d2aaed7b51f536e0c63b4516a775d59e537",
+    "afterSha256": "e89f043c46877917f1698f0f235c5d2aaed7b51f536e0c63b4516a775d59e537",
+    "credentialRetained": true
+  },
+  "limits": [
+    "The operator original 8443 workspace was only inspected using non-secret read-only comparisons and has not yet retried this candidate.",
+    "This is functional repair evidence, not release qualification."
+  ]
+}

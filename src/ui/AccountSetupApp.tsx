@@ -431,7 +431,10 @@ export function Setup({
         )}
         {state.kind === 'working' && (
           <p role="status">
-            {state.fresh ? 'Your accounts stay separate.' : 'Your writing stays in this workspace.'}
+            {state.detail ??
+              (state.fresh
+                ? 'Your accounts stay separate.'
+                : 'Your writing stays in this workspace.')}
           </p>
         )}
         {state.kind === 'unlock' && <RemoveFromDeviceButton slotId={slotId} />}

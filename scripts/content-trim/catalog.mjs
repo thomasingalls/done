@@ -49,8 +49,8 @@ export const mutants = [
     file: 'contentCompaction.ts',
     case: 'T06.changed',
     assertion: 'changed-record-refuses',
-    from: 'equalBytes(a.nonce, b.nonce) &&\n  equalBytes(a.ct, b.ct)',
-    to: 'true',
+    from: "sameBytes(a.nonce, b.nonce) &&\n  sameBytes(a.ct, b.ct)",
+    to: "true",
   },
   {
     id: 'skip-delete-census',

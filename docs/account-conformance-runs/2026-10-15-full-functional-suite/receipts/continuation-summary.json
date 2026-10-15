@@ -1,0 +1,1205 @@
+{
+  "schema": 1,
+  "scope": "Remaining pnpm check commands after retained custody failure, all additional test:* functional scripts, normal CI inventory/plan, all execution-runner unit tests. Latency measurements and aggregate release qualification excluded.",
+  "revision": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+  "priorFailure": "storage:custody mutation anchor is not unique: trust-unverified-metadata",
+  "status": "completed-with-retained-failures",
+  "jobs": [
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:content",
+      "log": "001-pnpm_storage_content.log",
+      "startedAt": "2026-10-15T09:37:39.745Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:38:45.859Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:journal",
+      "log": "002-pnpm_storage_journal.log",
+      "startedAt": "2026-10-15T09:38:45.860Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:40:05.303Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:contention",
+      "log": "003-pnpm_storage_contention.log",
+      "startedAt": "2026-10-15T09:40:05.305Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:40:27.233Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:admission",
+      "log": "004-pnpm_storage_admission.log",
+      "startedAt": "2026-10-15T09:40:27.234Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:41:42.856Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:editor",
+      "log": "005-pnpm_storage_editor.log",
+      "startedAt": "2026-10-15T09:41:42.857Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:43:16.608Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:workspace",
+      "log": "006-pnpm_storage_workspace.log",
+      "startedAt": "2026-10-15T09:43:16.609Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:44:40.676Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:projection",
+      "log": "007-pnpm_storage_projection.log",
+      "startedAt": "2026-10-15T09:44:40.677Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:45:02.791Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:delivery",
+      "log": "008-pnpm_storage_delivery.log",
+      "startedAt": "2026-10-15T09:45:02.792Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:45:28.658Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:startup",
+      "log": "009-pnpm_storage_startup.log",
+      "startedAt": "2026-10-15T09:45:28.658Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:46:48.864Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:genesis",
+      "log": "010-pnpm_storage_genesis.log",
+      "startedAt": "2026-10-15T09:46:48.865Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:49:17.973Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:clear",
+      "log": "011-pnpm_storage_clear.log",
+      "startedAt": "2026-10-15T09:49:17.974Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:50:54.252Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:trim",
+      "log": "012-pnpm_storage_trim.log",
+      "startedAt": "2026-10-15T09:50:54.253Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:52:13.645Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:properties",
+      "log": "013-pnpm_storage_properties.log",
+      "startedAt": "2026-10-15T09:52:13.646Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:55:01.959Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-source",
+      "log": "014-pnpm_storage_legacy-source.log",
+      "startedAt": "2026-10-15T09:55:01.960Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:55:07.607Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-export",
+      "log": "015-pnpm_storage_legacy-export.log",
+      "startedAt": "2026-10-15T09:55:07.608Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:56:59.370Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-import",
+      "log": "016-pnpm_storage_legacy-import.log",
+      "startedAt": "2026-10-15T09:56:59.371Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:57:31.063Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-selection",
+      "log": "017-pnpm_storage_legacy-selection.log",
+      "startedAt": "2026-10-15T09:57:31.063Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T09:58:02.560Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-cleanup:harness",
+      "log": "018-pnpm_storage_legacy-cleanup_harness.log",
+      "startedAt": "2026-10-15T09:58:02.560Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T09:58:05.230Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-cleanup",
+      "log": "019-pnpm_storage_legacy-cleanup.log",
+      "startedAt": "2026-10-15T09:58:05.231Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:03:14.095Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-coordinator",
+      "log": "020-pnpm_storage_legacy-coordinator.log",
+      "startedAt": "2026-10-15T10:03:14.096Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:03:45.826Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-host:harness",
+      "log": "021-pnpm_storage_legacy-host_harness.log",
+      "startedAt": "2026-10-15T10:03:45.830Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:03:47.054Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-host",
+      "log": "022-pnpm_storage_legacy-host.log",
+      "startedAt": "2026-10-15T10:03:47.055Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:14:27.425Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:private-migration",
+      "log": "023-pnpm_storage_private-migration.log",
+      "startedAt": "2026-10-15T10:14:27.427Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:16:10.629Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:app-startup",
+      "log": "024-pnpm_storage_app-startup.log",
+      "startedAt": "2026-10-15T10:16:10.633Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:17:30.324Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm test:geometry",
+      "log": "025-pnpm_test_geometry.log",
+      "startedAt": "2026-10-15T10:17:30.327Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:18:04.326Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:app-startup:packaged",
+      "log": "026-pnpm_storage_app-startup_packaged.log",
+      "startedAt": "2026-10-15T10:18:04.326Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:18:17.192Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:app-upgrades",
+      "log": "027-pnpm_storage_app-upgrades.log",
+      "startedAt": "2026-10-15T10:18:17.193Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:21:22.474Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:compatibility",
+      "log": "028-pnpm_storage_compatibility.log",
+      "startedAt": "2026-10-15T10:21:22.476Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:22:04.428Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm trace:check",
+      "log": "029-pnpm_trace_check.log",
+      "startedAt": "2026-10-15T10:22:04.430Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:22:16.037Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:core",
+      "log": "030-pnpm_account_core.log",
+      "startedAt": "2026-10-15T10:22:16.038Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:22:22.395Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:recovery",
+      "log": "031-pnpm_account_recovery.log",
+      "startedAt": "2026-10-15T10:22:22.395Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:22:26.744Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:authority",
+      "log": "032-pnpm_account_authority.log",
+      "startedAt": "2026-10-15T10:22:26.744Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:22:39.157Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:promotion",
+      "log": "033-pnpm_account_promotion.log",
+      "startedAt": "2026-10-15T10:22:39.157Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:22:57.398Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:genesis",
+      "log": "034-pnpm_account_genesis.log",
+      "startedAt": "2026-10-15T10:22:57.398Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:23:34.196Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:admission",
+      "log": "035-pnpm_account_admission.log",
+      "startedAt": "2026-10-15T10:23:34.196Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:24:40.078Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:handoff",
+      "log": "036-pnpm_account_handoff.log",
+      "startedAt": "2026-10-15T10:24:40.080Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:25:15.381Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:editing",
+      "log": "037-pnpm_account_editing.log",
+      "startedAt": "2026-10-15T10:25:15.382Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:27:32.424Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:outbound",
+      "log": "038-pnpm_account_outbound.log",
+      "startedAt": "2026-10-15T10:27:32.427Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:27:39.473Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:capture",
+      "log": "039-pnpm_account_capture.log",
+      "startedAt": "2026-10-15T10:27:39.474Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:29:35.501Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:spool",
+      "log": "040-pnpm_account_spool.log",
+      "startedAt": "2026-10-15T10:29:35.505Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:32:16.922Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:decisions",
+      "log": "041-pnpm_account_decisions.log",
+      "startedAt": "2026-10-15T10:32:16.925Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:33:09.740Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:delivery",
+      "log": "042-pnpm_account_delivery.log",
+      "startedAt": "2026-10-15T10:33:09.742Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:36:24.399Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:service-delivery",
+      "log": "043-pnpm_account_service-delivery.log",
+      "startedAt": "2026-10-15T10:36:24.401Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:36:41.426Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:transport",
+      "log": "044-pnpm_account_transport.log",
+      "startedAt": "2026-10-15T10:36:41.427Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:36:51.517Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:driver",
+      "log": "045-pnpm_account_driver.log",
+      "startedAt": "2026-10-15T10:36:51.518Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:40:28.739Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:inbound-prep",
+      "log": "046-pnpm_account_inbound-prep.log",
+      "startedAt": "2026-10-15T10:40:28.741Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:40:40.237Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:inbound-codecs",
+      "log": "047-pnpm_account_inbound-codecs.log",
+      "startedAt": "2026-10-15T10:40:40.238Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:40:57.151Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive",
+      "log": "048-pnpm_account_receive.log",
+      "startedAt": "2026-10-15T10:40:57.152Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:42:23.510Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive-editor",
+      "log": "049-pnpm_account_receive-editor.log",
+      "startedAt": "2026-10-15T10:42:23.512Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:43:54.418Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:service-inbound",
+      "log": "050-pnpm_account_service-inbound.log",
+      "startedAt": "2026-10-15T10:43:54.420Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:44:04.956Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive-transport",
+      "log": "051-pnpm_account_receive-transport.log",
+      "startedAt": "2026-10-15T10:44:04.957Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:44:38.158Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive-driver",
+      "log": "052-pnpm_account_receive-driver.log",
+      "startedAt": "2026-10-15T10:44:38.159Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:45:28.921Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:sync",
+      "log": "053-pnpm_account_sync.log",
+      "startedAt": "2026-10-15T10:45:28.923Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:48:08.669Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:admission-bounds",
+      "log": "054-pnpm_account_admission-bounds.log",
+      "startedAt": "2026-10-15T10:48:08.671Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:48:32.406Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:activation",
+      "log": "055-pnpm_account_activation.log",
+      "startedAt": "2026-10-15T10:48:32.407Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:48:51.961Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:crypto-prep",
+      "log": "056-pnpm_account_crypto-prep.log",
+      "startedAt": "2026-10-15T10:48:51.962Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T10:48:53.319Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:first-authority",
+      "log": "057-pnpm_account_first-authority.log",
+      "startedAt": "2026-10-15T10:48:53.320Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:49:12.023Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:recovery-contract",
+      "log": "058-pnpm_account_recovery-contract.log",
+      "startedAt": "2026-10-15T10:49:12.023Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:51:22.618Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:transport-contract",
+      "log": "059-pnpm_account_transport-contract.log",
+      "startedAt": "2026-10-15T10:51:22.620Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:52:08.956Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:service-custody",
+      "log": "060-pnpm_account_service-custody.log",
+      "startedAt": "2026-10-15T10:52:08.956Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:52:54.364Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:promotion-contract",
+      "log": "061-pnpm_account_promotion-contract.log",
+      "startedAt": "2026-10-15T10:52:54.364Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:56:12.154Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:ledger-contract",
+      "log": "062-pnpm_account_ledger-contract.log",
+      "startedAt": "2026-10-15T10:56:12.156Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:58:27.833Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:counter-contract",
+      "log": "063-pnpm_account_counter-contract.log",
+      "startedAt": "2026-10-15T10:58:27.836Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:58:44.059Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:store-contract",
+      "log": "064-pnpm_account_store-contract.log",
+      "startedAt": "2026-10-15T10:58:44.060Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:59:03.418Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:local-custody",
+      "log": "065-pnpm_account_local-custody.log",
+      "startedAt": "2026-10-15T10:59:03.418Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T10:59:20.249Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:checkpoint-contract",
+      "log": "066-pnpm_account_checkpoint-contract.log",
+      "startedAt": "2026-10-15T10:59:20.250Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:01:06.033Z"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:local-provenance",
+      "log": "067-pnpm_account_local-provenance.log",
+      "startedAt": "2026-10-15T11:01:06.035Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:02:15.449Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:device-enrollment",
+      "log": "068-pnpm_test_device-enrollment.log",
+      "startedAt": "2026-10-15T11:02:15.450Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:05:42.911Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-runtime",
+      "log": "069-pnpm_test_public-runtime.log",
+      "startedAt": "2026-10-15T11:05:42.913Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:05:44.404Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-backup",
+      "log": "070-pnpm_test_public-backup.log",
+      "startedAt": "2026-10-15T11:05:44.404Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:05:46.387Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-restore",
+      "log": "071-pnpm_test_public-restore.log",
+      "startedAt": "2026-10-15T11:05:46.388Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:05:50.185Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-maintenance",
+      "log": "072-pnpm_test_public-maintenance.log",
+      "startedAt": "2026-10-15T11:05:50.185Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:05:54.421Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:packaged-account",
+      "log": "073-pnpm_test_packaged-account.log",
+      "startedAt": "2026-10-15T11:05:54.421Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:23:34.334Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-runtime",
+      "log": "074-pnpm_test_account-runtime.log",
+      "startedAt": "2026-10-15T11:23:34.337Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:23:35.119Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-session-client-browser",
+      "log": "075-pnpm_test_account-session-client-browser.log",
+      "startedAt": "2026-10-15T11:23:35.120Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:23:36.069Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-sessions",
+      "log": "076-pnpm_test_account-sessions.log",
+      "startedAt": "2026-10-15T11:23:36.070Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:23:43.242Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-setup-upgrade",
+      "log": "077-pnpm_test_account-setup-upgrade.log",
+      "startedAt": "2026-10-15T11:23:43.242Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:23:44.056Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-setup-upgrade-browser",
+      "log": "078-pnpm_test_account-setup-upgrade-browser.log",
+      "startedAt": "2026-10-15T11:23:44.057Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:23:45.344Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-setup",
+      "log": "079-pnpm_test_account-setup.log",
+      "startedAt": "2026-10-15T11:23:45.345Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:49:32.349Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:https",
+      "log": "080-pnpm_test_https.log",
+      "startedAt": "2026-10-15T11:49:32.351Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:49:39.179Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:watch",
+      "log": "081-pnpm_test_watch.log",
+      "startedAt": "2026-10-15T11:49:39.181Z",
+      "status": "passed",
+      "signal": null,
+      "exitCode": 0,
+      "completedAt": "2026-10-15T11:50:12.572Z"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:local-baseline",
+      "log": "082-pnpm_test_local-baseline.log",
+      "startedAt": "2026-10-15T11:50:12.573Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:55:59.685Z"
+    },
+    {
+      "kind": "ci-inventory",
+      "command": "pnpm validation:inventory",
+      "log": "083-pnpm_validation_inventory.log",
+      "startedAt": "2026-10-15T11:55:59.687Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:56:01.250Z"
+    },
+    {
+      "kind": "ci-plan",
+      "command": "node scripts/release-validation/plan.mjs",
+      "log": "084-node_scripts_release-validation_plan_mjs.log",
+      "startedAt": "2026-10-15T11:56:01.251Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:56:02.465Z"
+    },
+    {
+      "kind": "complete-runner-regressions",
+      "command": "node --test --test-concurrency=2 test/release-validation/*.test.mjs",
+      "log": "085-node_--test_--test-concurrency_2_test_release-validation___test_mjs.log",
+      "startedAt": "2026-10-15T11:56:02.466Z",
+      "status": "failed",
+      "signal": null,
+      "exitCode": 1,
+      "completedAt": "2026-10-15T11:57:48.884Z"
+    }
+  ],
+  "planned": [
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:content"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:journal"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:contention"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:admission"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:editor"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:workspace"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:projection"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:delivery"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:startup"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:genesis"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:clear"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:trim"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:properties"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-source"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-export"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-import"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-selection"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-cleanup:harness"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-cleanup"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-coordinator"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-host:harness"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:legacy-host"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:private-migration"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:app-startup"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm test:geometry"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:app-startup:packaged"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:app-upgrades"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm storage:compatibility"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm trace:check"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:core"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:recovery"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:authority"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:promotion"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:genesis"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:admission"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:handoff"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:editing"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:outbound"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:capture"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:spool"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:decisions"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:delivery"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:service-delivery"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:transport"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:driver"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:inbound-prep"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:inbound-codecs"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive-editor"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:service-inbound"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive-transport"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:receive-driver"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:sync"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:admission-bounds"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:activation"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:crypto-prep"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:first-authority"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:recovery-contract"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:transport-contract"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:service-custody"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:promotion-contract"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:ledger-contract"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:counter-contract"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:store-contract"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:local-custody"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:checkpoint-contract"
+    },
+    {
+      "kind": "remaining-check",
+      "command": "pnpm account:local-provenance"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:device-enrollment"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-runtime"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-backup"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-restore"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:public-maintenance"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:packaged-account"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-runtime"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-session-client-browser"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-sessions"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-setup-upgrade"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-setup-upgrade-browser"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:account-setup"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:https"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:watch"
+    },
+    {
+      "kind": "additional-functional-test",
+      "command": "pnpm test:local-baseline"
+    },
+    {
+      "kind": "ci-inventory",
+      "command": "pnpm validation:inventory"
+    },
+    {
+      "kind": "ci-plan",
+      "command": "node scripts/release-validation/plan.mjs"
+    },
+    {
+      "kind": "complete-runner-regressions",
+      "command": "node --test --test-concurrency=2 test/release-validation/*.test.mjs"
+    }
+  ],
+  "startedAt": "2026-10-15T09:37:39.743Z",
+  "completedAt": "2026-10-15T11:57:48.886Z",
+  "passed": 36,
+  "failed": 49
+}

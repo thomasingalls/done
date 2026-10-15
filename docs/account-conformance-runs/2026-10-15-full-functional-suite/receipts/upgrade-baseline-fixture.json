@@ -1,0 +1,15 @@
+{
+  "revision": "7dab01cc413f8657b54c0d308e374632910f0595",
+  "root": "<upgrade-baseline-checkout>",
+  "node": "v26.11.1",
+  "dependencies": "Same materialized dependency bytes as candidate, excluding generated cache directories; generated launchers relocated. Baseline root dependencies retain the same locked versions; candidate adds router and tar-stream packages. Installed current Yjs patch is retained, so this is a historical-source diagnostic, not independent old-artifact qualification.",
+  "lockSha256": "d1a235a6fa7e533e526d2eb6a79b2c60c26b7193235330578c6b9c12ecee334d",
+  "rootDependencyComparison": {
+    "baseline": 41,
+    "retainedMatchingVersions": 41,
+    "candidateAdditions": [
+      "'@tanstack/react-router'",
+      "tar-stream"
+    ]
+  }
+}

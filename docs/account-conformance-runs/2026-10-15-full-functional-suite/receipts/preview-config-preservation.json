@@ -1,0 +1,14 @@
+{
+  "beforeSha256": "dface6756553bf846a4d9de34ce05877a06a28f96b5381e4e3c7b3f44d7864e0",
+  "afterSha256": "dface6756553bf846a4d9de34ce05877a06a28f96b5381e4e3c7b3f44d7864e0",
+  "identical": true,
+  "publicKeys": [
+    "v",
+    "pin",
+    "networkSessions",
+    "membershipContinuation"
+  ],
+  "v": 2,
+  "networkSessions": true,
+  "membershipContinuation": true
+}

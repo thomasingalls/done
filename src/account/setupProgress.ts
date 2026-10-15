@@ -69,7 +69,7 @@ export type SetupState = (
       error?: string;
     }
   | { kind: 'save-recovery' | 'save-device-code'; code: string }
-  | { kind: 'working'; message: string }
+  | { kind: 'working'; message: string; detail?: string }
   | { kind: 'approve-passkey'; message: string; description: string }
   | {
       kind: 'ready';

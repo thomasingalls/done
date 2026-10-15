@@ -1,0 +1,940 @@
+diff --git a/src/account/firstDeviceSetup.ts b/src/account/firstDeviceSetup.ts
+index 06994f61..e829185d 100644
+--- a/src/account/firstDeviceSetup.ts
++++ b/src/account/firstDeviceSetup.ts
+@@ -304,6 +304,7 @@ export function createFirstDeviceSetup(
+         pin,
+         local: { slotId, code },
+         ...(slotId !== 'local' ? { perSlotProgress: true as const } : {}),
++        isolateSetupProgress: true,
+         accountId: accountId(),
+         retryKey: saved!.retryKey,
+         signal: lifetime.signal,
+@@ -456,24 +457,44 @@ export function createFirstDeviceSetup(
+     }
+   };
+   const afterRegistration = async () => {
++    publish({
++      kind: 'working',
++      message: 'Checking your workspace…',
++      detail: 'If this waits, close other tabs using this list. Your writing will stay here.',
++    });
+     const retained = await marker();
+     if (retained && (retained.stage === 'handoff-selected' || retained.v >= 5))
+       return openAccount(retained.source.principalId);
+-    context = retained
+-      ? {
+-          principalId: retained.source.principalId,
+-          workspaceId: retained.source.workspaceId,
+-          lineageId: await promotionLineage(pin, accountId(), retained.source),
+-          authRoot: pin.authRoot,
+-        }
+-      : (await inspectLocalPromotion(baseOptions())).context;
+-    const status = await recovery((owner) => owner.status());
+-    if (status === 'empty') {
+-      const generated = await recovery((owner) => owner.generate());
+-      guard();
+-      recoveryDisplay = generated.code;
+-      publish({ kind: 'save-recovery', code: generated.code });
+-    } else publish({ kind: 'confirm-recovery' });
++    try {
++      context = retained
++        ? {
++            principalId: retained.source.principalId,
++            workspaceId: retained.source.workspaceId,
++            lineageId: await promotionLineage(pin, accountId(), retained.source),
++            authRoot: pin.authRoot,
++          }
++        : (await inspectLocalPromotion(baseOptions())).context;
++      const status = await recovery((owner) => owner.status());
++      if (status === 'empty') {
++        const generated = await recovery((owner) => owner.generate());
++        guard();
++        recoveryDisplay = generated.code;
++        publish({ kind: 'save-recovery', code: generated.code });
++      } else publish({ kind: 'confirm-recovery' });
++    } catch (cause) {
++      if (
++        cause instanceof SetupRetired ||
++        cause instanceof RemovalPending ||
++        lifetime.signal.aborted
++      )
++        throw cause;
++      throw new SetupContinuationNotice(
++        'Your unlock code was accepted, but account setup could not continue. ' +
++          (cause instanceof SetupNotice || cause instanceof PrivateServiceUnavailable
++            ? cause.message
++            : 'Try setup again, or return to your local workspace. Your writing has been kept.'),
++      );
++    }
+   };
+   const registrationView = (input: unknown): Result => {
+     if (!input || typeof input !== 'object' || Array.isArray(input))
+diff --git a/src/account/recoveryOwner.ts b/src/account/recoveryOwner.ts
+index c6d8a891..3b55d197 100644
+--- a/src/account/recoveryOwner.ts
++++ b/src/account/recoveryOwner.ts
+@@ -1,4 +1,9 @@
+ import { withPromotionSlot } from '../crdt/writeSession';
++import {
++  RECOVERY_PREPARATION_DB,
++  retainedRecoveryKey,
++  withSelectedSetupRecovery,
++} from './setupRecoveryMetadata';
+ import { readPromotion } from '../crdt/promotionRecord';
+ import { promotionLineage } from '../crdt/promotionPreparation';
+ import { type AuthorityPin, parseAuthorityPin } from '../../account-protocol/authority';
+@@ -14,7 +19,7 @@ import {
+ } from '../../account-protocol/recovery.ts';
+ import { generateRecovery, confirmRecovery } from './recovery.ts';
+ 
+-export const RECOVERY_PREPARATION_DB = 'done.account-recovery-preparation.v1';
++export { RECOVERY_PREPARATION_DB } from './setupRecoveryMetadata';
+ export interface RecoveryTransport {
+   begin(input: { retryKey: string; draft: RecoveryDraft }): Promise<unknown>;
+   finish(input: Finalization): Promise<unknown>;
+@@ -53,6 +58,8 @@ export async function withRecoveryOwner<T>(
+     local?: { slotId: string; code: string };
+     /** Opt in for newly allocated slots; existing callers keep their retained `pending` record. */
+     perSlotProgress?: true;
++    /** Preserve other attempts and fence every metadata operation against selected setup/removal. */
++    isolateSetupProgress?: true;
+     accountId: string;
+     retryKey: string;
+     transport: RecoveryTransport;
+@@ -75,7 +82,10 @@ export async function withRecoveryOwner<T>(
+   identifier(retryKey);
+   const local = options.local ? { ...options.local } : undefined;
+   if (options.perSlotProgress && !local) throw Error('Local recovery slot required');
+-  const progressKey = options.perSlotProgress ? `slot:${local!.slotId}` : 'pending';
++  if (options.isolateSetupProgress && (!local || !pin))
++    throw Error('Selected setup recovery requires a Local slot and service pin');
++  let progressKey: IDBValidKey = options.perSlotProgress ? `slot:${local!.slotId}` : 'pending';
++  const currentRetainedKey = retainedRecoveryKey(accountId, retryKey);
+   const transport = options.transport,
+     signal = options.signal;
+   return navigator.locks.request(
+@@ -99,43 +109,73 @@ export async function withRecoveryOwner<T>(
+         alive = false;
+         db.close();
+       };
+-      const access = (value?: Retained | null) =>
+-        new Promise<unknown>((resolve, reject) => {
+-          guard();
+-          const tx = db.transaction('progress', value !== undefined ? 'readwrite' : 'readonly', {
+-            durability: 'strict',
++      let displaced: { value: unknown; key: IDBValidKey } | undefined;
++      const access = (value?: Retained | null, key = progressKey): Promise<unknown> => {
++        const work = () =>
++          new Promise<unknown>((resolve, reject) => {
++            guard();
++            const tx = db.transaction('progress', value !== undefined ? 'readwrite' : 'readonly', {
++              durability: 'strict',
++            });
++            const store = tx.objectStore('progress');
++            let result: unknown, failure: unknown;
++            if (value && displaced) {
++              const before = displaced;
++              const source = store.get(key),
++                retained = store.get(before.key);
++              let remaining = 2;
++              const check = () => {
++                if (--remaining) return;
++                try {
++                  if (JSON.stringify(source.result) !== JSON.stringify(before.value))
++                    throw Error('Recovery progress changed before preservation');
++                  if (retained.result !== undefined)
++                    throw Error('Retained recovery progress already exists; nothing was replaced');
++                  store.add(before.value, before.key);
++                  store.put(value, key);
++                } catch (cause) {
++                  failure = cause;
++                  tx.abort();
++                }
++              };
++              source.onsuccess = check;
++              retained.onsuccess = check;
++            } else {
++              const request =
++                value === null ? store.delete(key) : value ? store.put(value, key) : store.get(key);
++              request.onsuccess = () => {
++                result = request.result;
++              };
++            }
++            tx.oncomplete = () => {
++              if (value !== undefined) displaced = undefined;
++              resolve(result);
++            };
++            tx.onabort = () =>
++              reject(failure ?? tx.error ?? Error('Recovery progress write aborted'));
++            tx.onerror = () => {};
+           });
+-          const store = tx.objectStore('progress'),
+-            request =
+-              value === null
+-                ? store.delete(progressKey)
+-                : value
+-                  ? store.put(value, progressKey)
+-                  : store.get(progressKey);
+-          tx.oncomplete = () => resolve(request.result);
+-          tx.onabort = () => reject(tx.error ?? Error('Recovery progress write aborted'));
+-          tx.onerror = () => {};
+-        });
+-      const load = async (): Promise<Retained | undefined> => {
+-        const input = await access();
+-        guard();
+-        if (input === undefined) return;
++        return options.isolateSetupProgress
++          ? withSelectedSetupRecovery(local!.slotId, pin!, accountId, retryKey, work)
++          : work();
++      };
++      const checked = (input: unknown): Retained => {
+         const saved = record(input);
+         if (
+           Object.keys(saved).sort().join() !== 'accountId,draft,finalization,retryKey,v' ||
+           saved['v'] !== 1 ||
+-          saved['accountId'] !== accountId ||
+-          saved['retryKey'] !== retryKey
++          typeof saved['accountId'] !== 'string' ||
++          typeof saved['retryKey'] !== 'string'
+         )
+           throw Error('Recovery owner mismatch');
++        identifier(saved['accountId']);
++        identifier(saved['retryKey']);
+         const draft = parseDraft(saved['draft']);
+-        for (const key of ['principalId', 'workspaceId', 'lineageId', 'authRoot'] as const)
+-          if (draft[key] !== scope[key]) throw Error('Recovery target changed');
+         if (saved['finalization'] !== null) {
+           const proof = record(saved['finalization']);
+           if (
+             Object.keys(proof).sort().join() !== 'recoveryId,recoveryProof,response,retryKey' ||
+-            proof['retryKey'] !== retryKey ||
++            proof['retryKey'] !== saved['retryKey'] ||
+             typeof proof['recoveryId'] !== 'string' ||
+             typeof proof['recoveryProof'] !== 'string' ||
+             !/^[0-9a-f]{128}$/.test(proof['recoveryProof'])
+@@ -145,12 +185,48 @@ export async function withRecoveryOwner<T>(
+         }
+         return {
+           v: 1,
+-          accountId,
+-          retryKey,
++          accountId: saved['accountId'],
++          retryKey: saved['retryKey'],
+           draft,
+           finalization: saved['finalization'] as Finalization | null,
+         };
+       };
++      const load = async (): Promise<Retained | undefined> => {
++        let input = await access();
++        guard();
++        displaced = undefined;
++        if (options.isolateSetupProgress) {
++          if (input === undefined) {
++            input = await access(undefined, currentRetainedKey);
++            if (input !== undefined) progressKey = currentRetainedKey;
++          } else {
++            const existing = checked(input);
++            if (existing.accountId !== accountId || existing.retryKey !== retryKey) {
++              const own = await access(undefined, currentRetainedKey);
++              if (own !== undefined) {
++                input = own;
++                progressKey = currentRetainedKey;
++              } else {
++                // Status is read-only. Only generation atomically preserves the old row and
++                // installs the new draft at the old-reader-compatible current key.
++                displaced = {
++                  value: input,
++                  key: retainedRecoveryKey(existing.accountId, existing.retryKey),
++                };
++                return;
++              }
++            }
++          }
++        }
++        if (input === undefined) return;
++        const saved = checked(input);
++        if (saved.accountId !== accountId || saved.retryKey !== retryKey)
++          throw Error('Recovery owner mismatch');
++        for (const key of ['principalId', 'workspaceId', 'lineageId', 'authRoot'] as const)
++          if (saved.draft[key] !== scope[key]) throw Error('Recovery target changed');
++        guard();
++        return saved;
++      };
+       // Hold the lock until the in-flight work settles, even if a caller forgets to await it.
+       let pending: Promise<unknown> = Promise.resolve();
+       const owned = <R>(action: () => Promise<R>): Promise<R> => {
+diff --git a/src/account/setupProgress.ts b/src/account/setupProgress.ts
+index 675a4c1b..11fdeaf2 100644
+--- a/src/account/setupProgress.ts
++++ b/src/account/setupProgress.ts
+@@ -69,7 +69,7 @@ export type SetupState = (
+       error?: string;
+     }
+   | { kind: 'save-recovery' | 'save-device-code'; code: string }
+-  | { kind: 'working'; message: string }
++  | { kind: 'working'; message: string; detail?: string }
+   | { kind: 'approve-passkey'; message: string; description: string }
+   | {
+       kind: 'ready';
+diff --git a/src/crdt/deviceDataRemoval.ts b/src/crdt/deviceDataRemoval.ts
+index cac6b08d..e50379ee 100644
+--- a/src/crdt/deviceDataRemoval.ts
++++ b/src/crdt/deviceDataRemoval.ts
+@@ -11,6 +11,7 @@ import { localClaimKey, parseLocalClaim } from './localGenesisRecord';
+ import { importClaimKey } from './legacyImportState';
+ import { cleanupComplete } from './legacyCleanupRecord';
+ import { assertLegacySourceAbsent } from './legacyCleanupStorage';
++import { RECOVERY_PREPARATION_DB, retainedRecoveryKey } from '../account/setupRecoveryMetadata';
+ 
+ /** Refuse before erasure; the older plaintext source needs its verified exclusion/cleanup owner. */
+ export class LegacyRemovalRequired extends Error {
+@@ -182,6 +183,40 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
+         }
+         if (r.phase === 'metadata') {
+           // Keep the intent until every independent metadata carrier has completed.
++          const selected = (await probeDatabase(task, 'done.first-device-setup.v1', async (db) =>
++            readRow(task, db, 'attempt', slotId === 'local' ? 'current' : slotId),
++          )) as
++            | { slotId?: unknown; retryKey?: unknown; view?: { accountId?: unknown } }
++            | null
++            | undefined;
++          const accountId = selected?.slotId === slotId ? selected.view?.accountId : undefined;
++          const retryKey = selected?.slotId === slotId ? selected.retryKey : undefined;
++          const hasOwner = typeof accountId === 'string' && typeof retryKey === 'string';
++          await probeDatabase(task, RECOVERY_PREPARATION_DB, (db) =>
++            contentTransaction<void>(db, task, ['progress'], 'readwrite', (tx, _result, guard) => {
++              const cursor = tx.objectStore('progress').openCursor();
++              cursor.onsuccess = () =>
++                guard(() => {
++                  const row = cursor.result;
++                  if (!row) return;
++                  const ownCurrent =
++                    row.key === `slot:${slotId}` ||
++                    (slotId === 'local' &&
++                      row.key === 'pending' &&
++                      hasOwner &&
++                      row.value?.accountId === accountId &&
++                      row.value?.retryKey === retryKey);
++                  const ownRetained =
++                    hasOwner &&
++                    indexedDB.cmp(
++                      row.key,
++                      retainedRecoveryKey(accountId as string, retryKey as string),
++                    ) === 0;
++                  if (ownCurrent || ownRetained) row.delete();
++                  row.continue();
++                });
++            }),
++          );
+           await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
+             contentTransaction<void>(db, task, ['attempt'], 'readwrite', (tx) => {
+               tx.objectStore('attempt').delete(slotId === 'local' ? 'current' : slotId);
+diff --git a/src/ui/AccountSetupApp.tsx b/src/ui/AccountSetupApp.tsx
+index e8b10739..c127a6d6 100644
+--- a/src/ui/AccountSetupApp.tsx
++++ b/src/ui/AccountSetupApp.tsx
+@@ -431,7 +431,10 @@ export function Setup({
+         )}
+         {state.kind === 'working' && (
+           <p role="status">
+-            {state.fresh ? 'Your accounts stay separate.' : 'Your writing stays in this workspace.'}
++            {state.detail ??
++              (state.fresh
++                ? 'Your accounts stay separate.'
++                : 'Your writing stays in this workspace.')}
+           </p>
+         )}
+         {state.kind === 'unlock' && <RemoveFromDeviceButton slotId={slotId} />}
+diff --git a/src/account/setupRecoveryMetadata.ts b/src/account/setupRecoveryMetadata.ts
+new file mode 100644
+index 00000000..209d500b
+--- /dev/null
++++ b/src/account/setupRecoveryMetadata.ts
+@@ -0,0 +1,69 @@
++/** Setup lifecycle fencing only; these records never authorize opening or account mutations. */
++import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
++import { progressKey } from './setupProgress';
++import {
++  assertSetupNotRemoved,
++  openSetupDB,
++  SetupRetired,
++  withSetupMetadataLock,
++} from './setupMetadata';
++
++export const RECOVERY_PREPARATION_DB = 'done.account-recovery-preparation.v1';
++export const retainedRecoveryKey = (accountId: string, retryKey: string): IDBValidKey => [
++  'retained-setup-recovery-v1',
++  accountId,
++  retryKey,
++];
++
++/** Never hold this metadata exclusion while acquiring a workspace permit. */
++export function withSelectedSetupRecovery<T>(
++  slotId: string,
++  pin: AuthorityPin,
++  accountId: string,
++  retryKey: string,
++  work: () => Promise<T>,
++): Promise<T> {
++  return withSetupMetadataLock(slotId, async () => {
++    await assertSetupNotRemoved(slotId);
++    const db = await openSetupDB();
++    let saved: unknown;
++    try {
++      saved = await new Promise((resolve, reject) => {
++        const tx = db.transaction('attempt', 'readonly');
++        const request = tx.objectStore('attempt').get(progressKey(slotId));
++        tx.oncomplete = () => resolve(request.result);
++        tx.onabort = () => reject(tx.error);
++      });
++    } finally {
++      db.close();
++    }
++    const value = saved as
++      | {
++          v?: unknown;
++          slotId?: unknown;
++          retryKey?: unknown;
++          pin?: unknown;
++          view?: { stage?: unknown; accountId?: unknown };
++        }
++      | undefined;
++    let pinMatches = false;
++    try {
++      pinMatches = String(pinBytes(parseAuthorityPin(value?.pin))) === String(pinBytes(pin));
++    } catch {
++      /* Unreadable hints cannot extend a retired setup's lifetime. */
++    }
++    if (
++      !value ||
++      value.v !== 1 ||
++      value.slotId !== slotId ||
++      value.retryKey !== retryKey ||
++      value.view?.stage !== 'credential-confirmed' ||
++      value.view.accountId !== accountId ||
++      !pinMatches
++    )
++      throw new SetupRetired(
++        'This setup attempt was removed or replaced. Resume the selected workspace.',
++      );
++    return work();
++  });
++}
+diff --git a/test/recoveryProgressIsolation.test.ts b/test/recoveryProgressIsolation.test.ts
+new file mode 100644
+index 00000000..50f36707
+--- /dev/null
++++ b/test/recoveryProgressIsolation.test.ts
+@@ -0,0 +1,256 @@
++// @vitest-environment node
++import { afterEach, beforeEach, expect, it, vi } from 'vitest';
++import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
++import { withRecoveryOwner } from '../src/account/recoveryOwner';
++import { setupProgress, type Retained } from '../src/account/setupProgress';
++import { beginLocalGenesis, listLocalWorkspaces } from '../src/crdt/localGenesis';
++import { removeDeviceData } from '../src/crdt/deviceDataRemoval';
++import { createFirstDeviceSetup } from '../src/account/firstDeviceSetup';
++import { retainedRecoveryKey } from '../src/account/setupRecoveryMetadata';
++
++beforeEach(() => {
++  vi.stubGlobal('indexedDB', new IDBFactory());
++  vi.stubGlobal('IDBKeyRange', IDBKeyRange);
++  vi.stubGlobal('isSecureContext', true);
++  vi.stubGlobal('location', { origin: 'https://isolation.example' });
++  const tails = new Map<string, Promise<unknown>>();
++  vi.stubGlobal('navigator', {
++    locks: {
++      request(name: string, _options: unknown, work: (lock: { name: string }) => unknown) {
++        const result = (tails.get(name) ?? Promise.resolve()).then(() => work({ name }));
++        tails.set(
++          name,
++          result.catch(() => {}),
++        );
++        return result;
++      },
++    },
++  });
++  const values: Record<string, string> = {};
++  vi.stubGlobal(
++    'localStorage',
++    new Proxy(values, {
++      get(target, key) {
++        if (key === 'getItem') return (name: string) => target[name] ?? null;
++        if (key === 'setItem')
++          return (name: string, value: string) => {
++            target[name] = value;
++          };
++        if (key === 'removeItem')
++          return (name: string) => {
++            delete target[name];
++          };
++        return target[key as string];
++      },
++    }),
++  );
++});
++afterEach(() => {
++  vi.restoreAllMocks();
++  vi.unstubAllGlobals();
++});
++
++const pin = {
++  v: 1 as const,
++  origin: 'https://isolation.example',
++  rpId: 'isolation.example',
++  serviceId: '01'.repeat(16),
++  authRoot: '02'.repeat(32),
++};
++const options = (letter: string, slotId = 'local') => ({
++  context: {
++    principalId: 'principal-' + letter,
++    workspaceId: 'workspace-' + letter,
++    lineageId: 'lineage-' + letter,
++    authRoot: pin.authRoot,
++  },
++  pin,
++  local: { slotId, code: 'unused-by-draft-only-operations' },
++  accountId: letter.repeat(42) + 'A',
++  retryKey: letter.toLowerCase().repeat(42) + 'A',
++  transport: { begin: vi.fn(), finish: vi.fn() },
++});
++async function select(input: ReturnType<typeof options>) {
++  await setupProgress(
++    {
++      v: 1,
++      pin,
++      slotId: input.local.slotId,
++      retryKey: input.retryKey,
++      view: {
++        ok: true,
++        stage: 'credential-confirmed',
++        accountId: input.accountId,
++        credentialId: 'test-credential',
++      },
++      proof: null,
++    } satisfies Retained,
++    input.local.slotId,
++  );
++  return { ...input, isolateSetupProgress: true as const };
++}
++async function rows() {
++  const request = indexedDB.open('done.account-recovery-preparation.v1', 1);
++  const db = await new Promise<IDBDatabase>((resolve, reject) => {
++    request.onupgradeneeded = () => request.result.createObjectStore('progress');
++    request.onsuccess = () => resolve(request.result);
++    request.onerror = () => reject(request.error);
++  });
++  try {
++    return await new Promise<{ key: IDBValidKey; value: unknown }[]>((resolve, reject) => {
++      const tx = db.transaction('progress');
++      const store = tx.objectStore('progress'),
++        keys = store.getAllKeys(),
++        values = store.getAll();
++      tx.oncomplete = () =>
++        resolve(keys.result.map((key, i) => ({ key, value: values.result[i] })));
++      tx.onabort = () => reject(tx.error);
++    });
++  } finally {
++    db.close();
++  }
++}
++
++it('keeps an unrelated legacy draft intact while a different Local attempt generates and resumes its own recovery', async () => {
++  const legacy = options('A');
++  await withRecoveryOwner(legacy, (owner) => owner.generate());
++  const before = await rows();
++  const current = await select(options('B'));
++  expect(await withRecoveryOwner(current, (owner) => owner.status())).toBe('empty');
++  await withRecoveryOwner(current, (owner) => owner.generate());
++  expect(await withRecoveryOwner(current, (owner) => owner.status())).toBe('awaiting-code');
++  expect(
++    (await rows()).filter((row) => JSON.stringify(row.value) === JSON.stringify(before[0]!.value)),
++  ).toHaveLength(1);
++  await expect(withRecoveryOwner(legacy, (owner) => owner.status())).rejects.toThrow(
++    'owner mismatch',
++  );
++  // Selecting the old attempt still reaches its original draft; the route itself grants no authority.
++  await select(legacy);
++  expect(
++    await withRecoveryOwner({ ...legacy, isolateSetupProgress: true }, (owner) => owner.status()),
++  ).toBe('awaiting-code');
++});
++
++it('resumes an exact legacy attempt in place without forking or replacing its saved recovery code', async () => {
++  const legacy = options('A');
++  await withRecoveryOwner(legacy, (owner) => owner.generate());
++  const before = await rows();
++  const current = await select(legacy);
++  expect(await withRecoveryOwner(current, (owner) => owner.status())).toBe('awaiting-code');
++  await expect(withRecoveryOwner(current, (owner) => owner.generate())).rejects.toThrow(
++    'already generated',
++  );
++  expect(await rows()).toEqual(before);
++  await expect(
++    withRecoveryOwner(
++      { ...current, context: { ...current.context, workspaceId: 'wrong' } },
++      (owner) => owner.status(),
++    ),
++  ).rejects.toThrow('target changed');
++  expect(await rows()).toEqual(before);
++});
++
++it('fences a staged recovery write when its selected setup is removed before crypto finishes', async () => {
++  const current = await select(options('B'));
++  let release!: () => void, reached!: () => void;
++  const barrier = new Promise<void>((resolve) => {
++    release = resolve;
++  });
++  const ready = new Promise<void>((resolve) => {
++    reached = resolve;
++  });
++  const generate = crypto.subtle.generateKey.bind(crypto.subtle);
++  vi.spyOn(crypto.subtle, 'generateKey').mockImplementationOnce((async (
++    ...args: Parameters<typeof generate>
++  ) => {
++    reached();
++    await barrier;
++    return generate(...args);
++  }) as typeof generate);
++  const operation = withRecoveryOwner(current, (owner) => owner.generate());
++  const refused = expect(operation).rejects.toThrow(/setup.*(retired|changed|missing)|removed/i);
++  await ready;
++  await setupProgress(null);
++  release();
++  await refused;
++  expect(await rows()).toEqual([]);
++});
++
++it('removes only the selected slot’s attempt progress and fences later writes without deleting unrelated legacy recovery', async () => {
++  const genesis = beginLocalGenesis('local'),
++    code = genesis.displayCode!;
++  await genesis.confirm(code);
++  expect(await listLocalWorkspaces('local', code)).toHaveLength(1);
++  await withRecoveryOwner(options('A'), (owner) => owner.generate());
++  const legacy = (await rows())[0];
++  const current = await select(options('B'));
++  await withRecoveryOwner(current, (owner) => owner.generate());
++  await removeDeviceData('local');
++  expect((await rows()).map((row) => row.value)).toEqual([legacy!.value]);
++  await expect(withRecoveryOwner(current, (owner) => owner.generate())).rejects.toThrow(
++    /setup.*(retired|changed|missing)|remov/i,
++  );
++  expect((await rows()).map((row) => row.value)).toEqual([legacy!.value]);
++});
++
++it('distinguishes a post-passkey continuation failure from rejection of the independently verified Local factor', async () => {
++  const genesis = beginLocalGenesis('local'),
++    code = genesis.displayCode!;
++  await genesis.confirm(code);
++  await select(options('B'));
++  vi.stubGlobal(
++    'fetch',
++    vi.fn().mockRejectedValue(new TypeError('Synthetic offline authority check')),
++  );
++  const owner = createFirstDeviceSetup({ networkSessions: true, pin });
++  try {
++    await owner.inspect();
++    await owner.unlock(code);
++    expect(owner.getSnapshot()).toMatchObject({
++      kind: 'resume-setup',
++      error: expect.stringContaining('unlock code was accepted'),
++    });
++    expect(await listLocalWorkspaces('local', code)).toHaveLength(1);
++  } finally {
++    await owner.close();
++  }
++  const cold = createFirstDeviceSetup({ networkSessions: true, pin });
++  try {
++    await cold.inspect();
++    await cold.unlock('00000-00000-00000-00000-00000');
++    expect(cold.getSnapshot()).toMatchObject({
++      kind: 'unlock',
++      error: expect.stringContaining('Could not unlock'),
++    });
++    expect(await listLocalWorkspaces('local', code)).toHaveLength(1);
++  } finally {
++    await cold.close();
++  }
++});
++
++it('refuses an occupied preservation destination atomically instead of replacing either draft', async () => {
++  const legacy = options('A');
++  await withRecoveryOwner(legacy, (owner) => owner.generate());
++  const request = indexedDB.open('done.account-recovery-preparation.v1');
++  const db = await new Promise<IDBDatabase>((resolve) => {
++    request.onsuccess = () => resolve(request.result);
++  });
++  await new Promise<void>((resolve, reject) => {
++    const tx = db.transaction('progress', 'readwrite');
++    tx.objectStore('progress').put(
++      { retained: 'do not replace this record' },
++      retainedRecoveryKey(legacy.accountId, legacy.retryKey),
++    );
++    tx.oncomplete = () => resolve();
++    tx.onabort = () => reject(tx.error);
++  });
++  db.close();
++  const before = await rows();
++  const current = await select(options('B'));
++  await expect(withRecoveryOwner(current, (owner) => owner.generate())).rejects.toThrow(
++    'already exists',
++  );
++  expect(await rows()).toEqual(before);
++  expect(await withRecoveryOwner(legacy, (owner) => owner.status())).toBe('awaiting-code');
++});
+diff --git a/test/packaged-account/multi-tab-protection.spec.ts b/test/packaged-account/multi-tab-protection.spec.ts
+new file mode 100644
+index 00000000..6d786fc7
+--- /dev/null
++++ b/test/packaged-account/multi-tab-protection.spec.ts
+@@ -0,0 +1,92 @@
++import { test, expect } from '@playwright/test';
++import { openApp } from '../geometry/openApp';
++import { authenticator } from '../device-enrollment/helpers';
++import { startService, stopService } from './server';
++
++// One browser context is intentional: both tabs share the same custody and setup stores.
++for (const unlockOther of [false, true])
++  test(`sync protection with a second ${unlockOther ? 'reopened' : 'retired'} Local tab preserves the factor across setup reload`, async ({
++    page,
++    context,
++  }, info) => {
++    const service = await startService(
++      info.outputPath('service'),
++      process.env['PASSKEY_TEST_BUILD'],
++      true,
++      true,
++    );
++    const other = await context.newPage();
++    const writing = 'Two tabs must retain this protected Local writing';
++    const errors: string[] = [];
++    page.on('pageerror', (error) => errors.push(error.message));
++    try {
++      await openApp(page);
++      const input = page.locator('.day-panel[data-active=true] [placeholder="What got done?"]');
++      await input.fill(writing);
++      await input.press('Enter');
++      await openApp(other);
++      await expect(other.locator('.shell')).toContainText(writing);
++      await authenticator(page);
++      await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
++      await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
++      await page.getByRole('button', { name: 'Continue', exact: true }).click();
++      const code = (await page.getByLabel('Generated unlock code').textContent())!;
++      await page.getByRole('button', { name: 'I saved my unlock code' }).click();
++      await page.getByLabel('Unlock code', { exact: true }).fill(code);
++      await page.getByRole('button', { name: 'Confirm and protect', exact: true }).click();
++      await expect(page.getByRole('heading', { name: 'Protection is enabled' })).toBeVisible();
++      await expect(other.locator('.shell')).toHaveCount(0);
++      if (unlockOther) {
++        await other.reload();
++        await other.getByLabel('Unlock code', { exact: true }).fill(code);
++        await other.getByRole('button', { name: 'Unlock', exact: true }).click();
++        await expect(other.locator('.shell')).toContainText(writing);
++      }
++      await page.getByRole('button', { name: 'Continue to sync setup', exact: true }).click();
++      await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
++      await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
++      await expect(
++        page.getByRole('heading', { name: 'Try your new passkey', exact: true }),
++      ).toBeVisible();
++      await page.getByRole('button', { name: 'Use my passkey', exact: true }).click();
++      if (unlockOther) {
++        await expect(page.getByRole('status')).toContainText('close other tabs using this list');
++        // The writer barrier must remain held until the other editor closes.
++        await expect
++          .poll(() =>
++            page.evaluate(async () => {
++              const locks = await navigator.locks.query();
++              return locks.pending?.some(
++                (pending) =>
++                  pending.mode === 'exclusive' &&
++                  locks.held?.some((held) => held.mode === 'shared' && held.name === pending.name),
++              );
++            }),
++          )
++          .toBe(true);
++        await other.close();
++      }
++      await expect(
++        page.getByRole('heading', { name: 'Save your recovery code', exact: true }),
++      ).toBeVisible();
++      await page.reload();
++      await page.getByLabel('Unlock code', { exact: true }).fill(code);
++      await page.getByRole('button', { name: 'Continue', exact: true }).click();
++      await expect(
++        page.getByRole('heading', { name: 'Check your saved copy', exact: true }),
++      ).toBeVisible();
++      if (!other.isClosed()) await other.close();
++      await page.getByRole('button', { name: 'Back to local workspace', exact: true }).click();
++      await page.getByLabel('Unlock code', { exact: true }).fill(code);
++      await page.getByRole('button', { name: 'Unlock', exact: true }).click();
++      await expect(page.locator('.shell')).toContainText(writing);
++      await page.reload();
++      await page.getByLabel('Unlock code', { exact: true }).fill(code);
++      await page.getByRole('button', { name: 'Unlock', exact: true }).click();
++      await expect(page.locator('.shell')).toContainText(writing);
++      expect(errors).toEqual([]);
++    } finally {
++      if (!other.isClosed()) await other.close();
++      await stopService(service);
++    }
++  });
+diff --git a/test/packaged-account/recovery-progress-isolation.spec.ts b/test/packaged-account/recovery-progress-isolation.spec.ts
+new file mode 100644
+index 00000000..2c0504b7
+--- /dev/null
++++ b/test/packaged-account/recovery-progress-isolation.spec.ts
+@@ -0,0 +1,151 @@
++import { writeFile } from 'node:fs/promises';
++import { test, expect, type Page } from '@playwright/test';
++import { openApp } from '../geometry/openApp';
++import { authenticator } from '../device-enrollment/helpers';
++import { startService, stopService } from './server';
++
++async function protectAndRegister(page: Page) {
++  await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
++  await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
++  await page.getByRole('button', { name: 'Continue', exact: true }).click();
++  const code = (await page.getByLabel('Generated unlock code').textContent())!;
++  await page.getByRole('button', { name: 'I saved my unlock code' }).click();
++  await page.getByLabel('Unlock code', { exact: true }).fill(code);
++  await page.getByRole('button', { name: 'Confirm and protect', exact: true }).click();
++  await page.getByRole('button', { name: 'Continue to sync setup', exact: true }).click();
++  await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
++  await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
++  await page.getByRole('button', { name: 'Use my passkey', exact: true }).click();
++  return code;
++}
++
++test('an orphaned legacy recovery draft cannot block another protected Local setup or mislabel its accepted factor', async ({
++  page,
++  context,
++}, info) => {
++  const service = await startService(
++    info.outputPath('service'),
++    process.env['PASSKEY_TEST_BUILD'],
++    true,
++    true,
++  );
++  try {
++    await openApp(page);
++    await authenticator(page);
++    await protectAndRegister(page);
++    await expect(
++      page.getByRole('heading', { name: 'Save your recovery code', exact: true }),
++    ).toBeVisible();
++    // A real owner generated this sealed draft. Retain it only in test memory to model a
++    // historical removal that left the old unscoped `pending` row behind.
++    const legacy = await page.evaluate(async () => {
++      const db = await new Promise<IDBDatabase>((resolve, reject) => {
++        const request = indexedDB.open('done.account-recovery-preparation.v1');
++        request.onsuccess = () => resolve(request.result);
++        request.onerror = () => reject(request.error);
++      });
++      try {
++        return await new Promise<unknown>((resolve, reject) => {
++          const tx = db.transaction('progress');
++          const read = tx.objectStore('progress').getAll();
++          tx.oncomplete = () => resolve(read.result.find((row) => row?.v === 1 && row?.draft));
++          tx.onabort = () => reject(tx.error);
++        });
++      } finally {
++        db.close();
++      }
++    });
++    expect(legacy).toBeTruthy();
++    await page.goto('/remove/local');
++    await page.getByRole('button', { name: 'Continue to confirmation' }).click();
++    await page.getByLabel('Type REMOVE to confirm').fill('REMOVE');
++    await page.getByRole('button', { name: 'Remove local data', exact: true }).click();
++    await page.getByRole('button', { name: 'Start fresh', exact: true }).click();
++    await expect(page.locator('.shell')).toBeVisible();
++    await page.evaluate(async (legacy) => {
++      const db = await new Promise<IDBDatabase>((resolve, reject) => {
++        const request = indexedDB.open('done.account-recovery-preparation.v1');
++        request.onsuccess = () => resolve(request.result);
++        request.onerror = () => reject(request.error);
++      });
++      try {
++        await new Promise<void>((resolve, reject) => {
++          const tx = db.transaction('progress', 'readwrite');
++          tx.objectStore('progress').put(legacy, 'pending');
++          tx.oncomplete = () => resolve();
++          tx.onabort = () => reject(tx.error);
++        });
++      } finally {
++        db.close();
++      }
++    }, legacy);
++    const writing = 'Keep the new Local writing independently of stale recovery';
++    const input = page.locator('.day-panel[data-active=true] [placeholder="What got done?"]');
++    await input.fill(writing);
++    await input.press('Enter');
++    const code = await protectAndRegister(page);
++    try {
++      await expect(
++        page.getByRole('heading', { name: 'Save your recovery code', exact: true }),
++      ).toBeVisible();
++    } catch (failure) {
++      const error = await page.getByRole('alert').textContent();
++      const other = await context.newPage();
++      await other.goto('/local');
++      await other.getByLabel('Unlock code', { exact: true }).fill(code);
++      await other.getByRole('button', { name: 'Unlock', exact: true }).click();
++      await expect(other.locator('.shell')).toContainText(writing);
++      await other.close();
++      await page.reload();
++      await page.getByLabel('Unlock code', { exact: true }).fill(code);
++      await page.getByRole('button', { name: 'Continue', exact: true }).click();
++      const resumedError = await page.getByRole('alert').textContent();
++      const observation = info.outputPath('retained-state-failure.json');
++      await writeFile(
++        observation,
++        JSON.stringify(
++          {
++            error,
++            resumedError,
++            independentLocalFactorAccepted: true,
++            path: new URL(page.url()).pathname,
++          },
++          null,
++          2,
++        ),
++      );
++      await info.attach('retained-state-failure', {
++        path: observation,
++        contentType: 'application/json',
++      });
++      throw failure;
++    }
++    await page.reload();
++    await page.getByLabel('Unlock code', { exact: true }).fill(code);
++    await page.getByRole('button', { name: 'Continue', exact: true }).click();
++    await expect(
++      page.getByRole('heading', { name: 'Check your saved copy', exact: true }),
++    ).toBeVisible();
++    await page.getByRole('button', { name: 'Back to local workspace', exact: true }).click();
++    await page.getByLabel('Unlock code', { exact: true }).fill(code);
++    await page.getByRole('button', { name: 'Unlock', exact: true }).click();
++    await expect(page.locator('.shell')).toContainText(writing);
++    const retainedLegacy = await page.evaluate(async () => {
++      const request = indexedDB.open('done.account-recovery-preparation.v1');
++      const db = await new Promise<IDBDatabase>((resolve) => {
++        request.onsuccess = () => resolve(request.result);
++      });
++      const read = db.transaction('progress').objectStore('progress').getAll();
++      const value = await new Promise<unknown[]>((resolve) => {
++        read.onsuccess = () => resolve(read.result);
++      });
++      db.close();
++      return value;
++    });
++    expect(
++      retainedLegacy.filter((row) => JSON.stringify(row) === JSON.stringify(legacy)),
++    ).toHaveLength(1);
++  } finally {
++    await stopService(service);
++  }
++});

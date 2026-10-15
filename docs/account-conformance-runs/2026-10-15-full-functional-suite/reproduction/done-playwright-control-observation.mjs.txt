@@ -1,0 +1,101 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  copyFileSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  writeFileSync,
+  rmSync,
+  symlinkSync,
+  existsSync,
+} from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, dirname, resolve } from 'node:path';
+import { createStageRunner } from '<test-checkout>/scripts/release-validation/stage.mjs';
+import { playwrightStage } from '<test-checkout>/scripts/release-validation/playwright-adapter.mjs';
+import { installedChromium } from '<test-checkout>/scripts/release-validation/browser.mjs';
+import { digest, filePins } from '<test-checkout>/scripts/release-validation/identity.mjs';
+const runtime = installedChromium();
+const ordinary = `import {test} from '../release-validation/browser-fixture';import {expect} from '@playwright/test';for(const name of ['one','two'])test(name,async({page},info)=>{await info.attach('inputs',{body:JSON.stringify({name}),contentType:'application/json'});await page.goto('/');await expect(page).toHaveTitle('Owned page');});`;
+function fixture(t, text = ordinary) {
+  const root = mkdtempSync(join(tmpdir(), 'done-playwright-control-'));
+  symlinkSync(resolve('node_modules'), join(root, 'node_modules'));
+  const files = [
+    'package.json',
+    'index.html',
+    'vite.config.ts',
+    'playwright.local-startup.config.ts',
+    'test/local-app/startup.spec.ts',
+    'test/release-validation/browser-fixture.ts',
+    'scripts/app-upgrades/server.mjs',
+    ...[
+      'process-guard',
+      'nested-launcher',
+      'playwright-driver',
+      'playwright-adapter',
+      'playwright-census',
+      'playwright-reporter',
+      'playwright-measurements',
+      'vitest-census',
+      'registration-data',
+      'registration-modules',
+      'identity',
+      'static-fixture',
+      'server',
+    ].map((n) => 'scripts/release-validation/' + n + '.mjs'),
+  ];
+  for (const path of files) mkdirSync(dirname(join(root, path)), { recursive: true });
+  for (const path of files.filter(
+    (p) => p.startsWith('scripts/') || p.endsWith('browser-fixture.ts'),
+  ))
+    copyFileSync(path, join(root, path));
+  writeFileSync(join(root, 'package.json'), '{"type":"module"}');
+  writeFileSync(join(root, 'index.html'), '<title>Owned page</title>');
+  writeFileSync(join(root, 'vite.config.ts'), 'export default {};');
+  writeFileSync(
+    join(root, 'playwright.local-startup.config.ts'),
+    'export default {timeout:20000,use:{headless:true}};',
+  );
+  const write = (text) => writeFileSync(join(root, 'test/local-app/startup.spec.ts'), text);
+  write(text);
+  const run = createStageRunner({
+    root,
+    output: join(root, 'reports'),
+    browserRuntime: runtime,
+    fingerprint: () => ({
+      revision: 'synthetic-playwright',
+      sourceDigest: digest(filePins(root, files)),
+      dependencyDigest: 'copied-installed-tools',
+      runtime: { node: process.version },
+      tools: { chromium: digest(runtime.snapshot) },
+    }),
+  });
+  const stage = {
+    ...playwrightStage(root, 'test/local-app/startup.spec.ts'),
+    deadlineMs: 15000,
+    graceMs: 1000,
+  };
+  const read = (receipt, path) =>
+    JSON.parse(readFileSync(join(root, 'reports', receipt.key, path), 'utf8'));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  return { root, run, stage, write, read };
+}
+
+const cleanups = [];
+const observed = fixture({ after: fn => cleanups.push(fn) });
+try {
+  const first = await observed.run(observed.stage);
+  const files = [];
+  const reportRoot = join(observed.root, 'reports');
+  const { readdirSync, statSync } = await import('node:fs');
+  for (const file of readdirSync(reportRoot, {recursive:true}).sort()) {
+    const full = join(reportRoot,file);
+    if (!statSync(full).isFile() || !/\.(?:json|jsonl|log)$/.test(file) || /(?:browser-profile|profile-data)/.test(file)) continue;
+    if (statSync(full).size > 1048576) throw Error('Unexpected large diagnostic text file');
+    files.push({path:file,text:readFileSync(full,'utf8')});
+  }
+  const observation = { source: "<test-checkout>/test/release-validation/playwright-native.test.mjs", sourceSha256: "daa8326634bce206f330c13f677185ecdad18c221b59c1f264c5b89cb77ed5dd", method: 'Verbatim existing fixture constructor; same 15-second stage limit; first stage observed outside node:test. Cleanup deferred only until its result/log copy, then original cleanup runs. Existing tests stay unchanged. Diagnostic exit does not mean the observed stage passed.', status:first.status, result:first.result, files };
+  writeFileSync('<execution-evidence>/playwright-control-observation.json',JSON.stringify(observation,null,2)+'\n');
+  console.log(JSON.stringify({observedStatus:first.status,reason:first.result?.reason,files:files.length}));
+} finally { for (const cleanup of cleanups.reverse()) await cleanup(); }

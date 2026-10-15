@@ -561,7 +561,7 @@
     },
     {
       "path": "src/account/firstDeviceSetup.ts",
-      "sha256": "91a755f5d559e3b07f046db16d83fa97e83cba18d185fd93a168582a7378b976"
+      "sha256": "4b2b75028fece0106ec5a38b15f8ff75da27430b6e4044a85327728d2dea028d"
     },
     {
       "path": "src/account/generationWrap.ts",
@@ -669,7 +669,7 @@
     },
     {
       "path": "src/account/recoveryOwner.ts",
-      "sha256": "c71d73c9828d4f54291ee23ad8496a923d83e61a7cd5324d5f8e0d2872539dd4"
+      "sha256": "7695ab989dfdf2234ead4263218f56b1eab09535a314ef4d5b8c0d68c3df75e4"
     },
     {
       "path": "src/account/recoveryTransition.ts",
@@ -689,7 +689,11 @@
     },
     {
       "path": "src/account/setupProgress.ts",
-      "sha256": "591772b802c890fda57966983a0ac6bc235679a0f622e2ed5fa90496bb6fd257"
+      "sha256": "499298709cc6a21fac0b5d1a6a6f8bd3edb2d872a634e1d17351cfce7f60ea38"
+    },
+    {
+      "path": "src/account/setupRecoveryMetadata.ts",
+      "sha256": "6d2f6094b79818236f2de09e8ce0868f6e24eeaf69620836ce956184df09bfa4"
     },
     {
       "path": "src/account/slotUnlock.ts",
@@ -905,7 +909,7 @@
     },
     {
       "path": "src/crdt/deviceDataRemoval.ts",
-      "sha256": "f9f7b77af657c1760a546e8e6fefc17d2d6375510e252a8db0617c75f8acea6e"
+      "sha256": "4ba91921d40cc596db1ff98544cebd3775b1c5399c55c0c06fa31125d52b6666"
     },
     {
       "path": "src/crdt/doc.ts",
@@ -1437,7 +1441,7 @@
     },
     {
       "path": "src/ui/AccountSetupApp.tsx",
-      "sha256": "bd40ca777882c28c7ffbb7a9ed5ebe6d5fc0bf55bf9a68783e3c92e0f67b99a9"
+      "sha256": "ef7656f120458cf099629f0c1625cc964cb3737c5fb8e05400cda5294e7195e2"
     },
     {
       "path": "src/ui/AccountSignIn.tsx",

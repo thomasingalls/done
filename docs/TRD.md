@@ -2571,6 +2571,25 @@ and its initial editor opening; online login uses the existing combined challeng
 single-use grant binds the complete verified binding proof, service pin, slot and live setup lifetime.
 It cannot survive reload, serialize, authorize a different destination or replace later unlocks.
 
+**Setup recovery progress isolation, amended 2026-10-15.** Recovery progress binds the account,
+retry capability and complete recovery context. Matching existing `pending` (Local) and
+`slot:<slotId>` (new Account) records resume in place. Before another attempt writes that current
+key, its owner validates the unrelated v1 record structurally and atomically preserves its exact
+value at `['retained-setup-recovery-v1', accountId, retryKey]`; an occupied destination or changed
+source refuses the transaction. Status reads perform no move. Current draft bytes and keys retain
+the existing reader format; older readers targeting another attempt refuse the owner mismatch.
+The updated owner can resume its exact retained record after checking the same account, retry and
+context. These hints never authorize opening, passkey confirmation or service mutations.
+
+Selected setup recovery reads/writes share setup-metadata exclusion with device removal and check
+the selected setup, service pin and removal fence. They acquire no workspace permit while holding
+that metadata exclusion. A crypto operation staged before removal cannot subsequently recreate
+progress. Explicit removal erases the slot's scoped current key and its identified current/retained
+attempt, preserving unrelated global recovery records. Matching protected custody and cryptographic
+byte formats are unchanged. Continuation errors are labelled as an accepted Local code only after
+the Local claim and custody factor have been verified; later account setup failure does not become
+a Local factor failure.
+
 **Legacy promptless migration is explicit and resumable.** `L_local` and old non-extractable operational
 credentials cannot be exported for resealing. Generate `L_lock`, stage factor seals and resealed retained
 generation envelopes, and generate factor-sealed replacement receiving credentials. Under exclusive

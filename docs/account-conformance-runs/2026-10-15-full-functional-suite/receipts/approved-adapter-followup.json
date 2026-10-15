@@ -1,0 +1,12 @@
+{
+  "command": "node --test --test-concurrency=2 test/release-validation/*.test.mjs",
+  "checkout": "<approved-harness-checkout>",
+  "patch": "/private/tmp/done-adapter-closure-census.patch",
+  "log": "followup-approved-adapter-closure-census.log",
+  "exitCode": 0,
+  "tests": 289,
+  "passed": 289,
+  "failed": 0,
+  "skipped": 0,
+  "earlierFailuresRetained": true
+}

@@ -4573,3 +4573,32 @@ observation separately in the [bounded packet](account-conformance-runs/2026-10-
 Do not relax CSP or authenticator verification to accommodate a provider. Retain the other seat's
 active checkpoint. Removal/migration UX and unissued-code routing are separate subsequent repairs;
 general qualification and publication stay paused.
+
+### Preserve foreign recovery progress and fence the selected setup lifecycle
+
+**Date:** 2026-10-15 · **Source:** follow-up to signed `5afdd0ad`.
+
+**Evidence.** The failing preview had a confirmed account passkey and a matching service pin, but
+its unscoped recovery draft belonged to another account/retry and another Local workspace. A new
+packaged regression reproduces both exact errors while the same code independently opens Local.
+The real Firefox-private/Bitwarden walkthrough reproduces the pair after an older Local removal.
+Fresh two-tab setup with the other tab locked succeeds; an unlocked editor can instead delay the
+required exclusive permit. Two-tab timing alone is not the identified cause of the retained-state
+error.
+
+**Decision.** Keep matching legacy drafts at their current keys. Preserve a structurally valid
+foreign draft atomically under its account/retry identity before saving a new current draft; refuse
+destination collisions and changed sources. Retain current-key reader compatibility and never use
+foreign recovery material as authority for the new attempt. Fence metadata operations against the
+selected setup and removal, including writes staged before removal. Explicit removal cleans only
+its scoped or identified attempt records. A post-verification continuation failure offers retry and
+independent Local access, without claiming the valid factor was rejected. A waiting writer barrier
+explains that other tabs need closing.
+
+**Tradeoff and bounds.** Unrelated legacy orphans remain preserved rather than being erased to make
+setup proceed. Older readers cannot resume retained foreign attempts through the new identity key;
+their current-key owner mismatch remains a refusal. Active matching drafts, protected workspaces,
+factor verification, account verification and crypto byte formats retain their previous behavior.
+No persisted unlock cache or credential fallback is introduced. The
+[bounded packet](account-conformance-runs/2026-10-15-multi-tab-setup/README.md) records failing evidence,
+new regressions, compatibility and removal checks, actual provider results and remaining limits.

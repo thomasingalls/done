@@ -1,0 +1,22 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { native, syncBundle } from '<test-checkout>/test/account-sync/fixtures.mjs';
+
+test('distinguish inherited profiled fixture globals from an ordinary rollback/default bundle', { timeout: 45000 }, async t => {
+  const f = await native(t);
+  const visible = () => f.page.evaluate(() => '__doneLedgerMetrics' in globalThis);
+  const observation = { afterInheritedSetup: await visible() };
+  const save = () => fs.writeFileSync('<execution-evidence>/ledger-profile-observation.json', JSON.stringify(observation, null, 2) + '\n');
+  save();
+  await f.page.goto(f.server.origin);
+  observation.beforeOrdinaryBundle = await visible(); save();
+  await f.page.evaluate(await syncBundle(undefined, 'reference'));
+  observation.afterReferenceBundle = await visible(); save();
+  await f.page.evaluate(await syncBundle());
+  observation.afterDefaultBundle = await visible(); save();
+  assert.equal(observation.afterInheritedSetup, true, 'inherited fixture explicitly selects profiling');
+  assert.equal(observation.beforeOrdinaryBundle, false);
+  assert.equal(observation.afterReferenceBundle, false);
+  assert.equal(observation.afterDefaultBundle, false);
+});

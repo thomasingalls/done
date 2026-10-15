@@ -1,0 +1,26 @@
+[
+  {
+    "command": "pnpm account:enrollment",
+    "startedAt": "2026-10-15T09:47:35.855Z",
+    "log": "account-enrollment.log",
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T09:47:41.499Z"
+  },
+  {
+    "command": "pnpm account:successor",
+    "startedAt": "2026-10-15T09:47:41.499Z",
+    "log": "account-successor.log",
+    "signal": null,
+    "exitCode": 1,
+    "completedAt": "2026-10-15T09:48:44.323Z"
+  },
+  {
+    "command": "pnpm storage:legacy-host-cold:harness",
+    "startedAt": "2026-10-15T09:48:44.324Z",
+    "log": "storage-legacy-host-cold-harness.log",
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T09:48:44.922Z"
+  }
+]

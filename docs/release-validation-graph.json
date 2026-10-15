@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 476,
-    "requiredTestFiles": 470,
+    "testFiles": 482,
+    "requiredTestFiles": 476,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -4063,7 +4063,7 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 56,
+          "line": 57,
           "form": "spawn",
           "arguments": [
             "process.execPath",
@@ -4667,7 +4667,7 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 116,
+          "line": 117,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ encoding: 'utf8' }"]
         }
@@ -4976,12 +4976,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 155,
+          "line": 156,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ encoding: 'utf8' }"]
         },
         {
-          "line": 157,
+          "line": 158,
           "form": "execFileSync",
           "arguments": ["'git'", "['status', '--porcelain']", "{ encoding: 'utf8' }"]
         }
@@ -5681,12 +5681,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 140,
+          "line": 141,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ encoding: 'utf8' }"]
         },
         {
-          "line": 142,
+          "line": 143,
           "form": "execFileSync",
           "arguments": ["'git'", "['status', '--porcelain']", "{ encoding: 'utf8' }"]
         }
@@ -9856,6 +9856,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/firstDeviceSetupAccess.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/firstDeviceSetupAccess.test.ts"
+        ]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/freeze.test.ts",
       "status": "required",
       "invocation": {
@@ -10913,7 +10928,40 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packaged-account/multi-tab-protection.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/packaged-account/offline.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/passkey-local-access.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/recovery-progress-isolation.spec.ts",
       "status": "required",
       "invocation": {
         "config": "playwright.packaged-account.config.ts",
@@ -11062,6 +11110,16 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/packagedConfig.test.ts"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/passkeyResponse.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/passkeyResponse.test.ts"]
+      },
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -11374,6 +11432,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/receiveSelection.test.ts"]
       },
       "declarations": 10,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/recoveryProgressIsolation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/recoveryProgressIsolation.test.ts"
+        ]
+      },
+      "declarations": 6,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -14799,7 +14872,7 @@
     },
     {
       "path": "scripts/account-recovery/run.mjs",
-      "sha256": "a404d46ebac93131bf29a0f9f891328ff77a32c45bd3aaef1511fe5bb6fab9ec"
+      "sha256": "92111dfee53ea49fda90a92600f769a312f86ff2b15ac5d7c2db82c9407c84f2"
     },
     {
       "path": "scripts/account-reservation-durability/run.mjs",
@@ -14863,7 +14936,7 @@
     },
     {
       "path": "scripts/admission/catalog.mjs",
-      "sha256": "d08a58f12fae145fc8f74e54a2ec1835db5bf5502cf405ee25270ab4c486744e"
+      "sha256": "82469ce611c51ce298a14d6e9b789475d2f2bec1d0530ca592926f920464bac5"
     },
     {
       "path": "scripts/admission/run.mjs",
@@ -14951,7 +15024,7 @@
     },
     {
       "path": "scripts/content-trim/catalog.mjs",
-      "sha256": "746f003fe228e08a03f36c08d3c76ef874de7f96dfd6e4b8933e5e627cb0ca88"
+      "sha256": "54e36fa304d3c69dbeb85082a6d6b25afeeb92801607e91ed13e1a0442f72a03"
     },
     {
       "path": "scripts/content-trim/run.mjs",
@@ -14967,7 +15040,7 @@
     },
     {
       "path": "scripts/content/catalog.mjs",
-      "sha256": "56c91e6a52a320f6359acf6417ed8a7d25c7e7f047ff261e13bf1f125462b081"
+      "sha256": "c442c205869759da6fe821ed5c1993e17f3b307e947f77c99381c9f7b9077816"
     },
     {
       "path": "scripts/content/run.mjs",
@@ -14999,7 +15072,7 @@
     },
     {
       "path": "scripts/custody/catalog.mjs",
-      "sha256": "fcfab3fedcc890455d107e60cca54b4a5c92bf240bda7bb17ff39b4555ec7a67"
+      "sha256": "5faa1cb34f18bdc840c0175c10cb0c35aa293b3a648edbc84baaf3fcc4539a23"
     },
     {
       "path": "scripts/custody/profiles.mjs",
@@ -15119,11 +15192,11 @@
     },
     {
       "path": "scripts/journal-contention/run.mjs",
-      "sha256": "996d4b5c051aa1c6fa5db7e4f159f8bccce9312de12cd086a84bfc3de3a3b40c"
+      "sha256": "84c1d62d528227255047ef7f59c9d323fa77d63905baa9c1243921339fb9d5f9"
     },
     {
       "path": "scripts/journal/catalog.mjs",
-      "sha256": "30efc9aa044c62daacf07de5033ef334840281c7d8d21bdcbc16ad94fc80b111"
+      "sha256": "0682d631b4c9b5e39cb21bf9cca5b26a99eb4ef1e9323277d32254296d0bfbe8"
     },
     {
       "path": "scripts/journal/run.mjs",
@@ -15355,7 +15428,7 @@
     },
     {
       "path": "scripts/pending-projection/run.mjs",
-      "sha256": "462ecc74ff4a02b57542a9a8613d6a5a688640bff4e1f4dd768bb6722846cd5b"
+      "sha256": "b9aa3a78942278dd579bc43fd0e198dd8406440a3bf8d9513164567c026ca025"
     },
     {
       "path": "scripts/performance/service-verified-tips.mjs",
@@ -15543,7 +15616,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "573d4bf8d3d173757a02b164e4b54aed597333a9c7e580576c20563bf3ecc498"
+      "sha256": "93fdb0ae83e67564e9527ba550b502cf35e24734fcc3aac0838283c1dee2c061"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -15799,7 +15872,7 @@
     },
     {
       "path": "scripts/yjs-delivery/run.mjs",
-      "sha256": "11f9f42bd82e32570c4156eacd9d8ad8e7607807fb6ae9cd8a57c14fe0d31534"
+      "sha256": "5d9c463f753e1b6025f18e6b64c61480974cf669957116eab58f27c0148f2198"
     },
     {
       "path": "test/account-activation/controls.test.mjs",
@@ -17714,6 +17787,10 @@
       "sha256": "2bdcc153a8ccbf620e953196637e3758ef3ea692a0461579e07c470b1995a66e"
     },
     {
+      "path": "test/firstDeviceSetupAccess.test.ts",
+      "sha256": "915df9d019fd822a36ad438be01b1e27ddf7f0876738e8f8ec9813ef182e032d"
+    },
+    {
       "path": "test/freeze.test.ts",
       "sha256": "70184c20d39e19b9c42233a2f86366e30bc53c3b4b88fb2cb31b6de43e128253"
     },
@@ -18290,8 +18367,20 @@
       "sha256": "cdc9ea7d3b3cc4a523dbc073682b91deec622d0917b65b32d9da9b8bb0d87032"
     },
     {
+      "path": "test/packaged-account/multi-tab-protection.spec.ts",
+      "sha256": "d5bebea8c2eb9e31f35cb560bfeb5dcdd53bcf2a15315b0338a555295f2c4a87"
+    },
+    {
       "path": "test/packaged-account/offline.spec.ts",
       "sha256": "6ab7dd81a835baddf0d0c4b1a086bc3061a74834ac591d5fa9e57ca065b4f4e5"
+    },
+    {
+      "path": "test/packaged-account/passkey-local-access.spec.ts",
+      "sha256": "ae49e0de7bbd61cd71ba808484b3ceb1e3a6c1da72feb2cd56defb5d85b336ef"
+    },
+    {
+      "path": "test/packaged-account/recovery-progress-isolation.spec.ts",
+      "sha256": "22ea3ac309b8abb17b3c540d5e2125ebd878cef623afd47a0dad876ebe3e602e"
     },
     {
       "path": "test/packaged-account/recovery.spec.ts",
@@ -18348,6 +18437,10 @@
     {
       "path": "test/packagedConfig.test.ts",
       "sha256": "ec42f5ccfc59f7a5414c6c51b6080c2bbc714b53f23b1feb959bc3d22d63bfe0"
+    },
+    {
+      "path": "test/passkeyResponse.test.ts",
+      "sha256": "774f9bf0cccfac4a502119e15d62941ea7d98722621acc862fd9f1dc55ac93f9"
     },
     {
       "path": "test/pending-projection/browser.mjs",
@@ -18454,6 +18547,10 @@
       "sha256": "507df2886b0ca8f4463167dad89ec4a74c4654fd10806cabdb8b9248ab4174ef"
     },
     {
+      "path": "test/recoveryProgressIsolation.test.ts",
+      "sha256": "1256ea9c3223a487773b5000c60c310541636e1158108634b0e91f88d3fe7ce9"
+    },
+    {
       "path": "test/relayAuth.test.ts",
       "sha256": "d01eac729f0ed5a9e298b4f315aaf8c7458e6831fcd23bc9f7e612f4ac745fe3"
     },
@@ -18507,11 +18604,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "b8305e4cb8ebcd9b8cc051d0bed4cf0c8c897c929e97f35e43ff874a53ebec1e"
+      "sha256": "f5023cffa4e821ab458b671b59a614054fe1094c2e69dc7d6a3a9b5926a5c09c"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "df658e523ce793c9e009ff921b27f7d8be278cfb59b469b65372527f9bc32926"
+      "sha256": "b24acbf9348b295d037ac26be96b70cb0701e0db20995430597b9c9090d9f1e2"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -18547,7 +18644,7 @@
     },
     {
       "path": "test/release-validation/playwright-native.test.mjs",
-      "sha256": "daa8326634bce206f330c13f677185ecdad18c221b59c1f264c5b89cb77ed5dd"
+      "sha256": "f24a8f5d56b87f8bff65135e4c63d687ad2362bfd880d916f70e6770fda9b6d3"
     },
     {
       "path": "test/release-validation/playwright.test.mjs",

@@ -1,0 +1,23 @@
+import fs from 'node:fs';import path from 'node:path';import {spawn,execFileSync} from 'node:child_process';
+const root='<test-checkout>';
+const output='<execution-evidence>';
+const manifest=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
+const chain=manifest.scripts.check.split(' && ');
+const failure=chain.indexOf('pnpm storage:custody');if(failure<0)throw Error('Missing failed boundary');
+const remainder=chain.slice(failure+1).map(command=>({kind:'remaining-check',command}));
+const already=new Set(chain.map(command=>command.replace(/^pnpm /,'')));
+const extras=Object.keys(manifest.scripts).filter(name=>name.startsWith('test:')&&!already.has(name)&&name!=='test:latency').map(name=>({kind:'additional-functional-test',command:'pnpm '+name}));
+const jobs=[...remainder,...extras,{kind:'ci-inventory',command:'pnpm validation:inventory'},{kind:'ci-plan',command:'node scripts/release-validation/plan.mjs'},{kind:'complete-runner-regressions',command:'node --test --test-concurrency=2 test/release-validation/*.test.mjs'}];
+const summary={schema:1,scope:'Remaining pnpm check commands after retained custody failure, all additional test:* functional scripts, normal CI inventory/plan, all execution-runner unit tests. Latency measurements and aggregate release qualification excluded.',revision:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),priorFailure:'storage:custody mutation anchor is not unique: trust-unverified-metadata',status:'running',jobs:[],planned:jobs,startedAt:new Date().toISOString()};
+const save=()=>fs.writeFileSync(path.join(output,'continuation-summary.json'),JSON.stringify(summary,null,2)+'\n');save();
+let active;
+for(const [index,job] of jobs.entries()){
+ const name=String(index+1).padStart(3,'0')+'-'+job.command.replace(/[^a-zA-Z0-9-]/g,'_');
+ const log=path.join(output,name+'.log');const fd=fs.openSync(log,'w');
+ const row={...job,log:path.basename(log),startedAt:new Date().toISOString(),status:'running'};summary.jobs.push(row);save();console.log('START '+(index+1)+'/'+jobs.length+' '+job.command);
+ const env={...process.env,PATH:'/private/tmp/done-pnpm11/bin:'+path.join(root,'node_modules/.bin')+':'+process.env.PATH,pnpm_config_verify_deps_before_run:'warn',NO_UPDATE_NOTIFIER:'1'};
+ active=spawn('/bin/sh',['-c',job.command],{cwd:root,env,stdio:['ignore',fd,fd],detached:true});
+ row.exitCode=await new Promise(resolve=>{active.once('error',error=>{row.error=String(error);resolve(null)});active.once('exit',(code,signal)=>{row.signal=signal;resolve(code)});});
+ fs.closeSync(fd);row.completedAt=new Date().toISOString();row.status=row.exitCode===0?'passed':'failed';save();console.log('END '+row.status+' '+job.command+' (exit '+row.exitCode+')');
+}
+summary.status='completed-with-retained-failures';summary.completedAt=new Date().toISOString();summary.passed=summary.jobs.filter(job=>job.status==='passed').length;summary.failed=summary.jobs.filter(job=>job.status==='failed').length;save();console.log(JSON.stringify({status:summary.status,passed:summary.passed,failed:summary.failed,priorFailure:summary.priorFailure}));

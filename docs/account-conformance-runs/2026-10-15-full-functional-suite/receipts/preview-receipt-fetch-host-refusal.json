@@ -1,0 +1,11 @@
+{
+  "revision": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+  "url": "https://mbp.tail0e0d4.ts.net:8443",
+  "checkedAt": "2026-10-15T09:43:43.455Z",
+  "asset": "assets/AccountSetupApp-BQqbzmO4.js",
+  "status": 403,
+  "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "savedBuildSha256": "3a1ae16248a35ef86ba62b684262e32a72a1a9c162f41b2e8459be04924a8e2c",
+  "matches": false,
+  "clientAdoption": "requires app update action; not inferred from gateway response"
+}

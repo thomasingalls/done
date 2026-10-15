@@ -1,0 +1,29 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { spawn } from 'node:child_process';
+const evidence = '<execution-evidence>';
+const stateFile = path.join(evidence, 'pending-followups.json');
+const read = () => JSON.parse(fs.readFileSync(stateFile));
+let state = read();
+console.log('Waiting for the original run and first isolated follow-up group.');
+while (state.afterContinuation.slice(0, 4).some(row => ['pending', 'running'].includes(row.status))) {
+  await new Promise(resolve => setTimeout(resolve, 5000)); state = read();
+}
+const results = [];
+const saveResults = () => fs.writeFileSync(path.join(evidence, 'standalone-followup-results.json'), JSON.stringify(results, null, 2) + '\n');
+for (const row of state.afterContinuation.slice(4)) {
+  if (row.status !== 'pending') continue;
+  const log = 'followup-' + row.id + '.log';
+  const fd = fs.openSync(path.join(evidence, log), 'wx');
+  row.status = 'running'; row.log = log; row.startedAt = new Date().toISOString();
+  fs.writeFileSync(stateFile, JSON.stringify(state, null, 2) + '\n');
+  const result = { id: row.id, command: row.command, checkout: row.checkout, log, startedAt: row.startedAt };
+  results.push(result); saveResults(); console.log('START ' + row.command);
+  const child = spawn('/bin/sh', ['-c', row.command], { cwd: row.checkout, env: { ...process.env, PATH: '/private/tmp/done-pnpm11/bin:' + path.join(row.checkout, 'node_modules/.bin') + ':' + process.env.PATH, pnpm_config_verify_deps_before_run: 'warn', NO_UPDATE_NOTIFIER: '1' }, stdio: ['ignore', fd, fd], detached: true });
+  result.pid = child.pid; saveResults();
+  result.exitCode = await new Promise(resolve => { child.once('error', error => { result.error = String(error); resolve(null); }); child.once('exit', (code, signal) => { result.signal = signal; resolve(code); }); });
+  fs.closeSync(fd); result.status = result.exitCode === 0 ? 'passed' : 'failed'; result.completedAt = new Date().toISOString(); saveResults();
+  row.status = result.status; row.exitCode = result.exitCode; row.completedAt = result.completedAt;
+  fs.writeFileSync(stateFile, JSON.stringify(state, null, 2) + '\n'); console.log('END ' + result.status + ' ' + row.id);
+}
+console.log('Standalone follow-ups completed; original failures retained.');

@@ -174,3 +174,18 @@ Removal/migration and unissued-code routing remain separate reported defects.
 The paused release compiler will also need explicit admission of the two new unit files and one new
 browser file, with any old census-fixture edits presented for approval. No tests are excluded to hide
 that maintenance. General release qualification, merges and publication remain paused.
+
+## Subsequent signed preview checkpoint
+
+The operator approved signing, and the repair is now committed as
+`5afdd0ad3d478e19c86f28e4db042a2d77d70c13` with a verified SSH signature. After the real-provider
+walkthrough above, the existing 8443 frontend was restarted against an immutable build from that
+commit. Its backend and Tailscale route were retained. The served module is
+`assets/AccountSetupApp-BQqbzmO4.js`; the app's update action is needed to establish adoption on an
+already cached client. The earlier statement about an untouched preview describes the walkthrough
+boundary, before this requested update.
+
+The [full functional run](../2026-10-15-full-functional-suite/README.md) is active and has retained
+failures beyond the focused repair checks. It does not close the original reported failure or
+provide release qualification. Existing test changes remain subject to the operator's explicit
+approval.
