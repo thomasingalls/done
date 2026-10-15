@@ -155,8 +155,8 @@ test('every specified metadata input binds or refuses; encoded omission witnesse
 test('closed structured-clone parsers reject malformed counters without inferring missing allocation state', () => {
   let refusals = 0;
   for (const f of fixtures()) {
-    const check = (v) => {
-      assert.throws(() => parsed(f, scope, v), { code: 'repair-required' });
+    const check = (v, code = 'repair-required') => {
+      assert.throws(() => parsed(f, scope, v), { code });
       refusals++;
     };
     for (const field of Object.keys(f.value)) {
@@ -165,7 +165,7 @@ test('closed structured-clone parsers reject malformed counters without inferrin
       check(v);
     }
     check({ ...f.value, extra: true });
-    check({ ...f.value, v: 3 });
+    check({ ...f.value, v: 3 }, f.family === 'counter' ? 'app-update-required' : 'repair-required');
     check({ ...f.value, mac: '00'.repeat(31) });
   }
   const base = initial(2);

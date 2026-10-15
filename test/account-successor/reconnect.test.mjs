@@ -142,6 +142,7 @@ test(
     await cold(f);
     await syncing(f.page, item);
     await settled(f.page);
+    await waitPredicate(f.page, () => opened.sync.status.receive.phase === 'idle');
     await close(f.page);
     assert((await marker(f.page, item)).successor);
   },

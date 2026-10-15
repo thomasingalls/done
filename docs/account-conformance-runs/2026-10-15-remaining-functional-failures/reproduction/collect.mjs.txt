@@ -1,0 +1,105 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { gzipSync } from 'node:zlib';
+
+const root = '<workspace>';
+const input = '/private/tmp/done-remaining-suite-6eeb7d5f';
+const previous = '/private/tmp/done-suite-triage-20261015';
+const target = path.join(root, 'docs/account-conformance-runs/2026-10-15-remaining-functional-failures');
+const source = '6eeb7d5f300bca252f32823e9be2be1b0546f25d';
+const sha = b => crypto.createHash('sha256').update(b).digest('hex');
+const git = (...args) => execFileSync('git', args, { cwd: root });
+assert.equal(git('rev-parse', 'HEAD').toString().trim(), source);
+execFileSync('git', ['verify-commit', source], { cwd: root, stdio: 'pipe' });
+const proposal = JSON.parse(fs.readFileSync(path.join(input, 'proposed-narrow-fixtures.json')));
+const approvedFiles = proposal.files.map(f => f.path);
+assert.deepEqual(git('diff', '--name-only', source, '--', 'test').toString().trim().split('\n').sort(), approvedFiles.toSorted());
+for (const file of proposal.files) {
+  assert.equal(sha(git('show', source + ':' + file.path)), file.originalSha256, file.path);
+  assert.equal(sha(fs.readFileSync(path.join(root, file.path))), file.proposedSha256, file.path);
+}
+assert.equal(git('diff', source, '--', 'src', 'account-protocol', 'account-service', 'vite', 'vite.config.ts').length, 0);
+const functional = fs.readFileSync(path.join(input, 'narrow-fixtures-after.log'), 'utf8');
+assert.match(functional, /ℹ tests 41\b/);
+assert.match(functional, /ℹ pass 41\b/);
+assert.match(functional, /ℹ fail 0\b/);
+assert.match(functional, /ℹ skipped 0\b/);
+const planned = fs.readFileSync(path.join(input, 'planning-regressions.log'), 'utf8');
+assert.match(planned, /ℹ pass 21\b/);
+assert.match(planned, /ℹ fail 0\b/);
+
+const artifacts = [];
+const normalize = b => b.toString().replaceAll(root, '<workspace>').replaceAll(process.env.HOME, '<home>').replace(/\b[A-Z0-9]{5}(?:-[A-Z0-9]{5}){4}\b/g, '<disposable-factor-redacted>');
+function retain(file, name, compressed = false) {
+  const original = fs.readFileSync(file);
+  const clean = Buffer.from(normalize(original));
+  const bytes = compressed ? gzipSync(clean, { level: 9 }) : clean;
+  const dest = path.join(target, name);
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, bytes);
+  artifacts.push({ path: name, originalSha256: sha(original), normalizedSha256: sha(clean), sha256: sha(bytes), bytes: bytes.length });
+}
+function json(name, value) {
+  const file = path.join(input, name.replaceAll('/', '-'));
+  fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n');
+  retain(file, name);
+}
+const ledger = JSON.parse(fs.readFileSync(path.join(previous, 'triage.json')));
+const closed = new Set(['D1', 'D2', 'C1', 'F2', 'F4', 'F5', 'U2']);
+const observations = {
+  D1: 'Repaired in signed 6eeb7d5f; legacy-host and retained-history refusal regressions retained in the receiver packet.',
+  D2: 'Repaired in signed 6eeb7d5f; complete persisted-census regressions retained in the receiver packet.',
+  D3: 'Fresh-cache current-source diagnostic reproduces missing named c export and no shell. A separate fresh-cache needsInterop override also fails. Diagnostic exit zero records errors; it is not an app pass. Initial diagnostic import-loader failure preserved separately.',
+  F2: 'Exact approved detached:false expectations applied. Full handoff native file, including all 24 generated histories and invalid-passkey control, passes within the 41-case run.',
+  F3: 'Approved host schema/title 23 to 26 update passes the complete host file, retaining key/pin/pending/recovery/backup checks. Browser schema-five upgrade/entry expectations remain unchanged and open.',
+  F4: 'Approved counter-v3-only update-required expectation applied; witness-v3 and all other malformed-field expectations stay repair-required. Full formats file passes.',
+  F5: 'Approved exact unknown/recorded:false result applied. Full receive-transport file passes, preserving single-flight, zero progress and writing assertions.',
+  U1: 'Unchanged structural test still fails on 6eeb7d5f: current parser accepts successor at v6-v9, deliberately expanded by 684f4f06 for checkpoint bootstrap. Independent current-browser diagnostics reject unsigned field stripping and v8 stage substitution on authenticated reopen. The earlier v9-only contract prose and old structural assertion remain unresolved; no old assertion changed.',
+  U2: 'Unchanged case fails on 6eeb7d5f. Corrected observer proves old settled returns with receive working before the automatic successor transaction completes. Prior diagnostic itself waited for the marker lock while owner was active. Approved receive-idle wait preserves the automatic-discovery assertion; all eight reconnect cases pass, including expiry omission detection.',
+  C1: 'Earlier approved repairs remain closed at their stated scope; receiver approval follow-up now retains all 289 runner cases passing, with native access and concurrency two.',
+};
+json('triage.json', {
+  schema: 1,
+  source,
+  scope: 'Signed receiver repair followed by diagnosis and explicitly approved five-file fixture updates. No additional runtime changes or aggregate qualification.',
+  issues: ledger.issues.map(row => ({
+    ...row,
+    status: closed.has(row.id) ? 'closed-at-described-scope' : row.id === 'F3' ? 'partially-cleared' : 'open',
+    currentObservation: observations[row.id] ?? 'Carried forward from retained earlier triage; relevant source/contract reviewed, not rerun as a whole against 6eeb7d5f. Later blocked behavior remains unverified.',
+  })).concat([{
+    id: 'R1', status: 'open', classification: 'parallel-load-sensitive-unit-deadline',
+    boundary: 'Default-worker full unit run',
+    evidence: 'Receiver approval packet retains default runs with three then one five-second timeouts; the complete 151-file population passes with two workers, 1779 passes and one existing named skip. No deadline or test changed.',
+    next: 'Establish a reproducible worker/resource policy and verify on pinned CI Node 24 before treating the default gate as green; preserve original failed runs.',
+  }]),
+  aggregateQualification: 'paused',
+  fullFunctionalBaseline: 'red; original 85-command baseline is retained, not rerun or superseded as a whole',
+});
+json('results.json', {
+  signedCommit: source,
+  signatureVerified: true,
+  approvedFixtureFiles: approvedFiles,
+  oldTestBoundary: 'Only these five old files differ from signed 6eeb7d5f, and each matches its approved proposed hash exactly.',
+  before: 'Two unchanged successor cases fail; five selected unchanged narrow fixture cases fail. Original logs retained.',
+  observations: 'Three independent successor diagnostics pass; automatic commit observed after old settlement, and both storage-attacker mutations refused by authentication.',
+  approvedFullFiles: '41 tests passed, zero failed/skipped across all five affected files; includes 24 generated handoff histories and the expiry omission control.',
+  planningRegressions: '21 passed, zero failed/skipped',
+  development: 'Both fresh-cache app probes fail on missing compiler-runtime c export; explicit needsInterop alone does not repair it. No app pass credited to diagnostic process exit zero.',
+  sourceBoundary: 'No src/account-protocol/account-service/vite source or root Vite config change after signed commit.',
+  planning: { obligations: 846, unresolved: 305, aggregate: 'blocked and paused' },
+  limitations: ['Local Node 26.11.1; no CI Node 24 result.', 'No new Firefox/Bitwarden walkthrough.', 'No complete rerun of the 85-command functional baseline.', 'Five approved fixture changes and follow-up records remain uncommitted.', 'No push, preview refresh, merge or deployment.'],
+});
+json('old-test-boundary.json', { source, approval: 'Operator explicitly approved the saved five-file patch.', patchSha256: sha(fs.readFileSync(path.join(input, 'proposed-narrow-fixtures.patch'))), noOtherOldTestChanges: true, files: proposal.files });
+const references = new Set(approvedFiles.concat(['vite.config.ts', 'vite/privateMigration.config.ts', 'src/crdt/contentRecord.ts', 'src/crdt/promotionRecord.ts', 'src/crdt/accountReceive.ts', 'docs/release-validation-graph.json', 'docs/release-validation-manifest.json']));
+for (const row of ledger.issues) for (const ref of row.refs ?? []) if (fs.statSync(path.join(root, ref.path)).isFile()) references.add(ref.path);
+json('source-pins.json', { source, node: process.version, files: [...references].sort().map(file => ({ path: file, sha256: sha(fs.readFileSync(path.join(root, file))) })) });
+for (const name of ['successor-unchanged.log', 'successor-observation.log', 'narrow-fixtures-before.log', 'narrow-fixtures-after.log', 'dev-runtime-initial-loader-failure.log', 'dev-runtime-observation.log', 'inventory-record.log', 'plan-record.log', 'planning-regressions.log', 'inventory-check.log', 'plan-check.log']) retain(path.join(input, name), 'logs/' + name + '.gz', true);
+for (const name of ['successor-observation.json', 'dev-runtime-observation.json']) retain(path.join(input, name), 'observations/' + name);
+for (const name of ['successor-observation.mjs', 'dev-runtime-observation.mjs', 'dev-runtime-initial-loader.mjs.txt', 'proposed-narrow-fixtures.patch', 'applied-narrow-fixtures.patch', 'collect.mjs']) retain(path.join(input, name), 'reproduction/' + name + (name.endsWith('.mjs') ? '.txt' : ''));
+retain(path.join(previous, 'triage.json'), 'previous/triage.json');
+for (const item of ledger.artifacts) retain(path.join(previous, item.path), 'previous/' + item.path + '.gz', true);
+fs.writeFileSync(path.join(target, 'artifact-index.json'), JSON.stringify({ schema: 1, source, collectedAt: new Date().toISOString(), retention: 'Logs normalized and disposable-factor patterns redacted; original hashes retained. No profiles, databases or real vault data copied.', artifacts }, null, 2) + '\n');
+console.log(JSON.stringify({ signedCommit: source, approvedOldFiles: approvedFiles.length, artifacts: artifacts.length, triageGroups: ledger.issues.length + 1 }));

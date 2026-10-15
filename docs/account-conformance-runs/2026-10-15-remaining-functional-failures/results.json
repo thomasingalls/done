@@ -1,0 +1,30 @@
+{
+  "signedCommit": "6eeb7d5f300bca252f32823e9be2be1b0546f25d",
+  "signatureVerified": true,
+  "approvedFixtureFiles": [
+    "test/account-handoff/native.test.mjs",
+    "test/account-sessions/host.test.mjs",
+    "test/account-counter-contract/formats.test.mjs",
+    "test/account-receive-transport/native.test.mjs",
+    "test/account-successor/reconnect.test.mjs"
+  ],
+  "oldTestBoundary": "Only these five old files differ from signed 6eeb7d5f, and each matches its approved proposed hash exactly.",
+  "before": "Two unchanged successor cases fail; five selected unchanged narrow fixture cases fail. Original logs retained.",
+  "observations": "Three independent successor diagnostics pass; automatic commit observed after old settlement, and both storage-attacker mutations refused by authentication.",
+  "approvedFullFiles": "41 tests passed, zero failed/skipped across all five affected files; includes 24 generated handoff histories and the expiry omission control.",
+  "planningRegressions": "21 passed, zero failed/skipped",
+  "development": "Both fresh-cache app probes fail on missing compiler-runtime c export; explicit needsInterop alone does not repair it. No app pass credited to diagnostic process exit zero.",
+  "sourceBoundary": "No src/account-protocol/account-service/vite source or root Vite config change after signed commit.",
+  "planning": {
+    "obligations": 846,
+    "unresolved": 305,
+    "aggregate": "blocked and paused"
+  },
+  "limitations": [
+    "Local Node 26.11.1; no CI Node 24 result.",
+    "No new Firefox/Bitwarden walkthrough.",
+    "No complete rerun of the 85-command functional baseline.",
+    "Five approved fixture changes and follow-up records remain uncommitted.",
+    "No push, preview refresh, merge or deployment."
+  ]
+}

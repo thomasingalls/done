@@ -16193,7 +16193,7 @@
     },
     {
       "path": "test/account-counter-contract/formats.test.mjs",
-      "sha256": "e44862ea3aae2779a367bd4111a607ea2b1c2c7cd7889fce5214ff4c02df19b6"
+      "sha256": "3992bd4622fe08c8061883eac9e1a14613335cbdc4e0b23a8f7552a496c890a1"
     },
     {
       "path": "test/account-counter-contract/native-browser.ts",
@@ -16453,7 +16453,7 @@
     },
     {
       "path": "test/account-handoff/native.test.mjs",
-      "sha256": "db1dda386f5616957a76da4a57e9e1ad2cf9c080fe59544d745dcf32f5cdef6e"
+      "sha256": "d7789d7c4c2ae43255846ed52a8ec50bf839a335f28961bb9d43cb9b9b796bb0"
     },
     {
       "path": "test/account-history/checkpoint.test.mjs",
@@ -16949,7 +16949,7 @@
     },
     {
       "path": "test/account-receive-transport/native.test.mjs",
-      "sha256": "e1ac28db4142d8ababb3b8e76cdce58bf167b6bd075ff2c60e4dc5aa7e00c706"
+      "sha256": "6527d607c249c330a7d2ac68f04472c008dd741fb51a0edcf97ea7f517da409a"
     },
     {
       "path": "test/account-receive/browser.ts",
@@ -17329,7 +17329,7 @@
     },
     {
       "path": "test/account-sessions/host.test.mjs",
-      "sha256": "bb7b905eeb3d02b14f68c9fa108d2e89e34a598a680e2519918f91935339ee09"
+      "sha256": "091a4d3261368f398fa5ee21b783b2265e471e736908eb06e66cbbe8786c6b7d"
     },
     {
       "path": "test/account-sessions/http.test.mjs",
@@ -17481,7 +17481,7 @@
     },
     {
       "path": "test/account-successor/reconnect.test.mjs",
-      "sha256": "85cfe0d3ce99a7090b9c15b6af398ed108812dcdaa51657572c7cb6334634abb"
+      "sha256": "5d126b935fc71ab9bae6ff3bc191ca6140ef0c2b90b38283a5f88537b6537512"
     },
     {
       "path": "test/account-successor/restart.test.mjs",

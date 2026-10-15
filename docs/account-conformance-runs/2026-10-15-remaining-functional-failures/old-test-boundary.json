@@ -1,0 +1,33 @@
+{
+  "source": "6eeb7d5f300bca252f32823e9be2be1b0546f25d",
+  "approval": "Operator explicitly approved the saved five-file patch.",
+  "patchSha256": "b848b3941e92f63736cfe0e1e1d3800a339f563b4fb6fe966e22f09a7fef870d",
+  "noOtherOldTestChanges": true,
+  "files": [
+    {
+      "path": "test/account-handoff/native.test.mjs",
+      "originalSha256": "db1dda386f5616957a76da4a57e9e1ad2cf9c080fe59544d745dcf32f5cdef6e",
+      "proposedSha256": "d7789d7c4c2ae43255846ed52a8ec50bf839a335f28961bb9d43cb9b9b796bb0"
+    },
+    {
+      "path": "test/account-sessions/host.test.mjs",
+      "originalSha256": "bb7b905eeb3d02b14f68c9fa108d2e89e34a598a680e2519918f91935339ee09",
+      "proposedSha256": "091a4d3261368f398fa5ee21b783b2265e471e736908eb06e66cbbe8786c6b7d"
+    },
+    {
+      "path": "test/account-counter-contract/formats.test.mjs",
+      "originalSha256": "e44862ea3aae2779a367bd4111a607ea2b1c2c7cd7889fce5214ff4c02df19b6",
+      "proposedSha256": "3992bd4622fe08c8061883eac9e1a14613335cbdc4e0b23a8f7552a496c890a1"
+    },
+    {
+      "path": "test/account-receive-transport/native.test.mjs",
+      "originalSha256": "e1ac28db4142d8ababb3b8e76cdce58bf167b6bd075ff2c60e4dc5aa7e00c706",
+      "proposedSha256": "6527d607c249c330a7d2ac68f04472c008dd741fb51a0edcf97ea7f517da409a"
+    },
+    {
+      "path": "test/account-successor/reconnect.test.mjs",
+      "originalSha256": "85cfe0d3ce99a7090b9c15b6af398ed108812dcdaa51657572c7cb6334634abb",
+      "proposedSha256": "5d126b935fc71ab9bae6ff3bc191ca6140ef0c2b90b38283a5f88537b6537512"
+    }
+  ]
+}

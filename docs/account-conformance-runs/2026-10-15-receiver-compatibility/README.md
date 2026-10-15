@@ -1,6 +1,6 @@
 # Receiver capability and blocked-open metadata repair
 
-**Bounded repairs and approved fixtures verified, 2026-10-15.** Base: signed
+**Bounded repairs committed as signed `6eeb7d5f`, 2026-10-15.** Verification base: signed
 `faadbff5d41eab72434af4193f774d50f1ac577c`. The operator authorized receiver compatibility first,
 then the blocked-upgrade metadata write, with new regressions and no changes to old tests without
 approval. Merge, deployment and aggregate qualification remain paused. The local 8443 preview stays
@@ -103,10 +103,14 @@ the reproduction patch, both saved candidate inventories and the failed attempts
 The additive [approval index](approval/artifact-index.json) retains 17 further artifacts, including
 the failed attempts, passing reruns, exact patch and boundary/source proofs. All 53 original artifacts
 are preserved and their hashes reverified.
-The repaired source is uncommitted. Source inventory keeps 393 files and all 195 crypto domains;
+The repaired source was uncommitted at that verification checkpoint. Source inventory keeps 393 files and all 195 crypto domains;
 only the two runtime hashes change. Planning retains 846 obligations and 305 unresolved obligations.
 The broader full-suite baseline remains red and aggregate qualification remains paused.
 
-Preview `fcb659c3`, its backend and user data remain untouched. No commit, push, merge or deployment
-occurred. The outcome was appended to `docs/completed.md` before advancing this active state. The
-other seat's `docs/progress.md` remains untouched.
+Preview `fcb659c3`, its backend and user data remain untouched. At that checkpoint no commit, push,
+merge or deployment occurred. The operator subsequently requested the commit; signed
+`6eeb7d5f300bca252f32823e9be2be1b0546f25d` contains the verified source and its SSH signature verifies.
+No new signed build, preview refresh or cached-client adoption is claimed. The following
+[remaining-failure packet](../2026-10-15-remaining-functional-failures/README.md) records the commit and
+the separately approved fixture follow-up. Outcomes were appended to `docs/completed.md` before
+advancing active state. The other seat's `docs/progress.md` remains untouched.

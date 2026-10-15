@@ -261,7 +261,7 @@ test(
     const accepted = await handoff(f.page, item),
       classified = await classify(f.page, item);
     assert.equal(accepted.kind, 'account-selected');
-    assert.deepEqual(classified, { ...accepted, kind: 'account' });
+    assert.deepEqual(classified, { ...accepted, kind: 'account', detached: false });
     if (process.env.ACCOUNT_REPORT_DIR) {
       const { writeFileSync } = await import('node:fs'),
         { join } = await import('node:path');
@@ -436,7 +436,7 @@ test(
               };
             });
             const classified = await classify(f.page, { ...item, recoveryCode: undefined });
-            assert.deepEqual(classified, { ...result, kind: 'account' });
+            assert.deepEqual(classified, { ...result, kind: 'account', detached: false });
             assert.equal(await inventory(f.page), after);
           }
           histories.push({ ...history, status: 'passed' });

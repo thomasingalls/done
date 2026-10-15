@@ -14759,3 +14759,48 @@ The broader functional-suite baseline remains unresolved. Planning retains 846 o
 Preview `fcb659c3`, user data and the other seat's `docs/progress.md` remain untouched. No commit,
 push, preview refresh, merge or deployment occurred. This outcome was appended before updating
 the bounded packet's active approval state.
+
+### Sign receiver/bootstrap repairs and narrow the remaining functional failures
+
+**Date:** 2026-10-15 · **Repair commit:** signed `6eeb7d5f300bca252f32823e9be2be1b0546f25d`.
+
+The requested commit contains both runtime repairs, their new unit/browser regressions, the four
+previously approved fixtures and the retained failed/passing evidence. Its SSH signature verifies.
+The working tree was clean immediately afterward. No push, preview refresh, merge or deployment
+was requested or performed. The signed source matches the earlier tested source pins; no new
+signed build or cached-client adoption is claimed.
+
+The subsequent triage reruns both unchanged successor failures and five selected fixture failures
+against this commit. A corrected independent observer establishes that the old settlement helper
+returns while the receive lane is still working, before automatic successor installation commits.
+Waiting for that completed native transaction preserves the authenticated successor on close.
+The earlier diagnostic had attempted a marker read while its own active owner held the necessary
+permit; its timeout is retained, not credited as a runtime failure. Separate current-browser storage
+attacker checks reject both successor-field removal and unsigned v8 stage substitution. The current
+parser deliberately accepts the structural child at v6–v9 after `684f4f06`, while the earlier prose
+and original structural assertion describe v9 only. That contract/fixture alignment stays open;
+the old security assertion remains unchanged.
+
+The operator then approved an exact five-file fixture patch: connected route shape, host schema
+26, counter-v3 compatibility refusal, superseded unrecorded-unknown result and completed automatic
+receiving before cold-discovery assertion. Only those five old files differ from the signed repair,
+and each matches its approved proposed hash. Their full files pass **41 cases with zero skips**,
+including all 24 generated handoff histories and the effective discovery-expiry omission control.
+Affected planning/selection regressions pass all **21 cases**. Inventory/manifest rechecks retain
+846 obligations and 305 unresolved obligations; aggregate qualification remains paused.
+
+A fresh development cache still fails to mount the app because the optimized compiler runtime
+does not expose the requested named `c` export. A separate fresh-cache explicit-interop override
+also fails; neither diagnostic process's zero exit is credited as an app pass. Its initial test-loader
+error is retained separately. No application, service, protocol or Vite configuration source changes
+were made in this triage. The remaining entry/model fixtures, historical/source closures, mutation
+controls, successor contract discrepancy, default-worker timeouts and deferred formatting remain
+separate open groups; earlier failures are not erased or generalized into passes.
+
+The [follow-up packet](account-conformance-runs/2026-10-15-remaining-functional-failures/README.md)
+retains 36 hashed artifacts, source identities, the exact approval boundary, updated issue ledger,
+original diagnostics and new counterexamples. These five fixture edits and follow-up records are
+uncommitted. The original 85-command red baseline was not rerun as a whole. Local Node is 26.11.1;
+no CI Node 24 or new Firefox/Bitwarden claim is made. Preview, protected user data and the other
+seat's `docs/progress.md` stay untouched. This outcome was appended before updating active packet
+status; no aggregate qualification, push, merge or deployment occurred.
