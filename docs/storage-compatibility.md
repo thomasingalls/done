@@ -26,6 +26,16 @@ carrier parsers still refuse unsupported records; not every such refusal has the
 
 ## Acquisition and refusal
 
+**2026-10-15 bootstrap repair:** startup discovery retains its Local-only, service-pin and protocol
+hints only under a short shared Local slot permit, acquired after its network response. This repeats
+the compatibility check after any queued upgrade and prevents background discovery from changing
+the persisted census of a refused Local installation. A native probe failure does not grant writes.
+If the ordinary Local interlock refuses, discovery omits those cache writes; public configuration
+can still locate a promoted Account whose own factor/passkey owner understands its authenticated
+interlock. Returning a locator grants no opening or storage authority. Its live protocol hint may
+refresh without waiting for a mounted Account's exclusive permit; optional persistence still needs
+the metadata permit and a retained-pin recheck. No network wait holds that metadata permit.
+
 `writeSession.ts` calls `checkStorageCompatibility` after a shared or exclusive grant and before caller
 initialization. It probes only `done.custody`, never enumerates database names, and never creates or
 upgrades a database. On a fresh profile the provisional creation transaction is aborted. Existing custody

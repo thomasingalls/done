@@ -67,7 +67,7 @@ jobs:
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Run onboarding, passkey and device-removal browser regressions
+      - name: Run onboarding, account compatibility and device-removal browser regressions
         run: >-
           pnpm exec playwright test --config playwright.packaged-account.config.ts
           test/packaged-account/removal-regressions.spec.ts
@@ -75,6 +75,8 @@ jobs:
           test/packaged-account/passkey-local-access.spec.ts
           test/packaged-account/multi-tab-protection.spec.ts
           test/packaged-account/recovery-progress-isolation.spec.ts
+          test/packaged-account/receiver-compatibility.spec.ts
+          test/packaged-account/bootstrap-compatibility.spec.ts
 
       - name: Check security evidence traceability
         run: pnpm trace:check

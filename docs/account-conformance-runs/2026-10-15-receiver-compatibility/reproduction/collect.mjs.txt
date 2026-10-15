@@ -1,0 +1,95 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { gzipSync } from 'node:zlib';
+import { execFileSync } from 'node:child_process';
+
+const root = '<workspace>';
+const target = path.join(root, 'docs/account-conformance-runs/2026-10-15-receiver-compatibility');
+const baseline = 'faadbff5d41eab72434af4193f774d50f1ac577c';
+const sha = b => crypto.createHash('sha256').update(b).digest('hex');
+const normalize = text => text.replaceAll(root, '<workspace>').replaceAll(process.env.HOME, '<home>');
+const redact = text => text.replace(/\b[A-Z0-9]{5}(?:-[A-Z0-9]{5}){4}\b/g, '<disposable-factor-redacted>');
+const artifacts = [];
+function retain(source, name, compressed = true, factors = true) {
+  const original = fs.readFileSync(source);
+  const clean = Buffer.from(factors ? redact(normalize(original.toString())) : normalize(original.toString()));
+  const bytes = compressed ? gzipSync(clean, { level: 9 }) : clean;
+  const file = path.join(target, name);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, bytes);
+  artifacts.push({ path: name, source: path.basename(source), originalSha256: sha(original), normalizedSha256: sha(clean), retainedSha256: sha(bytes), retainedBytes: bytes.length });
+}
+const logs = [
+  'done-receiver-before.json', 'done-receiver-before.stderr.log',
+  'done-receiver-build.log', 'done-receiver-after.json', 'done-receiver-after.stderr.log',
+  'done-receiver-after-2.json', 'done-receiver-after-2.stderr.log',
+  'done-bootstrap-unit-before.log', 'done-bootstrap-browser-before.json', 'done-bootstrap-browser-before.stderr.log',
+  'done-bootstrap-unit-after.log', 'done-receiver-bootstrap-build.log',
+  'done-bootstrap-new-unit-after.log', 'done-bootstrap-history-after.json', 'done-bootstrap-history-after.stderr.log',
+  'done-receiver-hint-omission-build.log', 'done-receiver-hint-omission-build-2.log',
+  'done-bootstrap-new-unit-after-2.log', 'done-receiver-bootstrap-build-2.log',
+  'done-receiver-bootstrap-all-unit.log', 'done-receiver-bootstrap-history-native.log',
+  'done-receiver-bootstrap-final-build.log', 'done-bootstrap-original-compatibility.json', 'done-bootstrap-original-compatibility.stderr.log',
+  'done-receiver-bootstrap-regressions.json', 'done-receiver-bootstrap-regressions.stderr.log',
+  'done-receiver-hint-omission-build-3.log', 'done-receiver-hint-omission-browser.json', 'done-receiver-hint-omission-browser.stderr.log',
+  'done-bootstrap-new-unit-final.log', 'done-receiver-bootstrap-final-browser.json', 'done-receiver-bootstrap-final-browser.stderr.log',
+  'done-receiver-bootstrap-plan.log', 'done-receiver-bootstrap-inventory.log',
+  'done-bootstrap-live-capability-before.log', 'done-bootstrap-final-unit-after.log',
+  'done-receiver-bootstrap-final-build-2.log', 'done-receiver-bootstrap-final-browser-2.json', 'done-receiver-bootstrap-final-browser-2.stderr.log',
+  'done-bootstrap-final-browser-3.json', 'done-bootstrap-final-browser-3.stderr.log',
+  'done-receiver-bootstrap-final-lint.log', 'done-receiver-bootstrap-final-inventory-2.log',
+  'done-receiver-bootstrap-final-plan-2.log', 'done-receiver-bootstrap-crypto-recheck.log',
+];
+for (const name of logs) retain('/private/tmp/' + name, 'logs/' + name + '.gz');
+retain('/private/tmp/done-receiver-bootstrap-fixtures.patch', 'reproduction/pending-old-fixtures.patch', false, false);
+retain('/private/tmp/done-collect-receiver-bootstrap.mjs', 'reproduction/collect.mjs.txt', false, false);
+retain('/private/tmp/done-receiver-bootstrap-final-build-pins.json', 'builds/first-candidate.json', false, false);
+retain('/private/tmp/done-receiver-bootstrap-final-build-v2-pins.json', 'builds/final-candidate.json', false, false);
+
+function json(name, value) {
+  const file = '/private/tmp/done-receiver-retain-' + name.replaceAll('/', '-');
+  fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n');
+  retain(file, name, false, false);
+}
+const touched = ['src/account/packagedConfig.ts', 'src/crdt/accountReceive.ts'];
+let patch = execFileSync('git', ['diff', baseline, '--', ...touched], { cwd: root, encoding: 'utf8' });
+const added = ['test/configDiscoveryCompatibility.test.ts', 'test/helpers/discoveryEnvironment.ts', 'test/packaged-account/bootstrap-compatibility.spec.ts', 'test/packaged-account/receiver-compatibility.spec.ts'];
+for (const file of added) {
+  try { patch += execFileSync('git', ['diff', '--no-index', '--', '/dev/null', file], { cwd: root, encoding: 'utf8' }); }
+  catch (e) { if (e.status !== 1) throw e; patch += e.stdout; }
+}
+fs.writeFileSync('/private/tmp/done-receiver-runtime-and-regressions.patch', patch);
+retain('/private/tmp/done-receiver-runtime-and-regressions.patch', 'reproduction/runtime-and-regressions.patch', false, false);
+const old = ['test/packagedConfig.test.ts', 'test/privateAccess.test.ts', 'test/release-validation/general-tests.test.mjs', 'test/release-validation/generated-tests.test.mjs'];
+const boundary = old.map(file => {
+  const original = execFileSync('git', ['show', baseline + ':' + file], { cwd: root });
+  const current = fs.readFileSync(path.join(root, file));
+  if (!original.equals(current)) throw Error('Unapproved old test change: ' + file);
+  return { path: file, baselineSha256: sha(original), currentSha256: sha(current), unchanged: true };
+});
+json('receipts/old-test-boundary.json', { baseline, approval: 'pending', patch: 'reproduction/pending-old-fixtures.patch', files: boundary });
+const sourceFiles = execFileSync('rg', ['--files', 'src', 'account-protocol', 'account-service'], { cwd: root, encoding: 'utf8' }).trim().split('\n');
+sourceFiles.push(...added, 'package.json', 'pnpm-lock.yaml', 'vite.config.ts', '.github/workflows/ci.yml', 'scripts/release-validation/general-tests.json');
+json('source-pins.json', { baseline, sourceWasUncommitted: true, node: process.version, platform: process.platform, architecture: process.arch, files: [...new Set(sourceFiles)].sort().map(file => ({ path: file, sha256: sha(fs.readFileSync(path.join(root, file))) })) });
+json('receipts/results.json', {
+  receiverBaseline: 'new legacy-host case fails at absent A-to-B writing on unchanged saved runtime',
+  bootstrapBaseline: 'both complete-census cases fail; 404 creates Local-only hint, valid service creates three hints',
+  unitBaseline: 'initial seven-case draft: five failed, two passed; later cases added and public-locator behavior refined',
+  receiverRepair: 'two new cases and unchanged sessions case: 3 passed',
+  historyAndBootstrap: 'two census cases plus three unchanged history cases: 5 passed',
+  originalCompatibility: 'unchanged two-live-writers exact-census case passed',
+  broaderMatrix: '26 passed, zero skipped/retried; before final live-capability refinement',
+  finalRefinement: 'nine-case report: 8 passed, one new fixture failed because it created a separate Account; corrected explicit Local-promotion fixture and both census cases: 3 passed on the same final runtime',
+  finalUnit: '10 new cases and 7 unchanged storage-compatibility cases passed',
+  historyNative: '9 unchanged installation/HTTP client cases passed',
+  fullUnitAttempt: '1772 passed, 7 failed in two unchanged old fixtures lacking browser storage/locks, 1 existing named skip; not green',
+  omissionControl: 'hint-only gate applied exactly once; retained-history detector fails at zero history requests after authenticated cold reopening',
+  sourceInventory: '393 sources and all 195 crypto domains unchanged except two runtime hashes; inventory only',
+  planning: { obligations: 846, unresolved: 305, aggregate: 'blocked and paused' },
+  limitations: ['No new actual Firefox/Bitwarden walkthrough or CI Node 24 execution claimed.', 'Old fixture/census edits await explicit approval and rerun.', 'Preview fcb659c3, merge and deployment untouched; no commit requested for this slice.'],
+});
+const size = artifacts.reduce((n, a) => n + a.retainedBytes, 0);
+if (size > 4 * 1024 * 1024) throw Error('Repair packet exceeds 4 MiB budget');
+fs.writeFileSync(path.join(target, 'artifact-index.json'), JSON.stringify({ schema: 1, baseline, collectedAt: new Date().toISOString(), artifactBytes: size, retention: 'Logs normalized and disposable factor patterns redacted; original hashes retained. No service databases, profiles, vault data or raw credential responses copied.', artifacts }, null, 2) + '\n');
+console.log(JSON.stringify({ artifacts: artifacts.length, bytes: size, oldTestFilesUnchanged: boundary.length }));

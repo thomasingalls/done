@@ -1,5 +1,13 @@
 # Owned v2 receive HTTP transport
 
+**2026-10-15 compatibility repair:** session hosts without membership/history continuation retain
+ordinary authenticated delivery without requesting the unsupported history-checkpoint endpoint.
+Before signing a history request, the owner checks the live host hint and its authenticated state.
+Installed/inherited history, later membership epochs or a later generation require history regardless
+of a false public hint. Once required during that owner lifetime, a later hint cannot disable it.
+An unavailable required history endpoint still withholds ordinary receiving; 404 is not an empty
+catalog or permission to advance. Local writing retains its existing durable admission path.
+
 **2026-10-12 update:** The composed receiver now groups up to four existing limit-one receipts
 under one checked commit and authenticated readback, through previously observed backlog. Exact
 v1 receipt bytes, per-entry verification, native bounds and the four-page publisher turn remain.

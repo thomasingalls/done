@@ -14687,3 +14687,75 @@ frontend rollback, with retained-draft reader limitations recorded in the
 This outcome was appended before advancing the packet's active publication state. The operator's
 original-workspace retry and any cached-client adoption remain unobserved. The broader full suite
 remains red; no push, merge, production deployment or aggregate release qualification occurred.
+
+### Receiver compatibility and blocked-bootstrap metadata checkpoint
+
+**Date:** 2026-10-15 · **Base:** signed `faadbff5`; implementation uncommitted, old-fixture approval pending.
+
+The requested repairs are implemented in dependency order. A legacy session host now receives
+ordinary authenticated writing without the unsupported history endpoint. Authenticated installed
+or inherited history, later epochs/generations and a history requirement already observed in the
+current lifetime keep the existing history-first refusal on unavailable service. Public hints cannot
+disable that requirement. The new downgrade detector fails on an exactly applied hint-only control.
+
+Startup discovery now saves its hints only under the ordinary shared Local compatibility permit,
+after the network response. Both absent and present service counterexamples reproduce the old
+complete-census write; both now preserve the census. Refused compatibility omits optional cache
+writes without preventing a public locator from reaching the independently authenticated Account
+owner. Live capability refresh stays independent of an active Account's exclusive permit. A further
+new case caught a freshly advertised capability being lost when caching was refused; that is repaired.
+
+**Evidence.** The [packet](account-conformance-runs/2026-10-15-receiver-compatibility/README.md) retains
+53 hashed artifacts, source/build identities, counterexamples and failed attempts. The initial receiver
+repair passes its two new cases plus the unchanged session case. Both census cases and all three
+unchanged history journeys pass; the original two-live-writer exact-census case passes unchanged.
+The broader 26-case browser matrix passes before the final live-capability refinement. The final
+receiver/history/bootstrap run passes eight cases and reveals one erroneous new fixture which
+created a separate Account; correcting it to promote and prove the Local interlock passes all three
+bootstrap cases on that same final runtime. Ten new unit cases, seven unchanged compatibility unit
+cases and nine unchanged native history/HTTP cases pass. Build, required Yjs patch, scoped lint and
+origin checks pass; initial JS is 231.6/350 kB. No new actual-provider or CI Node 24 result is claimed.
+
+**Remaining.** The full unit attempt passes 1,772, fails seven cases in the two old fixtures without
+storage/lock wiring, and retains the single existing named skip. The four-file proposed fixture/census
+patch is awaiting the operator's explicit approval; those old files remain byte-identical. The new
+unit is registered and normal CI adds both new browser files. Planning retains 846 obligations and
+305 unresolved obligations; all 195 crypto domains remain unchanged. The unrelated red full-suite
+failures and aggregate qualification remain open/paused. Preview `fcb659c3`, user data and the other
+seat's `docs/progress.md` are untouched. No commit, push, merge or deployment occurred. This checkpoint
+was appended before advancing the bounded packet's active state.
+
+### Approved receiver/bootstrap fixtures and verification
+
+**Date:** 2026-10-15 · **Base:** signed `faadbff5`; repairs remain uncommitted.
+
+The operator explicitly approved the saved four-file fixture patch. The applied old-test diff is
+byte-identical to that patch (`e919378e3d77e2f2f90a28c7222116c61045ad94a4f6a6e311ef9d35a3e5d525`):
+two unit fixtures gain secure-context/Web Locks/IndexedDB wiring, and two census fixtures retain
+the expanded 2,453-case denominator. No other tracked old test changes, assertions, deadlines or
+formatting edits were introduced. All 411 original source/configuration pins and all 53 artifacts
+from the preceding repair checkpoint remain identical. The
+[approval follow-up](account-conformance-runs/2026-10-15-receiver-compatibility/approval/results.json)
+retains 17 additional hashed artifacts and the exact old-file boundary proof.
+
+**Evidence.** All 22 affected unit cases and 17 affected census checks pass. The full unit population
+passes with two workers: 151 files, 1,779 passed cases and the one existing named skip. All 289
+release-runner checks pass with two files at a time and permission for disposable native browsers,
+loopback servers and process inspection. Scoped fixture lint and refreshed inventory/manifest checks
+pass. This exercises the runner's own tests; aggregate release qualification remains paused.
+
+**Inconvenient results retained.** The first default-worker unit run reports three five-second
+timeouts while another runner overlaps; the next default-worker run, after that runner ends,
+still times out in the existing multi-chunk baseline case (1,778 pass, one fail, one named skip).
+Reducing worker concurrency passes the same population without changing its deadlines. This
+establishes sensitivity to parallel load, not a green default-worker run or a permanent runner fix.
+The first runner attempt reports 271 passes and 18 failures under sandbox restrictions, including
+explicit loopback and process-inspection denials. Its fully permitted rerun passes every case.
+Both failed attempts and the intermediate unit run remain in the packet. No CI Node 24 or new
+Firefox/Bitwarden walkthrough is claimed.
+
+The broader functional-suite baseline remains unresolved. Planning retains 846 obligations and
+305 unresolved obligations; no security verifier, crypto format or release block was relaxed.
+Preview `fcb659c3`, user data and the other seat's `docs/progress.md` remain untouched. No commit,
+push, preview refresh, merge or deployment occurred. This outcome was appended before updating
+the bounded packet's active approval state.

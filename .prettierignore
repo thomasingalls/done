@@ -24,3 +24,6 @@ docs/account-conformance-runs/2026-10-15-full-functional-suite/**
 
 # Immutable retained-state reproduction, source pins and actual-provider observations.
 docs/account-conformance-runs/2026-10-15-multi-tab-setup/**
+
+# Immutable receiver/bootstrap counterexamples, controls and command receipts.
+docs/account-conformance-runs/2026-10-15-receiver-compatibility/**

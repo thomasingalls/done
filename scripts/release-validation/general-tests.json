@@ -17,6 +17,7 @@
     "test/cap.test.ts",
     "test/cardCommands.test.ts",
     "test/commands.test.ts",
+    "test/configDiscoveryCompatibility.test.ts",
     "test/contentCompaction.test.ts",
     "test/convergence.test.ts",
     "test/custodyRecord.test.ts",

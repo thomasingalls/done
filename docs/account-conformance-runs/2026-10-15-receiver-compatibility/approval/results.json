@@ -1,0 +1,30 @@
+{
+  "focusedUnit": "22 passed across the two approved existing fixtures and the new compatibility file",
+  "census": "17 passed; 2453 general cases retained",
+  "firstFullUnit": "1776 passed, 3 five-second timeouts, 1 existing named skip; another runner overlapped, so contention is a hypothesis rather than an established cause",
+  "firstRunner": "271 passed, 18 failed, 0 skipped; sandbox denied loopback listeners and process inspection, and caused browser/process lifecycle checks to fail",
+  "sequentialDefaultFullUnit": "1778 passed, 1 five-second multi-chunk baseline timeout, 1 existing named skip; the other runner had finished",
+  "limitedParallelFullUnit": "151 files passed; 1779 cases passed, 1 existing named skip; full population with two workers, without changing tests or deadlines",
+  "nativeRunner": "289 passed, zero failed/skipped; rerun with two files at a time and permission for disposable native browsers, loopback servers and process inspection",
+  "commands": [
+    "node node_modules/vitest/vitest.mjs run test/packagedConfig.test.ts test/privateAccess.test.ts test/configDiscoveryCompatibility.test.ts",
+    "node --test test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs",
+    "node node_modules/vitest/vitest.mjs run (first overlapped runner; second did not)",
+    "node node_modules/vitest/vitest.mjs run --maxWorkers=2",
+    "node --test test/release-validation/*.test.mjs (sandbox-restricted attempt)",
+    "node --test --test-concurrency=2 test/release-validation/*.test.mjs (native access)",
+    "node scripts/release-validation/check.mjs --record; node scripts/release-validation/plan.mjs --record; then both without --record"
+  ],
+  "planning": {
+    "obligations": 846,
+    "unresolved": 305,
+    "status": "blocked; aggregate qualification remains paused"
+  },
+  "limitations": [
+    "Original failed attempts remain retained; a passing rerun does not erase them.",
+    "Local Node 26.11.1; CI Node 24 and a new Firefox/Bitwarden walkthrough were not run.",
+    "Runtime and all 411 original source pins are unchanged from the browser-tested candidate.",
+    "Broader functional-suite failures outside this bounded repair remain unresolved.",
+    "No commit, push, preview refresh, merge or deployment performed."
+  ]
+}

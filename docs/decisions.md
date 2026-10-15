@@ -4602,3 +4602,32 @@ factor verification, account verification and crypto byte formats retain their p
 No persisted unlock cache or credential fallback is introduced. The
 [bounded packet](account-conformance-runs/2026-10-15-multi-tab-setup/README.md) records failing evidence,
 new regressions, compatibility and removal checks, actual provider results and remaining limits.
+
+## 2026-10-15 — Keep optional receiver discovery separate from required authenticated history
+
+**Scope.** The operator authorizes receiver compatibility, then blocked-bootstrap hint writes.
+Old tests still require explicit approval; merge, deployment and aggregate qualification stay paused.
+
+**Decision.** A legacy session host without continuation may use ordinary delivery without the
+unsupported history endpoint. Read the live host hint inside the serialized authenticated state
+task, and require history whenever installed/inherited history, a later membership epoch or a later
+generation requires it. Once required in that owner lifetime, keep requiring it even if the public
+hint changes. A failed required endpoint still withholds ordinary receiving. Keep the existing
+signature, prefix, coverage, native commit, readback and final-application verifiers unchanged.
+
+**Bootstrap.** Save startup discovery hints only after acquiring the existing shared Local permit
+and repeating compatibility, after the network wait. Refused compatibility omits optional cache
+writes; public configuration may still locate an Account whose own factor/passkey owner understands
+the authenticated promotion interlock. A failed native probe never grants writes. Recheck a pin
+which another opener may have retained before changing metadata. Keep live capability refresh
+independent of optional persistence so an active Account's exclusive permit cannot hide an upgraded
+host. The hint is scheduling information, never authority to skip retained history or open writing.
+
+**Evidence and tradeoff.** Initial regressions reproduce failed legacy delivery and exact-census
+changes under both absent and present account services. A hint-only fault build is detected by the
+retained-history test. Unit cases cover queued upgrades, unknown/undefined intents, failed probes,
+fresh/offline discovery and changed pins. A refined case caught the need to retain a freshly read
+capability in memory when persistence is correctly refused. The new promoted-Local browser fixture
+explicitly proves its interlock and authenticated reopen. Original failed attempts, a mistaken
+separate-Account fixture, and pending old-fixture updates are retained in the
+[bounded packet](account-conformance-runs/2026-10-15-receiver-compatibility/README.md).

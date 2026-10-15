@@ -1,6 +1,8 @@
-import { afterEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { loadPackagedConfig } from '../src/account/packagedConfig';
 import { privateServiceFetch } from '../src/account/privateAccess';
+import { installDiscoveryEnvironment } from './helpers/discoveryEnvironment';
+beforeEach(installDiscoveryEnvironment);
 const pin = {
   v: 1 as const,
   origin: 'http://localhost:3000',

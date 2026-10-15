@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "baseline": "faadbff5d41eab72434af4193f774d50f1ac577c",
+  "collectedAt": "2026-10-15T17:18:04.985Z",
+  "previousCheckpointIndexSha256": "3374755de600671ea053dab0d4675331642bcbe232e1b14fbfc600efcb301720",
+  "artifacts": [
+    {
+      "path": "logs/done-receiver-bootstrap-approved-fixtures.log.gz",
+      "sha256": "e322a5ee3c11b7f0a61c8db4a804b14973938fccec7e23d0ed018af05ea03ff6",
+      "bytes": 172,
+      "originalSha256": "b3c4b2d62ab47bbc41d8c98753ad1b4483cb105a5df16b92ef9b58654530e61a"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-census.log.gz",
+      "sha256": "18a5177b1cd750e699cf74e5b6701b7b030f712ae00605c2143045a8613ff89d",
+      "bytes": 1242,
+      "originalSha256": "f933621f1a56cd6b36acb70311e3aedcb098feea45ddb29f83d4f25ce11cf67e"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-all-unit.log.gz",
+      "sha256": "58e983541e98b95c9e4f2e329068aabd3d7dbeae4d3cc04d3e9dc0e0d24ace36",
+      "bytes": 953,
+      "originalSha256": "b0e4671a88e554a482785efac64b96e3a17de81b6eb3f7df80176acefa55b2b0"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-release-runner.log.gz",
+      "sha256": "d3b11fbca64b181ffa5712d8d7b78d0301ae520027bc56559ee85ea5129cb17a",
+      "bytes": 16379,
+      "originalSha256": "3ae7050ec64483c02a36042b4b3f6451a9ec3b606483de8ce1598f55cdb8816e"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-all-unit-serial.log.gz",
+      "sha256": "96e00a95e4ba9654d39a7ff677106e25a2d40cc1c73549cf2ff0f76a3e8c954c",
+      "bytes": 569,
+      "originalSha256": "c143ec6e38a7a68776e75554f0eff8aaecb3a4fbde5227c5dd95d93cd695ffb6"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-all-unit-two-workers.log.gz",
+      "sha256": "a00e279852118d35fe380bd160a96dd6b21b5866210e4425ca11852bc2726454",
+      "bytes": 193,
+      "originalSha256": "80d319333820434a0b22923d23f4d254bd7c52b79f3c9d113297cfa615f4dcfb"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-release-runner-native.log.gz",
+      "sha256": "bb144d08e7eafdda38c378d6e28ec2ccf1a8da6773f97bc4a2f09f3f40d3d4d7",
+      "bytes": 30553,
+      "originalSha256": "648ec00f46c762b9d600999eb78f0225efd95d0b8638e610e19d9308c893167e"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-inventory.log.gz",
+      "sha256": "87079720208dc2e7048dc273dc5764f5cdd27205f409f0af191cf44b3ad1ac4c",
+      "bytes": 240,
+      "originalSha256": "38c0638f231c8d9fdbac26a61588926679a3626aa4a6ec2db3b62d39d9c711da"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-plan.log.gz",
+      "sha256": "a8536543568ce622a9bc8fdb65303b8badf8b3cfa272ba15adbdf464bbe5caad",
+      "bytes": 223,
+      "originalSha256": "aa7e5724ddfd4d09186e3241737bed5113f2624c48491777340eccfc04821523"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-inventory-check.log.gz",
+      "sha256": "6e19203e2d09a38d78fb48f12c357836064ff86fbf9524d695badedb07bcb15b",
+      "bytes": 241,
+      "originalSha256": "f2130d2d5a7976c8ae1bd544801d823da64d1d697a1245b664f58cd19b082f63"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-plan-check.log.gz",
+      "sha256": "6e3b383d7a0140f4be881d19be319255f1bfe194092b13a2c18c70b6e5db79e7",
+      "bytes": 224,
+      "originalSha256": "4cf85af7fdfdcfa828f0b91618b2f29fc6cba4077a181b73c42e975384b92ee0"
+    },
+    {
+      "path": "logs/done-receiver-bootstrap-approved-fixture-lint.log.gz",
+      "sha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+      "bytes": 20,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "approved-old-fixtures.patch",
+      "sha256": "e919378e3d77e2f2f90a28c7222116c61045ad94a4f6a6e311ef9d35a3e5d525",
+      "bytes": 3289
+    },
+    {
+      "path": "collect.mjs.txt",
+      "sha256": "700dea4ba6f63e13a79315023d0ddfee0969c6ae120d3a40b307e668269a27a2",
+      "bytes": 7417
+    },
+    {
+      "path": "old-test-boundary.json",
+      "sha256": "3d01418423f3315ef7813b8078af3845d0e7be133c98b9ed6ce35a608fa3b336",
+      "bytes": 1455
+    },
+    {
+      "path": "source-pins.json",
+      "sha256": "b4db6de81a9a28c08e37bdec4e76c58cfd1a2e2dd0ea4adb055bcee5507dbe3f",
+      "bytes": 1072
+    },
+    {
+      "path": "results.json",
+      "sha256": "5048c20a98e36e7fdad4bc2fb6fac33b6a3fea6a586645afe4597cdfa6ac0579",
+      "bytes": 2305
+    }
+  ]
+}

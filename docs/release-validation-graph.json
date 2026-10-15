@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 482,
-    "requiredTestFiles": 476,
+    "testFiles": 485,
+    "requiredTestFiles": 479,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9613,6 +9613,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/configDiscoveryCompatibility.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/configDiscoveryCompatibility.test.ts"
+        ]
+      },
+      "declarations": 8,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/contentCompaction.test.ts",
       "status": "required",
       "invocation": {
@@ -10807,6 +10822,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packaged-account/bootstrap-compatibility.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/packaged-account/content-rotation.spec.ts",
       "status": "required",
       "invocation": {
@@ -10957,6 +10983,17 @@
         "packages": ["test:packaged-account"]
       },
       "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/receiver-compatibility.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 2,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15616,7 +15653,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "93fdb0ae83e67564e9527ba550b502cf35e24734fcc3aac0838283c1dee2c061"
+      "sha256": "9f1452ff32bbe3cdf2680117efbc71af425f8a0bb316d589042cbf239b163494"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -17671,6 +17708,10 @@
       "sha256": "de70742be0d8b63e3d3af6d84ae3671d8220d5cce35cd8c9b73cc5d2fd37303e"
     },
     {
+      "path": "test/configDiscoveryCompatibility.test.ts",
+      "sha256": "a4a16b78e50a1a9a102308e580df81084e84455e046b8ca2d04124b34f982de4"
+    },
+    {
       "path": "test/content-trim/browser.mjs",
       "sha256": "10d2aff3bed3d813b85fa6ddec6e83ad4b8010824392ce671684664fbd87a05a"
     },
@@ -17861,6 +17902,10 @@
     {
       "path": "test/helpers.ts",
       "sha256": "6554d5ff8da94a92d12849b6aa60ab606eaae33c6aa6e3ceaa308c20111d760f"
+    },
+    {
+      "path": "test/helpers/discoveryEnvironment.ts",
+      "sha256": "5024cc2fe9ba689c52069821fafa3f040de2b93ee748292624585caa38a7ba81"
     },
     {
       "path": "test/historyReceiveFence.test.ts",
@@ -18319,6 +18364,10 @@
       "sha256": "0fc002657a37d2224b038ccc870eb4b53cc0c40773d924e52cab0a89ed1ae5e3"
     },
     {
+      "path": "test/packaged-account/bootstrap-compatibility.spec.ts",
+      "sha256": "6b66dacf65f0819dbe08050304b968d708795515a248c80bd48e94f1cc405059"
+    },
+    {
       "path": "test/packaged-account/content-rotation.spec.ts",
       "sha256": "e215a77c2b9addc3eec9f98f8fc95c17bda92a27d4c5f114dd347151e6354a7d"
     },
@@ -18379,6 +18428,10 @@
       "sha256": "ae49e0de7bbd61cd71ba808484b3ceb1e3a6c1da72feb2cd56defb5d85b336ef"
     },
     {
+      "path": "test/packaged-account/receiver-compatibility.spec.ts",
+      "sha256": "e12dd4c41001d6eef53af93aed58455cc28e168af6b1f3f9109bb3823a3e00e6"
+    },
+    {
       "path": "test/packaged-account/recovery-progress-isolation.spec.ts",
       "sha256": "22ea3ac309b8abb17b3c540d5e2125ebd878cef623afd47a0dad876ebe3e602e"
     },
@@ -18436,7 +18489,7 @@
     },
     {
       "path": "test/packagedConfig.test.ts",
-      "sha256": "ec42f5ccfc59f7a5414c6c51b6080c2bbc714b53f23b1feb959bc3d22d63bfe0"
+      "sha256": "a05745e51354e4b31eff8feb3e30dd8d0e182cb58cbef544bb83391e3cd7265e"
     },
     {
       "path": "test/passkeyResponse.test.ts",
@@ -18468,7 +18521,7 @@
     },
     {
       "path": "test/privateAccess.test.ts",
-      "sha256": "42570e22fff46e9d494c82ff8b6fbd05cd15135c3c82755c0d20d1b1edafb9e0"
+      "sha256": "2533dc7d899e06753e1206d6d1ac28489e63c2422ef1c8fef003db09223c33bb"
     },
     {
       "path": "test/privateDeliveryHttp.test.ts",
@@ -18604,11 +18657,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "f5023cffa4e821ab458b671b59a614054fe1094c2e69dc7d6a3a9b5926a5c09c"
+      "sha256": "114485ff60aec66f176940efa0ec5c869309fa378a716e9b1d051129c15aab01"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "b24acbf9348b295d037ac26be96b70cb0701e0db20995430597b9c9090d9f1e2"
+      "sha256": "5637606a22fd098903a91dbe4b8ca758f216e7355555ba2facbf1520948531a4"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

@@ -1,0 +1,69 @@
+diff --git a/test/packagedConfig.test.ts b/test/packagedConfig.test.ts
+index dc71b311..c3ee9c6a 100644
+--- a/test/packagedConfig.test.ts
++++ b/test/packagedConfig.test.ts
+@@ -1,6 +1,8 @@
+ // @vitest-environment node
+-import { afterEach, expect, it, vi } from 'vitest';
++import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+ import { loadPackagedConfig } from '../src/account/packagedConfig';
++import { installDiscoveryEnvironment } from './helpers/discoveryEnvironment';
++beforeEach(installDiscoveryEnvironment);
+ const pin = {
+   v: 1 as const,
+   serviceId: '11'.repeat(16),
+diff --git a/test/privateAccess.test.ts b/test/privateAccess.test.ts
+index 9e2925e1..c668d7ab 100644
+--- a/test/privateAccess.test.ts
++++ b/test/privateAccess.test.ts
+@@ -1,6 +1,8 @@
+-import { afterEach, expect, it, vi } from 'vitest';
++import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+ import { loadPackagedConfig } from '../src/account/packagedConfig';
+ import { privateServiceFetch } from '../src/account/privateAccess';
++import { installDiscoveryEnvironment } from './helpers/discoveryEnvironment';
++beforeEach(installDiscoveryEnvironment);
+ const pin = {
+   v: 1 as const,
+   origin: 'http://localhost:3000',
+diff --git a/test/release-validation/general-tests.test.mjs b/test/release-validation/general-tests.test.mjs
+index 35e9160b..b491b335 100644
+--- a/test/release-validation/general-tests.test.mjs
++++ b/test/release-validation/general-tests.test.mjs
+@@ -26,18 +26,18 @@ import {
+ const inventory = () =>
+   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
+ 
+-test('reviewed Vitest and Node selections preserve the 2443-case file denominator and separate wrapper obligations', () => {
++test('reviewed Vitest and Node selections preserve the 2453-case file denominator and separate wrapper obligations', () => {
+   const p = generalTestPolicy(process.cwd()),
+     m = compileManifest(process.cwd(), inventory());
+-  assert.equal(p.vitest.length, 91);
++  assert.equal(p.vitest.length, 92);
+   assert.equal(p.node.length, 10);
+   const general = selectStages(m, 'general-tests');
+-  assert.equal(general.length, 275);
++  assert.equal(general.length, 276);
+   assert.equal(
+     general.reduce((n, s) => n + s.expect.cases.length, 0),
+-    2443,
++    2453,
+   );
+-  assert.equal(selectStages(m, 'vitest-reviewed').length, 110);
++  assert.equal(selectStages(m, 'vitest-reviewed').length, 111);
+   assert.equal(
+     selectStages(m, 'node-protocol').reduce((n, s) => n + s.expect.cases.length, 0),
+     66,
+diff --git a/test/release-validation/generated-tests.test.mjs b/test/release-validation/generated-tests.test.mjs
+index 368e20c2..1dfc5338 100644
+--- a/test/release-validation/generated-tests.test.mjs
++++ b/test/release-validation/generated-tests.test.mjs
+@@ -247,7 +247,7 @@ test('all reviewed generated files retain 224 cases and the compact manifest pre
+   assert.equal(selectStages(restored, 'generated-tests').length, 14);
+   assert.equal(
+     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
+-    2443,
++    2453,
+   );
+   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
+   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);

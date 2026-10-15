@@ -1,0 +1,714 @@
+diff --git a/src/account/packagedConfig.ts b/src/account/packagedConfig.ts
+index a5f36f78..bb634b3f 100644
+--- a/src/account/packagedConfig.ts
++++ b/src/account/packagedConfig.ts
+@@ -2,6 +2,7 @@ import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-pr
+ import type { SetupConfig } from './firstDeviceSetup';
+ import type { PrivateAccess } from './privateAccess';
+ import { isSetupEpoch } from './setupMetadata';
++import { StorageCompatibilityError } from '../crdt/storageCompatibility';
+ 
+ const PIN_KEY = 'done.account-service.pin.v1';
+ const MODE_KEY = 'done.account-service.transport.v1';
+@@ -10,6 +11,23 @@ const LOCAL_ONLY_KEY = 'done.application.local-only';
+ const LIMIT = 8192;
+ const samePin = (a: AuthorityPin, b: AuthorityPin) => String(pinBytes(a)) === String(pinBytes(b));
+ 
++/** Startup discovery owns no workspace. Fence its hint writes after the network wait. */
++async function retainDiscoveryHints(effect: () => void) {
++  const { openWriteSession } = await import('../crdt/writeSession');
++  const owner = await openWriteSession('local').catch((cause: unknown) => {
++    // A promoted Account may legitimately hold Local's ordinary-opening interlock.
++    // Return only its public locator; the selected owner still authenticates its own permit.
++    if (cause instanceof StorageCompatibilityError) return null;
++    throw cause;
++  });
++  if (!owner) return;
++  try {
++    owner.write(effect);
++  } finally {
++    await owner.close();
++  }
++}
++
+ /** Presentation-only guard: never drop a known account into a newly created Local list. */
+ export async function hasSavedAccountEntry(): Promise<boolean> {
+   if (localStorage.getItem(PIN_KEY) !== null) return true;
+@@ -124,6 +142,7 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
+   // Older packaged builds retained only the pin. Their successor selects sessions without a
+   // network wait; an old server then refuses network work instead of downgrading authentication.
+   let networkSessions = localStorage.getItem(MODE_KEY) !== 'private';
++  let membershipContinuation = localStorage.getItem(MEMBERSHIP_KEY) === '1';
+   let pin: AuthorityPin;
+   if (retained !== null) pin = parseAuthorityPin(JSON.parse(retained));
+   else {
+@@ -137,28 +156,43 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
+       throw cause;
+     }
+     if (!config) {
+-      localStorage.setItem(LOCAL_ONLY_KEY, '1');
++      await retainDiscoveryHints(() => {
++        if (localStorage.getItem(PIN_KEY) !== null)
++          throw Error('Account service configuration changed during discovery');
++        localStorage.setItem(LOCAL_ONLY_KEY, '1');
++      });
+       return null;
+     }
+     pin = config.pin;
+     networkSessions = config.networkSessions;
+-    localStorage.setItem(MODE_KEY, networkSessions ? 'sessions' : 'private');
+-    localStorage.setItem(PIN_KEY, JSON.stringify(pin));
+-    localStorage.setItem(MEMBERSHIP_KEY, config.membershipContinuation ? '1' : '0');
+-    localStorage.removeItem(LOCAL_ONLY_KEY);
++    membershipContinuation = config.membershipContinuation;
++    await retainDiscoveryHints(() => {
++      const current = localStorage.getItem(PIN_KEY);
++      if (current !== null && !samePin(parseAuthorityPin(JSON.parse(current)), pin))
++        throw Error('Account service configuration changed during discovery');
++      localStorage.setItem(MODE_KEY, networkSessions ? 'sessions' : 'private');
++      localStorage.setItem(PIN_KEY, JSON.stringify(pin));
++      localStorage.setItem(MEMBERSHIP_KEY, config.membershipContinuation ? '1' : '0');
++      localStorage.removeItem(LOCAL_ONLY_KEY);
++    });
+   }
+   if (pin.origin !== location.origin) throw Error('Account service differs from this page');
+   if (networkSessions) {
+-    let membershipContinuation = localStorage.getItem(MEMBERSHIP_KEY) === '1';
+     // Public protocol selection is a hint, never account authority. Refresh without delaying
+     // offline opening. Owners read the getter when discovering, so an already-open editor can
+     // notice an upgraded host. Only a matching pinned service may update this hint.
+     if (retained !== null)
+       void readConfig('config', AbortSignal.timeout(10000))
+-        .then((current) => {
++        .then(async (current) => {
+           if (!current || !current.networkSessions || !samePin(current.pin, pin)) return;
++          // The live scheduling hint must not wait behind a mounted Account's exclusive
++          // permit. Persisting it is optional and still needs the ordinary metadata gate.
+           membershipContinuation = current.membershipContinuation;
+-          localStorage.setItem(MEMBERSHIP_KEY, membershipContinuation ? '1' : '0');
++          await retainDiscoveryHints(() => {
++            if (localStorage.getItem(PIN_KEY) !== retained)
++              throw Error('Account service configuration changed during discovery');
++            localStorage.setItem(MEMBERSHIP_KEY, current.membershipContinuation ? '1' : '0');
++          });
+         })
+         .catch(() => {
+           /* Keep offline opening independent of service availability. */
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 3cdce470..bc3c2050 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1182,6 +1182,9 @@ async function openAccountReceiveOwner(
+   // Network waits never hold the local writer tail. The request captures actual slot authority;
+   // its evidence re-enters the admission FIFO and checks that authority again before persistence.
+   let historyDue = 0;
++  // Capability hints select optional work only before this owner has needed history.
++  // Authenticated retained history and later epochs cannot be downgraded by that hint.
++  let historyRequired = false;
+   const fetchHistory = () =>
+     runNetworkTask(async (network) => {
+       if (!access || account.detached || !canReceive() || Date.now() < historyDue) return null;
+@@ -1190,6 +1193,18 @@ async function openAccountReceiveOwner(
+         stamp.check();
+         const current = await state(task, owner, route);
+         if (describe(current).state === 'conflict') throw Error('Inbound stream is conflicted');
++        const continuation =
++          typeof options.membershipContinuation === 'function'
++            ? options.membershipContinuation()
++            : options.membershipContinuation;
++        historyRequired ||= Boolean(
++          continuation ||
++          current.installedHistory ||
++          (inheritedHistoryHash && inheritedHistoryHash !== EMPTY_HISTORY_CHECKPOINT) ||
++          base.authority.tip > 3 ||
++          base.generation > 1,
++        );
++        if (!historyRequired) return null;
+         const authority = checkpointAuthority(base);
+         const request = parseHistoryExchange({
+           v: 1,
+@@ -1221,6 +1236,7 @@ async function openAccountReceiveOwner(
+           installed: current.installedHistory,
+         };
+       });
++      if (!prepared) return null;
+       const exchange = createHistoryTransport(
+         prepared.authority,
+         access,
+diff --git a/test/configDiscoveryCompatibility.test.ts b/test/configDiscoveryCompatibility.test.ts
+new file mode 100644
+index 00000000..7f75d417
+--- /dev/null
++++ b/test/configDiscoveryCompatibility.test.ts
+@@ -0,0 +1,171 @@
++// @vitest-environment node
++import { afterEach, beforeEach, expect, it, vi } from 'vitest';
++import { loadPackagedConfig } from '../src/account/packagedConfig';
++import { storageUpgradeKey } from '../src/crdt/storageCompatibility';
++import { installDiscoveryEnvironment } from './helpers/discoveryEnvironment';
++
++const pin = {
++  v: 1 as const,
++  serviceId: '11'.repeat(16),
++  origin: 'http://localhost:4999',
++  rpId: 'localhost',
++  authRoot: '22'.repeat(32),
++};
++let values: Map<string, string>;
++beforeEach(() => {
++  values = new Map();
++  installDiscoveryEnvironment();
++  vi.stubGlobal('location', { origin: pin.origin });
++  vi.stubGlobal('localStorage', {
++    getItem: (key: string) => values.get(key) ?? null,
++    setItem: (key: string, value: string) => values.set(key, value),
++    removeItem: (key: string) => values.delete(key),
++  });
++});
++afterEach(() => {
++  vi.restoreAllMocks();
++  vi.unstubAllGlobals();
++});
++const answer = (value: unknown, status = 200) =>
++  new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
++async function interlock(value: unknown) {
++  const db = await new Promise<IDBDatabase>((resolve, reject) => {
++    const r = indexedDB.open('done.custody', 1);
++    r.onupgradeneeded = () => r.result.createObjectStore('entries');
++    r.onsuccess = () => resolve(r.result);
++    r.onerror = () => reject(r.error);
++  });
++  try {
++    await new Promise<void>((resolve, reject) => {
++      const tx = db.transaction('entries', 'readwrite');
++      tx.objectStore('entries').put(value, storageUpgradeKey('local'));
++      tx.oncomplete = () => resolve();
++      tx.onabort = () => reject(tx.error);
++    });
++  } finally {
++    db.close();
++  }
++}
++for (const hosted of [false, true])
++  it(`blocked discovery preserves every public hint (${hosted ? 'account service' : 'Local-only service'})`, async () => {
++    await interlock({ v: 999, state: 'ready' });
++    values.set('unrelated', 'keep');
++    const before = [...values];
++    vi.stubGlobal(
++      'fetch',
++      vi
++        .fn()
++        .mockResolvedValue(
++          hosted
++            ? answer({ v: 2, pin, networkSessions: true, membershipContinuation: true })
++            : answer({}, 404),
++        ),
++    );
++    const config = await loadPackagedConfig();
++    if (hosted) {
++      expect(config?.pin).toEqual(pin);
++      expect(config?.membershipContinuation).toBe(true);
++    } else expect(config).toBeNull();
++    expect([...values]).toEqual(before);
++  });
++it('an undefined retained interlock still prevents discovery metadata writes', async () => {
++  await interlock(undefined);
++  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(answer({}, 404)));
++  expect(await loadPackagedConfig()).toBeNull();
++  expect([...values]).toEqual([]);
++});
++it('a failed compatibility probe never becomes permission to save discovery metadata', async () => {
++  vi.spyOn(indexedDB, 'open').mockImplementation(() => {
++    throw Error('storage denied');
++  });
++  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(answer({}, 404)));
++  await expect(loadPackagedConfig()).rejects.toThrow('storage denied');
++  expect([...values]).toEqual([]);
++});
++it('compatible discovery remembers Local-only offline access without leaving a new custody database', async () => {
++  const fetch = vi.fn().mockResolvedValue(answer({}, 404));
++  vi.stubGlobal('fetch', fetch);
++  expect(await loadPackagedConfig()).toBeNull();
++  expect(values.get('done.application.local-only')).toBe('1');
++  expect(await indexedDB.databases()).toEqual([]);
++  fetch.mockRejectedValue(new TypeError('offline'));
++  expect(await loadPackagedConfig()).toBeNull();
++});
++it('compatible account discovery caches the pin and capability but never an access token', async () => {
++  vi.stubGlobal(
++    'fetch',
++    vi
++      .fn()
++      .mockResolvedValue(
++        answer({ v: 2, pin, networkSessions: true, membershipContinuation: true }),
++      ),
++  );
++  expect((await loadPackagedConfig())?.membershipContinuation).toBe(true);
++  expect(values.get('done.account-service.pin.v1')).toBe(JSON.stringify(pin));
++  expect(values.get('done.account-service.transport.v1')).toBe('sessions');
++  expect(values.get('done.account-service.membership.v2')).toBe('1');
++  expect(values.size).toBe(3);
++  expect(await indexedDB.databases()).toEqual([]);
++});
++it('a blocked background refresh keeps stored hints unchanged while refreshing its live scheduling hint', async () => {
++  await interlock(null);
++  values.set('done.account-service.pin.v1', JSON.stringify(pin));
++  values.set('done.account-service.transport.v1', 'sessions');
++  values.set('done.account-service.membership.v2', '0');
++  let finish!: (response: Response) => void;
++  vi.stubGlobal(
++    'fetch',
++    vi.fn(
++      () =>
++        new Promise<Response>((resolve) => {
++          finish = resolve;
++        }),
++    ),
++  );
++  const config = await loadPackagedConfig();
++  finish(answer({ v: 2, pin, networkSessions: true, membershipContinuation: true }));
++  await new Promise((resolve) => setTimeout(resolve, 30));
++  expect(config?.membershipContinuation).toBe(true);
++  expect(values.get('done.account-service.membership.v2')).toBe('0');
++});
++it('a discovery writer queued behind an upgrade rechecks compatibility before saving hints', async () => {
++  let release!: () => void;
++  const granted = new Promise<void>((resolve) => {
++    release = resolve;
++  });
++  const request = vi.fn(async (_name: string, _options: unknown, work: () => Promise<unknown>) => {
++    await granted;
++    return work();
++  });
++  vi.stubGlobal('navigator', { locks: { request } });
++  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(answer({}, 404)));
++  const pending = loadPackagedConfig();
++  const result = expect(pending).resolves.toBeNull();
++  await vi.waitFor(() => expect(request).toHaveBeenCalledOnce());
++  expect(values.size).toBe(0);
++  await interlock({ v: 1, state: 'migrating' });
++  release();
++  await result;
++  expect(values.size).toBe(0);
++});
++for (const hosted of [false, true])
++  it(`a delayed ${hosted ? 'hosted' : 'Local-only'} reply cannot overwrite a newly retained account pin`, async () => {
++    let finish!: (response: Response) => void;
++    vi.stubGlobal(
++      'fetch',
++      vi.fn(
++        () =>
++          new Promise<Response>((resolve) => {
++            finish = resolve;
++          }),
++      ),
++    );
++    const pending = loadPackagedConfig();
++    const refusal = expect(pending).rejects.toThrow('configuration changed during discovery');
++    const newer = { ...pin, authRoot: '33'.repeat(32) };
++    values.set('done.account-service.pin.v1', JSON.stringify(newer));
++    const before = [...values];
++    finish(hosted ? answer({ v: 2, pin, networkSessions: true }) : answer({}, 404));
++    await refusal;
++    expect([...values]).toEqual(before);
++  });
+diff --git a/test/helpers/discoveryEnvironment.ts b/test/helpers/discoveryEnvironment.ts
+new file mode 100644
+index 00000000..e6196a79
+--- /dev/null
++++ b/test/helpers/discoveryEnvironment.ts
+@@ -0,0 +1,13 @@
++import { vi } from 'vitest';
++import { IDBFactory } from 'fake-indexeddb';
++
++/** Unit wiring only; native compatibility tests exercise actual Web Lock exclusion. */
++export function installDiscoveryEnvironment() {
++  vi.stubGlobal('indexedDB', new IDBFactory());
++  vi.stubGlobal('isSecureContext', true);
++  vi.stubGlobal('navigator', {
++    locks: {
++      request: async (_name: string, _options: unknown, work: () => Promise<unknown>) => work(),
++    },
++  });
++}
+diff --git a/test/packaged-account/bootstrap-compatibility.spec.ts b/test/packaged-account/bootstrap-compatibility.spec.ts
+new file mode 100644
+index 00000000..f12ae658
+--- /dev/null
++++ b/test/packaged-account/bootstrap-compatibility.spec.ts
+@@ -0,0 +1,213 @@
++import { test, expect, type Page } from '@playwright/test';
++import { openApp, protectApp } from '../geometry/openApp';
++import { add } from './devices';
++import { startService, stopService } from './server';
++import { authenticator } from '../device-enrollment/helpers';
++import { openSaved } from './devices';
++
++test.use({ serviceWorkers: 'block' });
++async function blank(page: Page) {
++  await page.route('**/__compatibility-fixture__', (route) =>
++    route.fulfill({
++      contentType: 'text/html',
++      body: '<!doctype html><title>Disposable compatibility fixture</title>',
++    }),
++  );
++  await page.goto('/__compatibility-fixture__');
++}
++async function marker(page: Page, remove = false) {
++  await page.evaluate(async (remove) => {
++    await navigator.locks.request(
++      `done/slot-writer/${JSON.stringify('local')}`,
++      { mode: 'exclusive' },
++      async () => {
++        const db = await new Promise<IDBDatabase>((resolve, reject) => {
++          const r = indexedDB.open('done.custody');
++          r.onsuccess = () => resolve(r.result);
++          r.onerror = () => reject(r.error);
++        });
++        try {
++          await new Promise<void>((resolve, reject) => {
++            const tx = db.transaction('entries', 'readwrite');
++            if (remove) tx.objectStore('entries').delete(['local', 'application-upgrade']);
++            else
++              tx.objectStore('entries').put({ v: 999, state: 'ready' }, [
++                'local',
++                'application-upgrade',
++              ]);
++            tx.oncomplete = () => resolve();
++            tx.onabort = () => reject(tx.error);
++          });
++        } finally {
++          db.close();
++        }
++      },
++    );
++  }, remove);
++}
++const census = (page: Page) =>
++  page.evaluate(async () => {
++    const encode = (value: unknown): unknown => {
++      if (value instanceof ArrayBuffer) return { buffer: [...new Uint8Array(value)] };
++      if (ArrayBuffer.isView(value))
++        return {
++          type: value.constructor.name,
++          bytes: [...new Uint8Array(value.buffer, value.byteOffset, value.byteLength)],
++        };
++      if (Array.isArray(value)) return value.map(encode);
++      if (value && typeof value === 'object')
++        return Object.fromEntries(
++          Object.entries(value)
++            .sort(([a], [b]) => a.localeCompare(b))
++            .map(([k, v]) => [k, encode(v)]),
++        );
++      return value;
++    };
++    const databases = [];
++    for (const entry of (await indexedDB.databases()).sort((a, b) =>
++      a.name!.localeCompare(b.name!),
++    )) {
++      const db = await new Promise<IDBDatabase>((resolve, reject) => {
++        const r = indexedDB.open(entry.name!);
++        r.onsuccess = () => resolve(r.result);
++        r.onerror = () => reject(r.error);
++      });
++      try {
++        const stores = [];
++        for (const name of [...db.objectStoreNames]) {
++          stores.push(
++            await new Promise((resolve, reject) => {
++              const tx = db.transaction(name);
++              const store = tx.objectStore(name),
++                keys = store.getAllKeys(),
++                values = store.getAll();
++              tx.oncomplete = () =>
++                resolve({ name, keys: encode(keys.result), values: encode(values.result) });
++              tx.onabort = () => reject(tx.error);
++            }),
++          );
++        }
++        databases.push({ name: db.name, version: db.version, stores });
++      } finally {
++        db.close();
++      }
++    }
++    return {
++      local: Object.fromEntries(
++        Object.entries(localStorage).sort(([a], [b]) => a.localeCompare(b)),
++      ),
++      databases,
++    };
++  });
++for (const hosted of [false, true])
++  test(`blocked Local bootstrap preserves its complete census with ${hosted ? 'account' : 'Local-only'} discovery`, async ({
++    page,
++  }, info) => {
++    const service = await startService(info.outputPath('service'), undefined, true, false);
++    try {
++      await openApp(page);
++      await add(page, 'Original writing survives the blocked bootstrap');
++      await blank(page);
++      await marker(page);
++      await page.evaluate(() => {
++        for (const key of [
++          'done.application.local-only',
++          'done.account-service.pin.v1',
++          'done.account-service.transport.v1',
++          'done.account-service.membership.v2',
++        ])
++          localStorage.removeItem(key);
++      });
++      if (!hosted)
++        await page.route('**/__account-setup/config', (route) =>
++          route.fulfill({ status: 404, contentType: 'application/json', body: '{}' }),
++        );
++      const before = await census(page);
++      await page.goto('/');
++      await expect(
++        page.getByRole('heading', { name: 'This workspace needs a compatible app', exact: true }),
++      ).toBeVisible();
++      await expect(page.locator('.shell')).toHaveCount(0);
++      expect(await census(page)).toEqual(before);
++      await blank(page);
++      // Only remove this test's synthetic interlock; no format conversion occurred.
++      await marker(page, true);
++      await page.unroute('**/__account-setup/config');
++      await page.goto('/');
++      await expect(page.locator('.shell')).toContainText(
++        'Original writing survives the blocked bootstrap',
++      );
++    } finally {
++      await stopService(service);
++    }
++  });
++
++test('a promoted Account can authenticate a public locator without ordinary Local hint-write permission', async ({
++  page,
++}, info) => {
++  const service = await startService(info.outputPath('service'), undefined, true, true);
++  try {
++    await openApp(page);
++    const code = await protectApp(page);
++    await authenticator(page);
++    await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
++    await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
++    await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
++    await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
++    await page.getByRole('button', { name: 'Use my passkey', exact: true }).click();
++    const recovery = (await page.getByLabel('Generated recovery code').textContent())!;
++    await page.getByRole('button', { name: 'I saved my recovery code' }).click();
++    await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
++    await page.getByRole('button', { name: 'Confirm recovery and use passkey' }).click();
++    await page.getByRole('button', { name: 'Approve with passkey', exact: true }).click();
++    await page.getByRole('button', { name: 'Approve with passkey', exact: true }).click();
++    await expect(page.locator('.shell')).toBeVisible();
++    await add(page, 'Protected Account writing survives missing public hints');
++    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
++    await blank(page);
++    expect(
++      await page.evaluate(async () => {
++        const db = await new Promise<IDBDatabase>((resolve, reject) => {
++          const request = indexedDB.open('done.custody');
++          request.onsuccess = () => resolve(request.result);
++          request.onerror = () => reject(request.error);
++        });
++        try {
++          return await new Promise<number>((resolve, reject) => {
++            const tx = db.transaction('entries');
++            const read = tx.objectStore('entries').count(['local', 'application-upgrade']);
++            tx.oncomplete = () => resolve(read.result);
++            tx.onabort = () => reject(tx.error);
++          });
++        } finally {
++          db.close();
++        }
++      }),
++    ).toBe(1);
++    await page.evaluate(() => {
++      for (const key of [
++        'done.account-service.pin.v1',
++        'done.account-service.transport.v1',
++        'done.account-service.membership.v2',
++      ])
++        localStorage.removeItem(key);
++    });
++    let historyReads = 0;
++    page.on('request', (request) => {
++      if (new URL(request.url()).pathname === '/account/history/v1/checkpoint') historyReads++;
++    });
++    await page.goto('/');
++    await openSaved(page, code);
++    await expect(page.locator('.shell')).toContainText(
++      'Protected Account writing survives missing public hints',
++    );
++    // The ordinary Local gate refuses this promoted slot. Public configuration can
++    // locate it, but only the unchanged factor/passkey Account owner may open it.
++    expect(
++      await page.evaluate(() => localStorage.getItem('done.account-service.pin.v1')),
++    ).toBeNull();
++    await expect.poll(() => historyReads).toBeGreaterThan(0);
++  } finally {
++    await stopService(service);
++  }
++});
+diff --git a/test/packaged-account/receiver-compatibility.spec.ts b/test/packaged-account/receiver-compatibility.spec.ts
+new file mode 100644
+index 00000000..10684771
+--- /dev/null
++++ b/test/packaged-account/receiver-compatibility.spec.ts
+@@ -0,0 +1,156 @@
++import { test, expect, type Page } from '@playwright/test';
++import { pairedEditors, openSaved, add } from './devices';
++import { startService, stopService, startBackend, stopProcess } from './server';
++
++test('a legacy session host receives both ways across restart without requesting unsupported history', async ({
++  page,
++  browser,
++}, info) => {
++  const state = info.outputPath('service');
++  const service = await startService(state, process.env['RECEIVER_TEST_BUILD'], true, false);
++  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
++  const history: string[] = [];
++  const observe = (p: Page) =>
++    p.on('request', (r) => {
++      if (new URL(r.url()).pathname === '/account/history/v1/checkpoint') history.push(r.method());
++    });
++  observe(page);
++  try {
++    pair = await pairedEditors(page, browser, true, {
++      beforeCompare: async (second) => {
++        observe(second);
++      },
++    });
++    await add(page, 'Legacy first device reaches the second');
++    await expect(pair.second.locator('.shell')).toContainText(
++      'Legacy first device reaches the second',
++      { timeout: 20000 },
++    );
++    await add(pair.second, 'Legacy second device reaches the first');
++    await expect(page.locator('.shell')).toContainText('Legacy second device reaches the first', {
++      timeout: 20000,
++    });
++    await stopProcess(service.backend);
++    await add(page, 'Legacy writing retained across restart');
++    service.backend = await startBackend(state, true, false);
++    await expect(pair.second.locator('.shell')).toContainText(
++      'Legacy writing retained across restart',
++      { timeout: 20000 },
++    );
++    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
++    await page.context().setOffline(true);
++    await page.goto('/');
++    await openSaved(page, pair.first.code);
++    await add(page, 'Legacy offline writing survives reopening');
++    await page.context().setOffline(false);
++    await expect(pair.second.locator('.shell')).toContainText(
++      'Legacy offline writing survives reopening',
++      { timeout: 20000 },
++    );
++    expect(history).toEqual([]);
++  } finally {
++    await page.context().setOffline(false);
++    await pair?.other.close();
++    await stopService(service);
++  }
++});
++
++const historyPanel = (page: Page) =>
++  page.getByRole('region', { name: 'History maintenance', exact: true });
++async function inspectHistory(page: Page) {
++  await page.getByRole('button', { name: 'History maintenance', exact: true }).click();
++  await historyPanel(page).getByRole('button', { name: 'Check history', exact: true }).click();
++  await expect(
++    historyPanel(page).getByRole('button', { name: 'Check history', exact: true }),
++  ).toBeEnabled();
++}
++
++test('a false capability hint and history outage cannot bypass cold retained history before ordinary receive', async ({
++  page,
++  browser,
++}, info) => {
++  const service = await startService(
++    info.outputPath('service'),
++    process.env['RECEIVER_TEST_BUILD'],
++    true,
++    true,
++  );
++  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
++  try {
++    pair = await pairedEditors(page, browser, true);
++    const second = pair.second;
++    await page.route('**/account/delivery/submit', (route) => route.abort());
++    await add(page, 'This writing arrives only in authenticated history');
++    await inspectHistory(page);
++    await historyPanel(page)
++      .getByRole('button', { name: 'Create history snapshot', exact: true })
++      .click();
++    await expect(historyPanel(page)).toContainText(
++      'Snapshot saved. Verify it from another approved device.',
++      { timeout: 15000 },
++    );
++    await inspectHistory(second);
++    await historyPanel(second)
++      .getByRole('button', { name: 'Verify history snapshot', exact: true })
++      .click();
++    await expect(historyPanel(second)).toContainText('Verified snapshot 1 is saved.', {
++      timeout: 15000,
++    });
++    await expect(second.locator('.shell')).toContainText(
++      'This writing arrives only in authenticated history',
++      { timeout: 20000 },
++    );
++    await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
++    await second.evaluate(() => localStorage.setItem('done.account-service.membership.v2', '0'));
++    await second.route('**/__account-setup/config', async (route) => {
++      const response = await route.fetch();
++      const value = await response.json();
++      delete value.membershipContinuation;
++      await route.fulfill({ response, json: value });
++    });
++    let historyAttempts = 0,
++      ordinaryReads = 0;
++    await second.route('**/account/history/v1/checkpoint', (route) => {
++      historyAttempts++;
++      return route.fulfill({
++        status: 404,
++        contentType: 'application/json',
++        body: '{"ok":false,"refusal":"not-found"}',
++      });
++    });
++    second.on('request', (request) => {
++      if (new URL(request.url()).pathname === '/account/delivery/read-v2') ordinaryReads++;
++    });
++    await second.goto('/');
++    await openSaved(second, pair.next.code, true);
++    await expect(second.locator('.shell')).toContainText(
++      'This writing arrives only in authenticated history',
++    );
++    await expect.poll(() => historyAttempts, { timeout: 20000 }).toBeGreaterThanOrEqual(1);
++    await add(second, 'Local writing remains available during history outage');
++    await expect(second.locator('.shell')).toContainText(
++      'Local writing remains available during history outage',
++    );
++    await second.evaluate(() => dispatchEvent(new Event('online')));
++    await expect.poll(() => historyAttempts, { timeout: 20000 }).toBeGreaterThanOrEqual(2);
++    expect(ordinaryReads).toBe(0);
++    await expect
++      .poll(() => second.evaluate(() => localStorage.getItem('done.account-service.membership.v2')))
++      .toBe('0');
++    // Restore only the transport fault. The false public hint remains, so authenticated
++    // retained history must still be checked successfully before delivery may continue.
++    await second.unroute('**/account/history/v1/checkpoint');
++    await page.unroute('**/account/delivery/submit');
++    await page.evaluate(() => dispatchEvent(new Event('online')));
++    await add(page, 'Ordinary delivery resumes after authenticated history returns');
++    await second.evaluate(() => dispatchEvent(new Event('online')));
++    await expect(second.locator('.shell')).toContainText(
++      'Ordinary delivery resumes after authenticated history returns',
++      { timeout: 20000 },
++    );
++    expect(ordinaryReads).toBeGreaterThan(0);
++  } finally {
++    await pair?.other.close();
++    await stopService(service);
++  }
++});
