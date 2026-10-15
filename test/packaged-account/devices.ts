@@ -106,10 +106,14 @@ export async function restoreAuthenticator(
   return auth;
 }
 export async function openSaved(page: Page, code: string, joining = false) {
-  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
-  await page
-    .getByRole('button', { name: joining ? /Resume device connection/ : /^Unlock Device owner/ })
-    .click();
+  const codeEntry = page.getByLabel('Unlock code', { exact: true });
+  const saved = page.getByRole('button', {
+    name: joining ? /Resume device connection/ : /^Unlock Device owner/,
+  });
+  // Root now resumes one protected account directly; pending/multiple accounts use the chooser.
+  await expect.poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible())).toBe(true);
+  if (!(await codeEntry.isVisible())) await saved.click();
+  await expect(codeEntry).toBeVisible();
   if (joining) await unlock(page, code);
   else {
     await page.getByLabel('Unlock code', { exact: true }).fill(code);

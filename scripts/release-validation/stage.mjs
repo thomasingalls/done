@@ -107,6 +107,7 @@ import { groupState, signalGroup as kill } from './process-group.mjs';
 import { startOwnedChromium } from './browser.mjs';
 import { reconcileCarrier } from './carrier-adapter.mjs';
 import { reconcileVitest, vitestArgv } from './vitest-adapter.mjs';
+import { vitestDisposition } from './vitest-dispositions.mjs';
 import { assertHistoricalInputs, validateHistoricalInputs } from './historical-inputs.mjs';
 
 import { validatePlaywrightStage, reconcilePlaywright } from './playwright-adapter.mjs';
@@ -285,8 +286,11 @@ export function validateStage(stage) {
         typeof c.id === 'string' &&
           c.id.length &&
           (['pass', 'detected'].includes(c.outcome) ||
-            (stage.expect.kind === 'playwright' && c.outcome === 'not-applicable')),
-        'Invalid expected case',
+            (c.outcome === 'not-applicable' &&
+              (stage.expect.kind === 'playwright' ||
+                (vitestDisposition(c.id).outcome === 'not-applicable' &&
+                  c.reason === vitestDisposition(c.id).reason)))),
+        'Invalid expected case: ' + stage.id + ' / ' + c.id,
       );
       if (c.outcome === 'detected')
         assert(
@@ -511,8 +515,13 @@ export function validateStage(stage) {
     assert.deepEqual(stage.argv, vitestArgv(stage.expect.files[0]), 'Unreviewed Vitest invocation');
     assert.deepEqual(stage.env, {}, 'Unreviewed Vitest environment');
     assert(
-      stage.expect.cases.every((c) => c.outcome === 'pass'),
+      stage.expect.cases.every((c) => ['pass', 'not-applicable'].includes(c.outcome)),
       'Vitest mutations need a separate adapter',
+    );
+    assert.deepEqual(
+      stage.expect.cases,
+      stage.expect.cases.map((c) => vitestDisposition(c.id)),
+      'Unreviewed Vitest disposition',
     );
     assert(!stage.fixture, 'Native Vitest fixtures are not certified');
   }

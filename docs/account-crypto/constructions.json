@@ -1,6 +1,6 @@
 {
   "v": 1,
-  "status": "A/B/C/D1\u2013D8 specified; four inherited groups outside Account acceptance. Aggregate finding dispositions are recorded separately in docs/review/implementation/account-crypto-closure.md. Enrollment preparation is a new open qualification entry; prior closure is historical.",
+  "status": "A/B/C/D1–D8 historical specified contracts; four inherited groups outside Account acceptance. Enrollment, session, membership, recovery, history, local baseline and automatic-mode additions remain open. Source-site reconciliation grants no aggregate release credit.",
   "schemaSha256": "50800229da6b62f58d5376c27c844ef85cddb906164dd2b4854f11d3013ae09d",
   "vectorFile": "test/vectors/first-authority.json",
   "vectorSha256": "85117892fe9ba83695b4b94d7bb7bff7acd96dc07573d6357343ad86922ca9e9",
@@ -9,9 +9,14 @@
       "id": "candidate",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "device",
-      "labels": ["done/promotion-genesis-candidate/v1"],
+      "labels": [
+        "done/promotion-genesis-candidate/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/genesis.ts",
@@ -53,23 +58,38 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-creating-device"],
-      "vectorCases": ["candidate"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-creating-device"
+      ],
+      "vectorCases": [
+        "candidate"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "origin",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "bootstrap",
-      "labels": ["done/genesis-origin/v1"],
+      "labels": [
+        "done/genesis-origin/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/admission.ts",
-          "line": 221,
+          "line": 222,
           "label": "done/genesis-origin/v1",
           "kind": "literal"
         }
@@ -107,23 +127,38 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-origin"],
-      "vectorCases": ["origin"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-origin"
+      ],
+      "vectorCases": [
+        "origin"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "epoch",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "authority",
-      "labels": ["done/first-epoch/v1"],
+      "labels": [
+        "done/first-epoch/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/admission.ts",
-          "line": 322,
+          "line": 341,
           "label": "done/first-epoch/v1",
           "kind": "literal"
         }
@@ -156,23 +191,38 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-service"],
-      "vectorCases": ["epoch"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "epoch"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "offer",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "authority",
-      "labels": ["done/promotion-offer/v1"],
+      "labels": [
+        "done/promotion-offer/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/admission.ts",
-          "line": 337,
+          "line": 356,
           "label": "done/promotion-offer/v1",
           "kind": "literal"
         }
@@ -205,23 +255,38 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-service"],
-      "vectorCases": ["offer"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "offer"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "receipt",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "authority",
-      "labels": ["done/promotion-receipt/v2"],
+      "labels": [
+        "done/promotion-receipt/v2"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/admission.ts",
-          "line": 553,
+          "line": 593,
           "label": "done/promotion-receipt/v2",
           "kind": "literal"
         }
@@ -259,19 +324,35 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-service", "private-first-activation"],
-      "vectorCases": ["receipt"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-service",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "receipt"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "activation",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "authority",
-      "labels": ["done/promotion-activation-challenge/v1"],
+      "labels": [
+        "done/promotion-activation-challenge/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/activation.ts",
@@ -313,19 +394,34 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-service", "private-first-activation"],
-      "vectorCases": ["activation"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-service",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "activation"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "pin",
       "phase": "A",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/service-authority-pin/v1"],
+      "labels": [
+        "done/service-authority-pin/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/authority.ts",
@@ -357,19 +453,33 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-hashes"],
-      "vectorCases": ["pin"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "mapEntries": [
+        "private-first-hashes"
+      ],
+      "vectorCases": [
+        "pin"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "bootstrap",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "authority",
-      "labels": ["done/service-authority-bootstrap/v1"],
+      "labels": [
+        "done/service-authority-bootstrap/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/authority.ts",
@@ -401,19 +511,34 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-service"],
-      "vectorCases": ["bootstrap"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "bootstrap"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "pending",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "authority",
-      "labels": ["done/pending-account-observation/v1"],
+      "labels": [
+        "done/pending-account-observation/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/preparation.ts",
@@ -445,17 +570,30 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-service"],
-      "vectorCases": ["pending"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-service"
+      ],
+      "vectorCases": [
+        "pending"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "certification",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "device",
       "labels": [
         "done/certified-members/v1",
@@ -465,19 +603,37 @@
       "sourceSites": [
         {
           "path": "account-protocol/admission.ts",
-          "line": 174,
+          "line": 175,
+          "label": "done/certified-members/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentDelivery.ts",
+          "line": 114,
           "label": "done/certified-members/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/admission.ts",
-          "line": 175,
+          "line": 176,
+          "label": "done/certified-set-approval/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentDelivery.ts",
+          "line": 117,
           "label": "done/certified-set-approval/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/admission.ts",
-          "line": 177,
+          "line": 178,
+          "label": "done/certified-set/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentDelivery.ts",
+          "line": 118,
           "label": "done/certified-set/v1",
           "kind": "literal"
         }
@@ -505,29 +661,51 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-creating-device"],
-      "vectorCases": ["certification"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-creating-device"
+      ],
+      "vectorCases": [
+        "certification"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "manifest",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "device",
-      "labels": ["done/cp-manifest/v2", "done/headvec/v1"],
+      "labels": [
+        "done/cp-manifest/v2",
+        "done/headvec/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/admission.ts",
-          "line": 431,
+          "line": 454,
           "label": "done/cp-manifest/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/admission.ts",
-          "line": 468,
+          "line": 493,
+          "label": "done/headvec/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentCheckpoint.ts",
+          "line": 123,
           "label": "done/headvec/v1",
           "kind": "literal"
         }
@@ -560,23 +738,39 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-creating-device", "private-first-coverage"],
-      "vectorCases": ["manifest"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-creating-device",
+        "private-first-coverage"
+      ],
+      "vectorCases": [
+        "manifest"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "semantic",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "device",
-      "labels": ["done/cp-admit/v2"],
+      "labels": [
+        "done/cp-admit/v2"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/admission.ts",
-          "line": 448,
+          "line": 473,
           "label": "done/cp-admit/v2",
           "kind": "literal"
         }
@@ -609,19 +803,35 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-creating-device", "private-first-coverage"],
-      "vectorCases": ["semantic"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-creating-device",
+        "private-first-coverage"
+      ],
+      "vectorCases": [
+        "semantic"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "binding",
       "phase": "A",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "authority",
-      "labels": ["done/slotbind/v1"],
+      "labels": [
+        "done/slotbind/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/slot.ts",
@@ -631,7 +841,7 @@
         },
         {
           "path": "src/account/slotUnlock.ts",
-          "line": 54,
+          "line": 64,
           "label": "done/slotbind/v1",
           "kind": "literal"
         }
@@ -663,23 +873,38 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-service", "private-first-activation"],
-      "vectorCases": ["binding"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "mapEntries": [
+        "private-first-service",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "binding"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "unlock",
       "phase": "A",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/slotunlock/v1"],
+      "labels": [
+        "done/slotunlock/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/account/slotUnlock.ts",
-          "line": 55,
+          "line": 65,
           "label": "done/slotunlock/v1",
           "kind": "literal"
         }
@@ -707,19 +932,32 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-activation"],
-      "vectorCases": ["unlock"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "mapEntries": [
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "unlock"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "activation-nonce",
       "phase": "A",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/promotion-activation/v1"],
+      "labels": [
+        "done/promotion-activation/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/activation.ts",
@@ -756,17 +994,29 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-hashes", "private-first-activation"],
-      "vectorCases": ["activation-nonce"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "mapEntries": [
+        "private-first-hashes",
+        "private-first-activation"
+      ],
+      "vectorCases": [
+        "activation-nonce"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "request-digest",
       "phase": "A",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -798,17 +1048,28 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-hashes"],
-      "vectorCases": ["request-digest"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "mapEntries": [
+        "private-first-hashes"
+      ],
+      "vectorCases": [
+        "request-digest"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "completion-digest",
       "phase": "A",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -840,23 +1101,37 @@
           "hash": "e6fc9feaa990"
         }
       ],
-      "mapEntries": ["private-first-hashes"],
-      "vectorCases": ["completion-digest"],
-      "tests": ["test/account-first-authority/formats.test.mjs"],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "mapEntries": [
+        "private-first-hashes"
+      ],
+      "vectorCases": [
+        "completion-digest"
+      ],
+      "tests": [
+        "test/account-first-authority/formats.test.mjs"
+      ],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "service-root-custody",
       "phase": "D1",
       "status": "specified",
-      "roles": ["kdf", "aead"],
+      "roles": [
+        "kdf",
+        "aead"
+      ],
       "signer": null,
-      "labels": ["done/service-authority-seal/v1"],
+      "labels": [
+        "done/service-authority-seal/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-service/authority.ts",
-          "line": 61,
+          "line": 108,
           "label": "done/service-authority-seal/v1",
           "kind": "literal"
         }
@@ -894,39 +1169,54 @@
           "hash": "1713a08e3b21"
         }
       ],
-      "mapEntries": ["private-service-custody-input", "private-service-root-seal"],
-      "vectorCases": ["service-root-key", "service-root-seal"],
+      "mapEntries": [
+        "private-service-custody-input",
+        "private-service-root-seal"
+      ],
+      "vectorCases": [
+        "service-root-key",
+        "service-root-seal"
+      ],
       "tests": [
         "test/account-service-custody/formats.test.mjs",
         "test/account-service-custody/exports.test.mjs",
         "test/account-service-custody/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "service-acceptance-custody",
       "phase": "D1",
       "status": "specified",
-      "roles": ["kdf", "aead"],
+      "roles": [
+        "kdf",
+        "aead"
+      ],
       "signer": null,
-      "labels": ["done/acceptance-custody/v1", "done/acceptance-seal/v1"],
+      "labels": [
+        "done/acceptance-custody/v1",
+        "done/acceptance-seal/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-service/acceptance.ts",
-          "line": 51,
+          "line": 56,
           "label": "done/acceptance-custody/v1",
           "kind": "literal"
         },
         {
           "path": "account-service/acceptance.ts",
-          "line": 65,
+          "line": 70,
           "label": "done/acceptance-seal/v1",
           "kind": "literal"
         },
         {
           "path": "account-service/acceptance.ts",
-          "line": 69,
+          "line": 74,
           "label": "done/acceptance-seal/v1",
           "kind": "literal"
         }
@@ -964,7 +1254,10 @@
           "hash": "1713a08e3b21"
         }
       ],
-      "mapEntries": ["private-service-custody-input", "private-service-acceptance-seal"],
+      "mapEntries": [
+        "private-service-custody-input",
+        "private-service-acceptance-seal"
+      ],
       "vectorCases": [
         "service-acceptance-custody-key",
         "service-acceptance-seal-key",
@@ -975,14 +1268,20 @@
         "test/account-service-custody/exports.test.mjs",
         "test/account-service-custody/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "service-key-exports",
       "phase": "D1",
       "status": "specified",
-      "roles": ["predicate", "carrier"],
+      "roles": [
+        "predicate",
+        "carrier"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -1008,21 +1307,31 @@
           "hash": "1713a08e3b21"
         }
       ],
-      "mapEntries": ["private-service-custody-input"],
-      "vectorCases": ["service-seed-export", "service-public-export"],
+      "mapEntries": [
+        "private-service-custody-input"
+      ],
+      "vectorCases": [
+        "service-seed-export",
+        "service-public-export"
+      ],
       "tests": [
         "test/account-service-custody/formats.test.mjs",
         "test/account-service-custody/exports.test.mjs",
         "test/account-service-custody/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "service-acceptance-carrier",
       "phase": "D1",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -1049,33 +1358,47 @@
           "hash": "1713a08e3b21"
         }
       ],
-      "mapEntries": ["private-service-custody-input"],
-      "vectorCases": ["service-acceptance-carrier"],
+      "mapEntries": [
+        "private-service-custody-input"
+      ],
+      "vectorCases": [
+        "service-acceptance-carrier"
+      ],
       "tests": [
         "test/account-service-custody/formats.test.mjs",
         "test/account-service-custody/exports.test.mjs",
         "test/account-service-custody/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "local-promotion-mac",
       "phase": "D2",
       "status": "specified",
-      "roles": ["mac", "kdf", "carrier", "predicate"],
+      "roles": [
+        "mac",
+        "kdf",
+        "carrier",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/local-promotion/v1"],
+      "labels": [
+        "done/local-promotion/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 234,
+          "line": 267,
           "label": "done/local-promotion/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/promotionRecord.ts",
-          "line": 276,
+          "line": 312,
           "label": "done/local-promotion/v1",
           "kind": "literal"
         }
@@ -1125,7 +1448,10 @@
           "hash": "fb4cccefd90c"
         }
       ],
-      "mapEntries": ["private-promotion-authentication", "private-promotion-context"],
+      "mapEntries": [
+        "private-promotion-authentication",
+        "private-promotion-context"
+      ],
       "vectorCases": [
         "promotion-reserved",
         "promotion-prepared",
@@ -1146,16 +1472,25 @@
         "test/account-promotion-contract/formats.test.mjs",
         "test/account-promotion-contract/native.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "local-promotion-identities",
       "phase": "D2",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/promotion-lineage/v1", "done/promotion-attempt/v1"],
+      "labels": [
+        "done/promotion-lineage/v1",
+        "done/promotion-attempt/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/promotionGenesis.ts",
@@ -1171,7 +1506,7 @@
         },
         {
           "path": "src/crdt/promotionPreparation.ts",
-          "line": 59,
+          "line": 60,
           "label": "done/promotion-lineage/v1",
           "kind": "literal"
         }
@@ -1202,22 +1537,35 @@
           "hash": "fb4cccefd90c"
         }
       ],
-      "mapEntries": ["private-promotion-context"],
-      "vectorCases": ["promotion-lineage", "promotion-attempt"],
+      "mapEntries": [
+        "private-promotion-context"
+      ],
+      "vectorCases": [
+        "promotion-lineage",
+        "promotion-attempt"
+      ],
       "tests": [
         "test/account-promotion-contract/formats.test.mjs",
         "test/account-promotion-contract/native.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-envelope-key",
       "phase": "C",
       "status": "specified",
-      "roles": ["kdf"],
+      "roles": [
+        "kdf"
+      ],
       "signer": null,
-      "labels": ["done/envelope/v1", "done/envelope/v2"],
+      "labels": [
+        "done/envelope/v1",
+        "done/envelope/v2"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
@@ -1250,22 +1598,35 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["k-net"],
-      "vectorCases": ["transport-envelope-v1-kdf", "transport-envelope-v2-kdf"],
+      "mapEntries": [
+        "k-net"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-kdf",
+        "transport-envelope-v2-kdf"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-envelope-encryption",
       "phase": "C",
       "status": "specified",
-      "roles": ["aead", "digest"],
+      "roles": [
+        "aead",
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/env/v${h.v}"],
+      "labels": [
+        "done/env/v${h.v}"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
@@ -1300,22 +1661,35 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["k-net", "private-transport-commitments"],
-      "vectorCases": ["transport-envelope-v1-aad", "transport-envelope-v2-aad"],
+      "mapEntries": [
+        "k-net",
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-aad",
+        "transport-envelope-v2-aad"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-envelope-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-member",
-      "labels": ["done/env-sig/v${h.v}"],
+      "labels": [
+        "done/env-sig/v${h.v}"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
@@ -1351,22 +1725,35 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-member"],
-      "vectorCases": ["transport-envelope-v1-signature", "transport-envelope-v2-signature"],
+      "mapEntries": [
+        "private-transport-member"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-signature",
+        "transport-envelope-v2-signature"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-body",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/env-body/v1"],
+      "labels": [
+        "done/env-body/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
@@ -1408,22 +1795,34 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-envelope-body"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-envelope-body"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-envelope-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/envelope-wire/v${e.v}", "done/envelope-wire/v${version}"],
+      "labels": [
+        "done/envelope-wire/v${e.v}",
+        "done/envelope-wire/v${version}"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/envelope.ts",
@@ -1465,26 +1864,45 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-envelope-v1-wire", "transport-envelope-v2-wire"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-envelope-v1-wire",
+        "transport-envelope-v2-wire"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-wrapper-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": "transport-member",
-      "labels": ["done/envelope-submission/v1"],
+      "labels": [
+        "done/envelope-submission/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/submission.ts",
           "line": 103,
+          "label": "done/envelope-submission/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/prunedDecision.ts",
+          "line": 162,
           "label": "done/envelope-submission/v1",
           "kind": "literal"
         }
@@ -1516,22 +1934,36 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-member", "private-transport-commitments"],
-      "vectorCases": ["transport-submission-first", "transport-submission-successor"],
+      "mapEntries": [
+        "private-transport-member",
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-submission-first",
+        "transport-submission-successor"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-wrapper-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/envelope-submission-wire/v1"],
+      "labels": [
+        "done/envelope-submission-wire/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/submission.ts",
@@ -1573,22 +2005,34 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-submission-first-wire", "transport-submission-successor-wire"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-submission-first-wire",
+        "transport-submission-successor-wire"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-refusal-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-acceptance",
-      "labels": ["done/position-refuse/v1"],
+      "labels": [
+        "done/position-refuse/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/positionDecision.ts",
@@ -1624,20 +2068,30 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-acceptance"],
-      "vectorCases": ["transport-refusal"],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-refusal"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-refusal-id",
       "phase": "C",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -1664,22 +2118,33 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-commitments"],
-      "vectorCases": ["transport-refusal-id"],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-refusal-id"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-acceptance-link",
       "phase": "C",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/accept/v1"],
+      "labels": [
+        "done/accept/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/positionDecision.ts",
@@ -1711,26 +2176,43 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-commitments"],
-      "vectorCases": ["transport-accepted-link"],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-accepted-link"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-head-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-acceptance",
-      "labels": ["done/accept-head/v1"],
+      "labels": [
+        "done/accept-head/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/positionDecision.ts",
           "line": 97,
+          "label": "done/accept-head/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/rotation.ts",
+          "line": 449,
           "label": "done/accept-head/v1",
           "kind": "literal"
         }
@@ -1762,22 +2244,34 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-acceptance"],
-      "vectorCases": ["transport-accepted-head"],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-accepted-head"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-response-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/position-response/v1"],
+      "labels": [
+        "done/position-response/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/positionDecision.ts",
@@ -1819,22 +2313,34 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-response-refused", "transport-response-accepted"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-response-refused",
+        "transport-response-accepted"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-read-v1-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-member",
-      "labels": ["done/private-read/v1"],
+      "labels": [
+        "done/private-read/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
@@ -1872,20 +2378,30 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-member"],
-      "vectorCases": ["transport-read-v1"],
+      "mapEntries": [
+        "private-transport-member"
+      ],
+      "vectorCases": [
+        "transport-read-v1"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-read-v1-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -1916,22 +2432,33 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-read-v1-wire"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-read-v1-wire"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-page-v1-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-acceptance",
-      "labels": ["done/private-read-page/v1"],
+      "labels": [
+        "done/private-read-page/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
@@ -1969,20 +2496,31 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-acceptance"],
-      "vectorCases": ["transport-page-v1-empty", "transport-page-v1-full"],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-page-v1-empty",
+        "transport-page-v1-full"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-page-v1-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -2013,22 +2551,34 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-page-v1-empty-wire", "transport-page-v1-full-wire"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-page-v1-empty-wire",
+        "transport-page-v1-full-wire"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-read-v2-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-reader",
-      "labels": ["done/private-read/v2"],
+      "labels": [
+        "done/private-read/v2"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/inboundTransport.ts",
@@ -2066,20 +2616,30 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-member"],
-      "vectorCases": ["transport-read-v2"],
+      "mapEntries": [
+        "private-transport-member"
+      ],
+      "vectorCases": [
+        "transport-read-v2"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-read-v2-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -2110,32 +2670,43 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-read-v2-wire"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-read-v2-wire"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-page-v2-signature",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-acceptance",
-      "labels": ["done/private-read-page/v2"],
+      "labels": [
+        "done/private-read-page/v2"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 105,
+          "line": 117,
           "label": "done/private-read-page/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 132,
+          "line": 136,
           "label": "done/private-read-page/v2",
           "kind": "literal"
         }
@@ -2163,20 +2734,31 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-acceptance"],
-      "vectorCases": ["transport-page-v2-empty", "transport-page-v2-full"],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-page-v2-empty",
+        "transport-page-v2-full"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "transport-page-v2-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -2207,20 +2789,30 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-page-v2-empty-wire", "transport-page-v2-full-wire"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-page-v2-empty-wire",
+        "transport-page-v2-full-wire"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-request-hash",
       "phase": "C",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -2247,22 +2839,34 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-commitments"],
-      "vectorCases": ["transport-read-v1-hash", "transport-read-v2-hash"],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-read-v1-hash",
+        "transport-read-v2-hash"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-submit-wire",
       "phase": "C",
       "status": "specified",
-      "roles": ["carrier"],
+      "roles": [
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/private-submit/v1"],
+      "labels": [
+        "done/private-submit/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
@@ -2304,26 +2908,37 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-framing"],
-      "vectorCases": ["transport-submit-carrier"],
+      "mapEntries": [
+        "private-transport-framing"
+      ],
+      "vectorCases": [
+        "transport-submit-carrier"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-service-chain",
       "phase": "C",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/service-delivery-chain/v1"],
+      "labels": [
+        "done/service-delivery-chain/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 374,
+          "line": 673,
           "label": "done/service-delivery-chain/v1",
           "kind": "literal"
         }
@@ -2359,22 +2974,34 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-commitments"],
-      "vectorCases": ["transport-service-chain-1", "transport-service-chain-2"],
+      "mapEntries": [
+        "private-transport-commitments"
+      ],
+      "vectorCases": [
+        "transport-service-chain-1",
+        "transport-service-chain-2"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "transport-service-witness",
       "phase": "C",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "transport-acceptance",
-      "labels": ["done/service-delivery-witness/v1"],
+      "labels": [
+        "done/service-delivery-witness/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-service/deliveryWitness.ts",
@@ -2406,38 +3033,70 @@
           "hash": "381c3f07f8b3"
         }
       ],
-      "mapEntries": ["private-transport-acceptance"],
-      "vectorCases": ["transport-service-witness"],
+      "mapEntries": [
+        "private-transport-acceptance"
+      ],
+      "vectorCases": [
+        "transport-service-witness"
+      ],
       "tests": [
         "test/account-transport-contract/formats.test.mjs",
         "test/account-transport-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "account-source-capsule",
       "phase": "D3",
       "status": "specified",
-      "roles": ["carrier", "digest", "predicate"],
+      "roles": [
+        "carrier",
+        "digest",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/source-capture/v1"],
+      "labels": [
+        "done/source-capture/v1"
+      ],
       "sourceSites": [
         {
-          "path": "src/crdt/sourceCapture.ts",
-          "line": 97,
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 309,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 440,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 122,
+          "line": 102,
+          "label": "done/source-capture/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/sourceCapture.ts",
+          "line": 130,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 218,
+          "line": 264,
           "label": "done/source-capture/v1",
           "kind": "literal"
         }
@@ -2460,7 +3119,10 @@
           "name": "capturedRecovery"
         }
       ],
-      "mapEntries": ["private-account-capsule-input", "private-account-ledger-coverage"],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-coverage"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/account-ledger.md",
@@ -2478,7 +3140,11 @@
           "hash": "5e0caa8bc6a7"
         }
       ],
-      "vectorCases": ["source-human", "source-mixed", "capture-source-digest"],
+      "vectorCases": [
+        "source-human",
+        "source-mixed",
+        "capture-source-digest"
+      ],
       "tests": [
         "test/account-ledger-contract/formats.test.mjs",
         "test/account-ledger-contract/controls.test.mjs",
@@ -2496,25 +3162,54 @@
       "id": "account-spool-capsule",
       "phase": "D3",
       "status": "specified",
-      "roles": ["carrier", "predicate"],
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/account-spool/v1"],
+      "labels": [
+        "done/account-spool/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 173,
+          "line": 189,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 177,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 209,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-spool/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 446,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 131,
+          "line": 164,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 156,
+          "line": 189,
           "label": "done/account-spool/v1",
           "kind": "literal"
         }
@@ -2573,7 +3268,12 @@
           "hash": "b89ae7ea85c8"
         }
       ],
-      "vectorCases": ["spool-position", "spool-attempt", "spool-retry", "spool-envelope"],
+      "vectorCases": [
+        "spool-position",
+        "spool-attempt",
+        "spool-retry",
+        "spool-envelope"
+      ],
       "tests": [
         "test/account-ledger-contract/formats.test.mjs",
         "test/account-ledger-contract/controls.test.mjs",
@@ -2593,25 +3293,54 @@
       "id": "account-delivery-capsule",
       "phase": "D3",
       "status": "specified",
-      "roles": ["carrier", "predicate"],
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/account-delivery/v1"],
+      "labels": [
+        "done/account-delivery/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 96,
+          "line": 104,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 123,
+          "line": 131,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 161,
+          "line": 177,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 210,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 266,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 345,
+          "label": "done/account-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 447,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -2661,7 +3390,10 @@
           "hash": "5e0caa8bc6a7"
         }
       ],
-      "vectorCases": ["delivery-submission", "delivery-response"],
+      "vectorCases": [
+        "delivery-submission",
+        "delivery-response"
+      ],
       "tests": [
         "test/account-ledger-contract/formats.test.mjs",
         "test/account-ledger-contract/controls.test.mjs",
@@ -2679,25 +3411,36 @@
       "id": "account-inbound-capsule",
       "phase": "D3",
       "status": "specified",
-      "roles": ["carrier", "predicate"],
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/account-inbound/v1"],
+      "labels": [
+        "done/account-inbound/v1"
+      ],
       "sourceSites": [
         {
+          "path": "src/crdt/accountMembership.ts",
+          "line": 80,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
           "path": "src/crdt/accountSuccessor.ts",
-          "line": 67,
+          "line": 181,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundLedger.ts",
-          "line": 81,
+          "line": 120,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/inboundLedger.ts",
-          "line": 96,
+          "line": 138,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         },
@@ -2710,6 +3453,30 @@
         {
           "path": "src/crdt/inboundRecord.ts",
           "line": 96,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 206,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 259,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/incrementalAccountLedger.ts",
+          "line": 325,
+          "label": "done/account-inbound/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localRetentionPlan.ts",
+          "line": 448,
           "label": "done/account-inbound/v1",
           "kind": "literal"
         }
@@ -2764,7 +3531,10 @@
           "hash": "5e0caa8bc6a7"
         }
       ],
-      "vectorCases": ["inbound-received", "inbound-conflict"],
+      "vectorCases": [
+        "inbound-received",
+        "inbound-conflict"
+      ],
       "tests": [
         "test/account-ledger-contract/formats.test.mjs",
         "test/account-ledger-contract/controls.test.mjs",
@@ -2782,13 +3552,18 @@
       "id": "account-ledger-chain",
       "phase": "D3",
       "status": "specified",
-      "roles": ["digest", "predicate"],
+      "roles": [
+        "digest",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/account-spool-chain/v1\u0000"],
+      "labels": [
+        "done/account-spool-chain/v1\u0000"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 382,
+          "line": 501,
           "label": "done/account-spool-chain/v1\u0000",
           "kind": "literal"
         }
@@ -2803,7 +3578,10 @@
           "name": "verifySpoolWitness"
         }
       ],
-      "mapEntries": ["private-account-capsule-input", "private-account-ledger-completeness"],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-completeness"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/account-ledger.md",
@@ -2832,14 +3610,21 @@
         "test/account-spool/native.test.mjs",
         "test/account-receive/native.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "counter-witness-coupling"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "counter-witness-coupling"
+      ],
       "blocker": null
     },
     {
       "id": "account-inbound-baseline",
       "phase": "D3",
       "status": "specified",
-      "roles": ["digest", "predicate"],
+      "roles": [
+        "digest",
+        "predicate"
+      ],
       "signer": null,
       "labels": [],
       "sourceSites": [],
@@ -2849,7 +3634,10 @@
           "name": "heldInboundContext"
         }
       ],
-      "mapEntries": ["private-account-capsule-input", "private-account-ledger-coverage"],
+      "mapEntries": [
+        "private-account-capsule-input",
+        "private-account-ledger-coverage"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/account-ledger.md",
@@ -2862,26 +3650,41 @@
           "hash": "5e0caa8bc6a7"
         }
       ],
-      "vectorCases": ["inbound-baseline-digest"],
+      "vectorCases": [
+        "inbound-baseline-digest"
+      ],
       "tests": [
         "test/account-ledger-contract/formats.test.mjs",
         "test/account-ledger-contract/controls.test.mjs",
         "test/account-receive/native.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "content-metadata-key",
       "phase": "D4",
       "status": "specified",
-      "roles": ["kdf"],
+      "roles": [
+        "kdf"
+      ],
       "signer": null,
-      "labels": ["done/content-metadata/v1"],
+      "labels": [
+        "done/content-metadata/v1"
+      ],
       "sourceSites": [
         {
+          "path": "src/crdt/accountRotation.ts",
+          "line": 285,
+          "label": "done/content-metadata/v1",
+          "kind": "literal"
+        },
+        {
           "path": "src/crdt/custody.ts",
-          "line": 243,
+          "line": 264,
           "label": "done/content-metadata/v1",
           "kind": "literal"
         }
@@ -2896,7 +3699,9 @@
           "name": "fields"
         }
       ],
-      "mapEntries": ["private-content-metadata-key"],
+      "mapEntries": [
+        "private-content-metadata-key"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/content-counter.md",
@@ -2909,25 +3714,36 @@
           "hash": "89994beb8cea"
         }
       ],
-      "vectorCases": ["content-metadata-key"],
+      "vectorCases": [
+        "content-metadata-key"
+      ],
       "tests": [
         "test/account-counter-contract/formats.test.mjs",
         "test/account-counter-contract/native.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "native-metadata-owner"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "native-metadata-owner"
+      ],
       "blocker": null
     },
     {
       "id": "content-initialization-witness",
       "phase": "D4",
       "status": "specified",
-      "roles": ["mac", "predicate"],
+      "roles": [
+        "mac",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/content-witness/v1"],
+      "labels": [
+        "done/content-witness/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 234,
+          "line": 239,
           "label": "done/content-witness/v1",
           "kind": "literal"
         }
@@ -2942,7 +3758,10 @@
           "name": "parseWitness"
         }
       ],
-      "mapEntries": ["private-content-metadata", "private-content-counter-order"],
+      "mapEntries": [
+        "private-content-metadata",
+        "private-content-counter-order"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/content-counter.md",
@@ -2965,7 +3784,10 @@
           "hash": "89994beb8cea"
         }
       ],
-      "vectorCases": ["content-witness-creating", "content-witness-ready"],
+      "vectorCases": [
+        "content-witness-creating",
+        "content-witness-ready"
+      ],
       "tests": [
         "test/account-counter-contract/formats.test.mjs",
         "test/account-counter-contract/native.test.mjs"
@@ -2983,13 +3805,18 @@
       "id": "content-counter-v1",
       "phase": "D4",
       "status": "specified",
-      "roles": ["mac", "predicate"],
+      "roles": [
+        "mac",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/content-counter/v1"],
+      "labels": [
+        "done/content-counter/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 238,
+          "line": 243,
           "label": "done/content-counter/v1",
           "kind": "literal"
         }
@@ -3012,7 +3839,10 @@
           "name": "reserveCounter"
         }
       ],
-      "mapEntries": ["private-content-metadata", "private-content-counter-order"],
+      "mapEntries": [
+        "private-content-metadata",
+        "private-content-counter-order"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/content-counter.md",
@@ -3035,7 +3865,10 @@
           "hash": "89994beb8cea"
         }
       ],
-      "vectorCases": ["content-counter-v1-empty", "content-counter-v1-multigen"],
+      "vectorCases": [
+        "content-counter-v1-empty",
+        "content-counter-v1-multigen"
+      ],
       "tests": [
         "test/account-counter-contract/formats.test.mjs",
         "test/account-counter-contract/native.test.mjs"
@@ -3053,13 +3886,18 @@
       "id": "content-counter-v2",
       "phase": "D4",
       "status": "specified",
-      "roles": ["mac", "predicate"],
+      "roles": [
+        "mac",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/content-counter/v2"],
+      "labels": [
+        "done/content-counter/v2"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/contentRecord.ts",
-          "line": 238,
+          "line": 243,
           "label": "done/content-counter/v2",
           "kind": "literal"
         }
@@ -3131,9 +3969,13 @@
       "id": "store-name-digest",
       "phase": "D5",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/store-name/v1"],
+      "labels": [
+        "done/store-name/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/storeName.ts",
@@ -3148,7 +3990,9 @@
           "name": "deriveStoreName"
         }
       ],
-      "mapEntries": ["private-store-name"],
+      "mapEntries": [
+        "private-store-name"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/store-journal.md",
@@ -3161,7 +4005,10 @@
           "hash": "fc637722b527"
         }
       ],
-      "vectorCases": ["store-name-unicode", "store-name-boundary"],
+      "vectorCases": [
+        "store-name-unicode",
+        "store-name-boundary"
+      ],
       "tests": [
         "test/account-store-contract/formats.test.mjs",
         "test/account-store-contract/native.test.mjs"
@@ -3178,19 +4025,43 @@
       "id": "store-record-aead",
       "phase": "D5",
       "status": "specified",
-      "roles": ["kdf", "aead", "carrier"],
+      "roles": [
+        "kdf",
+        "aead",
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/store/v1"],
+      "labels": [
+        "done/store/v1"
+      ],
       "sourceSites": [
         {
+          "path": "src/crdt/accountRotation.ts",
+          "line": 271,
+          "label": "done/store/v1",
+          "kind": "literal"
+        },
+        {
           "path": "src/crdt/contentRecord.ts",
-          "line": 121,
+          "line": 122,
           "label": "done/store/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custody.ts",
-          "line": 231,
+          "line": 252,
+          "label": "done/store/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 318,
+          "label": "done/store/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/custody.ts",
+          "line": 341,
           "label": "done/store/v1",
           "kind": "literal"
         }
@@ -3213,7 +4084,10 @@
           "name": "openContentSession"
         }
       ],
-      "mapEntries": ["private-store-key", "private-store-record"],
+      "mapEntries": [
+        "private-store-key",
+        "private-store-record"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/store-journal.md",
@@ -3260,9 +4134,13 @@
       "id": "journal-key",
       "phase": "D5",
       "status": "specified",
-      "roles": ["kdf"],
+      "roles": [
+        "kdf"
+      ],
       "signer": null,
-      "labels": ["done/journal/v1"],
+      "labels": [
+        "done/journal/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/journalCodec.ts",
@@ -3277,7 +4155,9 @@
           "name": "deriveJournalKey"
         }
       ],
-      "mapEntries": ["private-journal-key"],
+      "mapEntries": [
+        "private-journal-key"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/store-journal.md",
@@ -3300,7 +4180,9 @@
           "hash": "fc637722b527"
         }
       ],
-      "vectorCases": ["journal-key"],
+      "vectorCases": [
+        "journal-key"
+      ],
       "tests": [
         "test/account-store-contract/formats.test.mjs",
         "test/account-store-contract/native.test.mjs"
@@ -3317,9 +4199,14 @@
       "id": "journal-carrier-aead",
       "phase": "D5",
       "status": "specified",
-      "roles": ["aead", "carrier"],
+      "roles": [
+        "aead",
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/jrnl/v1"],
+      "labels": [
+        "done/jrnl/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/journalCodec.ts",
@@ -3354,7 +4241,10 @@
           "name": "createJournalOwner"
         }
       ],
-      "mapEntries": ["private-journal-carrier", "private-journal-key"],
+      "mapEntries": [
+        "private-journal-carrier",
+        "private-journal-key"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/store-journal.md",
@@ -3377,7 +4267,11 @@
           "hash": "fc637722b527"
         }
       ],
-      "vectorCases": ["journal-carrier-1", "journal-carrier-256", "journal-carrier-4294967295"],
+      "vectorCases": [
+        "journal-carrier-1",
+        "journal-carrier-256",
+        "journal-carrier-4294967295"
+      ],
       "tests": [
         "test/account-store-contract/formats.test.mjs",
         "test/account-store-contract/native.test.mjs"
@@ -3395,19 +4289,25 @@
       "id": "custody-factor-v1",
       "phase": "D6",
       "status": "specified",
-      "roles": ["kdf", "aead", "predicate"],
+      "roles": [
+        "kdf",
+        "aead",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/devicelock/v1"],
+      "labels": [
+        "done/devicelock/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 94,
+          "line": 104,
           "label": "done/devicelock/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 110,
+          "line": 120,
           "label": "done/devicelock/v1",
           "kind": "literal"
         }
@@ -3438,7 +4338,10 @@
           "name": "generateDeviceCode"
         }
       ],
-      "mapEntries": ["private-local-factor", "private-local-factor-seal"],
+      "mapEntries": [
+        "private-local-factor",
+        "private-local-factor-seal"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/local-custody.md",
@@ -3480,13 +4383,17 @@
       "id": "custody-generation-envelope",
       "phase": "D6",
       "status": "specified",
-      "roles": ["aead"],
+      "roles": [
+        "aead"
+      ],
       "signer": null,
-      "labels": ["done/keyenv/v1"],
+      "labels": [
+        "done/keyenv/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 157,
+          "line": 167,
           "label": "done/keyenv/v1",
           "kind": "literal"
         }
@@ -3505,7 +4412,10 @@
           "name": "openEnvelope"
         }
       ],
-      "mapEntries": ["private-local-root-seals", "private-local-custody-open"],
+      "mapEntries": [
+        "private-local-root-seals",
+        "private-local-custody-open"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/local-custody.md",
@@ -3523,7 +4433,10 @@
           "hash": "4517b014105e"
         }
       ],
-      "vectorCases": ["custody-envelope-1", "custody-envelope-2"],
+      "vectorCases": [
+        "custody-envelope-1",
+        "custody-envelope-2"
+      ],
       "tests": [
         "test/account-local-custody/formats.test.mjs",
         "test/account-local-custody/native.test.mjs"
@@ -3541,13 +4454,18 @@
       "id": "custody-credential-v2",
       "phase": "D6",
       "status": "specified",
-      "roles": ["aead", "carrier"],
+      "roles": [
+        "aead",
+        "carrier"
+      ],
       "signer": null,
-      "labels": ["done/custody-credential/v2"],
+      "labels": [
+        "done/custody-credential/v2"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 213,
+          "line": 223,
           "label": "done/custody-credential/v2",
           "kind": "literal"
         }
@@ -3589,7 +4507,10 @@
           "hash": "4517b014105e"
         }
       ],
-      "vectorCases": ["custody-credential-wrapping", "custody-credential-signing"],
+      "vectorCases": [
+        "custody-credential-wrapping",
+        "custody-credential-signing"
+      ],
       "tests": [
         "test/account-local-custody/formats.test.mjs",
         "test/account-local-custody/native.test.mjs"
@@ -3608,13 +4529,17 @@
       "id": "custody-key-correspondence",
       "phase": "D6",
       "status": "specified",
-      "roles": ["predicate"],
+      "roles": [
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/custody-key-check/v2"],
+      "labels": [
+        "done/custody-key-check/v2"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 310,
+          "line": 343,
           "label": "done/custody-key-check/v2",
           "kind": "literal"
         }
@@ -3625,7 +4550,10 @@
           "name": "openCredential"
         }
       ],
-      "mapEntries": ["private-local-custody-pairs", "private-local-custody-open"],
+      "mapEntries": [
+        "private-local-custody-pairs",
+        "private-local-custody-open"
+      ],
       "homePins": [
         {
           "path": "docs/account-crypto/local-custody.md",
@@ -3643,7 +4571,10 @@
           "hash": "4517b014105e"
         }
       ],
-      "vectorCases": ["custody-signing-correspondence", "custody-wrapping-correspondence"],
+      "vectorCases": [
+        "custody-signing-correspondence",
+        "custody-wrapping-correspondence"
+      ],
       "tests": [
         "test/account-local-custody/formats.test.mjs",
         "test/account-local-custody/native.test.mjs"
@@ -3660,19 +4591,25 @@
       "id": "custody-metadata-v2",
       "phase": "D6",
       "status": "specified",
-      "roles": ["kdf", "mac", "predicate"],
+      "roles": [
+        "kdf",
+        "mac",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/custody-metadata/v2"],
+      "labels": [
+        "done/custody-metadata/v2"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/custodyRecord.ts",
-          "line": 228,
+          "line": 324,
           "label": "done/custody-metadata/v2",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custodyRecord.ts",
-          "line": 261,
+          "line": 393,
           "label": "done/custody-metadata/v2",
           "kind": "literal"
         }
@@ -3810,17 +4747,23 @@
       ],
       "blocker": null,
       "id": "local-claim-key",
-      "labels": ["done/local-genesis-metadata/v1"],
-      "roles": ["kdf"],
+      "labels": [
+        "done/local-genesis-metadata/v1"
+      ],
+      "roles": [
+        "kdf"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/localGenesisRecord.ts",
-          "line": 153,
+          "line": 163,
           "label": "done/local-genesis-metadata/v1",
           "kind": "literal"
         }
       ],
-      "vectorCases": ["local-claim-key"]
+      "vectorCases": [
+        "local-claim-key"
+      ]
     },
     {
       "phase": "D8",
@@ -3887,12 +4830,16 @@
       ],
       "blocker": null,
       "id": "local-claim-progress",
-      "labels": ["done/local-genesis-progress/v1"],
-      "roles": ["mac"],
+      "labels": [
+        "done/local-genesis-progress/v1"
+      ],
+      "roles": [
+        "mac"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/localGenesisRecord.ts",
-          "line": 180,
+          "line": 190,
           "label": "done/local-genesis-progress/v1",
           "kind": "literal"
         }
@@ -3968,17 +4915,23 @@
       ],
       "blocker": null,
       "id": "local-claim-selected-import",
-      "labels": ["done/local-import-selection/v1"],
-      "roles": ["mac"],
+      "labels": [
+        "done/local-import-selection/v1"
+      ],
+      "roles": [
+        "mac"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/localGenesisRecord.ts",
-          "line": 167,
+          "line": 177,
           "label": "done/local-import-selection/v1",
           "kind": "literal"
         }
       ],
-      "vectorCases": ["local-claim-imported"]
+      "vectorCases": [
+        "local-claim-imported"
+      ]
     },
     {
       "phase": "D8",
@@ -4057,12 +5010,17 @@
       ],
       "blocker": null,
       "id": "local-claim-source-cleanup",
-      "labels": ["done/local-import-cleanup"],
-      "roles": ["mac", "carrier"],
+      "labels": [
+        "done/local-import-cleanup"
+      ],
+      "roles": [
+        "mac",
+        "carrier"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/localGenesisRecord.ts",
-          "line": 184,
+          "line": 194,
           "label": "done/local-import-cleanup",
           "kind": "literal"
         }
@@ -4078,7 +5036,10 @@
       "phase": "Local",
       "status": "inherited",
       "scope": "outside-account-acceptance",
-      "roles": ["kdf", "mac"],
+      "roles": [
+        "kdf",
+        "mac"
+      ],
       "signer": null,
       "labels": [
         "done/local-clear-authentication/v1",
@@ -4149,7 +5110,9 @@
           "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
         }
       ],
-      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "tests": [
+        "test/account-local-provenance/native.test.mjs"
+      ],
       "requirements": [
         "outside-account-acceptance",
         "native-exclusion-barriers",
@@ -4162,9 +5125,15 @@
       "phase": "Local",
       "status": "inherited",
       "scope": "outside-account-acceptance",
-      "roles": ["kdf", "mac"],
+      "roles": [
+        "kdf",
+        "mac"
+      ],
       "signer": null,
-      "labels": ["done/legacy-import-metadata/v1", "done/legacy-import-progress/v1"],
+      "labels": [
+        "done/legacy-import-metadata/v1",
+        "done/legacy-import-progress/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/legacyImportRecord.ts",
@@ -4231,7 +5200,9 @@
           "sha256": "3d81b1bc08d128fcdb0dafa0db2c006296335b450c80f35fb4e4702f97c2b608"
         }
       ],
-      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "tests": [
+        "test/account-local-provenance/native.test.mjs"
+      ],
       "requirements": [
         "outside-account-acceptance",
         "native-exclusion-barriers",
@@ -4244,9 +5215,13 @@
       "phase": "Local",
       "status": "inherited",
       "scope": "outside-account-acceptance",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/legacy-source-observation/v1"],
+      "labels": [
+        "done/legacy-source-observation/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/legacySource.ts",
@@ -4291,7 +5266,9 @@
           "sha256": "bd09c7dd26f82cdd7b55acb89fad7f3eb1a15308f7ba880e92fd6572c84eeb4b"
         }
       ],
-      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "tests": [
+        "test/account-local-provenance/native.test.mjs"
+      ],
       "requirements": [
         "outside-account-acceptance",
         "native-exclusion-barriers",
@@ -4304,9 +5281,15 @@
       "phase": "Local",
       "status": "inherited",
       "scope": "outside-account-acceptance",
-      "roles": ["kdf", "mac"],
+      "roles": [
+        "kdf",
+        "mac"
+      ],
       "signer": null,
-      "labels": ["done/legacy-cleanup-fingerprint/v${version}", "done/legacy-cleanup-entry"],
+      "labels": [
+        "done/legacy-cleanup-fingerprint/v${version}",
+        "done/legacy-cleanup-entry"
+      ],
       "sourceSites": [
         {
           "path": "src/crdt/legacyCleanupRecord.ts",
@@ -4361,7 +5344,9 @@
           "sha256": "6bdeae2a8e8fc5dae56ae7433e545a5e63dda6e4abae8165c0b5ccd7c01c48b4"
         }
       ],
-      "tests": ["test/account-local-provenance/native.test.mjs"],
+      "tests": [
+        "test/account-local-provenance/native.test.mjs"
+      ],
       "requirements": [
         "outside-account-acceptance",
         "native-exclusion-barriers",
@@ -4373,11 +5358,16 @@
       "id": "remaining-coordination-names",
       "phase": "non-crypto",
       "status": "excluded",
-      "roles": ["name"],
+      "roles": [
+        "name"
+      ],
       "labels": [
         "done/slot-writer/${JSON.stringify(slotId)}",
         "done/accepted-workspace/v1/",
-        "done/accepted-text/v1/"
+        "done/accepted-text/v1/",
+        "done/account-ledger-reference-mismatch",
+        "done/setup-metadata/",
+        "done/slot-lifecycle"
       ],
       "sourceSites": [
         {
@@ -4393,6 +5383,36 @@
           "kind": "literal"
         },
         {
+          "path": "src/crdt/accountReceive.ts",
+          "line": 704,
+          "label": "done/account-ledger-reference-mismatch",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/setupMetadata.ts",
+          "line": 23,
+          "label": "done/setup-metadata/",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 217,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 299,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/writeSession.ts",
+          "line": 307,
+          "label": "done/slot-lifecycle",
+          "kind": "literal"
+        },
+        {
           "path": "src/crdt/writeSession.ts",
           "line": 37,
           "label": "done/slot-writer/${JSON.stringify(slotId)}",
@@ -4404,15 +5424,21 @@
       "home": "docs/account-crypto-prep.md",
       "blocker": null,
       "next": "retain as explicit non-crypto exclusions, not authority-map constructions",
-      "reason": "no cryptographic authority; data still passes authenticated storage/admission owners"
+      "reason": "no cryptographic authority; data still passes authenticated storage/admission owners Setup-metadata lock and slot-lifecycle BroadcastChannel names provide cooperative exclusion/notification only; account-ledger-reference-mismatch is a fixed diagnostic string. None is input to a cryptographic primitive."
     },
     {
       "id": "recovery-factor-seal",
       "phase": "B",
       "status": "specified",
-      "roles": ["kdf", "aead", "predicate"],
+      "roles": [
+        "kdf",
+        "aead",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/recovery/v1"],
+      "labels": [
+        "done/recovery/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/account/recovery.ts",
@@ -4449,23 +5475,36 @@
           "hash": "c160491d235a"
         }
       ],
-      "mapEntries": ["recovery-envelope", "k-code-sealed-envelopes"],
-      "vectorCases": ["recovery-kdf", "recovery-seal"],
+      "mapEntries": [
+        "recovery-envelope",
+        "k-code-sealed-envelopes"
+      ],
+      "vectorCases": [
+        "recovery-kdf",
+        "recovery-seal"
+      ],
       "tests": [
         "test/account-recovery-contract/formats.test.mjs",
         "test/account-recovery-contract/controls.test.mjs",
         "test/account-recovery-contract/exports.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "recovery-key-correspondence",
       "phase": "B",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "recovery-bootstrap",
-      "labels": ["done/recovery-key-check/v1"],
+      "labels": [
+        "done/recovery-key-check/v1"
+      ],
       "sourceSites": [
         {
           "path": "src/account/recovery.ts",
@@ -4492,26 +5531,38 @@
           "hash": "c160491d235a"
         }
       ],
-      "mapEntries": ["private-recovery-possession"],
-      "vectorCases": ["recovery-key-check"],
+      "mapEntries": [
+        "private-recovery-possession"
+      ],
+      "vectorCases": [
+        "recovery-key-check"
+      ],
       "tests": [
         "test/account-recovery-contract/formats.test.mjs",
         "test/account-recovery-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "recovery-initial-confirmation",
       "phase": "B",
       "status": "specified",
-      "roles": ["signature"],
+      "roles": [
+        "signature"
+      ],
       "signer": "recovery-bootstrap",
-      "labels": ["done/account-recovery-confirm/v1"],
+      "labels": [
+        "done/account-recovery-confirm/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 128,
+          "line": 141,
           "label": "done/account-recovery-confirm/v1",
           "kind": "literal"
         }
@@ -4543,20 +5594,31 @@
           "hash": "c160491d235a"
         }
       ],
-      "mapEntries": ["private-recovery-possession", "private-account-challenges"],
-      "vectorCases": ["recovery-confirm"],
+      "mapEntries": [
+        "private-recovery-possession",
+        "private-account-challenges"
+      ],
+      "vectorCases": [
+        "recovery-confirm"
+      ],
       "tests": [
         "test/account-recovery-contract/formats.test.mjs",
         "test/account-recovery-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations", "encoded-field-omissions"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations",
+        "encoded-field-omissions"
+      ],
       "blocker": null
     },
     {
       "id": "recovery-commitments",
       "phase": "B",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
       "labels": [
         "done/pkg-root/v1",
@@ -4567,25 +5629,25 @@
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 118,
+          "line": 131,
           "label": "done/account-recovery-draft/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 65,
+          "line": 78,
           "label": "done/pkg-root/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 98,
+          "line": 111,
           "label": "done/recovery-envelope/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 107,
+          "line": 120,
           "label": "done/recovery-state/v1",
           "kind": "literal"
         }
@@ -4625,22 +5687,37 @@
           "hash": "c160491d235a"
         }
       ],
-      "mapEntries": ["private-recovery-commitments"],
-      "vectorCases": ["recovery-root", "recovery-envelope", "recovery-state", "recovery-draft"],
+      "mapEntries": [
+        "private-recovery-commitments"
+      ],
+      "vectorCases": [
+        "recovery-root",
+        "recovery-envelope",
+        "recovery-state",
+        "recovery-draft"
+      ],
       "tests": [
         "test/account-recovery-contract/formats.test.mjs",
         "test/account-recovery-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "account-initial-challenges",
       "phase": "B",
       "status": "specified",
-      "roles": ["digest"],
+      "roles": [
+        "digest"
+      ],
       "signer": null,
-      "labels": ["done/account/${operation}/v1", "done/account/finalize-recovery/v1"],
+      "labels": [
+        "done/account/${operation}/v1",
+        "done/account/finalize-recovery/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-service/protocol.ts",
@@ -4682,7 +5759,9 @@
           "hash": "c160491d235a"
         }
       ],
-      "mapEntries": ["private-account-challenges"],
+      "mapEntries": [
+        "private-account-challenges"
+      ],
       "vectorCases": [
         "account-challenge-register",
         "account-challenge-confirm-registration",
@@ -4693,20 +5772,28 @@
         "test/account-recovery-contract/formats.test.mjs",
         "test/account-recovery-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "recovery-generation-bridge",
       "phase": "B",
       "status": "specified",
-      "roles": ["aead", "kdf"],
+      "roles": [
+        "aead",
+        "kdf"
+      ],
       "signer": null,
-      "labels": ["done/gen-wrap/v1"],
+      "labels": [
+        "done/gen-wrap/v1"
+      ],
       "sourceSites": [
         {
           "path": "account-protocol/genesis.ts",
-          "line": 150,
+          "line": 152,
           "label": "done/gen-wrap/v1",
           "kind": "literal"
         }
@@ -4737,32 +5824,74 @@
           "hash": "c160491d235a"
         }
       ],
-      "mapEntries": ["private-recovery-wrap", "private-recovery-recipient"],
-      "vectorCases": ["recovery-generation-wrap"],
+      "mapEntries": [
+        "private-recovery-wrap",
+        "private-recovery-recipient"
+      ],
+      "vectorCases": [
+        "recovery-generation-wrap"
+      ],
       "tests": [
         "test/account-recovery-contract/formats.test.mjs",
         "test/account-recovery-contract/controls.test.mjs"
       ],
-      "requirements": ["runtime-bytes", "input-mutations"],
+      "requirements": [
+        "runtime-bytes",
+        "input-mutations"
+      ],
       "blocker": null
     },
     {
       "id": "genesis-checkpoint-key",
       "phase": "D7",
       "status": "specified",
-      "roles": ["kdf"],
+      "roles": [
+        "kdf"
+      ],
       "signer": null,
-      "labels": ["done/checkpoint/v1"],
+      "labels": [
+        "done/checkpoint/v1"
+      ],
       "sourceSites": [
         {
+          "path": "src/account/recoveryTransition.ts",
+          "line": 53,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
           "path": "src/crdt/accountStartup.ts",
-          "line": 116,
+          "line": 147,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/contentCheckpoint.ts",
+          "line": 26,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/historySource.ts",
+          "line": 255,
           "label": "done/checkpoint/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/promotionGenesis.ts",
           "line": 83,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/recoveryReading.ts",
+          "line": 107,
+          "label": "done/checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/recoverySource.ts",
+          "line": 158,
           "label": "done/checkpoint/v1",
           "kind": "literal"
         }
@@ -4832,13 +5961,24 @@
       "id": "genesis-checkpoint-seal",
       "phase": "D7",
       "status": "specified",
-      "roles": ["aead", "predicate"],
+      "roles": [
+        "aead",
+        "predicate"
+      ],
       "signer": null,
-      "labels": ["done/cp/v1"],
+      "labels": [
+        "done/cp/v1"
+      ],
       "sourceSites": [
         {
+          "path": "account-protocol/contentCheckpoint.ts",
+          "line": 130,
+          "label": "done/cp/v1",
+          "kind": "literal"
+        },
+        {
           "path": "account-protocol/genesis.ts",
-          "line": 153,
+          "line": 158,
           "label": "done/cp/v1",
           "kind": "literal"
         }
@@ -4917,38 +6057,48 @@
       "id": "enrollment-preparation",
       "phase": "Enrollment",
       "status": "open",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": null,
       "labels": [
-        "done/enrollment-preparation-assertion/v1",
-        "done/enrollment-preparation-challenge/v1",
-        "done/enrollment-preparation-possession/v1",
-        "done/enrollment-preparation-receipt/v1"
+        "done/enrollment-preparation-assertion/v${c.v}",
+        "done/enrollment-preparation-challenge/v${c.v}",
+        "done/enrollment-preparation-possession/v${c.v}",
+        "done/enrollment-preparation-receipt/v${body.v}",
+        "done/enrollment-and-session-assertion/v${c.v}"
       ],
       "sourceSites": [
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 204,
-          "label": "done/enrollment-preparation-assertion/v1",
-          "kind": "literal"
+          "line": 234,
+          "label": "done/enrollment-and-session-assertion/v${c.v}",
+          "kind": "template"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 195,
-          "label": "done/enrollment-preparation-challenge/v1",
-          "kind": "literal"
+          "line": 235,
+          "label": "done/enrollment-preparation-assertion/v${c.v}",
+          "kind": "template"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 197,
-          "label": "done/enrollment-preparation-possession/v1",
-          "kind": "literal"
+          "line": 224,
+          "label": "done/enrollment-preparation-challenge/v${c.v}",
+          "kind": "template"
         },
         {
           "path": "account-protocol/enrollment.ts",
-          "line": 200,
-          "label": "done/enrollment-preparation-receipt/v1",
-          "kind": "literal"
+          "line": 226,
+          "label": "done/enrollment-preparation-possession/v${c.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/enrollment.ts",
+          "line": 229,
+          "label": "done/enrollment-preparation-receipt/v${body.v}",
+          "kind": "template"
         }
       ],
       "entryPoints": [
@@ -4991,7 +6141,10 @@
       "id": "admission-successor",
       "phase": "Enrollment",
       "status": "open",
-      "roles": ["signature", "digest"],
+      "roles": [
+        "signature",
+        "digest"
+      ],
       "signer": null,
       "labels": [
         "done/admission-successor/v1",
@@ -5001,19 +6154,19 @@
       "sourceSites": [
         {
           "path": "account-protocol/successor.ts",
-          "line": 207,
+          "line": 208,
           "label": "done/admission-successor/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/successor.ts",
-          "line": 354,
+          "line": 371,
           "label": "done/authority-discovery-request/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/successor.ts",
-          "line": 358,
+          "line": 375,
           "label": "done/authority-discovery-response/v1",
           "kind": "literal"
         }
@@ -5133,16 +6286,24 @@
       "id": "enrollment-ceremony",
       "phase": "Enrollment",
       "status": "open",
-      "roles": ["digest", "kdf", "carrier", "signature"],
+      "roles": [
+        "digest",
+        "kdf",
+        "carrier",
+        "signature"
+      ],
       "signer": null,
       "labels": [
         "done/enroll-commit/v1",
         "done/enroll/v1",
         "done/enroll-sas/v1",
         "done/enroll-wrap/v1",
-        "done/enrollment-ceremony-context/v1",
-        "done/enrollment-ceremony-commitment/v1",
-        "done/enrollment-ceremony-reveal/v1"
+        "done/enrollment-ceremony-context/v${c.v}",
+        "done/enrollment-ceremony-commitment/v${c.v}",
+        "done/enrollment-ceremony-reveal/v${r.v}",
+        "done/enrollment-ceremony-bootstrap/v1",
+        "done/enrollment-ceremony-invitation/v1",
+        "done/enrollment-ceremony-relay/v${body.v}"
       ],
       "sourceSites": [
         {
@@ -5170,22 +6331,40 @@
           "kind": "literal"
         },
         {
-          "path": "account-protocol/ceremonyExchange.ts",
-          "line": 243,
-          "label": "done/enrollment-ceremony-commitment/v1",
+          "path": "account-protocol/ceremonyRelay.ts",
+          "line": 79,
+          "label": "done/enrollment-ceremony-bootstrap/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/ceremonyExchange.ts",
-          "line": 238,
-          "label": "done/enrollment-ceremony-context/v1",
-          "kind": "literal"
+          "line": 296,
+          "label": "done/enrollment-ceremony-commitment/v${c.v}",
+          "kind": "template"
         },
         {
           "path": "account-protocol/ceremonyExchange.ts",
-          "line": 247,
-          "label": "done/enrollment-ceremony-reveal/v1",
+          "line": 290,
+          "label": "done/enrollment-ceremony-context/v${c.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/ceremonyRelay.ts",
+          "line": 95,
+          "label": "done/enrollment-ceremony-invitation/v1",
           "kind": "literal"
+        },
+        {
+          "path": "account-protocol/ceremonyRelay.ts",
+          "line": 75,
+          "label": "done/enrollment-ceremony-relay/v${body.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/ceremonyExchange.ts",
+          "line": 300,
+          "label": "done/enrollment-ceremony-reveal/v${r.v}",
+          "kind": "template"
         }
       ],
       "entryPoints": [
@@ -5267,6 +6446,931 @@
       ],
       "blocker": "Primitive/exchange chunks A/B have focused evidence and a specification ordering model; real durable owners, private relay and complete construction/authority-map qualification remain open.",
       "next": "Implement C/D and validate the modeled native save/attempt predicates before key-delivery continuation; no aggregate release credit."
+    },
+    {
+      "id": "network-session-custody",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "signature",
+        "digest",
+        "kdf",
+        "aead",
+        "mac"
+      ],
+      "signer": null,
+      "labels": [
+        "done/account-login-carrier/v1",
+        "done/account-session-and-slot-unlock/v1",
+        "done/account-session-issuance/v1",
+        "done/account-session-key-check/v1",
+        "done/account-session-login/v1",
+        "done/scoped-network-grant/v1",
+        "done/session-custody-key-check/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/account/sessionVault.ts",
+          "line": 94,
+          "label": "done/account-login-carrier/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/sessionUnlock.ts",
+          "line": 50,
+          "label": "done/account-session-and-slot-unlock/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/session-custody.ts",
+          "line": 25,
+          "label": "done/account-session-issuance/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/session-custody.ts",
+          "line": 34,
+          "label": "done/account-session-key-check/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/sessions.ts",
+          "line": 390,
+          "label": "done/account-session-login/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/scopedGrant.ts",
+          "line": 83,
+          "label": "done/scoped-network-grant/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/session-custody.ts",
+          "line": 42,
+          "label": "done/session-custody-key-check/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-sessions/core.test.mjs",
+        "test/account-sessions/client.test.mjs",
+        "test/account-sessions/grants.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish exact session custody/carrier, combined-challenge and scoped-grant byte contracts and resolve authority entries; retain absolute deadlines and cold-unlock controls."
+    },
+    {
+      "id": "account-client-custody",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "kdf",
+        "aead",
+        "mac"
+      ],
+      "signer": null,
+      "labels": [
+        "done/certified-account-device/v1",
+        "done/content-approval-state/v1",
+        "done/content-rotation-state/v1",
+        "done/custody-creation-seed/v1",
+        "done/history-maintenance-state/v1",
+        "done/installed-content-key/v1",
+        "done/installed-rotation-key/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/joinedAccount.ts",
+          "line": 156,
+          "label": "done/certified-account-device/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/approvalVault.ts",
+          "line": 38,
+          "label": "done/content-approval-state/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/approvalVault.ts",
+          "line": 40,
+          "label": "done/content-rotation-state/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/creationSeed.ts",
+          "line": 61,
+          "label": "done/custody-creation-seed/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/approvalVault.ts",
+          "line": 41,
+          "label": "done/history-maintenance-state/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/approvalVault.ts",
+          "line": 43,
+          "label": "done/installed-content-key/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/joinedAccount.ts",
+          "line": 492,
+          "label": "done/installed-content-key/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/joinedAccount.ts",
+          "line": 501,
+          "label": "done/installed-content-key/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/account/approvalVault.ts",
+          "line": 43,
+          "label": "done/installed-rotation-key/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-membership/delivery.test.mjs",
+        "test/account-membership/adoption.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Specify each KDF/AAD/MAC purpose and complete retained-reference/seal-budget and protected-profile qualification across current and future receiving keys."
+    },
+    {
+      "id": "content-certification",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "signature",
+        "digest",
+        "carrier"
+      ],
+      "signer": null,
+      "labels": [
+        "done/checkpoint-request/v1",
+        "done/content-key-delivery/v1",
+        "done/content-key-installed/v1",
+        "done/content-transfer/v1",
+        "done/device-certification-epoch/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/contentCheckpoint.ts",
+          "line": 236,
+          "label": "done/checkpoint-request/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentDelivery.ts",
+          "line": 161,
+          "label": "done/content-key-delivery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentDelivery.ts",
+          "line": 260,
+          "label": "done/content-key-installed/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentDelivery.ts",
+          "line": 446,
+          "label": "done/content-transfer/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/contentDelivery.ts",
+          "line": 348,
+          "label": "done/device-certification-epoch/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-membership/delivery.test.mjs",
+        "test/account-membership/ceremony.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish delivery/certification/checkpoint-request byte contracts and map recipient keys through the verified parent and exact ceremony; retain input-mutation and installation controls."
+    },
+    {
+      "id": "membership-successors",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "signature",
+        "digest",
+        "carrier"
+      ],
+      "signer": null,
+      "labels": [
+        "done/device-membership-admission/v2",
+        "done/device-membership-cancellation/v2",
+        "done/device-membership-certification/v2",
+        "done/device-membership-rotation/v2",
+        "done/membership-bootstrap/v2",
+        "done/membership-cancellation-request/v2",
+        "done/membership-checkpoint-read/v2",
+        "done/membership-discovery-request/v2",
+        "done/membership-discovery/v2",
+        "done/membership-invitation/v2",
+        "done/membership-key-delivery/v${body.v}",
+        "done/membership-key-installed/v${body.v}",
+        "done/membership-key-transfer/v2",
+        "done/membership-recipient-certificate/v2"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/membership.ts",
+          "line": 342,
+          "label": "done/device-membership-admission/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membership.ts",
+          "line": 715,
+          "label": "done/device-membership-cancellation/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membership.ts",
+          "line": 499,
+          "label": "done/device-membership-certification/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membership.ts",
+          "line": 848,
+          "label": "done/device-membership-rotation/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membershipLocator.ts",
+          "line": 195,
+          "label": "done/membership-bootstrap/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membership.ts",
+          "line": 613,
+          "label": "done/membership-cancellation-request/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membershipCheckpoint.ts",
+          "line": 70,
+          "label": "done/membership-checkpoint-read/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membershipLocator.ts",
+          "line": 248,
+          "label": "done/membership-discovery-request/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membershipLocator.ts",
+          "line": 294,
+          "label": "done/membership-discovery/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membershipLocator.ts",
+          "line": 150,
+          "label": "done/membership-invitation/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membershipDelivery.ts",
+          "line": 176,
+          "label": "done/membership-key-delivery/v${body.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/membershipDelivery.ts",
+          "line": 289,
+          "label": "done/membership-key-installed/v${body.v}",
+          "kind": "template"
+        },
+        {
+          "path": "account-protocol/membershipDelivery.ts",
+          "line": 376,
+          "label": "done/membership-key-transfer/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/membershipDelivery.ts",
+          "line": 129,
+          "label": "done/membership-recipient-certificate/v2",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-membership/history.test.mjs",
+        "test/account-membership/admission.test.mjs",
+        "test/account-membership/delivery.test.mjs",
+        "test/account-membership/locator.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish v2/v3 membership and delivery byte contracts and authority-map chains; qualify cancellation/rotation and historical-versus-current eligibility without rebasing human approvals."
+    },
+    {
+      "id": "device-removal-rotation",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "signature",
+        "digest",
+        "carrier"
+      ],
+      "signer": null,
+      "labels": [
+        "done/removal-discovery-request/v1",
+        "done/removal-discovery/v1",
+        "done/removal-preparation-request/v1",
+        "done/removal-preparation/v1",
+        "done/transition-out/v1",
+        "done/transition-payload/v1",
+        "done/transition/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/removalDiscovery.ts",
+          "line": 57,
+          "label": "done/removal-discovery-request/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/removalDiscovery.ts",
+          "line": 138,
+          "label": "done/removal-discovery/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/rotation.ts",
+          "line": 93,
+          "label": "done/removal-preparation-request/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/rotation.ts",
+          "line": 135,
+          "label": "done/removal-preparation/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/rotation.ts",
+          "line": 388,
+          "label": "done/transition-out/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/rotation.ts",
+          "line": 222,
+          "label": "done/transition-payload/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/rotation.ts",
+          "line": 268,
+          "label": "done/transition/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-membership/removal.test.mjs",
+        "test/account-membership/rotation.test.mjs",
+        "test/account-membership/rotation-history.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish exact removal/rotation transcript encodings, map all verifying/signing keys and qualify interruption, target fencing and complete opener references."
+    },
+    {
+      "id": "replacement-checkpoints",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "signature",
+        "digest",
+        "kdf",
+        "aead"
+      ],
+      "signer": null,
+      "labels": [
+        "done/replacement-checkpoint-admission/v1",
+        "done/replacement-checkpoint-aead/v1",
+        "done/replacement-checkpoint-key/v1",
+        "done/replacement-checkpoint-transfer/v1",
+        "done/replacement-checkpoint/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/replacementAcknowledgement.ts",
+          "line": 35,
+          "label": "done/replacement-checkpoint-admission/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/replacementCheckpoint.ts",
+          "line": 171,
+          "label": "done/replacement-checkpoint-aead/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/replacementCheckpoint.ts",
+          "line": 22,
+          "label": "done/replacement-checkpoint-key/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/replacementTransfer.ts",
+          "line": 57,
+          "label": "done/replacement-checkpoint-transfer/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/replacementCheckpoint.ts",
+          "line": 165,
+          "label": "done/replacement-checkpoint/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-membership/replacement-checkpoint.test.mjs",
+        "test/account-membership/replacement-checkpoint-replay.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish replacement KDF/AAD/signature byte contracts and map admission authorities; qualify exact-cut replay, recipient install and old-opener retirement."
+    },
+    {
+      "id": "lost-device-recovery",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "signature",
+        "digest",
+        "carrier"
+      ],
+      "signer": null,
+      "labels": [
+        "done/head-assert/v1",
+        "done/lost-device-recovery-assertion/v1",
+        "done/lost-device-recovery-challenge/v1",
+        "done/lost-device-recovery-page/v1",
+        "done/lost-device-recovery-possession/v1",
+        "done/lost-device-recovery-prepared/v1",
+        "done/lost-device-recovery-read/v1",
+        "done/recovery-and-session-assertion/v1",
+        "done/recovery-bootstrap/v1",
+        "done/recovery-checkpoint/v1",
+        "done/recovery-successor/v1",
+        "done/recovery-transition-intent/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/recoveryBootstrap.ts",
+          "line": 63,
+          "label": "done/head-assert/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/lostDeviceRecovery.ts",
+          "line": 131,
+          "label": "done/lost-device-recovery-assertion/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/lostDeviceRecovery.ts",
+          "line": 125,
+          "label": "done/lost-device-recovery-challenge/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recoveryRead.ts",
+          "line": 166,
+          "label": "done/lost-device-recovery-page/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/lostDeviceRecovery.ts",
+          "line": 127,
+          "label": "done/lost-device-recovery-possession/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/lostDeviceRecovery.ts",
+          "line": 224,
+          "label": "done/lost-device-recovery-prepared/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recoveryRead.ts",
+          "line": 76,
+          "label": "done/lost-device-recovery-read/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/lostDeviceRecovery.ts",
+          "line": 131,
+          "label": "done/recovery-and-session-assertion/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recoveryBootstrap.ts",
+          "line": 155,
+          "label": "done/recovery-bootstrap/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recoveryCommit.ts",
+          "line": 26,
+          "label": "done/recovery-checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recoveryTransition.ts",
+          "line": 213,
+          "label": "done/recovery-successor/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/recoveryTransition.ts",
+          "line": 99,
+          "label": "done/recovery-transition-intent/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-recovery/core.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish complete lost-device/combined-session/recovery-successor byte contracts and authority chains, and qualify stale-head, replay, rotated-signer and local-install boundaries."
+    },
+    {
+      "id": "history-maintenance",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "signature",
+        "digest",
+        "kdf",
+        "aead",
+        "carrier"
+      ],
+      "signer": null,
+      "labels": [
+        "done/history-checkpoint-admission/v1",
+        "done/history-checkpoint-aead/v1",
+        "done/history-checkpoint-catalog/v1",
+        "done/history-checkpoint-key/v1",
+        "done/history-checkpoint-page/v1",
+        "done/history-checkpoint-request/v1",
+        "done/history-checkpoint/v1",
+        "done/history-install/v1",
+        "done/history-install/v2",
+        "done/service-pruned-accepted-decision/v1",
+        "done/service-pruned-history-checkpoint/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/historyCheckpoint.ts",
+          "line": 310,
+          "label": "done/history-checkpoint-admission/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/historyCheckpoint.ts",
+          "line": 166,
+          "label": "done/history-checkpoint-aead/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/historyExchange.ts",
+          "line": 177,
+          "label": "done/history-checkpoint-catalog/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/historyCheckpoint.ts",
+          "line": 34,
+          "label": "done/history-checkpoint-key/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/historyExchange.ts",
+          "line": 240,
+          "label": "done/history-checkpoint-page/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/historyExchange.ts",
+          "line": 98,
+          "label": "done/history-checkpoint-request/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/historyCheckpoint.ts",
+          "line": 162,
+          "label": "done/history-checkpoint/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/historyInstall.ts",
+          "line": 30,
+          "label": "done/history-install/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/historyInstall.ts",
+          "line": 31,
+          "label": "done/history-install/v2",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/prunedDecision.ts",
+          "line": 77,
+          "label": "done/service-pruned-accepted-decision/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "account-service/prunedCheckpoint.ts",
+          "line": 53,
+          "label": "done/service-pruned-history-checkpoint/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-history/checkpoint.test.mjs",
+        "test/account-history/install.test.mjs",
+        "test/account-history/pruning.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish history/pruned-proof byte contracts and map producers and completeness witnesses; qualify exact retirement cuts and offline replay through interrupted installation."
+    },
+    {
+      "id": "account-local-baselines",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "digest",
+        "mac",
+        "carrier"
+      ],
+      "signer": null,
+      "labels": [
+        "done/account-journal/era-1\u0000",
+        "done/account-local-baseline-auth/draft-2\u0000",
+        "done/account-local-baseline-auth/draft-3\u0000",
+        "done/account-local-baseline/draft-2",
+        "done/account-local-baseline/draft-3",
+        "done/content-counter/local-baseline-draft-1",
+        "done/content-counter/local-baseline-draft-2",
+        "done/content-counter/local-baseline-draft-3",
+        "done/local-baseline-carrier/draft-1",
+        "done/local-baseline-carrier/draft-2",
+        "done/local-baseline-carrier/draft-3",
+        "done/local-baseline-scope/draft-2",
+        "done/upload-bootstrap-census/v1",
+        "done/upload-bootstrap/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/journalEra.ts",
+          "line": 43,
+          "label": "done/account-journal/era-1\u0000",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineRecord.ts",
+          "line": 271,
+          "label": "done/account-local-baseline-auth/draft-2\u0000",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineRecord.ts",
+          "line": 272,
+          "label": "done/account-local-baseline-auth/draft-3\u0000",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineRecord.ts",
+          "line": 20,
+          "label": "done/account-local-baseline/draft-2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineRecord.ts",
+          "line": 21,
+          "label": "done/account-local-baseline/draft-3",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 144,
+          "label": "done/content-counter/local-baseline-draft-1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 143,
+          "label": "done/content-counter/local-baseline-draft-2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 141,
+          "label": "done/content-counter/local-baseline-draft-3",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 14,
+          "label": "done/local-baseline-carrier/draft-1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 15,
+          "label": "done/local-baseline-carrier/draft-2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 16,
+          "label": "done/local-baseline-carrier/draft-3",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAuthority.ts",
+          "line": 65,
+          "label": "done/local-baseline-scope/draft-2",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountUploadActivation.ts",
+          "line": 73,
+          "label": "done/upload-bootstrap-census/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/accountUploadActivation.ts",
+          "line": 55,
+          "label": "done/upload-bootstrap/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-history/install.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Publish all supported draft baseline/era/carrier encodings and anchor authority chains; qualify counter/lifecycle continuity, source capture and stale-reader refusal."
+    },
+    {
+      "id": "automatic-local-protection",
+      "phase": "Local",
+      "status": "open",
+      "roles": [
+        "aead",
+        "mac",
+        "kdf"
+      ],
+      "signer": null,
+      "labels": [
+        "done/automatic-opening/v1",
+        "done/local-automatic-claim/v1",
+        "done/local-protection/v1"
+      ],
+      "sourceSites": [
+        {
+          "path": "src/crdt/automaticOpening.ts",
+          "line": 19,
+          "label": "done/automatic-opening/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localGenesisRecord.ts",
+          "line": 200,
+          "label": "done/local-automatic-claim/v1",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localProtection.ts",
+          "line": 108,
+          "label": "done/local-protection/v1",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/onboardingStorage.test.ts",
+        "test/deviceDataRemovalRegression.test.ts"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
+      "next": "Specify automatic AAD/claim/transition bytes and native interruption/profile qualification separately from protected custody; retain no-remint, no-downgrade and no-automatic-sync controls."
     }
   ],
   "additionalCorpora": [

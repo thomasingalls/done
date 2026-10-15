@@ -178,6 +178,20 @@ Once the first destructive step commits, resume authorized cleanup rather than p
 restore deleted content. Success means no target content, journal or index residue and no unnecessary
 target capability; the terminal marker itself is allowed diagnostic metadata.
 
+**Setup retirement and legacy imports, clarified 2026-10-15.** Removal also fences pending setup
+metadata. Acquire slot exclusion before the per-slot setup-metadata lock; a setup metadata transaction
+must never acquire a slot permit or retain its metadata lock across a network wait. Persist a new
+non-secret removal epoch before erasure. A setup coordinator retains its original epoch and refuses
+every later write after a mismatch, even if another tab explicitly starts a fresh Local list. The
+terminal marker independently refuses writes while removal is active or complete. Notifications request
+prompt disposal but do not supply this durable fence or authorize erasure.
+
+Selected legacy imports require verified source cleanup and a fresh source-absence check under the
+existing exclusion protocol before credential-free removal can start. Pending pre-selection imports
+also refuse removal. Keep source, destination and provenance intact on this refusal; do not report
+completion while plaintext predecessor carriers remain. The ordinary app cannot infer exclusion of
+old nonparticipating writers or erase all origin storage as a substitute.
+
 ## SC-08 — automatic Local custody and opt-in copied-profile protection
 
 New Local workspaces may open automatically. Their authenticated Local claim explicitly names this

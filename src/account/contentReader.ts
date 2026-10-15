@@ -56,6 +56,7 @@ export async function openApprovedWriting(
   input: {
     assert: LocalPasskey;
     token: AccountAccess;
+    historyAvailable(): boolean;
     signal: AbortSignal;
     save(): Promise<void>;
     request(route: string, value: unknown): Promise<any>;
@@ -117,7 +118,12 @@ export async function openApprovedWriting(
       }
       const state = p.reading;
       let addedHistory = false;
-      {
+      // Older private hosts cannot prune/checkpoint accepted history. Their
+      // complete stream still verifies from position zero. Never discard a
+      // retained history cut when a capability hint is absent or regresses.
+      if (state.history && !input.historyAvailable())
+        throw Error('Saved handoff history requires a history-capable account service');
+      if (input.historyAvailable()) {
         const proof = await readHandoffHistory(
           history,
           a.base.pin,

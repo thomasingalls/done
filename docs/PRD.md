@@ -1002,7 +1002,7 @@ undoable without touching yours.
 
 - **Agent membership requires the owner to have an account.** Admitting an agent changes authorization, only
   the service changes authorization, and a Local workspace has no service. Agents therefore live at Account
-  and the free product has none. Local already requires its local unlock factor (§7.2); archive portability separately asks for
+  and the free product has none. Sync requires local protection (§7.2); archive portability separately asks for
   nothing and correspondingly delegates nothing.
 - **Edit cryptographically implies read.** Under one symmetric content key per generation, an agent cannot
   construct an encrypted update without the key, and a holder of that key can decrypt the document. So the

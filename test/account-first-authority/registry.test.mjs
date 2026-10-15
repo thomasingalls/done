@@ -291,12 +291,26 @@ test('registered Account source sites, exact homes and evidence join the existin
   const result = checkConstructionRegistry(root);
   assert.deepEqual(result.failures, []);
   assert.equal(result.specified, 78);
-  assert.equal(result.open, 3);
+  assert.equal(result.open, 13);
   assert.deepEqual(
     baseline()
       .document.constructions.filter((r) => r.status === 'open')
       .map((r) => r.id),
-    ['enrollment-preparation', 'admission-successor', 'enrollment-ceremony'],
+    [
+      'enrollment-preparation',
+      'admission-successor',
+      'enrollment-ceremony',
+      'network-session-custody',
+      'account-client-custody',
+      'content-certification',
+      'membership-successors',
+      'device-removal-rotation',
+      'replacement-checkpoints',
+      'lost-device-recovery',
+      'history-maintenance',
+      'account-local-baselines',
+      'automatic-local-protection',
+    ],
   );
   assert.equal(result.excluded, 1);
   assert.equal(result.inherited, 4);

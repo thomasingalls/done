@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { vitestDeclarations } from './vitest-census.mjs';
+import { vitestDisposition } from './vitest-dispositions.mjs';
 
 // These five synthetic suites use the normal config/setup, in-memory IndexedDB and
 // inherited Vitest forks. Native wrappers and whole `pnpm test` remain separate obligations.
@@ -52,6 +53,11 @@ export function vitestStage(root, file) {
   };
 }
 export function reconcileVitest(expected, actual, nonce) {
+  assert.deepEqual(
+    expected.cases,
+    expected.cases.map((c) => vitestDisposition(c.id)),
+    'Unreviewed Vitest disposition',
+  );
   assert.equal(actual.schema, 1);
   assert.equal(actual.adapter, 'vitest-v1');
   assert.equal(actual.nonce, nonce, 'Stale Vitest report');
@@ -74,11 +80,26 @@ export function reconcileVitest(expected, actual, nonce) {
   );
   const sort = (cases) => [...cases].sort((a, b) => a.id.localeCompare(b.id));
   assert.deepEqual(
-    sort(actual.cases.map(({ id, outcome }) => ({ id, outcome }))),
+    sort(
+      actual.cases.map(({ id, outcome }) => ({
+        ...vitestDisposition(id),
+        outcome: outcome === 'skipped' ? 'not-applicable' : outcome,
+      })),
+    ),
     sort(expected.cases),
     'Incomplete or non-passing Vitest census',
   );
   for (const c of actual.cases) {
+    if (vitestDisposition(c.id).outcome === 'not-applicable') {
+      assert.equal(c.outcome, 'skipped', 'Named Vitest disposition must actually skip');
+      assert.equal(c.mode, 'skip');
+      assert.equal(c.retryCount ?? 0, 0);
+      assert.equal(c.repeatCount ?? 0, 0);
+      assert.equal(c.expectedFailure, false);
+      assert(c.durationMs === null || (Number.isFinite(c.durationMs) && c.durationMs >= 0));
+      assert.deepEqual(c.errors, []);
+      continue;
+    }
     assert.equal(c.retryCount, 0, 'Retried Vitest case');
     assert.equal(c.repeatCount, 0, 'Repeated Vitest case');
     assert.equal(c.expectedFailure, false, 'Inverted Vitest outcome');

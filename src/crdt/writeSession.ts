@@ -301,6 +301,16 @@ export function retireSlotWriters(slotId: string) {
   channel.close();
 }
 
+/** Cooperative retirement also reaches coordinators which are between slot-owned operations. */
+export function onSlotRetirement(slotId: string, retire: () => void): () => void {
+  if (typeof window === 'undefined' || typeof BroadcastChannel === 'undefined') return () => {};
+  const channel = new BroadcastChannel('done/slot-lifecycle');
+  channel.onmessage = (event) => {
+    if (event.data?.kind === 'retire' && event.data?.slotId === slotId) retire();
+  };
+  return () => channel.close();
+}
+
 /** Deletion needs coordination, never permission to decrypt or bypass an ordinary opening check. */
 export async function withDeviceRemovalSlot<T>(
   slotId: string,

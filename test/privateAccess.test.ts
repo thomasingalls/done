@@ -23,7 +23,8 @@ it('opens from the retained public pin offline without fetching or retaining ada
   vi.stubGlobal('fetch', fetch);
   await loadPackagedConfig();
   expect(fetch).toHaveBeenCalledTimes(1);
-  expect(localStorage.length).toBe(2);
+  expect(localStorage.length).toBe(3);
+  expect(localStorage.getItem('done.account-service.membership.v2')).toBe('0');
   fetch.mockRejectedValue(Error('offline'));
   const config = await loadPackagedConfig();
   expect(config?.pin).toEqual(pin);
@@ -126,10 +127,19 @@ it('retains session configuration without a bearer and opens it offline without 
   origin();
   const fetch = vi.fn().mockResolvedValue(response({ v: 2, pin, networkSessions: true }));
   vi.stubGlobal('fetch', fetch);
-  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
+  expect(await loadPackagedConfig()).toEqual({
+    pin,
+    networkSessions: true,
+    membershipContinuation: false,
+  });
   fetch.mockRejectedValue(new TypeError('offline'));
-  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
-  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(await loadPackagedConfig()).toEqual({
+    pin,
+    networkSessions: true,
+    membershipContinuation: false,
+  });
+  expect(fetch).toHaveBeenCalledTimes(2);
+  expect(fetch.mock.calls.every(([url]) => url === '/__account-setup/config')).toBe(true);
   expect(localStorage.getItem('done.account-service.transport.v1')).toBe('sessions');
 });
 it('upgrades an old pin-only locator offline without acquiring private access', async () => {
@@ -137,8 +147,13 @@ it('upgrades an old pin-only locator offline without acquiring private access', 
   localStorage.setItem('done.account-service.pin.v1', JSON.stringify(pin));
   const fetch = vi.fn().mockRejectedValue(new TypeError('offline'));
   vi.stubGlobal('fetch', fetch);
-  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
-  expect(fetch).not.toHaveBeenCalled();
+  expect(await loadPackagedConfig()).toEqual({
+    pin,
+    networkSessions: true,
+    membershipContinuation: false,
+  });
+  expect(fetch).toHaveBeenCalledTimes(1);
+  expect(fetch.mock.calls[0]![0]).toBe('/__account-setup/config');
 });
 it('a private fixture switching to sessions requires owner reopening instead of falling back', async () => {
   origin();
@@ -149,6 +164,10 @@ it('a private fixture switching to sessions requires owner reopening instead of 
   await expect(
     privateServiceFetch(pin, config.token!, '/account/delivery/submit', { method: 'POST' }),
   ).rejects.toThrow('Lock and reopen');
-  expect(await loadPackagedConfig()).toEqual({ pin, networkSessions: true });
+  expect(await loadPackagedConfig()).toEqual({
+    pin,
+    networkSessions: true,
+    membershipContinuation: false,
+  });
   expect(fetch.mock.calls.some(([url]) => String(url).endsWith('/access'))).toBe(false);
 });

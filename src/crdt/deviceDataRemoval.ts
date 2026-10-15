@@ -6,6 +6,38 @@ import { deriveStoreName } from './storeName';
 import { journalPrefix } from './journalCodec';
 import { retireSlotWriters, withDeviceRemovalSlot, type SessionTask } from './writeSession';
 import { stopStartup } from './startupState';
+import { withSetupMetadataLock, invalidateSetupEpoch } from '../account/setupMetadata';
+import { localClaimKey, parseLocalClaim } from './localGenesisRecord';
+import { importClaimKey } from './legacyImportState';
+import { cleanupComplete } from './legacyCleanupRecord';
+import { assertLegacySourceAbsent } from './legacyCleanupStorage';
+
+/** Refuse before erasure; the older plaintext source needs its verified exclusion/cleanup owner. */
+export class LegacyRemovalRequired extends Error {
+  constructor() {
+    super(
+      'Finish the verified legacy source cleanup before removing this workspace. Its saved data and cleanup progress have been kept.',
+    );
+  }
+}
+async function assertLegacyRemovalReady(task: SessionTask, slotId: string) {
+  const rows = await probeDatabase(task, CUSTODY_DB, (db) =>
+    readScopedRows(task, db, CUSTODY_STORE, [slotId]),
+  );
+  for (const row of rows ?? []) {
+    if (indexedDB.cmp(row.key, importClaimKey(slotId)) === 0) throw new LegacyRemovalRequired();
+    if (indexedDB.cmp(row.key, localClaimKey(slotId)) !== 0) continue;
+    const claim = parseLocalClaim(row.value, slotId);
+    if (claim.imported) {
+      if (!cleanupComplete(claim.sourceCleanup)) throw new LegacyRemovalRequired();
+      try {
+        await assertLegacySourceAbsent(task, claim.imported.sourceOrigin);
+      } catch {
+        throw new LegacyRemovalRequired();
+      }
+    }
+  }
+}
 
 export const removalKey = (slotId: string) => [slotId, 'device-data-removal-v1'];
 interface Removal {
@@ -42,9 +74,16 @@ export async function assertNoDeviceRemoval(task: SessionTask, slotId: string) {
 }
 async function save(task: SessionTask, r: Removal) {
   const found = await probeDatabase(task, CUSTODY_DB, (db) =>
-    contentTransaction<void>(db, task, [CUSTODY_STORE], 'readwrite', (tx) => {
-      tx.objectStore(CUSTODY_STORE).put(r, removalKey(r.slotId));
-    }),
+    contentTransaction<void>(
+      db,
+      task,
+      [CUSTODY_STORE],
+      'readwrite',
+      (tx) => {
+        tx.objectStore(CUSTODY_STORE).put(r, removalKey(r.slotId));
+      },
+      'strict',
+    ),
   );
   if (found === null) throw Error('Removal metadata is missing');
 }
@@ -71,153 +110,171 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
     'Closing this workspace in other tabs. If this waits, close those tabs to finish removal.',
   );
   retireSlotWriters(slotId);
-  await withDeviceRemovalSlot(slotId, async (task) => {
-    let r = await readDeviceRemoval(task, slotId);
-    if (!r) {
-      const names = new Set<string>(),
-        all = await slots(task),
-        slot = all.find((s) => s.id === slotId);
-      for (const s of slot?.stores ?? []) {
-        const expected = await task.wait(() => deriveStoreName(s.principal, s.workspace));
-        if (s.dbName !== expected) throw Error('Saved workspace routing is inconsistent');
-        names.add(expected);
-      }
-      const rows = await probeDatabase(task, CUSTODY_DB, (db) =>
-        readScopedRows(task, db, CUSTODY_STORE, [slotId]),
-      );
-      for (const row of rows ?? []) {
-        const value = row.value as {
-          slot_id?: string;
-          principal_id?: string;
-          workspace_id?: string;
-        };
-        if (
-          value?.slot_id === slotId &&
-          typeof value.principal_id === 'string' &&
-          typeof value.workspace_id === 'string'
-        )
-          names.add(
-            await task.wait(() => deriveStoreName(value.principal_id!, value.workspace_id!)),
+  await withDeviceRemovalSlot(slotId, (task) =>
+    task.wait(() =>
+      withSetupMetadataLock(slotId, async () => {
+        await assertLegacyRemovalReady(task, slotId);
+        let r = await readDeviceRemoval(task, slotId);
+        if (!r) {
+          const names = new Set<string>(),
+            all = await slots(task),
+            slot = all.find((s) => s.id === slotId);
+          for (const s of slot?.stores ?? []) {
+            const expected = await task.wait(() => deriveStoreName(s.principal, s.workspace));
+            if (s.dbName !== expected) throw Error('Saved workspace routing is inconsistent');
+            names.add(expected);
+          }
+          const rows = await probeDatabase(task, CUSTODY_DB, (db) =>
+            readScopedRows(task, db, CUSTODY_STORE, [slotId]),
           );
-      }
-      if (!rows?.length && !slot) throw Error('No saved data was found for this workspace');
-      r = {
-        v: 1,
-        kind: 'device-data-removal',
-        slotId,
-        databases: [...names].sort(),
-        phase: 'content',
-      };
-      await refuseShared(task, r);
-      await save(task, r);
-    }
-    await refuseShared(task, r);
-    if (r.phase === 'content') {
-      progress?.('Removing encrypted local data…');
-      for (const name of r.databases)
-        await task.wait(
-          () =>
-            new Promise<void>((resolve, reject) => {
-              const request = indexedDB.deleteDatabase(name);
-              request.onblocked = () =>
-                progress?.('Close other tabs using this workspace to finish removal.');
-              request.onsuccess = () => resolve();
-              request.onerror = () => reject(request.error);
-            }),
-        );
-      r = { ...r, phase: 'journal' };
-      await save(task, r);
-    }
-    if (r.phase === 'journal') {
-      task.step(() => {
-        const prefixes = r!.databases.map(journalPrefix);
-        for (const key of Object.keys(localStorage))
-          if (prefixes.some((prefix) => key.startsWith(prefix))) localStorage.removeItem(key);
-      });
-      r = { ...r, phase: 'metadata' };
-      await save(task, r);
-    }
-    if (r.phase === 'metadata') {
-      // Keep the intent until every independent metadata carrier has completed.
-      await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
-        contentTransaction<void>(db, task, ['attempt'], 'readwrite', (tx) => {
-          tx.objectStore('attempt').delete(slotId === 'local' ? 'current' : slotId);
-        }),
-      );
-      await probeDatabase(task, 'done.slots', (db) =>
-        contentTransaction<void>(db, task, ['slots'], 'readwrite', (tx) => {
-          tx.objectStore('slots').delete(slotId);
-        }),
-      );
-      await probeDatabase(task, 'done.account-login.v1', (db) =>
-        contentTransaction<void>(
-          db,
-          task,
-          ['slots', 'outbox'],
-          'readwrite',
-          (tx, _result, guard) => {
-            tx.objectStore('slots').delete(slotId);
-            const cursor = tx.objectStore('outbox').openCursor();
-            cursor.onsuccess = () =>
-              guard(() => {
-                const row = cursor.result;
-                if (!row) return;
-                if (typeof row.key === 'string') {
-                  let key: unknown;
-                  try {
-                    key = JSON.parse(row.key);
-                  } catch {
-                    /* unrelated outbox record */
-                  }
-                  if (Array.isArray(key) && key[0] === slotId) row.delete();
-                }
-                row.continue();
-              });
-          },
-        ),
-      );
-      task.step(() => {
-        for (const key of Object.keys(localStorage)) {
-          if (key.startsWith('done.pending-device.') && localStorage.getItem(key) === slotId)
-            localStorage.removeItem(key);
-          if (key === 'done.lost-recovery.' + slotId) localStorage.removeItem(key);
+          for (const row of rows ?? []) {
+            const value = row.value as {
+              slot_id?: string;
+              principal_id?: string;
+              workspace_id?: string;
+            };
+            if (
+              value?.slot_id === slotId &&
+              typeof value.principal_id === 'string' &&
+              typeof value.workspace_id === 'string'
+            )
+              names.add(
+                await task.wait(() => deriveStoreName(value.principal_id!, value.workspace_id!)),
+              );
+          }
+          if (!rows?.length && !slot) throw Error('No saved data was found for this workspace');
+          r = {
+            v: 1,
+            kind: 'device-data-removal',
+            slotId,
+            databases: [...names].sort(),
+            phase: 'content',
+          };
+          await refuseShared(task, r);
+          await save(task, r);
         }
-      });
-      r = { ...r, phase: 'removed' };
-      await probeDatabase(task, CUSTODY_DB, (db) =>
-        contentTransaction<void>(db, task, [CUSTODY_STORE], 'readwrite', (tx, _result, guard) => {
-          const store = tx.objectStore(CUSTODY_STORE),
-            cursor = store.openCursor(IDBKeyRange.lowerBound([slotId]));
-          cursor.onsuccess = () =>
-            guard(() => {
-              const row = cursor.result;
-              if (row && Array.isArray(row.key) && row.key[0] === slotId) {
-                row.delete();
-                row.continue();
-              } else store.put(r, removalKey(slotId));
-            });
-        }),
-      );
-    }
-  });
+        await refuseShared(task, r);
+        await task.wait(() => invalidateSetupEpoch(slotId));
+        if (r.phase === 'content') {
+          progress?.('Removing encrypted local data…');
+          for (const name of r.databases)
+            await task.wait(
+              () =>
+                new Promise<void>((resolve, reject) => {
+                  const request = indexedDB.deleteDatabase(name);
+                  request.onblocked = () =>
+                    progress?.('Close other tabs using this workspace to finish removal.');
+                  request.onsuccess = () => resolve();
+                  request.onerror = () => reject(request.error);
+                }),
+            );
+          r = { ...r, phase: 'journal' };
+          await save(task, r);
+        }
+        if (r.phase === 'journal') {
+          task.step(() => {
+            const prefixes = r!.databases.map(journalPrefix);
+            for (const key of Object.keys(localStorage))
+              if (prefixes.some((prefix) => key.startsWith(prefix))) localStorage.removeItem(key);
+          });
+          r = { ...r, phase: 'metadata' };
+          await save(task, r);
+        }
+        if (r.phase === 'metadata') {
+          // Keep the intent until every independent metadata carrier has completed.
+          await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
+            contentTransaction<void>(db, task, ['attempt'], 'readwrite', (tx) => {
+              tx.objectStore('attempt').delete(slotId === 'local' ? 'current' : slotId);
+            }),
+          );
+          await probeDatabase(task, 'done.slots', (db) =>
+            contentTransaction<void>(db, task, ['slots'], 'readwrite', (tx) => {
+              tx.objectStore('slots').delete(slotId);
+            }),
+          );
+          await probeDatabase(task, 'done.account-login.v1', (db) =>
+            contentTransaction<void>(
+              db,
+              task,
+              ['slots', 'outbox'],
+              'readwrite',
+              (tx, _result, guard) => {
+                tx.objectStore('slots').delete(slotId);
+                const cursor = tx.objectStore('outbox').openCursor();
+                cursor.onsuccess = () =>
+                  guard(() => {
+                    const row = cursor.result;
+                    if (!row) return;
+                    if (typeof row.key === 'string') {
+                      let key: unknown;
+                      try {
+                        key = JSON.parse(row.key);
+                      } catch {
+                        /* unrelated outbox record */
+                      }
+                      if (Array.isArray(key) && key[0] === slotId) row.delete();
+                    }
+                    row.continue();
+                  });
+              },
+            ),
+          );
+          task.step(() => {
+            for (const key of Object.keys(localStorage)) {
+              if (key.startsWith('done.pending-device.') && localStorage.getItem(key) === slotId)
+                localStorage.removeItem(key);
+              if (key === 'done.lost-recovery.' + slotId) localStorage.removeItem(key);
+            }
+          });
+          r = { ...r, phase: 'removed' };
+          await probeDatabase(task, CUSTODY_DB, (db) =>
+            contentTransaction<void>(
+              db,
+              task,
+              [CUSTODY_STORE],
+              'readwrite',
+              (tx, _result, guard) => {
+                const store = tx.objectStore(CUSTODY_STORE),
+                  cursor = store.openCursor(IDBKeyRange.lowerBound([slotId]));
+                cursor.onsuccess = () =>
+                  guard(() => {
+                    const row = cursor.result;
+                    if (row && Array.isArray(row.key) && row.key[0] === slotId) {
+                      row.delete();
+                      row.continue();
+                    } else store.put(r, removalKey(slotId));
+                  });
+              },
+              'strict',
+            ),
+          );
+        }
+      }),
+    ),
+  );
 }
 /** Explicit Start fresh acknowledgement. Never called by startup merely because data is absent. */
 export async function acknowledgeLocalRemoval(slotId: string) {
-  await withDeviceRemovalSlot(slotId, async (task) => {
-    const r = await readDeviceRemoval(task, slotId);
-    if (!r || r.phase !== 'removed') throw Error('Local removal is unfinished');
-    const rows = await probeDatabase(task, CUSTODY_DB, (db) =>
-      readScopedRows(task, db, CUSTODY_STORE, [slotId]),
-    );
-    if (rows?.length !== 1 || (await slots(task)).some((s) => s.id === slotId))
-      throw Error('Removed workspace still has metadata');
-    for (const name of r.databases)
-      if (await probeDatabase(task, name, async () => true))
-        throw Error('Removed content reappeared');
-    await probeDatabase(task, CUSTODY_DB, (db) =>
-      contentTransaction<void>(db, task, [CUSTODY_STORE], 'readwrite', (tx) => {
-        tx.objectStore(CUSTODY_STORE).delete(removalKey(slotId));
+  await withDeviceRemovalSlot(slotId, (task) =>
+    task.wait(() =>
+      withSetupMetadataLock(slotId, async () => {
+        const r = await readDeviceRemoval(task, slotId);
+        if (!r || r.phase !== 'removed') throw Error('Local removal is unfinished');
+        const rows = await probeDatabase(task, CUSTODY_DB, (db) =>
+          readScopedRows(task, db, CUSTODY_STORE, [slotId]),
+        );
+        if (rows?.length !== 1 || (await slots(task)).some((s) => s.id === slotId))
+          throw Error('Removed workspace still has metadata');
+        for (const name of r.databases)
+          if (await probeDatabase(task, name, async () => true))
+            throw Error('Removed content reappeared');
+        await task.wait(() => invalidateSetupEpoch(slotId));
+        await probeDatabase(task, CUSTODY_DB, (db) =>
+          contentTransaction<void>(db, task, [CUSTODY_STORE], 'readwrite', (tx) => {
+            tx.objectStore(CUSTODY_STORE).delete(removalKey(slotId));
+          }),
+        );
       }),
-    );
-  });
+    ),
+  );
 }

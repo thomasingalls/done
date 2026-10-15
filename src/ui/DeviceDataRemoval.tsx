@@ -4,6 +4,7 @@ import {
   acknowledgeLocalRemoval,
   readDeviceRemoval,
   removeDeviceData,
+  LegacyRemovalRequired,
 } from '../crdt/deviceDataRemoval';
 import { withDeviceRemovalSlot } from '../crdt/writeSession';
 import { probeDatabase, readRow } from '../crdt/startupStorage';
@@ -83,7 +84,7 @@ export function DeviceDataRemoval({
           ? cause.message
           : 'Removal could not finish. Your remaining local data has been kept.',
       );
-      setStep('resume');
+      setStep(cause instanceof LegacyRemovalRequired ? 'review' : 'resume');
     } finally {
       pending.current = false;
     }

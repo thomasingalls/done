@@ -60,6 +60,7 @@ const workerRuntime = (
   runInNewContext(source, {
     self: {
       location: { origin: 'https://app.invalid' },
+      clients: { matchAll: async () => [] },
       addEventListener: (
         name: string,
         fn: (event: { waitUntil(p: Promise<unknown>): void }) => void,

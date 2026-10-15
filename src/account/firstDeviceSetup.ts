@@ -20,7 +20,7 @@ import { preparePromotionGenesis } from '../crdt/promotionGenesis';
 import { admitLocalPromotion } from '../crdt/promotionAdmission';
 import { finishPromotionHandoff } from '../crdt/promotionHandoff';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
-import { withPromotionSlot } from '../crdt/writeSession';
+import { withPromotionSlot, onSlotRetirement } from '../crdt/writeSession';
 import { readPromotion } from '../crdt/promotionRecord';
 import { hex } from '../crdt/custodyCrypto';
 import type { LocalPasskey } from '../crdt/accountAccess';
@@ -28,11 +28,12 @@ import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 import { withRecoveryOwner } from './recoveryOwner';
 import { verifyPendingProof } from '../../account-protocol/preparation';
 import type { PromotionOpening } from './promotionOpening';
+import { SetupRetired } from './setupMetadata';
 
 import {
   SETUP_DB,
   progressKey,
-  setupProgress,
+  createSetupProgress,
   displayName,
   randomCapability,
   type SetupConfig,
@@ -58,7 +59,7 @@ export function createFirstDeviceSetup(
   takeInitialCode?: () => string | undefined,
 ) {
   progressKey(slotId);
-  const progress = (value?: Retained | null) => setupProgress(value, slotId);
+  const progress = createSetupProgress(slotId);
   const pin = parseAuthorityPin(input.pin);
   if (pin.origin !== location.origin || (!input.networkSessions && !isPrivateAccess(input.token)))
     throw Error('Account service configuration does not match this page');
@@ -334,6 +335,12 @@ export function createFirstDeviceSetup(
       })
       .catch((cause: unknown) => {
         if (lifetime.signal.aborted) return;
+        if (cause instanceof SetupRetired) {
+          saved = null;
+          code = '';
+          context = undefined;
+          draftName = undefined;
+        }
         if (fallback === 'unlock') code = '';
         const cancelled =
           cause instanceof DOMException && ['NotAllowedError', 'AbortError'].includes(cause.name);
@@ -341,7 +348,8 @@ export function createFirstDeviceSetup(
           kind: fallback,
           error: cancelled
             ? 'Passkey request cancelled. You can try again.'
-            : cause instanceof SetupNotice ||
+            : cause instanceof SetupRetired ||
+                cause instanceof SetupNotice ||
                 cause instanceof PrivateServiceUnavailable ||
                 cause instanceof RemovalPending
               ? cause.message
@@ -558,6 +566,7 @@ export function createFirstDeviceSetup(
   };
   const close = () => {
     if (closing) return closing;
+    stopRetirement();
     let lastName: string | undefined;
     try {
       lastName = displayName(
@@ -604,6 +613,9 @@ export function createFirstDeviceSetup(
     });
     return closing;
   };
+  const stopRetirement = onSlotRetirement(slotId, () => {
+    void close().catch(() => {});
+  });
   return {
     get networkLogin() {
       return networkLogin;

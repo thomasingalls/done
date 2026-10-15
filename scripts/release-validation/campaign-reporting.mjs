@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { reconcileVitest } from './vitest-adapter.mjs';
+import { vitestDisposition } from './vitest-dispositions.mjs';
 
 export const campaignReportFile = (name) => `case-reports/${name}.json`;
 export function createCampaignReporting(directory) {
@@ -109,7 +110,15 @@ export function reconcileCampaignTrace(expected, trace, nonce, directory, reconc
       assert.equal(step.kind, 'vitest');
       reconcileVitest(step.expect, report, childNonce);
     }
-    cases.push(...report.cases.map(({ id, outcome }) => ({ id, outcome })));
+    // A named framework skip remains not-applicable in the aggregate only
+    // after the child adapter has verified its exact identity and skip state.
+    cases.push(
+      ...report.cases.map(({ id, outcome }) =>
+        step.kind === 'vitest' && outcome === 'skipped'
+          ? { ...vitestDisposition(id) }
+          : { id, outcome },
+      ),
+    );
   }
   return { cases };
 }

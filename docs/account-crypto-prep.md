@@ -6,6 +6,22 @@ no runtime format, key, account, personal installation or deployment. **F-05/F-0
 
 ## 1. What the source census establishes
 
+**Inventory reconciliation 2026-10-15.** The current census contains 391 production sources,
+195 literal/template entries, 35 classification groups and 15 manual entrypoints. The counts below
+describe the historical preparation baseline. Newly inventoried session, client custody, content
+certification, membership, removal/rotation, replacement checkpoint, lost-device recovery, history,
+local baseline and automatic Local domains are explicitly **open**, alongside the three prior open
+groups. Versioned enrollment/ceremony domains expand only their parser-supported v1/v2 values;
+membership delivery/install expands v2/v3. Source-site refresh and source hashes establish inventory
+currency only. They grant no byte-contract, authority-map or supported-platform completion.
+
+The construction registry retains 78 specified contracts, four inherited groups outside Account
+acceptance and one group of non-cryptographic names. That last group now also names the setup-metadata
+lock, slot-retirement channel and fixed ledger-mismatch diagnostic; none enters a cryptographic
+primitive. All 13 open groups block `account:crypto-audit` at its unchanged zero-open prerequisite.
+The release execution manifest likewise retains unresolved obligations and refuses a complete release
+selection. No test/corpus exclusion or budget increase accompanies this reconciliation.
+
 [census.json](./account-crypto/census.json) pins 157 production TypeScript/TSX files in `src`,
 `account-protocol` and `account-service`, with 89 distinct literal/template entries at their source sites.
 [registry.json](./account-crypto/registry.json) classifies all of them into 22 groups, naming their

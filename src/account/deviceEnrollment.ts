@@ -650,6 +650,7 @@ export function createDeviceEnrollment(
             {
               assert: assertSlotPasskey(lifetime.signal),
               token: readingAccess(),
+              historyAvailable: () => config.membershipContinuation === true,
               signal: lifetime.signal,
               save: () => save(),
               request,

@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    name: Application build
+    name: Build and regression gates
     runs-on: ubuntu-24.04
     timeout-minutes: 20
 
@@ -51,6 +51,27 @@ jobs:
 
       - name: Build and check the application
         run: pnpm build
+
+      - name: Check security contracts and published vectors
+        run: pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify
+
+      - name: Check the complete release inventory
+        run: pnpm validation:inventory && node scripts/release-validation/plan.mjs
+
+      - name: Check release execution adapters
+        run: node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs
+
+      - name: Run all unit regression tests
+        run: pnpm test
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run onboarding and device-removal browser regressions
+        run: pnpm exec playwright test --config playwright.packaged-account.config.ts test/packaged-account/removal-regressions.spec.ts test/packaged-account/welcome.spec.ts
+
+      - name: Check security evidence traceability
+        run: pnpm trace:check
 
   quality:
     name: Full check (operator resumed)

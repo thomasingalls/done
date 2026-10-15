@@ -532,13 +532,13 @@ function inboundEvidence() {
     docs.forEach((d) => d.destroy());
   }
 }
-test('inbound preparation wrapper binds two exact invocations, 72 cases and both vector inputs', () => {
+test('inbound preparation wrapper binds two exact invocations, 73 cases and both vector inputs', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-inbound-prep');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 72);
+  assert.equal(s.expect.cases.length, 73);
   assert.equal(s.deadlineMs, 120000);
   assert.equal(s.fixture, undefined);
   assert.deepEqual(s.fileOutputs.required, inboundPrepReports);
@@ -846,13 +846,13 @@ function codecsEvidence(source) {
   }
   return r;
 }
-test('inbound codecs wrapper retains three exact commands, 114 cases and isolated preparation reports', () => {
+test('inbound codecs wrapper retains three exact commands, 118 cases and isolated preparation reports', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-inbound-codecs');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 114);
+  assert.equal(s.expect.cases.length, 118);
   assert.equal(s.expect.steps.length, 3);
   assert.equal(s.expect.steps[2].kind, 'exit');
   assert.equal(s.deadlineMs, 135000);
@@ -1174,13 +1174,13 @@ function receiveEvidence() {
     ledger.destroy();
   }
 }
-test('receive wrapper binds the unchanged property/native commands, 62 cases, browser and old marker reader', () => {
+test('receive wrapper binds the unchanged property/native commands, 68 cases, browser and old marker reader', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 62);
+  assert.equal(s.expect.cases.length, 68);
   assert.equal(s.deadlineMs, 360000);
   assert.equal(s.expect.steps[1].deadlineMs, 300000);
   assert.equal(s.expect.historyInputs[0].reference, '8378596');
@@ -1466,13 +1466,13 @@ function receiveEditorEvidence() {
   };
   return r;
 }
-test('receive-editor wrapper preserves three original commands, 151 cases and disposable browser without unused history', () => {
+test('receive-editor wrapper preserves three original commands, 299 cases and disposable browser without unused history', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive-editor');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 151);
+  assert.equal(s.expect.cases.length, 299);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [30000, 60000, 480000],
@@ -1535,11 +1535,12 @@ test('receive-editor trace requires typecheck exit and distinct exact property/n
       errors: [],
       cases: v.cases.map((c) => ({
         ...c,
+        outcome: c.outcome === 'not-applicable' ? 'skipped' : c.outcome,
         durationMs: 0,
         retryCount: 0,
         repeatCount: 0,
         expectedFailure: false,
-        mode: 'run',
+        mode: c.outcome === 'not-applicable' ? 'skip' : 'run',
         errors: [],
       })),
     },
@@ -1793,13 +1794,13 @@ function receiveTransportEvidence() {
     };
   return r;
 }
-test('receive-transport wrapper binds all five commands, 29 cases and inherited browser process ownership', () => {
+test('receive-transport wrapper binds all five commands, 30 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive-transport');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 29);
+  assert.equal(s.expect.cases.length, 30);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 120000, 90000, 330000],
@@ -2574,13 +2575,13 @@ function syncEvidence() {
   }
   return r;
 }
-test('sync wrapper binds all six commands, 52 cases and inherited browser process ownership', () => {
+test('sync wrapper binds all six commands, 81 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-sync');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 52);
+  assert.equal(s.expect.cases.length, 81);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 600000, 90000, 150000, 450000],

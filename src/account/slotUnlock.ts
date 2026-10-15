@@ -3,7 +3,7 @@ import {
   parseLostRecoveryContext,
   lostRecoveryAssertionMessage,
   type LostRecoveryContext,
-} from '../../account-protocol/lostDeviceRecovery';
+} from '../../account-protocol/lostDeviceRecovery.ts';
 import {
   sessionUnlockChallenge,
   type SessionUnlockContext,

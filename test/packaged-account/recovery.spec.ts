@@ -54,7 +54,9 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     const nextAuth = await restoreAuthenticator(next, passkeys);
     let assertionCount = 0;
     nextAuth.cdp.on('WebAuthn.credentialAsserted', () => assertionCount++);
-    await next.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+    await expect(next.locator('.shell')).toBeVisible();
+    await next.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await expect(next.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
     await next.getByRole('button', { name: 'Use another account', exact: true }).click();
     await next
       .getByRole('button', { name: 'Recover with a saved recovery code', exact: true })

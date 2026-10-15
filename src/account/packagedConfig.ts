@@ -1,6 +1,7 @@
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import type { SetupConfig } from './firstDeviceSetup';
 import type { PrivateAccess } from './privateAccess';
+import { isSetupEpoch } from './setupMetadata';
 
 const PIN_KEY = 'done.account-service.pin.v1';
 const MODE_KEY = 'done.account-service.transport.v1';
@@ -38,7 +39,7 @@ export async function hasSavedAccountEntry(): Promise<boolean> {
                     (row) =>
                       row?.unlockBinding || (typeof row?.id === 'string' && row.id !== 'local'),
                   )
-                : read.result.length > 0,
+                : read.result.some((row) => !isSetupEpoch(row)),
             );
           };
           tx.onabort = () => {

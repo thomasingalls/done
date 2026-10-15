@@ -1,7 +1,7 @@
 {
   "v": 1,
-  "baseCommit": "2ba50aa",
-  "status": "prep-open; inventory coverage is not authority-map or vector completion",
+  "baseCommit": "63da46001044b2e2ffb419671849b2fe500fabb2",
+  "status": "prep-open; current source classification is not authority-map, vector or platform qualification",
   "groups": [
     {
       "id": "authority-bootstrap",
@@ -104,7 +104,11 @@
       "authority": "eligible signing member at pinned epoch; raw SV/DS independently rederived from plaintext; digest alone is not coverage",
       "home": "docs/account-admission-bounds.md",
       "next": "A: explicit empty first-epoch vector; retain current v2 descriptor vectors",
-      "labels": ["done/cp-manifest/v2", "done/cp-admit/v2", "done/headvec/v1"],
+      "labels": [
+        "done/cp-manifest/v2",
+        "done/cp-admit/v2",
+        "done/headvec/v1"
+      ],
       "note": ""
     },
     {
@@ -113,7 +117,11 @@
       "authority": "K_g comes from factor-opened Local custody; HPKE base-mode recipient authority comes from authenticated candidate/recovery state",
       "home": "docs/account-admission.md",
       "next": "B/D: bridge runtime HPKE/checkpoint to published suite vectors",
-      "labels": ["done/gen-wrap/v1", "done/checkpoint/v1", "done/cp/v1"],
+      "labels": [
+        "done/gen-wrap/v1",
+        "done/checkpoint/v1",
+        "done/cp/v1"
+      ],
       "note": ""
     },
     {
@@ -122,7 +130,10 @@
       "authority": "K_auth binds actual registered passkey; offline assertion checks that pinned binding; signing credential ID is a different namespace",
       "home": "docs/account-handoff.md",
       "next": "A: reuse selected slot encodings, pin receipt-passkey dependency",
-      "labels": ["done/slotbind/v1", "done/slotunlock/v1"],
+      "labels": [
+        "done/slotbind/v1",
+        "done/slotunlock/v1"
+      ],
       "note": ""
     },
     {
@@ -161,7 +172,10 @@
       "authority": "device signing key certified at active root-pinned epoch; parent must be an owned issued closure",
       "home": "docs/account-decisions.md",
       "next": "C: wire/submission signing vectors and independent negative corpus",
-      "labels": ["done/envelope-submission/v1", "done/envelope-submission-wire/v1"],
+      "labels": [
+        "done/envelope-submission/v1",
+        "done/envelope-submission-wire/v1"
+      ],
       "note": ""
     },
     {
@@ -198,7 +212,9 @@
       "authority": "enclosed submission signature and service membership checks, not this frame label",
       "home": "docs/account-transport.md",
       "next": "C: document carrier versus signature and cover size/canonical decoding",
-      "labels": ["done/private-submit/v1"],
+      "labels": [
+        "done/private-submit/v1"
+      ],
       "note": ""
     },
     {
@@ -207,7 +223,10 @@
       "authority": "K_accept under pinned epoch; witness authenticates local census and never substitutes for an acceptance head",
       "home": "docs/account-service-delivery.md",
       "next": "C: witness/chain vectors and tamper/omission cases",
-      "labels": ["done/service-delivery-witness/v1", "done/service-delivery-chain/v1"],
+      "labels": [
+        "done/service-delivery-witness/v1",
+        "done/service-delivery-chain/v1"
+      ],
       "note": ""
     },
     {
@@ -289,7 +308,10 @@
       "labels": [
         "done/slot-writer/${JSON.stringify(slotId)}",
         "done/accepted-workspace/v1/",
-        "done/accepted-text/v1/"
+        "done/accepted-text/v1/",
+        "done/account-ledger-reference-mismatch",
+        "done/setup-metadata/",
+        "done/slot-lifecycle"
       ],
       "note": ""
     },
@@ -300,10 +322,11 @@
       "home": "docs/account-crypto/enrollment-preparation.md",
       "next": "Publish the enrollment authority-map/vector extension before release qualification; private preparation only.",
       "labels": [
-        "done/enrollment-preparation-assertion/v1",
-        "done/enrollment-preparation-challenge/v1",
-        "done/enrollment-preparation-possession/v1",
-        "done/enrollment-preparation-receipt/v1"
+        "done/enrollment-preparation-assertion/v${c.v}",
+        "done/enrollment-preparation-challenge/v${c.v}",
+        "done/enrollment-preparation-possession/v${c.v}",
+        "done/enrollment-preparation-receipt/v${body.v}",
+        "done/enrollment-and-session-assertion/v${c.v}"
       ],
       "note": "Focused backend tests are separate from the paused aggregate campaign."
     },
@@ -331,11 +354,199 @@
         "done/enroll/v1",
         "done/enroll-sas/v1",
         "done/enroll-wrap/v1",
-        "done/enrollment-ceremony-context/v1",
-        "done/enrollment-ceremony-commitment/v1",
-        "done/enrollment-ceremony-reveal/v1"
+        "done/enrollment-ceremony-context/v${c.v}",
+        "done/enrollment-ceremony-commitment/v${c.v}",
+        "done/enrollment-ceremony-reveal/v${r.v}",
+        "done/enrollment-ceremony-bootstrap/v1",
+        "done/enrollment-ceremony-invitation/v1",
+        "done/enrollment-ceremony-relay/v${body.v}"
       ],
       "note": "Row-11 vectors unchanged. Signed exchange and ordering model implemented; model saves do not establish native persistence or human approval."
+    },
+    {
+      "id": "network-session-custody",
+      "kind": "Operator-wrapped session issuance, factor-opened client login carrier, purpose-bound assertions and scoped grants",
+      "authority": "Operator session custody authorizes network availability only; retained local binding and external-factor custody independently gate local opening. A session or scoped grant is not content authority.",
+      "home": "docs/account-session-client.md",
+      "next": "Publish exact session custody/carrier, combined-challenge and scoped-grant byte contracts and resolve authority entries; retain absolute deadlines and cold-unlock controls.",
+      "labels": [
+        "done/account-login-carrier/v1",
+        "done/account-session-and-slot-unlock/v1",
+        "done/account-session-issuance/v1",
+        "done/account-session-key-check/v1",
+        "done/account-session-login/v1",
+        "done/scoped-network-grant/v1",
+        "done/session-custody-key-check/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "account-client-custody",
+      "kind": "Purpose-separated client custody and metadata authentication",
+      "authority": "Scope-bound factor-opened root seals creation/signing material, approval/rotation/history state and installed generation keys; a persisted carrier is not recipient certification.",
+      "home": "docs/account-content-delivery-development.md",
+      "next": "Specify each KDF/AAD/MAC purpose and complete retained-reference/seal-budget and protected-profile qualification across current and future receiving keys.",
+      "labels": [
+        "done/certified-account-device/v1",
+        "done/content-approval-state/v1",
+        "done/content-rotation-state/v1",
+        "done/custody-creation-seed/v1",
+        "done/history-maintenance-state/v1",
+        "done/installed-content-key/v1",
+        "done/installed-rotation-key/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "content-certification",
+      "kind": "Signed content delivery, installation, certification epoch and checkpoint request",
+      "authority": "Exact human ceremony and parent-certified member signatures license recipients; service admission and signed availability responses alone do not license key delivery.",
+      "home": "docs/account-content-delivery-development.md",
+      "next": "Publish delivery/certification/checkpoint-request byte contracts and map recipient keys through the verified parent and exact ceremony; retain input-mutation and installation controls.",
+      "labels": [
+        "done/checkpoint-request/v1",
+        "done/content-key-delivery/v1",
+        "done/content-key-installed/v1",
+        "done/content-transfer/v1",
+        "done/device-certification-epoch/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "membership-successors",
+      "kind": "Versioned membership epochs, locator proofs, recipient certificates and delivery/install/transfer messages",
+      "authority": "Service signatures serialize availability; client-certified parent keys and exact approval context determine recipients. Discovery or historical continuity is not current eligibility or local key installation.",
+      "home": "docs/account-device-removal.md",
+      "next": "Publish v2/v3 membership and delivery byte contracts and authority-map chains; qualify cancellation/rotation and historical-versus-current eligibility without rebasing human approvals.",
+      "labels": [
+        "done/device-membership-admission/v2",
+        "done/device-membership-cancellation/v2",
+        "done/device-membership-certification/v2",
+        "done/device-membership-rotation/v2",
+        "done/membership-bootstrap/v2",
+        "done/membership-cancellation-request/v2",
+        "done/membership-checkpoint-read/v2",
+        "done/membership-discovery-request/v2",
+        "done/membership-discovery/v2",
+        "done/membership-invitation/v2",
+        "done/membership-key-delivery/v${body.v}",
+        "done/membership-key-installed/v${body.v}",
+        "done/membership-key-transfer/v2",
+        "done/membership-recipient-certificate/v2"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "device-removal-rotation",
+      "kind": "Removal preparation/discovery, rotation intent, distribution payload and outgoing transition",
+      "authority": "Verified current membership, client-authorized recipient distribution and exact accepted cutoff remain separate from service serialization and target-stream fencing.",
+      "home": "docs/account-device-removal.md",
+      "next": "Publish exact removal/rotation transcript encodings, map all verifying/signing keys and qualify interruption, target fencing and complete opener references.",
+      "labels": [
+        "done/removal-discovery-request/v1",
+        "done/removal-discovery/v1",
+        "done/removal-preparation-request/v1",
+        "done/removal-preparation/v1",
+        "done/transition-out/v1",
+        "done/transition-payload/v1",
+        "done/transition/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "replacement-checkpoints",
+      "kind": "Replacement snapshot key, AEAD context, signed manifest/admission and transfer",
+      "authority": "Authenticated generation keys and independently rederived coverage/cuts authorize replacement; signed ciphertext or a service response alone does not prove semantic coverage.",
+      "home": "docs/account-device-removal.md",
+      "next": "Publish replacement KDF/AAD/signature byte contracts and map admission authorities; qualify exact-cut replay, recipient install and old-opener retirement.",
+      "labels": [
+        "done/replacement-checkpoint-admission/v1",
+        "done/replacement-checkpoint-aead/v1",
+        "done/replacement-checkpoint-key/v1",
+        "done/replacement-checkpoint-transfer/v1",
+        "done/replacement-checkpoint/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "lost-device-recovery",
+      "kind": "Recovery preparation/assertion, nonce-bound head, read pages, factor bootstrap and successor",
+      "authority": "Factor-opened recovery signer and exact new-device possession authorize recovery. Service head/read signatures provide bounded first-contact availability, never an alternate content key or local factor bypass.",
+      "home": "docs/account-lost-device-recovery.md",
+      "next": "Publish complete lost-device/combined-session/recovery-successor byte contracts and authority chains, and qualify stale-head, replay, rotated-signer and local-install boundaries.",
+      "labels": [
+        "done/head-assert/v1",
+        "done/lost-device-recovery-assertion/v1",
+        "done/lost-device-recovery-challenge/v1",
+        "done/lost-device-recovery-page/v1",
+        "done/lost-device-recovery-possession/v1",
+        "done/lost-device-recovery-prepared/v1",
+        "done/lost-device-recovery-read/v1",
+        "done/recovery-and-session-assertion/v1",
+        "done/recovery-bootstrap/v1",
+        "done/recovery-checkpoint/v1",
+        "done/recovery-successor/v1",
+        "done/recovery-transition-intent/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "history-maintenance",
+      "kind": "History checkpoint custody/AEAD, signed exchange/admission, install carriers and pruned witnesses",
+      "authority": "Certified producer/receiver keys and independently replayed accepted-prefix/coverage checks license local installation and pruning. A catalog or service pruned witness is not semantic coverage.",
+      "home": "docs/account-history-management.md",
+      "next": "Publish history/pruned-proof byte contracts and map producers and completeness witnesses; qualify exact retirement cuts and offline replay through interrupted installation.",
+      "labels": [
+        "done/history-checkpoint-admission/v1",
+        "done/history-checkpoint-aead/v1",
+        "done/history-checkpoint-catalog/v1",
+        "done/history-checkpoint-key/v1",
+        "done/history-checkpoint-page/v1",
+        "done/history-checkpoint-request/v1",
+        "done/history-checkpoint/v1",
+        "done/history-install/v1",
+        "done/history-install/v2",
+        "done/service-pruned-accepted-decision/v1",
+        "done/service-pruned-history-checkpoint/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "account-local-baselines",
+      "kind": "Journal-era framing, authenticated local baseline/counter carriers, scope digest and upload census",
+      "authority": "Owner metadata authentication and exact accepted/source coverage bind local anchors; deterministic IDs, counter payloads and journal tags supply no independent acceptance authority.",
+      "home": "docs/account-local-baseline-anchoring.md",
+      "next": "Publish all supported draft baseline/era/carrier encodings and anchor authority chains; qualify counter/lifecycle continuity, source capture and stale-reader refusal.",
+      "labels": [
+        "done/account-journal/era-1\u0000",
+        "done/account-local-baseline-auth/draft-2\u0000",
+        "done/account-local-baseline-auth/draft-3\u0000",
+        "done/account-local-baseline/draft-2",
+        "done/account-local-baseline/draft-3",
+        "done/content-counter/local-baseline-draft-1",
+        "done/content-counter/local-baseline-draft-2",
+        "done/content-counter/local-baseline-draft-3",
+        "done/local-baseline-carrier/draft-1",
+        "done/local-baseline-carrier/draft-2",
+        "done/local-baseline-carrier/draft-3",
+        "done/local-baseline-scope/draft-2",
+        "done/upload-bootstrap-census/v1",
+        "done/upload-bootstrap/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+    },
+    {
+      "id": "automatic-local-protection",
+      "kind": "Browser-held automatic root seal, MAC-covered automatic claim and factor-authenticated protection transition",
+      "authority": "Fresh Local genesis binds browser-held automatic custody without copied-profile confidentiality. Protected Local/Account keep external-factor custody, and sync refuses automatic mode.",
+      "home": "docs/storage-contract.md",
+      "next": "Specify automatic AAD/claim/transition bytes and native interruption/profile qualification separately from protected custody; retain no-remint, no-downgrade and no-automatic-sync controls.",
+      "labels": [
+        "done/automatic-opening/v1",
+        "done/local-automatic-claim/v1",
+        "done/local-protection/v1"
+      ],
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
     }
   ],
   "templates": [
@@ -350,33 +561,138 @@
     },
     {
       "pattern": "done/legacy-cleanup-fingerprint/v${version}",
-      "values": ["done/legacy-cleanup-fingerprint/v1", "done/legacy-cleanup-fingerprint/v2"],
+      "values": [
+        "done/legacy-cleanup-fingerprint/v1",
+        "done/legacy-cleanup-fingerprint/v2"
+      ],
       "source": "src/crdt/legacyCleanupRecord.ts: CleanupVersion"
     },
     {
       "pattern": "done/env/v${h.v}",
-      "values": ["done/env/v1", "done/env/v2"],
+      "values": [
+        "done/env/v1",
+        "done/env/v2"
+      ],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/env-sig/v${h.v}",
-      "values": ["done/env-sig/v1", "done/env-sig/v2"],
+      "values": [
+        "done/env-sig/v1",
+        "done/env-sig/v2"
+      ],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/envelope-wire/v${e.v}",
-      "values": ["done/envelope-wire/v1", "done/envelope-wire/v2"],
+      "values": [
+        "done/envelope-wire/v1",
+        "done/envelope-wire/v2"
+      ],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/envelope-wire/v${version}",
-      "values": ["done/envelope-wire/v1", "done/envelope-wire/v2"],
+      "values": [
+        "done/envelope-wire/v1",
+        "done/envelope-wire/v2"
+      ],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/slot-writer/${JSON.stringify(slotId)}",
-      "values": ["non-crypto: arbitrary validated slot name encoded as JSON"],
+      "values": [
+        "non-crypto: arbitrary validated slot name encoded as JSON"
+      ],
       "source": "src/crdt/writeSession.ts: slotLockName; no finite crypto-domain expansion"
+    },
+    {
+      "pattern": "done/enrollment-and-session-assertion/v${c.v}",
+      "values": [
+        "done/enrollment-and-session-assertion/v1",
+        "done/enrollment-and-session-assertion/v2"
+      ],
+      "source": "account-protocol/enrollment.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-ceremony-commitment/v${c.v}",
+      "values": [
+        "done/enrollment-ceremony-commitment/v1",
+        "done/enrollment-ceremony-commitment/v2"
+      ],
+      "source": "account-protocol/ceremonyExchange.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-ceremony-context/v${c.v}",
+      "values": [
+        "done/enrollment-ceremony-context/v1",
+        "done/enrollment-ceremony-context/v2"
+      ],
+      "source": "account-protocol/ceremonyExchange.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-ceremony-relay/v${body.v}",
+      "values": [
+        "done/enrollment-ceremony-relay/v1",
+        "done/enrollment-ceremony-relay/v2"
+      ],
+      "source": "account-protocol/ceremonyRelay.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-ceremony-reveal/v${r.v}",
+      "values": [
+        "done/enrollment-ceremony-reveal/v1",
+        "done/enrollment-ceremony-reveal/v2"
+      ],
+      "source": "account-protocol/ceremonyExchange.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-preparation-assertion/v${c.v}",
+      "values": [
+        "done/enrollment-preparation-assertion/v1",
+        "done/enrollment-preparation-assertion/v2"
+      ],
+      "source": "account-protocol/enrollment.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-preparation-challenge/v${c.v}",
+      "values": [
+        "done/enrollment-preparation-challenge/v1",
+        "done/enrollment-preparation-challenge/v2"
+      ],
+      "source": "account-protocol/enrollment.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-preparation-possession/v${c.v}",
+      "values": [
+        "done/enrollment-preparation-possession/v1",
+        "done/enrollment-preparation-possession/v2"
+      ],
+      "source": "account-protocol/enrollment.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/enrollment-preparation-receipt/v${body.v}",
+      "values": [
+        "done/enrollment-preparation-receipt/v1",
+        "done/enrollment-preparation-receipt/v2"
+      ],
+      "source": "account-protocol/enrollment.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/membership-key-delivery/v${body.v}",
+      "values": [
+        "done/membership-key-delivery/v2",
+        "done/membership-key-delivery/v3"
+      ],
+      "source": "account-protocol/membershipDelivery.ts: closed version union and parser; inventory expansion only"
+    },
+    {
+      "pattern": "done/membership-key-installed/v${body.v}",
+      "values": [
+        "done/membership-key-installed/v2",
+        "done/membership-key-installed/v3"
+      ],
+      "source": "account-protocol/membershipDelivery.ts: closed version union and parser; inventory expansion only"
     }
   ],
   "unlabelled": [

@@ -44,6 +44,9 @@ test('both certified devices edit, exchange concurrent offline writing, and reop
       'Stream writing before the second editor opens',
     );
     const submissions: string[] = [];
+    // Own-stream accepted proofs can settle a lost submit reply without resubmitting.
+    // Hold that independent recovery path out of this exact byte-retry schedule.
+    await second.route('**/account/delivery/read*', (route) => route.abort());
     let loseReply = true;
     await second.route('**/account/delivery/submit', async (route) => {
       submissions.push(route.request().postDataBuffer()!.toString('hex'));
@@ -59,6 +62,7 @@ test('both certified devices edit, exchange concurrent offline writing, and reop
     });
     await expect.poll(() => submissions.length, { timeout: 30000 }).toBeGreaterThan(1);
     expect(submissions[1]).toBe(submissions[0]);
+    await second.unroute('**/account/delivery/read*');
     await add(page, 'First device replies through the encrypted stream');
     await expect(second.locator('.shell')).toContainText(
       'First device replies through the encrypted stream',
@@ -563,13 +567,12 @@ test('root chooser resumes pending and approved connections; old attempts learn 
     const choose = async (workspaceId = workspace) => {
       await second.goto(new URL('/', first.link).href);
       await expect(
-        second.getByRole('heading', { name: 'Your Workspace', exact: true }),
+        second.getByRole('heading', { name: 'Choose an account', exact: true }),
       ).toBeVisible();
       await second.reload();
       await expect(
-        second.getByRole('heading', { name: 'Your Workspace', exact: true }),
+        second.getByRole('heading', { name: 'Choose an account', exact: true }),
       ).toBeVisible();
-      await second.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
       await second
         .getByRole('button', {
           name: `Resume device connection, workspace ${workspaceId}`,

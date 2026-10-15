@@ -197,6 +197,7 @@ export const createLocalStartup = (automaticFirstRun = false) => {
               }
             }
             if (
+              automaticFirstRun &&
               ['unlock-required', 'creation-pending'].includes(next.kind) &&
               next.reason !== 'local-protection-needs-unlock-code'
             ) {

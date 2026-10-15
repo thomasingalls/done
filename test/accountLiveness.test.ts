@@ -28,7 +28,9 @@ const events = source.entries
     const record = row(eventWire(e), 100 + i, 'heads');
     return { record, event: decodeInboundRecord(record.bytes) };
   });
-const census = { entries: events } as Parameters<typeof verifyInboundLedger>[0];
+const census = { entries: events, installations: [] } as unknown as Parameters<
+  typeof verifyInboundLedger
+>[0];
 
 it('unchanged event witness does not authorize missing content, including pending originals', async () => {
   const pending = new Y.Doc({ gc: false });
