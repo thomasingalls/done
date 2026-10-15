@@ -30,3 +30,6 @@ docs/account-conformance-runs/2026-10-15-receiver-compatibility/**
 
 # Immutable remaining-failure diagnostics, approval boundaries and original failed runs.
 docs/account-conformance-runs/2026-10-15-remaining-functional-failures/**
+
+# Immutable compiler-loader failures, cache-boundary controls and verified source/build pins.
+docs/account-conformance-runs/2026-10-15-compiler-loading/**

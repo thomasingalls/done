@@ -14804,3 +14804,48 @@ uncommitted. The original 85-command red baseline was not rerun as a whole. Loca
 no CI Node 24 or new Firefox/Bitwarden claim is made. Preview, protected user data and the other
 seat's `docs/progress.md` stay untouched. This outcome was appended before updating active packet
 status; no aggregate qualification, push, merge or deployment occurred.
+
+### Commit approved account fixtures and repair development compiler loading
+
+**Date:** 2026-10-15 · **Fixture commit:** signed `86e830c83e7d410443237a8bdeafc7d3f6e9663c`.
+
+The five previously approved account fixture corrections and their evidence were committed first;
+the SSH signature verifies and the working tree was clean afterward. The subsequent compiler
+repair remains uncommitted. No push, preview refresh, merge or deployment occurred.
+
+The root cause is a second React Compiler pass over optimized TanStack Router output when a dev
+cache is outside `node_modules`. It injects a named compiler-runtime import into a module where
+Vite intentionally skips ordinary-source CommonJS interop. Both new app-mount regressions fail
+before repair. Restricting Babel to a generic `src` path segment initially passes, then fails the
+new unrelated-`src` cache challenge. The final include filter anchors the actual application source
+directory. Compiler-generated application calls remain enabled; dependency versions, application,
+service, protocol and crypto source are unchanged.
+
+**Evidence.** Final browser checks pass all 15 cases without skips/retries: two new compiler/cold-and-
+warm-cache regressions, five existing private-migration walkthrough cases and eight unchanged
+packaged onboarding journeys. The regressions preserve writing through reload and server restart,
+compare retained optimizer metadata byte for byte, and exercise both ordinary and migration configs.
+The unit population passes all 151 files, with 1,779 passed cases and one existing named skip, using
+two workers and unchanged deadlines. Build/typecheck, required Yjs patch, origin isolation, scoped
+lint, new-test typecheck and format checks pass; initial JS is 231.6/350 kB. All 38 affected CI,
+inventory and census regressions pass. The normal CI job now invokes the new browser checks; the
+operator-resumed job remains byte-identical.
+
+**Existing-test boundary.** After the loader repair, an unchanged migration run passes three cases
+and times out twice at the old Local-editor `Device-lock code` locator. The initial Goals-related
+guess was corrected by the actual failure report; no Goals locator was changed. The operator
+explicitly approved exactly four Local-editor locator changes to `Unlock code`. Only those four
+lines in that one old file differ from the signed fixture commit. Migration/cleanup-dialog labels,
+all five tests, wrong-code checks, storage comparisons, recovery assertions and deadlines remain.
+The full corrected walkthrough then passes on the final configuration.
+
+The [bounded packet](account-conformance-runs/2026-10-15-compiler-loading/README.md) retains 59 hashed
+artifacts, source/build identities, original errors, failed first filter, successful reruns and exact
+approval proof. The first standalone TypeScript CLI attempt refused the repository config/file
+combination; the corrected `--ignoreConfig` check passes, and both logs are retained. The new browser
+family is required in inventory; its aggregate execution-adapter review remains blocked. Planning
+keeps 847 obligations and 306 unresolved obligations. This does not resume aggregate qualification,
+clear the broader red functional baseline or resolve default-worker timeouts. Local Node is 26.11.1;
+no CI Node 24 or new Firefox/Bitwarden walkthrough is claimed. Preview, backend, user data and the
+other seat's `docs/progress.md` stay untouched. This outcome was appended before advancing packet
+status; no push, merge or deployment occurred.

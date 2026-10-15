@@ -147,7 +147,7 @@ test('one-off pasted cleanup helper authenticates files and factor, removes sour
   await finishImport(page);
   const before = await census(page);
   await page.getByRole('button', { name: 'Open Local editor' }).click();
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   const master = page.locator('.goals .cm-content');
   await master.click();
@@ -193,7 +193,7 @@ test('one-off pasted cleanup helper authenticates files and factor, removes sour
   ).toEqual(modernJournals);
   await dialog.getByRole('button', { name: 'Close', exact: true }).click();
   await page.reload();
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await expect(page.locator('.goals .cm-content')).toContainText(
     'Later writing survives the cleanup helper',
@@ -242,7 +242,7 @@ test('saved files, renderer death, resumed selection and ordinary editor cold re
   expect(await census(reopened)).toEqual(before);
   await reopened.getByRole('button', { name: 'Open Local editor' }).click();
   await expect(reopened.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
-  await reopened.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await reopened.getByLabel('Unlock code', { exact: true }).fill(code);
   await reopened.getByRole('button', { name: 'Unlock', exact: true }).click();
   await expect(reopened.locator('.goals .cm-content')).toContainText('journal-only ✔');
   await reopened.getByLabel('Go to date', { exact: true }).fill('2026-01-02');
@@ -270,7 +270,7 @@ test('saved files, renderer death, resumed selection and ordinary editor cold re
   await reopened.getByRole('button', { name: 'Lock workspace' }).click();
   await expect(reopened.locator('.cm-editor')).toHaveCount(0);
   await reopened.reload();
-  await reopened.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await reopened.getByLabel('Unlock code', { exact: true }).fill(code);
   await reopened.getByRole('button', { name: 'Unlock', exact: true }).click();
   await expect(reopened.locator('.goals .cm-content')).toContainText('Later accepted edit');
   expect(await census(reopened)).toEqual(before);

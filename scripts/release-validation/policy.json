@@ -196,6 +196,7 @@
     "test/account-service-delivery/native.test.mjs": "Retired v8 HTTP client interoperability fixture; current service core/generated/controls/restart and v9 sync interoperability remain required."
   },
   "playwright": {
+    "test/compiler-loading": ["playwright.compiler-loading.config.ts"],
     "test/geometry": ["playwright.config.ts", "test:geometry"],
     "test/latency": ["playwright.latency.config.ts", "test:latency"],
     "test/local-app": [

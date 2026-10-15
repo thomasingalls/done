@@ -4631,3 +4631,25 @@ capability in memory when persistence is correctly refused. The new promoted-Loc
 explicitly proves its interlock and authenticated reopen. Original failed attempts, a mistaken
 separate-Account fixture, and pending old-fixture updates are retained in the
 [bounded packet](account-conformance-runs/2026-10-15-receiver-compatibility/README.md).
+
+## 2026-10-15 — Compile application source without recompiling optimizer output
+
+**Scope.** Repair development compiler loading after committing the separately approved account
+fixture updates. Preserve protected custody, authority checks and crypto formats. Existing tests
+still require explicit approval; publication and aggregate qualification remain paused.
+
+**Decision.** Anchor Babel's React Compiler include filter to this repository's actual `src/`
+directory, resolving the configuration URL and escaping path segments/separators. Keep the compiler
+preset and its ordinary dependency exclusions. Optimized dependencies must not be compiled again,
+including when their cache lives outside `node_modules` or under an unrelated directory named `src`.
+
+**Reason and evidence.** The traced optimized TanStack Router response gained a named compiler-runtime
+import after Babel processed it. Vite omits ordinary-source CommonJS interop inside optimizer output,
+whose compiler runtime exports a default. Explicit interop metadata alone did not fix that boundary.
+Both new browser regressions fail before repair. A first generic source-segment filter passes ordinary
+cache paths but fails both cases with an unrelated `src` cache path. The final anchored filter passes
+that challenge while actual application output still invokes the compiler runtime. Fresh and retained
+caches, identical retained optimizer metadata, Local writing, reload and server restart are exercised
+under both ordinary and private-migration configurations. No dependency upgrade or runtime shim is
+introduced. The [packet](account-conformance-runs/2026-10-15-compiler-loading/README.md) preserves those
+failures and the final evidence; broader release and default-worker timing obligations remain open.

@@ -1,0 +1,35 @@
+{
+  "fixtureCommit": "86e830c83e7d410443237a8bdeafc7d3f6e9663c",
+  "signatureVerified": true,
+  "baseline": "Both new browser cases fail at no mounted shell; embedded browser-error attachments retain the missing named compiler-runtime c export.",
+  "cause": "Babel recompiles optimized TanStack Router output when the cache is outside node_modules; Vite does not apply ordinary source CJS interop inside optimized output.",
+  "refinement": "A generic src-segment filter first passes ordinary cache paths, then fails both tests with an unrelated src cache directory. The final filter anchors the actual repository source directory.",
+  "compiler": "Enabled in application source and asserted active; React/runtime dependency versions, custody, authority and crypto source/bytes are unchanged.",
+  "finalBrowsers": {
+    "compiler": "2 passed, zero skips/retries; fresh and byte-identical retained optimizer metadata, reload and server restart writing",
+    "privateMigration": "5 passed, zero skips/retries; exact approved four-line locator update",
+    "packagedOnboarding": "8 passed, zero skips/retries on the final build"
+  },
+  "unit": "151 files passed; 1779 cases passed and one existing named skip; maxWorkers=2, no deadline changes",
+  "runner": "38 inventory/CI/census regressions passed; final snapshot checks pass",
+  "build": "Typecheck, required Yjs patch, bundle, origin and size checks passed; initial JS 231.6/350 kB",
+  "inconvenientResults": [
+    "Initial interop-only override fails; retained from preceding packet and current trace.",
+    "First broad source-path candidate fails the deliberately misleading src cache path.",
+    "Unchanged migration run after loader repair: 3 passes, 2 timeouts at old Device-lock code locators; retained before approved correction.",
+    "Initial standalone TypeScript CLI check refused TS5112; corrected --ignoreConfig invocation passes."
+  ],
+  "planning": {
+    "obligations": 847,
+    "unresolved": 306,
+    "newFamily": "Required and still blocked pending reviewed runtime denominator/process ownership adapter",
+    "aggregate": "paused"
+  },
+  "limitations": [
+    "Local Node 26.11.1; CI Node 24 not run.",
+    "No new Firefox/Bitwarden walkthrough or complete 85-command suite rerun.",
+    "Default-worker unit timeout issue remains open.",
+    "Compiler fix/regressions and four approved locator changes remain uncommitted.",
+    "Preview/backend/user data unchanged; no push, merge or deployment."
+  ]
+}

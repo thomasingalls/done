@@ -21,6 +21,7 @@ pnpm vectors:coverage  # just the AAD coverage half of the above
 pnpm check          # typecheck, vectors, document checks, traceability, WASM, unit and geometry tests
 pnpm test           # unit tests
 pnpm test:geometry  # layout, line-height and pixel-identity tests, needs a browser
+pnpm exec playwright test --config playwright.compiler-loading.config.ts # dev compiler and cache restart regressions
 pnpm test:latency   # TRD §12's latency budgets, measured; not part of `pnpm check`
 pnpm test:https     # production build, service worker, offline shell and real WSS proxy
 ```
@@ -174,5 +175,9 @@ changes.
 
 React Compiler is enabled in Vite through `@vitejs/plugin-react`'s
 `reactCompilerPreset()` and `@rolldown/plugin-babel`. React 19 is already in use,
-so no runtime shim is needed. It has one consequence worth knowing about before
+so no runtime shim is needed. Babel's include filter limits compilation to source files under
+`src`; optimized dependencies must not be compiled again when a rehearsal or test cache lives
+outside `node_modules`. The compiler-loading browser regressions exercise both the ordinary and
+private-migration configurations with fresh and retained caches, verify compilation remains active,
+and retain Local writing through reload and dev-server restart. It has one consequence worth knowing about before
 writing a component here — see "reading the document" below.

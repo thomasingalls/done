@@ -4,8 +4,11 @@
 `6eeb7d5f300bca252f32823e9be2be1b0546f25d` is committed and its SSH signature verifies. It contains
 the [previous repair packet](../2026-10-15-receiver-compatibility/README.md), regressions and approved
 fixtures. The working tree was clean after that commit. The five subsequently approved fixture
-edits and this follow-up record remain uncommitted. No push, preview refresh, merge or deployment
-occurred. Aggregate qualification remains paused.
+edits and this record were then committed as signed `86e830c8`; its SSH signature verifies.
+The following [compiler-loading packet](../2026-10-15-compiler-loading/README.md) closes D3's bounded
+loader defect and records its separate approved locator update. The table below retains the triage
+checkpoint and its other open groups. No push, preview refresh, merge or deployment occurred.
+Aggregate qualification remains paused.
 
 ## Scope and evidence
 

@@ -1,0 +1,179 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 6e6834e0..f439df54 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -67,6 +67,9 @@ jobs:
+       - name: Install Playwright Chromium
+         run: pnpm exec playwright install --with-deps chromium
+ 
++      - name: Check development compiler loading with fresh and retained caches
++        run: pnpm exec playwright test --config playwright.compiler-loading.config.ts
++
+       - name: Run onboarding, account compatibility and device-removal browser regressions
+         run: >-
+           pnpm exec playwright test --config playwright.packaged-account.config.ts
+diff --git a/scripts/release-validation/policy.json b/scripts/release-validation/policy.json
+index a3d137a0..0764542a 100644
+--- a/scripts/release-validation/policy.json
++++ b/scripts/release-validation/policy.json
+@@ -196,6 +196,7 @@
+     "test/account-service-delivery/native.test.mjs": "Retired v8 HTTP client interoperability fixture; current service core/generated/controls/restart and v9 sync interoperability remain required."
+   },
+   "playwright": {
++    "test/compiler-loading": ["playwright.compiler-loading.config.ts"],
+     "test/geometry": ["playwright.config.ts", "test:geometry"],
+     "test/latency": ["playwright.latency.config.ts", "test:latency"],
+     "test/local-app": [
+diff --git a/vite.config.ts b/vite.config.ts
+index fbfab8c8..6ef291e3 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -1,5 +1,6 @@
+ import { execFileSync } from 'node:child_process';
+ import { readFileSync } from 'node:fs';
++import { fileURLToPath } from 'node:url';
+ import { defineConfig } from 'vitest/config';
+ import { loadEnv } from 'vite';
+ import { accountTextMode } from './src/crdt/accountTextMode.ts';
+@@ -9,6 +10,14 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+ import babel from '@rolldown/plugin-babel';
+ import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
+ 
++const applicationSourcePath = fileURLToPath(new URL('./src/', import.meta.url))
++  .split(/[/\\]/)
++  .map((segment) => segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
++  .join('[/\\\\]');
++const applicationSource = new RegExp(
++  `^${applicationSourcePath}.*\\.(?:[jt]sx?|[cm][jt]s)(?:$|\\?)`,
++);
++
+ const commitMetadata = (): { version: string; date: string } => {
+   // Container contexts exclude .git and all retained/private runtime data. Require
+   // explicit provenance there; a local candidate may identify its uncommitted tree.
+@@ -80,7 +89,15 @@ const relayProxy = () => {
+ };
+ 
+ export default defineConfig(({ mode }) => ({
+-  plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
++  plugins: [
++    react(),
++    babel({
++      // Optimizer caches outside node_modules must not be compiled a second time.
++      include: applicationSource,
++      presets: [reactCompilerPreset()],
++    }),
++    precacheServiceWorker(),
++  ],
+   define: {
+     // First ship compatible readers. Conversions remain a separate, explicit private opt-in.
+     ...Object.fromEntries(
+diff --git a/playwright.compiler-loading.config.ts b/playwright.compiler-loading.config.ts
+new file mode 100644
+index 00000000..1cb40ff9
+--- /dev/null
++++ b/playwright.compiler-loading.config.ts
+@@ -0,0 +1,18 @@
++import { defineConfig } from '@playwright/test';
++
++export default defineConfig({
++  testDir: './test/compiler-loading',
++  testMatch: '**/*.spec.ts',
++  outputDir: './test-results/compiler-loading/artifacts',
++  timeout: 60_000,
++  workers: 1,
++  retries: 0,
++  reporter: [['list'], ['json', { outputFile: 'test-results/compiler-loading/report.json' }]],
++  use: {
++    headless: true,
++    serviceWorkers: 'block',
++    ...(process.env['CHROMIUM_PATH']
++      ? { launchOptions: { executablePath: process.env['CHROMIUM_PATH'] } }
++      : {}),
++  },
++});
+diff --git a/test/compiler-loading/development.spec.ts b/test/compiler-loading/development.spec.ts
+new file mode 100644
+index 00000000..fa7cd087
+--- /dev/null
++++ b/test/compiler-loading/development.spec.ts
+@@ -0,0 +1,80 @@
++import { test } from '../release-validation/browser-fixture';
++import { expect, type Page, type TestInfo } from '@playwright/test';
++import { createServer } from 'vite';
++import { resolve } from 'node:path';
++import { readFile } from 'node:fs/promises';
++
++async function development(page: Page, info: TestInfo, configFile: string) {
++  const cacheDir = info.outputPath('src', 'optimizer-cache');
++  const errors: string[] = [];
++  page.on('pageerror', (error) => errors.push(error.message));
++  let port = 0;
++  let retainedMetadata: string | undefined;
++  try {
++    for (const phase of ['fresh', 'retained']) {
++      const server = await createServer({
++        configFile: resolve(configFile),
++        // A cache outside node_modules must not become application compiler input.
++        cacheDir,
++        server: { host: '127.0.0.1', port, strictPort: true, open: false },
++        logLevel: 'error',
++      });
++      try {
++        await server.listen();
++        const origin = server.resolvedUrls!.local[0]!;
++        port = Number(new URL(origin).port);
++        const compiled = await server.transformRequest('/src/ui/LocalApp.tsx');
++        // Mounting by disabling the compiler would not exercise the repaired boundary.
++        expect(compiled!.code).toMatch(/compiler[-_]runtime/);
++        expect(compiled!.code).toMatch(/\b_c\(/);
++        await page.goto(new URL('/local.html', origin).href);
++        await expect(page.locator('.shell')).toBeVisible();
++        const writing = 'Writing survives compiler cache restart';
++        if (phase === 'fresh') {
++          const input = page.locator('.day-panel[data-active=true] [placeholder="What got done?"]');
++          await input.fill(writing);
++          await input.press('Enter');
++        }
++        await expect(
++          page.locator('.day-panel[data-active=true] .card').filter({ hasText: writing }),
++        ).toHaveCount(1);
++        await page.reload();
++        await expect(page.locator('.shell')).toContainText(writing);
++        if (configFile === 'vite/privateMigration.config.ts') {
++          await page.goto(new URL('/private/migration.html', origin).href);
++          await expect(page.locator('[data-migration-phase]')).toHaveAttribute(
++            'data-migration-phase',
++            'host',
++          );
++        }
++        expect(errors).toEqual([]);
++        if (phase === 'retained')
++          expect(await readFile(resolve(cacheDir, 'deps/_metadata.json'), 'utf8')).toBe(
++            retainedMetadata,
++          );
++        // Keep same-origin writing while releasing the mounted owner and HMR connection.
++        await page.goto('about:blank');
++      } finally {
++        await server.close();
++      }
++      retainedMetadata = await readFile(resolve(cacheDir, 'deps/_metadata.json'), 'utf8');
++    }
++  } finally {
++    await info.attach('browser-errors', {
++      body: JSON.stringify(errors),
++      contentType: 'application/json',
++    });
++  }
++}
++
++test('ordinary development compiles application code and retains writing across cold and warm cache starts', async ({
++  page,
++}, info) => {
++  await development(page, info, 'vite.config.ts');
++});
++
++test('private migration development compiles application code and retains writing across cold and warm cache starts', async ({
++  page,
++}, info) => {
++  await development(page, info, 'vite/privateMigration.config.ts');
++});

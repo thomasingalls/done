@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 485,
-    "requiredTestFiles": 479,
+    "testFiles": 486,
+    "requiredTestFiles": 480,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9613,6 +9613,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/compiler-loading/development.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.compiler-loading.config.ts",
+        "packages": []
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/configDiscoveryCompatibility.test.ts",
       "status": "required",
       "invocation": {
@@ -14668,6 +14679,10 @@
       "sha256": "e8a0823848dbb877e338f05f0a2688b1c93f915a824891741b31096691768502"
     },
     {
+      "path": "playwright.compiler-loading.config.ts",
+      "sha256": "bd305b995d5a465fd628e55ac89c10e307b72e02a90e6f8768cafa88751b023b"
+    },
+    {
       "path": "playwright.config.ts",
       "sha256": "8e5c204e5afdc1c7313167412260d6a48692f3f1e7687327ffe2e884f241f826"
     },
@@ -15741,7 +15756,7 @@
     },
     {
       "path": "scripts/release-validation/policy.json",
-      "sha256": "8f9f0c3ee4e8fc718ca546501f5c88ac644f3d4659bcb32acf78431549d5f38a"
+      "sha256": "60fc2b3da18ee4f7ffdff931d583f83f598368146f5075e825df430d4f6e1b47"
     },
     {
       "path": "scripts/release-validation/process-group.mjs",
@@ -17708,6 +17723,10 @@
       "sha256": "de70742be0d8b63e3d3af6d84ae3671d8220d5cce35cd8c9b73cc5d2fd37303e"
     },
     {
+      "path": "test/compiler-loading/development.spec.ts",
+      "sha256": "8e28c6b2f2600294ac733913fa3f2f08ce69d4cb9b0c54c5754d01603cf3b776"
+    },
+    {
       "path": "test/configDiscoveryCompatibility.test.ts",
       "sha256": "a4a16b78e50a1a9a102308e580df81084e84455e046b8ca2d04124b34f982de4"
     },
@@ -18517,7 +18536,7 @@
     },
     {
       "path": "test/private-migration/rehearsal.spec.ts",
-      "sha256": "c8458897ef3a3f8bd29137ffc7925b92b265ebb8a7392432fef59324dfbe2c63"
+      "sha256": "151056d9f8d4c5f06853e8e66e21aae861ea6ad03b9cc38ccd212cfac76146eb"
     },
     {
       "path": "test/privateAccess.test.ts",
@@ -19149,7 +19168,7 @@
     },
     {
       "path": "vite.config.ts",
-      "sha256": "bbdfe8c848ab5745a133c5561220bcbe9a7b51a4d0fce5d2ac266dac4781f269"
+      "sha256": "f4a9e3e70e537b9a8bc278b317acf187f36ccd48259ff6527cad9546a0f0152e"
     },
     {
       "path": "vite/appUpgradeProperties.test.ts",
