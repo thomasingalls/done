@@ -1,0 +1,60 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { gzipSync } from 'node:zlib';
+
+const root = '<workspace>';
+const target = path.join(root, 'docs/account-conformance-runs/2026-10-15-multi-tab-setup/preview');
+const revision = 'fcb659c32116d8af27598bba2fade1ac49cdd0e2';
+const hash = b => crypto.createHash('sha256').update(b).digest('hex');
+const normalized = text => text.replaceAll(root, '<workspace>').replaceAll(process.env.HOME, '<home>')
+  .replace(/\b[A-Z0-9]{5}(?:-[A-Z0-9]{5}){4}\b/g, '<disposable-factor-redacted>');
+fs.mkdirSync(target, { recursive: true });
+const artifacts = [];
+function retain(file, name, compress = false) {
+  const original = fs.readFileSync(file);
+  const clean = Buffer.from(normalized(original.toString()));
+  const bytes = compress ? gzipSync(clean, { level: 9 }) : clean;
+  fs.writeFileSync(path.join(target, name), bytes);
+  artifacts.push({ path: name, source: path.basename(file), originalSha256: hash(original), normalizedSha256: hash(clean), retainedSha256: hash(bytes), retainedBytes: bytes.length });
+}
+for (const [source, name, compress] of [
+  ['done-recovery-isolation-signed-build.log', 'build.log.gz', true],
+  ['done-recovery-isolation-signed-build-pins.json', 'build-pins.json', false],
+  ['done-recovery-isolation-signed-browser.json', 'browser.json.gz', true],
+  ['done-recovery-isolation-signed-browser.stderr.log', 'browser.stderr.log.gz', true],
+  ['done-recovery-signed-commit-verification.log', 'signature.log', false],
+  ['done-recovery-preview-before-receipt.json', 'before.json', false],
+  ['done-recovery-preview-after-receipt.json', 'after.json', false],
+  ['done-recovery-preview-https-receipt.json', 'https.json', false],
+  ['done-recovery-preview-routes-before.json', 'routes-before.json', false],
+  ['done-recovery-preview-routes-after.json', 'routes-after.json', false],
+  ['done-recovery-preview-probe-initial.mjs', 'probe-initial.mjs.txt', false],
+  ['done-recovery-preview-probe.mjs', 'probe.mjs.txt', false],
+  ['done-collect-recovery-preview.mjs', 'collect.mjs.txt', false],
+]) retain('/private/tmp/' + source, name, compress);
+const checkpoint = {
+  source: revision,
+  signedCommitVerified: true,
+  previewVersion: revision.slice(0, 8),
+  origin: 'https://mbp.tail0e0d4.ts.net:8443',
+  backend: { pid: 52585, port: 53220, restarted: false },
+  frontend: { previousPid: 65262, port: 53219, immutableBuild: '.dev/preview-builds/fcb659c3' },
+  oldBuildRetained: '.dev/preview-builds/5afdd0ad',
+  rollback: 'Restart only the frontend on port 53219 with ACCOUNT_SETUP_DIST pointing at the retained 5afdd0ad build; keep the backend process/state and origin. Old readers cannot resume a foreign draft parked at the new retained key; returning to the repair resumes it. No encrypted writing or key format changed.',
+  evidence: { build: 'passed typecheck, Yjs patch, origin and 229.8/350 kB initial-JS budget', browser: { passed: 3, skipped: 0, failed: 0, retried: 0 }, unchangedTestedSourceHashes: 466, serviceConfigUnchanged: true, routesUnchanged: true, servedFilesMatchOverTrustedHTTPS: true },
+  failures: [
+    'First signed commit attempt failed because Secretive refused the operation. Staged changes were preserved; the operator authorized retry and the signed commit succeeded.',
+    'First preview probe included a source-map URL and received the expected 404 refusal. The corrected probe checks only public JS/HTML/service-worker files, with byte hashes verified through both the gateway and trusted HTTPS.',
+  ],
+  limits: [
+    'The actual Firefox-private Bitwarden walkthrough tested the same application sources before signing, at AccountSetupApp-D5oNpqnO.js. The signed rebuild has new build metadata and AccountSetupApp-BklTor6w.js; its three new packaged regressions pass. These are different build artifacts.',
+    'Serving the repair does not establish adoption by an already open service-worker-controlled client. The operator original workspace has not yet been retried on this version.',
+    'The broader full functional baseline remains red. Aggregate qualification, push, merge and production deployment remain paused.',
+  ],
+};
+fs.writeFileSync(path.join(target, 'checkpoint.json'), JSON.stringify(checkpoint, null, 2) + '\n');
+const checkpointBytes = fs.readFileSync(path.join(target, 'checkpoint.json'));
+artifacts.push({ path: 'checkpoint.json', retainedSha256: hash(checkpointBytes), retainedBytes: checkpointBytes.length });
+fs.writeFileSync(path.join(target, 'artifact-index.json'), JSON.stringify({ schema: 1, source: revision, collectedAt: new Date().toISOString(), artifacts }, null, 2) + '\n');
+console.log(JSON.stringify({ artifacts: artifacts.length, bytes: artifacts.reduce((n, e) => n + e.retainedBytes, 0) }));

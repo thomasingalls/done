@@ -1,6 +1,7 @@
 # Two-tab protection and setup investigation
 
-**Verified implementation, 2026-10-15; signed checkpoint follows.** The operator reported that preview `5afdd0ad` still failed in Firefox private
+**Signed repair and local preview checkpoint, 2026-10-15.** Runtime source
+`fcb659c32116d8af27598bba2fade1ac49cdd0e2` is signed and serves preview 8443. The operator reported that preview `5afdd0ad` still failed in Firefox private
 browsing with Bitwarden. Protecting an automatic Local list retires another open tab. That second
 tab subsequently accepts the generated code; the original setup tab rejects it even after the other
 tab is closed and the original is hard-reloaded. Passkey creation saves a Bitwarden item before the
@@ -99,8 +100,7 @@ refresh adds the metadata helper and updates five source hashes, with all 195 do
 no sources removed. The affected registry/gate rerun passes all 87 cases. Inventory/plan retain 843
 obligations and 303 unresolved obligations, including the two new browser files. Planning does not
 qualify them. The prior full functional run remains red; its other failures are not closed here.
-The operator's actual 8443 workspace has not yet been retried on this repair. Signing, preview
-refresh remain as the following publication checkpoint. The outcome was appended to
+The operator's actual 8443 workspace has not yet been retried on this repair. The repair outcome was appended to
 `docs/completed.md` before replacing this active state. [Artifact index](artifact-index.json)
 records the retained logs, source/build pins, reproduction patch and non-secret actual-provider
 observations. The [approved patch boundary](receipts/approved-old-test-boundary.json) independently
@@ -109,3 +109,25 @@ compares every changed old test/harness file with its exact human-approved patch
 These checks use local Node 26.11.1 and the installed dependency tree, with its existing pnpm
 patched-dependency warning retained in the logs. CI uses Node 24.18.0. The build's required Yjs patch
 check passes; these functional runs do not establish CI/platform or release qualification.
+
+## Signed source and local preview
+
+The first Secretive signing attempt failed without changing the staged patch. The operator authorized
+retry, and `fcb659c3` now has a verified SSH signature. Its immutable production rebuild passes all
+three new packaged cases without skips or retries. All 466 pinned source hashes still match the
+actual-provider candidate. Build metadata changed the setup asset to `AccountSetupApp-BklTor6w.js`;
+the actual-provider walkthrough above used `AccountSetupApp-D5oNpqnO.js` before signing.
+
+Only the frontend on 53219 was restarted. Preview
+`https://mbp.tail0e0d4.ts.net:8443` serves version `fcb659c3`; its four checked public-file hashes
+match the immutable build through the gateway and trusted HTTPS. Backend PID 52585 on 53220,
+public configuration and all Tailscale routes remain unchanged. The old `5afdd0ad` build is retained.
+The initial probe included a deliberately unavailable source-map URL and failed with 404; the
+corrected probe limits verification to public JS/HTML/service-worker files.
+
+The [preview receipt and rollback boundary](preview/checkpoint.json) and its separate
+[artifact index](preview/artifact-index.json) preserve the signed rebuild, three-case rerun,
+verification scripts and before/after observations. The preview outcome was appended to
+`docs/completed.md` before advancing this state. An already open cached client may still need the
+app's update action. Original-workspace retry and client adoption remain operator observations;
+the broader full suite remains red and general qualification stays paused.

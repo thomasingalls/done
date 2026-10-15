@@ -14664,3 +14664,26 @@ failed results, new regressions, actual-provider observations and limitations.
 deployment was authorized or performed. Existing protected custody, verifier rules and crypto byte
 formats remain unchanged. Signed commit and local preview refresh are the following publication
 checkpoint; the operator's actual original workspace retry remains their observation to establish.
+
+### Sign the recovery repair and refresh the local preview
+
+**Date:** 2026-10-15 · **Runtime source:** signed `fcb659c32116d8af27598bba2fade1ac49cdd0e2`.
+
+The first signing attempt was refused by Secretive; staged work remained intact. After the operator
+authorized retry, the commit succeeded and its SSH signature verified. The immutable rebuild passes
+typecheck, required Yjs patch, origin and size checks (229.8/350 kB initial JS). All three new packaged
+browser regressions pass on that exact artifact without skips or retries. All 466 application/test
+source hashes pinned during the actual Firefox-private/Bitwarden walkthrough remain identical;
+the signed rebuild has different build metadata and a different setup asset.
+
+Preview `https://mbp.tail0e0d4.ts.net:8443` now serves version `fcb659c3`. Only the frontend was
+restarted. Backend PID 52585 on 53220, public configuration and Tailscale routes are unchanged. Four
+public-file hashes match the immutable build through both the local gateway and trusted HTTPS.
+The first probe incorrectly included a source map and received the expected 404; its corrected
+public-file filter and that limitation are retained. The old immutable build remains available for
+frontend rollback, with retained-draft reader limitations recorded in the
+[preview checkpoint](account-conformance-runs/2026-10-15-multi-tab-setup/preview/checkpoint.json).
+
+This outcome was appended before advancing the packet's active publication state. The operator's
+original-workspace retry and any cached-client adoption remain unobserved. The broader full suite
+remains red; no push, merge, production deployment or aggregate release qualification occurred.

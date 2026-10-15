@@ -1,0 +1,40 @@
+{
+  "source": "fcb659c32116d8af27598bba2fade1ac49cdd0e2",
+  "signedCommitVerified": true,
+  "previewVersion": "fcb659c3",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "backend": {
+    "pid": 52585,
+    "port": 53220,
+    "restarted": false
+  },
+  "frontend": {
+    "previousPid": 65262,
+    "port": 53219,
+    "immutableBuild": ".dev/preview-builds/fcb659c3"
+  },
+  "oldBuildRetained": ".dev/preview-builds/5afdd0ad",
+  "rollback": "Restart only the frontend on port 53219 with ACCOUNT_SETUP_DIST pointing at the retained 5afdd0ad build; keep the backend process/state and origin. Old readers cannot resume a foreign draft parked at the new retained key; returning to the repair resumes it. No encrypted writing or key format changed.",
+  "evidence": {
+    "build": "passed typecheck, Yjs patch, origin and 229.8/350 kB initial-JS budget",
+    "browser": {
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0,
+      "retried": 0
+    },
+    "unchangedTestedSourceHashes": 466,
+    "serviceConfigUnchanged": true,
+    "routesUnchanged": true,
+    "servedFilesMatchOverTrustedHTTPS": true
+  },
+  "failures": [
+    "First signed commit attempt failed because Secretive refused the operation. Staged changes were preserved; the operator authorized retry and the signed commit succeeded.",
+    "First preview probe included a source-map URL and received the expected 404 refusal. The corrected probe checks only public JS/HTML/service-worker files, with byte hashes verified through both the gateway and trusted HTTPS."
+  ],
+  "limits": [
+    "The actual Firefox-private Bitwarden walkthrough tested the same application sources before signing, at AccountSetupApp-D5oNpqnO.js. The signed rebuild has new build metadata and AccountSetupApp-BklTor6w.js; its three new packaged regressions pass. These are different build artifacts.",
+    "Serving the repair does not establish adoption by an already open service-worker-controlled client. The operator original workspace has not yet been retried on this version.",
+    "The broader full functional baseline remains red. Aggregate qualification, push, merge and production deployment remain paused."
+  ]
+}

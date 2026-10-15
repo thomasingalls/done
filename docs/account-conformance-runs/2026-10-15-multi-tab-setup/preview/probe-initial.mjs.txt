@@ -1,0 +1,43 @@
+import fs from 'node:fs';
+import crypto from 'node:crypto';
+import http from 'node:http';
+
+const stage = process.argv[2];
+if (!['before', 'after'].includes(stage)) throw Error('Expected before or after');
+const origin = 'https://mbp.tail0e0d4.ts.net:8443';
+const hash = b => crypto.createHash('sha256').update(b).digest('hex');
+function request(port, path, post = false) {
+  return new Promise((resolve, reject) => {
+    const req = http.request({ hostname: '127.0.0.1', port, path, method: post ? 'POST' : 'GET', headers: { Host: new URL(origin).host, Origin: origin, ...(post ? { 'Content-Type': 'application/json', 'Content-Length': 2 } : {}) }, agent: false }, res => {
+      const chunks = [];
+      res.on('data', chunk => chunks.push(chunk));
+      res.on('error', reject);
+      res.on('end', () => {
+        if (res.statusCode !== 200) return reject(Error(`${port}${path}: ${res.statusCode}`));
+        resolve(Buffer.concat(chunks));
+      });
+    });
+    req.setTimeout(15000, () => req.destroy(Error('Probe timed out')));
+    req.on('error', reject);
+    req.end(post ? '{}' : undefined);
+  });
+}
+const config = await request(53219, '/__account-setup/config', true);
+const backend = await request(53220, '/__account-setup/config', true);
+if (!config.equals(backend)) throw Error('Gateway differs from independent backend configuration');
+const expected = fs.readFileSync('/private/tmp/done-recovery-preview-config-before.json');
+if (!config.equals(expected)) throw Error('Public configuration changed');
+const result = { stage, origin, observedAt: new Date().toISOString(), frontendPort: 53219, backendPort: 53220, configSha256: hash(config), publicConfigUnchanged: true, frontendMatchesIndependentBackend: true };
+if (stage === 'after') {
+  const pins = JSON.parse(fs.readFileSync('/private/tmp/done-recovery-isolation-signed-build-pins.json'));
+  const files = pins.files.filter(f => ['index.html', 'sw.js', 'version.json'].includes(f.path) || /^assets\/(AccountSetupApp-|main-|bootstrap-)/.test(f.path));
+  for (const f of files) {
+    const served = await request(53219, '/' + f.path);
+    if (hash(served) !== f.sha256) throw Error('Served artifact mismatch: ' + f.path);
+  }
+  result.source = pins.source;
+  result.version = pins.source.slice(0, 8);
+  result.servedFiles = files;
+}
+fs.writeFileSync(`/private/tmp/done-recovery-preview-${stage}-receipt.json`, JSON.stringify(result, null, 2) + '\n');
+console.log(JSON.stringify(result));
