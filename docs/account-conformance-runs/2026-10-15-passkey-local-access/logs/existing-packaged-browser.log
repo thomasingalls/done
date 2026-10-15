@@ -1,0 +1,19 @@
+
+Running 12 tests using 1 worker
+
+(node:57381) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/packaged-account/recovery.spec.ts:7:1 › packaged recovery resumes, detaches old devices and supports enrollment, rotation and recovery again (1.1m)
+  ✓   2 test/packaged-account/recovery.spec.ts:257:1 › a never-paired account recovers and admits its next device without an original handoff checkpoint (16.7s)
+  ✓   3 test/packaged-account/removal-regressions.spec.ts:6:3 › a delayed registration reply cannot recreate removed setup (2.9s)
+  ✓   4 test/packaged-account/removal-regressions.spec.ts:6:3 › a delayed registration reply cannot recreate removed setup after Start fresh (4.1s)
+  ✓   5 test/packaged-account/welcome.spec.ts:41:3 › first visit opens the full app and saves without credentials (desktop) (1.1s)
+  ✓   6 test/packaged-account/welcome.spec.ts:41:3 › first visit opens the full app and saves without credentials (mobile) (1.3s)
+  ✓   7 test/packaged-account/welcome.spec.ts:79:1 › protection is optional, retains the full list, and remains required on cold visits (2.5s)
+  ✓   8 test/packaged-account/welcome.spec.ts:111:1 › an account can be removed on a cold locked entry without service access or credentials, preserving its separate Local list (6.0s)
+  ✓   9 test/packaged-account/welcome.spec.ts:144:1 › sync adds required protection, preserves writing, and combines the final approval (4.9s)
+  ✓  10 test/packaged-account/welcome.spec.ts:199:1 › locked local data can be explicitly removed and startup waits for Start fresh (3.1s)
+  ✓  11 test/packaged-account/welcome.spec.ts:226:1 › protection retires another live tab and copies its acknowledged writing (3.1s)
+  ✓  12 test/packaged-account/welcome.spec.ts:250:1 › an interrupted protection transition resumes after reload with the saved code (1.9s)
+
+  12 passed (1.9m)

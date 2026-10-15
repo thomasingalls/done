@@ -1,3 +1,4 @@
+import { authenticationResponse } from './passkeyResponse';
 import { defaultDeviceName } from '../lib/browser';
 import {
   RECOVERY_HISTORY_PAGE_LIMIT,
@@ -122,7 +123,7 @@ export const recoveryPasskey = async (
   })) as PublicKeyCredential | null;
   signal.throwIfAborted();
   if (!credential) throw Error('Passkey request cancelled');
-  return credential.toJSON();
+  return authenticationResponse(credential);
 };
 /** No recovery code is retained. Actual death before confirm may restart these early steps. */
 export async function beginLostDeviceRecovery(

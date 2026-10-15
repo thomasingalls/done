@@ -60,6 +60,7 @@ export type SetupState = (
       kind:
         | 'intro'
         | 'unlock'
+        | 'resume-setup'
         | 'passkey'
         | 'confirm-passkey'
         | 'confirm-recovery'

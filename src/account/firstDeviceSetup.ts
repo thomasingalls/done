@@ -29,6 +29,7 @@ import { withRecoveryOwner } from './recoveryOwner';
 import { verifyPendingProof } from '../../account-protocol/preparation';
 import type { PromotionOpening } from './promotionOpening';
 import { SetupRetired } from './setupMetadata';
+import { registrationResponse, authenticationResponse } from './passkeyResponse';
 
 import {
   SETUP_DB,
@@ -52,6 +53,7 @@ export {
   type SetupState,
 } from './setupProgress';
 class SetupNotice extends Error {}
+class SetupContinuationNotice extends Error {}
 
 export function createFirstDeviceSetup(
   input: SetupConfig,
@@ -185,7 +187,7 @@ export function createFirstDeviceSetup(
     })) as PublicKeyCredential | null;
     guard();
     if (!credential) throw Error('Passkey request cancelled');
-    return credential.toJSON();
+    return authenticationResponse(credential);
   };
   const assertPasskey: LocalPasskey = async ({
     rpId,
@@ -341,14 +343,16 @@ export function createFirstDeviceSetup(
           context = undefined;
           draftName = undefined;
         }
-        if (fallback === 'unlock') code = '';
+        const continuation = cause instanceof SetupContinuationNotice;
+        if (fallback === 'unlock' && !continuation) code = '';
         const cancelled =
           cause instanceof DOMException && ['NotAllowedError', 'AbortError'].includes(cause.name);
         publish({
-          kind: fallback,
+          kind: continuation ? 'resume-setup' : fallback,
           error: cancelled
             ? 'Passkey request cancelled. You can try again.'
-            : cause instanceof SetupRetired ||
+            : continuation ||
+                cause instanceof SetupRetired ||
                 cause instanceof SetupNotice ||
                 cause instanceof PrivateServiceUnavailable ||
                 cause instanceof RemovalPending
@@ -559,10 +563,25 @@ export function createFirstDeviceSetup(
       }
       guard();
     }
-    if (saved.proof) return advanceRegistration(await request('finish', saved.proof));
-    await advanceRegistration(
-      await request('begin', { operation: 'register', retryKey: saved.retryKey }),
-    );
+    try {
+      if (saved.proof) return await advanceRegistration(await request('finish', saved.proof));
+      await advanceRegistration(
+        await request('begin', { operation: 'register', retryKey: saved.retryKey }),
+      );
+    } catch (cause) {
+      if (
+        cause instanceof SetupRetired ||
+        cause instanceof RemovalPending ||
+        lifetime.signal.aborted
+      )
+        throw cause;
+      throw new SetupContinuationNotice(
+        'Your unlock code was accepted, but account setup could not continue. ' +
+          (cause instanceof SetupNotice || cause instanceof PrivateServiceUnavailable
+            ? cause.message
+            : 'Try setup again, or return to your local workspace. Your writing has been kept.'),
+      );
+    }
   };
   const close = () => {
     if (closing) return closing;
@@ -676,6 +695,17 @@ export function createFirstDeviceSetup(
         if (saved?.fresh && !saved.view) {
           const disposition = await inspectLocalStartup(slotId, { signal: lifetime.signal });
           if (disposition.kind === 'fresh') return publish({ kind: 'intro' });
+        }
+        if (saved && !saved.connected) {
+          const transferred = takeHandoffCode?.();
+          takeHandoffCode = undefined;
+          if (transferred) {
+            code = transferred;
+            // The handoff is volatile input, not authority. Continuation rechecks the factor,
+            // current Local routing or the authenticated promotion before any further action.
+            await continueRegistration();
+            return;
+          }
         }
         if (networkLogin && saved) void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
         publish({ kind: saved ? 'unlock' : 'intro' });
@@ -811,7 +841,7 @@ export function createFirstDeviceSetup(
             })) as PublicKeyCredential | null;
             guard();
             if (!credential) throw Error('Passkey request cancelled');
-            response = credential.toJSON();
+            response = registrationResponse(credential);
           } else response = await assert(view.options);
           saved = {
             ...saved,
@@ -827,6 +857,10 @@ export function createFirstDeviceSetup(
           await advanceRegistration(await request('finish', saved.proof));
         },
       ),
+    resumeSetup: () =>
+      state.kind === 'resume-setup' && code
+        ? run('Continuing account setup…', 'unlock', continueRegistration)
+        : Promise.resolve(),
     savedRecovery: () => {
       if (state.kind === 'save-recovery') publish({ kind: 'confirm-recovery' });
     },

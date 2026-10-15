@@ -1,0 +1,33 @@
+
+Running 1 test using 1 worker
+
+(node:56214) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 test/packaged-account/passkey-local-access.spec.ts:42:3 › extension response with missing native JSON method completes verified account setup and cold reopen (45.0s)
+
+
+  1) test/packaged-account/passkey-local-access.spec.ts:42:3 › extension response with missing native JSON method completes verified account setup and cold reopen
+
+    Test timeout of 45000ms exceeded.
+
+    Error: locator.click: Test timeout of 45000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Use my passkey', exact: true })
+
+
+       at ../device-enrollment/helpers.ts:28
+
+      26 |   const auth = await authenticator(page);
+      27 |   await page.getByRole('button', { name: 'Create passkey', exact: true }).click();
+    > 28 |   await page.getByRole('button', { name: 'Use my passkey', exact: true }).click();
+         |                                                                           ^
+      29 |   const recovery = (await page.getByLabel('Generated recovery code').textContent())!;
+      30 |   await page.getByRole('button', { name: 'I saved my recovery code' }).click();
+      31 |   await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
+        at createdAccount (<workspace>/test/device-enrollment/helpers.ts:28:75)
+        at <workspace>/test/packaged-account/passkey-local-access.spec.ts:46:24
+
+    Error Context: ../../../../../../private/tmp/done-passkey-access-baseline-browser/passkey-local-access-exten-84bea-count-setup-and-cold-reopen/error-context.md
+
+  1 failed
+    test/packaged-account/passkey-local-access.spec.ts:42:3 › extension response with missing native JSON method completes verified account setup and cold reopen

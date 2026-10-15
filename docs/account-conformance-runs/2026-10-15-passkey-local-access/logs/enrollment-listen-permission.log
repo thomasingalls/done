@@ -1,0 +1,30 @@
+[WebServer] (node:61256) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:61256) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+[WebServer] (node:61256) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+[WebServer] (!) Failed to run dependency scan. Skipping dependency pre-bundling. Error: The server is being restarted or closed. Request is outdated
+[WebServer]     at throwClosedServerError (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:29955:30)
+[WebServer]     at EnvironmentPluginContainer.resolveId (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30090:65)
+[WebServer]     at async resolvePath (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30737:16)
+[WebServer]     at async Promise.all (index 0)
+[WebServer]     at async computeEntries (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30746:46)
+[WebServer]     at async scan (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30689:19)
+[WebServer]     at async file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:33703:15
+[WebServer] node:net:2368
+[WebServer]       const error = new UVExceptionWithHostPort(rval, 'listen', address, port);
+[WebServer]                     ^
+[WebServer]
+[WebServer] Error: listen EPERM: operation not permitted 127.0.0.1:53218
+[WebServer]     at Server.setupListenHandle [as _listen2] (node:net:2368:21)
+[WebServer]     at listenInCluster (node:net:2499:12)
+[WebServer]     at node:net:2728:7
+[WebServer]     at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
+[WebServer]   code: 'EPERM',
+[WebServer]   errno: -1,
+[WebServer]   syscall: 'listen',
+[WebServer]   address: '127.0.0.1',
+[WebServer]   port: 53218
+[WebServer] }
+[WebServer]
+[WebServer] Node.js v26.11.1
+Error: Process from config.webServer was not able to start. Exit code: 1

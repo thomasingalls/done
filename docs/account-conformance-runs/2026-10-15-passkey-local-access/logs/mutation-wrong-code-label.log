@@ -1,0 +1,59 @@
+
+ RUN  v4.1.10 /private/tmp/done-passkey-mutant-wrong-code-label
+
+ ❯ test/firstDeviceSetupAccess.test.ts (3 tests | 2 failed) 96ms
+   × distinguishes an accepted Local code from a later network setup failure and retries without another code 58ms
+   × rechecks a live Local handoff when resuming an existing setup instead of asking for its code again 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/firstDeviceSetupAccess.test.ts > distinguishes an accepted Local code from a later network setup failure and retries without another code
+AssertionError: expected { kind: 'unlock', …(6) } to match object { kind: 'resume-setup', …(1) }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "error": "Your unlock code was accepted, but account setup could not continue. Try setup again, or return to your local workspace. Your writing has been kept.",
+-   "kind": "resume-setup",
++   "kind": "unlock",
+  }
+
+ ❯ test/firstDeviceSetupAccess.test.ts:87:31
+     85|   await owner.unlock(code);
+     86|   expect(request).toHaveBeenCalledTimes(1);
+     87|   expect(owner.getSnapshot()).toMatchObject({
+       |                               ^
+     88|     kind: 'resume-setup',
+     89|     error: expect.stringContaining('unlock code was accepted'),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/firstDeviceSetupAccess.test.ts > rechecks a live Local handoff when resuming an existing setup instead of asking for its code again
+AssertionError: expected { kind: 'unlock', …(6) } to match object { kind: 'resume-setup' }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "kind": "resume-setup",
++   "kind": "unlock",
+  }
+
+ ❯ test/firstDeviceSetupAccess.test.ts:151:33
+    149|   expect(take).toHaveBeenCalledTimes(1);
+    150|   expect(request).toHaveBeenCalledTimes(1);
+    151|   expect(resumed.getSnapshot()).toMatchObject({ kind: 'resume-setup' }…
+       |                                 ^
+    152| });
+    153|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  2 failed | 7 passed (9)
+   Start at  10:38:43
+   Duration  1.54s (transform 1.01s, setup 62ms, import 1.29s, tests 99ms, environment 0ms)

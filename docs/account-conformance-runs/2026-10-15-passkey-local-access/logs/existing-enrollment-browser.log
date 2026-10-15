@@ -1,0 +1,23 @@
+[WebServer] (node:61343) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:61343) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+[WebServer] (node:61343) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+
+Running 12 tests using 1 worker
+
+(node:61349) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 test/device-enrollment/flow.spec.ts:3:1 › both certified devices edit, exchange concurrent offline writing, and reopen durably (37.3s)
+  ✓   2 test/device-enrollment/flow.spec.ts:152:1 › checkpoint retries preserve the source and refuse false coverage or an aborted receiver installation (22.9s)
+  ✓   3 test/device-enrollment/flow.spec.ts:281:1 › the approved second device can read through the preview delivery adapter using its own key (14.0s)
+  ✓   4 test/device-enrollment/flow.spec.ts:377:1 › content delivery resumes exact bytes after sender restart and receiver certifies only its saved installation (19.9s)
+  ✓   5 test/device-enrollment/flow.spec.ts:500:1 › failed local installation save sends no countersignature; a cold retry installs the same delivery (15.0s)
+  ✓   6 test/device-enrollment/flow.spec.ts:556:1 › root chooser resumes pending and approved connections; old attempts learn the invitation once without trusting route hints (23.9s)
+  ✓   7 test/device-enrollment/flow.spec.ts:692:1 › background checks keep invitation, focus and layout stable; a failed check remains visible and can be retried (12.0s)
+  ✓   8 test/device-enrollment/flow.spec.ts:755:1 › a comparison clicked during a background check waits and publishes exactly once (13.7s)
+  ✓   9 test/device-enrollment/flow.spec.ts:797:1 › a queued comparison rechecks peer cancellation instead of approving stale displayed state (12.2s)
+  ✓  10 test/device-enrollment/flow.spec.ts:833:1 › two independent profiles enroll and approve through real HTTP; both resume exact state after reload and a lost decision reply (15.7s)
+  ✓  11 test/device-enrollment/flow.spec.ts:882:1 › aborted comparison has no published result; a committed mismatch survives reopening without another guess (14.5s)
+  ✓  12 test/device-enrollment/flow.spec.ts:932:1 › browser Back locks and resumes both devices without replacing codes, cancelling attempts or replaying approval (16.6s)
+
+  12 passed (3.7m)

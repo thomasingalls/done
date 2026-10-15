@@ -4553,3 +4553,23 @@ The real owner continues using full history. This is a design selection plus cha
 not implementation of the new guards, permission to erase acknowledged work, product activation,
 or authorization to delete history. Preserve live undo, journal-before-apply and complete fresh
 authority checks; old/private readers need explicit format fences before new writers activate.
+
+### Bound the passkey repair by independent Local access and a real provider walkthrough
+
+**Date:** 2026-10-15 · **Commit:** pending after signed `42ebdd12` · **PRD/TRD:** v9/v8,
+with their 2026-10-14 onboarding amendments.
+
+**Orientation.** The operator reproduced failed passkey setup in Firefox private browsing with
+Bitwarden: the extension saved a credential, then setup failed and later local access appeared to
+reject the copied unlock code. Focused Chromium/virtual-authenticator success had not established
+this journey. The working tree is clean and the earlier product changes have signed boundaries,
+so the repository procedure can be adopted without rewriting their history or recertifying them.
+
+**Decision.** First repair passkey response compatibility and independent protected Local access.
+Establish counterexamples before implementation, retain existing verification and custody checks,
+add new regressions without editing old tests, and require an actual Firefox-private/Bitwarden
+walkthrough before calling the repair fixed. Record implementation, automated evidence and device
+observation separately in the [bounded packet](account-conformance-runs/2026-10-15-passkey-local-access/README.md).
+Do not relax CSP or authenticator verification to accommodate a provider. Retain the other seat's
+active checkpoint. Removal/migration UX and unissued-code routing are separate subsequent repairs;
+general qualification and publication stay paused.

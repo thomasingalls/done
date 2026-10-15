@@ -207,19 +207,21 @@ export function Setup({
             ? state.accountName
               ? `Unlock ${state.accountName}’s account`
               : 'Unlock your workspace'
-            : state.kind === 'name'
-              ? 'What should we call you?'
-              : state.kind === 'passkey'
-                ? 'Create your passkey'
-                : state.kind === 'confirm-passkey'
-                  ? 'Try your new passkey'
-                  : state.kind === 'save-recovery'
-                    ? 'Save your recovery code'
-                    : state.kind === 'confirm-recovery'
-                      ? 'Check your saved copy'
-                      : 'message' in state
-                        ? state.message
-                        : 'Account setup';
+            : state.kind === 'resume-setup'
+              ? 'Continue account setup'
+              : state.kind === 'name'
+                ? 'What should we call you?'
+                : state.kind === 'passkey'
+                  ? 'Create your passkey'
+                  : state.kind === 'confirm-passkey'
+                    ? 'Try your new passkey'
+                    : state.kind === 'save-recovery'
+                      ? 'Save your recovery code'
+                      : state.kind === 'confirm-recovery'
+                        ? 'Check your saved copy'
+                        : 'message' in state
+                          ? state.message
+                          : 'Account setup';
   return (
     <main className="local-startup workspace-gate account-setup" data-setup-state={state.kind}>
       <WorkspaceBackdrop />
@@ -343,6 +345,14 @@ export function Setup({
             />
           </>
         )}
+        {state.kind === 'resume-setup' && (
+          <>
+            <p>Your local code has been checked. Account setup needs another attempt.</p>
+            <button className="setup-primary" onClick={() => void owner.resumeSetup()}>
+              Retry account setup
+            </button>
+          </>
+        )}
         {state.kind === 'passkey' && (
           <>
             <p>Use your password manager, fingerprint, face, or device PIN to sign in to done.</p>
@@ -425,6 +435,11 @@ export function Setup({
           </p>
         )}
         {state.kind === 'unlock' && <RemoveFromDeviceButton slotId={slotId} />}
+        {slotId === 'local' && !state.returning && !['intro', 'working'].includes(state.kind) && (
+          <button className="local-secondary" onClick={() => leave(onBack)}>
+            Back to local workspace
+          </button>
+        )}
         {state.fresh && !['intro', 'unlock', 'working'].includes(state.kind) && (
           <button
             className="local-secondary"
@@ -444,6 +459,7 @@ export function Setup({
           state.error &&
           state.kind !== 'confirm-recovery' &&
           state.kind !== 'unlock' &&
+          state.kind !== 'resume-setup' &&
           state.kind !== 'confirm-device-code' &&
           state.kind !== 'name' && (
             <button

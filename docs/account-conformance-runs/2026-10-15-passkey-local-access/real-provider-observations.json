@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "date": "2026-10-15",
+  "kind": "Operator-assisted native Firefox UI observations; not a virtual-authenticator report",
+  "browser": "Firefox Developer Edition 158.0b2",
+  "provider": "Bitwarden 2026.9.3",
+  "mode": "private browsing",
+  "origin": "https://mbp.tail0e0d4.ts.net:8444",
+  "rpId": "mbp.tail0e0d4.ts.net",
+  "isolation": "Separate origin port, browser storage and disposable service state from the original 8443 preview. Same HTTPS hostname/relying party and packaged CSP.",
+  "credentialInputs": "Generated test codes stayed in live test memory and password fields. No factors, raw credential responses, vault data or private service files retained in this packet.",
+  "baseline": {
+    "source": "42ebdd12de0edcae7a5cd51bd44c3266e914bfcf",
+    "module": {
+      "asset": "/assets/AccountSetupApp-CCfstx_P.js",
+      "sha256": "10cf7712fcbe9bb49089c653f0ca672e79cc46fc7f836bc2a1e53dd6a06bdb38"
+    },
+    "create": "passed",
+    "confirm": "passed",
+    "diagnostic": {
+      "create": {
+        "returned": true,
+        "jsonMethod": "function",
+        "converted": true
+      },
+      "finishStatus": 200,
+      "get": {
+        "returned": true,
+        "jsonMethod": "function",
+        "converted": true
+      }
+    },
+    "originalReportedGenericFailure": "not reproduced"
+  },
+  "clientAdoption": {
+    "ordinaryReloadAfterServerSwitch": {
+      "module": "/assets/AccountSetupApp-CCfstx_P.js",
+      "controlledByServiceWorker": true,
+      "candidateAdopted": false
+    },
+    "localOpenWithOriginalCode": "passed; original writing visible",
+    "updateUI": "Update ready; Reload to update",
+    "explicitReloadToUpdate": {
+      "module": "/assets/AccountSetupApp-CZLK8i_E.js",
+      "controlledByServiceWorker": true,
+      "candidateAdopted": true
+    },
+    "resumedLiveHandoff": "Recovery confirmation shown without another unlock-code field"
+  },
+  "candidate": {
+    "module": {
+      "asset": "/assets/AccountSetupApp-CZLK8i_E.js",
+      "sha256": "cf395c72bfe901c5f28b9fac4e1e6b61807d9e4912b317ac9becd744f2a22f54"
+    },
+    "providerResponseModification": false,
+    "verifiedJourney": [
+      "Retire only disposable unconnected setup; keep original Local writing and factor",
+      "Create passkey with real Bitwarden; operator confirms replacement of disposable test key",
+      "Confirm new passkey with real Bitwarden",
+      "Generate and confirm disposable recovery copy; real passkey assertion",
+      "Approve exact-list connection; real passkey assertion",
+      "Approve protected list opening; real passkey assertion",
+      "Original HTTPS writing visible in connected editor",
+      "Lock, reload, enter original code, real Bitwarden assertion; original writing visible",
+      "Remove temporary HTTPS route, lock/reload cached app, enter same code, real Bitwarden assertion; original writing visible while network login unavailable",
+      "Leave disposable workspace locked"
+    ]
+  },
+  "limits": [
+    "The same fresh HTTPS baseline passed, so this does not establish the cause or resolution of the operator original failure.",
+    "The earlier localhost packaged continuation lacked an independently observed module identity and is excluded from candidate credit after this cache finding.",
+    "Successful fresh-workspace tests do not prove the operator original retained Local state is recoverable.",
+    "No release qualification, existing-test edits, original-preview restart, commit, merge or deployment."
+  ],
+  "cleanup": {
+    "temporary8444RouteRemoved": true,
+    "allRoutesMatchPreTestObservedConfiguration": true,
+    "original8443Proxy": "http://127.0.0.1:53219",
+    "routingSha256": "127c18294dcfd4ea87d168c0e1a365da32721e8de30f57a2d20d0967f427c4f4",
+    "disposableServicesStopped": true,
+    "testWorkspaceLeftLocked": true,
+    "testVaultItemsRemain": [
+      "done — disposable Firefox Bitwarden repair test 2026-10-15",
+      "done — disposable packaged CSP repair test 2026-10-15",
+      "done — disposable HTTPS repair test 2026-10-15"
+    ]
+  }
+}

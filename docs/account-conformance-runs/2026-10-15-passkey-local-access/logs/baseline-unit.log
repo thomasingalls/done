@@ -1,0 +1,37 @@
+
+ RUN  v4.1.10 <workspace>
+
+ ❯ test/firstDeviceSetupAccess.test.ts (2 tests | 1 failed) 72ms
+   × distinguishes an accepted Local code from a later network setup failure and retries without another code 55ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/firstDeviceSetupAccess.test.ts > distinguishes an accepted Local code from a later network setup failure and retries without another code
+AssertionError: expected { kind: 'unlock', …(6) } to match object { kind: 'resume-setup', …(1) }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": StringContaining "unlock code was accepted",
+-   "kind": "resume-setup",
++   "error": "Could not unlock this workspace. Check your device-lock code and try again.",
++   "kind": "unlock",
+  }
+
+ ❯ test/firstDeviceSetupAccess.test.ts:62:31
+     60|   await owner.unlock(code);
+     61|   expect(request).toHaveBeenCalledTimes(1);
+     62|   expect(owner.getSnapshot()).toMatchObject({
+       |                               ^
+     63|     kind: 'resume-setup',
+     64|     error: expect.stringContaining('unlock code was accepted'),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  10:06:59
+   Duration  1.67s (transform 1.06s, setup 72ms, import 1.38s, tests 72ms, environment 0ms)

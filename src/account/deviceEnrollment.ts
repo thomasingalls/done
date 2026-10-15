@@ -1,3 +1,4 @@
+import { authenticationResponse } from './passkeyResponse';
 import { defaultDeviceName } from '../lib/browser';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import {
@@ -511,7 +512,7 @@ export function createDeviceEnrollment(
                 en.proof = {
                   retryKey: en.retryKey,
                   attemptId: challenge.context.attemptId,
-                  response: credential.toJSON(),
+                  response: authenticationResponse(credential),
                   possession: await owner.sign(enrollmentPossessionMessage(challenge.context)),
                   ...(en.loginRetryKey ? { loginRetryKey: en.loginRetryKey } : {}),
                 };

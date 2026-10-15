@@ -4,6 +4,7 @@ import { bootstrapFetch } from './bootstrapHttp';
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import type { SetupConfig } from './firstDeviceSetup';
 import { isAccountId } from './accountIdentity';
+import { authenticationResponse } from './passkeyResponse';
 
 type SignInState =
   | { kind: 'choose'; error?: string; retryProof?: boolean }
@@ -115,7 +116,7 @@ export function createAccountSignIn(input: SetupConfig) {
             retryKey,
             ceremonyId: result['ceremonyId'],
             operation: 'authenticate',
-            response: credential.toJSON() as AuthenticationResponseJSON,
+            response: authenticationResponse(credential),
           };
         }
         // Retain the exact proof in this owner when a reply is lost. No second

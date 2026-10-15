@@ -1,0 +1,25 @@
+
+ RUN  v4.1.10 /private/tmp/done-passkey-mutant-drop-handoff
+
+ ❯ test/firstDeviceSetupAccess.test.ts (3 tests | 1 failed) 81ms
+   × rechecks a live Local handoff when resuming an existing setup instead of asking for its code again 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/firstDeviceSetupAccess.test.ts > rechecks a live Local handoff when resuming an existing setup instead of asking for its code again
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ test/firstDeviceSetupAccess.test.ts:149:16
+    147|   owners.push(resumed);
+    148|   await resumed.inspect();
+    149|   expect(take).toHaveBeenCalledTimes(1);
+       |                ^
+    150|   expect(request).toHaveBeenCalledTimes(1);
+    151|   expect(resumed.getSnapshot()).toMatchObject({ kind: 'resume-setup' }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  1 failed | 8 passed (9)
+   Start at  10:38:45
+   Duration  1.48s (transform 975ms, setup 64ms, import 1.25s, tests 84ms, environment 0ms)

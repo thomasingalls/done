@@ -1,0 +1,88 @@
+[
+  {
+    "browser": "chromium",
+    "scenario": "legacy-only",
+    "result": {
+      "local": {
+        "kind": "migration-required",
+        "reason": "unassigned-legacy-carrier"
+      },
+      "setup": {
+        "kind": "unlock"
+      },
+      "removalError": "No saved data was found for this workspace",
+      "durableRemovalExists": false,
+      "createAgainReusesAttempt": true
+    }
+  },
+  {
+    "browser": "chromium",
+    "scenario": "valid-code-later-network-error",
+    "result": {
+      "state": {
+        "kind": "unlock",
+        "error": "Could not unlock this workspace. Check your device-lock code and try again."
+      },
+      "codeStillOpens": true,
+      "requestCount": 1,
+      "created": false
+    }
+  },
+  {
+    "browser": "chromium",
+    "scenario": "credential-without-toJSON",
+    "result": {
+      "state": {
+        "kind": "passkey",
+        "error": "The passkey step could not finish. Try again. Your setup progress has been kept."
+      },
+      "codeStillOpens": true,
+      "requestCount": 0,
+      "created": true,
+      "conversionError": "credential.toJSON is absent"
+    }
+  },
+  {
+    "browser": "firefox",
+    "scenario": "legacy-only",
+    "result": {
+      "local": {
+        "kind": "migration-required",
+        "reason": "unassigned-legacy-carrier"
+      },
+      "setup": {
+        "kind": "unlock"
+      },
+      "removalError": "No saved data was found for this workspace",
+      "durableRemovalExists": false,
+      "createAgainReusesAttempt": true
+    }
+  },
+  {
+    "browser": "firefox",
+    "scenario": "valid-code-later-network-error",
+    "result": {
+      "state": {
+        "kind": "unlock",
+        "error": "Could not unlock this workspace. Check your device-lock code and try again."
+      },
+      "codeStillOpens": true,
+      "requestCount": 1,
+      "created": false
+    }
+  },
+  {
+    "browser": "firefox",
+    "scenario": "credential-without-toJSON",
+    "result": {
+      "state": {
+        "kind": "passkey",
+        "error": "The passkey step could not finish. Try again. Your setup progress has been kept."
+      },
+      "codeStillOpens": true,
+      "requestCount": 0,
+      "created": true,
+      "conversionError": "credential.toJSON is absent"
+    }
+  }
+]

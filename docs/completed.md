@@ -14575,3 +14575,30 @@ history exists, use the retained compatible reader instead. Public conversion tr
 capacity/refusal UX, remaining preparation wait and current-phone checks are separate. No registry
 push, infrastructure or personal storage change occurred. `docs/progress.md` and unrelated notes
 remain untouched.
+
+### Checkpoint passkey compatibility and independent Local setup access
+
+**Date:** 2026-10-15 · **Source:** tested candidate after signed `42ebdd12`; this commit records the checkpoint · **Stage:** bounded implementation and real-provider testing, original report still open.
+
+**Exit.** The known native-JSON compatibility counterexample and misleading wrong-code continuation
+are repaired with nine new unit cases and five new packaged browser cases. The live Local handoff
+is consumed once and rechecked; failed registration continuation offers retry and independent Local
+access while cold visits still require the established factor. Explicit WebAuthn byte encoding
+replaces native credential JSON calls; existing server verification, protected Account requirements,
+storage formats and cryptographic policy remain unchanged.
+
+**Evidence.** The [packet](./account-conformance-runs/2026-10-15-passkey-local-access/README.md) retains
+1,763 passing unit tests with the existing single skip, 29 passing browser cases, three discriminating
+faults, failed baselines and intermediate attempts. Actual Firefox-private/Bitwarden creation,
+confirmation, recovery, connection, cold reopen and service-unreachable access pass on an isolated
+HTTPS origin with the preview's hostname/relying party and packaged CSP. Client adoption was checked
+independently: ordinary reload retained the old module; the app's update button loaded the exact
+candidate module. Original test writing and its code survived. The temporary route was removed and
+all original routes restored. Existing tests were neither edited nor removed.
+
+**Limits and next work.** The fresh HTTPS baseline also passed, so this checkpoint does not identify
+or claim to resolve the operator's original retained-state passkey failure. The operator requested
+this commit, an updated local 8443 preview and a full functional suite while retrying that flow.
+The full suite and user walkthrough are subsequent evidence, not established by these focused checks.
+Removal/migration and unissued-code routing remain open. General release qualification, merge and
+production deployment remain paused. The other workstream's `docs/progress.md` is untouched.

@@ -1,3 +1,4 @@
+import { authenticationResponse } from './passkeyResponse';
 import { defaultDeviceName } from '../lib/browser';
 /** Browser/session composition for the retained additional-device coordinator. */
 import { parseAuthorityPin } from '../../account-protocol/authority';
@@ -221,7 +222,7 @@ export function createMembershipEnrollment(
             })) as PublicKeyCredential | null;
             guard();
             if (!credential) throw Error('Passkey request cancelled');
-            return credential.toJSON();
+            return authenticationResponse(credential);
           },
           acknowledge: (login) =>
             postSession(
