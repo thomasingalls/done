@@ -17920,7 +17920,7 @@
     },
     {
       "path": "test/first-device-upgrade/upgrade.spec.ts",
-      "sha256": "2bdcc153a8ccbf620e953196637e3758ef3ea692a0461579e07c470b1995a66e"
+      "sha256": "6b2a9091a0e40162267548efc5e8c0d157124cce55a38862dcd14ca0149228d9"
     },
     {
       "path": "test/firstDeviceSetupAccess.test.ts",
