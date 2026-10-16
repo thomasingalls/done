@@ -64,6 +64,9 @@ jobs:
       - name: Run all unit regression tests
         run: pnpm test
 
+      - name: Check packaged application routing and gateway boundaries
+        run: node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs
+
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 
@@ -91,6 +94,8 @@ jobs:
         run: >-
           pnpm exec playwright test --config playwright.packaged-account.config.ts
           test/packaged-account/removal-regressions.spec.ts
+          test/packaged-account/local-removal-flow.spec.ts
+          test/packaged-account/account-creation-entry.spec.ts
           test/packaged-account/welcome.spec.ts
           test/packaged-account/passkey-local-access.spec.ts
           test/packaged-account/multi-tab-protection.spec.ts

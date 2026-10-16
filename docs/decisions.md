@@ -4739,3 +4739,9 @@ The two §13.3 authority-map pins predate the signed recovery-progress isolation
 **Against:** SC-06/07, PRD v9 / TRD v8.
 
 **Decision.** Narrow phase 1's metadata-only removal to the existing v1 fresh attempt with null view and proof. A later registration, non-fresh or malformed hint with no custody/index identity cannot establish that encrypted content is absent, so preserve it and refuse before creating an intent. A presentation hint never supplies missing content identity. Existing identity-bound removal and the newly supported valid pre-registration cleanup remain. Three discriminating counterexamples fail on the broader phase-2 composition and pass after this restriction. Apply the whole sequential series; intermediate snapshots are not release candidates.
+
+## 2026-10-16 — Integrate functional regressions without granting aggregate qualification credit
+
+**Against:** repository development/evidence procedure and paused release-validation contract.
+
+**Decision.** Run the five new regression files through normal CI (unit discovery, explicit packaged browser selection and bounded application/gateway tests) while retaining required blocked manifest rows until their independent execution adapters are reviewed. Preserve every preceding obligation/deadline and every old test file. Review only the six changed crypto census source hashes; labels, sites, constructions and exclusions are unchanged. Fix the new auto-resume callback's hook dependency rather than suppressing React lint. Source pins and failure logs bind these local checks; final patch replay is a separate verification, and signing/publication remain later operations.

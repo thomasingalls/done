@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 494,
-    "requiredTestFiles": 488,
+    "testFiles": 499,
+    "requiredTestFiles": 493,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -5920,6 +5920,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-application/removal-route.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-application/removal-route.test.mjs"
+        ]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-application/runtime.test.mjs",
       "status": "required",
       "invocation": {
@@ -9504,6 +9519,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/accountSetupEntry.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/accountSetupEntry.test.ts"]
+      },
+      "declarations": 9,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/accountSyncDriver.test.ts",
       "status": "required",
       "invocation": {
@@ -10934,6 +10959,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packaged-account/account-creation-entry.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/packaged-account/bootstrap-compatibility.spec.ts",
       "status": "required",
       "invocation": {
@@ -11029,6 +11065,17 @@
         "packages": ["test:packaged-account"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/local-removal-flow.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 5,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -12324,6 +12371,16 @@
           "form": "fc.property"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/removalEntry.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/removalEntry.test.ts"]
+      },
+      "declarations": 4,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -15540,7 +15597,7 @@
     },
     {
       "path": "scripts/lib/packaged-application.mjs",
-      "sha256": "421aa7485d57411a42ef58cb7ae973bf3d0d5bf2f4fa79308f0feae2f1a39119"
+      "sha256": "9343b7de953ac3fdf78097dad8ce99dc59ca2a72576f82bb9ae8e60f9a3b02bd"
     },
     {
       "path": "scripts/lib/receipts.mjs",
@@ -16157,6 +16214,10 @@
     {
       "path": "test/account-application/gateway.test.mjs",
       "sha256": "3b20f7207452290c523ed923677fc03064c88b59f56a0b72e530efe8cedafc7e"
+    },
+    {
+      "path": "test/account-application/removal-route.test.mjs",
+      "sha256": "fcaea7150250042a82771ee9ab5f23855f8dfcd6863d637368c5d67ce2c0d32a"
     },
     {
       "path": "test/account-application/runtime.test.mjs",
@@ -17803,6 +17864,10 @@
       "sha256": "51182951faa12fcda7625625e0ab114f8aa8b990d3ddd0070a36ab389e0719fc"
     },
     {
+      "path": "test/accountSetupEntry.test.ts",
+      "sha256": "e12ecbd3b105ee86749220dd3741e13636119e4546a4b87787bfd34e5994bcc3"
+    },
+    {
       "path": "test/accountSyncDriver.test.ts",
       "sha256": "49124204307e57fd84150b35d30611717222a770753d11c9da6f9ae88f48ae8f"
     },
@@ -18535,6 +18600,10 @@
       "sha256": "0fc002657a37d2224b038ccc870eb4b53cc0c40773d924e52cab0a89ed1ae5e3"
     },
     {
+      "path": "test/packaged-account/account-creation-entry.spec.ts",
+      "sha256": "d7bb66e4810316e899c12875d9a00b2b290d2428fc1ddc54e19d8e7337002615"
+    },
+    {
       "path": "test/packaged-account/bootstrap-compatibility.spec.ts",
       "sha256": "6b66dacf65f0819dbe08050304b968d708795515a248c80bd48e94f1cc405059"
     },
@@ -18573,6 +18642,10 @@
     {
       "path": "test/packaged-account/history.spec.ts",
       "sha256": "9887726ec156869061277cb99f77db9d0e2c39ddeabf1f4043d386de2b9917bf"
+    },
+    {
+      "path": "test/packaged-account/local-removal-flow.spec.ts",
+      "sha256": "93d8c2c68533be7480ff12e9fa0e43d2b137b909dd3f4d378bd92f1360de0b24"
     },
     {
       "path": "test/packaged-account/membership-connection.spec.ts",
@@ -18893,6 +18966,10 @@
     {
       "path": "test/release-validation/write-session.test.mjs",
       "sha256": "3e13919862a075c8b9fb58987e67434499725236c25c26f9db7b966fc6d27011"
+    },
+    {
+      "path": "test/removalEntry.test.ts",
+      "sha256": "902ebaeb509632fd3dccf38e309904e14bb9291c72731d93673a935e147b826b"
     },
     {
       "path": "test/reorder.test.ts",

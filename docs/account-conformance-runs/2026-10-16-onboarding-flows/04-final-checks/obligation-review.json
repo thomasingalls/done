@@ -1,0 +1,73 @@
+{
+  "unchangedPrecedingObligations": 855,
+  "addedRequiredBlockedTests": [
+    {
+      "id": "test:test/account-application/removal-route.test.mjs",
+      "kind": "test",
+      "path": "test/account-application/removal-route.test.mjs",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-application/removal-route.test.mjs"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/accountSetupEntry.test.ts",
+      "kind": "test",
+      "path": "test/accountSetupEntry.test.ts",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/accountSetupEntry.test.ts"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/packaged-account/account-creation-entry.spec.ts",
+      "kind": "test",
+      "path": "test/packaged-account/account-creation-entry.spec.ts",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": [
+          "test:packaged-account"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/packaged-account/local-removal-flow.spec.ts",
+      "kind": "test",
+      "path": "test/packaged-account/local-removal-flow.spec.ts",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": [
+          "test:packaged-account"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    },
+    {
+      "id": "test:test/removalEntry.test.ts",
+      "kind": "test",
+      "path": "test/removalEntry.test.ts",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/removalEntry.test.ts"
+        ]
+      },
+      "blocked": "Review the exact runtime case denominator and fixture/process ownership adapter."
+    }
+  ],
+  "aggregateCreditGranted": false,
+  "qualification": "paused"
+}

@@ -561,7 +561,7 @@
     },
     {
       "path": "src/account/firstDeviceSetup.ts",
-      "sha256": "4b2b75028fece0106ec5a38b15f8ff75da27430b6e4044a85327728d2dea028d"
+      "sha256": "13432a9c7320f3a0ba2ae93e6ce1e8e44bb3aed9c8264dcc6514e8abaf1cbc96"
     },
     {
       "path": "src/account/generationWrap.ts",
@@ -689,7 +689,7 @@
     },
     {
       "path": "src/account/setupProgress.ts",
-      "sha256": "499298709cc6a21fac0b5d1a6a6f8bd3edb2d872a634e1d17351cfce7f60ea38"
+      "sha256": "7f04721e135934c60c30820e2817ad66eb6103644270f92c9ce69a1abd451b5d"
     },
     {
       "path": "src/account/setupRecoveryMetadata.ts",
@@ -909,7 +909,7 @@
     },
     {
       "path": "src/crdt/deviceDataRemoval.ts",
-      "sha256": "4ba91921d40cc596db1ff98544cebd3775b1c5399c55c0c06fa31125d52b6666"
+      "sha256": "0b80da3966a8801efef35d93e413e6f4375ef339b77afeb12c99c9d8ac5ed750"
     },
     {
       "path": "src/crdt/doc.ts",
@@ -1301,7 +1301,7 @@
     },
     {
       "path": "src/crdt/writeSession.ts",
-      "sha256": "b612df30519a4c17bdbdc1ce3a5b2f5fff9436e0cedb64e2c0f1aa1f36d1fd97"
+      "sha256": "eb122c05ac1d7322632b6a396686cc323a61a2e46e3f0184f79921cd5274022b"
     },
     {
       "path": "src/crdt/yjs.ts",
@@ -1441,7 +1441,7 @@
     },
     {
       "path": "src/ui/AccountSetupApp.tsx",
-      "sha256": "ef7656f120458cf099629f0c1625cc964cb3737c5fb8e05400cda5294e7195e2"
+      "sha256": "af14a3b0b70c2832ad8a52caab909d595a68f524781f17e1401fc75758846d3e"
     },
     {
       "path": "src/ui/AccountSignIn.tsx",
@@ -1481,7 +1481,7 @@
     },
     {
       "path": "src/ui/DeviceDataRemoval.tsx",
-      "sha256": "67223a1f38639779582dd3a78d8fd94455b00877cbe550c8c627b89259429ce4"
+      "sha256": "8dd237d062fa447d534c2f902b5cbabfe91160b9e2bb4941c58f7258871a97fe"
     },
     {
       "path": "src/ui/Goals.tsx",

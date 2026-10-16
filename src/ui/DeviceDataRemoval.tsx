@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { PreviewNavigationContext } from './ceremonyNavigation';
 import {
   acknowledgeLocalRemoval,
@@ -53,7 +53,7 @@ function RemovalFlow({ slotId, onBack, onStartFresh }: RemovalProps) {
   const [check, setCheck] = useState(0);
   const navigation = useContext(PreviewNavigationContext);
   const [identity, setIdentity] = useState<{ name?: string; accountId?: string }>({});
-  const remove = async () => {
+  const remove = useCallback(async () => {
     if (pending.current) return;
     pending.current = true;
     setError('');
@@ -76,7 +76,7 @@ function RemovalFlow({ slotId, onBack, onStartFresh }: RemovalProps) {
     } finally {
       pending.current = false;
     }
-  };
+  }, [slotId]);
   useEffect(() => {
     let live = true;
     const controller = new AbortController();
@@ -119,7 +119,7 @@ function RemovalFlow({ slotId, onBack, onStartFresh }: RemovalProps) {
       live = false;
       controller.abort();
     };
-  }, [slotId, check]);
+  }, [slotId, check, remove]);
   return (
     <main className="local-startup workspace-gate">
       <section className="local-startup-panel workspace-gate-panel" aria-labelledby="remove-title">

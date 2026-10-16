@@ -15029,3 +15029,13 @@ The current workspace stays cumulative and unstaged; HEAD remains a6fa2298. No s
 **Date:** 2026-10-16 · **Commit:** unsigned sequential overlay above `1849721ee612` · **Stage:** onboarding repair phase 3
 
 **Exit.** Three new inconsistent-metadata cases demonstrate overly broad setup-only cleanup on the prior phase and preservation after the repair. All 39 affected unit cases and typecheck pass. No source, key, journal, factor or other-slot deletion is inferred from a later or malformed UI hint. [Evidence](./account-conformance-runs/2026-10-16-onboarding-flows/03-setup-only-boundary/README.md). Final native-browser composition, inventory and patch-chain verification follow separately. No commits, publication or qualification.
+
+### Onboarding flow repairs pass final functional checks and retain qualification boundaries
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential patch overlay above `1849721ee612` · **Stage:** onboarding repair phase 4
+
+**Exit.** The final hook-stable source passes the full pinned-Node unit population: 153 files, 1,796 passes and one existing skip. All 35 normal-CI packaged browser cases, 175 adapter/registry cases and 12 application/gateway cases pass. Build, budgets, vectors, storage/security contracts, WASM, traceability and React lint pass. Thirty-one new regression cases cover the reported flows, interruption/refusal and established-factor preservation. The initial lint dependency failure and earlier failed counterexamples remain; the hook fix receives final browser and full-unit coverage. Existing test files and the operator-resumed quality job are byte-identical.
+
+**Metadata.** Six reviewed source hashes change without altering crypto labels/sites or exclusions. All 855 prior obligation rows remain identical; five new regression files are required and blocked, yielding 860 obligations / 319 unresolved. Qualification remains paused and no new aggregate execution credit is granted. [Final evidence and limitations](./account-conformance-runs/2026-10-16-onboarding-flows/04-final-checks/README.md).
+
+**Handoff.** Four ordered patches are prepared against the signed base, with native index/filesystem replay and exact tree/source/evidence verification recorded separately in the distribution after its final freeze. Work stays cumulative and unstaged. No signing, commits, push, preview change, merge or deployment. Legacy-only data remains preserved pending verified migration/source cleanup; real-provider, hosted Linux/fresh installation, complete 85-command campaign, global formatting, billing and remembered unlocking remain separate.

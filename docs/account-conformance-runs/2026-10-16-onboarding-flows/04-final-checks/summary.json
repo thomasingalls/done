@@ -1,0 +1,73 @@
+{
+  "baseCommit": "1849721ee61265b73a00aca6df8f495629dd4e9c",
+  "newRegressionFiles": 5,
+  "newRegressionCases": 31,
+  "newUnitCases": 17,
+  "newBrowserCases": 12,
+  "newRoutingCases": 2,
+  "fullUnit": {
+    "node": "24.18.0",
+    "files": 153,
+    "passed": 1796,
+    "existingSkip": 1,
+    "attempts": [
+      "04-unit-full.log.gz",
+      "04-unit-closed.log.gz"
+    ],
+    "finalSourceAttempt": "04-unit-closed.log.gz"
+  },
+  "normalCIBrowser": {
+    "cases": 35,
+    "passed": 35,
+    "skips": 0,
+    "provider": "Playwright Chromium with existing virtual authenticator fixtures"
+  },
+  "normalCIAdapters": {
+    "cases": 175,
+    "passed": 175
+  },
+  "applicationGateway": {
+    "cases": 12,
+    "passed": 12
+  },
+  "gates": {
+    "build": "passed",
+    "vectors": "passed",
+    "retention": "passed",
+    "selectionStatus": "passed",
+    "updateLimit": "passed",
+    "authority": "passed",
+    "recipient": "passed",
+    "admission": "passed",
+    "remediation": "passed",
+    "debts": "passed",
+    "wasm": "passed",
+    "traceability": "passed",
+    "reactLint": "passed-after-hook-dependency-repair",
+    "originIsolation": "passed",
+    "initialJSGzipKiB": 232.5,
+    "budgetKiB": 350
+  },
+  "qualification": {
+    "state": "paused",
+    "obligations": 860,
+    "unresolved": 319,
+    "priorObligationsUnchanged": 855,
+    "newFilesGrantedAggregateCredit": false
+  },
+  "boundaries": {
+    "existingTestsByteIdentical": true,
+    "operatorQualityJobByteIdentical": true,
+    "cryptoDomainLabelsSitesAndExclusionsUnchanged": true,
+    "commitsCreated": 0,
+    "published": false,
+    "previewUpdated": false
+  },
+  "limits": [
+    "Legacy-only data requires migration and verified source cleanup; it is preserved on refusal.",
+    "Local macOS and installed dependencies; no fresh frozen installation or hosted Linux execution.",
+    "No new real Firefox-private/Bitwarden walkthrough or original retained-profile recovery claim.",
+    "Original 85-command campaign and aggregate qualification were not resumed.",
+    "Deferred formatting proposal retained unchanged; global formatting gate not claimed."
+  ]
+}
