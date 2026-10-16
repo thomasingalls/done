@@ -14997,3 +14997,7 @@ Root lint passes after excluding only immutable archive directories and resolvin
 ## 2026-10-16 — Patch-series phase 22: discovery control anchor
 
 All fourteen signed discovery/control cases and thirty generated histories pass on pinned Node 24. The additional old raw-snapshot anchor now targets its unique actual shared guard, preserving the real process pause/state change, exact signed proof, baseline refusal and deadline. New inventory/still-pending assertions keep the forbidden response discriminating. The absent-anchor original result remains. No production changes; planning 855/314 stays blocked and qualification paused. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/22-discovery-control-anchor/README.md). No commits/publication.
+
+## 2026-10-16 — Patch-series phase 23: construction site metadata
+
+The independent registry caught five recovery source-site line offsets from phase 21's added comment. Five numeric-only corrections align them with actual source literals; every other construction field and the existing JSON layout is unchanged. Registry cases and the authority gate pass on pinned Node 24, while original coupled failures remain. No runtime/checker/test changes, qualification credit or deferred formatting application. Planning remains 855/314 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/23-construction-site-lines/README.md). No commits/publication.

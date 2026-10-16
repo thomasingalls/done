@@ -5562,7 +5562,7 @@
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 141,
+          "line": 142,
           "label": "done/account-recovery-confirm/v1",
           "kind": "literal"
         }
@@ -5629,25 +5629,25 @@
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 131,
+          "line": 132,
           "label": "done/account-recovery-draft/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 78,
+          "line": 79,
           "label": "done/pkg-root/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 111,
+          "line": 112,
           "label": "done/recovery-envelope/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 120,
+          "line": 121,
           "label": "done/recovery-state/v1",
           "kind": "literal"
         }
