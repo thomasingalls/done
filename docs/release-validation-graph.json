@@ -17572,7 +17572,7 @@
     },
     {
       "path": "test/account-successor/discovery-controls.test.mjs",
-      "sha256": "d51e42feef87f8242921ef80e965d2177916a9dcc59551f86ebd167da0a3e82d"
+      "sha256": "752fcb56497ae98e83113cf3058443a8bb397ca0d327088eaf9652bfba6049e0"
     },
     {
       "path": "test/account-successor/discovery-fixtures.mjs",
