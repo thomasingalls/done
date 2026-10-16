@@ -17957,7 +17957,7 @@
     },
     {
       "path": "test/geometry/sync.spec.ts",
-      "sha256": "6016a81926b3ee423d931732b3e5655c7c17799f31bfc67c40cbb80c7ee7b51e"
+      "sha256": "c03a3a365bb07abd6ba46276a108998d59bfdca537f4d4e401bac1942680228d"
     },
     {
       "path": "test/geometry/task-ux.spec.ts",
@@ -18269,15 +18269,15 @@
     },
     {
       "path": "test/local-app/editor.spec.ts",
-      "sha256": "a3a172884b493c8d3140bc6371013504d7f6f735438f4e05ca8901fb9ad981ae"
+      "sha256": "804b89796d6e1d192219c2387c83cd6b08d5bdc3c895e11b88832c26c2bb5135"
     },
     {
       "path": "test/local-app/packaged.spec.ts",
-      "sha256": "eb44a572f8f554f79f44338c924c4d46bc6f2e9ba9f7a714f4d84bc009a9905d"
+      "sha256": "418ec4b1866a93ec11246f260d62ba417222f396e159625a7870d26095cbb5ac"
     },
     {
       "path": "test/local-app/startup.spec.ts",
-      "sha256": "b9d53cc03a036637966f81b95bb7be71888818c56c7218c94158a84948288fa9"
+      "sha256": "42e242bc16946e83dd7a49f835fdd797f75c6109493314c7e0cc05aa54c57ef1"
     },
     {
       "path": "test/local-baseline/anchor-browser.ts",
@@ -18317,7 +18317,7 @@
     },
     {
       "path": "test/local-baseline/reader-first.spec.ts",
-      "sha256": "65de021642e76638ec64921c519bc32e7841e76ddc2bca134c97d1da241a5452"
+      "sha256": "d0ffe17463d315167a56eaf7ffd3e4503c3df97fe67f26a69725c269b59bd7f4"
     },
     {
       "path": "test/local-baseline/reader-rollout.ts",

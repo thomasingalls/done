@@ -10,9 +10,7 @@ test('Local editing and reload work with no relay or plaintext identity cache', 
   const sockets: string[] = [];
   page.on('websocket', (socket) => sockets.push(socket.url()));
   await openApp(page);
-  await expect(
-    page.getByText('Off. This Local workspace is not connected to a relay.'),
-  ).toBeVisible();
+  await expect(page.getByText('Saved only in this browser. Sync is off.')).toBeVisible();
   await expect(page.getByRole('textbox', { name: 'Relay endpoint' })).toHaveCount(0);
   const compose = page.locator(
     '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',

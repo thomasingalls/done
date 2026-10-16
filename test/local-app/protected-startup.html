@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Protected startup compatibility fixture</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module">
+      import { createElement } from 'react';
+      import { createRoot } from 'react-dom/client';
+      import { LocalApp } from '/src/ui/LocalApp';
+      import '/src/styles/index.css';
+      import '/src/styles/local-startup.css';
+      // Exercise the retained explicit-code owner with the real component and storage.
+      // This test fixture is not a packaged entry and is not the current first-run UX.
+      createRoot(document.getElementById('root')).render(
+        createElement(LocalApp, { automaticFirstRun: false }),
+      );
+    </script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
 import * as fc from 'fast-check';
-import { openApp, reloadApp } from '../geometry/openApp';
+import { openApp, reloadApp, protectApp } from '../geometry/openApp';
 import { addDays } from '../../src/lib/date';
 const day = (page: Page) => page.locator('.day-panel[data-active="true"]');
 const faults = async (page: Page) =>
@@ -60,6 +60,7 @@ test('discarded editor input never appears, and locking disposes the mounted edi
   page,
 }) => {
   await openApp(page);
+  await protectApp(page);
   const content = page.locator('.goals .cm-content');
   await content.click();
   await page.keyboard.insertText('accepted');
@@ -200,7 +201,10 @@ for (const width of [320, 420, 1280]) {
     await page.setViewportSize({ width, height: 900 });
     await openApp(page);
     if (width < 768) {
-      await page.getByRole('button', { name: 'Open Goals', exact: true }).click();
+      await page
+        .locator('.day-panel[data-active="true"] .panel-header')
+        .getByRole('button', { name: 'Open Goals', exact: true })
+        .click();
       await expect(page.locator('.goals .cm-content')).toBeFocused();
     }
     const goals = page.locator('.goals');
@@ -253,7 +257,10 @@ test('Goals mobile menu removes the current line, undoes, redoes and dismisses a
 }) => {
   await page.setViewportSize({ width: 375, height: 800 });
   await openApp(page);
-  await page.getByRole('button', { name: 'Open Goals', exact: true }).click();
+  await page
+    .locator('.day-panel[data-active="true"] .panel-header')
+    .getByRole('button', { name: 'Open Goals', exact: true })
+    .click();
   const goals = page.locator('.goals');
   const content = goals.locator('.cm-content');
   const more = goals.getByRole('button', { name: 'More Goals actions' });

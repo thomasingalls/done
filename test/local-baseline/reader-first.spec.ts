@@ -119,13 +119,15 @@ test('reader-first update, private conversion, compatible rollback and incompati
     await switchApplication(service, old, devices, 'retention-old');
     const before = await Promise.all(devices.map((d, i) => disk(d.page, converted[i]!.name)));
     for (const [i, d] of devices.entries()) {
-      await d.page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
-      await d.page
-        .getByRole('button', {
-          name: d.joined ? /Resume device connection/ : /^Unlock Device owner/,
-        })
-        .click();
-      await d.page.getByLabel('Device-lock code', { exact: true }).fill(d.code);
+      const codeEntry = d.page.getByLabel('Unlock code', { exact: true });
+      const saved = d.page.getByRole('button', {
+        name: d.joined ? /Resume device connection/ : /^Unlock Device owner/,
+      });
+      await expect
+        .poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible()))
+        .toBe(true);
+      if (!(await codeEntry.isVisible())) await saved.click();
+      await codeEntry.fill(d.code);
       await d.page
         .getByRole('button', {
           name: d.joined ? 'Unlock enrollment' : 'Confirm code and unlock with passkey',
