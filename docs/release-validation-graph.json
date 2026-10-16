@@ -14765,7 +14765,7 @@
     },
     {
       "path": "playwright.account-setup.config.ts",
-      "sha256": "ee05aec63fae0214877e286b5ee60d8c6acd89318ed1869893becac13e7eac6c"
+      "sha256": "66c51aa38cd07b78e41b5d65d3074425bad484f9151cc82d095ff39273535798"
     },
     {
       "path": "playwright.account-upgrade.config.ts",
@@ -17961,7 +17961,7 @@
     },
     {
       "path": "test/first-device-setup/setup.spec.ts",
-      "sha256": "032fa71f84a185e119d5056f3d2a2d49c643b128647903ce23c5b4ee80bd6fda"
+      "sha256": "f5ab451ee19f7e029f33ec785f1294b0a472724a0214081f08c5e1b1a6875566"
     },
     {
       "path": "test/first-device-upgrade/checkpoint-stage.spec.ts",

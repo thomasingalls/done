@@ -1,4 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+import { existsSync } from 'node:fs';
+import { join, relative } from 'node:path';
 import { protectApp } from '../geometry/openApp';
 const entry = '/private/account-setup.html';
 const phase = (page: Page, name: string) =>
@@ -700,7 +702,7 @@ test('an existing unnamed preview account gains its name after unlock and rememb
 
 test('development service refuses uncredentialed API calls and does not serve its private files', async ({
   request,
-}) => {
+}, info) => {
   expect(
     (
       await request.post('/__account-setup/begin', {
@@ -708,12 +710,13 @@ test('development service refuses uncredentialed API calls and does not serve it
       })
     ).status(),
   ).toBe(403);
-  for (const path of [
-    '/.dev/account-setup-browser-tests/operator.key',
-    '/.dev/account-setup-browser-tests/account.sqlite',
-    '/.dev/account-setup-browser-tests/pin.json',
-  ])
-    expect((await request.get(path)).status()).toBe(403);
+  const state = info.config.metadata['accountSetupState'];
+  expect(typeof state).toBe('string');
+  for (const file of ['operator.key', 'account.sqlite', 'pin.json']) {
+    const path = join(state as string, file);
+    expect(existsSync(path), 'HTTP probe must target the real private service file').toBe(true);
+    expect((await request.get('/' + relative(process.cwd(), path))).status()).toBe(403);
+  }
 });
 
 test('use another account opens device connection without a passkey or changing saved writing', async ({

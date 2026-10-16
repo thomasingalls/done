@@ -95,6 +95,9 @@ jobs:
           test/packaged-account/receiver-compatibility.spec.ts
           test/packaged-account/bootstrap-compatibility.spec.ts
 
+      - name: Check development onboarding and service shutdown
+        run: pnpm test:account-setup
+
       - name: Check security evidence traceability
         run: pnpm trace:check
 
