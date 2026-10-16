@@ -2157,13 +2157,13 @@ function receiveDriverEvidence() {
     };
   return r;
 }
-test('receive-driver wrapper binds all six commands, 36 cases and inherited browser process ownership', () => {
+test('receive-driver wrapper binds all six commands, 37 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive-driver');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 36);
+  assert.equal(s.expect.cases.length, 37);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 180000, 90000, 90000, 270000],
