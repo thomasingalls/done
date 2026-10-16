@@ -17901,7 +17901,7 @@
     },
     {
       "path": "test/first-device-setup/setup.spec.ts",
-      "sha256": "5e505df453991bf502b4d78a975c7187aeb7dce44d25cfe8bd4fb1ea6640b4bc"
+      "sha256": "032fa71f84a185e119d5056f3d2a2d49c643b128647903ce23c5b4ee80bd6fda"
     },
     {
       "path": "test/first-device-upgrade/state.test.mjs",
