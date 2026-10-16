@@ -117,7 +117,7 @@ export function withMembershipVault<T>(
           channel: 'rotation',
         });
         return work({
-          prepareReplacement: (authority, candidate, read, exchange) =>
+          prepareReplacement: (authority, candidate, read, exchange, readBatch) =>
             import('../crdt/membershipSource').then(({ prepareNativeReplacement }) =>
               prepareNativeReplacement(
                 { task, kind: 'joined', slotId, code },
@@ -125,6 +125,7 @@ export function withMembershipVault<T>(
                 candidate,
                 read,
                 exchange,
+                readBatch,
               ),
             ),
           rotation,

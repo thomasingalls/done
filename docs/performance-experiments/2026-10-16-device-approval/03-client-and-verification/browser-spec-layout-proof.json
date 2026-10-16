@@ -1,0 +1,6 @@
+{
+  "testedFile": "/private/tmp/done-enrollment-speed-a18d5d1c/regression-source/test/packaged-account/enrollment-batch.spec.ts",
+  "checkoutFile": "test/packaged-account/enrollment-batch.spec.ts",
+  "identicalNormalizedAst": true,
+  "astSha256": "e2ad41e367896c9e350bb7ce5269437045a16de8e5cfffd461d900cf1c83d96d"
+}

@@ -1,0 +1,26 @@
+{
+  "runnerStartMs": 1792156553048,
+  "scenarios": [
+    {
+      "bursts": 0,
+      "comparisonTimes": [
+        {
+          "createdAt": 1792155340949,
+          "expiresAt": 1792155940949,
+          "expiredBeforeRecheckStarted": true
+        }
+      ]
+    },
+    {
+      "bursts": 24,
+      "comparisonTimes": [
+        {
+          "createdAt": 1792155395756,
+          "expiresAt": 1792155995756,
+          "expiredBeforeRecheckStarted": true
+        }
+      ]
+    }
+  ],
+  "limitation": "The next Playwright run reused its artifacts directory and replaced the UI error-context files. Runner JSON/log, executed source and disposable service snapshots remain. No deadline or protocol fixture time was changed."
+}

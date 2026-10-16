@@ -1,0 +1,60 @@
+import {test,expect} from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/index.mjs';
+import {pairedEditors,credentials,restoreAuthenticator,openSaved} from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/devices';
+import {pending,compared,unlock} from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/device-enrollment/helpers';
+import {startService,stopService} from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/server';
+import {writeFileSync,readFileSync,mkdirSync,cpSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+const root='/private/tmp/done-enrollment-speed-a18d5d1c';
+const sha=(b:any)=>createHash('sha256').update(b).digest('hex');
+for(const bursts of [0,24])test('capture and compare exact approval fixture '+bursts,async({page,browser},info)=>{
+ test.setTimeout(360000);
+ const output=root+'/matched-'+bursts;mkdirSync(output,{recursive:true});
+ let service:any=await startService(output+'/seed-service',root+'/baseline-dist',true,true),pair:any;
+ const extra=await browser.newContext(),third=await extra.newPage();let seed:any;
+ try{
+  pair=await pairedEditors(page,browser,true);
+  const goals=page.locator('.goals .cm-content'),otherGoals=pair.second.locator('.goals .cm-content');await goals.click();await page.keyboard.press('ControlOrMeta+End');let expected='';
+  for(let i=0;i<bursts;i++){const text=' matched delivered history '+i+';';expected+=text;await page.keyboard.insertText(text);await expect(otherGoals).toHaveText(expected,{timeout:20000});}
+  await pair.second.getByRole('button',{name:'Devices',exact:true}).click();await pair.second.getByRole('button',{name:'Connect another device',exact:true}).click();await unlock(pair.second,pair.next.code);
+  const link=await pair.second.getByLabel('Device invitation link').inputValue();const next=await pending(third,link,pair.next.auth);const code=await compared(pair.second,third);
+  seed={bursts,code,expected,devices:[]};
+  for(const [p,auth,lockCode] of [[pair.second,pair.next.auth,pair.next.code],[third,next.auth,next.code]] as any){
+   const url=p.url(),saved=await credentials(auth);
+   await p.getByRole('link',{name:'Close and return to accounts'}).click();await expect(p.getByRole('heading',{name:'Choose an account',exact:true})).toBeVisible();
+   seed.devices.push({url,credentials:saved,code:lockCode,storage:await p.context().storageState({indexedDB:true})});
+  }
+  await page.getByRole('button',{name:'Lock workspace',exact:true}).click();
+  writeFileSync(output+'/private-seed.json',JSON.stringify(seed),{mode:0o600});
+ }finally{await extra.close();await pair?.other.close();await stopService(service);service=undefined;}
+ const rows:any[]=[];
+ for(let round=0;round<3;round++)for(const arm of round%2?['candidate','baseline']:['baseline','candidate']){
+  const run=output+'/'+round+'-'+arm;mkdirSync(run,{recursive:true});cpSync(output+'/seed-service',run+'/service',{recursive:true});
+  service=await startService(run+'/service',root+'/'+arm+'-dist',true,true);
+  const contexts:any[]=[],pages:any[]=[],events:any[]=[];let measured=false,t0=0;
+  try{
+   for(const [i,d] of seed.devices.entries()){
+    const context=await browser.newContext({storageState:d.storage});contexts.push(context);const p=await context.newPage();pages.push(p);await restoreAuthenticator(p,d.credentials);await p.goto(d.url);await unlock(p,d.code);
+    if(i===0){await expect(p.getByLabel('Code on the new device')).toBeVisible();await p.getByLabel('Code on the new device').fill(seed.code);}
+    else await expect(p.getByLabel('Comparison code')).toHaveText(seed.code);
+   }
+   const [a,b]=pages;
+   await a.route('**/account/delivery/read-v2*',async(route:any)=>{const response=await route.fetch();await new Promise(r=>setTimeout(r,75));await route.fulfill({response});});
+   a.on('request',(r:any)=>{const path=new URL(r.url()).pathname;if(measured&&path.startsWith('/account/'))events.push({path,at:Date.now()-t0});});
+   await a.evaluate(()=>{(window as any).__approvalTrace=[];let prior=false;new MutationObserver(()=>{const busy=Array.from(document.querySelectorAll('[role=status]')).some(e=>e.textContent?.includes('Saving and checking this step'));if(busy!==prior){(window as any).__approvalTrace.push({busy,at:performance.now()});prior=busy;}}).observe(document.body,{subtree:true,childList:true,characterData:true});});
+   measured=true;t0=Date.now();await a.getByRole('button',{name:'Compare and approve',exact:true}).click();await expect(a.getByText('Saving and checking this step…',{exact:true})).toHaveCount(0,{timeout:120000});const foregroundMs=Date.now()-t0;
+   await expect(a.getByText('The device is connected.',{exact:false})).toBeVisible({timeout:120000});await expect(b.getByRole('button',{name:'Open your writing',exact:true})).toBeVisible({timeout:120000});const certifiedMs=Date.now()-t0;measured=false;
+   const trace=await a.evaluate(()=>(window as any).__approvalTrace);
+   await b.getByRole('button',{name:'Open your writing',exact:true}).click();await expect(b.locator('.shell')).toContainText('Keep the first device writing',{timeout:20000});if(seed.expected)await expect(b.locator('.goals .cm-content')).toHaveText(seed.expected);
+   await a.getByRole('link',{name:'Close and return to accounts'}).click();await a.goto('/');await openSaved(a,seed.devices[0].code,true);
+   const append=async(p:any,text:string)=>{await p.locator('.goals .cm-content').click();await p.keyboard.press('ControlOrMeta+End');await p.keyboard.insertText(text);};
+   await append(b,' after approval from new device');await expect(a.locator('.goals .cm-content')).toContainText('after approval from new device',{timeout:20000});await append(a,' reply from approving device');await expect(b.locator('.goals .cm-content')).toContainText('reply from approving device',{timeout:20000});
+   const exports=[];
+   for(const [i,p] of pages.entries()){
+    const download=p.waitForEvent('download');await p.getByRole('button',{name:'Export markdown',exact:true}).click();const file=await download;const path=run+'/writing-'+i+'.md';await file.saveAs(path);exports.push(sha(readFileSync(path)));
+    await p.getByRole('button',{name:'Lock workspace',exact:true}).click();await p.goto('/');await openSaved(p,seed.devices[i].code,true);await expect(p.locator('.goals .cm-content')).toContainText('reply from approving device');
+   }
+   expect(exports[0]).toBe(exports[1]);
+   const row={round,arm,bursts,foregroundMs,certifiedMs,trace,events,exportSha256:exports[0],replyDelayMs:75,writingAndReopen:'passed'};rows.push(row);writeFileSync(run+'/result.json',JSON.stringify(row,null,2));console.log(JSON.stringify({round,arm,bursts,foregroundMs,certifiedMs,reads:events.filter(e=>e.path.includes('delivery/read-v2')).length}));
+  }finally{await Promise.all(contexts.map(c=>c.close()));await stopService(service);service=undefined;writeFileSync(output+'/rows.json',JSON.stringify(rows,null,2));}
+ }
+});

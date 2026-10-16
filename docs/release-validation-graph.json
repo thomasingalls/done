@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 503,
-    "requiredTestFiles": 497,
+    "testFiles": 504,
+    "requiredTestFiles": 498,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -11065,6 +11065,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packaged-account/enrollment-batch.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/packaged-account/enrollment-open.spec.ts",
       "status": "required",
       "invocation": {
@@ -14875,7 +14886,10 @@
     {
       "id": "transport-read-batching",
       "status": "open",
-      "tests": ["test/account-sessions/inbound-batch.test.mjs"],
+      "tests": [
+        "test/account-sessions/inbound-batch.test.mjs",
+        "test/packaged-account/enrollment-batch.spec.ts"
+      ],
       "requirements": [
         "exact-byte-contracts",
         "independent-runtime-bytes",
@@ -14893,7 +14907,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "db1fade242052b1c98a6ba860e7ecf317d49b4c9940b6f43793bbbf94c8f4902"
+      "sha256": "484c18cc2998de521d68542da7acf1586c832bffdce9aa8ec7c1bddb81e9fe1e"
     },
     {
       "path": "package.json",
@@ -18702,6 +18716,10 @@
     {
       "path": "test/packaged-account/empty-legacy-startup.spec.ts",
       "sha256": "d568f231b7c69b0d04031d57a1de9ab9caf0d05371575886751dac0253ac78b0"
+    },
+    {
+      "path": "test/packaged-account/enrollment-batch.spec.ts",
+      "sha256": "1d42fc3fbeb2cfccd1b0c39df0f3e62884a40b8b3219f6d83c293ccb7f432b0f"
     },
     {
       "path": "test/packaged-account/enrollment-open.spec.ts",

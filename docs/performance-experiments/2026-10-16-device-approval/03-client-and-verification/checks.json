@@ -1,0 +1,20 @@
+{
+  "newNodeCases": 9,
+  "focusedNodeCases": 26,
+  "existingScopedClientCases": 16,
+  "selectedUnitCases": 9,
+  "browserJourneysBeforeWorkGuard": 11,
+  "newBrowserJourneysRepeatedOnFinalGuard": 4,
+  "adapterChecks": 175,
+  "finalTimedConnections": 12,
+  "matchedWorkloads": [
+    0,
+    24
+  ],
+  "prototypeTimedConnections": 12,
+  "normalCiIncludesNewCases": true,
+  "releaseQualification": "paused; manifest still blocked",
+  "productionTouched": false,
+  "previewDistChanged": false,
+  "performanceCommitted": false
+}

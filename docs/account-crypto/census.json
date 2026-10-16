@@ -517,7 +517,7 @@
     },
     {
       "path": "src/account/ceremonyVault.ts",
-      "sha256": "6879967c4fb7b277db0401c11a1b5745a1547867c236f3068d334ef437f76628"
+      "sha256": "3013817389a0f944e10c093b9a1f5026b14cac2bc869542b14458fb4d34cfd00"
     },
     {
       "path": "src/account/connectionNavigation.ts",
@@ -601,11 +601,11 @@
     },
     {
       "path": "src/account/membershipConnection.ts",
-      "sha256": "e71958280047768ba137821785a03be887434e3aeb54b5a70bbd12af608c463e"
+      "sha256": "71006712311184d33ed80ee8f6b62145a7aeed40b971c81129fdc8e4857e31a1"
     },
     {
       "path": "src/account/membershipEnrollment.ts",
-      "sha256": "f329d1f58eb54b4e57f08ce0e94f6ef1e11b88c0bcb3d12691b7afc35b82006d"
+      "sha256": "af46777f452d91ffe55889b50f25041ecffe3031ec954461e99e5e7392598075"
     },
     {
       "path": "src/account/membershipHandoff.ts",
@@ -625,7 +625,7 @@
     },
     {
       "path": "src/account/membershipVault.ts",
-      "sha256": "20b9ab38de4881af8c01f6fb15aa5fa32c6440f0a7ff0050770678653346c195"
+      "sha256": "a3d4e610748251142a6d189c44183340976524de7c6ac6ac2b37de6f715c280f"
     },
     {
       "path": "src/account/networkLogin.ts",
@@ -649,7 +649,7 @@
     },
     {
       "path": "src/account/privateDeliveryHttp.ts",
-      "sha256": "c32d1722767350119db45656c458fbf1420bad9067ea97d5eaa378ae31f35f9f"
+      "sha256": "8aecab834520c7e4378413fe545e8e616d5a6a595862fb28451de30d15cd6f33"
     },
     {
       "path": "src/account/privateDiscoveryHttp.ts",
@@ -685,7 +685,7 @@
     },
     {
       "path": "src/account/scopedTransport.ts",
-      "sha256": "109c6952ba66f37081b6a2b339f905c9c727bd318ed4a7c2aa0f24a20b0030e9"
+      "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7"
     },
     {
       "path": "src/account/sessionVault.ts",
@@ -969,7 +969,7 @@
     },
     {
       "path": "src/crdt/historySource.ts",
-      "sha256": "cb656e2f563ce69e6f210f4b176d6fd892606c0e55aefd8753af6e403a4798ac"
+      "sha256": "efd5025d3d15a054c87e8d11d68bf8af1804f1dd10d121f76e1f7d750c0b186c"
     },
     {
       "path": "src/crdt/inboundLedger.ts",
@@ -1141,7 +1141,7 @@
     },
     {
       "path": "src/crdt/membershipSource.ts",
-      "sha256": "f5db6a7172fa010fb75185f91acaa51e979feb7cda35883cce721a13edb8eb38"
+      "sha256": "b792821698eec8533911a4db03ed2bd493dfd762ffcdf762c086129bf8e1bcd0"
     },
     {
       "path": "src/crdt/moves.ts",
@@ -2059,7 +2059,7 @@
         },
         {
           "path": "src/crdt/historySource.ts",
-          "line": 255
+          "line": 259
         },
         {
           "path": "src/crdt/promotionGenesis.ts",

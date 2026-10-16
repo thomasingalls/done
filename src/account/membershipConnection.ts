@@ -66,6 +66,7 @@ export interface MembershipConnectionIO {
   /** Bootstrap is unauthenticated; all subsequent routes still require the actual scoped login. */
   request(path: string, body: unknown, base: SuccessorBase | null): Promise<unknown>;
   read(request: Bytes, base: SuccessorBase): Promise<Bytes>;
+  readBatch?(requests: readonly Bytes[], base: SuccessorBase): Promise<readonly Bytes[]>;
   assert(context: EnrollmentContext): Promise<unknown>;
   acknowledge(login: SessionIssued): Promise<unknown>;
   reconnect(base: SuccessorBase): Promise<void>;
@@ -430,6 +431,7 @@ export async function advanceMembershipConnection(
             if (result.ok !== true) throw Error('Handoff history is unavailable');
             return result.page;
           },
+          io.readBatch ? (requests) => io.readBatch!(requests, base) : undefined,
         ),
     },
     save,

@@ -1,0 +1,4 @@
+{
+  "result": "Final phase artifact whitespace verification refused an embedded raw patch: its valid blank context line ends in a space. Runtime sources passed formatting.",
+  "correction": "Preserve the exact embedded patch in deterministic gzip, retain the original draft and rerun application/staging/whitespace verification. No check is suppressed."
+}

@@ -1,0 +1,5 @@
+import assert from 'node:assert/strict';
+assert.equal(process.cwd(),'/Users/thomasingalls/.codex/worktrees/7fda/done');
+import {createRequire} from 'node:module';
+const {defineConfig}=createRequire('/Users/thomasingalls/.codex/worktrees/7fda/done/package.json')('@playwright/test');
+export default defineConfig({testDir:'.',testMatch:'matched-fresh-final.spec.ts',timeout:240000,workers:1,retries:0,reporter:[['list'],['json',{outputFile:'/private/tmp/done-enrollment-speed-a18d5d1c/matched-fresh-final-results.json'}]],outputDir:'/private/tmp/done-enrollment-speed-a18d5d1c/artifacts',use:{baseURL:'http://localhost:53221',viewport:{width:1280,height:900}}});

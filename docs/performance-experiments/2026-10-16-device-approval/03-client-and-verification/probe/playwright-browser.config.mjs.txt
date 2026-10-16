@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';
+assert.equal(process.cwd(),'/private/tmp/done-enrollment-speed-a18d5d1c/regression-source');
+import {createRequire} from 'node:module';
+const root='/private/tmp/done-enrollment-speed-a18d5d1c/regression-source';
+const {defineConfig}=createRequire(root+'/package.json')('@playwright/test');
+export default defineConfig({testDir:root+'/test/packaged-account',testMatch:['enrollment-batch.spec.ts'],timeout:120000,workers:1,retries:0,reporter:[['list'],['json',{outputFile:'/private/tmp/done-enrollment-speed-a18d5d1c/browser-final-new.json'}]],outputDir:'/private/tmp/done-enrollment-speed-a18d5d1c/browser-final-new-artifacts',use:{baseURL:'http://localhost:53221',viewport:{width:1280,height:900}}});

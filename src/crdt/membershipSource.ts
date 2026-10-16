@@ -323,6 +323,7 @@ export async function prepareNativeReplacement(
   candidate: string,
   read: (request: Bytes) => Promise<Bytes>,
   exchange: (request: HistoryExchange) => Promise<unknown>,
+  readBatch?: (requests: readonly Bytes[]) => Promise<readonly Bytes[]>,
 ) {
   const captured = structuredClone(authority);
   return withNativeHistorySource(input, async (source) => {
@@ -373,6 +374,7 @@ export async function prepareNativeReplacement(
       sign: source.sign,
       read,
       exchange,
+      ...(readBatch ? { readBatch } : {}),
     });
     try {
       const local = await source.local();

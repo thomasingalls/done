@@ -1,0 +1,132 @@
+{
+  "scenarios": [
+    {
+      "bursts": 0,
+      "pairs": 3,
+      "sameMarkdownContentsAcrossAllSixRuns": true,
+      "baseline": {
+        "foregroundMs": {
+          "median": 2839,
+          "min": 2351,
+          "max": 2844,
+          "raw": [
+            2839,
+            2844,
+            2351
+          ]
+        },
+        "certifiedMs": {
+          "median": 4666,
+          "min": 4646,
+          "max": 5147,
+          "raw": [
+            5147,
+            4646,
+            4666
+          ]
+        },
+        "historyReadRoundTrips": [
+          5,
+          5,
+          5
+        ]
+      },
+      "candidate": {
+        "foregroundMs": {
+          "median": 2385,
+          "min": 2339,
+          "max": 2864,
+          "raw": [
+            2339,
+            2864,
+            2385
+          ]
+        },
+        "certifiedMs": {
+          "median": 4664,
+          "min": 4203,
+          "max": 5197,
+          "raw": [
+            4664,
+            5197,
+            4203
+          ]
+        },
+        "historyReadRoundTrips": [
+          2,
+          2,
+          2
+        ]
+      },
+      "foregroundMedianReductionPercent": 15.99154631912645
+    },
+    {
+      "bursts": 24,
+      "pairs": 3,
+      "sameMarkdownContentsAcrossAllSixRuns": true,
+      "baseline": {
+        "foregroundMs": {
+          "median": 5874,
+          "min": 5863,
+          "max": 6403,
+          "raw": [
+            5874,
+            6403,
+            5863
+          ]
+        },
+        "certifiedMs": {
+          "median": 8688,
+          "min": 8193,
+          "max": 8745,
+          "raw": [
+            8193,
+            8745,
+            8688
+          ]
+        },
+        "historyReadRoundTrips": [
+          29,
+          29,
+          29
+        ]
+      },
+      "candidate": {
+        "foregroundMs": {
+          "median": 4380,
+          "min": 4342,
+          "max": 4907,
+          "raw": [
+            4342,
+            4380,
+            4907
+          ]
+        },
+        "certifiedMs": {
+          "median": 7148,
+          "min": 6680,
+          "max": 7227,
+          "raw": [
+            7148,
+            6680,
+            7227
+          ]
+        },
+        "historyReadRoundTrips": [
+          8,
+          8,
+          9
+        ]
+      },
+      "foregroundMedianReductionPercent": 25.434116445352394
+    }
+  ],
+  "replyDelayMs": 75,
+  "unit": "restored complete connection",
+  "candidateIncludesSlowWorkBound": true,
+  "limits": [
+    "three matched pairs per account shape, desktop Chromium with virtual passkeys",
+    "same candidate service runs both arms: baseline uses unchanged individual-read handler",
+    "online navigation/reopen checks; no phone, physical-provider or WAN timing claim"
+  ]
+}

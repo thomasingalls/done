@@ -1,0 +1,4 @@
+{
+  "result": "The temporary builder staged its dependency symlink because a directory-only ignore pattern does not cover that symlink. Replay also needed a refreshed index stat cache; verified document bytes already matched HEAD and the index exactly.",
+  "correction": "Stage only each reviewed phase path list; refresh the disposable index after read-tree. No real index or dependency path was changed."
+}

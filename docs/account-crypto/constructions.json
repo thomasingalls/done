@@ -5873,7 +5873,7 @@
         },
         {
           "path": "src/crdt/historySource.ts",
-          "line": 255,
+          "line": 259,
           "label": "done/checkpoint/v1",
           "kind": "literal"
         },
@@ -7409,7 +7409,8 @@
       "mapEntries": [],
       "vectorCases": [],
       "tests": [
-        "test/account-sessions/inbound-batch.test.mjs"
+        "test/account-sessions/inbound-batch.test.mjs",
+        "test/packaged-account/enrollment-batch.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",

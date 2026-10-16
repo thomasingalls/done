@@ -1,0 +1,4 @@
+{
+  "result": "Both final recheck scenarios refused during restored-fixture setup, before timed approval. The original comparison fixtures were now older than their ten-minute authenticated expiry.",
+  "correction": "Create fresh real account/device-comparison fixtures; preserve protocol/client/server deadlines. Do not relax expiry or reuse aged comparison material."
+}

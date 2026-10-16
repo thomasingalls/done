@@ -8,6 +8,12 @@ import { enrollmentOptions } from '../../account-protocol/enrollment';
 import { MEMBERSHIP_BOOTSTRAP_LIMIT } from '../../account-protocol/membershipLocator';
 import { HISTORY_PAGE_LIMIT } from '../../account-protocol/historyExchange';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
+import {
+  encodeInboundBatch,
+  encodeInboundBatchPages,
+  decodeInboundBatchPages,
+  INBOUND_BATCH_PAGE_LIMIT,
+} from '../../account-protocol/inboundBatch';
 import { withMembershipVault, type MembershipVault } from './membershipVault';
 import { advanceMembershipConnection, type MembershipConnection } from './membershipConnection';
 import { membershipInvitationUrl } from './membershipInvitation';
@@ -95,6 +101,7 @@ export function createMembershipEnrollment(
     role === 'existing' && /^enrollment-[a-f0-9]{32}$/.test(slotId) ? 'joined' : 'promotion';
   const ceremonyLogin = new NetworkLogin(pin, slotId),
     grants = new ScopedTransport(pin, lifetime.signal);
+  let batchingAvailable = true;
   if (role === 'new' && (!networkLogin || networkLogin.retired)) {
     networkLogin = new NetworkLogin(pin, slotId);
     void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
@@ -212,6 +219,58 @@ export function createMembershipEnrollment(
             guard();
             if (!page) throw Error('Writing could not be fetched. Retry the saved load.');
             return page;
+          },
+          readBatch: async (requests, base) => {
+            const scoped = access(owner, base);
+            return owner.withLogin(ceremonyLogin, identity(base), async () => {
+              const fallback = async () => {
+                batchingAvailable = false;
+                const page = await privateDeliveryPost(
+                  pin,
+                  scoped,
+                  'read-v2',
+                  requests[0]!,
+                  READ_PAGE_LIMIT,
+                  lifetime.signal,
+                  undefined,
+                  true,
+                );
+                if (!page) throw Error('Writing could not be fetched. Retry the saved load.');
+                try {
+                  return encodeInboundBatchPages([page]);
+                } finally {
+                  page.fill(0);
+                }
+              };
+              const body = encodeInboundBatch(requests);
+              let reply: Uint8Array<ArrayBuffer> | null = null;
+              try {
+                reply = batchingAvailable
+                  ? await privateDeliveryPost(
+                      pin,
+                      scoped,
+                      'read-v2-batch',
+                      body,
+                      INBOUND_BATCH_PAGE_LIMIT,
+                      lifetime.signal,
+                      undefined,
+                      true,
+                      fallback,
+                    )
+                  : await fallback();
+                guard();
+                if (!reply) throw Error('Writing could not be fetched. Retry the saved load.');
+                const pages = decodeInboundBatchPages(reply);
+                if (pages.length > requests.length) {
+                  for (const page of pages) page.fill(0);
+                  throw Error('Unexpected history read pages');
+                }
+                return pages;
+              } finally {
+                body.fill(0);
+                reply?.fill(0);
+              }
+            });
           },
           assert: async (context) => {
             const credential = (await navigator.credentials.get({

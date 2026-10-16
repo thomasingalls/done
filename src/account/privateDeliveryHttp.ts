@@ -24,16 +24,21 @@ export const recordPrivateReceiveExpiry = (phase: 'verify' | 'commit'): void =>
 export async function privateDeliveryPost(
   pin: AuthorityPin,
   token: AccountAccess,
-  path: 'submit' | 'read' | 'read-v2',
+  path: 'submit' | 'read' | 'read-v2' | 'read-v2-batch',
   body: Bytes,
   limit: number,
   signal: AbortSignal,
   observe: DiagnosticSink = diagnostics.record,
   /** Retained connection coordinators own rebootstrap/sign-in/backoff; byte-only drivers retain null. */
   propagateAuthorization = false,
+  unsupported?: () => Promise<Bytes | null>,
 ): Promise<Bytes | null> {
   const note = (phase: Diagnostic['phase'], code: Diagnostic['code']) =>
-    reportDiagnostic(observe, { operation: path, phase, code });
+    reportDiagnostic(observe, {
+      operation: path === 'read-v2-batch' ? 'read-v2' : path,
+      phase,
+      code,
+    });
   if (!isAccountAccess(token)) {
     note('request', 'invalid-token');
     return null;
@@ -51,6 +56,13 @@ export async function privateDeliveryPost(
       redirect: 'error',
       signal: stopped,
     });
+    // Only an absent optional route selects the original transport. All other refusals keep
+    // their normal classification; fallback grants no authority and never advances a cursor.
+    if (path === 'read-v2-batch' && response.status === 404 && unsupported) {
+      await response.body?.cancel();
+      stopped.throwIfAborted();
+      return await unsupported();
+    }
     const hint =
       response.status === 409 && response.headers.get('content-type') === 'application/json';
     if (

@@ -1,0 +1,4 @@
+{
+  "result": "Two passed; substituted-page injection failed on a legitimate one-page first publisher group. Its async callback error/time limit prevented context cleanup; eight following tests encountered the retained port. No product defect is inferred from those eight startup failures.",
+  "correction": "Wait for a multi-page group before swapping; nested finally always stops service after cleanup errors. Confirmed both orphan listeners belonged to the disposable frozen checkout before graceful SIGTERM."
+}
