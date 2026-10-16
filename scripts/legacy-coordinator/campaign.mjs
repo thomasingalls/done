@@ -28,6 +28,7 @@ const walk = (dir) =>
   );
 const paths = [
   ...walk('src'),
+  ...walk('account-protocol'),
   ...walk('scripts/legacy-coordinator'),
   ...walk('scripts/legacy-cleanup'),
   ...walk('scripts/legacy-export'),

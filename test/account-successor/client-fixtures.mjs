@@ -1,7 +1,7 @@
 import { build } from 'vite';
-import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
-import { resolve, join } from 'node:path';
+import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { emitBundle } from '../../scripts/lib/emitted-bundle.mjs';
 import { createCipheriv, hkdfSync, sign } from 'node:crypto';
 import { fixture, hash, lp } from './oracle.mjs';
 import { head, response, link, ZERO } from './history-oracle.mjs';
@@ -50,18 +50,13 @@ export async function adapters(control) {
     },
   });
   if (control && hits !== 1) throw Error('Unapplied control');
-  const output = (Array.isArray(result) ? result[0] : result).output.find(
-    (f) => f.type === 'chunk',
-  );
-  const parent = resolve('test-results/account-successor-adapters');
-  mkdirSync(parent, { recursive: true });
-  const dir = mkdtempSync(join(parent, 'module-'));
-  const file = join(dir, 'adapters.mjs');
-  writeFileSync(file, output.code);
-  return {
-    lib: await import(pathToFileURL(file)),
-    clear: () => rmSync(dir, { recursive: true, force: true }),
-  };
+  const emitted = emitBundle(result, resolve('test-results/account-successor-adapters'));
+  try {
+    return { lib: await import(pathToFileURL(emitted.entry)), clear: emitted.clear };
+  } catch (error) {
+    emitted.clear();
+    throw error;
+  }
 }
 const u32 = (n) => {
   const b = Buffer.alloc(4);

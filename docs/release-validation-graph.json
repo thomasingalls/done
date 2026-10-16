@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 486,
-    "requiredTestFiles": 480,
+    "testFiles": 489,
+    "requiredTestFiles": 483,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -2519,14 +2519,14 @@
       "referencesVectorChain": false,
       "runCallSites": [
         {
-          "line": 148,
+          "line": 149,
           "form": "run",
           "arguments": ["name", "args", "timeout"]
         }
       ],
       "processCallSites": [
         {
-          "line": 83,
+          "line": 84,
           "form": "spawn",
           "arguments": [
             "process.execPath",
@@ -3077,14 +3077,14 @@
       "referencesVectorChain": false,
       "runCallSites": [
         {
-          "line": 134,
+          "line": 135,
           "form": "run",
           "arguments": ["name", "args", "timeout"]
         }
       ],
       "processCallSites": [
         {
-          "line": 70,
+          "line": 71,
           "form": "spawn",
           "arguments": [
             "process.execPath",
@@ -3967,14 +3967,14 @@
       "referencesVectorChain": false,
       "runCallSites": [
         {
-          "line": 145,
+          "line": 146,
           "form": "run",
           "arguments": ["name", "args", "timeout"]
         }
       ],
       "processCallSites": [
         {
-          "line": 81,
+          "line": 82,
           "form": "spawn",
           "arguments": [
             "process.execPath",
@@ -4692,12 +4692,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 156,
+          "line": 157,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ cwd: root, encoding: 'utf8' }"]
         },
         {
-          "line": 844,
+          "line": 845,
           "form": "execFileSync",
           "arguments": [
             "process.execPath",
@@ -4726,12 +4726,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 189,
+          "line": 190,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ cwd: root, encoding: 'utf8' }"]
         },
         {
-          "line": 853,
+          "line": 854,
           "form": "execFileSync",
           "arguments": [
             "process.execPath",
@@ -4875,12 +4875,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 154,
+          "line": 155,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ cwd: root, encoding: 'utf8' }"]
         },
         {
-          "line": 590,
+          "line": 591,
           "form": "execFileSync",
           "arguments": [
             "process.execPath",
@@ -4899,12 +4899,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 128,
+          "line": 129,
           "form": "execFileSync",
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ cwd: root, encoding: 'utf8' }"]
         },
         {
-          "line": 534,
+          "line": 535,
           "form": "execFileSync",
           "arguments": [
             "process.execPath",
@@ -5753,6 +5753,21 @@
           "--test",
           "--test-concurrency=1",
           "test/account-activation/restart.test.mjs"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-admission-bounds/historical-closure.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-admission-bounds/historical-closure.test.mjs"
         ]
       },
       "declarations": 1,
@@ -7829,6 +7844,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-receive/historical-owner.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-receive/historical-owner.test.mjs"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-receive/native.test.mjs",
       "status": "required",
       "invocation": {
@@ -8816,6 +8846,21 @@
           "form": "fc.asyncProperty"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-successor/emitted-bundle.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-successor/emitted-bundle.test.mjs"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -11522,7 +11567,7 @@
       "declarations": 4,
       "propertyFamilies": [
         {
-          "line": 1125,
+          "line": 1123,
           "form": "fc.property"
         }
       ],
@@ -14740,7 +14785,7 @@
     },
     {
       "path": "scripts/account-admission-bounds/run.mjs",
-      "sha256": "72a553af3ba0daceb7e158e4799864c70990f6628084f041eaf6a3db03be31d8"
+      "sha256": "3eae2fdfa845bb5ca5aff7dc6d02a3bc5c48a4cb0ec4935b1fb0ce6e2590fbf2"
     },
     {
       "path": "scripts/account-admission-bounds/vectors.mjs",
@@ -14812,7 +14857,7 @@
     },
     {
       "path": "scripts/account-driver/run.mjs",
-      "sha256": "e02b27b771f800a1c98295b57c0da64eab3c144d8565044a5612cfd8d9afb953"
+      "sha256": "9a06ea32f60bbaa980aca0724bfe11b987252ef0b10df196b166d317242e8322"
     },
     {
       "path": "scripts/account-editing/run.mjs",
@@ -14912,7 +14957,7 @@
     },
     {
       "path": "scripts/account-receive/run.mjs",
-      "sha256": "dbba185d3d8d20cc0f59eb09ae22f7e73f6cfe7c795b6add2e6f2609e9732975"
+      "sha256": "de7dbd75f563833a16ee1890c3bfd42d34ca44d59a5f6236aeaedadb21ce6bea"
     },
     {
       "path": "scripts/account-recovery-contract/run.mjs",
@@ -15264,7 +15309,7 @@
     },
     {
       "path": "scripts/legacy-cleanup/campaign.mjs",
-      "sha256": "12dfe89d76cfc8ab9f338069d2e43a4c252b7ae87a58af62103c101b6d46f971"
+      "sha256": "cee1a312e34b62bc7ddf100213e0c79560b4c84c8f8e184c3ba062a8820eba4b"
     },
     {
       "path": "scripts/legacy-cleanup/config.mjs",
@@ -15288,7 +15333,7 @@
     },
     {
       "path": "scripts/legacy-coordinator/campaign.mjs",
-      "sha256": "08fa37ce9f95f826371744e5666e7aceed719a64037972ff7ea59494894f3b55"
+      "sha256": "5e387f59496961e725367c95b6f28bee92969744360dd8c0c3dfa57d65a860f6"
     },
     {
       "path": "scripts/legacy-coordinator/run.mjs",
@@ -15372,11 +15417,11 @@
     },
     {
       "path": "scripts/legacy-import/run.mjs",
-      "sha256": "54fb2a16d15039311bd53889d6e45f497afe4ac159d26df3f39abb530f6cf321"
+      "sha256": "fe25f08b6162a40dee522e5b4236925ba71dc30106954618ef7cb51845838b00"
     },
     {
       "path": "scripts/legacy-selection/run.mjs",
-      "sha256": "72311074a5b9b6596820838d88f0311b89c1a6da9ff0eb69d3737507d35f8e64"
+      "sha256": "799cd179b8803d7648e705c9684ee66f07ec58e54079216f6ef538aca8c8a16e"
     },
     {
       "path": "scripts/legacy-source/run.mjs",
@@ -15411,8 +15456,16 @@
       "sha256": "eaf6cb0a62f37c7cd2742d4c77bd969509399fa8682f979e83b56a228589e76b"
     },
     {
+      "path": "scripts/lib/emitted-bundle.mjs",
+      "sha256": "a53febe118e7c4cf9b84cf6062e4c03c9ec0abf56a6925aab9dffc026712f8b8"
+    },
+    {
       "path": "scripts/lib/findings.mjs",
       "sha256": "b12b56d711dc129acb55c0f2e0741dcbb286c29d1ab40a380c02283a507e8bdb"
+    },
+    {
+      "path": "scripts/lib/historical-bundle.mjs",
+      "sha256": "535835fbda8251357746e3405c1c56da843d4b4726ab94a626f086daf99fbc7d"
     },
     {
       "path": "scripts/lib/packaged-application.mjs",
@@ -15960,7 +16013,11 @@
     },
     {
       "path": "test/account-admission-bounds/fixtures.mjs",
-      "sha256": "b3e4682b468697d327e3f920b4f00c17476fb92f8ffdf82da8a03ab2a8d88407"
+      "sha256": "1459d8690cee6baecd3a012a36d1e760bf6ca9c73f1e0f92da2b54b5b9782183"
+    },
+    {
+      "path": "test/account-admission-bounds/historical-closure.test.mjs",
+      "sha256": "992985a8a61f8aaba3f0b4ecf8faa803c4f8cabf8187be393997cf8fb2180379"
     },
     {
       "path": "test/account-admission-bounds/histories.mjs",
@@ -16332,7 +16389,7 @@
     },
     {
       "path": "test/account-driver/controls.test.mjs",
-      "sha256": "d71b6d6b77ca207e51a2e3a10f032a4f67b0c57c742b23e482afbc6a0a9499ac"
+      "sha256": "946b3183de86f2ac5ab55e07428b487fd63e4ebd0c2aed6bb24d372dbc82cb9e"
     },
     {
       "path": "test/account-driver/fixtures.mjs",
@@ -16972,7 +17029,7 @@
     },
     {
       "path": "test/account-receive/fixtures.mjs",
-      "sha256": "4b951e685b5e91cb5669fd640c8f3640835bdf453a3380776647653072189d24"
+      "sha256": "7b2a99b04c20488a80a00c1d00b5a00c1568e7bfbf619f782799f0c930fe5838"
     },
     {
       "path": "test/account-receive/groups-transport.test.mjs",
@@ -16981,6 +17038,10 @@
     {
       "path": "test/account-receive/groups.test.mjs",
       "sha256": "5804423da6d409d2ed0049e9c008e6a10f91fc9613b0848ea54f0a70b7af8735"
+    },
+    {
+      "path": "test/account-receive/historical-owner.test.mjs",
+      "sha256": "8aee36dc0ba1004d86cadb8e16196500d2c6105c82077d901f38b52e1c9cedf9"
     },
     {
       "path": "test/account-receive/native.test.mjs",
@@ -17420,7 +17481,7 @@
     },
     {
       "path": "test/account-successor/client-fixtures.mjs",
-      "sha256": "394797867aafebbc36cab45b713a27de20a73888c77858b5ab0dc9c5991a5df1"
+      "sha256": "1c04f9453c1524600a80c5e086fe68d761fae93c5ebfcbba981fedbc5188d2f5"
     },
     {
       "path": "test/account-successor/client-replay-controls.test.mjs",
@@ -17445,6 +17506,10 @@
     {
       "path": "test/account-successor/discovery.test.mjs",
       "sha256": "2e80116edd79d26266ad4877d64676906e3a36e0581f91a3020642ae266a26d3"
+    },
+    {
+      "path": "test/account-successor/emitted-bundle.test.mjs",
+      "sha256": "018fc78bf16e6844715fad6f5998c68f1dab360dfd0f1b6bc20d58e3f1d8e6b9"
     },
     {
       "path": "test/account-successor/generated.test.mjs",
@@ -18628,7 +18693,7 @@
     },
     {
       "path": "test/release-validation/account-fixtures.test.mjs",
-      "sha256": "afe966bfaf186c662a28b3737d4d38ee5d7fd21e61d648442ee9879ef95a6192"
+      "sha256": "0a40e689481928a3b02eefef5b13ea8e4235d5c551d5102fd798eb4ffe3f2f39"
     },
     {
       "path": "test/release-validation/admission.test.mjs",

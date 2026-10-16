@@ -10,6 +10,11 @@ loader defect and records its separate approved locator update. The table below 
 checkpoint and its other open groups. No push, preview refresh, merge or deployment occurred.
 Aggregate qualification remains paused.
 
+The compiler repair is now signed as `a6fa2298`. The next
+[source/historical harness packet](../2026-10-15-source-harnesses/README.md) restores the H1/H2 functional
+paths and records three still-failing mutation anchors. The table below remains the earlier triage
+checkpoint; neither successor packet establishes a green full suite or resumes qualification.
+
 ## Scope and evidence
 
 The [original 85-command baseline](../2026-10-15-full-functional-suite/README.md) reports 36 command

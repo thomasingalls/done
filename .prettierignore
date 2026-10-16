@@ -33,3 +33,6 @@ docs/account-conformance-runs/2026-10-15-remaining-functional-failures/**
 
 # Immutable compiler-loader failures, cache-boundary controls and verified source/build pins.
 docs/account-conformance-runs/2026-10-15-compiler-loading/**
+
+# Immutable source-closure repairs, historical identities, original failures and retained controls.
+docs/account-conformance-runs/2026-10-15-source-harnesses/**

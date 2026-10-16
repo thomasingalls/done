@@ -14849,3 +14849,67 @@ clear the broader red functional baseline or resolve default-worker timeouts. Lo
 no CI Node 24 or new Firefox/Bitwarden walkthrough is claimed. Preview, backend, user data and the
 other seat's `docs/progress.md` stay untouched. This outcome was appended before advancing packet
 status; no push, merge or deployment occurred.
+
+### Commit compiler repair and restore source/historical harness execution
+
+**Date:** 2026-10-15 · **Compiler commit:** signed `a6fa2298cf3233893e3cbb9809190da6a8dc72bc`.
+
+The verified compiler-loading repair was committed first. Its SSH signature verifies and the working
+tree was clean afterward. The following H1/H2 harness repairs remain uncommitted; no push, preview
+refresh, merge, deployment or aggregate qualification occurred.
+
+**Bounded outcome.** Four legacy campaigns now copy and hash all 44 protocol files alongside application
+source. The scheduler controls bundle the actual mutated production entry with its dependencies.
+Successor adapters retain all emitted chunks/assets, hash their inventory and import the actual entry.
+The receive and admission-bounds fixtures rebuild complete production source from their original pinned
+revisions instead of combining old modules with current callers. The receive bridge invokes the genuine
+old v8 delivery owner; current raw-storage observers remain separate. Historical browser builds refuse
+unexpected external outputs instead of silently dropping them.
+
+**Evidence.** All four legacy baselines pass **123 named checks and 240 generated histories** with their
+original seeds/counts and deadlines. Import passes six controls, selection five, coordinator ten, and
+cleanup five across the full command and a separately reached final control. All four snapshot censuses
+independently match the copied protocol bytes and recorded input hashes. All 23 receive/admission native
+cases pass. Seven successor replay cases and both scheduler controls pass; the publisher-binding control
+also demonstrates its intended forbidden plaintext. The full affected native/control run remains red
+at its separate issuance-boundary anchor: 24 passes and one failure before fault application.
+
+Three new regressions pass under the exact normal-CI command: complete entry/lazy-chunk/binary-asset
+retention, fresh historical source/bundle identity checked independently against Git blobs, and an
+original v8 service/fixture/owner positive control followed by current-v9 no-write refusal. A naive v8
+positive control correctly refused modern v2 admission; the corrected test uses the original v1 fixture
+without rewriting signed receipts. A nested launch initially ran zero cases; final explicit TAP and
+exact named-case accounting prevent that from earning credit. Those failed diagnostics remain. Their
+intermediate new-test files were replaced during development; no exact source pin is claimed for those
+intermediate versions. All eight existing scheduler unit cases pass. The 26 focused planning/CI/census
+cases and 125 wrapper/manifest cases pass, **151** total, without changed deadlines or removed assertions.
+The operator-resumed CI job remains byte-identical; normal CI now invokes the three new regressions.
+
+**Remaining failures and limits.** Cleanup's full command reaches four controls after its successful
+baseline, then fails at `unsigned-manifest`. Individually reaching the later controls finds a second
+stale anchor, `omit-destination-journal`, while `clear-forgets-source` passes. Together with successor
+`issuance-boundary`, these are three H3 gaps whose intended fault never executes. No guard or control
+anchor was changed to manufacture sensitivity. Other issue groups from the original full-suite baseline
+remain open; that 85-command baseline was not rerun as a whole.
+
+The operator explicitly approved all changes to twelve existing test/harness files and the layout of
+their newly introduced blocks. A chained hash receipt checks each exact approved boundary. An inherited
+registry regex layout and the older deferred formatting patch stay untouched; scoped changed-source
+formatting and lint pass. Application, service, protocol and the other seat's `docs/progress.md` are
+unchanged from the signed compiler commit. Source rebuilds use the current installed toolchain, with
+historical runtime declarations and lock/source identities recorded; they are not historical binaries.
+Local Node is 26.11.1; no Node 24 or new Firefox/Bitwarden result is claimed.
+
+The [bounded packet](account-conformance-runs/2026-10-15-source-harnesses/README.md) retains red runs,
+final source identities, approvals, source audits, successful results and the unresolved controls.
+Inventory retains 850 obligations and 309 unresolved obligations. The three new files remain required
+and blocked from aggregate execution credit; existing historical adapters also need expanded archive
+and module-report custody review. Aggregate qualification remains paused. This outcome was appended
+before advancing packet/navigation state. Preview `fcb659c3`, its service and user data are untouched.
+
+**Final source-record check.** Inventory verification caught the new historical helper's final emitted-
+output guard hash after the last source edit. Review of the regenerated inventory finds exactly one
+changed input hash, independently matched to that helper; all counts and dispositions remain unchanged.
+The failed verification is retained. Fresh inventory/manifest checks and all 26 focused CI/planning
+cases then pass, with the same 850/309 blocked totals. No old test changes or guard relaxation follows
+from this generated-record refresh.

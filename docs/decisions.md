@@ -4653,3 +4653,37 @@ caches, identical retained optimizer metadata, Local writing, reload and server 
 under both ordinary and private-migration configurations. No dependency upgrade or runtime shim is
 introduced. The [packet](account-conformance-runs/2026-10-15-compiler-loading/README.md) preserves those
 failures and the final evidence; broader release and default-worker timing obligations remain open.
+
+## 2026-10-15 — Restore executable source and historical harness closures
+
+**Scope.** After signed compiler repair `a6fa2298`, restore the bounded H1/H2 harness paths. The
+operator explicitly approved the existing-file patches, source-evidence updates and layout of their
+new blocks. Application, service and protocol source, test assertions, mutation targets and existing
+deadlines remain. Merge, deployment, preview refresh and aggregate qualification stay paused.
+
+**Decision.** Include and hash all `account-protocol` files in the four frozen legacy campaigns.
+Bundle the actual mutated scheduler with its dependencies. Retain every emitted native chunk/asset
+under its emitted filename, hash the output inventory and import its declared entry. Do not read
+missing snapshot dependencies from the live checkout or infer an entry from output order.
+
+For receive/admission-bounds historical checks, rebuild complete production source from the original
+full Git revisions, reject loaded production files outside that snapshot, record module/source/bundle
+identities, and keep raw current census observers separate. The receiver bridge invokes the genuine
+historical v8 delivery owner because a receive owner did not exist at that revision. It does not export
+a current owner or substitute a parser. The old revision also predates v2 admission; a positive control
+runs its original service, creation fixture and owner together. Modern signed receipts are not rewritten
+to construct purported old data. Independent regression checks compare archive files against Git blob
+identities and require fresh output, so a prior successful artifact cannot satisfy a new run.
+
+**Limits and tradeoff.** These are historical source rebuilds using the current installed toolchain,
+with unchanged historical runtime dependency declarations and recorded lock identities. They do not
+reconstruct historical binaries. New direct regressions remain required but blocked from aggregate
+credit pending execution-denominator and process/browser-custody review. The separate issuance-boundary
+mutation anchor still fails before applying its fault; a load error is not sensitivity evidence. No
+security guard or assertion is weakened to clear that H3 obligation. The original failed attempts and
+subsequent results belong in the [bounded packet](account-conformance-runs/2026-10-15-source-harnesses/README.md).
+
+The existing historical execution adapters also require review of expanded archive and module-report
+custody. Their retained narrow module pins remain useful identities, but do not attest the complete
+rebuilt source graph. Direct native passes do not supply that missing aggregate evidence; no process
+guard or report policy is relaxed here.

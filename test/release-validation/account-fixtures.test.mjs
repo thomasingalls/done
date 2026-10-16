@@ -486,11 +486,7 @@ test('Account fixture selection admits exactly 686 Node cases and 12 delivery ca
     [['8378596', 'src/crdt/promotionRecord.ts']],
   );
   const readerPin = oldReader[0].expect.historyInputs[0];
-  assert(
-    readFileSync('test/account-receive/fixtures.mjs', 'utf8').includes(
-      readerPin.reference + ':' + readerPin.path,
-    ),
-  );
+  assert(readFileSync('test/account-receive/fixtures.mjs', 'utf8').includes(readerPin.revision));
   const spool = selectStages(m, 'spool-fixture');
   assert.deepEqual(
     spool.map((s) => s.argv.at(-1)),
@@ -802,7 +798,9 @@ test('Account fixture selection admits exactly 686 Node cases and 12 delivery ca
   );
   for (const pin of nativeBounds[0].expect.historyInputs) {
     assert.equal(pin.revision, bounds.expect.historyInputs[0].revision);
-    assert(readFileSync('test/account-admission-bounds/fixtures.mjs', 'utf8').includes(pin.path));
+    assert(
+      readFileSync('test/account-admission-bounds/fixtures.mjs', 'utf8').includes(pin.revision),
+    );
   }
   const durability = selectStages(m, 'reservation-durability-fixtures');
   assert.deepEqual(

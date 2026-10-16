@@ -181,3 +181,37 @@ outside `node_modules`. The compiler-loading browser regressions exercise both t
 private-migration configurations with fresh and retained caches, verify compilation remains active,
 and retain Local writing through reload and dev-server restart. It has one consequence worth knowing about before
 writing a component here — see "reading the document" below.
+
+## Source snapshots and historical harnesses
+
+A frozen-source campaign must copy and hash its complete runtime input graph. The legacy import,
+selection, cleanup and coordinator campaigns include `account-protocol` alongside `src`; resolving
+missing files from the live checkout would invalidate their snapshot and mutation evidence.
+
+Native Vite adapters use `scripts/lib/emitted-bundle.mjs` to retain every emitted chunk and asset under
+its emitted filename, record hashes, and import the actual entry. An arbitrary first chunk is not a
+complete executable artifact. The scheduler controls bundle the real mutated production entry with
+its dependencies; their original mutation anchors and prohibited-invocation assertions remain.
+
+`historical-bundle.mjs` rebuilds production source from a full pinned Git revision, with isolated source
+paths and a recorded module graph. It checks historical runtime dependency declarations against the
+current checkout's declarations and records both lockfile and source identities. This rebuild uses
+the current installed toolchain; it is not a reconstruction of a historical binary. Browser bridges
+invoke genuine old owners while current raw-census observers can remain separate. The original v8
+revision also predates v2 admission: its positive control runs the original service/creation fixture
+and owner together, rather than rewriting modern signed receipts. Source-identity checks independently
+compare archive contents with Git blob identities, including a fresh output-directory check.
+
+Focused commands for these additional regressions:
+
+```
+node --test --test-concurrency=1 test/account-successor/emitted-bundle.test.mjs test/account-admission-bounds/historical-closure.test.mjs
+node --test --test-concurrency=1 test/account-receive/historical-owner.test.mjs
+```
+
+The normal CI build job runs these three cases after Chromium installation; its operator-resumed
+quality job is unchanged. These direct functional checks do not provide aggregate execution credit. New files stay required and
+blocked until their runtime denominator, subprocess/browser ownership and retained evidence are reviewed.
+The rebuilt existing historical fixtures also need review of expanded archive/module-report custody in
+their aggregate adapters. Their previous narrow historical-module pins do not attest the entire new
+source closure. A direct native pass does not close that adapter obligation or authorize qualification.

@@ -1,9 +1,24 @@
 import { build } from 'vite';
 import { resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { historicalBundle } from '../../scripts/lib/historical-bundle.mjs';
 import { native as base } from '../account-admission/fixtures.mjs';
 export * from '../account-admission/fixtures.mjs';
 export async function bundle(control) {
+  if (control === 'old') {
+    return historicalBundle(
+      '6398e33da4fd4b5b413de23078a04707557599bf',
+      `
+export { admitLocalPromotion } from './src/crdt/promotionAdmission';
+export { verifyCompletion } from './account-protocol/admission';
+import { withPromotionSlot } from './src/crdt/writeSession';
+import { readPromotion } from './src/crdt/promotionRecord';
+export function readRetained(slotId: string, code: string) {
+  return withPromotionSlot(slotId, code, async task =>
+    (await readPromotion(task, slotId, code)).marker?.stage);
+}
+`,
+    );
+  }
   let hits = 0;
   const result = await build({
     configFile: false,
@@ -14,24 +29,6 @@ export async function bundle(control) {
             name: 'bounds-control',
             enforce: 'pre',
             transform(code, id) {
-              if (
-                control === 'old' &&
-                (id.endsWith('/account-protocol/admission.ts') ||
-                  id.endsWith('/src/crdt/promotionAdmission.ts'))
-              ) {
-                hits++;
-                return execFileSync(
-                  'git',
-                  [
-                    'show',
-                    '6398e33:' +
-                      (id.endsWith('/account-protocol/admission.ts')
-                        ? 'account-protocol/admission.ts'
-                        : 'src/crdt/promotionAdmission.ts'),
-                  ],
-                  { encoding: 'utf8', timeout: 5000, maxBuffer: 2 * 1024 * 1024 },
-                );
-              }
               if (control === 'small-bound' && id.endsWith('/account-protocol/admission.ts')) {
                 const needle = 'export const COVERAGE_LIMIT = GENESIS_LIMIT;';
                 if (code.split(needle).length !== 2) throw Error('Missing bound anchor');
@@ -52,7 +49,7 @@ export async function bundle(control) {
       },
     },
   });
-  if (control && hits !== (control === 'old' ? 2 : 1)) throw Error('Control did not apply');
+  if (control && hits !== 1) throw Error('Control did not apply');
   return (Array.isArray(result) ? result[0] : result).output.find((f) => f.type === 'chunk').code;
 }
 const script = await bundle();

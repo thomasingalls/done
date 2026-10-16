@@ -70,6 +70,13 @@ jobs:
       - name: Check development compiler loading with fresh and retained caches
         run: pnpm exec playwright test --config playwright.compiler-loading.config.ts
 
+      - name: Check source artifacts and historical owner regressions
+        run: >-
+          node --test --test-concurrency=1 --test-timeout=60000
+          test/account-successor/emitted-bundle.test.mjs
+          test/account-admission-bounds/historical-closure.test.mjs
+          test/account-receive/historical-owner.test.mjs
+
       - name: Run onboarding, account compatibility and device-removal browser regressions
         run: >-
           pnpm exec playwright test --config playwright.packaged-account.config.ts
