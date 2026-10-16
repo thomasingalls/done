@@ -148,6 +148,8 @@ export default defineConfig(({ mode }) => ({
     ...relayProxy(),
   },
   test: {
+    // Bound independent file workers; keep each case's concurrency and deadlines unchanged.
+    maxWorkers: 2,
     environment: 'jsdom',
     setupFiles: ['./test/setup.ts'],
     include: ['test/**/*.test.ts', 'test/**/*.test.tsx', 'vite/**/*.test.ts'],

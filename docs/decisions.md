@@ -4709,3 +4709,7 @@ Retain the original closed pre-checkpoint, malformed successor, invalid cut and 
 ## 2026-10-16 — Nonvisual lifecycle observers do not depend on animation frames
 
 A Local-genesis wait timed out even though its captured creation was resolved and no slot locks remained. Observe promise state and lock queues on bounded timer polls, preserving the original deadlines, fault definitions and exact refusal/no-write assertions. Preserve timeout state/lock artifacts and full failed sequences; selected passes do not erase full-run failures. Dependency-custody symlink refusals remain enforced, and bounded functional checks remain separate from aggregate qualification.
+
+## 2026-10-16 — Bound the default unit gate's independent file workers
+
+Use at most two concurrent Vitest files while retaining all cases, existing deadlines and concurrency explicitly exercised inside a case. Earlier default Node 26 timeouts remain evidence; fresh default passes do not erase them or establish a deterministic current failure. This is a repeatable gate resource budget with a local speed cost, separate from performance measurement and aggregate qualification. Compare complete case identities/statuses on pinned Node 24 and the local runtime rather than crediting a filtered fast run.

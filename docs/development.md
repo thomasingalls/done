@@ -215,3 +215,13 @@ blocked until their runtime denominator, subprocess/browser ownership and retain
 The rebuilt existing historical fixtures also need review of expanded archive/module-report custody in
 their aggregate adapters. Their previous narrow historical-module pins do not attest the entire new
 source closure. A direct native pass does not close that adapter obligation or authorize qualification.
+
+## Unit-suite resource budget
+
+The default Vitest gate runs at most two independent test files concurrently. This
+keeps its file-level resource budget explicit across developer machines and CI.
+Every case and existing case deadline remains; explicit concurrency exercised
+inside a case is unchanged. A filtered or capped exploratory command is not a
+substitute for the full `pnpm test` population. CI pins Node 24.18.0; record the
+actual runtime and keep failed attempts when comparing results. This worker
+budget is not a performance measurement or release-qualification result.

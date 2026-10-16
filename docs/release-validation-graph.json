@@ -19324,7 +19324,7 @@
     },
     {
       "path": "vite.config.ts",
-      "sha256": "f4a9e3e70e537b9a8bc278b317acf187f36ccd48259ff6527cad9546a0f0152e"
+      "sha256": "2556e1044d14dc1a26203d915d93624805c4ebc948e3c1ef51e4452c8b5115c3"
     },
     {
       "path": "vite/appUpgradeProperties.test.ts",
