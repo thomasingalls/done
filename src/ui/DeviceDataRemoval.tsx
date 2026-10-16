@@ -5,6 +5,7 @@ import {
   readDeviceRemoval,
   removeDeviceData,
   LegacyRemovalRequired,
+  WorkspaceDataAbsent,
 } from '../crdt/deviceDataRemoval';
 import { withDeviceRemovalSlot } from '../crdt/writeSession';
 import { probeDatabase, readRow } from '../crdt/startupStorage';
@@ -25,76 +26,110 @@ export function RemoveFromDeviceButton({ slotId }: { slotId: string }) {
     </button>
   );
 }
-export function DeviceDataRemoval({
-  slotId,
-  onBack,
-  onStartFresh,
-}: {
+type RemovalProps = {
   slotId: string;
   onBack: () => void;
   onStartFresh: () => void;
-}) {
-  const [step, setStep] = useState<'review' | 'confirm' | 'resume' | 'working' | 'removed'>(
-    'review',
-  );
+};
+export function DeviceDataRemoval(props: RemovalProps) {
+  return <RemovalFlow key={props.slotId} {...props} />;
+}
+function RemovalFlow({ slotId, onBack, onStartFresh }: RemovalProps) {
+  const [step, setStep] = useState<
+    | 'checking'
+    | 'review'
+    | 'confirm'
+    | 'failed'
+    | 'blocked'
+    | 'absent'
+    | 'read-failed'
+    | 'working'
+    | 'removed'
+  >('checking');
   const [typed, setTyped] = useState(''),
     [message, setMessage] = useState(''),
     [error, setError] = useState('');
   const pending = useRef(false);
+  const [check, setCheck] = useState(0);
+  const navigation = useContext(PreviewNavigationContext);
   const [identity, setIdentity] = useState<{ name?: string; accountId?: string }>({});
-  useEffect(() => {
-    let live = true;
-    void withDeviceRemovalSlot(slotId, async (task) => {
-      const hint = (await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
-        readRow(task, db, 'attempt', slotId === 'local' ? 'current' : slotId),
-      )) as { name?: unknown; requestedName?: unknown; view?: { accountId?: unknown } } | null;
-      if (live && hint) {
-        const name = hint.name ?? hint.requestedName,
-          accountId = hint.view?.accountId;
-        setIdentity({
-          ...(typeof name === 'string' && name.length <= 80 ? { name } : {}),
-          ...(typeof accountId === 'string' && /^[A-Za-z0-9_-]{43}$/.test(accountId)
-            ? { accountId }
-            : {}),
-        });
-      }
-      return readDeviceRemoval(task, slotId);
-    })
-      .then((r) => {
-        if (live && r) setStep(r.phase === 'removed' ? 'removed' : 'resume');
-      })
-      .catch(() => {
-        if (live) setError('Saved removal progress could not be read.');
-      });
-    return () => {
-      live = false;
-    };
-  }, [slotId]);
   const remove = async () => {
     if (pending.current) return;
     pending.current = true;
     setError('');
+    setMessage('');
     setStep('working');
     try {
       await removeDeviceData(slotId, setMessage);
       setStep('removed');
     } catch (cause) {
-      setError(
-        cause instanceof Error
-          ? cause.message
-          : 'Removal could not finish. Your remaining local data has been kept.',
-      );
-      setStep(cause instanceof LegacyRemovalRequired ? 'review' : 'resume');
+      if (cause instanceof WorkspaceDataAbsent) setStep('absent');
+      else if (cause instanceof LegacyRemovalRequired) {
+        setError(cause.message);
+        setStep('blocked');
+      } else {
+        setError(
+          'Removal could not finish. Remaining local data and cleanup progress have been kept. Close other tabs using this workspace and check that browser storage is available, then retry removal. If it still fails, keep your browser data and backups for recovery.',
+        );
+        setStep('failed');
+      }
     } finally {
       pending.current = false;
     }
   };
+  useEffect(() => {
+    let live = true;
+    const controller = new AbortController();
+    setStep('checking');
+    setError('');
+    void withDeviceRemovalSlot(
+      slotId,
+      async (task) => {
+        const hint = (await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
+          readRow(task, db, 'attempt', slotId === 'local' ? 'current' : slotId),
+        )) as { name?: unknown; requestedName?: unknown; view?: { accountId?: unknown } } | null;
+        if (live && hint) {
+          const name = hint.name ?? hint.requestedName,
+            accountId = hint.view?.accountId;
+          setIdentity({
+            ...(typeof name === 'string' && name.length <= 80 ? { name } : {}),
+            ...(typeof accountId === 'string' && /^[A-Za-z0-9_-]{43}$/.test(accountId)
+              ? { accountId }
+              : {}),
+          });
+        }
+        return readDeviceRemoval(task, slotId);
+      },
+      { signal: controller.signal },
+    )
+      .then((r) => {
+        if (!live) return;
+        if (r && r.phase !== 'removed') void remove();
+        else setStep(r ? 'removed' : 'review');
+      })
+      .catch(() => {
+        if (live) {
+          setError(
+            'Saved removal progress could not be read. Check that browser storage is available, then retry this check. No new removal was started.',
+          );
+          setStep('read-failed');
+        }
+      });
+    return () => {
+      live = false;
+      controller.abort();
+    };
+  }, [slotId, check]);
   return (
     <main className="local-startup workspace-gate">
       <section className="local-startup-panel workspace-gate-panel" aria-labelledby="remove-title">
         <span className="local-brand">done</span>
         <h1 id="remove-title">
-          {step === 'removed' ? 'Removed from this device' : 'Remove from this device'}
+          {step === 'removed'
+            ? 'Removed from this device'
+            : step === 'absent'
+              ? 'Nothing to remove'
+              : 'Remove from this device'}
         </h1>
         <p className="setup-note">
           {identity.name
@@ -147,11 +182,36 @@ export function DeviceDataRemoval({
             </button>
           </form>
         )}
-        {step === 'resume' && (
+        {step === 'checking' && (
+          <p role="status">
+            Checking saved removal progress. If this waits, close other tabs using this workspace.
+          </p>
+        )}
+        {step === 'failed' && (
           <>
-            <p>Removal has started. Finish cleanup before opening this workspace.</p>
-            <button onClick={() => void remove()}>Finish removal</button>
+            <button onClick={() => void remove()}>Retry removal</button>
           </>
+        )}
+        {step === 'read-failed' && (
+          <button onClick={() => setCheck((value) => value + 1)}>Retry check</button>
+        )}
+        {step === 'blocked' && (
+          <button
+            onClick={() => {
+              if (navigation) void navigation.go('/local');
+              else location.assign('/local');
+            }}
+          >
+            Return to workspace
+          </button>
+        )}
+        {step === 'absent' && (
+          <p>No saved data was found for this workspace. No removal was started.</p>
+        )}
+        {['failed', 'blocked', 'absent', 'read-failed', 'checking'].includes(step) && (
+          <button className="local-secondary" onClick={onBack}>
+            Back to accounts
+          </button>
         )}
         {step === 'working' && (
           <p role="status">{message || 'Closing local storage and removing data…'}</p>

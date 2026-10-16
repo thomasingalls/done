@@ -4717,3 +4717,11 @@ Use at most two concurrent Vitest files while retaining all cases, existing dead
 ## 2026-10-16 — Re-pin protected custody homes after reviewing recovery-only amendment
 
 The two §13.3 authority-map pins predate the signed recovery-progress isolation amendment. Independent old/current section extraction shows no other difference; both entries already scope protected custody and invocation accounting, and the amendment explicitly grants no opening/passkey/service authority. Refresh only those content pins with a dated review, retain every disposition/blocker, and challenge the unchanged checker with temporary section drift plus exact restoration. Do not pay implementation/platform debt by refreshing a documentation hash.
+
+## 2026-10-16 — Resume authorized removal; distinguish refusal from an unfinished deletion
+
+**Against:** PRD v9, TRD v8 and storage contract SC-06/07/08.
+
+**Decision.** A durable device-removal intent is authorization to resume its exact target automatically when the removal screen reopens. Reading progress is not new authorization: failed reads offer only a read retry, and absent workspaces do not claim erasure started. Unassigned legacy database/journal carriers refuse before any intent or deletion; verified legacy import cleanup/exclusion remains mandatory. The UI explains the refusal and preserves the old installation/export requirement. Ordinary removal failures retain a retry and actionable storage/tab guidance, with the content → journal → metadata ordering unchanged. An identified setup-only attempt may install a non-content removal fence even if genesis never created custody; it creates no workspace, key or opener. Cold removal URLs serve the existing immutable shell, retaining the same CSP and supported-slot grammar. A cancelled inspection releases its queued permit; it does not cancel or roll back authorized destructive work.
+
+**Bounds.** No legacy-writer exclusion is inferred, no origin-wide erasure is offered, and no protected opening, account deletion or remote revocation authority changes. General qualification and publication remain paused.

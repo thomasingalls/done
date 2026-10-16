@@ -1,0 +1,17 @@
+{
+  "src/crdt/deviceDataRemoval.ts": "9b968422cf5ec17d882d5769875d3ed4347033fcc67fff165ca04d6d31b41bf6",
+  "src/crdt/writeSession.ts": "eb122c05ac1d7322632b6a396686cc323a61a2e46e3f0184f79921cd5274022b",
+  "src/ui/DeviceDataRemoval.tsx": "6ca071d5ed4a6863c927da49a9257a480a36662b732af76a6e25903028cb9acd",
+  "scripts/lib/packaged-application.mjs": "9343b7de953ac3fdf78097dad8ce99dc59ca2a72576f82bb9ae8e60f9a3b02bd",
+  "test/removalEntry.test.ts": "f8d4457ed115044e7d24717a67d0310a4fb20154f65c04a6aad6a0e547f67818",
+  "test/packaged-account/local-removal-flow.spec.ts": "93d8c2c68533be7480ff12e9fa0e43d2b137b909dd3f4d378bd92f1360de0b24",
+  "test/account-application/removal-route.test.mjs": "fcaea7150250042a82771ee9ab5f23855f8dfcd6863d637368c5d67ce2c0d32a",
+  "test/deviceDataRemovalRegression.test.ts": "9a96a3c36d5b3d3d06c04b59fffce9caef0cb551d40e2a9c8725702d5c177899",
+  "test/onboardingStorage.test.ts": "c1596b1343d47a0e136566d99201b050951e85b145acb45924111b685ac14aea",
+  "test/packaged-account/removal-regressions.spec.ts": "2c8e9cf46ab15f7ae553df9d495db049bb9592766cb258828ee14f23811d2872",
+  "test/packaged-account/server.ts": "8d15970e91704eceb06bd2d3d985af7e3855f400e369f93ba578b62bb95d616b",
+  "playwright.packaged-account.config.ts": "0906bf9cc220e4919f9faa56c8802243d75b3e2086f196926e318db14fa442c8",
+  "docs/storage-contract.md": "b226865eeecf1dc83da47602cb7571b2d3a2a88611b9021813ec23662a053bb1",
+  "docs/PRD.md": "4b396c1ecde8e021d37b2a61926a3ec2ed4d213445b12fc2ad9c75c89882922f",
+  "docs/TRD.md": "4a93ffc03c0286a1891164d34dd6851a9a8dac81866d464a32e4b8d9cda196fe"
+}

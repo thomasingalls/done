@@ -1,7 +1,7 @@
 /** Explicit, credential-free removal of one installation's slot. No account deletion or revocation. */
-import { CUSTODY_DB, CUSTODY_STORE, identity } from './custodyRecord';
+import { CUSTODY_DB, CUSTODY_STORE, identity, openCustodyDb } from './custodyRecord';
 import { contentTransaction } from './contentDatabase';
-import { probeDatabase, readScopedRows, readRow } from './startupStorage';
+import { probeDatabase, readScopedRows, readRow, legacyJournalCount } from './startupStorage';
 import { deriveStoreName } from './storeName';
 import { journalPrefix } from './journalCodec';
 import { retireSlotWriters, withDeviceRemovalSlot, type SessionTask } from './writeSession';
@@ -17,8 +17,14 @@ import { RECOVERY_PREPARATION_DB, retainedRecoveryKey } from '../account/setupRe
 export class LegacyRemovalRequired extends Error {
   constructor() {
     super(
-      'Finish the verified legacy source cleanup before removing this workspace. Its saved data and cleanup progress have been kept.',
+      'This browser contains writing from an older version. This screen has not removed any data. Keep your existing installation and verified export available. Finish migration and verified legacy source cleanup before trying removal again.',
     );
+  }
+}
+export class WorkspaceDataAbsent extends Error {
+  override readonly name = 'WorkspaceDataAbsent';
+  constructor() {
+    super('No saved data was found for this workspace. No removal was started.');
   }
 }
 async function assertLegacyRemovalReady(task: SessionTask, slotId: string) {
@@ -73,8 +79,8 @@ export async function assertNoDeviceRemoval(task: SessionTask, slotId: string) {
   const r = await readDeviceRemoval(task, slotId);
   if (r) stopStartup(r.phase === 'removed' ? 'cleared' : 'clearing', 'device-data-removal');
 }
-async function save(task: SessionTask, r: Removal) {
-  const found = await probeDatabase(task, CUSTODY_DB, (db) =>
+async function save(task: SessionTask, r: Removal, createForSetupOnly = false) {
+  const write = (db: IDBDatabase) =>
     contentTransaction<void>(
       db,
       task,
@@ -84,9 +90,19 @@ async function save(task: SessionTask, r: Removal) {
         tx.objectStore(CUSTODY_STORE).put(r, removalKey(r.slotId));
       },
       'strict',
-    ),
-  );
-  if (found === null) throw Error('Removal metadata is missing');
+    );
+  const found = await probeDatabase(task, CUSTODY_DB, write);
+  if (found === null) {
+    if (!createForSetupOnly) throw Error('Removal metadata is missing');
+    // Explicitly confirmed erasure of an identified setup-only attempt needs a durable fence
+    // even when no genesis ever created the custody database. Never create content or keys.
+    const db = await task.wait(openCustodyDb);
+    try {
+      await task.wait(() => write(db));
+    } finally {
+      db.close();
+    }
+  }
 }
 async function slots(
   task: SessionTask,
@@ -143,7 +159,20 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
                 await task.wait(() => deriveStoreName(value.principal_id!, value.workspace_id!)),
               );
           }
-          if (!rows?.length && !slot) throw Error('No saved data was found for this workspace');
+          let setupOnly = false;
+          if (!rows?.length && !slot) {
+            if (
+              slotId === 'local' &&
+              ((await probeDatabase(task, 'done', async () => true)) || legacyJournalCount(task))
+            )
+              throw new LegacyRemovalRequired();
+            const setup = (await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
+              readRow(task, db, 'attempt', slotId === 'local' ? 'current' : slotId),
+            )) as { slotId?: unknown } | null | undefined;
+            if (!setup) throw new WorkspaceDataAbsent();
+            if (setup.slotId !== slotId) throw Error('Saved setup routing is inconsistent');
+            setupOnly = true;
+          }
           r = {
             v: 1,
             kind: 'device-data-removal',
@@ -152,7 +181,7 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
             phase: 'content',
           };
           await refuseShared(task, r);
-          await save(task, r);
+          await save(task, r, setupOnly);
         }
         await refuseShared(task, r);
         await task.wait(() => invalidateSetupEpoch(slotId));

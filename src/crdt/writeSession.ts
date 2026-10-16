@@ -315,8 +315,9 @@ export function onSlotRetirement(slotId: string, retire: () => void): () => void
 export async function withDeviceRemovalSlot<T>(
   slotId: string,
   operation: (task: SessionTask) => Promise<T>,
+  options: Pick<WriteSessionOptions, 'signal'> = {},
 ) {
-  const session = await acquire(slotId, 'exclusive', {}, async () => {});
+  const session = await acquire(slotId, 'exclusive', options, async () => {});
   try {
     return await session.run(operation);
   } finally {
