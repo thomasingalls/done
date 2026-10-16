@@ -1,0 +1,9 @@
+# Phase 1 — leave a zero-store legacy placeholder untouched
+
+Base: signed `faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2`. Unsigned bounded overlay; no deployment.
+
+Contract: SC-03/06/08. Only the known legacy name `done`, version 1, with zero object stores is not retained legacy material for fresh genesis. Do not delete or upgrade it. Any store (including empty or unfamiliar stores), unknown version, legacy journal, failed read, scoped index/custody or existing creation claim keeps its preceding refusal. The discovery observation is repeated by the actual creation owner and its first-custody precondition; it confers no opening or source-cleanup authority and establishes no exclusion of nonparticipating old writers. No keys, formats, authentication or migration/erasure machinery change.
+
+Evidence: eleven new real-crypto/fake-IDB cases. Four fail on the original guard; all eleven and 45 preceding Local/startup/compatibility cases pass after repair (56 total). Restoring the old guard makes the same four cases fail; exact source is restored. Typecheck passes. The tests preserve actual legacy keys/bytes, placeholder schema and journals, reject wrong unlock, refuse unknown/empty-store layouts and read failure, and inject a version-two writer before the final first-custody check. The late writer's bytes remain, with zero custody records and no slot.
+
+The first post-fix run found two new-fixture issues: jsdom/Node typed-array realms, and an assertion that disallowed the already-existing harmless empty custody database. Moving the real-crypto fixture to Node and asserting zero custody rows corrected those fixtures; both failed runs remain. Unit Web Locks are wiring only; native Firefox/Chromium composition follows separately. Source pins bind this phase. No claim about the earlier missing desktop account, real-provider behavior, or general qualification is made.

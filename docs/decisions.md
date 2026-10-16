@@ -4759,3 +4759,10 @@ The two §13.3 authority-map pins predate the signed recovery-progress isolation
 **Decision.** Run the ordinary hosted unit population with one file worker and preserve every case workload, the five-second default and the 20-minute job limit. Serialization alone is insufficient in the retained Linux control. Replace only five large binary comparison sites in the two timed-out cases with Node's strict deep equality, retaining all bytes/types, state copies, mutation/isolation checks, generated histories and seed/run parameters. No production code or crypto contract changes. Changed-byte controls must still fail; the projection reporter's wrapped/shrunk error is its actual evidence, not an inferred inner stack.
 
 **Bounds.** Full local functional passes do not erase the hosted failures or establish a successful AMD64 rerun. All obligation rows and release blocks remain. Hosted CI must pass on the signed phase before publication; qualification stays paused.
+
+
+## 2026-10-16 — An empty legacy placeholder is not retained legacy writing
+
+**Against:** storage contract SC-03/06/08 and the existing verified fresh-genesis owner.
+
+**Decision.** Fresh genesis may proceed beside the known `done` database only when its version is exactly 1 and it has zero object stores. Leave that database untouched. A store with zero rows is deliberately not this exception; recognized, unfamiliar and unsupported layouts still require migration, as do all legacy journals and read failures. Repeat the observation under the existing creation lifetime before the first custody claim. This neither migrates/removes source material nor supplies old-writer exclusion; legacy import/cleanup and factor/binding verification are unchanged. An observed late schema upgrade or journal refuses creation and retains its data. Presentation alone remains no authority to create.

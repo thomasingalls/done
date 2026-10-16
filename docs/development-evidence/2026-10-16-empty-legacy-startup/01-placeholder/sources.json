@@ -1,0 +1,7 @@
+{
+  "src/crdt/localGenesisStorage.ts": "2e2d76497283adc16a42f24e851d795c35bcdf9bfce930a6be33749d115da402",
+  "test/emptyLegacyDatabase.test.ts": "c56bffa00961fb92a5e1159322c83ae884af36004e6b97a8c88e4eb213e79d24",
+  "docs/storage-contract.md": "b226865eeecf1dc83da47602cb7571b2d3a2a88611b9021813ec23662a053bb1",
+  "docs/PRD.md": "4b396c1ecde8e021d37b2a61926a3ec2ed4d213445b12fc2ad9c75c89882922f",
+  "docs/TRD.md": "4a93ffc03c0286a1891164d34dd6851a9a8dac81866d464a32e4b8d9cda196fe"
+}
