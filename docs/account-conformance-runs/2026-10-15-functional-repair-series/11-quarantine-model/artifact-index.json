@@ -1,0 +1,115 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "1f1ca94ec411bb893292231904eef79e1639a9ad",
+  "artifacts": {
+    "README.md": {
+      "sha256": "2652a76b82b60905bddafdf3e60c6fc7d13f8d6cdf3da05fbd9632939be307e1",
+      "bytes": 1585
+    },
+    "logs/actual-model-reader.log.gz": {
+      "sha256": "0729c3d22b684618738f9e55fb8732a8a6a8f66ff094a871338b47d1c282e806",
+      "bytes": 145
+    },
+    "logs/actual-model-reader.source.mjs.log.gz": {
+      "sha256": "50364036676ba686dc2c3bbaa348364c57e7cc655f1c4df5314d46a44e0b9c8a",
+      "bytes": 487
+    },
+    "logs/adapter-after.log.gz": {
+      "sha256": "3036d5421eeac41cd132d508ea547696195cb107f20e1f7079012f0d877326d4",
+      "bytes": 523
+    },
+    "logs/diff-check.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/format-review.log.gz": {
+      "sha256": "663fc5f4279839fdfa80a6e8eba68b70cc6bed8b48d16fc4cf37fe090f50c89a",
+      "bytes": 860
+    },
+    "logs/generated-before.log.gz": {
+      "sha256": "3d475a98b7b0d9762961a525553748813e06547d24c16094cf96baad253f2f1e",
+      "bytes": 847
+    },
+    "logs/inventory-final.log.gz": {
+      "sha256": "39145aa25e5d20d16f15b40610166312b38c86f0457ad5bf807bd008a3ca39ab",
+      "bytes": 241
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "39145aa25e5d20d16f15b40610166312b38c86f0457ad5bf807bd008a3ca39ab",
+      "bytes": 241
+    },
+    "logs/lint.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/model-after.log.gz": {
+      "sha256": "6f17c7dd8b43188bde2f591af70dc8c3000e904a80b6071a0f1531dda0835a8d",
+      "bytes": 486
+    },
+    "logs/model-final.log.gz": {
+      "sha256": "c3c1e56a16d5164adef45f848dd355057e4edbb9af73a938524c8e4a0cecf342",
+      "bytes": 488
+    },
+    "logs/plan-final.log.gz": {
+      "sha256": "8bd32437e379a99d498aedbb328b90992cd1652aa26276e91967d6864d0df5f6",
+      "bytes": 223
+    },
+    "logs/plan.log.gz": {
+      "sha256": "dd08ace4b992546f29b99911312ab7a1904c1321cc24ce7b16b6d44437107fa4",
+      "bytes": 223
+    },
+    "receipts/actual-model-reader.json.gz": {
+      "sha256": "7b88ac0a46d98a738a5f38a07242894a8a8b316932713f708c9fb797a0f42bb9",
+      "bytes": 135
+    },
+    "receipts/adapter-after.json.gz": {
+      "sha256": "5b7dcac856a1a72294f11ea232760be02c0877f4f4ed002e37e76c81c5b0ec19",
+      "bytes": 181
+    },
+    "receipts/diff-check.json.gz": {
+      "sha256": "11259959a06d45354cd02b0f50780525a685b4f5dd2a356894531f493622cad7",
+      "bytes": 111
+    },
+    "receipts/generated-before.json.gz": {
+      "sha256": "67ae1539de06275d60b3fb547776a3886eaf256c8d0627c77a80134ff428635b",
+      "bytes": 158
+    },
+    "receipts/generated-final.json.gz": {
+      "sha256": "2a879d57813580fe4d1c38eef9420b05b2bd91fbb145002aed748cd5ab905d33",
+      "bytes": 214889
+    },
+    "receipts/inventory-final.json.gz": {
+      "sha256": "e72ba616d86b30967679ad60ac3754e1031d636ecca7e916f56c540e265bdc9c",
+      "bytes": 142
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "b25bc277110decb22cfc57a58845ff0591130c03919e42df9f524fd2fe5ba8c0",
+      "bytes": 142
+    },
+    "receipts/lint.json.gz": {
+      "sha256": "395e4f7bdc108a401374b7c266197f27fb9fa4420907d747b48e4de928f7731e",
+      "bytes": 212
+    },
+    "receipts/model-after.json.gz": {
+      "sha256": "44d48875607e734f8485720048a1756e27d9a132446b5287bde06359c7ce8b87",
+      "bytes": 170
+    },
+    "receipts/model-final.json.gz": {
+      "sha256": "1bd05d6abcb9087f3d2fbdefe3dc34eb56bd97b5237858de1246eed5d32c6feb",
+      "bytes": 169
+    },
+    "receipts/plan-final.json.gz": {
+      "sha256": "67a3d9b2f0089f36b9ee88a7da52903a431eb7e4abd1300478c36a2ffd22bd97",
+      "bytes": 141
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "1f90770e01ccea891818e7c57aba941da9b1bd738c95c23dd188c15f41bc4c09",
+      "bytes": 141
+    },
+    "source-pins.json.gz": {
+      "sha256": "6efc2d6d1668822c69ca3e959a40c266a8447cb4efebcce8863f699dbc9adcd9",
+      "bytes": 74135
+    }
+  }
+}

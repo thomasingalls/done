@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 492,
-    "requiredTestFiles": 486,
+    "testFiles": 493,
+    "requiredTestFiles": 487,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -8519,6 +8519,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-service-inbound/quarantine.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-service-inbound/quarantine.test.mjs"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-service-inbound/restart.test.mjs",
       "status": "required",
       "invocation": {
@@ -11697,27 +11712,27 @@
           "form": "fc.property"
         },
         {
-          "line": 3121,
+          "line": 3189,
           "form": "fc.property"
         },
         {
-          "line": 3145,
+          "line": 3213,
           "form": "fc.property"
         },
         {
-          "line": 3534,
+          "line": 3602,
           "form": "fc.property"
         },
         {
-          "line": 3564,
+          "line": 3632,
           "form": "fc.property"
         },
         {
-          "line": 4095,
+          "line": 4163,
           "form": "fc.property"
         },
         {
-          "line": 4146,
+          "line": 4214,
           "form": "fc.property"
         }
       ],
@@ -15690,7 +15705,7 @@
     },
     {
       "path": "scripts/release-validation/account-service-inbound-wrapper.mjs",
-      "sha256": "cce57ada0caf423eb5654f07959a4399b4de78b5b4540e65225fb48490b20b1e"
+      "sha256": "e72cda61359417096179f5da2979cca6c6aa64d885804be6f2429d71c8d5b2bd"
     },
     {
       "path": "scripts/release-validation/account-spool-wrapper.mjs",
@@ -17374,7 +17389,7 @@
     },
     {
       "path": "test/account-service-inbound/generated.test.mjs",
-      "sha256": "d3107874766b588bdac253289f7548dff16b92756bfd6ddb4c7984a892e58077"
+      "sha256": "a83a8d7ae42c1a21db52ebf481cc7746e0e065099f21dd32905a7cc93d4fb45b"
     },
     {
       "path": "test/account-service-inbound/native.test.mjs",
@@ -17383,6 +17398,10 @@
     {
       "path": "test/account-service-inbound/oracle.mjs",
       "sha256": "4cf862e74c4a750901b0d495577652c41eee3bbf5a1437a2bfe8cbd8905cfa7f"
+    },
+    {
+      "path": "test/account-service-inbound/quarantine.test.mjs",
+      "sha256": "37e48ac85d4001a068b5d711abc81fa4192835584395f179b53cfe90be701762"
     },
     {
       "path": "test/account-service-inbound/restart.test.mjs",
@@ -18750,7 +18769,7 @@
     },
     {
       "path": "test/release-validation/campaign-wrappers.test.mjs",
-      "sha256": "108d84245dfcf12a01abb86e29868768e35196219640912f6fe029607476634b"
+      "sha256": "5eac501559eb3c1a5b57e56063b033dd3bd22a8c4f61dad97408f20e5d199f4e"
     },
     {
       "path": "test/release-validation/carrier-fixture.mjs",

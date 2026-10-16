@@ -2854,7 +2854,10 @@ function serviceInboundEvidence() {
     if (op === 'read' || op === 'replay') Object.assign(o, page(q, [one]));
     else if (['reader', 'publisher', 'ledger'].includes(op)) {
       Object.assign(o, refused(request(0, 1, op === 'ledger' ? undefined : op)));
-      if (op === 'ledger') o.faulted = '22'.repeat(32);
+      if (op === 'ledger') {
+        o.faulted = '22'.repeat(32);
+        o.result = { kind: 'unknown', reason: 'ledger-integrity' };
+      }
     }
     h.observations.push(o);
   }
@@ -3105,6 +3108,71 @@ test('service-inbound reports require complete HTTP histories and effective cont
 test('160 generated service-inbound report corruptions reject changed originals, replay, read-only inventory and page signatures', () => {
   const r = serviceInboundEvidence();
   reconcileServiceInboundEvidence(r);
+  const restored = r['generated.json'].histories[0];
+  restored.commands.splice(
+    6,
+    0,
+    { op: 'append', limit: 1, cursor: 0 },
+    { op: 'read', limit: 1, cursor: 0 },
+  );
+  const inventory = restored.observations[5].after,
+    refusal = { kind: 'unknown', reason: 'ledger-integrity' };
+  restored.observations.splice(
+    6,
+    0,
+    {
+      op: 'append',
+      before: inventory,
+      after: inventory,
+      position: 2,
+      envelope: 'bb',
+      result: refusal,
+    },
+    {
+      op: 'read',
+      before: inventory,
+      after: inventory,
+      request: restored.observations[1].request,
+      result: refusal,
+    },
+  );
+  r['generated.json'].coverage.append++;
+  r['generated.json'].coverage.read++;
+  reconcileServiceInboundEvidence(r);
+  for (const index of [6, 7]) {
+    const bad = structuredClone(r);
+    bad['generated.json'].histories[0].observations[index].result = {
+      kind: 'decision',
+      bytes: 'aa',
+    };
+    assert.throws(() => reconcileServiceInboundEvidence(bad), 'same-owner quarantine must refuse');
+  }
+  const cold = r['generated.json'].histories[1];
+  cold.commands.pop();
+  cold.observations.pop();
+  r['generated.json'].coverage.restart--;
+  cold.recovery = {
+    before: inventory,
+    after: inventory,
+    read: { request: cold.observations[1].request, result: refusal },
+    append: { position: 2, envelope: 'bb', result: refusal },
+    restart: { before: inventory, after: inventory },
+  };
+  reconcileServiceInboundEvidence(r);
+  for (const alter of [
+    (h) => delete h.recovery,
+    (h) => delete h.recovery.restart,
+    (h) => (h.recovery.append.result.reason = 'unavailable'),
+    (h) => (h.recovery.read.result.kind = 'decision'),
+    (h) => (h.recovery.restart.after = 'ff'.repeat(32)),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad['generated.json'].histories[1]);
+    assert.throws(
+      () => reconcileServiceInboundEvidence(bad),
+      'cold recovery must retain explicit quarantine proof',
+    );
+  }
   const alters = [
     (h) => h.observations.pop(),
     (h) => (h.observations[0].envelope = 'bb'),
