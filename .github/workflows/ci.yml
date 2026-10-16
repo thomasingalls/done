@@ -81,6 +81,9 @@ jobs:
       - name: Check service quarantine and restart histories
         run: node --test --test-concurrency=1 test/account-service-inbound/generated.test.mjs test/account-service-inbound/quarantine.test.mjs
 
+      - name: Check upgrade fixture listener ownership
+        run: node --test --test-concurrency=1 test/harness-lifecycle/upgrade-fixture.test.mjs
+
       - name: Check Local bootstrap and native compatibility refusals
         run: pnpm storage:compatibility
 

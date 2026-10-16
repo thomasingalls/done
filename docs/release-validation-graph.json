@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 493,
-    "requiredTestFiles": 487,
+    "testFiles": 494,
+    "requiredTestFiles": 488,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -4612,12 +4612,12 @@
       "runCallSites": [],
       "processCallSites": [
         {
-          "line": 49,
+          "line": 51,
           "form": "spawn",
           "arguments": [
             "process.execPath",
-            "['node_modules/@playwright/test/cli.js', 'test', '--config', 'playwright.app-upgrades.config.ts']",
-            "{\n    stdio: 'inherit',\n    env: {\n      ...process.env,\n      APP_UPGRADE_OUTPUT: output,\n      APP_UPGRADE_HAS_PRIOR: predecessor ? '1' : '0',\n    },\n  }"
+            "[\n      'node_modules/@playwright/test/cli.js',\n      'test',\n      '--config',\n      'playwright.app-upgrades.config.ts',\n    ]",
+            "{\n      stdio: 'inherit',\n      env: {\n        ...process.env,\n        APP_UPGRADE_OUTPUT: output,\n        APP_UPGRADE_HAS_PRIOR: predecessor ? '1' : '0',\n     "
           ]
         }
       ]
@@ -10154,6 +10154,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/harness-lifecycle/upgrade-fixture.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/harness-lifecycle/upgrade-fixture.test.mjs"
+        ]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/historyReceiveFence.test.ts",
       "status": "required",
       "invocation": {
@@ -14773,7 +14788,7 @@
     },
     {
       "path": "playwright.app-upgrades.config.ts",
-      "sha256": "e8a0823848dbb877e338f05f0a2688b1c93f915a824891741b31096691768502"
+      "sha256": "3c4b223e1f0dc9deaf8fece9e0ecc061a8b1bf5fb31364066e1aa4e326ecdcac"
     },
     {
       "path": "playwright.compiler-loading.config.ts",
@@ -15100,8 +15115,12 @@
       "sha256": "2d20f6f35d0f0aba0374954e4f2dca1df3b8f07875f13ee4c5bb556a58eca63e"
     },
     {
+      "path": "scripts/app-upgrades/fixture-owner.mjs",
+      "sha256": "9f1d9cfd8b5bfe8788bed1757ed4989418290fe42cd0da3fbcb340e3f0789987"
+    },
+    {
       "path": "scripts/app-upgrades/run.mjs",
-      "sha256": "325ed117bfd4721ff9195577cd81ddef38a0c7c38c709ae5678c1213860b8e32"
+      "sha256": "94f2c6d325140b6a93a9683a36e150124d4ea978352206e59b18d61702300592"
     },
     {
       "path": "scripts/app-upgrades/server.mjs",
@@ -18046,6 +18065,10 @@
     {
       "path": "test/goals.test.ts",
       "sha256": "dc4a74080c6b7e0fe7bbfc68a895604fd9f1a13740e65705ce898d82611f2578"
+    },
+    {
+      "path": "test/harness-lifecycle/upgrade-fixture.test.mjs",
+      "sha256": "ac86d5c0a0d5a7c520dc45197ed1496a03032082bfb00e601aae07b426cfaf5c"
     },
     {
       "path": "test/helpers.ts",
