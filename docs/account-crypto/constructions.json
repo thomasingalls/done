@@ -5873,7 +5873,7 @@
         },
         {
           "path": "src/crdt/historySource.ts",
-          "line": 259,
+          "line": 266,
           "label": "done/checkpoint/v1",
           "kind": "literal"
         },

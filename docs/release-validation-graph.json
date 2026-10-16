@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 504,
-    "requiredTestFiles": 498,
+    "testFiles": 505,
+    "requiredTestFiles": 499,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -6890,7 +6890,7 @@
       "invocation": {
         "argv": ["node", "--test", "--test-concurrency=1", "test/account-history/source.test.mjs"]
       },
-      "declarations": 5,
+      "declarations": 9,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -11087,6 +11087,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/packaged-account/enrollment-progress.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/packaged-account/enrollment-retry.spec.ts",
       "status": "required",
       "invocation": {
@@ -14907,7 +14918,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "484c18cc2998de521d68542da7acf1586c832bffdce9aa8ec7c1bddb81e9fe1e"
+      "sha256": "9d5f0d983eb323d6104e5715aad1f257062cc924ac2e51063716cbc382573e5d"
     },
     {
       "path": "package.json",
@@ -16775,7 +16786,7 @@
     },
     {
       "path": "test/account-history/source.test.mjs",
-      "sha256": "92f850879c59167c4f8ed159b02fcb511080c60e5f831006f4eef8d34ca13c0e"
+      "sha256": "4b8d7d01d843dcd947648d32d766ffb88ed7b1d0f9c4f4cf46d48a9d92250ba6"
     },
     {
       "path": "test/account-inbound-codecs/oracle.ts",
@@ -18724,6 +18735,10 @@
     {
       "path": "test/packaged-account/enrollment-open.spec.ts",
       "sha256": "fb67a85386eb7bc0fa5cdae6ba618344bb3634725c8816beadc737edb657423c"
+    },
+    {
+      "path": "test/packaged-account/enrollment-progress.spec.ts",
+      "sha256": "14cd4ef3aacce2e4f55b7971653e7c5e2aeb7e6f9e2a12477ea0ad59e25e5804"
     },
     {
       "path": "test/packaged-account/enrollment-retry.spec.ts",

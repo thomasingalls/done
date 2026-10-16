@@ -21,6 +21,7 @@ import { AccountIdentity } from './AccountIdentity';
 import { AccountDevices } from './AccountDevices';
 import { useCeremonyNavigation } from './ceremonyNavigation';
 import { newRecoveryHref } from '../account/lostRecoveryRoutes';
+import { enrollmentProgressMessage, type EnrollmentProgress } from '../lib/enrollmentProgress';
 export function AccountEnrollmentApp({
   config,
   workspace,
@@ -56,6 +57,7 @@ export function AccountEnrollmentApp({
   const [invitationLink, setInvitationLink] = useState('');
   const [screen, setScreen] = useState<'editing' | 'devices'>('editing');
   const [state, setState] = useState<EnrollmentView | null>(null),
+    [progress, setProgress] = useState<EnrollmentProgress | null>(null),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false);
   const owner = useRef<Awaited<ReturnType<typeof createAccountEnrollment>> | null>(null),
@@ -88,6 +90,7 @@ export function AccountEnrollmentApp({
     setCode('');
     setTyped('');
     setState(null);
+    setProgress(null);
     await operating.current;
     await closing;
   }, []);
@@ -178,6 +181,9 @@ export function AccountEnrollmentApp({
         ? previous
         : next,
     );
+  }, []);
+  const publishProgress = useCallback((next: EnrollmentProgress | null) => {
+    if (!life.current.signal.aborted) setProgress(next);
   }, []);
   const run = useCallback(async (action: () => Promise<void>, background = false) => {
     if (life.current.signal.aborted) return;
@@ -518,6 +524,7 @@ export function AccountEnrollmentApp({
                     login.current,
                     life.current.signal,
                     begin ?? undefined,
+                    publishProgress,
                   );
                   publish(await owner.current.refresh());
                   if (!life.current.signal.aborted) setStage('open');
@@ -660,7 +667,22 @@ export function AccountEnrollmentApp({
             )}
           </>
         )}
-        {busy && <p role="status">Saving and checking this step…</p>}
+        {progress ? (
+          <div className="enrollment-progress" role="status">
+            <p>{enrollmentProgressMessage(progress)}</p>
+            <progress
+              aria-label="Current connection step"
+              {...((progress.stage === 'sources' || progress.stage === 'history') &&
+              progress.total !== null &&
+              progress.total > 0
+                ? { max: progress.total, value: progress.completed }
+                : {})}
+            />
+            <p className="setup-note">Keep both devices open until the connection finishes.</p>
+          </div>
+        ) : (
+          busy && <p role="status">Saving and checking this step…</p>
+        )}
         {error && <p role="alert">{error}</p>}
         <p>
           <a

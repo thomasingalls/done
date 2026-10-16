@@ -1,0 +1,11 @@
+# Bounded enrollment progress phase — 2026-10-16
+
+Base: signed 465c5e07; all three prior performance patch trees reproduced by signed commits.
+
+Outcome: additional-device approval explains its actual current work and shows completed source/history checks while the existing operation is in flight. No invented percentage or elapsed-time estimate; no extra polling, storage or network request; no background-execution/screen-lock promise. Existing protected-workspace, exclusive owner, lifetime, verification, approval, exact retry and certification boundaries remain.
+
+Evidence chosen before repair: hold real packaged history reads between two disposable browser owners, observe a visible zero/nonzero verified counter before releasing replies, and ensure no key delivery or completion occurs while held. Reject a signed-page substitution and require no counter advancement or key release. Close/reload during the held read, require UI progress retirement and exact durable approval resumption without another comparison. Unit counterexamples cover actual source verification, rejection, cancellation and failing observers.
+
+Progress callbacks carry only closed stage names and numeric counts. They are best-effort presentation: callback exceptions cannot change protocol outcome. Counters advance after page verification and application, never on response arrival. A completed history counter is only that substep; local replay, snapshot construction, delivery and installation/certification remain distinct. Lifetime checks remain before reporting; coordinator retirement clears progress; no callbacks are persisted.
+
+Performance inspection: the established exact-byte owner-local verification reuse, shared census and prepared handoff patterns are relevant. This source already borrows the baseline census during local recovery. Replacing independent server accepted-prefix replay with an editor document, moving a crypto memo across owners, or parallelizing the ceremony login is not licensed by those contracts. A further speed phase needs separate attribution of network replay versus local recovery on deeper retained histories and proof of authenticated cut/source completeness. This phase makes no new latency claim.

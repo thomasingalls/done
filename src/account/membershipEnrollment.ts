@@ -1,3 +1,7 @@
+import {
+  reportEnrollmentProgress,
+  type EnrollmentProgressListener,
+} from '../lib/enrollmentProgress';
 import { authenticationResponse } from './passkeyResponse';
 import { defaultDeviceName } from '../lib/browser';
 /** Browser/session composition for the retained additional-device coordinator. */
@@ -92,6 +96,7 @@ export function createMembershipEnrollment(
   invitation?: unknown,
   networkLogin?: NetworkLogin,
   begin?: string,
+  onProgress?: EnrollmentProgressListener,
 ) {
   if (!config.networkSessions) throw Error('Additional devices require account sessions');
   const pin = parseAuthorityPin(config.pin),
@@ -101,6 +106,9 @@ export function createMembershipEnrollment(
     role === 'existing' && /^enrollment-[a-f0-9]{32}$/.test(slotId) ? 'joined' : 'promotion';
   const ceremonyLogin = new NetworkLogin(pin, slotId),
     grants = new ScopedTransport(pin, lifetime.signal);
+  const progress: EnrollmentProgressListener = (value) => {
+    if (!lifetime.signal.aborted) reportEnrollmentProgress(onProgress, value);
+  };
   let batchingAvailable = true;
   if (role === 'new' && (!networkLogin || networkLogin.retired)) {
     networkLogin = new NetworkLogin(pin, slotId);
@@ -202,6 +210,7 @@ export function createMembershipEnrollment(
               ),
             );
           },
+          progress,
           read: async (bytes, base) => {
             const scoped = access(owner, base);
             const page = await owner.withLogin(ceremonyLogin, identity(base), () =>
@@ -318,6 +327,10 @@ export function createMembershipEnrollment(
           message:
             'Waiting for the remaining writing. Open writing again to resume the saved load.',
         });
+      if (result.kind === 'approved' && role === 'existing')
+        return view('approved', {
+          message: 'Waiting for the new device to save and confirm access. Keep it open to finish.',
+        });
       if (result.kind === 'installed')
         return view('certified', { message: 'Opening your writing…' });
       if (result.kind === 'comparison-cancelled')
@@ -383,6 +396,7 @@ export function createMembershipEnrollment(
     guard();
     if (operation) return operation;
     operation = (async () => {
+      progress({ stage: 'checking' });
       if (open) {
         const editor = await openEditor();
         if (editor) return editor;
@@ -407,6 +421,7 @@ export function createMembershipEnrollment(
       }
     })().finally(() => {
       operation = undefined;
+      progress(null);
     });
     return operation;
   };
@@ -448,6 +463,7 @@ export function createMembershipEnrollment(
     },
     close: async () => {
       lifetime.abort();
+      reportEnrollmentProgress(onProgress, null);
       networkLogin?.close();
       ceremonyLogin.close();
       grants.close();

@@ -102,6 +102,7 @@ jobs:
           test/packaged-account/account-creation-entry.spec.ts
           test/packaged-account/empty-legacy-startup.spec.ts
           test/packaged-account/enrollment-batch.spec.ts
+          test/packaged-account/enrollment-progress.spec.ts
           test/packaged-account/welcome.spec.ts
           test/packaged-account/passkey-local-access.spec.ts
           test/packaged-account/multi-tab-protection.spec.ts

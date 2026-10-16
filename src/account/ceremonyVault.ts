@@ -52,6 +52,7 @@ export interface CeremonyVault {
     read: Parameters<typeof prepareNativeReplacement>[3],
     exchange: Parameters<typeof prepareNativeReplacement>[4],
     readBatch?: Parameters<typeof prepareNativeReplacement>[5],
+    progress?: Parameters<typeof prepareNativeReplacement>[6],
   ): ReturnType<typeof prepareNativeReplacement>;
   archiveConnection(expected: unknown, next: unknown, check?: () => void): Promise<void>;
   activateRemoval(): Promise<{ generation: number; head: string }>;
@@ -176,7 +177,7 @@ export async function withCeremonyVault<T>(
               factor.fill(0);
             }
           },
-          prepareReplacement: (authority, candidate, read, exchange, readBatch) =>
+          prepareReplacement: (authority, candidate, read, exchange, readBatch, progress) =>
             import('../crdt/membershipSource').then(({ prepareNativeReplacement }) =>
               prepareNativeReplacement(
                 { task, kind: 'promotion', slotId, code },
@@ -185,6 +186,7 @@ export async function withCeremonyVault<T>(
                 read,
                 exchange,
                 readBatch,
+                progress,
               ),
             ),
           rotation,

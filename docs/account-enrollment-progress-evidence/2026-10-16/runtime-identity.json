@@ -1,0 +1,50 @@
+{
+  "base": "465c5e07cbfd9480666df269e4a1be223546a198",
+  "allRuntimeFilesMatchPackagedBrowserBuild": true,
+  "files": [
+    {
+      "path": "src/account/accountEnrollment.ts",
+      "sha256": "04e1a4f3f5f6684208ca7e67df683a35bc6f35c74f8fa77aad8f25fd5d1e0b37"
+    },
+    {
+      "path": "src/account/ceremonyVault.ts",
+      "sha256": "56f31b5a9213c23741b081729f7af7bbeabc6f73fd4278fa764a7208a8e6bac1"
+    },
+    {
+      "path": "src/account/membershipConnection.ts",
+      "sha256": "fd9d3be97da9ee543946dda37c28937a87a97b9f5c50dc085d2404dda2b680a1"
+    },
+    {
+      "path": "src/account/membershipEnrollment.ts",
+      "sha256": "30ed3506c3110830ccbcdab9bd8e918459f546b124cb15a5919b1847b877f707"
+    },
+    {
+      "path": "src/account/membershipHandoff.ts",
+      "sha256": "e6e27a53b92ae584731e5bc51edfd710f50b1204c715da93af32fc385120f2cc"
+    },
+    {
+      "path": "src/account/membershipVault.ts",
+      "sha256": "a81b3fab9b25a8e3ec71e17a79ead55592d495f2837081b07bf70d872aa8e2be"
+    },
+    {
+      "path": "src/crdt/historySource.ts",
+      "sha256": "d74398c44ad85130a6fd851136a529607bf0f58e4c715e408ba872b25b06e1c3"
+    },
+    {
+      "path": "src/crdt/membershipSource.ts",
+      "sha256": "9341811cef65e87c01b8d4a45501235e3ffe4d85ea66202a4d296422360e84b8"
+    },
+    {
+      "path": "src/lib/enrollmentProgress.ts",
+      "sha256": "036765f8b91576714df6c4f3c4e0ee8dab4e22b25775b31d6cccb675597c3bd3"
+    },
+    {
+      "path": "src/styles/account-setup.css",
+      "sha256": "77311f85d9ddc374dd1ecb9bccc79fc75650c74198cea2fdf87d90ca6f0fa160"
+    },
+    {
+      "path": "src/ui/AccountEnrollmentApp.tsx",
+      "sha256": "5828e14bbbb8a48e2fd8112c184ad78f818fe3834e7c7429ea8eac708882335e"
+    }
+  ]
+}

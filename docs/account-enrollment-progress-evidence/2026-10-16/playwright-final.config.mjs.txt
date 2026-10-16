@@ -1,0 +1,6 @@
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const root='/private/tmp/done-enrollment-progress-465c5e07/source';
+assert.equal(process.cwd(),root);
+const {defineConfig}=createRequire(root+'/package.json')('@playwright/test');
+export default defineConfig({testDir:root+'/test/packaged-account',testMatch:['enrollment-progress.spec.ts'],timeout:120000,workers:1,retries:0,reporter:[['list'],['json',{outputFile:'/private/tmp/done-enrollment-progress-465c5e07/browser-final-results.json'}]],outputDir:'/private/tmp/done-enrollment-progress-465c5e07/browser-final-artifacts',use:{baseURL:'http://localhost:53221',viewport:{width:1280,height:900}}});

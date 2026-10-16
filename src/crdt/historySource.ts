@@ -40,6 +40,7 @@ import { openRecoveryReading, type RecoveryReading } from './recoveryReading';
 import { openHistoryCheckpoint } from './historyCheckpoint';
 import { verifyInboundPage, type InboundContext, type InboundLifetime } from './accountInbound';
 import { INBOUND_BATCH_COUNT } from '../../account-protocol/inboundBatch';
+import { reportEnrollmentProgress, type HistoryReplayProgress } from '../lib/enrollmentProgress';
 import { fields, hkdf, hex, random, type Bytes } from './custodyCrypto';
 import { unhex } from '../../account-protocol/recovery';
 import { Y, genesisCoverage, genesisCoverageParts, hasPendingUpdates, type YDoc } from './yjs';
@@ -64,6 +65,7 @@ export interface HistorySourceInput {
   /** Optional transport grouping. Pages still undergo the original sequential verifier. */
   readBatch?(requests: readonly Bytes[]): Promise<readonly Bytes[]>;
   exchange(request: HistoryExchange): Promise<unknown>;
+  progress?: (progress: HistoryReplayProgress) => void;
 }
 /** Returns a caller-owned doc only after every source and cut verifies. All failures erase key/plain buffers.
  * A recovery baseline substitutes for unavailable old openers only with signed exact coverage. */
@@ -88,6 +90,11 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
     },
     guard = () => lifetime.assertCurrent();
   guard();
+  const progress = (value: HistoryReplayProgress) => {
+    guard();
+    reportEnrollmentProgress(input.progress, value);
+  };
+  progress({ stage: 'baseline' });
   const keys = new Map<number, Bytes>();
   let doc: YDoc | undefined;
   let consumedBytes = 0;
@@ -282,6 +289,8 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       });
     }
     guard();
+    let checkedSources = 0;
+    progress({ stage: 'sources', completed: 0, total: sources.length });
     for (const ref of sources) {
       at(ref.epoch, ref.head);
       const proof = timeline.proofs?.continuations.find((p) => p.head === ref.head);
@@ -293,7 +302,10 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
             : proof?.kind !== 'recovery-successor'
       )
         throw Error('History source kind differs from its membership');
-      if (coveredSources.some((s) => same(s, ref))) continue;
+      if (coveredSources.some((s) => same(s, ref))) {
+        progress({ stage: 'sources', completed: ++checkedSources, total: sources.length });
+        continue;
+      }
       const request = parseHistoryExchange({
         v: 1,
         kind: 'history-checkpoint-request',
@@ -364,6 +376,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       } finally {
         source.destroy();
       }
+      progress({ stage: 'sources', completed: ++checkedSources, total: sources.length });
     }
     for (const before of baselineHeads) {
       const cut = cuts.find((c) => c.credentialId === before.credentialId);
@@ -374,7 +387,18 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       )
         throw Error('History baseline exceeds the accepted cuts');
     }
-    let events = 0;
+    const remaining = cuts.reduce(
+      (sum, cut) =>
+        sum +
+        (cut.position -
+          (baselineHeads.find((h) => h.credentialId === cut.credentialId)?.position ?? 0)),
+      0,
+    );
+    // A display count must not round a sum of individually safe authenticated positions.
+    const total = Number.isSafeInteger(remaining) ? remaining : null;
+    let events = 0,
+      checkedEvents = 0;
+    progress({ stage: 'history', completed: 0, total });
     for (const cut of cuts) {
       const before = baselineHeads.find((h) => h.credentialId === cut.credentialId) ?? {
         position: 0,
@@ -458,6 +482,7 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
                 link: result.link,
                 observedThrough: result.through,
               };
+              progress({ stage: 'history', completed: ++checkedEvents, total });
             } finally {
               if (result.kind === 'received' || result.kind === 'conflict') result.record.fill(0);
               if (result.kind === 'received') for (const bytes of result.updates) bytes.fill(0);

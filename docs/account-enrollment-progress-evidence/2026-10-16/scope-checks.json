@@ -1,0 +1,15 @@
+{
+  "rootPreviewDistUnchanged": true,
+  "distFiles": 108,
+  "generalQualification": "paused",
+  "productionTouched": false,
+  "newProgressCases": 6,
+  "newBrowserCases": 2,
+  "newHistoryCases": 4,
+  "focusedHistoryAndHandoffCases": 18,
+  "registryCases": 12,
+  "adapterCases": 25,
+  "uniquePackagedJourneys": 6,
+  "finalExtendedProgressJourneys": 2,
+  "generalSuiteRun": false
+}

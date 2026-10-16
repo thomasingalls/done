@@ -1,3 +1,4 @@
+import type { EnrollmentProgress } from '../lib/enrollmentProgress';
 /** One retained additional-device journey, executed inside the actual slot's exclusive permit. */
 import { same } from '../../account-protocol/admission';
 import { closed } from '../../account-protocol/preparation';
@@ -63,6 +64,7 @@ export interface MembershipConnectionIO {
   pin: AuthorityPin;
   signal: AbortSignal;
   now?(): number;
+  progress?: (progress: EnrollmentProgress) => void;
   /** Bootstrap is unauthenticated; all subsequent routes still require the actual scoped login. */
   request(path: string, body: unknown, base: SuccessorBase | null): Promise<unknown>;
   read(request: Bytes, base: SuccessorBase): Promise<Bytes>;
@@ -418,6 +420,7 @@ export async function advanceMembershipConnection(
       base,
       membership: pending,
       certification,
+      ...(io.progress ? { progress: io.progress } : {}),
       prepareReplacement: () =>
         owner.prepareReplacement(
           { base, proofs: pendingProofs },
@@ -432,6 +435,7 @@ export async function advanceMembershipConnection(
             return result.page;
           },
           io.readBatch ? (requests) => io.readBatch!(requests, base) : undefined,
+          io.progress,
         ),
     },
     save,
