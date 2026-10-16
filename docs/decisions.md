@@ -4705,3 +4705,7 @@ The preserved future-document-schema census exposed another bootstrap write: an 
 ## 2026-10-16 — Successor stage expectations follow authenticated checkpoint transitions
 
 Retain the original closed pre-checkpoint, malformed successor, invalid cut and stripped-field checks. Correct only the obsolete v8 structural refusal to the actual pre-checkpoint v5 boundary, after independently exercising a genuine retained v5 → authenticated v6 checkpoint → cold v9 receiving transition. Add unsigned v6/v7/v8 and field-removal cold-open regressions with exact no-write inventories. Parsing a supported stage is not authentication. This reconciles the old C2b prose with the later checkpoint implementation rather than relaxing a security guarantee; protocol, custody and runtime code are unchanged.
+
+## 2026-10-16 — Nonvisual lifecycle observers do not depend on animation frames
+
+A Local-genesis wait timed out even though its captured creation was resolved and no slot locks remained. Observe promise state and lock queues on bounded timer polls, preserving the original deadlines, fault definitions and exact refusal/no-write assertions. Preserve timeout state/lock artifacts and full failed sequences; selected passes do not erase full-run failures. Dependency-custody symlink refusals remain enforced, and bounded functional checks remain separate from aggregate qualification.

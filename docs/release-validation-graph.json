@@ -15561,7 +15561,7 @@
     },
     {
       "path": "scripts/local-genesis/scenarios.mjs",
-      "sha256": "da23e89e991dbeb5e239f41cc5ab187e2a1eac5e0a076335c6b591f1e01a3f46"
+      "sha256": "4cd590e3e6d5cf63e1bde1272fddf482c674889ada23a5b6b9c653725c670270"
     },
     {
       "path": "scripts/local-genesis/worker.mjs",
