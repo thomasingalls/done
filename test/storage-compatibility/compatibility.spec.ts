@@ -107,7 +107,7 @@ test('two live writers block an upgrade; a queued opener rechecks before loading
   await expect(
     queued.getByRole('heading', { name: 'This workspace needs a compatible app' }),
   ).toBeVisible();
-  await expect(queued.getByLabel('Device-lock code', { exact: true })).toHaveCount(0);
+  await expect(queued.getByLabel('Unlock code', { exact: true })).toHaveCount(0);
   expect(await call(page, 'census')).toEqual(before);
   // Only the synthetic marker is removed here; no format changed. This is NOT a migration rollback.
   await call(page, 'unmark');
@@ -193,7 +193,7 @@ test('a future document schema held only in the journal refuses without rewritin
   const before = await call(page, 'census');
   await page.goto('/');
   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'app-update-required');
   await page.goto(fixture);

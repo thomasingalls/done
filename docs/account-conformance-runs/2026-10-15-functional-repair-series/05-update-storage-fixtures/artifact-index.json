@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "477013e002ee513e6496a7efc5c78a54a99f1338",
+  "artifacts": {
+    "README.md": {
+      "sha256": "33cbcee917fa45e505fbdd1dd786bf95960c7004fa5b9f96b20b32b7e967bd0c",
+      "bytes": 2111
+    },
+    "logs/app-upgrades-after-orphan.log.gz": {
+      "sha256": "6036b6aa78e9afe0bd10214a640995f960fb5d4b348b345e0d6736ffa697c0da",
+      "bytes": 3088
+    },
+    "logs/app-upgrades.log.gz": {
+      "sha256": "8e95a2e2c3ef3865f732aa3e3b04de1f8fa0002a0fdfe1761da3aea7b82281d8",
+      "bytes": 2513
+    },
+    "logs/diff-check.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "eaeb0d15fe92f6888ed4aee3f0fc0f6aecdd11671569fef5628340f8fcfc77f9",
+      "bytes": 239
+    },
+    "logs/lint.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/packaged-serving-updates.log.gz": {
+      "sha256": "53f79d158193f819766e7491a76a91ce9804748a64c674c6dd748397350c681b",
+      "bytes": 427
+    },
+    "logs/plan.log.gz": {
+      "sha256": "5e3fc5ec3a77da4c2fa21b11877531a0f2e65067a1e44d813214699497ed83ce",
+      "bytes": 224
+    },
+    "logs/planning-tests.log.gz": {
+      "sha256": "5116dd1caa23b20c1680d6bd434c9933ec1b685f958dfe301132fdf4381bfd7f",
+      "bytes": 602
+    },
+    "logs/storage-compatibility.log.gz": {
+      "sha256": "dbabc20c8cb689da4d020a022440d34dd2d240e429702812d1ab1076838e9e70",
+      "bytes": 2823
+    },
+    "receipts/app-upgrades-after-orphan.json.gz": {
+      "sha256": "69c65c0c4b7abc3c1639b3e8ab14e5de3b460ec1445365771fe4d1eddbfcc47e",
+      "bytes": 193
+    },
+    "receipts/app-upgrades.json.gz": {
+      "sha256": "c86bb4688dd8470e952f1e8f8059042ffc0c5ba85f59b630c315bab15dd41e67",
+      "bytes": 126
+    },
+    "receipts/future-schema-delta.json.gz": {
+      "sha256": "aaa71bd1ab30b106127659669e77d617137e2e773e229f4688b2100e9f7aed8f",
+      "bytes": 245
+    },
+    "receipts/orphan-upgrade-server.json.gz": {
+      "sha256": "64c6c691db52d485eccbe9c663f69cc427e8cb8e0847dbfccff8471546817b0d",
+      "bytes": 227
+    },
+    "receipts/packaged-serving-updates.json.gz": {
+      "sha256": "555c96eb6b32242f33beba8665ff96c7bd5a61536cbb4eace0d587ce360b2110",
+      "bytes": 183
+    },
+    "receipts/results.json.gz": {
+      "sha256": "81d8a6b9630a9c65b96dbea6cd4dc2abf89817e7243fa9b443e65b154f1a6e4d",
+      "bytes": 391
+    },
+    "receipts/storage-compatibility.json.gz": {
+      "sha256": "377d09edcc2119e553733ef69cf0bcd91c9bf2aef06c03d2a963015cf006698a",
+      "bytes": 169
+    },
+    "source-pins.json.gz": {
+      "sha256": "f390a6ac59fc91fed99490d4afa2429622cea45abc7382553b4d6efbc68e09a9",
+      "bytes": 73940
+    }
+  }
+}

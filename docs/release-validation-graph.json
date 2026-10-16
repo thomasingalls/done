@@ -17749,7 +17749,7 @@
     },
     {
       "path": "test/app-upgrades/upgrades.spec.ts",
-      "sha256": "ac0efd6af3d3eb090506f669dc9d51bf30bae117c30fb7b35614f9d2ab70c7f0"
+      "sha256": "682cd9ed1cf688363e95a16a7525ebc4bdbb6f5cc34108cff45fb46d1297be2a"
     },
     {
       "path": "test/appUpdate.test.ts",
@@ -18545,7 +18545,7 @@
     },
     {
       "path": "test/packaged-account/serving.spec.ts",
-      "sha256": "463eb9bf60985c0f6b68dca84e4ea7be3417b10ea910fbfd9d77e710667f0b8d"
+      "sha256": "074668584f6d104477259fbf36c53d3c1abad1a1b333a09ab0cfc53a077e9289"
     },
     {
       "path": "test/packaged-account/sessions.spec.ts",
@@ -18565,7 +18565,7 @@
     },
     {
       "path": "test/packaged-account/updates.spec.ts",
-      "sha256": "0d0d9061bb427798233a9c5af8b6681a2bfb5ee722dd41819612225268de0b97"
+      "sha256": "ead835b230d62312635ff41a69ea624258488b7e49d2037dd4ef466835f9f789"
     },
     {
       "path": "test/packaged-account/welcome.spec.ts",
@@ -18901,7 +18901,7 @@
     },
     {
       "path": "test/storage-compatibility/compatibility.spec.ts",
-      "sha256": "8a36a13ee5ae367b1a3a78ca56375554996161e61fbb74f9a7855693f8bbc135"
+      "sha256": "3fa4d4bc444f4e988ba650db68de3823404793c92f2ef2929d6f282b3208e610"
     },
     {
       "path": "test/storage-conformance/adapters/codex.mjs",

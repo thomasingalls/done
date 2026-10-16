@@ -134,7 +134,7 @@ test('unfinished registration resumes after an update with the original saved pa
     await page.goto('/');
     await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
     await page.reload();
-    await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+    await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
     await page.getByLabel('Your name', { exact: true }).fill('Resumable setup');
     await page.getByRole('button', { name: 'Create account', exact: true }).click();
@@ -166,7 +166,15 @@ test('unfinished registration resumes after an update with the original saved pa
     const recovery = (await resumed.getByLabel('Generated recovery code').textContent())!;
     await resumed.getByRole('button', { name: 'I saved my recovery code' }).click();
     await resumed.getByLabel('Recovery code', { exact: true }).fill(recovery);
-    await resumed.getByRole('button', { name: 'Finish account setup' }).click();
+    await resumed.getByRole('button', { name: 'Confirm recovery and use passkey' }).click();
+    await expect(
+      resumed.getByRole('heading', { name: 'Enable encrypted sync', exact: true }),
+    ).toBeVisible();
+    await resumed.getByRole('button', { name: 'Approve with passkey', exact: true }).click();
+    await expect(
+      resumed.getByRole('heading', { name: 'Open your list and connect sync', exact: true }),
+    ).toBeVisible();
+    await resumed.getByRole('button', { name: 'Approve with passkey', exact: true }).click();
     await expect(resumed.locator('.shell')).toBeVisible();
     await expect(resumed.locator('body')).toContainText(nextVersion);
     expect((await credentials(nextAuth)).map((x) => x.credentialId)).toEqual(

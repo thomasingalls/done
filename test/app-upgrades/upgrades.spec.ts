@@ -1,10 +1,15 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
+import { protectApp } from '../geometry/openApp';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-const unlock = async (page: Page, code: string) => {
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+const unlock = async (page: Page, code: string, suppliedPrior = false) => {
+  const current = page.getByLabel('Unlock code', { exact: true });
+  const field = suppliedPrior
+    ? current.or(page.getByLabel('Device-lock code', { exact: true }))
+    : current;
+  await field.fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await expect(page.locator('.compose-field').first()).toBeVisible();
 };
@@ -36,17 +41,31 @@ const update = (page: Page) =>
   });
 const create = async (page: Page, controlled = true, expectedVersion = 'upgrade-a') => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
-  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
-  await page.getByRole('button', { name: 'I saved my code' }).click();
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
-  await page.getByRole('button', { name: 'Confirm and create' }).click();
+  let code: string;
+  if (!expectedVersion) {
+    // An explicitly supplied actual predecessor may retain credential-first entry.
+    // Default a/b fixtures must exercise the current automatic entry instead.
+    const oldEntry = page.getByRole('button', { name: 'Create a local-only workspace' });
+    await expect
+      .poll(async () => (await oldEntry.isVisible()) || (await page.locator('.shell').isVisible()))
+      .toBe(true);
+    if (await oldEntry.isVisible()) {
+      await oldEntry.click();
+      code = (await page.getByLabel('Generated device-lock code').textContent())!;
+      await page.getByRole('button', { name: 'I saved my code' }).click();
+      await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+      await page.getByRole('button', { name: 'Confirm and create' }).click();
+    } else code = await protectApp(page);
+  } else {
+    await expect(page.locator('.shell[data-local-workspace]')).toBeVisible();
+    code = await protectApp(page);
+  }
   await write(page, 'Before update');
   await lock(page);
   await ready(page);
   if (controlled) {
     await page.reload(); // First install deliberately does not claim an already loaded page.
-    await unlock(page, code);
+    await unlock(page, code, !expectedVersion);
     if (expectedVersion) await expect(page.locator('body')).toContainText(expectedVersion);
   }
   return code;
