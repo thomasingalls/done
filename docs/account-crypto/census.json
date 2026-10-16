@@ -129,7 +129,7 @@
     },
     {
       "path": "account-protocol/recovery.ts",
-      "sha256": "6b43ecc35b2718ec478ef52024ed3a3792724b787109ef5dca79e1c30d80690d"
+      "sha256": "671acdb07184eb89963a2becae47ea8d44131de5a797e5a0e409a4684b91a3ae"
     },
     {
       "path": "account-protocol/recoveryBootstrap.ts",
@@ -285,7 +285,7 @@
     },
     {
       "path": "account-service/discovery.ts",
-      "sha256": "8261c3194034a5275bce6e91aebbec5c1b70989cf8c898429d0dcf7fd0a09631"
+      "sha256": "28a4f898df80b78b42bbcd5d7df1ed7d571ac8a388af77f29934cc4550b052eb"
     },
     {
       "path": "account-service/enrollment.ts",
@@ -1813,7 +1813,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 141
+          "line": 142
         }
       ]
     },
@@ -1823,7 +1823,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 131
+          "line": 132
         }
       ]
     },
@@ -3167,7 +3167,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 78
+          "line": 79
         }
       ]
     },
@@ -3375,7 +3375,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 111
+          "line": 112
         }
       ]
     },
@@ -3395,7 +3395,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 120
+          "line": 121
         }
       ]
     },

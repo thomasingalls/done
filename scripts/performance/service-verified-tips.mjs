@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash, sign, randomBytes } from 'node:crypto';
 import { authorityFixture } from '../../test/account-authority/fixtures.mjs';
 import { historyExchangeMessage } from '../../account-protocol/historyExchange.ts';
-import { ready, mutate, ZERO, link, lp } from '../../test/account-service-delivery/fixtures.mjs';
+import { ready, ZERO, link, lp } from '../../test/account-service-delivery/fixtures.mjs';
 import { query, read } from '../../test/account-service-inbound/oracle.mjs';
 import {
   read as snapshot,

@@ -15608,7 +15608,7 @@
     },
     {
       "path": "scripts/performance/service-verified-tips.mjs",
-      "sha256": "49fcfae807e50ed409325d139bc8b1c97de5a05509213743afa0162a713641b1"
+      "sha256": "95630aafe1a193a65e636ae264a484426565eb034779bc4c5a400225aee33045"
     },
     {
       "path": "scripts/private-release/profile-editor.mjs",

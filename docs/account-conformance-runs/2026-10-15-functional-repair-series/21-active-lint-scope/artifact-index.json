@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "f2ad5cf518997c5046d08db64bb25fb96586097b",
+  "artifacts": {
+    "README.md": {
+      "sha256": "8094d0308b6415c283eb4b3c866cebb5a77a49d7bdcf654633f51728e62d2ab8",
+      "bytes": 1645
+    },
+    "logs/census-record.log.gz": {
+      "sha256": "c3410179d2c04d98e0cf55f054bdc7a2ab8dca49161727c132febd0cce3fd5a6",
+      "bytes": 229
+    },
+    "logs/discovery-regressions.log.gz": {
+      "sha256": "b18603becd4c1ee8c2665b4d2f09dcd531014087f83cb5172dfa716803d0b044",
+      "bytes": 1134
+    },
+    "logs/initial-scope-proof.log.gz": {
+      "sha256": "674e9193f462191049087b73339ccbf39299150be21e5cb3587ce47cbbd7424a",
+      "bytes": 196
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "e8717d6920aad9319f62ca5e141123708f24785031aee36e83fcbcfae23a017a",
+      "bytes": 240
+    },
+    "logs/lint-active-control.log.gz": {
+      "sha256": "956773551b06aacaf56739203b38ad81df2dcd0c6b10a20093a2118f391aeace",
+      "bytes": 185
+    },
+    "logs/lint-before.log.gz": {
+      "sha256": "b6d8f5049a023f58d05e74fb6fa21efc1fd2de61518106d3d9923bbd3c8079a9",
+      "bytes": 2510
+    },
+    "logs/lint.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/plan.log.gz": {
+      "sha256": "7678e83a76cec2f66bf33ffd26df8f83226aa801133c207b8ee514a9f64d92a4",
+      "bytes": 225
+    },
+    "receipts/census-before.json.gz": {
+      "sha256": "d7a8c1e250ec6f38f4281732e0ab42711bcc4e6ab051c2c91a115d96f92bfc7d",
+      "bytes": 23271
+    },
+    "receipts/discovery-regressions.json.gz": {
+      "sha256": "c45ee511b61264b512b6528ab60c229560a2966648ba5c605986cec555cd838b",
+      "bytes": 165
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "da6f9c5b04f09e5d43ad6cb2b1c7b937daede36c633a49d147dcd0d60445566b",
+      "bytes": 142
+    },
+    "receipts/lint-scope-control.json.gz": {
+      "sha256": "a9b70a8553d84d2d3ce19af38470e12b1fc7a5f9da870386be4ca7e55f829962",
+      "bytes": 132
+    },
+    "receipts/lint.json.gz": {
+      "sha256": "6b72fe2de42c7256ec5a7ac4f96b5ad383c1167d6865aa4010de0d5b809ef594",
+      "bytes": 135
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "dedcc0a5e6af2665e954ff527df9c3bb7f22c8441cfc4b102134c1a869937861",
+      "bytes": 140
+    },
+    "receipts/scope-proof.json.gz": {
+      "sha256": "54249f72a396b6ba74b267dbffbfbf97b194953ace2d9e21749cd83e706f8529",
+      "bytes": 331
+    },
+    "receipts/stale-discovery-control.json.gz": {
+      "sha256": "bffca84f75fff85ec60022d21c688190d4c8beb158cd29b3f7b221b42529c97d",
+      "bytes": 151
+    },
+    "source-pins.json.gz": {
+      "sha256": "ab8c97ac581d07834fc8afe31b4a7fdc12c829e939439209d1f9c239f55f74c2",
+      "bytes": 74256
+    }
+  }
+}
