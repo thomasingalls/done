@@ -4687,3 +4687,9 @@ The existing historical execution adapters also require review of expanded archi
 custody. Their retained narrow module pins remain useful identities, but do not attest the complete
 rebuilt source graph. Direct native passes do not supply that missing aggregate evidence; no process
 guard or report policy is relaxed here.
+
+## 2026-10-15 — Functional repairs as an ordered unsigned patch series
+
+The operator explicitly authorized cautious changes to old tests and harnesses without individual approval, then superseded the request to commit with a request for sequential patch files to apply and sign later. Keep tests, meaningful security assertions, fault sensitivity and original deadlines; resolve contract disagreements before changing security expectations. Freeze each bounded phase against its preceding Git tree using a separate index, verify clean sequential application independently, and retain its evidence and limitations. Do not create even temporary commits, sign, push, merge, deploy or refresh the preview. General qualification remains paused; the previously deferred unrelated formatting patch stays separate.
+
+The first control repair updates the issuance-boundary policy at both enforcement sites, retains independent signing and exact plaintext/refusal checks, and requires actual forbidden cleanup before crediting cleanup mutants. A different refusal or failure to load is not evidence that the intended control works. Production application/service/protocol source is unchanged in this phase.

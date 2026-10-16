@@ -36,3 +36,6 @@ docs/account-conformance-runs/2026-10-15-compiler-loading/**
 
 # Immutable source-closure repairs, historical identities, original failures and retained controls.
 docs/account-conformance-runs/2026-10-15-source-harnesses/**
+
+# Immutable bounded patch-series evidence, source pins and command receipts.
+docs/account-conformance-runs/2026-10-15-functional-repair-series/**

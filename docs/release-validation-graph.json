@@ -4697,7 +4697,7 @@
           "arguments": ["'git'", "['rev-parse', 'HEAD']", "{ cwd: root, encoding: 'utf8' }"]
         },
         {
-          "line": 845,
+          "line": 864,
           "form": "execFileSync",
           "arguments": [
             "process.execPath",
@@ -15309,7 +15309,7 @@
     },
     {
       "path": "scripts/legacy-cleanup/campaign.mjs",
-      "sha256": "cee1a312e34b62bc7ddf100213e0c79560b4c84c8f8e184c3ba062a8820eba4b"
+      "sha256": "e4caf59e81fafccab130393e6cb47fa601595f57a9a1ab9f67c739916a1eb435"
     },
     {
       "path": "scripts/legacy-cleanup/config.mjs",
@@ -17481,7 +17481,7 @@
     },
     {
       "path": "test/account-successor/client-fixtures.mjs",
-      "sha256": "1c04f9453c1524600a80c5e086fe68d761fae93c5ebfcbba981fedbc5188d2f5"
+      "sha256": "bf3b52cb38b6af44aae331ff349774343974de116781928702f9a6e254c1e243"
     },
     {
       "path": "test/account-successor/client-replay-controls.test.mjs",

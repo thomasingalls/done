@@ -14913,3 +14913,7 @@ changed input hash, independently matched to that helper; all counts and disposi
 The failed verification is retained. Fresh inventory/manifest checks and all 26 focused CI/planning
 cases then pass, with the same 850/309 blocked totals. No old test changes or guard relaxation follows
 from this generated-record refresh.
+
+## 2026-10-15 — Patch-series phase 02: semantic mutation anchors
+
+Repaired the successor proof-issuance control and unsigned-cleanup/pending-journal controls against the Patch 01 overlay. All 11 successor replay/control/history cases pass. The complete cleanup campaign passes 45 named cases, 60 generated histories (seed 8941), and all seven mutation controls at unchanged deadlines; strengthened production refusals preserve the exact native census, while the two repaired cleanup controls must actually remove predecessor carriers. All 143 affected runner/planning cases pass. Planning remains 850 obligations, 309 unresolved; qualification is paused. Application, service and protocol source is unchanged. Original failures remain in the preceding source-harness packet. Local Node 26 evidence does not establish pinned Node 24 CI or whole-suite readiness. The operator requested sequential unsigned patches; no commits, publication or preview updates were performed. Evidence: [phase 02](./account-conformance-runs/2026-10-15-functional-repair-series/02-mutation-anchors/README.md).
