@@ -3,6 +3,7 @@ import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-pr
 import { hex } from '../../account-protocol/recovery';
 import type { PrivateAccess } from './privateAccess';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
+import type { StartupDisposition } from '../crdt/startupState';
 import { isAccountId, type RememberedAccount } from './accountIdentity';
 import {
   SETUP_DB,
@@ -71,6 +72,7 @@ export type SetupState = (
   | { kind: 'save-recovery' | 'save-device-code'; code: string }
   | { kind: 'working'; message: string; detail?: string }
   | { kind: 'approve-passkey'; message: string; description: string }
+  | { kind: 'storage-blocked'; disposition?: StartupDisposition; error?: string }
   | {
       kind: 'ready';
       workspace: AdmittedWorkspace;

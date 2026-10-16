@@ -8,6 +8,59 @@ import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 
 import { useCeremonyNavigation } from './ceremonyNavigation';
 import { RemoveFromDeviceButton } from './DeviceDataRemoval';
+import type { StartupDisposition } from '../crdt/startupState';
+
+function storageMessage(disposition?: StartupDisposition) {
+  if (disposition?.reason === 'enable-local-protection-before-sync')
+    return {
+      title: 'Add protection before sync',
+      detail:
+        'Open your local workspace and choose “Add an unlock code” or “Set up sync”. You’ll see and save your new code before you need to enter it.',
+    };
+  switch (disposition?.kind) {
+    case 'migration-required':
+      return {
+        title: 'Your existing writing needs migration',
+        detail:
+          'Keep your existing installation and verified export available. Finish migration and verified legacy source cleanup before continuing setup, then check again. Your saved writing has been kept.',
+      };
+    case 'fresh':
+      return {
+        title: 'Open your local workspace first',
+        detail:
+          'Start with your local list, then choose “Set up sync”. You’ll be guided through adding protection and saving a code.',
+      };
+    case 'clearing':
+      return {
+        title: 'Workspace removal is unfinished',
+        detail:
+          'Open “Remove from this device” to resume the authorized cleanup. Setup cannot continue while removal is unfinished.',
+      };
+    case 'cleared':
+      return {
+        title: 'This workspace was removed',
+        detail:
+          'Choose an account to begin a separate setup. Removed writing cannot be reopened with a code.',
+      };
+    case 'app-update-required':
+      return {
+        title: 'This workspace needs a compatible app',
+        detail:
+          'Use the app version that supports this saved workspace, then check again. Your saved data has been kept.',
+      };
+    case 'busy':
+      return {
+        title: 'Your workspace is busy',
+        detail: 'Close other tabs using this workspace and check again.',
+      };
+    default:
+      return {
+        title: 'Setup needs attention',
+        detail:
+          'Check that browser storage is available, then check again or choose another account. Keep your browser data and backups available; no replacement code will be generated for an unreadable workspace.',
+      };
+  }
+}
 
 function NameEntry({
   initialName = '',
@@ -195,33 +248,35 @@ export function Setup({
           ? 2
           : 0;
   const title =
-    state.kind === 'intro'
-      ? state.fresh
-        ? 'Create a new account'
-        : 'Set up sync for this list'
-      : state.kind === 'save-device-code'
-        ? 'Save your unlock code'
-        : state.kind === 'confirm-device-code'
-          ? 'Check your saved unlock code'
-          : state.kind === 'unlock'
-            ? state.accountName
-              ? `Unlock ${state.accountName}’s account`
-              : 'Unlock your workspace'
-            : state.kind === 'resume-setup'
-              ? 'Continue account setup'
-              : state.kind === 'name'
-                ? 'What should we call you?'
-                : state.kind === 'passkey'
-                  ? 'Create your passkey'
-                  : state.kind === 'confirm-passkey'
-                    ? 'Try your new passkey'
-                    : state.kind === 'save-recovery'
-                      ? 'Save your recovery code'
-                      : state.kind === 'confirm-recovery'
-                        ? 'Check your saved copy'
-                        : 'message' in state
-                          ? state.message
-                          : 'Account setup';
+    state.kind === 'storage-blocked'
+      ? storageMessage(state.disposition).title
+      : state.kind === 'intro'
+        ? state.fresh
+          ? 'Create a new account'
+          : 'Set up sync for this list'
+        : state.kind === 'save-device-code'
+          ? 'Save your unlock code'
+          : state.kind === 'confirm-device-code'
+            ? 'Check your saved unlock code'
+            : state.kind === 'unlock'
+              ? state.accountName
+                ? `Unlock ${state.accountName}’s account`
+                : 'Unlock your workspace'
+              : state.kind === 'resume-setup'
+                ? 'Continue account setup'
+                : state.kind === 'name'
+                  ? 'What should we call you?'
+                  : state.kind === 'passkey'
+                    ? 'Create your passkey'
+                    : state.kind === 'confirm-passkey'
+                      ? 'Try your new passkey'
+                      : state.kind === 'save-recovery'
+                        ? 'Save your recovery code'
+                        : state.kind === 'confirm-recovery'
+                          ? 'Check your saved copy'
+                          : 'message' in state
+                            ? state.message
+                            : 'Account setup';
   return (
     <main className="local-startup workspace-gate account-setup" data-setup-state={state.kind}>
       <WorkspaceBackdrop />
@@ -235,18 +290,32 @@ export function Setup({
             Back
           </button>
         )}
-        {state.kind !== 'unlock' && state.kind !== 'working' && state.kind !== 'name' && (
-          <ol className="setup-steps" aria-label="Account setup progress">
-            {['Your list', 'Passkey', 'Recovery code', 'Connect'].map((name, i) => (
-              <li key={name} aria-current={stage === i ? 'step' : undefined}>
-                {name}
-              </li>
-            ))}
-          </ol>
-        )}
+        {state.kind !== 'unlock' &&
+          state.kind !== 'working' &&
+          state.kind !== 'name' &&
+          state.kind !== 'storage-blocked' && (
+            <ol className="setup-steps" aria-label="Account setup progress">
+              {['Your list', 'Passkey', 'Recovery code', 'Connect'].map((name, i) => (
+                <li key={name} aria-current={stage === i ? 'step' : undefined}>
+                  {name}
+                </li>
+              ))}
+            </ol>
+          )}
         <h1 id="setup-title" tabIndex={-1} ref={heading}>
           {title}
         </h1>
+        {state.kind === 'storage-blocked' && (
+          <>
+            <p>{storageMessage(state.disposition).detail}</p>
+            <button onClick={() => void owner.inspect()}>Check again</button>
+            {!state.fresh && (
+              <button className="local-secondary" onClick={() => leave(onOtherAccount)}>
+                Choose an account
+              </button>
+            )}
+          </>
+        )}
         {state.kind === 'intro' && (
           <>
             <p>
@@ -437,7 +506,9 @@ export function Setup({
                 : 'Your writing stays in this workspace.')}
           </p>
         )}
-        {state.kind === 'unlock' && <RemoveFromDeviceButton slotId={slotId} />}
+        {(state.kind === 'unlock' || state.kind === 'storage-blocked') && (
+          <RemoveFromDeviceButton slotId={slotId} />
+        )}
         {slotId === 'local' && !state.returning && !['intro', 'working'].includes(state.kind) && (
           <button className="local-secondary" onClick={() => leave(onBack)}>
             Back to local workspace
@@ -464,6 +535,7 @@ export function Setup({
           state.kind !== 'unlock' &&
           state.kind !== 'resume-setup' &&
           state.kind !== 'confirm-device-code' &&
+          state.kind !== 'storage-blocked' &&
           state.kind !== 'name' && (
             <button
               className="local-secondary"

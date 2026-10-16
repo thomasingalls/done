@@ -20,7 +20,9 @@ import { preparePromotionGenesis } from '../crdt/promotionGenesis';
 import { admitLocalPromotion } from '../crdt/promotionAdmission';
 import { finishPromotionHandoff } from '../crdt/promotionHandoff';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
-import { withPromotionSlot, onSlotRetirement } from '../crdt/writeSession';
+import { withPromotionSlot, onSlotRetirement, openWriteSession } from '../crdt/writeSession';
+import { readLocalClaim } from '../crdt/localGenesisRecord';
+import type { StartupDisposition } from '../crdt/startupState';
 import { readPromotion } from '../crdt/promotionRecord';
 import { hex } from '../crdt/custodyCrypto';
 import type { LocalPasskey } from '../crdt/accountAccess';
@@ -172,6 +174,25 @@ export function createFirstDeviceSetup(
     }
     return result;
   };
+  // Classification controls presentation only. Existing factor/promotion owners still verify
+  // every continuation. A refusal is never evidence that a code exists or that genesis is fresh.
+  const entryDisposition = async (): Promise<StartupDisposition> => {
+    const result = await inspectLocalStartup(slotId, { signal: lifetime.signal });
+    if (slotId !== 'local' || result.kind !== 'unlock-required') return result;
+    const session = await openWriteSession(slotId, { signal: lifetime.signal });
+    try {
+      return await session.run(async (task) => {
+        const claim = await readLocalClaim(task, slotId);
+        return claim?.automatic
+          ? { kind: 'identity-required', reason: 'enable-local-protection-before-sync' }
+          : result;
+      });
+    } finally {
+      await session.close();
+    }
+  };
+  const needsCode = (result: StartupDisposition) =>
+    result.kind === 'unlock-required' || result.kind === 'creation-pending';
   const transport = {
     inspect: (body: unknown) => request('preparation/inspect', body),
     abandon: (body: unknown) => request('preparation/abandon', body),
@@ -345,7 +366,7 @@ export function createFirstDeviceSetup(
           draftName = undefined;
         }
         const continuation = cause instanceof SetupContinuationNotice;
-        if (fallback === 'unlock' && !continuation) code = '';
+        if (!continuation && (fallback === 'unlock' || fallback === 'storage-blocked')) code = '';
         const cancelled =
           cause instanceof DOMException && ['NotAllowedError', 'AbortError'].includes(cause.name);
         publish({
@@ -358,13 +379,15 @@ export function createFirstDeviceSetup(
                 cause instanceof PrivateServiceUnavailable ||
                 cause instanceof RemovalPending
               ? cause.message
-              : fallback === 'unlock'
-                ? 'Could not unlock this workspace. Check your device-lock code and try again.'
-                : fallback === 'confirm-recovery'
-                  ? 'Could not finish connecting. Check your saved recovery code and try again. Your progress has been kept.'
-                  : fallback === 'name'
-                    ? 'Your name could not be saved. Try again.'
-                    : 'The passkey step could not finish. Try again. Your setup progress has been kept.',
+              : fallback === 'storage-blocked'
+                ? 'Saved setup or browser storage could not be checked. Try again or choose another account. Your saved data has been kept.'
+                : fallback === 'unlock'
+                  ? 'Could not unlock this workspace. Check your device-lock code and try again.'
+                  : fallback === 'confirm-recovery'
+                    ? 'Could not finish connecting. Check your saved recovery code and try again. Your progress has been kept.'
+                    : fallback === 'name'
+                      ? 'Your name could not be saved. Try again.'
+                      : 'The passkey step could not finish. Try again. Your setup progress has been kept.',
         });
       })
       .finally(() => {
@@ -707,15 +730,16 @@ export function createFirstDeviceSetup(
       };
     },
     inspect: () =>
-      run('Checking saved setup…', 'unlock', async () => {
+      run('Checking saved setup…', 'storage-blocked', async () => {
         saved = checkedSaved(await progress());
         if (!saved && slotId !== 'local')
           throw new SetupNotice(
             'Saved account setup is unavailable. Choose an account to continue.',
           );
-        if (saved?.fresh && !saved.view) {
-          const disposition = await inspectLocalStartup(slotId, { signal: lifetime.signal });
-          if (disposition.kind === 'fresh') return publish({ kind: 'intro' });
+        if (!saved || (!saved.connected && !saved.view)) {
+          const disposition = await entryDisposition();
+          if (saved?.fresh && disposition.kind === 'fresh') return publish({ kind: 'intro' });
+          if (!needsCode(disposition)) return publish({ kind: 'storage-blocked', disposition });
         }
         if (saved && !saved.connected) {
           const transferred = takeHandoffCode?.();
@@ -734,12 +758,17 @@ export function createFirstDeviceSetup(
     start: (name: string) => {
       draftName = displayName(name) ?? 'You';
       if (saved?.fresh) {
-        void run('Preparing your new account…', 'intro', async () => {
+        void run('Preparing your new account…', 'storage-blocked', async () => {
           saved = { ...saved!, requestedName: draftName! };
           await progress(saved);
-          const disposition = await inspectLocalStartup(slotId, { signal: lifetime.signal });
+          const disposition = await entryDisposition();
           guard();
-          if (disposition.kind !== 'fresh') return publish({ kind: 'unlock' });
+          if (disposition.kind !== 'fresh')
+            return publish(
+              needsCode(disposition)
+                ? { kind: 'unlock' }
+                : { kind: 'storage-blocked', disposition },
+            );
           deviceEnrollment ??= beginLocalGenesis(slotId, { signal: lifetime.signal });
           const generated = deviceEnrollment.displayCode;
           if (!generated) throw Error('Device-lock code could not be generated');
@@ -769,7 +798,12 @@ export function createFirstDeviceSetup(
         });
         return;
       }
-      publish({ kind: 'unlock' });
+      void run('Checking your workspace…', 'storage-blocked', async () => {
+        const disposition = await entryDisposition();
+        publish(
+          needsCode(disposition) ? { kind: 'unlock' } : { kind: 'storage-blocked', disposition },
+        );
+      });
     },
     savedDeviceCode: () => {
       if (state.kind === 'save-device-code') publish({ kind: 'confirm-device-code' });
