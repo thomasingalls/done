@@ -4766,3 +4766,8 @@ The two §13.3 authority-map pins predate the signed recovery-progress isolation
 **Against:** storage contract SC-03/06/08 and the existing verified fresh-genesis owner.
 
 **Decision.** Fresh genesis may proceed beside the known `done` database only when its version is exactly 1 and it has zero object stores. Leave that database untouched. A store with zero rows is deliberately not this exception; recognized, unfamiliar and unsupported layouts still require migration, as do all legacy journals and read failures. Repeat the observation under the existing creation lifetime before the first custody claim. This neither migrates/removes source material nor supplies old-writer exclusion; legacy import/cleanup and factor/binding verification are unchanged. An observed late schema upgrade or journal refuses creation and retains its data. Presentation alone remains no authority to create.
+
+
+## 2026-10-16 — Connection preparation reports its actual startup refusal
+
+**Decision.** Keep the startup kind/reason when device preparation refuses and describe that state. Only a factor-bearing or resumable creation reports a saved device setup. A migration or unreadable store is not evidence of a saved attempt; cancellation, removal and compatibility also retain their actual requirements. The error authorizes no code generation, route replacement, repair, erasure or bypass. Fresh preparation and verified enrollment authority remain unchanged.

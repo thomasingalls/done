@@ -1,0 +1,5 @@
+{
+  "src/account/deviceEnrollment.ts": "512b8199766374f93518e8669a3b95def86dab8db6731d0aba97362c0bba90f6",
+  "src/crdt/startupState.ts": "b8560ce87fee8b1fdab5de14304840258fae649f1e5933f78a482f5adca5a4a7",
+  "test/devicePreparation.test.ts": "c2e8499ab1d936860b1878a2ae0ba72b72d39dbee374a29448e3339bd1796b4d"
+}

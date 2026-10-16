@@ -15066,3 +15066,12 @@ The current workspace stays cumulative and unstaged; HEAD remains a6fa2298. No s
 **Exit.** A version-one legacy database with zero object stores no longer blocks first creation; it remains unchanged. Eleven new unit cases and 45 preceding Local/startup/compatibility cases pass. The original guard fails four new counterexamples; a deliberate restoration detects the same four and restores exact source. Typecheck passes. Actual legacy bytes, journals, unsupported/empty-store layouts, wrong factors and a late schema upgrade remain refused/preserved. [Evidence](./development-evidence/2026-10-16-empty-legacy-startup/01-placeholder/README.md).
 
 **Notes.** Two new fixture failures and the corrections are retained. Native browser composition and connection-error presentation remain the next bounded phases. No application deployment, signed commit, qualification resumption or explanation of the earlier missing desktop account is claimed.
+
+
+### Device preparation — truthful startup refusals
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential overlay on phase 1 · **Stage:** bounded production-defect repair, phase 2
+
+**Exit.** Connection preparation preserves startup kind/reason and no longer calls every refusal a saved attempt. Fifteen new presentation cases pass; fourteen fail on the former catch-all. All 31 selected cases and typecheck pass, retaining saved route/factor requirements and issuing no code/hint on refusal. [Evidence](./development-evidence/2026-10-16-empty-legacy-startup/02-connection-refusals/README.md).
+
+**Notes.** Native browser composition/normal-CI integration remain phase 3. No enrollment protocol or storage authority changes, signed commit or deployment. Original desktop disappearance and general qualification remain unresolved/separate.
