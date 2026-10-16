@@ -1,0 +1,302 @@
+{
+  "total": 49,
+  "passed": 49,
+  "failed": 0,
+  "pending": 0,
+  "cases": [
+    {
+      "case": "commits a multi-chunk encrypted baseline and independent pointer, preserves every history byte and isolates callers",
+      "status": "passed",
+      "durationMs": 1617.248959,
+      "failureSummary": []
+    },
+    {
+      "case": "ordinary reader rejects v3 without treating its allocation portion as an ordinary counter",
+      "status": "passed",
+      "durationMs": 20.34287500000005,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses payload before any allocation or seal",
+      "status": "passed",
+      "durationMs": 5.707750000000033,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses mac before any allocation or seal",
+      "status": "passed",
+      "durationMs": 5.920208000000002,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses anchor before any allocation or seal",
+      "status": "passed",
+      "durationMs": 5.090791000000081,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses scope before any allocation or seal",
+      "status": "passed",
+      "durationMs": 4.944749999999885,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses cut before any allocation or seal",
+      "status": "passed",
+      "durationMs": 5.625041999999894,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses counter-mac before any allocation or seal",
+      "status": "passed",
+      "durationMs": 5.118333000000121,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses oversize before any allocation or seal",
+      "status": "passed",
+      "durationMs": 7.72870799999987,
+      "failureSummary": []
+    },
+    {
+      "case": "reservation is durable before encryption, and a seal failure burns its entire range",
+      "status": "passed",
+      "durationMs": 793.9379999999999,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed activity at the final boundary; keeps complete history and only reservation burns",
+      "status": "passed",
+      "durationMs": 4.902624999999716,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed authority at the final boundary; keeps complete history and only reservation burns",
+      "status": "passed",
+      "durationMs": 4.964707999999973,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed counter at the final boundary; keeps complete history and only reservation burns",
+      "status": "passed",
+      "durationMs": 3.930749999999989,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed old-row at the final boundary; keeps complete history and only reservation burns",
+      "status": "passed",
+      "durationMs": 3.5859999999997854,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed extra-row at the final boundary; keeps complete history and only reservation burns",
+      "status": "passed",
+      "durationMs": 3.734375,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed abort-after-put at the final boundary; keeps complete history and only reservation burns",
+      "status": "passed",
+      "durationMs": 3.907332999999653,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged ciphertext on cold carrier read",
+      "status": "passed",
+      "durationMs": 61.2429589999997,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged missing on cold carrier read",
+      "status": "passed",
+      "durationMs": 47.47608300000002,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged reorder on cold carrier read",
+      "status": "passed",
+      "durationMs": 64.88512499999979,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged pointer-mac on cold carrier read",
+      "status": "passed",
+      "durationMs": 60.0920000000001,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged pointer-commitment on cold carrier read",
+      "status": "passed",
+      "durationMs": 47.252874999999676,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged downgrade on cold carrier read",
+      "status": "passed",
+      "durationMs": 72.05062499999985,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged unknown on cold carrier read",
+      "status": "passed",
+      "durationMs": 60.9050000000002,
+      "failureSummary": []
+    },
+    {
+      "case": "verifies the independent pointer before opening chunks; authenticated wrong commitment still refuses",
+      "status": "passed",
+      "durationMs": 6.212583999999879,
+      "failureSummary": []
+    },
+    {
+      "case": "a lost committed reply is readable without allocating or sealing again",
+      "status": "passed",
+      "durationMs": 6.851208000000042,
+      "failureSummary": []
+    },
+    {
+      "case": "cancellation during sealing expires work and leaves an ordinary counter with burned reservations",
+      "status": "passed",
+      "durationMs": 3.7643339999999625,
+      "failureSummary": []
+    },
+    {
+      "case": "input buffers changing while crypto waits cannot change the installed candidate",
+      "status": "passed",
+      "durationMs": 5.397749999999633,
+      "failureSummary": []
+    },
+    {
+      "case": "counter signatures cannot be reused as baseline pointer signatures",
+      "status": "passed",
+      "durationMs": 4.705707999999959,
+      "failureSummary": []
+    },
+    {
+      "case": "a reservation transaction abort performs no encryption and preserves the original counter",
+      "status": "passed",
+      "durationMs": 4.056208999999853,
+      "failureSummary": []
+    },
+    {
+      "case": "rebuilding after a failed attempt allocates beyond the burned range and cold-reads the new anchor",
+      "status": "passed",
+      "durationMs": 8.809041999999863,
+      "failureSummary": []
+    },
+    {
+      "case": "requires the payload MAC to match the independently retained keyed commitment",
+      "status": "passed",
+      "durationMs": 5.223333999999795,
+      "failureSummary": []
+    },
+    {
+      "case": "private allocation adapter keeps the anchor in every MAC/write and isolates returned metadata",
+      "status": "passed",
+      "durationMs": 5.816624999999931,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks classifies runtime projection mismatch separately from persisted corruption",
+      "status": "passed",
+      "durationMs": 1.5392500000000382,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves a projection failure raised during admitted initialization through lifecycle shutdown",
+      "status": "passed",
+      "durationMs": 11.24587500000007,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves the saved pending corpus through a draft fork and later basis",
+      "status": "passed",
+      "durationMs": 4.361999999999853,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves the saved pending corpus through a history fork and later basis",
+      "status": "passed",
+      "durationMs": 2.7627919999999904,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks detaches pending structs, missing-clock maps and pending deletion bytes from the source",
+      "status": "passed",
+      "durationMs": 2.9426670000000286,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks compares actual content and deletions even when integrated state vectors agree",
+      "status": "passed",
+      "durationMs": 1.630292000000054,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves generated delivery histories across repeated detached forks and later dependencies",
+      "status": "passed",
+      "durationMs": 1094.973084,
+      "failureSummary": []
+    },
+    {
+      "case": "generated runtime codec forks agree with V1 and detach nested mutable content in both directions",
+      "status": "passed",
+      "durationMs": 438.40320900000006,
+      "failureSummary": []
+    },
+    {
+      "case": "runtime forks preserve V1 legacy JSON conversion in text formatting and embeds",
+      "status": "passed",
+      "durationMs": 2.5540000000000873,
+      "failureSummary": []
+    },
+    {
+      "case": "runtime forks preserve independent UTF-8 replacement across adjacent root and text fields",
+      "status": "passed",
+      "durationMs": 0.5443749999999454,
+      "failureSummary": []
+    },
+    {
+      "case": "generated human undo and redo match an unforked history through repeated private forks",
+      "status": "passed",
+      "durationMs": 805.5660010000001,
+      "failureSummary": []
+    },
+    {
+      "case": "runtime forks preserve and detach binary leaves nested inside arbitrary arrays and objects",
+      "status": "passed",
+      "durationMs": 0.6227499999999964,
+      "failureSummary": []
+    },
+    {
+      "case": "history metadata preserves generated selection graphs and isolates both mutation directions",
+      "status": "passed",
+      "durationMs": 136.18962499999998,
+      "failureSummary": []
+    },
+    {
+      "case": "history metadata retains native fallback values, cycles, descriptors and accessor behavior",
+      "status": "passed",
+      "durationMs": 5.589249999999993,
+      "failureSummary": []
+    },
+    {
+      "case": "generated detached histories preserve undo redo and restored master and card selections",
+      "status": "passed",
+      "durationMs": 511.4225839999999,
+      "failureSummary": []
+    },
+    {
+      "case": "generated retained history branches isolate selections through mutation clear and disposal",
+      "status": "passed",
+      "durationMs": 302.8552089999994,
+      "failureSummary": []
+    },
+    {
+      "case": "generic forks detach frozen maps and lookalike snapshot ownership fields",
+      "status": "passed",
+      "durationMs": 0.6137079999998605,
+      "failureSummary": []
+    }
+  ]
+}

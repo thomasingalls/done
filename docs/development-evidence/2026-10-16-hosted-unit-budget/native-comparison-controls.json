@@ -1,0 +1,20 @@
+[
+  {
+    "control": "anchor",
+    "changedByte": "middle of expected baseline payload",
+    "expectedCaseRefuses": true,
+    "evidence": "native strict assertion",
+    "selectedForNegativeControlOnly": true,
+    "normalWorkloadCaseCount": 49,
+    "workspaceSourcesModified": false
+  },
+  {
+    "control": "projection",
+    "changedByte": "last byte of generated history encoding",
+    "expectedCaseRefuses": true,
+    "evidence": "seeded property counterexample and shrink report; the JSON reporter wraps the inner assertion",
+    "selectedForNegativeControlOnly": true,
+    "normalWorkloadCaseCount": 49,
+    "workspaceSourcesModified": false
+  }
+]

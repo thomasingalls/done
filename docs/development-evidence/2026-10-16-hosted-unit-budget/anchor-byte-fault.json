@@ -1,0 +1,202 @@
+{
+  "total": 32,
+  "passed": 0,
+  "failed": 1,
+  "pending": 31,
+  "cases": [
+    {
+      "case": "commits a multi-chunk encrypted baseline and independent pointer, preserves every history byte and isolates callers",
+      "status": "failed",
+      "durationMs": 3176.549418,
+      "failureSummary": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:"
+      ]
+    },
+    {
+      "case": "ordinary reader rejects v3 without treating its allocation portion as an ordinary counter",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses payload before any allocation or seal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses mac before any allocation or seal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses anchor before any allocation or seal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses scope before any allocation or seal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses cut before any allocation or seal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses counter-mac before any allocation or seal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses oversize before any allocation or seal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "reservation is durable before encryption, and a seal failure burns its entire range",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed activity at the final boundary; keeps complete history and only reservation burns",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed authority at the final boundary; keeps complete history and only reservation burns",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed counter at the final boundary; keeps complete history and only reservation burns",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed old-row at the final boundary; keeps complete history and only reservation burns",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed extra-row at the final boundary; keeps complete history and only reservation burns",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses a changed abort-after-put at the final boundary; keeps complete history and only reservation burns",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged ciphertext on cold carrier read",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged missing on cold carrier read",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged reorder on cold carrier read",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged pointer-mac on cold carrier read",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged pointer-commitment on cold carrier read",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged downgrade on cold carrier read",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "refuses damaged unknown on cold carrier read",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "verifies the independent pointer before opening chunks; authenticated wrong commitment still refuses",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "a lost committed reply is readable without allocating or sealing again",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "cancellation during sealing expires work and leaves an ordinary counter with burned reservations",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "input buffers changing while crypto waits cannot change the installed candidate",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "counter signatures cannot be reused as baseline pointer signatures",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "a reservation transaction abort performs no encryption and preserves the original counter",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "rebuilding after a failed attempt allocates beyond the burned range and cold-reads the new anchor",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "requires the payload MAC to match the independently retained keyed commitment",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "private allocation adapter keeps the anchor in every MAC/write and isolates returned metadata",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    }
+  ]
+}

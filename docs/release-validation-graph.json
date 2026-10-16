@@ -11340,15 +11340,15 @@
           "form": "fc.property"
         },
         {
-          "line": 489,
+          "line": 492,
           "form": "fc.property"
         },
         {
-          "line": 627,
+          "line": 630,
           "form": "fc.property"
         },
         {
-          "line": 731,
+          "line": 734,
           "form": "fc.property"
         }
       ],
@@ -18513,7 +18513,7 @@
     },
     {
       "path": "test/localBaselineAnchor.test.ts",
-      "sha256": "2e2b8c5a108e3c4ce43ab37ba5b4b4738126d96fe015657fbb97b72a0415bf87"
+      "sha256": "23374b782e7d51fed8978b561b1136e6c9c547513ee3f13a54d594167921e56d"
     },
     {
       "path": "test/localBaselineLifecycle.test.ts",
@@ -18745,7 +18745,7 @@
     },
     {
       "path": "test/pendingProjection.test.ts",
-      "sha256": "07233d4b8d9f88611acd330f293e015769592bc1a7811278d8b4439bf9cadc8e"
+      "sha256": "872e1460ebb3a6352fac58f9d4312efac6982e76312aaa06a1998acb805699d1"
     },
     {
       "path": "test/plainTextUpdate.test.ts",

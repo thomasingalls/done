@@ -1,0 +1,112 @@
+{
+  "total": 17,
+  "passed": 0,
+  "failed": 1,
+  "pending": 16,
+  "cases": [
+    {
+      "case": "pending document forks classifies runtime projection mismatch separately from persisted corruption",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves a projection failure raised during admitted initialization through lifecycle shutdown",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves the saved pending corpus through a draft fork and later basis",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves the saved pending corpus through a history fork and later basis",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks detaches pending structs, missing-clock maps and pending deletion bytes from the source",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks compares actual content and deletions even when integrated state vectors agree",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "pending document forks preserves generated delivery histories across repeated detached forks and later dependencies",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "generated runtime codec forks agree with V1 and detach nested mutable content in both directions",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "runtime forks preserve V1 legacy JSON conversion in text formatting and embeds",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "runtime forks preserve independent UTF-8 replacement across adjacent root and text fields",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "generated human undo and redo match an unforked history through repeated private forks",
+      "status": "failed",
+      "durationMs": 71.89070800000013,
+      "failureSummary": [
+        "Error: Property failed after 1 tests"
+      ]
+    },
+    {
+      "case": "runtime forks preserve and detach binary leaves nested inside arbitrary arrays and objects",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "history metadata preserves generated selection graphs and isolates both mutation directions",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "history metadata retains native fallback values, cycles, descriptors and accessor behavior",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "generated detached histories preserve undo redo and restored master and card selections",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "generated retained history branches isolate selections through mutation clear and disposal",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    },
+    {
+      "case": "generic forks detach frozen maps and lookalike snapshot ownership fields",
+      "status": "skipped",
+      "durationMs": null,
+      "failureSummary": []
+    }
+  ]
+}

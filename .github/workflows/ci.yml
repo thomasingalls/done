@@ -62,7 +62,8 @@ jobs:
         run: node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs
 
       - name: Run all unit regression tests
-        run: pnpm test
+        # Keep each case's workload and deadline; avoid two heavy files competing on this runner.
+        run: pnpm test --maxWorkers=1
 
       - name: Check packaged application routing and gateway boundaries
         run: node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs

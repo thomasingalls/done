@@ -1,5 +1,6 @@
 // @vitest-environment node
 import { beforeEach, afterEach, expect, it, vi } from 'vitest';
+import assert from 'node:assert/strict';
 import { IDBFactory, IDBKeyRange, IDBObjectStore } from 'fake-indexeddb';
 import { setup, readCensus } from './local-baseline/anchor-fixture';
 import type { SessionTask } from '../src/crdt/writeSession';
@@ -97,7 +98,7 @@ it('commits a multi-chunk encrypted baseline and independent pointer, preserves 
   const anchor = await f.anchor();
   const opened = await f.read();
   expect(opened.anchor).toEqual(anchor);
-  expect(opened.baseline).toEqual(expected.baseline);
+  assert.deepStrictEqual(opened.baseline, expected.baseline);
   expect(opened.counter.baseline.chunks).toBeGreaterThan(1);
   expect(opened.counter.next_seq).toBe(before.counter!.next_seq + opened.counter.baseline.chunks);
   expect(opened.counter.reserved[1]).toBe(
@@ -112,13 +113,13 @@ it('commits a multi-chunk encrypted baseline and independent pointer, preserves 
   f.input.baseline.payload.fill(0);
   opened.baseline.payload.fill(0);
   opened.counter.baseline.commitment = '0'.repeat(64);
-  expect((await f.read()).baseline).toEqual(expected.baseline);
+  assert.deepStrictEqual((await f.read()).baseline, expected.baseline);
   for (const row of before.rows) {
     const actual = await new Promise((r) => {
       const q = f.owner.db.transaction(row.store).objectStore(row.store).get(row.key);
       q.onsuccess = () => r(q.result);
     });
-    expect(actual).toEqual(row.value);
+    assert.deepStrictEqual(actual, row.value);
   }
   await expect(f.carrier.load(f.task)).rejects.toBeInstanceOf(StorageCompatibilityError);
   await expect(
