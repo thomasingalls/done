@@ -284,3 +284,19 @@ No custody key, ciphertext or certified-recipient status is returned to the admi
 The defined admission-only phase is complete. The next gate is the committed-nonce/code-comparison
 ceremony, followed by durable delivery/certification, new-device custody and encrypted bootstrap.
 Full cryptographic qualification and production deployment remain separate work.
+
+## 2026-10-16 — Authenticated checkpoint-stage amendment
+
+The v9-only structural restriction described in C2b above was superseded by the
+checkpoint transition implemented in `684f4f067e80a1be63c5e9842a569f1830e461a9`.
+The closed promotion parser permits the successor field on v6, v7, v8 and v9.
+Versions one through five still refuse it. Structural parsing grants no authority:
+the ordered promotion MAC authenticates the version, stage and successor/catchup
+fields, and the normal lifecycle verifies original authority, certification, retained
+coverage and the checkpoint before allowing writing. No new crypto domain is introduced.
+
+A genuine schema-five local-only Account can therefore upgrade, create a certified
+checkpoint, commit v6 `account-capturing`, cold-unlock and resume v9 `account-receiving`.
+The functional repair regressions exercise that producer with original pinned source
+and unchanged credentials; unsigned rewrites to v6/v7/v8 and field removal each refuse
+cold reopening without storage changes. They do not establish general release qualification.

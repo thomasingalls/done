@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 490,
-    "requiredTestFiles": 484,
+    "testFiles": 492,
+    "requiredTestFiles": 486,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9034,6 +9034,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-successor/stage-authentication.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-successor/stage-authentication.test.mjs"
+        ]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-sync/activation.test.mjs",
       "status": "required",
       "invocation": {
@@ -9897,6 +9912,17 @@
         "packages": ["test:account-setup"]
       },
       "declarations": 19,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/first-device-upgrade/checkpoint-stage.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.account-upgrade.config.ts",
+        "packages": ["test:account-setup-upgrade-browser"]
+      },
+      "declarations": 1,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -17552,7 +17578,7 @@
     },
     {
       "path": "test/account-successor/owner-controls.test.mjs",
-      "sha256": "250256f776350d5c6c8c7ccda5e68ba5975fa5d3fd32213f31d93af5c1536483"
+      "sha256": "c26c3f05c9f3746d47032ced95491dc8d832f4c8d2a62fd784857a3f43b664c7"
     },
     {
       "path": "test/account-successor/owner-fixtures.mjs",
@@ -17589,6 +17615,10 @@
     {
       "path": "test/account-successor/service.test.mjs",
       "sha256": "22530d63af7cf2b3bf67a9e71b07babf69b4afd39221a5cb8c5f0f1d1e0ca2db"
+    },
+    {
+      "path": "test/account-successor/stage-authentication.test.mjs",
+      "sha256": "817fc6c14dba05c8c8439420cb4269a4a4ae358ac85ffb1a22d5ffcf7431834d"
     },
     {
       "path": "test/account-successor/worker.mjs",
@@ -17913,6 +17943,10 @@
     {
       "path": "test/first-device-setup/setup.spec.ts",
       "sha256": "032fa71f84a185e119d5056f3d2a2d49c643b128647903ce23c5b4ee80bd6fda"
+    },
+    {
+      "path": "test/first-device-upgrade/checkpoint-stage.spec.ts",
+      "sha256": "270351d363dd3207b8f832cd213f3444fdcec08143cc0116960ef9c955b443dc"
     },
     {
       "path": "test/first-device-upgrade/state.test.mjs",

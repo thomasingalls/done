@@ -74,6 +74,7 @@ jobs:
         run: >-
           node --test --test-concurrency=1 --test-timeout=60000
           test/account-successor/emitted-bundle.test.mjs
+          test/account-successor/stage-authentication.test.mjs
           test/account-admission-bounds/historical-closure.test.mjs
           test/account-receive/historical-owner.test.mjs
 
