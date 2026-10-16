@@ -17624,7 +17624,7 @@
     },
     {
       "path": "test/account-sync/native.test.mjs",
-      "sha256": "ef634aada56c816888b57d58d5596d34cbc4712a6bcb938cb10b2b4ca652ab04"
+      "sha256": "ddc9170cdf92418a7cf43b5f4e7110e4fdd2544ba603f835f15a4ce9d95399e6"
     },
     {
       "path": "test/account-sync/scheduler-fixture.ts",

@@ -867,7 +867,32 @@ test(
       if (index % 2) assert.ok(metrics.incremental > 0, 'unset flag selects incremental');
       else assert.equal(metrics.incremental, 0, 'rollback uses reference verification');
       assert.equal(metrics.mismatches, 0);
-      assert.equal(await f.page.evaluate(() => '__doneLedgerMetrics' in globalThis), false);
+      // The inherited editor fixture intentionally installs profiling globals.
+      // Loading an unprofiled bundle cannot make that existing realm ordinary.
+      assert.equal(await f.page.evaluate(() => typeof globalThis.__doneLedgerMetrics), 'function');
+      const ordinaryRealm = await f.context.newPage();
+      try {
+        await ordinaryRealm.goto(f.server.origin);
+        assert.equal(
+          await ordinaryRealm.evaluate(() => '__doneLedgerMetrics' in globalThis),
+          false,
+        );
+        await ordinaryRealm.evaluate(script);
+        assert.equal(
+          await ordinaryRealm.evaluate(() => typeof Harness.accountLedgerMetrics),
+          'function',
+        );
+        assert.equal(
+          await ordinaryRealm.evaluate(() => '__doneLedgerMetrics' in globalThis),
+          false,
+        );
+        assert.equal(
+          await ordinaryRealm.evaluate(() => '__doneOpenMilestones' in globalThis),
+          false,
+        );
+      } finally {
+        await ordinaryRealm.close();
+      }
       await close(f.page);
     }
   },
