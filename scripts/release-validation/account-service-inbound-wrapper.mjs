@@ -283,9 +283,20 @@ export function reconcileServiceInboundEvidence(r) {
     query(c.baseline.request);
     assert.equal(c.baseline.result.kind, 'unknown', 'Inbound omission baseline did not refuse');
     assert.equal(
-      page(c.mutant, mode === 'witness' ? [] : c.originals, c.publicKey),
-      mode === 'witness' ? 0 : 1,
+      page(c.mutant, mode === 'publisher' ? [] : c.originals, c.publicKey),
+      mode === 'publisher' ? 0 : 1,
     );
+    if (mode === 'publisher') {
+      assert.equal(c.publisherPolicyOmissions, 2);
+      query(c.publisherLookup.request);
+      assert.equal(c.publisherLookup.request, c.mutant.request);
+      assert.deepEqual(c.publisherLookup.result, { kind: 'unknown', reason: 'unavailable' });
+    }
+    if (mode === 'witness')
+      assert.deepEqual(
+        c.redundantWitness,
+        Array(2).fill({ kind: 'unknown', reason: 'ledger-integrity' }),
+      );
     if (mode === 'registration') {
       assert.equal(c.activation.length, 2);
       for (const o of c.activation) {

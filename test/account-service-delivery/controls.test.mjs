@@ -32,10 +32,13 @@ async function mutant(t, control) {
             "db.exec('ROLLBACK');\n      hook('after-commit', 'decide-submission');",
           ],
           current: [
-            /if \(snapshotBytes\(snapshot\(db, workspace\)\) !== snapshotBytes\(s\)\)/g,
-            'if (false)',
+            /hook\('after-verify', 'decide-submission'\);\n      db.exec\('BEGIN IMMEDIATE'\);\n      if \(!unchanged\(db, s, reuse\)\)/g,
+            "hook('after-verify', 'decide-submission');\n      db.exec('BEGIN IMMEDIATE');\n      if (false)",
           ],
-          generation: [/proposed =\s+e.gen !== auth.generation/g, 'proposed = false'],
+          generation: [
+            /if \(generation !== \(auth.history \? historyGeneration\(auth.history, epoch\) : auth.generation\)\)\n    return mismatch;/g,
+            'void generation;',
+          ],
         };
         const [pattern, replacement] = edits[control] ?? [];
         if (pattern) {
@@ -123,11 +126,45 @@ for (const control of ['commit', 'generation', 'current', 'witness'])
     const call = (w) =>
       authority.decideSubmission(core, { workspaceId: x.workspace, bytes: w.bytes });
     let w = x.make(1, 'control', { gen: control === 'generation' ? 2 : 1 });
+    let redundant, witnessCall;
     if (control === 'witness') {
       const bad = x.make(1, 'closed', { gen: 2 });
       const closure = await x.call(bad);
       assert.equal(proof(closure, x.offer.epoch.acceptancePublicKey, bad.subject).kind, 'refused');
+      const savedRow = x.f.rows('delivery_decisions')[0];
       mutate(x, (db) => db.exec('DELETE FROM delivery_decisions'));
+      w = x.make(1, 'restamped', { ct: bad.ct });
+      const before = x.f.rows('delivery_decisions');
+      redundant = [await x.call(w), await call(w)];
+      for (const result of redundant)
+        assert.deepEqual(result, { kind: 'unknown', reason: 'ledger-integrity' });
+      assert.deepEqual(x.f.rows('delivery_decisions'), before);
+      mutate(x, (db) => {
+        db.prepare('INSERT INTO delivery_decisions VALUES (?,?,?,?,?,?,?,?)').run(
+          ...Object.values(savedRow),
+        );
+        const witness = JSON.parse(
+          db.prepare('SELECT delivery_witness FROM promotions').get().delivery_witness,
+        );
+        witness.signature = 'ab'.repeat(64);
+        db.prepare('UPDATE promotions SET delivery_witness=?').run(JSON.stringify(witness));
+      });
+      // Count/shape and original signed closure still agree. Only witness authentication is damaged.
+      // Both owners were quarantined by the deletion probe; restart both before this independent fault.
+      x.f.restart();
+      x.authority.restart();
+      // Recreate the actual mutated owner without weakening its publisher count guard.
+      const freshCore = new Core(x.f.path, {
+        origin: x.authority.pin.origin,
+        rpId: x.authority.pin.rpId,
+      });
+      const freshOwner = Authority.open(x.authority.path, x.authority.pin, x.authority.key);
+      t.after(() => {
+        freshCore.close();
+        freshOwner.close();
+      });
+      witnessCall = (value) =>
+        freshOwner.decideSubmission(freshCore, { workspaceId: x.workspace, bytes: value.bytes });
       w = x.make(1, 'restamped', { ct: bad.ct });
       const result = await x.call(w);
       baseline = {
@@ -135,16 +172,21 @@ for (const control of ['commit', 'generation', 'current', 'witness'])
         persisted: x.f.rows('delivery_decisions').length,
         account: x.f.rows('accounts')[0].state,
       };
-      assert.equal(result.kind, 'unknown');
+      assert.deepEqual(result, { kind: 'unknown', reason: 'ledger-integrity' });
+      // The retained valid refusal requires its signed parent; preserve this independent policy.
+      w = x.make(1, 'successor', {
+        parent: proof(closure, x.offer.epoch.acceptancePublicKey, bad.subject).refusal,
+      });
     }
     if (control === 'current') armed = true;
-    const r = await call(w),
+    const r = await (witnessCall ?? call)(w),
       p = proof(r, x.offer.epoch.acceptancePublicKey, w.subject);
     assert.equal(p.kind, 'accepted');
     const rows = x.f.rows('delivery_decisions');
-    assert.equal(rows.length, control === 'commit' ? 0 : 1);
+    assert.equal(rows.length, control === 'commit' ? 0 : control === 'witness' ? 2 : 1);
     artifact('control-' + control, {
       baseline,
+      redundant,
       outcome: p.kind,
       persisted: rows.length,
       account: x.f.rows('accounts')[0].state,
@@ -152,7 +194,8 @@ for (const control of ['commit', 'generation', 'current', 'witness'])
         commit: 'Signed acceptance escapes without any durable decision.',
         generation: 'Certified epoch generation mismatch is accepted.',
         current: 'Acceptance commits after membership becomes inactive.',
-        witness: 'A deleted closure is followed by acceptance of the permanently refused subject.',
+        witness:
+          'An unauthenticated witness allows acceptance after a valid retained refusal; deletion still refuses with the count guard.',
       }[control],
     });
   });

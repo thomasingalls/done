@@ -14,7 +14,7 @@ async function mutant(t, needle, replacement) {
     for (const file of readdirSync(folder).filter((f) => f.endsWith('.ts'))) {
       let code = readFileSync(join(folder, file), 'utf8');
       if (folder === 'account-protocol' && file === 'admission.ts') {
-        assert(code.includes(needle), 'Control anchor must match');
+        assert.equal(code.split(needle).length, 2, 'Unique approval-verification anchor');
         code = code.replace(needle, replacement);
       }
       writeFileSync(join(dir, folder, file), code);
@@ -32,8 +32,8 @@ for (const gate of ['origin', 'certification'])
       request = structuredClone(x.request);
     const needle =
       gate === 'origin'
-        ? 'await verifySignature(r.recovery.bootstrapSigner, r.originSignature, await originMessage(r));'
-        : 'await verifySignature(key, r.certification.signature, await certificationMessage(r));';
+        ? 'verifySignature(\n      r.recovery.bootstrapSigner,\n      r.originSignature,\n      await proofWork(checkpoint, originMessage(r)),\n    )'
+        : 'verifySignature(\n      key,\n      r.certification.signature,\n      await proofWork(checkpoint, certificationMessage(r)),\n    )';
     // A certificate edit also changes the origin message: reseal that endorsement with the fixture's saved factor.
     if (gate === 'origin') request.originSignature = '00'.repeat(64);
     else {
@@ -55,7 +55,7 @@ for (const gate of ['origin', 'certification'])
       request,
     });
     assert.equal(baseline.ok, false);
-    const { Core, Authority } = await mutant(t, needle, 'void 0;'),
+    const { Core, Authority } = await mutant(t, needle, 'Promise.resolve()'),
       core = new Core(x.f.path, { rpId: x.authority.pin.rpId, origin: x.authority.pin.origin }),
       owner = Authority.open(x.authority.path, x.authority.pin, x.authority.key);
     t.after(() => {

@@ -216,9 +216,10 @@ function evidence() {
       account: 'pending',
     },
     'control-witness.json': {
-      baseline: { outcome: 'unknown', persisted: 0, account: 'active' },
+      baseline: { outcome: 'unknown', persisted: 1, account: 'active' },
+      redundant: Array(2).fill({ kind: 'unknown', reason: 'ledger-integrity' }),
       outcome: 'accepted',
-      persisted: 1,
+      persisted: 2,
       account: 'active',
     },
     'generated.json': {
@@ -2895,7 +2896,16 @@ function serviceInboundEvidence() {
       originals: [one],
       ordinary: [page(q, [one]), page(q, [one])],
       baseline: refused(q),
-      mutant: page(q, control === 'witness' ? [] : [one]),
+      mutant: page(q, control === 'publisher' ? [] : [one]),
+      ...(control === 'publisher'
+        ? {
+            publisherPolicyOmissions: 2,
+            publisherLookup: { request: q, result: { kind: 'unknown', reason: 'unavailable' } },
+          }
+        : {}),
+      ...(control === 'witness'
+        ? { redundantWitness: Array(2).fill({ kind: 'unknown', reason: 'ledger-integrity' }) }
+        : {}),
       activation: control === 'registration' ? [refused(q), refused(q)] : [],
     };
   for (const cut of ['verified', 'signed'])
@@ -3200,6 +3210,9 @@ test('160 generated service-inbound control corruptions reject missing refusal, 
   const alters = [
     (r) => (r['control-reader.json'].baseline.result.kind = 'decision'),
     (r) => (r['control-witness.json'].mutant.result.kind = 'unknown'),
+    (r) => (r['control-publisher.json'].publisherPolicyOmissions = 1),
+    (r) => (r['control-publisher.json'].publisherLookup.result.kind = 'decision'),
+    (r) => r['control-witness.json'].redundantWitness.pop(),
     (r) => r['control-registration.json'].activation.pop(),
     (r) => (r['control-signature.json'].mutant.result.bytes += '00'),
     (r) => (r['restart-signed.json'].replies = 1),
