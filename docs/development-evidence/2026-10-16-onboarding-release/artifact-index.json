@@ -1,0 +1,182 @@
+{
+  "README.md": {
+    "bytes": 3575,
+    "sha256": "e28236b05b33dc262200cc1c61df08a6ba1f683edde91885ea71b46912a75468"
+  },
+  "build-metadata.json": {
+    "bytes": 1826,
+    "sha256": "9ad310191923b29f5d2b958bc7b61522ac54bc797efd694b25b910089be5fbaf"
+  },
+  "candidate-frontend-files.json": {
+    "bytes": 16050,
+    "sha256": "29493e90ae2b435e7cadaae54838ecd91ae818ef5df1afdb08f71c90681383ff"
+  },
+  "ci-final-status.json": {
+    "bytes": 170,
+    "sha256": "bc9d153512d83f086e91c23f3fa4ecca257e9b7aa15bf3c00f7b2bb9fbce2f17"
+  },
+  "ci-premerge.json": {
+    "bytes": 4932,
+    "sha256": "799b43719e9c58da118ec63dfd1b0cbd736599f9f23c2b1afd1cc42c82cc939d"
+  },
+  "container-build.log.gz": {
+    "bytes": 7295,
+    "sha256": "c5e477ad85df07cc944d9c9ae2276db39d5332478d6a94bc2947f255b265f5a0"
+  },
+  "container-smoke.json": {
+    "bytes": 1124,
+    "sha256": "2284762718c10fc2dbd57bc01b4c44539ee801d08d442f21911eb83c4bd56870"
+  },
+  "container-smoke.log.gz": {
+    "bytes": 476,
+    "sha256": "3ec2658938b27a24a443791320e74c1733d299d25d4c8c750934ac1527ab2c1b"
+  },
+  "development-onboarding-repaired.log.gz": {
+    "bytes": 2171,
+    "sha256": "84540064585cc4ece943ebb874c0a9e5e286f245167ff78039882b227098d024"
+  },
+  "development-onboarding-reproduction.log.gz": {
+    "bytes": 888,
+    "sha256": "900d53de7b56b7996585559c05f9d44acaeb1ee67d35be9683c9b982501dcc95"
+  },
+  "hosted-ci-failed.log.gz": {
+    "bytes": 3490,
+    "sha256": "49ffe1914ea696e49a0fae2dda5ae32706106432aefda03d5befaa96c9da0f25"
+  },
+  "image-identities.json": {
+    "bytes": 923,
+    "sha256": "0859349553f4f6ad97652567a207a2ee02cfbaae31b6965980231fba97468df4"
+  },
+  "infra-check.json": {
+    "bytes": 613,
+    "sha256": "5e80a2fa96b3474632ff71dcdbae6adf7384af30779ebcedad8caa49650fa9bc"
+  },
+  "infra-render-comparison.json": {
+    "bytes": 874,
+    "sha256": "89a601e8b3277543928b188314b8d8532985856f8d906ac9602eb49e1c7f6334"
+  },
+  "linux-locking-fixed.json": {
+    "bytes": 372,
+    "sha256": "6d75ed48738ce7e31dcabeee7b40f432ba7a6a90725e87f33676766a7aec9bcf"
+  },
+  "linux-locking-fixed.log.gz": {
+    "bytes": 327,
+    "sha256": "03c24184d371d964d5a74e26530bee2edfb1c3c0c720e0e855a7b0369279be8a"
+  },
+  "linux-locking-old-state.json": {
+    "bytes": 893,
+    "sha256": "8038dfd8dd73280f5a17315a42565c1efd565f8aad10c9cc546e30240d8bc3f5"
+  },
+  "linux-locking-old-state.log.gz": {
+    "bytes": 704,
+    "sha256": "bd55454a0b3eb18f240d233388160620f3f572242037f1e9f0267591b091cef3"
+  },
+  "linux-onboarding-baseline.log.gz": {
+    "bytes": 1514,
+    "sha256": "62a326a1396c387722a5b135e94bc601ebd1d146b36b90fe7e46c8149dabd855"
+  },
+  "linux-onboarding-repaired.log.gz": {
+    "bytes": 2106,
+    "sha256": "61bb15f024fb7eb59337677c6949dde9cc9c90e26b4734b8a87a0062256847ca"
+  },
+  "locking-browser-baseline.log.gz": {
+    "bytes": 796,
+    "sha256": "2b20c63df15c1814e07364304f843f1c9653c3d333101e8c7acd515379e1ef47"
+  },
+  "locking-browser-heading-repaired.log.gz": {
+    "bytes": 384,
+    "sha256": "ea28dfbdc804cf3b0cd9186cd902eb31b799703fc42aece7bdc8a65fc4827d1c"
+  },
+  "locking-browser-original-state-control.log.gz": {
+    "bytes": 816,
+    "sha256": "a7dee36b6155cbceddbda0d9213dc74afe86497be744d7685aa693bf7f15ec19"
+  },
+  "locking-browser-repaired.log.gz": {
+    "bytes": 874,
+    "sha256": "c4b1dde06215cabba975114368b205bf4300c9a7d3d566c0e663926335ed7f6e"
+  },
+  "package-registry-credential-check.json": {
+    "bytes": 167,
+    "sha256": "0c4e8323b97fd7c4026340c84142c572545c1c577f4f099a5ccac0df3985ae20"
+  },
+  "packaged-browser.json": {
+    "bytes": 8355,
+    "sha256": "385625389372b19070107bec70602eb40f7bce6ba397f440c745430a72d6775d"
+  },
+  "packaged-browser.log.gz": {
+    "bytes": 2040,
+    "sha256": "33559b32ad19bc4db4da32537b4fcf9030e27229225c75c3735d7e61b9cccf17"
+  },
+  "public-before.json": {
+    "bytes": 2369,
+    "sha256": "1ade9ce5facab7b8edc98bf2be3134f5a28b17c658744f3b310adceefddf30b9"
+  },
+  "publication-legacy-devices.ts.txt": {
+    "bytes": 4788,
+    "sha256": "72f6717b1d0b0529b1cd1e5af20b7ea657c9eebb56cb583a3c2dda0b48ad1ddc"
+  },
+  "publication-legacy-helpers.ts.txt": {
+    "bytes": 5097,
+    "sha256": "ceff2dafb9f426ca9e5c79841352be4136522a2cd2ea0128294a74503ca8c26d"
+  },
+  "publication-upgrade.json": {
+    "bytes": 424,
+    "sha256": "92ed6441353d57720a95878654217dd742610ed72de366b6de0011cbc0099417"
+  },
+  "publication-upgrade.log.gz": {
+    "bytes": 306,
+    "sha256": "7e1d5110d10f98d6c8e4283cdd1dad6a184888f00e9fbfd2192d551fc8a5f475"
+  },
+  "publication-upgrade.spec.ts.txt": {
+    "bytes": 6112,
+    "sha256": "c0c67ff02be6efac3c7971db61b5a7cc3cf9737c8fe582a6460ead58a7965473"
+  },
+  "repair-adapters-final.log.gz": {
+    "bytes": 6441,
+    "sha256": "06d98ed2c7d324b1b22c0f7d143013f69d9bdd85aa043cf9572ffc675d140128"
+  },
+  "repair-adapters.log.gz": {
+    "bytes": 6795,
+    "sha256": "e4e7185897f6f96547060d63c11f018701545893c65f3c79e334ccecca83e2f4"
+  },
+  "repair-full-unit.log.gz": {
+    "bytes": 190,
+    "sha256": "00d6682c56fccef825d8309e941a242de9d02ae4de89fc34cd585d4adfdbcc11"
+  },
+  "repair-source-pins.json": {
+    "bytes": 894,
+    "sha256": "ef933103fc46a35b11ff36840b1f1dfb35d56f28e34f6189c781b972a85f0add"
+  },
+  "repair-typecheck.log.gz": {
+    "bytes": 20,
+    "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+  },
+  "retired-owner-baseline.log.gz": {
+    "bytes": 508,
+    "sha256": "5ef5f257f4aaf06f28e5c7377516aad27681d044f88c59eeebb1057474a0d5e8"
+  },
+  "retired-owner-repaired.log.gz": {
+    "bytes": 173,
+    "sha256": "69df2aa8cc0b588df3c11ba6937b862b10d9766343e5635678f601001bda7bec"
+  },
+  "rollback-frontend-files.json": {
+    "bytes": 16186,
+    "sha256": "0e93177816c5c40e7fdaa398c148343b7a6ea0bca3e6db19377ac6720c9ab749"
+  },
+  "rollback-tag-index.json": {
+    "bytes": 856,
+    "sha256": "fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb"
+  },
+  "setup-lock-fixture-control.log.gz": {
+    "bytes": 379,
+    "sha256": "4bd3ae650b87ad79caf4f94914d5e651bd35b9f9441ac4d2b535ac941f83c324"
+  },
+  "source.json": {
+    "bytes": 1473,
+    "sha256": "1cc81d672a2482ae915f20366662bb7bf1280dce4afd0e34e769faa25688b7e1"
+  },
+  "summary.json": {
+    "bytes": 3089,
+    "sha256": "ab66ee818f91a0780c470fb429481fa28a64567b89daec06d96dcf1730f82137"
+  }
+}

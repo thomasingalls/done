@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-16",
+  "basedOn": "58b1a12e33513d2a5ca10b62f268c0a9412abf36",
+  "phase": "Production preflight discovered an onboarding cleanup race; repair before publication",
+  "preflightImage": {
+    "index": "sha256:6fe094ddf96121c454dc629f94738ad515a532d69484176efa3f20fddceb2cb4",
+    "runtime": "sha256:36118671dd17ff5108cb7f16d279dbdaa329dfe3f3437ed94773b330cc5df84b",
+    "published": false,
+    "disposition": "Superseded for publication by the close-state repair; rebuild signed source before shipping."
+  },
+  "checks": {
+    "preflightContainerCases": 31,
+    "preflightContainerSmoke": "passed",
+    "preflightExactImageBrowserCases": 39,
+    "preflightActualProductionUpgradeRollbackCases": 1,
+    "repairUnitPassed": 1797,
+    "repairUnitExistingSkip": 1,
+    "repairFocusedUnitPassed": 20,
+    "repairAdapterPassed": 175,
+    "typecheck": "passed",
+    "lintChangedFiles": "passed",
+    "macDevelopment": "19 pre-existing cases pass; corrected new held-cleanup case passes separately",
+    "linuxDevelopment": "19 pre-existing cases pass in Linux ARM64; corrected new held-cleanup case passes separately",
+    "linuxOldStateControl": "fails at the exact held-cleanup assertion; repaired state passes",
+    "cryptoDomainsAndSites": "unchanged",
+    "manifestObligations": 860,
+    "unresolved": 319
+  },
+  "retainedFailures": [
+    "Hosted CI: stale two-tab entry fixture plus daily-unlock and unnamed-account waits failed; the latter two pass in local Mac and Linux runs. The early unlock form is a proven lifecycle defect, but those hosted failures have no retained page snapshot to prove one exclusive cause.",
+    "Unmodified two-tab fixture times out locally; explicit Check again retains its ownership and factor assertions.",
+    "New held-request unit case fails on the original owner state.",
+    "Initial new browser fixture looked for the locking title in role=status; actual title is a heading. Original and repaired failures are retained, the corrected heading case passes.",
+    "A Mac old-state control failed in earlier account setup (resume-setup) and is inconclusive; exit code alone does not establish mutation sensitivity. The later isolated Linux control reaches and fails the exact held-cleanup assertion.",
+    "Initial adapter run retains the newly stale second 2454-case expectation; corrected 2455 exact census retains every assertion and all 175 pass."
+  ],
+  "limits": [
+    "Linux container is ARM64; hosted GitHub runner is AMD64. Hosted CI must be rerun on the signed repair.",
+    "Preflight host browser services are Node 24 disposable services from the archive; container API checked separately.",
+    "No new actual-provider Firefox/Bitwarden walkthrough, new performance claim, generalized qualification, publication or deployment.",
+    "Source archive is retained in temporary scratch only. Frontend hashes identify unchanged extracted image files."
+  ],
+  "qualification": "paused",
+  "serviceStateTouched": false,
+  "infraBranch": "codex/done-ux-onboarding-58b1a12e",
+  "infraPublished": false,
+  "productionDeployed": false
+}

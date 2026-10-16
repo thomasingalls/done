@@ -4745,3 +4745,11 @@ The two §13.3 authority-map pins predate the signed recovery-progress isolation
 **Against:** repository development/evidence procedure and paused release-validation contract.
 
 **Decision.** Run the five new regression files through normal CI (unit discovery, explicit packaged browser selection and bounded application/gateway tests) while retaining required blocked manifest rows until their independent execution adapters are reviewed. Preserve every preceding obligation/deadline and every old test file. Review only the six changed crypto census source hashes; labels, sites, constructions and exclusions are unchanged. Fix the new auto-resume callback's hook dependency rather than suppressing React lint. Source pins and failure logs bind these local checks; final patch replay is a separate verification, and signing/publication remain later operations.
+
+## 2026-10-16 — A retired account coordinator cannot present an unlock form
+
+**Against:** SC-03/SC-08, the existing lock/drain lifecycle and the bounded publication procedure.
+
+**Decision.** Keep account setup in working/locking presentation from synchronous retirement through native cleanup. Only the successor coordinator may offer a code form. The former form belonged to an aborted owner and silently ignored input while its close promise was pending. Do not delay retirement, skip drainage, retain an unlock capability, or weaken factor verification to repair presentation. A held-request unit counterexample and a held native metadata-lock browser counterexample discriminate; the isolated Linux old-state control fails at the exact UI boundary.
+
+**Fixture and evidence bounds.** The competing setup tab uses the explicit Check again action before reclassification and still must enter the established factor. Retain every prior assertion, case and deadline. Add one unit and one browser case; update only the resulting exact denominator/source metadata. Hosted CI's other two timing failures are preserved; local Mac/Linux passes and the proven race do not by themselves establish their exclusive cause. Rerun hosted CI on the signed repair before publication. The earlier exact-image preflight artifact is superseded for publication and must be rebuilt from signed source. General qualification remains paused; no production change is made by this repair.

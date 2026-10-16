@@ -648,8 +648,10 @@ export function createFirstDeviceSetup(
     deviceEnrollment?.cancel();
     deviceEnrollment = undefined;
     retireEditors();
+    // This owner is retired immediately; only its successor may accept another code.
     state = {
-      kind: 'unlock',
+      kind: 'working',
+      message: 'Locking and finishing storage operations…',
       returning: saved?.connected === true,
       accountName: lastName ?? saved?.name,
       accountId: saved?.view?.stage === 'credential-confirmed' ? saved.view.accountId : undefined,

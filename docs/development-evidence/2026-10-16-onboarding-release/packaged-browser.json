@@ -1,0 +1,285 @@
+{
+  "stats": {
+    "startTime": "2026-10-16T09:29:35.211Z",
+    "duration": 207322.476,
+    "expected": 39,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "creating an account beside legacy database data explains the block before requesting any code",
+      "status": "passed",
+      "durationMs": 2889,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "creating an account beside legacy journal data explains the block before requesting any code",
+      "status": "passed",
+      "durationMs": 2381,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "new-account creation displays and confirms its own code before later cold unlock requires it",
+      "status": "passed",
+      "durationMs": 2687,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a nonexistent account-setup URL offers account selection without an unlock-code form",
+      "status": "passed",
+      "durationMs": 1387,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "direct sync entry returns an automatic Local list to protection without asking for an unissued code",
+      "status": "passed",
+      "durationMs": 2382,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "blocked Local bootstrap preserves its complete census with Local-only discovery",
+      "status": "passed",
+      "durationMs": 1013,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "blocked Local bootstrap preserves its complete census with account discovery",
+      "status": "passed",
+      "durationMs": 912,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a promoted Account can authenticate a public locator without ordinary Local hint-write permission",
+      "status": "passed",
+      "durationMs": 3948,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "legacy-only database removal reports a safe refusal with next steps, never unfinished erasure",
+      "status": "passed",
+      "durationMs": 1114,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "legacy-only journal removal reports a safe refusal with next steps, never unfinished erasure",
+      "status": "passed",
+      "durationMs": 908,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "an absent workspace does not claim removal started or offer Finish removal",
+      "status": "passed",
+      "durationMs": 1379,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "failed inspection offers a read retry without authorizing or starting erasure",
+      "status": "passed",
+      "durationMs": 953,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "failed content deletion retains the remaining carriers and automatically resumes on reopen",
+      "status": "passed",
+      "durationMs": 3134,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "failed journal deletion retains the remaining carriers and automatically resumes on reopen",
+      "status": "passed",
+      "durationMs": 3019,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a blocked native deletion reports the required tab closure and finishes without another button",
+      "status": "passed",
+      "durationMs": 1450,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "original and joined native custody preserve prior setup, interrupted progress and installed keys",
+      "status": "passed",
+      "durationMs": 17308,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "sync protection with a second retired Local tab preserves the factor across setup reload",
+      "status": "passed",
+      "durationMs": 5026,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "sync protection with a second reopened Local tab preserves the factor across setup reload",
+      "status": "passed",
+      "durationMs": 5699,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "extension response with missing native JSON method completes verified account setup and cold reopen",
+      "status": "passed",
+      "durationMs": 4665,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "extension response with throwing native JSON method completes verified account setup and cold reopen",
+      "status": "passed",
+      "durationMs": 4709,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "cancelled passkey setup retains offline Local access and the same resumable attempt",
+      "status": "passed",
+      "durationMs": 4915,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a failed online continuation accepts the correct code and offers Local access without another passkey",
+      "status": "passed",
+      "durationMs": 3819,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "an altered extension assertion is refused while the original protected Local writing stays accessible",
+      "status": "passed",
+      "durationMs": 3058,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a legacy session host receives both ways across restart without requesting unsupported history",
+      "status": "passed",
+      "durationMs": 17918,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a false capability hint and history outage cannot bypass cold retained history before ordinary receive",
+      "status": "passed",
+      "durationMs": 18638,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "an orphaned legacy recovery draft cannot block another protected Local setup or mislabel its accepted factor",
+      "status": "passed",
+      "durationMs": 7427,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a delayed registration reply cannot recreate removed setup",
+      "status": "passed",
+      "durationMs": 3384,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a delayed registration reply cannot recreate removed setup after Start fresh",
+      "status": "passed",
+      "durationMs": 4168,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "Account text undo spans received edits and journal-only offline reopening",
+      "status": "passed",
+      "durationMs": 22395,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "a sidebar update preserves both publishers and queued writing through offline activation",
+      "status": "passed",
+      "durationMs": 26654,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "unfinished registration resumes after an update with the original saved passkey proof",
+      "status": "passed",
+      "durationMs": 9449,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "first visit opens the full app and saves without credentials (desktop)",
+      "status": "passed",
+      "durationMs": 900,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "first visit opens the full app and saves without credentials (mobile)",
+      "status": "passed",
+      "durationMs": 849,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "protection is optional, retains the full list, and remains required on cold visits",
+      "status": "passed",
+      "durationMs": 1185,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "an account can be removed on a cold locked entry without service access or credentials, preserving its separate Local list",
+      "status": "passed",
+      "durationMs": 5257,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "sync adds required protection, preserves writing, and combines the final approval",
+      "status": "passed",
+      "durationMs": 3854,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "locked local data can be explicitly removed and startup waits for Start fresh",
+      "status": "passed",
+      "durationMs": 2133,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "protection retires another live tab and copies its acknowledged writing",
+      "status": "passed",
+      "durationMs": 1467,
+      "retry": 0,
+      "error": null
+    },
+    {
+      "title": "an interrupted protection transition resumes after reload with the saved code",
+      "status": "passed",
+      "durationMs": 1017,
+      "retry": 0,
+      "error": null
+    }
+  ]
+}

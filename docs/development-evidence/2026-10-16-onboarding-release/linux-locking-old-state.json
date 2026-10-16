@@ -1,0 +1,19 @@
+{
+  "stats": {
+    "startTime": "2026-10-16T09:47:03.041Z",
+    "duration": 15267.532,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "locking waits for native cleanup before exposing a live unlock form",
+      "status": "failed",
+      "durationMs": 12608,
+      "retry": 0,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Locking and finishing storage operations\u2026', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Locking and finishing storage operations\u2026', exact: true })\u001b[22m\n"
+    }
+  ]
+}

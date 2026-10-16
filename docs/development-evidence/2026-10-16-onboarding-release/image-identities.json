@@ -1,0 +1,28 @@
+{
+  "candidate": {
+    "Id": "sha256:6fe094ddf96121c454dc629f94738ad515a532d69484176efa3f20fddceb2cb4",
+    "RepoTags": [
+      "done-public:58b1a12e"
+    ],
+    "RepoDigests": [
+      "done-public@sha256:6fe094ddf96121c454dc629f94738ad515a532d69484176efa3f20fddceb2cb4"
+    ],
+    "Architecture": "arm64",
+    "Os": "linux",
+    "revision": "58b1a12e33513d2a5ca10b62f268c0a9412abf36",
+    "frontendFiles": 108
+  },
+  "rollback": {
+    "Id": "sha256:fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb",
+    "RepoTags": [
+      "ghcr.io/thomasingalls/done@sha256:fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb"
+    ],
+    "RepoDigests": [
+      "ghcr.io/thomasingalls/done@sha256:fa593e8a4501aa2c363347c21b7ed692a54c262cebd0dd131ea7602f28b143eb"
+    ],
+    "Architecture": "arm64",
+    "Os": "linux",
+    "revision": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+    "frontendFiles": 109
+  }
+}

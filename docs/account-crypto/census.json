@@ -561,7 +561,7 @@
     },
     {
       "path": "src/account/firstDeviceSetup.ts",
-      "sha256": "13432a9c7320f3a0ba2ae93e6ce1e8e44bb3aed9c8264dcc6514e8abaf1cbc96"
+      "sha256": "c6b6cf5606bf4062735a4f2b0c1aa5d23a909461f301024dae85ca82f53db960"
     },
     {
       "path": "src/account/generationWrap.ts",

@@ -9951,7 +9951,7 @@
         "config": "playwright.account-setup.config.ts",
         "packages": ["test:account-setup"]
       },
-      "declarations": 19,
+      "declarations": 20,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -10003,7 +10003,7 @@
           "test/firstDeviceSetupAccess.test.ts"
         ]
       },
-      "declarations": 3,
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -18045,7 +18045,7 @@
     },
     {
       "path": "test/first-device-setup/setup.spec.ts",
-      "sha256": "f5ab451ee19f7e029f33ec785f1294b0a472724a0214081f08c5e1b1a6875566"
+      "sha256": "9bda67997aab5c50f3fab7a4c7643a1058f84d191d243f469d110fc17c57502f"
     },
     {
       "path": "test/first-device-upgrade/checkpoint-stage.spec.ts",
@@ -18061,7 +18061,7 @@
     },
     {
       "path": "test/firstDeviceSetupAccess.test.ts",
-      "sha256": "915df9d019fd822a36ad438be01b1e27ddf7f0876738e8f8ec9813ef182e032d"
+      "sha256": "73a2b3ba507d21e66a6d7c37bacd3eb4c3065bb724cbff45a09711a5fc652247"
     },
     {
       "path": "test/freeze.test.ts",
@@ -18901,11 +18901,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "d4b9c65e6ab27336937d47bc228a388b1e2e3d11493816df9dc952c71a25e460"
+      "sha256": "fdbe27af1b3633002435aba20c5d496f395727ac574ba93f6aecc1c23a3b9684"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "f3737e3a3edb92a4e7e3a61b816455d186ad5f64a46aba9aa504693e02435faf"
+      "sha256": "bd67324a28a83d7bbe8bc77d520e8dcc2ebe5a865f84adbad5f55d520da964b1"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

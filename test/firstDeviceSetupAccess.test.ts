@@ -150,3 +150,43 @@ it('rechecks a live Local handoff when resuming an existing setup instead of ask
   expect(request).toHaveBeenCalledTimes(1);
   expect(resumed.getSnapshot()).toMatchObject({ kind: 'resume-setup' });
 });
+
+it('does not offer an unlock form from a retired owner while its outstanding operation drains', async () => {
+  const { code, owner } = await protectedSetup();
+  let rejectRequest!: (error: Error) => void;
+  const request = vi.fn(
+    () => new Promise<Response>((_resolve, reject) => (rejectRequest = reject)),
+  );
+  vi.stubGlobal('fetch', request);
+  const opening = owner.unlock(code);
+  await vi.waitFor(() => expect(request).toHaveBeenCalledTimes(1));
+  const notifications: string[] = [];
+  const unsubscribe = owner.subscribe(() => notifications.push(owner.getSnapshot().kind));
+  const closing = owner.close();
+  try {
+    expect(owner.getSnapshot().kind).not.toBe('unlock');
+    expect(notifications).not.toContain('unlock');
+    await owner.unlock(code);
+    expect(request).toHaveBeenCalledTimes(1);
+  } finally {
+    rejectRequest(new TypeError('The retired request has drained'));
+    await opening;
+    await closing;
+    unsubscribe();
+  }
+  expect(await listLocalWorkspaces('local', code)).toHaveLength(1);
+  const cold = createFirstDeviceSetup({
+    networkSessions: true,
+    pin: {
+      v: 1,
+      origin: location.origin,
+      rpId: 'setup.example',
+      serviceId: '01'.repeat(16),
+      authRoot: '02'.repeat(32),
+    },
+  });
+  owners.push(cold);
+  await cold.inspect();
+  expect(cold.getSnapshot()).toMatchObject({ kind: 'unlock' });
+  expect(request).toHaveBeenCalledTimes(1);
+});

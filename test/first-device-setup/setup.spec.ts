@@ -551,7 +551,9 @@ test('one tab owns setup across idle screens and releases it when closed', async
     'Account setup is open in another tab. Continue there or close it.',
   );
   await expect(second.getByRole('button', { name: 'Create passkey', exact: true })).toHaveCount(0);
+  await expect(second.getByLabel('Unlock code', { exact: true })).toHaveCount(0);
   await page.close();
+  await second.getByRole('button', { name: 'Check again', exact: true }).click();
   await reopen(second, code);
   await phase(second, 'passkey');
 });
@@ -1050,4 +1052,42 @@ test('legacy entry read failure keeps an explicit error instead of guessing a fr
     'Saved accounts and device connections could not be read. Reload to try again.',
   );
   await expect(page.locator('.shell')).toHaveCount(0);
+});
+
+test('locking waits for native cleanup before exposing a live unlock form', async ({ page }) => {
+  const { code } = await connectedAccount(page);
+  await page.getByLabel('Actor name', { exact: true }).fill('After drain');
+  await page.getByRole('button', { name: 'Save preferences' }).click();
+  await expect(page.getByText('Preferences saved.')).toBeVisible();
+  await page.evaluate(() => {
+    const host = window as typeof window & { releaseLockingProbe?: () => void };
+    return new Promise<void>((held) => {
+      void navigator.locks.request('done/setup-metadata/' + JSON.stringify('local'), async () => {
+        await new Promise<void>((release) => {
+          host.releaseLockingProbe = release;
+          held();
+        });
+      });
+    });
+  });
+  try {
+    await page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await expect(
+      page.getByRole('heading', { name: 'Locking and finishing storage operations…', exact: true }),
+    ).toBeVisible();
+    await expect(page.getByLabel('Unlock code', { exact: true })).toHaveCount(0);
+    await expect(page.locator('.cm-editor')).toHaveCount(0);
+  } finally {
+    await page.evaluate(() => {
+      const host = window as typeof window & { releaseLockingProbe?: () => void };
+      host.releaseLockingProbe?.();
+      delete host.releaseLockingProbe;
+    });
+  }
+  await expect(page.getByRole('heading', { name: 'Unlock After drain’s account' })).toBeVisible();
+  await reopen(page, code);
+  await expect(page.locator('.shell')).toBeVisible();
+  await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
+    'Writing from before account setup',
+  );
 });

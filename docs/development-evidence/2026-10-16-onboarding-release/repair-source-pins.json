@@ -1,0 +1,10 @@
+{
+  "src/account/firstDeviceSetup.ts": "c6b6cf5606bf4062735a4f2b0c1aa5d23a909461f301024dae85ca82f53db960",
+  "test/firstDeviceSetupAccess.test.ts": "73a2b3ba507d21e66a6d7c37bacd3eb4c3065bb724cbff45a09711a5fc652247",
+  "test/first-device-setup/setup.spec.ts": "9bda67997aab5c50f3fab7a4c7643a1058f84d191d243f469d110fc17c57502f",
+  "test/release-validation/general-tests.test.mjs": "fdbe27af1b3633002435aba20c5d496f395727ac574ba93f6aecc1c23a3b9684",
+  "test/release-validation/generated-tests.test.mjs": "bd67324a28a83d7bbe8bc77d520e8dcc2ebe5a865f84adbad5f55d520da964b1",
+  "docs/account-crypto/census.json": "d723b832b6c4c54388839b75f82b0eb7b3900e27de5e0263e6ffa2882a6c9b6b",
+  "docs/release-validation-graph.json": "98c11dfd3fb08aaf63d49e0c6631cf06c012dd61d23459a4e0809cfb6bc4b122",
+  "docs/release-validation-manifest.json": "8d7214e27368d37e2301e05f7be584b691652bfc170826eceb866db19e601bb8"
+}

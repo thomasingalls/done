@@ -1,0 +1,19 @@
+{
+  "stats": {
+    "startTime": "2026-10-16T09:46:50.864Z",
+    "duration": 11218.353,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "locking waits for native cleanup before exposing a live unlock form",
+      "status": "passed",
+      "durationMs": 8191,
+      "retry": 0,
+      "error": null
+    }
+  ]
+}
