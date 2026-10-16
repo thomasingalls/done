@@ -24,6 +24,11 @@ import type { AccountNotifications } from './notifications.ts';
 import { AuthorizationRefused } from './authorization.ts';
 import { createSessionHandler } from './session-http.ts';
 import { ScopedRequestBudget } from './requestBudget.ts';
+import {
+  INBOUND_BATCH_COUNT,
+  INBOUND_BATCH_REQUEST_LIMIT,
+} from '../account-protocol/inboundBatch.ts';
+import { readInboundBatch } from './inboundBatch.ts';
 
 export function createScopedAccountHandler(
   core: AccountCore,
@@ -138,6 +143,7 @@ export function createScopedAccountHandler(
       '/account/delivery/submit',
       {
         limit: SUBMIT_BODY_LIMIT,
+        cost: 1,
         run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
           authority.decideSubmission(core, decodeSubmit(v), authorization),
       },
@@ -146,6 +152,7 @@ export function createScopedAccountHandler(
       '/account/delivery/read',
       {
         limit: READ_REQUEST_LIMIT,
+        cost: 1,
         run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
           authority.readAccepted(core, v, authorization),
       },
@@ -154,8 +161,18 @@ export function createScopedAccountHandler(
       '/account/delivery/read-v2',
       {
         limit: READ_REQUEST_LIMIT,
+        cost: 1,
         run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
           authority.readInbound(core, v, authorization),
+      },
+    ],
+    [
+      '/account/delivery/read-v2-batch',
+      {
+        limit: INBOUND_BATCH_REQUEST_LIMIT,
+        cost: INBOUND_BATCH_COUNT,
+        run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
+          readInboundBatch(v, (request) => authority.readInbound(core, request, authorization)),
       },
     ],
   ]);
@@ -213,8 +230,18 @@ export function createScopedAccountHandler(
       return void authFailure(
         budget.invalid() ? (isGrant ? 'access-required' : 'grant-required') : 'capacity',
       );
-    const release = budget.acquire(sessionKey);
-    if (!release) return void authFailure('capacity');
+    const reservations: (() => void)[] = [];
+    for (let i = 0; i < (binary?.cost ?? 1); i++) {
+      const reservation = budget.acquire(sessionKey);
+      if (!reservation) {
+        for (const release of reservations) release();
+        return void authFailure('capacity');
+      }
+      reservations.push(reservation);
+    }
+    const release = () => {
+      for (const reservation of reservations) reservation();
+    };
     const timer = setTimeout(() => {
       response.destroy();
       request.destroy();

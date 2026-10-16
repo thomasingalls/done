@@ -68,6 +68,9 @@ jobs:
       - name: Check packaged application routing and gateway boundaries
         run: node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs
 
+      - name: Check authenticated enrollment read batching and existing transport boundaries
+        run: node --test --test-concurrency=1 --test-timeout=30000 test/account-sessions/inbound-batch.test.mjs test/account-sessions/scoped-http.test.mjs test/account-history/source.test.mjs test/account-membership/handoff.test.mjs
+
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
 

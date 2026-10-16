@@ -1,0 +1,13 @@
+# Bounded signed-read transport groups
+
+2026-10-16. This phase supplies the optional server route and framing, with client activation in phase 3. Intermediate patch states are not release candidates. The authoritative contract is the optional batching amendment in [account-receive-transport.md](../../../account-receive-transport.md); the prospective design and its later review amendment are retained here as history.
+
+A group contains 1–4 unchanged signed one-position requests, executed sequentially by the original domain owner and its transaction-time authorization. Every inner page keeps its original signature and request binding. The unsigned length framing is only a carrier. No ciphertext or accepted position is authorized by the outer group. The response exposes no partial pages on a refused subread, and may return a nonempty prefix at the aggregate 10 MiB or cooperative 250 ms completed-work bound. Remaining positions require fresh requests. The hard HTTP deadline remains ten seconds; the cooperative bound does not preempt cryptography already running.
+
+The route conservatively reserves four units of the existing session/process budget, including inflight slots, even if the group is shorter. It increases no rate, concurrency or size limit. Single-read and private-development-bearer handlers retain their existing behavior.
+
+Nine new directed Node cases check independent framing bytes, all truncations/counts/lengths, purpose separation/detachment, sequential processing and erasure, refusal/size-prefix handling, slow-work prefix, genuine signed HTTP pages, missing/revoked/wrong-account/reader authority, revocation between subreads, and unchanged budget exhaustion/isolation. Together with existing scoped-HTTP, history-source and handoff cases, **26 cases pass**. Sixteen existing scoped-client cases also pass. Initial HTTP runs were blocked by sandbox listen permission and are retained separately; they are not application failures.
+
+The two carrier tags are classified and registered as a new **open** construction. All 78 specified constructions and previous statuses remain; open obligations rise from 13 to 14. The shifted existing genesis-key source site is location-only in phase 3. Directed tests are not full byte/vector/authority-map qualification. Existing release blocks remain.
+
+No production or preview update, persistent format/key/factor change, publication or generalized qualification occurs. The new route is compatible with existing clients because they continue using the original route. The next phase activates the optional route only for additional-device accepted-prefix replay and checks older-server fallback, exact page verification and browser recovery.

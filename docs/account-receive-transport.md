@@ -73,3 +73,40 @@ crash/cold retry, generated histories and effective source omissions. This phase
 second-device enrollment, restore safety, general membership, lineage advancement, backlog scale or real
 Account readiness. The review gates recorded in `progress.md` remain open. Next is bounded reconnect
 scheduling, followed by explicit composition with outbound v9 delivery.
+
+## Optional enrollment-history transport grouping (2026-10-16)
+
+`POST /account/delivery/read-v2-batch` carries one through four **unchanged** signed v2
+one-position requests under the existing workspace grant. It grants no new read action. Each
+inner read runs sequentially through the same `readInbound` owner, including its request signature,
+current scope, authority and transaction-time authorization. Revocation or a refused subread returns
+its existing refusal without exposing a partial group. Existing request-budget units are reserved
+conservatively for four reads, including their inflight slots; process/session ceilings, replenishment
+rates and the HTTP ten-second deadline stay unchanged. This route is available only with the scoped
+session handler; the private development-bearer route is unchanged.
+
+The closed binary request is ASCII `done/private-read-batch/v1` followed by a NUL byte, a big-endian
+uint32 count, then count repetitions of a big-endian uint32 byte length and the exact signed request
+bytes. Count is 1–4, each request is 1–4,096 bytes, and no trailing bytes are allowed. The response uses
+ASCII `done/private-read-pages/v1` followed by NUL and the same count/length framing around the exact
+signed v2 pages. Page bodies together are at most the existing 10 MiB page limit, plus the fixed
+framing overhead. A size- or work-limited response may contain a nonempty prefix of the requested pages;
+remaining positions require fresh requests. After 250 ms of completed read work, the service returns
+that prefix without starting another subread. This is a cooperative work bound, not preemption of
+a running cryptographic read; the original ten-second HTTP deadline still applies. The tags and
+framing are not signed authority.
+
+The enrollment snapshot source binds each returned page to its own captured request by array index
+and invokes the original `verifyInboundPage` in order. One-position bounds, nonce/request binding,
+request expiry, page/acceptance/publisher signatures, certified reader and publisher, generation and
+historical route, prefix links and monotone observations, exact accepted cuts, actor/schema checks,
+4096-event/64 MiB replay limits, lifetime guards and buffer erasure remain. A missing, reordered,
+substituted or invalid inner page supplies no checkpoint and releases no content key. No persistent
+verification cache, schema change or additional remembered factor is introduced.
+
+Only a 404 from the optional route selects the original single-read transport. Its first exact
+request is sent on the original route and still fully verified; later reads mint fresh requests.
+The unsupported hint lasts only for that unlocked coordinator. Authorization, integrity, size,
+timeout and other failures never authorize this fallback. Old clients continue using the original
+route on new servers. Initial use is confined to additional-device replacement-snapshot replay;
+ordinary receiving and other history-source callers retain their existing transport.

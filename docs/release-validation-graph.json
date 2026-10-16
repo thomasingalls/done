@@ -11,12 +11,12 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 502,
-    "requiredTestFiles": 496,
+    "testFiles": 503,
+    "requiredTestFiles": 497,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
-    "constructions": 96,
+    "constructions": 97,
     "vectorChainConsumers": 18
   },
   "packageDispositions": {
@@ -8659,6 +8659,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-sessions/inbound-batch.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-batch.test.mjs"
+        ]
+      },
+      "declarations": 9,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-sessions/notifications.test.mjs",
       "status": "required",
       "invocation": {
@@ -14856,6 +14871,19 @@
       ],
       "vectorFile": null,
       "vectorCases": []
+    },
+    {
+      "id": "transport-read-batching",
+      "status": "open",
+      "tests": ["test/account-sessions/inbound-batch.test.mjs"],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "vectorFile": null,
+      "vectorCases": []
     }
   ],
   "inputs": [
@@ -14865,7 +14893,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "2d6916aad4bfb29a25c641b0d5e1891f2ae906745cc5aab79e797179176e002d"
+      "sha256": "db1fade242052b1c98a6ba860e7ecf317d49b4c9940b6f43793bbbf94c8f4902"
     },
     {
       "path": "package.json",
@@ -16653,7 +16681,7 @@
     },
     {
       "path": "test/account-first-authority/registry.test.mjs",
-      "sha256": "ba0b40e564a15211f29fb49ae24852c7bb9edeb24dcde309445e1231f32a26e1"
+      "sha256": "0a61099cc1ccea3ae17aa16a88874200e7fac818cfb29c586150eb88dc94518a"
     },
     {
       "path": "test/account-genesis/browser.ts",
@@ -17582,6 +17610,10 @@
     {
       "path": "test/account-sessions/http.test.mjs",
       "sha256": "7eaf931326a2383acbbfc9d2ef19e4df68dd7db6f07e80e7c0afa6db42df0cc1"
+    },
+    {
+      "path": "test/account-sessions/inbound-batch.test.mjs",
+      "sha256": "0c5c43d7f12b1ac31fbd87ccafabcab72e73ce4e9df4ef2072e1ec013fbfc66a"
     },
     {
       "path": "test/account-sessions/notifications.test.mjs",
@@ -18981,7 +19013,7 @@
     },
     {
       "path": "test/release-validation/onboarding-gates.test.mjs",
-      "sha256": "783489694e9d8eefa3149bdb79234769dc8f2cb6112be622c54c1d37164b5f14"
+      "sha256": "9ccaf2e2a42a461ac33af8b1093e1c65b4bcfc6b6b50a63e62b50a02145874c4"
     },
     {
       "path": "test/release-validation/owned-startup.test.mjs",

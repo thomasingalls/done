@@ -7371,6 +7371,54 @@
       ],
       "blocker": "Runtime domains were absent from the historical source inventory. Focused product tests do not establish complete published-vector and authority-map qualification.",
       "next": "Specify automatic AAD/claim/transition bytes and native interruption/profile qualification separately from protected custody; retain no-remint, no-downgrade and no-automatic-sync controls."
+    },
+    {
+      "id": "transport-read-batching",
+      "phase": "Enrollment",
+      "status": "open",
+      "roles": [
+        "carrier",
+        "predicate"
+      ],
+      "signer": null,
+      "labels": [
+        "done/private-read-batch/v1\u0000",
+        "done/private-read-pages/v1\u0000"
+      ],
+      "sourceSites": [
+        {
+          "path": "account-protocol/inboundBatch.ts",
+          "line": 6,
+          "label": "done/private-read-batch/v1\u0000",
+          "kind": "literal"
+        },
+        {
+          "path": "account-protocol/inboundBatch.ts",
+          "line": 7,
+          "label": "done/private-read-pages/v1\u0000",
+          "kind": "literal"
+        }
+      ],
+      "entryPoints": [
+        {
+          "path": "account-service/inboundBatch.ts",
+          "name": "readInboundBatch"
+        }
+      ],
+      "homePins": [],
+      "mapEntries": [],
+      "vectorCases": [],
+      "tests": [
+        "test/account-sessions/inbound-batch.test.mjs"
+      ],
+      "requirements": [
+        "exact-byte-contracts",
+        "independent-runtime-bytes",
+        "authority-map-resolution",
+        "native-lifecycle-qualification"
+      ],
+      "blocker": "The optional unsigned batch carrier retains existing signed per-page authority. Directed byte/authentication/browser regressions do not establish generalized transport or native lifecycle qualification.",
+      "next": "Publish independent framing vectors and authority-map chains for every optional batch/fallback branch; qualify interruption, capacity, response size and mixed-version operation without changing inner v2 checks."
     }
   ],
   "additionalCorpora": [

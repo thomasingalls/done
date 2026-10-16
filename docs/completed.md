@@ -15100,3 +15100,11 @@ The current workspace stays cumulative and unstaged; HEAD remains a6fa2298. No s
 **Exit.** Two disposable additional-device journeys identify history-dependent round trips: 24 separately synced Goals bursts add exactly 24 approver history reads (5 → 29). With an imposed 75 ms reply delay, the button operation increases from 2,854 ms to 6,330 ms while sampled non-idle client CPU over the wider continuation stays near 1.1 seconds. The traced source independently replays authenticated accepted writing before releasing the replacement snapshot/key. [Prospective protocol, profiles and limitations](./performance-experiments/2026-10-16-device-approval/01-attribution/README.md).
 
 **Notes.** These are descriptive desktop Chromium/virtual-passkey observations on different accounts, not a paired speedup estimate or a diagnosis of the user's phone. No check, factor, schema, deadline, production data or release block changes in this phase. Implementation must preserve complete accepted-source evidence, durable approval/install checks, exact retry/expiry and mixed-version behavior. The original Firefox account disappearance remains unresolved.
+
+### Device approval latency — bounded optional server transport
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential overlay on phase 1 · **Stage:** bounded performance phase 2
+
+**Exit.** Added an optional scoped binary route for up to four exact signed v2 reads. Sequential existing domain calls retain transaction-time authorization and every inner signature; aggregate page bytes stay within 10 MiB. Conservatively reserve existing budget units, retain the ten-second HTTP deadline and stop starting further reads after 250 ms of completed work. Nine new directed cases and 17 existing scoped-HTTP/history/handoff cases pass; 16 existing scoped-client cases pass. [Contract, controls and retained failures](./performance-experiments/2026-10-16-device-approval/02-transport/README.md).
+
+**Notes.** Framing supplies no authority or persistent format change. Existing clients continue using the original route; phase 3 owns client activation and browser evidence. All 78 specified construction contracts remain; the new carrier is open, so the unfinished count is 14 rather than 13. General qualification remains paused. No commit, push, preview update or deployment for this performance phase.

@@ -92,6 +92,10 @@
       "sha256": "4796129211591f7aa03afd5509b48073243b70de648743ba36388d4cb4d81bba"
     },
     {
+      "path": "account-protocol/inboundBatch.ts",
+      "sha256": "32becf116d8c1ace6ccc917024f677fd507a1fd315b43024092b717befe388df"
+    },
+    {
       "path": "account-protocol/inboundTransport.ts",
       "sha256": "60e67b703bd788444b574e739ee115b5428b7e96c5b0f8a9dc9c3dded8ed2969"
     },
@@ -304,6 +308,10 @@
       "sha256": "2f7b8f42fffd0615459b8f2016e075fe63db3e666b10c36e924b489faaccd3e4"
     },
     {
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "b9e893a56cb4d774afd5be9ab053ce7a25d8d27980ab4e7c31d6c510e13b7cde"
+    },
+    {
       "path": "account-service/keyEncoding.ts",
       "sha256": "c226cbea9e72e38e9059541fbf17b8263cd6710daae4501f86986ae347303b4e"
     },
@@ -441,7 +449,7 @@
     },
     {
       "path": "account-service/scoped-http.ts",
-      "sha256": "f6b606eed422a6c136693bb482e8e5e7880139a4bef5c6356931340204ce6a33"
+      "sha256": "459eb7d43e7bf9dcb166b783c7c89eb3c74230c0b7b9912753e3111fe68a4c16"
     },
     {
       "path": "account-service/service-lifetime.ts",
@@ -3196,6 +3204,16 @@
       ]
     },
     {
+      "label": "done/private-read-batch/v1\u0000",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/inboundBatch.ts",
+          "line": 6
+        }
+      ]
+    },
+    {
       "label": "done/private-read-page/v1",
       "kind": "literal",
       "sites": [
@@ -3220,6 +3238,16 @@
         {
           "path": "account-protocol/inboundTransport.ts",
           "line": 136
+        }
+      ]
+    },
+    {
+      "label": "done/private-read-pages/v1\u0000",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "account-protocol/inboundBatch.ts",
+          "line": 7
         }
       ]
     },
