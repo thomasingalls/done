@@ -1,0 +1,6 @@
+{
+  "serverRestartAndRefresh": "completed for original browser",
+  "storage": "Every database/store digest and localStorage digest unchanged across the new-document hard refresh",
+  "extraOfflineUnlock": "failed after offline was enabled before asynchronous app bootstrap had reached its unlock UI; account was still listed and the code form rendered",
+  "cause": "Unresolved; could be early availability/old-controller behavior. Not evidence of data deletion. Preserve result; standard upgrade test stays online through adoption and verifies offline only after whole-browser reopen on the installed current worker."
+}

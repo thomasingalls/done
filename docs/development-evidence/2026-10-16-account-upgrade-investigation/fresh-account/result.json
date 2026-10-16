@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "accountKind": "fresh-account",
+  "previous": "890fc6770cfdfff164dbda43c2f8040a1998a8dc",
+  "current": "faf465f7255f2df8c5c2f0fac6c8d74e2e2450c2",
+  "fullBackendAndGatewayRestart": true,
+  "retainedServiceIdentity": true,
+  "browsers": "Two independent Chromium processes with distinct persistent profile directories and established CDP virtual passkeys",
+  "scopes": "Original and invitation-joined accounts; both-way writing before/after; ciphertext retention across hard refresh; service-worker adoption and whole-process reopening offline",
+  "snapshotCount": 20,
+  "eventCount": 1299,
+  "productionTouched": false
+}

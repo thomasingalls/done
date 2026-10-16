@@ -1,0 +1,21 @@
+{
+  "scope": "All direct computer-use calls and their recorded tool responses in this chat session; no production browser or saved data inspected",
+  "calls": 0,
+  "productionReferences": [],
+  "hostsInAllArguments": [],
+  "hostsInAllResponses": [],
+  "possibleDestructiveControlMatches": [],
+  "recordedOriginScopedRemoval": {
+    "navigationCall": "call_f1dc3445e6dd42518c0a6402cb7cac32",
+    "confirmationCall": "call_64cad8b58a70408cb70d264ff1173329",
+    "date": "2026-10-15",
+    "origin": "https://mbp.tail0e0d4.ts.net:8445",
+    "path": "/remove/local",
+    "browserWindow": "Firefox Developer Edition \u2014 Private Browsing",
+    "result": "Removed from this device"
+  },
+  "limitations": [
+    "A record audit cannot prove absence of unrecorded browser/user behavior or filesystem/storage failures.",
+    "Numeric UI-control matches are candidates checked against prior recorded snapshots, not independently reconstructed UI state."
+  ]
+}

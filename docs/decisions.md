@@ -4776,3 +4776,10 @@ The two §13.3 authority-map pins predate the signed recovery-progress isolation
 ## 2026-10-16 — Preserve qualification blocks while integrating the empty-placeholder repairs
 
 **Decision.** Normal CI executes the two new unit files and packaged browser regression. Review their independent case census, retain the old tests/deadlines, and refresh only the affected source identities and exact fixture counts. Preserve every preceding obligation; the new browser file stays required but blocked from aggregate credit until its execution adapter is reviewed. Firefox/Chromium disposable checks are evidence for the bounded startup behavior, not a new platform/provider or release-qualification claim. Publication remains separately authorized and is not performed here.
+
+
+## 2026-10-16 — A preserved Chromium upgrade is not a resolution of Firefox account disappearance
+
+**Decision.** Investigate the recorded testing actions separately from application upgrade behavior. Audit original call/response identities and origins without opening production browser storage. Reproduce the actual previous and deployed release sources/frontends with a full backend/gateway restart, retained service identity and independent persistent browser profiles. Establish old-worker control before the baseline and await the new document when comparing refresh-boundary storage. Use the existing virtual-authenticator convention without changing application cryptography or storage owners. Archive the operational probe as evidence text, outside ordinary discovery and aggregate qualification credit.
+
+**Bounds.** Passing fresh-account and promoted-Local Chromium histories narrows the disappearance hypothesis; it does not disprove the reported normal-Firefox failure or earlier account histories. Retain incomplete attempts and the unresolved early-bootstrap offline-unlock failure alongside the passing result. Distinguish online navigation followed by offline unlocking from entirely offline launch, and descriptor digests from exported CryptoKey material. The prior repair series stays immutable; no production change follows from this investigation.

@@ -1,0 +1,7 @@
+{
+  "source": "retained local Playwright error-context.md",
+  "matchingLines": [
+    "- alert: Could not unlock this workspace. Check your device-lock code and try again."
+  ],
+  "scope": "Only the disposable test UI error; full UI snapshot omitted to avoid copying generated factors."
+}

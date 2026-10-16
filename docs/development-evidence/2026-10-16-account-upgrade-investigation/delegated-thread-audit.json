@@ -1,0 +1,50 @@
+{
+  "scope": "All five recorded delegated threads linked from this conversation",
+  "threads": [
+    {
+      "name": "inspect_live_unit_ci",
+      "threadId": "01a14407-1768-7bd1-819c-1cdff060adb8",
+      "allReturned": true,
+      "turns": 1,
+      "commands": 8,
+      "computerUseCalls": 0,
+      "profileAccessCommandCandidates": 0
+    },
+    {
+      "name": "security_preflight",
+      "threadId": "01a13c5f-a5f1-7331-a120-a8c430dab480",
+      "allReturned": true,
+      "turns": 1,
+      "commands": 2,
+      "computerUseCalls": 0,
+      "profileAccessCommandCandidates": 0
+    },
+    {
+      "name": "security_architecture",
+      "threadId": "01a13c60-9256-7bd2-926b-75c524736121",
+      "allReturned": true,
+      "turns": 2,
+      "commands": 23,
+      "computerUseCalls": 0,
+      "profileAccessCommandCandidates": 0
+    },
+    {
+      "name": "security_storage",
+      "threadId": "01a13c63-600b-7363-be29-78fa67ce511c",
+      "allReturned": true,
+      "turns": 1,
+      "commands": 40,
+      "computerUseCalls": 0,
+      "profileAccessCommandCandidates": 0
+    },
+    {
+      "name": "security_account",
+      "threadId": "01a13c63-81d9-77b1-941e-157399266ffd",
+      "allReturned": true,
+      "turns": 1,
+      "commands": 65,
+      "computerUseCalls": 0,
+      "profileAccessCommandCandidates": 0
+    }
+  ]
+}

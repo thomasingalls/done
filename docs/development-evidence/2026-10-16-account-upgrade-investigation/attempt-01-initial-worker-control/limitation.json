@@ -1,0 +1,5 @@
+{
+  "reachedUpgrade": false,
+  "reason": "Old worker activated but initial page was not controlled. Require old-version cold navigation and factor unlock before establishing the upgrade baseline.",
+  "evidenceRetained": true
+}

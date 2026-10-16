@@ -1,0 +1,9 @@
+
+Running 2 tests using 1 worker
+
+(node:96732) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/incident-full-upgrade.spec.ts:186:1 › previous server and persistent browser installations retain fresh-account through restart and app-adopting refresh (25.3s)
+  ✓  2 test/packaged-account/incident-full-upgrade.spec.ts:186:1 › previous server and persistent browser installations retain promoted-local through restart and app-adopting refresh (22.7s)
+
+  2 passed (48.4s)
