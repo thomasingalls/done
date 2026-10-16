@@ -1,0 +1,41 @@
+import {test,expect} from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/index.mjs';
+import {pairedEditors,credentials} from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/devices';
+import {pending,compared,unlock} from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/device-enrollment/helpers';
+import {startService,stopService} from '/Users/thomasingalls/.codex/worktrees/7fda/done/test/packaged-account/server';
+import {writeFileSync,mkdirSync} from 'node:fs';
+const root='/private/tmp/done-enrollment-speed-a18d5d1c';
+for(const bursts of [0,24])test('attribute approval after '+bursts+' delivered bursts',async({page,browser},info)=>{
+ const output=root+'/attribution-'+bursts;mkdirSync(output,{recursive:true});
+ const service=await startService(output+'/service',process.env.PERF_DIST??'/Users/thomasingalls/.codex/worktrees/7fda/done/dist',true,true);
+ let pair:any;const extra=await browser.newContext(),third=await extra.newPage();
+ const events:any[]=[],starts=new Map<any,number>();let measured=false,t0=0;
+ const watch=(p:any,device:string)=>{
+ p.on('request',(r:any)=>{const path=new URL(r.url()).pathname;if(path.startsWith('/account/')||path.startsWith('/__account-setup/'))starts.set(r,Date.now());});
+ p.on('requestfinished',async(r:any)=>{const start=starts.get(r);if(start===undefined||!measured)return;const response=await r.response();events.push({device,path:new URL(r.url()).pathname,status:response?.status(),ms:Date.now()-start,at:Date.now()-t0});});
+ p.on('requestfailed',(r:any)=>{if(measured)events.push({device,path:new URL(r.url()).pathname,failed:true,at:Date.now()-t0});});
+ };
+ try{
+ pair=await pairedEditors(page,browser,true);
+ const goals=page.locator('.goals .cm-content'),otherGoals=pair.second.locator('.goals .cm-content');await goals.click();await page.keyboard.press('ControlOrMeta+End');
+ let expected='';
+ for(let i=0;i<bursts;i++){const text=' delivered approval history '+i+';';expected+=text;await page.keyboard.insertText(text);await expect(otherGoals).toHaveText(expected,{timeout:20000});if(i%8===0)console.log('delivered bursts',i+1);}
+ await pair.second.getByRole('button',{name:'Devices',exact:true}).click();
+ await pair.second.getByRole('button',{name:'Connect another device',exact:true}).click();await unlock(pair.second,pair.next.code);
+ const link=await pair.second.getByLabel('Device invitation link').inputValue();
+ expect(JSON.parse(atob(new URL(link).searchParams.get('invitation')!)).v).toBe(2);
+ const next=await pending(third,link,pair.next.auth);const code=await compared(pair.second,third);
+ watch(pair.second,'approver');watch(third,'candidate');
+ await pair.second.route('**/account/delivery/read-v2',async(route:any)=>{const response=await route.fetch();await new Promise(r=>setTimeout(r,75));await route.fulfill({response});});
+ const cdp=await pair.second.context().newCDPSession(pair.second);await cdp.send('Profiler.enable');await cdp.send('Profiler.start');
+ await pair.second.evaluate(()=>{(window as any).__approvalTrace=[];let previous=false;new MutationObserver(()=>{const busy=Array.from(document.querySelectorAll('[role=status]')).some(e=>e.textContent?.includes('Saving and checking this step'));if(busy!==previous){(window as any).__approvalTrace.push({busy,at:performance.now()});previous=busy;}}).observe(document.body,{subtree:true,childList:true,characterData:true});});
+ await pair.second.getByLabel('Code on the new device').fill(code);t0=Date.now();measured=true;
+ await pair.second.getByRole('button',{name:'Compare and approve',exact:true}).click();
+ await expect(pair.second.getByText('Saving and checking this step…',{exact:true})).toHaveCount(0,{timeout:120000});const foregroundMs=Date.now()-t0;
+ await expect(pair.second.getByText('The device is connected.',{exact:false})).toBeVisible({timeout:120000});
+ await expect(third.getByRole('button',{name:'Open your writing',exact:true})).toBeVisible({timeout:120000});
+ const certifiedMs=Date.now()-t0;const trace=await pair.second.evaluate(()=>(window as any).__approvalTrace);const profile=await cdp.send('Profiler.stop');
+ writeFileSync(output+'/cpu.cpuprofile',JSON.stringify(profile.profile));writeFileSync(output+'/result.json',JSON.stringify({bursts,foregroundMs,certifiedMs,replyDelayMs:75,events,trace},null,2));
+ console.log(JSON.stringify({bursts,foregroundMs,certifiedMs,reads:events.filter(e=>e.path==='/account/delivery/read-v2').length}));
+ await third.getByRole('button',{name:'Open your writing',exact:true}).click();await expect(third.locator('.shell')).toContainText('Keep the first device writing',{timeout:30000});if(expected)await expect(third.locator('.goals .cm-content')).toHaveText(expected);
+ }finally{writeFileSync(output+'/events.json',JSON.stringify(events,null,2));await extra.close();await pair?.other.close();await stopService(service);}
+});
