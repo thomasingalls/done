@@ -1,0 +1,9 @@
+# Phase 13 — Native and primitive control machinery
+
+Parent overlay: `2fcf76fda20197ef91d3c9354a1f84b16c2b739f`. No production changes.
+
+Unique current anchors repair wrong-route capture, the first store-key derivation, unlock metadata authentication, successor installation cut, metadata count, credential-export cleanup and prior-MAC comparison. Existing real wrong-workspace, independent bytes, signed-prefix/cut, temporary-buffer disposal, cold reopen and exact storage assertions remain. All eight capture cases pass in the retained broader run (that run still fails the then-stale custody load); the final fourteen-case native custody/store/successor run passes. All fourteen primitive cases pass after repairing the additional anchors revealed by that population.
+
+The credential format policy now has both export and prepared-input guards. The test proves removing only the export guard still refuses, then explicitly removes both format checks for the bounded format-policy control; correspondence, AEAD and cleanup stay real. Boxed-state parsing remains a counterexample for the coercing parser, while the current exact primitive equality correctly refuses boxed state too. The old equality expectation is updated to that stricter behavior and primitive self-equality remains checked. No tests or deadlines removed.
+
+The unchanged Local-genesis selected three-case run detects its intended controls under a fresh owned functional browser, but the full seventeen-case baseline passes and its subsequent controls time out. That full failure is retained and H4 remains open for a separate machinery phase; the selected pass does not erase it. The stock aggregate entry correctly rejects external dependency symlinks in this checkout. No guard is weakened, no qualification credit granted. The functional-only owner source and reports are retained. Lint, diff and inventory pass; planning remains blocked at 854/313. No signing, commits, publication or preview update.

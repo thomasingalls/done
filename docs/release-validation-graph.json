@@ -16181,7 +16181,7 @@
     },
     {
       "path": "test/account-capture/fixtures.mjs",
-      "sha256": "04a1597e91df7379b71e75578207e81ba434ff292270f7d468f26bf838f6eb9d"
+      "sha256": "670eb2d1cc7f65172c76614c962e3d24e3540b65b88f926860db5560d22d2530"
     },
     {
       "path": "test/account-capture/native.test.mjs",
@@ -16749,7 +16749,7 @@
     },
     {
       "path": "test/account-local-custody/formats.test.mjs",
-      "sha256": "957576247be80992c87332b6cd9245822fddfa434da4b8f57903ff3f03f31705"
+      "sha256": "ff31fe9995288b032143ad559973a11dbaeaf2bc2961fa89327d452ea35c9aba"
     },
     {
       "path": "test/account-local-custody/native-browser.ts",
@@ -16765,7 +16765,7 @@
     },
     {
       "path": "test/account-local-custody/runtime.mjs",
-      "sha256": "eddec440dafec8d9bc198f46375058b4463badec3ae116e4bc560ab2dd21209f"
+      "sha256": "7ee9df94195825e72c731e767331218faac46d60e5608fd37def09e9d9ed22d0"
     },
     {
       "path": "test/account-local-provenance/browser.ts",
@@ -17529,7 +17529,7 @@
     },
     {
       "path": "test/account-store-contract/runtime.mjs",
-      "sha256": "d23776882a89bc1e397642dea0af1fa08909588d2ef9f1ae0170a59064b091d3"
+      "sha256": "59cde61ba2abee7541a56451655425fd98ce6a1bf11e8e2994b6060e40976b96"
     },
     {
       "path": "test/account-successor/client-browser.ts",
@@ -17601,7 +17601,7 @@
     },
     {
       "path": "test/account-successor/owner-fixtures.mjs",
-      "sha256": "6115508f803c7f5c669fbf9df18c017cbde8762a3a6dfb959dff8a0de20667d4"
+      "sha256": "91029946fbe9937b5302990924f16229832f0dcc05f91083c9f33ba777632680"
     },
     {
       "path": "test/account-successor/owner.test.mjs",
