@@ -14981,3 +14981,7 @@ The fresh Node 24 full run's only two failures occur in teardown after early-ref
 ## 2026-10-16 — Patch-series phase 18: unit worker budget
 
 The configured two-file unit budget passes the full population sequentially on pinned Node 24 and local Node 26: 151 files, 1,779 passes and the same one existing named skip. Independent full-report comparison proves all 1,780 case identities/statuses match the phase-17 default-policy run. No case, deadline, file selection or within-case concurrency changes. Fresh default runs also pass; earlier timeouts remain, so this is a resource policy rather than a claimed deterministic failure repair or benchmark. Lint/format/inventory pass, planning stays 855/314 blocked and qualification paused. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/18-unit-worker-budget/README.md). No production runtime changes, commits/publication or preview update.
+
+## 2026-10-16 — Patch-series phase 19: exact final census
+
+The full 175-case normal-CI adapter run exposes only two stale 2,453-case expectations after phase 08's independently identified additional HTTP-size boundary case. Updating those exact values/title to 2,454 passes all seventeen affected tests, retaining 276 stages and every assertion, skip and release block. No production changes; planning remains 855/314 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/19-final-census-expectations/README.md). No commits/publication or qualification.
