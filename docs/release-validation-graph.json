@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 499,
-    "requiredTestFiles": 493,
+    "testFiles": 502,
+    "requiredTestFiles": 496,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -9900,6 +9900,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/devicePreparation.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/devicePreparation.test.ts"]
+      },
+      "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/diagnostics.test.ts",
       "status": "required",
       "invocation": {
@@ -9912,6 +9922,21 @@
           "form": "fc.property"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/emptyLegacyDatabase.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/emptyLegacyDatabase.test.ts"
+        ]
+      },
+      "declarations": 9,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -11010,6 +11035,17 @@
         "packages": ["test:packaged-account"]
       },
       "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/empty-legacy-startup.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 4,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -15849,7 +15885,7 @@
     },
     {
       "path": "scripts/release-validation/general-tests.json",
-      "sha256": "9f1452ff32bbe3cdf2680117efbc71af425f8a0bb316d589042cbf239b163494"
+      "sha256": "fceca6a52ed328e9e9501460a93c5fcccdd27b0f7e46a3a30d3a5629b2cc0758"
     },
     {
       "path": "scripts/release-validation/general-tests.mjs",
@@ -18024,12 +18060,20 @@
       "sha256": "9a96a3c36d5b3d3d06c04b59fffce9caef0cb551d40e2a9c8725702d5c177899"
     },
     {
+      "path": "test/devicePreparation.test.ts",
+      "sha256": "c2e8499ab1d936860b1878a2ae0ba72b72d39dbee374a29448e3339bd1796b4d"
+    },
+    {
       "path": "test/diagnostics.test.ts",
       "sha256": "164ff0bfda6c7e0e50234d479c0e175bb97df689323de8f0d75d107ab710f487"
     },
     {
       "path": "test/editor-admission/browser.mjs",
       "sha256": "28240b448b695bb33bc4d0d0c2c1428a11b192e41d182c51a2e03f7f39ba18c7"
+    },
+    {
+      "path": "test/emptyLegacyDatabase.test.ts",
+      "sha256": "c56bffa00961fb92a5e1159322c83ae884af36004e6b97a8c88e4eb213e79d24"
     },
     {
       "path": "test/enrollmentStates.test.ts",
@@ -18624,6 +18668,10 @@
       "sha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77"
     },
     {
+      "path": "test/packaged-account/empty-legacy-startup.spec.ts",
+      "sha256": "d568f231b7c69b0d04031d57a1de9ab9caf0d05371575886751dac0253ac78b0"
+    },
+    {
       "path": "test/packaged-account/enrollment-open.spec.ts",
       "sha256": "fb67a85386eb7bc0fa5cdae6ba618344bb3634725c8816beadc737edb657423c"
     },
@@ -18901,11 +18949,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "fdbe27af1b3633002435aba20c5d496f395727ac574ba93f6aecc1c23a3b9684"
+      "sha256": "0576d472c200511e3708d1799fd5946b8d733068a099e1f0a11ec04bc033c90a"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "bd67324a28a83d7bbe8bc77d520e8dcc2ebe5a865f84adbad5f55d520da964b1"
+      "sha256": "9eb7a610816583d41598427b51a57230947f0f01f27a52556a22b51c85a6b6f0"
     },
     {
       "path": "test/release-validation/identity.test.mjs",

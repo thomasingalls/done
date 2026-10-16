@@ -529,7 +529,7 @@
     },
     {
       "path": "src/account/deviceEnrollment.ts",
-      "sha256": "c64032acb75978f1722127fa0d13a2c00164357fdb4de245c8748b964bbf96fc"
+      "sha256": "512b8199766374f93518e8669a3b95def86dab8db6731d0aba97362c0bba90f6"
     },
     {
       "path": "src/account/deviceRemoval.ts",
@@ -1109,7 +1109,7 @@
     },
     {
       "path": "src/crdt/localGenesisStorage.ts",
-      "sha256": "964dedafff546ea3e38f68c5d308d25e721cd90b058b0a4e1527563e444a3eb4"
+      "sha256": "2e2d76497283adc16a42f24e851d795c35bcdf9bfce930a6be33749d115da402"
     },
     {
       "path": "src/crdt/localProtection.ts",

@@ -4771,3 +4771,8 @@ The two §13.3 authority-map pins predate the signed recovery-progress isolation
 ## 2026-10-16 — Connection preparation reports its actual startup refusal
 
 **Decision.** Keep the startup kind/reason when device preparation refuses and describe that state. Only a factor-bearing or resumable creation reports a saved device setup. A migration or unreadable store is not evidence of a saved attempt; cancellation, removal and compatibility also retain their actual requirements. The error authorizes no code generation, route replacement, repair, erasure or bypass. Fresh preparation and verified enrollment authority remain unchanged.
+
+
+## 2026-10-16 — Preserve qualification blocks while integrating the empty-placeholder repairs
+
+**Decision.** Normal CI executes the two new unit files and packaged browser regression. Review their independent case census, retain the old tests/deadlines, and refresh only the affected source identities and exact fixture counts. Preserve every preceding obligation; the new browser file stays required but blocked from aggregate credit until its execution adapter is reviewed. Firefox/Chromium disposable checks are evidence for the bounded startup behavior, not a new platform/provider or release-qualification claim. Publication remains separately authorized and is not performed here.

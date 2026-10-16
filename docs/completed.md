@@ -15075,3 +15075,12 @@ The current workspace stays cumulative and unstaged; HEAD remains a6fa2298. No s
 **Exit.** Connection preparation preserves startup kind/reason and no longer calls every refusal a saved attempt. Fifteen new presentation cases pass; fourteen fail on the former catch-all. All 31 selected cases and typecheck pass, retaining saved route/factor requirements and issuing no code/hint on refusal. [Evidence](./development-evidence/2026-10-16-empty-legacy-startup/02-connection-refusals/README.md).
 
 **Notes.** Native browser composition/normal-CI integration remain phase 3. No enrollment protocol or storage authority changes, signed commit or deployment. Original desktop disappearance and general qualification remain unresolved/separate.
+
+
+### Empty-placeholder startup — native composition and normal-CI integration
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential overlay on phases 1–2 · **Stage:** bounded production-defect repair, phase 3
+
+**Exit.** Six new packaged cases pass on both Firefox and Chromium, including retained Local writing, protected cold unlock, connection preparation and preservation/refusal of real legacy bytes/journals/unknown versions. Two Firefox counterexamples fail on the unchanged deployed frontend. Thirteen preceding browser regressions and 44 inventory/adapter/registry checks pass, with typecheck, build/budget, changed-file lint/format and source snapshots. Normal CI includes the new cases; the exact general denominator rises by 26. [Evidence](./development-evidence/2026-10-16-empty-legacy-startup/03-browser-and-integration/README.md).
+
+**Notes.** All 860 preceding obligations and deadlines remain; the manifest has 863 obligations/320 unresolved and still refuses aggregate release selection. Planning drift and the failed first review-helper assumption are preserved. Apply all three overlays in order; no intermediate snapshot is a release candidate. The older deferred formatting patch remains untouched. No signing, push, preview update or deployment; general qualification remains paused. The earlier missing desktop connection and the source of the empty legacy placeholder remain unresolved.
