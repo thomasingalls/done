@@ -1,0 +1,87 @@
+{
+  "source": "<test-checkout>/test/release-validation/playwright-native.test.mjs",
+  "sourceSha256": "daa8326634bce206f330c13f677185ecdad18c221b59c1f264c5b89cb77ed5dd",
+  "method": "Verbatim existing fixture constructor; same 15-second stage limit; first stage observed outside node:test. Cleanup deferred only until its result/log copy, then original cleanup runs. Existing tests stay unchanged. Diagnostic exit does not mean the observed stage passed.",
+  "status": "failed",
+  "result": {
+    "code": 1,
+    "signal": null,
+    "reason": "AssertionError [ERR_ASSERTION]: Nonzero or missing exit\n\n1 !== 0\n",
+    "groupDrained": true,
+    "drainStarted": false,
+    "uncertainProbes": 0,
+    "browser": {
+      "executable": "<playwright-cache>/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+      "binaryIdentity": "f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b",
+      "argv": [
+        "--headless",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-background-networking",
+        "--disable-component-update",
+        "--disable-component-extensions-with-background-pages",
+        "--disable-extensions",
+        "--disable-sync",
+        "--disable-breakpad",
+        "--disable-crash-reporter",
+        "--disable-crashpad-for-testing",
+        "--metrics-recording-only",
+        "--password-store=basic",
+        "--use-mock-keychain",
+        "--remote-debugging-address=127.0.0.1",
+        "--remote-debugging-port=0",
+        "--user-data-dir=/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser-profile",
+        "about:blank"
+      ],
+      "pid": 75608,
+      "profile": "/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser-profile",
+      "groupDrained": true,
+      "endpoint": "ws://127.0.0.1:61711/devtools/browser/e8065422-fbf3-4a5b-8830-faa39ab7a564",
+      "readyMs": 424,
+      "exit": 0,
+      "signal": null,
+      "elapsedMs": 1519
+    },
+    "elapsedMs": 1520,
+    "artifacts": [
+      {
+        "path": "output.log",
+        "sha256": "c83c54c28a2885bd53cae5b95bcf8ccc21d0a74ebfc8404c6bb9035d05116d09"
+      },
+      {
+        "path": "ownership.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "browser.json",
+        "sha256": "502091d3c70e2843b5db5fa650b8da6a6f6d9838cb6be793bb7ab0f73323d321"
+      },
+      {
+        "path": "browser.log",
+        "sha256": "d5a89f255d191c01e13948e3de3b817460c227f91526bd419c38e4042c14c303"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser.json",
+      "text": "{\n  \"executable\": \"<playwright-cache>/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\",\n  \"binaryIdentity\": \"f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b\",\n  \"argv\": [\n    \"--headless\",\n    \"--no-first-run\",\n    \"--no-default-browser-check\",\n    \"--disable-background-networking\",\n    \"--disable-component-update\",\n    \"--disable-component-extensions-with-background-pages\",\n    \"--disable-extensions\",\n    \"--disable-sync\",\n    \"--disable-breakpad\",\n    \"--disable-crash-reporter\",\n    \"--disable-crashpad-for-testing\",\n    \"--metrics-recording-only\",\n    \"--password-store=basic\",\n    \"--use-mock-keychain\",\n    \"--remote-debugging-address=127.0.0.1\",\n    \"--remote-debugging-port=0\",\n    \"--user-data-dir=/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser-profile\",\n    \"about:blank\"\n  ],\n  \"pid\": 75608,\n  \"profile\": \"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser-profile\",\n  \"groupDrained\": true,\n  \"endpoint\": \"ws://127.0.0.1:61711/devtools/browser/e8065422-fbf3-4a5b-8830-faa39ab7a564\",\n  \"readyMs\": 424,\n  \"exit\": 0,\n  \"signal\": null,\n  \"elapsedMs\": 1519\n}\n"
+    },
+    {
+      "path": "2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser.log",
+      "text": "\nDevTools listening on ws://127.0.0.1:61711/devtools/browser/e8065422-fbf3-4a5b-8830-faa39ab7a564\n[75608:140089672:1015/121533.432985:ERROR:content/browser/gpu/gpu_process_host.cc:1035] GPU process exited unexpectedly: exit_code=15\n[75608:140089672:1015/121533.530162:ERROR:chrome/browser/component_updater/optimization_guide_on_device_model_installer.cc:666] Failed to update on-device model component with error 5\n[75632:140089977:1015/121533.574626:ERROR:base/apple/mach_port_rendezvous_mac.cc:256] bootstrap_look_up com.google.chrome.for.testing.MachPortRendezvousServer.1: Unknown service name (1102)\n[75632:140089977:1015/121533.574959:ERROR:base/memory/shared_memory_switch.cc:261] No rendezvous client, terminating process (parent died?)\n"
+    },
+    {
+      "path": "2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/output.log",
+      "text": "node:internal/modules/esm/resolve:241\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/private/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/scripts/release-validation/vitest-dispositions.mjs' imported from /private/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/scripts/release-validation/vitest-census.mjs\n    at finalizeResolution (node:internal/modules/esm/resolve:241:11)\n    at moduleResolve (node:internal/modules/esm/resolve:846:10)\n    at defaultResolve (node:internal/modules/esm/resolve:973:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)\n    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)\n    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)\n    at #resolve (node:internal/modules/esm/loader:690:17)\n    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)\n    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)\n    at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {\n  code: 'ERR_MODULE_NOT_FOUND',\n  url: 'file:///private/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/scripts/release-validation/vitest-dispositions.mjs'\n}\n\nNode.js v26.11.1\n"
+    },
+    {
+      "path": "2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/ownership.jsonl",
+      "text": ""
+    },
+    {
+      "path": "2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/receipt.json",
+      "text": "{\"artifacts\":[{\"path\":\"output.log\",\"sha256\":\"c83c54c28a2885bd53cae5b95bcf8ccc21d0a74ebfc8404c6bb9035d05116d09\"},{\"path\":\"ownership.jsonl\",\"sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"},{\"path\":\"browser.json\",\"sha256\":\"502091d3c70e2843b5db5fa650b8da6a6f6d9838cb6be793bb7ab0f73323d321\"},{\"path\":\"browser.log\",\"sha256\":\"d5a89f255d191c01e13948e3de3b817460c227f91526bd419c38e4042c14c303\"}],\"contract\":{\"argv\":[\"node\",\"scripts/release-validation/playwright-driver.mjs\",\"test/local-app/startup.spec.ts\"],\"deadlineMs\":15000,\"env\":{},\"expect\":{\"cases\":[{\"id\":\"test/local-app/startup.spec.ts::[\\\"\\\",\\\"one\\\"]\",\"outcome\":\"pass\"},{\"id\":\"test/local-app/startup.spec.ts::[\\\"\\\",\\\"two\\\"]\",\"outcome\":\"pass\"}],\"files\":[\"test/local-app/startup.spec.ts\"],\"kind\":\"playwright\",\"projects\":[\"\"]},\"fixture\":{\"kind\":\"chromium-cdp\",\"startupMs\":15000},\"graceMs\":1000,\"maxLogBytes\":4194304,\"maxReportBytes\":1048576,\"processPolicy\":\"inherited-group-v1\",\"variant\":\"playwright-owned-file-v1\"},\"environment\":{\"CI\":\"1\",\"HOME\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/home\",\"LANG\":\"C.UTF-8\",\"NODE_OPTIONS\":\"--import=/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/scripts/release-validation/process-guard.mjs\",\"PATH\":\"/opt/homebrew/Cellar/node/26.11.1_1/bin:/usr/bin:/bin\",\"RELEASE_ADMISSION_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/admission\",\"RELEASE_BROWSER_ENDPOINT\":\"ws://127.0.0.1:61711/devtools/browser/e8065422-fbf3-4a5b-8830-faa39ab7a564\",\"RELEASE_BROWSER_EXECUTABLE\":\"<playwright-cache>/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\",\"RELEASE_CASE_REPORT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/cases.json\",\"RELEASE_CONTENT_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/content\",\"RELEASE_CONTENT_TRIM_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/content-trim\",\"RELEASE_CUSTODY_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/custody\",\"RELEASE_EDITOR_ADMISSION_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/editor-admission\",\"RELEASE_GUARD_VIOLATIONS\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/ownership.jsonl\",\"RELEASE_JOURNAL_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/journal\",\"RELEASE_LOCAL_CLEAR_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/local-clear\",\"RELEASE_LOCAL_GENESIS_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/local-genesis\",\"RELEASE_OWNED_STARTUP_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/owned-startup\",\"RELEASE_PROCESS_GUARD\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/scripts/release-validation/process-guard.mjs\",\"RELEASE_RUN_NONCE\":\"7a8470d1-8c74-4c26-9c32-c26a37eb64fa\",\"RELEASE_WORKSPACE_ADMISSION_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/workspace-admission\",\"RELEASE_WRITE_SESSION_OUTPUT\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/test-results/release-worker/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/write-session\",\"TMPDIR\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/tmp\",\"TZ\":\"UTC\"},\"input\":\"6fa385699c3f8b9ad3f15ccbaab9012b1c50ab556b581c5ab9cad914cb7e62d5\",\"key\":\"2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d\",\"nonce\":\"7a8470d1-8c74-4c26-9c32-c26a37eb64fa\",\"owner\":\"dae987b2-2e49-43f3-a14f-e7aa0583f3b7\",\"prerequisites\":[],\"result\":{\"artifacts\":[{\"path\":\"output.log\",\"sha256\":\"c83c54c28a2885bd53cae5b95bcf8ccc21d0a74ebfc8404c6bb9035d05116d09\"},{\"path\":\"ownership.jsonl\",\"sha256\":\"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"},{\"path\":\"browser.json\",\"sha256\":\"502091d3c70e2843b5db5fa650b8da6a6f6d9838cb6be793bb7ab0f73323d321\"},{\"path\":\"browser.log\",\"sha256\":\"d5a89f255d191c01e13948e3de3b817460c227f91526bd419c38e4042c14c303\"}],\"browser\":{\"argv\":[\"--headless\",\"--no-first-run\",\"--no-default-browser-check\",\"--disable-background-networking\",\"--disable-component-update\",\"--disable-component-extensions-with-background-pages\",\"--disable-extensions\",\"--disable-sync\",\"--disable-breakpad\",\"--disable-crash-reporter\",\"--disable-crashpad-for-testing\",\"--metrics-recording-only\",\"--password-store=basic\",\"--use-mock-keychain\",\"--remote-debugging-address=127.0.0.1\",\"--remote-debugging-port=0\",\"--user-data-dir=/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser-profile\",\"about:blank\"],\"binaryIdentity\":\"f73a99d53ebc5434105991dfbaaa074abaf7fb592caefc52be2ac08356d4022b\",\"elapsedMs\":1519,\"endpoint\":\"ws://127.0.0.1:61711/devtools/browser/e8065422-fbf3-4a5b-8830-faa39ab7a564\",\"executable\":\"<playwright-cache>/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing\",\"exit\":0,\"groupDrained\":true,\"pid\":75608,\"profile\":\"/var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/done-playwright-control-SL3FdW/reports/2baf0a06b811905587a080c66d719714159b8c4a209e58c593c86496c7e1547d/browser-profile\",\"readyMs\":424,\"signal\":null},\"code\":1,\"drainStarted\":false,\"elapsedMs\":1520,\"groupDrained\":true,\"reason\":\"AssertionError [ERR_ASSERTION]: Nonzero or missing exit\\n\\n1 !== 0\\n\",\"signal\":null,\"uncertainProbes\":0},\"resultDigest\":\"2d0c60757d15be5bd44282080b3c1093768899e3080e9775483a9fdae5d03a31\",\"schema\":1,\"stageId\":\"test:test/local-app/startup.spec.ts\",\"status\":\"failed\"}\n"
+    }
+  ]
+}

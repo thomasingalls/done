@@ -2,6 +2,7 @@
 import assert from 'node:assert/strict';
 import { parseSync } from '@babel/core';
 import { registrationData, tableTitle } from './registration-data.mjs';
+import { namedVitestDispositions, vitestDisposition } from './vitest-dispositions.mjs';
 
 export const vitestCaseId = (path, names) => path + '::' + JSON.stringify(names);
 export function vitestCensus(path, text, options = {}) {
@@ -69,7 +70,30 @@ export function vitestDeclarations(path, text, { root } = {}) {
       const call = n.type === 'ExpressionStatement' ? n.expression : null;
       if (call?.type !== 'CallExpression') continue;
       let callee = call.callee,
-        values;
+        values,
+        skipped = false;
+      if (
+        callee.type === 'CallExpression' &&
+        callee.callee.type === 'MemberExpression' &&
+        !callee.callee.computed &&
+        callee.callee.property.name === 'skipIf' &&
+        aliases.get(callee.callee.object.name) === 'test'
+      ) {
+        const condition = callee.arguments[0];
+        assert(
+          path === 'test/workspaceAdmission.test.ts' &&
+            callee.arguments.length === 1 &&
+            condition?.type === 'BinaryExpression' &&
+            condition.operator === '===' &&
+            condition.left.type === 'Identifier' &&
+            condition.left.name === 'preparation' &&
+            condition.right.type === 'StringLiteral' &&
+            condition.right.value === 'account-text',
+          'Unreviewed Vitest conditional skip: ' + path,
+        );
+        skipped = data.value(condition.left, env) === 'account-text';
+        callee = callee.callee.object;
+      }
       if (
         callee.type === 'CallExpression' &&
         callee.callee.type === 'MemberExpression' &&
@@ -125,7 +149,14 @@ export function vitestDeclarations(path, text, { root } = {}) {
           statements(fn.body.body, full, inner, depth + 1);
         } else {
           assert(cases.length < 10000, 'Registration case limit');
-          cases.push({ id: vitestCaseId(path, full), outcome: 'pass' });
+          const id = vitestCaseId(path, full),
+            disposition = vitestDisposition(id);
+          assert.equal(
+            skipped,
+            disposition.outcome === 'not-applicable',
+            'Unreviewed Vitest skip disposition',
+          );
+          cases.push({ ...disposition });
         }
       }
     }
@@ -146,6 +177,11 @@ export function vitestDeclarations(path, text, { root } = {}) {
     }
   };
   visit(ast);
+  for (const named of namedVitestDispositions.filter((c) => c.id.startsWith(path + '::')))
+    assert(
+      cases.some((c) => c.id === named.id),
+      'Missing named Vitest disposition',
+    );
   assert(
     cases.length && new Set(cases.map((c) => c.id)).size === cases.length,
     'Empty or duplicate Vitest census: ' + path,

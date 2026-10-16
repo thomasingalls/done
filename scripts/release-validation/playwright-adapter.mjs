@@ -105,27 +105,53 @@ export const upgradePriorDisposition = {
 };
 export const namedBrowserDispositions = [
   upgradePriorDisposition,
+  ...['done', 'next', 'scheduled'].flatMap((section) => {
+    const named = (project, title, reason) => ({
+      id: playwrightCaseId('test/geometry/reorder.spec.ts', project, [
+        section + ' card reordering',
+        title,
+      ]),
+      outcome: 'not-applicable',
+      reason,
+    });
+    return [
+      named(
+        'android',
+        'a mouse drag on the grip reorders cards',
+        'The mouse grip is the desktop activation path.',
+      ),
+      named(
+        'desktop',
+        'a touch long-press then drag reorders cards',
+        'Long-press activation is exercised in the Android project.',
+      ),
+      named(
+        'desktop',
+        'a stationary touch long-press still unlocks Done',
+        'The touch unlock path is exercised in the Android project.',
+      ),
+      named(
+        'desktop',
+        'movement before the hold remains day navigation',
+        'The touch arbitration path is exercised in the Android project.',
+      ),
+      ...(section === 'done'
+        ? []
+        : [
+            named(
+              'android',
+              'a stationary touch long-press still unlocks Done',
+              'Only Done has the guarded unlock path; the Done case exercises it.',
+            ),
+            named(
+              'android',
+              'movement before the hold remains day navigation',
+              'Shared gesture arbitration is covered by the Done case.',
+            ),
+          ]),
+    ];
+  }),
   ...[
-    {
-      id: 'test/geometry/reorder.spec.ts::["android","Done-card reordering","a mouse drag on the grip reorders cards"]',
-      outcome: 'not-applicable',
-      reason: 'The mouse grip is the desktop activation path.',
-    },
-    {
-      id: 'test/geometry/reorder.spec.ts::["desktop","Done-card reordering","a touch long-press then drag reorders cards"]',
-      outcome: 'not-applicable',
-      reason: 'Long-press activation is exercised in the Android project.',
-    },
-    {
-      id: 'test/geometry/reorder.spec.ts::["desktop","Done-card reordering","a stationary touch long-press still unlocks Done"]',
-      outcome: 'not-applicable',
-      reason: 'Long-press activation is exercised in the Android project.',
-    },
-    {
-      id: 'test/geometry/reorder.spec.ts::["desktop","Done-card reordering","movement before the hold remains day navigation"]',
-      outcome: 'not-applicable',
-      reason: 'The touch arbitration path is exercised in the Android project.',
-    },
     {
       id: 'test/geometry/wheel.spec.ts::["android","desktop wheel navigation","an arbitrarily large wheel moves exactly one day"]',
       outcome: 'not-applicable',

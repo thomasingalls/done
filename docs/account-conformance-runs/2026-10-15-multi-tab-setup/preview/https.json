@@ -1,0 +1,25 @@
+{
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "observedAt": "2026-10-15T14:07:45.690Z",
+  "certificateVerification": "Node HTTPS default verification enabled",
+  "configSha256": "dface6756553bf846a4d9de34ce05877a06a28f96b5381e4e3c7b3f44d7864e0",
+  "servedFiles": [
+    {
+      "path": "assets/AccountSetupApp-BklTor6w.js",
+      "sha256": "ee09db21c7e06715fef154575d83da4418168d604da5ede6269d03ef710e1bb4"
+    },
+    {
+      "path": "assets/main-DcrfqL13.js",
+      "sha256": "143cebf86d8a5859b531963b5e335a44c35bd3084dbab9effc0e26046d1486f6"
+    },
+    {
+      "path": "index.html",
+      "sha256": "4df209a18f82f8786b09d6df5f4a0c957ac51edf81145b92c01e8042e281c528"
+    },
+    {
+      "path": "sw.js",
+      "sha256": "96f4fe4d0812860945e411c713bcc11d48a79315f09915305c2978ec216cbf90"
+    }
+  ],
+  "allMatched": true
+}

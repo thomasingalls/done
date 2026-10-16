@@ -1182,6 +1182,9 @@ async function openAccountReceiveOwner(
   // Network waits never hold the local writer tail. The request captures actual slot authority;
   // its evidence re-enters the admission FIFO and checks that authority again before persistence.
   let historyDue = 0;
+  // Capability hints select optional work only before this owner has needed history.
+  // Authenticated retained history and later epochs cannot be downgraded by that hint.
+  let historyRequired = false;
   const fetchHistory = () =>
     runNetworkTask(async (network) => {
       if (!access || account.detached || !canReceive() || Date.now() < historyDue) return null;
@@ -1190,6 +1193,18 @@ async function openAccountReceiveOwner(
         stamp.check();
         const current = await state(task, owner, route);
         if (describe(current).state === 'conflict') throw Error('Inbound stream is conflicted');
+        const continuation =
+          typeof options.membershipContinuation === 'function'
+            ? options.membershipContinuation()
+            : options.membershipContinuation;
+        historyRequired ||= Boolean(
+          continuation ||
+          current.installedHistory ||
+          (inheritedHistoryHash && inheritedHistoryHash !== EMPTY_HISTORY_CHECKPOINT) ||
+          base.authority.tip > 3 ||
+          base.generation > 1,
+        );
+        if (!historyRequired) return null;
         const authority = checkpointAuthority(base);
         const request = parseHistoryExchange({
           v: 1,
@@ -1221,6 +1236,7 @@ async function openAccountReceiveOwner(
           installed: current.installedHistory,
         };
       });
+      if (!prepared) return null;
       const exchange = createHistoryTransport(
         prepared.authority,
         access,
@@ -2518,6 +2534,7 @@ async function openAccountReceiveOwner(
   };
   return {
     access,
+    deviceId: base.reader.id,
     devices: Object.freeze({
       detached: account.detached,
       get transition() {
@@ -2722,6 +2739,7 @@ async function openReceivingWorkspace(
   const {
     access,
     devices,
+    deviceId,
     publisherCount,
     completedRead,
     isSelfRequest,
@@ -2775,6 +2793,7 @@ async function openReceivingWorkspace(
         ),
       {
         identity: options.identity,
+        deviceLabelId: deviceId,
         captureSources: true,
         suppressEmptySources: true,
         validateReceive: () => {

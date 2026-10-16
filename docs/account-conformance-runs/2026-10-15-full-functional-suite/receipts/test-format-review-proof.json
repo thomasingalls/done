@@ -1,0 +1,16 @@
+{
+  "catalogs": [
+    "scripts/admission/catalog.mjs",
+    "scripts/content-trim/catalog.mjs",
+    "scripts/content/catalog.mjs",
+    "scripts/custody/catalog.mjs"
+  ],
+  "assertion": "All catalogue exported values remain deeply equal, including every exact mutation from/to string. Recovery-entry Babel ASTs, including types, are identical after removing source-position and presentation metadata.",
+  "priorAttempts": [
+    "TypeScript 7 package does not expose the old scanner API.",
+    "Raw-token comparison detected only the formatter-removal of an optional trailing comma in a TypeScript method signature; AST equality is checked instead."
+  ],
+  "applied": false,
+  "humanDecision": "Leave old formatting alone; retain proposed patch without applying it.",
+  "recordedAt": "2026-10-15T12:12:11.650Z"
+}

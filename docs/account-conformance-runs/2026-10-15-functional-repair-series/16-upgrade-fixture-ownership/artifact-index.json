@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "e193406ddace835fda20a870d1629c1333fd8fa3",
+  "artifacts": {
+    "README.md": {
+      "sha256": "433d9b4a0828735305ae66776eeb2f61faf6438b062afad7924d1749cfb36d19",
+      "bytes": 1787
+    },
+    "logs/diff-check.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "e8717d6920aad9319f62ca5e141123708f24785031aee36e83fcbcfae23a017a",
+      "bytes": 240
+    },
+    "logs/lint.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/listener-regressions.log.gz": {
+      "sha256": "79d9ccda83ce182f73e24c7724e01d4a1c303c2736d39b3f52d2b542b7229688",
+      "bytes": 230
+    },
+    "logs/packet-repair.log.gz": {
+      "sha256": "50fa1542af453d40ab338c5210860a712c9551af23e81ea1d4610d9aaff8274f",
+      "bytes": 191
+    },
+    "logs/plan.log.gz": {
+      "sha256": "4f8c8a76ae7ab1aeab14a2444ce13fca6855fa5f5389f0109d9b77c1f5b36320",
+      "bytes": 225
+    },
+    "logs/planning.log.gz": {
+      "sha256": "10a10547d4e3d4bda66522974721237128ed109cb67977ec620ec0fd550bb4b8",
+      "bytes": 849
+    },
+    "logs/upgrades-full.log.gz": {
+      "sha256": "eb8bdd36057452e83edefd239d38390f78a624c884f133f04907f0f9e2df90bd",
+      "bytes": 3050
+    },
+    "receipts/build-scope.json.gz": {
+      "sha256": "4ac0f3bbc91ad3f0c72203dd0b2982e6b9398f7a8e106aa8e7584e7f2cbbf2da",
+      "bytes": 138
+    },
+    "receipts/diff-check.json.gz": {
+      "sha256": "3b6571b73aa4f27e6f5b4e5b03a7cae619afad4ef2cb5b672c7ab6519108e688",
+      "bytes": 111
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "b3846d1a0d38ed403f87b16d8b5b643101a6a72abbf0afc155df753eb74d02e3",
+      "bytes": 141
+    },
+    "receipts/lint.json.gz": {
+      "sha256": "14a1cb8dc0caf05bdbc7d0cb56d6e211746c357d5dc2b2171d10186ca0365ba0",
+      "bytes": 203
+    },
+    "receipts/listener-regressions.json.gz": {
+      "sha256": "7e4427fbf1800d1ed54bacdadebed8b051b113f3e073a8a768c3116a6b29242e",
+      "bytes": 161
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "91409def13ed62b1dfb0f737813ebc6d3a712cf013b1df892937b016d6812ca0",
+      "bytes": 138
+    },
+    "receipts/planning.json.gz": {
+      "sha256": "03be11465e8d5dac3d2f5c16037110abaedc4a33965a9fb35b2de4c993757cfc",
+      "bytes": 170
+    },
+    "receipts/upgrades-browser-results.json.gz": {
+      "sha256": "3f0eb092d081bd0dcca4ba17a8aac28978b8706346552c02d849d73754d17cfc",
+      "bytes": 1924
+    },
+    "receipts/upgrades-full.json.gz": {
+      "sha256": "118abbbb0cfc6edd30e4ed9fa78f795702df76a2d17d3c1e69e0581e54adf68a",
+      "bytes": 127
+    },
+    "source-pins.json.gz": {
+      "sha256": "82510b584a8f7d4dec455169b739d39ec0fd6227bfeffecc4b08ce002b5caf72",
+      "bytes": 74249
+    }
+  }
+}

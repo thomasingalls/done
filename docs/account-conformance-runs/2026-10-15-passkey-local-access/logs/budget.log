@@ -1,0 +1,28 @@
+index.html
+     5.3 kB  /assets/DeviceDataRemoval-ClFDgyJ7.js
+    25.1 kB  /assets/admissionHistory-CmN8dEdO.js
+    30.7 kB  /assets/contentCompaction-DCc9XCnl.js
+     1.8 kB  /assets/custodyCrypto-C44ppXTm.js
+    29.7 kB  /assets/deviceDataRemoval-NCvWO9v1.js
+     8.3 kB  /assets/deviceRemovalVault-DXJX3iCN.js
+     4.4 kB  /assets/historyCheckpoint-DjjS0kaE.js
+     1.3 kB  /assets/localBaselineAnchor-BtdxFya0.js
+    15.6 kB  /assets/localBaselineRecord-Do1FyGws.js
+   102.7 kB  /assets/main-BcisTHrj.js
+     4.5 kB  /assets/verifiedRecords-jlxxl0rJ.js
+initial JS, gzipped: 229.5 kB of 350.0 kB budget
+local.html
+     5.3 kB  /assets/DeviceDataRemoval-ClFDgyJ7.js
+    25.1 kB  /assets/admissionHistory-CmN8dEdO.js
+    30.7 kB  /assets/contentCompaction-DCc9XCnl.js
+     1.8 kB  /assets/custodyCrypto-C44ppXTm.js
+    29.7 kB  /assets/deviceDataRemoval-NCvWO9v1.js
+     8.3 kB  /assets/deviceRemovalVault-DXJX3iCN.js
+     4.4 kB  /assets/historyCheckpoint-DjjS0kaE.js
+     1.3 kB  /assets/localBaselineAnchor-BtdxFya0.js
+    15.6 kB  /assets/localBaselineRecord-Do1FyGws.js
+   102.7 kB  /assets/main-BcisTHrj.js
+     4.5 kB  /assets/verifiedRecords-jlxxl0rJ.js
+initial JS, gzipped: 229.5 kB of 350.0 kB budget
+     6.9 kB  (css, informational — the budget is on JS)
+fatal: not a git repository (or any of the parent directories): .git

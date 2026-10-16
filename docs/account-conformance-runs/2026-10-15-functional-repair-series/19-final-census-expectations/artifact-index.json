@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "e740e73a2f5d779781f64728cb4c2332362f3e68",
+  "artifacts": {
+    "README.md": {
+      "sha256": "807e5ea63e94f984c52f9650d0ee40fee4f3c4534248a9aa6a69fdfbdb4b8c2d",
+      "bytes": 831
+    },
+    "logs/census-after.log.gz": {
+      "sha256": "537eacc49d062dfcee2d18b995647ec4ad64e74d88eed6861194ca1cea18cc4c",
+      "bytes": 1121
+    },
+    "logs/ci-adapters-before.log.gz": {
+      "sha256": "b325811bab3a92a658b884e7c1f2f70ef33022a8d62a4736babcc626d3d25bd1",
+      "bytes": 6833
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "e8717d6920aad9319f62ca5e141123708f24785031aee36e83fcbcfae23a017a",
+      "bytes": 240
+    },
+    "logs/plan.log.gz": {
+      "sha256": "8053dd1a40600a1469695982248adaf99f575a77d154d34cf5a14d2c999b9129",
+      "bytes": 224
+    },
+    "receipts/census-after.json.gz": {
+      "sha256": "384f0be56e0fe0900e1294dfe05db63c1c7dc839dba361c5f143ebcf6cf8a426",
+      "bytes": 163
+    },
+    "receipts/independent-case-census.json.gz": {
+      "sha256": "a3d83298048c14d1dc0b71aa9430d71bf7fac38e248599ef6191fbbad0f2f3a9",
+      "bytes": 191
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "0de0a76974dd446132b9b0d14772ee83188b5d5faca70271546b287602e0eb41",
+      "bytes": 141
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "615fa566fd7b4730689c3bab6b88c7363b4d091e3d853c8e97f179acc3d07745",
+      "bytes": 140
+    },
+    "source-pins.json.gz": {
+      "sha256": "f3d8728b79fff298a564840ad050b2f15957c31813bdeae97457512411782bbe",
+      "bytes": 74251
+    }
+  }
+}

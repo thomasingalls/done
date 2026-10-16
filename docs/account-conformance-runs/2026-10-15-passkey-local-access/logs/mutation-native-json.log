@@ -1,0 +1,73 @@
+
+ RUN  v4.1.10 /private/tmp/done-passkey-mutant-native-json
+
+ ❯ test/passkeyResponse.test.ts (6 tests | 4 failed) 8ms
+   × serializes an assertion with no JSON method and retains an empty supplied user handle 2ms
+   × omits a null user handle and optional registration methods without inventing key data 0ms
+   × encodes only the supplied view slice and nested extension buffers 0ms
+   × refuses a non-public-key response and missing signed binary fields 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/passkeyResponse.test.ts > serializes an assertion with no JSON method and retains an empty supplied user handle
+TypeError: credential.toJSON is not a function
+ ❯ authenticationResponse src/account/passkeyResponse.ts:67:21
+     65|   credential: PublicKeyCredential,
+     66| ): AuthenticationResponseJSON {
+     67|   return credential.toJSON() as AuthenticationResponseJSON;
+       |                     ^
+     68|   const response = credential.response as AuthenticatorAssertionRespon…
+     69|   return {
+ ❯ test/passkeyResponse.test.ts:47:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  test/passkeyResponse.test.ts > omits a null user handle and optional registration methods without inventing key data
+TypeError: Native brand mismatch
+ ❯ Object.<anonymous> test/passkeyResponse.test.ts:8:9
+      6| const id = Buffer.from([0, 251, 255]).toString('base64url');
+      7| const nativeJSON = vi.fn(() => {
+      8|   throw new TypeError('Native brand mismatch');
+       |         ^
+      9| });
+     10| function credential(response: object, extra: object = {}) {
+ ❯ authenticationResponse src/account/passkeyResponse.ts:67:21
+ ❯ test/passkeyResponse.test.ts:75:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  test/passkeyResponse.test.ts > encodes only the supplied view slice and nested extension buffers
+TypeError: Native brand mismatch
+ ❯ Object.<anonymous> test/passkeyResponse.test.ts:8:9
+      6| const id = Buffer.from([0, 251, 255]).toString('base64url');
+      7| const nativeJSON = vi.fn(() => {
+      8|   throw new TypeError('Native brand mismatch');
+       |         ^
+      9| });
+     10| function credential(response: object, extra: object = {}) {
+ ❯ authenticationResponse src/account/passkeyResponse.ts:67:21
+ ❯ test/passkeyResponse.test.ts:92:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  test/passkeyResponse.test.ts > refuses a non-public-key response and missing signed binary fields
+AssertionError: expected [Function] to throw error including 'binary data' but got 'Native brand mismatch'
+
+Expected: "binary data"
+Received: "Native brand mismatch"
+
+ ❯ test/passkeyResponse.test.ts:128:5
+    126|       }),
+    127|     ),
+    128|   ).toThrow('binary data');
+       |     ^
+    129| });
+    130|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  4 failed | 5 passed (9)
+   Start at  10:38:41
+   Duration  1.58s (transform 976ms, setup 84ms, import 1.30s, tests 104ms, environment 0ms)

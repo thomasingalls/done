@@ -1,0 +1,37 @@
+
+Running 4 tests using 1 worker
+
+(node:56652) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 test/packaged-account/passkey-local-access.spec.ts:42:3 › extension response with missing native JSON method completes verified account setup and cold reopen (4.7s)
+  ✓  2 test/packaged-account/passkey-local-access.spec.ts:42:3 › extension response with throwing native JSON method completes verified account setup and cold reopen (4.7s)
+  ✘  3 test/packaged-account/passkey-local-access.spec.ts:55:1 › cancelled passkey setup retains offline Local access and the same resumable attempt (2.0m)
+(node:56796) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  4 test/packaged-account/passkey-local-access.spec.ts:84:1 › a failed online continuation accepts the correct code and offers Local access without another passkey (4.1s)
+
+
+  1) test/packaged-account/passkey-local-access.spec.ts:55:1 › cancelled passkey setup retains offline Local access and the same resumable attempt
+
+    Test timeout of 120000ms exceeded.
+
+    Error: locator.click: Test timeout of 120000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Continue to passkey setup', exact: true })
+
+
+      15 |   await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
+      16 |   await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
+    > 17 |   await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
+         |                                                                                      ^
+      18 |   await expect(page.getByRole('heading', { name: 'Create your passkey' })).toBeVisible();
+      19 | }
+      20 | async function extensionResponses(page: Page, mode: 'missing' | 'throwing') {
+        at syncSetup (<workspace>/test/packaged-account/passkey-local-access.spec.ts:17:86)
+        at <workspace>/test/packaged-account/passkey-local-access.spec.ts:80:5
+
+    Error Context: ../../../../../../private/tmp/done-passkey-access-browser/passkey-local-access-cance-e6046--the-same-resumable-attempt/error-context.md
+
+  1 failed
+    test/packaged-account/passkey-local-access.spec.ts:55:1 › cancelled passkey setup retains offline Local access and the same resumable attempt
+  3 passed (2.3m)

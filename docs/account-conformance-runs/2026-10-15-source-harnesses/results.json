@@ -1,0 +1,279 @@
+{
+  "baseline": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "baselineSignatureVerified": true,
+  "compilerRepairCommitted": true,
+  "harnessRepairUncommitted": true,
+  "scope": "H1/H2 functional source-closure repair; no aggregate qualification or publication. The original full-suite baseline remains red.",
+  "legacy": [
+    {
+      "campaign": "import-after",
+      "commandPassed": true,
+      "baselineNamedChecks": 22,
+      "baselineGeneratedHistories": 60,
+      "seed": 8941,
+      "rendererCrashes": 10,
+      "mutations": [],
+      "failure": null
+    },
+    {
+      "campaign": "selection-after",
+      "commandPassed": true,
+      "baselineNamedChecks": 20,
+      "baselineGeneratedHistories": 60,
+      "seed": 8941,
+      "rendererCrashes": 3,
+      "mutations": [
+        [
+          "trust-imported",
+          true
+        ],
+        [
+          "ignore-source",
+          true
+        ],
+        [
+          "unsigned-provenance",
+          true
+        ],
+        [
+          "skip-final-route-check",
+          true
+        ],
+        [
+          "retain-preactive-marker",
+          true
+        ]
+      ],
+      "failure": null
+    },
+    {
+      "campaign": "cleanup-after",
+      "commandPassed": false,
+      "baselineNamedChecks": 45,
+      "baselineGeneratedHistories": 60,
+      "seed": 8941,
+      "rendererCrashes": 16,
+      "mutations": [
+        [
+          "skip-manifest-validation",
+          true
+        ],
+        [
+          "skip-destination",
+          true
+        ],
+        [
+          "ignore-value",
+          true
+        ],
+        [
+          "prefix-sweep",
+          true
+        ]
+      ],
+      "failure": "Nonunique mutation anchor: unsigned-manifest"
+    },
+    {
+      "campaign": "coordinator-after",
+      "commandPassed": true,
+      "baselineNamedChecks": 36,
+      "baselineGeneratedHistories": 60,
+      "seed": 8941,
+      "rendererCrashes": 19,
+      "mutations": [
+        [
+          "stale-inspection",
+          true
+        ],
+        [
+          "unsigned-inspection",
+          true
+        ],
+        [
+          "index-as-active",
+          true
+        ],
+        [
+          "reset-retained",
+          true
+        ],
+        [
+          "rebind-partial",
+          true
+        ],
+        [
+          "skip-readback",
+          true
+        ],
+        [
+          "ignore-exclusion",
+          true
+        ],
+        [
+          "early-close",
+          true
+        ],
+        [
+          "overwrite-selected",
+          true
+        ],
+        [
+          "terminal-only",
+          true
+        ]
+      ],
+      "failure": null
+    }
+  ],
+  "legacyBaselineTotals": {
+    "namedChecks": 123,
+    "generatedHistories": 240
+  },
+  "focusedNodeRuns": {
+    "native-closures-before.log": {
+      "tests": 3,
+      "pass": 0,
+      "fail": 3,
+      "skipped": 0
+    },
+    "historical-before.log": {
+      "tests": 3,
+      "pass": 0,
+      "fail": 3,
+      "skipped": 0
+    },
+    "native-closures-after.log": {
+      "tests": 9,
+      "pass": 9,
+      "fail": 0,
+      "skipped": 0
+    },
+    "historical-after.log": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "affected-native-full.log": {
+      "tests": 25,
+      "pass": 24,
+      "fail": 1,
+      "skipped": 0
+    },
+    "new-regressions-ci-command.log": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "new-regressions-closed.log": {
+      "tests": 3,
+      "pass": 3,
+      "fail": 0,
+      "skipped": 0
+    },
+    "planning-ci-final.log": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0
+    },
+    "planning-ci-closed.log": {
+      "tests": 26,
+      "pass": 26,
+      "fail": 0,
+      "skipped": 0
+    },
+    "wrapper-manifest-final.log": {
+      "tests": 125,
+      "pass": 125,
+      "fail": 0,
+      "skipped": 0
+    }
+  },
+  "unit": {
+    "file": "test/accountDriver.test.ts",
+    "passed": 8,
+    "skipped": 0
+  },
+  "remainingControls": [
+    {
+      "test": "test/account-successor/client-replay-controls.test.mjs",
+      "control": "issuance-boundary",
+      "classification": "missing unique mutation anchor; intended fault did not execute"
+    },
+    {
+      "test": "scripts/legacy-cleanup/campaign.mjs",
+      "control": "unsigned-manifest",
+      "classification": "nonunique/missing mutation anchor; intended fault did not execute"
+    },
+    {
+      "test": "scripts/legacy-cleanup/campaign.mjs",
+      "control": "omit-destination-journal",
+      "classification": "nonunique/missing mutation anchor; intended fault did not execute"
+    }
+  ],
+  "additionalCleanupControls": [
+    {
+      "control": "omit-destination-journal",
+      "argv": [
+        "node",
+        "scripts/legacy-cleanup/run.mjs",
+        "--mutant",
+        "omit-destination-journal",
+        "--output",
+        "test-results/source-harness-a6fa2298/cleanup-control-omit-destination-journal"
+      ],
+      "exitCode": 1,
+      "elapsedSeconds": 1.6722977086901665
+    },
+    {
+      "control": "clear-forgets-source",
+      "argv": [
+        "node",
+        "scripts/legacy-cleanup/run.mjs",
+        "--mutant",
+        "clear-forgets-source",
+        "--output",
+        "test-results/source-harness-a6fa2298/cleanup-control-clear-forgets-source"
+      ],
+      "exitCode": 0,
+      "elapsedSeconds": 5.41915737465024
+    }
+  ],
+  "qualification": {
+    "resumed": false,
+    "obligations": 850,
+    "unresolved": 309,
+    "newRegressionFilesRequiredAndBlocked": 3,
+    "historicalArchiveAndModuleCustodyAdapterReviewPending": true
+  },
+  "checks": {
+    "snapshotAudit": "All four frozen snapshots contain and hash every one of 44 protocol files; original input hashes remain unchanged.",
+    "historicalSource": "Independent Git blob comparison, actual old service/fixture/v8-owner positive control, current-v9 no-write refusal, and real v1 offer/new-v2 refusal.",
+    "artifactEmission": "Actual entry, all emitted chunks/assets, lazy import, per-file hashes and cleanup.",
+    "lint": "All changed JS harness/test files pass.",
+    "format": "Changed source/new tests/CI pass; two approved identity assertions are formatted, and an inherited old regex layout remains unchanged.",
+    "applicationServiceProtocolSource": "Unchanged from signed baseline.",
+    "operatorResumedCiJob": "Byte-identical to signed baseline."
+  },
+  "diagnosticLimits": [
+    "Final inventory verification detected the last new-helper source hash. The reviewed regenerated inventory changes only that helper hash, with counts/dispositions unchanged; the failed check and successful recheck are retained.",
+    "An initial /tmp legacy output was outside Vite serving roots; the repository-root reproductions establish the missing protocol imports.",
+    "The first historical build probes overcompared dependency declarations and treated a dependency package src directory as an application escape. Corrected builds and independent Git identity checks pass.",
+    "A naive supported-v8 control used modern v2 admission and correctly failed unsupported semantic admission. The final control runs the original v1 service/fixture/owner without rewriting signed receipts.",
+    "The first nested Node test launch executed zero child cases. The final separate child context uses explicit TAP and requires the exact named original case and one pass.",
+    "A guessed nonexistent scheduler model filename ran no tests; the correct existing scheduler unit file passes all eight cases.",
+    "Intermediate new helper/test development files were replaced; their failed logs remain, but no exact source pin is claimed for those intermediate diagnostics.",
+    "Some small checks overlapped the serial legacy campaign queue. Timings are process receipts, not performance measurements.",
+    "No pinned CI Node 24 run, new Firefox/Bitwarden walkthrough or original 85-command whole-suite rerun is claimed.",
+    "Existing other full-suite issue groups remain open; these results do not establish release readiness."
+  ],
+  "actions": {
+    "pushed": false,
+    "merged": false,
+    "deployed": false,
+    "previewRefreshed": false,
+    "userDataTouched": false
+  }
+}

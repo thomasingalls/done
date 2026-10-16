@@ -1,0 +1,6 @@
+{
+  "error": "The passkey step could not finish. Try again. Your setup progress has been kept.",
+  "resumedError": "Could not unlock this workspace. Check your device-lock code and try again.",
+  "independentLocalFactorAccepted": true,
+  "path": "/setup/local/unlock"
+}

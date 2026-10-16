@@ -1,0 +1,38 @@
+[
+  {
+    "id": "packaged-session-isolated",
+    "command": "pnpm exec playwright test --config playwright.packaged-account.config.ts test/packaged-account/sessions.spec.ts --output test-results/packaged-account-session-recheck/artifacts --reporter=list",
+    "checkout": "<test-checkout>",
+    "log": "followup-packaged-session-isolated.log",
+    "startedAt": "2026-10-15T12:14:12.951Z",
+    "pid": 75346,
+    "signal": null,
+    "exitCode": 1,
+    "status": "failed",
+    "completedAt": "2026-10-15T12:14:53.572Z"
+  },
+  {
+    "id": "upgrade-historical-source",
+    "command": "ACCOUNT_SETUP_UPGRADE_BASE=<upgrade-baseline-checkout> pnpm exec playwright test --config playwright.account-upgrade.config.ts --output test-results/account-upgrade-recheck/artifacts --reporter=list",
+    "checkout": "<test-checkout>",
+    "log": "followup-upgrade-historical-source.log",
+    "startedAt": "2026-10-15T12:14:53.572Z",
+    "pid": 75415,
+    "signal": null,
+    "exitCode": 1,
+    "status": "failed",
+    "completedAt": "2026-10-15T12:15:00.762Z"
+  },
+  {
+    "id": "ledger-profile-observation",
+    "command": "node --test --test-timeout=60000 /private/tmp/done-ledger-profile-observation.test.mjs",
+    "checkout": "<test-checkout>",
+    "log": "followup-ledger-profile-observation.log",
+    "startedAt": "2026-10-15T12:15:00.762Z",
+    "pid": 75450,
+    "signal": null,
+    "exitCode": 0,
+    "status": "passed",
+    "completedAt": "2026-10-15T12:15:07.337Z"
+  }
+]

@@ -47,8 +47,8 @@ export const mutants = [
     file: 'admissionQueue.ts',
     case: 'C03.ordered-refusal',
     assertion: 'only-head-prepared',
-    from: 'queue.push(job);',
-    to: 'queue.push(job); if (busy && kind === "local") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);',
+    from: "    queue.push(job);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });",
+    to: "    queue.push(job); if (busy && kind === \"local\") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });",
   },
   {
     id: 'publish-receive-before-commit',

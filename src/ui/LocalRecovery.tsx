@@ -13,8 +13,8 @@ export const LocalRecovery = () => {
     <details className="local-recovery">
       <summary>Recover readable writing</summary>
       <p>
-        With your saved device-lock code, try a read-only partial export. It may omit writing and
-        does not repair or reopen this workspace. Keep your browser data and existing backups.
+        With your saved unlock code, try a read-only partial export. It may omit writing and does
+        not repair or reopen this workspace. Keep your browser data and existing backups.
       </p>
       <p>The downloaded ZIP contains plaintext writing. Keep it private.</p>
       <form
@@ -61,7 +61,7 @@ export const LocalRecovery = () => {
         }}
       >
         <label>
-          Recovery device-lock code
+          Recovery unlock code
           <input
             type="password"
             autoComplete="off"

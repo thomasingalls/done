@@ -1,0 +1,111 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { gzipSync } from 'node:zlib';
+
+const root = '<workspace>';
+const input = '/private/tmp/done-compiler-loading-86e830c8';
+const target = path.join(root, 'docs/account-conformance-runs/2026-10-15-compiler-loading');
+const baseline = '86e830c83e7d410443237a8bdeafc7d3f6e9663c';
+const hash = b => crypto.createHash('sha256').update(b).digest('hex');
+const git = (...args) => execFileSync('git', args, { cwd: root });
+const read = file => fs.readFileSync(path.join(root, file));
+assert.equal(git('rev-parse', 'HEAD').toString().trim(), baseline);
+execFileSync('git', ['verify-commit', baseline], { cwd: root, stdio: 'pipe' });
+const old = JSON.parse(fs.readFileSync(path.join(input, 'private-migration-unlock-fixture.json')));
+assert.equal(hash(git('show', baseline + ':' + old.path)), old.originalSha256);
+assert.equal(hash(read(old.path)), old.proposedSha256);
+assert.deepEqual(git('diff', '--name-only', baseline, '--', 'test').toString().trim().split('\n'), [old.path]);
+assert.equal(git('diff', baseline, '--', 'src', 'account-protocol', 'account-service', 'docs/progress.md').length, 0);
+const policy = JSON.parse(read('scripts/release-validation/policy.json'));
+assert.deepEqual(policy.playwright['test/compiler-loading'], ['playwright.compiler-loading.config.ts']);
+delete policy.playwright['test/compiler-loading'];
+assert.deepEqual(policy, JSON.parse(git('show', baseline + ':scripts/release-validation/policy.json')));
+assert.equal(read('.github/workflows/ci.yml').toString().split('\n  quality:\n')[1], git('show', baseline + ':.github/workflows/ci.yml').toString().split('\n  quality:\n')[1]);
+
+const reports = {
+  'regression-before.json': [0, 2],
+  'regression-after.json': [2, 0],
+  'regression-final.json': [2, 0],
+  'path-boundary-before.json': [0, 2],
+  'path-boundary-after.json': [2, 0],
+  'private-migration-after.json': [3, 2],
+  'private-migration-approved.json': [5, 0],
+  'private-migration-final.json': [5, 0],
+  'packaged-welcome.json': [8, 0],
+  'packaged-welcome-final.json': [8, 0],
+};
+for (const [file, [passed, failed]] of Object.entries(reports)) {
+  const { stats } = JSON.parse(fs.readFileSync(path.join(input, file)));
+  assert.equal(stats.expected, passed, file);
+  assert.equal(stats.unexpected, failed, file);
+  assert.equal(stats.skipped, 0, file);
+  assert.equal(stats.flaky, 0, file);
+}
+const unit = fs.readFileSync(path.join(input, 'unit-final.log'), 'utf8');
+assert.match(unit, /Test Files\s+151 passed \(151\)/);
+assert.match(unit, /Tests\s+1779 passed \| 1 skipped \(1780\)/);
+
+const artifacts = [];
+const clean = text => text.replaceAll(root, '<workspace>').replaceAll(process.env.HOME, '<home>').replace(/\b[A-Z0-9]{5}(?:-[A-Z0-9]{5}){4}\b/g, '<disposable-factor-redacted>');
+function cleanReport(value) {
+  if (!value || typeof value !== 'object') return value;
+  if (Array.isArray(value)) return value.map(cleanReport);
+  const result = Object.fromEntries(Object.entries(value).map(([key, item]) => [key, typeof item === 'string' ? clean(item) : cleanReport(item)]));
+  if (typeof value.body === 'string' && /^(application\/json|text\/)/.test(value.contentType ?? '')) {
+    result.body = Buffer.from(clean(Buffer.from(value.body, 'base64').toString())).toString('base64');
+  }
+  return result;
+}
+function retain(file, name, compressed = false, report = false) {
+  const original = fs.readFileSync(file);
+  const normalized = Buffer.from(report ? JSON.stringify(cleanReport(JSON.parse(original)), null, 2) + '\n' : clean(original.toString()));
+  const bytes = compressed ? gzipSync(normalized, { level: 9 }) : normalized;
+  const dest = path.join(target, name);
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, bytes);
+  artifacts.push({ path: name, originalSha256: hash(original), normalizedSha256: hash(normalized), sha256: hash(bytes), bytes: bytes.length });
+}
+function json(name, value) {
+  const file = path.join(input, name.replaceAll('/', '-'));
+  fs.writeFileSync(file, JSON.stringify(value, null, 2) + '\n');
+  retain(file, name);
+}
+for (const file of fs.readdirSync(input).filter(file => file.endsWith('.log')).sort()) retain(path.join(input, file), 'logs/' + file + '.gz', true);
+for (const file of Object.keys(reports)) retain(path.join(input, file), 'reports/' + file + '.gz', true, true);
+for (const file of ['dev-runtime-observation.json', 'trace-source-only.json']) retain(path.join(input, file), 'observations/' + file, false, true);
+for (const file of ['trace.mjs', 'first-scope-candidate.patch', 'private-migration-unlock-fixture.patch', 'collect.mjs']) retain(path.join(input, file), 'reproduction/' + file + (file.endsWith('.mjs') ? '.txt' : ''));
+for (const file of fs.readdirSync(input).filter(file => file.startsWith('private-migration-before-fixture-context-'))) retain(path.join(input, file), 'observations/' + file + '.gz', true);
+
+let patch = git('diff', baseline, '--', 'vite.config.ts', '.github/workflows/ci.yml', 'scripts/release-validation/policy.json').toString();
+const added = ['playwright.compiler-loading.config.ts', 'test/compiler-loading/development.spec.ts'];
+for (const file of added) {
+  try { patch += git('diff', '--no-index', '--', '/dev/null', file).toString(); }
+  catch (error) { if (error.status !== 1) throw error; patch += error.stdout.toString(); }
+}
+fs.writeFileSync(path.join(input, 'runtime-and-regressions.patch'), patch);
+retain(path.join(input, 'runtime-and-regressions.patch'), 'reproduction/runtime-and-regressions.patch');
+json('old-test-boundary.json', { baseline, approval: 'Operator explicitly approved exactly four Local-editor locator updates.', noOtherOldTestsChanged: true, applicationServiceAndProtocolSourceUnchanged: true, file: { path: old.path, originalSha256: old.originalSha256, proposedSha256: old.proposedSha256 }, applied: true, policyAddsOnlyNewRequiredFamily: true, operatorResumedCiJobUnchanged: true });
+const sourceFiles = execFileSync('rg', ['--files', 'src', 'account-protocol', 'account-service'], { cwd: root, encoding: 'utf8' }).trim().split('\n');
+sourceFiles.push(...added, old.path, 'vite.config.ts', 'vite/privateMigration.config.ts', 'vite/precacheServiceWorker.ts', 'package.json', 'pnpm-lock.yaml', '.github/workflows/ci.yml', 'scripts/release-validation/policy.json', 'docs/release-validation-graph.json', 'docs/release-validation-manifest.json');
+json('source-pins.json', { baseline, node: process.version, sourceWasUncommitted: true, files: [...new Set(sourceFiles)].sort().map(file => ({ path: file, sha256: hash(read(file)) })) });
+function walk(dir) { return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => entry.isDirectory() ? walk(path.join(dir, entry.name)) : [path.join(dir, entry.name)]); }
+json('build-pins.json', { baseline, sourceWasUncommitted: true, log: 'logs/final-build.log.gz', files: walk(path.join(root, 'dist')).sort().map(file => ({ path: path.relative(path.join(root, 'dist'), file), sha256: hash(fs.readFileSync(file)) })) });
+json('results.json', {
+  fixtureCommit: baseline, signatureVerified: true,
+  baseline: 'Both new browser cases fail at no mounted shell; embedded browser-error attachments retain the missing named compiler-runtime c export.',
+  cause: 'Babel recompiles optimized TanStack Router output when the cache is outside node_modules; Vite does not apply ordinary source CJS interop inside optimized output.',
+  refinement: 'A generic src-segment filter first passes ordinary cache paths, then fails both tests with an unrelated src cache directory. The final filter anchors the actual repository source directory.',
+  compiler: 'Enabled in application source and asserted active; React/runtime dependency versions, custody, authority and crypto source/bytes are unchanged.',
+  finalBrowsers: { compiler: '2 passed, zero skips/retries; fresh and byte-identical retained optimizer metadata, reload and server restart writing', privateMigration: '5 passed, zero skips/retries; exact approved four-line locator update', packagedOnboarding: '8 passed, zero skips/retries on the final build' },
+  unit: '151 files passed; 1779 cases passed and one existing named skip; maxWorkers=2, no deadline changes',
+  runner: '38 inventory/CI/census regressions passed; final snapshot checks pass',
+  build: 'Typecheck, required Yjs patch, bundle, origin and size checks passed; initial JS 231.6/350 kB',
+  inconvenientResults: ['Initial interop-only override fails; retained from preceding packet and current trace.', 'First broad source-path candidate fails the deliberately misleading src cache path.', 'Unchanged migration run after loader repair: 3 passes, 2 timeouts at old Device-lock code locators; retained before approved correction.', 'Initial standalone TypeScript CLI check refused TS5112; corrected --ignoreConfig invocation passes.'],
+  planning: { obligations: 847, unresolved: 306, newFamily: 'Required and still blocked pending reviewed runtime denominator/process ownership adapter', aggregate: 'paused' },
+  limitations: ['Local Node 26.11.1; CI Node 24 not run.', 'No new Firefox/Bitwarden walkthrough or complete 85-command suite rerun.', 'Default-worker unit timeout issue remains open.', 'Compiler fix/regressions and four approved locator changes remain uncommitted.', 'Preview/backend/user data unchanged; no push, merge or deployment.'],
+});
+fs.writeFileSync(path.join(target, 'artifact-index.json'), JSON.stringify({ schema: 1, baseline, collectedAt: new Date().toISOString(), retention: 'Normalized text and base64 text attachments; disposable factors redacted; original hashes retained. No profiles, storage databases, downloaded recovery files or real vault material copied.', artifacts }, null, 2) + '\n');
+console.log(JSON.stringify({ artifacts: artifacts.length, sourcePins: new Set(sourceFiles).size, approvedOldFiles: 1, browserPasses: 15 }));

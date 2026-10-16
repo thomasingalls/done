@@ -30,8 +30,8 @@ export const mutants = [
     file: 'contentStore.ts',
     case: 'C15.abandoned-seals',
     assertion: 'abandoned-encryption-remains-counted',
-    from: 'if (await compareAndWrite(task, before, next)) break;',
-    to: 'if (next) break;',
+    from: "if (await compareAndWrite(task, before, next)) {",
+    to: "if (next) {",
   },
   {
     id: 'omit-generation-fence',

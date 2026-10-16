@@ -1,0 +1,215 @@
+{
+  "source": "86e830c8",
+  "cases": [
+    {
+      "needsInterop": false,
+      "freshCache": true,
+      "errors": [
+        "The requested module '/@fs/private/tmp/done-compiler-loading-86e830c8/cache-current/deps/react_compiler-runtime.js?v=5d5506ca' does not provide an export named 'c'",
+        "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.shell, .local-startup') to be visible\u001b[22m\n"
+      ],
+      "moduleExports": [
+        "var require_react_compiler_runtime_development = /* @__PURE__ */ __commonJSMin((exports) => {",
+        "\t\texports.c = function(size) {",
+        "var require_compiler_runtime = /* @__PURE__ */ __commonJSMin((exports, module) => {"
+      ],
+      "shell": 0,
+      "plugins": [
+        {
+          "name": "@rolldown/plugin-babel",
+          "enforce": "pre"
+        },
+        {
+          "name": "vite:css"
+        },
+        {
+          "name": "builtin:oxc-runtime"
+        },
+        {
+          "name": "vite:oxc"
+        },
+        {
+          "name": "builtin:vite-json"
+        },
+        {
+          "name": "vite:worker"
+        },
+        {
+          "name": "vite:define"
+        },
+        {
+          "name": "vite:css-post"
+        },
+        {
+          "name": "vite:build-html"
+        },
+        {
+          "name": "vite:worker-import-meta-url"
+        },
+        {
+          "name": "vite:asset-import-meta-url"
+        },
+        {
+          "name": "vite:dynamic-import-vars"
+        },
+        {
+          "name": "vite:import-glob"
+        },
+        {
+          "name": "vite:client-inject"
+        },
+        {
+          "name": "vite:css-analysis"
+        },
+        {
+          "name": "vite:import-analysis"
+        }
+      ],
+      "imports": [
+        {
+          "url": "/src/ui/AccountPreview.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/AccountPreview.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const lazy = __vite__cjsImport3_react[\"lazy\"]; const Suspense = __vite__cjsImport3_react[\"Suspense\"]; const useEffect = __vite__cjsImport3_react[\"useEffect\"]; const useMemo = __vite__cjsImport3_react[\"useMemo\"]; const useState = __vite__cjsImport3_react[\"useState\"];const _jsxDEV = __vite__cjsImport6_react_jsxDevRuntime[\"jsxDEV\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-current/deps/react_compiler-runtime.js?v=5d5506ca\";"
+          ]
+        },
+        {
+          "url": "/src/ui/AccountSignIn.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/AccountSignIn.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const useEffect = __vite__cjsImport3_react[\"useEffect\"]; const useRef = __vite__cjsImport3_react[\"useRef\"]; const useState = __vite__cjsImport3_react[\"useState\"]; const useSyncExternalStore = __vite__cjsImport3_react[\"useSyncExternalStore\"];const _jsxDEV = __vite__cjsImport10_react_jsxDevRuntime[\"jsxDEV\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-current/deps/react_compiler-runtime.js?v=5d5506ca\";"
+          ]
+        },
+        {
+          "url": "/src/ui/AccountIdentity.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/AccountIdentity.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const _jsxDEV = __vite__cjsImport1_react_jsxDevRuntime[\"jsxDEV\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-current/deps/react_compiler-runtime.js?v=5d5506ca\";"
+          ]
+        },
+        {
+          "url": "/src/ui/NetworkLoginNotice.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/NetworkLoginNotice.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const useEffect = __vite__cjsImport1_react[\"useEffect\"]; const useState = __vite__cjsImport1_react[\"useState\"]; const useSyncExternalStore = __vite__cjsImport1_react[\"useSyncExternalStore\"];const _jsxDEV = __vite__cjsImport3_react_jsxDevRuntime[\"jsxDEV\"]; const _Fragment = __vite__cjsImport3_react_jsxDevRuntime[\"Fragment\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-current/deps/react_compiler-runtime.js?v=5d5506ca\";"
+          ]
+        },
+        {
+          "url": "/src/ui/WorkspaceBackdrop.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/WorkspaceBackdrop.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const _jsxDEV = __vite__cjsImport2_react_jsxDevRuntime[\"jsxDEV\"]; const _Fragment = __vite__cjsImport2_react_jsxDevRuntime[\"Fragment\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-current/deps/react_compiler-runtime.js?v=5d5506ca\";"
+          ]
+        },
+        {
+          "url": "/src/ui/DeviceDataRemoval.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/DeviceDataRemoval.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const useContext = __vite__cjsImport1_react[\"useContext\"]; const useEffect = __vite__cjsImport1_react[\"useEffect\"]; const useRef = __vite__cjsImport1_react[\"useRef\"]; const useState = __vite__cjsImport1_react[\"useState\"];const _jsxDEV = __vite__cjsImport7_react_jsxDevRuntime[\"jsxDEV\"]; const _Fragment = __vite__cjsImport7_react_jsxDevRuntime[\"Fragment\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-current/deps/react_compiler-runtime.js?v=5d5506ca\";"
+          ]
+        }
+      ],
+      "startup": 0,
+      "editable": 0
+    },
+    {
+      "needsInterop": true,
+      "freshCache": true,
+      "errors": [
+        "The requested module '/@fs/private/tmp/done-compiler-loading-86e830c8/cache-interop/deps/react_compiler-runtime.js?v=05c0daa4' does not provide an export named 'c'",
+        "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.shell, .local-startup') to be visible\u001b[22m\n"
+      ],
+      "moduleExports": [
+        "var require_react_compiler_runtime_development = /* @__PURE__ */ __commonJSMin((exports) => {",
+        "\t\texports.c = function(size) {",
+        "var require_compiler_runtime = /* @__PURE__ */ __commonJSMin((exports, module) => {"
+      ],
+      "shell": 0,
+      "plugins": [
+        {
+          "name": "@rolldown/plugin-babel",
+          "enforce": "pre"
+        },
+        {
+          "name": "vite:css"
+        },
+        {
+          "name": "builtin:oxc-runtime"
+        },
+        {
+          "name": "vite:oxc"
+        },
+        {
+          "name": "builtin:vite-json"
+        },
+        {
+          "name": "vite:worker"
+        },
+        {
+          "name": "vite:define"
+        },
+        {
+          "name": "vite:css-post"
+        },
+        {
+          "name": "vite:build-html"
+        },
+        {
+          "name": "vite:worker-import-meta-url"
+        },
+        {
+          "name": "vite:asset-import-meta-url"
+        },
+        {
+          "name": "vite:dynamic-import-vars"
+        },
+        {
+          "name": "vite:import-glob"
+        },
+        {
+          "name": "vite:client-inject"
+        },
+        {
+          "name": "vite:css-analysis"
+        },
+        {
+          "name": "vite:import-analysis"
+        }
+      ],
+      "imports": [
+        {
+          "url": "/src/ui/AccountPreview.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/AccountPreview.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const lazy = __vite__cjsImport3_react[\"lazy\"]; const Suspense = __vite__cjsImport3_react[\"Suspense\"]; const useEffect = __vite__cjsImport3_react[\"useEffect\"]; const useMemo = __vite__cjsImport3_react[\"useMemo\"]; const useState = __vite__cjsImport3_react[\"useState\"];const _jsxDEV = __vite__cjsImport6_react_jsxDevRuntime[\"jsxDEV\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-interop/deps/react_compiler-runtime.js?v=05c0daa4\";"
+          ]
+        },
+        {
+          "url": "/src/ui/AccountSignIn.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/AccountSignIn.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const useEffect = __vite__cjsImport3_react[\"useEffect\"]; const useRef = __vite__cjsImport3_react[\"useRef\"]; const useState = __vite__cjsImport3_react[\"useState\"]; const useSyncExternalStore = __vite__cjsImport3_react[\"useSyncExternalStore\"];const _jsxDEV = __vite__cjsImport10_react_jsxDevRuntime[\"jsxDEV\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-interop/deps/react_compiler-runtime.js?v=05c0daa4\";"
+          ]
+        },
+        {
+          "url": "/src/ui/NetworkLoginNotice.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/NetworkLoginNotice.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const useEffect = __vite__cjsImport1_react[\"useEffect\"]; const useState = __vite__cjsImport1_react[\"useState\"]; const useSyncExternalStore = __vite__cjsImport1_react[\"useSyncExternalStore\"];const _jsxDEV = __vite__cjsImport3_react_jsxDevRuntime[\"jsxDEV\"]; const _Fragment = __vite__cjsImport3_react_jsxDevRuntime[\"Fragment\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-interop/deps/react_compiler-runtime.js?v=05c0daa4\";"
+          ]
+        },
+        {
+          "url": "/src/ui/AccountIdentity.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/AccountIdentity.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const _jsxDEV = __vite__cjsImport1_react_jsxDevRuntime[\"jsxDEV\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-interop/deps/react_compiler-runtime.js?v=05c0daa4\";"
+          ]
+        },
+        {
+          "url": "/src/ui/WorkspaceBackdrop.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/WorkspaceBackdrop.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const _jsxDEV = __vite__cjsImport2_react_jsxDevRuntime[\"jsxDEV\"]; const _Fragment = __vite__cjsImport2_react_jsxDevRuntime[\"Fragment\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-interop/deps/react_compiler-runtime.js?v=05c0daa4\";"
+          ]
+        },
+        {
+          "url": "/src/ui/DeviceDataRemoval.tsx",
+          "lines": [
+            "import { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/ui/DeviceDataRemoval.tsx\");const _c = __vite__cjsImport0_react_compilerRuntime[\"c\"];const useContext = __vite__cjsImport1_react[\"useContext\"]; const useEffect = __vite__cjsImport1_react[\"useEffect\"]; const useRef = __vite__cjsImport1_react[\"useRef\"]; const useState = __vite__cjsImport1_react[\"useState\"];const _jsxDEV = __vite__cjsImport7_react_jsxDevRuntime[\"jsxDEV\"]; const _Fragment = __vite__cjsImport7_react_jsxDevRuntime[\"Fragment\"];import __vite__cjsImport0_react_compilerRuntime from \"/@fs/private/tmp/done-compiler-loading-86e830c8/cache-interop/deps/react_compiler-runtime.js?v=05c0daa4\";"
+          ]
+        }
+      ],
+      "startup": 0,
+      "editable": 0
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
 import type { SetupConfig } from './firstDeviceSetup';
 import type { PrivateAccess } from './privateAccess';
+import { isSetupEpoch } from './setupMetadata';
+import { StorageCompatibilityError } from '../crdt/storageCompatibility';
 
 const PIN_KEY = 'done.account-service.pin.v1';
 const MODE_KEY = 'done.account-service.transport.v1';
@@ -8,6 +10,71 @@ const MEMBERSHIP_KEY = 'done.account-service.membership.v2';
 const LOCAL_ONLY_KEY = 'done.application.local-only';
 const LIMIT = 8192;
 const samePin = (a: AuthorityPin, b: AuthorityPin) => String(pinBytes(a)) === String(pinBytes(b));
+
+/** Startup discovery owns no workspace. Fence its hint writes after the network wait. */
+async function retainDiscoveryHints(effect: () => void) {
+  const { openWriteSession } = await import('../crdt/writeSession');
+  const owner = await openWriteSession('local').catch((cause: unknown) => {
+    // A promoted Account may legitimately hold Local's ordinary-opening interlock.
+    // Return only its public locator; the selected owner still authenticates its own permit.
+    if (cause instanceof StorageCompatibilityError) return null;
+    throw cause;
+  });
+  if (!owner) return;
+  try {
+    owner.write(effect);
+  } finally {
+    await owner.close();
+  }
+}
+
+/** Presentation-only guard: never drop a known account into a newly created Local list. */
+export async function hasSavedAccountEntry(): Promise<boolean> {
+  if (localStorage.getItem(PIN_KEY) !== null) return true;
+  const inspect = (name: string, store: string, accountOnly: boolean) =>
+    new Promise<boolean>((resolve, reject) => {
+      let absent = false;
+      const request = indexedDB.open(name);
+      request.onupgradeneeded = () => {
+        absent = true;
+        request.transaction!.abort();
+      };
+      request.onerror = () => {
+        if (absent) resolve(false);
+        else reject(request.error);
+      };
+      request.onblocked = () => reject(Error('Saved workspace metadata is busy'));
+      request.onsuccess = () => {
+        const db = request.result;
+        try {
+          const tx = db.transaction(store),
+            read = tx.objectStore(store).getAll();
+          tx.oncomplete = () => {
+            db.close();
+            resolve(
+              accountOnly
+                ? read.result.some(
+                    (row) =>
+                      row?.unlockBinding || (typeof row?.id === 'string' && row.id !== 'local'),
+                  )
+                : read.result.some((row) => !isSetupEpoch(row)),
+            );
+          };
+          tx.onabort = () => {
+            db.close();
+            reject(tx.error);
+          };
+        } catch (cause) {
+          db.close();
+          reject(cause);
+        }
+      };
+    });
+  return (
+    (await inspect('done.first-device-setup.v1', 'attempt', false)) ||
+    (await inspect('done.slots', 'slots', true))
+  );
+}
 
 async function readConfig(path: 'config' | 'access', signal: AbortSignal) {
   const response = await fetch('/__account-setup/' + path, {
@@ -75,6 +142,7 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
   // Older packaged builds retained only the pin. Their successor selects sessions without a
   // network wait; an old server then refuses network work instead of downgrading authentication.
   let networkSessions = localStorage.getItem(MODE_KEY) !== 'private';
+  let membershipContinuation = localStorage.getItem(MEMBERSHIP_KEY) === '1';
   let pin: AuthorityPin;
   if (retained !== null) pin = parseAuthorityPin(JSON.parse(retained));
   else {
@@ -88,28 +156,43 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
       throw cause;
     }
     if (!config) {
-      localStorage.setItem(LOCAL_ONLY_KEY, '1');
+      await retainDiscoveryHints(() => {
+        if (localStorage.getItem(PIN_KEY) !== null)
+          throw Error('Account service configuration changed during discovery');
+        localStorage.setItem(LOCAL_ONLY_KEY, '1');
+      });
       return null;
     }
     pin = config.pin;
     networkSessions = config.networkSessions;
-    localStorage.setItem(MODE_KEY, networkSessions ? 'sessions' : 'private');
-    localStorage.setItem(PIN_KEY, JSON.stringify(pin));
-    localStorage.setItem(MEMBERSHIP_KEY, config.membershipContinuation ? '1' : '0');
-    localStorage.removeItem(LOCAL_ONLY_KEY);
+    membershipContinuation = config.membershipContinuation;
+    await retainDiscoveryHints(() => {
+      const current = localStorage.getItem(PIN_KEY);
+      if (current !== null && !samePin(parseAuthorityPin(JSON.parse(current)), pin))
+        throw Error('Account service configuration changed during discovery');
+      localStorage.setItem(MODE_KEY, networkSessions ? 'sessions' : 'private');
+      localStorage.setItem(PIN_KEY, JSON.stringify(pin));
+      localStorage.setItem(MEMBERSHIP_KEY, config.membershipContinuation ? '1' : '0');
+      localStorage.removeItem(LOCAL_ONLY_KEY);
+    });
   }
   if (pin.origin !== location.origin) throw Error('Account service differs from this page');
   if (networkSessions) {
-    let membershipContinuation = localStorage.getItem(MEMBERSHIP_KEY) === '1';
     // Public protocol selection is a hint, never account authority. Refresh without delaying
     // offline opening. Owners read the getter when discovering, so an already-open editor can
     // notice an upgraded host. Only a matching pinned service may update this hint.
     if (retained !== null)
       void readConfig('config', AbortSignal.timeout(10000))
-        .then((current) => {
+        .then(async (current) => {
           if (!current || !current.networkSessions || !samePin(current.pin, pin)) return;
+          // The live scheduling hint must not wait behind a mounted Account's exclusive
+          // permit. Persisting it is optional and still needs the ordinary metadata gate.
           membershipContinuation = current.membershipContinuation;
-          localStorage.setItem(MEMBERSHIP_KEY, membershipContinuation ? '1' : '0');
+          await retainDiscoveryHints(() => {
+            if (localStorage.getItem(PIN_KEY) !== retained)
+              throw Error('Account service configuration changed during discovery');
+            localStorage.setItem(MEMBERSHIP_KEY, current.membershipContinuation ? '1' : '0');
+          });
         })
         .catch(() => {
           /* Keep offline opening independent of service availability. */

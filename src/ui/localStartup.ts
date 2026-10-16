@@ -1,3 +1,4 @@
+import { defaultDeviceName } from '../lib/browser';
 /** Application lifetime for one Local slot. Dispositions never authorize creation or replacement. */
 import {
   beginLocalGenesis,
@@ -10,6 +11,10 @@ import {
 import { startupRefusal } from '../crdt/ownedStartup';
 import type { StartupDisposition } from '../crdt/startupState';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
+import { automaticCode } from '../crdt/automaticOpening';
+import { readLocalClaim } from '../crdt/localGenesisRecord';
+import { openWriteSession } from '../crdt/writeSession';
+import { protectLocalWorkspace } from '../crdt/localProtection';
 
 // The first Local workspace has one explicit slot. No native database-name discovery or legacy fallback.
 export const LOCAL_APP_SLOT = 'local';
@@ -18,9 +23,14 @@ export type LocalStartupState =
   | { readonly kind: 'checking' | 'working' | 'closing' }
   | { readonly kind: 'save-code'; readonly code: string }
   | { readonly kind: 'confirm-code'; readonly error: string | null }
-  | { readonly kind: 'ready'; readonly workspace: AdmittedWorkspace; readonly actorId: string };
+  | {
+      readonly kind: 'ready';
+      readonly workspace: AdmittedWorkspace;
+      readonly actorId: string;
+      readonly automatic: boolean;
+    };
 
-export const createLocalStartup = () => {
+export const createLocalStartup = (automaticFirstRun = false) => {
   const lifetime = new AbortController();
   const listeners = new Set<() => void>();
   const editors = new Set<() => void>();
@@ -41,6 +51,7 @@ export const createLocalStartup = () => {
   let operation: Promise<void> | undefined;
   let closing: Promise<void> | undefined;
   let closed = false;
+  let liveCode = '';
   const publish = (next: LocalStartupState) => {
     state = next;
     for (const listener of listeners) listener();
@@ -50,6 +61,7 @@ export const createLocalStartup = () => {
   const close = (): Promise<void> => {
     if (closing) return closing;
     closed = true;
+    liveCode = '';
     retireEditors();
     const pending = operation;
     // Install this before notifying subscribers; also drain any opener which resolves after abort.
@@ -80,7 +92,7 @@ export const createLocalStartup = () => {
     publish({ kind: 'working' });
     return operation;
   };
-  const open = async (code: string) => {
+  const open = async (code: string, automatic = false) => {
     // Verify routing with the factor before choosing the local actor. The opener verifies it again.
     const routes = await listLocalWorkspaces(LOCAL_APP_SLOT, code, options);
     if (closed) return;
@@ -92,7 +104,7 @@ export const createLocalStartup = () => {
       identity: {
         id: principal,
         actor: { kind: 'human', name: 'You', color: '#e0662f' },
-        device: { id: `local:${principal}`, name: 'This device' },
+        device: { id: `local:${principal}`, name: defaultDeviceName() },
       },
       validateReceive: () => {
         throw Error('Network delivery is not enabled for this Local session.');
@@ -117,12 +129,14 @@ export const createLocalStartup = () => {
         unsubscribe?.();
         unsubscribe = undefined;
         retireEditors();
+        liveCode = '';
         publish(startupRefusal(status.pressure ?? { code: 'inactive' }));
         void owned.close().catch(() => {
           if (!closed) publish({ kind: 'unavailable', reason: 'local-close-failed' });
         });
       });
-      publish({ kind: 'ready', workspace: owned, actorId: principal });
+      liveCode = code;
+      publish({ kind: 'ready', workspace: owned, actorId: principal, automatic });
     } catch (cause) {
       unsubscribe?.();
       unsubscribe = undefined;
@@ -168,8 +182,43 @@ export const createLocalStartup = () => {
       state.kind !== 'checking'
         ? Promise.resolve()
         : run(async () => {
-            const next = await inspectLocalStartup(LOCAL_APP_SLOT, options);
-            if (!closed) publish(next);
+            let next = await inspectLocalStartup(LOCAL_APP_SLOT, options);
+            if (closed) return;
+            if (automaticFirstRun && next.kind === 'fresh') {
+              const fresh = beginLocalGenesis(LOCAL_APP_SLOT, { ...options, automatic: true });
+              const code = fresh.displayCode!;
+              try {
+                await fresh.confirm(code);
+                if (!closed) await open(code, true);
+                return;
+              } catch (cause) {
+                if (startupRefusal(cause).kind !== 'unlock-required') throw cause;
+                next = await inspectLocalStartup(LOCAL_APP_SLOT, options);
+              }
+            }
+            if (
+              automaticFirstRun &&
+              ['unlock-required', 'creation-pending'].includes(next.kind) &&
+              next.reason !== 'local-protection-needs-unlock-code'
+            ) {
+              const session = await openWriteSession(LOCAL_APP_SLOT, options);
+              let code: string | null;
+              try {
+                code = await session.run(async (task) => {
+                  const claim = await readLocalClaim(task, LOCAL_APP_SLOT);
+                  return claim ? automaticCode(task, claim) : null;
+                });
+              } finally {
+                await session.close();
+              }
+              if (code) {
+                if (next.kind === 'creation-pending')
+                  await resumeLocalGenesis(LOCAL_APP_SLOT, code, options);
+                if (!closed) await open(code, true);
+                return;
+              }
+            }
+            publish(next);
           }),
     begin() {
       if (closed || operation || state.kind !== 'fresh') return;
@@ -224,7 +273,9 @@ export const createLocalStartup = () => {
         try {
           const current = await inspectLocalStartup(LOCAL_APP_SLOT, options);
           if (closed) return;
-          if (current.kind === 'creation-pending')
+          if (current.reason === 'local-protection-needs-unlock-code')
+            await protectLocalWorkspace(LOCAL_APP_SLOT, input, options);
+          else if (current.kind === 'creation-pending')
             await resumeLocalGenesis(LOCAL_APP_SLOT, input, options);
           else if (current.kind !== 'unlock-required') {
             publish(current);
@@ -235,6 +286,38 @@ export const createLocalStartup = () => {
           input = '';
         }
       });
+    },
+    protect(input: string) {
+      if (state.kind !== 'ready' || !state.automatic || operation || closed)
+        return Promise.resolve();
+      return run(async () => {
+        retireEditors();
+        unsubscribe?.();
+        unsubscribe = undefined;
+        await workspace?.whenDurable();
+        await workspace?.close();
+        workspace = undefined;
+        liveCode = '';
+        try {
+          await protectLocalWorkspace(LOCAL_APP_SLOT, input, options);
+          if (!closed) await open(input);
+        } catch (cause) {
+          const disposition = await inspectLocalStartup(LOCAL_APP_SLOT, options);
+          if (!closed && disposition.reason === 'local-protection-needs-unlock-code')
+            publish(disposition);
+          else throw cause;
+        } finally {
+          input = '';
+        }
+      });
+    },
+    /** One live, verified handoff into explicit sync setup. Never stored or used on a cold visit. */
+    takeSyncCode() {
+      if (state.kind !== 'ready' || state.automatic || workspace?.status.state !== 'active')
+        throw Error('Protect and open this workspace first');
+      const code = liveCode;
+      liveCode = '';
+      return code;
     },
     close,
   };

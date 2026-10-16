@@ -18,3 +18,24 @@ docs/performance-experiments/2026-10-11-packaged-failure-reproduction/**/*.json
 
 # Derived tables and run records for the 2026-10-11 two-device catch-up measurement.
 docs/performance-experiments/2026-10-11-two-device-catch-up/**/*.json
+
+# Immutable command receipts, source inventories and failed histories from the full functional run.
+docs/account-conformance-runs/2026-10-15-full-functional-suite/**
+
+# Immutable retained-state reproduction, source pins and actual-provider observations.
+docs/account-conformance-runs/2026-10-15-multi-tab-setup/**
+
+# Immutable receiver/bootstrap counterexamples, controls and command receipts.
+docs/account-conformance-runs/2026-10-15-receiver-compatibility/**
+
+# Immutable remaining-failure diagnostics, approval boundaries and original failed runs.
+docs/account-conformance-runs/2026-10-15-remaining-functional-failures/**
+
+# Immutable compiler-loader failures, cache-boundary controls and verified source/build pins.
+docs/account-conformance-runs/2026-10-15-compiler-loading/**
+
+# Immutable source-closure repairs, historical identities, original failures and retained controls.
+docs/account-conformance-runs/2026-10-15-source-harnesses/**
+
+# Immutable bounded patch-series evidence, source pins and command receipts.
+docs/account-conformance-runs/2026-10-15-functional-repair-series/**

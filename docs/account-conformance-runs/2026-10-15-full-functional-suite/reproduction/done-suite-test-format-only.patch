@@ -1,0 +1,75 @@
+diff --git a/scripts/admission/catalog.mjs b/scripts/admission/catalog.mjs
+index 85c7c13..1850ec4 100644
+--- a/scripts/admission/catalog.mjs
++++ b/scripts/admission/catalog.mjs
+@@ -47,8 +47,8 @@ export const mutants = [
+     file: 'admissionQueue.ts',
+     case: 'C03.ordered-refusal',
+     assertion: 'only-head-prepared',
+-    from: "    queue.push(job);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });",
+-    to: "    queue.push(job); if (busy && kind === \"local\") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });",
++    from: '    queue.push(job);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });',
++    to: '    queue.push(job); if (busy && kind === "local") job.prepared = prepareIntent(canonical, writer, job.input, MAX_JOURNAL_UPDATE, options.prepare);\n    recordQueue(job);\n    pump();\n    notify();\n    return Object.freeze({ id: job.id, accepted: completion.promise });',
+   },
+   {
+     id: 'publish-receive-before-commit',
+diff --git a/scripts/content/catalog.mjs b/scripts/content/catalog.mjs
+index e519a2a..f94cd69 100644
+--- a/scripts/content/catalog.mjs
++++ b/scripts/content/catalog.mjs
+@@ -30,8 +30,8 @@ export const mutants = [
+     file: 'contentStore.ts',
+     case: 'C15.abandoned-seals',
+     assertion: 'abandoned-encryption-remains-counted',
+-    from: "if (await compareAndWrite(task, before, next)) {",
+-    to: "if (next) {",
++    from: 'if (await compareAndWrite(task, before, next)) {',
++    to: 'if (next) {',
+   },
+   {
+     id: 'omit-generation-fence',
+diff --git a/scripts/content-trim/catalog.mjs b/scripts/content-trim/catalog.mjs
+index b484b27..d0e538d 100644
+--- a/scripts/content-trim/catalog.mjs
++++ b/scripts/content-trim/catalog.mjs
+@@ -49,8 +49,8 @@ export const mutants = [
+     file: 'contentCompaction.ts',
+     case: 'T06.changed',
+     assertion: 'changed-record-refuses',
+-    from: "sameBytes(a.nonce, b.nonce) &&\n  sameBytes(a.ct, b.ct)",
+-    to: "true",
++    from: 'sameBytes(a.nonce, b.nonce) &&\n  sameBytes(a.ct, b.ct)',
++    to: 'true',
+   },
+   {
+     id: 'skip-delete-census',
+diff --git a/scripts/custody/catalog.mjs b/scripts/custody/catalog.mjs
+index b1cc310..8927dd7 100644
+--- a/scripts/custody/catalog.mjs
++++ b/scripts/custody/catalog.mjs
+@@ -43,8 +43,8 @@ export const mutants = [
+     file: 'custody.ts',
+     case: 'C12.metadata-authentication',
+     assertion: 'modified-count-refuses',
+-    from: "        authenticateRecord(\n          root!,\n          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),",
+-    to: "        authenticateRecord(\n          root!,\n          record,\n          guardedSubtle(() => task.step(() => {})),\n        ).catch(() => {}),",
++    from: '        authenticateRecord(\n          root!,\n          record,\n          guardedSubtle(() => task.step(() => {})),\n        ),',
++    to: '        authenticateRecord(\n          root!,\n          record,\n          guardedSubtle(() => task.step(() => {})),\n        ).catch(() => {}),',
+   },
+   {
+     id: 'request-success-as-commit',
+diff --git a/test/account-recovery/coordinator-entry.ts b/test/account-recovery/coordinator-entry.ts
+index 95f66c5..a572f60 100644
+--- a/test/account-recovery/coordinator-entry.ts
++++ b/test/account-recovery/coordinator-entry.ts
+@@ -15,9 +15,7 @@ const controller = new AbortController();
+ declare global {
+   interface Window {
+     recoveryRequest(op: string, body: unknown): Promise<unknown>;
+-    recoveryAssertion(
+-      challenge: string,
+-    ): Promise<
++    recoveryAssertion(challenge: string): Promise<
+       {
+         id: string;
+         response: {

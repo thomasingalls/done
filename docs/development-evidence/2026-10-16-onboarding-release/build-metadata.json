@@ -1,0 +1,60 @@
+{
+  "buildx.build.provenance": {
+    "builder": {
+      "id": ""
+    },
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "materials": [
+      {
+        "uri": "pkg:docker/node@24.18.0-bookworm-slim?digest=sha256:6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d\u0026platform=linux%2Farm64",
+        "digest": {
+          "sha256": "6f7b03f7c2c8e2e784dcf9295400527b9b1270fd37b7e9a7285cf83b6951452d"
+        }
+      }
+    ],
+    "invocation": {
+      "configSource": {
+        "entryPoint": "Dockerfile"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "build-arg:APP_BUILD_DATE": "2026-10-16",
+          "build-arg:APP_BUILD_REVISION": "58b1a12e33513d2a5ca10b62f268c0a9412abf36"
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ],
+        "root": {
+          "configSource": {
+            "path": "Dockerfile"
+          },
+          "request": {
+            "args": {
+              "build-arg:APP_BUILD_DATE": "2026-10-16",
+              "build-arg:APP_BUILD_REVISION": "58b1a12e33513d2a5ca10b62f268c0a9412abf36"
+            }
+          }
+        },
+        "compatibilityVersion": 30
+      },
+      "environment": {
+        "dockerfileVersion": "1.27.0",
+        "platform": "linux/arm64"
+      }
+    }
+  },
+  "buildx.build.ref": "desktop-linux/desktop-linux/yco6pxi9pbtz08c833s0dneh6",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:6fe094ddf96121c454dc629f94738ad515a532d69484176efa3f20fddceb2cb4",
+    "size": 856
+  },
+  "containerimage.digest": "sha256:6fe094ddf96121c454dc629f94738ad515a532d69484176efa3f20fddceb2cb4",
+  "image.name": "docker.io/library/done-public:58b1a12e"
+}

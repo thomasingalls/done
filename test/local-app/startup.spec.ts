@@ -1,6 +1,9 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
 
+// Explicit protected startup stays covered for compatible stored workspaces.
+// Current automatic first-run and optional protection use the shipped entries in
+// packaged.spec.ts and packaged-account/welcome.spec.ts.
 const app = (page: Page) => page.locator('.local-startup');
 const state = (page: Page, kind: string) =>
   kind === 'ready'
@@ -15,14 +18,14 @@ const census = (page: Page) =>
 const enroll = async (page: Page) => {
   await state(page, 'fresh');
   await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
-  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
+  const code = (await page.getByLabel('Generated unlock code').textContent())!;
   await page.getByRole('button', { name: 'I saved my code' }).click();
-  await expect(page.getByLabel('Generated device-lock code')).toHaveCount(0);
-  await page.getByLabel('Device-lock code', { exact: true }).fill('wrong-code');
+  await expect(page.getByLabel('Generated unlock code')).toHaveCount(0);
+  await page.getByLabel('Unlock code', { exact: true }).fill('wrong-code');
   await page.getByRole('button', { name: 'Confirm and create' }).click();
   await state(page, 'confirm-code');
   expect((await census(page)).databases).toEqual([]);
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Confirm and create' }).click();
   await state(page, 'ready');
   return code;
@@ -38,11 +41,11 @@ test('confirmation is required; reload and offline unlock use the same identity'
 }) => {
   const sockets: string[] = [];
   page.on('websocket', (socket) => sockets.push(socket.url()));
-  await page.goto('/local.html');
+  await page.goto('/test/local-app/protected-startup.html');
   await state(page, 'fresh');
   expect((await census(page)).databases).toEqual([]);
   await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
-  const cancelled = await page.getByLabel('Generated device-lock code').textContent();
+  const cancelled = await page.getByLabel('Generated unlock code').textContent();
   await page.getByRole('button', { name: 'Cancel', exact: true }).click();
   await state(page, 'fresh');
   expect(JSON.stringify(await census(page))).not.toContain(cancelled);
@@ -55,12 +58,12 @@ test('confirmation is required; reload and offline unlock use the same identity'
   await lock(page);
   await page.reload();
   await state(page, 'unlock-required');
-  await page.getByLabel('Device-lock code', { exact: true }).fill('wrong-code');
+  await page.getByLabel('Unlock code', { exact: true }).fill('wrong-code');
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await state(page, 'unlock-failed');
   expect((await census(page)).databases).toEqual(created.databases);
   await context.setOffline(true);
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await state(page, 'ready');
   expect(sockets.filter((url) => url.includes('/relay'))).toEqual([]);
@@ -68,7 +71,7 @@ test('confirmation is required; reload and offline unlock use the same identity'
 });
 
 test('existing legacy data refuses creation without touching its carriers', async ({ page }) => {
-  await page.goto('/local.html');
+  await page.goto('/test/local-app/protected-startup.html');
   await state(page, 'fresh');
   await page.evaluate(async () => {
     await new Promise<void>((resolve, reject) => {
@@ -113,7 +116,7 @@ test('existing legacy data refuses creation without touching its carriers', asyn
 test('verified content opens in the admitted editor and disappears immediately on lock', async ({
   page,
 }) => {
-  await page.goto('/local.html');
+  await page.goto('/test/local-app/protected-startup.html');
   const code = await enroll(page);
   await lock(page);
   await page.evaluate(async (code) => {
@@ -140,7 +143,7 @@ test('verified content opens in the admitted editor and disappears immediately o
       await result.workspace.close();
     }
   }, code);
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await state(page, 'ready');
   await expect(page.locator('.goals .cm-content')).toHaveText(
@@ -156,7 +159,7 @@ test('verified content opens in the admitted editor and disappears immediately o
 test('interrupted creation reopens with the saved factor and original identity', async ({
   page,
 }) => {
-  await page.goto('/local.html');
+  await page.goto('/test/local-app/protected-startup.html');
   await state(page, 'fresh');
   await page.evaluate(() => {
     const put = IDBObjectStore.prototype.put;
@@ -180,9 +183,9 @@ test('interrupted creation reopens with the saved factor and original identity',
     };
   });
   await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
-  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
+  const code = (await page.getByLabel('Generated unlock code').textContent())!;
   await page.getByRole('button', { name: 'I saved my code' }).click();
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Confirm and create' }).click();
   await state(page, 'unavailable');
   expect(
@@ -209,7 +212,7 @@ test('interrupted creation reopens with the saved factor and original identity',
   );
   await page.reload();
   await state(page, 'creation-pending');
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+  await page.getByLabel('Unlock code', { exact: true }).fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await state(page, 'ready');
   expect(

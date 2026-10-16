@@ -1,0 +1,35 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {
+  remote, path, next, start, answer, status, view, close,
+} from '<test-checkout>/test/account-receive-transport/fixtures.mjs';
+
+test('observe superseded reply outcome and independently retain zero progress and original writing', { timeout: 45000 }, async (t) => {
+  const { f, item, wire, initial } = await remote(t, 'diagnose-superseded-outcome');
+  let release, hit = false, calls = 0;
+  await f.context.route(path(f), async (route) => {
+    calls++;
+    hit = true;
+    const request = Buffer.from(route.request().postData());
+    await new Promise((r) => { release = r; });
+    await route.fulfill({ status: 200, contentType: 'application/octet-stream', body: answer(f, item, request, wire).bytes });
+  });
+  await start(f);
+  const end = Date.now() + 10000;
+  while (!hit && Date.now() < end) await new Promise((r) => setTimeout(r, 10));
+  assert.equal(hit, true);
+  assert.equal((await next(f)).kind, 'busy');
+  assert.equal(calls, 1);
+  await f.page.evaluate(() => { window.superseding = opened.prepareRead(); });
+  release();
+  const result = await f.page.evaluate(() => work);
+  const observation = { kind: result.kind, recorded: result.recorded, reason: result.reason, errorType: typeof result.error };
+  fs.writeFileSync('<execution-evidence>/superseded-outcome-observation.json', JSON.stringify(observation, null, 2) + '\n');
+  assert.deepEqual(result, { kind: 'unknown', recorded: false });
+  await f.page.evaluate(() => superseding);
+  assert.equal((await status(f.page)).receivedThrough, 0);
+  assert.equal(await view(f.page), initial);
+  await f.context.unroute(path(f));
+  await close(f.page);
+});

@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 import { loadEnv } from 'vite';
 import { accountTextMode } from './src/crdt/accountTextMode.ts';
@@ -8,6 +9,14 @@ import { accountBatchPolicy } from './src/crdt/accountBatchPolicy.ts';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
+
+const applicationSourcePath = fileURLToPath(new URL('./src/', import.meta.url))
+  .split(/[/\\]/)
+  .map((segment) => segment.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  .join('[/\\\\]');
+const applicationSource = new RegExp(
+  `^${applicationSourcePath}.*\\.(?:[jt]sx?|[cm][jt]s)(?:$|\\?)`,
+);
 
 const commitMetadata = (): { version: string; date: string } => {
   // Container contexts exclude .git and all retained/private runtime data. Require
@@ -80,7 +89,15 @@ const relayProxy = () => {
 };
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
+  plugins: [
+    react(),
+    babel({
+      // Optimizer caches outside node_modules must not be compiled a second time.
+      include: applicationSource,
+      presets: [reactCompilerPreset()],
+    }),
+    precacheServiceWorker(),
+  ],
   define: {
     // First ship compatible readers. Conversions remain a separate, explicit private opt-in.
     ...Object.fromEntries(
@@ -131,6 +148,8 @@ export default defineConfig(({ mode }) => ({
     ...relayProxy(),
   },
   test: {
+    // Bound independent file workers; keep each case's concurrency and deadlines unchanged.
+    maxWorkers: 2,
     environment: 'jsdom',
     setupFiles: ['./test/setup.ts'],
     include: ['test/**/*.test.ts', 'test/**/*.test.tsx', 'vite/**/*.test.ts'],

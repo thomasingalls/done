@@ -1,7 +1,7 @@
 import { build } from 'vite';
-import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from 'node:fs';
-import { resolve, join } from 'node:path';
+import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { emitBundle } from '../../scripts/lib/emitted-bundle.mjs';
 import { createCipheriv, hkdfSync, sign } from 'node:crypto';
 import { fixture, hash, lp } from './oracle.mjs';
 import { head, response, link, ZERO } from './history-oracle.mjs';
@@ -21,22 +21,31 @@ export async function adapters(control) {
             transform(code, id) {
               const controls = {
                 'issuance-boundary': [
-                  '/account-protocol/admissionHistory.ts',
-                  'response.head.epoch !== (response.head.position <= h.boundary.position ? 1 : 2) ||',
-                  '',
+                  [
+                    '/account-protocol/admissionHistory.ts',
+                    'response.head.epoch !== expected.tip ||',
+                    '',
+                  ],
+                  [
+                    '/account-protocol/admissionHistory.ts',
+                    'issuance = expected;',
+                    'issuance = h.authorities.find((a) => a.tip === response.head.epoch) ?? expected;',
+                  ],
                 ],
                 'publisher-binding': [
-                  '/src/crdt/accountInbound.ts',
-                  'publisher.publicKey !== h.signingKey ||',
-                  '',
+                  ['/src/crdt/accountInbound.ts', 'publisher.publicKey !== h.signingKey ||', ''],
                 ],
               };
-              const [file, before, after] = controls[control];
-              if (!id.endsWith(file)) return;
-              if (code.split(before).length !== 2)
-                throw Error('Missing unique control anchor: ' + control);
-              hits++;
-              return code.replace(before, after);
+              // Issuance is enforced by the epoch comparison and selected verification authority.
+              // This models trusting the signed proof's epoch, retaining all signature/link checks.
+              for (const [file, before, after] of controls[control]) {
+                if (!id.endsWith(file)) continue;
+                if (code.split(before).length !== 2)
+                  throw Error('Missing unique control anchor: ' + control);
+                code = code.replace(before, after);
+                hits++;
+              }
+              return code;
             },
           },
         ]
@@ -49,19 +58,15 @@ export async function adapters(control) {
       lib: { entry: resolve('test/account-successor/client-browser.ts'), formats: ['es'] },
     },
   });
-  if (control && hits !== 1) throw Error('Unapplied control');
-  const output = (Array.isArray(result) ? result[0] : result).output.find(
-    (f) => f.type === 'chunk',
-  );
-  const parent = resolve('test-results/account-successor-adapters');
-  mkdirSync(parent, { recursive: true });
-  const dir = mkdtempSync(join(parent, 'module-'));
-  const file = join(dir, 'adapters.mjs');
-  writeFileSync(file, output.code);
-  return {
-    lib: await import(pathToFileURL(file)),
-    clear: () => rmSync(dir, { recursive: true, force: true }),
-  };
+  if (control && hits !== (control === 'issuance-boundary' ? 2 : 1))
+    throw Error('Unapplied control');
+  const emitted = emitBundle(result, resolve('test-results/account-successor-adapters'));
+  try {
+    return { lib: await import(pathToFileURL(emitted.entry)), clear: emitted.clear };
+  } catch (error) {
+    emitted.clear();
+    throw error;
+  }
 }
 const u32 = (n) => {
   const b = Buffer.alloc(4);

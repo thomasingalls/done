@@ -1,0 +1,49 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { spawn, execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
+const evidence = '<execution-evidence>';
+const original = '<test-checkout>';
+const patched = '<approved-harness-checkout>';
+const stateFile = path.join(evidence, 'pending-followups.json');
+let continuation = JSON.parse(fs.readFileSync(path.join(evidence, 'continuation-summary.json')));
+if (continuation.status === 'running') console.log('Waiting for original run to finish before starting isolated browser follow-ups.');
+while (continuation.status === 'running') {
+  await new Promise(resolve => setTimeout(resolve, 5000));
+  continuation = JSON.parse(fs.readFileSync(path.join(evidence, 'continuation-summary.json')));
+}
+const state = JSON.parse(fs.readFileSync(stateFile));
+const save = () => fs.writeFileSync(stateFile, JSON.stringify(state, null, 2) + '\n');
+const results = [];
+const saveResults = () => fs.writeFileSync(path.join(evidence, 'isolated-followup-results.json'), JSON.stringify(results, null, 2) + '\n');
+async function run(command, cwd, label) {
+  const log = 'followup-' + label + '.log';
+  const fd = fs.openSync(path.join(evidence, log), 'wx');
+  const row = { command, cwd, log, startedAt: new Date().toISOString(), status: 'running' };
+  results.push(row); saveResults(); console.log('START ' + command);
+  const env = { ...process.env, PATH: '/private/tmp/done-pnpm11/bin:' + path.join(cwd, 'node_modules/.bin') + ':' + process.env.PATH, pnpm_config_verify_deps_before_run: 'warn', NO_UPDATE_NOTIFIER: '1' };
+  const child = spawn('/bin/sh', ['-c', command], { cwd, env, stdio: ['ignore', fd, fd], detached: true });
+  row.pid = child.pid; saveResults();
+  row.exitCode = await new Promise(resolve => { child.once('error', error => { row.error = String(error); resolve(null); }); child.once('exit', (code, signal) => { row.signal = signal; resolve(code); }); });
+  fs.closeSync(fd); row.status = row.exitCode === 0 ? 'passed' : 'failed'; row.completedAt = new Date().toISOString(); saveResults(); console.log('END ' + row.status + ' ' + command);
+  return row;
+}
+state.afterContinuation[0].status = 'running'; save();
+let result = await run('pnpm storage:genesis', original, 'genesis-isolated');
+state.afterContinuation[0].status = result.status; state.afterContinuation[0].log = result.log; save();
+state.afterContinuation[1].status = 'running'; save();
+result = await run(state.afterContinuation[1].command, state.afterContinuation[1].checkout, 'successor-prior-baseline');
+state.afterContinuation[1].status = result.status; state.afterContinuation[1].log = result.log; save();
+state.afterContinuation[2].status = 'running'; save();
+result = await run(state.afterContinuation[2].command, original, 'superseded-observation');
+state.afterContinuation[2].status = result.status; state.afterContinuation[2].log = result.log; save();
+state.afterContinuation[3].status = 'running'; save();
+const patchFiles = ['/private/tmp/done-full-suite-harness-repairs.patch', '/private/tmp/done-passkey-general-census-fixture.patch'];
+const identity = { revision: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: patched, encoding: 'utf8' }).trim(), patches: patchFiles.map(file => ({ file, sha256: createHash('sha256').update(fs.readFileSync(file)).digest('hex') })), diff: execFileSync('git', ['diff', '--no-ext-diff'], { cwd: patched, encoding: 'utf8' }) };
+fs.writeFileSync(path.join(evidence, 'approved-harness-source-identity.json'), JSON.stringify(identity, null, 2) + '\n');
+const commands = ['pnpm storage:custody', 'pnpm storage:content', 'pnpm storage:journal', 'pnpm storage:admission', 'pnpm storage:trim', 'pnpm storage:contention', 'pnpm storage:projection', 'pnpm storage:delivery', 'node scripts/release-validation/check.mjs --record', 'node scripts/release-validation/plan.mjs --record', 'node --test --test-concurrency=2 test/release-validation/*.test.mjs'];
+const rows = [];
+for (const [index, command] of commands.entries()) rows.push(await run(command, patched, 'approved-' + String(index + 1).padStart(2, '0') + '-' + command.replace(/[^a-zA-Z0-9-]/g, '_')));
+state.afterContinuation[3].status = rows.every(row => row.status === 'passed') ? 'passed' : 'failed';
+state.afterContinuation[3].logs = rows.map(row => row.log); save();
+console.log(JSON.stringify({ status: 'completed', passed: results.filter(row => row.status === 'passed').length, failed: results.filter(row => row.status !== 'passed').length }));

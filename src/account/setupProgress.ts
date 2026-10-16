@@ -3,12 +3,22 @@ import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-pr
 import { hex } from '../../account-protocol/recovery';
 import type { PrivateAccess } from './privateAccess';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
+import type { StartupDisposition } from '../crdt/startupState';
 import { isAccountId, type RememberedAccount } from './accountIdentity';
+import {
+  SETUP_DB,
+  openSetupDB,
+  withSetupMetadataLock,
+  assertSetupNotRemoved,
+  setupEpochKey,
+  isSetupEpoch,
+  SetupRetired,
+} from './setupMetadata';
+export { SETUP_DB } from './setupMetadata';
 export type SetupConfig = { pin: AuthorityPin; readonly membershipContinuation?: boolean } & (
   | { networkSessions: true; token?: never }
   | { networkSessions?: false; token: PrivateAccess }
 );
-export const SETUP_DB = 'done.first-device-setup.v1';
 export const isSetupSlot = (value: unknown): value is string =>
   value === 'local' || (typeof value === 'string' && /^account-[a-f0-9]{32}$/.test(value));
 export const progressKey = (slotId: string) => {
@@ -51,6 +61,7 @@ export type SetupState = (
       kind:
         | 'intro'
         | 'unlock'
+        | 'resume-setup'
         | 'passkey'
         | 'confirm-passkey'
         | 'confirm-recovery'
@@ -59,7 +70,9 @@ export type SetupState = (
       error?: string;
     }
   | { kind: 'save-recovery' | 'save-device-code'; code: string }
-  | { kind: 'working'; message: string }
+  | { kind: 'working'; message: string; detail?: string }
+  | { kind: 'approve-passkey'; message: string; description: string }
+  | { kind: 'storage-blocked'; disposition?: StartupDisposition; error?: string }
   | {
       kind: 'ready';
       workspace: AdmittedWorkspace;
@@ -81,40 +94,62 @@ export const displayName = (value: unknown): string | undefined => {
   return name.length > 0 && name.length <= 80 && !/\p{Cc}/u.test(name) ? name : undefined;
 };
 
-const openSetupDB = () =>
-  new Promise<IDBDatabase>((resolve, reject) => {
-    const request = indexedDB.open(SETUP_DB, 1);
-    request.onupgradeneeded = () => request.result.createObjectStore('attempt');
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error);
-  });
-export async function setupProgress(
-  value?: Retained | null,
-  slotId = 'local',
-): Promise<Retained | null> {
+/** Each coordinator keeps its epoch across async responses and explicit Start fresh elsewhere. */
+export function createSetupProgress(slotId = 'local') {
   const key = progressKey(slotId);
-  if (value && value.slotId !== slotId) throw Error('Setup route mismatch');
-  const db = await openSetupDB();
-  try {
-    return await new Promise((resolve, reject) => {
-      const tx = db.transaction('attempt', value === undefined ? 'readonly' : 'readwrite', {
-        durability: 'strict',
-      });
-      const store = tx.objectStore('attempt');
-      const request =
-        value === undefined
-          ? store.get(key)
-          : value === null
-            ? store.delete(key)
-            : store.put(value, key);
-      tx.oncomplete = () => resolve(value === undefined ? (request.result ?? null) : value);
-      tx.onabort = () => reject(tx.error ?? Error('Setup progress could not be saved'));
-      tx.onerror = () => {};
+  let epoch: string | null | undefined;
+  return (value?: Retained | null): Promise<Retained | null> =>
+    withSetupMetadataLock(slotId, async () => {
+      if (value && value.slotId !== slotId) throw Error('Setup route mismatch');
+      if (value !== undefined) await assertSetupNotRemoved(slotId);
+      const db = await openSetupDB();
+      try {
+        return await new Promise<Retained | null>((resolve, reject) => {
+          const tx = db.transaction('attempt', value === undefined ? 'readonly' : 'readwrite', {
+            durability: 'strict',
+          });
+          const store = tx.objectStore('attempt');
+          const fence = store.get(setupEpochKey(slotId));
+          let failure: unknown,
+            result: Retained | null = null;
+          fence.onsuccess = () => {
+            try {
+              if (
+                fence.result !== undefined &&
+                (!isSetupEpoch(fence.result) || fence.result.slotId !== slotId)
+              )
+                throw Error('Setup removal epoch is unreadable');
+              const current = fence.result?.epoch ?? null;
+              if (epoch === undefined) epoch = current;
+              else if (epoch !== current)
+                throw new SetupRetired('This setup owner was retired by device removal');
+              const request =
+                value === undefined
+                  ? store.get(key)
+                  : value === null
+                    ? store.delete(key)
+                    : store.put(value, key);
+              request.onsuccess = () => {
+                result = value === undefined ? (request.result ?? null) : value;
+              };
+            } catch (cause) {
+              failure = cause;
+              tx.abort();
+            }
+          };
+          tx.oncomplete = () => resolve(result);
+          tx.onabort = () =>
+            reject(failure ?? tx.error ?? Error('Setup progress could not be saved'));
+          tx.onerror = () => {};
+        });
+      } finally {
+        db.close();
+      }
     });
-  } finally {
-    db.close();
-  }
 }
+/** One-shot metadata access; async ceremonies use a retained createSetupProgress owner. */
+export const setupProgress = (value?: Retained | null, slotId = 'local') =>
+  createSetupProgress(slotId)(value);
 export const hasFirstDeviceSetup = async (slotId = 'local') =>
   (await setupProgress(undefined, slotId)) !== null;
 /** Display only. It cannot open a slot or authorize registration, sign-in or writing. */

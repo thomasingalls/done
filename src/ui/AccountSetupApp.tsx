@@ -7,6 +7,60 @@ import { AccountDevices } from './AccountDevices';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 
 import { useCeremonyNavigation } from './ceremonyNavigation';
+import { RemoveFromDeviceButton } from './DeviceDataRemoval';
+import type { StartupDisposition } from '../crdt/startupState';
+
+function storageMessage(disposition?: StartupDisposition) {
+  if (disposition?.reason === 'enable-local-protection-before-sync')
+    return {
+      title: 'Add protection before sync',
+      detail:
+        'Open your local workspace and choose “Add an unlock code” or “Set up sync”. You’ll see and save your new code before you need to enter it.',
+    };
+  switch (disposition?.kind) {
+    case 'migration-required':
+      return {
+        title: 'Your existing writing needs migration',
+        detail:
+          'Keep your existing installation and verified export available. Finish migration and verified legacy source cleanup before continuing setup, then check again. Your saved writing has been kept.',
+      };
+    case 'fresh':
+      return {
+        title: 'Open your local workspace first',
+        detail:
+          'Start with your local list, then choose “Set up sync”. You’ll be guided through adding protection and saving a code.',
+      };
+    case 'clearing':
+      return {
+        title: 'Workspace removal is unfinished',
+        detail:
+          'Open “Remove from this device” to resume the authorized cleanup. Setup cannot continue while removal is unfinished.',
+      };
+    case 'cleared':
+      return {
+        title: 'This workspace was removed',
+        detail:
+          'Choose an account to begin a separate setup. Removed writing cannot be reopened with a code.',
+      };
+    case 'app-update-required':
+      return {
+        title: 'This workspace needs a compatible app',
+        detail:
+          'Use the app version that supports this saved workspace, then check again. Your saved data has been kept.',
+      };
+    case 'busy':
+      return {
+        title: 'Your workspace is busy',
+        detail: 'Close other tabs using this workspace and check again.',
+      };
+    default:
+      return {
+        title: 'Setup needs attention',
+        detail:
+          'Check that browser storage is available, then check again or choose another account. Keep your browser data and backups available; no replacement code will be generated for an unreadable workspace.',
+      };
+  }
+}
 
 function NameEntry({
   initialName = '',
@@ -38,8 +92,6 @@ function NameEntry({
         }}
         autoComplete="nickname"
         maxLength={80}
-        required
-        autoFocus
       />
       <p className="setup-note">
         Shown when you return to this device. You can change it in settings.
@@ -99,6 +151,7 @@ export function Setup({
   slotId,
   onName,
   onConnectDevice,
+  takeInitialCode,
 }: {
   config: SetupConfig;
   onBack: () => void;
@@ -108,8 +161,9 @@ export function Setup({
   slotId: string;
   onName?: (name: string) => void;
   onConnectDevice: () => void;
+  takeInitialCode?: () => string | undefined;
 }) {
-  const [owner] = useState(() => createFirstDeviceSetup(config, slotId));
+  const [owner] = useState(() => createFirstDeviceSetup(config, slotId, takeInitialCode));
   const state = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
   const heading = useRef<HTMLHeadingElement>(null);
   const [inspected, setInspected] = useState(false);
@@ -157,6 +211,7 @@ export function Setup({
   if (state.kind === 'ready')
     return (
       <WorkspaceUiProvider
+        slotId={slotId}
         workspace={state.workspace}
         sync={state.sync}
         actorId={state.actorId}
@@ -185,37 +240,43 @@ export function Setup({
       </WorkspaceUiProvider>
     );
   const stage =
-    state.kind === 'passkey' || state.kind === 'confirm-passkey'
-      ? 1
-      : state.kind === 'save-recovery' || state.kind === 'confirm-recovery'
-        ? 2
-        : 0;
+    state.kind === 'approve-passkey'
+      ? 3
+      : state.kind === 'passkey' || state.kind === 'confirm-passkey'
+        ? 1
+        : state.kind === 'save-recovery' || state.kind === 'confirm-recovery'
+          ? 2
+          : 0;
   const title =
-    state.kind === 'intro'
-      ? state.fresh
-        ? 'Create a new account'
-        : 'Make this your account workspace'
-      : state.kind === 'save-device-code'
-        ? 'Save your device-lock code'
-        : state.kind === 'confirm-device-code'
-          ? 'Check your saved device-lock code'
-          : state.kind === 'unlock'
-            ? state.accountName
-              ? `Unlock ${state.accountName}’s account`
-              : 'Unlock your workspace'
-            : state.kind === 'name'
-              ? 'What should we call you?'
-              : state.kind === 'passkey'
-                ? 'Create your passkey'
-                : state.kind === 'confirm-passkey'
-                  ? 'Try your new passkey'
-                  : state.kind === 'save-recovery'
-                    ? 'Save your recovery code'
-                    : state.kind === 'confirm-recovery'
-                      ? 'Check your saved copy'
-                      : 'message' in state
-                        ? state.message
-                        : 'Account setup';
+    state.kind === 'storage-blocked'
+      ? storageMessage(state.disposition).title
+      : state.kind === 'intro'
+        ? state.fresh
+          ? 'Create a new account'
+          : 'Set up sync for this list'
+        : state.kind === 'save-device-code'
+          ? 'Save your unlock code'
+          : state.kind === 'confirm-device-code'
+            ? 'Check your saved unlock code'
+            : state.kind === 'unlock'
+              ? state.accountName
+                ? `Unlock ${state.accountName}’s account`
+                : 'Unlock your workspace'
+              : state.kind === 'resume-setup'
+                ? 'Continue account setup'
+                : state.kind === 'name'
+                  ? 'What should we call you?'
+                  : state.kind === 'passkey'
+                    ? 'Create your passkey'
+                    : state.kind === 'confirm-passkey'
+                      ? 'Try your new passkey'
+                      : state.kind === 'save-recovery'
+                        ? 'Save your recovery code'
+                        : state.kind === 'confirm-recovery'
+                          ? 'Check your saved copy'
+                          : 'message' in state
+                            ? state.message
+                            : 'Account setup';
   return (
     <main className="local-startup workspace-gate account-setup" data-setup-state={state.kind}>
       <WorkspaceBackdrop />
@@ -229,24 +290,38 @@ export function Setup({
             Back
           </button>
         )}
-        {state.kind !== 'unlock' && state.kind !== 'working' && state.kind !== 'name' && (
-          <ol className="setup-steps" aria-label="Account setup progress">
-            {['Your workspace', 'Passkey', 'Recovery code'].map((name, i) => (
-              <li key={name} aria-current={stage === i ? 'step' : undefined}>
-                {name}
-              </li>
-            ))}
-          </ol>
-        )}
+        {state.kind !== 'unlock' &&
+          state.kind !== 'working' &&
+          state.kind !== 'name' &&
+          state.kind !== 'storage-blocked' && (
+            <ol className="setup-steps" aria-label="Account setup progress">
+              {['Your list', 'Passkey', 'Recovery code', 'Connect'].map((name, i) => (
+                <li key={name} aria-current={stage === i ? 'step' : undefined}>
+                  {name}
+                </li>
+              ))}
+            </ol>
+          )}
         <h1 id="setup-title" tabIndex={-1} ref={heading}>
           {title}
         </h1>
+        {state.kind === 'storage-blocked' && (
+          <>
+            <p>{storageMessage(state.disposition).detail}</p>
+            <button onClick={() => void owner.inspect()}>Check again</button>
+            {!state.fresh && (
+              <button className="local-secondary" onClick={() => leave(onOtherAccount)}>
+                Choose an account
+              </button>
+            )}
+          </>
+        )}
         {state.kind === 'intro' && (
           <>
             <p>
               {state.fresh
                 ? 'Start with an empty list. Accounts already saved on this device stay separate.'
-                : 'Keep everything you’ve written and connect this workspace to your account.'}
+                : 'Keep your list and notes, and connect an encrypted copy to your account. You can keep working offline.'}
             </p>
             <div className="setup-explanation">
               <p>
@@ -259,9 +334,9 @@ export function Setup({
               </p>
             </div>
             <NameEntry
-              initialName={initialName || state.requestedName}
+              initialName={initialName || state.requestedName || 'You'}
               onChange={onName}
-              button={state.fresh ? 'Create account' : 'Get started'}
+              button={state.fresh ? 'Create account' : 'Continue to passkey setup'}
               onSubmit={owner.start}
             />
             <button
@@ -280,11 +355,11 @@ export function Setup({
               Save this code somewhere safe outside this browser. It unlocks this new account’s
               writing on this device.
             </p>
-            <code className="local-generated-code" aria-label="Generated device-lock code">
+            <code className="local-generated-code" aria-label="Generated unlock code">
               {state.code}
             </code>
             <button className="setup-primary" onClick={owner.savedDeviceCode}>
-              I saved my device-lock code
+              I saved my unlock code
             </button>
           </>
         )}
@@ -292,8 +367,8 @@ export function Setup({
           <>
             <p>Enter the code from your saved copy to create your empty workspace.</p>
             <CodeEntry
-              label="Device-lock code"
-              button="Confirm device-lock code"
+              label="Unlock code"
+              button="Confirm unlock code"
               onSubmit={(code) => {
                 void owner.confirmDeviceCode(code);
               }}
@@ -305,14 +380,14 @@ export function Setup({
             {state.accountId && <AccountIdentity id={state.accountId} />}
             <p>
               {state.returning
-                ? 'Enter your device-lock code, then use your passkey to open your saved writing.'
-                : 'Enter the device-lock code you saved for this workspace.'}
+                ? 'Enter your unlock code, then use your passkey to open your saved writing.'
+                : 'Enter the unlock code you saved for this workspace.'}
             </p>
             {state.returning && (
               <p className="setup-note">You can unlock on this device offline.</p>
             )}
             <CodeEntry
-              label="Device-lock code"
+              label="Unlock code"
               button={state.returning ? 'Confirm code and unlock with passkey' : 'Continue'}
               onSubmit={(code) => {
                 void owner.unlock(code);
@@ -337,6 +412,14 @@ export function Setup({
                 void owner.saveName(name);
               }}
             />
+          </>
+        )}
+        {state.kind === 'resume-setup' && (
+          <>
+            <p>Your local code has been checked. Account setup needs another attempt.</p>
+            <button className="setup-primary" onClick={() => void owner.resumeSetup()}>
+              Retry account setup
+            </button>
           </>
         )}
         {state.kind === 'passkey' && (
@@ -365,6 +448,14 @@ export function Setup({
             </button>
           </>
         )}
+        {state.kind === 'approve-passkey' && (
+          <>
+            <p>{state.description}</p>
+            <button className="setup-primary" onClick={owner.approvePasskey}>
+              Approve with passkey
+            </button>
+          </>
+        )}
         {state.kind === 'save-recovery' && (
           <>
             <p>
@@ -387,11 +478,12 @@ export function Setup({
           <>
             <p>
               Enter the recovery code from the copy you saved. Your browser will also ask you to use
-              your passkey to finish connecting.
+              your passkey to confirm this recovery setup. You’ll review the connection approvals
+              next.
             </p>
             <CodeEntry
               label="Recovery code"
-              button={state.fresh ? 'Finish account setup' : 'Confirm and connect'}
+              button="Confirm recovery and use passkey"
               onSubmit={(code) => {
                 void owner.confirmRecovery(code);
               }}
@@ -408,8 +500,19 @@ export function Setup({
         )}
         {state.kind === 'working' && (
           <p role="status">
-            {state.fresh ? 'Your accounts stay separate.' : 'Your writing stays in this workspace.'}
+            {state.detail ??
+              (state.fresh
+                ? 'Your accounts stay separate.'
+                : 'Your writing stays in this workspace.')}
           </p>
+        )}
+        {(state.kind === 'unlock' || state.kind === 'storage-blocked') && (
+          <RemoveFromDeviceButton slotId={slotId} />
+        )}
+        {slotId === 'local' && !state.returning && !['intro', 'working'].includes(state.kind) && (
+          <button className="local-secondary" onClick={() => leave(onBack)}>
+            Back to local workspace
+          </button>
         )}
         {state.fresh && !['intro', 'unlock', 'working'].includes(state.kind) && (
           <button
@@ -430,7 +533,9 @@ export function Setup({
           state.error &&
           state.kind !== 'confirm-recovery' &&
           state.kind !== 'unlock' &&
+          state.kind !== 'resume-setup' &&
           state.kind !== 'confirm-device-code' &&
+          state.kind !== 'storage-blocked' &&
           state.kind !== 'name' && (
             <button
               className="local-secondary"

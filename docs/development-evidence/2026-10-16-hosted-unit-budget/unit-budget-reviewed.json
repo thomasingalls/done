@@ -1,0 +1,18 @@
+{
+  "base": "dbae813ca026081cecf33ee049a2e0706b1c6080",
+  "sourcePins": {
+    ".github/workflows/ci.yml": "5d65c67711ffdfbbb3a28e9aedd9bc82a201270d46197777b038b3f58959c59a",
+    "test/localBaselineAnchor.test.ts": "23374b782e7d51fed8978b561b1136e6c9c547513ee3f13a54d594167921e56d",
+    "test/pendingProjection.test.ts": "6fe3f0f2b4f2bfb26989f370ee7f77ff91de33e37aa9b7d6b64fc7d73c172786",
+    "docs/release-validation-graph.json": "201c8dd0a793a700132fd17a02619ba34347f264f2547da9d41921f7b1c31aaf",
+    "docs/release-validation-manifest.json": "cbf4685ec0797f9651b699945ab0fe1692a7a7910ff06925c71abe5221829689"
+  },
+  "manifestRowsByteEquivalentAfterParsing": true,
+  "priorObligations": 860,
+  "runtimeChanged": false,
+  "caseCountChanged": false,
+  "seedsAndRunsChanged": false,
+  "caseDeadlinesChanged": false,
+  "jobDeadlineMinutes": 20,
+  "hostedUnitFileWorkers": 1
+}

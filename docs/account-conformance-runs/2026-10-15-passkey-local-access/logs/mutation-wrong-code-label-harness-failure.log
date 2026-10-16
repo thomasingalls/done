@@ -1,0 +1,28 @@
+
+ RUN  v4.1.10 /private/tmp/done-passkey-mutant-wrong-code-label
+
+ ❯ test/passkeyResponse.test.ts (0 test)
+ ❯ test/firstDeviceSetupAccess.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/firstDeviceSetupAccess.test.ts [ test/firstDeviceSetupAccess.test.ts ]
+ FAIL  test/passkeyResponse.test.ts [ test/passkeyResponse.test.ts ]
+Error: Transform failed with 1 error:
+
+[31m[TSCONFIG_ERROR] [0mFailed to load tsconfig for 'test/setup.ts': Tsconfig not found
+
+  Plugin: vite:oxc
+  File: /private/tmp/done-passkey-mutant-wrong-code-label/test/setup.ts
+ ❯ transformWithOxc ../../..<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:4033:19
+ ❯ TransformPluginContext.transform ../../..<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:4104:26
+ ❯ EnvironmentPluginContainer.transform ../../..<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:30201:51
+ ❯ loadAndTransform ../../..<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:20124:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  no tests
+   Start at  10:37:51
+   Duration  213ms (transform 0ms, setup 0ms, import 0ms, tests 0ms, environment 0ms)

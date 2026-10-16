@@ -29,6 +29,7 @@ const files = [
   'tsconfig.app.json',
   'src/account/recovery.ts',
   'src/account/recoveryOwner.ts',
+  'src/account/setupRecoveryMetadata.ts',
   'test/account-core/fixtures.mjs',
   'test/account-core/worker.mjs',
   'scripts/account-recovery/run.mjs',

@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "1caf0982382da251cb9c2860d84e4dfe2cb2a3d2",
+  "artifacts": {
+    "README.md": {
+      "sha256": "fb754bf38b741782674928496981820fb5cf0d6f0765959a75c757c0c7f3e333",
+      "bytes": 1080
+    },
+    "logs/discovery-before.log.gz": {
+      "sha256": "b18603becd4c1ee8c2665b4d2f09dcd531014087f83cb5172dfa716803d0b044",
+      "bytes": 1134
+    },
+    "logs/discovery-control-after.log.gz": {
+      "sha256": "0c63280d4a0e5f8e19d34e6c739b71480dee0f931ade3586d75b02977e1d8ba0",
+      "bytes": 812
+    },
+    "logs/discovery-final.log.gz": {
+      "sha256": "06e7303f8055a82f237801a6aa06cc4be50eb0e386ed139c66a84425a1b67cb6",
+      "bytes": 814
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "e8717d6920aad9319f62ca5e141123708f24785031aee36e83fcbcfae23a017a",
+      "bytes": 240
+    },
+    "logs/plan.log.gz": {
+      "sha256": "6f09f7aff50b516c2ee7b385e14a1f2c0b26000a625abb1c86b1938346a8a9eb",
+      "bytes": 224
+    },
+    "receipts/discovery-control-after.json.gz": {
+      "sha256": "96b0a188ca17c17716b4929cb30d3ff89b173aaf2e377a95a59844d06d36a9cb",
+      "bytes": 165
+    },
+    "receipts/discovery-final.json.gz": {
+      "sha256": "645b87a6ce726c7f1308fe57cefa578cca119717f4e466e48397ccfd9a08cb96",
+      "bytes": 164
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "1d80a2449231b9570d72e7f6281e1be005f99ec51033717cb4f36ae94f323d37",
+      "bytes": 142
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "d9b1f8fdae6d177d08c8408883831cb9a034f826c020a22508dc3810debaee47",
+      "bytes": 139
+    },
+    "source-pins.json.gz": {
+      "sha256": "dd2208067c81f6d37ae770df686c105c2d652412e096f08fe528f2602697652b",
+      "bytes": 74254
+    }
+  }
+}

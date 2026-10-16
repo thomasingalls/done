@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "85b907b132ed47b4dd3fc3eadcbf1b9aba5675df",
+  "artifacts": {
+    "README.md": {
+      "sha256": "fd05c35b3df65727c5df77746e8a1953d95e7a7bc097f346bd91b9696f5e3926",
+      "bytes": 1518
+    },
+    "logs/authority-after.log.gz": {
+      "sha256": "3767d86a039544d62965bff329c04fbd9c1c98c52809e24992e18c8e80cd384f",
+      "bytes": 448
+    },
+    "logs/authority-before.log.gz": {
+      "sha256": "07f8f1e3575a53c18ef77ef2507ff5df4540355a618ae0e02860c8c8ca466fc6",
+      "bytes": 444
+    },
+    "logs/initial-pin-drift-control.log.gz": {
+      "sha256": "fe77a402995c75d44ad697bee888b9ebfcf2100888379ca88cb0f5c33d6efff3",
+      "bytes": 312
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "e8717d6920aad9319f62ca5e141123708f24785031aee36e83fcbcfae23a017a",
+      "bytes": 240
+    },
+    "logs/pin-drift-control.log.gz": {
+      "sha256": "fe77a402995c75d44ad697bee888b9ebfcf2100888379ca88cb0f5c33d6efff3",
+      "bytes": 312
+    },
+    "logs/plan.log.gz": {
+      "sha256": "9dbf8ff407b1809c93c1a2d71566f584ac2982d8046f034b4c722a5d7afefc56",
+      "bytes": 224
+    },
+    "logs/section-review.log.gz": {
+      "sha256": "5e65f2aaf6d093ae1b24719270a38c6c92354bd36a0f01454c46e3111d0ea329",
+      "bytes": 1117
+    },
+    "receipts/authority-after.json.gz": {
+      "sha256": "0bca3542eee05ee9146efabb2a942656cf5af0bdb6aca26bf6d04c831502be3f",
+      "bytes": 128
+    },
+    "receipts/initial-pin-drift-control.json.gz": {
+      "sha256": "31545c3ac62cf97369f2f4151685aeb6ff1772af2b796e631d148c37fc2b7c1e",
+      "bytes": 122
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "c2242230f36d72f21fa119f2247c10617d97807b9ba4781df9ac3c5c49e13972",
+      "bytes": 141
+    },
+    "receipts/pin-drift-control.json.gz": {
+      "sha256": "35c5e1882c8d928bebb93ce7f38c2f3e3767827e6cbf9675d184b4751434fffc",
+      "bytes": 169
+    },
+    "receipts/pin-identities.json.gz": {
+      "sha256": "7b1c53988221191b1f33bf97155f2098251d903d76bff656a32883f631cd44b0",
+      "bytes": 223
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "5c1479fe52eca5b4de0b4fa5d25249730e65c09d476f348517b04c77947afb40",
+      "bytes": 140
+    },
+    "source-pins.json.gz": {
+      "sha256": "d923d8edff8d3fcdbbfebcd360ad2b4a85376a50428d7a21188294ad26465685",
+      "bytes": 74251
+    }
+  }
+}

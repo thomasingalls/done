@@ -56,13 +56,29 @@ test(
                 ? { kind: result.kind, bytes: Buffer.from(result.bytes).toString('hex') }
                 : result,
           });
-          let saved;
+          let saved,
+            quarantined = false;
           for (const c of commands) {
             coverage[c.op] = (coverage[c.op] ?? 0) + 1;
             const beforeHash = hash(inventory(x));
             if (c.op === 'append') {
               const w = x.make(retained.length + 1, 'authored-' + retained.length),
                 r = await x.call(w);
+              if (quarantined) {
+                assert.deepEqual(r, { kind: 'unknown', reason: 'ledger-integrity' });
+                assert.equal(hash(inventory(x)), beforeHash);
+                entry.observations.push({
+                  op: c.op,
+                  quarantined,
+                  position: retained.length + 1,
+                  envelope: Buffer.from(envelope(w)).toString('hex'),
+                  before: beforeHash,
+                  after: hash(inventory(x)),
+                  result: r,
+                });
+                save('running');
+                continue;
+              }
               assert.equal(r.kind, 'decision');
               entry.observations.push({
                 op: c.op,
@@ -79,6 +95,7 @@ test(
             if (c.op === 'restart') {
               x.f.restart();
               x.authority.restart();
+              quarantined = false;
               entry.observations.push({ op: c.op, before: beforeHash, after: hash(inventory(x)) });
               save('running');
               continue;
@@ -101,7 +118,8 @@ test(
               );
               const result = await read(x, q);
               observation = { ...observe(q, result), faulted: hash(inventory(x)) };
-              assert.equal(result.kind, 'unknown');
+              assert.deepEqual(result, { kind: 'unknown', reason: 'ledger-integrity' });
+              quarantined = true;
               mutate(x, (db) =>
                 db
                   .prepare('UPDATE delivery_decisions SET ordinal=? WHERE ordinal=?')
@@ -110,8 +128,12 @@ test(
             } else {
               const result = await read(x, q);
               observation = observe(q, result);
-              pageProof(result, q, x, retained);
-              saved = q;
+              if (quarantined)
+                assert.deepEqual(result, { kind: 'unknown', reason: 'ledger-integrity' });
+              else {
+                pageProof(result, q, x, retained);
+                saved = q;
+              }
             }
             entry.observations.push({
               op: c.op,
@@ -121,6 +143,34 @@ test(
             });
             save('running');
             assert.equal(inventory(x), before);
+          }
+          if (quarantined) {
+            const before = inventory(x);
+            const request = query(x),
+              attempted = x.make(retained.length + 1, 'quarantined-final');
+            const readResult = await read(x, request),
+              appendResult = await x.call(attempted);
+            for (const result of [readResult, appendResult])
+              assert.deepEqual(result, { kind: 'unknown', reason: 'ledger-integrity' });
+            assert.equal(
+              inventory(x),
+              before,
+              'restoring bytes cannot clear running-owner quarantine',
+            );
+            entry.recovery = {
+              before: hash(before),
+              after: hash(inventory(x)),
+              read: observe(request, readResult),
+              append: {
+                position: retained.length + 1,
+                envelope: Buffer.from(envelope(attempted)).toString('hex'),
+                result: appendResult,
+              },
+            };
+            x.f.restart();
+            x.authority.restart();
+            entry.recovery.restart = { before: hash(before), after: hash(inventory(x)) };
+            quarantined = false;
           }
           let after = 0;
           do {

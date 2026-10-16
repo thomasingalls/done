@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   build:
-    name: Application build
+    name: Build and regression gates
     runs-on: ubuntu-24.04
     timeout-minutes: 20
 
@@ -51,6 +51,64 @@ jobs:
 
       - name: Build and check the application
         run: pnpm build
+
+      - name: Check security contracts and published vectors
+        run: pnpm vectors:check && pnpm retention:check && pnpm status:check && pnpm limit:check && pnpm authority:check && pnpm recipient:check && pnpm admission:check && pnpm remediation:check && pnpm debts:check && pnpm wasm:verify
+
+      - name: Check the complete release inventory
+        run: pnpm validation:inventory && node scripts/release-validation/plan.mjs
+
+      - name: Check release execution adapters
+        run: node --test --test-concurrency=2 test/release-validation/onboarding-gates.test.mjs test/release-validation/vitest.test.mjs test/release-validation/playwright.test.mjs test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs test/release-validation/account-fixtures.test.mjs test/release-validation/campaign-wrappers.test.mjs test/release-validation/manifest.test.mjs test/account-first-authority/registry.test.mjs
+
+      - name: Run all unit regression tests
+        # Keep each case's workload and deadline; avoid two heavy files competing on this runner.
+        run: pnpm test --maxWorkers=1
+
+      - name: Check packaged application routing and gateway boundaries
+        run: node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs
+
+      - name: Install Playwright Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Check development compiler loading with fresh and retained caches
+        run: pnpm exec playwright test --config playwright.compiler-loading.config.ts
+
+      - name: Check source artifacts and historical owner regressions
+        run: >-
+          node --test --test-concurrency=1 --test-timeout=60000
+          test/account-successor/emitted-bundle.test.mjs
+          test/account-successor/stage-authentication.test.mjs
+          test/account-admission-bounds/historical-closure.test.mjs
+          test/account-receive/historical-owner.test.mjs
+
+      - name: Check service quarantine and restart histories
+        run: node --test --test-concurrency=1 test/account-service-inbound/generated.test.mjs test/account-service-inbound/quarantine.test.mjs
+
+      - name: Check upgrade fixture listener ownership
+        run: node --test --test-concurrency=1 test/harness-lifecycle/upgrade-fixture.test.mjs
+
+      - name: Check Local bootstrap and native compatibility refusals
+        run: pnpm storage:compatibility
+
+      - name: Run onboarding, account compatibility and device-removal browser regressions
+        run: >-
+          pnpm exec playwright test --config playwright.packaged-account.config.ts
+          test/packaged-account/removal-regressions.spec.ts
+          test/packaged-account/local-removal-flow.spec.ts
+          test/packaged-account/account-creation-entry.spec.ts
+          test/packaged-account/welcome.spec.ts
+          test/packaged-account/passkey-local-access.spec.ts
+          test/packaged-account/multi-tab-protection.spec.ts
+          test/packaged-account/recovery-progress-isolation.spec.ts
+          test/packaged-account/receiver-compatibility.spec.ts
+          test/packaged-account/bootstrap-compatibility.spec.ts
+
+      - name: Check development onboarding and service shutdown
+        run: pnpm test:account-setup
+
+      - name: Check security evidence traceability
+        run: pnpm trace:check
 
   quality:
     name: Full check (operator resumed)

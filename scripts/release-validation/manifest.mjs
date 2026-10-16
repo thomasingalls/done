@@ -250,6 +250,7 @@ function compileManifestSnapshot(root, inventory) {
   ];
   assert.equal(new Set(reviewed).size, reviewed.length, 'Duplicate reviewed file disposition');
   const supportedTests = new Set([
+    'test/release-validation/onboarding-gates.test.mjs',
     'test/release-validation/playwright.test.mjs',
     'test/release-validation/inventory.test.mjs',
     'test/release-validation/manifest.test.mjs',
@@ -1117,6 +1118,9 @@ function compileManifestSnapshot(root, inventory) {
             account.node.includes(r.path) ||
             other.includes(r.path),
         )
+        .map((r) => r.id),
+      'onboarding-gate-controls': rows
+        .filter((r) => r.path === 'test/release-validation/onboarding-gates.test.mjs')
         .map((r) => r.id),
       vectors: rows.filter((r) => r.kind === 'vector').map((r) => r.id),
       ...(byId.has(contentId)

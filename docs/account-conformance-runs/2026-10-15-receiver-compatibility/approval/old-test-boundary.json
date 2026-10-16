@@ -1,0 +1,31 @@
+{
+  "baseline": "faadbff5d41eab72434af4193f774d50f1ac577c",
+  "authorization": "Operator explicitly approved the four-file saved fixture patch with the reply yes.",
+  "approvedPatchSha256": "e919378e3d77e2f2f90a28c7222116c61045ad94a4f6a6e311ef9d35a3e5d525",
+  "appliedDiffExactlyMatchesApprovedPatch": true,
+  "noOtherTrackedOldTestEdits": true,
+  "originalCheckpointArtifactsVerified": 53,
+  "originalSourcePinsStillIdentical": 411,
+  "files": [
+    {
+      "path": "test/packagedConfig.test.ts",
+      "baselineSha256": "ec42f5ccfc59f7a5414c6c51b6080c2bbc714b53f23b1feb959bc3d22d63bfe0",
+      "approvedSha256": "a05745e51354e4b31eff8feb3e30dd8d0e182cb58cbef544bb83391e3cd7265e"
+    },
+    {
+      "path": "test/privateAccess.test.ts",
+      "baselineSha256": "42570e22fff46e9d494c82ff8b6fbd05cd15135c3c82755c0d20d1b1edafb9e0",
+      "approvedSha256": "2533dc7d899e06753e1206d6d1ac28489e63c2422ef1c8fef003db09223c33bb"
+    },
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "baselineSha256": "f5023cffa4e821ab458b671b59a614054fe1094c2e69dc7d6a3a9b5926a5c09c",
+      "approvedSha256": "114485ff60aec66f176940efa0ec5c869309fa378a716e9b1d051129c15aab01"
+    },
+    {
+      "path": "test/release-validation/generated-tests.test.mjs",
+      "baselineSha256": "b24acbf9348b295d037ac26be96b70cb0701e0db20995430597b9c9090d9f1e2",
+      "approvedSha256": "5637606a22fd098903a91dbe4b8ca758f216e7355555ba2facbf1520948531a4"
+    }
+  ]
+}

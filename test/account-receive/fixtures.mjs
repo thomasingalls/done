@@ -1,6 +1,6 @@
 import { build } from 'vite';
 import { resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { historicalBundle } from '../../scripts/lib/historical-bundle.mjs';
 import { native as base, selected as baseSelected, args } from '../account-delivery/fixtures.mjs';
 import {
   fixtureAcceptance,
@@ -13,6 +13,13 @@ import {
 export * from '../account-delivery/fixtures.mjs';
 export { inventory, snapshot, boundary } from '../account-capture/fixtures.mjs';
 export async function receiveBundle(control) {
+  if (control === 'old-reader') {
+    // v8 predates the receive owner: exercise its genuine delivery owner against v9 storage.
+    return historicalBundle(
+      '83785967428cfd04b2ebbe9179c33db772a79b08',
+      "export { openOwnedAccountDeliveryWorkspace as openOwnedAccountReceiveStore } from './src/crdt/accountSpool';",
+    );
+  }
   let hits = 0;
   const targets = {
     'stored-page': [
@@ -50,14 +57,6 @@ export async function receiveBundle(control) {
             name: 'receive-control',
             enforce: 'pre',
             transform(code, id) {
-              if (control === 'old-reader' && id.endsWith('/src/crdt/promotionRecord.ts')) {
-                hits++;
-                return execFileSync('git', ['show', '8378596:src/crdt/promotionRecord.ts'], {
-                  encoding: 'utf8',
-                  timeout: 5000,
-                  maxBuffer: 2 * 1024 * 1024,
-                });
-              }
               if (control === 'witness' && id.endsWith('/src/crdt/spoolRecord.ts')) {
                 const re =
                   /(export async function verifySpoolWitness\([\s\S]*?\): Promise<void> \{)/g;

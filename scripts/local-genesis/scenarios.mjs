@@ -16,18 +16,31 @@ export async function runCase(definition, env) {
     p.setDefaultTimeout(15000);
     p.on('pageerror', (e) => errors.push(e.message));
     await p.goto(env.url);
-    await p.waitForFunction(() => window.genesis);
+    await p.waitForFunction(() => window.genesis, undefined, { polling: 25 });
     return p;
   };
   const settled = async (p, id) => {
-    await p.waitForFunction(
-      (id) => ['resolved', 'rejected'].includes(window.genesis.snapshot().entries[id]?.status),
-      id,
-    );
+    try {
+      await p.waitForFunction(
+        (id) => ['resolved', 'rejected'].includes(window.genesis.snapshot().entries[id]?.status),
+        id,
+        { polling: 25 },
+      );
+    } catch (cause) {
+      artifacts.push({
+        kind: 'settled-timeout',
+        id,
+        snapshot: await call(p, 'snapshot'),
+        locks: await call(p, 'locks'),
+      });
+      throw cause;
+    }
     return (await call(p, 'snapshot')).entries[id];
   };
   const gate = (p, name) =>
-    p.waitForFunction((name) => window.genesis.snapshot().gates.includes(name), name);
+    p.waitForFunction((name) => window.genesis.snapshot().gates.includes(name), name, {
+      polling: 25,
+    });
   const crash = async (p) => {
     const cdp = await context.newCDPSession(p),
       dead = p.waitForEvent('crash');
@@ -67,7 +80,11 @@ export async function runCase(definition, env) {
       );
       const b = await page();
       await call(b, 'resume', 'queued', 'local-slot', code);
-      await b.waitForFunction(() => window.genesis.locks().then((s) => s.pending.length > 0));
+      await b.waitForFunction(
+        () => window.genesis.locks().then((s) => s.pending.length > 0),
+        undefined,
+        { polling: 25 },
+      );
       check(
         'resume-waits-for-exclusive-owner',
         (await call(b, 'snapshot')).entries.queued.status,
@@ -124,7 +141,11 @@ export async function runCase(definition, env) {
           await call(a, 'confirm', 'a', ca);
           await gate(a, 'claim');
           await call(b, 'confirm', 'b', cb);
-          await b.waitForFunction(() => window.genesis.locks().then((s) => s.pending.length > 0));
+          await b.waitForFunction(
+            () => window.genesis.locks().then((s) => s.pending.length > 0),
+            undefined,
+            { polling: 25 },
+          );
           const initial = (await call(a, 'claim', 'local-slot')).initial;
           check('loser-queues', (await call(b, 'snapshot')).entries.b.status, 'pending');
           await call(a, 'release', 'claim');
@@ -182,7 +203,11 @@ export async function runCase(definition, env) {
           const b = await page();
           await call(b, 'barrier', 'next');
           await call(a, 'cancel');
-          await b.waitForFunction(() => window.genesis.locks().then((s) => s.pending.length > 0));
+          await b.waitForFunction(
+            () => window.genesis.locks().then((s) => s.pending.length > 0),
+            undefined,
+            { polling: 25 },
+          );
           check(
             'cancel-drains-native-crypto',
             (await call(b, 'snapshot')).entries.next.status,
@@ -240,7 +265,11 @@ export async function runCase(definition, env) {
           const before = await call(a, 'inventory'),
             b = await page();
           await call(b, 'legacy', 'close', 'local-slot', 'closeSlot');
-          await b.waitForFunction(() => window.genesis.locks().then((s) => s.pending.length > 0));
+          await b.waitForFunction(
+            () => window.genesis.locks().then((s) => s.pending.length > 0),
+            undefined,
+            { polling: 25 },
+          );
           check(
             'index-write-waits-for-live-writer',
             (await call(b, 'snapshot')).entries.close.status,

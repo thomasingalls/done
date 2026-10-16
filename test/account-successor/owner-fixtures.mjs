@@ -35,7 +35,7 @@ export async function ownerBundle(control) {
                 prefix: ['/src/crdt/accountSuccessor.ts', 'prefix.finish();', 'void prefix;'],
                 cut: [
                   '/src/crdt/accountSuccessor.ts',
-                  'if (epoch !== (index < cut.events ? 1 : 2))',
+                  'if (\n      epoch !==\n      (index < cut.events\n        ? 1\n        : certifiedCut && index < certifiedCut.events\n          ? 2\n          : installed.certification\n            ? 3\n            : 2)\n    )',
                   'if (false)',
                 ],
               };

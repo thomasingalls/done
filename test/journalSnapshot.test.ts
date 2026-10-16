@@ -29,7 +29,7 @@ const taskFor = (controller: AbortController): SessionTask => ({
 afterEach(() => {
   vi.restoreAllMocks();
   vi.useRealTimers();
-  localStorage.clear();
+  globalThis.localStorage?.clear();
   vi.unstubAllGlobals();
 });
 

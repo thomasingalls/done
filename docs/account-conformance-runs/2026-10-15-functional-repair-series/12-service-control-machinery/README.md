@@ -1,0 +1,11 @@
+# Phase 12 — Service control machinery
+
+Parent overlay: `59b7432e42ad3e2ed9e4d7e60774ed6cbd4eb032`. No production changes.
+
+The original fifteen-case run passes eight/fails seven. Current admission proof-work calls, generation policy and final snapshot guard now have unique semantic anchors. Faults retain signature/custody, retirement, parent and unrelated policy checks. The complete final fifteen-case run passes; separate final delivery (five) and inbound (eight) reruns preserve distinct reports.
+
+Witness probes no longer delete rows and call an earlier count refusal sensitivity evidence. Original deleted-row probes remain: baseline and witness-omitted owners both refuse ledger-integrity without writes. A separately restored, valid-count ledger with an altered witness signature reaches actual witness authentication. Removing that authentication permits a signed acceptance/page forbidden by the baseline; the valid retained refusal and its signed parent remain checked. Both owners restart between independent faults, preserving sticky quarantine.
+
+The publisher path gained independent scoped selection. Removing only the old member lookup still refuses the unrecognized publisher; that observation is required. An explicitly **two-site** publisher-policy mutation then omits selection and lookup together, retains the final scope/signature checks and signs an empty page for an unrecognized requested publisher. This establishes a compound policy control, not a single-check bypass or a data disclosure. The independent reader requires both the single-omission refusal and the explicit two-omission declaration.
+
+Eight selected adapter tests pass, retaining generated report-corruption challenges and adding wrong compound-count, missing redundant-refusal and false single-guard-success counterexamples. The independent readers also accept actual delivery/inbound control reports embedded in explicitly synthetic surrounding families; no campaign credit is claimed. Original and intermediate failures (including double-close cleanup and an invalid same-subject parent probe) remain. Lint/diff pass. Planning remains 854/313 blocked, qualification paused. No commits, signing, publication or preview changes.

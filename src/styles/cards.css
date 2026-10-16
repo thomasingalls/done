@@ -82,6 +82,24 @@
     font-size: 0.8125rem;
     color: var(--color-text-faint);
   }
+  .onboarding-note {
+    padding: var(--space-3);
+    border: 1px solid var(--color-text-faint);
+    border-radius: var(--radius-2);
+    font-size: 0.8125rem;
+    color: var(--color-text-dim);
+  }
+  .onboarding-note p {
+    margin-bottom: var(--space-2);
+  }
+  .onboarding-note button {
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-1);
+  }
+  .onboarding-note button:hover {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
 
   .collection-action {
     font-size: 0.6875rem;

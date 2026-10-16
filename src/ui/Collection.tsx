@@ -77,7 +77,7 @@ export const Collection = ({
 
   const reorder = useCardReorder({
     cards,
-    enabled: section === 'done' && active && !frozen && cards.length > 1,
+    enabled: active && !frozen && cards.length > 1,
   });
 
   const hooksFor = useCallback(
@@ -152,17 +152,30 @@ export const Collection = ({
         ];
       }
 
-      return [remove];
+      return [
+        {
+          label: 'Next',
+          hint: 'Move to Next',
+          run: () => void execute({ kind: 'move', id, to: { date, section: 'next' } }),
+          disabled: nextIsFull,
+          requiresUnlock: true,
+        },
+        {
+          label: 'Later',
+          hint: 'Move to Scheduled',
+          run: () => void execute({ kind: 'move', id, to: { date, section: 'scheduled' } }),
+          requiresUnlock: true,
+        },
+        remove,
+      ];
     },
     [execute, date, section, nextIsFull],
   );
 
-  // An empty collection is noise except where it says something: Next carries
-  // the cap, and Done carries the compose field. Those two render for adjacent
-  // days too, so promoting an already-mounted neighbour does not change its
-  // layout after the movement lands.
+  // Writable days keep both quick-entry fields visible, even before the first
+  // card. Frozen days can omit an empty Scheduled collection.
   const count = cards.length + archived.length;
-  if (count === 0 && section === 'scheduled') return null;
+  if (count === 0 && section === 'scheduled' && frozen) return null;
 
   const full = section === 'next' && count >= NEXT_CAP;
 
@@ -178,7 +191,13 @@ export const Collection = ({
       </h2>
 
       {count === 0 ? (
-        <p className="collection-empty">{section === 'done' ? 'Nothing yet.' : 'Empty.'}</p>
+        <p className="collection-empty">
+          {section === 'next'
+            ? 'The three most important things to focus on next.'
+            : section === 'done'
+              ? 'Anything you finished counts, planned or unplanned.'
+              : 'Things planned for this day.'}
+        </p>
       ) : (
         <div className="card-list" ref={reorder.listRef} data-reordering={reorder.drag !== null}>
           {cards.map((card) => {
@@ -222,16 +241,12 @@ export const Collection = ({
         </div>
       )}
 
-      {/*
-       * The one flow PRD §4 calls "trivial, non-negotiable": type, Enter, done.
-       * It is always live, which is what lets Done cards be guarded without the
-       * two rules fighting each other (PRD §5).
-       */}
-      {section === 'done' && !frozen && (
+      {/* Quick entry remains available independently of the card editors. */}
+      {section !== 'next' && !frozen && (
         <Compose
-          placeholder="What got done?"
+          placeholder={section === 'done' ? 'What got done?' : 'What’s scheduled?'}
           onSubmit={async (text) =>
-            Boolean(await execute({ kind: 'compose', to: { date, section: 'done' }, text }))
+            Boolean(await execute({ kind: 'compose', to: { date, section }, text }))
           }
         />
       )}

@@ -1,0 +1,27 @@
+✔ D8 requires live claim evidence and cannot relabel it as inherited migration scope (623.843417ms)
+✔ D7 cannot discard native startup, genesis scope, shrinking or inherited cipher evidence (271.260625ms)
+✔ D6 custody cannot drop correspondence, parser repair, native comparison or inherited byte obligations (403.737583ms)
+✔ D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence (363.77675ms)
+✔ registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups (620.136292ms)
+✔ registration omission controls fail for the missing obligation, not just a stale aggregate hash (723.469125ms)
+✔ recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes (256.964583ms)
+✔ transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content (383.340792ms)
+✔ D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives (322.09175ms)
+✔ D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source (457.910709ms)
+✔ D3 ledger byte coverage cannot discard canonical negatives or its counter witness dependency (359.993125ms)
+✔ D4 metadata cannot drop its scoped MAC owner, native coupling or negative corpus (382.162875ms)
+(node:61510) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ the existing mode-specific skip stays in the independently collected denominator (105.113375ms)
+✔ conditional skips outside the exact existing path, condition and case refuse (44.371334ms)
+✔ missing, extra, unexpectedly passing or failed skipped cases cannot earn execution credit (30.097875ms)
+✔ newly inventoried cryptographic domains remain open qualification obligations (749.056916ms)
+✔ campaign aggregation retains the named non-applicable case only after child verification (33.620334ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5476.878709

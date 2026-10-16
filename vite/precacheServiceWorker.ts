@@ -52,16 +52,22 @@ self.addEventListener('install', (event) => {
       throw error;
     }
     // Use the browser's waiting phase. Existing pages retain their worker and assets
-    // until every controlled tab/window closes; no reload or storage migration here.
+    // until every controlled tab/window closes or the user explicitly applies the update.
   })());
 });
 
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'ACTIVATE_UPDATE') event.waitUntil(self.skipWaiting());
+});
+
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) => Promise.all(keys.filter((key) => key.startsWith(PREFIX) && key !== CACHE).map((key) => caches.delete(key)))),
-  );
+  event.waitUntil((async () => {
+    // An explicit update can leave other tabs running the previous JS. Keep
+    // their hashed assets available offline; a later cold activation can prune.
+    if ((await self.clients.matchAll()).length > 0) return;
+    const keys = await caches.keys();
+    await Promise.all(keys.filter((key) => key.startsWith(PREFIX) && key !== CACHE).map((key) => caches.delete(key)));
+  })());
 });
 
 self.addEventListener('fetch', (event) => {
@@ -80,6 +86,15 @@ self.addEventListener('fetch', (event) => {
 
   if (URLS.has(request.url)) {
     event.respondWith(cached(request).then((response) => response || fetch(request)));
+  } else if (new URL(request.url).pathname.startsWith(BASE + 'assets/')) {
+    event.respondWith((async () => {
+      const keys = await caches.keys();
+      for (const key of keys.filter((key) => key.startsWith(PREFIX))) {
+        const response = await (await caches.open(key)).match(request, { ignoreVary: true });
+        if (response) return response;
+      }
+      return fetch(request);
+    })());
   }
 });
 `;

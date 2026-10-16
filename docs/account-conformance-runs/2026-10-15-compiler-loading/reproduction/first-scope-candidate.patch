@@ -1,0 +1,21 @@
+diff --git a/vite.config.ts b/vite.config.ts
+index fbfab8c8..95e87fda 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -80,7 +80,15 @@ const relayProxy = () => {
+ };
+ 
+ export default defineConfig(({ mode }) => ({
+-  plugins: [react(), babel({ presets: [reactCompilerPreset()] }), precacheServiceWorker()],
++  plugins: [
++    react(),
++    babel({
++      // Optimizer caches outside node_modules must not be compiled a second time.
++      include: /[/\\]src[/\\].*\.(?:[jt]sx?|[cm][jt]s)(?:$|\?)/,
++      presets: [reactCompilerPreset()],
++    }),
++    precacheServiceWorker(),
++  ],
+   define: {
+     // First ship compatible readers. Conversions remain a separate, explicit private opt-in.
+     ...Object.fromEntries(

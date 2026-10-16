@@ -1,0 +1,54 @@
+{
+  "revision": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+  "scope": "Only the exact nine old test/harness files explicitly approved in the two patches are changed; primary bytes match clean candidate plus approved patches.",
+  "files": [
+    {
+      "file": "scripts/custody/catalog.mjs",
+      "sha256": "5faa1cb34f18bdc840c0175c10cb0c35aa293b3a648edbc84baaf3fcc4539a23",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "scripts/content/catalog.mjs",
+      "sha256": "c442c205869759da6fe821ed5c1993e17f3b307e947f77c99381c9f7b9077816",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "scripts/journal/catalog.mjs",
+      "sha256": "0682d631b4c9b5e39cb21bf9cca5b26a99eb4ef1e9323277d32254296d0bfbe8",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "scripts/admission/catalog.mjs",
+      "sha256": "82469ce611c51ce298a14d6e9b789475d2f2bec1d0530ca592926f920464bac5",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "scripts/content-trim/catalog.mjs",
+      "sha256": "54e36fa304d3c69dbeb85082a6d6b25afeeb92801607e91ed13e1a0442f72a03",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "scripts/journal-contention/run.mjs",
+      "sha256": "84c1d62d528227255047ef7f59c9d323fa77d63905baa9c1243921339fb9d5f9",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "scripts/pending-projection/run.mjs",
+      "sha256": "b9aa3a78942278dd579bc43fd0e198dd8406440a3bf8d9513164567c026ca025",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "scripts/yjs-delivery/run.mjs",
+      "sha256": "5d9c463f753e1b6025f18e6b64c61480974cf669957116eab58f27c0148f2198",
+      "matchesApprovedPatchCheckout": true
+    },
+    {
+      "file": "test/release-validation/general-tests.test.mjs",
+      "sha256": "54c9ccae1d6a8d463127e2f20ddd09193280176acb68daca6c80a958a6de3084",
+      "matchesApprovedPatchCheckout": true
+    }
+  ],
+  "testChanged": [
+    "test/release-validation/general-tests.test.mjs"
+  ]
+}

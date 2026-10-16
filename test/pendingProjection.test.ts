@@ -385,14 +385,17 @@ it('generated human undo and redo match an unforked history through repeated pri
                 }
               }
               run(actual, action);
-              expect(Y.encodeStateAsUpdate(previous.doc)).toEqual(before);
+              assert.deepStrictEqual(Y.encodeStateAsUpdate(previous.doc), before);
               run(reference, action);
               expect(actual.doc.getText('master').toString()).toBe(
                 source.getText('master').toString(),
               );
               expect(actual.undoStack.length).toBe(reference.undoStack.length);
               expect(actual.redoStack.length).toBe(reference.redoStack.length);
-              expect(Y.encodeStateAsUpdate(actual.doc)).toEqual(Y.encodeStateAsUpdate(source));
+              assert.deepStrictEqual(
+                Y.encodeStateAsUpdate(actual.doc),
+                Y.encodeStateAsUpdate(source),
+              );
             } finally {
               previous.destroy();
               previous.doc.destroy();

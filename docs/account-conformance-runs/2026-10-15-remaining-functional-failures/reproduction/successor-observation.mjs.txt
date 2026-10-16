@@ -1,0 +1,127 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {
+  nativeOwner, selected, syncing, settled, online, close, cold, marker, waitPredicate, args,
+} from '<workspace>/test/account-successor/owner-fixtures.mjs';
+
+const output = '/private/tmp/done-remaining-suite-6eeb7d5f/successor-observation.json';
+const observation = { source: '6eeb7d5f', stages: [], network: [] };
+const mark = (stage, detail = {}) => {
+  observation.stages.push({ stage, at: new Date().toISOString(), ...detail });
+  fs.writeFileSync(output, JSON.stringify(observation, null, 2) + '\n');
+};
+
+test('observe automatic cold successor discovery through an independent completed-transaction signal', { timeout: 60000 }, async t => {
+  const f = await nativeOwner(t, undefined, true);
+  f.context.on('request', request => {
+    if (request.url().includes('/account/authority/discover')) {
+      observation.network.push({ event: 'request', method: request.method() });
+    }
+  });
+  f.context.on('response', response => {
+    if (response.url().includes('/account/authority/discover')) {
+      observation.network.push({ event: 'response', status: response.status() });
+    }
+  });
+  const item = await selected(f, 'triage-cold-discovery-after-close');
+  mark('selected');
+  await syncing(f.page, item);
+  await settled(f.page);
+  await online(f.page, false);
+  await f.successor(item);
+  let release, hit;
+  const held = new Promise(r => { release = r; });
+  const reached = new Promise(r => { hit = r; });
+  const path = f.server.origin + '/account/authority/discover';
+  await f.context.route(path, async route => {
+    const response = await route.fetch();
+    hit();
+    await held;
+    await route.fulfill({ response }).catch(() => {});
+  });
+  await online(f.page, true);
+  await reached;
+  mark('held-discovery-response');
+  await close(f.page);
+  release();
+  assert.equal((await marker(f.page, item)).successor, undefined);
+  await f.context.unroute(path);
+  await cold(f);
+  await f.page.evaluate(() => {
+    window.triageSuccessorCommitted = false;
+    const put = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function(value, key) {
+      if (this.transaction.db.name === 'done.custody' && Array.isArray(key) &&
+          key[1] === 'application-upgrade' && value?.successor) {
+        this.transaction.addEventListener('complete', () => {
+          window.triageSuccessorCommitted = true;
+        });
+      }
+      return arguments.length === 1 ? put.call(this, value) : put.call(this, value, key);
+    };
+  });
+  mark('cold-lifetime-start');
+  await syncing(f.page, item);
+  await settled(f.page);
+  mark('old-settled-returned', await f.page.evaluate(() => ({
+    successorCommitted: window.triageSuccessorCommitted,
+    status: opened.sync.status,
+  })));
+  await waitPredicate(f.page, () => window.triageSuccessorCommitted, 20000);
+  mark('automatic-successor-transaction-completed');
+  await close(f.page);
+  assert((await marker(f.page, item)).successor);
+  mark('closed-authenticated-marker-has-successor');
+});
+
+for (const fault of ['strip-field', 'change-stage']) {
+  test(`observe authenticated successor refusal after ${fault} independently of the structural-stage assertion`, { timeout: 60000 }, async t => {
+    const f = await nativeOwner(t);
+    const item = await selected(f, 'triage-successor-auth-' + fault);
+    await syncing(f.page, item);
+    await settled(f.page);
+    await online(f.page, false);
+    await f.page.evaluate(async artifact => opened.adoptSuccessor(artifact), await f.successor(item));
+    await close(f.page);
+    const parses = await f.page.evaluate(async item => {
+      const marker = await Harness.successorMarker(item.slotId, item.code);
+      return [6, 7, 8, 9].map(v => {
+        const stage = {6: 'account-capturing', 7: 'account-spooling', 8: 'account-delivering', 9: 'account-receiving'}[v];
+        try { Harness.parsePromotion({ ...marker, v, stage }); return { v, accepted: true }; }
+        catch { return { v, accepted: false }; }
+      });
+    }, args(item));
+    mark(fault + '-structural-parses', { parses });
+    if (fault === 'strip-field') {
+      await f.page.evaluate(slot => Harness.stripSuccessor(slot), item.slotId);
+    } else {
+      await f.page.evaluate(async slot => {
+        const db = await new Promise((resolve, reject) => {
+          const request = indexedDB.open('done.custody');
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error);
+        });
+        try {
+          await new Promise((resolve, reject) => {
+            const tx = db.transaction('entries', 'readwrite');
+            const store = tx.objectStore('entries');
+            const key = [slot, 'application-upgrade'];
+            const request = store.get(key);
+            request.onsuccess = () => {
+              const value = request.result;
+              if (!value?.successor) { tx.abort(); return; }
+              store.put({ ...value, v: 8, stage: 'account-delivering' }, key);
+            };
+            tx.oncomplete = resolve;
+            tx.onabort = () => reject(tx.error ?? Error('Missing successor fault target'));
+          });
+        } finally { db.close(); }
+      }, item.slotId);
+    }
+    await cold(f);
+    await online(f.page, false);
+    await assert.rejects(syncing(f.page, item), /Promotion authentication failed/);
+    mark(fault + '-authenticated-opening-refused');
+  });
+}

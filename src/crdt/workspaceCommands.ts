@@ -71,6 +71,7 @@ export type WorkspaceIntent = {
 export type CommandValue = boolean | number | string | null | { readonly id: string };
 export interface CommandContext {
   readonly identity: WorkspaceActorIdentity;
+  readonly deviceLabelId?: string;
   readonly human: Origin;
   readonly system: Origin;
   readonly today: ISODate;
@@ -217,6 +218,20 @@ const executeWorkspaceCommand = (
       throw Error('Unsupported workspace schema.');
     registerWorkspaceActor(doc, context.identity);
     openTree(doc, context.system);
+    // Older releases keyed names by a local provenance ID. Publish that name under
+    // this owner's verified device ID once, so other devices can associate it.
+    if (context.deviceLabelId && context.deviceLabelId !== context.identity.device.id) {
+      const meta = doc.getMap('meta');
+      const key = `device-label:${context.deviceLabelId}`;
+      const current = meta.get(key);
+      const legacy = meta.get(`device-label:${context.identity.device.id}`);
+      const name =
+        typeof legacy === 'string' && legacy !== 'This device'
+          ? legacy
+          : context.identity.device.name;
+      if ((typeof current !== 'string' || current === 'This device') && current !== name)
+        doc.transact(() => meta.set(key, name), context.system);
+    }
     return { value: repairCardMemberships(doc, context.system) };
   }
   // Repair is its own system transaction, including before a later queued human command.
@@ -351,10 +366,12 @@ const executeWorkspaceCommand = (
       const name = command.name.trim().slice(0, 80);
       if (!name) break;
       // A display label inside encrypted workspace content, never a device credential.
-      doc.transact(
-        () => doc.getMap('meta').set(`device-label:${context.identity.device.id}`, name),
-        context.human,
-      );
+      doc.transact(() => {
+        const meta = doc.getMap('meta');
+        meta.set(`device-label:${context.identity.device.id}`, name);
+        if (context.deviceLabelId && context.deviceLabelId !== context.identity.device.id)
+          meta.set(`device-label:${context.deviceLabelId}`, name);
+      }, context.human);
       value = true;
       break;
     }

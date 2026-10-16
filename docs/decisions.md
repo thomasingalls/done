@@ -4553,3 +4553,209 @@ The real owner continues using full history. This is a design selection plus cha
 not implementation of the new guards, permission to erase acknowledged work, product activation,
 or authorization to delete history. Preserve live undo, journal-before-apply and complete fresh
 authority checks; old/private readers need explicit format fences before new writers activate.
+
+### Bound the passkey repair by independent Local access and a real provider walkthrough
+
+**Date:** 2026-10-15 · **Commit:** pending after signed `42ebdd12` · **PRD/TRD:** v9/v8,
+with their 2026-10-14 onboarding amendments.
+
+**Orientation.** The operator reproduced failed passkey setup in Firefox private browsing with
+Bitwarden: the extension saved a credential, then setup failed and later local access appeared to
+reject the copied unlock code. Focused Chromium/virtual-authenticator success had not established
+this journey. The working tree is clean and the earlier product changes have signed boundaries,
+so the repository procedure can be adopted without rewriting their history or recertifying them.
+
+**Decision.** First repair passkey response compatibility and independent protected Local access.
+Establish counterexamples before implementation, retain existing verification and custody checks,
+add new regressions without editing old tests, and require an actual Firefox-private/Bitwarden
+walkthrough before calling the repair fixed. Record implementation, automated evidence and device
+observation separately in the [bounded packet](account-conformance-runs/2026-10-15-passkey-local-access/README.md).
+Do not relax CSP or authenticator verification to accommodate a provider. Retain the other seat's
+active checkpoint. Removal/migration UX and unissued-code routing are separate subsequent repairs;
+general qualification and publication stay paused.
+
+### Preserve foreign recovery progress and fence the selected setup lifecycle
+
+**Date:** 2026-10-15 · **Source:** follow-up to signed `5afdd0ad`.
+
+**Evidence.** The failing preview had a confirmed account passkey and a matching service pin, but
+its unscoped recovery draft belonged to another account/retry and another Local workspace. A new
+packaged regression reproduces both exact errors while the same code independently opens Local.
+The real Firefox-private/Bitwarden walkthrough reproduces the pair after an older Local removal.
+Fresh two-tab setup with the other tab locked succeeds; an unlocked editor can instead delay the
+required exclusive permit. Two-tab timing alone is not the identified cause of the retained-state
+error.
+
+**Decision.** Keep matching legacy drafts at their current keys. Preserve a structurally valid
+foreign draft atomically under its account/retry identity before saving a new current draft; refuse
+destination collisions and changed sources. Retain current-key reader compatibility and never use
+foreign recovery material as authority for the new attempt. Fence metadata operations against the
+selected setup and removal, including writes staged before removal. Explicit removal cleans only
+its scoped or identified attempt records. A post-verification continuation failure offers retry and
+independent Local access, without claiming the valid factor was rejected. A waiting writer barrier
+explains that other tabs need closing.
+
+**Tradeoff and bounds.** Unrelated legacy orphans remain preserved rather than being erased to make
+setup proceed. Older readers cannot resume retained foreign attempts through the new identity key;
+their current-key owner mismatch remains a refusal. Active matching drafts, protected workspaces,
+factor verification, account verification and crypto byte formats retain their previous behavior.
+No persisted unlock cache or credential fallback is introduced. The
+[bounded packet](account-conformance-runs/2026-10-15-multi-tab-setup/README.md) records failing evidence,
+new regressions, compatibility and removal checks, actual provider results and remaining limits.
+
+## 2026-10-15 — Keep optional receiver discovery separate from required authenticated history
+
+**Scope.** The operator authorizes receiver compatibility, then blocked-bootstrap hint writes.
+Old tests still require explicit approval; merge, deployment and aggregate qualification stay paused.
+
+**Decision.** A legacy session host without continuation may use ordinary delivery without the
+unsupported history endpoint. Read the live host hint inside the serialized authenticated state
+task, and require history whenever installed/inherited history, a later membership epoch or a later
+generation requires it. Once required in that owner lifetime, keep requiring it even if the public
+hint changes. A failed required endpoint still withholds ordinary receiving. Keep the existing
+signature, prefix, coverage, native commit, readback and final-application verifiers unchanged.
+
+**Bootstrap.** Save startup discovery hints only after acquiring the existing shared Local permit
+and repeating compatibility, after the network wait. Refused compatibility omits optional cache
+writes; public configuration may still locate an Account whose own factor/passkey owner understands
+the authenticated promotion interlock. A failed native probe never grants writes. Recheck a pin
+which another opener may have retained before changing metadata. Keep live capability refresh
+independent of optional persistence so an active Account's exclusive permit cannot hide an upgraded
+host. The hint is scheduling information, never authority to skip retained history or open writing.
+
+**Evidence and tradeoff.** Initial regressions reproduce failed legacy delivery and exact-census
+changes under both absent and present account services. A hint-only fault build is detected by the
+retained-history test. Unit cases cover queued upgrades, unknown/undefined intents, failed probes,
+fresh/offline discovery and changed pins. A refined case caught the need to retain a freshly read
+capability in memory when persistence is correctly refused. The new promoted-Local browser fixture
+explicitly proves its interlock and authenticated reopen. Original failed attempts, a mistaken
+separate-Account fixture, and pending old-fixture updates are retained in the
+[bounded packet](account-conformance-runs/2026-10-15-receiver-compatibility/README.md).
+
+## 2026-10-15 — Compile application source without recompiling optimizer output
+
+**Scope.** Repair development compiler loading after committing the separately approved account
+fixture updates. Preserve protected custody, authority checks and crypto formats. Existing tests
+still require explicit approval; publication and aggregate qualification remain paused.
+
+**Decision.** Anchor Babel's React Compiler include filter to this repository's actual `src/`
+directory, resolving the configuration URL and escaping path segments/separators. Keep the compiler
+preset and its ordinary dependency exclusions. Optimized dependencies must not be compiled again,
+including when their cache lives outside `node_modules` or under an unrelated directory named `src`.
+
+**Reason and evidence.** The traced optimized TanStack Router response gained a named compiler-runtime
+import after Babel processed it. Vite omits ordinary-source CommonJS interop inside optimizer output,
+whose compiler runtime exports a default. Explicit interop metadata alone did not fix that boundary.
+Both new browser regressions fail before repair. A first generic source-segment filter passes ordinary
+cache paths but fails both cases with an unrelated `src` cache path. The final anchored filter passes
+that challenge while actual application output still invokes the compiler runtime. Fresh and retained
+caches, identical retained optimizer metadata, Local writing, reload and server restart are exercised
+under both ordinary and private-migration configurations. No dependency upgrade or runtime shim is
+introduced. The [packet](account-conformance-runs/2026-10-15-compiler-loading/README.md) preserves those
+failures and the final evidence; broader release and default-worker timing obligations remain open.
+
+## 2026-10-15 — Restore executable source and historical harness closures
+
+**Scope.** After signed compiler repair `a6fa2298`, restore the bounded H1/H2 harness paths. The
+operator explicitly approved the existing-file patches, source-evidence updates and layout of their
+new blocks. Application, service and protocol source, test assertions, mutation targets and existing
+deadlines remain. Merge, deployment, preview refresh and aggregate qualification stay paused.
+
+**Decision.** Include and hash all `account-protocol` files in the four frozen legacy campaigns.
+Bundle the actual mutated scheduler with its dependencies. Retain every emitted native chunk/asset
+under its emitted filename, hash the output inventory and import its declared entry. Do not read
+missing snapshot dependencies from the live checkout or infer an entry from output order.
+
+For receive/admission-bounds historical checks, rebuild complete production source from the original
+full Git revisions, reject loaded production files outside that snapshot, record module/source/bundle
+identities, and keep raw current census observers separate. The receiver bridge invokes the genuine
+historical v8 delivery owner because a receive owner did not exist at that revision. It does not export
+a current owner or substitute a parser. The old revision also predates v2 admission; a positive control
+runs its original service, creation fixture and owner together. Modern signed receipts are not rewritten
+to construct purported old data. Independent regression checks compare archive files against Git blob
+identities and require fresh output, so a prior successful artifact cannot satisfy a new run.
+
+**Limits and tradeoff.** These are historical source rebuilds using the current installed toolchain,
+with unchanged historical runtime dependency declarations and recorded lock identities. They do not
+reconstruct historical binaries. New direct regressions remain required but blocked from aggregate
+credit pending execution-denominator and process/browser-custody review. The separate issuance-boundary
+mutation anchor still fails before applying its fault; a load error is not sensitivity evidence. No
+security guard or assertion is weakened to clear that H3 obligation. The original failed attempts and
+subsequent results belong in the [bounded packet](account-conformance-runs/2026-10-15-source-harnesses/README.md).
+
+The existing historical execution adapters also require review of expanded archive and module-report
+custody. Their retained narrow module pins remain useful identities, but do not attest the complete
+rebuilt source graph. Direct native passes do not supply that missing aggregate evidence; no process
+guard or report policy is relaxed here.
+
+## 2026-10-15 — Functional repairs as an ordered unsigned patch series
+
+The operator explicitly authorized cautious changes to old tests and harnesses without individual approval, then superseded the request to commit with a request for sequential patch files to apply and sign later. Keep tests, meaningful security assertions, fault sensitivity and original deadlines; resolve contract disagreements before changing security expectations. Freeze each bounded phase against its preceding Git tree using a separate index, verify clean sequential application independently, and retain its evidence and limitations. Do not create even temporary commits, sign, push, merge, deploy or refresh the preview. General qualification remains paused; the previously deferred unrelated formatting patch stays separate.
+
+The first control repair updates the issuance-boundary policy at both enforcement sites, retains independent signing and exact plaintext/refusal checks, and requires actual forbidden cleanup before crediting cleanup mutants. A different refusal or failure to load is not evidence that the intended control works. Production application/service/protocol source is unchanged in this phase.
+
+## 2026-10-15 — Keep explicit protected-startup checks alongside automatic first-run fixtures
+
+The four existing protected-startup cases retain their original confirmation-before-creation, legacy no-write refusal, plaintext disposal and interrupted-genesis assertions. A test-only HTML entry mounts the unmodified current LocalApp with its retained explicit protected-startup option; it is not the default shipped entry or a production artifact. Current packaged root/Local entries use the actual optional-protection UI before requiring lock/offline cold unlock. Account and reader fixtures must accept only the documented direct saved-factor entry or explicit chooser; preserve actual authentication, rollback and unchanged-storage assertions. This avoids relabeling a credential-first fixture as proof of the agreed automatic first run.
+
+## 2026-10-15 — First Local bootstrap does not start hint-writing discovery
+
+The preserved future-document-schema census exposed another bootstrap write: an unauthenticated service response added public cache hints before Local refusal. Keep the exact assertion. For public Local entry with no known saved Account entry, defer service discovery until explicit sync/account navigation. Preserve the existing pinned Account bootstrap and all factor, compatibility, replay and document checks. Saved-entry read failure must refuse rather than infer a fresh workspace; reuse the existing error panel as its single UI home. This is a bounded first-Local repair, not generalized qualification of every cached-pin state. Add native public-entry and full-census regressions and normal CI coverage without resuming the paused aggregate. Dedicated injected-router setup tests and packaged main-bootstrap tests are separate evidence populations.
+
+## 2026-10-16 — Successor stage expectations follow authenticated checkpoint transitions
+
+Retain the original closed pre-checkpoint, malformed successor, invalid cut and stripped-field checks. Correct only the obsolete v8 structural refusal to the actual pre-checkpoint v5 boundary, after independently exercising a genuine retained v5 → authenticated v6 checkpoint → cold v9 receiving transition. Add unsigned v6/v7/v8 and field-removal cold-open regressions with exact no-write inventories. Parsing a supported stage is not authentication. This reconciles the old C2b prose with the later checkpoint implementation rather than relaxing a security guarantee; protocol, custody and runtime code are unchanged.
+
+## 2026-10-16 — Nonvisual lifecycle observers do not depend on animation frames
+
+A Local-genesis wait timed out even though its captured creation was resolved and no slot locks remained. Observe promise state and lock queues on bounded timer polls, preserving the original deadlines, fault definitions and exact refusal/no-write assertions. Preserve timeout state/lock artifacts and full failed sequences; selected passes do not erase full-run failures. Dependency-custody symlink refusals remain enforced, and bounded functional checks remain separate from aggregate qualification.
+
+## 2026-10-16 — Bound the default unit gate's independent file workers
+
+Use at most two concurrent Vitest files while retaining all cases, existing deadlines and concurrency explicitly exercised inside a case. Earlier default Node 26 timeouts remain evidence; fresh default passes do not erase them or establish a deterministic current failure. This is a repeatable gate resource budget with a local speed cost, separate from performance measurement and aggregate qualification. Compare complete case identities/statuses on pinned Node 24 and the local runtime rather than crediting a filtered fast run.
+
+## 2026-10-16 — Re-pin protected custody homes after reviewing recovery-only amendment
+
+The two §13.3 authority-map pins predate the signed recovery-progress isolation amendment. Independent old/current section extraction shows no other difference; both entries already scope protected custody and invocation accounting, and the amendment explicitly grants no opening/passkey/service authority. Refresh only those content pins with a dated review, retain every disposition/blocker, and challenge the unchanged checker with temporary section drift plus exact restoration. Do not pay implementation/platform debt by refreshing a documentation hash.
+
+## 2026-10-16 — Resume authorized removal; distinguish refusal from an unfinished deletion
+
+**Against:** PRD v9, TRD v8 and storage contract SC-06/07/08.
+
+**Decision.** A durable device-removal intent is authorization to resume its exact target automatically when the removal screen reopens. Reading progress is not new authorization: failed reads offer only a read retry, and absent workspaces do not claim erasure started. Unassigned legacy database/journal carriers refuse before any intent or deletion; verified legacy import cleanup/exclusion remains mandatory. The UI explains the refusal and preserves the old installation/export requirement. Ordinary removal failures retain a retry and actionable storage/tab guidance, with the content → journal → metadata ordering unchanged. An identified setup-only attempt may install a non-content removal fence even if genesis never created custody; it creates no workspace, key or opener. Cold removal URLs serve the existing immutable shell, retaining the same CSP and supported-slot grammar. A cancelled inspection releases its queued permit; it does not cancel or roll back authorized destructive work.
+
+**Bounds.** No legacy-writer exclusion is inferred, no origin-wide erasure is offered, and no protected opening, account deletion or remote revocation authority changes. General qualification and publication remain paused.
+
+## 2026-10-16 — Storage refusals are not unlock prompts or fresh-account authority
+
+**Against:** PRD v9 onboarding amendment, TRD v8 and SC-06/08.
+
+**Decision.** Account setup distinguishes a fresh store, an established factor-bearing store, and a refusal. Inspect migration/repair/removal/availability states before selecting a code screen, and repeat classification before issuing a new code. A saved setup hint alone authorizes neither genesis nor replacement enrollment. Automatic Local custody routes back to explicit protection rather than asking for a code that was never issued. Read-only classification changes presentation only; all factor, claim, genesis, promotion, passkey and service verifiers remain. Connected/confirmed account ceremonies retain their authenticated continuation. Failed inspection offers a storage/account-selection path instead of the restart action that itself requires a code.
+
+**Bounds.** Unconfirmed codes may be regenerated only while existing genesis reports fresh; any completed or resumable claim requires its established factor. Valid-code continuation failures keep their separate retry classification. Legacy carriers are preserved, not bypassed to create a new account. Billing, remembered unlocking and generalized qualification remain separate.
+
+## 2026-10-16 — Setup-only removal requires the pre-registration shape
+
+**Against:** SC-06/07, PRD v9 / TRD v8.
+
+**Decision.** Narrow phase 1's metadata-only removal to the existing v1 fresh attempt with null view and proof. A later registration, non-fresh or malformed hint with no custody/index identity cannot establish that encrypted content is absent, so preserve it and refuse before creating an intent. A presentation hint never supplies missing content identity. Existing identity-bound removal and the newly supported valid pre-registration cleanup remain. Three discriminating counterexamples fail on the broader phase-2 composition and pass after this restriction. Apply the whole sequential series; intermediate snapshots are not release candidates.
+
+## 2026-10-16 — Integrate functional regressions without granting aggregate qualification credit
+
+**Against:** repository development/evidence procedure and paused release-validation contract.
+
+**Decision.** Run the five new regression files through normal CI (unit discovery, explicit packaged browser selection and bounded application/gateway tests) while retaining required blocked manifest rows until their independent execution adapters are reviewed. Preserve every preceding obligation/deadline and every old test file. Review only the six changed crypto census source hashes; labels, sites, constructions and exclusions are unchanged. Fix the new auto-resume callback's hook dependency rather than suppressing React lint. Source pins and failure logs bind these local checks; final patch replay is a separate verification, and signing/publication remain later operations.
+
+## 2026-10-16 — A retired account coordinator cannot present an unlock form
+
+**Against:** SC-03/SC-08, the existing lock/drain lifecycle and the bounded publication procedure.
+
+**Decision.** Keep account setup in working/locking presentation from synchronous retirement through native cleanup. Only the successor coordinator may offer a code form. The former form belonged to an aborted owner and silently ignored input while its close promise was pending. Do not delay retirement, skip drainage, retain an unlock capability, or weaken factor verification to repair presentation. A held-request unit counterexample and a held native metadata-lock browser counterexample discriminate; the isolated Linux old-state control fails at the exact UI boundary.
+
+**Fixture and evidence bounds.** The competing setup tab uses the explicit Check again action before reclassification and still must enter the established factor. Retain every prior assertion, case and deadline. Add one unit and one browser case; update only the resulting exact denominator/source metadata. Hosted CI's other two timing failures are preserved; local Mac/Linux passes and the proven race do not by themselves establish their exclusive cause. Rerun hosted CI on the signed repair before publication. The earlier exact-image preflight artifact is superseded for publication and must be rebuilt from signed source. General qualification remains paused; no production change is made by this repair.
+
+## 2026-10-16 — Keep unit deadlines and exact bytes while bounding hosted contention
+
+**Decision.** Run the ordinary hosted unit population with one file worker and preserve every case workload, the five-second default and the 20-minute job limit. Serialization alone is insufficient in the retained Linux control. Replace only five large binary comparison sites in the two timed-out cases with Node's strict deep equality, retaining all bytes/types, state copies, mutation/isolation checks, generated histories and seed/run parameters. No production code or crypto contract changes. Changed-byte controls must still fail; the projection reporter's wrapped/shrunk error is its actual evidence, not an inferred inner stack.
+
+**Bounds.** Full local functional passes do not erase the hosted failures or establish a successful AMD64 rerun. All obligation rows and release blocks remain. Hosted CI must pass on the signed phase before publication; qualification stays paused.

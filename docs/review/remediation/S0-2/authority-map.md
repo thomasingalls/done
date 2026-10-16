@@ -1,5 +1,19 @@
 # The authority-derivation map
 
+**2026-10-16 pin review:** §13.3 differs from the prior pinned onboarding section only by
+its signed setup-recovery isolation amendment (`fcb659c3`). Recovery hints remain non-authorizing;
+protected factor opening, metadata authentication, credential correspondence and root invocation
+accounting are unchanged. Reread `device-lock-custody` and `k-key-envelopes` and refresh only those
+two content pins. Their specified-home statuses and every implementation/platform blocker remain.
+
+**2026-10-15 pin review:** reread TRD §§7.4/13.3/13.5/13.6/13.9 against the entries below.
+The v2 envelope retains credential/generation separation and per-invocation accounting; admission-only
+successors carry existing certification unchanged; competing epochs require a fresh human ceremony;
+combined session assertions still require local binding/factor verification. The device-lock predicate
+is now explicitly scoped to protected Local/Account. Automatic Local makes no external-factor or
+copied-profile claim and its new construction qualification remains open in the runtime registry.
+These pins update specified homes only; no implementation/platform debt is paid.
+
 **2026-09-08 pin review:** the changed custody, storage and local-activation sections were reread
 against SC-01–09. Factor roots retain their existing principal/workspace authority. `resolved` below
 means the specified derivation/predicate has a home; it does not claim production conformance. Custody
@@ -96,7 +110,7 @@ resolves: the named signer's member entry (credential_id ‖ W_pub ‖ S_pub) in
 resolves: a bootstrap-minted replacement set -> via:bootstrap-signer
 status: resolved
 pin: docs/TRD.md §13.2 e20172edb4ea
-pin: docs/TRD.md §13.5 fc07fa38364f
+pin: docs/TRD.md §13.5 9167f0fa6abe
 pin: docs/review/remediation/S0-2/A-schemas.md §1 4863e06ab791
 ```
 
@@ -161,7 +175,7 @@ guards: keys
 verifies: the SAS ceremony that licenses a content-key release and produces the set successor
 resolves: the typed symbols over the transcript (workspace, epoch and head, both credentials, W_pub, S_pub, recovery_state_digest) -> the releasing client's eligibility in the certified set -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §13.6 1accb334be21
+pin: docs/TRD.md §13.6 43e15a43e700
 ```
 
 ## 2. The lineage and the acceptance domain — service powers, each with its bound
@@ -179,7 +193,7 @@ verifies: a successor epoch — roster, capabilities, generation, K_accept certi
 resolves: the service authorization key -> root:service
 bound: §13.5 — epochs are serialized, signed and ancestor-checked, so equivocation must fork the lineage rather than withhold; and per P-1 the epoch resolves no recipient-authority key — it carries the certified sets and vouches for none of them
 status: resolved
-pin: docs/TRD.md §13.5 fc07fa38364f
+pin: docs/TRD.md §13.5 9167f0fa6abe
 ```
 
 ```authority
@@ -190,7 +204,7 @@ verifies: the nonce-bound signed head assertion a brand-new or total-loss device
 resolves: K_auth's head assertion -> root:service
 bound: §13.5 — client_nonce separates a hostile relay from a hostile service; issued_at is displayed, never enforced; a stale self-consistent head degrades to a partition because a hidden revocation is a hidden generation, and the ancestor rule takes over after first contact
 status: resolved
-pin: docs/TRD.md §13.5 fc07fa38364f
+pin: docs/TRD.md §13.5 9167f0fa6abe
 ```
 
 ```authority
@@ -251,7 +265,7 @@ guards: content
 verifies: sig over an envelope's AAD fields, nonce and digest (§7.4)
 resolves: the signing credential named in the clear header -> its member entry for the referenced epoch -> via:member-signing-keys
 status: resolved
-pin: docs/TRD.md §7.4 879970c40c7c
+pin: docs/TRD.md §7.4 62f91be5d706
 ```
 
 ```authority
@@ -483,17 +497,17 @@ guards: availability
 verifies: the WebAuthn account credential and the local slot verifier
 resolves: an assertion from the platform authenticator, same-origin only, Ed25519 or ES256 -> root:factor
 status: resolved
-pin: docs/TRD.md §13.9 8d9ba621b3e6
+pin: docs/TRD.md §13.9 fa26c57c20cb
 ```
 
 ```authority
 entry: device-lock-custody
 kind: predicate
 guards: custody
-verifies: opening every persistent scoped custody entry from genesis and cold start
+verifies: opening every protected Local and Account scoped custody entry from protected genesis and cold start
 resolves: current code-only custody requires factor opening, metadata authentication and retained-key correspondence; selected PRF enrollment remains separate -> via:private-local-custody-open
 status: resolved
-pin: docs/TRD.md §13.3 edf42ef40738
+pin: docs/TRD.md §13.3 7a2b8ec58274
 ```
 
 ## 5. The AEAD keys — `P-3` falsifier 16's census, seeded
@@ -542,7 +556,7 @@ verifies: the network-envelope subkey K_net
 counted-by: NetSealCounter.reserved[gen] per workspace/credential — private v2 binds credential and generation in HKDF; strictly reserve each invocation before crypto, including crash recovery and refusal successors; reject before 2^32; assumes an unrewound, unbranched credential history
 status: resolved
 note: FU-10 still requires atomic position plus reserved-row identity. The 2026-09-10 preparation corrects the older model’s crash/successor undercount and v1 shared-key domain. Resolved here is the specified construction, not native implementation; account-outbound.md and its counterexamples retain that boundary.
-pin: docs/TRD.md §7.4 879970c40c7c
+pin: docs/TRD.md §7.4 62f91be5d706
 pin: docs/review/remediation/S0-4/A-schemas.md §2 4eee344bd206
 pin: docs/account-crypto/transport.md §2 ff41202e59ad
 pin: docs/account-crypto/transport.md §8 381c3f07f8b3
@@ -569,7 +583,7 @@ verifies: the local key envelopes — K_g and §13.4's sealed credentials under 
 counted-by: v2 custody root seal_reserved — reserve before every invocation, across purposes and abandoned retries; rotate the root or refuse before the 2^32nd reservation (row 3 §5, SC-09). One envelope per (generation, purpose) is only logical uniqueness. Resume the same staged root with its counter; unrewound/unbranched history is required
 status: resolved
 pin: docs/selections/row-3-record-format.md dcefb99d3368
-pin: docs/TRD.md §13.3 edf42ef40738
+pin: docs/TRD.md §13.3 7a2b8ec58274
 ```
 
 ```authority

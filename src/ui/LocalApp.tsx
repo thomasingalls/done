@@ -8,6 +8,9 @@ import { LocalRecovery } from './LocalRecovery';
 import { Welcome } from './Welcome';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 import { useCeremonyNavigation } from './ceremonyNavigation';
+import { ProtectionFlow } from './ProtectionFlow';
+import { RemoveFromDeviceButton } from './DeviceDataRemoval';
+import { acknowledgeLocalRemoval } from '../crdt/deviceDataRemoval';
 
 const messages: Record<Exclude<StartupKind, 'fresh'>, { title: string; detail: string }> = {
   'app-update-required': {
@@ -17,7 +20,7 @@ const messages: Record<Exclude<StartupKind, 'fresh'>, { title: string; detail: s
   },
   'unlock-required': {
     title: 'Unlock your workspace',
-    detail: 'Enter your device-lock code to open the writing saved in this browser.',
+    detail: 'Enter your unlock code to open the writing saved in this browser.',
   },
   'creation-pending': {
     title: 'Finish creating your workspace',
@@ -26,7 +29,7 @@ const messages: Record<Exclude<StartupKind, 'fresh'>, { title: string; detail: s
   'unlock-failed': {
     title: 'Could not unlock',
     detail:
-      'Check your device-lock code and try again. If it is correct, the saved workspace may need repair.',
+      'Check your unlock code and try again. If it is correct, the saved workspace may need repair.',
   },
   'migration-required': {
     title: 'Your existing writing needs migration',
@@ -88,7 +91,7 @@ const CodeForm = ({
         onSubmit(input);
       }}
     >
-      <label htmlFor="local-code">Device-lock code</label>
+      <label htmlFor="local-code">Unlock code</label>
       <input
         id="local-code"
         type="password"
@@ -110,28 +113,44 @@ export const LocalApp = ({
   onChooseAccount,
   onCreateWorkspace,
   beginOnFresh = false,
+  automaticFirstRun = true,
+  onConnectExisting,
 }: {
-  onConnectAccount?: (name: string) => void;
+  onConnectAccount?: (name: string, code?: string) => void;
   onChooseAccount?: () => void;
   onCreateWorkspace?: () => Promise<void>;
   beginOnFresh?: boolean;
+  automaticFirstRun?: boolean;
+  onConnectExisting?: () => void;
 } = {}): React.ReactElement => {
   const [epoch, setEpoch] = useState(0);
   const [owner, setOwner] = useState<LocalStartup | null>(null);
   const [state, setState] = useState<LocalStartupState>({ kind: 'checking' });
   const beginRequested = useRef(beginOnFresh);
+  const [screen, setScreen] = useState<'sync' | 'protect' | 'protected' | null>(null);
+  const syncAfterProtection = useRef(false);
   const navigation = useCeremonyNavigation({
     base: '/local',
-    step: ['checking', 'working', 'closing'].includes(state.kind) ? null : state.kind,
+    step: ['checking', 'working', 'closing'].includes(state.kind)
+      ? null
+      : state.kind === 'ready' && screen
+        ? screen
+        : state.kind,
     parent: state.kind === 'fresh' ? '/' : '/accounts',
-    visit: (step) => owner?.visit(step) ?? false,
+    visit: (step) => {
+      if (state.kind === 'ready' && step === 'ready') {
+        setScreen(null);
+        return true;
+      }
+      return owner?.visit(step) ?? false;
+    },
     close: async () => {
       await owner?.close();
     },
     preserveEntry: beginOnFresh,
   });
   useEffect(() => {
-    const current = createLocalStartup();
+    const current = createLocalStartup(automaticFirstRun);
     setOwner(current);
     setState(current.getSnapshot());
     const unsubscribe = current.subscribe(() => setState(current.getSnapshot()));
@@ -158,7 +177,7 @@ export const LocalApp = ({
       window.removeEventListener('pageshow', restore);
       retire();
     };
-  }, [epoch]);
+  }, [epoch, automaticFirstRun]);
   const restart = () => {
     if (!owner) return;
     void owner.close().then(
@@ -177,16 +196,122 @@ export const LocalApp = ({
       .then(onChooseAccount, () => setState({ kind: 'unavailable', reason: 'local-close-failed' }));
   };
   let content: React.ReactNode;
+  const connect = () => {
+    if (!owner || state.kind !== 'ready' || !onConnectAccount) return;
+    const name =
+      state.workspace.read().actors.find((actor) => actor.id === state.actorId)?.name ?? 'You';
+    const code = owner.takeSyncCode();
+    void owner.close().then(
+      () => onConnectAccount(name, code),
+      () => setState({ kind: 'unavailable', reason: 'local-close-failed' }),
+    );
+  };
   if (navigation.leaving)
     return <p role="status">{navigation.error || 'Locking and finishing storage operations…'}</p>;
-  if (state.kind === 'checking' || state.kind === 'working' || state.kind === 'closing') {
+  if (state.kind === 'ready' && screen === 'protect' && owner)
+    return (
+      <ProtectionFlow
+        forSync={syncAfterProtection.current}
+        onCancel={() => {
+          syncAfterProtection.current = false;
+          setScreen(null);
+        }}
+        onConfirm={async (code) => {
+          await owner.protect(code);
+          if (owner.getSnapshot().kind === 'ready') setScreen('protected');
+          else setScreen(null);
+        }}
+      />
+    );
+  if (state.kind === 'ready' && screen === 'sync')
     content = (
       <>
-        <h1>{state.kind === 'closing' ? 'Locking your workspace…' : 'Opening your workspace…'}</h1>
+        <h1>Sync across devices</h1>
+        <p>
+          Keep an encrypted copy of this list with your account and use it on your other devices.
+          You can still work offline.
+        </p>
+        <p>
+          You’ll need local protection, an account passkey, and a saved recovery code. Your current
+          list and notes will be kept.
+        </p>
+        <button
+          onClick={() => {
+            if (state.automatic) {
+              syncAfterProtection.current = true;
+              setScreen('protect');
+            } else connect();
+          }}
+        >
+          Sync this list
+        </button>
+        <button
+          className="local-secondary"
+          onClick={() => {
+            if (onConnectExisting) onConnectExisting();
+            else chooseAccount();
+          }}
+        >
+          Connect an existing account
+        </button>
+        <p className="setup-note">Connecting an existing account keeps this local list separate.</p>
+        <button className="local-secondary" onClick={() => setScreen(null)}>
+          Back to Today
+        </button>
+      </>
+    );
+  else if (state.kind === 'ready' && screen === 'protected')
+    content = (
+      <>
+        <h1>Protection is enabled</h1>
+        <p>Your list and notes have been kept. Future visits require your saved unlock code.</p>
+        <button
+          onClick={() => {
+            if (syncAfterProtection.current) connect();
+            else setScreen(null);
+          }}
+        >
+          {syncAfterProtection.current ? 'Continue to sync setup' : 'Back to Today'}
+        </button>
+        <button
+          className="local-secondary"
+          onClick={() => {
+            syncAfterProtection.current = false;
+            setScreen(null);
+            restart();
+          }}
+        >
+          Lock now
+        </button>
+        {syncAfterProtection.current && (
+          <button
+            className="local-secondary"
+            onClick={() => {
+              syncAfterProtection.current = false;
+              setScreen(null);
+            }}
+          >
+            Set up sync later
+          </button>
+        )}
+      </>
+    );
+  else if (state.kind === 'checking' || state.kind === 'working' || state.kind === 'closing') {
+    content = (
+      <>
+        <h1>
+          {state.kind === 'closing'
+            ? 'Locking your workspace…'
+            : screen === 'protect'
+              ? 'Applying protection…'
+              : 'Opening your workspace…'}
+        </h1>
         <p role="status">
           {state.kind === 'closing'
             ? 'Waiting for storage operations to finish.'
-            : 'Checking encrypted storage.'}
+            : screen === 'protect'
+              ? 'Verifying your protected copy. If this waits, close other tabs using this list.'
+              : 'Checking encrypted storage.'}
         </p>
         {state.kind !== 'closing' && <button onClick={restart}>Cancel</button>}
       </>
@@ -194,12 +319,12 @@ export const LocalApp = ({
   } else if (state.kind === 'save-code') {
     content = (
       <>
-        <h1>Save your device-lock code</h1>
+        <h1>Save your unlock code</h1>
         <p>
           Store this code somewhere safe outside this browser. You need it to reopen your workspace.
           Losing it can mean losing access to your writing.
         </p>
-        <code className="local-generated-code" aria-label="Generated device-lock code">
+        <code className="local-generated-code" aria-label="Generated unlock code">
           {state.code}
         </code>
         <button onClick={() => owner?.saved()}>I saved my code</button>
@@ -232,18 +357,15 @@ export const LocalApp = ({
         actorId={state.actorId}
         registerEditor={owner.registerEditor}
         onLock={restart}
+        protection={state.automatic ? 'automatic' : 'protected'}
+        onProtect={() => {
+          syncAfterProtection.current = false;
+          setScreen('protect');
+        }}
         {...(onChooseAccount ? { onSwitchAccount: chooseAccount } : {})}
         {...(onConnectAccount
           ? {
-              onConnectAccount: () => {
-                const name = state.workspace
-                  .read()
-                  .actors.find((actor) => actor.id === state.actorId)?.name;
-                void owner.close().then(
-                  () => onConnectAccount(name === 'You' ? '' : (name ?? '')),
-                  () => setState({ kind: 'unavailable', reason: 'local-close-failed' }),
-                );
-              },
+              onConnectAccount: () => setScreen('sync'),
             }
           : {})}
       >
@@ -263,8 +385,16 @@ export const LocalApp = ({
     const message = messages[state.kind];
     content = (
       <>
-        <h1>{message.title}</h1>
-        <p>{message.detail}</p>
+        <h1>
+          {'reason' in state && state.reason === 'local-protection-needs-unlock-code'
+            ? 'Finish enabling protection'
+            : message.title}
+        </h1>
+        <p>
+          {'reason' in state && state.reason === 'local-protection-needs-unlock-code'
+            ? 'Enter your saved unlock code to finish the interrupted protection setup. Your list has been kept.'
+            : message.detail}
+        </p>
         {['repair-required', 'unlock-failed', 'unavailable'].includes(state.kind) && (
           <LocalRecovery />
         )}
@@ -275,9 +405,20 @@ export const LocalApp = ({
               void owner?.unlock(code);
             }}
           />
+        ) : state.kind === 'cleared' && state.reason === 'device-data-removal' ? (
+          <button
+            onClick={() => {
+              void acknowledgeLocalRemoval('local')
+                .then(restart)
+                .catch(() => setState({ kind: 'unavailable', reason: 'fresh-start-failed' }));
+            }}
+          >
+            Start fresh
+          </button>
         ) : (
           <button onClick={restart}>Check again</button>
         )}
+        <RemoveFromDeviceButton slotId="local" />
         {onChooseAccount && (
           <button className="local-secondary" onClick={chooseAccount}>
             Use another account

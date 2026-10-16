@@ -15,9 +15,16 @@ import { parseSlot } from './startupClassification';
 import { requireAccountAccess, type LocalPasskey } from './accountAccess';
 import type { Slot } from './slotIndex';
 import type { HandoffState } from './handoffRecord';
+import { authorizePromotionOpening, type PromotionOpening } from '../account/promotionOpening';
+import type { NetworkLogin } from '../account/networkLogin';
 export interface HandoffOptions extends PrepareGenesisOptions {
   bindingTransport(input: { retryKey: string; requestDigest: string }): Promise<unknown>;
   assertPasskey: LocalPasskey;
+  opening?: {
+    signal: AbortSignal;
+    login?: NetworkLogin;
+    receive: (opening: PromotionOpening) => void;
+  };
 }
 export interface HandoffReceipt {
   kind: 'account-selected';
@@ -94,7 +101,20 @@ export async function finishPromotionHandoff(input: HandoffOptions): Promise<Han
           const binding = await task.wait(() =>
             verifyBindingProof(proof, request, receipt, options.pin),
           );
-          await requireAccountAccess(task, binding, options.pin, options.assertPasskey);
+          if (input.opening)
+            input.opening.receive(
+              await authorizePromotionOpening(task, {
+                slotId: options.slotId,
+                pin: options.pin,
+                proof: binding,
+                root,
+                rootId: record.root_id,
+                signal: input.opening.signal,
+                assert: options.assertPasskey,
+                ...(input.opening.login ? { login: input.opening.login } : {}),
+              }),
+            );
+          else await requireAccountAccess(task, binding, options.pin, options.assertPasskey);
           const local = await localRoute(task, claim);
           const destination: Slot = {
             id: local.id,

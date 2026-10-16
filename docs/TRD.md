@@ -1,7 +1,9 @@
 # done — Technical Requirements
 
 **Status:** v8 — current and normative. Supersedes v7 in full.
-**Storage contract amended 2026-09-08:** mandatory factor custody, writer lifetime, offline causal recovery,
+**Storage contract amended 2026-10-14:** automatic Local opening, opt-in external-factor protection,
+credential-free scoped removal and a single-use initial sync opening amend the September custody policy.
+Writer lifetime, offline causal recovery,
 exact coverage and failure dispositions are consolidated here and in [storage-contract.md](./storage-contract.md).
 The [conformance matrix](./storage-conformance.md) separates current requirements from existing partial evidence.
 **Date:** 2026-08-17
@@ -108,7 +110,7 @@ the rest in and passing it to review remains the work between this draft and an 
 | Durable store              | **Content-blind: envelopes, checkpoints, manifests. Cannot merge (§7.6)**                            |
 | Doc partitioning           | Single root doc per workspace; destructive compaction is safety-paused (§4.5)                        |
 | Recovery                   | **Non-custodial: `R_pub` wraps generations, saved code seals `R_priv` 1-of-N (§13.8)**               |
-| PWA shell                  | Hand-rolled service worker, precache-only                                                            |
+| PWA shell                  | Hand-rolled service worker, precache-only; explicit update activation and reload                      |
 | Targets                    | Android Chrome (primary), Desktop Chrome/Edge                                                        |
 
 Four load-bearing decisions. Two survive from v7: **Yjs is the source of truth and the derived index is a
@@ -2534,14 +2536,17 @@ violates it, and the narrow rule above follows from it.
 **Edit implies read.** Under one symmetric key per generation there is no cryptographic write-without-read. This is a
 capability limit, not a policy one, and the agent feature inherits it (§10.6).
 
-### 13.3 Mandatory factor custody and legacy migration
+### 13.3 Automatic Local custody, protection and legacy migration
 
-**Constraint.** Persistent Local and Account workspaces use factor custody from genesis and unlock at
-cold start. No promptless persisted handle or fallback independently opens content or receives future
-generation keys. This intentionally replaces the former optional-lock default (SC-08). Each custody root retains row 13’s
+**Constraint, amended 2026-10-14.** New Local lists use authenticated automatic opening by default.
+`LocalClaim.automatic` is covered by its metadata MAC; the bound automatic opener is sealed with a
+non-exportable browser CryptoKey and installed atomically with genesis. This mode makes no copied-profile
+confidentiality claim. Existing protected lists retain their original factor custody and byte formats.
+Protected Local and all Account workspaces require unlock at cold start. No automatic persisted handle
+or fallback independently opens their content or receives future generation keys. Each custody root retains row 13’s
 principal/workspace factor binding; the slot-wide writer barrier does not broaden that authority.
 
-**Construction, selected** (§15 row 13). A generated **125-bit device-lock code is always enrolled**;
+**Protected construction** (§15 row 13). A generated **125-bit unlock code is confirmed when protection is enabled**;
 WebAuthn PRF, where supported, adds an independent seal of the same random `L_lock`. A user-chosen
 password is rejected. Retain row 13's seal format, HKDF/AAD and role/slot-bound PRF inputs. The factor
 must be outside the copied-profile exposure domain; authenticator capability and user verification
@@ -2550,7 +2555,40 @@ assumptions require support-matrix evidence. Code-only unlock works offline with
 `L_lock` opens each retained `K_g` envelope. Persist only sealed root/credential bytes; import ordinary
 private credentials as non-extractable runtime keys after unlock. Plaintext factors, generation keys
 and raw journal subkeys stay in the coordinated live session, never in a persisted remember-unlocked
-cache. Confirm the factor and complete recoverable custody before acknowledging the first persistent edit.
+cache. Protected genesis confirms the external factor before the first persistent edit. Automatic genesis
+completes recoverable browser-held custody before acknowledgement.
+
+**Adding protection to the new automatic mode.** `localProtection` holds exclusive slot ownership,
+copies the complete authenticated Yjs state and journal basis into a fresh store with fresh keys, and
+cold-verifies an exact factor-authenticated snapshot digest before retiring source content. Progress
+is resumable through content, journal, index and custody retirement. The final custody transaction
+removes automatic opening and selects the protected claim. The principal, text hierarchy, card IDs,
+attribution and settings survive; the physical workspace/store identity changes. Pre-protection copies
+retain their old data and keys. The automatic receiving/signing credentials are not promoted into sync.
+
+**Initial sync opening.** One locally verified passkey approval can authorize the promotion handoff
+and its initial editor opening; online login uses the existing combined challenge. An opaque in-memory,
+single-use grant binds the complete verified binding proof, service pin, slot and live setup lifetime.
+It cannot survive reload, serialize, authorize a different destination or replace later unlocks.
+
+**Setup recovery progress isolation, amended 2026-10-15.** Recovery progress binds the account,
+retry capability and complete recovery context. Matching existing `pending` (Local) and
+`slot:<slotId>` (new Account) records resume in place. Before another attempt writes that current
+key, its owner validates the unrelated v1 record structurally and atomically preserves its exact
+value at `['retained-setup-recovery-v1', accountId, retryKey]`; an occupied destination or changed
+source refuses the transaction. Status reads perform no move. Current draft bytes and keys retain
+the existing reader format; older readers targeting another attempt refuse the owner mismatch.
+The updated owner can resume its exact retained record after checking the same account, retry and
+context. These hints never authorize opening, passkey confirmation or service mutations.
+
+Selected setup recovery reads/writes share setup-metadata exclusion with device removal and check
+the selected setup, service pin and removal fence. They acquire no workspace permit while holding
+that metadata exclusion. A crypto operation staged before removal cannot subsequently recreate
+progress. Explicit removal erases the slot's scoped current key and its identified current/retained
+attempt, preserving unrelated global recovery records. Matching protected custody and cryptographic
+byte formats are unchanged. Continuation errors are labelled as an accepted Local code only after
+the Local claim and custody factor have been verified; later account setup failure does not become
+a Local factor failure.
 
 **Legacy promptless migration is explicit and resumable.** `L_local` and old non-extractable operational
 credentials cannot be exported for resealing. Generate `L_lock`, stage factor seals and resealed retained

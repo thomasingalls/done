@@ -4,6 +4,7 @@ import { mkdirSync, writeFileSync, cpSync, readFileSync, readdirSync, statSync }
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { spawn } from 'node:child_process';
+import { withUpgradeFixture } from './fixture-owner.mjs';
 const output = resolve('test-results/app-upgrades', new Date().toISOString().replaceAll(':', '-'));
 mkdirSync(output, { recursive: true });
 console.log(`Upgrade evidence: ${output}`);
@@ -46,22 +47,52 @@ writeFileSync(
     2,
   ),
 );
-const child = spawn(
-  process.execPath,
-  ['node_modules/@playwright/test/cli.js', 'test', '--config', 'playwright.app-upgrades.config.ts'],
-  {
-    stdio: 'inherit',
-    env: {
-      ...process.env,
-      APP_UPGRADE_OUTPUT: output,
-      APP_UPGRADE_HAS_PRIOR: predecessor ? '1' : '0',
+process.exitCode = await withUpgradeFixture(output, async (origin) => {
+  const child = spawn(
+    process.execPath,
+    [
+      'node_modules/@playwright/test/cli.js',
+      'test',
+      '--config',
+      'playwright.app-upgrades.config.ts',
+    ],
+    {
+      stdio: 'inherit',
+      env: {
+        ...process.env,
+        APP_UPGRADE_OUTPUT: output,
+        APP_UPGRADE_HAS_PRIOR: predecessor ? '1' : '0',
+        APP_UPGRADE_ORIGIN: origin,
+      },
     },
-  },
-);
-const deadline = setTimeout(() => child.kill('SIGTERM'), 180_000);
-const code = await new Promise((resolve, reject) => {
-  child.on('error', reject);
-  child.on('exit', (value) => resolve(value ?? 1));
+  );
+  let timedOut = false,
+    interrupted = false,
+    forced;
+  const stop = () => {
+    child.kill('SIGTERM');
+    forced ??= setTimeout(() => child.kill('SIGKILL'), 5000);
+  };
+  const interrupt = () => {
+    interrupted = true;
+    stop();
+  };
+  process.once('SIGTERM', interrupt);
+  process.once('SIGINT', interrupt);
+  const deadline = setTimeout(() => {
+    timedOut = true;
+    stop();
+  }, 180_000);
+  try {
+    const code = await new Promise((resolve, reject) => {
+      child.once('error', reject);
+      child.once('exit', (value) => resolve(value ?? 1));
+    });
+    return timedOut || interrupted ? 1 : code;
+  } finally {
+    clearTimeout(deadline);
+    clearTimeout(forced);
+    process.removeListener('SIGTERM', interrupt);
+    process.removeListener('SIGINT', interrupt);
+  }
 });
-clearTimeout(deadline);
-process.exitCode = code;

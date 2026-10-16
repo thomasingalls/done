@@ -27,7 +27,7 @@ export async function captureBundle(control) {
                 ],
                 route: [
                   '/src/crdt/sourceCapture.ts',
-                  "if (result[key] !== route[key]) throw Error('route');",
+                  "if (result[key] !== historical[key]) throw Error('route');",
                   'void 0;',
                 ],
               };

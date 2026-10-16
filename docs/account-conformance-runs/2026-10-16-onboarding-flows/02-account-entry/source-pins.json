@@ -1,0 +1,16 @@
+{
+  "src/account/firstDeviceSetup.ts": "13432a9c7320f3a0ba2ae93e6ce1e8e44bb3aed9c8264dcc6514e8abaf1cbc96",
+  "src/account/setupProgress.ts": "7f04721e135934c60c30820e2817ad66eb6103644270f92c9ce69a1abd451b5d",
+  "src/ui/AccountSetupApp.tsx": "af14a3b0b70c2832ad8a52caab909d595a68f524781f17e1401fc75758846d3e",
+  "src/crdt/localGenesis.ts": "32133fb2fe0302bddc0fdaaea56cff5e268021ad4f4d9489802d79788cb68eae",
+  "src/crdt/localGenesisStorage.ts": "964dedafff546ea3e38f68c5d308d25e721cd90b058b0a4e1527563e444a3eb4",
+  "src/crdt/localGenesisRecord.ts": "1d5c88ce57abeeca5c8a366d079b3d16812fab9363112242e79cc4f1d6815894",
+  "test/accountSetupEntry.test.ts": "e12ecbd3b105ee86749220dd3741e13636119e4546a4b87787bfd34e5994bcc3",
+  "test/firstDeviceSetupAccess.test.ts": "915df9d019fd822a36ad438be01b1e27ddf7f0876738e8f8ec9813ef182e032d",
+  "test/packaged-account/account-creation-entry.spec.ts": "d7bb66e4810316e899c12875d9a00b2b290d2428fc1ddc54e19d8e7337002615",
+  "test/packaged-account/welcome.spec.ts": "5e0d7eae7ba7a47aa9c179539ffdfe62640d64a4fa0943f7ab2b4b3f421f3743",
+  "playwright.packaged-account.config.ts": "0906bf9cc220e4919f9faa56c8802243d75b3e2086f196926e318db14fa442c8",
+  "docs/storage-contract.md": "b226865eeecf1dc83da47602cb7571b2d3a2a88611b9021813ec23662a053bb1",
+  "docs/PRD.md": "4b396c1ecde8e021d37b2a61926a3ec2ed4d213445b12fc2ad9c75c89882922f",
+  "docs/TRD.md": "4a93ffc03c0286a1891164d34dd6851a9a8dac81866d464a32e4b8d9cda196fe"
+}

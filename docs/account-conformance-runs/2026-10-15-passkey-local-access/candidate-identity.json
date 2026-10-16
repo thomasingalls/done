@@ -1,0 +1,69 @@
+{
+  "baseline": "42ebdd12de0edcae7a5cd51bd44c3266e914bfcf",
+  "state": "uncommitted candidate; not a release identity",
+  "snapshotSource": "/private/tmp/done-passkey-access-checkout",
+  "pinnedFiles": 1665,
+  "sourceDigest": "f93a4ea5018bdb042fc874f10d315349935039e7d10fd86706f8ec2153006401",
+  "candidateBuild": "/private/tmp/done-passkey-access-candidate-build-2",
+  "changedSourcesMatchTestedSnapshot": true,
+  "changedFiles": [
+    {
+      "path": "src/account/passkeyResponse.ts",
+      "sha256": "8c6ec847e20869d48b3f4cf4ed3450464aae8ade5c8a5449901ee5f27a9b6666"
+    },
+    {
+      "path": "src/account/firstDeviceSetup.ts",
+      "sha256": "91a755f5d559e3b07f046db16d83fa97e83cba18d185fd93a168582a7378b976"
+    },
+    {
+      "path": "src/account/setupProgress.ts",
+      "sha256": "591772b802c890fda57966983a0ac6bc235679a0f622e2ed5fa90496bb6fd257"
+    },
+    {
+      "path": "src/ui/AccountSetupApp.tsx",
+      "sha256": "bd40ca777882c28c7ffbb7a9ed5ebe6d5fc0bf55bf9a68783e3c92e0f67b99a9"
+    },
+    {
+      "path": "src/account/accountSignIn.ts",
+      "sha256": "638b75189d953f222723765263f5131a60defd97c9d5b01733762be44c5685b4"
+    },
+    {
+      "path": "src/account/deviceEnrollment.ts",
+      "sha256": "c64032acb75978f1722127fa0d13a2c00164357fdb4de245c8748b964bbf96fc"
+    },
+    {
+      "path": "src/account/networkLogin.ts",
+      "sha256": "8fe6372238634d22f78585d9c6ed07335e3c1347c784b43fdaefcca31ed8d031"
+    },
+    {
+      "path": "src/account/membershipEnrollment.ts",
+      "sha256": "f329d1f58eb54b4e57f08ce0e94f6ef1e11b88c0bcb3d12691b7afc35b82006d"
+    },
+    {
+      "path": "src/account/lostDeviceRecovery.ts",
+      "sha256": "691fe605dd50cbd93b4950df281b1d0dc3327859c116b68b6463401690df5566"
+    },
+    {
+      "path": "test/passkeyResponse.test.ts",
+      "sha256": "774f9bf0cccfac4a502119e15d62941ea7d98722621acc862fd9f1dc55ac93f9"
+    },
+    {
+      "path": "test/firstDeviceSetupAccess.test.ts",
+      "sha256": "915df9d019fd822a36ad438be01b1e27ddf7f0876738e8f8ec9813ef182e032d"
+    },
+    {
+      "path": "test/packaged-account/passkey-local-access.spec.ts",
+      "sha256": "ae49e0de7bbd61cd71ba808484b3ceb1e3a6c1da72feb2cd56defb5d85b336ef"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "package.json",
+      "sha256": "0f36597716b4ee2785570a7bafaa0b9e1891510bfbfb812fc998007920a52c02"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "734ac3c5e75fac6498ab11a394fb76c5228057abc52b238e585438abe1143aa8"
+    }
+  ]
+}

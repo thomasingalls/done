@@ -1,0 +1,159 @@
+{
+  "baseline": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "applicationServiceProtocolAndProgressUnchanged": true,
+  "onlyExplicitlyApprovedOldTestsAndHarnessesChanged": true,
+  "files": [
+    {
+      "path": "scripts/account-admission-bounds/run.mjs",
+      "approvalChain": [
+        {
+          "path": "scripts/account-admission-bounds/run.mjs",
+          "originalSha256": "72a553af3ba0daceb7e158e4799864c70990f6628084f041eaf6a3db03be31d8",
+          "proposedSha256": "3eae2fdfa845bb5ca5aff7dc6d02a3bc5c48a4cb0ec4935b1fb0ce6e2590fbf2"
+        }
+      ],
+      "currentSha256": "3eae2fdfa845bb5ca5aff7dc6d02a3bc5c48a4cb0ec4935b1fb0ce6e2590fbf2"
+    },
+    {
+      "path": "scripts/account-driver/run.mjs",
+      "approvalChain": [
+        {
+          "path": "scripts/account-driver/run.mjs",
+          "originalSha256": "e02b27b771f800a1c98295b57c0da64eab3c144d8565044a5612cfd8d9afb953",
+          "proposedSha256": "9a06ea32f60bbaa980aca0724bfe11b987252ef0b10df196b166d317242e8322"
+        }
+      ],
+      "currentSha256": "9a06ea32f60bbaa980aca0724bfe11b987252ef0b10df196b166d317242e8322"
+    },
+    {
+      "path": "scripts/account-receive/run.mjs",
+      "approvalChain": [
+        {
+          "path": "scripts/account-receive/run.mjs",
+          "originalSha256": "dbba185d3d8d20cc0f59eb09ae22f7e73f6cfe7c795b6add2e6f2609e9732975",
+          "proposedSha256": "de7dbd75f563833a16ee1890c3bfd42d34ca44d59a5f6236aeaedadb21ce6bea"
+        }
+      ],
+      "currentSha256": "de7dbd75f563833a16ee1890c3bfd42d34ca44d59a5f6236aeaedadb21ce6bea"
+    },
+    {
+      "path": "scripts/legacy-cleanup/campaign.mjs",
+      "approvalChain": [
+        {
+          "path": "scripts/legacy-cleanup/campaign.mjs",
+          "originalSha256": "12dfe89d76cfc8ab9f338069d2e43a4c252b7ae87a58af62103c101b6d46f971",
+          "proposedSha256": "cee1a312e34b62bc7ddf100213e0c79560b4c84c8f8e184c3ba062a8820eba4b"
+        }
+      ],
+      "currentSha256": "cee1a312e34b62bc7ddf100213e0c79560b4c84c8f8e184c3ba062a8820eba4b"
+    },
+    {
+      "path": "scripts/legacy-coordinator/campaign.mjs",
+      "approvalChain": [
+        {
+          "path": "scripts/legacy-coordinator/campaign.mjs",
+          "originalSha256": "08fa37ce9f95f826371744e5666e7aceed719a64037972ff7ea59494894f3b55",
+          "proposedSha256": "5e387f59496961e725367c95b6f28bee92969744360dd8c0c3dfa57d65a860f6"
+        }
+      ],
+      "currentSha256": "5e387f59496961e725367c95b6f28bee92969744360dd8c0c3dfa57d65a860f6"
+    },
+    {
+      "path": "scripts/legacy-import/run.mjs",
+      "approvalChain": [
+        {
+          "path": "scripts/legacy-import/run.mjs",
+          "originalSha256": "54fb2a16d15039311bd53889d6e45f497afe4ac159d26df3f39abb530f6cf321",
+          "proposedSha256": "fe25f08b6162a40dee522e5b4236925ba71dc30106954618ef7cb51845838b00"
+        }
+      ],
+      "currentSha256": "fe25f08b6162a40dee522e5b4236925ba71dc30106954618ef7cb51845838b00"
+    },
+    {
+      "path": "scripts/legacy-selection/run.mjs",
+      "approvalChain": [
+        {
+          "path": "scripts/legacy-selection/run.mjs",
+          "originalSha256": "72311074a5b9b6596820838d88f0311b89c1a6da9ff0eb69d3737507d35f8e64",
+          "proposedSha256": "799cd179b8803d7648e705c9684ee66f07ec58e54079216f6ef538aca8c8a16e"
+        }
+      ],
+      "currentSha256": "799cd179b8803d7648e705c9684ee66f07ec58e54079216f6ef538aca8c8a16e"
+    },
+    {
+      "path": "test/account-admission-bounds/fixtures.mjs",
+      "approvalChain": [
+        {
+          "path": "test/account-admission-bounds/fixtures.mjs",
+          "originalSha256": "b3e4682b468697d327e3f920b4f00c17476fb92f8ffdf82da8a03ab2a8d88407",
+          "proposedSha256": "5cce7b19abbdc01485854e17e552ec92dfae70c54d1f9cf7005d3a5bf4351d60"
+        },
+        {
+          "path": "test/account-admission-bounds/fixtures.mjs",
+          "originalSha256": "5cce7b19abbdc01485854e17e552ec92dfae70c54d1f9cf7005d3a5bf4351d60",
+          "proposedSha256": "1459d8690cee6baecd3a012a36d1e760bf6ca9c73f1e0f92da2b54b5b9782183"
+        }
+      ],
+      "currentSha256": "1459d8690cee6baecd3a012a36d1e760bf6ca9c73f1e0f92da2b54b5b9782183"
+    },
+    {
+      "path": "test/account-driver/controls.test.mjs",
+      "approvalChain": [
+        {
+          "path": "test/account-driver/controls.test.mjs",
+          "originalSha256": "d71b6d6b77ca207e51a2e3a10f032a4f67b0c57c742b23e482afbc6a0a9499ac",
+          "proposedSha256": "e0605ee4354e219f86353ba306b900d2def07fe1c62e6737c00ebeb3966880db"
+        },
+        {
+          "path": "test/account-driver/controls.test.mjs",
+          "originalSha256": "e0605ee4354e219f86353ba306b900d2def07fe1c62e6737c00ebeb3966880db",
+          "proposedSha256": "946b3183de86f2ac5ab55e07428b487fd63e4ebd0c2aed6bb24d372dbc82cb9e"
+        }
+      ],
+      "currentSha256": "946b3183de86f2ac5ab55e07428b487fd63e4ebd0c2aed6bb24d372dbc82cb9e"
+    },
+    {
+      "path": "test/account-receive/fixtures.mjs",
+      "approvalChain": [
+        {
+          "path": "test/account-receive/fixtures.mjs",
+          "originalSha256": "4b951e685b5e91cb5669fd640c8f3640835bdf453a3380776647653072189d24",
+          "proposedSha256": "b3ce7add763b849bd0380d0c9cbc5d07cffdb6844dafbb12c6547ac894c1497a"
+        },
+        {
+          "path": "test/account-receive/fixtures.mjs",
+          "originalSha256": "b3ce7add763b849bd0380d0c9cbc5d07cffdb6844dafbb12c6547ac894c1497a",
+          "proposedSha256": "7b2a99b04c20488a80a00c1d00b5a00c1568e7bfbf619f782799f0c930fe5838"
+        }
+      ],
+      "currentSha256": "7b2a99b04c20488a80a00c1d00b5a00c1568e7bfbf619f782799f0c930fe5838"
+    },
+    {
+      "path": "test/account-successor/client-fixtures.mjs",
+      "approvalChain": [
+        {
+          "path": "test/account-successor/client-fixtures.mjs",
+          "originalSha256": "394797867aafebbc36cab45b713a27de20a73888c77858b5ab0dc9c5991a5df1",
+          "proposedSha256": "1c04f9453c1524600a80c5e086fe68d761fae93c5ebfcbba981fedbc5188d2f5"
+        }
+      ],
+      "currentSha256": "1c04f9453c1524600a80c5e086fe68d761fae93c5ebfcbba981fedbc5188d2f5"
+    },
+    {
+      "path": "test/release-validation/account-fixtures.test.mjs",
+      "approvalChain": [
+        {
+          "path": "test/release-validation/account-fixtures.test.mjs",
+          "originalSha256": "afe966bfaf186c662a28b3737d4d38ee5d7fd21e61d648442ee9879ef95a6192",
+          "proposedSha256": "6111aab7e90e360a5b52d4bd19d7a39ea72e3262f2828fea0c178d729a5a2541"
+        },
+        {
+          "path": "test/release-validation/account-fixtures.test.mjs",
+          "originalSha256": "6111aab7e90e360a5b52d4bd19d7a39ea72e3262f2828fea0c178d729a5a2541",
+          "proposedSha256": "0a40e689481928a3b02eefef5b13ea8e4235d5c551d5102fd798eb4ffe3f2f39"
+        }
+      ],
+      "currentSha256": "0a40e689481928a3b02eefef5b13ea8e4235d5c551d5102fd798eb4ffe3f2f39"
+    }
+  ]
+}

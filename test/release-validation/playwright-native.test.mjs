@@ -38,6 +38,7 @@ function fixture(t, text = ordinary) {
       'playwright-reporter',
       'playwright-measurements',
       'vitest-census',
+      'vitest-dispositions',
       'registration-data',
       'registration-modules',
       'identity',

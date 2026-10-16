@@ -1,0 +1,11 @@
+{
+  "assertion": "blocked-upgrade preserves exact persisted census",
+  "differences": [
+    {
+      "path": "/local/done.application.local-only",
+      "expected": "absent",
+      "received": "string",
+      "value": "1"
+    }
+  ]
+}

@@ -104,7 +104,7 @@ test(
 );
 
 test(
-  'successor storage is closed to old stages and removing its field cannot restore genesis authority',
+  'successor storage refuses pre-checkpoint stages and removing its field cannot restore genesis authority',
   { timeout: 60000 },
   async (t) => {
     const f = await nativeOwner(t),
@@ -126,7 +126,7 @@ test(
         }
       };
       return [
-        attempt({ ...marker, v: 8, stage: 'account-delivering' }),
+        attempt({ ...marker, v: 5, stage: 'account-active' }),
         attempt({ ...marker, successor: { ...marker.successor, extra: 1 } }),
         attempt({
           ...marker,

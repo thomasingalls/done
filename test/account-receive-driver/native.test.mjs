@@ -254,45 +254,66 @@ test(
   },
 );
 
-for (const mode of ['wire', 'count', 'declared', 'streamed'])
+// Independent contract bounds: decoded envelope and hex-framed HTTP page.
+const R01_ENVELOPE_BYTES = 512 * 1024,
+  R01_PAGE_BYTES = 1_057_280;
+for (const mode of ['wire', 'wire-http', 'count', 'declared', 'streamed'])
   test(
     `R-01 ${mode} size failure is terminal, preserves Local, and retries only explicitly`,
     { timeout: 45000 },
     async (t) => {
       const { f, item, wires, initial } = await remote(t, 'r01-' + mode);
-      const oversized =
-        mode === 'wire' || mode === 'count'
-          ? await f.page.evaluate(
-              async ({ item, mode }) => {
-                const doc = new Harness.Y.Doc({ gc: false });
-                try {
-                  doc.getText('master').insert(0, 'x'.repeat(600 * 1024));
-                  const updates =
-                    mode === 'count'
-                      ? Array.from({ length: 256 }, () => [0, 0])
-                      : [[...Harness.Y.encodeStateAsUpdate(doc)]];
-                  return Harness.fixtureInboundEnvelope(item.slotId, item.code, 1, updates);
-                } finally {
-                  doc.destroy();
-                }
-              },
-              { item: args(item), mode },
-            )
-          : null;
+      const oversized = ['wire', 'wire-http', 'count'].includes(mode)
+        ? await f.page.evaluate(
+            async ({ item, mode }) => {
+              const doc = new Harness.Y.Doc({ gc: false });
+              try {
+                doc
+                  .getText('master')
+                  .insert(0, 'x'.repeat((mode === 'wire-http' ? 600 : 512) * 1024));
+                const updates =
+                  mode === 'count'
+                    ? Array.from({ length: 256 }, () => [0, 0])
+                    : [[...Harness.Y.encodeStateAsUpdate(doc)]];
+                return Harness.fixtureInboundEnvelope(item.slotId, item.code, 1, updates);
+              } finally {
+                doc.destroy();
+              }
+            },
+            { item: args(item), mode },
+          )
+        : null;
+      if (mode === 'wire' || mode === 'wire-http')
+        assert.ok(
+          oversized.length > R01_ENVELOPE_BYTES,
+          'fixture must exceed decoded envelope limit',
+        );
+      if (mode === 'count')
+        assert.ok(
+          oversized.length < R01_ENVELOPE_BYTES,
+          'count fixture must not hit envelope byte limit',
+        );
       let calls = 0,
         bad = true;
       await f.context.route(path(f), (route) => {
         calls++;
         const q = Buffer.from(route.request().postData());
+        const body = answer(
+          f,
+          item,
+          q,
+          bad ? oversized : JSON.parse(q.toString())[10] === 0 ? wires[0] : null,
+        ).bytes;
+        if (bad && oversized)
+          assert.equal(
+            body.length > R01_PAGE_BYTES,
+            mode === 'wire-http',
+            'independent signed-page bytes must reach the intended HTTP/decoded boundary',
+          );
         return route.fulfill({
           status: 200,
           contentType: 'application/octet-stream',
-          body: answer(
-            f,
-            item,
-            q,
-            bad ? oversized : JSON.parse(q.toString())[10] === 0 ? wires[0] : null,
-          ).bytes,
+          body,
         });
       });
       if (!oversized)
@@ -317,7 +338,7 @@ for (const mode of ['wire', 'count', 'declared', 'streamed'])
       await waitPredicate(f.page, () => opened.receiver.status.phase === 'blocked');
       assert.equal(
         (await driverStatus(f.page)).reason,
-        oversized ? 'inbound-size' : 'response-too-large',
+        mode === 'wire' || mode === 'count' ? 'inbound-size' : 'response-too-large',
       );
       assert.equal((await driverStatus(f.page)).receivedThrough, 0);
       assert.equal(await view(f.page), initial);

@@ -1,0 +1,6 @@
+{
+  "src/crdt/deviceDataRemoval.ts": "0b80da3966a8801efef35d93e413e6f4375ef339b77afeb12c99c9d8ac5ed750",
+  "test/removalEntry.test.ts": "902ebaeb509632fd3dccf38e309904e14bb9291c72731d93673a935e147b826b",
+  "src/account/setupProgress.ts": "7f04721e135934c60c30820e2817ad66eb6103644270f92c9ce69a1abd451b5d",
+  "docs/storage-contract.md": "b226865eeecf1dc83da47602cb7571b2d3a2a88611b9021813ec23662a053bb1"
+}

@@ -14,7 +14,9 @@ import { expect, type Page } from '@playwright/test';
  */
 const fill = async (page: Page, lines: number): Promise<void> => {
   await openApp(page);
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await expect(compose).toBeVisible();
   await compose.click();
   await page.keyboard.insertText(
@@ -182,7 +184,11 @@ test.describe('layout', () => {
   test('the trigger opens and closes the menu', async ({ page }) => {
     await page.setViewportSize({ width: 420, height: 900 });
     await openApp(page);
-    await expect(page.locator('.day-panel[data-active="true"] .compose-field')).toBeVisible();
+    await expect(
+      page.locator(
+        '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+      ),
+    ).toBeVisible();
 
     await page.locator('.menu-trigger').click();
     await expect(page.locator('.shell')).toHaveAttribute('data-menu', 'open');
@@ -197,19 +203,16 @@ test.describe('layout', () => {
   test('the day reads Next, Done, Scheduled, in that order', async ({ page }) => {
     await openApp(page);
     const day = page.locator('.day-panel[data-active="true"]');
-    await expect(day.locator('.collection')).toHaveCount(2); // Scheduled is hidden while empty
+    await expect(day.locator('.collection')).toHaveCount(3);
 
-    const compose = day.locator('.compose-field');
+    const compose = day.getByRole('textbox', { name: 'What got done?' });
     await compose.click();
     await page.keyboard.insertText('something finished');
     await compose.press('Enter');
 
-    // Seeding Scheduled needs the master list, which is the only way in.
-    await page.setViewportSize({ width: 1280, height: 900 });
-    const master = page.locator('.goals .cm-content');
-    await master.click();
-    await page.keyboard.insertText('a scheduled thing');
-    await page.locator('.goals').getByRole('button', { name: 'Scheduled' }).click();
+    const scheduled = day.getByRole('textbox', { name: 'What’s scheduled?' });
+    await scheduled.fill('a scheduled thing');
+    await scheduled.press('Enter');
 
     await expect(day.locator('.collection')).toHaveCount(3);
     expect(
@@ -233,8 +236,8 @@ test.describe('layout', () => {
     await openApp(page);
 
     const next = page.locator('.day-panel[data-active="false"]').last();
-    await expect(next.locator('.collection')).toHaveCount(2);
-    await expect(next.locator('.compose-field')).toHaveCount(1);
+    await expect(next.locator('.collection')).toHaveCount(3);
+    await expect(next.locator('.compose-field')).toHaveCount(2);
     await next.evaluate((element) => {
       element.setAttribute('data-was-prerendered', 'true');
     });

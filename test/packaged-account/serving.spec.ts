@@ -16,9 +16,8 @@ test('compiled setup survives independent API and application restarts without r
   const service = await startService(state);
   try {
     await page.goto('/');
-    await expect(
-      page.getByRole('button', { name: 'I already have a workspace', exact: true }),
-    ).toBeVisible();
+    await expect(page.locator('.shell[data-local-workspace]')).toBeVisible();
+    await expect(page.locator('input[type=password]')).toHaveCount(0);
     const first = await account(page);
     await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
     await stopProcess(service.backend);

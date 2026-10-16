@@ -1,0 +1,7 @@
+{
+  ".github/workflows/ci.yml": "5d65c67711ffdfbbb3a28e9aedd9bc82a201270d46197777b038b3f58959c59a",
+  "test/localBaselineAnchor.test.ts": "23374b782e7d51fed8978b561b1136e6c9c547513ee3f13a54d594167921e56d",
+  "test/pendingProjection.test.ts": "872e1460ebb3a6352fac58f9d4312efac6982e76312aaa06a1998acb805699d1",
+  "docs/release-validation-graph.json": "ddca6640679764b47519000db02324bc3b6090e2d0e8b11475829a99b29aeaae",
+  "docs/release-validation-manifest.json": "0a5b0af35a5a52554fc25a3c32ec1a911c44431648790a14683a4ea8d9292263"
+}

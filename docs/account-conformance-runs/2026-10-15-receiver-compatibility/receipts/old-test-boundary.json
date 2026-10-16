@@ -1,0 +1,31 @@
+{
+  "baseline": "faadbff5d41eab72434af4193f774d50f1ac577c",
+  "approval": "pending",
+  "patch": "reproduction/pending-old-fixtures.patch",
+  "files": [
+    {
+      "path": "test/packagedConfig.test.ts",
+      "baselineSha256": "ec42f5ccfc59f7a5414c6c51b6080c2bbc714b53f23b1feb959bc3d22d63bfe0",
+      "currentSha256": "ec42f5ccfc59f7a5414c6c51b6080c2bbc714b53f23b1feb959bc3d22d63bfe0",
+      "unchanged": true
+    },
+    {
+      "path": "test/privateAccess.test.ts",
+      "baselineSha256": "42570e22fff46e9d494c82ff8b6fbd05cd15135c3c82755c0d20d1b1edafb9e0",
+      "currentSha256": "42570e22fff46e9d494c82ff8b6fbd05cd15135c3c82755c0d20d1b1edafb9e0",
+      "unchanged": true
+    },
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "baselineSha256": "f5023cffa4e821ab458b671b59a614054fe1094c2e69dc7d6a3a9b5926a5c09c",
+      "currentSha256": "f5023cffa4e821ab458b671b59a614054fe1094c2e69dc7d6a3a9b5926a5c09c",
+      "unchanged": true
+    },
+    {
+      "path": "test/release-validation/generated-tests.test.mjs",
+      "baselineSha256": "b24acbf9348b295d037ac26be96b70cb0701e0db20995430597b9c9090d9f1e2",
+      "currentSha256": "b24acbf9348b295d037ac26be96b70cb0701e0db20995430597b9c9090d9f1e2",
+      "unchanged": true
+    }
+  ]
+}

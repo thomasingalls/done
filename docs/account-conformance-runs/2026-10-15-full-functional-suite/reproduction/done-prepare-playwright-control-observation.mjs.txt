@@ -1,0 +1,31 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { createHash } from 'node:crypto';
+const root = '<test-checkout>';
+const original = path.join(root, 'test/release-validation/playwright-native.test.mjs');
+const source = fs.readFileSync(original, 'utf8');
+const boundary = source.indexOf('const drained =');
+if (boundary < 0) throw Error('Missing diagnostic extraction boundary');
+// Copy the unchanged fixture construction, then observe its first stage outside node:test.
+const prefix = source.slice(0, boundary).replaceAll("from '../../scripts/", "from '" + root + '/scripts/');
+const tail = `
+const cleanups = [];
+const observed = fixture({ after: fn => cleanups.push(fn) });
+try {
+  const first = await observed.run(observed.stage);
+  const files = [];
+  const reportRoot = join(observed.root, 'reports');
+  const { readdirSync, statSync } = await import('node:fs');
+  for (const file of readdirSync(reportRoot, {recursive:true}).sort()) {
+    const full = join(reportRoot,file);
+    if (!statSync(full).isFile() || !/\\.(?:json|jsonl|log)$/.test(file) || /(?:browser-profile|profile-data)/.test(file)) continue;
+    if (statSync(full).size > 1048576) throw Error('Unexpected large diagnostic text file');
+    files.push({path:file,text:readFileSync(full,'utf8')});
+  }
+  const observation = { source: ${JSON.stringify(original)}, sourceSha256: ${JSON.stringify(createHash('sha256').update(source).digest('hex'))}, method: 'Verbatim existing fixture constructor; same 15-second stage limit; first stage observed outside node:test. Cleanup deferred only until its result/log copy, then original cleanup runs. Existing tests stay unchanged. Diagnostic exit does not mean the observed stage passed.', status:first.status, result:first.result, files };
+  writeFileSync('<execution-evidence>/playwright-control-observation.json',JSON.stringify(observation,null,2)+'\\n');
+  console.log(JSON.stringify({observedStatus:first.status,reason:first.result?.reason,files:files.length}));
+} finally { for (const cleanup of cleanups.reverse()) await cleanup(); }
+`;
+fs.writeFileSync('/private/tmp/done-playwright-control-observation.mjs', prefix + tail);
+console.log('Prepared unchanged-fixture observation; no existing test modified.');

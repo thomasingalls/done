@@ -1,3 +1,5 @@
+import { authenticationResponse } from './passkeyResponse';
+import { defaultDeviceName } from '../lib/browser';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import {
   ScopedTransport,
@@ -510,7 +512,7 @@ export function createDeviceEnrollment(
                 en.proof = {
                   retryKey: en.retryKey,
                   attemptId: challenge.context.attemptId,
-                  response: credential.toJSON(),
+                  response: authenticationResponse(credential),
                   possession: await owner.sign(enrollmentPossessionMessage(challenge.context)),
                   ...(en.loginRetryKey ? { loginRetryKey: en.loginRetryKey } : {}),
                 };
@@ -649,6 +651,7 @@ export function createDeviceEnrollment(
             {
               assert: assertSlotPasskey(lifetime.signal),
               token: readingAccess(),
+              historyAvailable: () => config.membershipContinuation === true,
               signal: lifetime.signal,
               save: () => save(),
               request,
@@ -933,7 +936,7 @@ export function createDeviceEnrollment(
         identity: {
           id: joined.principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: 'joined:' + slotId, name: 'This device' },
+          device: { id: 'joined:' + slotId, name: defaultDeviceName() },
         },
       },
       legacyAccess(config),

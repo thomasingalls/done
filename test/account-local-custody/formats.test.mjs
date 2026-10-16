@@ -642,12 +642,17 @@ test('authentic wrong private keys, relocated credentials and metadata omissions
   const accepted = coercion.parseRecord(boxed, o.scope);
   await coercion.authenticateRecord(o.bytes(o.root), accepted);
   assert.equal(typeof accepted.state, 'object');
-  assert.equal(coercion.recordEqual(accepted, typed(r)), true);
+  assert.equal(
+    coercion.recordEqual(accepted, typed(r)),
+    false,
+    'primitive comparison also refuses boxed state',
+  );
+  assert.equal(coercion.recordEqual(typed(r), typed(r)), true);
   evidence.push('stateCoercion');
   report('source-controls', {
     caught: evidence,
     stateCoercion:
-      'old parser accepts authenticated boxed state; ordinary owner separately refuses nonprimitive state',
+      'coercing parser accepts authenticated boxed state; primitive equality and ordinary owner separately refuse it',
     metadataKeySlot:
       'independent bytes detect weakened KDF even though payload still binds the slot',
   });
@@ -755,7 +760,8 @@ test('credential export-format and failure cleanup guards execute before accepti
     );
   }
   cleanup.push('failed-create');
-  // With only the format guard removed, altered DER prefix is ignored and its unchanged seed is sealed.
+  // Export and prepared-input format checks are independent. One omission still refuses;
+  // the explicit two-site format-policy control ignores the prefix and seals the unchanged seed.
   const weak = await load('privateFormat'),
     base = awaitableSubtle('signing'),
     subtle = new Proxy(base, {
@@ -770,6 +776,11 @@ test('credential export-format and failure cleanup guards execute before accepti
         return f;
       },
     });
+  const single = await load('privateFormatExport');
+  await assert.rejects(
+    single.createCredential(o.scope, o.bytes(o.root), 'signing', o.intent.signingId, subtle),
+    /Unsupported prepared credential encoding/,
+  );
   const c = await weak.createCredential(
     o.scope,
     o.bytes(o.root),

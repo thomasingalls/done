@@ -1,0 +1,53 @@
+diff --git a/test/release-validation/general-tests.test.mjs b/test/release-validation/general-tests.test.mjs
+index 8e4014de..35e9160b 100644
+--- a/test/release-validation/general-tests.test.mjs
++++ b/test/release-validation/general-tests.test.mjs
+@@ -26,18 +26,18 @@ import {
+ const inventory = () =>
+   buildInventory(process.cwd(), JSON.parse(readFileSync('scripts/release-validation/policy.json')));
+ 
+-test('reviewed Vitest and Node selections preserve the 2437-case file denominator and separate wrapper obligations', () => {
++test('reviewed Vitest and Node selections preserve the 2443-case file denominator and separate wrapper obligations', () => {
+   const p = generalTestPolicy(process.cwd()),
+     m = compileManifest(process.cwd(), inventory());
+-  assert.equal(p.vitest.length, 90);
++  assert.equal(p.vitest.length, 91);
+   assert.equal(p.node.length, 10);
+   const general = selectStages(m, 'general-tests');
+-  assert.equal(general.length, 274);
++  assert.equal(general.length, 275);
+   assert.equal(
+     general.reduce((n, s) => n + s.expect.cases.length, 0),
+-    2437,
++    2443,
+   );
+-  assert.equal(selectStages(m, 'vitest-reviewed').length, 109);
++  assert.equal(selectStages(m, 'vitest-reviewed').length, 110);
+   assert.equal(
+     selectStages(m, 'node-protocol').reduce((n, s) => n + s.expect.cases.length, 0),
+     66,
+diff --git a/test/release-validation/generated-tests.test.mjs b/test/release-validation/generated-tests.test.mjs
+index dcf8f314..368e20c2 100644
+--- a/test/release-validation/generated-tests.test.mjs
++++ b/test/release-validation/generated-tests.test.mjs
+@@ -247,7 +247,7 @@ test('all reviewed generated files retain 224 cases and the compact manifest pre
+   assert.equal(selectStages(restored, 'generated-tests').length, 14);
+   assert.equal(
+     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
+-    2437,
++    2443,
+   );
+   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
+   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);
+diff --git a/scripts/account-recovery/run.mjs b/scripts/account-recovery/run.mjs
+index 3ac3e1eb..cff8755b 100644
+--- a/scripts/account-recovery/run.mjs
++++ b/scripts/account-recovery/run.mjs
+@@ -29,6 +29,7 @@ const files = [
+   'tsconfig.app.json',
+   'src/account/recovery.ts',
+   'src/account/recoveryOwner.ts',
++  'src/account/setupRecoveryMetadata.ts',
+   'test/account-core/fixtures.mjs',
+   'test/account-core/worker.mjs',
+   'scripts/account-recovery/run.mjs',

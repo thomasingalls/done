@@ -174,7 +174,7 @@ test(
     });
     release();
     const r = await f.page.evaluate(() => work);
-    assert.match(r.error, /superseded/);
+    assert.deepEqual(r, { kind: 'unknown', recorded: false });
     await f.page.evaluate(() => superseding);
     assert.equal((await status(f.page)).receivedThrough, 0);
     assert.equal(await view(f.page), initial);

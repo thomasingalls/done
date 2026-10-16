@@ -1,0 +1,8 @@
+
+ RUN  v4.1.10 <workspace>
+
+
+ Test Files  149 passed (149)
+      Tests  1763 passed | 1 skipped (1764)
+   Start at  10:22:17
+   Duration  39.92s (transform 16.78s, setup 5.37s, import 46.91s, tests 238.11s, environment 36.05s)

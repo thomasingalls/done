@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "note": "The RC-9A debt manifest (ratified 2026-08-28, consolidated at the S0-8 regeneration). Every property Stage 0 defers to a later gate is exactly one entry here; a gate consults this file and blocks while its debt is unpaid, expired or input-changed; an entry leaves only by a payment record or a recorded waiver; what-blocks-what is computed from these entries on demand (pnpm debts), never transcribed beside them. Read back by scripts/check-debts.mjs (pnpm debts:check, in pnpm check) and consumed by scripts/check-traceability.mjs for its owed rows. Inputs are pinned by hash12 of the file, or of the named section under the authority-map slicing rule; a changed input fails the check until the entry is re-read and re-pinned or amended. The 2026-09-08 storage amendment adds three unpaid production-conformance obligations; earlier repaired finding statuses and primitive receipts do not pay them.",
+  "note": "The RC-9A debt manifest (ratified 2026-08-28, consolidated at the S0-8 regeneration). Every property Stage 0 defers to a later gate is exactly one entry here; a gate consults this file and blocks while its debt is unpaid, expired or input-changed; an entry leaves only by a payment record or a recorded waiver; what-blocks-what is computed from these entries on demand (pnpm debts), never transcribed beside them. Read back by scripts/check-debts.mjs (pnpm debts:check, in pnpm check) and consumed by scripts/check-traceability.mjs for its owed rows. Inputs are pinned by hash12 of the file, or of the named section under the authority-map slicing rule; a changed input fails the check until the entry is re-read and re-pinned or amended. The 2026-09-08 storage amendment adds three unpaid production-conformance obligations; earlier repaired finding statuses and primitive receipts do not pay them. The 2026-10-15 reread scopes external-factor/copied-profile obligations to protected modes under the accepted onboarding amendment; automatic-mode integrity, protection transition and removal obligations remain production-conformance work. All three storage conformance debts remain open with unchanged payment requirements.",
   "debts": [
     {
       "id": "x25519-dated-readback",
@@ -164,11 +164,11 @@
     {
       "id": "storage-contract-adapter-conformance",
       "finding": "f-9b49b74-journal-seal-64k-gap",
-      "property": "SC-01\u201309 storage/admission/startup/clear/custody behavior through actual production paths; applicable C01\u2013C16 cases include ordered refusal, causal offline recovery, exact trim, partial genesis, interrupted clear, factor genesis and seal reservation accounting.",
+      "property": "SC-01\u201309 storage/admission/startup/clear/custody behavior through actual production paths; applicable C01\u2013C16 cases include ordered refusal, causal offline recovery, exact trim, partial genesis, interrupted clear, protected-factor and authenticated automatic Local genesis and seal reservation accounting.",
       "owner": "the L-1 shared production-adapter harness",
       "gate": "L-1",
       "artifact": "Executed shared adapter and browser schedules on pinned candidate revisions, including seeded failures and guard-removal mutants; inspect canonical UI/export/transport and replay durable bytes offline after valid unlock.",
-      "falsifier": "Any acknowledged semantic loss, pending-input leak, deletion outside authenticated coverage, partial-state remint, missing opener, promptless genesis or uncounted seal retry fails; a mutant that reproduces the losing schedule must be detected.",
+      "falsifier": "Any acknowledged semantic loss, pending-input leak, deletion outside authenticated coverage, partial-state remint, missing opener, promptless protected genesis, automatic-mode sync admission, stale setup metadata resurrection, false removal completion over a retained legacy source or uncounted seal retry fails; a mutant that reproduces the losing schedule must be detected.",
       "payment": {
         "kind": "executed-production-conformance",
         "requires": [
@@ -190,12 +190,12 @@
         {
           "path": "docs/storage-contract.md",
           "section": null,
-          "hash": "439b820e3258"
+          "hash": "b226865eeecf"
         },
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "0d492c62fe48"
+          "hash": "c81cc962ac76"
         },
         {
           "path": "docs/review/findings/f-9b49b74-journal-seal-64k-gap.md",
@@ -233,12 +233,12 @@
         {
           "path": "docs/storage-contract.md",
           "section": null,
-          "hash": "439b820e3258"
+          "hash": "b226865eeecf"
         },
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "0d492c62fe48"
+          "hash": "c81cc962ac76"
         },
         {
           "path": "docs/review/findings/f-4259822-generation-switch-local-durability-undefined.md",
@@ -250,11 +250,11 @@
     {
       "id": "factor-profile-conformance",
       "finding": "f-f5def83-device-lock-reader-key-bypass",
-      "property": "C12\u201314 mandatory-factor Local/Account genesis, offline unlock and complete copied-profile protection under the declared browser/authenticator population; inventory all current/future receiving and indirect custody paths.",
+      "property": "C12\u201314 mandatory-factor protected Local/Account genesis, offline unlock and complete copied-profile protection under the declared browser/authenticator population; inventory all current/future receiving and indirect custody paths.",
       "owner": "the supported-platform custody and profile review track",
       "gate": "L-4",
       "artifact": "Executed full-profile negative tests, valid-factor controls and planted promptless-opener control on the declared population, plus interrupted legacy replacement and remote-observation cases.",
-      "falsifier": "Any copied supported profile opens retained content or receives successor keys without the external factor, any valid-factor control fails, or protection completes before receiver/local activation obligations; plaintext scans alone are insufficient.",
+      "falsifier": "Any copied supported protected profile opens retained content or receives successor keys without the external factor, any valid-factor control fails, or protection completes before receiver/local activation obligations; plaintext scans alone are insufficient.",
       "payment": {
         "kind": "executed-production-conformance",
         "requires": [
@@ -276,12 +276,12 @@
         {
           "path": "docs/storage-contract.md",
           "section": null,
-          "hash": "439b820e3258"
+          "hash": "b226865eeecf"
         },
         {
           "path": "docs/storage-conformance.md",
           "section": null,
-          "hash": "0d492c62fe48"
+          "hash": "c81cc962ac76"
         },
         {
           "path": "docs/review/findings/f-f5def83-device-lock-reader-key-bypass.md",

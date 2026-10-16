@@ -54,7 +54,9 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     const nextAuth = await restoreAuthenticator(next, passkeys);
     let assertionCount = 0;
     nextAuth.cdp.on('WebAuthn.credentialAsserted', () => assertionCount++);
-    await next.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
+    await expect(next.locator('.shell')).toBeVisible();
+    await next.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await expect(next.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
     await next.getByRole('button', { name: 'Use another account', exact: true }).click();
     await next
       .getByRole('button', { name: 'Recover with a saved recovery code', exact: true })
@@ -64,13 +66,13 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     await next.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
     await expect(next.getByLabel('Recovery code', { exact: true })).toHaveValue(recovery);
     await next.getByRole('button', { name: 'Continue with recovery code', exact: true }).click();
-    const code = (await next.getByLabel('Generated device-lock code').textContent())!;
-    await next.getByRole('button', { name: 'I saved my device-lock code' }).click();
+    const code = (await next.getByLabel('Generated unlock code').textContent())!;
+    await next.getByRole('button', { name: 'I saved my unlock code' }).click();
     await next.goBack();
-    await expect(next.getByLabel('Generated device-lock code')).toHaveText(code);
-    await next.getByRole('button', { name: 'I saved my device-lock code' }).click();
-    await next.getByLabel('Device-lock code', { exact: true }).fill(code);
-    await next.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+    await expect(next.getByLabel('Generated unlock code')).toHaveText(code);
+    await next.getByRole('button', { name: 'I saved my unlock code' }).click();
+    await next.getByLabel('Unlock code', { exact: true }).fill(code);
+    await next.getByRole('button', { name: 'Confirm unlock code', exact: true }).click();
     await expect(
       next.getByRole('heading', {
         name: 'Recover on this device and disconnect the previous devices',
@@ -80,7 +82,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
 
     // A reload follows the slot URL into authenticated resume, never replays a URL transition.
     await next.reload();
-    await next.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await next.getByLabel('Unlock code', { exact: true }).fill(code);
     await next.getByRole('button', { name: 'Unlock saved recovery', exact: true }).click();
     await next
       .getByRole('button', {
@@ -99,7 +101,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     await sent;
     await next.getByRole('button', { name: 'Lock workspace', exact: true }).click();
     await next.getByRole('button', { name: /^Open saved recovery, account/ }).click();
-    await next.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await next.getByLabel('Unlock code', { exact: true }).fill(code);
     await next.getByRole('button', { name: 'Unlock saved recovery', exact: true }).click();
     await next.getByRole('button', { name: 'Open recovered writing', exact: true }).click();
     await expect(next.locator('.shell')).toContainText('Writing from the recovered device');
@@ -140,7 +142,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     const openRecovered = async () => {
       await next.goto('/accounts');
       await next.getByRole('button', { name: /^Open saved recovery, account/ }).click();
-      await next.getByLabel('Device-lock code', { exact: true }).fill(code);
+      await next.getByLabel('Unlock code', { exact: true }).fill(code);
       await next.getByRole('button', { name: 'Unlock saved recovery', exact: true }).click();
       await next.getByRole('button', { name: 'Open recovered writing', exact: true }).click();
       await expect(next.locator('.shell')).toBeVisible();
@@ -219,10 +221,10 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
     await page.getByRole('button', { name: 'Use account passkey', exact: true }).click();
     await page.getByLabel('Recovery code', { exact: true }).fill(recovery);
     await page.getByRole('button', { name: 'Continue with recovery code', exact: true }).click();
-    const secondCode = (await page.getByLabel('Generated device-lock code').textContent())!;
-    await page.getByRole('button', { name: 'I saved my device-lock code' }).click();
-    await page.getByLabel('Device-lock code', { exact: true }).fill(secondCode);
-    await page.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+    const secondCode = (await page.getByLabel('Generated unlock code').textContent())!;
+    await page.getByRole('button', { name: 'I saved my unlock code' }).click();
+    await page.getByLabel('Unlock code', { exact: true }).fill(secondCode);
+    await page.getByRole('button', { name: 'Confirm unlock code', exact: true }).click();
     await page
       .getByRole('button', {
         name: 'Recover on this device and disconnect the previous devices',
@@ -333,10 +335,10 @@ test('a never-paired account recovers and admits its next device without an orig
     await next.getByRole('button', { name: 'Use account passkey', exact: true }).click();
     await next.getByLabel('Recovery code', { exact: true }).fill(first.recovery);
     await next.getByRole('button', { name: 'Continue with recovery code', exact: true }).click();
-    const code = (await next.getByLabel('Generated device-lock code').textContent())!;
-    await next.getByRole('button', { name: 'I saved my device-lock code' }).click();
-    await next.getByLabel('Device-lock code', { exact: true }).fill(code);
-    await next.getByRole('button', { name: 'Confirm device-lock code', exact: true }).click();
+    const code = (await next.getByLabel('Generated unlock code').textContent())!;
+    await next.getByRole('button', { name: 'I saved my unlock code' }).click();
+    await next.getByLabel('Unlock code', { exact: true }).fill(code);
+    await next.getByRole('button', { name: 'Confirm unlock code', exact: true }).click();
     await next
       .getByRole('button', {
         name: 'Recover on this device and disconnect the previous devices',

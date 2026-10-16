@@ -15,6 +15,7 @@ export interface RecoveryDraft extends RecoveryContext {
 const HEX_BYTES = Array.from({ length: 256 }, (_, byte) => byte.toString(16).padStart(2, '0'));
 export const hex = (value: Uint8Array): string => {
   if (!value.length) value.subarray(0, 0); // Keep detached-buffer failure, including empty views.
+  // oxlint-disable-next-line unicorn/no-new-array -- Preallocate the exact byte count; every slot is assigned below.
   const parts = new Array<string>(value.length);
   for (let i = 0; i < value.length; i++) parts[i] = HEX_BYTES[value[i]!]!;
   return parts.join('');

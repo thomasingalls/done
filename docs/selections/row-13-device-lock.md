@@ -1,5 +1,12 @@
 # Selection — TRD §15 row 13: device-lock derivation, enrollment migration and copy
 
+**Amended 2026-10-14:** the new authenticated automatic Local mode restores credential-free first use.
+External-factor protection is optional for Local and required for sync. Existing protected workspaces
+retain their factors. The opt-in transition copies complete CRDT state to fresh encrypted custody and
+content, verifies before retiring the automatic predecessor, and is resumable. [SC-08](../storage-contract.md)
+and TRD §13.3 supersede the September requirement for a human-held code at every Local genesis.
+No ordinary disable-protection or persisted remember-unlocked capability is introduced.
+
 **Amended 2026-09-08:** mandatory factor custody at persistent genesis/cold start replaces the optional
 default. [SC-03/04/08](../storage-contract.md) governs writer lifetime, migration and copied-profile claims.
 Factor seal/derivation bytes stay unchanged; custody lifecycle metadata is versioned separately. The

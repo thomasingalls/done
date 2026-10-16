@@ -16,6 +16,7 @@ import { contentTransaction } from './contentDatabase';
 import { replayRecovery } from './admissionDocument';
 import { Y, hasPendingUpdates } from './yjs';
 import { stopStartup } from './startupState';
+import { automaticCode } from './automaticOpening';
 
 export interface PromotionSource {
   readonly slotId: string;
@@ -104,6 +105,8 @@ export async function inspectPromotionUnderPermit(
     throw Error('Malformed pending account');
 
   const claim = await readLocalClaim(task, slotId);
+  if (claim && (await automaticCode(task, claim)))
+    throw Error('Protect this Local workspace before enabling sync');
   if (!claim || claim.stage !== 'ready')
     stopStartup('identity-required', 'promotion-needs-ready-local');
   await verifyLocalClaim(task, claim, code);

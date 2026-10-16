@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import type { DeviceRosterSnapshot } from '../account/deviceRoster';
+import { deviceCode, type DeviceRosterSnapshot } from '../account/deviceRoster';
 import { useWorkspaceUi } from './workspaceUi';
 import { AccountIdentity } from './AccountIdentity';
 
@@ -67,7 +67,11 @@ export function AccountDevices({
                       ? snapshot.deviceName === 'This device'
                         ? 'This device'
                         : snapshot.deviceName + ' · This device'
-                      : 'Device ' + device.id.slice(0, 8)}
+                      : (snapshot.deviceLabels[device.id] ?? 'Device')}
+                    {' · '}
+                    <code aria-label="Device code" title={device.id}>
+                      {deviceCode(device.id)}
+                    </code>
                   </h2>
                   <p>
                     {device.state === 'certified'
@@ -95,7 +99,7 @@ export function AccountDevices({
             </ul>
             {target && (
               <section aria-label="Confirm device removal">
-                <h2>Remove device {target.slice(0, 8)}?</h2>
+                <h2>Remove device {deviceCode(target)}?</h2>
                 <p>
                   It will stop receiving new writing. Existing copies on that device cannot be
                   erased and can still be read, edited and exported locally.

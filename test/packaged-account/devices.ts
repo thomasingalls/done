@@ -37,7 +37,7 @@ export async function pairedEditors(
     ).toBeVisible();
     await page.getByRole('link', { name: 'Close and return to accounts' }).click();
     await page.getByRole('button', { name: /^Unlock Device owner/ }).click();
-    await page.getByLabel('Device-lock code', { exact: true }).fill(first.code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(first.code);
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
     await expect(page.locator('.shell')).toBeVisible();
     await second.getByRole('button', { name: 'Open your writing', exact: true }).click();
@@ -106,19 +106,25 @@ export async function restoreAuthenticator(
   return auth;
 }
 export async function openSaved(page: Page, code: string, joining = false) {
-  await page.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
-  await page
-    .getByRole('button', { name: joining ? /Resume device connection/ : /^Unlock Device owner/ })
-    .click();
+  const codeEntry = page.getByLabel('Unlock code', { exact: true });
+  const saved = page.getByRole('button', {
+    name: joining ? /Resume device connection/ : /^Unlock Device owner/,
+  });
+  // Root now resumes one protected account directly; pending/multiple accounts use the chooser.
+  await expect.poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible())).toBe(true);
+  if (!(await codeEntry.isVisible())) await saved.click();
+  await expect(codeEntry).toBeVisible();
   if (joining) await unlock(page, code);
   else {
-    await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(code);
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
   }
   await expect(page.locator('.shell')).toBeVisible({ timeout: 15000 });
 }
 export async function add(page: Page, text: string) {
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill(text);
   await compose.press('Enter');
   await expect(page.locator('.shell')).toContainText(text);

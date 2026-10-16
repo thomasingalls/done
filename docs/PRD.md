@@ -1,8 +1,10 @@
 # done — Product Requirements
 
-**Storage amendment 2026-09-08:** persistent workspaces require factor custody from genesis. The
-[storage contract](./storage-contract.md) and [conformance matrix](./storage-conformance.md) define the
-corrected recovery, coverage and failure boundaries.
+**Onboarding amendment 2026-10-14:** new Local lists open automatically with encrypted storage.
+Local protection is optional; sync requires it. Existing protected Local and Account lists retain
+their unlock requirements. Automatic opening makes no copied-profile confidentiality claim.
+The [storage contract](./storage-contract.md) defines the custody transition and removal boundaries.
+Goals and Next retain their names. Remembered unlocking and the mascot remain separate work.
 
 **Status:** v9 — current and normative. Supersedes v8 in full, consolidating it with the settled product and
 architecture decisions recorded in `docs/sessions.md`.
@@ -370,7 +372,8 @@ at most three), membership that moves between them, per-item state, and per-item
 A day shows them in the order **Next, Done, Scheduled**: what you are doing, what you did, and the tail of
 intentions that have not come up yet. **Done reads newest-first** — whatever was completed most recently is
 on top, and a record you only ever add to is read from the top. Next and Scheduled are ordered by intent
-rather than by time and keep the order you put them in.
+rather than by time and keep the order you put them in. All three collections can be reordered on
+writable days, using the desktop grip, arrow keys on the grip, or a touch/pen hold followed by a drag.
 
 **The cap bounds what you can add, not what a day can hold.** Three is a rule about the act of putting
 something in Next, and it is enforced by refusing: at three, the app does not take a fourth. It is not a
@@ -411,12 +414,14 @@ purpose.
 | From → To                        | Difficulty                   | Flow                                                                                                    |
 | -------------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------- |
 | _nothing_ → Done                 | **Trivial. Non-negotiable.** | Persistent compose field at the foot of Done. Type, Enter, done.                                        |
+| _nothing_ → Scheduled            | Trivial                      | Persistent compose field at the foot of Scheduled, including when empty. Type, Enter, scheduled on the focused day. |
 | Next → Done                      | **Trivial.**                 | One gesture on the card. Single atomic move.                                                            |
 | Next → Scheduled                 | Easy                         | One gesture on the card. Also the only way back under the cap once sync has expanded Next (§4.1).       |
 | Scheduled → Next / Done          | Easy                         | One gesture.                                                                                            |
 | Master → Next / Scheduled / Done | Explicit Copy or Move       | **Copy** keeps the original; **Move** transfers the selected lines in one undoable action. **Remove** remains independent. |
 | Done → editable                  | **Deliberately hard**        | Long-press or explicit unlock. See §4.3.                                                                |
-| Done → reordered                 | Deliberate                   | Long-press then drag on touch/pen; drag from the reorder grip on desktop. Writable days only.           |
+| Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
+| Any collection → reordered        | Deliberate                   | Long-press then drag on touch/pen; drag or arrow keys on the reorder grip on desktop. Writable days only. |
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
@@ -440,6 +445,9 @@ card renders as static text and does not become editable by tapping it; unlockin
 (mobile) or explicit action (desktop). Moving after the hold reorders the card instead. Meanwhile the compose
 field is always live at the foot of the list, so recording something new is a single uninterrupted keystroke
 path.
+
+While unlocked, a Done card also offers Next and Later to correct its placement. Focus can move from the
+editor to those controls without relocking; leaving the card locks it again.
 
 **TRD.** TRD §4.4 (cards render static until focused), TRD §8.4 (gestures).
 
@@ -612,6 +620,9 @@ Consequently a scheduled item is simply a card living in a day's collection. **T
 date** — there is no separate date field, and therefore no reschedule history, no slip counter, and no
 distinction between cut-and-pasting an item forward and leaving it behind while re-adding it tomorrow. Both
 are ordinary card operations and the app has no opinion about which you use.
+
+One-off tasks can be entered directly in Scheduled on any writable day, independently of Goals. Enter
+adds a task, Shift-Enter adds a line, and Add offers the same submission on touch.
 
 For the same reason there is **no inline date syntax** (`📅2026-09-01`) and **no completion timestamps**
 (`✅2026-08-04`) in documents. Both are deadline-tracking scaffolding for a system this explicitly isn't.
@@ -940,10 +951,13 @@ time. The preference is always to solve the underlying thing invisibly: **if a t
 question was probably wrong.**
 
 Two candidate exceptions have been examined and neither survives. A PWA that cannot update because other
-tabs are open is not this app's behaviour — the service worker claims clients rather than waiting; the
-residual case is an old tab requesting an evicted lazy chunk, whose fix is cache retention or a reload
-prompt. And a search index holding an exclusive lock yields the useful sentence *"search is unavailable in
-this tab"*, which needs no count either — and does not currently arise at all, because the first search
+tabs are open is not this app's behaviour — a downloaded release waits until all current windows close or
+the user chooses **Reload to update** in the sidebar. That action saves pending writing and reloads this
+tab; other tabs keep writing and receive their own reload control. Their previous hashed assets remain
+cached for offline use.
+Checks run on foreground, reconnect and restored-page events, without polling. A search index holding an
+exclusive lock yields the useful sentence *"search is unavailable in this tab"*, which needs no count
+either — and does not currently arise at all, because the first search
 index is in memory (§10).
 
 **Failure and lifecycle.** Deduplicate **by device id** while that is all there is — awareness already
@@ -988,7 +1002,7 @@ undoable without touching yours.
 
 - **Agent membership requires the owner to have an account.** Admitting an agent changes authorization, only
   the service changes authorization, and a Local workspace has no service. Agents therefore live at Account
-  and the free product has none. Local already requires its local unlock factor (§7.2); archive portability separately asks for
+  and the free product has none. Sync requires local protection (§7.2); archive portability separately asks for
   nothing and correspondingly delegates nothing.
 - **Edit cryptographically implies read.** Under one symmetric content key per generation, an agent cannot
   construct an encrypted update without the key, and a holder of that key can decrypt the document. So the
@@ -1192,13 +1206,18 @@ identically to an enrolled one is not honest, and it is the screen a person woul
 do not recognise. The distinction is the same one §6.3 draws — admitted is not enrolled — carried onto the
 surface where someone can act on it.
 
-Device names are currently user-agent guesses (`Mac`, `Android`), **renameable from this list and local to
-the device that holds them**, and two of the same kind collide. They are worth improving, and the mechanism
-is open with one guardrail: **not by fingerprinting.** Deriving a stable
-identifier from device characteristics is the thing browser vendors are actively closing off and would be a
-poor look in an app whose pitch is that your data stays yours. A stable random device id already exists and
-carries no information about the machine; a suffix taken from it — four characters, or a deterministic word,
-`Mac (violet)` — disambiguates two Macs without deriving anything (§11).
+The sidebar's **Identity and preferences** shows this device's public **Device code**, matching the code
+on every connected device's list. It is the first eight characters of the verified device ID, independent
+of the editable name. Defaults use ordinary browser and OS hints, for example **Firefox - macOS** or
+**Chrome - Android**, falling back to **This device** when those hints are unavailable. Browser profile
+names, client hostnames and exact hardware models are not available to a normal tab. Custom names complement the code rather
+than replace it, and sync through encrypted workspace content so each device shows the same names.
+Existing names are associated with the verified ID when that device next opens its workspace.
+
+Names do not establish membership. The code comes from the held account owner's verified device ID,
+never from a name or machine characteristics. **No fingerprinting:** naming and disambiguation do not
+derive identifiers from hardware or browser attributes. Browser and OS hints only suggest an editable
+display name; the verified code remains independent (§11).
 
 **Not promised.** A stale device is never **hidden**. Omitting a device because the app inferred it was gone
 is exactly the dishonesty this list exists to avoid. The staleness interval is an open parameter (§11).
@@ -1751,14 +1770,18 @@ drafts:
 | Property                                               | Answer                        |
 | ------------------------------------------------------ | ----------------------------- |
 | Persisted user content is ciphertext                   | **Always, from first run**    |
-| Opening it requires a **user-held factor**             | Required at persistent genesis and cold start (§7.2) |
+| Opening it requires a **user-held factor**             | Optional for Local; required for protected Local and Account (§7.2) |
 | Plaintext exists in memory while the workspace is open | Yes, unavoidably              |
-| A copied profile without its external factor is resisted | Required; supported-browser custody tests gate the claim |
+| A copied profile without its external factor is resisted | Protected mode only; supported-browser custody tests gate the claim |
 
-**What the user sees.** Before the first persistent edit, Local confirms a generated device-lock code
-and installs factor-sealed custody. No account or network is required. Cold start asks for a local
-unlock; a supported authenticator can provide an additional convenience seal. Local no longer promises
-promptless launch. Explain that losing the last factor and independent readable copy can be final loss.
+**What the user sees.** First Local use opens Today and saves automatically, without names, credentials,
+installation requests or a tour. Empty Next reads “The three most important things to focus on next.”
+Done reads “Anything you finished counts, planned or unplanned.” Scheduled reads “Things planned for
+this day.” Goals reads “Your running list of tasks, projects, someday-maybes, notes to self, and ideas.”
+An in-place introduction is dismissible and retires after writing begins. The sidebar offers Install,
+Personalize, Protection and Sync independently. Adding protection explains loss consequences, saves
+and confirms a generated unlock code, then applies the durable transition before reporting completion.
+Existing protected lists never acquire an automatic opener.
 
 **The subject is every app-managed store**, not the main database alone — encrypting one of them is theatre:
 
@@ -1768,7 +1791,7 @@ promptless launch. Explain that losing the last factor and independent readable 
 | The synchronous crash journal | Each update, written synchronously so a page kill between transaction and commit cannot lose it | Encrypted too — see below, this is the sharp edge                              |
 | Any persistent derived index | The derived text of everything searchable                                     | May ship **only** when its on-disk representation is encrypted (§10 below)                             |
 
-**The copied-profile promise has a precise boundary.** A supported browser profile without its external
+**The protected-mode copied-profile promise has a precise boundary.** A supported browser profile without its external
 unlock factor or an already unlocked runtime cannot recover content through the application's persisted
 custody paths, including credentials that receive future keys. Complete-profile tests must substantiate
 that claim; ciphertext scans and non-extractable key flags alone cannot.
@@ -1819,21 +1842,21 @@ select it, and remove legacy carriers only after verification. Execute its kill 
 installation. Stage 2 performs the author’s real-data cutover after the carrier decision and review 3a;
 shipping before external users exist does not remove Stage 1’s obligation to build and test recovery.
 
-### 7.2 Required local unlock
+### 7.2 Optional Local protection; required protection for sync
 
-**Invariant.** Persistent Local and Account workspaces require factor custody at genesis and local
-unlock at cold start. The generated 125-bit device-lock code is always enrolled; supported PRF factors
+**Invariant.** Protected Local and Account workspaces require local unlock at cold start.
+The generated 125-bit unlock code is enrolled when protection is selected; supported PRF factors
 add seals of the same custody key. Code-only use works offline. A user-chosen password is not substituted.
 The factor must be held outside the copied-profile exposure domain. The app does not retain the code
 for redisplay or offer an ordinary disable-lock downgrade.
 
-**What the user sees.** Confirm the generated code before the first persistent edit; later cold starts
+**What the user sees.** Confirm the generated code before enabling protection; later cold starts
 ask for that code or a supported enrolled authenticator. The ceremony is local, not a network wait.
 Account login neither replaces it nor becomes a requirement for Local. Pending edits are not ordinary
 editor content until durable (SC-01–02); no interface labels provisional input saved.
 
 **Failure and lifecycle.** Losing the last Local factor, with no independent readable replica/archive,
-can mean final loss. State this at first run and require code confirmation. At Account, login alone
+can mean final loss. State this when adding protection and require code confirmation. At Account, login alone
 still cannot recover content: the separate recovery material or a surviving authorized device can
 re-enroll a new device. Recovery never bypasses this locked slot. Local unlock does not authenticate
 an account, sign mutations or implicitly become an account recovery factor.
@@ -2326,6 +2349,11 @@ account-acquisition surface.**
 **Not promised.** The grant interaction is not ours to design — one browser shows a permission prompt in a
 location we do not choose, another decides silently on engagement heuristics, and an installed PWA may simply
 be persistent without ever asking. Re-check on every launch rather than trusting a past grant.
+
+The sidebar's **Install** button explicitly checks and requests persistent local storage. It also opens
+the native app installation prompt when the browser makes one available. On browsers with manual-only
+installation, show applicable instructions; on combinations without installation, offer the storage
+check alone. In particular, desktop Firefox on macOS has no browser-menu installation instruction.
 
 **The second row is a description, not a deficiency.** A single local device holding the only copy is what a
 local application on one computer *is* — the same kind of statement as a text editor saving to one disk. It

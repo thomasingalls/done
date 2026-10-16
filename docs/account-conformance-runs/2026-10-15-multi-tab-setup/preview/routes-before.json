@@ -1,0 +1,44 @@
+{
+  "TCP": {
+    "443": {
+      "HTTPS": true
+    },
+    "8443": {
+      "HTTPS": true
+    }
+  },
+  "Web": {
+    "mbp.tail0e0d4.ts.net:443": {
+      "Handlers": {
+        "/": {
+          "Proxy": "http://127.0.0.1:8082"
+        }
+      }
+    },
+    "mbp.tail0e0d4.ts.net:8443": {
+      "Handlers": {
+        "/": {
+          "Proxy": "http://127.0.0.1:53219"
+        }
+      }
+    }
+  },
+  "Services": {
+    "svc:llm": {
+      "TCP": {
+        "1234": {
+          "HTTPS": true
+        }
+      },
+      "Web": {
+        "llm.tail0e0d4.ts.net:1234": {
+          "Handlers": {
+            "/": {
+              "Proxy": "http://127.0.0.1:1234"
+            }
+          }
+        }
+      }
+    }
+  }
+}

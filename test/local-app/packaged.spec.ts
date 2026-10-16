@@ -1,5 +1,6 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect } from '@playwright/test';
+import { protectApp } from '../geometry/openApp';
 import { readFile, access } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 
@@ -40,13 +41,11 @@ for (const entry of ['/', '/local.html']) {
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(entry);
-    await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'fresh');
-    await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
-    const code = (await page.getByLabel('Generated device-lock code').textContent())!;
-    await page.getByRole('button', { name: 'I saved my code' }).click();
-    await page.getByLabel('Device-lock code', { exact: true }).fill(code);
-    await page.getByRole('button', { name: 'Confirm and create' }).click();
-    const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+    await expect(page.locator('.shell[data-local-workspace]')).toBeVisible();
+    const code = await protectApp(page);
+    const compose = page.locator(
+      '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+    );
     await expect(compose).toBeVisible();
     await compose.fill('Offline encrypted writing');
     await compose.press('Enter');
@@ -66,15 +65,17 @@ for (const entry of ['/', '/local.html']) {
       'data-state',
       'unlock-required',
     );
-    await offline.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await offline.getByLabel('Unlock code', { exact: true }).fill(code);
     await offline.getByRole('button', { name: 'Unlock', exact: true }).click();
     await expect(offline.locator('.day-panel[data-active="true"] .card')).toContainText(
       'Offline encrypted writing',
     );
     await offline
-      .locator('.day-panel[data-active="true"] .compose-field')
+      .locator('.day-panel[data-active="true"] .collection[data-section="done"] .compose-field')
       .fill('Written while offline');
-    await offline.locator('.day-panel[data-active="true"] .compose-field').press('Enter');
+    await offline
+      .locator('.day-panel[data-active="true"] .collection[data-section="done"] .compose-field')
+      .press('Enter');
     await expect(
       offline.locator('.card').filter({ hasText: 'Written while offline' }),
     ).toBeVisible();
@@ -87,7 +88,7 @@ for (const entry of ['/', '/local.html']) {
     const reopened = await context.newPage();
     reopened.on('pageerror', (error) => errors.push(error.message));
     await reopened.goto(entry);
-    await reopened.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await reopened.getByLabel('Unlock code', { exact: true }).fill(code);
     await reopened.getByRole('button', { name: 'Unlock', exact: true }).click();
     await expect(
       reopened.locator('.card').filter({ hasText: 'Written while offline' }),

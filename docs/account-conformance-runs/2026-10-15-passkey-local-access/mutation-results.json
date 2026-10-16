@@ -1,0 +1,35 @@
+[
+  {
+    "id": "native-json",
+    "path": "src/account/passkeyResponse.ts",
+    "before": "const response = credential.response as AuthenticatorAssertionResponse;",
+    "after": "return credential.toJSON() as AuthenticationResponseJSON;\n  const response = credential.response as AuthenticatorAssertionResponse;",
+    "mutantSha256": "6e613b97f2322693413ae2be1e4fa8751d9801c89ca9cdf8d2138316174191c1",
+    "exitCode": 1,
+    "log": "/private/tmp/done-passkey-mutant-native-json-2.log",
+    "harnessFailureLog": "/private/tmp/done-passkey-mutant-native-json.log",
+    "testsActuallyRan": true
+  },
+  {
+    "id": "wrong-code-label",
+    "path": "src/account/firstDeviceSetup.ts",
+    "before": "kind: continuation ? 'resume-setup' : fallback,",
+    "after": "kind: fallback,",
+    "mutantSha256": "213b5f8d76e50a8e8c0de15202724816d9a1d75edb155ed7453b213ba6c9192c",
+    "exitCode": 1,
+    "log": "/private/tmp/done-passkey-mutant-wrong-code-label-2.log",
+    "harnessFailureLog": "/private/tmp/done-passkey-mutant-wrong-code-label.log",
+    "testsActuallyRan": true
+  },
+  {
+    "id": "drop-handoff",
+    "path": "src/account/firstDeviceSetup.ts",
+    "before": "if (saved && !saved.connected) {\n          const transferred",
+    "after": "if (false && saved && !saved.connected) {\n          const transferred",
+    "mutantSha256": "c2ca0ff1950c194006446f7f9886fc0094ec678cb95c96e66b85dd8d25fbdaca",
+    "exitCode": 1,
+    "log": "/private/tmp/done-passkey-mutant-drop-handoff-2.log",
+    "harnessFailureLog": "/private/tmp/done-passkey-mutant-drop-handoff.log",
+    "testsActuallyRan": true
+  }
+]

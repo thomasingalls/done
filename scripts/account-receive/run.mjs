@@ -46,6 +46,7 @@ const files = [
     'scripts/generate-private-envelope-vectors.mjs',
     'scripts/generate-envelope-vectors.mjs',
     'scripts/lib/aad-coverage.mjs',
+    'scripts/lib/historical-bundle.mjs',
     ...['src', 'account-protocol', 'account-service', 'test', 'vite', 'wasm/journal-seal']
       .flatMap(walk)
       .filter((f) => /\.(ts|tsx|mjs|json|wasm)$/.test(f)),

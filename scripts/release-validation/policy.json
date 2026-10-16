@@ -11,7 +11,15 @@
       "format:fix",
       "review:status",
       "remediation:status",
-      "storage:private-cleanup:prepare"
+      "storage:private-cleanup:prepare",
+      "dev:account-setup",
+      "init:public-account",
+      "restore:public-account",
+      "serve:account",
+      "serve:account-service",
+      "serve:public-account-api",
+      "serve:public-account-app",
+      "upgrade:account-setup"
     ],
     "generator": ["vectors", "trace", "wasm", "latency:record"],
     "optional-check": [
@@ -39,7 +47,22 @@
       "account:admission-evidence",
       "account:residue",
       "account:liveness",
-      "validation:inventory"
+      "validation:inventory",
+      "account:enrollment",
+      "account:successor",
+      "test:account-runtime",
+      "test:account-session-client-browser",
+      "test:account-sessions",
+      "test:account-setup",
+      "test:account-setup-upgrade",
+      "test:account-setup-upgrade-browser",
+      "test:device-enrollment",
+      "test:packaged-account",
+      "test:public-backup",
+      "test:public-maintenance",
+      "test:public-restore",
+      "test:public-runtime",
+      "test:local-baseline"
     ],
     "alias": [
       "account:activation",
@@ -173,6 +196,7 @@
     "test/account-service-delivery/native.test.mjs": "Retired v8 HTTP client interoperability fixture; current service core/generated/controls/restart and v9 sync interoperability remain required."
   },
   "playwright": {
+    "test/compiler-loading": ["playwright.compiler-loading.config.ts"],
     "test/geometry": ["playwright.config.ts", "test:geometry"],
     "test/latency": ["playwright.latency.config.ts", "test:latency"],
     "test/local-app": [
@@ -188,7 +212,15 @@
       "playwright.storage-compatibility.config.ts",
       "storage:compatibility"
     ],
-    "test/app-upgrades": ["playwright.app-upgrades.config.ts", "storage:app-upgrades"]
+    "test/app-upgrades": ["playwright.app-upgrades.config.ts", "storage:app-upgrades"],
+    "test/device-enrollment": ["playwright.device-enrollment.config.ts", "test:device-enrollment"],
+    "test/first-device-setup": ["playwright.account-setup.config.ts", "test:account-setup"],
+    "test/first-device-upgrade": [
+      "playwright.account-upgrade.config.ts",
+      "test:account-setup-upgrade-browser"
+    ],
+    "test/packaged-account": ["playwright.packaged-account.config.ts", "test:packaged-account"],
+    "test/local-baseline": ["playwright.local-baseline.config.ts", "test:local-baseline"]
   },
   "vectorGenerators": {
     "test/vectors/account-checkpoint.json": "scripts/account-checkpoint-contract/vectors.mjs",
@@ -219,7 +251,8 @@
     "test/vectors/record-format.json": "scripts/generate-record-vectors.mjs",
     "test/vectors/recovery-code.json": "scripts/generate-recovery-vectors.mjs",
     "test/vectors/transition.json": "scripts/generate-transition-vectors.mjs",
-    "test/vectors/web-security-baseline.json": "scripts/generate-baseline-vectors.mjs"
+    "test/vectors/web-security-baseline.json": "scripts/generate-baseline-vectors.mjs",
+    "test/vectors/account-successor.json": "scripts/account-successor-vectors.mjs"
   },
   "limits": [
     "Direct test-file commands describe proposed unfiltered coverage, not proof that existing wrappers execute those files.",

@@ -1,0 +1,23 @@
+[WebServer] (node:59068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:59068) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+[WebServer] (node:59068) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+[WebServer] failed to load config from /private/tmp/done-passkey-access-checkout/vite.config.ts
+[WebServer] /private/tmp/done-passkey-access-checkout/vite.config.ts:31
+[WebServer] 		if (!revision || !/^[0-9a-f]{40}(?:-dirty)?$/.test(revision) || !date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("APP_BUILD_REVISION and APP_BUILD_DATE must identify the container source");
+[WebServer] 		                                                                                                                  ^
+[WebServer]
+[WebServer] Error: APP_BUILD_REVISION and APP_BUILD_DATE must identify the container source
+[WebServer]     at commitMetadata (/private/tmp/done-passkey-access-checkout/vite.config.ts:31:117)
+[WebServer]     at eval (/private/tmp/done-passkey-access-checkout/vite.config.ts:55:16)
+[WebServer]     at async ESModulesEvaluator.runInlinedModule (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/module-runner.js:1005:3)
+[WebServer]     at async ModuleRunner.directRequest (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/module-runner.js:1258:59)
+[WebServer]     at async ModuleRunner.cachedRequest (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/module-runner.js:1165:73)
+[WebServer]     at async ModuleRunner.import (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/module-runner.js:1119:10)
+[WebServer]     at async runnerImport (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:35140:18)
+[WebServer]     at async runnerImportConfigFile (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:36032:35)
+[WebServer]     at async loadConfigFromFile (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:36001:42)
+[WebServer]     at async resolveConfig (file://<dependencies>/.pnpm/vite@8.1.5_@types+node@26.1.2/node_modules/vite/dist/node/chunks/node.js:35617:22)
+[WebServer]
+[WebServer] Node.js v26.11.1
+Error: Process from config.webServer was not able to start. Exit code: 1

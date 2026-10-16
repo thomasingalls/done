@@ -15,6 +15,7 @@ import {
 import type { Extension } from '@codemirror/state';
 import { createAdmittedEditor } from '../editor/admittedEditor';
 import { masterLineSelection } from '../editor/masterLineSelection';
+import { requestPersistentStorage, type StoragePersistence } from '../lib/storagePersistence';
 import type {
   AdmittedWorkspace,
   TextTarget,
@@ -42,6 +43,7 @@ export interface WorkspaceUi {
     placeholder?: string,
   ): ReturnType<typeof createAdmittedEditor>;
   lock(): void;
+  requestStoragePersistence(): Promise<StoragePersistence>;
   connectAccount?: () => void;
   accountWorkspace: boolean;
   accountId?: string;
@@ -49,6 +51,9 @@ export interface WorkspaceUi {
   networkLogin?: NetworkLogin;
   devices?: import('../account/deviceRoster').DeviceRoster;
   showDevices?: () => void;
+  protection: 'automatic' | 'protected';
+  protect?: () => void;
+  slotId: string;
 }
 const Context = createContext<WorkspaceUi | null>(null);
 export const useWorkspaceUi = (): WorkspaceUi => {
@@ -71,6 +76,9 @@ export const WorkspaceUiProvider = ({
   devices,
   onShowDevices,
   children,
+  protection = 'protected',
+  onProtect,
+  slotId = 'local',
 }: {
   workspace: AdmittedWorkspace;
   sync?: SyncRuntime | undefined;
@@ -85,6 +93,9 @@ export const WorkspaceUiProvider = ({
   devices?: import('../account/deviceRoster').DeviceRoster;
   onShowDevices?: () => void;
   children: React.ReactNode;
+  protection?: 'automatic' | 'protected';
+  onProtect?: () => void;
+  slotId?: string;
 }) => {
   const [snapshot, setSnapshot] = useState(() => workspace.read());
   const [error, setError] = useState('');
@@ -105,6 +116,11 @@ export const WorkspaceUiProvider = ({
   }, [workspace]);
   const actions = useMemo(
     () => ({
+      async requestStoragePersistence() {
+        const result = await requestPersistentStorage();
+        setStorage(result === 'granted' ? 'Persistent' : 'Best-effort');
+        return result;
+      },
       async removeMasterLines(lines: readonly number[], options?: CommandFeedback) {
         try {
           if (options?.feedback !== 'local') setError('');
@@ -177,6 +193,9 @@ export const WorkspaceUiProvider = ({
       ...actions,
       lock: onLock,
       accountWorkspace,
+      protection,
+      slotId,
+      ...(onProtect ? { protect: onProtect } : {}),
       ...(networkLogin ? { networkLogin } : {}),
       ...(devices ? { devices } : {}),
       ...(onShowDevices ? { showDevices: onShowDevices } : {}),
@@ -199,6 +218,9 @@ export const WorkspaceUiProvider = ({
       accountId,
       onSwitchAccount,
       onConnectAccount,
+      protection,
+      slotId,
+      onProtect,
     ],
   );
   return (

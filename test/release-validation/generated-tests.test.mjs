@@ -226,11 +226,11 @@ test('generated Node declarations expand the reviewed algorithm loops and still 
     );
 });
 
-test('all reviewed generated files retain 222 cases and the compact manifest preserves every row, contract, selection and blocked obligation', () => {
+test('all reviewed generated files retain 224 cases and the compact manifest preserves every row, contract, selection and blocked obligation', () => {
   const counts = generatedFiles.vitest.map(
     (file) => vitestStage(process.cwd(), file).expect.cases.length,
   );
-  assert.deepEqual(counts, [8, 13, 12, 9, 23, 18, 15, 22, 27, 5, 7, 33, 17]);
+  assert.deepEqual(counts, [8, 13, 12, 9, 23, 18, 17, 22, 27, 5, 7, 33, 17]);
   assert.equal(generatedNodeStage(process.cwd(), generatedFiles.node[0]).expect.cases.length, 13);
   const inventory = buildInventory(
     process.cwd(),
@@ -247,7 +247,7 @@ test('all reviewed generated files retain 222 cases and the compact manifest pre
   assert.equal(selectStages(restored, 'generated-tests').length, 14);
   assert.equal(
     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
-    2203,
+    2455,
   );
   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);

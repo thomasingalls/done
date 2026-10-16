@@ -231,6 +231,11 @@
     background: var(--color-text);
     border-color: var(--color-text);
   }
+  .welcome .welcome-primary:not(:disabled):hover {
+    color: var(--color-bg);
+    background: var(--color-text-dim);
+    border-color: var(--color-text-dim);
+  }
   .welcome button:disabled {
     cursor: default;
   }

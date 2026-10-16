@@ -1,0 +1,99 @@
+{
+  "afterContinuation": [
+    {
+      "command": "pnpm storage:genesis",
+      "condition": "Run with no competing browser tests; retain first full-run timeout and isolated G11 pass.",
+      "status": "failed",
+      "log": "followup-genesis-isolated.log"
+    },
+    {
+      "command": "node --test --test-timeout=30000 --test-name-pattern 'closing during discovery|successor storage' test/account-successor/reconnect.test.mjs test/account-successor/owner-controls.test.mjs",
+      "checkout": "<baseline-checkout>",
+      "revision": "42ebdd12de0edcae7a5cd51bd44c3266e914bfcf",
+      "condition": "Compare same unchanged assertions on prior signed baseline; use same dependency bytes/runtime. No competing browser tests.",
+      "status": "failed",
+      "log": "followup-successor-prior-baseline.log"
+    },
+    {
+      "command": "node --test --test-timeout=60000 /private/tmp/done-superseded-observation.test.mjs",
+      "checkout": "<test-checkout>",
+      "condition": "New diagnostic only: observe actual superseded reply shape and independently check zero receive progress and unchanged synthetic writing; existing failing test stays unchanged.",
+      "status": "passed",
+      "log": "followup-superseded-observation.log"
+    },
+    {
+      "command": "approved harness and census targeted reruns",
+      "condition": "Use approved patch state in a separate source checkout after original suite ends; retain original failures and demonstrate mutation sensitivity.",
+      "status": "failed",
+      "logs": [
+        "followup-approved-01-pnpm_storage_custody.log",
+        "followup-approved-02-pnpm_storage_content.log",
+        "followup-approved-03-pnpm_storage_journal.log",
+        "followup-approved-04-pnpm_storage_admission.log",
+        "followup-approved-05-pnpm_storage_trim.log",
+        "followup-approved-06-pnpm_storage_contention.log",
+        "followup-approved-07-pnpm_storage_projection.log",
+        "followup-approved-08-pnpm_storage_delivery.log",
+        "followup-approved-09-node_scripts_release-validation_check_mjs_--record.log",
+        "followup-approved-10-node_scripts_release-validation_plan_mjs_--record.log",
+        "followup-approved-11-node_--test_--test-concurrency_2_test_release-validation___test_mjs.log"
+      ]
+    },
+    {
+      "id": "packaged-session-isolated",
+      "command": "pnpm exec playwright test --config playwright.packaged-account.config.ts test/packaged-account/sessions.spec.ts --output test-results/packaged-account-session-recheck/artifacts --reporter=list",
+      "checkout": "<test-checkout>",
+      "condition": "Recheck unchanged session transport case alone. Preserve original 49-case report and use a different artifact directory; do not infer fixture drift from a receive:network-unavailable timeout.",
+      "status": "failed",
+      "log": "followup-packaged-session-isolated.log",
+      "startedAt": "2026-10-15T12:14:12.951Z",
+      "exitCode": 1,
+      "completedAt": "2026-10-15T12:14:53.572Z"
+    },
+    {
+      "id": "upgrade-historical-source",
+      "command": "ACCOUNT_SETUP_UPGRADE_BASE=<upgrade-baseline-checkout> pnpm exec playwright test --config playwright.account-upgrade.config.ts --output test-results/account-upgrade-recheck/artifacts --reporter=list",
+      "checkout": "<test-checkout>",
+      "condition": "Supply unchanged browser test with its required schema-five source checkout; use independent artifacts and preserve initial precondition failure. Dependency reuse/current Yjs patch qualifies historical-source diagnostic; no old-artifact qualification claim.",
+      "status": "failed",
+      "log": "followup-upgrade-historical-source.log",
+      "startedAt": "2026-10-15T12:14:53.572Z",
+      "exitCode": 1,
+      "completedAt": "2026-10-15T12:15:00.762Z"
+    },
+    {
+      "id": "ledger-profile-observation",
+      "command": "node --test --test-timeout=60000 /private/tmp/done-ledger-profile-observation.test.mjs",
+      "checkout": "<test-checkout>",
+      "condition": "New diagnostic distinguishes profiling explicitly enabled by inherited receive-editor setup from reference/default unprofiled bundles in a fresh realm. Keep the original failed global-absence assertion unchanged.",
+      "status": "passed",
+      "log": "followup-ledger-profile-observation.log",
+      "startedAt": "2026-10-15T12:15:00.762Z",
+      "exitCode": 0,
+      "completedAt": "2026-10-15T12:15:07.337Z"
+    }
+  ],
+  "interactiveWatch": {
+    "command": "pnpm test:watch",
+    "classification": "Interactive development mode; not an additional finite suite. Allow its initial unit result, then stop only the verified watch test process group and retain the log.",
+    "status": "completed",
+    "observed": "The non-TTY invocation used RUN mode, passed 1,763 unit cases with the same existing skip, and exited 0 naturally. No signal was sent. This repeats the unit run; it adds no distinct coverage."
+  },
+  "approvals": [
+    {
+      "path": "/private/tmp/done-passkey-general-census-fixture.patch",
+      "status": "Explicitly approved by the human and applied to the primary working branch; original test checkout remains unchanged."
+    },
+    {
+      "path": "/private/tmp/done-full-suite-harness-repairs.patch",
+      "status": "Explicitly approved by the human and applied to the primary working branch; original test checkout remains unchanged."
+    },
+    {
+      "path": "/private/tmp/done-adapter-closure-census.patch",
+      "status": "Human explicitly approved; applied to primary and isolated approved-harness checkout. No formatting edits."
+    }
+  ],
+  "releaseQualification": "paused",
+  "merge": "not authorized",
+  "productionDeployment": "not authorized"
+}

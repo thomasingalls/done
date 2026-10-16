@@ -1,0 +1,65 @@
+{
+  "at": "2026-10-16T09:29:57.298339+00:00",
+  "origin": "https://done.oxidationlabs.com",
+  "index": {
+    "status": 200,
+    "sha256": "b6512827cedbf762edb15ce953c2d07802d94f8b9c2fcb747a116bd5ddf4bcb2",
+    "bytes": 2181,
+    "headers": {
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+      "referrer-policy": "no-referrer",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "content-type": "text/html",
+      "content-length": "2181",
+      "date": "Fri, 16 Oct 2026 09:29:57 GMT",
+      "x-envoy-upstream-service-time": "0",
+      "server": "envoy",
+      "connection": "close"
+    }
+  },
+  "serviceWorker": {
+    "status": 200,
+    "sha256": "a6fa1eaca18fe720a902c7aa8cb894f8a041168decad518f8dd908167e64453d",
+    "bytes": 11033,
+    "headers": {
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+      "referrer-policy": "no-referrer",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "content-type": "text/javascript",
+      "content-length": "11033",
+      "date": "Fri, 16 Oct 2026 09:29:57 GMT",
+      "x-envoy-upstream-service-time": "0",
+      "server": "envoy",
+      "connection": "close"
+    }
+  },
+  "publicConfiguration": {
+    "status": 200,
+    "sha256": "178b9ac2e6d24ada2a18c68961c516bb6a684a61ab4963020aa076362264ae00",
+    "bytes": 273,
+    "headers": {
+      "cache-control": "no-store",
+      "x-content-type-options": "nosniff",
+      "content-type": "application/json",
+      "date": "Fri, 16 Oct 2026 09:29:57 GMT",
+      "x-envoy-upstream-service-time": "2",
+      "server": "envoy",
+      "connection": "close",
+      "transfer-encoding": "chunked"
+    },
+    "configuration": {
+      "v": 2,
+      "pin": {
+        "v": 1,
+        "serviceId": "f8d715e0f60edcbe5c59f677c4ee4dea",
+        "origin": "https://done.oxidationlabs.com",
+        "rpId": "done.oxidationlabs.com",
+        "authRoot": "02ffe2cf3937039be7579496a651b447b58a708507d6dc64cad6181ab54ebfa6"
+      },
+      "networkSessions": true,
+      "membershipContinuation": true
+    }
+  }
+}

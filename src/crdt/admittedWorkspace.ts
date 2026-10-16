@@ -88,6 +88,8 @@ export interface WorkspaceSnapshot {
   readonly actors: ReturnType<typeof listActors>;
   readonly settings: ReturnType<typeof readSettings>;
   readonly deviceName: string;
+  readonly deviceId: string;
+  readonly deviceLabels: Readonly<Record<string, string>>;
   readonly undo: number;
   readonly redo: number;
 }
@@ -114,6 +116,8 @@ export interface WorkspaceOptions {
   /** New Account owners omit truly source-free commands; legacy capture factories retain their format. */
   readonly suppressEmptySources?: boolean;
   readonly identity: WorkspaceActorIdentity;
+  /** Verified Account device identifier for display labels; provenance keeps its existing identity. */
+  readonly deviceLabelId?: string;
   readonly validateReceive: AdmissionOptions['validateReceive'];
   readonly today?: () => ISODate;
   readonly signal?: AbortSignal;
@@ -214,6 +218,7 @@ export const createAdmittedWorkspace = async (
   const archiveProjection = createArchiveProjection();
   const commands = createWorkspaceCommandRunner();
   const identity = structuredClone(options.identity);
+  const deviceLabelId = options.deviceLabelId ?? identity.device.id;
   const human: Origin = Object.freeze({
     actor: identity.id,
     kind: 'human',
@@ -358,7 +363,7 @@ export const createAdmittedWorkspace = async (
       const result = commands.run(
         history,
         intent,
-        { identity, human, system, today: today() },
+        { identity, deviceLabelId, human, system, today: today() },
         selections,
       );
       if (humanItem) {
@@ -880,9 +885,19 @@ export const createAdmittedWorkspace = async (
       actors: structuredClone(listActors(doc)),
       settings: readSettings(doc.getMap('meta')),
       deviceName:
-        typeof doc.getMap('meta').get(`device-label:${identity.device.id}`) === 'string'
-          ? (doc.getMap('meta').get(`device-label:${identity.device.id}`) as string)
-          : identity.device.name,
+        typeof doc.getMap('meta').get(`device-label:${deviceLabelId}`) === 'string'
+          ? (doc.getMap('meta').get(`device-label:${deviceLabelId}`) as string)
+          : typeof doc.getMap('meta').get(`device-label:${identity.device.id}`) === 'string'
+            ? (doc.getMap('meta').get(`device-label:${identity.device.id}`) as string)
+            : identity.device.name,
+      deviceId: deviceLabelId,
+      deviceLabels: Object.fromEntries(
+        [...doc.getMap('meta')].flatMap(([key, value]) =>
+          key.startsWith('device-label:') && typeof value === 'string'
+            ? [[key.slice('device-label:'.length), value]]
+            : [],
+        ),
+      ),
       undo: history.undoStack.length,
       redo: history.redoStack.length,
     };

@@ -216,9 +216,10 @@ function evidence() {
       account: 'pending',
     },
     'control-witness.json': {
-      baseline: { outcome: 'unknown', persisted: 0, account: 'active' },
+      baseline: { outcome: 'unknown', persisted: 1, account: 'active' },
+      redundant: Array(2).fill({ kind: 'unknown', reason: 'ledger-integrity' }),
       outcome: 'accepted',
-      persisted: 1,
+      persisted: 2,
       account: 'active',
     },
     'generated.json': {
@@ -532,13 +533,13 @@ function inboundEvidence() {
     docs.forEach((d) => d.destroy());
   }
 }
-test('inbound preparation wrapper binds two exact invocations, 72 cases and both vector inputs', () => {
+test('inbound preparation wrapper binds two exact invocations, 73 cases and both vector inputs', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-inbound-prep');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 72);
+  assert.equal(s.expect.cases.length, 73);
   assert.equal(s.deadlineMs, 120000);
   assert.equal(s.fixture, undefined);
   assert.deepEqual(s.fileOutputs.required, inboundPrepReports);
@@ -846,13 +847,13 @@ function codecsEvidence(source) {
   }
   return r;
 }
-test('inbound codecs wrapper retains three exact commands, 114 cases and isolated preparation reports', () => {
+test('inbound codecs wrapper retains three exact commands, 118 cases and isolated preparation reports', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-inbound-codecs');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 114);
+  assert.equal(s.expect.cases.length, 118);
   assert.equal(s.expect.steps.length, 3);
   assert.equal(s.expect.steps[2].kind, 'exit');
   assert.equal(s.deadlineMs, 135000);
@@ -1174,13 +1175,13 @@ function receiveEvidence() {
     ledger.destroy();
   }
 }
-test('receive wrapper binds the unchanged property/native commands, 62 cases, browser and old marker reader', () => {
+test('receive wrapper binds the unchanged property/native commands, 68 cases, browser and old marker reader', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 62);
+  assert.equal(s.expect.cases.length, 68);
   assert.equal(s.deadlineMs, 360000);
   assert.equal(s.expect.steps[1].deadlineMs, 300000);
   assert.equal(s.expect.historyInputs[0].reference, '8378596');
@@ -1466,13 +1467,13 @@ function receiveEditorEvidence() {
   };
   return r;
 }
-test('receive-editor wrapper preserves three original commands, 151 cases and disposable browser without unused history', () => {
+test('receive-editor wrapper preserves three original commands, 299 cases and disposable browser without unused history', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive-editor');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 151);
+  assert.equal(s.expect.cases.length, 299);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [30000, 60000, 480000],
@@ -1535,11 +1536,12 @@ test('receive-editor trace requires typecheck exit and distinct exact property/n
       errors: [],
       cases: v.cases.map((c) => ({
         ...c,
+        outcome: c.outcome === 'not-applicable' ? 'skipped' : c.outcome,
         durationMs: 0,
         retryCount: 0,
         repeatCount: 0,
         expectedFailure: false,
-        mode: 'run',
+        mode: c.outcome === 'not-applicable' ? 'skip' : 'run',
         errors: [],
       })),
     },
@@ -1793,13 +1795,13 @@ function receiveTransportEvidence() {
     };
   return r;
 }
-test('receive-transport wrapper binds all five commands, 29 cases and inherited browser process ownership', () => {
+test('receive-transport wrapper binds all five commands, 30 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive-transport');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 29);
+  assert.equal(s.expect.cases.length, 30);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 120000, 90000, 330000],
@@ -2156,13 +2158,13 @@ function receiveDriverEvidence() {
     };
   return r;
 }
-test('receive-driver wrapper binds all six commands, 36 cases and inherited browser process ownership', () => {
+test('receive-driver wrapper binds all six commands, 37 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-receive-driver');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 36);
+  assert.equal(s.expect.cases.length, 37);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 180000, 90000, 90000, 270000],
@@ -2574,13 +2576,13 @@ function syncEvidence() {
   }
   return r;
 }
-test('sync wrapper binds all six commands, 52 cases and inherited browser process ownership', () => {
+test('sync wrapper binds all six commands, 81 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-sync');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 52);
+  assert.equal(s.expect.cases.length, 81);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 600000, 90000, 150000, 450000],
@@ -2853,7 +2855,10 @@ function serviceInboundEvidence() {
     if (op === 'read' || op === 'replay') Object.assign(o, page(q, [one]));
     else if (['reader', 'publisher', 'ledger'].includes(op)) {
       Object.assign(o, refused(request(0, 1, op === 'ledger' ? undefined : op)));
-      if (op === 'ledger') o.faulted = '22'.repeat(32);
+      if (op === 'ledger') {
+        o.faulted = '22'.repeat(32);
+        o.result = { kind: 'unknown', reason: 'ledger-integrity' };
+      }
     }
     h.observations.push(o);
   }
@@ -2891,7 +2896,16 @@ function serviceInboundEvidence() {
       originals: [one],
       ordinary: [page(q, [one]), page(q, [one])],
       baseline: refused(q),
-      mutant: page(q, control === 'witness' ? [] : [one]),
+      mutant: page(q, control === 'publisher' ? [] : [one]),
+      ...(control === 'publisher'
+        ? {
+            publisherPolicyOmissions: 2,
+            publisherLookup: { request: q, result: { kind: 'unknown', reason: 'unavailable' } },
+          }
+        : {}),
+      ...(control === 'witness'
+        ? { redundantWitness: Array(2).fill({ kind: 'unknown', reason: 'ledger-integrity' }) }
+        : {}),
       activation: control === 'registration' ? [refused(q), refused(q)] : [],
     };
   for (const cut of ['verified', 'signed'])
@@ -3104,6 +3118,71 @@ test('service-inbound reports require complete HTTP histories and effective cont
 test('160 generated service-inbound report corruptions reject changed originals, replay, read-only inventory and page signatures', () => {
   const r = serviceInboundEvidence();
   reconcileServiceInboundEvidence(r);
+  const restored = r['generated.json'].histories[0];
+  restored.commands.splice(
+    6,
+    0,
+    { op: 'append', limit: 1, cursor: 0 },
+    { op: 'read', limit: 1, cursor: 0 },
+  );
+  const inventory = restored.observations[5].after,
+    refusal = { kind: 'unknown', reason: 'ledger-integrity' };
+  restored.observations.splice(
+    6,
+    0,
+    {
+      op: 'append',
+      before: inventory,
+      after: inventory,
+      position: 2,
+      envelope: 'bb',
+      result: refusal,
+    },
+    {
+      op: 'read',
+      before: inventory,
+      after: inventory,
+      request: restored.observations[1].request,
+      result: refusal,
+    },
+  );
+  r['generated.json'].coverage.append++;
+  r['generated.json'].coverage.read++;
+  reconcileServiceInboundEvidence(r);
+  for (const index of [6, 7]) {
+    const bad = structuredClone(r);
+    bad['generated.json'].histories[0].observations[index].result = {
+      kind: 'decision',
+      bytes: 'aa',
+    };
+    assert.throws(() => reconcileServiceInboundEvidence(bad), 'same-owner quarantine must refuse');
+  }
+  const cold = r['generated.json'].histories[1];
+  cold.commands.pop();
+  cold.observations.pop();
+  r['generated.json'].coverage.restart--;
+  cold.recovery = {
+    before: inventory,
+    after: inventory,
+    read: { request: cold.observations[1].request, result: refusal },
+    append: { position: 2, envelope: 'bb', result: refusal },
+    restart: { before: inventory, after: inventory },
+  };
+  reconcileServiceInboundEvidence(r);
+  for (const alter of [
+    (h) => delete h.recovery,
+    (h) => delete h.recovery.restart,
+    (h) => (h.recovery.append.result.reason = 'unavailable'),
+    (h) => (h.recovery.read.result.kind = 'decision'),
+    (h) => (h.recovery.restart.after = 'ff'.repeat(32)),
+  ]) {
+    const bad = structuredClone(r);
+    alter(bad['generated.json'].histories[1]);
+    assert.throws(
+      () => reconcileServiceInboundEvidence(bad),
+      'cold recovery must retain explicit quarantine proof',
+    );
+  }
   const alters = [
     (h) => h.observations.pop(),
     (h) => (h.observations[0].envelope = 'bb'),
@@ -3131,6 +3210,9 @@ test('160 generated service-inbound control corruptions reject missing refusal, 
   const alters = [
     (r) => (r['control-reader.json'].baseline.result.kind = 'decision'),
     (r) => (r['control-witness.json'].mutant.result.kind = 'unknown'),
+    (r) => (r['control-publisher.json'].publisherPolicyOmissions = 1),
+    (r) => (r['control-publisher.json'].publisherLookup.result.kind = 'decision'),
+    (r) => r['control-witness.json'].redundantWitness.pop(),
     (r) => r['control-registration.json'].activation.pop(),
     (r) => (r['control-signature.json'].mutant.result.bytes += '00'),
     (r) => (r['restart-signed.json'].replies = 1),

@@ -27,6 +27,7 @@ import { journalPrefix } from './journalCodec';
 import { openOwnedWorkspace, startupRefusal, type WorkspaceStartupResult } from './ownedStartup';
 import { stopStartup, type StartupDisposition } from './startupState';
 import type { WorkspaceOptions } from './admittedWorkspace';
+import { createAutomaticOpening } from './automaticOpening';
 
 export interface LocalGenesisReceipt {
   readonly kind: 'created';
@@ -93,7 +94,7 @@ export interface LocalGenesisEnrollment {
 }
 export const beginLocalGenesis = (
   slotId: string,
-  options: { signal?: AbortSignal; seed?: CreationSeed } = {},
+  options: { signal?: AbortSignal; seed?: CreationSeed; automatic?: boolean } = {},
 ): LocalGenesisEnrollment => {
   identity(slotId);
   const seed = options.seed ? captureCreationSeed(options.seed) : undefined;
@@ -165,10 +166,19 @@ export const beginLocalGenesis = (
               async (task, db, _scope, initial) => {
                 claim = await signLocalClaim(
                   task,
-                  { v: 1, initial, stage: 'custody', mac: new Uint8Array(32) },
+                  {
+                    v: 1,
+                    initial,
+                    stage: 'custody',
+                    mac: new Uint8Array(32),
+                    ...(options.automatic ? { automatic: true as const } : {}),
+                  },
                   typed,
                 );
-                await installLocalClaim(task, db, claim);
+                const automatic = options.automatic
+                  ? await createAutomaticOpening(task, claim, typed)
+                  : undefined;
+                await installLocalClaim(task, db, claim, automatic);
               },
             );
             return finishLocal(task, claim, typed);

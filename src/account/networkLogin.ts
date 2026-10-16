@@ -1,3 +1,4 @@
+import { authenticationResponse } from './passkeyResponse';
 import { consumeRecoveryOpening, type RecoveryOpening } from './recoveryOpening';
 import type { RecoverySuccessor } from '../../account-protocol/recoveryTransition';
 import { parseAuthorityPin, pinBytes, type AuthorityPin } from '../../account-protocol/authority';
@@ -342,7 +343,7 @@ export class NetworkLogin {
         signal,
       })) as PublicKeyCredential | null;
       if (!credential) throw Error('Passkey cancelled');
-      return credential.toJSON();
+      return authenticationResponse(credential);
     },
   ) {
     this.#stop.signal.throwIfAborted();

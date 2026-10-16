@@ -1,4 +1,3 @@
-import { LedgerIntegrityError } from './publisherTips.ts';
 import { rethrowAuthorization } from './authorization.ts';
 /** Private signed locator. No ciphertext, wrapping key or publication capability is returned. */
 import type { DatabaseSync } from 'node:sqlite';

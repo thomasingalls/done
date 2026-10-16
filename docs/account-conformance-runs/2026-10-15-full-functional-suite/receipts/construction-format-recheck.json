@@ -1,0 +1,10 @@
+{
+  "command": "node scripts/account-first-authority/run.mjs",
+  "checkout": "<approved-harness-checkout>",
+  "revision": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+  "exitCode": 0,
+  "result": "passed",
+  "log": "construction-format-first-authority.log",
+  "sourceChange": "Formatting-only construction-registry JSON with parsed values independently equal; approved test/harness patches present; no application source changes.",
+  "concurrentActivity": "Original first-device setup suite was waiting at retired UI controls; this command uses Node/Vitest/static checks only, no browser. No performance or qualification credit."
+}

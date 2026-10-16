@@ -1,0 +1,25 @@
+{
+  "receiverBaseline": "new legacy-host case fails at absent A-to-B writing on unchanged saved runtime",
+  "bootstrapBaseline": "both complete-census cases fail; 404 creates Local-only hint, valid service creates three hints",
+  "unitBaseline": "initial seven-case draft: five failed, two passed; later cases added and public-locator behavior refined",
+  "receiverRepair": "two new cases and unchanged sessions case: 3 passed",
+  "historyAndBootstrap": "two census cases plus three unchanged history cases: 5 passed",
+  "originalCompatibility": "unchanged two-live-writers exact-census case passed",
+  "broaderMatrix": "26 passed, zero skipped/retried; before final live-capability refinement",
+  "finalRefinement": "nine-case report: 8 passed, one new fixture failed because it created a separate Account; corrected explicit Local-promotion fixture and both census cases: 3 passed on the same final runtime",
+  "finalUnit": "10 new cases and 7 unchanged storage-compatibility cases passed",
+  "historyNative": "9 unchanged installation/HTTP client cases passed",
+  "fullUnitAttempt": "1772 passed, 7 failed in two unchanged old fixtures lacking browser storage/locks, 1 existing named skip; not green",
+  "omissionControl": "hint-only gate applied exactly once; retained-history detector fails at zero history requests after authenticated cold reopening",
+  "sourceInventory": "393 sources and all 195 crypto domains unchanged except two runtime hashes; inventory only",
+  "planning": {
+    "obligations": 846,
+    "unresolved": 305,
+    "aggregate": "blocked and paused"
+  },
+  "limitations": [
+    "No new actual Firefox/Bitwarden walkthrough or CI Node 24 execution claimed.",
+    "Old fixture/census edits await explicit approval and rerun.",
+    "Preview fcb659c3, merge and deployment untouched; no commit requested for this slice."
+  ]
+}

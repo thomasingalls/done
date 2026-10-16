@@ -28,6 +28,7 @@ export function packagedApplication(directory) {
       path === '/' ||
       path === '/private/account-setup.html' ||
       path === '/private/account-enrollment.html' ||
+      /^\/remove\/(local|account-[a-f0-9]{32}|enrollment-[a-f0-9]{32})\/?$/.test(path) ||
       /^\/(accounts|local(?:\/[a-z-]+)?|(?:setup|recover)\/[^/]+\/[a-z-]+|connect\/[a-z-]+)$/.test(
         path,
       );

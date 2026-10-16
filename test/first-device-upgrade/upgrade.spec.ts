@@ -62,7 +62,7 @@ test('schema-five account retains its original passkey, authority, name, code an
   const baseline = process.env['ACCOUNT_SETUP_UPGRADE_BASE'];
   if (!baseline)
     throw Error(
-      'Set ACCOUNT_SETUP_UPGRADE_BASE to a schema-five preview checkout (7dab01cc). Run this test after integrating the schema-eight backend.',
+      'Set ACCOUNT_SETUP_UPGRADE_BASE to a schema-five preview checkout (7dab01cc). Run this test after integrating the current private backend.',
     );
   const state = testInfo.outputPath('service');
   mkdirSync(state, { recursive: true, mode: 0o700 });
@@ -126,7 +126,9 @@ test('schema-five account retains its original passkey, authority, name, code an
     await page.getByRole('button', { name: 'Finish account setup', exact: true }).click();
     await expect(page.locator('.shell')).toBeVisible();
     const id = (await page.getByLabel('Account ID', { exact: true }).textContent())!;
-    const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+    const compose = page.locator(
+      '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+    );
     await compose.fill('Writing saved before the service upgrade');
     await compose.press('Enter');
     await expect(page.locator('.day-panel[data-active="true"] .card')).toContainText(
@@ -155,7 +157,7 @@ test('schema-five account retains its original passkey, authority, name, code an
       encoding: 'utf8',
       timeout: 30000,
     });
-    expect(output).toContain('schema 5 → 8');
+    expect(output).toContain('schema 5 → 11');
     const snapshot = output.split('Backup: ')[1]!.trim();
     expect(retainedRows(join(snapshot, 'account.sqlite'))).toEqual(before);
     expect(retainedRows(join(snapshot, 'authority.sqlite'))).toEqual(authority);
@@ -170,11 +172,11 @@ test('schema-five account retains its original passkey, authority, name, code an
       encoding: 'utf8',
       timeout: 30000,
     });
-    expect(second).toContain('already uses schema 8');
+    expect(second).toContain('already uses schema 11');
     await start(process.cwd());
     await page.goto(entry);
     await expect(page.getByLabel('Account ID', { exact: true })).toHaveText(id);
-    await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(code);
     await page
       .getByRole('button', { name: 'Confirm code and unlock with passkey', exact: true })
       .click();
@@ -185,11 +187,21 @@ test('schema-five account retains its original passkey, authority, name, code an
     );
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
     await page.getByRole('button', { name: 'Use another account', exact: true }).click();
-    await expect(page.getByRole('heading', { name: 'Account verified' })).toBeVisible();
-    expect(await page.getByLabel('Account ID', { exact: true }).allTextContents()).toEqual([
-      id,
-      id,
-    ]);
+    await expect(page.getByRole('heading', { name: 'Connect devices', exact: true })).toBeVisible();
+    const displayedIds = await page.getByLabel('Account ID', { exact: true }).allTextContents();
+    expect(displayedIds).toEqual([id]);
+    await page.getByRole('button', { name: 'Create invitation for Alex', exact: true }).click();
+    await page.getByLabel('Unlock code', { exact: true }).fill(code);
+    const verified = page.waitForResponse(
+      (response) =>
+        response.url().endsWith('/__account-setup/ceremony/bootstrap') && response.status() === 200,
+    );
+    await page.getByRole('button', { name: 'Unlock and get invitation', exact: true }).click();
+    const bootstrap = await (await verified).json();
+    await expect(page.getByLabel('Device invitation link')).toBeVisible();
+    // The retired panel displayed this account twice. Preserve both identity
+    // observations using the chooser and the completed authenticated bootstrap.
+    expect([...displayedIds, bootstrap.base.receipt.offer.epoch.accountId]).toEqual([id, id]);
     const after = await cdp.send('WebAuthn.getCredentials', { authenticatorId });
     expect(after.credentials.map((credential) => credential.credentialId)).toEqual(
       credentials.credentials.map((credential) => credential.credentialId),

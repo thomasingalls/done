@@ -1,6 +1,8 @@
 // @vitest-environment node
-import { afterEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { loadPackagedConfig } from '../src/account/packagedConfig';
+import { installDiscoveryEnvironment } from './helpers/discoveryEnvironment';
+beforeEach(installDiscoveryEnvironment);
 const pin = {
   v: 1 as const,
   serviceId: '11'.repeat(16),

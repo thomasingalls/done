@@ -1,0 +1,120 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { gzipSync } from 'node:zlib';
+import { execFileSync } from 'node:child_process';
+
+const root = '/Users/thomasingalls/.codex/worktrees/7fda/done';
+const packet = path.join(root, 'docs/account-conformance-runs/2026-10-15-receiver-compatibility');
+const target = path.join(packet, 'approval');
+const baseline = 'faadbff5d41eab72434af4193f774d50f1ac577c';
+const hash = (bytes) => crypto.createHash('sha256').update(bytes).digest('hex');
+const read = (file) => fs.readFileSync(path.join(root, file));
+const git = (...args) => execFileSync('git', args, { cwd: root });
+const old = [
+  'test/packagedConfig.test.ts',
+  'test/privateAccess.test.ts',
+  'test/release-validation/general-tests.test.mjs',
+  'test/release-validation/generated-tests.test.mjs',
+];
+const approved = fs.readFileSync('/private/tmp/done-receiver-bootstrap-fixtures.patch');
+assert(approved.equals(fs.readFileSync(path.join(packet, 'reproduction/pending-old-fixtures.patch'))));
+assert(git('diff', baseline, '--', ...old).equals(approved), 'Diff must equal exactly the approved patch');
+assert.deepEqual(git('diff', '--name-only', baseline, '--', 'test').toString().trim().split('\n').sort(), old.toSorted());
+const previousIndex = JSON.parse(fs.readFileSync(path.join(packet, 'artifact-index.json')));
+for (const item of previousIndex.artifacts) {
+  assert.equal(hash(fs.readFileSync(path.join(packet, item.path))), item.retainedSha256, item.path);
+}
+const sources = JSON.parse(fs.readFileSync(path.join(packet, 'source-pins.json')));
+for (const item of sources.files) assert.equal(hash(read(item.path)), item.sha256, item.path);
+
+fs.mkdirSync(target, { recursive: true });
+const artifacts = [];
+const retain = (name, bytes, originalSha256) => {
+  const dest = path.join(target, name);
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, bytes);
+  artifacts.push({ path: name, sha256: hash(bytes), bytes: bytes.length, ...(originalSha256 ? { originalSha256 } : {}) });
+};
+const json = (name, value) => retain(name, Buffer.from(JSON.stringify(value, null, 2) + '\n'));
+const logs = [
+  'done-receiver-bootstrap-approved-fixtures.log',
+  'done-receiver-bootstrap-approved-census.log',
+  'done-receiver-bootstrap-approved-all-unit.log',
+  'done-receiver-bootstrap-approved-release-runner.log',
+  'done-receiver-bootstrap-approved-all-unit-serial.log',
+  'done-receiver-bootstrap-approved-all-unit-two-workers.log',
+  'done-receiver-bootstrap-approved-release-runner-native.log',
+  'done-receiver-bootstrap-approved-inventory.log',
+  'done-receiver-bootstrap-approved-plan.log',
+  'done-receiver-bootstrap-approved-inventory-check.log',
+  'done-receiver-bootstrap-approved-plan-check.log',
+  'done-receiver-bootstrap-approved-fixture-lint.log',
+];
+for (const name of logs) {
+  const bytes = fs.readFileSync('/private/tmp/' + name);
+  const normalized = bytes.toString().replaceAll(root, '<workspace>').replaceAll(process.env.HOME, '<home>');
+  retain('logs/' + name + '.gz', gzipSync(normalized, { level: 9 }), hash(bytes));
+}
+retain('approved-old-fixtures.patch', approved);
+retain('collect.mjs.txt', fs.readFileSync('/private/tmp/done-collect-receiver-bootstrap-approval.mjs'));
+json('old-test-boundary.json', {
+  baseline,
+  authorization: 'Operator explicitly approved the four-file saved fixture patch with the reply yes.',
+  approvedPatchSha256: hash(approved),
+  appliedDiffExactlyMatchesApprovedPatch: true,
+  noOtherTrackedOldTestEdits: true,
+  originalCheckpointArtifactsVerified: previousIndex.artifacts.length,
+  originalSourcePinsStillIdentical: sources.files.length,
+  files: old.map((file) => ({ path: file, baselineSha256: hash(git('show', baseline + ':' + file)), approvedSha256: hash(read(file)) })),
+});
+json('source-pins.json', {
+  baseline,
+  sourceWasUncommitted: true,
+  node: process.version,
+  priorPins: '../source-pins.json',
+  files: [...old, 'docs/release-validation-graph.json', 'docs/release-validation-manifest.json'].map((file) => ({ path: file, sha256: hash(read(file)) })),
+});
+const unit = fs.readFileSync('/private/tmp/done-receiver-bootstrap-approved-all-unit-two-workers.log', 'utf8');
+const native = fs.readFileSync('/private/tmp/done-receiver-bootstrap-approved-release-runner-native.log', 'utf8');
+assert.match(unit, /Test Files\s+151 passed \(151\)/);
+assert.match(unit, /Tests\s+1779 passed \| 1 skipped \(1780\)/);
+assert.match(native, /ℹ tests 289\b/);
+assert.match(native, /ℹ pass 289\b/);
+assert.match(native, /ℹ fail 0\b/);
+assert.match(native, /ℹ skipped 0\b/);
+json('results.json', {
+  focusedUnit: '22 passed across the two approved existing fixtures and the new compatibility file',
+  census: '17 passed; 2453 general cases retained',
+  firstFullUnit: '1776 passed, 3 five-second timeouts, 1 existing named skip; another runner overlapped, so contention is a hypothesis rather than an established cause',
+  firstRunner: '271 passed, 18 failed, 0 skipped; sandbox denied loopback listeners and process inspection, and caused browser/process lifecycle checks to fail',
+  sequentialDefaultFullUnit: '1778 passed, 1 five-second multi-chunk baseline timeout, 1 existing named skip; the other runner had finished',
+  limitedParallelFullUnit: '151 files passed; 1779 cases passed, 1 existing named skip; full population with two workers, without changing tests or deadlines',
+  nativeRunner: '289 passed, zero failed/skipped; rerun with two files at a time and permission for disposable native browsers, loopback servers and process inspection',
+  commands: [
+    'node node_modules/vitest/vitest.mjs run test/packagedConfig.test.ts test/privateAccess.test.ts test/configDiscoveryCompatibility.test.ts',
+    'node --test test/release-validation/general-tests.test.mjs test/release-validation/generated-tests.test.mjs',
+    'node node_modules/vitest/vitest.mjs run (first overlapped runner; second did not)',
+    'node node_modules/vitest/vitest.mjs run --maxWorkers=2',
+    'node --test test/release-validation/*.test.mjs (sandbox-restricted attempt)',
+    'node --test --test-concurrency=2 test/release-validation/*.test.mjs (native access)',
+    'node scripts/release-validation/check.mjs --record; node scripts/release-validation/plan.mjs --record; then both without --record',
+  ],
+  planning: { obligations: 846, unresolved: 305, status: 'blocked; aggregate qualification remains paused' },
+  limitations: [
+    'Original failed attempts remain retained; a passing rerun does not erase them.',
+    'Local Node 26.11.1; CI Node 24 and a new Firefox/Bitwarden walkthrough were not run.',
+    'Runtime and all 411 original source pins are unchanged from the browser-tested candidate.',
+    'Broader functional-suite failures outside this bounded repair remain unresolved.',
+    'No commit, push, preview refresh, merge or deployment performed.',
+  ],
+});
+fs.writeFileSync(path.join(target, 'artifact-index.json'), JSON.stringify({
+  schema: 1,
+  baseline,
+  collectedAt: new Date().toISOString(),
+  previousCheckpointIndexSha256: hash(fs.readFileSync(path.join(packet, 'artifact-index.json'))),
+  artifacts,
+}, null, 2) + '\n');
+console.log(JSON.stringify({ artifacts: artifacts.length, verifiedPreviousArtifacts: previousIndex.artifacts.length, verifiedPreviousSourcePins: sources.files.length, approvedOldFiles: old.length }));

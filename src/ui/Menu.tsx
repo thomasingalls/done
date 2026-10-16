@@ -2,13 +2,15 @@ import { SyncNotice } from './SyncNotice';
 import { AccountHistory } from './AccountHistory';
 import { NetworkLoginNotice } from './NetworkLoginNotice';
 /** Local navigation, explicit preferences, recovery export and lock. */
-import { useState, useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import { exportFilename } from '../crdt/export';
 import { addDays, formatDayLong, relativeDay, type ISODate } from '../lib/date';
-import { installHelp, readInstallState, requestInstall, subscribeToInstallState } from '../pwa';
 import { useWorkspaceUi } from './workspaceUi';
 import { AppUpdateNotice } from './AppUpdateNotice';
 import { AccountIdentity } from './AccountIdentity';
+import { deviceCode } from '../account/deviceRoster';
+import { InstallPanel } from './InstallPanel';
+import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 
 export interface MenuProps {
   today: ISODate;
@@ -34,12 +36,10 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
     showDevices,
     devices,
     sync,
+    protection,
+    protect,
+    slotId,
   } = useWorkspaceUi();
-  const installState = useSyncExternalStore(
-    subscribeToInstallState,
-    readInstallState,
-    readInstallState,
-  );
   const actor = snapshot.actors.find((value) => value.id === actorId)!;
   const [name, setName] = useState(actor.name);
   const [deviceName, setDeviceName] = useState(snapshot.deviceName);
@@ -87,7 +87,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
   };
   return (
     <aside className="menu" id="menu" aria-label="Menu" ref={ref}>
-      <AppUpdateNotice />
+      <AppUpdateNotice beforeReload={workspace.whenDurable} />
       <section className="menu-section">
         <h2 className="menu-heading">Day</h2>
         <p className="menu-note">{formatDayLong(date)}</p>
@@ -123,7 +123,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
         </label>
       </section>
       <section className="menu-section">
-        <h2 className="menu-heading">Storage</h2>
+        <h2 className="menu-heading">Data</h2>
         <div className="menu-row">
           <span>Local data</span>
           <span className="menu-value">{storage}</span>
@@ -139,9 +139,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             {exportError}
           </p>
         )}
-        <button className="menu-button" onClick={lock}>
-          Lock workspace
-        </button>
+        <RemoveFromDeviceButton slotId={slotId} />
         <div className="menu-days">
           <button
             className="menu-day"
@@ -158,6 +156,23 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
             Redo
           </button>
         </div>
+      </section>
+      <section className="menu-section">
+        <h2 className="menu-heading">Protection</h2>
+        <p className="menu-note">
+          {protection === 'automatic'
+            ? 'Opens automatically. Anyone using this browser can open your list.'
+            : 'Unlock code enabled. Your local copy requires an unlock code.'}
+        </p>
+        {protection === 'automatic' ? (
+          <button className="menu-button" onClick={protect}>
+            Add an unlock code
+          </button>
+        ) : (
+          <button className="menu-button" onClick={lock}>
+            Lock workspace
+          </button>
+        )}
       </section>
       <section className="menu-section">
         <h2 className="menu-heading">{accountWorkspace ? 'Account' : 'Sync'}</h2>
@@ -194,17 +209,17 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           <p className="menu-note">
             {accountWorkspace
               ? 'Account connected. Approved devices can sync writing.'
-              : 'Off. This Local workspace is not connected to a relay.'}
+              : 'Saved only in this browser. Sync is off.'}
           </p>
         )}
         {connectAccount && (
           <button className="menu-button" onClick={connectAccount}>
-            Connect this workspace
+            Set up sync
           </button>
         )}
       </section>
       <section className="menu-section">
-        <h2 className="menu-heading">Identity and preferences</h2>
+        <h2 className="menu-heading">Personalize</h2>
         <div className="menu-row">
           <span>Actor</span>
           <span className="menu-value">
@@ -235,6 +250,14 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
               onChange={(e) => setDeviceName(e.target.value)}
             />
           </label>
+          {accountWorkspace && (
+            <div className="menu-row">
+              <span>Device code</span>
+              <code className="menu-value" aria-label="Device code" title={snapshot.deviceId}>
+                {deviceCode(snapshot.deviceId)}
+              </code>
+            </div>
+          )}
           <label className="menu-row">
             <span>Name</span>
             <input
@@ -282,17 +305,7 @@ export const Menu = ({ today, date, onGoTo, onClose, ref }: MenuProps) => {
           )}
         </form>
       </section>
-      {installState !== 'installed' && (
-        <section className="menu-section">
-          <h2 className="menu-heading">Install</h2>
-          <p className="menu-note">{installHelp()}</p>
-          {installState === 'available' && (
-            <button className="menu-button" onClick={() => void requestInstall()}>
-              Install app
-            </button>
-          )}
-        </section>
-      )}
+      <InstallPanel />
     </aside>
   );
 };

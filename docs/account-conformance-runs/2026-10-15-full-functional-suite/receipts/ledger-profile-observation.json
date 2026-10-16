@@ -1,0 +1,6 @@
+{
+  "afterInheritedSetup": true,
+  "beforeOrdinaryBundle": false,
+  "afterReferenceBundle": false,
+  "afterDefaultBundle": false
+}

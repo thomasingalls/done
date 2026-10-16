@@ -21,8 +21,8 @@ export const controls = {
   ],
   custodyStore: [
     'custody.ts',
-    "fields('done/store/v1', scope.workspaceId, record.store_id)",
-    "fields('done/store/v1', scope.workspaceId)",
+    "keys.store = await hkdf(\n        generation!,\n        new Uint8Array(),\n        fields('done/store/v1', scope.workspaceId, record.store_id)",
+    "keys.store = await hkdf(\n        generation!,\n        new Uint8Array(),\n        fields('done/store/v1', scope.workspaceId)",
   ],
   canonicalBase64: ['journalCodec.ts', 'if (btoa(binary) !== encoded)', 'if (false)'],
 };

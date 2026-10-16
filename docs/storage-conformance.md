@@ -1,5 +1,34 @@
 # Encrypted-store conformance matrix
 
+**Removal regressions 2026-10-15.** `test/deviceDataRemovalRegression.test.ts` exercises setup write
+retirement across removal/Start fresh, metadata-write serialization, slot isolation, pending/selected
+legacy-import refusal with source preservation, and removal after the existing verified source cleanup.
+`test/packaged-account/removal-regressions.spec.ts` holds an actual registration response across
+two-tab removal, both with and without Start fresh, while suppressing the cooperative retirement
+notification. Chromium passes both durable-epoch schedules. This is focused regression evidence;
+fake IndexedDB and a delayed network reply do not establish OS/power-loss durability, full-profile
+residue, real authenticator behavior or supported-version exclusion of legacy writers. Those existing
+production/platform debts remain open.
+
+Sensitivity checks in disposable source copies retain all six baseline cases. Removing both setup
+write fences makes three cases fail; omitting the legacy preflight makes two fail. The workspace's
+existing tests and vector corpora are unchanged by these deliberate mutants. Separately, the release
+adapter reconciles all 214 collected workspace-admission cases, including its one explicitly named
+mode-specific skip; it refuses missing, extra, unexpectedly passing or failed skipped cases.
+
+The current focused browser runs pass all 10 packaged onboarding/removal cases, all 12 private
+two-device enrollment cases and both packaged lost-device recovery cases. Existing wrong-code,
+passkey, exact checkpoint/coverage, interrupted installation and byte-retry assertions remain.
+These disposable Chromium runs use virtual authenticators; the broader platform debts stay open.
+
+**Onboarding amendment 2026-10-14.** C12/C13 external-factor requirements apply to protected Local
+and Account modes. New automatic Local mode retains encrypted content without a copied-profile
+confidentiality claim. `test/onboardingStorage.test.ts` covers exact state preservation, six interrupted
+transition phases, replacement damage, old-opener rejection, protected-workspace preservation and scoped
+credential-free removal. `test/promotionOpening.test.ts` checks real signed assertions and single-use,
+exact-destination/lifetime restrictions. Packaged browser onboarding and paired-device suites exercise
+the public flows with virtual authenticators. These checks do not replace broader platform qualification.
+
 **Status:** current implementation acceptance plan · **Updated:** 2026-09-08.
 Requirements are [storage-contract.md](./storage-contract.md), PRD §§7.1–7.2/7.10 and TRD
 §§6.1/6.5/13.3/13.7. This matrix records **evidence classes**, not a claim that production conforms.

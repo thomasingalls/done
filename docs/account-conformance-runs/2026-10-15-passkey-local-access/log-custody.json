@@ -1,0 +1,173 @@
+{
+  "normalization": "Workspace/dependency absolute paths replaced; trailing line whitespace and extra EOF blank lines trimmed for Git. Original source hashes retained; no failed attempts discarded.",
+  "logs": [
+    {
+      "path": "logs/baseline-unit.log",
+      "source": "/private/tmp/done-passkey-access-baseline-unit.log",
+      "sourceSha256": "c7c8b7b7c58d298973210e5f9c54dfddb203c7dcc6a7d44823dadd00c3f4ab49",
+      "retainedSha256": "8fc2bd626b371437ef0f286e416ba3bda8bec82128c16a6b75e2c0bfd45e4c4c"
+    },
+    {
+      "path": "logs/baseline-browser.log",
+      "source": "/private/tmp/done-passkey-access-baseline-browser.log",
+      "sourceSha256": "e89848450ef803a2ca38644035ad734b3b6a627383e9914c299f2ee44e02c077",
+      "retainedSha256": "e9b3263327738f27dd070283624ef1a81eec63b257678a384dbd5ad0f3ab91c9"
+    },
+    {
+      "path": "logs/handoff-counterexample.log",
+      "source": "/private/tmp/done-passkey-handoff-before.log",
+      "sourceSha256": "80fb5a60fc63c93d72cbd2ec25fd9959cbfe8de855dd1bafa1fcccb27197354b",
+      "retainedSha256": "eb996d6a6981addc4903886855b4e9028c1a441fbe9a20ba8b07330ad1457778"
+    },
+    {
+      "path": "logs/candidate-browser-first.log",
+      "source": "/private/tmp/done-passkey-access-browser.log",
+      "sourceSha256": "20fa2958e3c6c4ca5c21fc3b7473e97236a7c7e2808049367b956e3c21fc0bd4",
+      "retainedSha256": "4567b47e43c46fd1502827c26e2b5887e386bfcf94f8525b84c067102b85b628"
+    },
+    {
+      "path": "logs/candidate-browser.log",
+      "source": "/private/tmp/done-passkey-access-browser-2.log",
+      "sourceSha256": "dc4cb009653b7e368257a552c1f03a25eb548b6ac4cc63951bba1753b9df9688",
+      "retainedSha256": "dc4cb009653b7e368257a552c1f03a25eb548b6ac4cc63951bba1753b9df9688"
+    },
+    {
+      "path": "logs/focused-unit.log",
+      "source": "/private/tmp/done-passkey-access-focused-unit.log",
+      "sourceSha256": "aa4a3df8f0af0f70b53cda7ca9d0a9bfd887fca6783fc97988c3907f38e6d01b",
+      "retainedSha256": "7704af7a8c8ca3e6c83e0a3f15dfaf01883c38e64718e146163bc8d82790bd7e"
+    },
+    {
+      "path": "logs/full-unit.log",
+      "source": "/private/tmp/done-passkey-access-full-unit.log",
+      "sourceSha256": "ac5cf08799648cb8ce1532eb3c188e27546294334311e08d858e19652c5aecdc",
+      "retainedSha256": "0e153690a6524c7e023c9fa4c16edbff82da4fe57049a1ecb4b2674bcef0d597"
+    },
+    {
+      "path": "logs/existing-packaged-browser.log",
+      "source": "/private/tmp/done-passkey-existing-browser.log",
+      "sourceSha256": "945e21fcb6d08680c52761da891399c1c91853feba00e1031cf53dfe515d320c",
+      "retainedSha256": "945e21fcb6d08680c52761da891399c1c91853feba00e1031cf53dfe515d320c"
+    },
+    {
+      "path": "logs/enrollment-invalid-revision.log",
+      "source": "/private/tmp/done-passkey-existing-enrollment.log",
+      "sourceSha256": "a6b4a3499f365d9504a10b35103f5d4776649cdf00086f2cb9f819e5b0bd7015",
+      "retainedSha256": "31863f2b06cd91e990b48e9b2a1ad59393156d389d032bc914ad789d14b69767"
+    },
+    {
+      "path": "logs/enrollment-cache-permission.log",
+      "source": "/private/tmp/done-passkey-existing-enrollment-2.log",
+      "sourceSha256": "fdb89a75bc46dcfcc84358c7a7abbde1d501860ffc9dabcfd684b45a9139db14",
+      "retainedSha256": "88e1086b75a265ef0ff72b16ac75c2452ceeecc10e7eede34aa7812a6e0b9987"
+    },
+    {
+      "path": "logs/enrollment-listen-permission.log",
+      "source": "/private/tmp/done-passkey-existing-enrollment-3.log",
+      "sourceSha256": "e1c194842fc180db4d8cf3642b1d361021948095cc83b6fb2ad5d1f658e839bd",
+      "retainedSha256": "a7ecbededbc093abb52e6cac0219b508be5e10efdca19f7d1cf7b93a8f965f3a"
+    },
+    {
+      "path": "logs/existing-enrollment-browser.log",
+      "source": "/private/tmp/done-passkey-existing-enrollment-4.log",
+      "sourceSha256": "fda143d1174b21c4d17c02d9daf57a8bdaea62724109b76c71f19eb02f9d8dc7",
+      "retainedSha256": "fda143d1174b21c4d17c02d9daf57a8bdaea62724109b76c71f19eb02f9d8dc7"
+    },
+    {
+      "path": "logs/crypto-inventory.log",
+      "source": "/private/tmp/done-passkey-crypto-inventory.log",
+      "sourceSha256": "a8e42713b733683f632755b638362c8ca31cf95448ca4679e8cd91d250415893",
+      "retainedSha256": "a8e42713b733683f632755b638362c8ca31cf95448ca4679e8cd91d250415893"
+    },
+    {
+      "path": "logs/registry-guards.log",
+      "source": "/private/tmp/done-passkey-registry-guards.log",
+      "sourceSha256": "e46fe3f51da69a2d681bc53e26372b2abb59824e97cafbbdfb521bbe09f9c305",
+      "retainedSha256": "e46fe3f51da69a2d681bc53e26372b2abb59824e97cafbbdfb521bbe09f9c305"
+    },
+    {
+      "path": "logs/candidate-build.log",
+      "source": "/private/tmp/done-passkey-access-candidate-build-2.log",
+      "sourceSha256": "7faf85d9c549b1cf8df21d4103807bd7ebab13375846484a345c363be05636b4",
+      "retainedSha256": "31990eada5d92d64f0abc7bb668aeb436f7cb350fb307d5a6d52f8e0b257ea63"
+    },
+    {
+      "path": "logs/types.log",
+      "source": "/private/tmp/done-passkey-access-types-final.log",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retainedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/lint.log",
+      "source": "/private/tmp/done-passkey-access-lint-final.log",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retainedSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "logs/yjs.log",
+      "source": "/private/tmp/done-passkey-yjs-check.log",
+      "sourceSha256": "28953ea7888b1246ed4899348b5f90dba7daf3efae0eb9220d80f94d49f056a0",
+      "retainedSha256": "28953ea7888b1246ed4899348b5f90dba7daf3efae0eb9220d80f94d49f056a0"
+    },
+    {
+      "path": "logs/budget.log",
+      "source": "/private/tmp/done-passkey-build-budget.log",
+      "sourceSha256": "307101a25e76d2a5260bf159b51443ee43c93f05f8c8b7986f1205517572d056",
+      "retainedSha256": "307101a25e76d2a5260bf159b51443ee43c93f05f8c8b7986f1205517572d056"
+    },
+    {
+      "path": "logs/origin-isolation.log",
+      "source": "/private/tmp/done-passkey-origin-isolation.log",
+      "sourceSha256": "436afbb04962532f9eda691162c70813fa6def0d608b3aeb4a39aebc43eb5abc",
+      "retainedSha256": "436afbb04962532f9eda691162c70813fa6def0d608b3aeb4a39aebc43eb5abc"
+    },
+    {
+      "path": "logs/mutation-native-json-harness-failure.log",
+      "source": "/private/tmp/done-passkey-mutant-native-json.log",
+      "sourceSha256": "fe60f5686abde31cf403548f5efde38c60bffe66ca663f8f5a0f86f15d8c97e6",
+      "retainedSha256": "8681568ae4dfa689ce4506080d6db2a54170a573b11e2a38b6e779dc7b929a0d"
+    },
+    {
+      "path": "logs/mutation-native-json.log",
+      "source": "/private/tmp/done-passkey-mutant-native-json-2.log",
+      "sourceSha256": "86bb70dc89160b5e16bf970ca834651476a7b951f13edfe69b159fe14a391c9b",
+      "retainedSha256": "9a08fc91ee0b0b0259d27ce73ddd2f6506ba9539217e9348137f644f46f19427"
+    },
+    {
+      "path": "logs/mutation-wrong-code-label-harness-failure.log",
+      "source": "/private/tmp/done-passkey-mutant-wrong-code-label.log",
+      "sourceSha256": "ad0748374c51072a73803ab4cd7dca138652a1abcff659d48f41132447814d70",
+      "retainedSha256": "f09646efea086e4c64a48d2b12cd64a125dc3905943b89991c87c888c2a1efc8"
+    },
+    {
+      "path": "logs/mutation-wrong-code-label.log",
+      "source": "/private/tmp/done-passkey-mutant-wrong-code-label-2.log",
+      "sourceSha256": "175ec226bf6a27107f4f9c1082995b17efbd0ed54d0d3b34c0bd024a54174738",
+      "retainedSha256": "ddd06ddc5741f28885f36c9fd34baf7a1720a7624aa56d5a3dd9c975e8405efc"
+    },
+    {
+      "path": "logs/mutation-drop-handoff-harness-failure.log",
+      "source": "/private/tmp/done-passkey-mutant-drop-handoff.log",
+      "sourceSha256": "916ea23006cd20028c4cef560d97ffb776870e0308f205007d66710fe746be37",
+      "retainedSha256": "f3d7a152e04f848326c83a57c8511bcfd9349ce1a7d82f69246eb193bf067d4b"
+    },
+    {
+      "path": "logs/mutation-drop-handoff.log",
+      "source": "/private/tmp/done-passkey-mutant-drop-handoff-2.log",
+      "sourceSha256": "c633d3198231e84eaaa76170743d227e89b65625d9c2869154c4a47208d53d4e",
+      "retainedSha256": "f01293400629cdb0bdf9f6f224557bf3cc1764891eda7778f2cde3e8f4f166e3"
+    },
+    {
+      "path": "logs/https-baseline-service.log",
+      "source": "/private/tmp/done-passkey-real-https-baseline-service.log",
+      "sourceSha256": "22e6c3094fa9ebbaf5e4d14b175d788c4f93b2d0376bd771454479fb10877be0",
+      "retainedSha256": "22e6c3094fa9ebbaf5e4d14b175d788c4f93b2d0376bd771454479fb10877be0"
+    },
+    {
+      "path": "logs/https-candidate-service.log",
+      "source": "/private/tmp/done-passkey-real-https-candidate-service.log",
+      "sourceSha256": "b8342ad3714629666de25e0c2185d39e7e9ed96d48c44d9960ccee4ec61f4e57",
+      "retainedSha256": "b8342ad3714629666de25e0c2185d39e7e9ed96d48c44d9960ccee4ec61f4e57"
+    }
+  ]
+}

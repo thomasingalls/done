@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "4b43e68a8b73427c6a75d5b3f501cf5d90645436",
+  "artifacts": {
+    "README.md": {
+      "sha256": "0a6f7e5ddeb9acd719f19727bf64c4a116a15217cda77cbb8ab731541c150bc9",
+      "bytes": 1519
+    },
+    "logs/diff-check.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "39145aa25e5d20d16f15b40610166312b38c86f0457ad5bf807bd008a3ca39ab",
+      "bytes": 241
+    },
+    "logs/lint.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/plan.log.gz": {
+      "sha256": "875cc5d28e140fa6cd6a8eae772b86a6e92d84424bec529ec07427c3580e8c06",
+      "bytes": 223
+    },
+    "logs/planning.log.gz": {
+      "sha256": "0e705a77916bc000224390d644f4f100e1d02e95a5d82ddba365dfcc61febb7a",
+      "bytes": 863
+    },
+    "logs/setup-full-first.log.gz": {
+      "sha256": "22cc0ce1febf592a87838f57ed4357164507d4d96d5e6468037730c9bab8888f",
+      "bytes": 1652
+    },
+    "logs/setup-full-node24.log.gz": {
+      "sha256": "670017861508fe23eaf036b736745ec63b9e248fdc1ebaa62382a47e48d247f7",
+      "bytes": 1658
+    },
+    "logs/typecheck.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "receipts/diff-check.json.gz": {
+      "sha256": "79a2253caa2c2bad55793bee0a83b4d3e6c1f059484939331a03376a60c30d74",
+      "bytes": 111
+    },
+    "receipts/first-state.json.gz": {
+      "sha256": "028c601d21107a32858e4851a89e1881c5f7acbdc4a14763c8ff4fb4ca605514",
+      "bytes": 132
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "50443fe2e89ab880312ddd50bbcecc16bbdefa15516578381f8b20ac8fb6603c",
+      "bytes": 142
+    },
+    "receipts/lint.json.gz": {
+      "sha256": "0b8121133dc3e3c1194b5f485788208639c63c5cb73e230cb9663c9aec8e4d80",
+      "bytes": 173
+    },
+    "receipts/next-runner-plan.json.gz": {
+      "sha256": "f9a8789d28a43e07eb047c8e4204d925b8c0137dd9552b2834e3e70bf44b0c6d",
+      "bytes": 374
+    },
+    "receipts/node24-browser-results.json.gz": {
+      "sha256": "0545f3c48fd1e26a85424bd01419737bab3eaf8c0a6294d9c0fee9c74c4c2590",
+      "bytes": 2873
+    },
+    "receipts/node24-runtime-identity.json.gz": {
+      "sha256": "7572df4f7ddaac737f5a2b03dd4f80c17dc832f27aa6bfc0f50ed400ae24a42e",
+      "bytes": 177
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "54cd880a464348e407776d282c75f350261b3ccd23411d9225ab1940468812fe",
+      "bytes": 140
+    },
+    "receipts/planning.json.gz": {
+      "sha256": "8027f7a9c51f545b74b4752903bc4441c2b4fb24e2458c910c3e961646503c2e",
+      "bytes": 172
+    },
+    "receipts/second-state.json.gz": {
+      "sha256": "5426eed83934e158d4a9e92ac46bb01940235e944dfd46691bf3200dda52f004",
+      "bytes": 237
+    },
+    "receipts/setup-full-first.json.gz": {
+      "sha256": "781670204b551da0ed1ef0b2a3643880a3071975a20df9636700414f5bf5a65f",
+      "bytes": 163
+    },
+    "receipts/setup-full-node24.json.gz": {
+      "sha256": "85614d5d6ed926ce530533e1e02f3236eef64f8ecb0b23000da84c12a3717d1a",
+      "bytes": 205
+    },
+    "receipts/typecheck.json.gz": {
+      "sha256": "e657be7cef0344f355fbac21eb2490fedb145975e9e5b562b0b5bb4b0760a942",
+      "bytes": 246
+    },
+    "source-pins.json.gz": {
+      "sha256": "f4fb86db2ba6da29318f80aeecf67e348d0db91d65fe212c94970fae1b055cc6",
+      "bytes": 74138
+    }
+  }
+}

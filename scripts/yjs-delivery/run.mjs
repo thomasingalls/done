@@ -75,6 +75,7 @@ const tree = (path) =>
   );
 const paths = [
   ...tree('src'),
+  ...tree('account-protocol'),
   'pnpm-workspace.yaml',
   'scripts/check-yjs-patch.mjs',
   'vendor-patches/yjs-13.6.31.json',

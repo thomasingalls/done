@@ -1,0 +1,11 @@
+# Phase 4 — final functional checks and required-file integration
+
+The three preceding repair phases are followed by normal-CI wiring, reviewed metadata and this handoff. The final UI callback is stable across inspection renders, satisfying the missing exhaustive-deps diagnostic found by lint. This small hook repair is covered by the final packaged population and the final full unit rerun. Earlier lint failure and both full unit runs remain.
+
+Pinned Node 24.18.0 on local macOS: **153 unit files, 1,796 passes and the existing named skip; 35 packaged browser passes; 175 adapter/registry passes; 12 application/gateway passes.** Build/budget/origin isolation, vectors, retention/status/update limits, authority/recipient/admission/remediation/debt gates, WASM, traceability and React lint pass. All 31 new cases execute in normal CI through its existing unit glob and explicit browser/gateway additions. All pre-existing test files remain byte-identical. The operator-resumed quality job remains byte-identical.
+
+Reviewed metadata: exactly six runtime source hashes change in the crypto census. Every domain label/site and exclusion is unchanged. The execution plan preserves all 855 preceding obligation rows exactly and adds only five required, blocked regression-file rows. Planning is now 860 obligations / 319 unresolved; no aggregate credit or qualification resumption follows from local functional success.
+
+The initial inventory/source-census drift and lint failure are preserved alongside the reviewed records and final passes. Source pins, asset hashes, command logs and obligation comparisons are retained here. The distribution's verification.json records native index and independent filesystem patch replay after final freeze, own-phase source pins, and refusal checks for the signing helper. No fabricated future commits are used.
+
+Limits: no automatic erasure of unassigned legacy data or inference of old-writer exclusion; no fresh dependency installation/hosted Linux result; no new real Firefox/Bitwarden walkthrough; no full original 85-command repeat; no global formatting-green claim. The old formatting proposal remains unchanged. No commits, push, merge, deployment or preview update. The cumulative checkout remains unstaged for later sequential signing.

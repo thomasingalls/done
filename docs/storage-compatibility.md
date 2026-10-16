@@ -26,6 +26,16 @@ carrier parsers still refuse unsupported records; not every such refusal has the
 
 ## Acquisition and refusal
 
+**2026-10-15 bootstrap repair:** startup discovery retains its Local-only, service-pin and protocol
+hints only under a short shared Local slot permit, acquired after its network response. This repeats
+the compatibility check after any queued upgrade and prevents background discovery from changing
+the persisted census of a refused Local installation. A native probe failure does not grant writes.
+If the ordinary Local interlock refuses, discovery omits those cache writes; public configuration
+can still locate a promoted Account whose own factor/passkey owner understands its authenticated
+interlock. Returning a locator grants no opening or storage authority. Its live protocol hint may
+refresh without waiting for a mounted Account's exclusive permit; optional persistence still needs
+the metadata permit and a retained-pin recheck. No network wait holds that metadata permit.
+
 `writeSession.ts` calls `checkStorageCompatibility` after a shared or exclusive grant and before caller
 initialization. It probes only `done.custody`, never enumerates database names, and never creates or
 upgrades a database. On a fresh profile the provisional creation transaction is aborted. Existing custody
@@ -129,3 +139,13 @@ Account journal-era wrapper and explicit metadata/journal reader fences before s
 retirement. These are not implemented or added implicitly to counter v3. Current private profiles
 still retain complete history. A mismatched/legacy journal after conversion must be preserved and
 refused; matching eras alone cannot establish safety of an arbitrary browser-profile restore.
+
+### 2026-10-15 — First Local entry and encrypted document refusal
+
+The earlier metadata-permit check alone cannot establish encrypted document compatibility before a
+factor and replay. Public Local entry without a known saved Account entry therefore no longer starts
+configuration discovery in the background. Local opening and refusal leave service-cache hints alone;
+explicit sync/account navigation can request configuration. Existing pinned Account bootstrap remains
+unchanged. A saved-entry metadata read error refuses through the shared error panel rather than
+inferring permission to create. The original future-journal exact-census test and eleven new native
+entry/error cases exercise this boundary; this does not qualify all cached-account combinations.

@@ -1,0 +1,30 @@
+{
+  "base": "dbae813ca026081cecf33ee049a2e0706b1c6080",
+  "hostedRun": "https://github.com/thomasingalls/done/actions/runs/38883271712",
+  "hostedFailure": "Two existing five-second unit deadlines; 1795 pass, two fail, one named skip",
+  "initialLinuxSerialControl": "48 pass, one baseline case still exceeds five seconds",
+  "repair": "Use built-in Node strict equality for the same five large binary comparison sites; one CI file worker",
+  "normalLinuxPair": {
+    "passed": 49,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullMacUnit": {
+    "files": 153,
+    "passed": 1797,
+    "existingNamedSkip": 1,
+    "maxWorkers": 1
+  },
+  "adaptersPassed": 93,
+  "deadlinesSeedsHistoriesAssertionsRetained": true,
+  "normalCaseCountUnchanged": 1798,
+  "runtimeChanged": false,
+  "cryptoChanged": false,
+  "obligations": 860,
+  "unresolved": 319,
+  "hostedResultAfterRepair": "pending signed push",
+  "qualification": "paused",
+  "published": false,
+  "deployed": false,
+  "controlReportingLimitation": "The projection JSON wraps its inner byte assertion in a seeded, shrunk property failure. An initially too-specific control-report guard failed; the underlying failure and shrink report are retained and classified correctly."
+}

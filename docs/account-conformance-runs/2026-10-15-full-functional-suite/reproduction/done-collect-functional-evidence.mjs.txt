@@ -1,0 +1,109 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { gzipSync } from 'node:zlib';
+import { execFileSync } from 'node:child_process';
+
+const [root, evidence, destination] = process.argv.slice(2).map((p) => path.resolve(p));
+if (!root || !evidence || !destination) throw Error('Require checkout, evidence and packet paths');
+const continuation = JSON.parse(fs.readFileSync(path.join(evidence, 'continuation-summary.json')));
+if (continuation.status === 'running') throw Error('The command continuation is still running');
+const pending = JSON.parse(fs.readFileSync(path.join(evidence, 'pending-followups.json')));
+if (pending.afterContinuation.some((r) => ['pending', 'running'].includes(r.status)))
+  throw Error('Required isolated rechecks are still pending');
+const manualPath = path.join(evidence, 'manual-followups.json');
+if (fs.existsSync(manualPath) && JSON.parse(fs.readFileSync(manualPath)).jobs.some(r => ['pending', 'running'].includes(r.status)))
+  throw Error('Required manual diagnostic follow-ups are still pending');
+const hash = (bytes) => crypto.createHash('sha256').update(bytes).digest('hex');
+const normalize = (text) =>
+  text
+    .replaceAll(evidence, '<execution-evidence>')
+    .replaceAll(root, '<test-checkout>')
+    .replaceAll('<approved-harness-checkout>', '<approved-harness-checkout>')
+    .replaceAll('<baseline-checkout>', '<baseline-checkout>')
+    .replaceAll('<upgrade-baseline-checkout>', '<upgrade-baseline-checkout>')
+    .replace(/\/private\/var\/folders\/[^\s"']*?\/done-release-validation-[^/\s"']+\/checkout/g, '<owned-checkout>')
+    .replaceAll(process.env.HOME + '/.codex/worktrees/7fda/done', '<workspace>')
+    .replaceAll(process.env.HOME + '/.codex/worktrees/c030/done', '<dependency-source>')
+    .replaceAll(process.env.HOME + '/Library/Caches/ms-playwright', '<playwright-cache>')
+    .replaceAll(process.env.HOME, '<home>');
+const artifacts = [];
+const add = (source, retainedPath, compress = true) => {
+  const original = fs.readFileSync(source);
+  const normalized = Buffer.from(normalize(original.toString('utf8')));
+  const bytes = compress ? gzipSync(normalized, { level: 9 }) : normalized;
+  artifacts.push({
+    source,
+    path: retainedPath,
+    originalBytes: original.length,
+    originalSha256: hash(original),
+    normalizedSha256: hash(normalized),
+    retainedSha256: hash(bytes),
+    retainedBytes: bytes.length,
+    encoding: compress ? 'gzip of UTF-8' : 'UTF-8',
+    bytes,
+  });
+};
+for (const file of fs.readdirSync(evidence).sort()) {
+  if (file.endsWith('.log')) add(path.join(evidence, file), 'logs/' + file + '.gz');
+  else if (file.endsWith('-report.json') || file.endsWith('.jsonl'))
+    add(path.join(evidence, file), 'receipts/' + file + '.gz');
+  else if (file.endsWith('.json')) add(path.join(evidence, file), 'receipts/' + file, false);
+}
+for (const file of ['done-full-suite-continue.mjs', 'done-run-isolated-followups.mjs', 'done-run-standalone-followups.mjs', 'done-materialize-test-deps.mjs', 'done-prepare-approved-harness.mjs', 'done-superseded-observation.test.mjs', 'done-ledger-profile-observation.test.mjs', 'done-prepare-playwright-control-observation.mjs', 'done-playwright-control-observation.mjs', 'done-collect-functional-evidence.mjs', 'done-full-suite-harness-repairs.patch', 'done-passkey-general-census-fixture.patch', 'done-construction-format-only.patch', 'done-suite-test-format-only.patch', 'done-adapter-closure-census.patch']) {
+  const suffix = file.endsWith('.mjs') ? '.txt' : '';
+  add('/private/tmp/' + file, 'reproduction/' + file + suffix, false);
+}
+for (const [label, checkout] of [['signed-source', root], ['approved-harness', '<approved-harness-checkout>']]) {
+  const resultRoot = path.join(checkout, 'test-results');
+  if (!fs.existsSync(resultRoot)) continue;
+  for (const file of fs.readdirSync(resultRoot, { recursive: true }).sort()) {
+    if (/^[^/]+\/(?:[^/]+\/)?(?:report|summary|results|sources|generated)\.json$/.test(file))
+      add(path.join(resultRoot, file), 'reports/' + label + '/' + file + '.gz');
+    else if (/^[^/]+\/(?:[^/]+\/)?[^/]+\.log$/.test(file))
+      add(path.join(resultRoot, file), 'reports/' + label + '/' + file + '.gz');
+    else if (/(?:^|\/)error-context\.md$/.test(file))
+      add(path.join(resultRoot, file), 'reports/' + label + '/' + file + '.gz');
+  }
+}
+const budget = 8 * 1024 * 1024;
+const total = artifacts.reduce((n, f) => n + f.retainedBytes, 0);
+const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+const index = {
+  schema: 1,
+  collectedAt: new Date().toISOString(),
+  source: { revision: git('rev-parse', 'HEAD'), tree: git('rev-parse', 'HEAD^{tree}'), status: git('status', '--porcelain') },
+  claim: 'Functional command evidence with retained failures; no aggregate qualification or publication claim.',
+  omitted: 'Disposable browser profiles, build outputs and repeated full source/dependency snapshots are not copied. Signed revision, approved patch bytes/hashes, per-campaign source inventories, generated schedules and command logs retain the reproduction boundary. Originals are not removed.',
+  budgetBytes: budget,
+  retainedBytes: total,
+  normalization: 'Only absolute checkout, home, dependency, browser-cache and disposable owned-checkout path prefixes are normalized. Test outcomes, assertions and deadlines are unchanged. Original bytes remain at the source paths, with hashes retained here.',
+  artifacts: artifacts.map(({ bytes, source, ...r }) => ({ ...r, originalLocation: normalize(source) })),
+};
+const plannedPaths = new Set(['artifact-index.json', ...artifacts.map(a => a.path)]);
+let otherBytes = 0;
+for (const file of fs.readdirSync(destination, { recursive: true })) {
+  const full = path.join(destination, file);
+  if (fs.statSync(full).isFile() && !plannedPaths.has(file)) otherBytes += fs.statSync(full).size;
+}
+let indexBytes;
+for (let i = 0; i < 3; i++) {
+  indexBytes = Buffer.from(JSON.stringify(index, null, 2) + '\n');
+  index.projectedPacketBytes = total + otherBytes + indexBytes.length;
+}
+indexBytes = Buffer.from(JSON.stringify(index, null, 2) + '\n');
+const projected = total + otherBytes + indexBytes.length;
+if (projected > budget) throw Error(`Evidence exceeds prospective 8 MiB packet budget: ${projected}`);
+// Validate every destination before writing any retained byte.
+for (const artifact of artifacts) {
+  const file = path.join(destination, artifact.path);
+  if (fs.existsSync(file) && !fs.readFileSync(file).equals(artifact.bytes))
+    throw Error('Refusing to replace different retained evidence: ' + file);
+}
+for (const artifact of artifacts) {
+  const file = path.join(destination, artifact.path);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, artifact.bytes);
+}
+fs.writeFileSync(path.join(destination, 'artifact-index.json'), indexBytes);
+console.log(JSON.stringify({ files: artifacts.length, artifactBytes: total, projectedPacketBytes: projected, budget, revision: index.source.revision }));

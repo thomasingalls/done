@@ -79,7 +79,7 @@ test('Vitest census refuses conditional, aliased, modified, nested and unknown g
     );
 });
 
-test('the five reviewed property suites have 62 exact cases; other test-file and wrapper credit stays separate', () => {
+test('the five reviewed property suites have 63 exact cases; other test-file and wrapper credit stays separate', () => {
   const counts = propertyFiles.map((file) => {
     const stage = vitestStage(process.cwd(), file);
     validateStage(stage);
@@ -87,7 +87,7 @@ test('the five reviewed property suites have 62 exact cases; other test-file and
     assert.equal(stage.graceMs, 5000);
     return stage.expect.cases.length;
   });
-  assert.deepEqual(counts, [3, 25, 13, 10, 11]);
+  assert.deepEqual(counts, [4, 25, 13, 10, 11]);
   const batch = readFileSync('test/spoolBatch.test.ts', 'utf8');
   assert(batch.includes('{ seed: 1209032, numRuns: 120 }'));
   assert(batch.includes('}, 60_000);'));
@@ -131,7 +131,7 @@ test('manifest selects all five properties and refuses a lost file without credi
   assert.deepEqual(stages.map((s) => s.id).sort(), propertyFiles.map((f) => 'test:' + f).sort());
   assert.equal(
     stages.reduce((n, s) => n + s.expect.cases.length, 0),
-    62,
+    63,
   );
   const wholeVitest = plan.rows.filter((r) => r.kind === 'command' && r.argv[0] === 'vitest');
   assert(wholeVitest.length > 0 && wholeVitest.every((r) => r.blocked));

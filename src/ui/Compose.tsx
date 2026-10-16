@@ -1,5 +1,5 @@
 /**
- * The compose field at the foot of Done (PRD §4).
+ * Quick entry at the foot of Done and Scheduled.
  *
  * "Persistent compose field at the foot of Done. Type, Enter, done." The one
  * flow the PRD calls non-negotiable, so it is a plain textarea rather than a

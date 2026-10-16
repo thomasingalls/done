@@ -173,7 +173,7 @@ export function reconcileServiceDeliveryEvidence(r) {
     commit: ['accepted', 1, 'active', 0, 'active'],
     generation: ['refused', 1, 'active', 1, 'active'],
     current: ['unknown', 0, 'pending', 1, 'pending'],
-    witness: ['unknown', 0, 'active', 1, 'active'],
+    witness: ['unknown', 1, 'active', 2, 'active'],
   };
   for (const [name, [outcome, persisted, account, mutantRows, mutantAccount]] of Object.entries(
     expected,
@@ -187,6 +187,8 @@ export function reconcileServiceDeliveryEvidence(r) {
     assert.equal(c.outcome, 'accepted');
     assert.equal(c.persisted, mutantRows);
     assert.equal(c.account, mutantAccount);
+    if (name === 'witness')
+      assert.deepEqual(c.redundant, Array(2).fill({ kind: 'unknown', reason: 'ledger-integrity' }));
   }
   const g = r['generated.json'];
   assert.equal(g.status, 'passed');

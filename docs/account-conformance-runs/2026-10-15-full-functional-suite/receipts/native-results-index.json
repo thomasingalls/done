@@ -1,0 +1,280 @@
+[
+  {
+    "path": "admission/2026-10-15T09-40-27.919Z/report.json",
+    "scope": "ordered-admission-browser",
+    "exit": 2,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 15,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "publish-before-forced-commit",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "content/2026-10-15T09-37-40.493Z/report.json",
+    "scope": "content-carrier-browser",
+    "exit": 2,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 13,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "early-transaction-success",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "custody/2026-10-15T09-33-42.571Z/report.json",
+    "scope": "custody-component-browser",
+    "exit": 2,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 13,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "skip-nested-crypto-guard",
+        "status": "detected"
+      },
+      {
+        "id": "accept-unconfirmed-code",
+        "status": "detected"
+      },
+      {
+        "id": "skip-reservation-commit",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "editor-admission/2026-10-15T09-41-43.657Z/report.json",
+    "scope": "editor-admission-browser",
+    "exit": 0,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 12,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "history-before-receipt",
+        "status": "detected"
+      },
+      {
+        "id": "ordinary-view-before-receipt",
+        "status": "detected"
+      },
+      {
+        "id": "remote-in-undo",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "journal/2026-10-15T09-38-46.561Z/report.json",
+    "scope": "journal-carrier-browser",
+    "exit": 2,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 17,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "skip-storage-append",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "journal-contention/1792057205934/report.json",
+    "scope": "journal-contention-regression",
+    "passed": 0,
+    "failures": [],
+    "error": {
+      "message": "page.waitForFunction: Timeout 20000ms exceeded.",
+      "stack": "page.waitForFunction: Timeout 20000ms exceeded.\n    at page (<test-checkout>/scripts/journal-contention/run.mjs:193:15)\n    at async scenario (<test-checkout>/scripts/journal-contention/run.mjs:196:15)\n    at async file://<test-checkout>/scripts/journal-contention/run.mjs:228:3"
+    },
+    "mutants": []
+  },
+  {
+    "path": "local-clear/2026-10-15T09-49-18.646Z/report.json",
+    "scope": "local-clear-browser",
+    "exit": 0,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 17,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "blocked-as-success",
+        "status": "detected"
+      },
+      {
+        "id": "journal-before-content",
+        "status": "detected"
+      },
+      {
+        "id": "retain-genesis-opener",
+        "status": "detected"
+      },
+      {
+        "id": "skip-resume-authentication",
+        "status": "detected"
+      },
+      {
+        "id": "allow-component-open",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "local-genesis/2026-10-15T09-46-49.678Z/report.json",
+    "scope": "local-genesis-browser",
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 10,
+    "failures": [
+      {
+        "id": "G11.kill-index",
+        "status": "error",
+        "message": "page.waitForFunction: Timeout 15000ms exceeded."
+      },
+      {
+        "id": "G12.abort",
+        "status": "error",
+        "message": "page.waitForFunction: Timeout 15000ms exceeded."
+      },
+      {
+        "id": "G13.cancel",
+        "status": "error",
+        "message": "page.waitForFunction: Timeout 15000ms exceeded."
+      }
+    ],
+    "mutants": []
+  },
+  {
+    "path": "local-genesis/2026-10-15T09-50-33.050Z/report.json",
+    "scope": "local-genesis-browser",
+    "exit": 0,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 1,
+    "failures": [],
+    "mutants": []
+  },
+  {
+    "path": "owned-startup/2026-10-15T09-45-29.328Z/report.json",
+    "scope": "owned-startup-browser",
+    "exit": 0,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 15,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "probe-creates-database",
+        "status": "detected"
+      },
+      {
+        "id": "orphan-is-fresh",
+        "status": "detected"
+      },
+      {
+        "id": "skip-open-classification",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "pending-projection/1792057481293/report.json",
+    "scope": "pending-projection-regression",
+    "passed": 0,
+    "failures": [],
+    "error": {
+      "message": "page.waitForFunction: Timeout 20000ms exceeded.",
+      "stack": "page.waitForFunction: Timeout 20000ms exceeded.\n    at page (<test-checkout>/scripts/pending-projection/run.mjs:237:15)\n    at async scenario (<test-checkout>/scripts/pending-projection/run.mjs:240:15)\n    at async file://<test-checkout>/scripts/pending-projection/run.mjs:283:3"
+    },
+    "mutants": []
+  },
+  {
+    "path": "workspace-admission/2026-10-15T09-43-17.500Z/report.json",
+    "scope": "workspace-admission-browser",
+    "exit": 0,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 10,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "pending-history-visible",
+        "status": "detected"
+      },
+      {
+        "id": "system-bulk-in-human-history",
+        "status": "detected"
+      },
+      {
+        "id": "received-work-in-human-history",
+        "status": "detected"
+      },
+      {
+        "id": "lost-redone-links",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "write-session/2026-10-15T09-32-37.891Z/report.json",
+    "scope": "C04-component-browser",
+    "exit": 0,
+    "source": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+    "dirty": false,
+    "passed": 13,
+    "failures": [],
+    "mutants": [
+      {
+        "id": "split-coordination-domain",
+        "status": "detected"
+      },
+      {
+        "id": "ignore-session-invalidation",
+        "status": "detected"
+      },
+      {
+        "id": "release-before-drain",
+        "status": "detected"
+      },
+      {
+        "id": "skip-cache-cleanup",
+        "status": "detected"
+      },
+      {
+        "id": "reuse-finished-task",
+        "status": "detected"
+      }
+    ]
+  },
+  {
+    "path": "yjs-delivery/campaign-1792057503177/report.json",
+    "scope": "yjs-delivery",
+    "passed": 0,
+    "failures": [],
+    "mutants": []
+  },
+  {
+    "path": "yjs-delivery/native-1792057507271/report.json",
+    "scope": "yjs-delivery-regression",
+    "passed": 0,
+    "failures": [],
+    "error": {
+      "message": "page.waitForFunction: Timeout 20000ms exceeded.",
+      "stack": "page.waitForFunction: Timeout 20000ms exceeded.\n    at page (<test-checkout>/scripts/yjs-delivery/run.mjs:231:15)\n    at async scenario (<test-checkout>/scripts/yjs-delivery/run.mjs:234:15)\n    at async file://<test-checkout>/scripts/yjs-delivery/run.mjs:301:3"
+    },
+    "mutants": []
+  }
+]

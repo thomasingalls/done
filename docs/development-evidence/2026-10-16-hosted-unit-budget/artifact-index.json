@@ -1,0 +1,62 @@
+{
+  "README.md": {
+    "bytes": 2842,
+    "sha256": "d86f63c2097a2bcab451ad5658d377e8e4e64fcb3c9fd3f7dbdb96970e47ca74"
+  },
+  "anchor-byte-fault.json": {
+    "bytes": 6024,
+    "sha256": "d2cac67c9f341f09d039a59f169d493072850be5443eb18d608ceec01cd318fc"
+  },
+  "hosted-ci-failed.log.gz": {
+    "bytes": 156727,
+    "sha256": "54fb67cd1782b20fc4ac798a8a76d0f079dd2237854bc3f6f40a5e99ba0bf687"
+  },
+  "linux-unit-budget.json": {
+    "bytes": 10043,
+    "sha256": "b39856b45e03ca16314ed176252097d5397c2ee0d28a68e901402be64b888d65"
+  },
+  "linux-unit-budget.log.gz": {
+    "bytes": 65,
+    "sha256": "bda917b745a25c65745af42be4204772404ca0d00db7f92f6cb4e403a193310a"
+  },
+  "linux-unit-native.json": {
+    "bytes": 9989,
+    "sha256": "1d1ba1c57f9c42d3674c5d392e419e0a1b400e59d9e58e0162ea250880ba23ca"
+  },
+  "linux-unit-native.log.gz": {
+    "bytes": 65,
+    "sha256": "ebbc000cdc15bd9479020c45fcafd08596348391a6fbc4d77a30ad1c2d7eefef"
+  },
+  "native-comparison-controls.json": {
+    "bytes": 651,
+    "sha256": "4cb26645e1a4f740075a8409a0e8c2f1dd0497c7c8048a6d714281e6d765c81d"
+  },
+  "projection-byte-fault.json": {
+    "bytes": 3636,
+    "sha256": "775a56c0708c24eebc069832d52b93f7daae2226495981432de8c5c6d4aee21e"
+  },
+  "source-pins.json": {
+    "bytes": 530,
+    "sha256": "5125e18df08462d2802990667905566c15d7b89cec268be8b45266c470154b48"
+  },
+  "summary.json": {
+    "bytes": 1224,
+    "sha256": "9ca55b812e90d3e4f6cf9501740b208627750882b4ddb9b7600e345382f97f69"
+  },
+  "unit-budget-adapters.log.gz": {
+    "bytes": 3527,
+    "sha256": "e9c71362ed1b96e24d6b5e78c0f2d46302c7b2a9659081e3a6c0d59db4151d0e"
+  },
+  "unit-budget-full-unit.log.gz": {
+    "bytes": 191,
+    "sha256": "c4ac385a3911eebc87aa7b6e5c8e2be8fbb4c65089d48f90fe63ec91dd055b52"
+  },
+  "unit-budget-lint.log.gz": {
+    "bytes": 20,
+    "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+  },
+  "unit-budget-reviewed.json": {
+    "bytes": 872,
+    "sha256": "556c08fda68ef25d654083b495ac49f794df15d7fdc126681f585f9c7ab80882"
+  }
+}

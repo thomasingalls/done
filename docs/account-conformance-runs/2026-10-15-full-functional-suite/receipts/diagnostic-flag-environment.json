@@ -1,0 +1,10 @@
+{
+  "scope": "Only nonsecret diagnostic feature flags; current executor environment, not an inferred child environment.",
+  "environment": {
+    "ACCOUNT_AUTHORITY_REUSE": null,
+    "ACCOUNT_BATCH_MODE": null,
+    "ACCOUNT_LEDGER_MODE": null,
+    "ACCOUNT_LEDGER_AUDIT": null,
+    "VITE_ACCOUNT_LEDGER_PROFILE": null
+  }
+}

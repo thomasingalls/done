@@ -1,13 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, mkdtempSync, rmSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { build } from 'vite';
+import { emitBundle } from '../../scripts/lib/emitted-bundle.mjs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 async function mutant(t, mode) {
-  const root = resolve('test-results/account-driver-controls');
-  mkdirSync(root, { recursive: true });
-  const dir = mkdtempSync(join(root, 'control-'));
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
   let code = readFileSync('src/crdt/accountDriver.ts', 'utf8');
   const changes =
     mode === 'overlap'
@@ -25,9 +23,29 @@ async function mutant(t, mode) {
     assert.equal(code.split(from).length, 2, 'Mutation anchor ' + mode);
     code = code.replace(from, to);
   }
-  const file = join(dir, 'driver.ts');
-  writeFileSync(file, code);
-  return import(pathToFileURL(file).href);
+  const entry = resolve('src/crdt/accountDriver.ts');
+  const result = await build({
+    configFile: false,
+    logLevel: 'error',
+    plugins: [
+      {
+        name: 'scheduler-control',
+        enforce: 'pre',
+        transform(_source, id) {
+          if (id === entry) return code;
+        },
+      },
+    ],
+    build: {
+      write: false,
+      minify: false,
+      target: 'esnext',
+      lib: { entry, formats: ['es'] },
+    },
+  });
+  const emitted = emitBundle(result, resolve('test-results/account-driver-controls'));
+  t.after(emitted.clear);
+  return import(pathToFileURL(emitted.entry).href);
 }
 const tick = async () => {
   for (let n = 0; n < 20; n++) await Promise.resolve();

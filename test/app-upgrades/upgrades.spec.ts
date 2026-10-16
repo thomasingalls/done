@@ -1,15 +1,22 @@
 import { test } from '../release-validation/browser-fixture';
 import { expect, type Page } from '@playwright/test';
+import { protectApp } from '../geometry/openApp';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-const unlock = async (page: Page, code: string) => {
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+const unlock = async (page: Page, code: string, suppliedPrior = false) => {
+  const current = page.getByLabel('Unlock code', { exact: true });
+  const field = suppliedPrior
+    ? current.or(page.getByLabel('Device-lock code', { exact: true }))
+    : current;
+  await field.fill(code);
   await page.getByRole('button', { name: 'Unlock', exact: true }).click();
   await expect(page.locator('.compose-field').first()).toBeVisible();
 };
 const write = async (page: Page, text: string) => {
-  const compose = page.locator('.day-panel[data-active="true"] .compose-field');
+  const compose = page.locator(
+    '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+  );
   await compose.fill(text);
   await compose.press('Enter');
   await expect(page.locator('.card').filter({ hasText: text })).toBeVisible();
@@ -34,17 +41,31 @@ const update = (page: Page) =>
   });
 const create = async (page: Page, controlled = true, expectedVersion = 'upgrade-a') => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Create a local-only workspace' }).click();
-  const code = (await page.getByLabel('Generated device-lock code').textContent())!;
-  await page.getByRole('button', { name: 'I saved my code' }).click();
-  await page.getByLabel('Device-lock code', { exact: true }).fill(code);
-  await page.getByRole('button', { name: 'Confirm and create' }).click();
+  let code: string;
+  if (!expectedVersion) {
+    // An explicitly supplied actual predecessor may retain credential-first entry.
+    // Default a/b fixtures must exercise the current automatic entry instead.
+    const oldEntry = page.getByRole('button', { name: 'Create a local-only workspace' });
+    await expect
+      .poll(async () => (await oldEntry.isVisible()) || (await page.locator('.shell').isVisible()))
+      .toBe(true);
+    if (await oldEntry.isVisible()) {
+      await oldEntry.click();
+      code = (await page.getByLabel('Generated device-lock code').textContent())!;
+      await page.getByRole('button', { name: 'I saved my code' }).click();
+      await page.getByLabel('Device-lock code', { exact: true }).fill(code);
+      await page.getByRole('button', { name: 'Confirm and create' }).click();
+    } else code = await protectApp(page);
+  } else {
+    await expect(page.locator('.shell[data-local-workspace]')).toBeVisible();
+    code = await protectApp(page);
+  }
   await write(page, 'Before update');
   await lock(page);
   await ready(page);
   if (controlled) {
     await page.reload(); // First install deliberately does not claim an already loaded page.
-    await unlock(page, code);
+    await unlock(page, code, !expectedVersion);
     if (expectedVersion) await expect(page.locator('body')).toContainText(expectedVersion);
   }
   return code;
@@ -169,6 +190,56 @@ test('two old tabs retain their release and writing until final close; new relea
   await again.goto('/local.html');
   await unlock(again, code);
   await expect(again.locator('.card').filter({ hasText: 'Offline after upgrade' })).toBeVisible();
+});
+
+test('the sidebar discovers an update on reconnect and reloads one tab without disrupting another', async ({
+  page,
+  context,
+  request,
+}) => {
+  const code = await create(page);
+  const second = await context.newPage();
+  await second.goto('/local.html');
+  await unlock(second, code);
+  const previousAsset = await second.evaluate(
+    () =>
+      [...document.querySelectorAll<HTMLScriptElement>('script[src]')].find((script) =>
+        script.src.includes('/assets/'),
+      )!.src,
+  );
+  const previousBytes = await second.evaluate(
+    async (url) => await (await fetch(url)).text(),
+    previousAsset,
+  );
+  const initialCaches = await second.evaluate(() => caches.keys());
+  await request.post('/__release', { data: { version: 'b' } });
+  // Exercise the app's event-driven check, without calling registration.update().
+  await page.bringToFront();
+  await page.evaluate(() => window.dispatchEvent(new Event('online')));
+  await expect.poll(() => waiting(page)).toBe('installed');
+  await write(page, 'Saved through the update button');
+  await context.setOffline(true);
+  await page.getByRole('button', { name: 'Reload to update', exact: true }).click();
+  await expect(page.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
+  await unlock(page, code);
+  await expect(page.locator('body')).toContainText('upgrade-b');
+  await expect(
+    page.locator('.card').filter({ hasText: 'Saved through the update button' }),
+  ).toBeVisible();
+  await expect(second.locator('body')).toContainText('upgrade-a');
+  await expect(second.getByRole('button', { name: 'Reload to update', exact: true })).toBeVisible();
+  expect(await second.evaluate(() => caches.keys())).toEqual(expect.arrayContaining(initialCaches));
+  expect(await second.evaluate(async (url) => await (await fetch(url)).text(), previousAsset)).toBe(
+    previousBytes,
+  );
+  await write(second, 'Still writing in the other tab');
+  await second.getByRole('button', { name: 'Reload to update', exact: true }).click();
+  await expect(second.locator('.local-startup')).toHaveAttribute('data-state', 'unlock-required');
+  await unlock(second, code);
+  await expect(second.locator('body')).toContainText('upgrade-b');
+  await expect(
+    second.locator('.card').filter({ hasText: 'Still writing in the other tab' }),
+  ).toBeVisible();
 });
 
 for (const fault of ['missing', 'wrong-bytes']) {

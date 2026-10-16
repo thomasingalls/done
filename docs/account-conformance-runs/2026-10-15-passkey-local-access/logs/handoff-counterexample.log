@@ -1,0 +1,25 @@
+
+ RUN  v4.1.10 <workspace>
+
+ ❯ test/firstDeviceSetupAccess.test.ts (3 tests | 1 failed) 82ms
+   × rechecks a live Local handoff when resuming an existing setup instead of asking for its code again 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/firstDeviceSetupAccess.test.ts > rechecks a live Local handoff when resuming an existing setup instead of asking for its code again
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ test/firstDeviceSetupAccess.test.ts:138:16
+    136|   owners.push(resumed);
+    137|   await resumed.inspect();
+    138|   expect(take).toHaveBeenCalledTimes(1);
+       |                ^
+    139|   expect(request).toHaveBeenCalledTimes(1);
+    140|   expect(resumed.getSnapshot()).toMatchObject({ kind: 'resume-setup' }…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  10:19:00
+   Duration  1.60s (transform 979ms, setup 48ms, import 1.30s, tests 82ms, environment 0ms)

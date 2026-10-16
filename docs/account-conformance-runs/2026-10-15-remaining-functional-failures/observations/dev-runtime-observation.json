@@ -1,0 +1,37 @@
+{
+  "source": "6eeb7d5f",
+  "cases": [
+    {
+      "needsInterop": false,
+      "freshCache": true,
+      "errors": [
+        "The requested module '/@fs/private/tmp/done-remaining-suite-6eeb7d5f/cache-current/deps/react_compiler-runtime.js?v=b2654624' does not provide an export named 'c'",
+        "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.shell, .local-startup') to be visible\u001b[22m\n"
+      ],
+      "moduleExports": [
+        "var require_react_compiler_runtime_development = /* @__PURE__ */ __commonJSMin((exports) => {",
+        "\t\texports.c = function(size) {",
+        "var require_compiler_runtime = /* @__PURE__ */ __commonJSMin((exports, module) => {"
+      ],
+      "shell": 0,
+      "startup": 0,
+      "editable": 0
+    },
+    {
+      "needsInterop": true,
+      "freshCache": true,
+      "errors": [
+        "The requested module '/@fs/private/tmp/done-remaining-suite-6eeb7d5f/cache-interop/deps/react_compiler-runtime.js?v=ed8870ec' does not provide an export named 'c'",
+        "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('.shell, .local-startup') to be visible\u001b[22m\n"
+      ],
+      "moduleExports": [
+        "var require_react_compiler_runtime_development = /* @__PURE__ */ __commonJSMin((exports) => {",
+        "\t\texports.c = function(size) {",
+        "var require_compiler_runtime = /* @__PURE__ */ __commonJSMin((exports, module) => {"
+      ],
+      "shell": 0,
+      "startup": 0,
+      "editable": 0
+    }
+  ]
+}

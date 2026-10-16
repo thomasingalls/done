@@ -176,6 +176,7 @@ async function acquire(
   const detach = () => {
     signal?.removeEventListener('abort', cancel);
     globalThis.removeEventListener?.('pagehide', cancel);
+    lifecycle?.close();
   };
   const close = (): Promise<void> => {
     if (closing) return closing;
@@ -211,6 +212,14 @@ async function acquire(
   const cancel = () => {
     void close().catch(() => {});
   };
+  const lifecycle =
+    mode === 'shared' && typeof window !== 'undefined' && typeof BroadcastChannel !== 'undefined'
+      ? new BroadcastChannel('done/slot-lifecycle')
+      : undefined;
+  if (lifecycle)
+    lifecycle.onmessage = (event) => {
+      if (event.data?.kind === 'retire' && event.data?.slotId === slotId) cancel();
+    };
   const session: WriteSession = {
     slotId,
     lockName: name,
@@ -283,6 +292,38 @@ export const openWriteSession = (
   slotId: string,
   options: WriteSessionOptions = {},
 ): Promise<WriteSession> => acquire(slotId, 'shared', options);
+
+/** Ask participating tabs to close; never steal a permit or retire a frozen writer's keys. */
+export function retireSlotWriters(slotId: string) {
+  if (typeof window === 'undefined' || typeof BroadcastChannel === 'undefined') return;
+  const channel = new BroadcastChannel('done/slot-lifecycle');
+  channel.postMessage({ kind: 'retire', slotId });
+  channel.close();
+}
+
+/** Cooperative retirement also reaches coordinators which are between slot-owned operations. */
+export function onSlotRetirement(slotId: string, retire: () => void): () => void {
+  if (typeof window === 'undefined' || typeof BroadcastChannel === 'undefined') return () => {};
+  const channel = new BroadcastChannel('done/slot-lifecycle');
+  channel.onmessage = (event) => {
+    if (event.data?.kind === 'retire' && event.data?.slotId === slotId) retire();
+  };
+  return () => channel.close();
+}
+
+/** Deletion needs coordination, never permission to decrypt or bypass an ordinary opening check. */
+export async function withDeviceRemovalSlot<T>(
+  slotId: string,
+  operation: (task: SessionTask) => Promise<T>,
+  options: Pick<WriteSessionOptions, 'signal'> = {},
+) {
+  const session = await acquire(slotId, 'exclusive', options, async () => {});
+  try {
+    return await session.run(operation);
+  } finally {
+    await session.close();
+  }
+}
 
 /**
  * Close the initiating shared session FIRST. There is no upgrade or lock stealing.

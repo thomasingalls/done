@@ -31,6 +31,7 @@ const walk = (dir) =>
   );
 const paths = [
   ...walk('src'),
+  ...walk('account-protocol'),
   ...walk('scripts/legacy-cleanup'),
   ...walk('test/legacy-cleanup'),
   ...walk('test/legacy-selection'),
@@ -108,8 +109,8 @@ const variants = [
     patches: [
       [
         'src/crdt/localGenesisRecord.ts',
-        'const payload = claim.sourceCleanup',
-        'const payload = false && claim.sourceCleanup',
+        'const legacyPayload = claim.sourceCleanup',
+        'const legacyPayload = false && claim.sourceCleanup',
       ],
     ],
   },
@@ -120,8 +121,8 @@ const variants = [
     patches: [
       [
         'src/crdt/custody.ts',
-        'return await operation({ records, journal });',
-        'return await operation({ records, journal: [] });',
+        '{ records, journal },\n      logical.kind',
+        '{ records, journal: [] },\n      logical.kind',
       ],
     ],
   },
@@ -404,18 +405,37 @@ async function variantRun(variant) {
   };
   const pendingJournal = async () => {
     ok(await call(handle.page, 'journalEdit', code, 'dependent', true));
-    assert.equal(
-      (await call(handle.page, 'clean', code, input)).reason,
-      'cleanup-destination-pending',
-      'pending-journal-refuses',
-    );
+    const census = await call(handle.page, 'dump');
+    const result = await call(handle.page, 'clean', code, input);
+    if (variant?.id === 'omit-destination-journal') {
+      // A different safety guard's refusal is not this control's sensitivity evidence.
+      assert.equal(result.status, 'ok', 'journal omission must actually permit cleanup');
+      assert.equal(result.value.kind, 'source-cleaned');
+      await absent();
+    } else {
+      assert.deepEqual(
+        await call(handle.page, 'dump'),
+        census,
+        'pending refusal preserves carriers',
+      );
+    }
+    assert.equal(result.reason, 'cleanup-destination-pending', 'pending-journal-refuses');
   };
   const tamper = async () => {
     await call(handle.page, 'fault', 'abort-1');
     assert.equal((await call(handle.page, 'clean', code, input)).status, 'refused');
     await call(handle.page, 'tamper', 'cursor');
+    const census = await call(handle.page, 'dump');
+    const result = await call(handle.page, 'clean', code, input);
+    if (variant?.id === 'unsigned-manifest') {
+      assert.equal(result.status, 'ok', 'unsigned progress must actually permit cleanup');
+      assert.equal(result.value.kind, 'source-cleaned');
+      await absent();
+    } else {
+      assert.deepEqual(await call(handle.page, 'dump'), census, 'MAC refusal preserves carriers');
+    }
     assert.equal(
-      (await call(handle.page, 'clean', code, input)).reason,
+      result.reason,
       'local-progress-authentication-failed',
       'tampered-progress-refuses',
     );

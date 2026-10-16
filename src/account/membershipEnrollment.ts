@@ -1,3 +1,5 @@
+import { authenticationResponse } from './passkeyResponse';
+import { defaultDeviceName } from '../lib/browser';
 /** Browser/session composition for the retained additional-device coordinator. */
 import { parseAuthorityPin } from '../../account-protocol/authority';
 import type { SuccessorBase } from '../../account-protocol/successor';
@@ -220,7 +222,7 @@ export function createMembershipEnrollment(
             })) as PublicKeyCredential | null;
             guard();
             if (!credential) throw Error('Passkey request cancelled');
-            return credential.toJSON();
+            return authenticationResponse(credential);
           },
           acknowledge: (login) =>
             postSession(
@@ -298,7 +300,7 @@ export function createMembershipEnrollment(
         identity: {
           id: joined.principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: 'joined:' + slotId, name: 'This device' },
+          device: { id: 'joined:' + slotId, name: defaultDeviceName() },
         },
       },
       legacyAccess(config),

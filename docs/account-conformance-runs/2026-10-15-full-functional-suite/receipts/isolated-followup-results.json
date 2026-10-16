@@ -1,0 +1,156 @@
+[
+  {
+    "command": "pnpm storage:genesis",
+    "cwd": "<test-checkout>",
+    "log": "followup-genesis-isolated.log",
+    "startedAt": "2026-10-15T11:57:52.799Z",
+    "status": "failed",
+    "pid": 42156,
+    "signal": null,
+    "exitCode": 1,
+    "completedAt": "2026-10-15T12:00:16.422Z"
+  },
+  {
+    "command": "node --test --test-timeout=30000 --test-name-pattern 'closing during discovery|successor storage' test/account-successor/reconnect.test.mjs test/account-successor/owner-controls.test.mjs",
+    "cwd": "<baseline-checkout>",
+    "log": "followup-successor-prior-baseline.log",
+    "startedAt": "2026-10-15T12:00:16.425Z",
+    "status": "failed",
+    "pid": 42613,
+    "signal": null,
+    "exitCode": 1,
+    "completedAt": "2026-10-15T12:00:26.467Z"
+  },
+  {
+    "command": "node --test --test-timeout=60000 /private/tmp/done-superseded-observation.test.mjs",
+    "cwd": "<test-checkout>",
+    "log": "followup-superseded-observation.log",
+    "startedAt": "2026-10-15T12:00:26.468Z",
+    "status": "passed",
+    "pid": 42646,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:00:31.255Z"
+  },
+  {
+    "command": "pnpm storage:custody",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-01-pnpm_storage_custody.log",
+    "startedAt": "2026-10-15T12:00:31.326Z",
+    "status": "passed",
+    "pid": 42676,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:02:03.141Z"
+  },
+  {
+    "command": "pnpm storage:content",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-02-pnpm_storage_content.log",
+    "startedAt": "2026-10-15T12:02:03.142Z",
+    "status": "passed",
+    "pid": 43214,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:03:17.477Z"
+  },
+  {
+    "command": "pnpm storage:journal",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-03-pnpm_storage_journal.log",
+    "startedAt": "2026-10-15T12:03:17.478Z",
+    "status": "passed",
+    "pid": 43639,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:05:00.898Z"
+  },
+  {
+    "command": "pnpm storage:admission",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-04-pnpm_storage_admission.log",
+    "startedAt": "2026-10-15T12:05:00.900Z",
+    "status": "passed",
+    "pid": 44131,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:06:38.699Z"
+  },
+  {
+    "command": "pnpm storage:trim",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-05-pnpm_storage_trim.log",
+    "startedAt": "2026-10-15T12:06:38.700Z",
+    "status": "passed",
+    "pid": 44628,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:08:33.843Z"
+  },
+  {
+    "command": "pnpm storage:contention",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-06-pnpm_storage_contention.log",
+    "startedAt": "2026-10-15T12:08:33.846Z",
+    "status": "passed",
+    "pid": 45171,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:08:49.446Z"
+  },
+  {
+    "command": "pnpm storage:projection",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-07-pnpm_storage_projection.log",
+    "startedAt": "2026-10-15T12:08:49.447Z",
+    "status": "passed",
+    "pid": 45248,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:10:14.518Z"
+  },
+  {
+    "command": "pnpm storage:delivery",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-08-pnpm_storage_delivery.log",
+    "startedAt": "2026-10-15T12:10:14.519Z",
+    "status": "passed",
+    "pid": 45585,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:12:17.059Z"
+  },
+  {
+    "command": "node scripts/release-validation/check.mjs --record",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-09-node_scripts_release-validation_check_mjs_--record.log",
+    "startedAt": "2026-10-15T12:12:17.060Z",
+    "status": "passed",
+    "pid": 46289,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:12:18.282Z"
+  },
+  {
+    "command": "node scripts/release-validation/plan.mjs --record",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-10-node_scripts_release-validation_plan_mjs_--record.log",
+    "startedAt": "2026-10-15T12:12:18.283Z",
+    "status": "passed",
+    "pid": 46290,
+    "signal": null,
+    "exitCode": 0,
+    "completedAt": "2026-10-15T12:12:20.477Z"
+  },
+  {
+    "command": "node --test --test-concurrency=2 test/release-validation/*.test.mjs",
+    "cwd": "<approved-harness-checkout>",
+    "log": "followup-approved-11-node_--test_--test-concurrency_2_test_release-validation___test_mjs.log",
+    "startedAt": "2026-10-15T12:12:20.477Z",
+    "status": "failed",
+    "pid": 46664,
+    "signal": null,
+    "exitCode": 1,
+    "completedAt": "2026-10-15T12:14:10.721Z"
+  }
+]

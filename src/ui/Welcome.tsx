@@ -6,10 +6,14 @@ export const Welcome = ({
   onCreateLocal,
   onCreateWorkspace,
   onChooseAccount,
+  hasLocalWorkspace = false,
+  checkingLocalWorkspace = false,
 }: {
   onCreateLocal: () => void;
   onCreateWorkspace?: () => Promise<void>;
   onChooseAccount?: () => void;
+  hasLocalWorkspace?: boolean;
+  checkingLocalWorkspace?: boolean;
 }): React.ReactElement => {
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState('');
@@ -52,8 +56,16 @@ export const Welcome = ({
               {creating ? 'Preparing workspace…' : 'Create a workspace'}
             </button>
           )}
-          <button type="button" onClick={onCreateLocal} disabled={creating}>
-            Create a local-only workspace
+          <button
+            type="button"
+            onClick={onCreateLocal}
+            disabled={creating || checkingLocalWorkspace}
+          >
+            {checkingLocalWorkspace
+              ? 'Checking local workspace…'
+              : hasLocalWorkspace
+                ? 'Open local-only workspace'
+                : 'Create a local-only workspace'}
           </button>
         </div>
         {error && <p role="alert">{error}</p>}

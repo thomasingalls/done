@@ -1,0 +1,14 @@
+{
+  "baseline": "86e830c83e7d410443237a8bdeafc7d3f6e9663c",
+  "approval": "Operator explicitly approved exactly four Local-editor locator updates.",
+  "noOtherOldTestsChanged": true,
+  "applicationServiceAndProtocolSourceUnchanged": true,
+  "file": {
+    "path": "test/private-migration/rehearsal.spec.ts",
+    "originalSha256": "c8458897ef3a3f8bd29137ffc7925b92b265ebb8a7392432fef59324dfbe2c63",
+    "proposedSha256": "151056d9f8d4c5f06853e8e66e21aae861ea6ad03b9cc38ccd212cfac76146eb"
+  },
+  "applied": true,
+  "policyAddsOnlyNewRequiredFamily": true,
+  "operatorResumedCiJobUnchanged": true
+}

@@ -1,0 +1,85 @@
+{
+  "baseline": "5afdd0ad3d478e19c86f28e4db042a2d77d70c13",
+  "patches": [
+    {
+      "file": "done-full-suite-harness-repairs.patch",
+      "sha256": "93caf894446f89a19343d2a6ed334a9c8747d8d8bdec3e823698621f49a7c499"
+    },
+    {
+      "file": "done-passkey-general-census-fixture.patch",
+      "sha256": "4eb7e4bcfbd03af1a71f05d08f0a402521072f4cf1018315e22aafed462b2551"
+    },
+    {
+      "file": "done-adapter-closure-census.patch",
+      "sha256": "ea5f917f6e5a4c6a5c91500963b9618aaa36992a586703c792251f52c3d1f40a"
+    },
+    {
+      "file": "done-recovery-isolation-census-source.patch",
+      "sha256": "2bb0765b1aa4ee37768ccada786e9dd2593694763a800d10766137e3a4fb27af"
+    }
+  ],
+  "compared": [
+    {
+      "path": "scripts/account-recovery/run.mjs",
+      "approvedSha256": "92111dfee53ea49fda90a92600f769a312f86ff2b15ac5d7c2db82c9407c84f2",
+      "currentSha256": "92111dfee53ea49fda90a92600f769a312f86ff2b15ac5d7c2db82c9407c84f2"
+    },
+    {
+      "path": "scripts/admission/catalog.mjs",
+      "approvedSha256": "82469ce611c51ce298a14d6e9b789475d2f2bec1d0530ca592926f920464bac5",
+      "currentSha256": "82469ce611c51ce298a14d6e9b789475d2f2bec1d0530ca592926f920464bac5"
+    },
+    {
+      "path": "scripts/content-trim/catalog.mjs",
+      "approvedSha256": "54e36fa304d3c69dbeb85082a6d6b25afeeb92801607e91ed13e1a0442f72a03",
+      "currentSha256": "54e36fa304d3c69dbeb85082a6d6b25afeeb92801607e91ed13e1a0442f72a03"
+    },
+    {
+      "path": "scripts/content/catalog.mjs",
+      "approvedSha256": "c442c205869759da6fe821ed5c1993e17f3b307e947f77c99381c9f7b9077816",
+      "currentSha256": "c442c205869759da6fe821ed5c1993e17f3b307e947f77c99381c9f7b9077816"
+    },
+    {
+      "path": "scripts/custody/catalog.mjs",
+      "approvedSha256": "5faa1cb34f18bdc840c0175c10cb0c35aa293b3a648edbc84baaf3fcc4539a23",
+      "currentSha256": "5faa1cb34f18bdc840c0175c10cb0c35aa293b3a648edbc84baaf3fcc4539a23"
+    },
+    {
+      "path": "scripts/journal-contention/run.mjs",
+      "approvedSha256": "84c1d62d528227255047ef7f59c9d323fa77d63905baa9c1243921339fb9d5f9",
+      "currentSha256": "84c1d62d528227255047ef7f59c9d323fa77d63905baa9c1243921339fb9d5f9"
+    },
+    {
+      "path": "scripts/journal/catalog.mjs",
+      "approvedSha256": "0682d631b4c9b5e39cb21bf9cca5b26a99eb4ef1e9323277d32254296d0bfbe8",
+      "currentSha256": "0682d631b4c9b5e39cb21bf9cca5b26a99eb4ef1e9323277d32254296d0bfbe8"
+    },
+    {
+      "path": "scripts/pending-projection/run.mjs",
+      "approvedSha256": "b9aa3a78942278dd579bc43fd0e198dd8406440a3bf8d9513164567c026ca025",
+      "currentSha256": "b9aa3a78942278dd579bc43fd0e198dd8406440a3bf8d9513164567c026ca025"
+    },
+    {
+      "path": "scripts/yjs-delivery/run.mjs",
+      "approvedSha256": "5d9c463f753e1b6025f18e6b64c61480974cf669957116eab58f27c0148f2198",
+      "currentSha256": "5d9c463f753e1b6025f18e6b64c61480974cf669957116eab58f27c0148f2198"
+    },
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "approvedSha256": "f5023cffa4e821ab458b671b59a614054fe1094c2e69dc7d6a3a9b5926a5c09c",
+      "currentSha256": "f5023cffa4e821ab458b671b59a614054fe1094c2e69dc7d6a3a9b5926a5c09c"
+    },
+    {
+      "path": "test/release-validation/generated-tests.test.mjs",
+      "approvedSha256": "b24acbf9348b295d037ac26be96b70cb0701e0db20995430597b9c9090d9f1e2",
+      "currentSha256": "b24acbf9348b295d037ac26be96b70cb0701e0db20995430597b9c9090d9f1e2"
+    },
+    {
+      "path": "test/release-validation/playwright-native.test.mjs",
+      "approvedSha256": "f24a8f5d56b87f8bff65135e4c63d687ad2362bfd880d916f70e6770fda9b6d3",
+      "currentSha256": "f24a8f5d56b87f8bff65135e4c63d687ad2362bfd880d916f70e6770fda9b6d3"
+    }
+  ],
+  "allExistingTestChangesExplicitlyApproved": true,
+  "formattingProposalApplied": false
+}

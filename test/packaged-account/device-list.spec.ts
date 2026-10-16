@@ -17,7 +17,7 @@ test('verified Devices is available on both account owners; Back preserves writi
   page,
   browser,
 }, info) => {
-  const service = await startService(info.outputPath('service'), undefined, true);
+  const service = await startService(info.outputPath('service'), undefined, true, true);
   let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
@@ -50,7 +50,7 @@ test('verified Devices is available on both account owners; Back preserves writi
       await showDevices(p, 2);
       await expect(
         p.getByRole('button', { name: 'Connect another device', exact: true }),
-      ).toBeDisabled();
+      ).toBeEnabled();
       await expect(p.locator('.account-device-list')).toContainText(
         'Key-storage details are not recorded',
       );
@@ -63,9 +63,9 @@ test('verified Devices is available on both account owners; Back preserves writi
     });
     await showDevices(page, 2);
     await page.reload();
-    await expect(page.getByLabel('Device-lock code', { exact: true })).toBeVisible();
+    await expect(page.getByLabel('Unlock code', { exact: true })).toBeVisible();
     await expect(page.locator('.account-device-list')).toHaveCount(0);
-    await page.getByLabel('Device-lock code', { exact: true }).fill(pair.first.code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(pair.first.code);
     await page
       .getByRole('button', { name: 'Confirm code and unlock with passkey', exact: true })
       .click();
@@ -73,6 +73,65 @@ test('verified Devices is available on both account owners; Back preserves writi
     await showDevices(page, 2);
     await page.screenshot({ path: info.outputPath('devices.png'), fullPage: true });
     expect(errors).toEqual([]);
+  } finally {
+    await pair?.other.close();
+    await stopService(service);
+  }
+});
+
+test('device codes match across owners and custom names sync beside them, including queued and reopened changes', async ({
+  page,
+  browser,
+}, info) => {
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  const rename = async (target: Page, name: string) => {
+    await target.getByLabel('Device name', { exact: true }).fill(name);
+    await target.getByRole('button', { name: 'Save preferences', exact: true }).click();
+    await expect(
+      target.getByRole('status').filter({ hasText: 'Preferences saved.' }),
+    ).toBeVisible();
+  };
+  try {
+    pair = await pairedEditors(page, browser, true);
+    const second = pair.second;
+    const firstCode = (await page.getByLabel('Device code', { exact: true }).textContent())!;
+    const firstDefaultName = await page.getByLabel('Device name', { exact: true }).inputValue();
+    expect(firstDefaultName).not.toBe('This device');
+    const secondCode = (await second.getByLabel('Device code', { exact: true }).textContent())!;
+    expect(firstCode).toHaveLength(8);
+    expect(secondCode).toHaveLength(8);
+    expect(firstCode).not.toBe(secondCode);
+    await showDevices(second, 2);
+    const firstOnSecond = second.locator('.account-device-list li').filter({ hasText: firstCode });
+    await expect(firstOnSecond).toHaveCount(1);
+    await expect(firstOnSecond).toContainText(firstDefaultName, { timeout: 15000 });
+    await rename(page, 'MacBook');
+    await expect(firstOnSecond).toContainText('MacBook', { timeout: 15000 });
+    await expect(firstOnSecond.getByLabel('Device code', { exact: true })).toHaveText(firstCode);
+    await second.getByRole('button', { name: 'Back to writing', exact: true }).click();
+    await rename(second, 'Phone');
+    await showDevices(page, 2);
+    const secondOnFirst = page.locator('.account-device-list li').filter({ hasText: secondCode });
+    await expect(secondOnFirst).toContainText('Phone', { timeout: 15000 });
+    await expect(secondOnFirst.getByLabel('Device code', { exact: true })).toHaveText(secondCode);
+    await pair.other.setOffline(true);
+    await rename(second, 'Pixel phone');
+    await expect(second.getByLabel('Device code', { exact: true })).toHaveText(secondCode);
+    await pair.other.setOffline(false);
+    await expect(secondOnFirst).toContainText('Pixel phone', { timeout: 15000 });
+    await page.getByRole('button', { name: 'Back to writing', exact: true }).click();
+    await page.reload();
+    await page.getByLabel('Unlock code', { exact: true }).fill(pair.first.code);
+    await page
+      .getByRole('button', { name: 'Confirm code and unlock with passkey', exact: true })
+      .click();
+    await expect(page.getByLabel('Device name', { exact: true })).toHaveValue('MacBook');
+    await expect(page.getByLabel('Device code', { exact: true })).toHaveText(firstCode);
+    await showDevices(page, 2);
+    await expect(
+      page.locator('.account-device-list li').filter({ hasText: secondCode }),
+    ).toContainText('Pixel phone');
   } finally {
     await pair?.other.close();
     await stopService(service);

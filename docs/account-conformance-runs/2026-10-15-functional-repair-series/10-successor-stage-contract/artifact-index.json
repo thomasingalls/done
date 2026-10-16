@@ -1,0 +1,91 @@
+{
+  "schema": 1,
+  "baseCommit": "a6fa2298cf3233893e3cbb9809190da6a8dc72bc",
+  "parentOverlayTree": "82255ca6e53fd88662fbde0c8a7a623f17d23492",
+  "artifacts": {
+    "README.md": {
+      "sha256": "2bfffecc2eb0fb68c1db1145e6e414da1b73b1593323b97e620f6435193fdd5e",
+      "bytes": 1895
+    },
+    "logs/format.log.gz": {
+      "sha256": "c648ea447906e76328c7f750bea92b488e3a6f2a0464d7b52c7a70aa248b7e63",
+      "bytes": 109
+    },
+    "logs/genuine-checkpoint-stage.log.gz": {
+      "sha256": "c2e15998fe50a1bb924e7e4631fee2a5586c369b4db6531d055d67b8dfb9c50c",
+      "bytes": 400
+    },
+    "logs/inventory.log.gz": {
+      "sha256": "40aa014fa150580f9ada49d84c2391e6d3bd3d9a62c5e7b700d3be49147b340e",
+      "bytes": 241
+    },
+    "logs/lint.log.gz": {
+      "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 20
+    },
+    "logs/plan.log.gz": {
+      "sha256": "1be675efd2648f5f902fb310d0e9be3ce1ad23f6cf56af8e147fab80bc79a894",
+      "bytes": 223
+    },
+    "logs/planning.log.gz": {
+      "sha256": "1604b7cf05352ef56c13729d3bb4dbf64d814a12989b2d0783dc035ac2199969",
+      "bytes": 4773
+    },
+    "logs/stage-after.log.gz": {
+      "sha256": "1dfda8b127331b937dcb6e711fede9775ff0379befe67b3ca9f899d4feb3d823",
+      "bytes": 389
+    },
+    "logs/stage-before.log.gz": {
+      "sha256": "cf28b017a5b02f2c5039ba1dd1bfbc8ae19859d8e56a1bcca6acd36ef3172006",
+      "bytes": 712
+    },
+    "logs/unsigned-stage-regressions.log.gz": {
+      "sha256": "4be217870744ec412fe964922b009b6d690e37c86ac7651885e98b113aaf13fa",
+      "bytes": 428
+    },
+    "receipts/format.json.gz": {
+      "sha256": "d289d9e922314d877c3da26e4340eb32872e9b10a4f1d74b1b297c76d208a62c",
+      "bytes": 212
+    },
+    "receipts/genuine-checkpoint-stage.json.gz": {
+      "sha256": "9dc65c4be5b092845af8235adec70ee3cef9cf24ba33d1d606a61c5e23c04915",
+      "bytes": 181
+    },
+    "receipts/inventory.json.gz": {
+      "sha256": "38575f245661c7a165740b90dd98739bd15a2cccc17ca2970f9e37a7c4826ac7",
+      "bytes": 142
+    },
+    "receipts/lint.json.gz": {
+      "sha256": "f9900e948e80ce6cb2c8a6d4f154fc00b6a917ce14058f1ff7b6b5a5035cd3f9",
+      "bytes": 208
+    },
+    "receipts/plan.json.gz": {
+      "sha256": "b90269f7ea72e76a69508835557e8c8438c57da4a6eb48454ee69620f91c3746",
+      "bytes": 142
+    },
+    "receipts/planning.json.gz": {
+      "sha256": "c0bc6133bdd3c9113ae24b917613ae81bb9e70fa68f1511294c77fdec5b1c7c7",
+      "bytes": 196
+    },
+    "receipts/results.json.gz": {
+      "sha256": "c59b5a2caee88ae706eb5ee03cc3144e7e30b1a5fe0ab1f6110685a4538a627e",
+      "bytes": 185
+    },
+    "receipts/stage-after.json.gz": {
+      "sha256": "ea2f8bb92896eed97a6693f6a2cdd89f7a72499a2d36a19ba21436c3393d1f66",
+      "bytes": 174
+    },
+    "receipts/stage-before.json.gz": {
+      "sha256": "3fa87190817da0a64a2edbfea33ba938fd8ec14143c678243184f61bbf0a2bd8",
+      "bytes": 233
+    },
+    "receipts/unsigned-stage-regressions.json.gz": {
+      "sha256": "4f4a7f884c6b50811020a5264995be264d25548a5e2bc471232aa4520a54d912",
+      "bytes": 174
+    },
+    "source-pins.json.gz": {
+      "sha256": "f9b4371b441dd3f9e71b39f993fe1fce0e466f7a70cb84463dbad2fdd3bd8e20",
+      "bytes": 74088
+    }
+  }
+}

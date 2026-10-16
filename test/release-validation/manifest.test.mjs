@@ -1260,10 +1260,10 @@ test('capture wrapper binds exact property/native stages, historical reader and 
   const [s, ...rest] = selectStages(m, 'wrapper-account-capture');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 23);
+  assert.equal(s.expect.cases.length, 24);
   assert.deepEqual(
     s.expect.steps.map((x) => x.expect.cases.length),
-    [8, 15],
+    [9, 15],
   );
   assert.deepEqual(s.fileOutputs.required, captureReports);
   assert.deepEqual(
@@ -3605,8 +3605,8 @@ test('preparation wrappers retain grouped Node execution and vector aliases shar
   const inventory = JSON.parse(readFileSync('docs/release-validation-graph.json'));
   const plan = compileManifest(process.cwd(), inventory);
   const selected = selectStages(plan, 'wrapper-preparation');
-  assert.equal(selected.length, 31);
-  assert.equal(selected.filter((s) => s.id.startsWith('vector:')).length, 29);
+  assert.equal(selected.length, 32);
+  assert.equal(selected.filter((s) => s.id.startsWith('vector:')).length, 30);
   assert.equal(new Set(selected.map((s) => digest(s.argv))).size, selected.length);
   const tests = selected.find((s) => s.variant === 'crypto-preparation-tests-v1');
   assert.equal(tests.expect.cases.length, 6);

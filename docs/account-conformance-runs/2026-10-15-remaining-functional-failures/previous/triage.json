@@ -1,0 +1,460 @@
+{
+  "schema": 1,
+  "source": "faadbff5d41eab72434af4193f774d50f1ac577c",
+  "reviewedAt": "2026-10-15T14:21:23.001Z",
+  "scope": "Read-only full-functional-failure triage; no application, old-test, harness or documentation changes; preview untouched.",
+  "runtime": "v26.11.1",
+  "classificationRule": "A stale first assertion does not credit later unexecuted behavior. Mutation/historical coverage gaps and unresolved contract disagreements are not passing tests.",
+  "issues": [
+    {
+      "id": "D1",
+      "classification": "confirmed-application-defect",
+      "boundary": "Receiving when membership continuation is disabled",
+      "evidence": "The existing session test still fails on current source. A separate hook imported the unchanged test and recorded repeated /account/history/v1/checkpoint 404s after enrollment; later A-to-B writing remains absent. The server registers that route only when membershipContinuationEnabled; fetchHistory runs before ordinary receive without the corresponding capability gate.",
+      "next": "Repair feature/capability selection while retaining authenticated history ordering for enabled hosts. Keep the existing failing two-device test and add disabled/enabled, outage, restart and capability-upgrade regressions. Do not merely enable the feature in this fixture.",
+      "refs": [
+        {
+          "path": "src/crdt/accountReceive.ts",
+          "line": 1185
+        },
+        {
+          "path": "src/crdt/accountReceive.ts",
+          "line": 3121
+        },
+        {
+          "path": "account-service/scoped-http.ts",
+          "line": 90
+        },
+        {
+          "path": "test/packaged-account/sessions.spec.ts",
+          "line": 53
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "classification": "confirmed-contract-defect",
+      "boundary": "Blocked upgrade changes persisted metadata",
+      "evidence": "The retained independent census differs only by done.application.local-only=1. loadPackagedConfig writes it on configuration 404 before Local compatibility refusal. Exact no-write assertion remains failed; no encrypted-carrier difference was found.",
+      "next": "Prevent the preflight metadata write on blocked installations, or seek an explicit contract decision. Preserve the exact-census assertion and fresh/offline discovery behavior.",
+      "refs": [
+        {
+          "path": "src/account/packagedConfig.ts",
+          "line": 139
+        },
+        {
+          "path": "src/main.tsx",
+          "line": 37
+        },
+        {
+          "path": "docs/storage-compatibility.md",
+          "line": 31
+        }
+      ]
+    },
+    {
+      "id": "D3",
+      "classification": "confirmed-development-tooling-failure",
+      "boundary": "React compiler runtime named export",
+      "evidence": "A new disposable Vite cache and fresh headless browser reproduce the missing named c export on /local.html, with no shell mounted. This excludes a stale optimizer cache as the sole explanation under the installed Node/dependency tree. The diagnostic process exits zero after recording the page failure; that is not a passing app check.",
+      "next": "Repair and challenge compiler/dependency interop or transform configuration. Keep development and packaged results separate. No Node 24 or production failure is inferred.",
+      "refs": [
+        {
+          "path": "vite.config.ts",
+          "line": 83
+        },
+        {
+          "path": "vite/privateMigration.config.ts",
+          "line": 8
+        }
+      ]
+    },
+    {
+      "id": "F1",
+      "classification": "stale-fixture-entry-and-presentation",
+      "boundary": "Retired onboarding controls, duplicate broad Goals locators, device labels and relay copy",
+      "evidence": "Failures stop at removed credential-first entry buttons, local-startup=fresh, ambiguous Open Goals buttons, old Device labels and relay text. The reader-first rollback test specifically waits for I already have a workspace at line 122.",
+      "next": "Review exact entry/locator/copy changes as a separate patch. Preserve all later unlock, wrong-code, storage, undo, retry, offline and rollback assertions; those unexecuted steps remain unverified.",
+      "refs": [
+        {
+          "path": "test/first-device-setup/setup.spec.ts",
+          "line": 105
+        },
+        {
+          "path": "test/local-app/editor.spec.ts",
+          "line": 197
+        },
+        {
+          "path": "test/local-baseline/reader-first.spec.ts",
+          "line": 122
+        }
+      ]
+    },
+    {
+      "id": "F2",
+      "classification": "stale-exact-shape-fixture",
+      "boundary": "Account route now includes detached:false",
+      "evidence": "Both handoff failures are exact equality comparisons with one extra field. accountStartup intentionally returns detached:!!detached; authenticated removal uses detached routes.",
+      "next": "Add the explicit false field to expected connected routes, keeping exact identity/shape assertions and invalid-passkey control. Rerun the full generated histories currently stopped by the early comparison.",
+      "refs": [
+        {
+          "path": "src/crdt/accountStartup.ts",
+          "line": 340
+        },
+        {
+          "path": "test/account-handoff/native.test.mjs",
+          "line": 342
+        }
+      ]
+    },
+    {
+      "id": "F3",
+      "classification": "stale-schema-expectations",
+      "boundary": "Explicit service upgrade versions",
+      "evidence": "The retained session-host test expects 23 and receives 26; current core explicitly supports/installs 26 for continuation. The separately supplied schema-five browser fixture reaches its upgrade and expects 5 to 8 but observes 5 to 11.",
+      "next": "Review exact version/title/log expectations while retaining original backup, key, pin, pending account, passkey and writing comparisons. Execute the previously blocked remainder; no retention pass is implied.",
+      "refs": [
+        {
+          "path": "test/account-sessions/host.test.mjs",
+          "line": 179
+        },
+        {
+          "path": "account-service/core.ts",
+          "line": 528
+        },
+        {
+          "path": "test/first-device-upgrade/upgrade.spec.ts",
+          "line": 158
+        }
+      ]
+    },
+    {
+      "id": "F4",
+      "classification": "stale-refusal-expectation",
+      "boundary": "Counter v3 compatibility refusal",
+      "evidence": "Existing malformed-counter test expects repair-required for every mutation including v:3. The implemented compatibility fence and documented boundary use app-update-required for that unsupported Local-baseline reader shape. Both refuse.",
+      "next": "Review the precise v3 branch only, retaining all malformed-field refusals and no-state-inference assertions. Do not broadly replace repair-required.",
+      "refs": [
+        {
+          "path": "test/account-counter-contract/formats.test.mjs",
+          "line": 156
+        },
+        {
+          "path": "docs/account-local-baseline-anchoring.md",
+          "line": 88
+        }
+      ]
+    },
+    {
+      "id": "F5",
+      "classification": "stale-result-shape-expectation",
+      "boundary": "Superseded receive response",
+      "evidence": "The diagnostic observes unknown/recorded:false, zero progress and unchanged writing. The September 16 decision explicitly says a reply bound to a superseded request is transiently discarded; source catches ReceiveAuthorityChanged into that shape.",
+      "next": "Review exact result-shape expectation while retaining single-flight, no-progress and writing-preservation assertions.",
+      "refs": [
+        {
+          "path": "test/account-receive-transport/native.test.mjs",
+          "line": 177
+        },
+        {
+          "path": "src/crdt/accountReceive.ts",
+          "line": 2911
+        },
+        {
+          "path": "docs/decisions.md",
+          "line": 4024
+        }
+      ]
+    },
+    {
+      "id": "F6",
+      "classification": "stale-environment-fixture",
+      "boundary": "Profiled test realm used for ordinary global-exposure assertion",
+      "evidence": "Inherited receive-editor bundle deliberately defines VITE_ACCOUNT_LEDGER_PROFILE=1. The old sync test expects __doneLedgerMetrics absent in that same realm. The preserved fresh-realm observation finds it absent in ordinary/reference unprofiled bundles.",
+      "next": "Review separation of profiled metrics evidence from the ordinary unprofiled exposure assertion. Do not simply remove the absence assertion or call the profiled fixture ordinary.",
+      "refs": [
+        {
+          "path": "test/account-receive-editor/fixtures.mjs",
+          "line": 12
+        },
+        {
+          "path": "test/account-sync/native.test.mjs",
+          "line": 870
+        }
+      ]
+    },
+    {
+      "id": "F7",
+      "classification": "stale-boundary-fixture",
+      "boundary": "R-01 wire-size test reaches earlier HTTP limit",
+      "evidence": "The wire fixture uses 600 KiB before hex encoding. The October 12 HTTP page ceiling is now 1,057,280 bytes; it rejects this response as response-too-large before the decoded envelope can produce inbound-size. Both limits and their distinction are documented.",
+      "next": "Review an input that actually reaches the decoded limit while fitting the HTTP ceiling, alongside a separate oversized HTTP input. Keep terminal halt, preserved Local state and explicit retry assertions.",
+      "refs": [
+        {
+          "path": "test/account-receive-driver/native.test.mjs",
+          "line": 257
+        },
+        {
+          "path": "docs/account-receive-transport.md",
+          "line": 7
+        },
+        {
+          "path": "docs/account-receive-driver.md",
+          "line": 66
+        }
+      ]
+    },
+    {
+      "id": "F8",
+      "classification": "stale-generated-model",
+      "boundary": "Service-inbound continuation after detected corruption",
+      "evidence": "The generated history changes a decision ordinal, observes ledger-integrity, restores SQL bytes and expects the same owner to accept another append. The documented quarantine survives restoration until restart. A new minimal diagnostic confirms: first append decision; corrupted read unknown/ledger-integrity; original census restored; same-owner append/read still unknown; cold restart append decision.",
+      "next": "Review a quarantine-aware independent model. Preserve explicit same-owner refusal after byte restoration and full-verification recovery on restart; do not weaken the service quarantine.",
+      "refs": [
+        {
+          "path": "test/account-service-inbound/generated.test.mjs",
+          "line": 96
+        },
+        {
+          "path": "account-service/publisherTips.ts",
+          "line": 127
+        },
+        {
+          "path": "docs/account-service-delivery.md",
+          "line": 157
+        }
+      ]
+    },
+    {
+      "id": "H1",
+      "classification": "broken-source-snapshot-fixtures",
+      "boundary": "Legacy frozen source closures and driver dependency copy",
+      "evidence": "Legacy import/selection/cleanup/coordinator copy current imports without account-protocol. Driver controls omit account/accountHttp. These fail to load before the promised behavior. Three other snapshot runners already have approved repairs and passed.",
+      "next": "Prepare separately reviewed complete copied/hashed closures, retaining the historical source identity. Rerun all currently unreachable cases.",
+      "refs": [
+        {
+          "path": "scripts/legacy-import/run.mjs"
+        },
+        {
+          "path": "scripts/legacy-selection/run.mjs"
+        },
+        {
+          "path": "scripts/legacy-cleanup/run.mjs"
+        },
+        {
+          "path": "scripts/legacy-coordinator/run.mjs"
+        },
+        {
+          "path": "test/account-driver/controls.test.mjs"
+        }
+      ]
+    },
+    {
+      "id": "H2",
+      "classification": "broken-historical-harness",
+      "boundary": "Historical module mixed with new dependency graph; emitted chunks discarded",
+      "evidence": "Receive uses an old promotionRecord without authenticatePromotionRows required by the current caller. Admission-bounds uses an old admission module without coverageParts/certification/COVERAGE_LIMIT required by current imports. Successor adapter writes only one emitted Vite chunk although the generated entry imports sibling chunks.",
+      "next": "Review complete historical artifact/dependency closures and retain all generated output chunks. Replacing an old reader with a current one or using parse-only checks would lose the intended compatibility evidence.",
+      "refs": [
+        {
+          "path": "test/account-receive/fixtures.mjs"
+        },
+        {
+          "path": "test/account-admission-bounds"
+        },
+        {
+          "path": "test/account-successor/client-fixtures.mjs",
+          "line": 54
+        }
+      ]
+    },
+    {
+      "id": "H3",
+      "classification": "mutation-coverage-gap",
+      "boundary": "Moved controls and controls stopped by another guard",
+      "evidence": "Admission/capture/store/local-custody and service-delivery controls have missing/nonunique anchors or earlier ledger-integrity refusal. Successor controls have moved snapshot/install-cut anchors. A mutant refused by another safety guard has not demonstrated the intended bad outcome.",
+      "next": "Review each unique semantic anchor and an independent sensitivity challenge. Do not count load errors or another refusal as detection of the specified missing guard, and do not disable added safety checks merely to make old controls escape.",
+      "refs": [
+        {
+          "path": "test/account-admission/controls.test.mjs"
+        },
+        {
+          "path": "test/account-capture/fixtures.mjs"
+        },
+        {
+          "path": "test/account-service-delivery/controls.test.mjs"
+        },
+        {
+          "path": "test/account-service-inbound/controls.test.mjs"
+        },
+        {
+          "path": "test/account-store-contract/native.test.mjs"
+        },
+        {
+          "path": "test/account-local-custody"
+        }
+      ]
+    },
+    {
+      "id": "H4",
+      "classification": "mutation-coverage-gap",
+      "boundary": "Local genesis controls error before intended fault observation",
+      "evidence": "Isolated baseline passes all 17 cases. skip-factor-confirmation is detected; forget-completed-stage/G14, skip-progress-authentication/G15 and legacy-overwrites-local/G16 time out during create/settled. The original overlapped run remains contaminated and failed.",
+      "next": "Review control activation/schedule so normal setup completes and the intended failure boundary is observed. No assertion or deadline change is proposed here.",
+      "refs": [
+        {
+          "path": "scripts/local-genesis/scenarios.mjs",
+          "line": 23
+        },
+        {
+          "path": "scripts/local-genesis/catalog.mjs"
+        }
+      ]
+    },
+    {
+      "id": "U1",
+      "classification": "unresolved-contract-disagreement",
+      "boundary": "Successor field accepted on v8 marker",
+      "evidence": "The old test requires rejecting successor on v8. Commit 684f4f06 intentionally broadened structural parsing from v9 to v6-v9 while adding second-device checkpoint support; the earlier contract describes v9 only. Parsing is not authority, and stage/MAC verification still matters. Both current and previous signed source fail the old assertion.",
+      "next": "Resolve supported structural stages against authenticated checkpoint/activation requirements and add discriminating MAC/field-removal checks before approving any old security assertion change.",
+      "refs": [
+        {
+          "path": "src/crdt/promotionRecord.ts",
+          "line": 126
+        },
+        {
+          "path": "test/account-successor/owner-controls.test.mjs",
+          "line": 106
+        },
+        {
+          "path": "docs/decisions.md",
+          "line": 4016
+        }
+      ]
+    },
+    {
+      "id": "U2",
+      "classification": "unresolved-runtime-or-test-lifecycle",
+      "boundary": "Cold discovery after cancelling held response",
+      "evidence": "The original assertion fails on both retained signed sources. The settled helper checks send and receive positions, not completed authority discovery, suggesting an early-close race. A new diagnostic that awaited explicit discovery timed out at its 60-second boundary without producing the planned observation; this does not establish the hypothesis.",
+      "next": "Instrument stage boundaries and establish whether the supported automatic receive lifetime discovers/installs before changing the original test. Preserve the failed new diagnostic.",
+      "refs": [
+        {
+          "path": "test/account-successor/reconnect.test.mjs",
+          "line": 117
+        },
+        {
+          "path": "test/account-sync/fixtures.mjs",
+          "line": 250
+        }
+      ]
+    },
+    {
+      "id": "P1",
+      "classification": "deferred-formatting-only",
+      "boundary": "Construction registry and old recovery-entry formatting",
+      "evidence": "Formatting proposals remain unapplied at the operator request; a passing proposal-only run is not a current gate pass. Existing five-file formatting patch remains preserved.",
+      "next": "Keep separate from correctness repairs; do not apply without approval. No security qualification follows from formatting.",
+      "refs": [
+        {
+          "path": "docs/account-crypto/constructions.json"
+        },
+        {
+          "path": "test/account-recovery/coordinator-entry.ts"
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "classification": "previously-approved-fixtures-repaired",
+      "boundary": "Five catalogues, three snapshot runners and runner census/closure updates",
+      "evidence": "All eight approved native harness reruns passed. The approved 5af-based runner fixture checkout passed 289 cases; the later repair source rerun passed 288/289 before census refresh, and all 87 affected gate/registry cases passed afterward. No new complete 289-case run is claimed here. Latest runtime unit and browser checks are in the separate repair packet.",
+      "next": "Keep those rows closed as specific approved repairs; do not reopen them as unrelated product defects or treat them as aggregate qualification.",
+      "refs": [
+        {
+          "path": "docs/account-conformance-runs/2026-10-15-multi-tab-setup/receipts/approved-old-test-boundary.json"
+        },
+        {
+          "path": "docs/account-conformance-runs/2026-10-15-full-functional-suite/README.md",
+          "line": 125
+        }
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "name": "session",
+      "outcome": "unchanged old test failed; separate non-secret network hook recorded the unavailable checkpoint route",
+      "file": "session-network.json"
+    },
+    {
+      "name": "service-inbound",
+      "outcome": "observation completed; documented same-owner quarantine and cold restart confirmed",
+      "file": "service-inbound-observation.json"
+    },
+    {
+      "name": "dev-fresh-cache",
+      "outcome": "page failed with missing compiler-runtime named c export; empty cache and fresh context",
+      "file": "dev-fresh-cache.json"
+    },
+    {
+      "name": "successor-cold-discovery",
+      "outcome": "cancelled at 60-second timeout; no observation obtained",
+      "file": "successor-discovery-observation.log"
+    }
+  ],
+  "oldTestsModified": false,
+  "repositoryClean": true,
+  "releaseQualification": "paused",
+  "mergeOrDeployment": false,
+  "artifacts": [
+    {
+      "path": "dev-fresh-cache.json",
+      "sha256": "0a82a169afa70abffdf24bd6976f924008eeee7265081b4e9bc1915ee026c097"
+    },
+    {
+      "path": "dev-fresh-cache.log",
+      "sha256": "abe8d85d681e1ef4a96f392f3c9cc736cd945e4edd6803c0a768ab4ee7850ab1"
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "53e23422dea319b3226ca0e5e27ccf22d716e736a4579ffd26267761a34a1e6b"
+    },
+    {
+      "path": "service-inbound-observation.json",
+      "sha256": "64adc7a8ac90910d5692cb4b18a1ccf5637ca191e6786187024ea65e7473bea5"
+    },
+    {
+      "path": "service-inbound-observation.log",
+      "sha256": "35eaca7a0c7863d788d138b525c2fd0720406f069e45a6545ef054607f1e20dc"
+    },
+    {
+      "path": "service-inbound-observation.mjs",
+      "sha256": "6f57d5234d2e26b9d383e0802170f7e31555766557886db4e28d79bd9b9e1df3"
+    },
+    {
+      "path": "session-diagnostic.spec.ts",
+      "sha256": "765ccf3b1c1f708fbbc3138a7a93db73939f9ad5b5a94ff14b021e9c7f10d5f7"
+    },
+    {
+      "path": "session-network.json",
+      "sha256": "a297648c808dc02d0dd8f685b777096bd963d6aed0a934bd5be3d7fdf6ef9411"
+    },
+    {
+      "path": "session-report.json",
+      "sha256": "737ddc470a93d435107ee0c7d7df6a8b8deceb697c5a5789c7a91e04b69381c0"
+    },
+    {
+      "path": "session.log",
+      "sha256": "a241aefb1f1ee1636399338764fbdc0b395a71e09ca44163eb28073deec110a9"
+    },
+    {
+      "path": "successor-discovery-observation.log",
+      "sha256": "3ab2c3cf0aadcda45b5e0402031b39d46ccc21b1ccd2b2720726a20fd3201c1d"
+    },
+    {
+      "path": "successor-discovery-observation.test.mjs",
+      "sha256": "b51837aaeaa0a9de6cce9f2d98b4c4e3d3690e80e067666048ca219eaae1339d"
+    }
+  ]
+}

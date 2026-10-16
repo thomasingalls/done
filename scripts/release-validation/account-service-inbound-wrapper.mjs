@@ -283,9 +283,20 @@ export function reconcileServiceInboundEvidence(r) {
     query(c.baseline.request);
     assert.equal(c.baseline.result.kind, 'unknown', 'Inbound omission baseline did not refuse');
     assert.equal(
-      page(c.mutant, mode === 'witness' ? [] : c.originals, c.publicKey),
-      mode === 'witness' ? 0 : 1,
+      page(c.mutant, mode === 'publisher' ? [] : c.originals, c.publicKey),
+      mode === 'publisher' ? 0 : 1,
     );
+    if (mode === 'publisher') {
+      assert.equal(c.publisherPolicyOmissions, 2);
+      query(c.publisherLookup.request);
+      assert.equal(c.publisherLookup.request, c.mutant.request);
+      assert.deepEqual(c.publisherLookup.result, { kind: 'unknown', reason: 'unavailable' });
+    }
+    if (mode === 'witness')
+      assert.deepEqual(
+        c.redundantWitness,
+        Array(2).fill({ kind: 'unknown', reason: 'ledger-integrity' }),
+      );
     if (mode === 'registration') {
       assert.equal(c.activation.length, 2);
       for (const o of c.activation) {
@@ -319,7 +330,9 @@ export function reconcileServiceInboundEvidence(r) {
     assert(h.commands.length >= 4 && h.commands.length <= 14);
     assert.equal(h.observations.length, h.commands.length);
     const originals = [];
-    let saved, inventory;
+    let saved,
+      inventory,
+      quarantined = false;
     for (const [i, c] of h.commands.entries()) {
       assert(
         ['append', 'read', 'restart', 'replay', 'reader', 'publisher', 'ledger'].includes(c.op),
@@ -337,6 +350,11 @@ export function reconcileServiceInboundEvidence(r) {
       if (c.op === 'append') {
         assert.equal(o.position, originals.length + 1);
         wire(o.envelope);
+        if (quarantined) {
+          unchanged(o);
+          assert.deepEqual(o.result, { kind: 'unknown', reason: 'ledger-integrity' });
+          continue;
+        }
         assert.equal(o.result.kind, 'decision');
         const result = JSON.parse(wire(o.result.bytes));
         assert.deepEqual(result.slice(0, 3), ['done/position-response/v1', 1, 'accepted']);
@@ -346,7 +364,10 @@ export function reconcileServiceInboundEvidence(r) {
         continue;
       }
       unchanged(o);
-      if (c.op === 'restart') continue;
+      if (c.op === 'restart') {
+        quarantined = false;
+        continue;
+      }
       const q = query(o.request),
         after = c.cursor % (originals.length + 1);
       if (c.op === 'replay' && saved !== undefined)
@@ -359,14 +380,29 @@ export function reconcileServiceInboundEvidence(r) {
         assert.equal(q[c.op === 'reader' ? 5 : 6], 'ac'.repeat(16));
         assert.equal(o.result.kind, 'unknown');
       } else if (c.op === 'ledger' && originals.length) {
-        assert.equal(o.result.kind, 'unknown');
+        assert.deepEqual(o.result, { kind: 'unknown', reason: 'ledger-integrity' });
+        quarantined = true;
         assert.match(o.faulted, /^[0-9a-f]{64}$/);
         assert.notEqual(o.faulted, o.before);
+      } else if (quarantined) {
+        assert.deepEqual(o.result, { kind: 'unknown', reason: 'ledger-integrity' });
       } else {
         page(o, originals, h.publicKey);
         saved = o.request;
       }
     }
+    if (quarantined) {
+      assert(h.recovery, 'Missing final quarantine and restart proof');
+      unchanged(h.recovery);
+      assert.equal(h.recovery.before, inventory);
+      query(h.recovery.read.request);
+      assert.deepEqual(h.recovery.read.result, { kind: 'unknown', reason: 'ledger-integrity' });
+      assert.equal(h.recovery.append.position, originals.length + 1);
+      wire(h.recovery.append.envelope);
+      assert.deepEqual(h.recovery.append.result, { kind: 'unknown', reason: 'ledger-integrity' });
+      unchanged(h.recovery.restart);
+      assert.equal(h.recovery.restart.before, inventory);
+    } else assert.equal(h.recovery, undefined);
     let after = 0;
     assert(h.final.length >= 1 && h.final.length <= Math.max(1, originals.length));
     for (const o of h.final) {

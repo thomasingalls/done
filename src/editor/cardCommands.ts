@@ -88,10 +88,10 @@ export const cardKeymap = (hooks: CardHooks): Extension =>
   ]);
 
 /** Unmounts back to static when focus goes elsewhere (TRD §4.4). */
-export const blurToStatic = (onBlur: () => void): Extension =>
+export const blurToStatic = (onBlur: (event: FocusEvent) => void): Extension =>
   EditorView.domEventHandlers({
-    blur() {
-      onBlur();
+    blur(event) {
+      onBlur(event);
       return false;
     },
   });

@@ -1,3 +1,4 @@
+import { defaultDeviceName } from '../lib/browser';
 import { RemovalPending } from './accountTransitionNotice';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import { NetworkLogin, prewarmSlotLogin } from './networkLogin';
@@ -19,18 +20,23 @@ import { preparePromotionGenesis } from '../crdt/promotionGenesis';
 import { admitLocalPromotion } from '../crdt/promotionAdmission';
 import { finishPromotionHandoff } from '../crdt/promotionHandoff';
 import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
-import { withPromotionSlot } from '../crdt/writeSession';
+import { withPromotionSlot, onSlotRetirement, openWriteSession } from '../crdt/writeSession';
+import { readLocalClaim } from '../crdt/localGenesisRecord';
+import type { StartupDisposition } from '../crdt/startupState';
 import { readPromotion } from '../crdt/promotionRecord';
 import { hex } from '../crdt/custodyCrypto';
 import type { LocalPasskey } from '../crdt/accountAccess';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 import { withRecoveryOwner } from './recoveryOwner';
 import { verifyPendingProof } from '../../account-protocol/preparation';
+import type { PromotionOpening } from './promotionOpening';
+import { SetupRetired } from './setupMetadata';
+import { registrationResponse, authenticationResponse } from './passkeyResponse';
 
 import {
   SETUP_DB,
   progressKey,
-  setupProgress,
+  createSetupProgress,
   displayName,
   randomCapability,
   type SetupConfig,
@@ -49,10 +55,15 @@ export {
   type SetupState,
 } from './setupProgress';
 class SetupNotice extends Error {}
+class SetupContinuationNotice extends Error {}
 
-export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
+export function createFirstDeviceSetup(
+  input: SetupConfig,
+  slotId = 'local',
+  takeInitialCode?: () => string | undefined,
+) {
   progressKey(slotId);
-  const progress = (value?: Retained | null) => setupProgress(value, slotId);
+  const progress = createSetupProgress(slotId);
   const pin = parseAuthorityPin(input.pin);
   if (pin.origin !== location.origin || (!input.networkSessions && !isPrivateAccess(input.token)))
     throw Error('Account service configuration does not match this page');
@@ -77,6 +88,22 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
   let closing: Promise<void> | undefined;
   let unsubscribe: (() => void) | undefined;
   let ownsSetup = false;
+  let takeHandoffCode = takeInitialCode;
+  let promotionOpening: PromotionOpening | undefined;
+  let approval: { invoke: () => void; reject: (error: Error) => void } | undefined;
+  const approve = <T>(message: string, description: string, work: () => Promise<T>): Promise<T> =>
+    new Promise((resolve, reject) => {
+      guard();
+      approval = {
+        reject,
+        invoke: () => {
+          approval = undefined;
+          publish({ kind: 'working', message: 'Follow your browser’s passkey prompt…' });
+          void work().then(resolve, reject);
+        },
+      };
+      publish({ kind: 'approve-passkey', message, description });
+    });
   let releaseSetup: (() => void) | undefined;
   let lease: Promise<void> | undefined;
   const acquireSetup = () =>
@@ -147,6 +174,25 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     }
     return result;
   };
+  // Classification controls presentation only. Existing factor/promotion owners still verify
+  // every continuation. A refusal is never evidence that a code exists or that genesis is fresh.
+  const entryDisposition = async (): Promise<StartupDisposition> => {
+    const result = await inspectLocalStartup(slotId, { signal: lifetime.signal });
+    if (slotId !== 'local' || result.kind !== 'unlock-required') return result;
+    const session = await openWriteSession(slotId, { signal: lifetime.signal });
+    try {
+      return await session.run(async (task) => {
+        const claim = await readLocalClaim(task, slotId);
+        return claim?.automatic
+          ? { kind: 'identity-required', reason: 'enable-local-protection-before-sync' }
+          : result;
+      });
+    } finally {
+      await session.close();
+    }
+  };
+  const needsCode = (result: StartupDisposition) =>
+    result.kind === 'unlock-required' || result.kind === 'creation-pending';
   const transport = {
     inspect: (body: unknown) => request('preparation/inspect', body),
     abandon: (body: unknown) => request('preparation/abandon', body),
@@ -162,7 +208,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     })) as PublicKeyCredential | null;
     guard();
     if (!credential) throw Error('Passkey request cancelled');
-    return credential.toJSON();
+    return authenticationResponse(credential);
   };
   const assertPasskey: LocalPasskey = async ({
     rpId,
@@ -279,6 +325,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         pin,
         local: { slotId, code },
         ...(slotId !== 'local' ? { perSlotProgress: true as const } : {}),
+        isolateSetupProgress: true,
         accountId: accountId(),
         retryKey: saved!.retryKey,
         signal: lifetime.signal,
@@ -295,7 +342,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     message: string,
     fallback: Exclude<
       SetupState,
-      { kind: 'ready' | 'working' | 'save-recovery' | 'save-device-code' }
+      { kind: 'ready' | 'working' | 'save-recovery' | 'save-device-code' | 'approve-passkey' }
     >['kind'],
     work: () => Promise<void>,
   ) => {
@@ -312,24 +359,35 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       })
       .catch((cause: unknown) => {
         if (lifetime.signal.aborted) return;
-        if (fallback === 'unlock') code = '';
+        if (cause instanceof SetupRetired) {
+          saved = null;
+          code = '';
+          context = undefined;
+          draftName = undefined;
+        }
+        const continuation = cause instanceof SetupContinuationNotice;
+        if (!continuation && (fallback === 'unlock' || fallback === 'storage-blocked')) code = '';
         const cancelled =
           cause instanceof DOMException && ['NotAllowedError', 'AbortError'].includes(cause.name);
         publish({
-          kind: fallback,
+          kind: continuation ? 'resume-setup' : fallback,
           error: cancelled
             ? 'Passkey request cancelled. You can try again.'
-            : cause instanceof SetupNotice ||
+            : continuation ||
+                cause instanceof SetupRetired ||
+                cause instanceof SetupNotice ||
                 cause instanceof PrivateServiceUnavailable ||
                 cause instanceof RemovalPending
               ? cause.message
-              : fallback === 'unlock'
-                ? 'Could not unlock this workspace. Check your device-lock code and try again.'
-                : fallback === 'confirm-recovery'
-                  ? 'Could not finish connecting. Check your saved recovery code and try again. Your progress has been kept.'
-                  : fallback === 'name'
-                    ? 'Your name could not be saved. Try again.'
-                    : 'The passkey step could not finish. Try again. Your setup progress has been kept.',
+              : fallback === 'storage-blocked'
+                ? 'Saved setup or browser storage could not be checked. Try again or choose another account. Your saved data has been kept.'
+                : fallback === 'unlock'
+                  ? 'Could not unlock this workspace. Check your device-lock code and try again.'
+                  : fallback === 'confirm-recovery'
+                    ? 'Could not finish connecting. Check your saved recovery code and try again. Your progress has been kept.'
+                    : fallback === 'name'
+                      ? 'Your name could not be saved. Try again.'
+                      : 'The passkey step could not finish. Try again. Your setup progress has been kept.',
         });
       })
       .finally(() => {
@@ -355,6 +413,8 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
     }
     publish({ kind: 'working', message: 'Opening your workspace…' });
+    const opening = promotionOpening;
+    promotionOpening = undefined;
     const opened = await openOwnedSyncingAccountWorkspace(
       {
         membershipContinuation: () => input.membershipContinuation === true,
@@ -368,15 +428,17 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         },
         signal: lifetime.signal,
         ...(networkLogin ? { networkLogin } : {}),
+        ...(opening ? { promotionOpening: opening } : {}),
         identity: {
           id: principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: `local:${principalId}`, name: 'This device' },
+          device: { id: `local:${principalId}`, name: defaultDeviceName() },
         },
       },
       token,
     );
     workspace = opened.workspace;
+    promotionOpening = undefined;
     sync = opened.sync;
     devices = opened.devices;
     openedPrincipal = principalId;
@@ -418,24 +480,44 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     }
   };
   const afterRegistration = async () => {
+    publish({
+      kind: 'working',
+      message: 'Checking your workspace…',
+      detail: 'If this waits, close other tabs using this list. Your writing will stay here.',
+    });
     const retained = await marker();
     if (retained && (retained.stage === 'handoff-selected' || retained.v >= 5))
       return openAccount(retained.source.principalId);
-    context = retained
-      ? {
-          principalId: retained.source.principalId,
-          workspaceId: retained.source.workspaceId,
-          lineageId: await promotionLineage(pin, accountId(), retained.source),
-          authRoot: pin.authRoot,
-        }
-      : (await inspectLocalPromotion(baseOptions())).context;
-    const status = await recovery((owner) => owner.status());
-    if (status === 'empty') {
-      const generated = await recovery((owner) => owner.generate());
-      guard();
-      recoveryDisplay = generated.code;
-      publish({ kind: 'save-recovery', code: generated.code });
-    } else publish({ kind: 'confirm-recovery' });
+    try {
+      context = retained
+        ? {
+            principalId: retained.source.principalId,
+            workspaceId: retained.source.workspaceId,
+            lineageId: await promotionLineage(pin, accountId(), retained.source),
+            authRoot: pin.authRoot,
+          }
+        : (await inspectLocalPromotion(baseOptions())).context;
+      const status = await recovery((owner) => owner.status());
+      if (status === 'empty') {
+        const generated = await recovery((owner) => owner.generate());
+        guard();
+        recoveryDisplay = generated.code;
+        publish({ kind: 'save-recovery', code: generated.code });
+      } else publish({ kind: 'confirm-recovery' });
+    } catch (cause) {
+      if (
+        cause instanceof SetupRetired ||
+        cause instanceof RemovalPending ||
+        lifetime.signal.aborted
+      )
+        throw cause;
+      throw new SetupContinuationNotice(
+        'Your unlock code was accepted, but account setup could not continue. ' +
+          (cause instanceof SetupNotice || cause instanceof PrivateServiceUnavailable
+            ? cause.message
+            : 'Try setup again, or return to your local workspace. Your writing has been kept.'),
+      );
+    }
   };
   const registrationView = (input: unknown): Result => {
     if (!input || typeof input !== 'object' || Array.isArray(input))
@@ -511,7 +593,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         identity: {
           id: principal,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: `local:${principal}`, name: 'This device' },
+          device: { id: `local:${principal}`, name: defaultDeviceName() },
         },
         validateReceive: () => {
           throw Error('Account setup does not accept network writing');
@@ -525,13 +607,29 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       }
       guard();
     }
-    if (saved.proof) return advanceRegistration(await request('finish', saved.proof));
-    await advanceRegistration(
-      await request('begin', { operation: 'register', retryKey: saved.retryKey }),
-    );
+    try {
+      if (saved.proof) return await advanceRegistration(await request('finish', saved.proof));
+      await advanceRegistration(
+        await request('begin', { operation: 'register', retryKey: saved.retryKey }),
+      );
+    } catch (cause) {
+      if (
+        cause instanceof SetupRetired ||
+        cause instanceof RemovalPending ||
+        lifetime.signal.aborted
+      )
+        throw cause;
+      throw new SetupContinuationNotice(
+        'Your unlock code was accepted, but account setup could not continue. ' +
+          (cause instanceof SetupNotice || cause instanceof PrivateServiceUnavailable
+            ? cause.message
+            : 'Try setup again, or return to your local workspace. Your writing has been kept.'),
+      );
+    }
   };
   const close = () => {
     if (closing) return closing;
+    stopRetirement();
     let lastName: string | undefined;
     try {
       lastName = displayName(
@@ -541,13 +639,19 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       /* A retired workspace has no readable name. */
     }
     lifetime.abort();
+    approval?.reject(new DOMException('Setup closed', 'AbortError'));
+    approval = undefined;
+    takeHandoffCode = undefined;
+    promotionOpening = undefined;
     networkLogin?.close();
     recoveryDisplay = undefined;
     deviceEnrollment?.cancel();
     deviceEnrollment = undefined;
     retireEditors();
+    // This owner is retired immediately; only its successor may accept another code.
     state = {
-      kind: 'unlock',
+      kind: 'working',
+      message: 'Locking and finishing storage operations…',
       returning: saved?.connected === true,
       accountName: lastName ?? saved?.name,
       accountId: saved?.view?.stage === 'credential-confirmed' ? saved.view.accountId : undefined,
@@ -574,11 +678,15 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
     });
     return closing;
   };
+  const stopRetirement = onSlotRetirement(slotId, () => {
+    void close().catch(() => {});
+  });
   return {
     get networkLogin() {
       return networkLogin;
     },
     getSnapshot: () => state,
+    approvePasskey: () => approval?.invoke(),
     hasRecoveryDisplay: () => recoveryDisplay !== undefined,
     visit(step: string): boolean {
       if (lifetime.signal.aborted || operation) return false;
@@ -624,30 +732,45 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
       };
     },
     inspect: () =>
-      run('Checking saved setup…', 'unlock', async () => {
+      run('Checking saved setup…', 'storage-blocked', async () => {
         saved = checkedSaved(await progress());
         if (!saved && slotId !== 'local')
           throw new SetupNotice(
             'Saved account setup is unavailable. Choose an account to continue.',
           );
-        if (saved?.fresh && !saved.view) {
-          const disposition = await inspectLocalStartup(slotId, { signal: lifetime.signal });
-          if (disposition.kind === 'fresh') return publish({ kind: 'intro' });
+        if (!saved || (!saved.connected && !saved.view)) {
+          const disposition = await entryDisposition();
+          if (saved?.fresh && disposition.kind === 'fresh') return publish({ kind: 'intro' });
+          if (!needsCode(disposition)) return publish({ kind: 'storage-blocked', disposition });
+        }
+        if (saved && !saved.connected) {
+          const transferred = takeHandoffCode?.();
+          takeHandoffCode = undefined;
+          if (transferred) {
+            code = transferred;
+            // The handoff is volatile input, not authority. Continuation rechecks the factor,
+            // current Local routing or the authenticated promotion before any further action.
+            await continueRegistration();
+            return;
+          }
         }
         if (networkLogin && saved) void prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
         publish({ kind: saved ? 'unlock' : 'intro' });
       }),
     start: (name: string) => {
-      draftName = displayName(name);
-      if (!draftName)
-        return publish({ kind: 'intro', error: 'Enter a name of up to 80 characters.' });
+      draftName = displayName(name) ?? 'You';
       if (saved?.fresh) {
-        void run('Preparing your new account…', 'intro', async () => {
+        void run('Preparing your new account…', 'storage-blocked', async () => {
           saved = { ...saved!, requestedName: draftName! };
           await progress(saved);
-          const disposition = await inspectLocalStartup(slotId, { signal: lifetime.signal });
+          const disposition = await entryDisposition();
           guard();
-          if (disposition.kind !== 'fresh') return publish({ kind: 'unlock' });
+          if (disposition.kind !== 'fresh')
+            return publish(
+              needsCode(disposition)
+                ? { kind: 'unlock' }
+                : { kind: 'storage-blocked', disposition },
+            );
           deviceEnrollment ??= beginLocalGenesis(slotId, { signal: lifetime.signal });
           const generated = deviceEnrollment.displayCode;
           if (!generated) throw Error('Device-lock code could not be generated');
@@ -655,7 +778,34 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
         });
         return;
       }
-      publish({ kind: 'unlock' });
+      const transferred = takeHandoffCode?.();
+      takeHandoffCode = undefined;
+      if (transferred) {
+        void run('Preparing encrypted sync…', 'unlock', async () => {
+          code = transferred;
+          saved = checkedSaved(await progress());
+          if (!saved) {
+            saved = {
+              v: 1,
+              pin,
+              slotId,
+              retryKey: randomCapability(),
+              view: null,
+              proof: null,
+              requestedName: draftName!,
+            };
+            await progress(saved);
+          }
+          await continueRegistration();
+        });
+        return;
+      }
+      void run('Checking your workspace…', 'storage-blocked', async () => {
+        const disposition = await entryDisposition();
+        publish(
+          needsCode(disposition) ? { kind: 'unlock' } : { kind: 'storage-blocked', disposition },
+        );
+      });
     },
     savedDeviceCode: () => {
       if (state.kind === 'save-device-code') publish({ kind: 'confirm-device-code' });
@@ -748,7 +898,7 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
             })) as PublicKeyCredential | null;
             guard();
             if (!credential) throw Error('Passkey request cancelled');
-            response = credential.toJSON();
+            response = registrationResponse(credential);
           } else response = await assert(view.options);
           saved = {
             ...saved,
@@ -764,6 +914,10 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           await advanceRegistration(await request('finish', saved.proof));
         },
       ),
+    resumeSetup: () =>
+      state.kind === 'resume-setup' && code
+        ? run('Continuing account setup…', 'unlock', continueRegistration)
+        : Promise.resolve(),
     savedRecovery: () => {
       if (state.kind === 'save-recovery') publish({ kind: 'confirm-recovery' });
     },
@@ -800,7 +954,12 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           ) {
             await admitLocalPromotion({
               ...options,
-              assertActivation: assert,
+              assertActivation: (options) =>
+                approve(
+                  'Enable encrypted sync',
+                  'Your passkey approves connecting this exact list and its recovery setup to your account.',
+                  () => assert(options),
+                ),
               admissionTransport: {
                 begin: (body) => request('promotion/begin', body),
                 challenge: (body) => request('promotion/challenge', body),
@@ -810,12 +969,23 @@ export function createFirstDeviceSetup(input: SetupConfig, slotId = 'local') {
           }
           const selected = await finishPromotionHandoff({
             ...options,
-            assertPasskey,
+            assertPasskey: (request) =>
+              approve(
+                'Open your list and connect sync',
+                'Your passkey approves opening this protected list and, when the service is reachable, signing in to sync. This approval also finishes setup on this device.',
+                () => assertPasskey(request),
+              ),
+            opening: {
+              signal: lifetime.signal,
+              ...(networkLogin ? { login: networkLogin } : {}),
+              receive: (opening) => {
+                promotionOpening = opening;
+              },
+            },
             bindingTransport: (body) => request('promotion/binding', body),
           });
           // The slot binding did not exist when setup began. Prepare its combined challenge
           // now so the first editor-opening assertion also establishes the network login.
-          if (networkLogin) await prewarmSlotLogin(networkLogin, slotId, lifetime.signal);
           await openAccount(selected.principalId);
         } finally {
           recoveryCode = '';

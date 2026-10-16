@@ -27,17 +27,35 @@ const AccountRecoveryApp = lazy(() =>
 );
 import { AccountSignIn } from './AccountSignIn';
 const LocalApp = lazy(() => import('./LocalApp').then((module) => ({ default: module.LocalApp })));
-import { Welcome } from './Welcome';
 import { AppUpdateNotice } from './AppUpdateNotice';
 import { PreviewNavigationContext } from './ceremonyNavigation';
+import { rememberedDeviceConnections } from '../account/deviceConnectionRoutes';
+import { rememberedRecoveryRoutes } from '../account/lostRecoveryRoutes';
+const DeviceDataRemoval = lazy(() =>
+  import('./DeviceDataRemoval').then((module) => ({ default: module.DeviceDataRemoval })),
+);
+
+/** A metadata read failure cannot authorize a fresh workspace or silent fallback. */
+export function SavedSetupReadError() {
+  return (
+    <main className="local-startup">
+      <p role="alert">Saved setup could not be read. Your browser data has been kept.</p>
+      <a href="/">Return to done</a>
+    </main>
+  );
+}
 
 const ACCESS_CHOICE = 'done.account-setup.access-choice';
 const ACCESS_SLOT = 'done.account-setup.selected-slot';
 
 /** One preview router shared by old HTML entry points and ordinary browser navigation. */
-export async function createAccountPreview(config: SetupConfig) {
+export async function createAccountPreview(
+  config: SetupConfig,
+  initial?: { entry: string; name?: string; code?: string },
+) {
   const history = createBrowserHistory();
   let entry = location.pathname + location.search;
+  if (initial) entry = initial.entry;
   if (location.pathname === '/private/account-enrollment.html')
     entry = '/connect/' + (location.search ? 'prepare' : 'choose') + location.search;
   else if (['/private/account-setup.html', '/local.html'].includes(location.pathname)) {
@@ -57,12 +75,7 @@ export async function createAccountPreview(config: SetupConfig) {
     ]).catch(() => null);
     if (!resolved) {
       history.destroy();
-      return (
-        <main className="local-startup">
-          <p role="alert">Saved setup could not be read. Your browser data has been kept.</p>
-          <a href="/">Return to done</a>
-        </main>
-      );
+      return <SavedSetupReadError />;
     }
     const [pending, accounts] = resolved;
     entry =
@@ -99,6 +112,9 @@ export async function createAccountPreview(config: SetupConfig) {
   // Only non-secret name drafts live across chooser visits. Credential displays
   // belong to the mounted owner, not router data, loaders or history entries.
   const names = new Map<string, string>();
+  const syncCodes = new Map<string, string>();
+  if (initial?.name) names.set('local', initial.name);
+  if (initial?.code) syncCodes.set('local', initial.code);
   let beginLocal = false;
   const root = createRootRoute({ component: Frame });
   const welcome = createRoute({ getParentRoute: () => root, path: '/', component: Splash });
@@ -119,11 +135,17 @@ export async function createAccountPreview(config: SetupConfig) {
     path: '/recover/$slotId',
     component: Recover,
   });
+  const remove = createRoute({
+    getParentRoute: () => root,
+    path: '/remove/$slotId',
+    component: Remove,
+  });
   const router = createRouter({
     history,
     routeTree: root.addChildren([
       welcome,
       accounts,
+      remove,
       local.addChildren([
         createRoute({ getParentRoute: () => local, path: '$step', component: () => null }),
       ]),
@@ -181,6 +203,14 @@ export async function createAccountPreview(config: SetupConfig) {
   };
   function Frame() {
     const active = useLocation();
+    useEffect(() => {
+      if (!active.pathname.startsWith('/setup/local/')) syncCodes.clear();
+    }, [active.pathname]);
+    useEffect(() => {
+      const retire = () => syncCodes.clear();
+      window.addEventListener('pagehide', retire);
+      return () => window.removeEventListener('pagehide', retire);
+    }, []);
     const [offline, setOffline] = useState(!navigator.onLine);
     useEffect(() => {
       const update = () => setOffline(!navigator.onLine);
@@ -211,16 +241,43 @@ export async function createAccountPreview(config: SetupConfig) {
     );
   }
   function Splash() {
-    return (
-      <Welcome
-        onCreateWorkspace={createAccount}
-        onChooseAccount={choose}
-        onCreateLocal={() => {
-          beginLocal = true;
-          openLocal();
-        }}
-      />
-    );
+    const [target, setTarget] = useState<'local' | 'accounts' | string | null>(null);
+    useEffect(() => {
+      let live = true;
+      void rememberedAccounts(config.pin)
+        .then(async (accounts) => {
+          let selected: string | null = null;
+          try {
+            selected = sessionStorage.getItem(ACCESS_SLOT);
+          } catch {
+            /* optional selection */
+          }
+          const saved = accounts.find((account) => account.slotId === selected);
+          const otherSaved =
+            rememberedDeviceConnections().length > 0 ||
+            rememberedRecoveryRoutes(config.pin).length > 0;
+          const destination =
+            saved?.slotId ??
+            (accounts.length > 1 || otherSaved ? 'accounts' : (accounts[0]?.slotId ?? 'local'));
+          if (live) setTarget(destination);
+        })
+        .catch(() => {
+          if (live) setTarget('accounts');
+        });
+      return () => {
+        live = false;
+      };
+    }, []);
+    useEffect(() => {
+      if (target === 'accounts') choose();
+      else if (target && target !== 'local') select(target);
+      else if (target === 'local')
+        void hasFirstDeviceSetup('local').then((pending) => {
+          if (pending) select('local');
+          else openLocal();
+        });
+    }, [target]);
+    return <p role="status">Opening your saved list…</p>;
   }
   function Accounts() {
     const [epoch, setEpoch] = useState(0);
@@ -252,9 +309,13 @@ export async function createAccountPreview(config: SetupConfig) {
         onCreateWorkspace={createAccount}
         beginOnFresh={requested}
         onChooseAccount={choose}
-        onConnectAccount={(name) => {
+        onConnectAccount={(name, code) => {
           names.set('local', name);
+          if (code) syncCodes.set('local', code);
           select('local');
+        }}
+        onConnectExisting={() => {
+          void go('/connect/choose');
         }}
       />
     );
@@ -270,6 +331,11 @@ export async function createAccountPreview(config: SetupConfig) {
         config={config}
         slotId={slotId}
         initialName={names.get(slotId) ?? ''}
+        takeInitialCode={() => {
+          const code = syncCodes.get(slotId);
+          syncCodes.delete(slotId);
+          return code;
+        }}
         onName={(name) => names.set(slotId, name)}
         onBack={openLocal}
         onLock={lock}
@@ -279,6 +345,12 @@ export async function createAccountPreview(config: SetupConfig) {
         }}
       />
     );
+  }
+  function Remove() {
+    const { slotId } = remove.useParams();
+    if (!(isSetupSlot(slotId) || /^enrollment-[a-f0-9]{32}$/.test(slotId)))
+      return <p role="alert">Choose a saved workspace to remove.</p>;
+    return <DeviceDataRemoval slotId={slotId} onBack={choose} onStartFresh={openLocal} />;
   }
   function Connect() {
     const active = useLocation();

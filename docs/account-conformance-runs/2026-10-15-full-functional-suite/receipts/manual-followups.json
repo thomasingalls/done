@@ -1,0 +1,14 @@
+{
+  "jobs": [
+    {
+      "id": "playwright-control-observation",
+      "command": "node /private/tmp/done-playwright-control-observation.mjs",
+      "checkout": "<test-checkout>",
+      "status": "completed",
+      "reason": "Capture child process failure after both queued follow-up groups finish. Maintained separately because the running first group owns its pending-state snapshot.",
+      "observedStageStatus": "failed",
+      "receipt": "playwright-control-observation.json",
+      "completedAt": "2026-10-15T12:15:56.985Z"
+    }
+  ]
+}

@@ -21,11 +21,13 @@ test('both certified devices edit, exchange concurrent offline writing, and reop
     ).toBeVisible();
     await page.getByRole('link', { name: 'Close and return to accounts' }).click();
     await page.getByRole('button', { name: /^Unlock Device owner/ }).click();
-    await page.getByLabel('Device-lock code', { exact: true }).fill(first.code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(first.code);
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
     await expect(page.locator('.shell')).toBeVisible();
     const add = async (p: Page, text: string) => {
-      const compose = p.locator('.day-panel[data-active="true"] .compose-field');
+      const compose = p.locator(
+        '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+      );
       await compose.fill(text);
       await compose.press('Enter');
       await expect(p.locator('.shell')).toContainText(text);
@@ -42,6 +44,9 @@ test('both certified devices edit, exchange concurrent offline writing, and reop
       'Stream writing before the second editor opens',
     );
     const submissions: string[] = [];
+    // Own-stream accepted proofs can settle a lost submit reply without resubmitting.
+    // Hold that independent recovery path out of this exact byte-retry schedule.
+    await second.route('**/account/delivery/read*', (route) => route.abort());
     let loseReply = true;
     await second.route('**/account/delivery/submit', async (route) => {
       submissions.push(route.request().postDataBuffer()!.toString('hex'));
@@ -57,6 +62,7 @@ test('both certified devices edit, exchange concurrent offline writing, and reop
     });
     await expect.poll(() => submissions.length, { timeout: 30000 }).toBeGreaterThan(1);
     expect(submissions[1]).toBe(submissions[0]);
+    await second.unroute('**/account/delivery/read*');
     await add(page, 'First device replies through the encrypted stream');
     await expect(second.locator('.shell')).toContainText(
       'First device replies through the encrypted stream',
@@ -127,7 +133,7 @@ test('both certified devices edit, exchange concurrent offline writing, and reop
     await unlock(second, next.code);
     await expect(second.locator('.shell')).toBeVisible({ timeout: 15000 });
     await page.reload();
-    await page.getByLabel('Device-lock code', { exact: true }).fill(first.code);
+    await page.getByLabel('Unlock code', { exact: true }).fill(first.code);
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
     for (const p of [page, second])
       for (const text of [
@@ -561,13 +567,12 @@ test('root chooser resumes pending and approved connections; old attempts learn 
     const choose = async (workspaceId = workspace) => {
       await second.goto(new URL('/', first.link).href);
       await expect(
-        second.getByRole('heading', { name: 'Your Workspace', exact: true }),
+        second.getByRole('heading', { name: 'Choose an account', exact: true }),
       ).toBeVisible();
       await second.reload();
       await expect(
-        second.getByRole('heading', { name: 'Your Workspace', exact: true }),
+        second.getByRole('heading', { name: 'Choose an account', exact: true }),
       ).toBeVisible();
-      await second.getByRole('button', { name: 'I already have a workspace', exact: true }).click();
       await second
         .getByRole('button', {
           name: `Resume device connection, workspace ${workspaceId}`,
@@ -575,7 +580,7 @@ test('root chooser resumes pending and approved connections; old attempts learn 
         })
         .click();
       expect(new URL(second.url()).searchParams.has('invitation')).toBe(false);
-      await expect(second.getByLabel('Device-lock code', { exact: true })).toBeVisible();
+      await expect(second.getByLabel('Unlock code', { exact: true })).toBeVisible();
     };
     await choose();
     let bootstraps = 0;
@@ -961,15 +966,15 @@ test('browser Back locks and resumes both devices without replacing codes, cance
         credential,
       });
     await second.getByRole('button', { name: 'Prepare this device' }).click();
-    const code = (await second.getByLabel('Generated device-lock code').textContent())!;
-    await second.getByRole('button', { name: 'I saved my device-lock code' }).click();
+    const code = (await second.getByLabel('Generated unlock code').textContent())!;
+    await second.getByRole('button', { name: 'I saved my unlock code' }).click();
     await back(second);
-    await expect(second.getByLabel('Generated device-lock code')).toHaveText(code);
+    await expect(second.getByLabel('Generated unlock code')).toHaveText(code);
     await back(second);
     await expect(second.getByRole('button', { name: 'Prepare this device' })).toBeVisible();
     await second.getByRole('button', { name: 'Prepare this device' }).click();
-    await expect(second.getByLabel('Generated device-lock code')).toHaveText(code);
-    await second.getByRole('button', { name: 'I saved my device-lock code' }).click();
+    await expect(second.getByLabel('Generated unlock code')).toHaveText(code);
+    await second.getByRole('button', { name: 'I saved my unlock code' }).click();
     await unlock(second, code);
     await expect(second.getByRole('button', { name: 'Use account passkey' })).toBeVisible();
     const resume = async () => {

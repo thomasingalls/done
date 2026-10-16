@@ -1,0 +1,25 @@
+diff --git a/test/release-validation/playwright-native.test.mjs b/test/release-validation/playwright-native.test.mjs
+index 22294e62..77e2998e 100644
+--- a/test/release-validation/playwright-native.test.mjs
++++ b/test/release-validation/playwright-native.test.mjs
+@@ -38,6 +38,7 @@ function fixture(t, text = ordinary) {
+       'playwright-reporter',
+       'playwright-measurements',
+       'vitest-census',
++      'vitest-dispositions',
+       'registration-data',
+       'registration-modules',
+       'identity',
+diff --git a/test/release-validation/generated-tests.test.mjs b/test/release-validation/generated-tests.test.mjs
+index de0d0ed8..dcf8f314 100644
+--- a/test/release-validation/generated-tests.test.mjs
++++ b/test/release-validation/generated-tests.test.mjs
+@@ -247,7 +247,7 @@ test('all reviewed generated files retain 224 cases and the compact manifest pre
+   assert.equal(selectStages(restored, 'generated-tests').length, 14);
+   assert.equal(
+     selectStages(restored, 'general-tests').reduce((n, s) => n + s.expect.cases.length, 0),
+-    2428,
++    2437,
+   );
+   assert(manifest.rows.find((r) => r.path === 'test/accountDelivery.test.ts').stage);
+   assert.throws(() => selectStages(restored, 'release'), /Unresolved/);

@@ -1,0 +1,19 @@
+{
+  "stats": {
+    "startTime": "2026-10-16T09:33:37.925Z",
+    "duration": 34805.985,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "actual production reader upgrades and rolls back protected original and joined profiles without losing offline writing",
+      "status": "passed",
+      "durationMs": 33865,
+      "retry": 0,
+      "error": null
+    }
+  ]
+}

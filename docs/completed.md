@@ -14575,3 +14575,485 @@ history exists, use the retained compatible reader instead. Public conversion tr
 capacity/refusal UX, remaining preparation wait and current-phone checks are separate. No registry
 push, infrastructure or personal storage change occurred. `docs/progress.md` and unrelated notes
 remain untouched.
+
+### Checkpoint passkey compatibility and independent Local setup access
+
+**Date:** 2026-10-15 · **Source:** tested candidate after signed `42ebdd12`; this commit records the checkpoint · **Stage:** bounded implementation and real-provider testing, original report still open.
+
+**Exit.** The known native-JSON compatibility counterexample and misleading wrong-code continuation
+are repaired with nine new unit cases and five new packaged browser cases. The live Local handoff
+is consumed once and rechecked; failed registration continuation offers retry and independent Local
+access while cold visits still require the established factor. Explicit WebAuthn byte encoding
+replaces native credential JSON calls; existing server verification, protected Account requirements,
+storage formats and cryptographic policy remain unchanged.
+
+**Evidence.** The [packet](./account-conformance-runs/2026-10-15-passkey-local-access/README.md) retains
+1,763 passing unit tests with the existing single skip, 29 passing browser cases, three discriminating
+faults, failed baselines and intermediate attempts. Actual Firefox-private/Bitwarden creation,
+confirmation, recovery, connection, cold reopen and service-unreachable access pass on an isolated
+HTTPS origin with the preview's hostname/relying party and packaged CSP. Client adoption was checked
+independently: ordinary reload retained the old module; the app's update button loaded the exact
+candidate module. Original test writing and its code survived. The temporary route was removed and
+all original routes restored. Existing tests were neither edited nor removed.
+
+**Limits and next work.** The fresh HTTPS baseline also passed, so this checkpoint does not identify
+or claim to resolve the operator's original retained-state passkey failure. The operator requested
+this commit, an updated local 8443 preview and a full functional suite while retrying that flow.
+The full suite and user walkthrough are subsequent evidence, not established by these focused checks.
+Removal/migration and unissued-code routing remain open. General release qualification, merge and
+production deployment remain paused. The other workstream's `docs/progress.md` is untouched.
+
+### Full functional baseline after signed passkey/Local-access repair
+
+**Date:** 2026-10-15 · **Source:** signed `5afdd0ad3d478e19c86f28e4db042a2d77d70c13`.
+
+The requested 8443 preview update and full functional run are complete. The immutable frontend
+matches its served bytes; the separately running account backend and public service configuration
+were preserved. The continuation attempted all 85 listed commands beyond the initial custody
+failure: 36 passed and 49 failed. Repeated wrapper failures are not independent defects. The unit
+population passes 1,763 cases with one existing named skip. The full suite is red, not release-ready.
+
+Original failures and isolated rechecks are retained in the
+[functional packet](account-conformance-runs/2026-10-15-full-functional-suite/README.md), with 637
+hashed artifacts. The explicitly approved five catalogue/three snapshot repairs pass all eight
+native harness commands. The approved census/module-copy follow-up passes all 289 release-runner
+regression tests. No old test was removed or weakened. The proposed unrelated test formatting remains
+unapplied and preserved; the construction-registry formatting proposal was reverted as requested.
+
+Remaining functional disagreements include blocked-open metadata mutation, session receive failure,
+successor behavior, generated-history/control failures, stale entry fixtures and historical dependency
+closures. The isolated genesis run passes its 17 baseline cases but still has three errored mutation
+controls. The original Firefox report remained open at this boundary. A subsequent read-only summary
+and a disposable real-provider reproduction identify stale recovery ownership; its bounded repair is
+tracked separately in the [two-tab/setup packet](account-conformance-runs/2026-10-15-multi-tab-setup/README.md).
+General release qualification, merge, push and production deployment remain paused. The other seat's
+`docs/progress.md` was not replaced.
+
+### Repair stale recovery ownership after passkey confirmation
+
+**Date:** 2026-10-15 · **Source:** bounded follow-up to signed `5afdd0ad`; signing follows this record.
+
+**Problem and result.** A retained recovery draft from another account/retry and Local workspace
+blocked already-confirmed passkey setup. Resuming setup then mislabelled the valid Local factor as
+an invalid code. The independent Local verifier still opened the writing. The repair preserves the
+foreign v1 draft atomically under its identity before saving the current draft at the existing
+reader-compatible key. Matching legacy drafts resume in place. Selected setup/pin/removal checks
+fence metadata operations; explicit removal cleans only scoped or identified records. Continuation
+errors distinguish a verified factor from a later setup failure. Writer waits explain other tabs.
+
+**Evidence.** A packaged regression reproduces both exact messages before the repair. Initial unit
+counterexamples include a staged recovery write crossing removal. The updated source passes all
+1,769 unit cases with the same existing skip, 18 affected browser cases plus two existing removal
+regressions, all 25 unchanged recovery campaign cases, type/build/size/origin checks and focused lint.
+The broad runner recheck passed 288/289; its sole stale runtime census was reviewed and refreshed
+without changing any of 195 domains. All 87 affected gate/registry rerun cases pass. The independent
+patch-boundary comparison proves all 12 changed existing test/harness files match explicitly approved
+patches. No unrelated old formatting was applied.
+
+**Actual provider.** Disposable Firefox-private + Bitwarden reproduces the same two baseline errors
+after removing an earlier Local list. On the independently observed repair module, the same failing
+attempt resumes with its original code, completes real recovery/connection/opening assertions, and
+retains writing through lock plus code-and-Bitwarden cold reopening. The temporary 8445 route and
+both disposable services were removed; original route hashes match. The test credential remains
+in the vault as explicitly approved; no real credential was replaced. The
+[bounded packet](account-conformance-runs/2026-10-15-multi-tab-setup/README.md) retains source/build pins,
+failed results, new regressions, actual-provider observations and limitations.
+
+**Limits and handoff.** The broader functional baseline remains red. The planning manifest retains
+843 obligations and 303 unresolved obligations; no aggregate qualification, push, merge or production
+deployment was authorized or performed. Existing protected custody, verifier rules and crypto byte
+formats remain unchanged. Signed commit and local preview refresh are the following publication
+checkpoint; the operator's actual original workspace retry remains their observation to establish.
+
+### Sign the recovery repair and refresh the local preview
+
+**Date:** 2026-10-15 · **Runtime source:** signed `fcb659c32116d8af27598bba2fade1ac49cdd0e2`.
+
+The first signing attempt was refused by Secretive; staged work remained intact. After the operator
+authorized retry, the commit succeeded and its SSH signature verified. The immutable rebuild passes
+typecheck, required Yjs patch, origin and size checks (229.8/350 kB initial JS). All three new packaged
+browser regressions pass on that exact artifact without skips or retries. All 466 application/test
+source hashes pinned during the actual Firefox-private/Bitwarden walkthrough remain identical;
+the signed rebuild has different build metadata and a different setup asset.
+
+Preview `https://mbp.tail0e0d4.ts.net:8443` now serves version `fcb659c3`. Only the frontend was
+restarted. Backend PID 52585 on 53220, public configuration and Tailscale routes are unchanged. Four
+public-file hashes match the immutable build through both the local gateway and trusted HTTPS.
+The first probe incorrectly included a source map and received the expected 404; its corrected
+public-file filter and that limitation are retained. The old immutable build remains available for
+frontend rollback, with retained-draft reader limitations recorded in the
+[preview checkpoint](account-conformance-runs/2026-10-15-multi-tab-setup/preview/checkpoint.json).
+
+This outcome was appended before advancing the packet's active publication state. The operator's
+original-workspace retry and any cached-client adoption remain unobserved. The broader full suite
+remains red; no push, merge, production deployment or aggregate release qualification occurred.
+
+### Receiver compatibility and blocked-bootstrap metadata checkpoint
+
+**Date:** 2026-10-15 · **Base:** signed `faadbff5`; implementation uncommitted, old-fixture approval pending.
+
+The requested repairs are implemented in dependency order. A legacy session host now receives
+ordinary authenticated writing without the unsupported history endpoint. Authenticated installed
+or inherited history, later epochs/generations and a history requirement already observed in the
+current lifetime keep the existing history-first refusal on unavailable service. Public hints cannot
+disable that requirement. The new downgrade detector fails on an exactly applied hint-only control.
+
+Startup discovery now saves its hints only under the ordinary shared Local compatibility permit,
+after the network response. Both absent and present service counterexamples reproduce the old
+complete-census write; both now preserve the census. Refused compatibility omits optional cache
+writes without preventing a public locator from reaching the independently authenticated Account
+owner. Live capability refresh stays independent of an active Account's exclusive permit. A further
+new case caught a freshly advertised capability being lost when caching was refused; that is repaired.
+
+**Evidence.** The [packet](account-conformance-runs/2026-10-15-receiver-compatibility/README.md) retains
+53 hashed artifacts, source/build identities, counterexamples and failed attempts. The initial receiver
+repair passes its two new cases plus the unchanged session case. Both census cases and all three
+unchanged history journeys pass; the original two-live-writer exact-census case passes unchanged.
+The broader 26-case browser matrix passes before the final live-capability refinement. The final
+receiver/history/bootstrap run passes eight cases and reveals one erroneous new fixture which
+created a separate Account; correcting it to promote and prove the Local interlock passes all three
+bootstrap cases on that same final runtime. Ten new unit cases, seven unchanged compatibility unit
+cases and nine unchanged native history/HTTP cases pass. Build, required Yjs patch, scoped lint and
+origin checks pass; initial JS is 231.6/350 kB. No new actual-provider or CI Node 24 result is claimed.
+
+**Remaining.** The full unit attempt passes 1,772, fails seven cases in the two old fixtures without
+storage/lock wiring, and retains the single existing named skip. The four-file proposed fixture/census
+patch is awaiting the operator's explicit approval; those old files remain byte-identical. The new
+unit is registered and normal CI adds both new browser files. Planning retains 846 obligations and
+305 unresolved obligations; all 195 crypto domains remain unchanged. The unrelated red full-suite
+failures and aggregate qualification remain open/paused. Preview `fcb659c3`, user data and the other
+seat's `docs/progress.md` are untouched. No commit, push, merge or deployment occurred. This checkpoint
+was appended before advancing the bounded packet's active state.
+
+### Approved receiver/bootstrap fixtures and verification
+
+**Date:** 2026-10-15 · **Base:** signed `faadbff5`; repairs remain uncommitted.
+
+The operator explicitly approved the saved four-file fixture patch. The applied old-test diff is
+byte-identical to that patch (`e919378e3d77e2f2f90a28c7222116c61045ad94a4f6a6e311ef9d35a3e5d525`):
+two unit fixtures gain secure-context/Web Locks/IndexedDB wiring, and two census fixtures retain
+the expanded 2,453-case denominator. No other tracked old test changes, assertions, deadlines or
+formatting edits were introduced. All 411 original source/configuration pins and all 53 artifacts
+from the preceding repair checkpoint remain identical. The
+[approval follow-up](account-conformance-runs/2026-10-15-receiver-compatibility/approval/results.json)
+retains 17 additional hashed artifacts and the exact old-file boundary proof.
+
+**Evidence.** All 22 affected unit cases and 17 affected census checks pass. The full unit population
+passes with two workers: 151 files, 1,779 passed cases and the one existing named skip. All 289
+release-runner checks pass with two files at a time and permission for disposable native browsers,
+loopback servers and process inspection. Scoped fixture lint and refreshed inventory/manifest checks
+pass. This exercises the runner's own tests; aggregate release qualification remains paused.
+
+**Inconvenient results retained.** The first default-worker unit run reports three five-second
+timeouts while another runner overlaps; the next default-worker run, after that runner ends,
+still times out in the existing multi-chunk baseline case (1,778 pass, one fail, one named skip).
+Reducing worker concurrency passes the same population without changing its deadlines. This
+establishes sensitivity to parallel load, not a green default-worker run or a permanent runner fix.
+The first runner attempt reports 271 passes and 18 failures under sandbox restrictions, including
+explicit loopback and process-inspection denials. Its fully permitted rerun passes every case.
+Both failed attempts and the intermediate unit run remain in the packet. No CI Node 24 or new
+Firefox/Bitwarden walkthrough is claimed.
+
+The broader functional-suite baseline remains unresolved. Planning retains 846 obligations and
+305 unresolved obligations; no security verifier, crypto format or release block was relaxed.
+Preview `fcb659c3`, user data and the other seat's `docs/progress.md` remain untouched. No commit,
+push, preview refresh, merge or deployment occurred. This outcome was appended before updating
+the bounded packet's active approval state.
+
+### Sign receiver/bootstrap repairs and narrow the remaining functional failures
+
+**Date:** 2026-10-15 · **Repair commit:** signed `6eeb7d5f300bca252f32823e9be2be1b0546f25d`.
+
+The requested commit contains both runtime repairs, their new unit/browser regressions, the four
+previously approved fixtures and the retained failed/passing evidence. Its SSH signature verifies.
+The working tree was clean immediately afterward. No push, preview refresh, merge or deployment
+was requested or performed. The signed source matches the earlier tested source pins; no new
+signed build or cached-client adoption is claimed.
+
+The subsequent triage reruns both unchanged successor failures and five selected fixture failures
+against this commit. A corrected independent observer establishes that the old settlement helper
+returns while the receive lane is still working, before automatic successor installation commits.
+Waiting for that completed native transaction preserves the authenticated successor on close.
+The earlier diagnostic had attempted a marker read while its own active owner held the necessary
+permit; its timeout is retained, not credited as a runtime failure. Separate current-browser storage
+attacker checks reject both successor-field removal and unsigned v8 stage substitution. The current
+parser deliberately accepts the structural child at v6–v9 after `684f4f06`, while the earlier prose
+and original structural assertion describe v9 only. That contract/fixture alignment stays open;
+the old security assertion remains unchanged.
+
+The operator then approved an exact five-file fixture patch: connected route shape, host schema
+26, counter-v3 compatibility refusal, superseded unrecorded-unknown result and completed automatic
+receiving before cold-discovery assertion. Only those five old files differ from the signed repair,
+and each matches its approved proposed hash. Their full files pass **41 cases with zero skips**,
+including all 24 generated handoff histories and the effective discovery-expiry omission control.
+Affected planning/selection regressions pass all **21 cases**. Inventory/manifest rechecks retain
+846 obligations and 305 unresolved obligations; aggregate qualification remains paused.
+
+A fresh development cache still fails to mount the app because the optimized compiler runtime
+does not expose the requested named `c` export. A separate fresh-cache explicit-interop override
+also fails; neither diagnostic process's zero exit is credited as an app pass. Its initial test-loader
+error is retained separately. No application, service, protocol or Vite configuration source changes
+were made in this triage. The remaining entry/model fixtures, historical/source closures, mutation
+controls, successor contract discrepancy, default-worker timeouts and deferred formatting remain
+separate open groups; earlier failures are not erased or generalized into passes.
+
+The [follow-up packet](account-conformance-runs/2026-10-15-remaining-functional-failures/README.md)
+retains 36 hashed artifacts, source identities, the exact approval boundary, updated issue ledger,
+original diagnostics and new counterexamples. These five fixture edits and follow-up records are
+uncommitted. The original 85-command red baseline was not rerun as a whole. Local Node is 26.11.1;
+no CI Node 24 or new Firefox/Bitwarden claim is made. Preview, protected user data and the other
+seat's `docs/progress.md` stay untouched. This outcome was appended before updating active packet
+status; no aggregate qualification, push, merge or deployment occurred.
+
+### Commit approved account fixtures and repair development compiler loading
+
+**Date:** 2026-10-15 · **Fixture commit:** signed `86e830c83e7d410443237a8bdeafc7d3f6e9663c`.
+
+The five previously approved account fixture corrections and their evidence were committed first;
+the SSH signature verifies and the working tree was clean afterward. The subsequent compiler
+repair remains uncommitted. No push, preview refresh, merge or deployment occurred.
+
+The root cause is a second React Compiler pass over optimized TanStack Router output when a dev
+cache is outside `node_modules`. It injects a named compiler-runtime import into a module where
+Vite intentionally skips ordinary-source CommonJS interop. Both new app-mount regressions fail
+before repair. Restricting Babel to a generic `src` path segment initially passes, then fails the
+new unrelated-`src` cache challenge. The final include filter anchors the actual application source
+directory. Compiler-generated application calls remain enabled; dependency versions, application,
+service, protocol and crypto source are unchanged.
+
+**Evidence.** Final browser checks pass all 15 cases without skips/retries: two new compiler/cold-and-
+warm-cache regressions, five existing private-migration walkthrough cases and eight unchanged
+packaged onboarding journeys. The regressions preserve writing through reload and server restart,
+compare retained optimizer metadata byte for byte, and exercise both ordinary and migration configs.
+The unit population passes all 151 files, with 1,779 passed cases and one existing named skip, using
+two workers and unchanged deadlines. Build/typecheck, required Yjs patch, origin isolation, scoped
+lint, new-test typecheck and format checks pass; initial JS is 231.6/350 kB. All 38 affected CI,
+inventory and census regressions pass. The normal CI job now invokes the new browser checks; the
+operator-resumed job remains byte-identical.
+
+**Existing-test boundary.** After the loader repair, an unchanged migration run passes three cases
+and times out twice at the old Local-editor `Device-lock code` locator. The initial Goals-related
+guess was corrected by the actual failure report; no Goals locator was changed. The operator
+explicitly approved exactly four Local-editor locator changes to `Unlock code`. Only those four
+lines in that one old file differ from the signed fixture commit. Migration/cleanup-dialog labels,
+all five tests, wrong-code checks, storage comparisons, recovery assertions and deadlines remain.
+The full corrected walkthrough then passes on the final configuration.
+
+The [bounded packet](account-conformance-runs/2026-10-15-compiler-loading/README.md) retains 59 hashed
+artifacts, source/build identities, original errors, failed first filter, successful reruns and exact
+approval proof. The first standalone TypeScript CLI attempt refused the repository config/file
+combination; the corrected `--ignoreConfig` check passes, and both logs are retained. The new browser
+family is required in inventory; its aggregate execution-adapter review remains blocked. Planning
+keeps 847 obligations and 306 unresolved obligations. This does not resume aggregate qualification,
+clear the broader red functional baseline or resolve default-worker timeouts. Local Node is 26.11.1;
+no CI Node 24 or new Firefox/Bitwarden walkthrough is claimed. Preview, backend, user data and the
+other seat's `docs/progress.md` stay untouched. This outcome was appended before advancing packet
+status; no push, merge or deployment occurred.
+
+### Commit compiler repair and restore source/historical harness execution
+
+**Date:** 2026-10-15 · **Compiler commit:** signed `a6fa2298cf3233893e3cbb9809190da6a8dc72bc`.
+
+The verified compiler-loading repair was committed first. Its SSH signature verifies and the working
+tree was clean afterward. The following H1/H2 harness repairs remain uncommitted; no push, preview
+refresh, merge, deployment or aggregate qualification occurred.
+
+**Bounded outcome.** Four legacy campaigns now copy and hash all 44 protocol files alongside application
+source. The scheduler controls bundle the actual mutated production entry with its dependencies.
+Successor adapters retain all emitted chunks/assets, hash their inventory and import the actual entry.
+The receive and admission-bounds fixtures rebuild complete production source from their original pinned
+revisions instead of combining old modules with current callers. The receive bridge invokes the genuine
+old v8 delivery owner; current raw-storage observers remain separate. Historical browser builds refuse
+unexpected external outputs instead of silently dropping them.
+
+**Evidence.** All four legacy baselines pass **123 named checks and 240 generated histories** with their
+original seeds/counts and deadlines. Import passes six controls, selection five, coordinator ten, and
+cleanup five across the full command and a separately reached final control. All four snapshot censuses
+independently match the copied protocol bytes and recorded input hashes. All 23 receive/admission native
+cases pass. Seven successor replay cases and both scheduler controls pass; the publisher-binding control
+also demonstrates its intended forbidden plaintext. The full affected native/control run remains red
+at its separate issuance-boundary anchor: 24 passes and one failure before fault application.
+
+Three new regressions pass under the exact normal-CI command: complete entry/lazy-chunk/binary-asset
+retention, fresh historical source/bundle identity checked independently against Git blobs, and an
+original v8 service/fixture/owner positive control followed by current-v9 no-write refusal. A naive v8
+positive control correctly refused modern v2 admission; the corrected test uses the original v1 fixture
+without rewriting signed receipts. A nested launch initially ran zero cases; final explicit TAP and
+exact named-case accounting prevent that from earning credit. Those failed diagnostics remain. Their
+intermediate new-test files were replaced during development; no exact source pin is claimed for those
+intermediate versions. All eight existing scheduler unit cases pass. The 26 focused planning/CI/census
+cases and 125 wrapper/manifest cases pass, **151** total, without changed deadlines or removed assertions.
+The operator-resumed CI job remains byte-identical; normal CI now invokes the three new regressions.
+
+**Remaining failures and limits.** Cleanup's full command reaches four controls after its successful
+baseline, then fails at `unsigned-manifest`. Individually reaching the later controls finds a second
+stale anchor, `omit-destination-journal`, while `clear-forgets-source` passes. Together with successor
+`issuance-boundary`, these are three H3 gaps whose intended fault never executes. No guard or control
+anchor was changed to manufacture sensitivity. Other issue groups from the original full-suite baseline
+remain open; that 85-command baseline was not rerun as a whole.
+
+The operator explicitly approved all changes to twelve existing test/harness files and the layout of
+their newly introduced blocks. A chained hash receipt checks each exact approved boundary. An inherited
+registry regex layout and the older deferred formatting patch stay untouched; scoped changed-source
+formatting and lint pass. Application, service, protocol and the other seat's `docs/progress.md` are
+unchanged from the signed compiler commit. Source rebuilds use the current installed toolchain, with
+historical runtime declarations and lock/source identities recorded; they are not historical binaries.
+Local Node is 26.11.1; no Node 24 or new Firefox/Bitwarden result is claimed.
+
+The [bounded packet](account-conformance-runs/2026-10-15-source-harnesses/README.md) retains red runs,
+final source identities, approvals, source audits, successful results and the unresolved controls.
+Inventory retains 850 obligations and 309 unresolved obligations. The three new files remain required
+and blocked from aggregate execution credit; existing historical adapters also need expanded archive
+and module-report custody review. Aggregate qualification remains paused. This outcome was appended
+before advancing packet/navigation state. Preview `fcb659c3`, its service and user data are untouched.
+
+**Final source-record check.** Inventory verification caught the new historical helper's final emitted-
+output guard hash after the last source edit. Review of the regenerated inventory finds exactly one
+changed input hash, independently matched to that helper; all counts and dispositions remain unchanged.
+The failed verification is retained. Fresh inventory/manifest checks and all 26 focused CI/planning
+cases then pass, with the same 850/309 blocked totals. No old test changes or guard relaxation follows
+from this generated-record refresh.
+
+## 2026-10-15 — Patch-series phase 02: semantic mutation anchors
+
+Repaired the successor proof-issuance control and unsigned-cleanup/pending-journal controls against the Patch 01 overlay. All 11 successor replay/control/history cases pass. The complete cleanup campaign passes 45 named cases, 60 generated histories (seed 8941), and all seven mutation controls at unchanged deadlines; strengthened production refusals preserve the exact native census, while the two repaired cleanup controls must actually remove predecessor carriers. All 143 affected runner/planning cases pass. Planning remains 850 obligations, 309 unresolved; qualification is paused. Application, service and protocol source is unchanged. Original failures remain in the preceding source-harness packet. Local Node 26 evidence does not establish pinned Node 24 CI or whole-suite readiness. The operator requested sequential unsigned patches; no commits, publication or preview updates were performed. Evidence: [phase 02](./account-conformance-runs/2026-10-15-functional-repair-series/02-mutation-anchors/README.md).
+
+## 2026-10-15 — Patch-series phase 03: Local/browser entry fixtures
+
+All 15 Local development cases, three packaged precache/offline cases, 108 desktop/mobile geometry cases and the complete two-profile reader/rollback case pass. Geometry retains its 24 existing project/activation skips; 11 browser-population/planning cases pass. The first rollback attempt still waited for a chooser despite an already-visible factor form; its failure is retained, and the final full rerun passes all conversion/anchor/chunk/snapshot/undo/no-write checks at the original deadline. Four explicit protected-startup compatibility cases retain their old security assertions through a test-only current-component entry; shipped entry tests use real automatic opening and optional protection. No application/service/protocol source changes, test removals or deadline increases. Planning remains 850 obligations/309 unresolved and qualification paused. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/03-local-browser-fixtures/README.md). No commits or publication.
+
+## 2026-10-15 — Patch-series phase 04: current first-device fixture bodies
+
+All 19 original first-device case bodies pass on final source with current entry, factor vocabulary and ordered non-repeating explicit connection approvals. The fresh-service wrapper imports the original config/population/deadlines and changes only its disposable state directory. A stock-config full run passed before the final helper strengthening, but normal shutdown leaves its shared maintenance lock; this runner-lifecycle issue remains open for the machinery phase. Retained launch failures and the first isolated 18/19 result are not erased: the latter exposed a five-second cap introduced by the new helper, now removed in favor of the original 90-second test lifetime; the complete final rerun passes. Six browser-planning cases pass. All account/factor/writing isolation, wrong-code, lost-reply, recovery, tab, offline and owner-drain checks remain exercised. No product source changes or test removals. [Evidence and changed onboarding assumptions](./account-conformance-runs/2026-10-15-functional-repair-series/04-account-entry-fixtures/README.md). No commits, publication or qualification.
+
+## 2026-10-15 — Patch-series phase 05: remaining update/storage fixture reachability
+
+Current-entry corrections pass eight app-upgrade cases (one existing optional real-predecessor skip), three packaged serving/update cases and six browser-planning cases. Storage compatibility passes five cases; its sixth now reaches the original exact census assertion and demonstrates a remaining product defect: configuration discovery adds only done.application.local-only=1 before refusing an encrypted future document schema. The databases remain equal. Preserve this assertion and failure for the next bounded bootstrap repair; do not call the six-case suite green. An orphaned disposable app-upgrade server from the retained earlier full-suite scratch checkout was identified and stopped before the successful complete rerun. No product source, case removals, deadline changes, commits or publication. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/05-update-storage-fixtures/README.md).
+
+## 2026-10-15 — Patch-series phase 06: first Local bootstrap no-write repair
+
+The unchanged future-schema census is now green. First Local entry with no known saved Account defers discovery until explicit sync/account navigation, preventing hint writes before factor/replay/document refusal. Saved Account bootstrap is preserved; a metadata read error refuses via the shared existing error panel. All 17 native storage cases (six old plus eleven new), 57 focused units, 16 CI/planning cases, three packaged Local offline cases and twelve packaged welcome/session/update cases pass; build passes. The injected-router setup attempt was 18/19 after an unnecessary expectation edit; restoring the exact old assertion passes its focused case. No final full 19-case stock-runner pass is claimed here. The new public-main read-error regression supplies the distinct bootstrap coverage. The runtime crypto census changes only two reviewed source hashes; all domain/obligation fields remain unchanged. Planning remains blocked at 851 obligations/310 unresolved, with the new native file required and not granted aggregate credit. Original failures/probe mistakes are retained; pinned Node 24 and whole-suite/real-provider readiness remain unestablished. [Evidence and limits](./account-conformance-runs/2026-10-15-functional-repair-series/06-local-bootstrap-no-write/README.md). No commits, publication or preview update.
+
+## 2026-10-16 — Patch-series phase 07: unprofiled realm fixture
+
+The complete native sync file passes 25 cases, with six existing feature-flag skips and zero failures. The ordinary global-absence assertion now runs in fresh same-origin realms loaded with each actual reference/default/rollback script; it proves the bundle loaded and both profiling globals remain absent. The inherited profiled realm retains its positive diagnostic check and all old full/incremental/mismatch, storage, writing, compaction and cold-reopen assertions. Four fixture-planning cases pass. No production source, cases, flags or deadlines change; the original red reproduction is preserved. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/07-unprofiled-realm-fixture/README.md). No commits or publication; qualification remains paused.
+
+## 2026-10-16 — Patch-series phase 08: separate R-01 size boundaries
+
+All ten receive-driver native cases pass. The envelope case now demonstrably fits HTTP framing while exceeding the 512 KiB envelope cap; the original 600 KiB wire remains an additional HTTP-ceiling regression. Independent signed-page byte checks distinguish those boundaries and the count cap. All terminal halt, zero progress, Local preservation, explicit retry and cold reopen assertions remain. All 59 affected fixture/wrapper planning cases pass after precise +1 population updates; commands, file requirements, inherited process ownership and deadlines remain unchanged. Original and intermediate census failures are retained; unrelated deferred regex formatting stays untouched. No production source changes, commits, publication or qualification. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/08-receive-size-fixture/README.md).
+
+## 2026-10-16 — Patch-series phase 09: genuine private upgrade expectations
+
+The complete schema-five-to-eleven browser upgrade passes using the clean original 7dab01cc checkout (503 independently verified runtime files, preserved dependency versions recorded). Five offline-upgrade state and six browser-planning cases pass. Only current target/version/current-label and connection-presentation expectations change; old-side creation is unchanged. Backup snapshots, original-column/authority rows, operator key, service pin, account/name/code/passkey/writing comparisons remain. The retired duplicate-ID panel is replaced with two exact observations from the current chooser and completed authenticated invitation bootstrap, preserving the identity check and adding an actual post-upgrade credentialed action. Original schema/UI failures are retained. No production changes, commits or publication; qualification remains paused. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/09-private-upgrade-expectations/README.md).
+
+## 2026-10-16 — Patch-series phase 10: authenticated successor stage contract
+
+The genuine retained schema-five Account passes v5 → authenticated v6 checkpoint → cold v9 receiving with original unlock/passkey/writing and a second device. Four unsigned v6/v7/v8/field-removal cases refuse cold opening without writes; the corrected original structural case passes with malformed/cut/stripping assertions preserved and v5 still closed. The original v8 structural failure is retained. Only test, CI, dated contract amendment and evidence change; no production source. New cases remain required and blocked from aggregate credit (853 obligations/312 unresolved). [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/10-successor-stage-contract/README.md). No commits, publication, preview changes or qualification.
+
+## 2026-10-16 — Patch-series phase 11: sticky quarantine model
+
+All 60 original generated service-inbound histories and the new direct SQL restore/restart regression pass without changing service behavior, seeds, population or deadlines. Exact same-owner ledger-integrity refusals and unchanged inventories now precede recovery only after restart/full original-prefix verification. The independent report reader and five adapter tests preserve signature/replay/role/read-only checks and challenge quarantine/restart evidence; it also accepts the actual 60-history report in an explicitly synthetic surrounding packet, without campaign credit. Original red evidence is retained. Normal CI includes both regressions. Planning remains blocked (854 obligations/313 unresolved). [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/11-quarantine-model/README.md). No production source, commits, publication or qualification.
+
+## 2026-10-16 — Patch-series phase 12: service mutation machinery
+
+All fifteen admission/service delivery/inbound control cases now pass at original deadlines; final separate five/eight-case runs and eight adapter checks pass. Unique current proof/policy/commit anchors preserve unrelated guards. Deleted-row witness probes still refuse in both owners; valid-count signature corruption isolates witness authentication. A single publisher lookup omission still refuses, while a distinctly recorded two-site policy fault signs an unauthorized empty response. Independent readers require those distinctions and accept actual control reports without granting campaign credit from synthetic surrounding reports. Original and intermediate failures remain. No production source changes or qualification; planning stays blocked at 854/313. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/12-service-control-machinery/README.md). No commits/publication.
+
+## 2026-10-16 — Patch-series phase 13: native and primitive controls
+
+Eight capture cases pass, including all sixteen generated editing histories, in a broader run that retained a then-stale custody load failure. The final fourteen native custody/store/successor cases and fourteen primitive cases pass after semantic anchor repairs. Original storage, crypto-byte, route, prior-MAC, correspondence, disposal, cold-open and installation-cut assertions remain. Both credential format checks are distinguished from a single omission, and current primitive equality's stricter boxed-state refusal is retained. Local-genesis's selected three-case control pass is qualified by a failed full-campaign control attempt after a passing seventeen-case baseline; H4 stays open. The aggregate dependency-symlink refusal is preserved. No production changes or qualification; planning stays 854/313 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/13-native-control-machinery/README.md). No commits/publication.
+
+## 2026-10-16 — Patch-series phase 14: Local-genesis observation scheduling
+
+The full functional-only and stock owned Local-genesis runs each pass seventeen baseline cases and detect four intended controls; the stock reconciler credits exactly 21 bounded cases and confirms group drain. Five adapter tests pass. Nonvisual waits use timer polling at unchanged fifteen-second deadlines after diagnostics captured a timed-out observer with creation already resolved and no locks. All original cases, fault definitions, named assertions and failures remain. The stock pass uses self-contained disposable dependencies; the borrowed-tree symlink refusal remains enforced. No production changes, commits or publication; qualification stays paused and planning 854/313 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/14-genesis-observation-scheduling/README.md).
+
+## 2026-10-16 — Patch-series phase 15: development setup lifecycle
+
+Both complete stock nineteen-case runs pass, first on Node 26 and then the verified CI-pinned Node 24.18.0 runtime. Fresh per-run directories and bounded graceful shutdown leave both maintenance locks absent; no existing lock is removed. The private-file case now proves it targets actual key/database/pin files before requiring HTTP refusal. All case deadlines and security assertions remain, and normal CI includes the full development walkthrough. Eleven planning cases, focused types, lint and diff pass; planning remains 854/313 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/15-setup-server-lifecycle/README.md). No production source changes, commits, publication, preview update or aggregate qualification.
+
+## 2026-10-16 — Patch-series phase 16: upgrade fixture ownership
+
+The HTTP upgrade fixture now lives in the runner process on an ephemeral loopback port, following the guarded driver pattern. Three new real-HTTP normal/failure/SIGKILL regressions pass on pinned Node 24. All eight active existing app-upgrade cases pass, including activation sensitivity, with the one original optional predecessor skip retained. Case/child deadlines remain unchanged; interruption and timeout remain failures. Eleven planning cases, lint and diff pass. Planning retains the new file as required and blocked (855/314); no aggregate qualification or production source changes. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/16-upgrade-fixture-ownership/README.md). No commits or publication.
+
+## 2026-10-16 — Patch-series phase 17: pinned-Node journal cleanup
+
+The fresh Node 24 full run's only two failures occur in teardown after early-refusal bodies that never install storage. Optional global access fixes teardown without changing case bodies or security assertions. All nine focused journal cases pass, then the unchanged default-worker full population passes all 151 files with 1,779 passes and the one existing skip. Original failures and full reports remain. No runtime or worker-policy change; planning remains 855/314 blocked and qualification paused. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/17-node24-journal-cleanup/README.md). No commits/publication.
+
+## 2026-10-16 — Patch-series phase 18: unit worker budget
+
+The configured two-file unit budget passes the full population sequentially on pinned Node 24 and local Node 26: 151 files, 1,779 passes and the same one existing named skip. Independent full-report comparison proves all 1,780 case identities/statuses match the phase-17 default-policy run. No case, deadline, file selection or within-case concurrency changes. Fresh default runs also pass; earlier timeouts remain, so this is a resource policy rather than a claimed deterministic failure repair or benchmark. Lint/format/inventory pass, planning stays 855/314 blocked and qualification paused. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/18-unit-worker-budget/README.md). No production runtime changes, commits/publication or preview update.
+
+## 2026-10-16 — Patch-series phase 19: exact final census
+
+The full 175-case normal-CI adapter run exposes only two stale 2,453-case expectations after phase 08's independently identified additional HTTP-size boundary case. Updating those exact values/title to 2,454 passes all seventeen affected tests, retaining 276 stages and every assertion, skip and release block. No production changes; planning remains 855/314 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/19-final-census-expectations/README.md). No commits/publication or qualification.
+
+## 2026-10-16 — Patch-series phase 20: authority home pin review
+
+The authority checker passes after reviewing the complete signed §13.3 change and refreshing only two content hashes. The change is solely non-authorizing setup-recovery isolation; protected factor, key-format and invocation guarantees remain. Every map status, guard and blocker is unchanged. A positive/fault/restore/positive experiment verifies both exact new pins still detect home drift. Original failures and the whole section diff remain. Planning stays 855/314 blocked; no runtime/checker changes or qualification. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/20-authority-pin-review/README.md). No commits/publication.
+
+## 2026-10-16 — Patch-series phase 21: active lint boundary
+
+Root lint passes after excluding only immutable archive directories and resolving three pre-existing active diagnostics. Frozen evidence remains byte-identical; a deliberate active-code unused-variable fault is still rejected. Recovery's algorithm is unchanged, discovery loses only an unused import, and the census's two hashes/derived line shifts are independently checked with all domains and blockers retained. Thirteen signed-discovery cases and thirty histories pass on pinned Node 24. A separately exposed old discovery control has the same absent anchor before/after cleanup and remains red for phase 22. No qualification, commits/publication or deferred formatting changes. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/21-active-lint-scope/README.md).
+
+## 2026-10-16 — Patch-series phase 22: discovery control anchor
+
+All fourteen signed discovery/control cases and thirty generated histories pass on pinned Node 24. The additional old raw-snapshot anchor now targets its unique actual shared guard, preserving the real process pause/state change, exact signed proof, baseline refusal and deadline. New inventory/still-pending assertions keep the forbidden response discriminating. The absent-anchor original result remains. No production changes; planning 855/314 stays blocked and qualification paused. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/22-discovery-control-anchor/README.md). No commits/publication.
+
+## 2026-10-16 — Patch-series phase 23: construction site metadata
+
+The independent registry caught five recovery source-site line offsets from phase 21's added comment. Five numeric-only corrections align them with actual source literals; every other construction field and the existing JSON layout is unchanged. Registry cases and the authority gate pass on pinned Node 24, while original coupled failures remain. No runtime/checker/test changes, qualification credit or deferred formatting application. Planning remains 855/314 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/23-construction-site-lines/README.md). No commits/publication.
+
+## 2026-10-16 — Patch-series phase 24: functional handoff for later signing
+
+Prepared the bounded repairs and retained failures as an ordered unsigned patch series based on signed a6fa2298. Every patch is independently replayed to its exact Git tree; indexed evidence and own-phase source pins are verified. Both clean-application and cumulative-staging helpers validate the signed base, exact trees and changed-file refusal without creating commits. Full unit runs on pinned Node 24 and local Node 26 pass 151 files/1,779 cases with the same existing skip and identical complete case populations. Final normal-CI adapter/registry tests pass all 175 cases. Build, vectors, security contracts, traceability, inventory and active lint pass; seven source/MAC, seventeen native compatibility, two compiler, twenty-three packaged onboarding and five service/listener cases pass on pinned Node 24. Earlier full development onboarding and upgrade/genesis results remain linked to their bounded phases.
+
+The current workspace stays cumulative and unstaged; HEAD remains a6fa2298. No signing, commits, push, merge, deployment or preview update. Qualification stays paused and blocked at 855 obligations/314 unresolved, with new files not silently credited. The original formatting-only proposal and global formatting debt remain deferred. This is not a claim that every original 85-command campaign was rerun, that hosted Linux CI/fresh dependency installation ran, or that the real Firefox/Bitwarden walkthrough was repeated for this series. The active handoff is now [the functional repair series](./account-conformance-runs/2026-10-15-functional-repair-series/README.md); the other workstream's progress.md is untouched.
+
+### Credential-free removal reports refusal correctly and resumes its durable intent
+
+**Date:** 2026-10-16 · **Commit:** unsigned overlay above `1849721ee612`; sequential patch preparation · **Stage:** bounded onboarding repair, phase 1
+
+**Exit.** Baseline storage tests reproduce misclassification of unassigned legacy carriers and absence; an additional case reproduces inability to remove a setup-only attempt. A cold removal URL independently returns 404. After repairing only that route, the old packaged UI fails five cases and passes the blocked-delete case. The final removal phase passes 23 storage/protection cases, 12 application/gateway cases and nine packaged browser cases. These include seven new native-browser cases and both unchanged delayed-reply removal regressions. Cold reopen automatically completes content/journal interruptions without another finish button; blocked deletion retains the journal and reports required tab closure; failed inspection never offers new erasure. Carrier/key/index comparisons and unrelated setup preservation remain asserted.
+
+**Limits.** Legacy-only data is safely refused with migration/verified-cleanup guidance; automatic legacy deletion would violate SC-07. The original blank-page timeout is retained and traced to missing packaged cold-entry routing; initial cancelled package-manager invocations and a new test's unused-parameter type error remain in the record. Direct pinned-Node commands establish the recorded results, not package-manager startup. This phase does not repair account-entry classification, run aggregate qualification, update the preview, or commit/publish. [Evidence](./account-conformance-runs/2026-10-16-onboarding-flows/01-removal/README.md).
+
+### Account setup distinguishes storage refusal from a code-bearing workspace
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential patch overlay above `1849721ee612` · **Stage:** bounded onboarding repair, phase 2
+
+**Exit.** Seven failing unit counterexamples and four failing packaged-browser journeys distinguish the unissued-code defect from the already working fresh-account path. The repaired phase passes all 36 affected unit cases and 13 packaged onboarding cases, including the unchanged protected-factor and combined-passkey walkthroughs. Storage is reclassified before code generation; existing genesis and all authentication/continuation verifiers remain unchanged. A failed inspection, unassigned legacy source, unfinished removal or automatic Local list no longer becomes a spurious unlock form. Wrong established factors still fail without network work, and the confirmed factor still resumes after cold reopen.
+
+**Limits.** The extra new control's missing request.error caused one fixture failure, retained alongside its corrected run. This is local Chromium/Node 24 evidence, not a new real-provider walkthrough, aggregate qualification or deployment. [Evidence](./account-conformance-runs/2026-10-16-onboarding-flows/02-account-entry/README.md). Normal-CI/required-file integration and final patch verification follow as phase 3.
+
+### Review tightens the setup-only removal boundary
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential overlay above `1849721ee612` · **Stage:** onboarding repair phase 3
+
+**Exit.** Three new inconsistent-metadata cases demonstrate overly broad setup-only cleanup on the prior phase and preservation after the repair. All 39 affected unit cases and typecheck pass. No source, key, journal, factor or other-slot deletion is inferred from a later or malformed UI hint. [Evidence](./account-conformance-runs/2026-10-16-onboarding-flows/03-setup-only-boundary/README.md). Final native-browser composition, inventory and patch-chain verification follow separately. No commits, publication or qualification.
+
+### Onboarding flow repairs pass final functional checks and retain qualification boundaries
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential patch overlay above `1849721ee612` · **Stage:** onboarding repair phase 4
+
+**Exit.** The final hook-stable source passes the full pinned-Node unit population: 153 files, 1,796 passes and one existing skip. All 35 normal-CI packaged browser cases, 175 adapter/registry cases and 12 application/gateway cases pass. Build, budgets, vectors, storage/security contracts, WASM, traceability and React lint pass. Thirty-one new regression cases cover the reported flows, interruption/refusal and established-factor preservation. The initial lint dependency failure and earlier failed counterexamples remain; the hook fix receives final browser and full-unit coverage. Existing test files and the operator-resumed quality job are byte-identical.
+
+**Metadata.** Six reviewed source hashes change without altering crypto labels/sites or exclusions. All 855 prior obligation rows remain identical; five new regression files are required and blocked, yielding 860 obligations / 319 unresolved. Qualification remains paused and no new aggregate execution credit is granted. [Final evidence and limitations](./account-conformance-runs/2026-10-16-onboarding-flows/04-final-checks/README.md).
+
+**Handoff.** Four ordered patches are prepared against the signed base, with native index/filesystem replay and exact tree/source/evidence verification recorded separately in the distribution after its final freeze. Work stays cumulative and unstaged. No signing, commits, push, preview change, merge or deployment. Legacy-only data remains preserved pending verified migration/source cleanup; real-provider, hosted Linux/fresh installation, complete 85-command campaign, global formatting, billing and remembered unlocking remain separate.
+
+### Production preflight exposes and repairs a retired-owner unlock form
+
+**Date:** 2026-10-16 · **Source:** bounded overlay above signed `58b1a12e` · **Stage:** production preflight, publication withheld pending repair/hosted CI
+
+**Exit.** The clean signed-source ARM64 preflight image passes its 31 runtime/gateway/backup/restore/maintenance cases, disposable restart/ownership smoke, 39 exact-frontend browser cases and an actual deployed-reader upgrade/rollback journey with two protected device roles. Public shell/worker hashes match retained `890fc677`. Hosted CI then fails three development-onboarding cases, so publication stops. One stale fixture now explicitly checks again after the competing tab closes, retaining its ownership/factor assertions and adding absence of an unclassified code form. Investigation independently demonstrates that a synchronously retired account coordinator exposes an unusable unlock form while native cleanup drains. It now presents locking progress until the live successor starts.
+
+**Evidence.** The new held-request unit case fails on the original state. The native held-metadata-lock browser case verifies no editor/code form, cleanup settlement, the same valid factor and retained writing. Its corrected version passes on Mac and Linux ARM64; an isolated Linux old-state control fails at the exact assertion. All 153 unit files pass (1,797 passes, one unchanged named skip), all 19 prior development cases pass and the new case passes separately, and all 175 adapter/registry cases, TypeScript and changed-file lint pass. The initial title/status fixture error, inconclusive earlier-setup Mac control, hosted failures and stale second census expectation remain. [Packet and reproduction](./development-evidence/2026-10-16-onboarding-release/README.md).
+
+**Boundaries.** One runtime hash changes; crypto labels/sites/classifications and all 860 obligations/319 unresolved entries remain. The +1 unit denominator is 2,455; prior assertions, skips, deadlines and release blocks are intact. Mac/Linux ARM64 results do not replace the failed hosted AMD64 run. The preflight image remains local and is superseded for publication by this repair. Next: sign/push the repair, rerun hosted CI, rebuild and test the identified signed artifact, verify application merge agreement, then publish and prepare the infrastructure PR. No registry push, production deployment, preview update, credential/data mutation, generalized qualification or progress.md change.
+
+### Hosted unit deadlines retain exact byte comparisons under a bounded runner budget
+
+**Date:** 2026-10-16 · **Source:** test/CI overlay above signed `dbae813c` · **Stage:** bounded production-preflight harness repair
+
+**Exit.** Hosted run 38883271712 retains two five-second deadline failures (1,795 passes, two failures, one named skip). A Linux serial control still times out in baseline anchoring, so worker serialization alone is not treated as sufficient. Five large-binary comparison sites now use Node strict deep equality with their complete inputs and assertions preserved. The unchanged 49-case affected workload passes in Linux; changed-byte controls refuse both the baseline and the seeded generated history, with its shrunk counterexample retained. Full pinned-Node units at the new hosted one-file budget pass 153 files / 1,797 cases plus the unchanged named skip; all 93 affected adapter cases pass. Formatting changes only the newly modified assertion. Runtime/crypto bytes, every test, all deadlines, 860 obligation rows and 319 unresolved entries remain. [Evidence, retained failures and reporting limits](./development-evidence/2026-10-16-hosted-unit-budget/README.md).
+
+**Handoff.** Sign/push and require a complete hosted pass before continuing publication. The prior local `dbae813c` image separately passes 31 container cases, ownership/restart/precache smoke, 41 exact-frontend browser cases and two Local rollback probes. Those probes establish protected Local rollback and safe automatic-Local refusal/forward recovery; the old entry adds only an empty UI metadata database and independently checked public configuration hints, while all existing stores/rows and journal entries remain. The new image must be retained for automatic-Local compatibility. No registry publication, application/infra merge, production or preview change, resumed qualification or progress.md modification.

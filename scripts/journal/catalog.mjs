@@ -61,8 +61,8 @@ export const mutants = [
     file: 'journalStore.ts',
     case: 'C03.refusals',
     assertion: 'unavailable-does-not-acknowledge',
-    from: "        return {\n          status: 'refused',\n          reason:\n            cause instanceof DOMException && cause.name === 'QuotaExceededError'\n              ? 'quota'\n              : 'unavailable',\n        };",
-    to: "        return Object.freeze({status:'journalled',key:storageKey,generation});",
+    from: "          return {\n            status: 'refused',\n            reason:\n              cause instanceof DOMException && cause.name === 'QuotaExceededError'\n                ? 'quota'\n                : 'unavailable',\n          };",
+    to: "          return Object.freeze({status:'journalled',key:storageKey,generation});",
   },
   {
     id: 'remove-changed-entry',

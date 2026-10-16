@@ -1,3 +1,5 @@
+import { authenticationResponse } from './passkeyResponse';
+import { defaultDeviceName } from '../lib/browser';
 import {
   RECOVERY_HISTORY_PAGE_LIMIT,
   parseRecoveryRead,
@@ -121,7 +123,7 @@ export const recoveryPasskey = async (
   })) as PublicKeyCredential | null;
   signal.throwIfAborted();
   if (!credential) throw Error('Passkey request cancelled');
-  return credential.toJSON();
+  return authenticationResponse(credential);
 };
 /** No recovery code is retained. Actual death before confirm may restart these early steps. */
 export async function beginLostDeviceRecovery(
@@ -435,7 +437,7 @@ export async function openRecoveredWorkspace(
         identity: {
           id: installed.principalId,
           actor: { kind: 'human', name: 'You', color: '#e0662f' },
-          device: { id: 'recovered:' + slotId, name: 'This device' },
+          device: { id: 'recovered:' + slotId, name: defaultDeviceName() },
         },
       },
       legacyAccess(config),

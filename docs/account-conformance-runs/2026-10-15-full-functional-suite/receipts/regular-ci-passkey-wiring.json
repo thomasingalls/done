@@ -1,0 +1,57 @@
+{
+  "selection": "Existing onboarding/removal browser selections retained; passkey-local-access.spec.ts added.",
+  "qualificationJobByteIdentical": true,
+  "executionSource": "Original complete 49-case packaged-app report, candidate 5afdd0ad; local Node 26, not remote CI.",
+  "cases": [
+    {
+      "file": "passkey-local-access.spec.ts",
+      "title": "extension response with missing native JSON method completes verified account setup and cold reopen",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "passkey-local-access.spec.ts",
+      "title": "extension response with throwing native JSON method completes verified account setup and cold reopen",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "passkey-local-access.spec.ts",
+      "title": "cancelled passkey setup retains offline Local access and the same resumable attempt",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "passkey-local-access.spec.ts",
+      "title": "a failed online continuation accepts the correct code and offers Local access without another passkey",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    },
+    {
+      "file": "passkey-local-access.spec.ts",
+      "title": "an altered extension assertion is refused while the original protected Local writing stays accessible",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0
+        }
+      ]
+    }
+  ]
+}

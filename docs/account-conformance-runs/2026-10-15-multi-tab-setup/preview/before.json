@@ -1,0 +1,10 @@
+{
+  "stage": "before",
+  "origin": "https://mbp.tail0e0d4.ts.net:8443",
+  "observedAt": "2026-10-15T14:06:20.252Z",
+  "frontendPort": 53219,
+  "backendPort": 53220,
+  "configSha256": "dface6756553bf846a4d9de34ce05877a06a28f96b5381e4e3c7b3f44d7864e0",
+  "publicConfigUnchanged": true,
+  "frontendMatchesIndependentBackend": true
+}

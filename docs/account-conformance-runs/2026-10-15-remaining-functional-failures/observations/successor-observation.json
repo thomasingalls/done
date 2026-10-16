@@ -1,0 +1,124 @@
+{
+  "source": "6eeb7d5f",
+  "stages": [
+    {
+      "stage": "selected",
+      "at": "2026-10-15T17:25:06.050Z"
+    },
+    {
+      "stage": "held-discovery-response",
+      "at": "2026-10-15T17:25:06.800Z"
+    },
+    {
+      "stage": "cold-lifetime-start",
+      "at": "2026-10-15T17:25:08.020Z"
+    },
+    {
+      "stage": "old-settled-returned",
+      "at": "2026-10-15T17:25:08.166Z",
+      "successorCommitted": false,
+      "status": {
+        "send": {
+          "phase": "idle",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "acceptedThrough": 2
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "receivedThrough": 2
+        }
+      }
+    },
+    {
+      "stage": "automatic-successor-transaction-completed",
+      "at": "2026-10-15T17:25:08.238Z"
+    },
+    {
+      "stage": "closed-authenticated-marker-has-successor",
+      "at": "2026-10-15T17:25:08.263Z"
+    },
+    {
+      "stage": "strip-field-structural-parses",
+      "at": "2026-10-15T17:25:13.552Z",
+      "parses": [
+        {
+          "v": 6,
+          "accepted": true
+        },
+        {
+          "v": 7,
+          "accepted": true
+        },
+        {
+          "v": 8,
+          "accepted": true
+        },
+        {
+          "v": 9,
+          "accepted": true
+        }
+      ]
+    },
+    {
+      "stage": "strip-field-authenticated-opening-refused",
+      "at": "2026-10-15T17:25:14.753Z"
+    },
+    {
+      "stage": "change-stage-structural-parses",
+      "at": "2026-10-15T17:25:19.831Z",
+      "parses": [
+        {
+          "v": 6,
+          "accepted": true
+        },
+        {
+          "v": 7,
+          "accepted": true
+        },
+        {
+          "v": 8,
+          "accepted": true
+        },
+        {
+          "v": 9,
+          "accepted": true
+        }
+      ]
+    },
+    {
+      "stage": "change-stage-authenticated-opening-refused",
+      "at": "2026-10-15T17:25:21.047Z"
+    }
+  ],
+  "network": [
+    {
+      "event": "request",
+      "method": "POST"
+    },
+    {
+      "event": "response",
+      "status": 200
+    },
+    {
+      "event": "request",
+      "method": "POST"
+    },
+    {
+      "event": "request",
+      "method": "POST"
+    },
+    {
+      "event": "response",
+      "status": 200
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "source": "<test-checkout>/node_modules",
+  "root": "<approved-harness-checkout>",
+  "internalLinks": 662,
+  "externalLinks": 0,
+  "launchers": [
+    {
+      "path": ".bin/0ecdsa-generate-keypair",
+      "before": "75ef4349b574d9919c23a86d659a4509d00de572a4bb2d80590215478478af85",
+      "after": "2c6993030914afbd33c2090fc98e1ba70e3117327ec86ffb6f37d6b905ba35e1"
+    },
+    {
+      "path": ".bin/0gentesthtml",
+      "before": "ba29edd6ad712089fc8d95b490d6773286aabad77755cf552b5c58db18321d50",
+      "after": "898dd9802bb512707de0b9331707222e05da1c3eb4d13d5d2edde644ac27d1b5"
+    },
+    {
+      "path": ".bin/0serve",
+      "before": "80d22afd13b2b664a4ff97ce10ae3b834c359e4d50646967b32563e4c2c55bce",
+      "after": "296807212935d5ec469a85b7d336f5f540b8c24b29233987868b02a1d990e1fe"
+    },
+    {
+      "path": ".bin/browserslist",
+      "before": "3ac7ac5aea9efe688e66e3534e97abc9f9f2aac22c15035b214465e08791e758",
+      "after": "94d6c36a77eb361e20cb31cb6bbe147ba1cc2a016e1c74ff48cb7dda62fd4392"
+    },
+    {
+      "path": ".bin/oxfmt",
+      "before": "77b391effb04b55a1d0ab4b9683eca5db53f1589c863f0b2e12ca98f416f17d8",
+      "after": "6116e3c6ad83893c228b430c2a3f38c1872b4101c10ac351302ac501f795b594"
+    },
+    {
+      "path": ".bin/oxlint",
+      "before": "59a8d081c3b4eb43d8ba7eaf1c877137a1cbb566e6187a9d243d5be4da96884b",
+      "after": "4a2462d90bbd4b1cc475948e37934de8ec08b78153f2f8179ce0eab583c2116f"
+    },
+    {
+      "path": ".bin/playwright",
+      "before": "b1ea205a4141f79dafdf4bf787278577099c1a54e3f60a13f672f28c06ca7cd1",
+      "after": "12488143137b66c322d0e00b167fcf377d81d139e4761f93791905f46dcbbd19"
+    },
+    {
+      "path": ".bin/rolldown",
+      "before": "a5cb21c12f0d17e3547678ba969add1f6555db046386c1f7244f27445aca8532",
+      "after": "ec2f8ce87253807c004a5a8360cee27b282bc54acb3749e030af31a1692700a1"
+    },
+    {
+      "path": ".bin/tsc",
+      "before": "023084b8e804c7d23c8b953fdce887855820b967eefcd14b6a1ba8621d872908",
+      "after": "aaee4b87f67bf9a49e3dbb1d07355fb158c60564f20fd371795d79d798d76c9f"
+    },
+    {
+      "path": ".bin/tsgolint",
+      "before": "f8b414848fd27192afaeaf3098e6dc8b991c210c5bdaa2936f72e4a61d80349d",
+      "after": "c3dae7b366db629648c52c4dc4cfab9b091fb3006b9487f08f0d31a3fb708556"
+    },
+    {
+      "path": ".bin/vite",
+      "before": "12ea6558cb92d9f172a5a4ec06b8add03f4c3bbe9a7db3645369a24ac061192a",
+      "after": "572fe451c56314ac5dfbd41e12006e961d9ab8beb737ca5eb12cc40be9197572"
+    },
+    {
+      "path": ".bin/vitest",
+      "before": "ada7aea24315cd4a6c18c21f161e2092f564bbcee52b4340ddd10d20480c7e58",
+      "after": "3a590367f0be2146249c6f56586f4d0f38ce1b7ac58e978dde80e808c280e434"
+    }
+  ]
+}

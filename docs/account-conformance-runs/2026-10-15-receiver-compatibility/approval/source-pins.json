@@ -1,0 +1,32 @@
+{
+  "baseline": "faadbff5d41eab72434af4193f774d50f1ac577c",
+  "sourceWasUncommitted": true,
+  "node": "v26.11.1",
+  "priorPins": "../source-pins.json",
+  "files": [
+    {
+      "path": "test/packagedConfig.test.ts",
+      "sha256": "a05745e51354e4b31eff8feb3e30dd8d0e182cb58cbef544bb83391e3cd7265e"
+    },
+    {
+      "path": "test/privateAccess.test.ts",
+      "sha256": "2533dc7d899e06753e1206d6d1ac28489e63c2422ef1c8fef003db09223c33bb"
+    },
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "sha256": "114485ff60aec66f176940efa0ec5c869309fa378a716e9b1d051129c15aab01"
+    },
+    {
+      "path": "test/release-validation/generated-tests.test.mjs",
+      "sha256": "5637606a22fd098903a91dbe4b8ca758f216e7355555ba2facbf1520948531a4"
+    },
+    {
+      "path": "docs/release-validation-graph.json",
+      "sha256": "7c2ad9c30a9d9e7d9a187b8025f074767132359484f89b44c89a413fab0be394"
+    },
+    {
+      "path": "docs/release-validation-manifest.json",
+      "sha256": "e9c875b9bd0862a7ed59aced9a62f63d408710d7c7897479775032193d8d5476"
+    }
+  ]
+}

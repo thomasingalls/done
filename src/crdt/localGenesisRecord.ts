@@ -22,6 +22,7 @@ import { cleanupFields } from './legacyCleanupEncoding';
 import { probeDatabase, checkLayout, readScopedRows, readScopedRowsBulk } from './startupStorage';
 import { assertNoLocalClear } from './localClearState';
 import { assertNoPreactiveImport } from './legacyImportState';
+import { assertNoLocalProtection } from './localProtection';
 import { stopStartup } from './startupState';
 import type { SessionTask } from './writeSession';
 
@@ -37,6 +38,8 @@ export interface LocalClaim {
   initial: CustodyRecord;
   stage: 'custody' | 'content' | 'ready';
   mac: Bytes;
+  /** Authenticated weaker mode, present only on new credential-free Local genesis. */
+  automatic?: true;
   sourceCleanup?: LegacyCleanupRecord;
   /** Authenticated provenance of an imported Local selection; absent for fresh genesis. */
   imported?: {
@@ -60,6 +63,7 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
     !v ||
     ![
       'initial,mac,stage,v',
+      'automatic,initial,mac,stage,v',
       'imported,initial,mac,stage,v',
       'imported,initial,mac,sourceCleanup,stage,v',
     ].includes(Object.keys(v).sort().join(',')) ||
@@ -67,7 +71,8 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
     !v.initial ||
     !['custody', 'content', 'ready'].includes(v.stage) ||
     !(v.mac instanceof Uint8Array) ||
-    v.mac.length !== 32
+    v.mac.length !== 32 ||
+    ('automatic' in v && v.automatic !== true)
   )
     return stopStartup('repair-required', 'invalid-local-claim');
   const scope = {
@@ -107,6 +112,7 @@ export const parseLocalClaim = (value: unknown, slotId: string): LocalClaim => {
     initial,
     stage: v.stage,
     mac: v.mac.slice(),
+    ...(v.automatic ? { automatic: true as const } : {}),
     ...(v.imported ? { imported: { ...v.imported } } : {}),
     ...('sourceCleanup' in v ? { sourceCleanup: parseLegacyCleanup(v.sourceCleanup) } : {}),
   };
@@ -125,6 +131,7 @@ export const readLocalClaim = async (
 ): Promise<LocalClaim | null> => {
   await assertNoLocalClear(task, slotId);
   await assertNoPreactiveImport(task, slotId);
+  await assertNoLocalProtection(task, slotId);
   const rows = (await slotCustodyRows(task, slotId)) ?? [];
   const row = rows.find((r) => indexedDB.cmp(r.key, localClaimKey(slotId)) === 0);
   return row ? parseLocalClaim(row.value, slotId) : null;
@@ -181,7 +188,7 @@ const claimAuthentication = async (
           ]),
         )
       : fields('done/local-genesis-progress/v1', hex(claim.initial.mac), claim.stage);
-    const payload = claim.sourceCleanup
+    const legacyPayload = claim.sourceCleanup
       ? cleanupFields(
           claim.sourceCleanup.v,
           'done/local-import-cleanup',
@@ -189,6 +196,9 @@ const claimAuthentication = async (
           cleanupPayload(claim.sourceCleanup),
         )
       : selectionPayload;
+    const payload = claim.automatic
+      ? fields('done/local-automatic-claim/v1', hex(legacyPayload))
+      : legacyPayload;
     if (signing) return new Uint8Array(await task.wait(() => subtle.sign('HMAC', key, payload)));
     if (!(await task.wait(() => subtle.verify('HMAC', key, claim.mac, payload))))
       stopStartup('repair-required', 'local-progress-authentication-failed');

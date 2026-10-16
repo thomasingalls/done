@@ -1,0 +1,103 @@
+// Publication-only rehearsal: extracted immutable frontends, disposable profiles and state.
+import { test, expect, type Page } from '@playwright/test';
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { pairedEditors as legacyPair, openSaved as legacyOpen } from './publication-legacy-devices';
+import { openSaved, credentials, restoreAuthenticator } from './devices';
+import { startService, stopService, startApplication, stopProcess } from './server';
+
+const goals = (p: Page) => p.locator('.goals .cm-content');
+const append = async (p: Page, text: string) => {
+  await goals(p).click();
+  await p.keyboard.press('ControlOrMeta+End');
+  await p.keyboard.insertText('\n' + text);
+  await expect(goals(p)).toContainText(text);
+};
+const version = (p: Page) => p.locator('.menu-row').filter({ hasText: 'Version' }).locator('.menu-value');
+
+test('actual production reader upgrades and rolls back protected original and joined profiles without losing offline writing', async ({ page, browser }, info) => {
+  test.setTimeout(180000);
+  const predecessor = process.env['DONE_PREDECESSOR_DIST']!;
+  expect(predecessor).toBeTruthy();
+  const service = await startService(info.outputPath('service'), predecessor, true, true);
+  let pair: Awaited<ReturnType<typeof legacyPair>> | undefined;
+  try {
+    pair = await legacyPair(page, browser, true);
+    const devices = [
+      { page, auth: pair.first.auth, code: pair.first.code, joined: false },
+      { page: pair.second, auth: pair.next.auth, code: pair.next.code, joined: true },
+    ];
+    for (const d of devices) {
+      await d.page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+      await d.page.goto('/');
+      await legacyOpen(d.page, d.code, d.joined);
+      await expect(version(d.page)).toHaveText('890fc677');
+      expect(await d.page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+    }
+    // Accepted encrypted journals stay queued while the old app remains in use.
+    for (const d of devices) await d.page.context().route('**/account/delivery/**', route => route.abort('internetdisconnected'));
+    await append(devices[0]!.page, 'Queued before production upgrade A');
+    await append(devices[1]!.page, 'Queued before production upgrade B');
+    const switchImage = async (dir: string, expectedVersion: string, legacy: boolean) => {
+      await stopProcess(service.app);
+      service.app = await startApplication(dir);
+      for (const d of devices) {
+        await d.page.evaluate(async () => (await navigator.serviceWorker.getRegistration())!.update());
+        await expect.poll(() => d.page.evaluate(async () => (await navigator.serviceWorker.getRegistration())?.waiting?.state)).toBe('installed');
+      }
+      const saved = await Promise.all(devices.map(d => credentials(d.auth)));
+      // The real old client activates updates by closing its controlled pages.
+      for (const d of devices) await d.page.close();
+      const expectedHash = createHash('sha256').update(readFileSync(resolve(dir, 'index.html'))).digest('hex');
+      for (const [i, d] of devices.entries()) {
+        const context = i === 0 ? page.context() : pair!.other;
+        d.page = await context.newPage();
+        d.auth = await restoreAuthenticator(d.page, saved[i]!);
+        await d.page.goto('/');
+        await expect(d.page.locator('.shell')).toHaveCount(0);
+        const html = await d.page.evaluate(async () => await (await fetch('/index.html')).text());
+        expect(createHash('sha256').update(html).digest('hex')).toBe(expectedHash);
+        if (!legacy && i === 0) {
+          await d.page.getByLabel('Unlock code', { exact: true }).fill('wrong');
+          await d.page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
+          await expect(d.page.getByRole('alert')).toContainText('code');
+          await expect(d.page.locator('.shell')).toHaveCount(0);
+        }
+        await (legacy ? legacyOpen : openSaved)(d.page, d.code, d.joined);
+        await expect(version(d.page)).toHaveText(expectedVersion);
+      }
+    };
+    await switchImage(resolve('dist'), '58b1a12e', false);
+    await expect(goals(devices[0]!.page)).toContainText('Queued before production upgrade A');
+    await expect(goals(devices[1]!.page)).toContainText('Queued before production upgrade B');
+    for (const d of devices) {
+      await d.page.context().unroute('**/account/delivery/**');
+      await d.page.context().setOffline(true);
+    }
+    await append(devices[0]!.page, 'Offline after production upgrade');
+    await devices[0]!.page.keyboard.press('ControlOrMeta+z');
+    await expect(goals(devices[0]!.page)).not.toContainText('Offline after production upgrade');
+    await devices[0]!.page.keyboard.press('ControlOrMeta+Shift+z');
+    await expect(goals(devices[0]!.page)).toContainText('Offline after production upgrade');
+    for (const d of devices) {
+      await d.page.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+      await d.page.goto('/');
+      await openSaved(d.page, d.code, d.joined);
+      await d.page.context().setOffline(false);
+    }
+    for (const d of devices)
+      for (const text of ['Queued before production upgrade A', 'Queued before production upgrade B', 'Offline after production upgrade'])
+        await expect(goals(d.page)).toContainText(text, { timeout: 20000 });
+    await switchImage(predecessor, '890fc677', true);
+    await append(devices[1]!.page, 'Writing after compatible image rollback');
+    await expect(goals(devices[0]!.page)).toContainText('Writing after compatible image rollback', { timeout: 20000 });
+    await switchImage(resolve('dist'), '58b1a12e', false);
+    for (const d of devices)
+      for (const text of ['Queued before production upgrade A', 'Queued before production upgrade B', 'Offline after production upgrade', 'Writing after compatible image rollback'])
+        await expect(goals(d.page)).toContainText(text, { timeout: 20000 });
+  } finally {
+    await pair?.other.close();
+    await stopService(service);
+  }
+});

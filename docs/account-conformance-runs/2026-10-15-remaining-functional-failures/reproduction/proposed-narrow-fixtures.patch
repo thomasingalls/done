@@ -1,0 +1,88 @@
+diff --git a/test/account-handoff/native.test.mjs b/test/account-handoff/native.test.mjs
+--- a/test/account-handoff/native.test.mjs
++++ b/test/account-handoff/native.test.mjs
+@@ -261,7 +261,7 @@
+     const accepted = await handoff(f.page, item),
+       classified = await classify(f.page, item);
+     assert.equal(accepted.kind, 'account-selected');
+-    assert.deepEqual(classified, { ...accepted, kind: 'account' });
++    assert.deepEqual(classified, { ...accepted, kind: 'account', detached: false });
+     if (process.env.ACCOUNT_REPORT_DIR) {
+       const { writeFileSync } = await import('node:fs'),
+         { join } = await import('node:path');
+@@ -436,7 +436,7 @@
+               };
+             });
+             const classified = await classify(f.page, { ...item, recoveryCode: undefined });
+-            assert.deepEqual(classified, { ...result, kind: 'account' });
++            assert.deepEqual(classified, { ...result, kind: 'account', detached: false });
+             assert.equal(await inventory(f.page), after);
+           }
+           histories.push({ ...history, status: 'passed' });
+diff --git a/test/account-sessions/host.test.mjs b/test/account-sessions/host.test.mjs
+--- a/test/account-sessions/host.test.mjs
++++ b/test/account-sessions/host.test.mjs
+@@ -156,7 +156,7 @@
+   );
+ });
+ 
+-test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 23', async (t) => {
++test('continuation host requires offline opt-in and preserves the account and identity across schema 14 to 26', async (t) => {
+   const f = await fixture(t),
+     retryKey = fresh();
+   const pending = await (
+@@ -176,7 +176,7 @@
+   });
+   const upgraded = await upgradePreviewState({ ...f.config, membershipContinuation: true });
+   assert.equal(upgraded.from, 14);
+-  assert.equal(upgraded.to, 23);
++  assert.equal(upgraded.to, 26);
+   assert.equal(accountSchema(join(upgraded.backup, 'account.sqlite')), 14);
+   assert.deepEqual(readFileSync(join(f.directory, 'operator.key')), key);
+   assert.deepEqual(JSON.parse(readFileSync(join(f.directory, 'pin.json'))), pin);
+diff --git a/test/account-counter-contract/formats.test.mjs b/test/account-counter-contract/formats.test.mjs
+--- a/test/account-counter-contract/formats.test.mjs
++++ b/test/account-counter-contract/formats.test.mjs
+@@ -155,8 +155,8 @@
+ test('closed structured-clone parsers reject malformed counters without inferring missing allocation state', () => {
+   let refusals = 0;
+   for (const f of fixtures()) {
+-    const check = (v) => {
+-      assert.throws(() => parsed(f, scope, v), { code: 'repair-required' });
++    const check = (v, code = 'repair-required') => {
++      assert.throws(() => parsed(f, scope, v), { code });
+       refusals++;
+     };
+     for (const field of Object.keys(f.value)) {
+@@ -165,7 +165,7 @@
+       check(v);
+     }
+     check({ ...f.value, extra: true });
+-    check({ ...f.value, v: 3 });
++    check({ ...f.value, v: 3 }, f.family === 'counter' ? 'app-update-required' : 'repair-required');
+     check({ ...f.value, mac: '00'.repeat(31) });
+   }
+   const base = initial(2);
+diff --git a/test/account-receive-transport/native.test.mjs b/test/account-receive-transport/native.test.mjs
+--- a/test/account-receive-transport/native.test.mjs
++++ b/test/account-receive-transport/native.test.mjs
+@@ -174,7 +174,7 @@
+     });
+     release();
+     const r = await f.page.evaluate(() => work);
+-    assert.match(r.error, /superseded/);
++    assert.deepEqual(r, { kind: 'unknown', recorded: false });
+     await f.page.evaluate(() => superseding);
+     assert.equal((await status(f.page)).receivedThrough, 0);
+     assert.equal(await view(f.page), initial);
+diff --git a/test/account-successor/reconnect.test.mjs b/test/account-successor/reconnect.test.mjs
+--- a/test/account-successor/reconnect.test.mjs
++++ b/test/account-successor/reconnect.test.mjs
+@@ -142,6 +142,7 @@
+     await cold(f);
+     await syncing(f.page, item);
+     await settled(f.page);
++    await waitPredicate(f.page, () => opened.sync.status.receive.phase === 'idle');
+     await close(f.page);
+     assert((await marker(f.page, item)).successor);
+   },

@@ -1,0 +1,9 @@
+{
+  "humanDecision": "Leave old formatting alone",
+  "primaryProposalReverted": true,
+  "patchedCheckoutProposalStillPresentDuringRun": false,
+  "retainedPatch": "/private/tmp/done-construction-format-only.patch",
+  "firstAuthorityPassingRerun": "Evidence for the formatting proposal only; does not establish the current reverted gate result",
+  "recordedAt": "2026-10-15T12:15:19.302Z",
+  "patchedCheckoutProposalRevertedAfterRun": true
+}
