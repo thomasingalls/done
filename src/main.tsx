@@ -6,7 +6,7 @@ const LocalApp = lazy(() =>
 import { BOOT, mark } from './lib/marks';
 import { prepareInstallPrompt, registerServiceWorker } from './pwa';
 import { hasSavedAccountEntry, loadPackagedConfig } from './account/packagedConfig';
-import { createAccountPreview } from './ui/AccountPreview';
+import { createAccountPreview, SavedSetupReadError } from './ui/AccountPreview';
 import './styles/index.css';
 import './styles/local-startup.css';
 import './styles/account-setup.css';
@@ -33,13 +33,26 @@ if (/^\/remove\/(local|account-[a-f0-9]{32}|enrollment-[a-f0-9]{32})\/?$/.test(l
   );
 } else
   void (async () => {
-    // Service discovery can prepare sidebar sync in the background; first Local use never waits for it.
-    const discovery = loadPackagedConfig();
-    void discovery.catch(() => {});
-    if (location.pathname === '/' && !(await hasSavedAccountEntry())) {
+    // Local opening must finish its own compatibility/factor/replay checks without
+    // discovery writing public cache hints first. Sync/account navigation
+    // requests discovery explicitly; saved Accounts keep their pinned bootstrap.
+    const localEntry =
+      ['/', '/index.html', '/local.html', '/private/account-setup.html'].includes(
+        location.pathname,
+      ) || /^\/local(?:\/[^/]+)?\/?$/.test(location.pathname);
+    let savedAccount = true;
+    if (localEntry) {
+      try {
+        savedAccount = await hasSavedAccountEntry();
+      } catch {
+        view.render(<SavedSetupReadError />);
+        return undefined;
+      }
+    }
+    if (localEntry && !savedAccount) {
       const open = async (entry: string, name?: string, code?: string) => {
         try {
-          const config = await discovery;
+          const config = await loadPackagedConfig();
           if (!config)
             throw Error('Sync is not available at this address. Your local list has been kept.');
           view.render(
@@ -75,7 +88,7 @@ if (/^\/remove\/(local|account-[a-f0-9]{32}|enrollment-[a-f0-9]{32})\/?$/.test(l
       );
       return undefined;
     }
-    return discovery;
+    return loadPackagedConfig();
   })()
     .then(async (config) => {
       if (config === undefined) return;

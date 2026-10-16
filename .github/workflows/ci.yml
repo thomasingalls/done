@@ -77,6 +77,9 @@ jobs:
           test/account-admission-bounds/historical-closure.test.mjs
           test/account-receive/historical-owner.test.mjs
 
+      - name: Check Local bootstrap and native compatibility refusals
+        run: pnpm storage:compatibility
+
       - name: Run onboarding, account compatibility and device-removal browser regressions
         run: >-
           pnpm exec playwright test --config playwright.packaged-account.config.ts

@@ -1,0 +1,23 @@
+# Phase 06: keep first Local refusal free of discovery writes
+
+Parent overlay `3c0aeedf3b488aebe62741ec9b460adb8d8b46dd`, signed base `a6fa2298cf3233893e3cbb9809190da6a8dc72bc`. This is an unsigned source overlay, not a release artifact identified by the unchanged Git version string. No publication or qualification.
+
+## Contract and bounded repair
+
+Phase 05's original exact-census test demonstrates a real defect, not a stale assertion: background configuration discovery writes a Local-only cache hint before a future encrypted document schema is refused. Four additional valid pre-fix native cases show Local-only and hosted discovery changing public cache keys; the hosted HTML entry also creates a metadata database. No cryptographic format or authority change is needed to prevent those effects.
+
+When a Local entry has no known saved Account entry, `main.tsx` now opens Local without starting service discovery. Its owner still verifies compatibility, factor, authenticated recovery and document schema. Explicit sync/account navigation requests discovery; saved Account bootstrap retains its existing pinned path. This is a repair of the first-Local branch, not a universal qualification of all saved-account/hint combinations. Unknown saved-entry metadata refuses through the existing error panel instead of guessing a fresh workspace. That panel has one shared implementation, with identical private-entry markup. No crypto, custody, protocol or service source changes.
+
+Native regression coverage exercises five public Local entry aliases with Local-only/hosted service responses, wrong and correct codes, editor absence and exact full stored census after refusal. The legacy private HTML alias is served through the same public index mapping used by packaged-application.mjs; plain Vite's dedicated private development HTML correctly requires injected configuration and is not that public entry. A separate public-bootstrap read-failure case requires an explicit error, zero discovery, no editor/create control and no database/storage creation. The normal CI job runs the complete native compatibility command; the operator-resumed qualification job remains byte-identical to the signed base. The new test file remains required and blocked for aggregate credit.
+
+## Results and limitations
+
+- **17 native storage cases pass:** all six original cases plus eleven new regressions. The old future-schema exact census assertion is unchanged from Phase 05.
+- **57 focused unit cases pass**, covering config/private access and protected Local startup; **16 CI/planning cases pass**.
+- Build passes; all **three packaged Local offline cases** and **12 packaged welcome/session/serving/update cases** pass. Packaged coverage includes optional protection, sync, cold access, two-tab protection, interrupted protection and device removal.
+- The dedicated dev setup run was **18/19** because I unnecessarily changed a read-error expectation. That fixture injects AccountPreview rather than running main.tsx; the old exact assertion was restored byte-for-byte and its focused case passes. The unchanged eighteen cases passed in the full attempt. A new public-bootstrap native test covers main's actual new error path. No final full 19-case stock-runner pass is claimed in this phase; the shared test-lock machinery remains pending.
+- The runtime crypto census initially refused changed source. Reviewed regeneration changes **only two source hashes** (main.tsx and AccountPreview.tsx), preserving all domain labels, classification and qualification obligations. Planning is **851 obligations / 310 unresolved**; crypto constructions remain open as before.
+
+Original failures and failed development probes remain retained. Initial hosted fixtures used disallowed IPv4 HTTP authority policy, then a missing fixture parameter; neither is credited as a security counterexample. The valid four-case pre-fix test source was reconstructed from the final body and verified against its digest captured at execution. Its actual full-census failures, source and raw logs are retained. The unsupported dedicated-dev-entry probe and mistaken old expectation remain failures in the record, not passes. Standalone test typecheck first needed the installed TypeScript command's config/types flags; final check passes.
+
+Source pins, command receipts and all 108 built-file hashes identify the work. No service keys, browser profiles or user data are copied. Small checks overlapped browser work; elapsed times are not performance measurements. Local Node 26 results do not establish pinned Node 24 CI, real Firefox/provider behavior, whole-suite readiness, release qualification or cached-client adoption. The preview remains untouched.

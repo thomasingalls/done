@@ -1409,7 +1409,7 @@
     },
     {
       "path": "src/main.tsx",
-      "sha256": "6c8e6ee7b587f215247729ceb669b0d0927fe71c2a2bde01784b334a5a62e116"
+      "sha256": "2075a03547dca26a9c605ed11f8d1cfc033139b8f16a7bee05c2834fd3cf9e57"
     },
     {
       "path": "src/pwa.ts",
@@ -1433,7 +1433,7 @@
     },
     {
       "path": "src/ui/AccountPreview.tsx",
-      "sha256": "1332e0c3686b27c18d4a16a936651fb053b76a27865561147f4ad7cdc4af185d"
+      "sha256": "c1865f0e34c086f97e544bc0fcf41c2796d3211dc7878fe9c03d0fd890c818b3"
     },
     {
       "path": "src/ui/AccountRecoveryApp.tsx",

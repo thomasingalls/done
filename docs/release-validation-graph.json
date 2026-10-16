@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 489,
-    "requiredTestFiles": 483,
+    "testFiles": 490,
+    "requiredTestFiles": 484,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -12547,6 +12547,17 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/storage-compatibility/discovery.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.storage-compatibility.config.ts",
+        "packages": ["storage:compatibility"]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/storage-harness/lifecycle.node.mjs",
       "status": "required",
       "invocation": {
@@ -18902,6 +18913,10 @@
     {
       "path": "test/storage-compatibility/compatibility.spec.ts",
       "sha256": "3fa4d4bc444f4e988ba650db68de3823404793c92f2ef2929d6f282b3208e610"
+    },
+    {
+      "path": "test/storage-compatibility/discovery.spec.ts",
+      "sha256": "fcf4c0ab147ce9fa67af7990e4df32ca5e3ea567c7e488bbb9bf3da7ebf1259d"
     },
     {
       "path": "test/storage-conformance/adapters/codex.mjs",

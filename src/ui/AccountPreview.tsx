@@ -35,6 +35,16 @@ const DeviceDataRemoval = lazy(() =>
   import('./DeviceDataRemoval').then((module) => ({ default: module.DeviceDataRemoval })),
 );
 
+/** A metadata read failure cannot authorize a fresh workspace or silent fallback. */
+export function SavedSetupReadError() {
+  return (
+    <main className="local-startup">
+      <p role="alert">Saved setup could not be read. Your browser data has been kept.</p>
+      <a href="/">Return to done</a>
+    </main>
+  );
+}
+
 const ACCESS_CHOICE = 'done.account-setup.access-choice';
 const ACCESS_SLOT = 'done.account-setup.selected-slot';
 
@@ -65,12 +75,7 @@ export async function createAccountPreview(
     ]).catch(() => null);
     if (!resolved) {
       history.destroy();
-      return (
-        <main className="local-startup">
-          <p role="alert">Saved setup could not be read. Your browser data has been kept.</p>
-          <a href="/">Return to done</a>
-        </main>
-      );
+      return <SavedSetupReadError />;
     }
     const [pending, accounts] = resolved;
     entry =

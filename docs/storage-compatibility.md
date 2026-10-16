@@ -139,3 +139,13 @@ Account journal-era wrapper and explicit metadata/journal reader fences before s
 retirement. These are not implemented or added implicitly to counter v3. Current private profiles
 still retain complete history. A mismatched/legacy journal after conversion must be preserved and
 refused; matching eras alone cannot establish safety of an arbitrary browser-profile restore.
+
+### 2026-10-15 — First Local entry and encrypted document refusal
+
+The earlier metadata-permit check alone cannot establish encrypted document compatibility before a
+factor and replay. Public Local entry without a known saved Account entry therefore no longer starts
+configuration discovery in the background. Local opening and refusal leave service-cache hints alone;
+explicit sync/account navigation can request configuration. Existing pinned Account bootstrap remains
+unchanged. A saved-entry metadata read error refuses through the shared error panel rather than
+inferring permission to create. The original future-journal exact-census test and eleven new native
+entry/error cases exercise this boundary; this does not qualify all cached-account combinations.
