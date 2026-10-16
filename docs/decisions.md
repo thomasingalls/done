@@ -4713,3 +4713,7 @@ A Local-genesis wait timed out even though its captured creation was resolved an
 ## 2026-10-16 — Bound the default unit gate's independent file workers
 
 Use at most two concurrent Vitest files while retaining all cases, existing deadlines and concurrency explicitly exercised inside a case. Earlier default Node 26 timeouts remain evidence; fresh default passes do not erase them or establish a deterministic current failure. This is a repeatable gate resource budget with a local speed cost, separate from performance measurement and aggregate qualification. Compare complete case identities/statuses on pinned Node 24 and the local runtime rather than crediting a filtered fast run.
+
+## 2026-10-16 — Re-pin protected custody homes after reviewing recovery-only amendment
+
+The two §13.3 authority-map pins predate the signed recovery-progress isolation amendment. Independent old/current section extraction shows no other difference; both entries already scope protected custody and invocation accounting, and the amendment explicitly grants no opening/passkey/service authority. Refresh only those content pins with a dated review, retain every disposition/blocker, and challenge the unchanged checker with temporary section drift plus exact restoration. Do not pay implementation/platform debt by refreshing a documentation hash.

@@ -1,5 +1,11 @@
 # The authority-derivation map
 
+**2026-10-16 pin review:** §13.3 differs from the prior pinned onboarding section only by
+its signed setup-recovery isolation amendment (`fcb659c3`). Recovery hints remain non-authorizing;
+protected factor opening, metadata authentication, credential correspondence and root invocation
+accounting are unchanged. Reread `device-lock-custody` and `k-key-envelopes` and refresh only those
+two content pins. Their specified-home statuses and every implementation/platform blocker remain.
+
 **2026-10-15 pin review:** reread TRD §§7.4/13.3/13.5/13.6/13.9 against the entries below.
 The v2 envelope retains credential/generation separation and per-invocation accounting; admission-only
 successors carry existing certification unchanged; competing epochs require a fresh human ceremony;
@@ -501,7 +507,7 @@ guards: custody
 verifies: opening every protected Local and Account scoped custody entry from protected genesis and cold start
 resolves: current code-only custody requires factor opening, metadata authentication and retained-key correspondence; selected PRF enrollment remains separate -> via:private-local-custody-open
 status: resolved
-pin: docs/TRD.md §13.3 a2f3f88f46d8
+pin: docs/TRD.md §13.3 7a2b8ec58274
 ```
 
 ## 5. The AEAD keys — `P-3` falsifier 16's census, seeded
@@ -577,7 +583,7 @@ verifies: the local key envelopes — K_g and §13.4's sealed credentials under 
 counted-by: v2 custody root seal_reserved — reserve before every invocation, across purposes and abandoned retries; rotate the root or refuse before the 2^32nd reservation (row 3 §5, SC-09). One envelope per (generation, purpose) is only logical uniqueness. Resume the same staged root with its counter; unrewound/unbranched history is required
 status: resolved
 pin: docs/selections/row-3-record-format.md dcefb99d3368
-pin: docs/TRD.md §13.3 a2f3f88f46d8
+pin: docs/TRD.md §13.3 7a2b8ec58274
 ```
 
 ```authority

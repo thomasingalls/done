@@ -14985,3 +14985,7 @@ The configured two-file unit budget passes the full population sequentially on p
 ## 2026-10-16 — Patch-series phase 19: exact final census
 
 The full 175-case normal-CI adapter run exposes only two stale 2,453-case expectations after phase 08's independently identified additional HTTP-size boundary case. Updating those exact values/title to 2,454 passes all seventeen affected tests, retaining 276 stages and every assertion, skip and release block. No production changes; planning remains 855/314 blocked. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/19-final-census-expectations/README.md). No commits/publication or qualification.
+
+## 2026-10-16 — Patch-series phase 20: authority home pin review
+
+The authority checker passes after reviewing the complete signed §13.3 change and refreshing only two content hashes. The change is solely non-authorizing setup-recovery isolation; protected factor, key-format and invocation guarantees remain. Every map status, guard and blocker is unchanged. A positive/fault/restore/positive experiment verifies both exact new pins still detect home drift. Original failures and the whole section diff remain. Planning stays 855/314 blocked; no runtime/checker changes or qualification. [Evidence](./account-conformance-runs/2026-10-15-functional-repair-series/20-authority-pin-review/README.md). No commits/publication.
