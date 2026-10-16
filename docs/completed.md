@@ -15023,3 +15023,9 @@ The current workspace stays cumulative and unstaged; HEAD remains a6fa2298. No s
 **Exit.** Seven failing unit counterexamples and four failing packaged-browser journeys distinguish the unissued-code defect from the already working fresh-account path. The repaired phase passes all 36 affected unit cases and 13 packaged onboarding cases, including the unchanged protected-factor and combined-passkey walkthroughs. Storage is reclassified before code generation; existing genesis and all authentication/continuation verifiers remain unchanged. A failed inspection, unassigned legacy source, unfinished removal or automatic Local list no longer becomes a spurious unlock form. Wrong established factors still fail without network work, and the confirmed factor still resumes after cold reopen.
 
 **Limits.** The extra new control's missing request.error caused one fixture failure, retained alongside its corrected run. This is local Chromium/Node 24 evidence, not a new real-provider walkthrough, aggregate qualification or deployment. [Evidence](./account-conformance-runs/2026-10-16-onboarding-flows/02-account-entry/README.md). Normal-CI/required-file integration and final patch verification follow as phase 3.
+
+### Review tightens the setup-only removal boundary
+
+**Date:** 2026-10-16 · **Commit:** unsigned sequential overlay above `1849721ee612` · **Stage:** onboarding repair phase 3
+
+**Exit.** Three new inconsistent-metadata cases demonstrate overly broad setup-only cleanup on the prior phase and preservation after the repair. All 39 affected unit cases and typecheck pass. No source, key, journal, factor or other-slot deletion is inferred from a later or malformed UI hint. [Evidence](./account-conformance-runs/2026-10-16-onboarding-flows/03-setup-only-boundary/README.md). Final native-browser composition, inventory and patch-chain verification follow separately. No commits, publication or qualification.

@@ -168,9 +168,21 @@ export async function removeDeviceData(slotId: string, progress?: (message: stri
               throw new LegacyRemovalRequired();
             const setup = (await probeDatabase(task, 'done.first-device-setup.v1', (db) =>
               readRow(task, db, 'attempt', slotId === 'local' ? 'current' : slotId),
-            )) as { slotId?: unknown } | null | undefined;
+            )) as
+              | { v?: unknown; slotId?: unknown; fresh?: unknown; view?: unknown; proof?: unknown }
+              | null
+              | undefined;
             if (!setup) throw new WorkspaceDataAbsent();
             if (setup.slotId !== slotId) throw Error('Saved setup routing is inconsistent');
+            if (
+              setup.v !== 1 ||
+              setup.fresh !== true ||
+              setup.view !== null ||
+              setup.proof !== null
+            )
+              throw Error(
+                'Saved setup cannot identify all local data for removal. Keep your data and backups available for recovery.',
+              );
             setupOnly = true;
           }
           r = {

@@ -113,3 +113,38 @@ it('removes an identified setup-only attempt without inventing encrypted content
     false,
   );
 });
+
+it.each(['registered', 'not-fresh', 'malformed'] as const)(
+  'preserves %s setup metadata when no content identity can establish complete removal',
+  async (state) => {
+    const slotId = 'account-' + '44'.repeat(16);
+    const attempt = {
+      v: state === 'malformed' ? 2 : 1,
+      slotId,
+      ...(state === 'not-fresh' ? {} : { fresh: true }),
+      pin: {
+        v: 1,
+        origin: 'https://setup.example',
+        rpId: 'setup.example',
+        serviceId: '01'.repeat(16),
+        authRoot: '02'.repeat(32),
+      },
+      retryKey: 'A'.repeat(43),
+      view:
+        state === 'registered'
+          ? {
+              ok: true,
+              stage: 'credential-confirmed',
+              accountId: 'B'.repeat(43),
+              credentialId: 'credential',
+            }
+          : null,
+      proof: null,
+    } as Retained;
+    await setupProgress(attempt, slotId);
+    const before = await indexedDB.databases();
+    await expect(removeDeviceData(slotId)).rejects.toThrow('cannot identify');
+    expect(await setupProgress(undefined, slotId)).toEqual(attempt);
+    expect(await indexedDB.databases()).toEqual(before);
+  },
+);

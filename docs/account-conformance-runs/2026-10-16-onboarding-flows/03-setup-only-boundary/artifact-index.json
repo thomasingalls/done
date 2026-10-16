@@ -1,0 +1,22 @@
+{
+  "logs/03-format.log.gz": {
+    "sha256": "fd84cfdb7207e6597d8b2f37c0420a6565f2dd704af23a3884db64b2e44c0459",
+    "bytes": 66
+  },
+  "logs/03-typecheck.log.gz": {
+    "sha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+    "bytes": 20
+  },
+  "logs/03-unit-after.log.gz": {
+    "sha256": "5b0f9852a330bcd670c2af7d2389505625cbd3c4c39b697904bb1f64a956ec6f",
+    "bytes": 172
+  },
+  "logs/03-unit-before.log.gz": {
+    "sha256": "7bb7055684ae7c16ceeddcf4d7862a428c0b8c679a5244c0a90f41cd041f7701",
+    "bytes": 618
+  },
+  "source-pins.json": {
+    "sha256": "5141ceae99aaac4da336e7afecc90031ffdb9764656741d8c5722218f37ef703",
+    "bytes": 405
+  }
+}
