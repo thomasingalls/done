@@ -38,8 +38,8 @@ import {
 } from '../../account-protocol/replacementCheckpoint';
 import { openRecoveryReading, type RecoveryReading } from './recoveryReading';
 import { openHistoryCheckpoint } from './historyCheckpoint';
-import { verifyInboundPage, type InboundContext, type InboundLifetime } from './accountInbound';
-import { INBOUND_BATCH_COUNT } from '../../account-protocol/inboundBatch';
+import { verifyHistoryPage, type InboundContext, type InboundLifetime } from './accountInbound';
+import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import { reportEnrollmentProgress, type HistoryReplayProgress } from '../lib/enrollmentProgress';
 import { fields, hkdf, hex, random, type Bytes } from './custodyCrypto';
 import { unhex } from '../../account-protocol/recovery';
@@ -62,7 +62,7 @@ export interface HistorySourceInput {
   lifetime: InboundLifetime;
   sign(message: Bytes): Promise<string>;
   read(request: Bytes): Promise<Bytes>;
-  /** Optional transport grouping. Pages still undergo the original sequential verifier. */
+  /** Optional carrier; one bounded page at a time avoids skipping byte-limited tails. */
   readBatch?(requests: readonly Bytes[]): Promise<readonly Bytes[]>;
   exchange(request: HistoryExchange): Promise<unknown>;
   progress?: (progress: HistoryReplayProgress) => void;
@@ -428,68 +428,52 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       while (context.prefix.position < cut.position) {
         guard();
         if (events >= HISTORY_REPLAY_EVENTS) throw Error('History replay exceeds its event bound');
-        const count = Math.min(
-          readBatch ? INBOUND_BATCH_COUNT : 1,
+        const limit = Math.min(
+          READ_COUNT_LIMIT,
           cut.position - context.prefix.position,
           HISTORY_REPLAY_EVENTS - events,
         );
-        const requests: Bytes[] = [];
-        let pages: readonly Bytes[] = [];
+        const body = {
+          serviceId: p.pin.serviceId,
+          origin: p.pin.origin,
+          workspace: p.workspaceId,
+          reader: producer,
+          publisher: publisher.credential,
+          lineage: p.lineageId,
+          head: p.head,
+          epoch: p.epoch,
+          after: context.prefix.position,
+          limit,
+          nonce: hex(random(32)),
+          expires: (lifetime.now?.() ?? Date.now()) + 30000,
+          signature: '00'.repeat(64),
+        };
+        body.signature = await sign(inboundRequestMessage(body));
+        const request = encodeInboundRequest(body);
+        let pages: readonly Bytes[] = [],
+          result: Awaited<ReturnType<typeof verifyHistoryPage>> | undefined;
         try {
-          for (let i = 0; i < count; i++) {
-            const body = {
-              serviceId: p.pin.serviceId,
-              origin: p.pin.origin,
-              workspace: p.workspaceId,
-              reader: producer,
-              publisher: publisher.credential,
-              lineage: p.lineageId,
-              head: p.head,
-              epoch: p.epoch,
-              after: context.prefix.position + i,
-              limit: 1,
-              nonce: hex(random(32)),
-              expires: (lifetime.now?.() ?? Date.now()) + 30000,
-              signature: '00'.repeat(64),
-            };
-            body.signature = await sign(inboundRequestMessage(body));
-            requests.push(encodeInboundRequest(body));
-          }
           guard();
-          pages = readBatch ? await readBatch(requests) : [await read(requests[0]!)];
+          // A byte-limited page can be shorter than its requested entry count. Its verified
+          // next position determines the next request; never speculate a fixed stride.
+          pages = readBatch ? await readBatch([request]) : [await read(request)];
           guard();
-          if (!pages.length || pages.length > requests.length)
-            throw Error('Unexpected history read pages');
-          // The server processes reads in this order. No page may select its own request,
-          // skip a position, regress an observation, or advance beyond the signed cut.
-          for (let i = 0; i < pages.length; i++) {
-            events++;
-            const result = await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime);
-            try {
-              if (
-                result.kind !== 'received' ||
-                result.position !== context.prefix.position + 1 ||
-                result.position > cut.position ||
-                (result.position === cut.position && result.link !== cut.link)
-              )
-                throw Error('History replay does not reach its authenticated cut');
-              for (const bytes of result.updates) {
-                addBytes(bytes.length);
-                Y.applyUpdate(doc, bytes);
-              }
-              context.prefix = {
-                position: result.position,
-                link: result.link,
-                observedThrough: result.through,
-              };
-              progress({ stage: 'history', completed: ++checkedEvents, total });
-            } finally {
-              if (result.kind === 'received' || result.kind === 'conflict') result.record.fill(0);
-              if (result.kind === 'received') for (const bytes of result.updates) bytes.fill(0);
-            }
+          if (pages.length !== 1) throw Error('Unexpected history read pages');
+          result = await verifyHistoryPage(context, request, pages[0]!, cut, lifetime);
+          events += result.count;
+          for (const bytes of result.updates) {
+            addBytes(bytes.length);
+            Y.applyUpdate(doc, bytes);
           }
+          context.prefix = {
+            position: result.position,
+            link: result.link,
+            observedThrough: result.through,
+          };
+          checkedEvents += result.count;
+          progress({ stage: 'history', completed: checkedEvents, total });
         } finally {
-          for (const bytes of [...requests, ...pages]) bytes.fill(0);
+          for (const bytes of [request, ...pages, ...(result?.updates ?? [])]) bytes.fill(0);
         }
       }
     }

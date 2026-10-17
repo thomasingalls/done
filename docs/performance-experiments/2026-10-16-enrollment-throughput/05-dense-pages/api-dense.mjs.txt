@@ -1,0 +1,51 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {fork} from 'node:child_process';
+import {request} from 'node:http';
+import {createPrivateKey,sign} from 'node:crypto';
+import {setTimeout as delay} from 'node:timers/promises';
+const root='/private/tmp/done-enrollment-throughput-2f1d0b0f',reference=root+'/reference-source',accounted=root+'/series-source';
+const data=JSON.parse(readFileSync(root+'/private-api-seed.json'));
+const {query,pageProof}=await import(accounted+'/test/account-service-inbound/oracle.mjs');
+const {message}=await import(accounted+'/test/account-sessions/grant-fixtures.mjs');
+const {encodeInboundBatch,decodeInboundBatchPages}=await import(accounted+'/account-protocol/inboundBatch.ts');
+const {proof:verifyDecision}=await import(accounted+'/test/account-service-delivery/fixtures.mjs');
+const pageSize=8;
+const {encodeSubmit}=await import(accounted+'/account-protocol/deliveryTransport.ts');
+for(const who of ['first','other']){
+ data[who].authority={pin:data.pin};data[who].s.privateKey=createPrivateKey(data[who].s.privateKey);
+ data[who].retained=data[who].retained.map(({w,r})=>({w:{...w,bytes:Buffer.from(w.bytes,'hex')},r:{bytes:Buffer.from(r.bytes,'hex')}}));
+}
+const output=root+'/'+(process.env.LOAD_OUTPUT??'api-load');
+const observations=[],rounds=Number(process.env.LOAD_PAIRS??3),positions=Number(process.env.LOAD_POSITIONS??1024);
+mkdirSync(output,{recursive:true});
+for(let round=0;round<rounds;round++)for(const arm of ['accounted']){
+ const child=fork(root+'/probe/api-server.mjs',[arm==='reference'?reference:accounted,`${output}/${round}-${arm}-service`],{stdio:['ignore','pipe','pipe','ipc']});
+ let logs='';child.stdout.on('data',b=>logs+=b);child.stderr.on('data',b=>logs+=b);
+ let serial=0;const flights=new Map();
+ child.on('exit',code=>{for(const f of flights.values())f.reject(Error('Server exited '+code));flights.clear()});
+ child.on('message',msg=>{if(msg.id&&flights.has(msg.id)){const {resolve,reject}=flights.get(msg.id);flights.delete(msg.id);msg.error?reject(Error(msg.error)):resolve(msg)}});
+ const send=body=>new Promise((resolve,reject)=>{if(!child.connected)return reject(Error('API child disconnected')); const id=++serial;flights.set(id,{resolve,reject});child.send({...body,id})});
+ let stop=false,writer,peer,started=Date.now(),statuses=[],retries=[],writes=[],peerLatencies=[],port;
+ try{
+  port=await new Promise((resolve,reject)=>{child.on('message',m=>{if(m.ready)resolve(m.port)});child.once('exit',code=>reject(Error('server exit '+code+logs)));});
+  const grants={};for(const who of ['first','other']){const g=await send({kind:'grant',who});assert.equal(g.view.stage,'challenge');const proof={challengeId:g.view.challenge.challengeId,signature:sign(null,message(g.view.challenge),data[who].s.privateKey).toString('hex')};const f=await send({kind:'finishGrant',access:g.access.accessToken,proof});assert.equal(f.result.stage,'granted');grants[who]=f.result.grantToken;}
+  const post=async(path,body,who,label)=>{
+   const captured=Buffer.from(body);
+   for(let attempt=0;;attempt++){
+    assert(Buffer.from(body).equals(captured));
+    const result=await new Promise((resolve,reject)=>{const req=request({host:'127.0.0.1',port,path,method:'POST',headers:{Host:new URL(data.pin.origin).host,Origin:data.pin.origin,'Content-Type':'application/octet-stream',Authorization:'Bearer '+grants[who]}},res=>{const chunks=[];res.on('data',b=>chunks.push(b));res.on('end',()=>resolve({status:res.statusCode,bytes:new Uint8Array(Buffer.concat(chunks))}));res.on('error',reject)});req.on('error',reject);req.setTimeout(10000,()=>req.destroy(Error('HTTP deadline')));req.end(captured)});
+    statuses.push({label,status:result.status,at:Date.now()-started});
+    if(result.status!==429||attempt>=2)return result;
+    assert.equal(JSON.parse(Buffer.from(result.bytes)).refusal,'capacity');const before=performance.now();await delay(1000*(attempt+1));retries.push({label,attempt,waitMs:performance.now()-before});
+   }
+  };
+  await send({kind:'start'});started=Date.now();
+  writer=(async()=>{let i=0,previous=JSON.parse(Buffer.from(data.first.retained[1023].r.bytes))[6];while(!stop){await delay(500);if(stop)break;const w=data.first.extras[i++];assert(w);const at=performance.now(),answer=await post('/account/delivery/submit',encodeSubmit(data.first.workspace,Buffer.from(w.bytes,'hex')),'first','write');assert.equal(answer.status,200);const checked=verifyDecision({kind:'decision',bytes:answer.bytes},data.first.offer.epoch.acceptancePublicKey,w.subject,previous,w.parent);assert.equal(checked.kind,'accepted');previous=checked.head.link;const row={w:{...w,bytes:Buffer.from(w.bytes,'hex')},r:{bytes:answer.bytes}};data.first.retained.push(row);writes.push(performance.now()-at);}})();
+  peer=(async()=>{while(!stop){await delay(250);if(stop)break;const q=query(data.other),at=performance.now(),r=await post('/account/delivery/read-v2',q,'other','peer');assert.equal(r.status,200);pageProof({kind:'decision',bytes:r.bytes},q,data.other,data.other.retained);peerLatencies.push(performance.now()-at);}})();
+  let after=0,batches=0;
+  while(after<positions){const requests=[query(data.first,after,Math.min(pageSize,positions-after))];const r=await post('/account/delivery/read-v2-batch',encodeInboundBatch(requests),'first','replay');assert.equal(r.status,200);const pages=decodeInboundBatchPages(r.bytes);assert(pages.length);for(let i=0;i<pages.length;i++){const through=JSON.parse(Buffer.from(pages[i]))[3];const proof=pageProof({kind:'decision',bytes:pages[i]},requests[i],data.first,data.first.retained.slice(0,through));assert(proof.count>=1&&proof.count<=pageSize);after=proof.next;}batches++;}
+  const replayMs=Date.now()-started;stop=true;await Promise.all([writer,peer]);const metrics=(await send({kind:'end'})).metrics;
+  const row={round,arm,positions,pageSize,replayMs,batches,statuses,retries,writes,peerLatencies,metrics,acceptedWrites:writes.length,independentProofs:'all returned replay, peer and live write proofs passed',scope:'first-epoch API fixture; server CPU excludes client/oracle; no browser replay claim'};observations.push(row);writeFileSync(output+`/${round}-${arm}.json`,JSON.stringify(row,null,2));console.log(JSON.stringify({round,arm,positions,replayMs,batches,refusals:statuses.filter(x=>x.status===429).length,writes:writes.length,maxWrite:Math.max(...writes),cpuMs:(metrics.cpu.user+metrics.cpu.system)/1000}));
+ }catch(e){writeFileSync(output+`/${round}-${arm}-failure.txt`,e.stack);throw e;}finally{stop=true;await Promise.allSettled([writer,peer].filter(Boolean));try{await send({kind:'stop'})}catch(e){writeFileSync(output+`/${round}-${arm}-cleanup-failure.txt`,e.stack)}finally{child.kill('SIGTERM');writeFileSync(output+`/${round}-${arm}.log`,logs);writeFileSync(output+'/results.json',JSON.stringify(observations,null,2));data.first.retained.length=1024;}}
+}

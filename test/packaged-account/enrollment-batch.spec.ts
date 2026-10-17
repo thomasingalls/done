@@ -13,6 +13,8 @@ for (const mode of ['batched', 'older-server', 'substituted-page', 'lost-reply']
     const extra = await browser.newContext(),
       candidate = await extra.newPage();
     let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+    let previousPage: Uint8Array<ArrayBuffer> | undefined;
+    const singleLimits: number[] = [];
     let batches = 0,
       singles = 0,
       deliveredKeys = 0,
@@ -43,7 +45,10 @@ for (const mode of ['batched', 'older-server', 'substituted-page', 'lost-reply']
       const comparison = await compared(approver, candidate);
       approver.on('request', (request) => {
         const path = new URL(request.url()).pathname;
-        if (path === '/account/delivery/read-v2') singles++;
+        if (path === '/account/delivery/read-v2') {
+          singles++;
+          singleLimits.push(request.postDataJSON()[11] as number);
+        }
         if (path === '/account/delivery/read-v2-batch') batches++;
         if (
           path === '/account/membership/v2/transfer' &&
@@ -65,13 +70,19 @@ for (const mode of ['batched', 'older-server', 'substituted-page', 'lost-reply']
             await route.abort();
           } else {
             const returned = decodeInboundBatchPages(new Uint8Array(await response.body()));
-            // A publisher may have a one-page prefix. Inject only where reordering is possible.
+            // A dense carrier can contain one page. Substitute a preceding genuine reply
+            // when no same-carrier pair exists, retaining the exact request-binding fault.
             if (returned.length < 2) {
-              await route.fulfill({ response });
-              return;
+              if (!previousPage) {
+                previousPage = returned[0]!.slice();
+                await route.fulfill({ response });
+                return;
+              }
+              returned[0] = previousPage;
+            } else {
+              [returned[0], returned[1]] = [returned[1]!, returned[0]!];
             }
             injected = true;
-            [returned[0], returned[1]] = [returned[1]!, returned[0]!];
             await route.fulfill({ response, body: Buffer.from(encodeInboundBatchPages(returned)) });
           }
         } else await route.continue();
@@ -101,7 +112,10 @@ for (const mode of ['batched', 'older-server', 'substituted-page', 'lost-reply']
       expect(batches).toBeGreaterThanOrEqual(mode === 'older-server' ? 1 : 2);
       if (mode === 'older-server') {
         expect(batches).toBe(1);
-        expect(singles).toBeGreaterThan(8);
+        // The retained 13-position fixture fits pages of 8, 4 and 1 across its publishers.
+        expect(singles).toBe(3);
+        expect(singleLimits).toContain(8);
+        expect(singleLimits.every((limit) => limit >= 1 && limit <= 8)).toBe(true);
       } else expect(singles).toBe(0);
       await candidate.getByRole('button', { name: 'Open your writing', exact: true }).click();
       await expect(candidate.locator('.shell')).toContainText('Keep the first device writing');

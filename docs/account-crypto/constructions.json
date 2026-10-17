@@ -7181,7 +7181,9 @@
       "tests": [
         "test/account-history/checkpoint.test.mjs",
         "test/account-history/install.test.mjs",
-        "test/account-history/pruning.test.mjs"
+        "test/account-history/pruning.test.mjs",
+        "test/historyReplayPage.test.ts",
+        "test/account-history/multi-page-source.test.mjs"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -7412,7 +7414,9 @@
         "test/account-sessions/inbound-batch.test.mjs",
         "test/account-sessions/inbound-authority-reuse.test.mjs",
         "test/packaged-account/enrollment-batch.spec.ts",
-        "test/packaged-account/enrollment-capacity.spec.ts"
+        "test/packaged-account/enrollment-capacity.spec.ts",
+        "test/historyReplayPage.test.ts",
+        "test/account-history/multi-page-source.test.mjs"
       ],
       "requirements": [
         "exact-byte-contracts",

@@ -18,7 +18,7 @@ for (const mode of ['advance-and-reopen', 'rejected-reply'] as const)
       second = new Promise<void>((resolve) => (releaseSecond = resolve)),
       installation = new Promise<void>((resolve) => (releaseInstallation = resolve));
     let batches = 0,
-      firstPages = 0,
+      firstEntries = 0,
       keys = 0;
     const pages = [page, candidate];
     try {
@@ -60,7 +60,11 @@ for (const mode of ['advance-and-reopen', 'rejected-reply'] as const)
           response = await route.fetch(),
           returned = decodeInboundBatchPages(new Uint8Array(await response.body()));
         if (number === 1) {
-          firstPages = returned.length;
+          firstEntries = returned.reduce(
+            (sum, bytes) =>
+              sum + (JSON.parse(new TextDecoder().decode(bytes))[5] as unknown[]).length,
+            0,
+          );
           await first;
           if (mode === 'rejected-reply') {
             const page = JSON.parse(new TextDecoder().decode(returned[0]!)) as unknown[];
@@ -76,7 +80,7 @@ for (const mode of ['advance-and-reopen', 'rejected-reply'] as const)
       await approver.getByLabel('Code on the new device').fill(comparison);
       await approver.getByRole('button', { name: 'Compare and approve', exact: true }).click();
       const progress = approver.getByRole('progressbar', { name: 'Current connection step' });
-      await expect.poll(() => firstPages).toBeGreaterThan(0);
+      await expect.poll(() => firstEntries).toBeGreaterThan(0);
       await expect(
         approver.getByText(/^Checking synced changes: 0 of \d+ checked…$/),
       ).toBeVisible();
@@ -99,7 +103,7 @@ for (const mode of ['advance-and-reopen', 'rejected-reply'] as const)
         expect(keys).toBe(0);
       } else {
         await expect.poll(() => batches).toBe(2);
-        await expect(progress).toHaveAttribute('value', String(firstPages));
+        await expect(progress).toHaveAttribute('value', String(firstEntries));
         await approver
           .locator('.enrollment-progress')
           .screenshot({ path: info.outputPath('verified-progress-advanced.png') });

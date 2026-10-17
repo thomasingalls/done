@@ -1,0 +1,58 @@
+import {test,expect} from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/index.mjs';
+import {pairedEditors,credentials,restoreAuthenticator,openSaved} from '/private/tmp/done-enrollment-throughput-2f1d0b0f/series-source/test/packaged-account/devices';
+import {pending,compared,unlock} from '/private/tmp/done-enrollment-throughput-2f1d0b0f/series-source/test/device-enrollment/helpers';
+import {startService,stopService,frontend} from './services';
+import {readFileSync,writeFileSync,mkdirSync,cpSync} from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
+const root='/private/tmp/done-enrollment-throughput-2f1d0b0f',sha=(b:any)=>createHash('sha256').update(b).digest('hex');
+const entries=(path:string)=>JSON.parse(execFileSync('python3',['-c',"import json,sys,zipfile;z=zipfile.ZipFile(sys.argv[1]);print(json.dumps([(n,z.read(n).hex()) for n in sorted(z.namelist())]))",path],{encoding:'utf8'}));
+for(const spec of [{role:'original',bursts:96,pairs:3},{role:'joined',bursts:96,pairs:3},{role:'original',bursts:0,pairs:1}])test(`matched multi-entry history ${spec.role} ${spec.bursts}`,async({browser,page})=>{
+ test.setTimeout(540000);const output=`${root}/matched-${spec.role}-${spec.bursts}`;mkdirSync(output);
+ let service:any,expected='',seed:any;const contexts:any[]=[];
+ try{
+  if(spec.bursts){
+   const stable=JSON.parse(readFileSync('/private/tmp/done-enrollment-reuse-2f1d0b0f/private-stable-seed.json','utf8'));expected=stable.expected;
+   cpSync('/private/tmp/done-enrollment-reuse-2f1d0b0f/seed-service',output+'/seed-service',{recursive:true});service=await startService(output+'/seed-service','reference');
+   const d=stable.saved[spec.role==='original'?0:1],ctx=await browser.newContext({storageState:d.storage});contexts.push(ctx);const a=await ctx.newPage(),auth=await restoreAuthenticator(a,d.credentials);
+   await a.goto('/');await openSaved(a,d.code,d.joining);seed={a,auth,code:d.code,joining:d.joining};
+  }else{
+   service=await startService(output+'/seed-service','reference');const pair=await pairedEditors(page,browser,true);contexts.push(pair.other);
+   await pair.second.getByRole('button',{name:'Lock workspace',exact:true}).click();seed={a:page,auth:pair.first.auth,code:pair.first.code,joining:false};
+  }
+  const a=seed.a;await a.getByRole('button',{name:'Devices',exact:true}).click();await a.getByRole('button',{name:'Connect another device',exact:true}).click();await unlock(a,seed.code);
+  const link=await a.getByLabel('Device invitation link').inputValue(),ctx=await browser.newContext();contexts.push(ctx);const b=await ctx.newPage(),next=await pending(b,link,seed.auth),comparison=await compared(a,b);
+  const devices=[];
+  for(const [p,auth,code,joining] of [[a,seed.auth,seed.code,seed.joining],[b,next.auth,next.code,true]] as any){
+   const url=p.url(),saved=await credentials(auth);await p.getByRole('link',{name:'Close and return to accounts'}).click();await expect(p.getByRole('heading',{name:'Choose an account',exact:true})).toBeVisible();
+   devices.push({url,credentials:saved,code,joining,storage:await p.context().storageState({indexedDB:true})});
+  }
+  seed={devices,comparison,expected};writeFileSync(output+'/private-pending-seed.json',JSON.stringify(seed),{mode:0o600});
+ }finally{await Promise.all(contexts.map(c=>c.close()));if(service)await stopService(service);service=undefined;}
+ const rows:any[]=[];
+ for(let round=0;round<spec.pairs;round++)for(const arm of round%2?['candidate','reference']:['reference','candidate']){
+  const run=output+'/'+round+'-'+arm;mkdirSync(run);cpSync(output+'/seed-service',run+'/service',{recursive:true});service=await startService(run+'/service',arm as any);
+  const contexts:any[]=[],pages:any[]=[],requests:any[]=[];
+  try{
+   for(const [index,d] of seed.devices.entries()){
+    const ctx=await browser.newContext({storageState:d.storage});contexts.push(ctx);const p=await ctx.newPage();pages.push(p);await restoreAuthenticator(p,d.credentials);await p.goto(d.url);await unlock(p,d.code);
+    if(index===0){await expect(p.getByLabel('Code on the new device')).toBeVisible();await p.getByLabel('Code on the new device').fill(seed.comparison);}else await expect(p.getByLabel('Comparison code')).toHaveText(seed.comparison);
+   }
+   const [a,b]=pages;await expect(a.getByRole('progressbar',{name:'Current connection step'})).toHaveCount(0);
+   await a.evaluate(()=>{const g=globalThis as any;g.__trace=[];let previous=false;new MutationObserver(()=>{const busy=!!document.querySelector('progress[aria-label="Current connection step"]');if(busy!==previous){g.__trace.push({busy,at:performance.now()});previous=busy;}}).observe(document.body,{subtree:true,childList:true});});
+   let measuring=true;a.on('request',(r:any)=>{const path=new URL(r.url()).pathname;if(measuring&&path.startsWith('/account/'))requests.push({path,at:Date.now()});});
+   const start=Date.now();await a.getByRole('button',{name:'Compare and approve',exact:true}).click();await expect(a.getByRole('progressbar',{name:'Current connection step'})).toHaveCount(0,{timeout:120000});const foregroundMs=Date.now()-start;
+   await expect(a.getByText('The device is connected.',{exact:false})).toBeVisible({timeout:120000});await expect(b.getByRole('button',{name:'Open your writing',exact:true})).toBeVisible({timeout:120000});const certifiedMs=Date.now()-start;measuring=false;
+   const trace=await a.evaluate(()=>(globalThis as any).__trace);writeFileSync(run+'/timing.json',JSON.stringify({round,arm,...spec,start,foregroundMs,certifiedMs,trace,requests},null,2));
+   await b.getByRole('button',{name:'Open your writing',exact:true}).click();await expect(b.locator('.shell')).toContainText('Keep the first device writing');if(expected)await expect(b.locator('.goals .cm-content')).toHaveText(expected);
+   await a.getByRole('link',{name:'Close and return to accounts'}).click();await a.goto('/');await openSaved(a,seed.devices[0].code,seed.devices[0].joining);
+   for(const [p,text,peer] of [[b,' from new device',a],[a,' from approving device',b]] as any){await p.locator('.goals .cm-content').click();await p.keyboard.press('ControlOrMeta+End');await p.keyboard.insertText(text);await expect(peer.locator('.goals .cm-content')).toContainText(text.trim(),{timeout:20000});}
+   const exported=[];
+   for(const [i,p] of pages.entries()){
+    const download=p.waitForEvent('download');await p.getByRole('button',{name:'Export markdown',exact:true}).click();const path=run+'/writing-'+i+'.zip';await(await download).saveAs(path);exported.push(entries(path));
+    await p.getByRole('button',{name:'Lock workspace',exact:true}).click();await p.goto('/');await openSaved(p,seed.devices[i].code,i===1||seed.devices[i].joining);await expect(p.locator('.goals .cm-content')).toContainText('from approving device');
+   }
+   expect(exported[0]).toEqual(exported[1]);rows.push({round,arm,...spec,foregroundMs,certifiedMs,trace,requests,exportSha256:sha(JSON.stringify(exported[0])),writingAndReopen:'passed',frontend});writeFileSync(run+'/result.json',JSON.stringify(rows.at(-1),null,2));console.log(JSON.stringify({round,arm,...spec,foregroundMs,certifiedMs}));
+  }finally{await Promise.all(contexts.map(c=>c.close()));await stopService(service);service=undefined;writeFileSync(output+'/rows.json',JSON.stringify(rows,null,2));}
+ }
+});

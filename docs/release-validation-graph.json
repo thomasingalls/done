@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 509,
-    "requiredTestFiles": 503,
+    "testFiles": 511,
+    "requiredTestFiles": 505,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -6865,6 +6865,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-history/multi-page-source.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-history/multi-page-source.test.mjs"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-history/pruning.test.mjs",
       "status": "required",
       "invocation": {
@@ -10306,6 +10321,16 @@
           "form": "fc.property"
         }
       ],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/historyReplayPage.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/historyReplayPage.test.ts"]
+      },
+      "declarations": 13,
+      "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
@@ -14913,7 +14938,9 @@
       "tests": [
         "test/account-history/checkpoint.test.mjs",
         "test/account-history/install.test.mjs",
-        "test/account-history/pruning.test.mjs"
+        "test/account-history/pruning.test.mjs",
+        "test/historyReplayPage.test.ts",
+        "test/account-history/multi-page-source.test.mjs"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -14957,7 +14984,9 @@
         "test/account-sessions/inbound-batch.test.mjs",
         "test/account-sessions/inbound-authority-reuse.test.mjs",
         "test/packaged-account/enrollment-batch.spec.ts",
-        "test/packaged-account/enrollment-capacity.spec.ts"
+        "test/packaged-account/enrollment-capacity.spec.ts",
+        "test/historyReplayPage.test.ts",
+        "test/account-history/multi-page-source.test.mjs"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -14976,7 +15005,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "268bc409d2210ef9419ea09a0e143b4208b5fbf3906f0a808bfda03365afad8b"
+      "sha256": "cbd8034fe0c2d8f513b34853161f88573cf7ed0b1181f22cdc16283cec611eda"
     },
     {
       "path": "package.json",
@@ -16831,6 +16860,10 @@
       "sha256": "6c3a64a15be6f77870043f02d537ed5d1d0957f2902d35d81b14228577b00d2e"
     },
     {
+      "path": "test/account-history/multi-page-source.test.mjs",
+      "sha256": "b5bcad21fd65ec833963e97405c97a87e61491a576c7b366b67a9f5b4e2e7cce"
+    },
+    {
       "path": "test/account-history/pruning.test.mjs",
       "sha256": "e3ce556e9fe199d064d855d779c0842e56e5c72dd36c5be58f17be8d5f74a70b"
     },
@@ -18323,6 +18356,10 @@
       "sha256": "5a8bac3b35165f0a3fa78e0cc45e56f49f21be6ec7e6a6aaf04f0dfa243f5c4a"
     },
     {
+      "path": "test/historyReplayPage.test.ts",
+      "sha256": "6c3ac8eba6c2dae46716578aaf3e69cf06dbeb3bb90b7e37282e78da86328552"
+    },
+    {
       "path": "test/historyRetirement.test.ts",
       "sha256": "7218479b9576f0f6a83ccdcfd41d8ecc40ff5634657babc4b9f75d2a917c984b"
     },
@@ -18800,7 +18837,7 @@
     },
     {
       "path": "test/packaged-account/enrollment-batch.spec.ts",
-      "sha256": "1d42fc3fbeb2cfccd1b0c39df0f3e62884a40b8b3219f6d83c293ccb7f432b0f"
+      "sha256": "6af38d3575132d23e738fab60fc258c370491bf29a93e71b8df89980beb4b98d"
     },
     {
       "path": "test/packaged-account/enrollment-capacity.spec.ts",
@@ -18812,7 +18849,7 @@
     },
     {
       "path": "test/packaged-account/enrollment-progress.spec.ts",
-      "sha256": "14cd4ef3aacce2e4f55b7971653e7c5e2aeb7e6f9e2a12477ea0ad59e25e5804"
+      "sha256": "d26bac9d9f0ce91226ff2717b1ee202ba0289b6d9cda13f9fa939807da976647"
     },
     {
       "path": "test/packaged-account/enrollment-retry.spec.ts",

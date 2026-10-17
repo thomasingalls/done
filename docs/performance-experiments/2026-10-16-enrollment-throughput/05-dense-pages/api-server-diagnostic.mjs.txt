@@ -1,0 +1,27 @@
+import {readFileSync,copyFileSync,mkdirSync} from 'node:fs';
+import {createServer} from 'node:http';
+const root='/private/tmp/done-enrollment-throughput-2f1d0b0f',source=process.argv[2],state=process.argv[3];mkdirSync(state,{recursive:true});
+const data=JSON.parse(readFileSync(root+'/private-api-seed.json')),key=Buffer.from(data.authorityKey,'hex');
+copyFileSync(root+'/private-api-seed.sqlite',state+'/account.sqlite');copyFileSync(root+'/private-api-authority.sqlite',state+'/authority.sqlite');
+const {AccountCore}=await import(source+'/account-service/core.ts'),{PrivateAuthority}=await import(source+'/account-service/authority.ts'),{createScopedAccountHandler}=await import(source+'/account-service/scoped-http.ts');
+const authority=PrivateAuthority.open(state+'/authority.sqlite',data.pin,key),core=new AccountCore(state+'/account.sqlite',{origin:data.pin.origin,rpId:data.pin.rpId},{sessions:{pin:data.pin,operatorKey:key}});
+let metrics,interval;
+const diagnostics=[];const nativeSubmit=authority.decideSubmission.bind(authority);authority.decideSubmission=async(...args)=>{ const at=performance.now(),before=core.deliveryVerificationStatus;const result=await nativeSubmit(...args);process.stderr.write(JSON.stringify({diagnostic:'write',durationMs:performance.now()-at,before,after:core.deliveryVerificationStatus})+'\n');return result;};
+const owner=new Proxy(authority,{get(target,name){const value=Reflect.get(target,name);if(typeof value!=='function')return value;if(name==='readInbound')return(...args)=>{if(metrics)metrics.startedReads++;return value.apply(target,args)};return value.bind(target)}});
+const handler=createScopedAccountHandler(core,owner,data.pin),server=createServer((req,res)=>void handler(req,res));await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+process.on('message',async msg=>{
+ try {
+  if(msg.kind==='grant'){
+   const s=data[msg.who].session,access=core.sessions.renew({sessionId:s.sessionId,renewalToken:s.renewalToken});
+   if(access.stage!=='access')throw Error('renew '+JSON.stringify(access));
+   const scope={kind:'workspace',workspaceId:data[msg.who].workspace,credentialId:data[msg.who].credential},view=await authority.beginGrant(core,access.accessToken,scope);
+   process.send({id:msg.id,view,access});
+  }else if(msg.kind==='finishGrant'){process.send({id:msg.id,result:await core.grants.finish(msg.access,msg.proof)});
+  }else if(msg.kind==='start'){
+   metrics={startedReads:0,cpu:process.cpuUsage(),start:performance.now(),rss:[process.memoryUsage().rss]};interval=setInterval(()=>metrics.rss.push(process.memoryUsage().rss),20);process.send({id:msg.id,ok:true});
+  }else if(msg.kind==='end'){
+   clearInterval(interval);const {cpu,start,rss,startedReads}=metrics;metrics=undefined;process.send({id:msg.id,metrics:{startedReads,elapsedMs:performance.now()-start,cpu:process.cpuUsage(cpu),rssStart:rss[0],rssEnd:process.memoryUsage().rss,rssSampledPeak:Math.max(...rss),rssSamples:rss.length,samplingMs:20}});
+  }else if(msg.kind==='stop'){server.closeAllConnections();await new Promise(resolve=>server.close(resolve));core.close();authority.close();key.fill(0);process.send({id:msg.id,ok:true},()=>process.disconnect());}
+ }catch(e){process.send({id:msg.id,error:e.stack});}
+});
+process.send({ready:true,port:server.address().port});
