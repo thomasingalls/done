@@ -1,0 +1,48 @@
+import { test, expect } from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/index.mjs';
+import { pairedEditors, credentials, restoreAuthenticator, openSaved } from '/private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/test/packaged-account/devices';
+import { pending, compared, unlock } from '/private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/test/device-enrollment/helpers';
+import { startService, stopService } from '/private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/test/packaged-account/server';
+import { mkdirSync, writeFileSync, cpSync } from 'node:fs';
+const root='/private/tmp/done-enrollment-reuse-2f1d0b0f';
+test('attribute original and joined approval on the same 96-position writing fixture',async({page,browser})=>{
+ test.setTimeout(600000);
+ let service:any=await startService(root+'/seed-service',root+'/diagnostic-source/dist',true,true),pair:any;
+ const saved:any[]=[];let expected='';
+ try{
+  pair=await pairedEditors(page,browser,true);
+  await page.locator('.goals .cm-content').click();await page.keyboard.press('ControlOrMeta+End');
+  for(let i=0;i<96;i++){const text=` retained history ${i};`;expected+=text;await page.keyboard.insertText(text);await expect(pair.second.locator('.goals .cm-content')).toHaveText(expected,{timeout:20000});}
+  for(const [p,auth,code,joining] of [[page,pair.first.auth,pair.first.code,false],[pair.second,pair.next.auth,pair.next.code,true]] as any){
+   await p.getByRole('button',{name:'Lock workspace',exact:true}).click();await expect(p.locator('.shell')).toHaveCount(0);
+   saved.push({code,joining,credentials:await credentials(auth),storage:await p.context().storageState({indexedDB:true})});
+  }
+  writeFileSync(root+'/private-stable-seed.json',JSON.stringify({expected,saved}),{mode:0o600});
+ }finally{await pair?.other.close();await stopService(service);service=undefined;}
+ for(const role of ['original','joined']){
+  const output=root+'/attribution-'+role;mkdirSync(output);cpSync(root+'/seed-service',output+'/service',{recursive:true});
+  service=await startService(output+'/service',root+'/diagnostic-source/dist',true,true);
+  const d=saved[role==='original'?0:1],ctx=await browser.newContext({storageState:d.storage}),other=await browser.newContext(),a=await ctx.newPage(),b=await other.newPage();
+  try{
+   const auth=await restoreAuthenticator(a,d.credentials);await a.goto('/');await openSaved(a,d.code,d.joining);
+   await a.getByRole('button',{name:'Devices',exact:true}).click();await a.getByRole('button',{name:'Connect another device',exact:true}).click();await unlock(a,d.code);
+   const link=await a.getByLabel('Device invitation link').inputValue();await pending(b,link,auth);const comparison=await compared(a,b);
+   await a.evaluate(()=>{
+    const g=globalThis as any;g.__doneApprovalPerf={phase:'button',rows:[],crypto:{}};
+    for(const name of ['importKey','deriveKey','deriveBits','verify','sign','digest','decrypt','encrypt'] as const){
+     const native=SubtleCrypto.prototype[name] as any;
+     (SubtleCrypto.prototype as any)[name]=function(...args:any[]){const phase=g.__doneApprovalPerf?.phase??'outside',at=performance.now();const algorithm=typeof args[0]==='object'?args[0]?.name:args[0];const family=['PBKDF2','HKDF','Ed25519','AES-GCM','HMAC','SHA-256'].includes(algorithm)?algorithm:'other';return native.apply(this,args).finally(()=>{const key=phase+'/'+name+'/'+family,row=g.__doneApprovalPerf.crypto[key]??={calls:0,totalMs:0};row.calls++;row.totalMs+=performance.now()-at;});};
+    }
+   });
+   const cdp=await a.context().newCDPSession(a);await cdp.send('Profiler.enable');await cdp.send('Profiler.start');
+   const requests:any[]=[];a.on('request',r=>{const path=new URL(r.url()).pathname;if(path.startsWith('/account/'))requests.push({path,at:Date.now()});});
+   await a.getByLabel('Code on the new device').fill(comparison);const start=Date.now();await a.getByRole('button',{name:'Compare and approve',exact:true}).click();
+   await expect.poll(()=>a.evaluate(()=>(globalThis as any).__doneApprovalPerf.rows.some((r:any)=>r.phase==='checkpoint-end')),{timeout:120000}).toBe(true);
+   await expect(a.getByRole('progressbar',{name:'Current connection step'})).toHaveCount(0,{timeout:120000});const foregroundMs=Date.now()-start;
+   const profile=await cdp.send('Profiler.stop');writeFileSync(output+'/cpu.cpuprofile',JSON.stringify(profile.profile));
+   const diagnostics=await a.evaluate(()=>({perf:(globalThis as any).__doneApprovalPerf,ledger:(globalThis as any).__doneLedgerMetrics?.()}));
+   await expect(a.getByText('The device is connected.',{exact:false})).toBeVisible({timeout:30000});await expect(b.getByRole('button',{name:'Open your writing',exact:true})).toBeVisible({timeout:30000});
+   await b.getByRole('button',{name:'Open your writing',exact:true}).click();await expect(b.locator('.goals .cm-content')).toHaveText(expected);
+   writeFileSync(output+'/result.json',JSON.stringify({role,bursts:96,foregroundMs,diagnostics,requests,writing:'passed'},null,2));console.log(JSON.stringify({role,foregroundMs,marks:diagnostics.perf.rows,crypto:diagnostics.perf.crypto}));
+  }finally{await ctx.close();await other.close();await stopService(service);service=undefined;}
+ }
+});

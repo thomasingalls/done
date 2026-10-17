@@ -1,0 +1,17 @@
+{
+  "authority": {
+    "calls": 117,
+    "inclusiveElapsedMs": 6216.492329999999,
+    "maximumMs": 84.12062499999956
+  },
+  "census": {
+    "calls": 120,
+    "inclusiveElapsedMs": 636.1799680000113,
+    "maximumMs": 86.99904099999912
+  },
+  "served": {
+    "calls": 101,
+    "inclusiveElapsedMs": 79.43907400000717,
+    "maximumMs": 1.1642499999998108
+  }
+}

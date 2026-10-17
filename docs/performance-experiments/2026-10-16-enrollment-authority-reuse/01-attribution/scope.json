@@ -1,0 +1,14 @@
+{
+  "base": "2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54",
+  "node": "24.18.0",
+  "requestedSyncBursts": 96,
+  "nativeAcceptedRows": {
+    "original": 100,
+    "joined": 1
+  },
+  "frontendDiagnostics": true,
+  "apiDiagnosticIsSeparate": true,
+  "profilesContainNoInvitationOrDocumentURLs": true,
+  "rawPrivateSnapshotsExcluded": true,
+  "productionTouched": false
+}

@@ -1,0 +1,11 @@
+--- /private/tmp/done-enrollment-reuse-2f1d0b0f/reference-source/test/packaged-account/server.ts	2026-10-16 16:13:19
++++ /private/tmp/done-enrollment-reuse-2f1d0b0f/diagnostic-source/test/packaged-account/server.ts	2026-10-16 16:25:31
+@@ -12,7 +12,7 @@
+   networkSessions = false,
+   membershipContinuation = false,
+ ) {
+-  const child = spawn(process.execPath, [script], {
++  const child = spawn(process.execPath, [...(script === 'scripts/serve-account-service.mjs' ? ['--inspect=127.0.0.1:53332'] : []), script], {
+     env: {
+       ...process.env,
+       ACCOUNT_NETWORK_SESSIONS: networkSessions ? '1' : '0',
