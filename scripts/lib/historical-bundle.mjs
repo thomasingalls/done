@@ -6,12 +6,21 @@ import { join, relative, resolve } from 'node:path';
 import { build } from 'vite';
 const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const cache = new Map();
-export function historicalBundle(revision, bridge) {
-  const key = revision + '\n' + bridge;
-  if (!cache.has(key)) cache.set(key, buildHistorical(revision, bridge));
+export function historicalBundle(revision, bridge, defines = {}) {
+  // The pre-group reader has a genuine reference mode. Do not expose arbitrary
+  // source replacements or let a later caller mutation alter the pinned build.
+  const define = Object.fromEntries(Object.entries(defines).sort(([a], [b]) => a.localeCompare(b)));
+  for (const [name, value] of Object.entries(define))
+    if (
+      name !== 'import.meta.env.VITE_ACCOUNT_LEDGER' ||
+      ![JSON.stringify('reference'), JSON.stringify('incremental')].includes(value)
+    )
+      throw Error('Unsupported historical build definition');
+  const key = JSON.stringify([revision, bridge, define]);
+  if (!cache.has(key)) cache.set(key, buildHistorical(revision, bridge, define));
   return cache.get(key);
 }
-async function buildHistorical(revision, bridge) {
+async function buildHistorical(revision, bridge, define) {
   const commit = execFileSync('git', ['rev-parse', '--verify', revision + '^{commit}'], {
     encoding: 'utf8',
   }).trim();
@@ -45,6 +54,7 @@ async function buildHistorical(revision, bridge) {
     root: source,
     configFile: false,
     logLevel: 'error',
+    define,
     plugins: [
       {
         name: 'historical-source-identity',
@@ -84,6 +94,7 @@ async function buildHistorical(revision, bridge) {
     runtimeDependencies: declared,
     currentLockSha256: sha(readFileSync('pnpm-lock.yaml')),
     bridge,
+    define,
     source: pins,
     modules: modules.map((id) => (id.startsWith(source + '/') ? relative(source, id) : id)),
     bundleSha256: sha(code),

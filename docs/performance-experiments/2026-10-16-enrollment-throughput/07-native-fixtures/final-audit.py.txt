@@ -1,0 +1,44 @@
+from pathlib import Path
+import subprocess,json,hashlib
+root=Path.cwd();r=Path('/private/tmp/done-enrollment-throughput-2f1d0b0f')
+sha=lambda b:hashlib.sha256(b).hexdigest()
+base='2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54'
+assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==base
+assert subprocess.check_output(['git','diff','--cached','--name-only'],text=True)==''
+assert (root/'docs/progress.md').read_bytes()==subprocess.check_output(['git','show',base+':docs/progress.md'])
+assert sha(Path('/private/tmp/done-suite-test-format-only.patch').read_bytes())=='0481ebda379a3259d997d1aa3057638508175eac032f9a7b541832cfb353ebb3'
+prior=Path('/private/tmp/done-enrollment-reuse-2f1d0b0f/patches')
+for name,digest in [('01-attribute-enrollment-authority-work-and-repair-fault-route.patch','45f893f15ecda94f25b83aad480dbf73c2afbd9ca0e7133c052b78e05b76c979'),('02-reuse-authority-evidence-within-one-read-batch.patch','147b665f311ad1f30a4c67cbd6447eac862d5c1b51d3d90189563787f5ad1589')]:assert sha((prior/name).read_bytes())==digest
+identity=json.loads((r/'pages-runtime-identity.json').read_text()); checked=[]
+for row in identity['files']:
+ assert sha((root/row['path']).read_bytes())==row['sha256'],row['path'];checked.append(row['path'])
+for row in identity['candidateFrontendAssets']:assert sha((r/'candidate-source/dist'/row['path']).read_bytes())==row['sha256'],row['path']
+for directory in ['src','account-protocol','account-service']:
+ for path in (root/directory).rglob('*'):
+  if path.is_file():
+   rel=path.relative_to(root);other=r/'candidate-source'/rel
+   assert other.exists() and path.read_bytes()==other.read_bytes(),str(rel)
+for name in ['account-service/publisherTips.ts','src/crdt/inboundRecord.ts']:assert (root/name).read_bytes()==subprocess.check_output(['git','show',base+':'+name]),name
+old=json.loads(subprocess.check_output(['git','show',base+':docs/release-validation-manifest.json']));new=json.loads((root/'docs/release-validation-manifest.json').read_text());a={v['id']:v for v in old['rows']};b={v['id']:v for v in new['rows']}
+assert set(a)<=set(b);assert set(old['unresolved'])<=set(new['unresolved']);assert new['status']=='blocked'
+changed=[]
+for k in a:
+ if a[k]==b[k]:continue
+ assert k in ['construction:history-maintenance','construction:transport-read-batching'],k
+ assert {key:value for key,value in a[k].items() if key!='requires'}=={key:value for key,value in b[k].items() if key!='requires'},k
+ assert set(a[k]['requires'])<=set(b[k]['requires']);changed.append(k)
+for k in set(b)-set(a):assert k in new['unresolved'] and 'stage' not in b[k],k
+oldc=json.loads(subprocess.check_output(['git','show',base+':docs/account-crypto/constructions.json']));newc=json.loads((root/'docs/account-crypto/constructions.json').read_text());ac={v['id']:v for v in oldc['constructions']};bc={v['id']:v for v in newc['constructions']};assert set(ac)==set(bc)
+for k in ac:
+ assert ac[k]['status']==bc[k]['status'],k
+ if ac[k]!=bc[k]:
+  assert k in ['service-root-custody','transport-service-chain','history-maintenance','transport-read-batching'],k
+  assert {x:y for x,y in ac[k].items() if x not in ['tests','sourceSites']}=={x:y for x,y in bc[k].items() if x not in ['tests','sourceSites']},k
+  assert set(ac[k].get('tests',[]))<=set(bc[k].get('tests',[]))
+  if ac[k].get('sourceSites')!=bc[k].get('sourceSites'):
+   assert len(ac[k]['sourceSites'])==len(bc[k]['sourceSites'])
+   for x,y in zip(ac[k]['sourceSites'],bc[k]['sourceSites']):
+    assert {a:b for a,b in x.items() if a!='line'}=={a:b for a,b in y.items() if a!='line'}
+    assert y['line']==x['line']+1
+result={'base':base,'realIndexEmpty':True,'progressUnchanged':True,'priorPatchesAndDeferredFormattingUnchanged':True,'runtimeMatchesAllMeasuredPhaseCProductionSources':True,'measuredFrontendAssets':len(identity['candidateFrontendAssets']),'runtimeIdentityChecked':checked,'deferredRuntimeAbsent':True,'durableInboundRecordUnchanged':True,'oldManifestRowsPreserved':len(a),'newBlockedTestFiles':sorted(set(b)-set(a)),'obligations':len(b),'unresolved':len(new['unresolved']),'stageAssignmentsExpectationsDeadlinesAndOldBlocksUnchanged':True,'onlyAddedConstructionRequirements':changed,'allConstructionStatusesUnchanged':True}
+(r/'final-retention-audit.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result))

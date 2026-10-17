@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 511,
-    "requiredTestFiles": 505,
+    "testFiles": 512,
+    "requiredTestFiles": 506,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -7904,6 +7904,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-receive/pre-group-closure.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-receive/pre-group-closure.test.mjs"
+        ]
+      },
+      "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-recovery-contract/controls.test.mjs",
       "status": "required",
       "invocation": {
@@ -15769,7 +15784,7 @@
     },
     {
       "path": "scripts/lib/historical-bundle.mjs",
-      "sha256": "535835fbda8251357746e3405c1c56da843d4b4726ab94a626f086daf99fbc7d"
+      "sha256": "e0d2b5eb99aeffb143b5bde7e5de733c9910bc4bb411e8433c256f47489787dc"
     },
     {
       "path": "scripts/lib/packaged-application.mjs",
@@ -17349,7 +17364,7 @@
     },
     {
       "path": "test/account-receive/groups.test.mjs",
-      "sha256": "5804423da6d409d2ed0049e9c008e6a10f91fc9613b0848ea54f0a70b7af8735"
+      "sha256": "1d1389a5d73ef7c2ce172d837fb8526bbdf219dd15845fda908bec6c08ea46d2"
     },
     {
       "path": "test/account-receive/historical-owner.test.mjs",
@@ -17358,6 +17373,10 @@
     {
       "path": "test/account-receive/native.test.mjs",
       "sha256": "1a7782513d6f71ec3eb71afc15df4feddf2b1b49c7d110385cc82978a410e3d4"
+    },
+    {
+      "path": "test/account-receive/pre-group-closure.test.mjs",
+      "sha256": "f5cba0c35c9c5179036bcc83f6fc0d13fae75c761cb62b844ca84631c14bb7f8"
     },
     {
       "path": "test/account-recovery-contract/controls.test.mjs",

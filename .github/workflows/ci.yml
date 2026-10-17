@@ -84,6 +84,7 @@ jobs:
           test/account-successor/stage-authentication.test.mjs
           test/account-admission-bounds/historical-closure.test.mjs
           test/account-receive/historical-owner.test.mjs
+          test/account-receive/pre-group-closure.test.mjs
 
       - name: Check service quarantine and restart histories
         run: node --test --test-concurrency=1 test/account-service-inbound/generated.test.mjs test/account-service-inbound/quarantine.test.mjs

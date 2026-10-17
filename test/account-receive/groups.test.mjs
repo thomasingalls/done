@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { build } from 'vite';
-import { resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { historicalBundle } from '../../scripts/lib/historical-bundle.mjs';
 import {
   native,
   selected,
@@ -86,43 +84,11 @@ const start = (p, pages, queries) =>
   );
 
 async function oldReader(reference = false) {
-  let hits = 0;
-  const files = [
-    'src/crdt/accountReceive.ts',
-    'src/crdt/contentStore.ts',
-    'src/crdt/receiveSelection.ts',
-  ];
-  const output = await build({
-    configFile: false,
-    logLevel: 'error',
-    define: reference ? { 'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify('reference') } : {},
-    plugins: [
-      {
-        name: 'pre-group-reader',
-        enforce: 'pre',
-        transform(code, id) {
-          const path = files.find((path) => id.endsWith('/' + path));
-          if (!path) return;
-          hits++;
-          return execFileSync('git', ['show', '534252e1:' + path], {
-            encoding: 'utf8',
-            maxBuffer: 2 * 1024 * 1024,
-          });
-        },
-      },
-    ],
-    build: {
-      write: false,
-      minify: false,
-      lib: {
-        entry: resolve('test/account-receive/browser.ts'),
-        name: 'Harness',
-        formats: ['iife'],
-      },
-    },
-  });
-  assert.equal(hits, 3);
-  return (Array.isArray(output) ? output[0] : output).output.find((f) => f.type === 'chunk').code;
+  return historicalBundle(
+    '534252e1dde26a02020491b2f42e2481513abb98',
+    "export { openOwnedAccountReceiveStore } from './src/crdt/accountReceive';",
+    reference ? { 'import.meta.env.VITE_ACCOUNT_LEDGER': JSON.stringify('reference') } : {},
+  );
 }
 
 test(
@@ -283,7 +249,7 @@ for (const bound of ['records', 'bytes'])
   );
 
 test(
-  'group amortizes fresh content loads and transactions while preserving each receipt',
+  'group amortizes fresh content-counter reads and transactions while preserving each receipt',
   { timeout: 60000 },
   async (t) => {
     const measured = {};
@@ -291,12 +257,17 @@ test(
       const { f, item, wires, first } = await setup(t, 'group-count-' + mode);
       await f.page.evaluate(() => {
         window.groupCounts = { loads: 0, readonly: 0, readwrite: 0, verify: 0 };
-        const all = IDBObjectStore.prototype.getAll,
+        const get = IDBObjectStore.prototype.get,
           tx = IDBDatabase.prototype.transaction,
           verify = crypto.subtle.verify.bind(crypto.subtle);
-        IDBObjectStore.prototype.getAll = function (...args) {
-          if (this.name === 'content') groupCounts.loads++;
-          return all.apply(this, args);
+        IDBObjectStore.prototype.get = function (...args) {
+          if (
+            this.name === 'meta' &&
+            args[0] === 'counter' &&
+            this.transaction.db.objectStoreNames.contains('content')
+          )
+            groupCounts.loads++;
+          return get.apply(this, args);
         };
         IDBDatabase.prototype.transaction = function (stores, mode, ...args) {
           groupCounts[mode ?? 'readonly']++;
