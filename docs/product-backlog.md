@@ -50,6 +50,13 @@ get a bounded scope and evidence before implementation. General release qualific
   stay nested beneath their parent. This adds transfer semantics alongside UX-08's separate question
   about where the controls belong. Multiline cards remain essential, and the existing three-Enter
   split stays for now. No new content format or replacement split gesture is selected.
+- **UX-11 — Goals lenses for scanning and gathering.** The operator primarily scans Goals to gather
+  possible work, rather than sending items across while writing. As the document grows, surveying it
+  becomes burdensome. Explore low-effort ways to bring relevant writing into focus without requiring
+  the user to formulate a search or supply extensive categorization. Heading navigation already exists
+  and does not answer the whole need. Preserve the premise that actively prioritizing helps the user
+  do the work; automatic recurring tasks or AI-selected priorities are not the solution requested here.
+  This is a design problem to explore, not a selected lens or implementation.
 
 ## Earlier conversation items retained
 
@@ -64,6 +71,20 @@ get a bounded scope and evidence before implementation. General release qualific
   metaphor and the distinction between the running notes and what matters now.
 - **Mascot.** Revisit the fastidious snail: a todo list carrying its house on its back. This remains a
   separate creative pass.
+- **Agent integrations.** Deferred, reaffirmed by the operator on 2026-10-17. Keep advisory assistance
+  separate from agents that can author writing as authorized members. Roles/capabilities, enrollment,
+  attribution and the human's control need a dedicated design before implementation.
+  [PRD phases 5 and 6](./PRD.md#10-phasing) retain the earlier scope; UX-11 does not authorize agents
+  to prioritize on the user's behalf.
+- **Possible multiuser support.** Retain human collaboration as a separate exploration: invitations,
+  sharing, permissions, attribution and navigation across workspaces need their own product and
+  authorization design. No commitment to build it or change the current single-person experience.
+  [PRD deferred scope](./PRD.md#11-remaining-product-questions).
+- **WebSockets instead of SSE.** Revisit the transport choice as deferred engineering work, as recalled
+  by the operator on 2026-10-17. The current notification design uses authenticated fetch streaming
+  with SSE framing; no replacement is selected by this reminder. Establish the intended benefit and
+  preserve authorization, bounded reconnect/catch-up and the rule that a notification is not approval
+  or content authority. [Current notification design](./account-sessions-subscriptions.md#6-notifications-fetch-streaming-with-sse-framing).
 - **Disappearing desktop account.** Keep the production Firefox incident open for new evidence. The
   recorded-action audit found no recorded computer-use action targeting production, and the tested
   Chromium upgrade paths preserved their data; neither establishes the cause of the Firefox incident.
