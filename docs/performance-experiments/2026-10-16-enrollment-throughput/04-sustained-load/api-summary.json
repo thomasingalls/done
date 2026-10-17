@@ -1,0 +1,100 @@
+{
+  "reference": {
+    "replayMs": [
+      69226,
+      70403,
+      68299
+    ],
+    "replayMedianMs": 69226,
+    "replay429": [
+      61,
+      62,
+      59
+    ],
+    "replayBackoffMs": [
+      62111.13300500004,
+      63123.97896200002,
+      61102.95425300009
+    ],
+    "writerP95Ms": [
+      1019.989207999999,
+      1019.3007079999952,
+      1022.0118340000045
+    ],
+    "writerMaxMs": [
+      3017.5671250000014,
+      3022.0750420000113,
+      3022.8986250000307
+    ],
+    "acceptedWrites": [
+      110,
+      109,
+      102
+    ],
+    "peer429": [
+      0,
+      0,
+      0
+    ],
+    "cpuMs": [
+      10826.795,
+      10993.437,
+      10639.988
+    ],
+    "sampledRssPeakBytes": [
+      241516544,
+      232259584,
+      235520000
+    ]
+  },
+  "accounted": {
+    "replayMs": [
+      67065,
+      67526,
+      66672
+    ],
+    "replayMedianMs": 67065,
+    "replay429": [
+      58,
+      59,
+      56
+    ],
+    "replayBackoffMs": [
+      58134.780250999946,
+      59113.18933900009,
+      56110.38283500011
+    ],
+    "writerP95Ms": [
+      946.5112910000025,
+      33.20229200000176,
+      746.7606669999659
+    ],
+    "writerMaxMs": [
+      1022.486917000002,
+      1021.1357499999867,
+      1028.5211659999914
+    ],
+    "acceptedWrites": [
+      114,
+      122,
+      112
+    ],
+    "peer429": [
+      0,
+      0,
+      0
+    ],
+    "cpuMs": [
+      14260.599,
+      13427.38,
+      17067.654
+    ],
+    "sampledRssPeakBytes": [
+      270974976,
+      276643840,
+      306987008
+    ]
+  },
+  "decision": "Actual 1,024-position replay is dominated by explicit backoff. Correct accounting improves same-session coexistence but does not remove the sustained rate ceiling. Keep numeric rates: first-epoch fixture and sampled resources cannot establish deeper-membership/global production capacity. Test page density next.",
+  "limits": "Six matched first-epoch API runs; three restored pairs, no browser/phone/WAN or population claim. Every write completed with HTTP 200 after bounded retry; separate cold audit verifies every stored authored wire/proof. Live write response bytes were not retained."
+}

@@ -1,0 +1,19 @@
+{
+  "head": "2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54",
+  "cumulativeTree": "7e020ea496ff3fef3c1a822ea24a2f25fb1ed805",
+  "priorPatches": [
+    {
+      "path": "01-attribute-enrollment-authority-work-and-repair-fault-route.patch",
+      "sha256": "45f893f15ecda94f25b83aad480dbf73c2afbd9ca0e7133c052b78e05b76c979",
+      "bytes": 293744,
+      "expectedTree": "cb4533e59b1280725fd8e87e3bc1088191f40393"
+    },
+    {
+      "path": "02-reuse-authority-evidence-within-one-read-batch.patch",
+      "sha256": "147b665f311ad1f30a4c67cbd6447eac862d5c1b51d3d90189563787f5ad1589",
+      "bytes": 322231,
+      "expectedTree": "7e020ea496ff3fef3c1a822ea24a2f25fb1ed805"
+    }
+  ],
+  "realIndexInitiallyEmpty": true
+}

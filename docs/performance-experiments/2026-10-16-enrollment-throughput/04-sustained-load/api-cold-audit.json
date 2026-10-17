@@ -1,0 +1,62 @@
+[
+  {
+    "round": 0,
+    "arm": "reference",
+    "seedAndAllInteractiveWiresMatch": true,
+    "acceptedPositions": 1134,
+    "independentlyVerifiedStoredProofs": 1134,
+    "finalLink": "917e95746dd4991da6f01cc10c3fff018b688edd67f98660b3d8e42b1a81a69a",
+    "databaseSha256": "e286acd0693fadafabf2eddc15c1dbf037fab52969b753cd8e2a068f757b150f",
+    "scope": "cold SQL evidence; live HTTP write replies were status-checked but their bytes were not retained"
+  },
+  {
+    "round": 0,
+    "arm": "accounted",
+    "seedAndAllInteractiveWiresMatch": true,
+    "acceptedPositions": 1138,
+    "independentlyVerifiedStoredProofs": 1138,
+    "finalLink": "213213741bbae296194e5bc44c742a8f02f7899f61c43f533820ca91b7a5a882",
+    "databaseSha256": "9a40a09592eab507dccd94bc5ab661d3fe9e8f6cd2df7aa9dc1e3e9a5d6ad5c9",
+    "scope": "cold SQL evidence; live HTTP write replies were status-checked but their bytes were not retained"
+  },
+  {
+    "round": 1,
+    "arm": "accounted",
+    "seedAndAllInteractiveWiresMatch": true,
+    "acceptedPositions": 1146,
+    "independentlyVerifiedStoredProofs": 1146,
+    "finalLink": "fd6aa43e42523efb6df402477023c55ca53fdf572db6c245e1bc5bde44c52efe",
+    "databaseSha256": "bf21e5e4ddd1e412310e41f527bfefb5013c1b9c7ef0712df1fb3c1bef2fce19",
+    "scope": "cold SQL evidence; live HTTP write replies were status-checked but their bytes were not retained"
+  },
+  {
+    "round": 1,
+    "arm": "reference",
+    "seedAndAllInteractiveWiresMatch": true,
+    "acceptedPositions": 1133,
+    "independentlyVerifiedStoredProofs": 1133,
+    "finalLink": "aa370bd2b933a660396f01cd10b83e8c7f91d3c7fafbdbca6f15c87e91b8894d",
+    "databaseSha256": "ba880f70273b71fcebb688c23e85f5854792a3baa30b11d2fd264113bb4304b7",
+    "scope": "cold SQL evidence; live HTTP write replies were status-checked but their bytes were not retained"
+  },
+  {
+    "round": 2,
+    "arm": "reference",
+    "seedAndAllInteractiveWiresMatch": true,
+    "acceptedPositions": 1126,
+    "independentlyVerifiedStoredProofs": 1126,
+    "finalLink": "204f876183edb8a3ef83bc74e6dd1a9f9637441c35b2ad3ac9676832b9a7feff",
+    "databaseSha256": "f1d4089d597ed911d6664e3d42a15717e431c2ffdf1c6ce44447f4c1406862b6",
+    "scope": "cold SQL evidence; live HTTP write replies were status-checked but their bytes were not retained"
+  },
+  {
+    "round": 2,
+    "arm": "accounted",
+    "seedAndAllInteractiveWiresMatch": true,
+    "acceptedPositions": 1136,
+    "independentlyVerifiedStoredProofs": 1136,
+    "finalLink": "02bc55394952f8e79411cd56a943a84d2f0b4f5f7e7b36baddc207b65e953c02",
+    "databaseSha256": "63543aaf8fc9105cb20bd9438adc2b18588e0ed6e129907ce0aa3fc19d4401fd",
+    "scope": "cold SQL evidence; live HTTP write replies were status-checked but their bytes were not retained"
+  }
+]

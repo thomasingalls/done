@@ -1,0 +1,26 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {DatabaseSync} from 'node:sqlite';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+const root='/private/tmp/done-enrollment-throughput-2f1d0b0f',seed=JSON.parse(readFileSync(root+'/private-api-seed.json'));
+const {proof,link}=await import(root+'/series-source/test/account-service-delivery/fixtures.mjs');
+const rows=JSON.parse(readFileSync(root+'/api-matched/results.json')),audit=[];
+for(const run of rows){
+ const path=root+`/api-matched/${run.round}-${run.arm}-service/account.sqlite`,db=new DatabaseSync(path,{readOnly:true});
+ try{
+  const actual=db.prepare('SELECT * FROM delivery_decisions WHERE account_id=? ORDER BY position').all(seed.first.session.accountId);
+  // Session result does not expose accountId. Read its server-held account mapping instead.
+  const account=db.prepare('SELECT account_id FROM network_sessions WHERE id=?').get(seed.first.session.sessionId).account_id;
+  const decisions=db.prepare('SELECT * FROM delivery_decisions WHERE account_id=? ORDER BY position').all(account);
+  assert.equal(decisions.length,1024+run.acceptedWrites);
+  let previous='00'.repeat(32);
+  for(let i=0;i<decisions.length;i++){
+   const d=decisions[i],w=i<1024?seed.first.retained[i].w:seed.first.extras[i-1024];
+   assert.equal(d.kind,'accepted');assert.equal(d.position,i+1);assert(Buffer.from(d.submission).equals(Buffer.from(w.bytes,'hex')));
+   const checked=proof({kind:'decision',bytes:new Uint8Array(d.response)},seed.first.offer.epoch.acceptancePublicKey,w.subject,previous,w.parent);
+   assert.equal(checked.kind,'accepted');previous=checked.head.link;
+  }
+  audit.push({round:run.round,arm:run.arm,seedAndAllInteractiveWiresMatch:true,acceptedPositions:decisions.length,independentlyVerifiedStoredProofs:decisions.length,finalLink:previous,databaseSha256:createHash('sha256').update(readFileSync(path)).digest('hex'),scope:'cold SQL evidence; live HTTP write replies were status-checked but their bytes were not retained'});
+ }finally{db.close();}
+}
+writeFileSync(root+'/api-cold-audit.json',JSON.stringify(audit,null,2)+'\n');console.log(JSON.stringify(audit.map(x=>({round:x.round,arm:x.arm,accepted:x.acceptedPositions}))));
