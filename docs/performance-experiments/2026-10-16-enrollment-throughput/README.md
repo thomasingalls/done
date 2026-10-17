@@ -1,5 +1,9 @@
 # Enrollment throughput: bounded development patch sequence
 
+Current follow-up: [patch 08](./08-history-read-retry/README.md) implements bounded exact read continuation; [patch 09](./09-concurrent-continuation/README.md) closes the identified failure boundary and finite concurrency workload. All three repaired load runs, 15 functional journeys and four full-export/writing/reopen connections pass. General release qualification remains paused and new tests remain blocked from aggregate credit. Earlier failed evidence and patch bytes remain intact.
+
+## Initial seven-patch checkpoint (historical)
+
 Base: signed `2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54`. This extends the two separately prepared authority-attribution/reuse patches without changing their bytes. There is no commit, push, preview update, merge, deployment or qualification resumption.
 
 | Patch | Bounded outcome | Evidence |
@@ -21,3 +25,8 @@ All old assertions/cases/deadlines and qualification blocks remain, apart from e
 ## Follow-up patch 08 — bounded real-client continuation
 
 The [directed repair](./08-history-read-retry/README.md) preserves safe native refusals and retries exact signed reads under one deadline and a load-wide cap. All directed checks pass; the original workload blocker remains pending the separately recorded native comparison. Earlier failed experiments and patch bytes remain unchanged.
+
+
+## Follow-up patch 09 — finite concurrency acceptance
+
+The [acceptance record](./09-concurrent-continuation/README.md) supersedes the initial checkpoint’s open client-continuation blocker within its tested scope. Preserve the original failed cache experiment and every previous gate. Persistent contention remains bounded and may require a saved retry; no global liveness/capacity or release qualification is claimed.

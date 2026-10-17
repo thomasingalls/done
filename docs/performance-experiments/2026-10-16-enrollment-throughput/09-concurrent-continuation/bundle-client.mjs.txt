@@ -1,0 +1,10 @@
+import {createRequire} from 'node:module';
+import {writeFileSync} from 'node:fs';
+import {pathToFileURL} from 'node:url';
+const source=process.argv[2],output=process.argv[3],candidate=process.argv[4]==='candidate';
+const require=createRequire(source+'/package.json'),vr=createRequire(require.resolve('vite'));
+const {rolldown}=await import(vr.resolve('rolldown'));
+const entry='\0history-retry-probe';
+const files=['privateDeliveryHttp',...(candidate?['historyReadRetry']:[])];
+const bundle=await rolldown({input:entry,plugins:[{name:'actual-history-client',resolveId:id=>id===entry?id:undefined,load:id=>id===entry?files.map(name=>`export * from ${JSON.stringify(source+'/src/account/'+name+'.ts')};`).join('\n'):undefined}]});
+try{const built=await bundle.generate({format:'esm'});writeFileSync(output,built.output[0].code)}finally{await bundle.close()}

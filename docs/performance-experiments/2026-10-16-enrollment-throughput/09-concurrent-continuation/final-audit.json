@@ -1,0 +1,25 @@
+{
+  "base": "2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54",
+  "priorCumulativeTree": "5b48412859e1ef072f63efb5094e6ae8478a9053",
+  "realHeadAndIndexUnchanged": true,
+  "progressAndDeferredFormattingUnchanged": true,
+  "allSevenPriorPatchHashesUnchanged": true,
+  "onlyChangedProductionFiles": [
+    "src/account/membershipEnrollment.ts",
+    "src/account/historyReadRetry.ts",
+    "src/account/privateDeliveryHttp.ts"
+  ],
+  "productionMatchesFrozenMeasuredSource": true,
+  "nativeApiProtocolAndDurableFormatsUnchanged": true,
+  "frozenFrontendFiles": 110,
+  "clientBundlesPinned": true,
+  "newRetryOwnerInCryptoCensus": true,
+  "oldTestFilesChangedInThisFollowup": [],
+  "priorObligationsPreserved": 874,
+  "currentObligations": 876,
+  "unresolved": 332,
+  "allPriorStagesExpectationsDeadlinesAndBlocksUnchanged": true,
+  "onlyAddedConstructionTestRequirements": true,
+  "allConstructionContractsAndStatusesUnchanged": true,
+  "newTestFilesBlockedFromAggregateCredit": true
+}

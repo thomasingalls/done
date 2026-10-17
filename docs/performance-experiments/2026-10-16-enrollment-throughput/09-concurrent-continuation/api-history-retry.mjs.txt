@@ -1,0 +1,72 @@
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync,mkdirSync} from 'node:fs';
+import {fork} from 'node:child_process';
+import {request} from 'node:http';
+import {createPrivateKey,sign,createHash} from 'node:crypto';
+import {setTimeout as delay} from 'node:timers/promises';
+const root='/private/tmp/done-enrollment-retry-2f1d0b0f',seed='/private/tmp/done-enrollment-throughput-2f1d0b0f',reference=root+'/reference-source',accounted=root+'/candidate-source';
+const data=JSON.parse(readFileSync(seed+'/private-api-seed.json'));
+const {query,pageProof}=await import(accounted+'/test/account-service-inbound/oracle.mjs');
+const {message}=await import(accounted+'/test/account-sessions/grant-fixtures.mjs');
+const {encodeInboundBatch,decodeInboundBatchPages,INBOUND_BATCH_PAGE_LIMIT}=await import(accounted+'/account-protocol/inboundBatch.ts');
+const {proof:verifyDecision}=await import(accounted+'/test/account-service-delivery/fixtures.mjs');
+const pageSize=8;
+const {encodeSubmit}=await import(accounted+'/account-protocol/deliveryTransport.ts');
+for(const who of ['first','other']){
+ data[who].authority={pin:data.pin};data[who].s.privateKey=createPrivateKey(data[who].s.privateKey);
+ data[who].retained=data[who].retained.map(({w,r})=>({w:{...w,bytes:Buffer.from(w.bytes,'hex')},r:{bytes:Buffer.from(r.bytes,'hex')}}));
+}
+const output=root+'/'+(process.env.LOAD_OUTPUT??'api-load');
+const observations=[],rounds=Number(process.env.LOAD_PAIRS??3),positions=Number(process.env.LOAD_POSITIONS??1024);
+mkdirSync(output,{recursive:true});
+for(let round=0;round<rounds;round++)for(const arm of round%2?['candidate','reference']:['reference','candidate']){
+ const child=fork(root+'/probe/api-server.mjs',[reference,`${output}/${round}-${arm}-service`],{stdio:['ignore','pipe','pipe','ipc']});
+ let logs='';child.stdout.on('data',b=>logs+=b);child.stderr.on('data',b=>logs+=b);
+ let serial=0;const flights=new Map();
+ child.on('exit',code=>{for(const f of flights.values())f.reject(Error('Server exited '+code));flights.clear()});
+ child.on('message',msg=>{if(msg.id&&flights.has(msg.id)){const {resolve,reject}=flights.get(msg.id);flights.delete(msg.id);msg.error?reject(Error(msg.error)):resolve(msg)}});
+ const send=body=>new Promise((resolve,reject)=>{if(!child.connected)return reject(Error('API child disconnected')); const id=++serial;flights.set(id,{resolve,reject});child.send({...body,id})});
+ let stop=false,writer,peer,started=Date.now(),statuses=[],retries=[],writes=[],inputLatencies=[],peerLatencies=[],port;
+ try{
+  const client=await import(root+'/probe/'+arm+'-client.mjs');client.clearPrivateTransportDiagnostics();
+  port=await new Promise((resolve,reject)=>{child.on('message',m=>{if(m.ready)resolve(m.port)});child.once('exit',code=>reject(Error('server exit '+code+logs)));});
+  const grants={};for(const who of ['first','other']){const g=await send({kind:'grant',who});assert.equal(g.view.stage,'challenge');const proof={challengeId:g.view.challenge.challengeId,signature:sign(null,message(g.view.challenge),data[who].s.privateKey).toString('hex')};const f=await send({kind:'finishGrant',access:g.access.accessToken,proof});assert.equal(f.result.stage,'granted');grants[who]=f.result.grantToken;}
+  const post=async(path,body,who,label)=>{
+   const captured=Buffer.from(body);
+   for(let attempt=0;;attempt++){
+    assert(Buffer.from(body).equals(captured));
+    const result=await new Promise((resolve,reject)=>{const req=request({host:'127.0.0.1',port,path,method:'POST',headers:{Host:new URL(data.pin.origin).host,Origin:data.pin.origin,'Content-Type':'application/octet-stream',Authorization:'Bearer '+grants[who]}},res=>{const chunks=[];res.on('data',b=>chunks.push(b));res.on('end',()=>resolve({status:res.statusCode,bytes:new Uint8Array(Buffer.concat(chunks))}));res.on('error',reject)});req.on('error',reject);req.setTimeout(10000,()=>req.destroy(Error('HTTP deadline')));req.end(captured)});
+    statuses.push({label,status:result.status,at:Date.now()-started});
+    if(result.status!==429||attempt>=2)return result;
+    assert.equal(JSON.parse(Buffer.from(result.bytes)).refusal,'capacity');const before=performance.now();await delay(1000*(attempt+1));retries.push({label,attempt,waitMs:performance.now()-before});
+   }
+  };
+  let expectedRead;
+  const scoped={kind:'scoped-account',pin:data.pin,fetch:async(path,init)=>{
+   assert.equal(path,'/account/delivery/read-v2-batch');assert.equal(init.credentials,'omit');assert.equal(init.cache,'no-store');assert.equal(init.redirect,'error');
+   const body=Buffer.from(init.body);assert(body.equals(expectedRead),'Read attempt changed captured signed body');
+   const response=await new Promise((resolve,reject)=>{
+    const req=request({host:'127.0.0.1',port,path,method:'POST',signal:init.signal,headers:{Host:new URL(data.pin.origin).host,Origin:data.pin.origin,'Content-Type':'application/octet-stream',Authorization:'Bearer '+grants.first}},res=>{
+     const chunks=[];res.on('data',b=>chunks.push(b));res.on('error',reject);res.on('end',()=>resolve(new Response(Buffer.concat(chunks),{status:res.statusCode,headers:res.headers})));
+    });req.on('error',reject);req.end(body);
+   });
+   statuses.push({label:'replay',status:response.status,at:Date.now()-started,bodySha256:createHash('sha256').update(body).digest('hex')});return response;
+  }};
+  const stopRead=new AbortController();
+  const read=arm==='candidate'?client.createHistoryReadRetry(stopRead.signal):(body,post)=>post(body,stopRead.signal,undefined);
+  await send({kind:'start'});started=Date.now();
+  writer=(async()=>{let previous=JSON.parse(Buffer.from(data.first.retained[1023].r.bytes))[6];
+   for(let i=0;i<9;i++){
+    const target=started+500*(i+1);await delay(Math.max(0,target-Date.now()));
+    const w=data.first.extras[i],at=performance.now(),answer=await post('/account/delivery/submit',encodeSubmit(data.first.workspace,Buffer.from(w.bytes,'hex')),'first','write');assert.equal(answer.status,200);
+    const checked=verifyDecision({kind:'decision',bytes:answer.bytes},data.first.offer.epoch.acceptancePublicKey,w.subject,previous,w.parent);assert.equal(checked.kind,'accepted');previous=checked.head.link;
+    data.first.retained.push({w:{...w,bytes:Buffer.from(w.bytes,'hex')},r:{bytes:answer.bytes}});writes.push(performance.now()-at);inputLatencies.push(Date.now()-target);
+   }
+  })();
+  peer=(async()=>{while(!stop){await delay(250);if(stop)break;const q=query(data.other),at=performance.now(),r=await post('/account/delivery/read-v2',q,'other','peer');assert.equal(r.status,200);pageProof({kind:'decision',bytes:r.bytes},q,data.other,data.other.retained);peerLatencies.push(performance.now()-at);}})();
+  let after=0,batches=0;
+  while(after<positions){const requests=[query(data.first,after,Math.min(pageSize,positions-after))];const captured=encodeInboundBatch(requests);expectedRead=Buffer.from(captured);const bytes=await read(captured,(body,signal,observe)=>client.privateDeliveryPost(data.pin,scoped,'read-v2-batch',body,INBOUND_BATCH_PAGE_LIMIT,signal,observe,true));if(!bytes)throw Error('Actual history transport refused replay: '+JSON.stringify(client.readPrivateTransportDiagnostics()));const pages=decodeInboundBatchPages(bytes);assert(pages.length);for(let i=0;i<pages.length;i++){const through=JSON.parse(Buffer.from(pages[i]))[3];const proof=pageProof({kind:'decision',bytes:pages[i]},requests[i],data.first,data.first.retained.slice(0,through));assert(proof.count>=1&&proof.count<=pageSize);after=proof.next;}batches++;}
+  const replayMs=Date.now()-started;await writer;stop=true;await peer;const metrics=(await send({kind:'end'})).metrics;
+  const row={outcome:'passed',round,arm,positions,pageSize,replayMs,batches,statuses,retries,writes,inputLatencies,peerLatencies,metrics,totalWorkMs:Date.now()-started,acceptedWrites:writes.length,independentProofs:'all returned replay, peer and live write proofs passed',completedCut:after,clientDiagnostics:client.readPrivateTransportDiagnostics(),extraReplayAttempts:statuses.filter(s=>s.label==='replay').length-batches,bodyIdentity:'every replay dispatch matches the original captured signed query',scope:'same phase-C API; real privateDeliveryPost and candidate history retry owner; fresh native grants supplied before timing; no grant-renewal or browser replay claim'};observations.push(row);writeFileSync(output+`/${round}-${arm}.json`,JSON.stringify(row,null,2));console.log(JSON.stringify({round,arm,positions,replayMs,batches,refusals:statuses.filter(x=>x.status===429).length,writes:writes.length,maxWrite:Math.max(...writes),maxInputLatency:Math.max(...inputLatencies),fullCensuses:metrics.prefixStatus.fullCensuses,cpuMs:(metrics.cpu.user+metrics.cpu.system)/1000}));
+ }catch(e){stop=true;await Promise.allSettled([writer,peer].filter(Boolean));writeFileSync(output+`/${round}-${arm}-failure.txt`,e.stack);let metrics;try{metrics=(await send({kind:'end'})).metrics}catch{};observations.push({round,arm,positions,pageSize,outcome:'failed',error:e.message,statuses,retries,writes,inputLatencies,peerLatencies,metrics,acceptedWrites:writes.length,scope:'incomplete replay retained; no success/timing credit'});console.log(JSON.stringify({round,arm,outcome:'failed',error:e.message,writes:writes.length}));}finally{stop=true;await Promise.allSettled([writer,peer].filter(Boolean));try{await send({kind:'stop'})}catch(e){writeFileSync(output+`/${round}-${arm}-cleanup-failure.txt`,e.stack)}finally{child.kill('SIGTERM');writeFileSync(output+`/${round}-${arm}.log`,logs);writeFileSync(output+'/results.json',JSON.stringify(observations,null,2));data.first.retained.length=1024;}}
+}
