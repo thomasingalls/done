@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 507,
-    "requiredTestFiles": 501,
+    "testFiles": 509,
+    "requiredTestFiles": 503,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -8674,6 +8674,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-sessions/inbound-batch-budget.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-batch-budget.test.mjs"
+        ]
+      },
+      "declarations": 6,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-sessions/inbound-batch.test.mjs",
       "status": "required",
       "invocation": {
@@ -8715,6 +8730,21 @@
         ]
       },
       "declarations": 5,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-sessions/request-budget-work.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/request-budget-work.test.mjs"
+        ]
+      },
+      "declarations": 8,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -17669,8 +17699,12 @@
       "sha256": "06eee28d38e47f8baa0965fe07b886f2847c30ffce0a58f4417db1c46a7700ae"
     },
     {
+      "path": "test/account-sessions/inbound-batch-budget.test.mjs",
+      "sha256": "90ae093a0dce638ed576acaf3b8c6386e5003a501d50158026f91df509ca7296"
+    },
+    {
       "path": "test/account-sessions/inbound-batch.test.mjs",
-      "sha256": "0c5c43d7f12b1ac31fbd87ccafabcab72e73ce4e9df4ef2072e1ec013fbfc66a"
+      "sha256": "ce2f872bcf86d523bc139e3bb8055c47c0223f22106e5e96dc170b045ec08b33"
     },
     {
       "path": "test/account-sessions/notifications.test.mjs",
@@ -17679,6 +17713,10 @@
     {
       "path": "test/account-sessions/renewal-window.test.mjs",
       "sha256": "bb1c503dce0aff8bf4c6e0c1b135a8760aef900444c67b1c833c0fb8ac20ba6b"
+    },
+    {
+      "path": "test/account-sessions/request-budget-work.test.mjs",
+      "sha256": "437b4f3c51a242039f0368002fe5c1a0e757def38a0bfe1359521c44ad947870"
     },
     {
       "path": "test/account-sessions/request-budget.test.mjs",

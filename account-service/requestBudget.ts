@@ -11,6 +11,12 @@ export const REQUEST_LIMITS = Object.freeze({
   sessions: 1024,
 });
 type Bucket = { tokens: number; last: number; active: number };
+export type RequestReservation = (() => void) & {
+  /** Includes the already charged admission unit. Additional work is reserved atomically. */
+  reserveWork(total: number): boolean;
+  /** Refund only work that never started; every admitted HTTP request costs at least one unit. */
+  settleWork(started: number): void;
+};
 export class ScopedRequestBudget {
   #now: () => number;
   #sessions = new Map<string, Bucket>();
@@ -33,7 +39,7 @@ export class ScopedRequestBudget {
     return true;
   }
   /** Only pass a service-held session key. A rejected session never debits the shared ceiling. */
-  acquire(key: string): (() => void) | undefined {
+  acquire(key: string): RequestReservation | undefined {
     const now = this.#now(),
       l = REQUEST_LIMITS;
     let b = this.#sessions.get(key);
@@ -55,12 +61,54 @@ export class ScopedRequestBudget {
     b.active++;
     this.#process.tokens--;
     this.#process.active++;
-    let released = false;
-    return () => {
+    const session = b;
+    let released = false,
+      reserved = 1,
+      toppedUp = false,
+      settled = false;
+    const release = () => {
       if (released) return;
       released = true;
-      b.active--;
+      session.active--;
       this.#process.active--;
     };
+    const refill = () => {
+      const at = this.#now();
+      this.#refill(session, l.sessionBurst, l.sessionPerSecond, at);
+      this.#refill(this.#process, l.processBurst, l.processPerSecond, at);
+    };
+    return Object.freeze(
+      Object.assign(release, {
+        reserveWork: (total: number) => {
+          if (
+            released ||
+            settled ||
+            toppedUp ||
+            !Number.isSafeInteger(total) ||
+            total < 1 ||
+            total > l.sessionBurst
+          )
+            return false;
+          refill();
+          const extra = total - reserved;
+          if (session.tokens < extra || this.#process.tokens < extra) return false;
+          session.tokens -= extra;
+          this.#process.tokens -= extra;
+          reserved = total;
+          toppedUp = true;
+          return true;
+        },
+        settleWork: (started: number) => {
+          if (released || settled) return;
+          if (!Number.isSafeInteger(started) || started < 0 || started > reserved)
+            throw Error('Invalid started request work');
+          settled = true;
+          refill();
+          const unused = reserved - Math.max(1, started);
+          session.tokens = Math.min(l.sessionBurst, session.tokens + unused);
+          this.#process.tokens = Math.min(l.processBurst, this.#process.tokens + unused);
+        },
+      }),
+    );
   }
 }

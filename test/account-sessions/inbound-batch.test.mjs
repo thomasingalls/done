@@ -249,7 +249,7 @@ test('batch HTTP debits existing work limits and releases every reserved infligh
     call = await http(t, x, new ScopedRequestBudget(() => 0)),
     g = await x.grant(),
     body = encodeInboundBatch([query(x)]);
-  for (let i = 0; i < REQUEST_LIMITS.sessionBurst / INBOUND_BATCH_COUNT; i++)
+  for (let i = 0; i < REQUEST_LIMITS.sessionBurst; i++)
     assert.equal((await call(body, g.grantToken)).status, 200);
   const denied = await call(body, g.grantToken);
   assert.equal(denied.status, 429);

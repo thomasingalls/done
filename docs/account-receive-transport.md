@@ -137,3 +137,25 @@ fixed-purpose signing and far-side custody/expiry checks remain. Historical auth
 has no current-clock input; live request, custody and grant checks cannot be memoized. The four-read,
 250 ms completed-work, byte, inflight and HTTP deadline bounds are unchanged. This reuses evidence
 for byte-identical inputs; it grants no reader status, key access or ability to issue a page.
+
+### Precise sequential-batch admission accounting — 2026-10-16
+
+This supersedes the earlier conservative reservation of four rate and concurrency units for every
+batch. One admitted HTTP request now holds one session/process concurrency slot and costs at least
+one work unit before reading its bounded body. After exact framing, reserve all remaining **actual
+requested** inner-read units atomically, before starting any inner read. Insufficient additional work
+refuses before native execution and spends only the initial admission unit. Malformed bodies still
+spend admission; rejected credentials cannot select another session's budget.
+
+Each sequential native read that starts remains charged, including a failed/refused read or a read
+whose page is discarded at the response-size cut. Only reserved reads never started are refunded at
+settlement. Unused-refund and release are idempotent, burst-capped, and cannot enlarge a closed ticket.
+Numeric session/process burst and refill limits, invalid-bearer allowance, total live-request ceilings,
+maximum four sequential reads, body/page bounds and deadlines remain unchanged. At most one native
+inner read runs per live batch; there is no concurrent four-read fan-out. The existing live-request
+ceilings and per-request byte bounds still apply across single and batched routes.
+
+Admission/accounting supplies no membership, grant, signature or commit authority. Every original
+per-read check remains. Full four-read batches still debit four rate units; faster execution does not
+silently waive their sustained budget. Later measured work selects any rate-policy or page-density
+change separately, with concurrent writing and aggregate resource checks.
