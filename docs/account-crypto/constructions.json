@@ -7183,7 +7183,9 @@
         "test/account-history/install.test.mjs",
         "test/account-history/pruning.test.mjs",
         "test/historyReplayPage.test.ts",
-        "test/account-history/multi-page-source.test.mjs"
+        "test/account-history/multi-page-source.test.mjs",
+        "test/historyReadRetry.test.ts",
+        "test/packaged-account/enrollment-state-retry.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -7416,7 +7418,9 @@
         "test/packaged-account/enrollment-batch.spec.ts",
         "test/packaged-account/enrollment-capacity.spec.ts",
         "test/historyReplayPage.test.ts",
-        "test/account-history/multi-page-source.test.mjs"
+        "test/account-history/multi-page-source.test.mjs",
+        "test/historyReadRetry.test.ts",
+        "test/packaged-account/enrollment-state-retry.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",

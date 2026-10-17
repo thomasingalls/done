@@ -15,6 +15,7 @@ import {
   type Diagnostic,
 } from '../../account-protocol/diagnostics';
 const diagnostics = createDiagnostics();
+export const PRIVATE_DELIVERY_TIMEOUT_MS = 10000;
 export const readPrivateTransportDiagnostics = diagnostics.read;
 export const clearPrivateTransportDiagnostics = diagnostics.clear;
 export const recordPrivateTransportDiagnostic = diagnostics.record;
@@ -43,7 +44,7 @@ export async function privateDeliveryPost(
     note('request', 'invalid-token');
     return null;
   }
-  const stopped = AbortSignal.any([signal, AbortSignal.timeout(10000)]);
+  const stopped = AbortSignal.any([signal, AbortSignal.timeout(PRIVATE_DELIVERY_TIMEOUT_MS)]);
   const interrupted = () => (signal.aborted ? ('aborted' as const) : ('timeout' as const));
   try {
     stopped.throwIfAborted();

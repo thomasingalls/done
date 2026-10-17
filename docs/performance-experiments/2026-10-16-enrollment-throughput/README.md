@@ -16,3 +16,8 @@ The rate boundary did contribute to delay. Exact accounting alone still leaves 5
 **Open acceptance blocker:** all six fixed-offer concurrent-writing stress arms refuse replay with 409 unknown/state-changed, including the proposed extra prefix-cache repair. This is not a 429 issue. Reduced census work does not establish completion. The prototype is retained only as deferred evidence; the runtime is restored to exact phase C. These are reviewable development patches, not a release-ready performance change. Next: reproduce the real client's transient state-change handling and establish bounded completion/write latency under the same fixed-offer workload while preserving every authorization, cut, expiry/retirement and corruption check.
 
 All old assertions/cases/deadlines and qualification blocks remain, apart from explicitly replacing the defective three-file-transform census with independent full historical graph identity and renaming the content-read counter case to describe its actual probe. Seven new test files remain blocked from aggregate credit; all 78 specified and 14 open construction statuses remain. Planning is blocked at 874 obligations / 330 unresolved. General qualification, unrelated formatting and the account-disappearance investigation remain separate. Private snapshots, keys and service databases stay outside Git.
+
+
+## Follow-up patch 08 — bounded real-client continuation
+
+The [directed repair](./08-history-read-retry/README.md) preserves safe native refusals and retries exact signed reads under one deadline and a load-wide cap. All directed checks pass; the original workload blocker remains pending the separately recorded native comparison. Earlier failed experiments and patch bytes remain unchanged.

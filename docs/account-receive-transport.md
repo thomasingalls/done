@@ -159,3 +159,32 @@ Admission/accounting supplies no membership, grant, signature or commit authorit
 per-read check remains. Full four-read batches still debit four rate units; faster execution does not
 silently waive their sustained budget. Later measured work selects any rate-policy or page-density
 change separately, with concurrent writing and aggregate resource checks.
+
+### Bounded history-load retries for a raced snapshot — 2026-10-16
+
+Additional-device reconstruction may repeat a read after the existing adapter consumes an exact,
+size-bounded `409` JSON `unknown/state-changed` hint. That unsigned hint schedules work only; it is
+never a page, a progress observation, an accepted cut or membership authority. Every returned page
+still passes the full transient history verifier. The service's four-attempt fresh-snapshot guard,
+transaction-time authorization, signing/custody checks, corruption handling and numeric rates remain.
+
+One `advanceMembershipConnection` load owns four extra transport attempts shared across all its
+history requests, with one logical read active at a time. A logical request captures independent bytes
+before awaiting and sends a new detached copy of those exact bytes on each attempt, retaining nonce,
+signature, expiry and cut. A 200 ms abortable delay precedes each repeat. The existing ten-second
+private-delivery deadline also bounds the entire logical request including repeats/delays; it does
+not restart with the retry. Existing authorization/capacity transport behavior remains subordinate
+to that signal. Every dispatched HTTP request still passes normal service admission and authorization.
+
+Only the read-v2 diagnostic from that invocation's closed response parser can request a repeat, and
+only when no byte reply was returned. Submissions, v1 reads, other refusals, malformed or oversized
+hints, network loss, bad signatures, invalid/expired requests, authority changes and throttling do not
+select this retry. Cancelling or timing out prevents later dispatch and withholds/erases a late reply;
+the existing transport cancellation-drain behavior remains. Exhaustion returns the existing saved-load
+failure instead of looping indefinitely. A later saved-operation retry receives a new bounded owner.
+
+Optional-route 404 fallback remains separate from state-change handling. It decodes the exact captured
+batch request, sends that first signed inner request, and shares the same retry budget and logical
+request signal. Only 404 disables batching for the coordinator. Retrying changes no factor, key,
+schema, durable progress, accepted position, source inventory or checkpoint. See the bounded repair
+and its independent concurrency result in the enrollment-throughput evidence map.

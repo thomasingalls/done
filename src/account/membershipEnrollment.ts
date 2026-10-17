@@ -16,6 +16,7 @@ import {
   encodeInboundBatch,
   encodeInboundBatchPages,
   decodeInboundBatchPages,
+  decodeInboundBatch,
   INBOUND_BATCH_PAGE_LIMIT,
 } from '../../account-protocol/inboundBatch';
 import { withMembershipVault, type MembershipVault } from './membershipVault';
@@ -23,6 +24,7 @@ import { advanceMembershipConnection, type MembershipConnection } from './member
 import { membershipInvitationUrl } from './membershipInvitation';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import { privateDeliveryPost } from './privateDeliveryHttp';
+import { createHistoryReadRetry } from './historyReadRetry';
 import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
 import {
   ScopedTransport,
@@ -150,6 +152,7 @@ export function createMembershipEnrollment(
   };
   const runOperation = (input: Parameters<typeof advanceMembershipConnection>[3] = {}) =>
     withMembershipVault(ownerKind, slotId, code, lifetime.signal, async (owner) => {
+      const historyRead = createHistoryReadRetry(lifetime.signal);
       const result = await advanceMembershipConnection(
         owner,
         role,
@@ -214,15 +217,17 @@ export function createMembershipEnrollment(
           read: async (bytes, base) => {
             const scoped = access(owner, base);
             const page = await owner.withLogin(ceremonyLogin, identity(base), () =>
-              privateDeliveryPost(
-                pin,
-                scoped,
-                'read-v2',
-                bytes,
-                READ_PAGE_LIMIT,
-                lifetime.signal,
-                undefined,
-                true,
+              historyRead(bytes, (body, signal, observe) =>
+                privateDeliveryPost(
+                  pin,
+                  scoped,
+                  'read-v2',
+                  body,
+                  READ_PAGE_LIMIT,
+                  signal,
+                  observe,
+                  true,
+                ),
               ),
             );
             guard();
@@ -232,41 +237,45 @@ export function createMembershipEnrollment(
           readBatch: async (requests, base) => {
             const scoped = access(owner, base);
             return owner.withLogin(ceremonyLogin, identity(base), async () => {
-              const fallback = async () => {
-                batchingAvailable = false;
-                const page = await privateDeliveryPost(
-                  pin,
-                  scoped,
-                  'read-v2',
-                  requests[0]!,
-                  READ_PAGE_LIMIT,
-                  lifetime.signal,
-                  undefined,
-                  true,
-                );
-                if (!page) throw Error('Writing could not be fetched. Retry the saved load.');
-                try {
-                  return encodeInboundBatchPages([page]);
-                } finally {
-                  page.fill(0);
-                }
-              };
               const body = encodeInboundBatch(requests);
               let reply: Uint8Array<ArrayBuffer> | null = null;
               try {
-                reply = batchingAvailable
-                  ? await privateDeliveryPost(
-                      pin,
-                      scoped,
-                      'read-v2-batch',
-                      body,
-                      INBOUND_BATCH_PAGE_LIMIT,
-                      lifetime.signal,
-                      undefined,
-                      true,
-                      fallback,
-                    )
-                  : await fallback();
+                reply = await historyRead(body, async (captured, signal, observe) => {
+                  const fallback = async () => {
+                    batchingAvailable = false;
+                    const inner = decodeInboundBatch(captured);
+                    let page: Uint8Array<ArrayBuffer> | null = null;
+                    try {
+                      page = await privateDeliveryPost(
+                        pin,
+                        scoped,
+                        'read-v2',
+                        inner[0]!,
+                        READ_PAGE_LIMIT,
+                        signal,
+                        observe,
+                        true,
+                      );
+                      return page ? encodeInboundBatchPages([page]) : null;
+                    } finally {
+                      for (const bytes of inner) bytes.fill(0);
+                      page?.fill(0);
+                    }
+                  };
+                  return batchingAvailable
+                    ? privateDeliveryPost(
+                        pin,
+                        scoped,
+                        'read-v2-batch',
+                        captured,
+                        INBOUND_BATCH_PAGE_LIMIT,
+                        signal,
+                        observe,
+                        true,
+                        fallback,
+                      )
+                    : fallback();
+                });
                 guard();
                 if (!reply) throw Error('Writing could not be fetched. Retry the saved load.');
                 const pages = decodeInboundBatchPages(reply);

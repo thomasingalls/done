@@ -588,6 +588,10 @@
       "sha256": "9ff10bef78498eb8175bc5a4aa239e118e0e38f0b1314e767b36054742623333"
     },
     {
+      "path": "src/account/historyReadRetry.ts",
+      "sha256": "79b2878c1d1e8fe086f9e63427b4b16040e4a4082b3f3cdccc20c630b1fa846d"
+    },
+    {
       "path": "src/account/lostDeviceRecovery.ts",
       "sha256": "691fe605dd50cbd93b4950df281b1d0dc3327859c116b68b6463401690df5566"
     },
@@ -609,7 +613,7 @@
     },
     {
       "path": "src/account/membershipEnrollment.ts",
-      "sha256": "30ed3506c3110830ccbcdab9bd8e918459f546b124cb15a5919b1847b877f707"
+      "sha256": "2dcfd293ab211ca4b2ff278311f0e674182c48620b70e8b361bc8cf1adb5c359"
     },
     {
       "path": "src/account/membershipHandoff.ts",
@@ -653,7 +657,7 @@
     },
     {
       "path": "src/account/privateDeliveryHttp.ts",
-      "sha256": "8aecab834520c7e4378413fe545e8e616d5a6a595862fb28451de30d15cd6f33"
+      "sha256": "38c1f82f15408496236d4d72a2972a8299a29fb8a7a147ab6ac6474aef484d4b"
     },
     {
       "path": "src/account/privateDiscoveryHttp.ts",

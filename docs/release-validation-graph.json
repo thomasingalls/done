@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 512,
-    "requiredTestFiles": 506,
+    "testFiles": 514,
+    "requiredTestFiles": 508,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -10309,6 +10309,16 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/historyReadRetry.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/historyReadRetry.test.ts"]
+      },
+      "declarations": 14,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/historyReceiveFence.test.ts",
       "status": "required",
       "invocation": {
@@ -11201,6 +11211,17 @@
         "packages": ["test:packaged-account"]
       },
       "declarations": 2,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/enrollment-state-retry.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -14955,7 +14976,9 @@
         "test/account-history/install.test.mjs",
         "test/account-history/pruning.test.mjs",
         "test/historyReplayPage.test.ts",
-        "test/account-history/multi-page-source.test.mjs"
+        "test/account-history/multi-page-source.test.mjs",
+        "test/historyReadRetry.test.ts",
+        "test/packaged-account/enrollment-state-retry.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -15001,7 +15024,9 @@
         "test/packaged-account/enrollment-batch.spec.ts",
         "test/packaged-account/enrollment-capacity.spec.ts",
         "test/historyReplayPage.test.ts",
-        "test/account-history/multi-page-source.test.mjs"
+        "test/account-history/multi-page-source.test.mjs",
+        "test/historyReadRetry.test.ts",
+        "test/packaged-account/enrollment-state-retry.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -15020,7 +15045,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "cbd8034fe0c2d8f513b34853161f88573cf7ed0b1181f22cdc16283cec611eda"
+      "sha256": "ada4bbb02353345bbfbe21ae050564e4c52f2f79c41995b97093d5bcd613855a"
     },
     {
       "path": "package.json",
@@ -18367,6 +18392,10 @@
       "sha256": "5024cc2fe9ba689c52069821fafa3f040de2b93ee748292624585caa38a7ba81"
     },
     {
+      "path": "test/historyReadRetry.test.ts",
+      "sha256": "9e0f3eae776a493c0c7e6ced4598e14c710ca9a46801bb92d34b1087082c6c71"
+    },
+    {
       "path": "test/historyReceiveFence.test.ts",
       "sha256": "b2992437f3e816b568394a03bbcdcb15d2ced44b27da8ad4d9c87f6e4cbd2adb"
     },
@@ -18873,6 +18902,10 @@
     {
       "path": "test/packaged-account/enrollment-retry.spec.ts",
       "sha256": "67b56d7634b7a26b344e44282dfaa79e1ba8e21702aa75bb97a91831bd39f85e"
+    },
+    {
+      "path": "test/packaged-account/enrollment-state-retry.spec.ts",
+      "sha256": "00c8f64410013cd4f5ae5a8742a11afec9bb092112039e7c4aebf8781caf26e7"
     },
     {
       "path": "test/packaged-account/generation-retry.spec.ts",
