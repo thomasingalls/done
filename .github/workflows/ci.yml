@@ -69,7 +69,7 @@ jobs:
         run: node --test --test-concurrency=1 --test-timeout=15000 test/account-application/*.test.mjs
 
       - name: Check authenticated enrollment read batching and existing transport boundaries
-        run: node --test --test-concurrency=1 --test-timeout=30000 test/account-sessions/inbound-batch.test.mjs test/account-sessions/scoped-http.test.mjs test/account-history/source.test.mjs test/account-membership/handoff.test.mjs
+        run: node --test --test-concurrency=1 --test-timeout=30000 test/account-sessions/inbound-batch.test.mjs test/account-sessions/inbound-authority-reuse.test.mjs test/account-sessions/scoped-http.test.mjs test/account-history/source.test.mjs test/account-membership/handoff.test.mjs
 
       - name: Install Playwright Chromium
         run: pnpm exec playwright install --with-deps chromium
@@ -103,6 +103,7 @@ jobs:
           test/packaged-account/empty-legacy-startup.spec.ts
           test/packaged-account/enrollment-batch.spec.ts
           test/packaged-account/enrollment-progress.spec.ts
+          test/packaged-account/enrollment-capacity.spec.ts
           test/packaged-account/welcome.spec.ts
           test/packaged-account/passkey-local-access.spec.ts
           test/packaged-account/multi-tab-protection.spec.ts

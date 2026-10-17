@@ -110,3 +110,30 @@ The unsupported hint lasts only for that unlocked coordinator. Authorization, in
 timeout and other failures never authorize this fallback. Old clients continue using the original
 route on new servers. Initial use is confined to additional-device replacement-snapshot replay;
 ordinary receiving and other history-source callers retain their existing transport.
+
+### Sequential read-batch authority reuse — 2026-10-16
+
+The batch owner may reuse a fully verified historical workspace-authority result across its
+sequential inner reads. Each read still obtains a fresh native snapshot. Exact equality covers
+the service pin and every snapshot header field, including witnesses, all membership/removal/
+recovery artifacts, publisher identity and unknown future header fields. Only decision rows are
+excluded: they are not inputs to `WorkspaceAuthoritySnapshot` verification and retain their
+independent ledger/served-row checks. A changed header or verifier performs full verification.
+
+The runtime-branded owner is created for one `readInboundBatch` and closed in its `finally`.
+It holds at most one context/result, retains no context exceeding 2 MiB of serialized bytes, rejects
+overlapping use, and fences close or input changes during verification and native checks. A failed
+verification/check leaves no entry. Oversized contexts take the complete reference path. The bound
+is on the retained context bytes, not the total derived authority graph or process heap.
+Process-local V8 serialization preserves non-JSON values; unsupported inputs take the full
+reference path. These bytes are never persisted or exchanged between processes. No result
+is persisted, shared across HTTP batches or retained by the core after the batch. Mutable result
+fields are detached; already immutable, runtime-branded membership/history values retain identity.
+
+Every reuse repeats all native `issuer.check` operations observed during full verification, using
+that read's issuer. Per-request reader resolution, request signatures/scope/expiry, ledger census,
+served proof checks, fresh transaction-time unchanged comparison, session/grant authorization,
+fixed-purpose signing and far-side custody/expiry checks remain. Historical authority verification
+has no current-clock input; live request, custody and grant checks cannot be memoized. The four-read,
+250 ms completed-work, byte, inflight and HTTP deadline bounds are unchanged. This reuses evidence
+for byte-identical inputs; it grants no reader status, key access or ability to issue a page.

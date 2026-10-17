@@ -1,3 +1,4 @@
+import type { InboundAuthorityReuse } from './inboundAuthorityReuse.ts';
 import {
   exchangeHistoryCheckpoint,
   HISTORY_CHECKPOINT_SCHEMA,
@@ -728,7 +729,7 @@ export class AccountCore {
   exchangeReplacementCheckpoint(input: unknown, issuer: ReplacementCheckpointIssuer) {
     return exchangeReplacementCheckpoint(this.#db, input, issuer, this.#hook);
   }
-  readInbound(input: unknown, issuer: InboundReadIssuer) {
+  readInbound(input: unknown, issuer: InboundReadIssuer, authority?: InboundAuthorityReuse) {
     return readInbound(
       this.#db,
       input,
@@ -736,6 +737,7 @@ export class AccountCore {
       this.#hook,
       this.#deliveryVerification,
       this.#diagnostics.record,
+      authority,
     );
   }
   decideSubmission(input: unknown, issuer: DeliveryIssuer) {

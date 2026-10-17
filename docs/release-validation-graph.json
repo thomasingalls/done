@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 505,
-    "requiredTestFiles": 499,
+    "testFiles": 507,
+    "requiredTestFiles": 501,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -8659,6 +8659,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-sessions/inbound-authority-reuse.test.mjs"
+        ]
+      },
+      "declarations": 13,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-sessions/inbound-batch.test.mjs",
       "status": "required",
       "invocation": {
@@ -11066,6 +11081,17 @@
     },
     {
       "path": "test/packaged-account/enrollment-batch.spec.ts",
+      "status": "required",
+      "invocation": {
+        "config": "playwright.packaged-account.config.ts",
+        "packages": ["test:packaged-account"]
+      },
+      "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/packaged-account/enrollment-capacity.spec.ts",
       "status": "required",
       "invocation": {
         "config": "playwright.packaged-account.config.ts",
@@ -14899,7 +14925,9 @@
       "status": "open",
       "tests": [
         "test/account-sessions/inbound-batch.test.mjs",
-        "test/packaged-account/enrollment-batch.spec.ts"
+        "test/account-sessions/inbound-authority-reuse.test.mjs",
+        "test/packaged-account/enrollment-batch.spec.ts",
+        "test/packaged-account/enrollment-capacity.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
@@ -14918,7 +14946,7 @@
     },
     {
       "path": "docs/account-crypto/constructions.json",
-      "sha256": "9d5f0d983eb323d6104e5715aad1f257062cc924ac2e51063716cbc382573e5d"
+      "sha256": "268bc409d2210ef9419ea09a0e143b4208b5fbf3906f0a808bfda03365afad8b"
     },
     {
       "path": "package.json",
@@ -17637,6 +17665,10 @@
       "sha256": "7eaf931326a2383acbbfc9d2ef19e4df68dd7db6f07e80e7c0afa6db42df0cc1"
     },
     {
+      "path": "test/account-sessions/inbound-authority-reuse.test.mjs",
+      "sha256": "06eee28d38e47f8baa0965fe07b886f2847c30ffce0a58f4417db1c46a7700ae"
+    },
+    {
       "path": "test/account-sessions/inbound-batch.test.mjs",
       "sha256": "0c5c43d7f12b1ac31fbd87ccafabcab72e73ce4e9df4ef2072e1ec013fbfc66a"
     },
@@ -18731,6 +18763,10 @@
     {
       "path": "test/packaged-account/enrollment-batch.spec.ts",
       "sha256": "1d42fc3fbeb2cfccd1b0c39df0f3e62884a40b8b3219f6d83c293ccb7f432b0f"
+    },
+    {
+      "path": "test/packaged-account/enrollment-capacity.spec.ts",
+      "sha256": "cedb0fd4416185b3176c9c1269cb835544a7e6d820abf6acc25bb84147518bd6"
     },
     {
       "path": "test/packaged-account/enrollment-open.spec.ts",

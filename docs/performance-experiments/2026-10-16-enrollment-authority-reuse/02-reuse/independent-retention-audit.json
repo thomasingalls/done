@@ -1,0 +1,21 @@
+{
+  "oldObligations": 867,
+  "newObligations": 869,
+  "oldUnresolved": 323,
+  "newUnresolved": 325,
+  "priorRowsRetained": true,
+  "priorStageContractsUnchanged": true,
+  "reviewedDependencyExpansion": [
+    "construction:transport-read-batching"
+  ],
+  "constructionStatuses": {
+    "specified": 78,
+    "inherited": 4,
+    "excluded": 1,
+    "open": 14
+  },
+  "constructionChangesOnlySourceLinesAndAddedTestReferences": true,
+  "timedRuntimeFilesMatchCheckout": true,
+  "realIndexEmpty": true,
+  "otherProgressAndDeferredFormattingUntouched": true
+}

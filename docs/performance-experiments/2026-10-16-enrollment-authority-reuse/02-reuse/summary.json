@@ -1,0 +1,100 @@
+{
+  "observations": 14,
+  "conditions": {
+    "original-96": {
+      "pairs": [
+        {
+          "round": 0,
+          "referenceMs": 8859,
+          "candidateMs": 5413,
+          "improvementPct": 38.89829551868157
+        },
+        {
+          "round": 1,
+          "referenceMs": 8863,
+          "candidateMs": 5490,
+          "improvementPct": 38.05709127834819
+        },
+        {
+          "round": 2,
+          "referenceMs": 8858,
+          "candidateMs": 5488,
+          "improvementPct": 38.044705351095054
+        }
+      ],
+      "medianPairedImprovementPct": 38.05709127834819,
+      "referenceMedianMs": 8859,
+      "candidateMedianMs": 5488,
+      "referenceRangeMs": [
+        8858,
+        8863
+      ],
+      "candidateRangeMs": [
+        5413,
+        5490
+      ],
+      "writingExportsAndReopen": "passed in every connection",
+      "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757"
+    },
+    "joined-96": {
+      "pairs": [
+        {
+          "round": 0,
+          "referenceMs": 8885,
+          "candidateMs": 5469,
+          "improvementPct": 38.44682048396174
+        },
+        {
+          "round": 1,
+          "referenceMs": 8861,
+          "candidateMs": 5893,
+          "improvementPct": 33.49509084753414
+        },
+        {
+          "round": 2,
+          "referenceMs": 8872,
+          "candidateMs": 5927,
+          "improvementPct": 33.19431920649233
+        }
+      ],
+      "medianPairedImprovementPct": 33.49509084753414,
+      "referenceMedianMs": 8872,
+      "candidateMedianMs": 5893,
+      "referenceRangeMs": [
+        8861,
+        8885
+      ],
+      "candidateRangeMs": [
+        5469,
+        5927
+      ],
+      "writingExportsAndReopen": "passed in every connection",
+      "exportSha256": "dee6950766a8a55a0304976c577647bdb651ddfc8c22cd1b1f8a49a1512b8757"
+    },
+    "original-0": {
+      "pairs": [
+        {
+          "round": 0,
+          "referenceMs": 3373,
+          "candidateMs": 3341,
+          "improvementPct": 0.9487103468722206
+        }
+      ],
+      "medianPairedImprovementPct": 0.9487103468722206,
+      "referenceMedianMs": 3373,
+      "candidateMedianMs": 3341,
+      "referenceRangeMs": [
+        3373,
+        3373
+      ],
+      "candidateRangeMs": [
+        3341,
+        3341
+      ],
+      "writingExportsAndReopen": "passed in every connection",
+      "exportSha256": "f4a182efd06d3140a8bf7fd1688a94b3dfa663dd0da0987a438f76727068fb4f"
+    }
+  },
+  "primaryDecision": "prespecified >=10% median paired improvement met in both 96-burst owner slices; all correctness checks pass; fresh guardrail has no observed slowdown",
+  "scope": "small serial desktop local-service engineering sample, no phone/WAN or population bound"
+}

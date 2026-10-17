@@ -1,0 +1,32 @@
+{
+  "base": "2f1d0b0fd72e4879e96c2a0eeaf052918e3ceb54",
+  "files": [
+    {
+      "path": "account-service/authority.ts",
+      "sha256": "704910dcd6755bcfaa1324be682038989edc05ea4eba8a5f866b1af728dbc47b"
+    },
+    {
+      "path": "account-service/core.ts",
+      "sha256": "0d75d870b1003560914531a55357b40ba676d8fc7237a3ad48ac6c9383956773"
+    },
+    {
+      "path": "account-service/delivery.ts",
+      "sha256": "79733800bfa78e0809a7d44cba4d568f4aa4ff8d4e859df99d0da6a53325f7f1"
+    },
+    {
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23"
+    },
+    {
+      "path": "account-service/scoped-http.ts",
+      "sha256": "9d9d228d8c091942429bf2b48b550e744325a94293732f2b17fd7dc50ace69ff"
+    },
+    {
+      "path": "account-service/inboundAuthorityReuse.ts",
+      "sha256": "ab030f647cd50c5865798bdf28717ac45880bb83cda528937d3b5c689729c9d9"
+    }
+  ],
+  "frontend": ".dev/preview-builds/2f1d0b0f",
+  "diagnostics": false,
+  "copiesMatchWorktree": true
+}

@@ -172,7 +172,9 @@ export function createScopedAccountHandler(
         limit: INBOUND_BATCH_REQUEST_LIMIT,
         cost: INBOUND_BATCH_COUNT,
         run: (v: Uint8Array<ArrayBuffer>, _token: string, authorization: OperationAuthorization) =>
-          readInboundBatch(v, (request) => authority.readInbound(core, request, authorization)),
+          readInboundBatch(v, (request, reuse) =>
+            authority.readInbound(core, request, authorization, reuse),
+          ),
       },
     ],
   ]);

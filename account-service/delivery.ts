@@ -1,3 +1,4 @@
+import { reuseInboundAuthority, type InboundAuthorityReuse } from './inboundAuthorityReuse.ts';
 import { isPrunedDecision, verifyPrunedDecision } from './prunedDecision.ts';
 import { recoveryRows, type RecoveryRow } from './recoveryStore.ts';
 import type {
@@ -1275,6 +1276,7 @@ export async function readInbound(
   hook: DeliveryHook,
   reuse?: DeliveryVerification,
   diagnostics?: DiagnosticSink,
+  authorityReuse?: InboundAuthorityReuse,
 ): Promise<ServiceDeliveryResult> {
   let phase: Diagnostic['phase'] = 'request';
   const note = (cause: unknown) =>
@@ -1301,7 +1303,10 @@ export async function readInbound(
         limit: request.limit,
       });
       if (!s) return unknown('unavailable');
-      const auth = selectPublisher(await verifyCurrentWorkspaceAuthority(s, issuer), s.publisher),
+      const auth = selectPublisher(
+          await reuseInboundAuthority(authorityReuse, s, issuer, verifyCurrentWorkspaceAuthority),
+          s.publisher,
+        ),
         { reader, publisher } = resolveInboundRoles(auth, request);
       if (
         request.serviceId !== issuer.pin.serviceId ||

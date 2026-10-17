@@ -1,3 +1,7 @@
+import {
+  createInboundAuthorityReuse,
+  type InboundAuthorityReuse,
+} from './inboundAuthorityReuse.ts';
 /** Sequential existing reads; framing never replaces a subrequest's transaction authorization. */
 import { decodeInboundBatch, encodeInboundBatchPages } from '../account-protocol/inboundBatch.ts';
 import { READ_PAGE_LIMIT } from '../account-protocol/deliveryTransport.ts';
@@ -8,16 +12,17 @@ export const INBOUND_BATCH_WORK_MS = 250;
 
 export async function readInboundBatch(
   bytes: Bytes,
-  read: (request: Bytes) => Promise<ServiceDeliveryResult>,
+  read: (request: Bytes, authority: InboundAuthorityReuse) => Promise<ServiceDeliveryResult>,
   now: () => number = () => performance.now(),
 ): Promise<ServiceDeliveryResult> {
   const requests = decodeInboundBatch(bytes),
-    pages: Bytes[] = [];
+    pages: Bytes[] = [],
+    authority = createInboundAuthorityReuse();
   const started = now();
   let size = 0;
   try {
     for (const request of requests) {
-      const result = await read(request);
+      const result = await read(request, authority);
       if (result.kind !== 'decision') return result;
       if (result.bytes.length > READ_PAGE_LIMIT || !result.bytes.length) {
         result.bytes.fill(0);
@@ -35,6 +40,7 @@ export async function readInboundBatch(
     }
     return { kind: 'decision', bytes: encodeInboundBatchPages(pages) };
   } finally {
+    authority.close();
     for (const item of [...requests, ...pages]) item.fill(0);
   }
 }

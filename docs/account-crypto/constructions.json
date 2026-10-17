@@ -1131,7 +1131,7 @@
       "sourceSites": [
         {
           "path": "account-service/authority.ts",
-          "line": 108,
+          "line": 109,
           "label": "done/service-authority-seal/v1",
           "kind": "literal"
         }
@@ -2938,7 +2938,7 @@
       "sourceSites": [
         {
           "path": "account-service/delivery.ts",
-          "line": 673,
+          "line": 674,
           "label": "done/service-delivery-chain/v1",
           "kind": "literal"
         }
@@ -7410,7 +7410,9 @@
       "vectorCases": [],
       "tests": [
         "test/account-sessions/inbound-batch.test.mjs",
-        "test/packaged-account/enrollment-batch.spec.ts"
+        "test/account-sessions/inbound-authority-reuse.test.mjs",
+        "test/packaged-account/enrollment-batch.spec.ts",
+        "test/packaged-account/enrollment-capacity.spec.ts"
       ],
       "requirements": [
         "exact-byte-contracts",
