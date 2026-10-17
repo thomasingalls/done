@@ -38,6 +38,18 @@ get a bounded scope and evidence before implementation. General release qualific
   export. No replacement format is selected. Consider existing writing, import/export fidelity and
   compatibility if a proposal changes stored representation. The separate day-container question below
   is related technical history, not an assumed answer to this design question.
+- **UX-10 — Copy or move a Goals list item with its subtree.** Agreed in discussion on 2026-10-17;
+  pending implementation. The current list item becomes the card title, and its descendants become
+  the card body. Include the whole subtree until the next sibling or ancestor; retain the descendants'
+  relative nesting inside the card. Acting on a child includes only that child's subtree, not its
+  siblings or parent. For several selected sibling items, create one card per item, each carrying
+  its descendants. Do not also create duplicate cards for children already included through a parent.
+  Copy retains the source subtree; Move transfers the entire subtree in one undoable action.
+  For example, `Plan the trip` with children `Book trains` and `Find somewhere to stay` becomes one
+  card titled `Plan the trip` with those children as a Markdown list in its body; any grandchildren
+  stay nested beneath their parent. This adds transfer semantics alongside UX-08's separate question
+  about where the controls belong. Multiline cards remain essential, and the existing three-Enter
+  split stays for now. No new content format or replacement split gesture is selected.
 
 ## Earlier conversation items retained
 
@@ -76,6 +88,8 @@ Confirm current behavior and subsequent decisions before promoting one into an a
   between navigation, temporary focus and changing text.
 - **Card splitting:** whether three consecutive returns is discoverable and the right threshold.
   [PRD §4.8](./PRD.md#48-editing-experience) and §11 question 6 retain this as a tunable interaction.
+  Discussion on 2026-10-17 confirms multiline cards matter and deliberately retains three-Enter
+  splitting for now; UX-10 is the agreed improvement to add next to this open design question.
 - **Done ordering after concurrent day creation:** observe whether reconstructed ordering is visibly
   wrong in real use. [TRD §10.8](./TRD.md#108-a-days-collections-are-containers-created-concurrently--deferred)
   records the mitigation, root-type alternative, migration costs and triggers for reopening it.
