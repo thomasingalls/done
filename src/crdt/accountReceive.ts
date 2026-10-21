@@ -15,7 +15,7 @@ import { authenticatePromotionRows } from './promotionRecord';
 import { slotCustodyRows } from './localGenesisRecord';
 import { accountTextMode } from './accountTextMode';
 import { MaintenanceInterrupted, isMaintenanceTask } from './contentMaintenance';
-import { collectReceivePages } from './receivePrefetch';
+import { createReceivePageTransport } from './receivePageTransport';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
   RECEIVE_GROUP_LIMIT,
@@ -1116,6 +1116,7 @@ async function openAccountReceiveOwner(
       first.fill(0);
       return outstandingGroup.map((r) => r.slice());
     });
+  const receivePages = createReceivePageTransport();
   // Future cursors are only scheduling predictions through an authenticated observed tip.
   // The exact request set remains owned, and no prefix advances before ordered verification.
   const fetchPage = async (operatorToken: AccountAccess) => {
@@ -1130,23 +1131,49 @@ async function openAccountReceiveOwner(
         const events: Diagnostic[][] = requests.map(() => []);
         let attempted = 0;
         await network.wait(async () => {
-          const collected = await collectReceivePages(
-            requests.length,
+          const collected = await receivePages(
+            requests,
             signal,
-            (index, signal, limit) =>
-              canReceive()
-                ? privateDeliveryPost(
-                    options.pin,
-                    access ?? operatorToken,
-                    'read-v2',
-                    requests[index]!,
-                    limit,
-                    signal,
-                    (event) => {
-                      events[index]!.push(event);
-                    },
-                  )
-                : Promise.resolve(null),
+            {
+              read: (request, index, signal, limit) =>
+                canReceive()
+                  ? privateDeliveryPost(
+                      options.pin,
+                      access ?? operatorToken,
+                      'read-v2',
+                      request,
+                      limit,
+                      signal,
+                      (event) => {
+                        events[index]!.push(event);
+                      },
+                    )
+                  : Promise.resolve(null),
+              batch: (body, signal, limit, unsupported) =>
+                canReceive()
+                  ? privateDeliveryPost(
+                      options.pin,
+                      access ?? operatorToken,
+                      'read-v2-batch',
+                      body,
+                      limit,
+                      signal,
+                      (event) => {
+                        events[0]!.push(event);
+                      },
+                      false,
+                      unsupported,
+                      // Select bounded individual work only after a successful binary response
+                      // exceeds aggregation space. Hints cannot trigger this downgrade.
+                      () => {
+                        // The aggregate's size is a transport choice, not the individual result.
+                        // A failed fallback retains its own retry/refusal classification.
+                        events[0]!.length = 0;
+                        void unsupported();
+                      },
+                    )
+                  : Promise.resolve(null),
+            },
             (page) => {
               // Unverified hints may shorten collection, never grant progress or authority.
               try {

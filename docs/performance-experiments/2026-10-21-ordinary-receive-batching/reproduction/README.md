@@ -1,0 +1,11 @@
+# Reproduction boundaries
+
+The seven journey/proxy/fixture sources are exact recorded copies with a `.txt` suffix, so repository test discovery does not execute an evidence snapshot. Copy them into `test/live-sync-attribution/` in disposable baseline/candidate archives. The baseline is signed `27dc7d78`; the candidate is the cumulative patch-02 source, whose exact hashes are in identity.json. Both use the same locked dependencies and Node 24.18.0. Build with APP_BUILD_REVISION=27dc7d78d973f2741a813d8d217f28e0c2f033a4, APP_BUILD_DATE=2026-10-17 and VITE_ACCOUNT_BATCH=coordinated-2000.
+
+Use the preceding attribution packet's seed-initial config/spec and disposable seed-construction recipe, retaining its complete export/position inspections. Private snapshot files and matching API state are intentionally unavailable in Git. Construct fresh virtual WebAuthn credentials; do not borrow any personal browser profile. Save the verified caughtup-seed-v3 and backlog-seed-v3 pair outside the repository.
+
+The serial runner expects sibling baseline/, candidate-final/, baseline-dist/ and candidate-final-dist/ folders (the recorded final comparison uses symlinks), plus matched-plan.json. Its original absolute temporary seed root and the audit programs' absolute workspace paths are retained as provenance; adjust only paths for a new machine and record the changed probe identities. Keep the 14-journey plan, delay values, deadlines, workload, guardrails and no-retry/one-worker policy. Ports 53781/53782/53784 must be available for disposable loopback services. Do not overlap measurement with builds or validators.
+
+The analyzer counts both HTTP batches and their requested signed inner bodies, including refused/retried predictions. The independent acceptance program reconstructs DOM p95 values directly and compares complete exports rather than trusting that analyzer. Old-assertion and planning-preservation records supply a separate check of retained test assertions, deadlines, construction statuses and blocks. Source/build identities do not claim to audit the full installed package store.
+
+Preserve every failed run and invocation. Earlier prototype paths and scripts remain exact historical evidence; they are not instructions to apply an unsuccessful runtime. Generalized qualification and production publication remain separate.

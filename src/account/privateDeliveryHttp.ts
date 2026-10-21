@@ -33,6 +33,9 @@ export async function privateDeliveryPost(
   /** Retained connection coordinators own rebootstrap/sign-in/backoff; byte-only drivers retain null. */
   propagateAuthorization = false,
   unsupported?: () => Promise<Bytes | null>,
+  /** Optional aggregation can retry individual reads only after a successful binary reply
+   * exceeds its byte reservation. Error hints and malformed declarations never select this. */
+  aggregateLimit?: () => void,
 ): Promise<Bytes | null> {
   const note = (phase: Diagnostic['phase'], code: Diagnostic['code']) =>
     reportDiagnostic(observe, {
@@ -89,6 +92,7 @@ export async function privateDeliveryPost(
     if (declared !== null && (!/^\d+$/.test(declared) || Number(declared) > responseLimit)) {
       await response.body.cancel();
       note('response', 'response-too-large');
+      if (path === 'read-v2-batch' && !hint && /^\d+$/.test(declared)) aggregateLimit?.();
       return null;
     }
     const reader = response.body.getReader(),
@@ -109,6 +113,7 @@ export async function privateDeliveryPost(
         if (length > responseLimit) {
           cancel();
           note('stream', 'response-too-large');
+          if (path === 'read-v2-batch' && !hint) aggregateLimit?.();
           return null;
         }
         chunks.push(new Uint8Array(value));

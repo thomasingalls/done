@@ -1,0 +1,114 @@
+{
+  "pairs": [
+    {
+      "delay": 75,
+      "pair": 1,
+      "referenceMs": 59389,
+      "candidateMs": 39233,
+      "ratio": 0.6606105507753961,
+      "improvementPercent": 33.938944922460394,
+      "referenceLocalP95Ms": 7.7998046875,
+      "candidateLocalP95Ms": 9.2001953125,
+      "referencePeerP95Ms": 58718.300048828125,
+      "candidatePeerP95Ms": 38381.900146484375,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "delay": 75,
+      "pair": 2,
+      "referenceMs": 56863,
+      "candidateMs": 37687,
+      "ratio": 0.6627684082795491,
+      "improvementPercent": 33.723159172045094,
+      "referenceLocalP95Ms": 5.900146484375,
+      "candidateLocalP95Ms": 4.5,
+      "referencePeerP95Ms": 56089.099853515625,
+      "candidatePeerP95Ms": 36985.10009765625,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "delay": 75,
+      "pair": 3,
+      "referenceMs": 59396,
+      "candidateMs": 40215,
+      "ratio": 0.6770657956764765,
+      "improvementPercent": 32.29342043235235,
+      "referenceLocalP95Ms": 18.89990234375,
+      "candidateLocalP95Ms": 6.199951171875,
+      "referencePeerP95Ms": 58323.199951171875,
+      "candidatePeerP95Ms": 39061.300048828125,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "delay": 0,
+      "pair": 1,
+      "referenceMs": 34220,
+      "candidateMs": 33327,
+      "ratio": 0.9739041496201052,
+      "improvementPercent": 2.6095850379894814,
+      "referenceLocalP95Ms": 12.7998046875,
+      "candidateLocalP95Ms": 11,
+      "referencePeerP95Ms": 33003.5,
+      "candidatePeerP95Ms": 32381,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "delay": 0,
+      "pair": 2,
+      "referenceMs": 33703,
+      "candidateMs": 33728,
+      "ratio": 1.0007417737293416,
+      "improvementPercent": -0.07417737293415883,
+      "referenceLocalP95Ms": 12,
+      "candidateLocalP95Ms": 13.5,
+      "referencePeerP95Ms": 32507.5,
+      "candidatePeerP95Ms": 32500.5,
+      "localGuard": true,
+      "peerGuard": true
+    },
+    {
+      "delay": 0,
+      "pair": 3,
+      "referenceMs": 33727,
+      "candidateMs": 33675,
+      "ratio": 0.9984582085569426,
+      "improvementPercent": 0.15417914430574386,
+      "referenceLocalP95Ms": 8.10009765625,
+      "candidateLocalP95Ms": 10.5,
+      "referencePeerP95Ms": 32894,
+      "candidatePeerP95Ms": 32350.599853515625,
+      "localGuard": true,
+      "peerGuard": true
+    }
+  ],
+  "foreground": {
+    "isolated": {
+      "referenceLocalP95Ms": 3.39990234375,
+      "candidateLocalP95Ms": 3.699951171875,
+      "referencePeerP95Ms": 702.699951171875,
+      "candidatePeerP95Ms": 753.89990234375
+    },
+    "continuous": {
+      "referenceLocalP95Ms": 5.89990234375,
+      "candidateLocalP95Ms": 8.199951171875,
+      "referencePeerP95Ms": 2296.60009765625,
+      "candidatePeerP95Ms": 2288.699951171875
+    }
+  },
+  "medianImprovement75Percent": 33.723159172045094,
+  "medianRatio0": 0.9984582085569426,
+  "referenceDrift": {
+    "75": 0.04454566238151347,
+    "0": 0.01533988072278425
+  },
+  "journeys": 14,
+  "guardsPassed": true,
+  "matchedCompleteExports": true,
+  "measuredProductionExact": true,
+  "protectedProgressAndDeferredFormatUnchanged": true,
+  "realIndexClean": true
+}

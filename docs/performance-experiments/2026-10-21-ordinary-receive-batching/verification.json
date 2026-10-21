@@ -1,0 +1,14 @@
+{
+  "previousPacketChecksumsVerified": 139,
+  "precedingPatchUnchanged": true,
+  "appendOnlyPrefixesExact": true,
+  "measuredSourceAndRegressionHashesExact": true,
+  "preservedArtifactSourceAndStoredHashesExact": true,
+  "finalJourneys": 14,
+  "allDataAndTypingGuardsPass": true,
+  "referenceDriftBelowPredeclaredThreshold": true,
+  "privateFixtureExactMatches": 0,
+  "protectedProgressAndDeferredFormatUnchanged": true,
+  "realIndexClean": true,
+  "scope": "Bounded local Chromium functional/performance evidence. No aggregate qualification, release or capacity credit."
+}

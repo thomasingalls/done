@@ -1,0 +1,5 @@
+{
+  "knownPrivateValuesChecked": 5,
+  "matches": 0,
+  "scope": "Exact known synthetic fixture codes and credential fields only; explicit artifact whitelist excludes storage/keys. This is not a general secret detector."
+}

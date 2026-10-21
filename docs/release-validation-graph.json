@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 514,
-    "requiredTestFiles": 508,
+    "testFiles": 516,
+    "requiredTestFiles": 510,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -7849,6 +7849,21 @@
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
     {
+      "path": "test/account-receive/batch-transport.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-receive/batch-transport.test.mjs"
+        ]
+      },
+      "declarations": 15,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
       "path": "test/account-receive/groups-transport.test.mjs",
       "status": "required",
       "invocation": {
@@ -11798,6 +11813,21 @@
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/receiveGroup.test.ts"]
       },
       "declarations": 3,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/receivePageTransport.test.ts",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/receivePageTransport.test.ts"
+        ]
+      },
+      "declarations": 14,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -17361,11 +17391,11 @@
     },
     {
       "path": "test/account-receive-transport/controls.test.mjs",
-      "sha256": "04bb53f7e105a46879f482715ccbaa91190ad1fa7814184b8dab4c020c291cdc"
+      "sha256": "24047aaa35237e9e359161dec8e920e1efd37ac23b1478242b8866ec405ff3fb"
     },
     {
       "path": "test/account-receive-transport/fixtures.mjs",
-      "sha256": "c83361aa5f1eea3c6a8c631d9a55d8c3e49bee19b66687c01a76e07e298145a5"
+      "sha256": "0cba4f8f0d2a25c40ecb795a8cf16b39ce838e638ac0f6e283f5c7ddb4bd41fe"
     },
     {
       "path": "test/account-receive-transport/generated.test.mjs",
@@ -17374,6 +17404,10 @@
     {
       "path": "test/account-receive-transport/native.test.mjs",
       "sha256": "6527d607c249c330a7d2ac68f04472c008dd741fb51a0edcf97ea7f517da409a"
+    },
+    {
+      "path": "test/account-receive/batch-transport.test.mjs",
+      "sha256": "b94db249a92e7dbe6c522edc57df00bb14761df817c7a43d3b58c715e594e29c"
     },
     {
       "path": "test/account-receive/browser.ts",
@@ -17385,7 +17419,7 @@
     },
     {
       "path": "test/account-receive/groups-transport.test.mjs",
-      "sha256": "eceb70c8511958b81624bd9f9e672633ccaaf9fb93e3229afd0385bc6eb86c1f"
+      "sha256": "0b6c1ab2b72ace31b018f702a28341742741957389f989f13a291bdb686bbf0c"
     },
     {
       "path": "test/account-receive/groups.test.mjs",
@@ -19110,6 +19144,10 @@
     {
       "path": "test/receiveGroup.test.ts",
       "sha256": "b0581644a21d14748b31f451bc75a4f9cf6ae5c7243deddfac0fc3b05bd224e2"
+    },
+    {
+      "path": "test/receivePageTransport.test.ts",
+      "sha256": "86d626aaf2b1e096ca56c721772a5cef5e6cd1f25f80d9c31845d31f50a9d97b"
     },
     {
       "path": "test/receivePrefetch.test.ts",

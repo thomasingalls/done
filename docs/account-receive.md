@@ -1,5 +1,21 @@
 # Private native inbound storage
 
+**2026-10-21 transport update:** ordinary catch-up carries the existing owned set of up to four
+limit-one requests through the optional `read-v2-batch` route. Every original signed page still
+passes its existing request/prefix, signature, authority, expiry and actor checks before the
+unchanged durable group commit. Original v1 receipt bytes and cold readers remain compatible.
+This reuses the service's request-local authority lease; no native cache or format changes.
+
+The collector reserves a 4 MiB aggregate HTTP ceiling and retains the existing 1,057,280-byte
+individual-page limit. A successful binary aggregate that exceeds that ceiling is canceled and
+drained before retrying the captured requests through the existing individual prefetch collector.
+An absent optional route (404) also selects individual transport. The downgrade lasts only for
+this receive owner. Other refusals, error hints, malformed framing and invalid evidence cannot
+select it. Batch and fallback share one ten-second logical deadline. A short returned prefix
+advances only after full verification and durable commit; missing predictions are refetched.
+Singleton/self reads, the four-page publisher turn, input/send fairness and numeric service
+limits remain unchanged. See the [bounded comparison and regressions](./performance-experiments/2026-10-21-ordinary-receive-batching/README.md).
+
 **2026-10-12 update:** The composed receiver now groups up to four existing limit-one receipts
 under one checked commit and authenticated readback, through previously observed backlog. Exact
 v1 receipt bytes, per-entry verification, native bounds and the four-page publisher turn remain.

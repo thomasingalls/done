@@ -1,0 +1,12 @@
+{
+  "oldObligations": 876,
+  "newObligations": 878,
+  "oldUnresolved": 332,
+  "newUnresolved": 334,
+  "oldRowsExact": true,
+  "constructionContractsAndStatusesExact": true,
+  "newBlocked": [
+    "test:test/account-receive/batch-transport.test.mjs",
+    "test:test/receivePageTransport.test.ts"
+  ]
+}

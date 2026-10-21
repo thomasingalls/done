@@ -1,5 +1,14 @@
 # Owned v2 receive HTTP transport
 
+**2026-10-21 ordinary catch-up:** the normal receiver now uses the optional batch route for its
+existing owned set of two through four limit-one requests, preserving exact original durable
+receipts and every per-entry verifier. The [current collector contract](./account-receive.md)
+defines its aggregate byte reservation, drained fallback, deadline and unchanged turn limits.
+The enrollment-only scope below records the route's initial introduction. Enrollment's fallback
+policy remains unchanged; the ordinary collector additionally permits bounded individual work
+after a successful binary aggregate exceeds its 4 MiB HTTP ceiling. Neither transport observation
+grants authority or progress. [Evidence](./performance-experiments/2026-10-21-ordinary-receive-batching/README.md).
+
 **2026-10-15 compatibility repair:** session hosts without membership/history continuation retain
 ordinary authenticated delivery without requesting the unsupported history-checkpoint endpoint.
 Before signing a history request, the owner checks the live host hint and its authenticated state.

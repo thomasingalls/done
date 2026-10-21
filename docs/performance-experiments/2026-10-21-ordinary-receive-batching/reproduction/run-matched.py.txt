@@ -1,0 +1,20 @@
+from pathlib import Path
+import datetime, json, os, subprocess, sys, time
+root=Path(__file__).parent
+plan=json.loads((root/'matched-plan.json').read_text())
+receipts=[]
+for run in plan:
+ out=root/run['name']
+ if out.exists(): raise SystemExit('Refuse overwrite: '+str(out))
+ source=root/run['source']
+ env=dict(os.environ,PATH='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],SYNC_ROOT='/private/tmp/done-live-sync-attribution-20261021',SYNC_SOURCE=str(source),SYNC_SEED='backlog-seed-v3' if run['mode']=='catchup' else 'caughtup-seed-v3',SYNC_OUT=str(out),SYNC_DIST=str(root/('baseline-dist' if run['source']=='baseline' else 'candidate-final-dist')),SYNC_MODE=run['mode'],SYNC_DELAY=str(run['delay']),SYNC_REVISION='27dc7d78' if run['source']=='baseline' else 'candidate-final')
+ command=['node','node_modules/@playwright/test/cli.js','test','--config','test/live-sync-attribution/playwright.config.ts']
+ receipt=dict(run,startedAt=datetime.datetime.now(datetime.timezone.utc).isoformat(),command=command)
+ print('Starting '+run['name'],flush=True)
+ with (root/(run['name']+'.log')).open('w') as log:
+  result=subprocess.run(command,cwd=source,env=env,stdout=log,stderr=subprocess.STDOUT)
+ receipt.update(returncode=result.returncode,completedAt=datetime.datetime.now(datetime.timezone.utc).isoformat())
+ receipts.append(receipt)
+ (root/'matched-runner.json').write_text(json.dumps(receipts,indent=2)+'\n')
+ print('Finished '+run['name']+' code '+str(result.returncode),flush=True)
+ if result.returncode: sys.exit(result.returncode)

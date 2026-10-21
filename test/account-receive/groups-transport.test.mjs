@@ -40,6 +40,8 @@ async function grouped(t, id) {
   const hit = new Promise((r) => (entered = r));
   const laterHit = new Promise((r) => (laterEntered = r));
   let mode = 'normal';
+  // This campaign exercises the individual prefetch fallback against an older service.
+  await f.context.route(path(f) + '-batch', (route) => route.fulfill({ status: 404 }));
   await f.context.route(path(f), async (route) => {
     const q = Buffer.from(route.request().postData()),
       template = JSON.parse(q),

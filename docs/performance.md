@@ -1946,3 +1946,19 @@ descriptive timings; DOM is not physical paint or proof of local durable accepta
 Firefox, WAN, capacity, whole-process cold reopen, runtime speedup or qualification claim follows.
 Next compare ordinary bounded read batching with original receipts and every existing guard, then
 publication timing independently of disk flush. [Protocol, raw evidence and exact limits](./performance-experiments/2026-10-21-live-sync-attribution/README.md).
+
+
+## Ordinary catch-up batching — 2026-10-21
+
+The [bounded comparison packet](./performance-experiments/2026-10-21-ordinary-receive-batching/README.md) compares signed branch `27dc7d78` with a receiver using the existing optional batch route and request-local authority reuse. It preserves original signed limit-one replies/receipts, every verifier, four-page turn, cancellation/deadline/bounds and numeric rates.
+
+| Restored 600-update backlog, three pairs each | Reference median | Candidate median | Median paired improvement |
+| --- | ---: | ---: | ---: |
+| +75 ms per account request | 59.389 s | 39.233 s | 33.7% |
+| Loopback | 33.727 s | 33.675 s | 0.15% |
+
+Receiver HTTP reads fall from 620–622 to 161–166 in the latency-added arms. Original inner requests remain individually signed and verified. All fourteen journeys pass complete exports, two-way writing, Undo/Redo, locked offline document reopen and predeclared local/peer typing guards. Isolated foreground peer p95 changes 702.7→753.9 ms (within the 10% guard); continuous peer p95 is 2,296.6→2,288.7 ms. This does not replace TRD latency budgets.
+
+Loopback candidate runs record 6–8 HTTP 429s versus 1–4 for reference, and show almost no catch-up improvement. This supports a separate bounded capacity/rate experiment; it does not establish a safe increase or isolate every cause. The +75 ms arms have zero 429s. Retain the slow V1 prototype, V2's missed target, V3 classification counterexamples/interrupted plan and the complete final paired denominator. Source/build hashes, per-pair guard values and independently reconstructed raw DOM observations remain in the packet.
+
+These are descriptive local Chromium journeys on matching encrypted synthetic fixtures (121 cards, 13,000-byte Goals, exactly 600 missing accepted positions), with new typing independently offered during draining. No physical Android/Firefox/WAN, production adoption, capacity, full-suite or generalized qualification claim. Foreground publication timing is still separate. New test obligations stay blocked; no preview or deployment changes.

@@ -1,0 +1,10 @@
+{
+  "base": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "precedingPatchSha256": "178284be7c132af165fca0fa05973157c97ea387204ad1b27c02ecb3b756fdaf",
+  "precedingTree": "37fa6fc1eb0d0572c7c69d1301908b4bfc358b49",
+  "seedRoot": "/private/tmp/done-live-sync-attribution-20261021",
+  "seedHashes": {
+    "caughtup-seed-v3": "7c4b1001514485730f9c0b9bd99de0e4062829cb9731c605315a01c2dd95bae7",
+    "backlog-seed-v3": "7c75a658cc6deb5df55df47560813eb55e580f9b55916d9ad3173e70e67b4e24"
+  }
+}

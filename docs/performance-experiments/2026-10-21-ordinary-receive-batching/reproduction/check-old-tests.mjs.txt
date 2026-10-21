@@ -1,0 +1,32 @@
+import { parseSync } from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@babel/core/lib/index.js';
+import { readFileSync, writeFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const files=['test/account-receive/groups-transport.test.mjs','test/account-receive-transport/fixtures.mjs','test/account-receive-transport/controls.test.mjs'];
+const inspect=(name,text)=>{
+ const source=parseSync(text,{configFile:false,babelrc:false,parserOpts:{sourceType:'module'}}).program,assertions=[],cases=[];
+ const original=n=>text.slice(n.start,n.end);
+ function walk(n){
+  if(!n || typeof n!=='object')return;
+  if(n.type==='CallExpression'){
+   if(original(n.callee).startsWith('assert.'))assertions.push(original(n));
+   if(original(n.callee)==='test')cases.push(n.arguments.slice(0,2).map(original));
+  }
+  for(const [key,value] of Object.entries(n)){
+   if(['loc','start','end','extra','comments','leadingComments','trailingComments','innerComments'].includes(key))continue;
+   if(Array.isArray(value))for(const child of value)walk(child);
+   else if(value && typeof value==='object')walk(value);
+  }
+ }
+ walk(source);
+ return {assertions,cases};
+};
+const results=[];
+for(const path of files){
+ const before=inspect(path,execFileSync('git',['show','27dc7d78:'+path],{cwd:root,encoding:'utf8'}));
+ const after=inspect(path,readFileSync(root+'/'+path,'utf8'));
+ if(JSON.stringify(before)!==JSON.stringify(after))throw Error('Old assertion/case/deadline changed: '+path);
+ results.push({path,assertions:after.assertions.length,cases:after.cases.length,preserved:true});
+}
+writeFileSync('/private/tmp/done-ordinary-receive-batch-20261021/old-test-preservation.json',JSON.stringify(results,null,2)+'\n');
+console.log(JSON.stringify(results));
