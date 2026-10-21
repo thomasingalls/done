@@ -1,0 +1,9 @@
+from pathlib import Path
+import subprocess,json,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');rows=[]
+checks=[('browser-analysis',['python3',str(r/'analyze-browser.py')]),('independent-browser-review',['python3',str(r/'review-browser.py')]),('source-challenge',['node',str(r/'source-challenge.mjs')]),('working-types',['node','node_modules/typescript/bin/tsc','-b']),('lint',['node','node_modules/oxlint/bin/oxlint','account-service/batchReadAdmission.ts','account-service/scoped-http.ts','src/crdt/verifiedRecords.ts','test/account-sessions/inbound-batch-budget.test.mjs']),('format',['node','node_modules/oxfmt/bin/oxfmt','--check','account-service/batchReadAdmission.ts','account-service/scoped-http.ts','src/crdt/verifiedRecords.ts','test/account-sessions/inbound-batch-budget.test.mjs'])]
+for name,cmd in checks:
+ at=time.time_ns()//1000000
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=repo,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'post-browser-checks.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

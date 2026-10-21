@@ -244,6 +244,10 @@
       "sha256": "b04dc55a439ee5516b052a692d68059e63666e5d73ec579fdd437a576d3fc2b5"
     },
     {
+      "path": "account-service/batchReadAdmission.ts",
+      "sha256": "16f2eb20570065de995263b9aeb59829612d75827de401b914e4b84e0431cd1e"
+    },
+    {
       "path": "account-service/ceremony.ts",
       "sha256": "356adbf65884ea8fedc8e1b214c50ed44737c993ff50bf72f0fa6eadbf63ffaa"
     },
@@ -453,7 +457,7 @@
     },
     {
       "path": "account-service/scoped-http.ts",
-      "sha256": "3c4593d0f45ddbbd492a4a3ac2e27b8f89be382ff50e56f12df6767696edefcc"
+      "sha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb"
     },
     {
       "path": "account-service/service-lifetime.ts",
@@ -1301,7 +1305,7 @@
     },
     {
       "path": "src/crdt/verifiedRecords.ts",
-      "sha256": "198de17eb6611b4ddb0c8abf5bc1df5c502273f059cbb903b9964da0c3edc907"
+      "sha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6"
     },
     {
       "path": "src/crdt/warmContent.ts",

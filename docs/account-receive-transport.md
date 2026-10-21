@@ -275,3 +275,28 @@ This is a bounded cold-start scheduling change. It changes no persisted or wire 
 rate/refill, burst/concurrency/work/body limit, native guard-attempt limit or existing deadline.
 It does not establish unrestricted capacity, general absence of starvation, supported-device
 performance or permission to promote a new rate policy.
+
+
+## Concurrent identical batch admission (2026-10-21)
+
+The scoped HTTP batch route declines a second live request only when both the complete
+bounded immutable body and the server-held session-budget identity exactly match a live
+entry. The original framing decode and admission acquisition happen first; refusal spends
+that admission unit. The guard precedes extra native reservation, so duplicate work never
+starts. It returns only the existing generic capacity refusal and never returns a prior
+reply, proof, authorization, verification lease or progress. Distinct bodies/scopes continue
+through every original budget, signature, current-scope, native snapshot, proof, custody,
+freshness and reply check. Singleton reads are unchanged.
+
+The transient collection borrows existing handler-owned immutable buffers and is bounded
+by REQUEST_LIMITS.active, the existing policy home. An idempotent owned release runs in
+the handler's existing finally on success/refusal/failure and cannot delete a later owner.
+There is no new copy, fingerprint, timer, queue or persisted state. The lifetime is that of
+the existing handler operation: the HTTP deadline does not preempt native work, and this
+change makes no new preemption guarantee. Original started-work charging, never-started-tail
+refund, rate/refill, burst/concurrency/work limits, retry count/delay and deadlines remain.
+
+[Phase13 evidence](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) pairs
+this scheduling guard with exact-word typing comparison at actual16/64. It establishes a
+bounded local candidate, not unrestricted capacity, supported-device performance, production
+adoption or generalized qualification. Temporary32/128 remains diagnostic and unadopted.

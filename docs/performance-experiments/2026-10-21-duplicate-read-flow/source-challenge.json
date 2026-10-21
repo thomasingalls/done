@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "originalScopedHandlerBusinessASTExactAfterRemovingOnlyAdmissionWiring": true,
+  "allOriginalAuthorizationSignatureNativeBudgetFramingAndResponseStatementsPreserved": true,
+  "wordHelperASTExactHeldV3": true,
+  "allSixOldHttpTestDeclarationsAndAssertionsASTExact": true,
+  "newHttpAndSchedulingCases": 5,
+  "handlerSha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb",
+  "wordHelperSha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6",
+  "oldTestSha256": "90ae093a0dce638ed576acaf3b8c6386e5003a501d50158026f91df509ca7296",
+  "currentTestSha256": "b66fd4a2dc6857c81411771500b80d969e2983e2f837b8704721a3ccef4cf4dd",
+  "scope": "Independent structural preservation check plus explicit new scheduling contract/unit/HTTP evidence, not a whole-program security audit."
+}

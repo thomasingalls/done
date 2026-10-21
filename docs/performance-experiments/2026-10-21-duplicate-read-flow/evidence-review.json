@@ -1,0 +1,97 @@
+{
+  "status": "passed",
+  "allTwelveFullDataJourneys": true,
+  "peerVerifiedNewKeys": 1440,
+  "foregroundIsolatedMarkers": 60,
+  "twoTrueFourReadIndependentControlsWith72OffersAndZeroSkips": true,
+  "rawPerKeyValuesIndependentlyReconstructed": [
+    {
+      "name": "1-D-R-feedback",
+      "localP95": 13.7998046875,
+      "peerP95": 143555.89990234375,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "2-D-C-feedback",
+      "localP95": 7.39990234375,
+      "peerP95": 66106.80004882812,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "3-D-C-feedback",
+      "localP95": 9.60009765625,
+      "peerP95": 65948.80004882812,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "4-D-R-feedback",
+      "localP95": 11.800048828125,
+      "peerP95": 140792.39990234375,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "5-D-R-ordinary",
+      "localP95": 12.60009765625,
+      "peerP95": 32639.099853515625,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "6-D-C-ordinary",
+      "localP95": 8.099853515625,
+      "peerP95": 33114,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "7-D-R-independent",
+      "localP95": 13,
+      "peerP95": 50394.89990234375,
+      "fourReadOffersVerified": 72,
+      "dataGuards": true
+    },
+    {
+      "name": "8-D-C-independent",
+      "localP95": 4.800048828125,
+      "peerP95": 50420.400146484375,
+      "fourReadOffersVerified": 72,
+      "dataGuards": true
+    },
+    {
+      "name": "9-D-R-foreground",
+      "localP95": 8.89990234375,
+      "peerP95": 2308.89990234375,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "10-D-C-foreground",
+      "localP95": 9.2001953125,
+      "peerP95": 2256.599853515625,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "11-B-R-feedback",
+      "localP95": 14.800048828125,
+      "peerP95": 26895.199951171875,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    },
+    {
+      "name": "12-B-C-feedback",
+      "localP95": 5.89990234375,
+      "peerP95": 28288.39990234375,
+      "fourReadOffersVerified": 0,
+      "dataGuards": true
+    }
+  ],
+  "allRunsSerialAndFixedPlanComplete": true,
+  "primaryDDefaultPolicyAcceptance": true,
+  "BPolicyAdopted": false,
+  "scope": "Independent measurement/data/source review, not general qualification or physical-device proof."
+}

@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "changedPriorPaths": [
+    "account-service/scoped-http.ts",
+    "docs/account-crypto/census.json",
+    "docs/account-receive-transport.md",
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/performance.md",
+    "docs/release-validation-graph.json",
+    "docs/release-validation-manifest.json",
+    "src/crdt/verifiedRecords.ts",
+    "test/account-sessions/inbound-batch-budget.test.mjs"
+  ],
+  "newRuntimeFile": "account-service/batchReadAdmission.ts",
+  "priorBlobsUnchanged": 26215,
+  "priorTestBlobs": 875,
+  "onlyOneOldTestFileAppendedWithOldSixASTExact": true,
+  "sourceClosureR": 803,
+  "sourceClosureC": 804,
+  "sourceClosureQualification": "Snapshot includes runtime, build tools and40packaged test helpers; not803exclusively executing runtime modules. Crypto TS census399\u2192400.",
+  "existingSourceDifferences": [
+    "account-service/scoped-http.ts",
+    "src/crdt/verifiedRecords.ts"
+  ],
+  "newSourceOnlySchedulingHelper": true,
+  "workingInputsExactTestedC": true,
+  "BServicePolicyOnlyDifferenceAndClientArtifactsReused": true,
+  "actualBrowser": {
+    "pid": 9112,
+    "executable": "/Users/thomasingalls/Library/Caches/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-mac-arm64/chrome-headless-shell",
+    "sha256": "7687bff7cb2db075f250e6d5848bbc8838cac3802ac3952a899c574f8eccab45",
+    "version": {
+      "protocolVersion": "1.3",
+      "product": "HeadlessChrome/151.0.7922.34",
+      "revision": "@782af9cb30a53f54487e5d2e44738645a8ec457c",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.7922.34 Safari/537.36",
+      "jsVersion": "15.1.206.8"
+    }
+  },
+  "all881ManifestRows337Unresolved97ConstructionStatusesAndContractsExact": true,
+  "allCryptoDomainSitesExact": true,
+  "workingLimits": "16/64",
+  "BPolicyAdopted": false,
+  "allPriorPatchHashesExact": true,
+  "realIndexByteUnchangedAndNoStaging": true
+}

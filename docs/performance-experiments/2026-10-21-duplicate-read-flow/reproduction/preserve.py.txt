@@ -1,0 +1,33 @@
+from pathlib import Path
+import json,gzip,hashlib
+r=Path(__file__).parent;dest=r/'evidence-build';dest.mkdir();provenance={};sha=lambda b:hashlib.sha256(b).hexdigest()
+def put(f,name,compress=False):
+ b=f.read_bytes();p=dest/(name+('.gz'if compress else''));p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0)if compress else b);provenance[str(p.relative_to(dest))]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+for f in sorted(r.iterdir()):
+ if not f.is_file():continue
+ if f.suffix=='.md':put(f,f.name)
+ elif f.suffix=='.json':put(f,f.name,compress=f.stat().st_size>25000)
+ elif f.suffix in ['.log','.jsonl']:put(f,'checks/'+f.name,True)
+ elif f.suffix in ['.py','.mjs']or f.name.endswith('.txt'):put(f,'reproduction/'+f.name+(''if f.name.endswith('.txt')else'.txt'))
+for arm in ['R','C']:
+ for f in ['account-service/requestBudget.ts','account-service/scoped-http.ts','src/crdt/verifiedRecords.ts','test/account-sessions/inbound-batch-budget.test.mjs']:
+  put(r/('source-'+arm)/f,'reproduction/'+arm+'/'+f+'.txt')
+ for f in ['account-service/batchReadAdmission.ts']:
+  if (r/('source-'+arm)/f).exists():put(r/('source-'+arm)/f,'reproduction/'+arm+'/'+f+'.txt')
+ put(r/('source-'+arm+'B')/'account-service/requestBudget.ts','reproduction/'+arm+'B/account-service/requestBudget.ts.txt')
+for f in sorted((r/'browser-harness').iterdir()):
+ if f.is_file():put(f,'reproduction/browser/'+f.name+'.txt')
+for case in json.loads((r/'browser-runner.json').read_text()):
+ folder=r/case['name']
+ for n in ['result.json','invocation.log','runner.json','services.log']:put(folder/n,'runs/'+case['name']+'/'+n,True)
+ for f in sorted((folder/'node-monitors').glob('*.json')):put(f,'runs/'+case['name']+'/node-monitors/'+f.name,True)
+values=set()
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for who in ['a','b']:
+  strings=[d[who]['code']]+[c[k]for c in d[who]['credentials']for k in ['privateKey','credentialId','userHandle']if c.get(k)]
+  for s in strings:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+for f in dest.rglob('*'):
+ if f.is_file():
+  b=f.read_bytes();b=gzip.decompress(b)if f.name.endswith('.gz')else b;assert not any(v in b for v in values),str(f.relative_to(dest))
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n');(dest/'privacy-audit.json').write_text(json.dumps({'knownPrivateRawAndEscapedValues':len(values),'matches':0,'scope':'Numeric/closed-label/source/hash whitelist; no fixture credential, code, token, DB, profile, browser storage or environment file. Known-value scan is not universal DLP.'},indent=2)+'\n');print(len(provenance),'files preserved,',len(values),'known values scanned')

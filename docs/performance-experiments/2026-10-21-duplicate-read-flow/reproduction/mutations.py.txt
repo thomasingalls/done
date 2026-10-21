@@ -1,0 +1,12 @@
+from pathlib import Path
+import subprocess,json,time,hashlib
+r=Path(__file__).parent;source=r/'source-C';helper=source/'account-service/batchReadAdmission.ts';handler=source/'account-service/scoped-http.ts';original={helper:helper.read_bytes(),handler:handler.read_bytes()};h=helper.read_text();s=handler.read_text();assert 'releaseBatch = batchReads.acquire(sessionKey, bytes);'in s
+mutants=[('omit-wiring',handler,s.replace('releaseBatch = batchReads.acquire(sessionKey, bytes);','releaseBatch = () => {};',1)),('omit-scope',helper,h.replace('entry.scope === scope && ','')),('length-only-match',helper,h.replace('entry.body.equals(body)','entry.body.length === body.length')),('omit-release',handler,s.replace('          releaseBatch?.();','',1)),('omit-bound',helper,h.replace('active.size >= REQUEST_LIMITS.active','false')),('release-other-body',helper,h.replace('active.delete(entry);','for (const held of active) if (held.scope === scope) active.delete(held);'))];rows=[]
+for name,path,text in mutants:
+ assert text.encode()!=original[path],name
+ try:
+  path.write_text(text);(r/(name+'-source.ts.txt')).write_text(text);cmd=['node','--test','test/account-sessions/inbound-batch-budget.test.mjs'];at=time.time_ns()//1000000
+  with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=source,stdout=log,stderr=subprocess.STDOUT)
+  lines=[line for line in(r/(name+'.log')).read_text().splitlines()if line.startswith('✖')];rows.append({'name':name,'path':str(path.relative_to(source)),'mutatedSha256':hashlib.sha256(text.encode()).hexdigest(),'command':cmd,'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode,'failedCases':lines});(r/'mutation-summary.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,lines[:2],flush=True);assert p.returncode!=0 and lines
+ finally:path.write_bytes(original[path])
+assert all(p.read_bytes()==b for p,b in original.items())

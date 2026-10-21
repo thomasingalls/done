@@ -6,8 +6,10 @@ import { fixture } from './grant-fixtures.mjs';
 import { query, pageProof } from '../account-service-inbound/oracle.mjs';
 import { createScopedAccountHandler } from '../../account-service/scoped-http.ts';
 import { ScopedRequestBudget, REQUEST_LIMITS as L } from '../../account-service/requestBudget.ts';
+import { createBatchReadAdmission } from '../../account-service/batchReadAdmission.ts';
 import {
   encodeInboundBatch,
+  decodeInboundBatch,
   decodeInboundBatchPages,
 } from '../../account-protocol/inboundBatch.ts';
 
@@ -70,7 +72,7 @@ async function harness(t, { before = async () => {} } = {}) {
     }
     return { status: response.status, refusal: JSON.parse(Buffer.from(body).toString()).refusal };
   };
-  return { x, budget, grant, call, started: () => started };
+  return { x, budget, grant, call, port: server.address().port, started: () => started };
 }
 
 test('one-page HTTP batches consume one work unit and retain the exact session ceiling', async (t) => {
@@ -134,4 +136,144 @@ test('malformed framing spends admission only and invalid credentials execute no
   assert.equal(h.started(), 0);
   for (let i = 0; i < L.sessionBurst - 3; i++) assert.equal((await h.call()).status, 200);
   assert.deepEqual(await h.call(), { status: 429, refusal: 'capacity' });
+});
+
+async function exactBatch(h, bytes) {
+  const result = await new Promise((resolve, reject) => {
+    const req = request(
+      {
+        host: '127.0.0.1',
+        port: h.port,
+        path: '/account/delivery/read-v2-batch',
+        method: 'POST',
+        headers: {
+          Host: new URL(h.x.authority.pin.origin).host,
+          Origin: h.x.authority.pin.origin,
+          'Content-Type': 'application/octet-stream',
+          Authorization: 'Bearer ' + h.grant.grantToken,
+        },
+      },
+      (res) => {
+        const chunks = [];
+        res.on('data', (chunk) => chunks.push(chunk));
+        res.on('end', () => resolve({ status: res.statusCode, body: Buffer.concat(chunks) }));
+        res.on('error', reject);
+      },
+    );
+    req.on('error', reject);
+    req.setTimeout(10000, () => req.destroy(Error('Test HTTP deadline')));
+    req.end(bytes);
+  });
+  if (result.status !== 200)
+    return { status: result.status, refusal: JSON.parse(result.body.toString()).refusal };
+  const requests = decodeInboundBatch(bytes),
+    pages = decodeInboundBatchPages(new Uint8Array(result.body));
+  try {
+    for (let i = 0; i < pages.length; i++)
+      pageProof({ kind: 'decision', bytes: pages[i] }, requests[i], h.x, []);
+    return { status: result.status, pages: pages.length };
+  } finally {
+    for (const request of requests) request.fill(0);
+    for (const page of pages) page.fill(0);
+  }
+}
+
+test('concurrent identical HTTP batches spend admission only, preserve distinct work and retry after release', async (t) => {
+  let release;
+  const held = new Promise((resolve) => {
+    release = resolve;
+  });
+  const h = await harness(t, { before: (n) => (n === 1 ? held : Promise.resolve()) });
+  const bytes = encodeInboundBatch(Array.from({ length: 4 }, () => query(h.x)));
+  let first;
+  try {
+    first = exactBatch(h, bytes);
+    const until = Date.now() + 5000;
+    while (!h.started() && Date.now() < until) await delay(1);
+    assert.equal(h.started(), 1);
+    for (let i = 0; i < 3; i++)
+      assert.deepEqual(await exactBatch(h, bytes.slice()), { status: 429, refusal: 'capacity' });
+    assert.equal(h.started(), 1, 'duplicates start no native read');
+    assert.deepEqual(await h.call(), { status: 200, pages: 1 });
+    release();
+    assert.deepEqual(await first, { status: 200, pages: 4 });
+    assert.deepEqual(await exactBatch(h, bytes), { status: 200, pages: 4 });
+    // Original4 + three refused admissions + one distinct read + retried4 =12 units.
+    for (let i = 0; i < L.sessionBurst - 12; i++) assert.equal((await h.call()).status, 200);
+    assert.deepEqual(await h.call(), { status: 429, refusal: 'capacity' });
+    assert.equal(h.started(), L.sessionBurst - 3);
+  } finally {
+    release();
+    if (first) await Promise.allSettled([first]);
+    bytes.fill(0);
+  }
+});
+
+test('a native batch failure retires only its live exclusion and leaves exact retry fully checked', async (t) => {
+  const h = await harness(t, {
+    before: (n) =>
+      n === 1 ? Promise.reject(Error('Deliberate native failure')) : Promise.resolve(),
+  });
+  const bytes = encodeInboundBatch(Array.from({ length: 4 }, () => query(h.x)));
+  try {
+    assert.equal((await exactBatch(h, bytes)).status, 400);
+    assert.deepEqual(await exactBatch(h, bytes), { status: 200, pages: 4 });
+    assert.equal(h.started(), 5);
+    for (let i = 0; i < L.sessionBurst - 5; i++) assert.equal((await h.call()).status, 200);
+    assert.deepEqual(await h.call(), { status: 429, refusal: 'capacity' });
+  } finally {
+    bytes.fill(0);
+  }
+});
+
+test('batch exclusion distinguishes exact bodies and server-held scopes', () => {
+  const admission = createBatchReadAdmission(),
+    body = Buffer.from([1, 2, 3]);
+  const first = admission.acquire('session-a', body);
+  assert.ok(first);
+  assert.equal(admission.acquire('session-a', Buffer.from(body)), undefined);
+  const otherScope = admission.acquire('session-b', Buffer.from(body));
+  const changedBody = admission.acquire('session-a', Buffer.from([1, 2, 4]));
+  const shorterBody = admission.acquire('session-a', Buffer.from([1, 2]));
+  assert.ok(otherScope);
+  assert.ok(changedBody);
+  assert.ok(shorterBody);
+  first();
+  assert.equal(admission.acquire('session-a', Buffer.from([1, 2, 4])), undefined);
+  assert.equal(admission.acquire('session-a', Buffer.from([1, 2])), undefined);
+  otherScope();
+  changedBody();
+  shorterBody();
+});
+
+test('a stale batch release cannot remove a later byte-identical owner', () => {
+  const admission = createBatchReadAdmission(),
+    body = Buffer.from([4, 5, 6]);
+  const first = admission.acquire('session', body);
+  assert.ok(first);
+  first();
+  const later = admission.acquire('session', Buffer.from(body));
+  assert.ok(later);
+  first();
+  assert.equal(admission.acquire('session', Buffer.from(body)), undefined);
+  later();
+  const final = admission.acquire('session', body);
+  assert.ok(final);
+  final();
+});
+
+test('the batch scheduling collection stays bounded by the original active-request ceiling', () => {
+  const admission = createBatchReadAdmission();
+  const leases = Array.from({ length: L.active }, (_, i) =>
+    admission.acquire('session-' + i, Buffer.from([i])),
+  );
+  assert.ok(leases.every(Boolean));
+  assert.equal(admission.acquire('extra-session', Buffer.from([0])), undefined);
+  leases[0]();
+  leases[0]();
+  const extra = admission.acquire('extra-session', Buffer.from([0]));
+  assert.ok(extra);
+  assert.equal(admission.acquire('another-session', Buffer.from([0])), undefined);
+  for (const release of leases) release();
+  extra();
 });

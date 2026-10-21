@@ -1,0 +1,162 @@
+from pathlib import Path
+import json
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');load=lambda n:json.loads((r/n).read_text())
+a=load('browser-analysis.json');review=load('evidence-review.json');identity=load('identity.json')
+assert a['primaryDAcceptance'] and review['status']=='passed' and identity['status']=='passed'
+summary={'status':'bounded local candidate accepted; publication and generalized qualification pending','phase':13,'workingPolicy':'16/64 unchanged','runtimeChange':['decline concurrent exact identical batch bodies within one server-held budget scope before extra native reservation','enable phase11 held V3 exact-word comparison, preserving scalar/tail/cooperative checks'],'referenceDriftPercent':a['primaryReferenceDriftPercent'],'pairs':a['pairs'],'allTwelveDataGuards':a['allTwelveDataGuards'],'peerVerifiedNewKeys':review['peerVerifiedNewKeys'],'foregroundIsolatedMarkers':review['foregroundIsolatedMarkers'],'primaryDAcceptance':a['primaryDAcceptance'],'BPolicyAdopted':False,'newNativeRegressions':5,'affectedNativeCases':50,'affectedWordOwnershipCases':112,'planningCases':105,'intentionalOmissionsDetected':6,'all881Rows337Unresolved97ConstructionStatusesAndContractsExact':True,'ordinaryCatchupStillSeconds':34.156,'scope':'Fixed local headless Chromium journeys on host; not physical Android, Firefox, WAN, maximum capacity, rollout or general qualification.'}
+(r/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+(r/'decision.md').write_text('''# Bounded phase13 decision
+
+Accept the combined admission guard and exact-word comparison at the existing working16/64 policy for the sequential local patch. All predeclared primary-D pair guards pass, including both pressure orders, ordinary catch-up, genuine independent four-read load and foreground typing. This is a new combined repair; phase11's word-only equal-B pressure failures remain failures. Temporary32/128 B is a diagnostic only, and no numeric policy is adopted.
+
+The measured benefit is pressure catch-up and several local typing workloads. Pressure catch-up143.423/140.523s becomes67.082/67.091s (53.23%/52.26% reduction); local typing p95 13.8/11.8ms becomes7.4/9.6ms. Ordinary catch-up33.602→34.156s and independent51.363→51.475s are slightly slower, within the prospective10% guards. Foreground local8.9→9.2ms is roughly unchanged. Bdiagnostic catch-up28.077→29.084s is slower; its local typing improves14.8→5.9ms. Do not claim universally faster sync or typing, and do not substitute the B result for the product policy.
+
+The guard supplies refusal only and retains all original authority, signature, parser, budget, native/proof/custody, freshness and reply checks for admitted work. It spends the original admission unit even on duplicate refusal, charges every started native read and retains original refund rules. Original active ceiling bounds the transient set; the borrowed immutable body exists only for its original handler lifetime. There is no result/authorization reuse, queue, extra copy, fingerprint, persisted state, deadline extension or retry change. The original HTTP deadline does not preempt native work, and this phase makes no new preemption guarantee.
+
+Baseline actual HTTP duplication fails the new regression. All original six HTTP cases remain AST-exact; five appended cases pass, and six deliberate omissions fail intended assertions. Independent source comparison removes only new scheduling wiring and proves every original admitted-request business statement remains; the word helper matches held V3. All112 affected word/ownership cases,50 native cases,105 planning cases and12 actual app data journeys pass. Whole exports, every new key, both-way writing, Undo/Redo and locked offline reopening are checked in each journey. The independent four-read control now joins the captured template hash to the actual browser wire body and proves72 offers with no skips in each arm, closing phase12's explicitly retained three-read measurement gap.
+
+Keep ordinary catch-up latency, physical-device/Firefox/WAN evidence, longer histories, broader fairness/capacity and qualification as open work. New five native cases remain blocked from aggregate qualification credit, all881 obligation rows/337 unresolved/97 construction statuses and crypto contracts/sites remain exact. No real staging, signing, commit, push, preview change, merge or deployment. The other worker's progress file and all prior patches/packets are untouched.
+''')
+# The durable outcome is appended BEFORE decisions or working guidance advance.
+completed='''\n\n## 2026-10-21 — Duplicate batch admission paired with exact comparison
+
+[Phase13 evidence](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) accepts the combined local candidate at unchanged16/64: concurrent exact batch bodies within the same server-held budget identity are refused before extra native reservation, and the held V3 exact-word comparison is enabled. This shares no authority or result and extends no lifetime; every admitted request retains original signature/scope/native/proof/custody/freshness checks. Refused duplicates still spend admission, started reads still cost work, and the original active bound, refund rules, rates, deadlines and retries remain.
+
+All12 fixed actual-client journeys pass whole exports, both-way writing, Undo/Redo, locked offline reopen,1440 new peer keys and60 foreground markers. Primary pressure catch-up143.423/140.523→67.082/67.091s; local input→DOM p95 13.8/11.8→7.4/9.6ms. Both references drift2.06%, and all predeclared actual-D pair guards pass. Ordinary33.602→34.156s and fixed four-read51.363→51.475s are slightly slower; foreground8.9→9.2ms is roughly unchanged. Temporary B32/128 passes its diagnostic guards but is not adopted. Preserve phase11 word-only failures and phase12 observer/three-read limitations; phase13's independent wire-joined control verifies exactly4 reads,72 offers and0 skips per arm.
+
+Actual baseline HTTP reproduction fails the duplicate assertion; original six case bodies/assertions remain AST-exact. Five new regressions,50 affected native cases,112 word/ownership cases,105 planning cases, both type/build/budget/isolation sets and six omission controls pass. All881 rows/337 unresolved/97 construction statuses/contracts and crypto domain sites remain unchanged; new native cases stay blocked from aggregate credit. Source closure803→804 includes runtime, tools and40 packaged test helpers; crypto TS census399→400. The only existing source differences are the scoped handler and comparison helper, plus one new bounded admission helper. Preserve all prior artifact bytes and other-seat progress. Sequential patch13 only; no real stage/commit/push/preview/merge/deploy or generalized qualification. Ordinary~34s catch-up, supported-device/WAN/long-history performance and broader capacity remain open.
+'''
+for f,s in [('docs/completed.md',completed),('docs/decisions.md','''\n\n## 2026-10-21 — Pair exact comparison with duplicate read admission at existing policy
+
+Accept [phase13](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) as a bounded local candidate at unchanged16/64 after all prospective actual-D timing and data guards pass. Match only full exact immutable batch bytes and the server-held budget identity; overlapping duplicates get the existing generic capacity refusal before extra native reservation. Spend original admission, release the owned entry in existing finally, and retain every original authority/proof/freshness/native check. Share neither result nor verification permission. Bound the transient collection by the existing active limit and retain the original handler lifetime; no queue, persisted state or deadline/rate/retry change.
+
+This permits the exact-word helper previously held in phase11 to be tested as a new combined candidate. Pressure catch-up falls about52–53% and pressure typing improves, while ordinary catch-up and foreground typing remain roughly unchanged. Keep the old word-only failures and all current small slowdowns. Temporary B32/128 remains diagnostic and unadopted even though its pair passes. A local fixed headless workload is not physical-device or generalized capacity proof. Keep all881 obligation rows/337 unresolved/97 construction statuses and crypto contracts/sites; appended native regressions receive no aggregate credit. General qualification and publication remain separate and paused.
+'''),('docs/performance.md','''\n\n## 2026-10-21 — Combined duplicate-read flow control and comparison
+
+[Phase13 packet](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) uses a fixed12-journey matched R/C design with actual16/64 primary policy, repeated reversed feedback pressure, ordinary catch-up, independently offered exact four-read contention, foreground typing and a separately labeled temporary32/128 diagnostic. Runtime differences are bounded exact concurrent batch exclusion plus the held V3 exact-word comparator. No tracing hooks, numeric rate/refill, burst/active/session/work limit, wire/storage, authority, verification lease or retry policy change. Source closure803→804 includes build tools/test helpers; crypto TS inventory399→400.
+
+All primary pair guards pass: pressure143.423/140.523→67.082/67.091s (53.23%/52.26%), local p95 13.8/11.8→7.4/9.6ms. Ordinary33.602→34.156s and independent51.363→51.475s are slightly slower; foreground8.9→9.2ms is roughly unchanged. The Bdiagnostic28.077→29.084s also passes its guard but grants no policy adoption. Reference drift2.06% is within15%. Every journey retains full export/two-way/Undo/locked-offline guards and120new peer keys; foreground adds30 markers per arm. Independent wire hash joins prove4-read template,72offers and0skips in both fixed-load arms. Keep phase11 and phase12 failures/limitations, dependent per-key observations and lack of supported mobile/Firefox/WAN/general capacity evidence. No universally faster typing/sync claim; ordinary catch-up still~34s.
+
+Original HTTP duplicate counterexample, five appended regressions, six omission controls, exact source/old-test AST review,50native/112word/105planning cases and matched type/build/budget/isolation checks are preserved. All881rows/337unresolved/97statuses/contracts stay exact; new cases stay blocked from aggregate qualification credit. Local unsigned sequential patch13, no staging/publication or generalized qualification.
+'''),('docs/account-receive-transport.md','''\n\n## Concurrent identical batch admission (2026-10-21)
+
+The scoped HTTP batch route declines a second live request only when both the complete
+bounded immutable body and the server-held session-budget identity exactly match a live
+entry. The original framing decode and admission acquisition happen first; refusal spends
+that admission unit. The guard precedes extra native reservation, so duplicate work never
+starts. It returns only the existing generic capacity refusal and never returns a prior
+reply, proof, authorization, verification lease or progress. Distinct bodies/scopes continue
+through every original budget, signature, current-scope, native snapshot, proof, custody,
+freshness and reply check. Singleton reads are unchanged.
+
+The transient collection borrows existing handler-owned immutable buffers and is bounded
+by REQUEST_LIMITS.active, the existing policy home. An idempotent owned release runs in
+the handler's existing finally on success/refusal/failure and cannot delete a later owner.
+There is no new copy, fingerprint, timer, queue or persisted state. The lifetime is that of
+the existing handler operation: the HTTP deadline does not preempt native work, and this
+change makes no new preemption guarantee. Original started-work charging, never-started-tail
+refund, rate/refill, burst/concurrency/work limits, retry count/delay and deadlines remain.
+
+[Phase13 evidence](./performance-experiments/2026-10-21-duplicate-read-flow/README.md) pairs
+this scheduling guard with exact-word typing comparison at actual16/64. It establishes a
+bounded local candidate, not unrestricted capacity, supported-device performance, production
+adoption or generalized qualification. Temporary32/128 remains diagnostic and unadopted.
+''')]:
+ p=repo/f;marker=s.splitlines()[2];assert marker not in p.read_text(),f;p.write_text(p.read_text()+s)
+(r/'README.md').write_text('''# Phase13: duplicate batch admission and exact-word typing
+
+The combined local candidate passes every prospective actual16/64 timing and data guard.
+It prevents concurrent exact duplicates from spending extra native work and enables the
+held V3 exact-word comparator. This is unsigned sequential patch13, not a release or rollout.
+
+## Contract, decision and measurement
+
+Read [protocol](protocol.md), [contract review](contract-review.md), [decision](decision.md)
+and [summary](summary.json). The plan predates implementation/measurement. D16/64 is the
+unchanged working policy; B32/128 is a separate temporary diagnostic and is not adopted.
+[Source identity](source-identity.json) freezes R/C source and test/build inputs;
+[browser identity](browser-identity.json) freezes artifacts/harness. Source closure803→804
+includes runtime, build tools and40 packaged test helpers; crypto TS census399→400.
+
+| Workload | Catch-up R→C seconds | Local input→DOM p95 R→C ms |
+|---|---:|---:|
+| D feedback1 |143.423→67.082|13.8→7.4|
+| D feedback2, reversed |140.523→67.091|11.8→9.6|
+| D ordinary |33.602→34.156|12.6→8.1|
+| D independent4-read |51.363→51.475|13.0→4.8|
+| D foreground |—|8.9→9.2|
+| B diagnostic feedback |28.077→29.084|14.8→5.9|
+
+Feedback catch-up improves53.23%/52.26%; reference drift2.06% is within15%.
+Ordinary and independent catch-up are slightly slower, and foreground typing is roughly
+unchanged. This does not establish universally faster sync/typing. Ordinary catch-up remains
+about34seconds. All1440 new keys,60 foreground markers, whole exports, both-way writing,
+Undo/Redo and locked offline reopening pass across12 journeys. The fixed-load control joins
+the captured template hash to the actual browser wire body: exactly4 reads,72 offers,0 skips
+per arm. Phase12's three-read limitation and all phase11 word-only failures remain preserved.
+
+[Raw analysis](browser-analysis.json.gz), [independent review](evidence-review.json) and
+[fixed run plan](browser-plan.json) retain every declared run with no retries. Per-key
+observations are dependent; results are descriptive fixed local headless Chromium journeys,
+not physical Android/Firefox, mobile input-to-paint, WAN, long-history or maximum-capacity proof.
+No CPU profiler/capacity trace hooks are present. Foreground warmup is3s with30 isolated
+markers then120 keys150ms; catch-up uses120 genuine keys150ms. All original deadlines remain.
+
+## Repair and regression evidence
+
+The scheduling collection borrows bounded immutable request buffers, matches exact bytes
+within a service-held scope and only supplies refusal. Original admission cost remains,
+extra reservation is skipped on overlap, started-work charging/refund is unchanged, and
+all original authority/signature/native/proof/custody/freshness checks run for admitted work.
+The original active bound and existing handler lifetime apply. There is no response cache,
+new authorization, queue, fingerprint, persisted state, rate/refill/retry/deadline change.
+The HTTP timeout still does not preempt a running native operation. Exact-word comparison
+keeps scalar short/unaligned spans, every tail byte, metadata and cooperative checkpoints,
+with no ownership/invalidation/erasure or verification-lease extension.
+
+The original HTTP implementation fails the new duplicate test (`checks/http-before.log.gz`).
+Five appended regressions pass and all original six case bodies/assertions remain AST-exact.
+Six intentional omission variants fail their intended checks; source/logs and
+[mutation summary](mutation-summary.json) remain. See [source challenge](source-challenge.json),
+[build receipts](build-receipts.json), [post-browser checks](post-browser-checks.json),
+[metadata review](metadata-review.json) and [planning receipt](planning-receipt.json).
+50native,112word/ownership and105planning cases pass, as do matched R/C type/build/budget/
+isolation checks and working type/lint/format. Build/test checks ran separately from browsers.
+The planning log's filesystem bounds are explicitly not precise runner timestamps or timings.
+
+All881 qualification rows,337 unresolved obligations,97 construction statuses, crypto domain
+sites/contracts and registry classifications remain unchanged. The five new native cases
+are in an already blocked file and receive no aggregate qualification credit. Root inventory
+identities are regenerated for the reviewed source delta; no old census assertion needed editing.
+[Identity review](identity.json) verifies the working sources exactly match tested C, numeric
+policy remains16/64, all prior patch hashes and real index bytes remain unchanged, and no
+staging occurred. Other-seat progress and deferred formatting remain untouched.
+
+## Preserved material and reproduction
+
+`runs/` contains compressed original12 run results, Playwright reports, invocation/service
+logs and numeric Node monitors. `checks/` preserves passing checks, the original failed HTTP
+counterexample and intentional omission failures. `reproduction/` includes exact handler/
+helper/test sources, frozen browser harness, Bbudget source, scripts and omission variants.
+Before/after sources plus original protocol, metadata failures before regeneration and every
+measurement are retained; a later pass does not erase an earlier failure.
+
+Scripts retain original absolute scratch paths and source/fixture dependencies; they are
+reproduction records, not a portable one-command package. Use Node24.18.0 and pinned repo
+dependencies, read the prospective protocol, prepare matched source closures, run baseline
+HTTP reproduction then candidate checks/mutations/builds serially, run the fixed browser plan,
+independently analyze/review, then regenerate metadata and preserve/check artifacts. Earlier
+packet references supply heldV3 and the original synthetic fixture. Generate new disposable
+credentials; private fixture data are deliberately excluded. Reproducing performance requires
+matching machine/browser/flags and does not imply identical timings.
+
+The packet uses an explicit numeric/source/hash whitelist and scans known fixture secrets
+(raw and JSON-escaped) after decompression. No database/profile/storage, private credential,
+unlock code or environment file is included. The scan is not universal DLP.
+[Artifact provenance](artifact-provenance.json), [privacy audit](privacy-audit.json) and
+[SHA256SUMS](SHA256SUMS) bind the preserved files. Sequential patch/commit instructions and
+independent01→13 apply receipts live outside the packet to avoid circular hashes. No real
+staging, signing, commit, push, preview8443 change, merge or deployment. General qualification
+remains paused. Ordinary catch-up, representative devices/WAN and broader capacity remain open.
+''')
+print('Durable completion appended first; decision, transport/performance guidance and packet narratives written.')

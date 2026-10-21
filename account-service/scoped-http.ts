@@ -24,6 +24,7 @@ import type { AccountNotifications } from './notifications.ts';
 import { AuthorizationRefused } from './authorization.ts';
 import { createSessionHandler } from './session-http.ts';
 import { ScopedRequestBudget } from './requestBudget.ts';
+import { createBatchReadAdmission } from './batchReadAdmission.ts';
 import {
   decodeInboundBatch,
   INBOUND_BATCH_REQUEST_LIMIT,
@@ -40,6 +41,7 @@ export function createScopedAccountHandler(
   const pin = parseAuthorityPin(inputPin),
     host = new URL(pin.origin).host;
   const session = createSessionHandler(core.sessions, pin);
+  const batchReads = createBatchReadAdmission();
   const jsonRoutes = new Map<
     string,
     {
@@ -239,6 +241,7 @@ export function createScopedAccountHandler(
     if (!reservation) return void authFailure('capacity');
     const batch = path === '/account/delivery/read-v2-batch';
     let started = 0;
+    let releaseBatch: (() => void) | undefined;
     const timer = setTimeout(() => {
       response.destroy();
       request.destroy();
@@ -311,6 +314,8 @@ export function createScopedAccountHandler(
           // count before any native read; failed top-up retains only admission cost.
           const requests = decodeInboundBatch(new Uint8Array(bytes));
           try {
+            releaseBatch = batchReads.acquire(sessionKey, bytes);
+            if (!releaseBatch) throw new AuthorizationRefused('capacity');
             if (!reservation.reserveWork(requests.length))
               throw new AuthorizationRefused('capacity');
           } finally {
@@ -365,7 +370,11 @@ export function createScopedAccountHandler(
       try {
         reservation.settleWork(started);
       } finally {
-        reservation();
+        try {
+          releaseBatch?.();
+        } finally {
+          reservation();
+        }
       }
       notifications?.reconcile();
     }

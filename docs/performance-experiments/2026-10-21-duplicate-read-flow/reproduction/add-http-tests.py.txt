@@ -1,0 +1,57 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/test/account-sessions/inbound-batch-budget.test.mjs');s=p.read_text();s=s.replace('  encodeInboundBatch,\n','  encodeInboundBatch,\n  decodeInboundBatch,\n',1).replace('  return { x, budget, grant, call, started: () => started };','  return { x, budget, grant, call, port: server.address().port, started: () => started };',1);s+='''
+
+async function exactBatch(h, bytes) {
+  const result = await new Promise((resolve, reject) => {
+    const req = request({ host: '127.0.0.1', port: h.port, path: '/account/delivery/read-v2-batch', method: 'POST', headers: {
+      Host: new URL(h.x.authority.pin.origin).host, Origin: h.x.authority.pin.origin,
+      'Content-Type': 'application/octet-stream', Authorization: 'Bearer ' + h.grant.grantToken,
+    } }, res => {
+      const chunks = []; res.on('data', chunk => chunks.push(chunk));
+      res.on('end', () => resolve({ status: res.statusCode, body: Buffer.concat(chunks) }));res.on('error', reject);
+    });
+    req.on('error', reject);req.setTimeout(10000, () => req.destroy(Error('Test HTTP deadline')));req.end(bytes);
+  });
+  if (result.status !== 200) return { status: result.status, refusal: JSON.parse(result.body.toString()).refusal };
+  const requests = decodeInboundBatch(bytes), pages = decodeInboundBatchPages(new Uint8Array(result.body));
+  try {
+    for (let i = 0; i < pages.length; i++) pageProof({ kind: 'decision', bytes: pages[i] }, requests[i], h.x, []);
+    return { status: result.status, pages: pages.length };
+  } finally { for (const request of requests) request.fill(0);for (const page of pages) page.fill(0); }
+}
+
+test('concurrent identical HTTP batches spend admission only, preserve distinct work and retry after release', async t => {
+  let release;
+  const held = new Promise(resolve => { release = resolve; });
+  const h = await harness(t, { before: n => n === 1 ? held : Promise.resolve() });
+  const bytes = encodeInboundBatch(Array.from({ length: 4 }, () => query(h.x)));
+  let first;
+  try {
+    first = exactBatch(h, bytes);
+    const until = Date.now() + 5000;
+    while (!h.started() && Date.now() < until) await delay(1);
+    assert.equal(h.started(), 1);
+    for (let i = 0; i < 3; i++) assert.deepEqual(await exactBatch(h, bytes.slice()), { status: 429, refusal: 'capacity' });
+    assert.equal(h.started(), 1, 'duplicates start no native read');
+    assert.deepEqual(await h.call(), { status: 200, pages: 1 });
+    release();assert.deepEqual(await first, { status: 200, pages: 4 });
+    assert.deepEqual(await exactBatch(h, bytes), { status: 200, pages: 4 });
+    // Original4 + three refused admissions + one distinct read + retried4 =12 units.
+    for (let i = 0; i < L.sessionBurst - 12; i++) assert.equal((await h.call()).status, 200);
+    assert.deepEqual(await h.call(), { status: 429, refusal: 'capacity' });
+    assert.equal(h.started(), L.sessionBurst - 3);
+  } finally { release();if (first) await Promise.allSettled([first]);bytes.fill(0); }
+});
+
+test('a native batch failure retires only its live exclusion and leaves exact retry fully checked', async t => {
+  const h = await harness(t, { before: n => n === 1 ? Promise.reject(Error('Deliberate native failure')) : Promise.resolve() });
+  const bytes = encodeInboundBatch(Array.from({ length: 4 }, () => query(h.x)));
+  try {
+    assert.equal((await exactBatch(h, bytes)).status, 400);
+    assert.deepEqual(await exactBatch(h, bytes), { status: 200, pages: 4 });
+    assert.equal(h.started(), 5);
+    for (let i = 0; i < L.sessionBurst - 5; i++) assert.equal((await h.call()).status, 200);
+    assert.deepEqual(await h.call(), { status: 429, refusal: 'capacity' });
+  } finally { bytes.fill(0); }
+});
+''';p.write_text(s)

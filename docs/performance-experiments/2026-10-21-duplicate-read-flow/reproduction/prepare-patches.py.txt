@@ -1,0 +1,33 @@
+from pathlib import Path
+import hashlib,io,json,subprocess,tarfile,os
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());base=start['base'];prior=start['priorTree'];env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'};sha=lambda b:hashlib.sha256(b).hexdigest()
+def run(args,**kwargs):return subprocess.check_output(args,env=env,**kwargs)
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+assert run(['git','rev-parse','HEAD'],cwd=repo,text=True).strip()==base
+realIndex=Path(run(['git','rev-parse','--git-path','index'],cwd=repo,text=True).strip());assert sha(realIndex.read_bytes())==start['realIndexSha256']
+append=['docs/account-receive-transport.md','docs/completed.md','docs/decisions.md','docs/performance.md'];packetpath='docs/performance-experiments/2026-10-21-duplicate-read-flow'
+allowed=['account-service/batchReadAdmission.ts','account-service/scoped-http.ts','src/crdt/verifiedRecords.ts','test/account-sessions/inbound-batch-budget.test.mjs','docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json',*append,packetpath]
+def isolated(name,worktree):
+ bare=r/name;assert not bare.exists(),str(bare)
+ subprocess.run(['git','init','--bare','--quiet',str(bare)],check=True,env=env)
+ priorObjects=Path('/private/tmp/done-capacity-trace-20261021/patch12-index.git/objects');(bare/'objects/info/alternates').write_text((priorObjects/'info/alternates').read_text()+str(priorObjects)+'\n')
+ return ['git','-C',str(worktree),'--git-dir='+str(bare),'--work-tree='+str(worktree)]
+git=isolated('patch13-index.git',repo);subprocess.run(git+['read-tree',prior],check=True,env=env)
+for f in append:assert (repo/f).read_bytes().startswith(run(git+['show',prior+':'+f])),f
+packet=repo/packetpath
+for line in(packet/'SHA256SUMS').read_text().splitlines():
+ h,f=line.split('  ',1);assert sha((packet/f).read_bytes())==h,f
+subprocess.run(git+['add','--',*allowed],check=True,env=env);tree=run(git+['write-tree'],text=True).strip();changed=run(git+['diff','--cached','--name-only',prior],text=True).splitlines();assert all(p in allowed or p.startswith(packetpath+'/')for p in changed),changed
+patch=run(git+['diff','--cached','--binary','--full-index','--no-ext-diff',prior]);patchdir=r/'patches';patchdir.mkdir(exist_ok=False);third=patchdir/'13-duplicate-read-admission-and-typing.patch';third.write_bytes(patch)
+clean=r/'clean-sequential-apply';clean.mkdir();combined=run(git+['diff','--cached','--name-only',base],text=True).splitlines();tracked=set(run(['git','ls-tree','-r','--name-only',base],cwd=repo,text=True).splitlines());originalPaths=sorted(tracked.intersection(combined));archive=run(['git','archive',base,'--',*originalPaths],cwd=repo)
+with tarfile.open(fileobj=io.BytesIO(archive))as t:t.extractall(clean,filter='data')
+verify=isolated('verify13-index.git',clean);subprocess.run(verify+['read-tree',base],check=True,env=env);subprocess.run(verify+['add','--',*originalPaths],check=True,env=env);assert run(verify+['write-tree'],text=True).strip()==run(['git','rev-parse',base+'^{tree}'],cwd=repo,text=True).strip();steps=[]
+for file,expected in [(Path(p['patch']),p['expectedTree'])for p in start['priorPatches']]+[(third,tree)]:
+ subprocess.run(verify+['apply','--index','--whitespace=nowarn','--check',str(file)],check=True,env=env);subprocess.run(verify+['apply','--index','--whitespace=nowarn',str(file)],check=True,env=env)
+ actual=run(verify+['write-tree'],text=True).strip();assert actual==expected
+ steps.append({'patch':str(file),'sha256':sha(file.read_bytes()),'expectedTree':expected,'independentCleanApplyTree':actual})
+assert run(git+['diff',tree,'--'])==b'';assert sha(realIndex.read_bytes())==start['realIndexSha256'];assert run(['git','diff','--cached','--name-only'],cwd=repo)==b''
+manifest={'baseCommit':base,'priorTree':prior,'expectedCumulativeTree':tree,'independentSequentialApply':steps,'changedFilesInPatch13':len(changed),'patch13Bytes':len(patch),'realIndexSha256BeforeAndAfter':start['realIndexSha256'],'realIndexUntouched':True,'byteExactApplyFlag':'--whitespace=nowarn','publication':'No real staging, signing, commit, push, preview change, merge or deployment.','scope':'Combined bounded exact duplicate admission plus exact-word comparison at unchanged16/64. All primary local guards pass; B32/128 diagnostic unadopted; all881 rows/337 unresolved/97 statuses unchanged. General qualification paused.'};(patchdir/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+(patchdir/'13-commit-message.txt').write_text('perf(sync): decline overlapping exact batch reads and speed exact comparison\n\nKeep original admission/work accounting and all admitted-read authority checks.\nBound transient exclusion by the original active limit and handler lifetime.\nEnable exact-word comparison with scalar tails and cooperative checkpoints.\n\nPreserve baseline regression, six omission checks and twelve app journeys.\nKeep rates16/64 and all qualification obligations; Bdiagnostic not adopted.\n')
+(patchdir/'README.md').write_text('# Sequential patch application\n\nThe cumulative checkout already contains01–13. Do not reapply over it. The manifest gives exact ordered hashes/trees; apply in a separate checkout with git apply --index --whitespace=nowarn and sign one bounded commit per patch when available. All thirteen cumulative trees are independently byte-verified using temporary bare indices. The real index is unchanged and unstaged. Patch12 records the capacity trace; patch13 combines bounded duplicate admission with exact comparison at16/64. No new rate policy, preview, publication or generalized qualification.\n')
+print(json.dumps({k:v for k,v in manifest.items()if k!='independentSequentialApply'},indent=2))

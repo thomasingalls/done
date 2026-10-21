@@ -1,0 +1,13 @@
+from pathlib import Path
+import subprocess,json,time,os,sys
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');rows=[];env={**os.environ,'APP_BUILD_REVISION':'27dc7d78d973f2741a813d8d217f28e0c2f033a4','APP_BUILD_DATE':'2026-10-17','VITE_ACCOUNT_BATCH':'coordinated-2000'}
+checks=[('native-affected',repo,['node','--test','test/account-sessions/inbound-batch-budget.test.mjs','test/account-sessions/request-budget.test.mjs','test/account-sessions/request-budget-work.test.mjs','test/account-sessions/inbound-batch.test.mjs','test/account-sessions/scoped-http.test.mjs','test/account-sessions/scoped-client.test.mjs']),('word-units',repo,['node','node_modules/vitest/vitest.mjs','run','test/verifiedRecords.test.ts','test/verificationOwnership.test.ts','test/verificationMemo.test.ts','test/warmContent.test.ts','test/cpuBudget.test.ts','test/custodyRecord.test.ts','test/custodyCrypto.test.ts','test/contentRecord.test.ts','test/accountAuthority.test.ts','test/contentInterruptedReuse.test.ts','test/incrementalLedger.test.ts','test/accountReceiveLedger.test.ts','--reporter=json','--outputFile='+str(r/'word-units.json')])]
+for arm in ['R','C']:
+ source=r/('source-'+arm);checks.extend([(arm+'-patch-check',source,['node','scripts/check-yjs-patch.mjs']),(arm+'-types',source,['node','node_modules/typescript/bin/tsc','-b']),(arm+'-bundle',source,['node','node_modules/vite/bin/vite.js','build']),(arm+'-budget',source,['node','scripts/check-budget.mjs']),(arm+'-isolation',source,['node','scripts/check-origin-isolation.mjs'])])
+if len(sys.argv)>1:
+ start=next(i for i,x in enumerate(checks)if x[0]==sys.argv[1]);rows=[x for x in json.loads((r/'build-receipts.json').read_text())if x['name']in[n for n,c,cmd in checks[:start]]];assert len(rows)==start;checks=checks[start:]
+for name,cwd,cmd in checks:
+ at=time.time_ns()//1000000
+ with(r/(name+'.log')).open('w')as log:p=subprocess.run(cmd,cwd=cwd,env=env,stdout=log,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'cwd':str(cwd),'startedAt':at,'completedAt':time.time_ns()//1000000,'exitCode':p.returncode});(r/'build-receipts.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)

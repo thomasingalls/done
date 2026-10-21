@@ -1,0 +1,52 @@
+[
+  {
+    "name": "final-identity",
+    "command": [
+      "python3",
+      "/private/tmp/done-duplicate-read-flow-20261021/identity.py"
+    ],
+    "startedAt": 1792616958505,
+    "completedAt": 1792616964805,
+    "exitCode": 0
+  },
+  {
+    "name": "final-source-challenge",
+    "command": [
+      "node",
+      "/private/tmp/done-duplicate-read-flow-20261021/source-challenge.mjs"
+    ],
+    "startedAt": 1792616964806,
+    "completedAt": 1792616965125,
+    "exitCode": 0
+  },
+  {
+    "name": "final-census",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792616965125,
+    "completedAt": 1792616965753,
+    "exitCode": 0
+  },
+  {
+    "name": "final-inventory",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792616965753,
+    "completedAt": 1792616966820,
+    "exitCode": 0
+  },
+  {
+    "name": "final-manifest",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792616966821,
+    "completedAt": 1792616969177,
+    "exitCode": 0
+  }
+]

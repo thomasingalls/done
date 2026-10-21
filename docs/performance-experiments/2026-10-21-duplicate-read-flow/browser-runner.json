@@ -1,0 +1,218 @@
+[
+  {
+    "name": "1-D-R-feedback",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792615122918,
+    "completedAt": 1792615285352,
+    "exitCode": 0
+  },
+  {
+    "name": "2-D-C-feedback",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792615285356,
+    "completedAt": 1792615367150,
+    "exitCode": 0
+  },
+  {
+    "name": "3-D-C-feedback",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792615367153,
+    "completedAt": 1792615449967,
+    "exitCode": 0
+  },
+  {
+    "name": "4-D-R-feedback",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792615449970,
+    "completedAt": 1792615607168,
+    "exitCode": 0
+  },
+  {
+    "name": "5-D-R-ordinary",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "none",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792615607171,
+    "completedAt": 1792615656036,
+    "exitCode": 0
+  },
+  {
+    "name": "6-D-C-ordinary",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "none",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792615656039,
+    "completedAt": 1792615704503,
+    "exitCode": 0
+  },
+  {
+    "name": "7-D-R-independent",
+    "arm": "R",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "independent",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792615704506,
+    "completedAt": 1792615771003,
+    "exitCode": 0
+  },
+  {
+    "name": "8-D-C-independent",
+    "arm": "C",
+    "policy": "D",
+    "mode": "catchup",
+    "pressure": "independent",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792615771006,
+    "completedAt": 1792615837183,
+    "exitCode": 0
+  },
+  {
+    "name": "9-D-R-foreground",
+    "arm": "R",
+    "policy": "D",
+    "mode": "foreground",
+    "pressure": "none",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-R",
+    "startedAt": 1792615837187,
+    "completedAt": 1792615893567,
+    "exitCode": 0
+  },
+  {
+    "name": "10-D-C-foreground",
+    "arm": "C",
+    "policy": "D",
+    "mode": "foreground",
+    "pressure": "none",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-C",
+    "startedAt": 1792615893571,
+    "completedAt": 1792615949408,
+    "exitCode": 0
+  },
+  {
+    "name": "11-B-R-feedback",
+    "arm": "R",
+    "policy": "B",
+    "mode": "catchup",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-RB",
+    "startedAt": 1792615949411,
+    "completedAt": 1792615992105,
+    "exitCode": 0
+  },
+  {
+    "name": "12-B-C-feedback",
+    "arm": "C",
+    "policy": "B",
+    "mode": "catchup",
+    "pressure": "feedback",
+    "command": [
+      "node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/live-sync-attribution/playwright.config.ts"
+    ],
+    "cwd": "/private/tmp/done-duplicate-read-flow-20261021/source-CB",
+    "startedAt": 1792615992108,
+    "completedAt": 1792616036285,
+    "exitCode": 0
+  }
+]

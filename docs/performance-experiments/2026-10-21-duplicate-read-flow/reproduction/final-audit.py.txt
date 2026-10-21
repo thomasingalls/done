@@ -1,0 +1,26 @@
+from pathlib import Path
+import json,hashlib,subprocess,shutil,os,gzip
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-duplicate-read-flow';load=lambda p:json.loads(p.read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=load(r/'starting.json');env={**os.environ,'GIT_OPTIONAL_LOCKS':'0'}
+# Re-run the separate source/index check after the durable record, not the performance journeys.
+subprocess.run(['python3',str(r/'identity.py')],stdout=subprocess.DEVNULL,check=True,env=env)
+assert len(load(r/'final-checks.json'))==5 and all(x['exitCode']==0 for x in load(r/'final-checks.json'))
+assert len(load(r/'build-receipts.json'))==12 and all(x['exitCode']==0 for x in load(r/'build-receipts.json'))
+assert len(load(r/'post-browser-checks.json'))==6 and all(x['exitCode']==0 for x in load(r/'post-browser-checks.json'))
+assert len(load(r/'metadata-receipts.json'))==9 and all(x['exitCode']==x['expectedExit']for x in load(r/'metadata-receipts.json'))
+assert load(r/'metadata-review.json')['allCryptoDomainsAndSitesExact']
+assert load(r/'planning-receipt.json')['passed']==105 and load(r/'planning-receipt.json')['failed']==0 and load(r/'planning-receipt.json')['skipped']==0
+assert load(r/'word-units.json')['numTotalTests']==112 and load(r/'word-units.json')['numPassedTests']==112
+assert 'pass 50'in(r/'native-affected.log').read_text()and'fail 0'in(r/'native-affected.log').read_text()
+red=(r/'http-before.log').read_text();assert 'pass 7'in red and'fail 1'in red and'concurrent identical HTTP batches'in red
+mut=load(r/'mutation-summary.json');assert len(mut)==6 and all(x['exitCode']==1 and x['failedCases']for x in mut)
+assert load(r/'source-challenge.json')['status']=='passed';assert load(r/'evidence-review.json')['status']=='passed';assert load(r/'browser-analysis.json')['primaryDAcceptance']and not load(r/'browser-analysis.json')['BPolicyAdopted']
+priorPaths=set(subprocess.check_output(['git','--git-dir=/private/tmp/done-capacity-trace-20261021/patch12-index.git','ls-tree','-r','--name-only',start['priorTree']],env=env).decode().splitlines());untracked=set(subprocess.check_output(['git','-C',str(repo),'ls-files','--others','--exclude-standard'],env=env).decode().splitlines());new=untracked-priorPaths;assert all(x=='account-service/batchReadAdmission.ts'or x.startswith(str(packet.relative_to(repo))+'/')for x in new),sorted(new)
+for old in(repo/'docs/performance-experiments').iterdir():
+ if old==packet or not(old/'SHA256SUMS').exists():continue
+ for line in(old/'SHA256SUMS').read_text().splitlines():
+  h,f=line.split('  ',1);assert sha((old/f).read_bytes())==h,str(old/f)
+assert not packet.exists();shutil.copytree(r/'evidence-build',packet)
+for f,v in load(packet/'artifact-provenance.json').items():assert sha((packet/f).read_bytes())==v['storedSha256'],f
+assert load(packet/'privacy-audit.json')['matches']==0
+result={'status':'passed','sourceAndWorkingInputsExactTestedC':True,'allPriorBlobsExactExceptReviewedDeltaAndAppendOnlyRecords':True,'oldSixHttpTestCasesASTExact':True,'newNativeRegressionCases':5,'baselineHttpCounterexampleRetained':True,'intentionalOmissionsDetected':6,'affectedNativeCasesPassed':50,'affectedWordOwnershipCasesPassed':112,'planningCasesPassed':105,'allTwelveAppJourneysAndPrimaryTimingGuardsPassed':True,'all1440Keys60MarkersExportsBothWaysUndoOfflineGuardsPassed':True,'independentActualWireFourReadTemplates72OffersZeroSkips':True,'all881Rows337Unresolved97StatusesAndCryptoDomainSitesExact':True,'sourceClosureR':803,'sourceClosureC':804,'sourceClosureIncludesBuildToolsAndPackagedTestHelpers':True,'cryptoTsInventoryBefore':399,'cryptoTsInventoryAfter':400,'newNativeCasesBlockedFromAggregateCredit':True,'workingPolicy':'16/64 unchanged','BPolicyAdopted':False,'ordinaryCatchupStillAbout34Seconds':True,'priorPatchAndPacketIdentitiesExact':True,'realIndexUnchangedAndNoStaging':True,'generalQualificationPaused':True,'publication':'No real staging, signing, commit, push, preview change, merge or deployment.','scope':'Fixed local combined candidate, not supported-device/Firefox/WAN/maximum-capacity or general security qualification.'}
+(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n');(packet/'SHA256SUMS').write_text(''.join(sha(p.read_bytes())+'  '+str(p.relative_to(packet))+'\n'for p in sorted(packet.rglob('*'))if p.is_file()and p.name!='SHA256SUMS'));print(json.dumps(result,indent=2))

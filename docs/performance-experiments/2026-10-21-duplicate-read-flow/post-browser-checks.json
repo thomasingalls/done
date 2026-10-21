@@ -1,0 +1,72 @@
+[
+  {
+    "name": "browser-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-duplicate-read-flow-20261021/analyze-browser.py"
+    ],
+    "startedAt": 1792616090711,
+    "completedAt": 1792616090959,
+    "exitCode": 0
+  },
+  {
+    "name": "independent-browser-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-duplicate-read-flow-20261021/review-browser.py"
+    ],
+    "startedAt": 1792616090959,
+    "completedAt": 1792616091172,
+    "exitCode": 0
+  },
+  {
+    "name": "source-challenge",
+    "command": [
+      "node",
+      "/private/tmp/done-duplicate-read-flow-20261021/source-challenge.mjs"
+    ],
+    "startedAt": 1792616091172,
+    "completedAt": 1792616091381,
+    "exitCode": 0
+  },
+  {
+    "name": "working-types",
+    "command": [
+      "node",
+      "node_modules/typescript/bin/tsc",
+      "-b"
+    ],
+    "startedAt": 1792616091381,
+    "completedAt": 1792616092577,
+    "exitCode": 0
+  },
+  {
+    "name": "lint",
+    "command": [
+      "node",
+      "node_modules/oxlint/bin/oxlint",
+      "account-service/batchReadAdmission.ts",
+      "account-service/scoped-http.ts",
+      "src/crdt/verifiedRecords.ts",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792616092577,
+    "completedAt": 1792616092662,
+    "exitCode": 0
+  },
+  {
+    "name": "format",
+    "command": [
+      "node",
+      "node_modules/oxfmt/bin/oxfmt",
+      "--check",
+      "account-service/batchReadAdmission.ts",
+      "account-service/scoped-http.ts",
+      "src/crdt/verifiedRecords.ts",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792616092663,
+    "completedAt": 1792616092801,
+    "exitCode": 0
+  }
+]

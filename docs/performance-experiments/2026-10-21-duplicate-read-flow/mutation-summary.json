@@ -1,0 +1,120 @@
+[
+  {
+    "name": "omit-wiring",
+    "path": "account-service/scoped-http.ts",
+    "mutatedSha256": "243bfb684967bc550f2c8f1971574e2dfb0ea0db907a29553db8d68d5c4f9428",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792614999755,
+    "completedAt": 1792615003897,
+    "exitCode": 1,
+    "failedCases": [
+      "\u2716 concurrent identical HTTP batches spend admission only, preserve distinct work and retry after release (55.587875ms)",
+      "\u2716 failing tests:",
+      "\u2716 concurrent identical HTTP batches spend admission only, preserve distinct work and retry after release (55.587875ms)"
+    ]
+  },
+  {
+    "name": "omit-scope",
+    "path": "account-service/batchReadAdmission.ts",
+    "mutatedSha256": "15e48060741839f79b88d22f01499bf16a2c2738397b2a63687a524ce237b303",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792615003898,
+    "completedAt": 1792615008495,
+    "exitCode": 1,
+    "failedCases": [
+      "\u2716 batch exclusion distinguishes exact bodies and server-held scopes (4.474875ms)",
+      "\u2716 failing tests:",
+      "\u2716 batch exclusion distinguishes exact bodies and server-held scopes (4.474875ms)"
+    ]
+  },
+  {
+    "name": "length-only-match",
+    "path": "account-service/batchReadAdmission.ts",
+    "mutatedSha256": "2d6d395354fd0e337d9f552dd360eb4be4ef8f5960e384ad2c73275010a897c5",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792615008496,
+    "completedAt": 1792615013077,
+    "exitCode": 1,
+    "failedCases": [
+      "\u2716 batch exclusion distinguishes exact bodies and server-held scopes (2.7785ms)",
+      "\u2716 failing tests:",
+      "\u2716 batch exclusion distinguishes exact bodies and server-held scopes (2.7785ms)"
+    ]
+  },
+  {
+    "name": "omit-release",
+    "path": "account-service/scoped-http.ts",
+    "mutatedSha256": "c61f5bb0ee0e424516a9ace5cc43e3c73688d3ea3d3e4992e50d008d9b961f21",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792615013078,
+    "completedAt": 1792615014533,
+    "exitCode": 1,
+    "failedCases": [
+      "\u2716 one-page HTTP batches consume one work unit and retain the exact session ceiling (174.301958ms)",
+      "\u2716 full batches still debit every requested native read (216.524083ms)",
+      "\u2716 a completed-work cut refunds only never-started tail reads (424.183583ms)",
+      "\u2716 malformed framing spends admission only and invalid credentials execute no reads (126.781583ms)",
+      "\u2716 concurrent identical HTTP batches spend admission only, preserve distinct work and retry after release (53.52925ms)",
+      "\u2716 a native batch failure retires only its live exclusion and leaves exact retry fully checked (32.53075ms)",
+      "\u2716 failing tests:",
+      "\u2716 one-page HTTP batches consume one work unit and retain the exact session ceiling (174.301958ms)",
+      "\u2716 full batches still debit every requested native read (216.524083ms)",
+      "\u2716 a completed-work cut refunds only never-started tail reads (424.183583ms)",
+      "\u2716 malformed framing spends admission only and invalid credentials execute no reads (126.781583ms)",
+      "\u2716 concurrent identical HTTP batches spend admission only, preserve distinct work and retry after release (53.52925ms)",
+      "\u2716 a native batch failure retires only its live exclusion and leaves exact retry fully checked (32.53075ms)"
+    ]
+  },
+  {
+    "name": "omit-bound",
+    "path": "account-service/batchReadAdmission.ts",
+    "mutatedSha256": "ab1e0616f8b8175fb9a09b8666a250635f006b150e2ebb711cd31d675f30c4f9",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792615014534,
+    "completedAt": 1792615019034,
+    "exitCode": 1,
+    "failedCases": [
+      "\u2716 the batch scheduling collection stays bounded by the original active-request ceiling (0.705667ms)",
+      "\u2716 failing tests:",
+      "\u2716 the batch scheduling collection stays bounded by the original active-request ceiling (0.705667ms)"
+    ]
+  },
+  {
+    "name": "release-other-body",
+    "path": "account-service/batchReadAdmission.ts",
+    "mutatedSha256": "0a3032ab8ca39945d1cef96eb7b471e8cf8f76c7c739e7c1d66769d8c4c0bc42",
+    "command": [
+      "node",
+      "--test",
+      "test/account-sessions/inbound-batch-budget.test.mjs"
+    ],
+    "startedAt": 1792615019035,
+    "completedAt": 1792615023547,
+    "exitCode": 1,
+    "failedCases": [
+      "\u2716 batch exclusion distinguishes exact bodies and server-held scopes (0.784041ms)",
+      "\u2716 failing tests:",
+      "\u2716 batch exclusion distinguishes exact bodies and server-held scopes (0.784041ms)"
+    ]
+  }
+]

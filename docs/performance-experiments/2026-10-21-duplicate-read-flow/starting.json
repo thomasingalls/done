@@ -1,0 +1,79 @@
+{
+  "base": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "priorTree": "9ce45fdfbfd6a82b69bfae4cc97d89dde44dd905",
+  "priorPatches": [
+    {
+      "patch": "/private/tmp/done-live-sync-attribution-20261021/patches/01-live-sync-attribution.patch",
+      "sha256": "178284be7c132af165fca0fa05973157c97ea387204ad1b27c02ecb3b756fdaf",
+      "expectedTree": "37fa6fc1eb0d0572c7c69d1301908b4bfc358b49",
+      "independentCleanApplyTree": "37fa6fc1eb0d0572c7c69d1301908b4bfc358b49"
+    },
+    {
+      "patch": "/private/tmp/done-ordinary-receive-batch-20261021/patches/02-ordinary-catchup-batching.patch",
+      "sha256": "dbeae2d82777b8920a8ae0b36e079d8ae755a756600500bc9ded7fcd1e1f3bcb",
+      "expectedTree": "fbeafda974ef4e5df816bf07c89f26f92d4ae89a",
+      "independentCleanApplyTree": "fbeafda974ef4e5df816bf07c89f26f92d4ae89a"
+    },
+    {
+      "patch": "/private/tmp/done-sync-capacity-20261021/patches/03-sync-capacity-investigation.patch",
+      "sha256": "7ee3447f1daa52e87ebf4e1fe39f28299824c6d1988631a7595115fdfbad41e5",
+      "expectedTree": "9beaf4508a75cc5ba15ea5808d5d0bcfb85b0c1f",
+      "independentCleanApplyTree": "9beaf4508a75cc5ba15ea5808d5d0bcfb85b0c1f"
+    },
+    {
+      "patch": "/private/tmp/done-sync-continuation-20261021/patches/04-sync-continuation-and-invalidation.patch",
+      "sha256": "03466e09ab0284c5065b5b2afe56a8921c6b4233012f8ded51df5a302905c531",
+      "expectedTree": "9422214ba22e307767866c99cbf93398c2f5e57a",
+      "independentCleanApplyTree": "9422214ba22e307767866c99cbf93398c2f5e57a"
+    },
+    {
+      "patch": "/private/tmp/done-publisher-isolation-20261021/patches-v2/05-publisher-scoped-invalidation.patch",
+      "sha256": "816608540331bee79f775fe8b942dff814a32998fc79aaf832c35ab23e33bb4c",
+      "expectedTree": "3fd6967e9e51ee166946d7fd2c0a7aecf696e13e",
+      "independentCleanApplyTree": "3fd6967e9e51ee166946d7fd2c0a7aecf696e13e"
+    },
+    {
+      "patch": "/private/tmp/done-publisher-races-20261021/patches/06-known-publisher-commit-markers.patch",
+      "sha256": "3066bd8c773bf0e975bc4b4a996751e2e072054dd7301c4a8fa66218321ea918",
+      "expectedTree": "dd5755a91faf940c9c99a3e6516f2aaf9ff70967",
+      "independentCleanApplyTree": "dd5755a91faf940c9c99a3e6516f2aaf9ff70967"
+    },
+    {
+      "patch": "/private/tmp/done-cold-verification-20261021/patches/07-cold-publisher-admission.patch",
+      "sha256": "d3ab51470a4bb242e6cf9c817b0f959bd20d55798ddc94808a538eb41d7b150f",
+      "expectedTree": "aadfbab35081da1daea12c72438a834db429c405",
+      "independentCleanApplyTree": "aadfbab35081da1daea12c72438a834db429c405"
+    },
+    {
+      "patch": "/private/tmp/done-rate-review-20261021/patches/08-rate-capacity-review.patch",
+      "sha256": "b10a568d4c0ab373e5014929804e8b579100a287779ed6c8bfd9d570107ae629",
+      "expectedTree": "ac64a219d29db307cce87fbca65b85cfae59426b",
+      "independentCleanApplyTree": "ac64a219d29db307cce87fbca65b85cfae59426b"
+    },
+    {
+      "patch": "/private/tmp/done-coupled-capacity-20261021/patches/09-coupled-capacity-and-typing.patch",
+      "sha256": "d5f642b07814847b34436e849e9a0d49cbd30a9203b6a267331ea435e0dcf024",
+      "expectedTree": "f753a1ad6da2edc024976823cd50248d9d1c96dd",
+      "independentCleanApplyTree": "f753a1ad6da2edc024976823cd50248d9d1c96dd"
+    },
+    {
+      "patch": "/private/tmp/done-dispatch-calibration-20261021/patches/10-dispatch-calibration.patch",
+      "sha256": "bebaa6278b9c671f424495dcb5470083933b28176700114a40e393580fbf9395",
+      "expectedTree": "34ac5ae5798c142e7a2da3487c4e6f6c7c4b1bcc",
+      "independentCleanApplyTree": "34ac5ae5798c142e7a2da3487c4e6f6c7c4b1bcc"
+    },
+    {
+      "patch": "/private/tmp/done-word-comparison-20261021/patches/11-comparison-regressions-and-held-prototype.patch",
+      "sha256": "5e79ee3cedf1d03601e69fcee1fbcca2c1ef3abaa080f41cf87714c763d37429",
+      "expectedTree": "a192942ef923a11cba525c2b7ec999b6399abacf",
+      "independentCleanApplyTree": "a192942ef923a11cba525c2b7ec999b6399abacf"
+    },
+    {
+      "patch": "/private/tmp/done-capacity-trace-20261021/patches/12-capacity-refusal-trace.patch",
+      "sha256": "bc2c527b13575bfc2a762061145b8ca1b6979fbf2a6545b0f0f66ce263f9e289",
+      "expectedTree": "9ce45fdfbfd6a82b69bfae4cc97d89dde44dd905",
+      "independentCleanApplyTree": "9ce45fdfbfd6a82b69bfae4cc97d89dde44dd905"
+    }
+  ],
+  "realIndexSha256": "84a8b44d849e78973269831cd12b27273b6759ccca284fc51ab3b7ed41134b8a"
+}

@@ -8774,7 +8774,7 @@
           "test/account-sessions/inbound-batch-budget.test.mjs"
         ]
       },
-      "declarations": 6,
+      "declarations": 11,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -17872,7 +17872,7 @@
     },
     {
       "path": "test/account-sessions/inbound-batch-budget.test.mjs",
-      "sha256": "90ae093a0dce638ed576acaf3b8c6386e5003a501d50158026f91df509ca7296"
+      "sha256": "b66fd4a2dc6857c81411771500b80d969e2983e2f837b8704721a3ccef4cf4dd"
     },
     {
       "path": "test/account-sessions/inbound-batch.test.mjs",

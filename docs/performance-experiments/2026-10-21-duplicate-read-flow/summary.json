@@ -1,0 +1,135 @@
+{
+  "status": "bounded local candidate accepted; publication and generalized qualification pending",
+  "phase": 13,
+  "workingPolicy": "16/64 unchanged",
+  "runtimeChange": [
+    "decline concurrent exact identical batch bodies within one server-held budget scope before extra native reservation",
+    "enable phase11 held V3 exact-word comparison, preserving scalar/tail/cooperative checks"
+  ],
+  "referenceDriftPercent": 2.063719106480799,
+  "pairs": [
+    {
+      "R": "1-D-R-feedback",
+      "C": "2-D-C-feedback",
+      "policy": "D",
+      "primary": true,
+      "localP95R": 13.7998046875,
+      "localP95C": 7.39990234375,
+      "peerP95R": 143555.89990234375,
+      "peerP95C": 66106.80004882812,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": true,
+        "catchup": true
+      },
+      "catchupR": 143423,
+      "catchupC": 67082,
+      "catchupImprovementPercent": 53.22786442899674,
+      "passed": true
+    },
+    {
+      "R": "4-D-R-feedback",
+      "C": "3-D-C-feedback",
+      "policy": "D",
+      "primary": true,
+      "localP95R": 11.800048828125,
+      "localP95C": 9.60009765625,
+      "peerP95R": 140792.39990234375,
+      "peerP95C": 65948.80004882812,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": true,
+        "catchup": true
+      },
+      "catchupR": 140523,
+      "catchupC": 67091,
+      "catchupImprovementPercent": 52.256214285205985,
+      "passed": true
+    },
+    {
+      "R": "5-D-R-ordinary",
+      "C": "6-D-C-ordinary",
+      "policy": "D",
+      "primary": true,
+      "localP95R": 12.60009765625,
+      "localP95C": 8.099853515625,
+      "peerP95R": 32639.099853515625,
+      "peerP95C": 33114,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": true,
+        "catchup": true
+      },
+      "catchupR": 33602,
+      "catchupC": 34156,
+      "catchupImprovementPercent": -1.6487113862270197,
+      "passed": true
+    },
+    {
+      "R": "7-D-R-independent",
+      "C": "8-D-C-independent",
+      "policy": "D",
+      "primary": true,
+      "localP95R": 13,
+      "localP95C": 4.800048828125,
+      "peerP95R": 50394.89990234375,
+      "peerP95C": 50420.400146484375,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": true,
+        "catchup": true
+      },
+      "catchupR": 51363,
+      "catchupC": 51475,
+      "catchupImprovementPercent": -0.2180557989214016,
+      "passed": true
+    },
+    {
+      "R": "9-D-R-foreground",
+      "C": "10-D-C-foreground",
+      "policy": "D",
+      "primary": true,
+      "localP95R": 8.89990234375,
+      "localP95C": 9.2001953125,
+      "peerP95R": 2308.89990234375,
+      "peerP95C": 2256.599853515625,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": true
+      },
+      "passed": true
+    },
+    {
+      "R": "11-B-R-feedback",
+      "C": "12-B-C-feedback",
+      "policy": "B",
+      "primary": false,
+      "localP95R": 14.800048828125,
+      "localP95C": 5.89990234375,
+      "peerP95R": 26895.199951171875,
+      "peerP95C": 28288.39990234375,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": true,
+        "catchup": true
+      },
+      "catchupR": 28077,
+      "catchupC": 29084,
+      "catchupImprovementPercent": -3.586565516258866,
+      "passed": true
+    }
+  ],
+  "allTwelveDataGuards": true,
+  "peerVerifiedNewKeys": 1440,
+  "foregroundIsolatedMarkers": 60,
+  "primaryDAcceptance": true,
+  "BPolicyAdopted": false,
+  "newNativeRegressions": 5,
+  "affectedNativeCases": 50,
+  "affectedWordOwnershipCases": 112,
+  "planningCases": 105,
+  "intentionalOmissionsDetected": 6,
+  "all881Rows337Unresolved97ConstructionStatusesAndContractsExact": true,
+  "ordinaryCatchupStillSeconds": 34.156,
+  "scope": "Fixed local headless Chromium journeys on host; not physical Android, Firefox, WAN, maximum capacity, rollout or general qualification."
+}

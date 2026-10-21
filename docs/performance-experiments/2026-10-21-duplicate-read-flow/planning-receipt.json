@@ -1,0 +1,19 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "test/release-validation/general-tests.test.mjs",
+    "test/release-validation/generated-tests.test.mjs",
+    "test/release-validation/vitest.test.mjs",
+    "test/release-validation/manifest.test.mjs",
+    "test/account-first-authority/registry.test.mjs"
+  ],
+  "exitCode": 0,
+  "cases": 105,
+  "passed": 105,
+  "failed": 0,
+  "skipped": 0,
+  "logCreatedAtMs": 1792616298186,
+  "logLastWrittenAtMs": 1792616333061,
+  "timeBasis": "Filesystem log bounds, not runner brackets or performance evidence."
+}
