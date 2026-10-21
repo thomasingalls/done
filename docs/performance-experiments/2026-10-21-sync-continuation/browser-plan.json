@@ -1,0 +1,28 @@
+[
+  {
+    "name": "browser-1-baseline",
+    "pressure": false
+  },
+  {
+    "name": "browser-1-pressure",
+    "pressure": true
+  },
+  {
+    "name": "browser-2-pressure",
+    "pressure": true
+  },
+  {
+    "name": "browser-2-baseline",
+    "pressure": false
+  },
+  {
+    "name": "browser-forced-refusals",
+    "pressure": true,
+    "inject": true
+  },
+  {
+    "name": "browser-pressure-trace",
+    "pressure": true,
+    "trace": true
+  }
+]

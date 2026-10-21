@@ -1,0 +1,1420 @@
+{
+  "runs": [
+    {
+      "name": "trace-pilot",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 3161,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 3137,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 3171,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 3165,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 3140,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 3157,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 3502,
+      "statuses": {
+        "200": 108
+      },
+      "writes": {
+        "first": {
+          "offered": 6,
+          "started": 6,
+          "verified": 6
+        },
+        "other": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        }
+      },
+      "traceEvents": 782,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 390,
+        "guard-same": 390,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-1-00",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2490,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2488,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2497,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2505,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2489,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2508,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 2517,
+      "statuses": {
+        "200": 102
+      },
+      "writes": {
+        "first": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        },
+        "other": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        }
+      },
+      "traceEvents": 770,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 384,
+        "guard-same": 384,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-1-10",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2661,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2639,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2661,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2641,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2639,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2662,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 3002,
+      "statuses": {
+        "200": 107
+      },
+      "writes": {
+        "first": {
+          "offered": 5,
+          "started": 5,
+          "verified": 5
+        },
+        "other": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        }
+      },
+      "traceEvents": 780,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 389,
+        "guard-same": 389,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-1-01",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2497,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2489,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2475,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2465,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2477,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2475,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 3003,
+      "statuses": {
+        "200": 104
+      },
+      "writes": {
+        "first": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        },
+        "other": {
+          "offered": 2,
+          "started": 2,
+          "verified": 2
+        }
+      },
+      "traceEvents": 774,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 386,
+        "guard-same": 386,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-1-11",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2676,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2696,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2675,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2695,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2691,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2672,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 3002,
+      "statuses": {
+        "200": 109
+      },
+      "writes": {
+        "first": {
+          "offered": 5,
+          "started": 5,
+          "verified": 5
+        },
+        "other": {
+          "offered": 2,
+          "started": 2,
+          "verified": 2
+        }
+      },
+      "traceEvents": 784,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 391,
+        "guard-same": 391,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-2-11",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2666,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2681,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2662,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2670,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2668,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2683,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 3002,
+      "statuses": {
+        "200": 109
+      },
+      "writes": {
+        "first": {
+          "offered": 5,
+          "started": 5,
+          "verified": 5
+        },
+        "other": {
+          "offered": 2,
+          "started": 2,
+          "verified": 2
+        }
+      },
+      "traceEvents": 784,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 391,
+        "guard-same": 391,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-2-01",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2493,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2497,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2472,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2488,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2467,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2473,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 3004,
+      "statuses": {
+        "200": 104
+      },
+      "writes": {
+        "first": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        },
+        "other": {
+          "offered": 2,
+          "started": 2,
+          "verified": 2
+        }
+      },
+      "traceEvents": 774,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 386,
+        "guard-same": 386,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-2-10",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2652,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2654,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2625,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2664,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2656,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2650,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 3002,
+      "statuses": {
+        "200": 107
+      },
+      "writes": {
+        "first": {
+          "offered": 5,
+          "started": 5,
+          "verified": 5
+        },
+        "other": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        }
+      },
+      "traceEvents": 780,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 389,
+        "guard-same": 389,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "trace-2-00",
+      "outcome": "passed",
+      "positionsPerStream": 64,
+      "streams": [
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2472,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2467,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2462,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2481,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2482,
+          "completed": true
+        },
+        {
+          "positions": 64,
+          "batches": 17,
+          "elapsedMs": 2469,
+          "completed": true
+        }
+      ],
+      "verifiedPositions": 384,
+      "completedStreams": 6,
+      "elapsedMs": 2490,
+      "statuses": {
+        "200": 102
+      },
+      "writes": {
+        "first": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        },
+        "other": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        }
+      },
+      "traceEvents": 770,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 384,
+        "guard-same": 384,
+        "invalidate": 2
+      },
+      "invalidationReasons": {
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "full-trace",
+      "outcome": "failed",
+      "positionsPerStream": 256,
+      "streams": [
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        }
+      ],
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 7015,
+      "statuses": {
+        "200": 30,
+        "409:state-changed": 7
+      },
+      "writes": {
+        "first": {
+          "offered": 12,
+          "started": 1,
+          "verified": 0
+        },
+        "other": {
+          "offered": 6,
+          "started": 6,
+          "verified": 6
+        }
+      },
+      "traceEvents": 136,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 64,
+        "guard-same": 30,
+        "invalidate": 8,
+        "guard-fingerprint": 6,
+        "guard-stale": 28
+      },
+      "invalidationReasons": {
+        "fingerprint": 6,
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [
+        {
+          "affectedPublisher": 0,
+          "causePublisher": 1,
+          "reason": "fingerprint",
+          "count": 28
+        }
+      ],
+      "crossPublisherExamples": [
+        {
+          "capture": {
+            "at": 1792584321170,
+            "kind": "capture",
+            "publisher": 0,
+            "capture": 1,
+            "revision": 0,
+            "count": 1024,
+            "prefix": 0,
+            "after": 0,
+            "position": null
+          },
+          "invalidation": {
+            "at": 1792584322148,
+            "kind": "invalidate",
+            "publisher": 1,
+            "capture": 12,
+            "reason": "fingerprint",
+            "revision": 0,
+            "nextRevision": 1
+          },
+          "guard": {
+            "at": 1792584322728,
+            "kind": "guard-stale",
+            "publisher": 0,
+            "capture": 1,
+            "captureRevision": 0,
+            "revision": 1
+          }
+        },
+        {
+          "capture": {
+            "at": 1792584321218,
+            "kind": "capture",
+            "publisher": 0,
+            "capture": 3,
+            "revision": 0,
+            "count": 1024,
+            "prefix": 0,
+            "after": 0,
+            "position": null
+          },
+          "invalidation": {
+            "at": 1792584322148,
+            "kind": "invalidate",
+            "publisher": 1,
+            "capture": 12,
+            "reason": "fingerprint",
+            "revision": 0,
+            "nextRevision": 1
+          },
+          "guard": {
+            "at": 1792584322748,
+            "kind": "guard-stale",
+            "publisher": 0,
+            "capture": 3,
+            "captureRevision": 0,
+            "revision": 1
+          }
+        }
+      ],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "full-default",
+      "outcome": "failed",
+      "positionsPerStream": 256,
+      "streams": [
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        }
+      ],
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 7004,
+      "statuses": {
+        "200": 30,
+        "409:state-changed": 7
+      },
+      "writes": {
+        "first": {
+          "offered": 12,
+          "started": 1,
+          "verified": 0
+        },
+        "other": {
+          "offered": 6,
+          "started": 6,
+          "verified": 6
+        }
+      },
+      "traceEvents": 0,
+      "traceAvailable": false,
+      "traceOverflow": null,
+      "tipKinds": {},
+      "invalidationReasons": {},
+      "staleByFirstCause": [],
+      "crossPublisherExamples": [],
+      "source": "D",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "full-hot-and-peer",
+      "outcome": "failed",
+      "positionsPerStream": 256,
+      "streams": [
+        {
+          "positions": 83,
+          "batches": 38,
+          "elapsedMs": 57838,
+          "completed": false
+        },
+        {
+          "positions": 82,
+          "batches": 36,
+          "elapsedMs": 57859,
+          "completed": false
+        },
+        {
+          "positions": 82,
+          "batches": 36,
+          "elapsedMs": 56443,
+          "completed": false
+        },
+        {
+          "positions": 79,
+          "batches": 36,
+          "elapsedMs": 48544,
+          "completed": false
+        },
+        {
+          "positions": 83,
+          "batches": 38,
+          "elapsedMs": 58668,
+          "completed": false
+        },
+        {
+          "positions": 83,
+          "batches": 38,
+          "elapsedMs": 57808,
+          "completed": false
+        }
+      ],
+      "verifiedPositions": 492,
+      "completedStreams": 0,
+      "elapsedMs": 59296,
+      "statuses": {
+        "200": 549,
+        "409:state-changed": 1
+      },
+      "writes": {
+        "first": {
+          "offered": 109,
+          "started": 109,
+          "verified": 109
+        },
+        "other": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        }
+      },
+      "traceEvents": 2098,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 1033,
+        "guard-same": 819,
+        "invalidate": 32,
+        "guard-fingerprint": 30,
+        "guard-stale": 184
+      },
+      "invalidationReasons": {
+        "fingerprint": 30,
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [
+        {
+          "affectedPublisher": 0,
+          "causePublisher": 0,
+          "reason": "fingerprint",
+          "count": 169
+        },
+        {
+          "affectedPublisher": 1,
+          "causePublisher": 0,
+          "reason": "fingerprint",
+          "count": 15
+        }
+      ],
+      "crossPublisherExamples": [
+        {
+          "capture": {
+            "at": 1792584771096,
+            "kind": "capture",
+            "publisher": 1,
+            "capture": 348,
+            "revision": 0,
+            "count": 1,
+            "prefix": 1,
+            "after": 0,
+            "position": null
+          },
+          "invalidation": {
+            "at": 1792584771148,
+            "kind": "invalidate",
+            "publisher": 0,
+            "capture": 357,
+            "reason": "fingerprint",
+            "revision": 0,
+            "nextRevision": 1
+          },
+          "guard": {
+            "at": 1792584771199,
+            "kind": "guard-stale",
+            "publisher": 1,
+            "capture": 348,
+            "captureRevision": 0,
+            "revision": 1
+          }
+        },
+        {
+          "capture": {
+            "at": 1792584774861,
+            "kind": "capture",
+            "publisher": 1,
+            "capture": 397,
+            "revision": 2,
+            "count": 1,
+            "prefix": 1,
+            "after": 0,
+            "position": null
+          },
+          "invalidation": {
+            "at": 1792584774996,
+            "kind": "invalidate",
+            "publisher": 0,
+            "capture": 387,
+            "reason": "fingerprint",
+            "revision": 2,
+            "nextRevision": 3
+          },
+          "guard": {
+            "at": 1792584775082,
+            "kind": "guard-stale",
+            "publisher": 1,
+            "capture": 397,
+            "captureRevision": 2,
+            "revision": 3
+          }
+        }
+      ],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "full-writers-no-peer",
+      "outcome": "failed",
+      "positionsPerStream": 256,
+      "streams": [
+        {
+          "positions": 101,
+          "batches": 46,
+          "elapsedMs": 61468,
+          "completed": false
+        },
+        {
+          "positions": 98,
+          "batches": 44,
+          "elapsedMs": 61485,
+          "completed": false
+        },
+        {
+          "positions": 94,
+          "batches": 41,
+          "elapsedMs": 54558,
+          "completed": false
+        },
+        {
+          "positions": 95,
+          "batches": 43,
+          "elapsedMs": 61440,
+          "completed": false
+        },
+        {
+          "positions": 102,
+          "batches": 45,
+          "elapsedMs": 61502,
+          "completed": false
+        },
+        {
+          "positions": 96,
+          "batches": 42,
+          "elapsedMs": 61527,
+          "completed": false
+        }
+      ],
+      "verifiedPositions": 586,
+      "completedStreams": 0,
+      "elapsedMs": 62184,
+      "statuses": {
+        "200": 441,
+        "409:state-changed": 1
+      },
+      "writes": {
+        "first": {
+          "offered": 120,
+          "started": 120,
+          "verified": 120
+        },
+        "other": {
+          "offered": 60,
+          "started": 60,
+          "verified": 60
+        }
+      },
+      "traceEvents": 2021,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 993,
+        "guard-same": 766,
+        "invalidate": 35,
+        "guard-fingerprint": 33,
+        "guard-stale": 194
+      },
+      "invalidationReasons": {
+        "fingerprint": 33,
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [
+        {
+          "affectedPublisher": 0,
+          "causePublisher": 0,
+          "reason": "fingerprint",
+          "count": 191
+        },
+        {
+          "affectedPublisher": 1,
+          "causePublisher": 0,
+          "reason": "fingerprint",
+          "count": 3
+        }
+      ],
+      "crossPublisherExamples": [
+        {
+          "capture": {
+            "at": 1792584843225,
+            "kind": "capture",
+            "publisher": 1,
+            "capture": 517,
+            "revision": 7,
+            "count": 15,
+            "prefix": 14,
+            "after": null,
+            "position": 16
+          },
+          "invalidation": {
+            "at": 1792584843295,
+            "kind": "invalidate",
+            "publisher": 0,
+            "capture": 514,
+            "reason": "fingerprint",
+            "revision": 7,
+            "nextRevision": 8
+          },
+          "guard": {
+            "at": 1792584843378,
+            "kind": "guard-stale",
+            "publisher": 1,
+            "capture": 517,
+            "captureRevision": 7,
+            "revision": 8
+          }
+        },
+        {
+          "capture": {
+            "at": 1792584859213,
+            "kind": "capture",
+            "publisher": 1,
+            "capture": 674,
+            "revision": 16,
+            "count": 31,
+            "prefix": 30,
+            "after": null,
+            "position": 32
+          },
+          "invalidation": {
+            "at": 1792584859258,
+            "kind": "invalidate",
+            "publisher": 0,
+            "capture": 676,
+            "reason": "fingerprint",
+            "revision": 16,
+            "nextRevision": 17
+          },
+          "guard": {
+            "at": 1792584859338,
+            "kind": "guard-stale",
+            "publisher": 1,
+            "capture": 674,
+            "captureRevision": 16,
+            "revision": 17
+          }
+        }
+      ],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    },
+    {
+      "name": "full-other-and-peer",
+      "outcome": "failed",
+      "positionsPerStream": 256,
+      "streams": [
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        },
+        {
+          "positions": 0,
+          "batches": 0,
+          "elapsedMs": 0,
+          "completed": false
+        }
+      ],
+      "verifiedPositions": 0,
+      "completedStreams": 0,
+      "elapsedMs": 6002,
+      "statuses": {
+        "200": 28,
+        "409:state-changed": 6
+      },
+      "writes": {
+        "first": {
+          "offered": 0,
+          "started": 0,
+          "verified": 0
+        },
+        "other": {
+          "offered": 5,
+          "started": 5,
+          "verified": 5
+        }
+      },
+      "traceEvents": 121,
+      "traceAvailable": true,
+      "traceOverflow": 0,
+      "tipKinds": {
+        "capture": 57,
+        "guard-same": 28,
+        "invalidate": 7,
+        "guard-fingerprint": 5,
+        "guard-stale": 24
+      },
+      "invalidationReasons": {
+        "fingerprint": 5,
+        "close": 1,
+        "external-clear": 1
+      },
+      "staleByFirstCause": [
+        {
+          "affectedPublisher": 0,
+          "causePublisher": 1,
+          "reason": "fingerprint",
+          "count": 24
+        }
+      ],
+      "crossPublisherExamples": [
+        {
+          "capture": {
+            "at": 1792584891220,
+            "kind": "capture",
+            "publisher": 0,
+            "capture": 1,
+            "revision": 0,
+            "count": 1024,
+            "prefix": 0,
+            "after": 0,
+            "position": null
+          },
+          "invalidation": {
+            "at": 1792584892207,
+            "kind": "invalidate",
+            "publisher": 1,
+            "capture": 11,
+            "reason": "fingerprint",
+            "revision": 0,
+            "nextRevision": 1
+          },
+          "guard": {
+            "at": 1792584892768,
+            "kind": "guard-stale",
+            "publisher": 0,
+            "capture": 1,
+            "captureRevision": 0,
+            "revision": 1
+          }
+        },
+        {
+          "capture": {
+            "at": 1792584891267,
+            "kind": "capture",
+            "publisher": 0,
+            "capture": 3,
+            "revision": 0,
+            "count": 1024,
+            "prefix": 0,
+            "after": 0,
+            "position": null
+          },
+          "invalidation": {
+            "at": 1792584892207,
+            "kind": "invalidate",
+            "publisher": 1,
+            "capture": 11,
+            "reason": "fingerprint",
+            "revision": 0,
+            "nextRevision": 1
+          },
+          "guard": {
+            "at": 1792584892791,
+            "kind": "guard-stale",
+            "publisher": 0,
+            "capture": 3,
+            "captureRevision": 0,
+            "revision": 1
+          }
+        }
+      ],
+      "source": "trace",
+      "rawAbortOn409": true,
+      "scope": "A failed raw run is not completed capacity or client continuation evidence."
+    }
+  ],
+  "controlledSchedules": [
+    {
+      "condition": "no-change",
+      "outcome": "passed",
+      "unchangedWholeSnapshot": true,
+      "snapshotSha256": "7ab0b8233c0774c04d7131034650524f697e56b4ebe8d824c40bfcc6e7cd1564",
+      "unrelatedSnapshotChanged": false,
+      "committedProofVerified": false,
+      "staleChangedGuard": true,
+      "unchangedCapturedGuard": true,
+      "freshCaptureGuard": true,
+      "freshIndependentlyVerifiedRead": true,
+      "scope": "Direct same-connection native owner schedule; scoped HTTP authorization is covered separately, not inferred from this diagnostic."
+    },
+    {
+      "condition": "unrelated-commit",
+      "outcome": "passed",
+      "unchangedWholeSnapshot": true,
+      "snapshotSha256": "7ab0b8233c0774c04d7131034650524f697e56b4ebe8d824c40bfcc6e7cd1564",
+      "unrelatedSnapshotChanged": true,
+      "committedProofVerified": true,
+      "staleChangedGuard": false,
+      "unchangedCapturedGuard": false,
+      "freshCaptureGuard": true,
+      "freshIndependentlyVerifiedRead": true,
+      "scope": "Direct same-connection native owner schedule; scoped HTTP authorization is covered separately, not inferred from this diagnostic."
+    }
+  ],
+  "finding": "A stale unrelated publisher fingerprint globally invalidates otherwise byte-identical hot-publisher captures. Original traced/default refusals match; own-publisher write races also cause later refusals. Actual client continuation is assessed separately.",
+  "scope": "Mechanism diagnostics on fixed synthetic native fixtures, not production frequency, maximum capacity or general security qualification."
+}

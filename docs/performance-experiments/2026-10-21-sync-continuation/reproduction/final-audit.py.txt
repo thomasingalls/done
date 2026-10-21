@@ -1,0 +1,68 @@
+from pathlib import Path
+import gzip,hashlib,json,re,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-sync-continuation';sha=lambda b:hashlib.sha256(b).hexdigest()
+def load(p):return json.loads(p.read_text())
+def git(args):return subprocess.check_output(args,cwd=repo)
+start=load(r/'starting.json');base=start['base'];prior=start['priorTree'];pgit=['git','--git-dir=/private/tmp/done-sync-capacity-20261021/patch03-index.git','--work-tree='+str(repo)]
+assert git(['git','rev-parse','HEAD']).decode().strip()==base and git(['git','diff','--cached','--name-only'])==b''
+for p in start['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+priorPackets={}
+for name in ['2026-10-21-live-sync-attribution','2026-10-21-ordinary-receive-batching','2026-10-21-sync-capacity']:
+ root=repo/'docs/performance-experiments'/name;lines=(root/'SHA256SUMS').read_text().splitlines()
+ for line in lines:
+  h,file=line.split('  ',1);assert sha((root/file).read_bytes())==h,(name,file)
+ priorPackets[name]=len(lines)
+appendDocs=['docs/completed.md','docs/decisions.md','docs/performance.md']
+for f in appendDocs:assert (repo/f).read_bytes().startswith(git(pgit+['show',prior+':'+f])),f
+for f in ['docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch','docs/release-validation-graph.json','docs/release-validation-manifest.json']:assert (repo/f).read_bytes()==git(pgit+['show',prior+':'+f]),f
+assert set(git(pgit+['diff','--name-only',prior,'--']).decode().splitlines())==set(appendDocs)
+priorPaths=set(git(pgit+['ls-tree','-r','--name-only',prior]).decode().splitlines());new=set(git(['git','ls-files','--others','--exclude-standard']).decode().splitlines())-priorPaths
+assert all(f.startswith('docs/performance-experiments/2026-10-21-sync-continuation/') for f in new),sorted(new)
+identity=load(repo/'docs/performance-experiments/2026-10-21-sync-capacity/identity.json');production=identity['ordinaryArms']['D']['sourceSha256'];assert len(production)==803
+for f,h in production.items():assert sha((repo/f).read_bytes())==h,f
+for arm in ['D','trace']:
+ changed=[f for f,h in production.items() if sha((r/('source-'+arm)/f).read_bytes())!=h];assert changed==(['account-service/publisherTips.ts'] if arm=='trace' else []),changed
+assert all(sha((r/'client-dist'/f).read_bytes())==h for f,h in identity['clientBuildSha256'].items())
+assert len(identity['clientBuildSha256'])==110
+provenance=load(packet/'artifact-provenance.json')
+for f,ident in provenance.items():
+ b=(packet/f).read_bytes();assert sha(b)==ident['storedSha256'],f;raw=gzip.decompress(b) if f.endswith('.gz') else b;assert sha(raw)==ident['sourceSha256'],f
+browser=load(r/'browser-summary.json');assert browser['allDataGuardsPassed'] and browser['identicalFinalExports'] and browser['knownRefusalControlAutonomouslyContinued'] and len(browser['rows'])==9 and browser['explicitRemoteReceiverControlContinued']
+forced=[x for x in browser['rows'] if x['forced']];assert len(forced)==3 and all(x['injectedStateChangeReplies']==2 and x['continuation']['autonomous'] and not x['continuation']['manualRetryOrReload'] for x in forced)
+native=load(r/'native-summary.json');assert len(native['runs'])==14 and sum(x['outcome']=='failed' for x in native['runs'])==5
+assert all(x['traceOverflow']==0 for x in native['runs'] if x['traceAvailable'])
+control=native['controlledSchedules'];assert len(control)==2 and not control[1]['unchangedCapturedGuard'] and control[1]['unchangedWholeSnapshot'] and control[1]['committedProofVerified'] and control[1]['freshIndependentlyVerifiedRead']
+cold=0;unack=0
+for row in native['runs']:
+ audit=load(r/row['name']/'cold-audit.json');assert len(audit)==1 and audit[0]['outcome']==row['outcome']
+ for account in audit[0]['accounts']:assert account['seedAndAllStoredWiresExact'];unack+=account['unacknowledgedStored']
+ cold+=1
+checks=load(r/'check-receipts.json');assert len(checks)==16 and all(x['returncode']==0 for x in checks)
+unit={}
+for name in ['publisher-tip-invariants','default-budget-invariants']:
+ log=(r/(name+'.log')).read_text();counts={key:int(re.search(r'ℹ '+key+r' (\d+)',log)[1]) for key in ['tests','pass','fail','cancelled','skipped','todo']};assert counts['tests']==counts['pass'] and all(counts[k]==0 for k in ['fail','cancelled','skipped','todo']);unit[name]=counts['pass']
+assert unit['default-budget-invariants']==17
+# Explicit known-value scan, not a general secret detector.
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=load(Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json')
+ for device in ['a','b']:
+  secrets.append(d[device]['code'])
+  for c in d[device]['credentials']:
+   for key in ['privateKey','credentialId','userHandle']:
+    if c.get(key):secrets.append(c[key])
+d=load(r/'private-api/fixture.json');secrets.append(d['authorityKey'])
+for who in ['first','other']:
+ secrets.append(d[who]['s']['privateKey'])
+ for session in d[who]['sessions']:
+  for key,value in session.items():
+   if isinstance(value,str) and len(value)>=12:secrets.append(value)
+values=set()
+for s in secrets:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+for p in packet.rglob('*'):
+ if p.is_file():
+  b=p.read_bytes();b=gzip.decompress(b) if p.name.endswith('.gz') else b;assert not any(s in b for s in values),str(p.relative_to(packet))
+assert len(values)==35
+assert '"testFiles":516' in (r/'inventory-check.log').read_text() and '"obligations":878,"unresolved":334' in (r/'manifest-check.log').read_text()
+result={'status':'passed','priorPacketChecksumCounts':priorPackets,'priorThreePatchesExact':True,'allPriorRuntimeAndTestBytesExact':True,'defaultProductionIdentities':803,'clientBuildIdentities':110,'appendOnlyDocuments':appendDocs,'otherSeatProgressAndDeferredFormattingExact':True,'browserJourneysPassed':9,'allDataGuardsPassed':True,'knownReadAndSubmitRefusalControlContinued':True,'naturalStateChangeBrowserExposures':browser['naturalStateChangeExposure'],'rawNativeRuns':14,'failedRawRunsPreserved':5,'controlledSameConnectionSchedules':2,'coldStoreAudits':cold,'unacknowledgedStoredWrites':unack,'unitCasesPassed':unit,'artifactProvenanceEntriesVerified':len(provenance),'knownExactPrivateValuesChecked':len(values),'matches':0,'planningObligations':878,'unresolvedObligations':334,'sourceHead':base,'realStagingEmpty':True,'scope':'Evidence integrity and bounded local continuation/mechanism tests, not production capacity/frequency, absence of starvation or generalized security/release qualification. No staging/signing/commit/push/merge/preview restart/deployment.'}
+(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

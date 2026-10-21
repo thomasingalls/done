@@ -1,0 +1,2 @@
+// Functional isolation control: a diagnostic failure must never alter authority/refusal.
+Object.defineProperty(globalThis,'__publisherTipObserve',{value:()=>{throw Error('Disposable observer failure')}});

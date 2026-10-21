@@ -1,0 +1,33 @@
+from pathlib import Path
+import collections,json
+r=Path(__file__).parent
+names=['trace-pilot']+[row['output'] for row in json.loads((r/'native-plan.json').read_text())]+['full-trace','full-default']+[row['name'] for row in json.loads((r/'discriminator-plan.json').read_text())]
+summary=[]
+for name in names:
+ rows=json.loads((r/name/'results.json').read_text());assert len(rows)==1;row=rows[0]
+ traceFile=next((r/name).glob('*tip-trace.json'));traceAvailable=traceFile.stat().st_size>0
+ if not traceAvailable:assert row['arm']=='D','Missing instrumented trace';trace={'rows':[],'overflow':0}
+ else:trace=json.loads(traceFile.read_text())
+ assert trace['overflow']==0
+ counts=collections.Counter(x['kind'] for x in trace['rows']);reasons=collections.Counter(x['reason'] for x in trace['rows'] if x['kind']=='invalidate');captures={};invalidations={};cross=collections.Counter();staleExamples=[]
+ for event in trace['rows']:
+  if event['kind']=='capture':captures[event['capture']]=event
+  elif event['kind']=='invalidate':invalidations[event['nextRevision']]=event
+  elif event['kind']=='guard-stale':
+   capture=captures[event['capture']];assert capture['publisher']==event['publisher'] and capture['revision']==event['captureRevision']
+   causes=[invalidations[n] for n in range(event['captureRevision']+1,event['revision']+1)]
+   first=causes[0];cross[(event['publisher'],first['publisher'],first['reason'])]+=1
+   if first['publisher'] is not None and first['publisher']!=event['publisher'] and len(staleExamples)<2:staleExamples.append({'capture':capture,'invalidation':first,'guard':event})
+ status=collections.Counter(str(x['status'])+(':'+x['reason'] if 'reason' in x else '') for x in row['statuses']);writes={who:{'offered':len(items),'started':sum('startedAt' in x for x in items),'verified':sum('verifiedAt' in x for x in items)} for who,items in row['writes'].items()}
+ summary.append({'name':name,'outcome':row['outcome'],'positionsPerStream':row['positionsPerStream'],'streams':row['streams'],'verifiedPositions':sum(x.get('positions',0) for x in row['streams']),'completedStreams':sum(x.get('completed',False) for x in row['streams']),'elapsedMs':row['elapsedMs'],'statuses':dict(status),'writes':writes,'traceEvents':len(trace['rows']),'traceAvailable':traceAvailable,'traceOverflow':trace['overflow'] if traceAvailable else None,'tipKinds':dict(counts),'invalidationReasons':dict(reasons),'staleByFirstCause':[{'affectedPublisher':k[0],'causePublisher':k[1],'reason':k[2],'count':v} for k,v in cross.items()],'crossPublisherExamples':staleExamples,'source':row['arm'],'rawAbortOn409':True,'scope':'A failed raw run is not completed capacity or client continuation evidence.'})
+by={x['name']:x for x in summary}
+assert all(by['trace-'+str(block)+'-'+arm]['outcome']=='passed' for block in [1,2] for arm in ['00','10','01','11'])
+assert by['full-trace']['outcome']==by['full-default']['outcome']=='failed'
+assert by['full-trace']['tipKinds']['guard-stale']==28
+assert by['full-trace']['invalidationReasons']['fingerprint']==6
+assert by['full-trace']['staleByFirstCause']==[{'affectedPublisher':0,'causePublisher':1,'reason':'fingerprint','count':28}]
+assert by['full-other-and-peer']['writes']['first']['offered']==0 and by['full-other-and-peer']['outcome']=='failed'
+controlled=json.loads((r/'controlled-invalidation.json').read_text());a,b=controlled['summary'];assert a['unchangedCapturedGuard'] and not b['unchangedCapturedGuard'] and b['unchangedWholeSnapshot'] and b['committedProofVerified'] and b['freshCaptureGuard'] and b['freshIndependentlyVerifiedRead']
+result={'runs':summary,'controlledSchedules':controlled['summary'],'finding':'A stale unrelated publisher fingerprint globally invalidates otherwise byte-identical hot-publisher captures. Original traced/default refusals match; own-publisher write races also cause later refusals. Actual client continuation is assessed separately.','scope':'Mechanism diagnostics on fixed synthetic native fixtures, not production frequency, maximum capacity or general security qualification.'}
+(r/'native-summary.json').write_text(json.dumps(result,indent=2)+'\n')
+print(json.dumps([{k:x[k] for k in ['name','outcome','verifiedPositions','completedStreams','elapsedMs','statuses','invalidationReasons']} for x in summary],indent=2))

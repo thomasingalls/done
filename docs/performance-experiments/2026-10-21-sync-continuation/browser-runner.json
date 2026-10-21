@@ -1,0 +1,46 @@
+[
+  {
+    "name": "browser-1-baseline",
+    "pressure": false,
+    "startedAt": "2026-10-21T12:15:58.119019+00:00",
+    "returncode": 0,
+    "completedAt": "2026-10-21T12:16:48.568053+00:00"
+  },
+  {
+    "name": "browser-1-pressure",
+    "pressure": true,
+    "startedAt": "2026-10-21T12:16:48.569494+00:00",
+    "returncode": 0,
+    "completedAt": "2026-10-21T12:19:29.218269+00:00"
+  },
+  {
+    "name": "browser-2-pressure",
+    "pressure": true,
+    "startedAt": "2026-10-21T12:19:29.219512+00:00",
+    "returncode": 0,
+    "completedAt": "2026-10-21T12:22:01.051246+00:00"
+  },
+  {
+    "name": "browser-2-baseline",
+    "pressure": false,
+    "startedAt": "2026-10-21T12:22:01.052567+00:00",
+    "returncode": 0,
+    "completedAt": "2026-10-21T12:22:48.954317+00:00"
+  },
+  {
+    "name": "browser-forced-refusals",
+    "pressure": true,
+    "inject": true,
+    "startedAt": "2026-10-21T12:22:48.955536+00:00",
+    "returncode": 0,
+    "completedAt": "2026-10-21T12:25:21.726019+00:00"
+  },
+  {
+    "name": "browser-pressure-trace",
+    "pressure": true,
+    "trace": true,
+    "startedAt": "2026-10-21T12:25:21.727582+00:00",
+    "returncode": 0,
+    "completedAt": "2026-10-21T12:27:54.499571+00:00"
+  }
+]

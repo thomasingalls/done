@@ -1,0 +1,5 @@
+{
+  "runtimeSha256": "9f1a1a240e0a862d6bd19ac738223dce177d1e5434e22a1c857c5ca13b9033f0",
+  "defaultRuntimeSha256": "4b236c45bee643dafa0f37b5d06295bca089c2a57f3b838f40ac550f5f1d05a2",
+  "difference": "Only pre-forward injected read target narrowed from first self-or-remote read to first remote batch; all production source and client bytes unchanged."
+}

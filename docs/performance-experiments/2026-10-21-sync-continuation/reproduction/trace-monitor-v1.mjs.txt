@@ -1,0 +1,5 @@
+import {writeFileSync} from 'node:fs';
+const rows=[];let overflow=0;
+Object.defineProperty(globalThis,'__publisherTipObserve',{value:row=>{if(rows.length<100000)rows.push({at:Date.now(),...row});else overflow++}});
+const write=()=>{if(process.env.TIP_TRACE_FILE)writeFileSync(process.env.TIP_TRACE_FILE,JSON.stringify({rows,overflow,scope:'Observer-only anonymous capture/publisher ordinals and closed reasons; not ordinary performance timing.'},null,2)+'\n')};
+process.on('exit',write);process.on('publisher-tip-flush',write);

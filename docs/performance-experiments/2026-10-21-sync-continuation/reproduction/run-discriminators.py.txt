@@ -1,0 +1,7 @@
+from pathlib import Path
+import os,json,subprocess
+r=Path(__file__).parent;plan=[{'name':'full-hot-and-peer','hot':'1','other':'0','peer':'1'},{'name':'full-writers-no-peer','hot':'1','other':'1','peer':'0'},{'name':'full-other-and-peer','hot':'0','other':'1','peer':'1'}];(r/'discriminator-plan.json').write_text(json.dumps(plan,indent=2)+'\n');receipts=[]
+for run in plan:
+ env=dict(os.environ,PATH='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'],LOAD_OUTPUT=run['name'],LOAD_FIRST_WRITER=run['hot'],LOAD_OTHER_WRITER=run['other'],LOAD_PEER=run['peer'],LOAD_POSITIONS='256')
+ with (r/(run['name']+'.log')).open('w') as log:result=subprocess.run(['node',str(r/'api-load.mjs')],env=env,stdout=log,stderr=subprocess.STDOUT)
+ receipts.append({**run,'returncode':result.returncode});(r/'discriminator-runner.json').write_text(json.dumps(receipts,indent=2)+'\n');print(run['name'],result.returncode,flush=True)

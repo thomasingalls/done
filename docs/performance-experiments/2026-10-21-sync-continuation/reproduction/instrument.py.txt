@@ -1,0 +1,34 @@
+from pathlib import Path
+import json,hashlib
+r=Path(__file__).parent;p=r/'source-trace/account-service/publisherTips.ts';s=p.read_text()
+header='''
+// Disposable diagnostic: anonymous, bounded observer; no authority or semantic output.
+const diagnosticPublishers = new Map<string, number>();
+const diagnosticCaptures = new WeakMap<object, number>();
+let diagnosticNextCapture = 0;
+function observeTip(kind: string, key?: string, capture?: object, detail: Record<string, unknown> = {}) {
+  try {
+    const observe = (globalThis as any).__publisherTipObserve;
+    if (!observe) return;
+    if (key !== undefined && !diagnosticPublishers.has(key)) diagnosticPublishers.set(key, diagnosticPublishers.size);
+    if (capture && !diagnosticCaptures.has(capture)) diagnosticCaptures.set(capture, ++diagnosticNextCapture);
+    observe({kind, publisher:key === undefined ? null : diagnosticPublishers.get(key), capture:capture ? diagnosticCaptures.get(capture) : null, ...detail});
+  } catch { /* Observations cannot grant authority or alter refusal. */ }
+}
+'''
+anchor="export class LedgerIntegrityError extends Error {";assert s.count(anchor)==1;s=s.replace(anchor,header+'\n'+anchor)
+def replace(a,b):
+ global s
+ assert s.count(a)==1,(a,s.count(a));s=s.replace(a,b)
+replace('const invalidate = () => {\n    revision++;', '''const invalidate = (reason = 'external-clear', key?: string, capture?: object) => {
+    observeTip('invalidate', key, capture, {reason, revision, nextRevision:revision+1, callers: reason === 'external-clear' ? new Error().stack?.split('\\n').slice(2,6).map(s=>s.trim()) : undefined});
+    revision++;''')
+replace('      version = current;\n      invalidate();','      version = current;\n      invalidate(\'data-version\');')
+replace('              invalidate();\n              notify();',"              invalidate('audit-result');\n              notify();")
+replace('          invalidate();\n          notify();',"          invalidate('audit-error');\n          notify();")
+replace('      closed = true;\n      invalidate();',"      closed = true;\n      invalidate('close');")
+replace('      return s;\n    },\n    prefix',"      observeTip('capture', key, s, {revision, count, prefix:prefix?.count ?? 0, after:options?.after ?? null, position:options?.position ?? null});\n      return s;\n    },\n    prefix")
+replace('      if (c.revision !== revision || c.version !== checkVersion()) return false;',"      if (c.revision !== revision || c.version !== checkVersion()) { observeTip('guard-stale', c.key, s, {captureRevision:c.revision,revision}); return false; }")
+replace('      if (!same) invalidate(); // A detected race must not leave its preliminary tip installed.',"      if (!same) invalidate('fingerprint', c.key, s); // A detected race must not leave its preliminary tip installed.\n      observeTip(same ? 'guard-same' : 'guard-fingerprint', c.key, s, {captureRevision:c.revision, revision});")
+p.write_text(s)
+print(json.dumps({'changedFile':'account-service/publisherTips.ts','before':hashlib.sha256((r/'source-D/account-service/publisherTips.ts').read_bytes()).hexdigest(),'after':hashlib.sha256(p.read_bytes()).hexdigest()}))

@@ -1,0 +1,380 @@
+import { membershipEnabled } from './membershipStore.ts';
+import { createHash } from 'node:crypto';
+import type { AuthorityPin } from '../account-protocol/authority.ts';
+import type { DatabaseSync } from 'node:sqlite';
+import { Worker } from 'node:worker_threads';
+import {
+  snapshot,
+  snapshotBytes,
+  type Snapshot,
+  type DeliveryAuthority,
+  type DecisionRow,
+} from './delivery.ts';
+import { parseWitness } from './deliveryWitness.ts';
+
+export class LedgerIntegrityError extends Error {
+  readonly code = 'ledger-integrity';
+  constructor() {
+    super('Publisher ledger integrity failure');
+  }
+}
+export interface VerifiedPrefix {
+  count: number;
+  commitment: string;
+  through: number;
+  previous: string;
+}
+interface Tip extends VerifiedPrefix {
+  context: string;
+  witness: string | null;
+  workspace: string;
+  publisher: string;
+  pin: AuthorityPin;
+  audited: number;
+  extendable: boolean;
+}
+interface Capture {
+  key: string;
+  context: string;
+  revision: number;
+  version: number;
+  count: number;
+  prefix?: VerifiedPrefix;
+  after?: number;
+  limit?: number;
+  served: DecisionRow[];
+  fingerprint: string;
+  terminal: boolean;
+}
+const MAX_PUBLISHERS = 128,
+  MAX_BYTES = 16 * 1024 * 1024,
+  AUDIT_ROWS = 256;
+const witness = (s: Snapshot) =>
+  (s.publisher ? s.publisherWitness : s.promotion.delivery_witness) ?? null;
+export const publisherContext = (s: Snapshot) =>
+  createHash('sha256')
+    .update(
+      JSON.stringify({
+        ...s,
+        rows: undefined,
+        publisherWitness: undefined,
+        promotion: { ...s.promotion, delivery_witness: undefined },
+      }),
+    )
+    .digest('hex');
+function countRows(db: DatabaseSync, s: Snapshot): number {
+  const r = s.publisher
+    ? db
+        .prepare(
+          'SELECT count(*) AS n FROM publisher_decisions WHERE account_id=? AND credential_id=?',
+        )
+        .get(s.account.id, s.publisher)
+    : db
+        .prepare('SELECT count(*) AS n FROM delivery_decisions WHERE account_id=?')
+        .get(s.account.id);
+  return Number(r!.n);
+}
+function servedRows(db: DatabaseSync, s: Snapshot, after: number, limit: number): DecisionRow[] {
+  // Include the predecessor to authenticate its signed link, without replaying its ancestry.
+  return (s.publisher
+    ? db
+        .prepare(
+          "SELECT account_id,ordinal,position,digest,envelope_epoch,kind,submission,response FROM publisher_decisions WHERE account_id=? AND credential_id=? AND kind='accepted' AND position>=? ORDER BY position LIMIT ?",
+        )
+        .all(s.account.id, s.publisher, Math.max(1, after), limit + (after ? 1 : 0))
+    : db
+        .prepare(
+          "SELECT * FROM delivery_decisions WHERE account_id=? AND kind='accepted' AND position>=? ORDER BY position LIMIT ?",
+        )
+        .all(
+          s.account.id,
+          Math.max(1, after),
+          limit + (after ? 1 : 0),
+        )) as unknown as DecisionRow[];
+}
+/** Core-private evidence. Captures are immutable copies owned by one asynchronous operation. */
+export function createPublisherTips(db: DatabaseSync, path: string, signal: () => void) {
+  const tips = new Map<string, Tip>(),
+    poisoned = new Set<string>();
+  const captures = new WeakMap<Snapshot, Capture>();
+  let version = Number(db.prepare('PRAGMA data_version').get()!.data_version),
+    revision = 0,
+    closed = false;
+  let verifiedRows = 0,
+    servedChecks = 0,
+    fullCensuses = 0,
+    auditsStarted = 0,
+    auditsCompleted = 0;
+  let worker: Worker | undefined;
+  const queued = new Map<string, Tip>();
+  let active: { key: string; tip: Tip; revision: number } | undefined;
+  const invalidate = () => {
+    revision++;
+    tips.clear();
+    queued.clear();
+  };
+  const checkVersion = () => {
+    const current = Number(db.prepare('PRAGMA data_version').get()!.data_version);
+    if (version !== current) {
+      version = current;
+      invalidate();
+    }
+    return current;
+  };
+  const notify = () => {
+    try {
+      signal();
+    } catch {
+      /* Diagnostics cannot grant authority. */
+    }
+  };
+  const fail = (key: string): never => {
+    if (!poisoned.has(key)) {
+      poisoned.add(key);
+      tips.delete(key);
+      queued.delete(key);
+      notify();
+    }
+    throw new LedgerIntegrityError();
+  };
+  const check = (key: string) => {
+    if (closed) throw Error('Closed publisher verifier');
+    // Bound failure bookkeeping too. An exhausted quarantine fails the owner closed.
+    if (poisoned.has(key) || poisoned.size >= MAX_PUBLISHERS) throw new LedgerIntegrityError();
+  };
+  const pump = () => {
+    if (closed || active || !queued.size) return;
+    const [key, tip] = queued.entries().next().value!;
+    queued.delete(key);
+    if (poisoned.has(key)) {
+      pump();
+      return;
+    }
+    active = { key, tip, revision };
+    auditsStarted++;
+    // Only the service pin and expected snapshot digest cross this boundary.
+    // The worker re-establishes branded public authority in its own JavaScript realm.
+    worker = new Worker(new URL('./publisherAudit.worker.ts', import.meta.url), {
+      workerData: {
+        path,
+        membership: membershipEnabled(db),
+        workspace: tip.workspace,
+        publisher: tip.publisher,
+        context: tip.context,
+        pin: tip.pin,
+      },
+    });
+    const finish = (result: { kind: string; count?: number }) => {
+      const job = active;
+      worker = undefined;
+      active = undefined;
+      if (!closed && job && job.revision === revision) {
+        const ownsRead = !db.isTransaction;
+        try {
+          if (ownsRead) db.exec('BEGIN');
+          const current = snapshot(
+            db,
+            job.tip.workspace,
+            job.tip.publisher,
+            Number.MAX_SAFE_INTEGER,
+          );
+          // Changed membership or pruning may make a completed snapshot obsolete.
+          if (current && publisherContext(current) === job.tip.context) {
+            if (result.kind === 'mismatch') {
+              try {
+                fail(job.key);
+              } catch {
+                /* quarantine retained */
+              }
+            } else if (result.kind === 'verified') {
+              auditsCompleted++;
+              const latest = tips.get(job.key);
+              if (latest) latest.audited = Math.max(latest.audited, result.count ?? 0);
+            } else {
+              invalidate();
+              notify();
+            }
+          }
+        } catch {
+          // An audit completion cannot crash the serving owner or count unreadable state as good.
+          invalidate();
+          notify();
+        } finally {
+          if (ownsRead && db.isTransaction) db.exec('ROLLBACK');
+        }
+      }
+      pump();
+    };
+    let result = { kind: 'failed' } as { kind: string; count?: number };
+    worker.once('message', (value) => {
+      result = value;
+    });
+    worker.once('error', () => {
+      result = { kind: 'failed' };
+    });
+    worker.once('exit', () => finish(result));
+  };
+  const queue = (key: string, tip: Tip) => {
+    if (active?.key !== key) queued.set(key, tip);
+    pump();
+  };
+  const fingerprint = (s: Snapshot, count: number, served: DecisionRow[]) =>
+    JSON.stringify([snapshotBytes(s), count, snapshotBytes({ ...s, rows: served })]);
+  return {
+    invalidate,
+    close() {
+      closed = true;
+      invalidate();
+      void worker?.terminate();
+    },
+    audit() {
+      for (const [key, tip] of tips) queue(key, tip);
+    },
+    status: () => ({
+      publishers: tips.size,
+      quarantined: poisoned.size,
+      auditActive: !!active,
+      auditsQueued: queued.size,
+      retainedBytes: [...tips.values()].reduce(
+        (bytes, tip) => bytes + 2 * JSON.stringify(tip).length,
+        0,
+      ),
+      verifiedRows,
+      servedChecks,
+      fullCensuses,
+      auditsStarted,
+      auditsCompleted,
+    }),
+    checkedServed() {
+      servedChecks++;
+    },
+    capture(
+      workspace: string,
+      publisher?: string,
+      options?: { after?: number; limit?: number; position?: number },
+    ) {
+      checkVersion();
+      const header = snapshot(db, workspace, publisher, Number.MAX_SAFE_INTEGER);
+      if (!header) return null;
+      const id = publisher ?? JSON.parse(header.promotion.request).candidate.signer;
+      const key = header.account.id + ':' + id;
+      check(key);
+      const context = publisherContext(header),
+        count = countRows(db, header);
+      let tip = tips.get(key);
+      if (tip?.context !== context) {
+        tips.delete(key);
+        queued.delete(key);
+        tip = undefined;
+      }
+      try {
+        const retained = witness(header),
+          events = retained === null ? 0 : parseWitness(JSON.parse(retained)).events;
+        if (
+          events !== count ||
+          (tip && (count < tip.count || (count === tip.count && retained !== tip.witness)))
+        )
+          return fail(key);
+      } catch {
+        return fail(key);
+      }
+      // Exact historical retries and refusal ancestry retain the complete reference path.
+      if (options?.position !== undefined && tip && options.position <= tip.through)
+        tip = undefined;
+      const prefix = tip?.extendable
+        ? {
+            count: tip.count,
+            commitment: tip.commitment,
+            through: tip.through,
+            previous: tip.previous,
+          }
+        : undefined;
+      const s = snapshot(db, workspace, publisher, prefix?.count ?? 0)!;
+      const served =
+        options?.after === undefined ? [] : servedRows(db, s, options.after, options.limit!);
+      captures.set(s, {
+        key,
+        context,
+        revision,
+        version,
+        count,
+        prefix,
+        after: options?.after,
+        limit: options?.limit,
+        served,
+        terminal: s.rows.at(-1)?.kind === 'accepted' || !s.rows.length,
+        fingerprint: fingerprint(s, count, served),
+      });
+      return s;
+    },
+    prefix(s: Snapshot) {
+      check(s.account.id + ':' + (s.publisher ?? JSON.parse(s.promotion.request).candidate.signer));
+      return captures.get(s)?.prefix;
+    },
+    served(s: Snapshot) {
+      return captures.get(s)?.served;
+    },
+    guard(s: Snapshot) {
+      const c = captures.get(s);
+      if (!c) return false;
+      check(c.key);
+      if (c.revision !== revision || c.version !== checkVersion()) return false;
+      const current = snapshot(db, s.promotion.workspace_id, s.publisher, c.prefix?.count ?? 0);
+      if (!current) return false;
+      const selected = c.after === undefined ? [] : servedRows(db, current, c.after, c.limit!);
+      const same = fingerprint(current, countRows(db, current), selected) === c.fingerprint;
+      if (!same) invalidate(); // A detected race must not leave its preliminary tip installed.
+      return same;
+    },
+    remember(s: Snapshot, auth: DeliveryAuthority, result: VerifiedPrefix) {
+      const c = captures.get(s);
+      if (!c || closed || c.revision !== revision || c.version !== checkVersion()) return;
+      if (result.count !== c.count) return fail(c.key);
+      verifiedRows += s.rows.length;
+      if (!c.prefix) fullCensuses++;
+      if (poisoned.has(c.key)) return;
+      const old = tips.get(c.key);
+      if (old && old.count > result.count) return;
+      const tip = {
+        ...result,
+        context: c.context,
+        witness: witness(s),
+        workspace: s.promotion.workspace_id,
+        publisher: auth.credential,
+        pin: { ...auth.pin },
+        audited: old?.audited ?? result.count,
+      };
+      // Never retain the census maps or historical bytes through result's structural type.
+      const compact: Tip = {
+        count: tip.count,
+        commitment: tip.commitment,
+        through: tip.through,
+        previous: tip.previous,
+        context: tip.context,
+        witness: tip.witness,
+        workspace: tip.workspace,
+        publisher: tip.publisher,
+        pin: { ...auth.pin },
+        audited: tip.audited,
+        extendable: c.terminal,
+      };
+      tips.delete(c.key);
+      tips.set(c.key, compact);
+      let bytes = 0;
+      for (const v of tips.values()) bytes += 2 * JSON.stringify(v).length;
+      while (tips.size > MAX_PUBLISHERS || bytes > MAX_BYTES) {
+        const first = tips.keys().next().value!;
+        bytes -= 2 * JSON.stringify(tips.get(first)).length;
+        tips.delete(first);
+        queued.delete(first);
+      }
+      if (tips.has(c.key) && compact.count - compact.audited >= AUDIT_ROWS) queue(c.key, compact);
+    },
+    failure(s: Snapshot): never {
+      return fail(
+        captures.get(s)?.key ??
+          s.account.id + ':' + (s.publisher ?? JSON.parse(s.promotion.request).candidate.signer),
+      );
+    },
+  };
+}

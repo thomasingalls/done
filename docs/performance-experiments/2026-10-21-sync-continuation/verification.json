@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "priorPacketChecksumCounts": {
+    "2026-10-21-live-sync-attribution": 139,
+    "2026-10-21-ordinary-receive-batching": 207,
+    "2026-10-21-sync-capacity": 145
+  },
+  "priorThreePatchesExact": true,
+  "allPriorRuntimeAndTestBytesExact": true,
+  "defaultProductionIdentities": 803,
+  "clientBuildIdentities": 110,
+  "appendOnlyDocuments": [
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/performance.md"
+  ],
+  "otherSeatProgressAndDeferredFormattingExact": true,
+  "browserJourneysPassed": 9,
+  "allDataGuardsPassed": true,
+  "knownReadAndSubmitRefusalControlContinued": true,
+  "naturalStateChangeBrowserExposures": 0,
+  "rawNativeRuns": 14,
+  "failedRawRunsPreserved": 5,
+  "controlledSameConnectionSchedules": 2,
+  "coldStoreAudits": 14,
+  "unacknowledgedStoredWrites": 0,
+  "unitCasesPassed": {
+    "publisher-tip-invariants": 14,
+    "default-budget-invariants": 17
+  },
+  "artifactProvenanceEntriesVerified": 237,
+  "knownExactPrivateValuesChecked": 35,
+  "matches": 0,
+  "planningObligations": 878,
+  "unresolvedObligations": 334,
+  "sourceHead": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "realStagingEmpty": true,
+  "scope": "Evidence integrity and bounded local continuation/mechanism tests, not production capacity/frequency, absence of starvation or generalized security/release qualification. No staging/signing/commit/push/merge/preview restart/deployment."
+}

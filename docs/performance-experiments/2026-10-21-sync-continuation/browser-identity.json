@@ -1,0 +1,24 @@
+{
+  "runtime": "4b236c45bee643dafa0f37b5d06295bca089c2a57f3b838f40ac550f5f1d05a2",
+  "probes": {
+    "D": {
+      "devices.ts": "9a6992af600a27d7b58e32d557782289ac67350c148cf25a062670208de56226",
+      "seed-initial.config.ts": "fe3a2546a7e6b656336ce3d69ba0cdf1a843855d339eb82d46d1ff6537dd911f",
+      "seed-initial.spec.ts": "6cd7055e89710516da1c7bd21ec3259d6c94861cfd70962f7c36e45883df4b47",
+      "runtime.mjs": "4b236c45bee643dafa0f37b5d06295bca089c2a57f3b838f40ac550f5f1d05a2",
+      "inspect-fixture.mjs": "1371c1bd15f0c97b0d0647e282ad63b5063424a37b8af3b78269850a08b05732",
+      "playwright.config.ts": "ba5b49483886cc79ce9110f487355f3b177098a736285ffe3d829b0b3e23a4c9",
+      "live-sync.spec.ts": "555c44e273cbb51000da971742aadb6ec5bc6798b7603a901519e140de861046"
+    },
+    "trace": {
+      "devices.ts": "9a6992af600a27d7b58e32d557782289ac67350c148cf25a062670208de56226",
+      "seed-initial.config.ts": "fe3a2546a7e6b656336ce3d69ba0cdf1a843855d339eb82d46d1ff6537dd911f",
+      "seed-initial.spec.ts": "6cd7055e89710516da1c7bd21ec3259d6c94861cfd70962f7c36e45883df4b47",
+      "runtime.mjs": "4b236c45bee643dafa0f37b5d06295bca089c2a57f3b838f40ac550f5f1d05a2",
+      "inspect-fixture.mjs": "1371c1bd15f0c97b0d0647e282ad63b5063424a37b8af3b78269850a08b05732",
+      "playwright.config.ts": "ba5b49483886cc79ce9110f487355f3b177098a736285ffe3d829b0b3e23a4c9",
+      "live-sync.spec.ts": "555c44e273cbb51000da971742aadb6ec5bc6798b7603a901519e140de861046"
+    }
+  },
+  "clientDist": "Exact previous frozen patch02 build; no new client instrumentation."
+}
