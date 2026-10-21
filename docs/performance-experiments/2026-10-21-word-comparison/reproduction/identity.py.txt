@@ -1,0 +1,44 @@
+from pathlib import Path
+import json,subprocess,hashlib,re
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');start=json.loads((r/'starting.json').read_text());git=['git','--git-dir=/private/tmp/done-dispatch-calibration-20261021/patch10-index.git'];sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();out=lambda args:subprocess.check_output(args)
+allowed={'test/verifiedRecords.test.ts','test/release-validation/general-tests.test.mjs','test/release-validation/generated-tests.test.mjs','test/release-validation/vitest.test.mjs','docs/release-validation-graph.json','docs/release-validation-manifest.json','docs/completed.md','docs/decisions.md','docs/performance.md'}
+changed=[];unchanged=0;tests=0
+for row in out(git+['ls-tree','-r',start['priorTree']]).decode().splitlines():
+ meta,f=row.split('\t',1);before=meta.split()[2];b=(repo/f).read_bytes();after=hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()
+ if f.startswith('test/'):tests+=1
+ if before!=after:assert f in allowed,f;changed.append(f)
+ else:unchanged+=1
+for f in ['docs/completed.md','docs/decisions.md','docs/performance.md']:assert(repo/f).read_bytes().startswith(out(git+['show',start['priorTree']+':'+f]))
+# Old test bodies are byte-for-byte, after removing only the expanded import and six appended cases.
+old=(r/'tests-before.ts.txt').read_text();new=(repo/'test/verifiedRecords.test.ts').read_text();new=new[:new.index("describe('exact comparison span boundaries'")];pattern=r"import \{[\s\S]*?\} from '../src/crdt/verifiedRecords';";oldImport=re.search(pattern,old).group();newImport=re.search(pattern,new).group();assert new.replace(newImport,oldImport)==old+'\n'
+# Narrow census expectation edits only, if discovery actually needed them.
+for f in [x for x in changed if x.startswith('test/')and x!='test/verifiedRecords.test.ts']:
+ before=out(git+['show',start['priorTree']+':'+f]).decode();after=(repo/f).read_text();assert after==before.replace('2481','2487'),f
+original=json.loads(out(git+['show',start['priorTree']+':docs/release-validation-manifest.json']));current=json.loads((repo/'docs/release-validation-manifest.json').read_text());by={x['id']:x for x in current['rows']};assert len(original['rows'])==len(current['rows'])==881;assert original['unresolved']==current['unresolved'];manifestChanges=[]
+for row in original['rows']:
+ now=by[row['id']]
+ if row!=now:
+  if row['id']=='test:test/release-validation/general-tests.test.mjs':assert now==json.loads(json.dumps(row).replace('2481','2487'))
+  else:
+   assert row['id']=='test:test/verifiedRecords.test.ts';a=row['stage']['expect']['cases'];b=now['stage']['expect']['cases'];assert b[:len(a)]==a and len(b)==len(a)+6
+   stripped=json.loads(json.dumps(now));stripped['stage']['expect']['cases']=a;assert stripped==row
+  manifestChanges.append(row['id'])
+assert set(manifestChanges)=={'test:test/verifiedRecords.test.ts','test:test/release-validation/general-tests.test.mjs'}
+# Same803 runtime files and original helper; service clones differ only in the planned helper and temporary policy.
+source=json.loads((r/'source-identity.json').read_text());runtimeDifferences=[]
+for f,h in source['R']['sha256'].items():
+ assert sha(r/'source-R'/f)==h
+ assert sha(r/'source-C'/f)==source['C']['sha256'][f]
+ if source['C']['sha256'][f]!=h:runtimeDifferences.append(f)
+assert runtimeDifferences==['src/crdt/verifiedRecords.ts'];assert(repo/'src/crdt/verifiedRecords.ts').read_bytes()==(r/'verifiedRecords-before.ts.txt').read_bytes()
+browser=json.loads((r/'browser-identity.json').read_text())
+for arm in ['R','C']:
+ assert {p.name:sha(p)for p in(r/('source-'+arm)/'test/live-sync-attribution').iterdir()if p.is_file()}==browser['browserClosure']
+ assert {str(p.relative_to(r/('source-'+arm)/'dist')):sha(p)for p in(r/('source-'+arm)/'dist').rglob('*')if p.is_file()}==browser['dist'][arm]
+roots=[]
+for run in json.loads((r/'browser-runner.json').read_text()):roots+=json.loads((r/run['name']/'result.json').read_text())['roots']
+assert len({x['sha256']for x in roots})==1
+for root in roots:assert sha(Path(root['executable']))==root['sha256']
+for p in start['priorPatches']:assert sha(Path(p['patch']))==p['sha256']
+index=Path(out(['git','-C',str(repo),'rev-parse','--git-path','index']).decode().strip());assert sha(index)==json.loads((r/'index-metadata-review.json').read_text())['currentSha256'];assert out(['git','-C',str(repo),'diff','--cached','--name-only'])==b''
+result={'status':'passed','oldTestBlobs':tests,'priorBlobsUnchanged':unchanged,'changedPathsFromPhase10':changed,'allPriorVerifiedRecordTestBodiesByteExact':True,'newCases':6,'allOther879ManifestRowsExact':True,'manifestCaseChanges':manifestChanges,'allEightOldVerifiedCasesExact':True,'generalCaseTitleUpdatesOnlyItsExactDenominator':True,'obligations':881,'unresolved':len(current['unresolved']),'runtimeCandidateDifferences':runtimeDifferences,'workingRuntimeAllUnchanged':True,'workingDefaults':'16/64','temporaryComparisonPolicy':'32/128','priorPatches01Through10Unchanged':True,'actualBrowserBinary':roots[0],'finalTestSha256':sha(repo/'test/verifiedRecords.test.ts'),'finalGeneralCensusTestSha256':sha(repo/'test/release-validation/general-tests.test.mjs'),'realIndexMetadataReview':json.loads((r/'index-metadata-review.json').read_text()),'noRealStaging':True};(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

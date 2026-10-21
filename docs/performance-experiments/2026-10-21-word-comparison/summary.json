@@ -1,0 +1,495 @@
+{
+  "microGates": {
+    "alignedEqualAndLateMismatchAtLeast20Percent": true,
+    "cooperativeAtLeast20Percent": true,
+    "allControlsNonRegression": true
+  },
+  "alignedPairedImprovementPercent": [
+    68.55525323752141,
+    67.51411680539127,
+    67.34694876222254
+  ],
+  "cooperativePairedImprovementPercent": [
+    84.21051706964006,
+    71.111085679796,
+    72.09305729718125
+  ],
+  "pairs": [
+    {
+      "R": "1-R-catchup",
+      "C": "2-C-catchup",
+      "localP95R": 13.900146484375,
+      "localP95C": 7.2001953125,
+      "peerP95R": 36286.2998046875,
+      "peerP95C": 55906.900146484375,
+      "keydownHandlerP95R": 12.39990234375,
+      "keydownHandlerP95C": 2.099853515625,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": false,
+        "catchup": false
+      },
+      "catchupR": 37223,
+      "catchupC": 56038,
+      "passed": false
+    },
+    {
+      "R": "4-R-catchup",
+      "C": "3-C-catchup",
+      "localP95R": 9.800048828125,
+      "localP95C": 8.099853515625,
+      "peerP95R": 33637.10009765625,
+      "peerP95C": 52299.300048828125,
+      "keydownHandlerP95R": 7.800048828125,
+      "keydownHandlerP95C": 1.5,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": false,
+        "catchup": false
+      },
+      "catchupR": 34133,
+      "catchupC": 53435,
+      "passed": false
+    },
+    {
+      "R": "5-R-catchup",
+      "C": "6-C-catchup",
+      "localP95R": 14.7998046875,
+      "localP95C": 6.5,
+      "peerP95R": 33974.199951171875,
+      "peerP95C": 52773.5,
+      "keydownHandlerP95R": 13.39990234375,
+      "keydownHandlerP95C": 1.89990234375,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": false,
+        "catchup": false
+      },
+      "catchupR": 35172,
+      "catchupC": 53909,
+      "passed": false
+    },
+    {
+      "R": "7-R-foreground",
+      "C": "8-C-foreground",
+      "localP95R": 7.199951171875,
+      "localP95C": 5.39990234375,
+      "peerP95R": 2259.60009765625,
+      "peerP95C": 2259.60009765625,
+      "keydownHandlerP95R": 1.300048828125,
+      "keydownHandlerP95C": 0.89990234375,
+      "checks": {
+        "localTyping": true,
+        "peerTyping": true
+      },
+      "passed": true
+    }
+  ],
+  "referenceDriftPercent": 9.05282278147248,
+  "appTimingAcceptance": false,
+  "allEightFullDataGuards": true,
+  "workingHelperRestoredExactly": true,
+  "rates": "16/64 unchanged",
+  "rows": [
+    {
+      "name": "1-R-catchup",
+      "mode": "catchup",
+      "arm": "R",
+      "catchupMs": 37223,
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 2.400146484375,
+          "p95": 13.900146484375,
+          "min": 1.5,
+          "max": 22.699951171875
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 28353.5,
+          "p95": 36286.2998046875,
+          "min": 19652.099853515625,
+          "max": 37185.2998046875
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.39990234375,
+          "p95": 12.39990234375,
+          "min": 0.10009765625,
+          "max": 20.800048828125
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 0.5,
+          "p95": 1.5,
+          "min": 0.300048828125,
+          "max": 2.60009765625
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 9
+        }
+      },
+      "networkStatuses": {
+        "200": 205,
+        "429": 12
+      },
+      "capacityRefusalsByDevicePath": {
+        "B:/account/delivery/read-v2-batch": 12
+      },
+      "offlineReopenMs": 3891
+    },
+    {
+      "name": "2-C-catchup",
+      "mode": "catchup",
+      "arm": "C",
+      "catchupMs": 56038,
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 2.5,
+          "p95": 7.2001953125,
+          "min": 1.300048828125,
+          "max": 14.10009765625
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 47981.60009765625,
+          "p95": 55906.900146484375,
+          "min": 39260.199951171875,
+          "max": 56807.900146484375
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.39990234375,
+          "p95": 2.099853515625,
+          "min": 0.10009765625,
+          "max": 12.699951171875
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 0.599853515625,
+          "p95": 1.60009765625,
+          "min": 0.300048828125,
+          "max": 2.39990234375
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 3
+        }
+      },
+      "networkStatuses": {
+        "200": 217,
+        "429": 31
+      },
+      "capacityRefusalsByDevicePath": {
+        "B:/account/delivery/read-v2-batch": 31
+      },
+      "offlineReopenMs": 3684
+    },
+    {
+      "name": "3-C-catchup",
+      "mode": "catchup",
+      "arm": "C",
+      "catchupMs": 53435,
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 2.2998046875,
+          "p95": 8.099853515625,
+          "min": 1.39990234375,
+          "max": 17.2998046875
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 44374.89990234375,
+          "p95": 52299.300048828125,
+          "min": 35649.300048828125,
+          "max": 53200.300048828125
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.300048828125,
+          "p95": 1.5,
+          "min": 0.099853515625,
+          "max": 12.5
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 0.5,
+          "p95": 1.5,
+          "min": 0.39990234375,
+          "max": 2.699951171875
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 2
+        }
+      },
+      "networkStatuses": {
+        "200": 214,
+        "429": 28
+      },
+      "capacityRefusalsByDevicePath": {
+        "B:/account/delivery/read-v2-batch": 28
+      },
+      "offlineReopenMs": 3686
+    },
+    {
+      "name": "4-R-catchup",
+      "mode": "catchup",
+      "arm": "R",
+      "catchupMs": 34133,
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 2.300048828125,
+          "p95": 9.800048828125,
+          "min": 1.39990234375,
+          "max": 23.300048828125
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 25689.800048828125,
+          "p95": 33637.10009765625,
+          "min": 16989.60009765625,
+          "max": 34537.10009765625
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.300048828125,
+          "p95": 7.800048828125,
+          "min": 0.099853515625,
+          "max": 21.900146484375
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 0.5,
+          "p95": 1.39990234375,
+          "min": 0.39990234375,
+          "max": 1.5
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 3
+        }
+      },
+      "networkStatuses": {
+        "200": 206,
+        "429": 10
+      },
+      "capacityRefusalsByDevicePath": {
+        "B:/account/delivery/read-v2-batch": 10
+      },
+      "offlineReopenMs": 3980
+    },
+    {
+      "name": "5-R-catchup",
+      "mode": "catchup",
+      "arm": "R",
+      "catchupMs": 35172,
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 2.39990234375,
+          "p95": 14.7998046875,
+          "min": 1.5,
+          "max": 22.199951171875
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 26017.39990234375,
+          "p95": 33974.199951171875,
+          "min": 17332.5,
+          "max": 34874.199951171875
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.300048828125,
+          "p95": 13.39990234375,
+          "min": 0.099853515625,
+          "max": 20.0
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 0.599853515625,
+          "p95": 1.39990234375,
+          "min": 0.39990234375,
+          "max": 1.89990234375
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 3
+        }
+      },
+      "networkStatuses": {
+        "200": 205,
+        "429": 10
+      },
+      "capacityRefusalsByDevicePath": {
+        "B:/account/delivery/read-v2-batch": 10
+      },
+      "offlineReopenMs": 3946
+    },
+    {
+      "name": "6-C-catchup",
+      "mode": "catchup",
+      "arm": "C",
+      "catchupMs": 53909,
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 2.300048828125,
+          "p95": 6.5,
+          "min": 1.39990234375,
+          "max": 14.599853515625
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 44824.199951171875,
+          "p95": 52773.5,
+          "min": 36101.39990234375,
+          "max": 53675.5
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.300048828125,
+          "p95": 1.89990234375,
+          "min": 0.099853515625,
+          "max": 12.900146484375
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 0.5,
+          "p95": 1.5,
+          "min": 0.300048828125,
+          "max": 1.89990234375
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 3
+        }
+      },
+      "networkStatuses": {
+        "200": 215,
+        "429": 28
+      },
+      "capacityRefusalsByDevicePath": {
+        "B:/account/delivery/read-v2-batch": 28
+      },
+      "offlineReopenMs": 3675
+    },
+    {
+      "name": "7-R-foreground",
+      "mode": "foreground",
+      "arm": "R",
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 4.699951171875,
+          "p95": 7.199951171875,
+          "min": 1.5,
+          "max": 7.89990234375
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 1334.300048828125,
+          "p95": 2259.60009765625,
+          "min": 283.300048828125,
+          "max": 2431.60009765625
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.5,
+          "p95": 1.300048828125,
+          "min": 0.099853515625,
+          "max": 4.699951171875
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 1.199951171875,
+          "p95": 1.5,
+          "min": 0.39990234375,
+          "max": 2.5
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 2
+        }
+      },
+      "networkStatuses": {
+        "200": 170
+      },
+      "capacityRefusalsByDevicePath": {},
+      "offlineReopenMs": 1788
+    },
+    {
+      "name": "8-C-foreground",
+      "mode": "foreground",
+      "arm": "C",
+      "metrics": {
+        "offerToDOM": {
+          "n": 120,
+          "p50": 2.60009765625,
+          "p95": 5.39990234375,
+          "min": 1.60009765625,
+          "max": 7.300048828125
+        },
+        "peerDOM": {
+          "n": 120,
+          "p50": 1328,
+          "p95": 2259.60009765625,
+          "min": 277,
+          "max": 2492.900146484375
+        },
+        "keydownStampToHandler": {
+          "n": 120,
+          "p50": 0.300048828125,
+          "p95": 0.89990234375,
+          "min": 0.099853515625,
+          "max": 3.2001953125
+        },
+        "beforeinputToDOM": {
+          "n": 120,
+          "p50": 0.60009765625,
+          "p95": 1.300048828125,
+          "min": 0.39990234375,
+          "max": 1.7001953125
+        },
+        "offerLateness": {
+          "n": 120,
+          "p50": 1,
+          "p95": 2,
+          "min": -1,
+          "max": 6
+        }
+      },
+      "networkStatuses": {
+        "200": 172
+      },
+      "capacityRefusalsByDevicePath": {},
+      "offlineReopenMs": 2312
+    }
+  ]
+}

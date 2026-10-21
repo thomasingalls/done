@@ -1,0 +1,4 @@
+import {createRequire} from 'node:module';
+const root='/private/tmp/done-word-comparison-20261021',require=createRequire('/Users/thomasingalls/.codex/worktrees/7fda/done/package.json');
+const {build}=await import(require.resolve('vite'));
+for(const arm of ['R','C'])await build({configFile:false,root:root+'/source-'+arm,logLevel:'warn',build:{lib:{entry:root+'/source-'+arm+'/src/crdt/verifiedRecords.ts',formats:['es'],fileName:()=> 'helper.js'},outDir:root+'/helper-'+arm,emptyOutDir:false,sourcemap:true,minify:true}});

@@ -1,7 +1,14 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import fc from 'fast-check';
-import { createVerifiedRecords, eraseVerified, copyRecords } from '../src/crdt/verifiedRecords';
+import {
+  createVerifiedRecords,
+  eraseVerified,
+  copyRecords,
+  sameBytes,
+  sameRecords,
+  sameRecordsCooperatively,
+} from '../src/crdt/verifiedRecords';
 import type { OpenedRecord } from '../src/crdt/contentRecord';
 const current = () => {};
 const rows = (): OpenedRecord[] => [
@@ -171,6 +178,164 @@ describe.each([false, true])('verified records owned=%s', (owned) => {
       await first;
     }
     expect([...cache.read(next).bytes]).toEqual([1, 2, 3]);
+    cache.clear();
+  });
+});
+
+describe('exact comparison span boundaries', () => {
+  const view = (length: number, offset: number) => {
+    const buffer = new Uint8Array(length + offset + 9).fill(211);
+    const bytes = buffer.subarray(offset, offset + length);
+    for (let i = 0; i < length; i++) bytes[i] = (i * 131 + 197) % 256;
+    return { buffer, bytes };
+  };
+  it('compares every byte and excludes surrounding bytes for aligned and unaligned subranges', () => {
+    for (const length of [0, 1, 3, 4, 7, 31, 255, 256, 257, 259, 511]) {
+      for (let a = 0; a < 4; a++)
+        for (let b = 0; b < 4; b++) {
+          const left = view(length, a),
+            right = view(length, b);
+          right.buffer[right.buffer.length - 1] = 99;
+          expect(sameBytes(left.bytes, right.bytes)).toBe(true);
+          for (let i = 0; i < length; i++) {
+            right.bytes[i]! ^= 128;
+            expect(
+              sameBytes(left.bytes, right.bytes),
+              `length=${length}, offsets=${a}/${b}, byte=${i}`,
+            ).toBe(false);
+            right.bytes[i]! ^= 128;
+          }
+        }
+    }
+  });
+  it('agrees with the independent native Buffer oracle on generated slices and changed bytes', () => {
+    fc.assert(
+      fc.property(
+        fc.uint8Array({ maxLength: 8192 }),
+        fc.integer({ min: 0, max: 3 }),
+        fc.integer({ min: 0, max: 3 }),
+        fc.nat(),
+        fc.boolean(),
+        (bytes, a, b, index, change) => {
+          const left = view(bytes.length, a).bytes,
+            right = view(bytes.length, b).bytes;
+          left.set(bytes);
+          right.set(bytes);
+          if (change && bytes.length) right[index % bytes.length]! ^= 1;
+          expect(sameBytes(left, right)).toBe(
+            Buffer.compare(Buffer.from(left), Buffer.from(right)) === 0,
+          );
+        },
+      ),
+      { seed: 211121, numRuns: 250 },
+    );
+  });
+  it('retains exact metadata, final-word, byte-tail and cooperative chunk comparisons', async () => {
+    for (const length of [65535, 65536, 65537, 131075]) {
+      const input = [{ kind: 'update' as const, gen: 1, seq: 1, bytes: view(length, 0).bytes }];
+      const other = [{ ...input[0]!, bytes: view(length, 0).bytes }];
+      let checkpoints = 0;
+      expect(
+        await sameRecordsCooperatively(input, other, () => {
+          checkpoints++;
+          return undefined;
+        }),
+      ).toBe(true);
+      expect(checkpoints).toBe(Math.ceil(length / 65536) + 1);
+      for (const at of [
+        0,
+        255,
+        256,
+        65534,
+        65535,
+        length - 4,
+        length - 3,
+        length - 2,
+        length - 1,
+      ].filter((i) => i < length)) {
+        other[0]!.bytes[at]! ^= 1;
+        expect(sameRecords(input, other)).toBe(false);
+        expect(await sameRecordsCooperatively(input, other, () => undefined)).toBe(false);
+        other[0]!.bytes[at]! ^= 1;
+      }
+      for (const changed of [
+        { ...other[0]!, kind: 'outbound' as const },
+        { ...other[0]!, gen: 2 },
+        { ...other[0]!, seq: 2 },
+        { ...other[0]!, bytes: other[0]!.bytes.subarray(1) },
+      ])
+        expect(await sameRecordsCooperatively(input, [changed], () => undefined)).toBe(false);
+    }
+  });
+  it('preserves empty, self and detached-left behavior', async () => {
+    const bytes = view(259, 0).bytes;
+    expect(sameBytes(bytes, bytes)).toBe(true);
+    expect(sameBytes(bytes, new Uint8Array(0))).toBe(false);
+    expect(sameBytes(new Uint8Array(0), new Uint8Array(0))).toBe(true);
+    const detached = new Uint8Array(4);
+    structuredClone(detached.buffer, { transfer: [detached.buffer] });
+    expect(() => sameBytes(detached, new Uint8Array(0))).toThrow();
+    expect(sameBytes(new Uint8Array(0), detached)).toBe(true);
+    expect(sameBytes(detached, bytes)).toBe(false);
+    await expect(
+      sameRecordsCooperatively(
+        [{ kind: 'update', gen: 1, seq: 1, bytes: detached }],
+        [{ kind: 'update', gen: 1, seq: 1, bytes: new Uint8Array(0) }],
+        () => undefined,
+      ),
+    ).rejects.toThrow();
+  });
+  it('still yields before later chunks and rejects a view invalidated during comparison', async () => {
+    const cache = createVerifiedRecords<{ records: OpenedRecord[] }>({ ownResults: true });
+    const input = [{ kind: 'update' as const, gen: 1, seq: 1, bytes: view(131077, 0).bytes }];
+    let retained!: OpenedRecord[];
+    await cache.verify(input, 'same', async (r) => ({ records: (retained = r) }), current);
+    let checkpoints = 0,
+      full = 0;
+    await expect(
+      cache.verify(
+        input,
+        'same',
+        async (r) => {
+          full++;
+          return { records: r };
+        },
+        current,
+        undefined,
+        () => {
+          checkpoints++;
+          if (checkpoints === 1) {
+            cache.clear();
+            return Promise.resolve();
+          }
+          return undefined;
+        },
+      ),
+    ).rejects.toThrow(/invalidated/);
+    expect(checkpoints).toBeGreaterThan(0);
+    expect(full).toBe(0);
+    expect(retained[0]!.bytes.every((b) => b === 0)).toBe(true);
+    expect(input[0]!.bytes[0]).toBe(197);
+    expect(() => cache.read(input)).toThrow();
+  });
+  it('keeps caller slices and detached projections outside verifier ownership', async () => {
+    const cache = createVerifiedRecords<{ bytes: Uint8Array }>({ ownResults: true });
+    const caller = view(515, 1),
+      input = [{ kind: 'update' as const, gen: 1, seq: 1, bytes: caller.bytes }];
+    let calls = 0;
+    const check = async (r: OpenedRecord[]) => {
+      calls++;
+      return { bytes: r[0]!.bytes };
+    };
+    await cache.verify(input, 1, check, current, undefined, () => undefined);
+    cache.read(input).bytes.fill(0);
+    caller.buffer[0] = 0;
+    await cache.verify(input, 1, check, current, undefined, () => undefined);
+    expect(calls).toBe(1);
+    caller.bytes[514]! ^= 1;
+    await cache.verify(input, 1, check, current, undefined, () => undefined);
+    expect(calls).toBe(2);
+    expect(cache.read(input).bytes[514]).toBe(caller.bytes[514]);
     cache.clear();
   });
 });

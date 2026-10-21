@@ -1,0 +1,17 @@
+from pathlib import Path
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=repo/'src/crdt/verifiedRecords.ts';s=p.read_text();assert s== (r/'verifiedRecords-before.ts.txt').read_text()
+helper='''/** Exact bounded span comparison; no retained views or skipped tail bytes. */
+const sameByteSpan = (a: Uint8Array, b: Uint8Array, start: number, end: number): boolean => {
+  let at = start;
+  if (end - start >= 256 && (a.byteOffset + start) % 4 === 0 && (b.byteOffset + start) % 4 === 0) {
+    const count = Math.floor((end - start) / 4),
+      left = new Uint32Array(a.buffer, a.byteOffset + start, count),
+      right = new Uint32Array(b.buffer, b.byteOffset + start, count);
+    for (let i = 0; i < count; i++) if (left[i] !== right[i]) return false;
+    at += count * 4;
+  }
+  for (; at < end; at++) if (a[at] !== b[at]) return false;
+  return true;
+};
+'''
+s=s.replace('export const sameBytes =',helper+'export const sameBytes =',1);s=s.replace('  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;\n  return true;\n};','  return sameByteSpan(a, b, 0, a.length);\n};',1);s=s.replace('        for (let j = at; j < end; j++) if (left.bytes[j] !== right.bytes[j]) return false;','        if (!sameByteSpan(left.bytes, right.bytes, at, end)) return false;',1);assert s.count('sameByteSpan(')==2;p.write_text(s)

@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "entriesExactHEAD": 24100,
+  "stagedChanges": 0,
+  "priorRecordedSha256": "df44841805bae41f991e101d7df8e5695c8042e2bc8e42c00016cb5b54201a3f",
+  "currentSha256": "84a8b44d849e78973269831cd12b27273b6759ccca284fc51ab3b7ed41134b8a",
+  "explanation": "The index byte hash changed during status/verification; its complete24100mode/object/path/stage entries still independently match HEAD and no changes are staged. Initial git status can refresh stat/cache metadata, but the exact writer was not logged. Record metadata-only discrepancy; do not claim byte-unchanged index."
+}

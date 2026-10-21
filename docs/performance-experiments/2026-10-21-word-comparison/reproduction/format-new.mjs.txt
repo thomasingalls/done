@@ -1,0 +1,14 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {format} from '/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/oxfmt/dist/index.js';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const opts=JSON.parse(readFileSync(root+'/.oxfmtrc.json'));
+for(const file of ['src/crdt/verifiedRecords.ts','test/verifiedRecords.test.ts']){
+ const src=readFileSync(root+'/'+file,'utf8'),result=await format(file,src,opts);if(result.errors.length)throw Error(JSON.stringify(result.errors));
+ if(file.startsWith('test/')){
+  const boundary="describe('exact comparison span boundaries'";
+  const a=src.indexOf(boundary),b=result.code.indexOf(boundary);if(a<0||b<0)throw Error('Missing boundary');
+  // Preserve all pre-existing test body text. Format only the expanded import and the appended cases.
+  const prefix=src.slice(0,a).replace(/import \{ createVerifiedRecords, eraseVerified, copyRecords, sameBytes, sameRecords, sameRecordsCooperatively \} from '..\/src\/crdt\/verifiedRecords';/,result.code.match(/import \{[\s\S]*?\} from '..\/src\/crdt\/verifiedRecords';/)[0].replace(/^import \{ describe,[\s\S]*?import fc from 'fast-check';\n/,''));
+  writeFileSync(root+'/'+file,prefix+result.code.slice(b));
+ }else writeFileSync(root+'/'+file,result.code);
+}

@@ -1,0 +1,127 @@
+[
+  {
+    "name": "reference",
+    "sourceSha256": "198de17eb6611b4ddb0c8abf5bc1df5c502273f059cbb903b9964da0c3edc907",
+    "command": [
+      "node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/private/tmp/done-word-comparison-20261021/mutation-source/vitest.config.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/reference-mutation.json"
+    ],
+    "exitCode": 0,
+    "expectedPass": true,
+    "cases": 14,
+    "failed": [],
+    "startedAt": 1792611360262,
+    "completedAt": 1792611360882
+  },
+  {
+    "name": "candidate",
+    "sourceSha256": "0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6",
+    "command": [
+      "node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/private/tmp/done-word-comparison-20261021/mutation-source/vitest.config.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/candidate-mutation.json"
+    ],
+    "exitCode": 0,
+    "expectedPass": true,
+    "cases": 14,
+    "failed": [],
+    "startedAt": 1792611360883,
+    "completedAt": 1792611361448
+  },
+  {
+    "name": "omit-tail",
+    "sourceSha256": "1bdae773fafd611fb27cc8b0b219578e082abb8bdb06379259aaea380955c95b",
+    "command": [
+      "node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/private/tmp/done-word-comparison-20261021/mutation-source/vitest.config.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/omit-tail-mutation.json"
+    ],
+    "exitCode": 1,
+    "expectedPass": false,
+    "cases": 14,
+    "failed": [
+      "exact comparison span boundaries compares every byte and excludes surrounding bytes for aligned and unaligned subranges",
+      "exact comparison span boundaries retains exact metadata, final-word, byte-tail and cooperative chunk comparisons",
+      "exact comparison span boundaries keeps caller slices and detached projections outside verifier ownership"
+    ],
+    "startedAt": 1792611361449,
+    "completedAt": 1792611361966
+  },
+  {
+    "name": "omit-final-word",
+    "sourceSha256": "4065b8e4eb1707bfda9cfc568c01cb863300f5897b2450a1d3986cb9c473c9f1",
+    "command": [
+      "node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/private/tmp/done-word-comparison-20261021/mutation-source/vitest.config.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/omit-final-word-mutation.json"
+    ],
+    "exitCode": 1,
+    "expectedPass": false,
+    "cases": 14,
+    "failed": [
+      "exact comparison span boundaries compares every byte and excludes surrounding bytes for aligned and unaligned subranges",
+      "exact comparison span boundaries retains exact metadata, final-word, byte-tail and cooperative chunk comparisons"
+    ],
+    "startedAt": 1792611361967,
+    "completedAt": 1792611362401
+  },
+  {
+    "name": "omit-span-checkpoint",
+    "sourceSha256": "78fdddef2d63de9814b63696847c83b2403ecdd6c781ea087be8bcf969cd7d3a",
+    "command": [
+      "node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/private/tmp/done-word-comparison-20261021/mutation-source/vitest.config.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/omit-span-checkpoint-mutation.json"
+    ],
+    "exitCode": 1,
+    "expectedPass": false,
+    "cases": 14,
+    "failed": [
+      "exact comparison span boundaries retains exact metadata, final-word, byte-tail and cooperative chunk comparisons"
+    ],
+    "startedAt": 1792611362402,
+    "completedAt": 1792611362955
+  },
+  {
+    "name": "omit-record-checkpoint",
+    "sourceSha256": "a70b8f7607249e549da56c1abd47ea02c6a4ce78c4e8ac25d67381b60a5ac3b4",
+    "command": [
+      "node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vitest/vitest.mjs",
+      "run",
+      "--config",
+      "/private/tmp/done-word-comparison-20261021/mutation-source/vitest.config.ts",
+      "--reporter=json",
+      "--outputFile=/private/tmp/done-word-comparison-20261021/omit-record-checkpoint-mutation.json"
+    ],
+    "exitCode": 1,
+    "expectedPass": false,
+    "cases": 14,
+    "failed": [
+      "exact comparison span boundaries retains exact metadata, final-word, byte-tail and cooperative chunk comparisons"
+    ],
+    "startedAt": 1792611362956,
+    "completedAt": 1792611363510
+  }
+]

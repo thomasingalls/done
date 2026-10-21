@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+    "--test",
+    "test/release-validation/general-tests.test.mjs",
+    "test/release-validation/generated-tests.test.mjs",
+    "test/release-validation/vitest.test.mjs",
+    "test/release-validation/manifest.test.mjs"
+  ],
+  "startedAt": 1792611487941,
+  "completedAt": 1792611523006,
+  "exitCode": 0
+}

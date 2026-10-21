@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "fullAppJourneys": 8,
+  "peerVerifiedKeys": 960,
+  "foregroundIsolatedMarkers": 60,
+  "independentReconstructedPercentiles": {
+    "1-R-catchup": {
+      "localP95": 13.900146484375,
+      "peerP95": 36286.2998046875
+    },
+    "2-C-catchup": {
+      "localP95": 7.2001953125,
+      "peerP95": 55906.900146484375
+    },
+    "3-C-catchup": {
+      "localP95": 8.099853515625,
+      "peerP95": 52299.300048828125
+    },
+    "4-R-catchup": {
+      "localP95": 9.800048828125,
+      "peerP95": 33637.10009765625
+    },
+    "5-R-catchup": {
+      "localP95": 14.7998046875,
+      "peerP95": 33974.199951171875
+    },
+    "6-C-catchup": {
+      "localP95": 6.5,
+      "peerP95": 52773.5
+    },
+    "7-R-foreground": {
+      "localP95": 7.199951171875,
+      "peerP95": 2259.60009765625
+    },
+    "8-C-foreground": {
+      "localP95": 5.39990234375,
+      "peerP95": 2259.60009765625
+    }
+  },
+  "fixedPlanCompletedWithoutOverlap": true,
+  "catchupTimingAcceptance": false,
+  "holdingFailedCandidate": true,
+  "scope": "Independent numeric reconstruction and data-guard review, not an independent security review or resumed qualification."
+}

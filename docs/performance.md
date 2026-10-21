@@ -2085,3 +2085,23 @@ Typing acceptance remains failed. Preserve16.8ms pressure1-B against16ms; later9
 Three 80 ms beforeinput faults at indices30/60/90 all trigger independent DOM/RAF/heartbeat/longtask sensors; overall p95 alone hides these2.5% stalls. None of the focus/order or independent-root comparisons consistently meets>=3ms and>=20% reduction in both blocks. Native-input controls omit new editor writes and induced background work, so do not identify a pure editor effect. Renderer queuing is supported by the input timestamp/handler gap and larger renderer timer lateness, while driver lateness remains2–3ms. Together with prior profile hotspots, this selects owner-local verification/comparison reuse as the next bounded target, preserving all trust/byte/invalidation/cleanup fences.
 
 Reference catchup drift7.33%; instrumented32.1–38.7 s catchups cannot be compared with prior different-sensor/workload timings. Keep prior 16 ms misses,16/64 defaults, all 875 old-test blobs/803 runtime files and 881/337/97 planning state exact. Six affected integrity/planning checks pass; no full-suite/general qualification, physical keyboard-to-paint, preview/publication or runtime adoption.
+
+
+## Exact comparison prototype — held after app catchup regression — 2026-10-21
+
+[Phase11 prospective contract and complete evidence](./performance-experiments/2026-10-21-word-comparison/README.md). V3 actual built helper passes all unchanged micro guards: aligned equal/late67.3–68.6%, cooperative71.1–84.2% faster; V1/V2failed early/short controls remain. No timing assertion substitutes for exact semantic tests.
+
+| Run | Catchup ms | Local offer→DOM p95 ms | Keydown stamp→handler p95 ms | HTTP429s |
+|---|---:|---:|---:|---:|
+|1-R-catchup|37223|13.9|12.4|12|
+|2-C-catchup|56038|7.2|2.1|31|
+|3-C-catchup|53435|8.1|1.5|28|
+|4-R-catchup|34133|9.8|7.8|10|
+|5-R-catchup|35172|14.8|13.4|10|
+|6-C-catchup|53909|6.5|1.9|28|
+|7-R-foreground|—|7.2|1.3|0|
+|8-C-foreground|—|5.4|0.9|0|
+
+All8full data journeys pass;960keys/60foreground markers reach peers. Fixed pressure R,C;C,R;R,C pairs all pass local C<=max(16,R+3), all fail catchup and peer<=1.10R. Foreground pair passes. Reference drift9.05%within15%; no favorable reruns. Equal temporary32/128service,121cards/13kGoals/600positions, two browser roots, explicit focus and identical low-overhead sensors. No physical/mobile/Firefox/WAN or maximum capacity claim.
+
+Runtime candidate held and exact original helper restored. More capacity refusals and existing1s/2s explicit-refusal waits suggest a next pacing/admission study; no causal throttle-cost attribution or safe numeric change established. Six new regressions preserve every byte/tail/chunk/checkpoint and owner boundary; both helpers pass14cases, four omissions fail.112affected final units,93planning cases and relevant build/type/census/inventory checks pass. Overall case census2481→2487only;881/337/97planning state and16/64defaults retained. Sequential patch11contains tests/evidence, no runtime adoption, preview/publication or general qualification.

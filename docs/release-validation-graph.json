@@ -13194,11 +13194,15 @@
       "invocation": {
         "argv": ["node", "node_modules/vitest/vitest.mjs", "run", "test/verifiedRecords.test.ts"]
       },
-      "declarations": 5,
+      "declarations": 12,
       "propertyFamilies": [
         {
-          "line": 89,
+          "line": 96,
           "form": "fc.asyncProperty"
+        },
+        {
+          "line": 213,
+          "form": "fc.property"
         }
       ],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
@@ -19272,11 +19276,11 @@
     },
     {
       "path": "test/release-validation/general-tests.test.mjs",
-      "sha256": "0576d472c200511e3708d1799fd5946b8d733068a099e1f0a11ec04bc033c90a"
+      "sha256": "79be79bd97c8ac7154ad50a152eea4dbb783aef60f99afd1d580c79de71f1a4c"
     },
     {
       "path": "test/release-validation/generated-tests.test.mjs",
-      "sha256": "9eb7a610816583d41598427b51a57230947f0f01f27a52556a22b51c85a6b6f0"
+      "sha256": "7db6401352578cd17620a2f9739ec2dae90dad34e3200f17516dcd5610a8f235"
     },
     {
       "path": "test/release-validation/identity.test.mjs",
@@ -19692,7 +19696,7 @@
     },
     {
       "path": "test/verifiedRecords.test.ts",
-      "sha256": "680aa0c134680ae91533be2795a5ff212d385ad91a0c35289528679d372e258d"
+      "sha256": "608d3bc13c328db106bcdb2d2d672c2f1f3edc70ec6f54758f0473ac9b87e210"
     },
     {
       "path": "test/warmContent.test.ts",

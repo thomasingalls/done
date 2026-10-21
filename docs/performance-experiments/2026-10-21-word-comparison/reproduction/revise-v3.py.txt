@@ -1,0 +1,11 @@
+from pathlib import Path
+import shutil,json,hashlib
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');v=r/'v2';v.mkdir()
+for name in ['micro.json','micro-summary.json','micro.log','unit-v2.json','unit-v2.log','v2-receipts.json','source-identity.json']:
+ shutil.copyfile(r/name,v/name)
+shutil.copyfile(repo/'src/crdt/verifiedRecords.ts',v/'verifiedRecords.ts.txt');shutil.copytree(r/'helper-C',v/'helper-C');shutil.copytree(r/'source-C/dist',v/'client-dist-C')
+p=repo/'src/crdt/verifiedRecords.ts';s=p.read_text().replace('  if (a === b) return true;\n','  if (a === b) return true;\n  if (a[0] !== b[0]) return false;\n',1);p.write_text(s);shutil.copyfile(p,r/'source-C/src/crdt/verifiedRecords.ts')
+i=json.loads((r/'source-identity.json').read_text());i['C']['sha256']['src/crdt/verifiedRecords.ts']=hashlib.sha256(p.read_bytes()).hexdigest();(r/'source-identity.json').write_text(json.dumps(i,indent=2)+'\n')
+with(r/'protocol.md').open('a')as f:f.write('\n## Prospective V3 amendment\n\nV2 passed both large-comparison targets but failed one original early-mismatch control (reference0ms/candidate0.20000076293945312ms at256B, beyond strict0.2ms). Preserve the exact miss, not rounded into a pass. V3 rejects the first byte in sameBytes before alignment/length-path selection, retaining the cooperative span rejection too. No semantic, threshold, workload or ordering change. Rebuild changed candidate; run complete original micro plan once on a fresh browser, then use the declared gates. No app tests have used V1 or V2.\n')
+s=(r/'build-v2.py').read_text().replace('v2','v3').replace('# Rebuild helper artifacts in a new folder so every V1 compiled artifact stays recoverable.','# Rebuild canonical artifacts after archiving the preceding candidate.')
+(r/'build-v3.py').write_text(s)

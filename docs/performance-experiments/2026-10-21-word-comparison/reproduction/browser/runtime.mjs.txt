@@ -1,0 +1,69 @@
+import {spawn} from 'node:child_process';
+import {createServer,request} from 'node:http';
+import {appendFileSync} from 'node:fs';
+const children=new Set(),shadows=new Set();let proxy;
+export const requests=[],frames=[];
+const labels=new Map();
+export const labelBearer=(bearer,device)=>{if(bearer)labels.set(bearer,device)};
+export function attributeRequests(){for(const row of requests)row.device=labels.get(row._bearer)??'unattributed'}
+export let phase='setup';export const setPhase=value=>{phase=value};
+let injectedRead=false,injectedSubmit=false;
+export async function start(state,dist,delay=0){
+ if(delay!==0)throw Error('Continuation probe uses default loopback only');
+ const environment={...process.env,ACCOUNT_NETWORK_SESSIONS:'1',ACCOUNT_MEMBERSHIP_CONTINUATION:'1',ACCOUNT_SETUP_PORT:'53781',ACCOUNT_SETUP_ORIGIN:'http://localhost:53781',ACCOUNT_SERVICE_PORT:'53782',ACCOUNT_SETUP_STATE:state,ACCOUNT_SETUP_DIST:dist,TIP_TRACE_FILE:process.env.SYNC_OUT+'/tip-trace.json'};
+ const launch=(script,ready,extra={})=>new Promise((resolve,reject)=>{
+  const traced=process.env.SYNC_TIP_TRACE==='1'&&script.endsWith('serve-account-service.mjs');
+  const args=traced?['--import','/private/tmp/done-sync-continuation-20261021/trace-monitor.mjs',script]:[script];
+  const child=spawn(process.execPath,args,{cwd:process.env.SYNC_SOURCE,env:{...environment,...extra},stdio:['ignore','pipe','pipe']});children.add(child);let tail='';
+  const timer=setTimeout(()=>{child.kill('SIGTERM');reject(Error('Disposable startup deadline: '+tail))},20000);
+  child.once('exit',code=>{children.delete(child);clearTimeout(timer);reject(Error('Disposable service exited: '+code+' '+tail))});
+  const data=b=>{tail=(tail+b.toString()).slice(-5000);appendFileSync(process.env.SYNC_OUT+'/services.log',b);if(tail.includes(ready)){clearTimeout(timer);resolve(child)}};child.stdout.on('data',data);child.stderr.on('data',data);
+ });
+ await launch('scripts/serve-account-service.mjs','Account API development:');
+ const newRow=(req,role)=>{
+  const row={id:requests.length,path:new URL(req.url,'http://localhost').pathname,phase,at:Date.now(),role};Object.defineProperty(row,'_bearer',{value:req.headers.authorization});requests.push(row);return row;
+ };
+ const send=(req,body,res,row)=>{
+  row.forwardAt=Date.now();
+  const up=request({hostname:'127.0.0.1',port:53782,path:req.url,method:req.method,headers:req.headers,agent:false},reply=>{
+   row.headersAt=Date.now();row.status=reply.statusCode;
+   if(res)res.writeHead(reply.statusCode,reply.headers);
+   let hint='',partial='';
+   reply.on('data',b=>{
+    if(reply.statusCode===409&&hint.length<=512)hint+=b.toString('utf8');
+    if(reply.headers['content-type']?.startsWith('text/event-stream')){
+     partial=(partial+b.toString('ascii')).slice(-8192);let end;
+     while((end=partial.indexOf('\n\n'))>=0){const frame=partial.slice(0,end);partial=partial.slice(end+2);const event=/^event: (ready|hint|content)\ndata: \{\}$/.exec(frame)?.[1];if(event)frames.push({request:row.id,device:labels.get(req.headers.authorization)??'unattributed',phase,event,at:Date.now()})}
+    }
+   });
+   reply.once('end',()=>{row.end=Date.now();if(hint&&hint.length<=512){try{const v=JSON.parse(hint);for(const k of ['kind','reason','refusal'])if(typeof v[k]==='string'&&/^[a-z-]{1,64}$/.test(v[k]))row[k]=v[k]}catch{row.unclassified=true}}});
+   if(res)reply.pipe(res);else reply.resume();
+  });
+  up.once('error',()=>{row.errorAt=Date.now();if(res){if(!res.headersSent)res.writeHead(502);res.end()}});
+  if(res)res.once('close',()=>{row.closeAt=Date.now();up.destroy()});
+  else {shadows.add(up);up.once('close',()=>shadows.delete(up));up.setTimeout(10000,()=>up.destroy(Error('Shadow deadline')))}
+  up.end(body);
+ };
+ proxy=createServer((req,res)=>{
+  const row=newRow(req,'client'),chunks=[];let size=0;
+  req.on('data',b=>{size+=b.length;if(size>4*1024*1024){res.writeHead(413);res.end();req.destroy()}else chunks.push(b)});
+  req.once('end',()=>{
+   if(res.destroyed)return;const body=Buffer.concat(chunks),device=labels.get(req.headers.authorization),measured=phase==='catchup';
+   const read=row.path.endsWith('/read-v2-batch')||row.path.endsWith('/read-v2');
+   const inject=process.env.SYNC_INJECT==='1'&&measured&&((device==='B'&&row.path.endsWith('/read-v2-batch')&&!injectedRead)||(device==='A'&&row.path.endsWith('/submit')&&!injectedSubmit));
+   if(inject){if(read)injectedRead=true;else injectedSubmit=true;Object.assign(row,{injected:true,status:409,reason:'state-changed',end:Date.now()});res.writeHead(409,{'content-type':'application/json'});res.end(JSON.stringify({v:1,kind:'unknown',reason:'state-changed'}));return}
+   send(req,body,res,row);
+   if(process.env.SYNC_PRESSURE==='1'&&measured&&device==='B'&&read){
+    while(shadows.size<3){const extra=newRow(req,'shadow');extra.parent=row.id;send(req,body,undefined,extra)}
+   }
+  });
+ });
+ await new Promise((resolve,reject)=>{proxy.once('error',reject);proxy.listen(53784,'127.0.0.1',resolve)});
+ await launch('scripts/serve-account.mjs','Account packaged development:',{ACCOUNT_SERVICE_PORT:'53784'});
+}
+export async function stop(){
+ for(const up of shadows)up.destroy();
+ for(const child of [...children]){if(child.exitCode!==null||child.signalCode!==null)continue;await new Promise(resolve=>{const timer=setTimeout(()=>child.kill('SIGKILL'),10000);child.once('exit',()=>{clearTimeout(timer);resolve()});child.kill('SIGTERM')})}
+ if(proxy){const old=proxy;proxy=undefined;await new Promise(resolve=>{old.close(resolve);old.closeAllConnections()})}
+}
+process.on('exit',()=>{for(const child of children)child.kill('SIGKILL')});
