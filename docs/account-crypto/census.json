@@ -409,7 +409,7 @@
     },
     {
       "path": "account-service/publisherTips.ts",
-      "sha256": "b1fb4841dd5f7b24286753b7f638353972e96bea5f3c3363abaed24abb815a3a"
+      "sha256": "d1e3f6ed433350af265160835342b6c582eb62101e0063de393d7a8e3ee9ff0f"
     },
     {
       "path": "account-service/recovery.ts",
@@ -657,7 +657,7 @@
     },
     {
       "path": "src/account/privateDeliveryHttp.ts",
-      "sha256": "38c1f82f15408496236d4d72a2972a8299a29fb8a7a147ab6ac6474aef484d4b"
+      "sha256": "a9d3e25464123357a3af42d8ca552ba78eab50ffedbf4b34278a850c405d9e21"
     },
     {
       "path": "src/account/privateDiscoveryHttp.ts",
@@ -781,7 +781,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "338e16006869d9b5bc2cba641f8f2ed8c4883311fe76cc3d7b4fcead9ae1cf48"
+      "sha256": "2a839903efe25c7452279066002e977a014d2e7ad300a65d4d9aa4aa6903a0bc"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1190,6 +1190,10 @@
     {
       "path": "src/crdt/receiveGroup.ts",
       "sha256": "95e6aa774513d5423849093aaab5bf08623ef1947d06403b494736578efb0485"
+    },
+    {
+      "path": "src/crdt/receivePageTransport.ts",
+      "sha256": "ced09b540e505f08b973e9f30565073ef124dfde34957d198e8288bd2c162dbb"
     },
     {
       "path": "src/crdt/receivePrefetch.ts",

@@ -11,8 +11,8 @@
   "counts": {
     "packageScripts": 145,
     "campaigns": 78,
-    "testFiles": 516,
-    "requiredTestFiles": 510,
+    "testFiles": 517,
+    "requiredTestFiles": 511,
     "excludedProductTestFiles": 6,
     "catalogues": 12,
     "vectorCorpora": 30,
@@ -8480,6 +8480,21 @@
         ]
       },
       "declarations": 1,
+      "propertyFamilies": [],
+      "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
+    },
+    {
+      "path": "test/account-service-delivery/publisher-isolation.test.mjs",
+      "status": "required",
+      "invocation": {
+        "argv": [
+          "node",
+          "--test",
+          "--test-concurrency=1",
+          "test/account-service-delivery/publisher-isolation.test.mjs"
+        ]
+      },
+      "declarations": 5,
       "propertyFamilies": [],
       "dynamicCaseCensus": "Required at execution; static declarations are not a case denominator."
     },
@@ -17706,6 +17721,10 @@
       "sha256": "4d7c2be2f4aaf5fab8ee7af23a2716fb90b2608cacdb4bc4d948afdaa10ad585"
     },
     {
+      "path": "test/account-service-delivery/publisher-isolation.test.mjs",
+      "sha256": "15af4374a3e50ad0bb998d31e88d9695c01f34af48c4d8ebbbe84989d0b686f5"
+    },
+    {
       "path": "test/account-service-delivery/publisher-tips.test.mjs",
       "sha256": "99889890b56e2fb1870a62ac492aa30e07add8acc9565804ca2e7d36fa6845ab"
     },
@@ -17719,7 +17738,7 @@
     },
     {
       "path": "test/account-service-inbound/controls.test.mjs",
-      "sha256": "004a25caccd0eb31432285a4d42c5d704e8919c34e94637f8a7494d55ac82f4e"
+      "sha256": "d43414495aa2e4593955705a2bc26ac70dcd434fcdab2d4c971490218101ca44"
     },
     {
       "path": "test/account-service-inbound/core.test.mjs",

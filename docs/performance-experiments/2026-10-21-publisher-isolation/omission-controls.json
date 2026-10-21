@@ -1,0 +1,50 @@
+[
+  {
+    "name": "global-race",
+    "exactAnchorCount": 1,
+    "returncode": 1,
+    "expectedAssertionFailure": true,
+    "mutatedSourceSha256": "a1beee42827e0e063ede7ba775d2fe401ad93b9e26f1f8a4a5a9c3c231ce5782",
+    "pattern": "a same-connection unrelated"
+  },
+  {
+    "name": "guard-owner",
+    "exactAnchorCount": 1,
+    "returncode": 1,
+    "expectedAssertionFailure": true,
+    "mutatedSourceSha256": "9e53a870d5ee164664a8fe84bbc35170a11e10a1daea1065c1a7d102aa435a09",
+    "pattern": "bounded preliminary"
+  },
+  {
+    "name": "remember-owner",
+    "exactAnchorCount": 1,
+    "returncode": 1,
+    "expectedAssertionFailure": true,
+    "mutatedSourceSha256": "70cd5266ccb3c4fb55b23f91c836acf781183ea56cd03fd2b513f8bebee769a8",
+    "pattern": "a same-connection unrelated"
+  },
+  {
+    "name": "audit-owner",
+    "exactAnchorCount": 1,
+    "returncode": 1,
+    "expectedAssertionFailure": true,
+    "mutatedSourceSha256": "ffa68ac6de62e70628bc4a6096c41dc4480818496b3ab3faaa8948c1be8e54c6",
+    "pattern": "a local race discards its active audit"
+  },
+  {
+    "name": "owner-bound",
+    "exactAnchorCount": 1,
+    "returncode": 1,
+    "expectedAssertionFailure": true,
+    "mutatedSourceSha256": "e1e62c9f67636bb85659efa570392a6714c49ee1594cfd1eee793f3580581e27",
+    "pattern": "bounded preliminary"
+  },
+  {
+    "name": "external-clear",
+    "exactAnchorCount": 1,
+    "returncode": 1,
+    "expectedAssertionFailure": true,
+    "mutatedSourceSha256": "2d6893b98443a0cbe7c3e5eba36016b3d9ead0018a099211381bb5f021451b0f",
+    "pattern": "external-connection"
+  }
+]

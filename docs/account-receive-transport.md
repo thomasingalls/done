@@ -197,3 +197,24 @@ batch request, sends that first signed inner request, and shares the same retry 
 request signal. Only 404 disables batching for the coordinator. Retrying changes no factor, key,
 schema, durable progress, accepted position, source inventory or checkpoint. See the bounded repair
 and its independent concurrency result in the enrollment-throughput evidence map.
+
+
+### Publisher-local snapshot race invalidation — 2026-10-21
+
+A failed fresh fingerprint comparison rejects that capture and discards the preliminary tip and
+queued audit for its account/publisher key. An unrelated publisher's capture may remain eligible,
+but must still pass its own fresh transaction-time snapshot, row-count and served-row comparison.
+This changes no reader, publisher, membership, signature, expiry, grant, custody or signing authority.
+
+The process-local identity map holds at most 128 publisher keys with LRU eviction, separately from
+the existing 128-tip/16 MiB prefix limits. Each identity is a unique object: invalidation, eviction
+or deletion/recreation cannot revive an earlier capture, delayed remember or active audit result.
+Unverified preliminary captures occupy the same bounded identity map and confer no membership or
+progress. An obsolete audit completion is discarded; an unrelated queued audit remains eligible.
+
+Unknown external SQLite changes detected through data_version, explicit verifier clears, closure
+and applicable audit failures still invalidate all owners, tips and queued work through the global
+revision fence. Integrity quarantine is retained across clears; stale audit results cannot restore
+a prefix or establish an audit count. No persisted or wire-format change, numeric rate increase,
+retry increase, deadline relaxation or reduction in verification is authorized by this optimization.
+Same-publisher contention and aggregate capacity remain separate measured acceptance conditions.

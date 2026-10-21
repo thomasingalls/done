@@ -1,0 +1,20 @@
+from pathlib import Path
+import os,json,shutil,subprocess,hashlib
+r=Path(__file__).parent;source=(r/'source-candidate/account-service/publisherTips.ts').read_text()
+controls=[
+ ('global-race', 'if (!same) invalidatePublisher(c.key);','if (!same) invalidate();','a same-connection unrelated'),
+ ('guard-owner', 'if (c.revision !== revision || c.version !== checkVersion() || owners.get(c.key) !== c.owner)','if (c.revision !== revision || c.version !== checkVersion())','bounded preliminary'),
+ ('remember-owner','c.version !== checkVersion() ||\n        owners.get(c.key) !== c.owner','c.version !== checkVersion()','a same-connection unrelated'),
+ ('audit-owner','job.revision === revision && owners.get(job.key) === job.owner','job.revision === revision','a local race discards its active audit'),
+ ('owner-bound','if (owners.size >= MAX_PUBLISHERS) invalidatePublisher(owners.keys().next().value!);','/* omitted ownership bound */','bounded preliminary'),
+ ('external-clear',"version = current;\n      invalidate();","version = current;\n      /* omitted global invalidation */",'external-connection'),
+]
+results=[]
+for name,anchor,replacement,pattern in controls:
+ assert source.count(anchor)==1,(name,source.count(anchor));folder=r/('omission-'+name);shutil.copytree(r/'source-candidate',folder,symlinks=True);mutated=source.replace(anchor,replacement);(folder/'account-service/publisherTips.ts').write_text(mutated)
+ env=dict(os.environ,PATH='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin:'+os.environ['PATH'])
+ command=['node','--test','--test-concurrency=1','--test-name-pattern='+pattern,'test/account-service-delivery/publisher-isolation.test.mjs']
+ with (r/('omission-'+name+'.log')).open('w') as log:result=subprocess.run(command,cwd=folder,env=env,stdout=log,stderr=subprocess.STDOUT)
+ log=(r/('omission-'+name+'.log')).read_text();assert result.returncode!=0 and 'AssertionError' in log and 'ℹ fail 1' in log,(name,result.returncode,log[-3000:])
+ results.append({'name':name,'exactAnchorCount':1,'returncode':result.returncode,'expectedAssertionFailure':True,'mutatedSourceSha256':hashlib.sha256(mutated.encode()).hexdigest(),'pattern':pattern});(r/'omission-controls.json').write_text(json.dumps(results,indent=2)+'\n')
+print(json.dumps(results,indent=2))

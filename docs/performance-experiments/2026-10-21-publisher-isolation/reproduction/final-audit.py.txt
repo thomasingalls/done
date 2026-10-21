@@ -1,0 +1,58 @@
+from pathlib import Path
+import gzip,hashlib,json,re,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');packet=repo/'docs/performance-experiments/2026-10-21-publisher-isolation';sha=lambda b:hashlib.sha256(b).hexdigest();load=lambda p:json.loads(p.read_text())
+prior='9422214ba22e307767866c99cbf93398c2f5e57a';base='27dc7d78d973f2741a813d8d217f28e0c2f033a4';pgit=['git','--git-dir=/private/tmp/done-sync-continuation-20261021/patch04-index.git','--work-tree='+str(repo)]
+def run(args):return subprocess.check_output(args,cwd=repo)
+def old(f):return run(pgit+['show',prior+':'+f])
+assert run(['git','rev-parse','HEAD']).decode().strip()==base and run(['git','diff','--cached','--name-only'])==b''
+for p in load(r/'starting.json')['priorPatches']:assert sha(Path(p['patch']).read_bytes())==p['sha256']
+priorPackets={}
+for name in ['2026-10-21-live-sync-attribution','2026-10-21-ordinary-receive-batching','2026-10-21-sync-capacity','2026-10-21-sync-continuation']:
+ root=repo/'docs/performance-experiments'/name;lines=(root/'SHA256SUMS').read_text().splitlines()
+ for line in lines:
+  h,file=line.split('  ',1);assert sha((root/file).read_bytes())==h,(name,file)
+ priorPackets[name]=len(lines)
+append=['docs/completed.md','docs/decisions.md','docs/performance.md','docs/account-receive-transport.md']
+for f in append:assert (repo/f).read_bytes().startswith(old(f)),f
+for f in ['docs/progress.md','docs/private-release-validation-prep.md','docs/account-conformance-runs/2026-10-15-full-functional-suite/reproduction/done-suite-test-format-only.patch']:assert (repo/f).read_bytes()==old(f),f
+allowed=set(append+['account-service/publisherTips.ts','test/account-service-inbound/controls.test.mjs','docs/account-crypto/census.json','docs/release-validation-graph.json','docs/release-validation-manifest.json'])
+changed=set(run(pgit+['diff','--name-only',prior,'--']).decode().splitlines());assert changed==allowed,(changed-allowed,allowed-changed)
+priorPaths=set(run(pgit+['ls-tree','-r','--name-only',prior]).decode().splitlines());new=set(run(['git','ls-files','--others','--exclude-standard']).decode().splitlines())-priorPaths
+assert 'test/account-service-delivery/publisher-isolation.test.mjs' in new
+assert all(f=='test/account-service-delivery/publisher-isolation.test.mjs' or f.startswith('docs/performance-experiments/2026-10-21-publisher-isolation/') for f in new)
+frozen=load(r/'source-identity.json');assert len(frozen['candidate']['sha256'])==803
+for f,h in frozen['candidate']['sha256'].items():assert sha((repo/f).read_bytes())==h,f
+assert frozen['candidate']['changedProductionFiles']==['account-service/publisherTips.ts']
+assert (r/'source-candidate/test/account-service-delivery/publisher-isolation.test.mjs').read_bytes()==(repo/'test/account-service-delivery/publisher-isolation.test.mjs').read_bytes()
+assert (r/'controls-before.mjs.txt').read_bytes()==old('test/account-service-inbound/controls.test.mjs')
+oldLines=old('test/account-service-inbound/controls.test.mjs').splitlines();newLines=(repo/'test/account-service-inbound/controls.test.mjs').read_bytes().splitlines();assert len(oldLines)==len(newLines)
+assert sum(a!=b for a,b in zip(oldLines,newLines))==2
+for a,b in zip(oldLines,newLines):
+ if a!=b:assert b'resolveInboundRoles(auth, request)' in a and b'resolveInboundRoles(auth, request)' in b and b'reuseInboundAuthority' in b
+census=load(repo/'docs/account-crypto/census.json');pc=json.loads(old('docs/account-crypto/census.json'));assert {**census,'sources':None}=={**pc,'sources':None};assert census==load(r/'census-candidate.json')
+planning=load(r/'planning-audit.json');assert planning['everyPriorObligationExact'] and planning['constructionContractsAndStatusesExact']==97 and planning['obligations']==879 and planning['unresolved']==335 and planning['aggregateReleaseRemainsBlocked']
+unit={}
+for name,expected in [('publisher-tests',20),('affected-tests-repaired',114),('planning-tests-census-refreshed',109)]:
+ log=(r/(name+'.log')).read_text();counts={k:int(re.search(r'ℹ '+k+r' (\d+)',log)[1]) for k in ['tests','pass','fail','cancelled','skipped','todo']};assert counts['tests']==counts['pass']==expected and all(counts[k]==0 for k in ['fail','cancelled','skipped','todo']);unit[name]=expected
+assert 'unchanged publisher must retain its capture' in (r/'regression-before.log').read_text()
+omissions=load(r/'omission-controls.json');assert len(omissions)==6 and all(x['returncode']==1 and x['exactAnchorCount']==1 and x['expectedAssertionFailure'] for x in omissions)
+checks=load(r/'check-receipts-reviewed.json');assert len(checks)==9 and all(x['exitCode']==0 for x in checks)
+native=load(r/'native-summary.json')['runs'];assert len(native)==6 and sum(x['outcome']=='failed' for x in native)==5
+assert [x['outcome'] for x in native[:4]]==['failed']*4
+assert native[4]['outcome']=='passed' and native[4]['verifiedReadPositions']==1536 and native[4]['writes']['other']['verified']==20
+cold=0;unack=0
+for folder in ['matched','other-peer','own-nopeer']:
+ audit=load(r/folder/'cold-audit.json')
+ for row in audit:
+  for account in row['accounts']:assert account['seedAndAllStoredWiresExact'];unack+=account['unacknowledgedStored']
+  cold+=1
+assert cold==6
+browser=load(r/'browser-summary.json');assert len(browser['rows'])==3 and browser['allDataGuardsPassed'] and browser['identicalFinalExports'] and browser['explicitRemoteReceiverControlContinued']
+assert all(x['exitCode']==0 and x['cwd']==x['serviceSource']==str(r/'source-candidate') for x in load(r/'browser-runner.json'))
+forced=[x for x in browser['rows'] if x['forced']];assert len(forced)==1 and forced[0]['injectedStateChangeReplies']==2 and forced[0]['continuation']['autonomous'] and not forced[0]['continuation']['manualRetryOrReload']
+provenance=load(packet/'artifact-provenance.json')
+for f,ident in provenance.items():
+ b=(packet/f).read_bytes();assert sha(b)==ident['storedSha256'],f;raw=gzip.decompress(b) if f.endswith('.gz') else b;assert sha(raw)==ident['sourceSha256'],f
+assert load(packet/'privacy-audit.json')['matches']==0
+result={'status':'passed','baseCommit':base,'priorTree':prior,'priorPatchesExact':4,'priorPacketChecksumCounts':priorPackets,'onlyNewRuntimeChange':'account-service/publisherTips.ts','sourceFilesPerFrozenArm':803,'exactPriorClientBuildFiles':110,'newRegressionCases':6,'affectedCasesPassed':114,'planningCasesPassed':109,'publisherSubsetCasesPassed':20,'effectiveOmissionControls':6,'rawNativeRuns':6,'rawNativeFailuresRetained':5,'coldStoreWireAndProofAudits':6,'unacknowledgedStoredWrites':unack,'browserJourneysPassed':3,'allFullDataGuardsPassed':True,'knownRemoteReadAndIdenticalPendingSubmitContinued':True,'naturalBrowserStateChangeExposures':browser['naturalStateChangeExposure'],'priorObligationsExact':878,'obligations':879,'unresolved':335,'constructionContractsAndStatusesExact':97,'aggregateReleaseRemainsBlocked':True,'cryptoDomainSitesAndClassificationsExact':True,'oldTestEdit':'Only two exact mutation-anchor strings; assertions/deadlines/cases retained.','appendOnlyRecordsAndOtherSeatProgressPreserved':True,'deferredFormattingExact':True,'provenanceEntriesVerified':len(provenance),'knownExactPrivateValuesChecked':load(packet/'privacy-audit.json')['knownExactValuesChecked'],'matches':0,'realIndexEmpty':True,'scope':'Bounded local publisher isolation and functional continuation. Full mixed contention remains failed; no safe-rate, capacity, phone/Firefox/WAN, production adoption or generalized security/release qualification. No staging/signing/commit/push/preview restart/merge/deployment.'}
+(packet/'verification.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

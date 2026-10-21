@@ -1,0 +1,35 @@
+{
+  "matched": {
+    "order": [
+      "reference",
+      "candidate",
+      "candidate",
+      "reference"
+    ],
+    "readers": 6,
+    "positionsPerStream": 256,
+    "firstWriterPeriodMs": 500,
+    "otherWriterPeriodMs": 1000,
+    "peerPeriodMs": 250
+  },
+  "discriminators": [
+    {
+      "name": "other-peer",
+      "firstWriter": false,
+      "otherWriter": true,
+      "peer": true
+    },
+    {
+      "name": "own-nopeer",
+      "firstWriter": true,
+      "otherWriter": true,
+      "peer": false
+    }
+  ],
+  "ceilings": {
+    "replayMs": 120000,
+    "httpMs": 10000,
+    "rssBytes": 1073741824
+  },
+  "retry": "Existing capacity waits1000/2000ms only; abort on409. Not app continuation."
+}

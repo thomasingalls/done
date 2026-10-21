@@ -35,6 +35,7 @@ interface Tip extends VerifiedPrefix {
 }
 interface Capture {
   key: string;
+  owner: object;
   context: string;
   revision: number;
   version: number;
@@ -97,6 +98,9 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
   const tips = new Map<string, Tip>(),
     poisoned = new Set<string>();
   const captures = new WeakMap<Snapshot, Capture>();
+  // Bounded identities, not reusable numeric generations: recreating an evicted key
+  // must never revive a capture or audit owned by its previous incarnation.
+  const owners = new Map<string, object>();
   let version = Number(db.prepare('PRAGMA data_version').get()!.data_version),
     revision = 0,
     closed = false;
@@ -107,11 +111,27 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     auditsCompleted = 0;
   let worker: Worker | undefined;
   const queued = new Map<string, Tip>();
-  let active: { key: string; tip: Tip; revision: number } | undefined;
+  let active: { key: string; tip: Tip; revision: number; owner: object } | undefined;
   const invalidate = () => {
     revision++;
+    owners.clear();
     tips.clear();
     queued.clear();
+  };
+  const invalidatePublisher = (key: string) => {
+    owners.delete(key);
+    tips.delete(key);
+    queued.delete(key);
+  };
+  const captureOwner = (key: string) => {
+    let owner = owners.get(key);
+    if (owner) owners.delete(key);
+    else {
+      if (owners.size >= MAX_PUBLISHERS) invalidatePublisher(owners.keys().next().value!);
+      owner = {};
+    }
+    owners.set(key, owner);
+    return owner;
   };
   const checkVersion = () => {
     const current = Number(db.prepare('PRAGMA data_version').get()!.data_version);
@@ -146,11 +166,12 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     if (closed || active || !queued.size) return;
     const [key, tip] = queued.entries().next().value!;
     queued.delete(key);
-    if (poisoned.has(key)) {
+    const owner = owners.get(key);
+    if (poisoned.has(key) || !owner) {
       pump();
       return;
     }
-    active = { key, tip, revision };
+    active = { key, tip, revision, owner };
     auditsStarted++;
     // Only the service pin and expected snapshot digest cross this boundary.
     // The worker re-establishes branded public authority in its own JavaScript realm.
@@ -168,7 +189,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       const job = active;
       worker = undefined;
       active = undefined;
-      if (!closed && job && job.revision === revision) {
+      if (!closed && job && job.revision === revision && owners.get(job.key) === job.owner) {
         const ownsRead = !db.isTransaction;
         try {
           if (ownsRead) db.exec('BEGIN');
@@ -232,6 +253,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     },
     status: () => ({
       publishers: tips.size,
+      captureOwners: owners.size,
       quarantined: poisoned.size,
       auditActive: !!active,
       auditsQueued: queued.size,
@@ -259,6 +281,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       const id = publisher ?? JSON.parse(header.promotion.request).candidate.signer;
       const key = header.account.id + ':' + id;
       check(key);
+      const owner = captureOwner(key);
       const context = publisherContext(header),
         count = countRows(db, header);
       let tip = tips.get(key);
@@ -294,6 +317,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
         options?.after === undefined ? [] : servedRows(db, s, options.after, options.limit!);
       captures.set(s, {
         key,
+        owner,
         context,
         revision,
         version,
@@ -318,17 +342,27 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
       const c = captures.get(s);
       if (!c) return false;
       check(c.key);
-      if (c.revision !== revision || c.version !== checkVersion()) return false;
+      if (c.revision !== revision || c.version !== checkVersion() || owners.get(c.key) !== c.owner)
+        return false;
       const current = snapshot(db, s.promotion.workspace_id, s.publisher, c.prefix?.count ?? 0);
       if (!current) return false;
       const selected = c.after === undefined ? [] : servedRows(db, current, c.after, c.limit!);
       const same = fingerprint(current, countRows(db, current), selected) === c.fingerprint;
-      if (!same) invalidate(); // A detected race must not leave its preliminary tip installed.
+      // Reject the changed snapshot and discard only its publisher's preliminary evidence.
+      // Other publishers still have to pass their own fresh transaction-time comparison.
+      if (!same) invalidatePublisher(c.key);
       return same;
     },
     remember(s: Snapshot, auth: DeliveryAuthority, result: VerifiedPrefix) {
       const c = captures.get(s);
-      if (!c || closed || c.revision !== revision || c.version !== checkVersion()) return;
+      if (
+        !c ||
+        closed ||
+        c.revision !== revision ||
+        c.version !== checkVersion() ||
+        owners.get(c.key) !== c.owner
+      )
+        return;
       if (result.count !== c.count) return fail(c.key);
       verifiedRows += s.rows.length;
       if (!c.prefix) fullCensuses++;

@@ -1,0 +1,6 @@
+{
+  "matched": {"cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done", "exitCode": 1, "firstWriter": true, "otherWriter": true, "peer": true, "positions": 256},
+  "other-peer": {"exitCode": 0, "firstWriter": false, "otherWriter": true, "peer": true, "positions": 256},
+  "own-nopeer": {"exitCode": 1, "firstWriter": true, "otherWriter": true, "peer": false, "positions": 256},
+  "scope": "Predeclared six raw runs, serialized; failed outcomes retained. Existing 429 waits only; no automatic retry of 409."
+}

@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,subprocess,os,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');rows=[]
+checks=[
+ ('census-check',['node','scripts/account-crypto-prep/run.mjs']),
+ ('inventory-record-final',['node','scripts/release-validation/check.mjs','--record']),
+ ('manifest-record-final',['node','scripts/release-validation/plan.mjs','--record']),
+ ('inventory-check-final',['node','scripts/release-validation/check.mjs']),
+ ('manifest-check-final',['node','scripts/release-validation/plan.mjs']),
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ('planning-audit-final',['python3',str(r/'audit-planning.py')]),
+ ('format-reviewed',['node','node_modules/oxfmt/bin/oxfmt','--check','account-service/publisherTips.ts','test/account-service-delivery/publisher-isolation.test.mjs','test/account-service-inbound/controls.test.mjs']),
+ ('lint-reviewed',['node','node_modules/oxlint/bin/oxlint','account-service/publisherTips.ts','test/account-service-delivery/publisher-isolation.test.mjs','test/account-service-inbound/controls.test.mjs']),
+ ('planning-tests-census-refreshed',['node','--test','--test-concurrency=1','test/release-validation/inventory.test.mjs','test/release-validation/manifest.test.mjs','test/release-validation/general-tests.test.mjs','test/release-validation/generated-tests.test.mjs','test/account-first-authority/registry.test.mjs'])]
+for name,cmd in checks:
+ before=time.time_ns()//1000000
+ with (r/(name+'.log')).open('w') as out:p=subprocess.run(cmd,cwd=repo,stdout=out,stderr=subprocess.STDOUT)
+ rows.append({'name':name,'command':cmd,'cwd':str(repo),'exitCode':p.returncode,'startedAt':before,'completedAt':time.time_ns()//1000000});(r/'check-receipts-reviewed.json').write_text(json.dumps(rows,indent=2)+'\n');print(name,p.returncode,flush=True)
+ if p.returncode:raise SystemExit(p.returncode)
