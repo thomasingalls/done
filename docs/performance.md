@@ -2021,3 +2021,19 @@ All16 native stores pass independent exact-wire/proof audits, including11 failed
 Both candidates meet the added2500ms interaction guard, retain exactly two whole censuses (one/account), and finish without state-change replies, quarantine or remaining waiters. CPU8.73/9.16s, sampledRSS346/396MB. All8 original/final stores pass read-only original-wire/link/signature audits. Failed references preclude a completed paired percentage-speedup estimate. These are two correlated-workload process replications on one machine, not a confidence interval, rate-policy approval, general no-starvation claim or maximum-capacity measurement.
 
 Exact patch02 packaged-client normal/duplicate-reader functional journeys pass34.246/139.577s catch-up, full exports, two-way writes, Undo/Redo and locked offline reopening. No paired browser speedup or physical Android/Firefox/WAN/production claim. Retain the initial candidate's unchanged-regression failure, membership-enabled600s browser failure/interrupted repeat, initial first-epoch success and all fixture corrections; only final-source runs receive final-source acceptance credit. General qualification remains paused.
+
+
+## Revisit rate/capacity after cold verification — 2026-10-21
+
+[Prospective phase08 and full evidence](./performance-experiments/2026-10-21-rate-review/README.md). Working runtime remains16/session64/process. Only disposable service refill literals differ; all limits, checks, fixtures and exact patch02 client stay. Eight counterbalanced cold processes (D,S,P,B then B,P,S,D), plus one asymmetric1024-position D/S pair, all complete independently verified reads/offered writes. All10 stores pass cold original-wire/proof audits.
+
+| Session/process | Six-session replay in two runs |
+|---|---:|
+|16/64|20.141s /20.745s|
+|32/64|20.881s /20.416s|
+|16/128|11.408s /11.093s|
+|32/128|9.845s /10.142s|
+
+The single-session D/S pair is68.654/31.686s. The32/64 primary fails the relative native fairness gate: median per-run hot offered-to-proof p95 182→315.5ms; separate-account peer607→1133.5ms. Every absolute2.5s/resource guard passes; small quantile samples and1s retry steps remain qualified. Process128 variants pass local native gates but are diagnostic, with no production-capacity or adoption claim.
+
+Three restored actual-client600-update D/S pairs improve 31.46% at median. All10 normal/foreground/duplicate-pressure client journeys pass full data/edit/offline guards; all predeclared typing gates: False. Repeated-reference drift 0.07%. No physical Firefox/Android/WAN, container sizing, maximum sustained capacity or deployed-version claim. Pressure local typing also misses16ms (12.0→17.8ms). Keep16/64 pending a bounded typing/coupled-policy/container/multiple-publisher investigation. Preserve complete raw denominator, gate misses and the native stdout collision note; no new aggregate qualification credit.

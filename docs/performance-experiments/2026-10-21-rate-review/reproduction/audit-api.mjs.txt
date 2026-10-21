@@ -1,0 +1,33 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {DatabaseSync} from 'node:sqlite';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+const root='/private/tmp/done-rate-review-20261021',folder=process.argv[2]??'api-primary';
+const seed=JSON.parse(readFileSync(root+'/private-api/fixture.json'));
+const {proof,ZERO}=await import(root+'/source-D/test/account-service-delivery/fixtures.mjs');
+const runs=JSON.parse(readFileSync(root+'/'+folder+'/results.json')),audit=[];
+for(const run of runs){
+ const name=run.block+'-'+run.arm,path=root+'/'+folder+'/'+name+'-service/account.sqlite',db=new DatabaseSync(path,{readOnly:true});
+ try{
+  const accounts=[];
+  for(const who of ['first','other']){
+   const account=db.prepare('SELECT account_id FROM network_sessions WHERE id=?').get(seed[who].sessions[0].sessionId).account_id;
+   const tables=['delivery_decisions','publisher_decisions'].map(table=>({table,rows:db.prepare('SELECT * FROM '+table+' WHERE account_id=? ORDER BY position').all(account)})).filter(x=>x.rows.length);
+   assert.equal(tables.length,1,'one independently retained publisher stream');
+   const {table,rows}=tables[0],offered=run.writes[who].length,verified=run.writes[who].filter(x=>Number.isFinite(x.verifiedAt)).length;
+   assert(rows.length>=seed[who].retained.length&&rows.length<=seed[who].retained.length+offered);
+   let previous=ZERO;
+   for(let i=0;i<rows.length;i++){
+    const d=rows[i],w=i<seed[who].retained.length?seed[who].retained[i].w:seed[who].extras[i-seed[who].retained.length];
+    assert.equal(d.kind,'accepted');assert.equal(d.position,i+1);assert(Buffer.from(d.submission).equals(Buffer.from(w.bytes,'hex')));
+    const checked=proof({kind:'decision',bytes:new Uint8Array(d.response)},seed[who].offer.epoch.acceptancePublicKey,w.subject,previous,w.parent);assert.equal(checked.kind,'accepted');previous=checked.head.link;
+    if(i<seed[who].retained.length)assert(Buffer.from(d.response).equals(Buffer.from(seed[who].retained[i].r.bytes,'hex')));
+   }
+   const committed=rows.length-seed[who].retained.length;assert(committed>=verified);
+   if(run.outcome==='passed')assert.equal(committed,offered);
+   accounts.push({who,table,offeredWrites:offered,liveVerifiedWrites:verified,storedNewAccepted:committed,storedProofsVerified:rows.length,seedAndAllStoredWiresExact:true,finalLink:previous,unacknowledgedStored:committed-verified});
+  }
+  audit.push({name,outcome:run.outcome,accounts,databaseSha256:createHash('sha256').update(readFileSync(path)).digest('hex'),scope:'Read-only cold SQL; failed/unacknowledged/queued writes are not promoted to completed operations.'});
+ }finally{db.close()}
+}
+writeFileSync(root+'/'+folder+'/cold-audit.json',JSON.stringify(audit,null,2)+'\n');console.log(JSON.stringify(audit.map(x=>({name:x.name,outcome:x.outcome,accounts:x.accounts.map(a=>({who:a.who,offered:a.offeredWrites,stored:a.storedNewAccepted,verified:a.liveVerifiedWrites}))})),null,2));

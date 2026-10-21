@@ -1,0 +1,23 @@
+{
+  "candidate": "32/session64/process",
+  "checks": {
+    "meaningfulPrimaryBrowserImprovement": true,
+    "primaryReferenceDrift": true,
+    "allBrowserTypingGuards": false,
+    "allTenClientDataGuards": true,
+    "nativeSReviewGate": false,
+    "asymmetricCompleteAndWithinAbsoluteBounds": true
+  },
+  "allAdoptionReviewGatesPassed": false,
+  "failedChecks": [
+    "allBrowserTypingGuards",
+    "nativeSReviewGate"
+  ],
+  "configuredApplicationPolicyRemains": {
+    "sessionPerSecond": 16,
+    "processPerSecond": 64
+  },
+  "global128VariantsDiagnosticOnly": true,
+  "safeProductionCapacityEstablished": false,
+  "scope": "Prospective local decision gates; no p-values, supported-device/container capacity or runtime configuration adoption. Guard misses remain misses, not favorable reruns."
+}

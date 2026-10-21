@@ -1,0 +1,49 @@
+{
+  "base": "27dc7d78d973f2741a813d8d217f28e0c2f033a4",
+  "priorTree": "aadfbab35081da1daea12c72438a834db429c405",
+  "priorPatches": [
+    {
+      "patch": "/private/tmp/done-live-sync-attribution-20261021/patches/01-live-sync-attribution.patch",
+      "sha256": "178284be7c132af165fca0fa05973157c97ea387204ad1b27c02ecb3b756fdaf",
+      "expectedTree": "37fa6fc1eb0d0572c7c69d1301908b4bfc358b49",
+      "independentCleanApplyTree": "37fa6fc1eb0d0572c7c69d1301908b4bfc358b49"
+    },
+    {
+      "patch": "/private/tmp/done-ordinary-receive-batch-20261021/patches/02-ordinary-catchup-batching.patch",
+      "sha256": "dbeae2d82777b8920a8ae0b36e079d8ae755a756600500bc9ded7fcd1e1f3bcb",
+      "expectedTree": "fbeafda974ef4e5df816bf07c89f26f92d4ae89a",
+      "independentCleanApplyTree": "fbeafda974ef4e5df816bf07c89f26f92d4ae89a"
+    },
+    {
+      "patch": "/private/tmp/done-sync-capacity-20261021/patches/03-sync-capacity-investigation.patch",
+      "sha256": "7ee3447f1daa52e87ebf4e1fe39f28299824c6d1988631a7595115fdfbad41e5",
+      "expectedTree": "9beaf4508a75cc5ba15ea5808d5d0bcfb85b0c1f",
+      "independentCleanApplyTree": "9beaf4508a75cc5ba15ea5808d5d0bcfb85b0c1f"
+    },
+    {
+      "patch": "/private/tmp/done-sync-continuation-20261021/patches/04-sync-continuation-and-invalidation.patch",
+      "sha256": "03466e09ab0284c5065b5b2afe56a8921c6b4233012f8ded51df5a302905c531",
+      "expectedTree": "9422214ba22e307767866c99cbf93398c2f5e57a",
+      "independentCleanApplyTree": "9422214ba22e307767866c99cbf93398c2f5e57a"
+    },
+    {
+      "patch": "/private/tmp/done-publisher-isolation-20261021/patches-v2/05-publisher-scoped-invalidation.patch",
+      "sha256": "816608540331bee79f775fe8b942dff814a32998fc79aaf832c35ab23e33bb4c",
+      "expectedTree": "3fd6967e9e51ee166946d7fd2c0a7aecf696e13e",
+      "independentCleanApplyTree": "3fd6967e9e51ee166946d7fd2c0a7aecf696e13e"
+    },
+    {
+      "patch": "/private/tmp/done-publisher-races-20261021/patches/06-known-publisher-commit-markers.patch",
+      "sha256": "3066bd8c773bf0e975bc4b4a996751e2e072054dd7301c4a8fa66218321ea918",
+      "expectedTree": "dd5755a91faf940c9c99a3e6516f2aaf9ff70967",
+      "independentCleanApplyTree": "dd5755a91faf940c9c99a3e6516f2aaf9ff70967"
+    },
+    {
+      "patch": "/private/tmp/done-cold-verification-20261021/patches/07-cold-publisher-admission.patch",
+      "sha256": "d3ab51470a4bb242e6cf9c817b0f959bd20d55798ddc94808a538eb41d7b150f",
+      "expectedTree": "aadfbab35081da1daea12c72438a834db429c405",
+      "independentCleanApplyTree": "aadfbab35081da1daea12c72438a834db429c405"
+    }
+  ],
+  "realIndexSha256": "df44841805bae41f991e101d7df8e5695c8042e2bc8e42c00016cb5b54201a3f"
+}

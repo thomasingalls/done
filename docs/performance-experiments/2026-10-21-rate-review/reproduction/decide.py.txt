@@ -1,0 +1,6 @@
+from pathlib import Path
+import json
+r=Path(__file__).parent;n=json.loads((r/'native-summary.json').read_text());b=json.loads((r/'browser-summary.json').read_text());s=next(x for x in n['comparisons'] if x['arm']=='S')
+checks={'meaningfulPrimaryBrowserImprovement':b['meaningfulSignal'],'primaryReferenceDrift':b['referenceDriftGuardPassed'],'allBrowserTypingGuards':b['allTypingGuards'],'allTenClientDataGuards':b['allTenFullDataGuardsPassed'],'nativeSReviewGate':s['nativeReviewGatePassed'],'asymmetricCompleteAndWithinAbsoluteBounds':all(x['completeAndVerified'] and x['absoluteInteractionGuards'] for x in n['asymmetric']['runs'])}
+result={'candidate':'32/session64/process','checks':checks,'allAdoptionReviewGatesPassed':all(checks.values()),'failedChecks':[k for k,v in checks.items() if not v],'configuredApplicationPolicyRemains':{'sessionPerSecond':16,'processPerSecond':64},'global128VariantsDiagnosticOnly':True,'safeProductionCapacityEstablished':False,'scope':'Prospective local decision gates; no p-values, supported-device/container capacity or runtime configuration adoption. Guard misses remain misses, not favorable reruns.'}
+(r/'decision.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

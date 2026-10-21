@@ -1,0 +1,3 @@
+# Native launcher stdout collision
+
+The outer shell and first nested native subprocess both used native-invocation.log. The parent receipt print can overwrite initial stdout bytes after the native block finishes. Retain that file as emitted, with this limitation. Every per-run result JSON, per-server log, original network status/proof record and native-runner.json is separate and complete. Analysis and denominator use those files, never the collided launcher stdout. The asymmetric subprocess has its own separate file. This is an artifact limitation; no load, request timing or service code changed.

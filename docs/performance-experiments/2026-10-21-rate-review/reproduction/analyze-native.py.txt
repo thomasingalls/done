@@ -1,0 +1,33 @@
+from pathlib import Path
+import collections,json,math,statistics
+r=Path(__file__).parent;median=statistics.median
+def dist(values):
+ v=sorted(values)
+ return {'n':len(v),'p50':v[math.ceil(len(v)*.5)-1],'p95':v[math.ceil(len(v)*.95)-1],'max':v[-1]} if v else None
+rows=[]
+for folder in ['native','asymmetric']:
+ raw=json.loads((r/folder/'results.json').read_text());plan=json.loads((r/('native-plan.json' if folder=='native' else 'asymmetric-plan.json')).read_text());assert [(x['arm'],x['block']) for x in raw]==[(x['arm'],x['block']) for x in plan]
+ for x in raw:
+  writes={}
+  for who,offers in x['writes'].items():
+   good=[o for o in offers if 'verifiedAt' in o];writes[who]={'offered':len(offers),'verified':len(good),'offeredToVerifiedMs':dist([o['verifiedAt']-o['offeredAt'] for o in good]),'queueToStartMs':dist([o['startedAt']-o['offeredAt'] for o in good]),'initialWriteMs':good[0]['verifiedAt']-good[0]['offeredAt'] if good else None}
+  pg=[o for o in x['peer'] if 'verifiedAt' in o];peer={'offered':len(x['peer']),'verified':len(pg),'offeredToResponseMs':dist([o['responseAt']-o['offeredAt'] for o in pg]),'offeredToVerifiedMs':dist([o['verifiedAt']-o['offeredAt'] for o in pg])}
+  positions=sum(s['positions'] for s in x['streams']);units=positions+sum(v['verified'] for v in writes.values())+len(pg);m=x['metrics'];cpu=(m['cpu']['user']+m['cpu']['system'])/1000 if m else None
+  row={'folder':folder,'arm':x['arm'],'block':x['block'],'outcome':x['outcome'],'replayMs':x.get('replayMs'),'elapsedMs':x['elapsedMs'],'verifiedPositions':positions,'streams':x['streams'],'writes':writes,'peer':peer,'completedUsefulUnits':units,'cpuMs':cpu,'cpuMsPerUsefulUnit':cpu/units if units and cpu is not None else None,'rssPeak':m['rssSampledPeak'] if m else None,'loopDelayMs':m['loopDelayMs'] if m else None,'readConcurrency':m['peakReadActive'] if m else None,'publisherVerification':m['publisherVerification'] if m else None,'httpStatuses':dict(collections.Counter(str(q['status'])+(':'+q.get('reason',q.get('refusal'))) if q.get('reason',q.get('refusal')) else str(q['status']) for q in x['statuses'])),'capacityRefusals':sum(q['status']==429 for q in x['statuses']),'stateChangeRefusals':sum(q.get('reason')=='state-changed' for q in x['statuses']),'explicitBackoffMs':sum(q['waitMs'] for q in x['retries']),'errors':x.get('errors',[])}
+  expected=(6*256 if folder=='native' else 1024);row['completeAndVerified']=x['outcome']=='passed' and positions==expected and all(q['completed'] for q in x['streams']) and all(w['offered']==w['verified'] for w in writes.values()) and peer['offered']==peer['verified'];row['absoluteInteractionGuards']=all((v and v['p95']<=2500) for v in [writes['first']['offeredToVerifiedMs'],writes['other']['offeredToVerifiedMs'],peer['offeredToVerifiedMs']]);rows.append(row)
+by={arm:[x for x in rows if x['folder']=='native' and x['arm']==arm] for arm in ['D','S','P','B']};assert all(len(v)==2 for v in by.values())
+def med(arm,f):return median(f(x) for x in by[arm])
+comparisons=[]
+for arm in ['S','P','B']:
+ d=by['D'];v=by[arm];latencies={}
+ for name,f in [('hot',lambda x:x['writes']['first']['offeredToVerifiedMs']['p95']),('other',lambda x:x['writes']['other']['offeredToVerifiedMs']['p95']),('peer',lambda x:x['peer']['offeredToVerifiedMs']['p95'])]:
+  a,b=med('D',f),med(arm,f);latencies[name]={'referenceMedianRunP95Ms':a,'candidateMedianRunP95Ms':b,'guardPassed':not (b>1.1*a and b>a+20)}
+ df=lambda x:x['cpuMsPerUsefulUnit'];rf=lambda x:x['rssPeak'];lf=lambda x:x['loopDelayMs']['p99'];cpuGuard=med(arm,df)<=1.2*med('D',df);rssGuard=med(arm,rf)<=max(1.25*med('D',rf),med('D',rf)+64*1024**2);loopGuard=med(arm,lf)<=max(1.25*med('D',lf),50) and all(x['loopDelayMs']['max']<=250 for x in v)
+ eligible=all(x['completeAndVerified'] and x['absoluteInteractionGuards'] for x in v) and all(x['guardPassed'] for x in latencies.values()) and cpuGuard and rssGuard and loopGuard
+ pairs=[{'block':b,'referenceMs':next(x['replayMs'] for x in d if x['block']==b),'candidateMs':next(x['replayMs'] for x in v if x['block']==b)} for b in [1,2]]
+ for p in pairs:p['improvementPercent']=100*(1-p['candidateMs']/p['referenceMs']) if p['candidateMs'] and p['referenceMs'] else None
+ comparisons.append({'arm':arm,'pairs':pairs,'fairness':latencies,'cpuPerUsefulUnitGuard':cpuGuard,'rssGuard':rssGuard,'eventLoopGuard':loopGuard,'nativeReviewGatePassed':eligible})
+asym=[x for x in rows if x['folder']=='asymmetric'];asymD,asymS=asym
+asymSummary={'runs':[{'arm':x['arm'],'replayMs':x['replayMs'],'writes':x['writes'],'peer':x['peer'],'completeAndVerified':x['completeAndVerified'],'absoluteInteractionGuards':x['absoluteInteractionGuards']} for x in asym],'improvementPercent':100*(1-asymS['replayMs']/asymD['replayMs']) if asymD['replayMs'] and asymS['replayMs'] else None,'singlePairDescriptiveOnly':True}
+result={'rows':rows,'comparisons':comparisons,'asymmetric':asymSummary,'allOriginalRunsComplete':all(x['completeAndVerified'] for x in rows),'allAbsoluteInteractionGuards':all(x['absoluteInteractionGuards'] for x in rows),'sourcePolicyUnchanged':True,'scope':'Fixed local workload, two factorial blocks and one asymmetric pair; normalized CPU is descriptive, not production/container capacity, universal fairness or a global policy selection.'}
+(r/'native-summary.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:v for k,v in result.items() if k!='rows'},indent=2))

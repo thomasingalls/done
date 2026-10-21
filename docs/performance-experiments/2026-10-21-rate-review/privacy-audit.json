@@ -1,0 +1,5 @@
+{
+  "knownExactValuesChecked": 35,
+  "matches": 0,
+  "scope": "Explicit whitelist and35 known raw/JSON-escaped private fixture values; not a general secret detector."
+}

@@ -1,0 +1,14 @@
+from pathlib import Path
+import hashlib,json,subprocess
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');prior=json.loads(Path('/private/tmp/done-cold-verification-20261021/identity.json').read_text());sources=json.loads((r/'source-identity.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for arm,values in sources.items():
+ assert len(values['sha256'])==803
+ for f,h in values['sha256'].items():assert sha(r/('source-'+arm)/f)==h
+assert all(sha(repo/f)==h for f,h in sources['D']['sha256'].items())
+referenceTests={str(p.relative_to(r/'source-D')):sha(p) for p in sorted((r/'source-D/test').rglob('*')) if p.is_file() and p.suffix in ['.mjs','.ts']};assert referenceTests==prior['candidateTestClosureSha256']
+for arm in ['S','P','B']:assert {str(p.relative_to(r/('source-'+arm))):sha(p) for p in sorted((r/('source-'+arm)/'test').rglob('*')) if p.is_file() and p.suffix in ['.mjs','.ts']}==referenceTests
+build={str(p.relative_to(r/'client-dist')):sha(p) for p in (r/'client-dist').rglob('*') if p.is_file()};assert build==prior['clientBuildSha256'] and len(build)==110
+for f,h in prior['privateFixtureSha256'].items():assert sha(Path(f))==h
+exe=Path(subprocess.check_output(['node','--input-type=module','-e',"import{chromium}from'@playwright/test';console.log(chromium.executablePath())"],cwd=repo,text=True).strip());assert sha(exe)==prior['browser']['executableSha256']
+result={'environment':prior['environment'],'browser':prior['browser'],'chromiumExecutablePathApiHashVerified':True,'browserHashScope':prior['browserHashScope'],'sourceMaps':'source-identity.json','productionFilesPerArm':803,'temporaryProductionChanges':{k:v['changesAgainstPatch07'] for k,v in sources.items()},'onlyRefillLiteralInterventions':True,'preflightEffectivePolicies':'preflight.json','testClosureSha256':referenceTests,'allFourTestClosuresExact':True,'clientBuildSha256':build,'clientBuildExactPatch02':True,'privateFixtureSha256':prior['privateFixtureSha256'],'privateFixtureHashesExactPatch07':True,'rootProbeSha256':{p.name:sha(p) for p in r.iterdir() if p.is_file() and p.suffix in ['.py','.mjs']},'scope':'Named local sources/build/probes/executablePath API/fixture hashes. No independent headless-shell or full installed-dependency-store attestation.'}
+(r/'identity.json').write_text(json.dumps(result,indent=2)+'\n');print('All source/test/build/fixture identities exact, apart from planned temporary refill literals')

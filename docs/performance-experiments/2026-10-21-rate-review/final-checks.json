@@ -1,0 +1,108 @@
+[
+  {
+    "name": "dom-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-rate-review-20261021/analyze-dom.py",
+      "/private/tmp/done-rate-review-20261021/catchup-1-D/result.json",
+      "/private/tmp/done-rate-review-20261021/catchup-1-S/result.json",
+      "/private/tmp/done-rate-review-20261021/catchup-2-S/result.json",
+      "/private/tmp/done-rate-review-20261021/catchup-2-D/result.json",
+      "/private/tmp/done-rate-review-20261021/catchup-3-D/result.json",
+      "/private/tmp/done-rate-review-20261021/catchup-3-S/result.json",
+      "/private/tmp/done-rate-review-20261021/foreground-D/result.json",
+      "/private/tmp/done-rate-review-20261021/foreground-S/result.json",
+      "/private/tmp/done-rate-review-20261021/pressure-D/result.json",
+      "/private/tmp/done-rate-review-20261021/pressure-S/result.json"
+    ],
+    "startedAt": 1792600842234,
+    "completedAt": 1792600842334,
+    "exitCode": 0
+  },
+  {
+    "name": "browser-analysis",
+    "command": [
+      "python3",
+      "/private/tmp/done-rate-review-20261021/analyze-browser.py"
+    ],
+    "startedAt": 1792600842334,
+    "completedAt": 1792600842434,
+    "exitCode": 0
+  },
+  {
+    "name": "policy-decision",
+    "command": [
+      "python3",
+      "/private/tmp/done-rate-review-20261021/decide.py"
+    ],
+    "startedAt": 1792600842434,
+    "completedAt": 1792600842464,
+    "exitCode": 0
+  },
+  {
+    "name": "identity-check",
+    "command": [
+      "python3",
+      "/private/tmp/done-rate-review-20261021/identity.py"
+    ],
+    "startedAt": 1792600842465,
+    "completedAt": 1792600844279,
+    "exitCode": 0
+  },
+  {
+    "name": "evidence-review",
+    "command": [
+      "python3",
+      "/private/tmp/done-rate-review-20261021/review-evidence.py"
+    ],
+    "startedAt": 1792600844279,
+    "completedAt": 1792600844479,
+    "exitCode": 0
+  },
+  {
+    "name": "census-check",
+    "command": [
+      "node",
+      "scripts/account-crypto-prep/run.mjs"
+    ],
+    "startedAt": 1792600844479,
+    "completedAt": 1792600845257,
+    "exitCode": 0
+  },
+  {
+    "name": "inventory-check",
+    "command": [
+      "node",
+      "scripts/release-validation/check.mjs"
+    ],
+    "startedAt": 1792600845257,
+    "completedAt": 1792600846655,
+    "exitCode": 0
+  },
+  {
+    "name": "manifest-check",
+    "command": [
+      "node",
+      "scripts/release-validation/plan.mjs"
+    ],
+    "startedAt": 1792600846655,
+    "completedAt": 1792600849076,
+    "exitCode": 0
+  },
+  {
+    "name": "planning-tests",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "test/release-validation/inventory.test.mjs",
+      "test/release-validation/manifest.test.mjs",
+      "test/release-validation/general-tests.test.mjs",
+      "test/release-validation/generated-tests.test.mjs",
+      "test/account-first-authority/registry.test.mjs"
+    ],
+    "startedAt": 1792600849077,
+    "completedAt": 1792600896614,
+    "exitCode": 0
+  }
+]

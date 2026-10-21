@@ -1,0 +1,40 @@
+from pathlib import Path
+import hashlib,gzip,json
+r=Path(__file__).parent;dest=r/'evidence-build';dest.mkdir(exist_ok=False);sha=lambda b:hashlib.sha256(b).hexdigest();provenance={}
+def put(src,name,compress=False):
+ b=Path(src).read_bytes();name+=('.gz' if compress else '');p=dest/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.compress(b,mtime=0) if compress else b);provenance[name]={'sourceSha256':sha(b),'storedSha256':sha(p.read_bytes())}
+roots=['README.md','protocol.md','native-stdio-note.md','starting.json','identity.json','source-identity.json','preflight.json','native-plan.json','asymmetric-plan.json','browser-plan.json','native-runner.json','browser-runner.json','native-summary.json','browser-summary.json','analysis.json','decision.json','evidence-review.json','final-checks.json']
+for name in roots:put(r/name,name)
+for p in sorted(r.glob('*.log')):put(p,'checks/'+p.name,True)
+for p in sorted(r.iterdir()):
+ if p.is_file() and p.suffix in ['.mjs','.py']:put(p,'reproduction/'+p.name+'.txt')
+put(r/'budget-before.ts.txt','reproduction/budget-before.ts.txt')
+for arm in ['D','S','P','B']:put(r/('source-'+arm)/'account-service/requestBudget.ts','reproduction/requestBudget-'+arm+'.ts.txt')
+for p in sorted((r/'source-D/test/live-sync-attribution').iterdir()):
+ if p.is_file():put(p,'reproduction/browser/'+p.name+'.txt')
+for folder in ['native','asymmetric']:
+ for p in sorted((r/folder).iterdir()):
+  if p.is_file() and p.suffix in ['.json','.log','.txt']:put(p,'runs/native/'+folder+'/'+p.name,True)
+for case in json.loads((r/'browser-plan.json').read_text()):
+ for name in ['result.json','runner.json','services.log','invocation.log']:put(r/case['name']/name,'runs/browser/'+case['name']+'/'+name,True)
+# Explicit whitelist. DBs, fixture JSON/keys/tokens/codes/browser storage and dependency trees remain outside Git.
+secrets=[]
+for folder in ['caughtup-seed-v3','backlog-seed-v3']:
+ d=json.loads((Path('/private/tmp/done-live-sync-attribution-20261021')/folder/'fixture.json').read_text())
+ for who in ['a','b']:
+  secrets.append(d[who]['code'])
+  for c in d[who]['credentials']:
+   for k in ['privateKey','credentialId','userHandle']:
+    if c.get(k):secrets.append(c[k])
+d=json.loads((r/'private-api/fixture.json').read_text());secrets.append(d['authorityKey'])
+for who in ['first','other']:
+ secrets.append(d[who]['s']['privateKey'])
+ for session in d[who]['sessions']:
+  for value in session.values():
+   if isinstance(value,str) and len(value)>=12:secrets.append(value)
+values=set()
+for s in secrets:values.update([s.encode(),json.dumps(s)[1:-1].encode()])
+for p in dest.rglob('*'):
+ if p.is_file():
+  b=p.read_bytes();b=gzip.decompress(b) if p.name.endswith('.gz') else b;assert not any(s in b for s in values),str(p.relative_to(dest))
+(dest/'artifact-provenance.json').write_text(json.dumps(provenance,indent=2)+'\n');(dest/'privacy-audit.json').write_text(json.dumps({'knownExactValuesChecked':len(values),'matches':0,'scope':'Explicit whitelist and35 known raw/JSON-escaped private fixture values; not a general secret detector.'},indent=2)+'\n');print(json.dumps({'files':len(provenance),'storedBytes':sum((dest/p).stat().st_size for p in provenance),'knownExactValuesChecked':len(values),'matches':0}))
